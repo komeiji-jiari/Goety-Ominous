@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "#forge:bones",
-    "#forge:gunpowder",
-    "#forge:string",
-    "minecraft:rotten_flesh"
-  ]
-}

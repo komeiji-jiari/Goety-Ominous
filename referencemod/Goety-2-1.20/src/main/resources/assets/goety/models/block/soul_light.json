@@ -1,6 +1,0 @@
-{
-  "textures": {
-    "particle": "minecraft:block/soul_lantern"
-  },
-  "render_type": "translucent"
-}

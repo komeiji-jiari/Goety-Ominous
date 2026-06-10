@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "#goety:bosses",
-    "#goety:mini_bosses",
-    "#goety:golems",
-    "goety:prisoner"
-  ]
-}

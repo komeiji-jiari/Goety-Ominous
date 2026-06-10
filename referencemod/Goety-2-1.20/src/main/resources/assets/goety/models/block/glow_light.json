@@ -1,6 +1,0 @@
-{
-  "textures": {
-    "particle": "minecraft:block/glowstone"
-  },
-  "render_type": "translucent"
-}
