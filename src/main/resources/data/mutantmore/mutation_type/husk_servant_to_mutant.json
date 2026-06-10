@@ -1,0 +1,12 @@
+{
+  "entityType": "goety:husk_servant",
+  "resultEntityType": "mutantmore:mutant_husk",
+  "requiredMods": [
+    "goety"
+  ],
+  "screenShake": {
+    "amount": 0.15,
+    "duration": 20,
+    "range": 35
+  }
+}

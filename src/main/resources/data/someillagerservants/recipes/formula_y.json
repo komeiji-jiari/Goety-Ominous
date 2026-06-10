@@ -1,0 +1,33 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "mutantmore:incomplete_formula_y"
+  },
+  "craftType": "animation",
+  "soulCost": 1,
+  "duration": 5,
+  "ingredients": [
+    {
+      "item": "minecraft:nether_wart"
+    },
+    {
+      "item": "minecraft:gunpowder"
+    },
+    {
+      "item": "minecraft:fermented_spider_eye"
+    },
+    {
+      "item": "minecraft:golden_carrot"
+    },
+    {
+      "item": "minecraft:crying_obsidian"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    }
+  ],
+  "result": {
+    "item": "mutantmore:formula_y"
+  }
+}

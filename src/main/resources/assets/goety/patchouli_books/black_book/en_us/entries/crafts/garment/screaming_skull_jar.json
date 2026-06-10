@@ -1,0 +1,23 @@
+{
+  "name": "Screaming Skull Jar",
+  "icon": "someillagerservants:screaming_skull_jar",
+  "category": "goety:crafts/garment",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "While the Shrieking Obelisk is already effective at intimidating the Illagers who come hunting for you, there are always those forgetful sorts who launch a dull raid on your home while you're away. Therefore, you've decided to forge a new trinket to be rid of them for good."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:screaming_skull_jar"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "By consuming a Tall Skull, this Skull Jar can unleash a terrible noise that reminds Illager hunting parties of their place—before they even find you. Simple and convenient."
+    },
+    {
+        "type": "patchouli:text",
+        "text": "Aside from effectively stopping Illager Assaults, this charm can also effectively intimidate Illagers, causing them to deal slightly less damage to you."
+    }
+  ]
+}

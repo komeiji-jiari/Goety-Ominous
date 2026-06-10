@@ -1,0 +1,25 @@
+{
+  "name": "友方魔法师",
+  "icon": "someillagerservants:mysterious_contract",
+  "category": "goety:iascompat",
+  "advancement": "goety:goety/read_ravaging_scroll",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "狡猾的魔法师这次在被你打跑之后留下了一张精致的书页，上边用非常娟秀精致的笔记表达出了一种既病态又嘲讽式的欣赏。看来你已经得到了这位狡诈的邪术师的青睐，只需要用祭坛给他送去一些他感兴趣的物品就能让他为你工作了。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:magispeller_servant",
+      "text": "当然，他认为这只是简单的雇佣关系而已。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "战斗中魔法师能够使用多种出色且具有观赏性的的魔法既凶狠又不失优雅地重创你的敌人。受你的魔法天资启发，他甚至学会了召唤全新的怒鬼仆从——大概某位皇室成员会对此表达强烈抗议吧。当魔法师倒下逃走之后，他会返还神秘的合同，你当然可以选择继续用一些物品续约这张合同。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:magispeller_servant"
+    }
+  ]
+}

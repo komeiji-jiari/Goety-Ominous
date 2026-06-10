@@ -1,0 +1,28 @@
+{
+  "name": "突变凋灵骷髅仆从",
+  "icon": "mutantmore:mutant_wither_skeleton_skull",
+  "category": "goety:mmcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你好奇突变试剂能否被应用在你的凋灵骷髅仆从上。事实上这只会把你忠诚的仆从变得六亲不认，但如果在更可控的黑暗仪式上对化合物注入死者的能量，你就能变异出姑且算得上忠诚于你的突变凋灵骷髅仆从。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:convert_wither_skeleton_to_mutant_wither_skeleton"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "你可以为你的突变凋灵骷髅仆从装备盔甲。奇特的是，盔甲似乎会正确符合他们高大的身材。除了剑以外，他们能够接受任意装备，包括你的工具，镰刀，大锤等。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:mutant_wither_skeleton_servant",
+      "text": "厉不厉害你凋哥"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "使用骨头右键你的突变凋灵骷髅仆从能够治愈他们。当然，穿戴死灵套装或者下界长袍也能提供额外的自然治疗。"
+    }
+  ]
+}

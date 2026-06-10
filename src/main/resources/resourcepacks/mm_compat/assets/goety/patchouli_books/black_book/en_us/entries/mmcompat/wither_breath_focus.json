@@ -1,0 +1,20 @@
+{
+  "name": "Wither Breath Focus",
+  "icon": "someillagerservants:wither_breath_focus",
+  "category": "goety:mmcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "This spell allows you to exhale a withering breath just like a Mutant Wither Skeleton, inflicting severe Wither, Slowness, and Blindness upon creatures caught within, while also making it difficult for them to jump. You and your allies, however, remain unaffected by its harm."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:wither_breath_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "Casting this spell with a Nether Staff also afflicts affected creatures with Sapped on top of the existing effects."
+    }
+  ]
+}

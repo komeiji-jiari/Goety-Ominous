@@ -1,0 +1,24 @@
+{
+  "name": "Stranger Pyre Additions",
+  "icon": "goety:ominous_pyre",
+  "category": "goety:iascompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "More stranger Illagers to train."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Twittollager Servant",
+      "text": "Requirements: $(li)Neollager$(li)64 Cobblestone$(li)1 Anvil$(li)2 Iron Blocks$(li)2 Redstone Blocks$(li)8 Glass$(li)4 Observers$(li)8 TNT"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Absorber Servant",
+      "text": "Requirements: $(li)Crusher Servant$(li)8 Chains$(li)4 Iron Blocks$(li)2 Gold Blocks$(li)2 Emerald Blocks$(li)2 Anvils$(li)2 Pale Metal Blocks$(li)2 Cursed Metal Blocks$(li)2 Dark Metal Blocks"
+    }
+  ],
+  "extra_recipe_mappings": {
+    "goety:ominous_pyre": 1
+  }
+}

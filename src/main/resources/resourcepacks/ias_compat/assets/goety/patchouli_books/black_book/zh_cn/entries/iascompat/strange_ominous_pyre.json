@@ -1,0 +1,24 @@
+{
+  "name": "怪奇不祥火炬",
+  "icon": "goety:ominous_pyre",
+  "category": "goety:iascompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "更多可以训练的怪奇灾厄村民。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "暴躁推特哥仆从",
+      "text": "需求: $(li)新刌民 $(li)64个圆石 $(li)1个铁砧 $(li)2个铁块 $(li)2个红石块 $(li)8个玻璃 $(li)4个侦测器 $(li)8个TNT"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "伤害吸收者仆从",
+      "text": "需求: $(li)粉碎者仆从 $(li)8个锁链 $(li)4个铁块 $(li)2个金块 $(li)2个绿宝石块 $(li)2个铁砧 $(li)2个苍白金属块 $(li)2个诅咒金属块 $(li)2个黑暗金属块"
+    }
+  ],
+  "extra_recipe_mappings": {
+    "goety:ominous_pyre": 1
+  }
+}

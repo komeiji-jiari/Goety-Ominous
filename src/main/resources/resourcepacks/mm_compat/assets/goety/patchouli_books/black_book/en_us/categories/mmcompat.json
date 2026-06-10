@@ -1,0 +1,7 @@
+{
+  "name": "Mutant More Integration",
+  "description": "There is darkness even within science.",
+  "icon": "mutantmore:formula_y",
+  "sortnum": 3,
+  "parent": "goety:goetyominous"
+}

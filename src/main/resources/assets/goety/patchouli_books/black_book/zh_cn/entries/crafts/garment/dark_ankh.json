@@ -1,0 +1,23 @@
+{
+  "name": "黑暗安卡",
+  "icon": "someillagerservants:dark_ankh",
+  "category": "goety:crafts/garment",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你认为你的长袍为相应的仆从提供的保护还是不够有效，毕竟你不能穿着同时穿着好几件长袍。你已经设计出了一种饰品，能够为你的仆从提供更有效的保护。当被附魔持久时，你的仆从甚至有机会从死亡中幸存下来。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:dark_ankh"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "这个护符也可以接受其他聚晶附魔。当被附魔强效或是高速时，它可以在使用死灵法术时为你的仆从提供增益。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "众生逆位作何物？奇异万古死亦逝。"
+    }
+  ]
+}

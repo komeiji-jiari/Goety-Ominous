@@ -1,0 +1,32 @@
+{
+  "name": "异教牧首仆从",
+  "icon": "goety:malefic_helm",
+  "category": "goety:mutations",
+  "advancement": "goety:goety/read_bygone_scroll",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你对下界的了解已经超过了那些愚昧无知的邪教徒。就像发展灾厄村民部落那样，你可以从许多平庸的邪教徒中提拔一位牧首，只需要些许魔法物品就能让你的教团拥有一位不洁的司祭。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:convert_heretic_to_heresiarch"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "这些司祭掌握多种下界法术，他们能够使用一种被底层教徒称为‘圣火’的不洁之火快速地烧尽面前的敌人。虽然那些黑曜石巨柱是如何被召唤出来的仍是未知，可如果你在$(l)$(4)探究升格的道路上$()得到了巨柱的一部分力量，或许你可以用它来增强你的司祭的能力..."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:heresiarch_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "你可以命令教团的牧首在村民之中发展教徒。类似唤魔者制造蹂躏者的方法，当你用装有命令聚晶/敕令聚晶的法杖右键你的牧首，再右键离他们最近的村民或者流浪商人，你的牧首便会将他们转化为任意一种邪教徒。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "你可以通过给予绿宝石与你的异教牧首仆从交易，且无需穿戴特定的服饰。若你与异教牧首仆从的主人（如果其有主人）是盟友关系，并且穿戴了合适的服饰，你也能与其他人的异教牧首仆从进行交易。"
+    }
+  ]
+}

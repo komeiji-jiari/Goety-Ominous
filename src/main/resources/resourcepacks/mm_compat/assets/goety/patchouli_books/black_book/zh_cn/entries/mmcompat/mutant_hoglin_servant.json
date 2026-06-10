@@ -1,0 +1,28 @@
+{
+  "name": "突变疣猪兽仆从",
+  "icon": "mutantmore:mutant_hoglin_tusk",
+  "category": "goety:mmcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "一头强大而暴戾的凶兽，被创造出来时就充满愤怒，用不可思议的蛮力踏碎面前的一切。尽管突变疣猪兽看起来很强大，但你可以用仪式突变的方式强行束缚住它们的野性，从而让如此产生的突变疣猪兽对你保留忠诚。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:convert_hoglin_to_mutant_hoglin"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "正如疣猪兽仆从一样，你能够骑乘这些巨大的野兽，操控它移动的方式与疣猪兽仆从类似。你甚至可以命令它发起冲锋，将挡在路径上的东西碾压殆尽。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:mutant_hoglin_servant",
+      "text": "突变laowang237"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "使用绯红菌潜行+右键你的突变疣猪兽仆从能够治愈它们。如果它们的主人穿着下界长袍，它们也能利用主人的灵魂能量治愈自己。"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "Hog Charge Focus",
+  "icon": "someillagerservants:hog_charge_focus",
+  "category": "goety:mmcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "With this spell, you can charge forward like a Mutant Hoglin, tearing through any stone blocks in your path like a human-shaped tunnel boring machine! If you prefer not to destroy blocks, you can cast the spell while sneaking—it will be slower, but at least you won't leave craters everywhere."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:hog_charge_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "If you cast this spell with a Nether Staff, all stone-like blocks you destroy will be smelted, including ores."
+    }
+  ]
+}

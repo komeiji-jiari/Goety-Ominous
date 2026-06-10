@@ -1,0 +1,29 @@
+{
+  "name": "沉溺死灵法师",
+  "icon": "goety:bouncy_bubble_focus",
+  "category": "goety:mutations",
+  "advancement": "goety:goety/unlock_necromancer",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "为什么深渊魔法能够被那些愚蠢的、脑子进水的溺尸掌握，而不是骷髅呢？如果存在一个死灵法师协会的话大概会表示强烈不满吧。无论如何，你已经想到了用沉溺骷髅作为死灵法师的载体的方法了。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:convert_sunken_skeleton_to_sunken_necromancer"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "和溺尸死灵法师类似，他们能够召唤出沉溺骷髅。当然他们也可以接受更多的聚晶，甚至包括一些水生生物，比如黑鲷和噬咬鲨。空手右键点击他们，会使沉溺死灵法师为你召唤仆从。你可以根据意愿让他们成为专精于水战的大师，或是在陆地上像其他死灵法师一样助你一臂之力。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:sunken_necromancer_servant"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "someillagerservants:sunken_soul_jar",
+      "text": "如果一个沉溺死灵法师死亡，而你正好有一个$(l:crafts/empty_soul_jar)空灵魂罐$()将会使他们的灵魂填充进去，当在一个沉溺骷髅身上右键点击这个魂罐时，将会用该沉溺骷髅作为新的躯体来复活死灵法师。"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "name": "Ankh das Trevas",
+  "icon": "someillagerservants:dark_ankh",
+  "category": "goety:crafts/garment",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Você descobre que a proteção que suas túnicas oferecem aos seus respectivos servos ainda é insuficiente, afinal, você não pode usar várias túnicas ao mesmo tempo. Você criou uma curiosidade que fornece proteção mais eficaz para seus servos. Quando encantada com Persistência, seus servos ainda têm uma chance de sobreviver à morte."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:dark_ankh"
+    },
+    {
+        "type": "patchouli:text",
+        "text": "Este amuleto também pode aceitar outros encantamentos de foco. Quando encantado com Potência ou Velocidade, ele fornece buffs aos seus servos quando você conjura feitiços de necromancia."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Qual é a reversão de todas as coisas vivas? Estranha por eras, até a morte eventualmente passa."
+    }
+  ]
+}

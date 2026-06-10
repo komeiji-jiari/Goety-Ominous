@@ -1,0 +1,28 @@
+{
+  "name": "Mutant Wither Skeleton Servant",
+  "icon": "mutantmore:mutant_wither_skeleton_skull",
+  "category": "goety:mmcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You wondered whether the mutation formula could be applied to your Wither Skeleton Servants. In fact, doing so would only turn your loyal servant against you, but if you channel the dead's energy into the compound through a more controlled ritual, you can mutate a Mutant Wither Skeleton that is, for the most part, loyal to you."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:convert_wither_skeleton_to_mutant_wither_skeleton"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "You can equip your Mutant Wither Skeleton Servant with armor. Strangely, the armor seems to properly fit their tall stature. Besides swords, they can accept any equipment, including your tools, scythes, hammers, and so on."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:mutant_wither_skeleton_servant",
+      "text": "Your Wither Bro is absolutely cracked"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Right-clicking your Mutant Wither Skeleton Servant with bones will heal them. Of course, wearing the Necro Set or the Nether Robe also provides additional passive healing."
+    }
+  ]
+}

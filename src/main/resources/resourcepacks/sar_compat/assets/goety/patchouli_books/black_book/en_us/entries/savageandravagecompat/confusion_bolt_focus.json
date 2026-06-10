@@ -1,0 +1,16 @@
+{
+  "name": "Confusion Bolt Focus",
+  "icon": "someillagerservants:confusion_bolt_focus",
+  "category": "goety:savageandravagecompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "By studying the tricks of the Trickster, you've learned how to craft a spell that fires a flash of light. Upon hitting a target, this spell swaps your position with theirs, while also inflicting a brief moment of Weight and Weakness upon them."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:confusion_bolt_focus",
+      "text": ""
+    }
+  ]
+}

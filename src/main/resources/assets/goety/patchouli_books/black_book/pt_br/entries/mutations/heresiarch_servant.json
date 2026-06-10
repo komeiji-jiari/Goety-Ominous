@@ -1,0 +1,32 @@
+{
+  "name": "Servo Heresiarca",
+  "icon": "goety:malefic_helm",
+  "category": "goety:mutations",
+  "advancement": "goety:goety/read_bygone_scroll",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Seu entendimento sobre o Nether supera em muitos os outros cultistas ignorantes. Assim como você desenvolveria uma facção de Illagers, você pode promover um Heresiarca entre muitos cultistas medíocres. Com alguns itens mágicos, você pode conceder ao seu culto um padre profano."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:convert_heretic_to_heresiarch"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Estes padres empunham várias magias do Nether e podem queimar rapidamente inimigos diante deles com uma chama profana que cultistas de nível inferior chamam de 'Fogo Sagrado'. Embora permaneça desconhecido como os Monólitos de Obsidiana são invocados, se você obtivesse uma parte de seu poder ao longo do $(l)$(4)caminho da Ascensão$(), talvez pudesse usá-lo para melhorar as habilidades de seu padre..."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:heresiarch_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Você pode comandar o Heresiarca do seu culto para recrutar cultistas entre os aldeões. Assim como os Invocadores criam um Devastado, quando você clica com o botão direito no seu Heresiarca com uma varinha contendo um Foco de Comando e então clica com o botão direito em um Aldeão ou Vendedor Ambulante próximo, seu Heresiarca os transformará em um tipo aleatório de cultista."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Você também pode negociar com seu Servo Heresiarca dando-lhe uma Esmeralda, sem precisar vestir a roupa apropriada para isso. Você também pode negociar com outros Servos Heresiarca, desde que seja aliado ao seu mestre, se eles tiverem um, e esteja vestindo a roupa apropriada."
+    }
+  ]
+}

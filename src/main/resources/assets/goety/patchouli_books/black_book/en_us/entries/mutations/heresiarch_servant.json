@@ -1,0 +1,32 @@
+{
+  "name": "Heresiarch Servant",
+  "icon": "goety:malefic_helm",
+  "category": "goety:mutations",
+  "advancement": "goety:goety/read_bygone_scroll",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Your understanding of the Nether has surpassed that of the ignorant cultists. Just as you would develop an Illager tribe, you can promote a Heresiarch from among many mediocre cultists. With a few magical items, you can grant your cult an unholy priest."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:convert_heretic_to_heresiarch"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "These priests wield various Nether spells and can quickly burn enemies before them with an unholy flame that lower-ranking cultists call 'Sacred Fire'. Though it remains unknown how the Obsidian Monoliths are summoned, if you were to obtain a portion of their power along the $(l)$(4)path of Ascension$(), perhaps you could use it to enhance your priest's abilities..."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:heresiarch_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "You can command your cult's Heresiarch to recruit cultists from among villagers. Similar to how Evokers create one Ravaged, when you right-click your Heresiarch with a wand containing a Command Focus, then right-click a nearby Villager or Wandering Trader, your Heresiarch will transform them into a random type of cultist."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "You're also able to trade with your Heresiarch Servant by giving them an Emerald, without needing to wear appropriate attire to do so. You can also trade with other Heresiarch Servants, provided you're allied to their master, if they have one, and wearing the appropriate attire."
+    }
+  ]
+}

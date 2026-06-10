@@ -1,0 +1,16 @@
+{
+  "name": "诡术师仆从",
+  "icon": "goety:mystic_core",
+  "category": "goety:savageandravagecompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "让具有魔法天赋的灾厄村民们担任丑角这这一点看起来简直不可理喻，但是不要误会，他们使用的魔法狡诈而又阴险，可不仅仅只是为了给那些趾高气扬的皇室成员取乐。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:trickster_servant",
+      "text": "天旋地转，地转天旋"
+    }
+  ]
+}

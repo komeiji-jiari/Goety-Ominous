@@ -1,0 +1,42 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "mutantmore:incomplete_compound_z"
+  },
+  "craftType": "animation",
+  "soulCost": 1,
+  "duration": 10,
+  "ingredients": [
+    {
+      "item": "mutantmore:formula_y"
+    },
+    {
+      "item": "minecraft:glowstone_dust"
+    },
+    {
+      "item": "minecraft:experience_bottle"
+    },
+    {
+      "item": "minecraft:golden_apple"
+    },
+    {
+      "item": "minecraft:sculk_catalyst"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    },
+    {
+      "item": "minecraft:end_crystal"
+    },
+    {
+      "item": "minecraft:redstone"
+    },
+    {
+      "item": "minecraft:prismarine_crystals"
+    }
+  ],
+  "result": {
+    "item": "mutantmore:compound_z"
+  }
+}

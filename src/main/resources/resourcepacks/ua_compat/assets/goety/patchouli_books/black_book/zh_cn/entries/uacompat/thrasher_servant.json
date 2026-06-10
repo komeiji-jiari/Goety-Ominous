@@ -1,0 +1,37 @@
+{
+  "name": "长尾鲨仆从",
+  "icon": "upgrade_aquatic:thrasher_tooth",
+  "category": "goety:uacompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "一种只生活在极冷之地的海水中的凶猛水生生物，它们和监守者一样虽然没有视觉，但可以依靠敏锐的嗅觉和发射声波来定位潜在的猎物。当它们咬住生物时，会通过猛烈地甩动让被困的生物遭受巨大伤害。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:thrasher_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:thrasher_servant",
+      "text": "白鲨糖"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "航行在冻洋之中的渔船偶有报告发现体型超过普通长尾鲨的巨型长尾鲨。它们比起那些较小的个体攻击性更强，也更加坚韧。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:great_thrasher_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:great_thrasher_servant",
+      "text": "巨大白鲨糖"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "你可以使用猛袭聚晶来召唤这些可怕的水中恶魔。如果你的长尾鲨仆从受伤了，你可以通过喂食鱼来治愈它们。"
+    }
+  ]
+}

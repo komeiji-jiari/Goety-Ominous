@@ -1,0 +1,20 @@
+{
+  "name": "凋零斩切聚晶",
+  "icon": "someillagerservants:wither_slash_focus",
+  "category": "goety:mmcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "你能够将突变凋灵骷髅的枯萎气息注入到轻薄却锋利的风刃之中，复现突变凋灵骷髅用长剑挥出的凋零斩击，在伤害生物的同时为你回复一些血量。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:wither_slash_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "使用下界魔杖施法可以增大凋零斩击的尺寸，造成更高伤害的同时为你恢复更多血量。"
+    }
+  ]
+}

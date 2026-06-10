@@ -1,0 +1,39 @@
+{
+  "name": "Compound Formula",
+  "icon": "mutantmore:compound_z",
+  "category": "goety:mmcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Some buried underground laboratories have revealed a strange type of potion. Unlike the witch brews you know well, this potion is highly unstable and extremely dangerous. Creatures that come into contact with it usually take massive damage and die, but the survivors transform into far more powerful and violent mutants."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "mutantmore:incomplete_formula_y",
+      "text": "You can craft a specialized vial to contain this formula."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "For a typical witch, producing this formula might be a lengthy and tedious process. Fortunately, through the dark arts, you are able to bypass the laborious brewing steps, saving precious time to seize this mutating power for yourself."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:formula_y",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "However, Formula Y is unstable and cannot reliably induce mutation in creatures. If you could refine and purify it further... perhaps you could greatly increase the success rate of mutation? Of course, you are also aware of the risks involved..."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "mutantmore:incomplete_compound_z",
+      "text": "A vessel for an even more terrifying potion."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:compound_z",
+      "text": ""
+    }
+  ]
+}

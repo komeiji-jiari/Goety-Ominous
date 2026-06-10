@@ -1,0 +1,7 @@
+{
+  "name": "碧海新生联动",
+  "description": "发掘碧海下的黑暗。",
+  "icon": "upgrade_aquatic:thrasher_tooth",
+  "sortnum": 2,
+  "parent": "goety:goetyominous"
+}

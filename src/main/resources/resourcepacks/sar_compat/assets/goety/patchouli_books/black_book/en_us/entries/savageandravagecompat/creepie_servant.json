@@ -1,0 +1,20 @@
+{
+  "name": "Creepie Servant",
+  "icon": "minecraft:creeper_head",
+  "category": "goety:savageandravagecompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "These little Creepies are lively, adorable, and loyal. Though their explosive power is far less than that of their adult counterparts, they make up for it with numbers and speed."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:creepie_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:creepie_servant",
+      "text": "Creepie?Aww Man~"
+    }
+  ]
+}

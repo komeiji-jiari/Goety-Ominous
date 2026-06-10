@@ -1,0 +1,33 @@
+{
+  "name": "残暴的不祥火炬",
+  "icon": "goety:ominous_pyre",
+  "category": "goety:savageandravagecompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "他们残暴，他们掠夺。当然，是在你的手下。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goety:ominous_pyre"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "破坏者仆从",
+      "text": "需求: $(li)新刌民$(li)32个防爆板块 $(li)8个苦力怕图腾 $(li)4个孢子炸弹"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "诡术师仆从",
+      "text": "需求: $(li)必须是有魔法资质的新刌民 $(li)2个雕刻南瓜 $(li)32个玻璃块 $(li)2个干草捆 $(li)4个书架 $(li)16个幽暗瓦 $(li)2个雕文幽暗瓦"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "刽子手仆从",
+      "text": "需求: $(li)新刌民 $(li)32个阴影石砖 $(li)1个铁砧 $(li)2个骷髅头颅 $(li)2个高头骨 $(li)16个铁栅栏 $(li)必须是插在地上的4个铁制地牢火把"
+    }
+  ],
+  "extra_recipe_mappings": {
+    "goety:ominous_pyre": 1
+  }
+}

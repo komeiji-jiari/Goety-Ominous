@@ -1,0 +1,25 @@
+{
+  "name": "Ally Magispeller",
+  "icon": "someillagerservants:mysterious_contract",
+  "category": "goety:iascompat",
+  "advancement": "goety:goety/read_ravaging_scroll",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The cunning Magispeller, after being driven off by you this time, left behind an exquisite page of notes. Written in a very elegant and delicate hand, it expresses a sense of admiration that is both morbid and mockingly appreciative. It seems you have earned the favor of this treacherous sorcerer—simply send him some items that pique his interest via the altar, and he will work for you."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:magispeller_servant",
+      "text": "Of course, he considers this merely a simple employer-employee relationship."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "In battle, the Magispeller can use a variety of impressive and visually striking spells to devastate your enemies with both ferocity and elegance. Inspired by your magical talent, he has even learned to summon new Irk Servants—perhaps some royal figure would protest this loudly. When the Magispeller falls and escapes, he returns the mysterious contract. Of course, you may choose to renew it by offering him certain items."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:magispeller_servant"
+    }
+  ]
+}

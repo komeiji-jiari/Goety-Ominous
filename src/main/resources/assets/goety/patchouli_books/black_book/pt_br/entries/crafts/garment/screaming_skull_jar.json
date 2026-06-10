@@ -1,0 +1,23 @@
+{
+  "name": "Jarro da Caveira Gritante",
+  "icon": "someillagerservants:screaming_skull_jar",
+  "category": "goety:crafts/garment",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Embora o Obelisco Gritante já seja eficaz em intimidar os Illagers que vêm caçá-lo, sempre há aqueles esquecidos que lançam um ataque entediante em sua casa enquanto você está fora. Portanto, você decidiu forjar uma nova curiosidade para se livrar deles de uma vez por todas."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:screaming_skull_jar"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Ao consumir um Crânio Alto este Jarro da Caveira pode liberar um barulho terrível que lembra aos grupos de caça Illager o seu lugar — antes mesmo de eles encontrarem você. Simples e conveniente."
+    },
+    {
+        "type": "patchouli:text",
+        "text": "Além de impedir efetivamente os Ataques Illager, esta curiosidade também pode intimidar os Illagers, fazendo com que causem um pouco menos de dano em você."
+    }
+  ]
+}

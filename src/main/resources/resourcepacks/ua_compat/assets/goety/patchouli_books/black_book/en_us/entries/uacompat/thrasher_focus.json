@@ -1,0 +1,20 @@
+{
+  "name": "Thrasher Focus",
+  "icon": "someillagerservants:thrasher_focus",
+  "category": "goety:uacompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "By modifying the Mauling Focus, you have enabled this focus to summon ferocious Thrasher servants. These vicious aquatic demons bite and shred creatures before them with astounding strength and endurance."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:thrasher_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "Casting with the Abyss Staff summons more Thrasher servants. Moreover, when you cast wearing Abyss Robes and using the Abyss Staff, you can summon an even more powerful Great Thrasher servant."
+    }
+  ]
+}

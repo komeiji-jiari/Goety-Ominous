@@ -1,0 +1,28 @@
+{
+  "name": "Ominous Pyre Additions",
+  "icon": "goety:ominous_pyre",
+  "category": "goety:crafts/artifice",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "New Illagers have emerged—it's time to expand your Illager tribe even further!"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goety:ominous_pyre"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Conquillager Servant",
+      "text": "Requirements: $(li)Pillager Servant$(li)2 Indented Gold Blocks$(li)8 Creeper Totems$(li)16 Wooden Fences$(li)1 Crafting Table$(li)8 Jungle Logs$(li)32 Jungle Planks"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Inquisitor Servant",
+      "text": "Requirements: $(li)Magic Neollager$(li)64 Planks$(li)60 Any Bricks$(li)10 Any Walls$(li)10 Fences$(li)2 Stash Urns$(li)1 Brewing Stand$(li)1 Enchanting Table"
+    }
+  ],
+  "extra_recipe_mappings": {
+    "goety:ominous_pyre": 1
+  }
+}

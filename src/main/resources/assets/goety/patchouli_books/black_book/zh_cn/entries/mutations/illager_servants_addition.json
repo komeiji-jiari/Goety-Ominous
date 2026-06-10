@@ -1,0 +1,27 @@
+{
+  "name": "新的刌民们",
+  "icon": "goety:magic_emerald",
+  "category": "goety:mutations",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你注意到还有更多刌民还没有加入你的部落。你认为凭借你对他们的了解，你能把他们都纳入你的麾下。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:conquillager_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "疾病缠身的异乡人向他们的敌人传播着可怕的瘟疫，幸运的是这次他们不会传染给你和你的盟友。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:inquillager_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "这些专职于猎杀法师的灾厄村民对魔法有着极高的抗性，他们也会朝敌人扔出药水，或是施法治愈自己。"
+    }
+  ]
+}

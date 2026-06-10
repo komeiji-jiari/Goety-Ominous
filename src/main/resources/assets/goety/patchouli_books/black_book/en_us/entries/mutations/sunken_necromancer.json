@@ -1,0 +1,29 @@
+{
+  "name": "Sunken Necromancer",
+  "icon": "goety:bouncy_bubble_focus",
+  "category": "goety:mutations",
+  "advancement": "goety:goety/unlock_necromancer",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Why is it that abyssal magic can be mastered by those foolish, waterlogged drowned, rather than by skeletons? If there were a Necromancer's Association, they would surely express their strong discontent. Regardless, you have devised a method to use Sunken Skeletons as vessels for Necromancers."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:convert_sunken_skeleton_to_sunken_necromancer"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Similar to Drowned Necromancers, they are capable of summoning Sunken Skeletons. Of course, they can also accept various focuses, including those for aquatic creatures such as Snapper and Gnashers. Right-clicking on them with an empty hand will command the Sunken Necromancer to summon servants for you. You may mold them into masters specializing in aquatic combat or have them assist you on land just like any other Necromancer."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:sunken_necromancer_servant"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "someillagerservants:sunken_soul_jar",
+      "text": "If a Sunken Necromancer dies and you happen to have an $(l:crafts/empty_soul_jar)Empty Soul Jar$(), their soul will fill it. Right-clicking on a Sunken Skeleton with this filled Soul Jar will resurrect the Necromancer, using that Sunken Skeleton as a new body."
+    }
+  ]
+}

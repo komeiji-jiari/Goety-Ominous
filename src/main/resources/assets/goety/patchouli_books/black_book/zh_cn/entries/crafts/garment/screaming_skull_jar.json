@@ -1,0 +1,23 @@
+{
+  "name": "尖啸颅骨罐",
+  "icon": "someillagerservants:screaming_skull_jar",
+  "category": "goety:crafts/garment",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "尽管尖啸方尖碑已经能有效地恐吓那些试图追杀你的灾厄村民了，但总有些记性不好的家伙选择在你不在家的时候对你发动无聊的突袭。因此，你决定锻造一个新饰品来一劳永逸地摆脱他们。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:screaming_skull_jar"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "这个颅骨罐能够在灾厄猎杀队发现你之前，通过一阵可怕的噪音让他们时刻记住自己的位置，只需要消耗一个高头骨。多么简单又方便。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "除了能够有效地阻止灾厄猎杀，这颗护符也能够有效地恐吓灾厄村民，让他们对你的伤害略微降低。"
+    }
+  ]
+}

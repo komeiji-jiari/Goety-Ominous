@@ -1,0 +1,27 @@
+{
+  "name": "Mais Servos Illager",
+  "icon": "goety:magic_emerald",
+  "category": "goety:mutations",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Você percebeu que ainda há mais Illagers que ainda não se juntaram ao seu império. Com seu conhecimento sobre eles, você acredita que pode trazê-los todos sob seu comando."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:conquillager_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Forasteiros pestilentos espalham pragas terríveis entre seus inimigos — felizmente, desta vez eles não infectarão você ou seus aliados."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:inquillager_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Estes Illagers, especializados em caçar magos, possuem alta resistência à magia. Eles também jogam poções em inimigos ou conjuram feitiços para se curar."
+    }
+  ]
+}

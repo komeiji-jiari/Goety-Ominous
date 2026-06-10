@@ -1,0 +1,20 @@
+{
+  "name": "猛袭聚晶",
+  "icon": "someillagerservants:thrasher_focus",
+  "category": "goety:uacompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "通过改造猛击聚晶，你能够让这枚聚晶唤来凶猛的长尾鲨仆从。这些凶恶的水中恶魔会以惊人的力量和耐力咬住和撕碎面前的生物。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:thrasher_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "使用深渊魔杖可以召唤更多长尾鲨仆从。此外，当你身穿深渊长袍并使用深渊魔杖施法时，你能够召唤更强大的巨型长尾鲨仆从。"
+    }
+  ]
+}

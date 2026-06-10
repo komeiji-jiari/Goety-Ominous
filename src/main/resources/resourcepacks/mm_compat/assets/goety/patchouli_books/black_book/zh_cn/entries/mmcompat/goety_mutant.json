@@ -1,0 +1,23 @@
+{
+  "name": "更多突变",
+  "icon": "mutantmore:formula_y",
+  "category": "goety:mmcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你发现你的一些仆从也会受到突变药剂的影响。但很可惜，发生突变的仆从并不会忠诚于你，不过你或许可以通过突变你的变种僵尸仆从的方法，让一些本无法被创造出来的突变体现身？"
+    },
+    {
+      "type": "patchouli:image",
+      "images": ["someillagerservants:textures/gui/entries/mutant1.png"],
+      "border": true,
+      "text": "一个让仆从发生突变的例子"
+    },
+    {
+      "type": "patchouli:image",
+      "images": ["someillagerservants:textures/gui/entries/mutant2.png"],
+      "border": true,
+      "text": "应对恶战的的准备是必须的"
+    }
+  ]
+}

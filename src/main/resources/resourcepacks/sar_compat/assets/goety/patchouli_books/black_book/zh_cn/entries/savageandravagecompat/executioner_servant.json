@@ -1,0 +1,16 @@
+{
+  "name": "刽子手仆从",
+  "icon": "minecraft:iron_axe",
+  "category": "goety:savageandravagecompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "残酷无情的杀手兼任地牢看守，在灾厄村民的文明中常常作为处决犯人(通常是村民)的执行者。他们熟练掌握斩首的技巧，能斩下诸如凋灵骷髅等生物的头颅。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:executioner_servant",
+      "text": "Deep Dark Fantasy"
+    }
+  ]
+}

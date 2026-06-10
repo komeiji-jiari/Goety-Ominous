@@ -1,0 +1,7 @@
+{
+  "name": "Upgrade Aquatic Integration",
+  "description": "Unearth the darkness beneath the azure waves.",
+  "icon": "upgrade_aquatic:thrasher_tooth",
+  "sortnum": 2,
+  "parent": "goety:goetyominous"
+}

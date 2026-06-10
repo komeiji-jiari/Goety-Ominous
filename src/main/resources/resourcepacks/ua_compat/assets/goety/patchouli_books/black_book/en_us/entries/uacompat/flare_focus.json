@@ -1,0 +1,20 @@
+{
+  "name": "Flare Focus",
+  "icon": "someillagerservants:flare_focus",
+  "category": "goety:uacompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "You've devised a way to afflict your Phantom servants with insomnia. With just a few cocoa beans, you can alter the nature of the Phantasm Focus, allowing you to summon a close relative of the Phantom servant: the Flare servant."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:flare_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "For reasons unknown, the Void Staff resonates particularly well with the Flare Focus, enabling you to summon more Flare servants.Casting with a Void Staff while wearing the Void Set also causes your Flare servants' attacks to inflict Void Touched."
+    }
+  ]
+}

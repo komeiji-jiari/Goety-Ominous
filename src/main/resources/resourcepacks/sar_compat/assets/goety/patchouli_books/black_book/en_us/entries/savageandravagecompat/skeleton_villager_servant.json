@@ -1,0 +1,20 @@
+{
+  "name": "Skeleton Villager Servant",
+  "icon": "minecraft:skeleton_skull",
+  "category": "goety:savageandravagecompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You've heard that in the age of legends, skeletons once bore the noses of villagers. You suspect this is merely a tall tale spread by villagers themselves. But for a legendary necromancer like yourself, reanimating the skeletons of villagers to fight for you is a trivial task."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:skeleton_villager_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:skeleton_villager_servant",
+      "text": "Old-timer, you're not dead... you're still alive..."
+    }
+  ]
+}

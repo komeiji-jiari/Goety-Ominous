@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "goety:heretic_servant",
+    "goety:maverick_servant",
+    "goety:reprobate_servant",
+    "goety:warlock_servant",
+    "goety:witch_servant",
+    "goetyawaken:crone_servant"
+  ]
+}

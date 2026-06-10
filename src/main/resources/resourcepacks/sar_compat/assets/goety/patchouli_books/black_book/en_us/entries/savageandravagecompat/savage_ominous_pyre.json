@@ -1,0 +1,33 @@
+{
+  "name": "Savage Ominous Pyre",
+  "icon": "goety:ominous_pyre",
+  "category": "goety:savageandravagecompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "They are savage. They ravage. Of course, under your command."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goety:ominous_pyre"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Griefer Servant",
+      "text": "Requirements: $(li)Neollager$(li)32 Blast Proof Plates$(li)8 Creeper Totems$(li)4 Spore Bombs"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Trickster Servant",
+      "text": "Requirements: $(li)Magic Neollager$(li)2 Carved Pumpkins$(li)32 Glass Blocks$(li)2 Hay Blocks$(li)4 Bookshelves$(li)16 Gloomy Tiles$(li)2 Chiseled Gloomy Tiles"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Executioner Servant",
+      "text": "Requirements: $(li)Neollager$(li)32 Shade Stone Bricks$(li)1 Anvil$(li)2 Skeleton Skulls$(li)2 Tall Skulls$(li)16 Iron Bars$(li)Must be 4 Iron Dungeon Torches placed on the ground"
+    }
+  ],
+  "extra_recipe_mappings": {
+    "goety:ominous_pyre": 1
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "Executioner Servant",
+  "icon": "minecraft:iron_axe",
+  "category": "goety:savageandravagecompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Ruthless killers who also serve as dungeon wardens, often acting as executioners of prisoners (usually Villagers) in Illager civilization. They have mastered the art of beheading, capable of severing the heads of creatures such as Wither Skeletons."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:executioner_servant",
+      "text": "Deep Dark Fantasy"
+    }
+  ]
+}

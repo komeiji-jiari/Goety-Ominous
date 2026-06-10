@@ -1,0 +1,12 @@
+{
+  "entityType": "goety:hoglin_servant",
+  "resultEntityType": "mutantmore:mutant_hoglin",
+  "requiredMods": [
+    "goety"
+  ],
+  "screenShake": {
+    "amount": 0.15,
+    "duration": 20,
+    "range": 35
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "More Illager Servants",
+  "icon": "goety:magic_emerald",
+  "category": "goety:mutations",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You've noticed that there are still more Illagers who have yet to join your tribe. With your knowledge of them, you believe you can bring them all under your command."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:conquillager_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Disease-ridden outlanders spread terrible plagues among their enemies—fortunately, this time they won't infect you or your allies."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:inquillager_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "These Illagers, specialized in hunting mages, possess high resistance to magic. They also throw potions at enemies or cast spells to heal themselves."
+    }
+  ]
+}

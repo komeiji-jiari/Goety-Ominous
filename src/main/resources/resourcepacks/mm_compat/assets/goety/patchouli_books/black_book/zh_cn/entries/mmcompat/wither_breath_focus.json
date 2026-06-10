@@ -1,0 +1,20 @@
+{
+  "name": "枯萎呼吸聚晶",
+  "icon": "someillagerservants:wither_breath_focus",
+  "category": "goety:mmcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "使用这个法术可以让你像突变凋灵骷髅一样喷出让生命迅速枯萎的气息，对其中的生物造成严重的凋零，缓慢和失明，并让他们难以跳跃，而你和你的盟友则不会受其损害。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:wither_breath_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "使用下界魔杖施法，可以在已有效果的基础上额外使得生物遭受侵蚀效果。"
+    }
+  ]
+}

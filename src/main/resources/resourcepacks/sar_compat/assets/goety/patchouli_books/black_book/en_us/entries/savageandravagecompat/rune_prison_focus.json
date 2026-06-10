@@ -1,0 +1,20 @@
+{
+  "name": "Rune Prison Focus",
+  "icon": "someillagerservants:rune_prison_focus",
+  "category": "goety:savageandravagecompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "This spell allows you to condense runic energy into a rune prison just like the Trickster's, causing creatures trapped inside to feel heavy and struggle to move."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:rune_prison_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "Casting this spell with an Ominous Staff makes the rune prison deal a small amount of damage to the creature trapped within. This damage can be increased with the Potency enchantment."
+    }
+  ]
+}

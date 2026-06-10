@@ -1,0 +1,27 @@
+{
+  "name": "怪奇刌民们",
+  "icon": "goety:magic_emerald",
+  "category": "goety:iascompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你发现你可以训练更多的怪奇灾厄村民。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:twittollager_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "好吧，你真不应该怪他总是那么生气，他的妻子刚刚在前一秒变成了前妻，或者存着他努力了一辈子的积蓄的银行刚刚倒闭了...又或者他单纯是看到了某条推特？谁知道呢...等等，他为什么会有手机？"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:absorber_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "你注意到这些大块头能够出色的抵挡大量伤害。你觉得可以通过一种魔鬼训练的方式让你的粉碎者仆从变成一头笨重但有力的肌肉壮汉！"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "entityType": "goety:blaze_servant",
+  "resultEntityType": "mutantmore:mutant_blaze",
+  "requiredMods": [
+    "goety"
+  ],
+  "screenShake": {
+    "amount": 0.15,
+    "duration": 20,
+    "range": 35
+  }
+}

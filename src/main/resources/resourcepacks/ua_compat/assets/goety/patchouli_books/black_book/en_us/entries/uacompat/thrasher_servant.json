@@ -1,0 +1,37 @@
+{
+  "name": "Thrasher Servant",
+  "icon": "upgrade_aquatic:thrasher_tooth",
+  "category": "goety:uacompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "A ferocious aquatic creature that only lives in the icy waters of extremely cold regions. Like Wardens, they are blind but rely on keen senses of smell and echolocation to locate potential prey. When they bite onto a creature, they thrash violently, causing massive damage to their trapped target."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:thrasher_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:thrasher_servant",
+      "text": "White Shark Sugar"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Fishing boats navigating the frozen oceans occasionally report sightings of Great Thrashers that exceed the size of ordinary Thrashers. They are far more aggressive and resilient than their smaller kin."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:great_thrasher_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:great_thrasher_servant",
+      "text": "Giant White Shark Sugar"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "You can summon these fearsome aquatic demons using a Thrasher Focus. If your Thrasher servant is injured, you can heal them by feeding them fish."
+    }
+  ]
+}

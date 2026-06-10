@@ -1,0 +1,28 @@
+{
+  "name": "不祥火炬附加",
+  "icon": "goety:ominous_pyre",
+  "category": "goety:crafts/artifice",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "新的刌民已现，是时候进一步扩张你的灾厄村民部落了！"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goety:ominous_pyre"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "征服者仆从",
+      "text": "需求: $(li)掠夺者仆从$(li)2个平滑金块 $(li)8个苦力怕图腾 $(li)16个木栅栏，$(li)1个工作台 $(li)8个丛林原木 $(li)32个丛林木板"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "巡查官仆从",
+      "text": "需求: $(li)必须是有魔法资质的新刌民 $(li)64个木板 $(li)60个任意种类的砖块 $(li)10个任意种类的墙 $(li)10个栅栏 $(li)2个隐秘之瓮 $(li)1个酿造台 $(li)1个附魔台"
+    }
+  ],
+  "extra_recipe_mappings": {
+    "goety:ominous_pyre": 1
+  }
+}

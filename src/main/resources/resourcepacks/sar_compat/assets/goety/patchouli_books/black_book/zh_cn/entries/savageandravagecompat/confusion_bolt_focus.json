@@ -1,0 +1,16 @@
+{
+  "name": "魔法闪光聚晶",
+  "icon": "someillagerservants:confusion_bolt_focus",
+  "category": "goety:savageandravagecompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "通过学习诡术师的戏法，你了解了如何制作一个法术来发射闪光。这个法术能够在命中目标后将你与目标交换位置，并给予对方短暂的沉重与虚弱效果。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:confusion_bolt_focus",
+      "text": ""
+    }
+  ]
+}

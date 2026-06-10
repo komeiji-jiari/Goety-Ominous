@@ -1,0 +1,28 @@
+{
+  "name": "Adições da Pira Sinistra",
+  "icon": "goety:ominous_pyre",
+  "category": "goety:crafts/artifice",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Novos Illagers surgiram — é hora dar mais treinamentos para os Illagers!"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goety:ominous_pyre"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Servo Conquillager",
+      "text": "Requisitos: $(li)Servo Saqueador$(li)2 Blocos de Ouro Reentrantes$(li)8 Totens de Creeper$(li)16 Cercas de Madeira$(li)1 Mesa de Trabalho$(li)8 Troncos da Selva$(li)32 Tábuas da Selva"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Servo Inquillager",
+      "text": "Requisitos: $(li)Neollager Mágico$(li)64 Tábuas$(li)60 Tijolos$(li)10 Muros$(li)10 Cercas$(li)2 Urnas de Reserva$(li)1 Suporte de Poções$(li)1 Mesa de Encantamento"
+    }
+  ],
+  "extra_recipe_mappings": {
+    "goety:ominous_pyre": 1
+  }
+}

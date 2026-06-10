@@ -1,0 +1,29 @@
+{
+  "name": "Necromante Submerso",
+  "icon": "goety:bouncy_bubble_focus",
+  "category": "goety:mutations",
+  "advancement": "goety:goety/unlock_necromancer",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Por que a magia abissal pode ser dominada por aqueles afogados tolos e encharcados, em vez dos classicos esqueletos? Se existisse uma Associação de Necromantes, certamente expressariam seu forte descontentamento. Independentemente disso, você criou um método para usar Esqueletos Submersos como receptaculos para Necromantes."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:convert_sunken_skeleton_to_sunken_necromancer"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Semelhantes aos Necromantes Afogados, eles são capazes de invocar Esqueletos Submersos. Claro, eles também podem aceitar vários focos, incluindo aqueles para criaturas aquáticas, como Pargos e Trituradores. Clicar com o botão direito neles com a mão vazia fará o Necromante Submerso invocar servos para você. Você pode moldá-los em mestres especializados em combate aquático ou tê-los ajudando em terra como qualquer outro Necromante."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:sunken_necromancer_servant"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "someillagerservants:sunken_soul_jar",
+      "text": "Se um Necromante Submerso morrer e você tiver um $(l:crafts/empty_soul_jar)Jarra de Alma Vazio$(), sua alma o preencherá. Clicar com o botão direito em um Esqueleto Submerso com esta Jarra de Alma preenchido ressuscitará o Necromante, usando aquele Esqueleto Submerso como um novo corpo."
+    }
+  ]
+}

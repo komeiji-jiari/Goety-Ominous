@@ -1,0 +1,24 @@
+{
+  "name": "耀翼仆从",
+  "icon": "minecraft:cocoa_beans",
+  "category": "goety:uacompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你一直以来深受幻翼的骚扰。你不明白为什么这些可恶的飞行生物总是能嗅到失眠的气息，于是你尝试让你召唤出的幻翼仆从也感受一下失眠的感觉。出乎意料地，被召唤出来的幻翼仆从变成了一种更奇怪的紫色形态。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:flare_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "这些奇特的耀翼仆从身体构成更接近末影能量。它们的攻击性更强，会无情地攻击除了主人以及盟友以外的其他生物。当你穿着虚空套装时，耀翼仆从的身体会变成半透明的并且能够穿墙飞行。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:flare_servant",
+      "text": "24小时宿管"
+    }
+  ]
+}

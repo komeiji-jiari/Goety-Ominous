@@ -1,0 +1,24 @@
+{
+  "name": "Flare Servant",
+  "icon": "minecraft:cocoa_beans",
+  "category": "goety:uacompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You have long been plagued by Phantoms. Unable to understand why these detestable flying creatures always seem to sense the scent of sleeplessness, you decided to let a summoned Phantom servant experience insomnia as well. Unexpectedly, the Phantom servant that answered your call transformed into a strange, purplish form."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:flare_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "These peculiar Flare servants have a constitution more akin to Ender energy. They are highly aggressive, attacking any creature other than their owner and allies without mercy. When you wear the Void Set, Flare servants become semi-transparent and gain the ability to phase through blocks while flying."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:flare_servant",
+      "text": "24/7 Dorm Supervisor"
+    }
+  ]
+}

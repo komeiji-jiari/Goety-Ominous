@@ -1,0 +1,23 @@
+{
+  "name": "Further Mutations",
+  "icon": "mutantmore:formula_y",
+  "category": "goety:mmcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You have discovered that some of your servants are also affected by the mutation formula. Unfortunately, mutated servants do not remain loyal to you. However, perhaps you could create certain mutants that cannot otherwise be created by mutating your zombie variant servants?"
+    },
+    {
+      "type": "patchouli:image",
+      "images": ["someillagerservants:textures/gui/entries/mutant1.png"],
+      "border": true,
+      "text": "An example of mutating a servant"
+    },
+    {
+      "type": "patchouli:image",
+      "images": ["someillagerservants:textures/gui/entries/mutant2.png"],
+      "border": true,
+      "text": "Preparation for a brutal battle is essential"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "name": "更多突变生物联动",
+  "description": "科学之中亦有黑暗。",
+  "icon": "mutantmore:formula_y",
+  "sortnum": 3,
+  "parent": "goety:goetyominous"
+}

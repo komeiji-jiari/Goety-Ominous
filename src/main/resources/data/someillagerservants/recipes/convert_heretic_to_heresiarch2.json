@@ -1,0 +1,36 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:convert_tamed",
+  "activation_item": {
+    "item": "goety:malefic_helm"
+  },
+  "craftType": "expert_nether",
+  "entity_to_convert": {
+    "tag": "goety:cultist_convert",
+    "display_name": "entity.goety.heretic_servant"
+  },
+  "entity_to_convert_into": "someillagerservants:heresiarch_servant",
+  "soulCost": 66,
+  "duration": 10,
+  "research": "bygone",
+  "ingredients": [
+    {
+      "item": "goety:hogging_focus"
+    },
+    {
+      "item": "goety:bombardment_focus"
+    },
+    {
+      "item": "goety_equipped:soul_knife"
+    },
+    {
+      "item": "goety:updraft_focus"
+    },
+    {
+      "item": "goety:nether_robe"
+    }
+  ],
+  "result": {
+    "item": "goety:jei_dummy/none"
+  }
+}

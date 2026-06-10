@@ -1,0 +1,12 @@
+{
+  "entityType": "goety:wither_necromancer",
+  "resultEntityType": "mutantmore:mutant_wither_skeleton",
+  "requiredMods": [
+    "goety"
+  ],
+  "screenShake": {
+    "amount": 0.15,
+    "duration": 20,
+    "range": 35
+  }
+}

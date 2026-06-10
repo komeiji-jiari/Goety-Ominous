@@ -1,0 +1,16 @@
+{
+  "name": "破坏者仆从",
+  "icon": "minecraft:tnt",
+  "category": "goety:savageandravagecompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "即使是不擅长战斗的弱者在灾厄村民的文明中也不会闲着吃白饭，当然在你的部落这里也一样。这些擅长饲养小苦力怕的灾厄村民能够让他们的敌人感受到爆裂性的战斗热情。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:griefer_servant",
+      "text": "爆炸是一门艺术！"
+    }
+  ]
+}

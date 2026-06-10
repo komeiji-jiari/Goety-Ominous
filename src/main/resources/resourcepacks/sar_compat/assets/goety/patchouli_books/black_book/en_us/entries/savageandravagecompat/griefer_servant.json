@@ -1,0 +1,16 @@
+{
+  "name": "Griefer Servant",
+  "icon": "minecraft:tnt",
+  "category": "goety:savageandravagecompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Even Illagers who aren't skilled in combat don't sit idle in Illager society—and the same holds true in your warband. These Illagers, adept at raising Creepies, make their enemies feel an explosive passion for battle."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:griefer_servant",
+      "text": "Explosions are an art!"
+    }
+  ]
+}

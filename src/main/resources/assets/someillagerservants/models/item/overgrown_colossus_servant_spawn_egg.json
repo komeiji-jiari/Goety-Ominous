@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "someillagerservants:item/overgrown_colossus_servant_spawn_egg"
+  }
+}

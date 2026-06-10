@@ -1,0 +1,20 @@
+{
+  "name": "骷髅村民仆从",
+  "icon": "minecraft:skeleton_skull",
+  "category": "goety:savageandravagecompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你听说传奇时代的的骷髅长着村民的鼻子，你认为这只是村民以讹传讹的说法而已。不过对你这样的传奇死灵法师来说，让村民的骷髅复生并为你而战简直轻而易举。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:skeleton_villager_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:skeleton_villager_servant",
+      "text": "老资历，你没死啊，你还活着..."
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "acolyte_idle_1": {
+    "subtitle": "subtitles.someillagerservants.acolyte.idle",
+    "sounds": [
+      "someillagerservants:acolyte/idle1"
+    ]
+  },
+  "acolyte_idle_2": {
+    "subtitle": "subtitles.someillagerservants.acolyte.idle",
+    "sounds": [
+      "someillagerservants:acolyte/idle2"
+    ]
+  },
+  "acolyte_idle_3": {
+    "subtitle": "subtitles.someillagerservants.acolyte.idle",
+    "sounds": [
+      "someillagerservants:acolyte/idle3"
+    ]
+  },
+  "acolyte_idle_4": {
+    "subtitle": "subtitles.someillagerservants.acolyte.idle",
+    "sounds": [
+      "someillagerservants:acolyte/idle4"
+    ]
+  },
+  "acolyte_idle_5": {
+    "subtitle": "subtitles.someillagerservants.acolyte.idle",
+    "sounds": [
+      "someillagerservants:acolyte/idle5"
+    ]
+  },
+  "acolyte_hurt_1": {
+    "subtitle": "subtitles.someillagerservants.acolyte.hurt",
+    "sounds": [
+      "someillagerservants:acolyte/hurt1"
+    ]
+  },
+  "acolyte_hurt_2": {
+    "subtitle": "subtitles.someillagerservants.acolyte.hurt",
+    "sounds": [
+      "someillagerservants:acolyte/hurt2"
+    ]
+  },
+  "acolyte_hurt_3": {
+    "subtitle": "subtitles.someillagerservants.acolyte.hurt",
+    "sounds": [
+      "someillagerservants:acolyte/hurt3"
+    ]
+  },
+  "acolyte_death_1": {
+    "subtitle": "subtitles.someillagerservants.acolyte.death",
+    "sounds": [
+      "someillagerservants:acolyte/death1"
+    ]
+  },
+  "acolyte_death_2": {
+    "subtitle": "subtitles.someillagerservants.acolyte.death",
+    "sounds": [
+      "someillagerservants:acolyte/death2"
+    ]
+  },
+  "lm_music_disc": {
+    "sounds": [
+      {
+        "name": "someillagerservants:lm_music_disc",
+        "stream": true
+      }
+    ]
+  },
+  "acolyte_death_3": {
+    "subtitle": "subtitles.someillagerservants.acolyte.death",
+    "sounds": [
+      "someillagerservants:acolyte/death3"
+    ]
+  }
+}

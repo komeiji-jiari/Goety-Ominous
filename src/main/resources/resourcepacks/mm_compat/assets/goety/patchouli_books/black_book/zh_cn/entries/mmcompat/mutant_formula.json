@@ -1,0 +1,39 @@
+{
+  "name": "复合物配方",
+  "icon": "mutantmore:compound_z",
+  "category": "goety:mmcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "一些埋藏在地下的实验室揭示了某种奇怪的药剂。不同于你熟知的女巫药酿，这种药剂十分不稳定且非常危险，接触到它的生物一般会受到大量伤害后死亡，但幸存者却变成了更加强大暴戾的突变体。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "mutantmore:incomplete_formula_y",
+      "text": "你可以制作一个专门的药瓶来盛装这种配方。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "对一位女巫来说制造这种配方可能是漫长而麻烦的，不过幸运的是，通过黑暗艺术，你能够省去繁复的酿造步骤，为你攫取这股异变力量节约一些宝贵的时间。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:formula_y",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "然而这种Y配方因为不够稳定，所以并不能保证让生物发生突变。如果，你能够对其加以精炼提纯...或许能够将突变的成功率大大提升？当然你也意识到了其中蕴含的风险..."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "mutantmore:incomplete_compound_z",
+      "text": "一个为更可怕的药剂准备的容器。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:compound_z",
+      "text": ""
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "疣猪冲刺聚晶",
+  "icon": "someillagerservants:hog_charge_focus",
+  "category": "goety:mmcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "通过这个法术，你能够像突变疣猪兽一样奔跑冲刺，破坏你面前的一切石质方块，就像一个人形盾构机！如果你不想破坏方块，你可以潜行施法，虽然速度慢了一些但至少不会撞得到处是坑洞了。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:hog_charge_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "如果你使用下界魔杖装载这个法术施法，那么你破坏的所有石质方块都会被烧炼，包括矿石在内。"
+    }
+  ]
+}

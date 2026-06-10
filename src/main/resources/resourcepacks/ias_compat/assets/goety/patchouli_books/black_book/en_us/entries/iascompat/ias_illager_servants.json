@@ -1,0 +1,27 @@
+{
+  "name": "Stranger Illager Servants",
+  "icon": "goety:magic_emerald",
+  "category": "goety:iascompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You have discovered that you can train even stranger Illagers."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:twittollager_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Well, you really can't blame him for always being so angry. His wife just turned into his ex-wife a second ago, or the bank that held his life's savings just went under... Or maybe he simply saw some tweet? Who knows... Wait, how does he even have a phone?"
+    },
+        {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:absorber_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "You've noticed that these bulky brutes are exceptional at absorbing massive amounts of damage. You suspect that through a devilish training regimen, you could turn your Crusher Servants into hulking, powerful muscle mountains!"
+    }
+  ]
+}

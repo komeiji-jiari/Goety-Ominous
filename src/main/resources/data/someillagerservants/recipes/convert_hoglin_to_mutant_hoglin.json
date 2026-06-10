@@ -1,0 +1,47 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:convert_tamed",
+  "activation_item": {
+    "item": "mutantmore:compound_z"
+  },
+  "craftType": "adept_nether",
+  "entity_to_convert": {
+    "tag": "goety:hoglin_convert",
+    "display_name": "entity.goety.hoglin_servant"
+  },
+  "entity_to_convert_into": "someillagerservants:mutant_hoglin_servant",
+  "soulCost": 5,
+  "duration": 30,
+  "ingredients": [
+    {
+      "item": "minecraft:crimson_roots"
+    },
+    {
+      "item": "minecraft:shroomlight"
+    },
+    {
+      "item": "minecraft:weeping_vines"
+    },
+    {
+      "item": "goety:savage_tooth"
+    },
+    {
+      "item": "minecraft:nether_wart_block"
+    },
+    {
+      "item": "minecraft:crimson_fungus"
+    },
+    {
+      "item": "goety:raging_matter"
+    },
+    {
+      "item": "mutantmore:mutant_hoglin_tusk"
+    },
+    {
+      "item": "mutantmore:mutant_hoglin_tusk"
+    }
+  ],
+  "result": {
+    "item": "goety:jei_dummy/none"
+  }
+}

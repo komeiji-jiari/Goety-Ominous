@@ -1,0 +1,20 @@
+{
+  "name": "耀斑聚晶",
+  "icon": "someillagerservants:flare_focus",
+  "category": "goety:uacompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "你想到一种办法让你召唤出的幻翼仆从经历失眠症的困扰。只需要一些可可豆就能让幻散聚晶的性质发生转变，从而让你召唤出幻翼仆从的近亲：耀翼仆从。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:flare_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "不知为何，虚空魔杖能够更好地亲和耀斑聚晶，使你能召唤更多耀翼仆从。使用虚空魔杖并且穿着虚空套装施法，可以让你的耀翼仆从的攻击附加虚空之蚀。"
+    }
+  ]
+}

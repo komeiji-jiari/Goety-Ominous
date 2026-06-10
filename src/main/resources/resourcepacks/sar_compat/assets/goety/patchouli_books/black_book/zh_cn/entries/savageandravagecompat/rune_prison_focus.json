@@ -1,0 +1,20 @@
+{
+  "name": "符文监狱聚晶",
+  "icon": "someillagerservants:rune_prison_focus",
+  "category": "goety:savageandravagecompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "这个法术允许你将符文能量凝聚成诡术师同款的符文监狱，让被困其中的生物感到身体沉重，难以行动。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:rune_prison_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "使用不祥之杖施法可以让符文监狱对被困其中的生物造成一次轻微的伤害。该伤害可以通过强效附魔进行提升。"
+    }
+  ]
+}

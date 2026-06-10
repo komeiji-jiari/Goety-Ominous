@@ -1,0 +1,20 @@
+{
+  "name": "孢子云聚晶",
+  "icon": "someillagerservants:spore_cloud_focus",
+  "category": "goety:savageandravagecompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "你注意到袭击中的那些破坏者能够用一种独特的孢子瞬间培植出大量小苦力怕。你认为可以通过聚晶来复现他们使用的孢子囊，从而培育出你的小苦力怕大军。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:spore_cloud_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "荒野魔杖能够更好地亲和小苦力怕的孢子，使你一次能够发射两枚孢子云。"
+    }
+  ]
+}

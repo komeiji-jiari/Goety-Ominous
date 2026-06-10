@@ -1,0 +1,23 @@
+{
+  "name": "Dark Ankh",
+  "icon": "someillagerservants:dark_ankh",
+  "category": "goety:crafts/garment",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You find that the protection your robes offer to their respective servants is still insufficient, after all, you cannot wear multiple robes at once. You have devised a trinket that provides more effective protection for your servants. When enchanted with Persistence, your servants even have a chance to survive death."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:dark_ankh"
+    },
+    {
+        "type": "patchouli:text",
+        "text": "This charm can also accept other focus enchantments. When enchanted with Potency or Velocity, it provides buffs to your servants when you cast necromancy spells."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "What is the reversal of all living things? Strange for eons, even death eventually passes."
+    }
+  ]
+}

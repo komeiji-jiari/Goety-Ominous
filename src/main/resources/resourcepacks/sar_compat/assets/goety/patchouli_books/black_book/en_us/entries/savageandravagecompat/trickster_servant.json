@@ -1,0 +1,16 @@
+{
+  "name": "Trickster Servant",
+  "icon": "goety:mystic_core",
+  "category": "goety:savageandravagecompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Putting magically-gifted Illagers in the role of jesters might seem preposterous at first glance. But make no mistake—the magic they wield is cunning and insidious, meant for far more than merely amusing pompous royals."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:trickster_servant",
+      "text": "THE WORLD REVOLVING"
+    }
+  ]
+}

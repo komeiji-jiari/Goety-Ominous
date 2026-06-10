@@ -1,0 +1,7 @@
+{
+  "name": "Savage And Ravage Compat",
+  "description": "With unimaginable savagery, plunder the rare treasures of this world.",
+  "icon": "savage_and_ravage:creeper_spores",
+  "sortnum": 1,
+  "parent": "goety:goetyominous"
+}

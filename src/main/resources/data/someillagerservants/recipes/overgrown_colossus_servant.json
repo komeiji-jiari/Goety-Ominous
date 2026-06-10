@@ -1,0 +1,26 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:convert_complete_tamed",
+  "activation_item": {
+    "item": "legendary_monsters:eye_of_moss"
+  },
+  "craftType": "deep",
+  "entity_to_convert": {
+    "tag": "someillagerservants:overgrown_colossus_convert",
+    "display_name": "entity.legendary_monsters.mossy_golem"
+  },
+  "entity_to_convert_into": "someillagerservants:overgrown_colossus_servant",
+  "soulCost": 10,
+  "duration": 30,
+  "ingredients": [
+    {
+      "item": ""
+    },
+    {
+      "item": ""
+    }
+  ],
+  "result": {
+    "item": "goety:jei_dummy/none"
+  }
+}

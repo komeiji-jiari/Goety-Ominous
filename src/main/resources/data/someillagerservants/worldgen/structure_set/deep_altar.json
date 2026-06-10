@@ -1,0 +1,15 @@
+{
+  "structures": [
+    {
+      "structure": "someillagerservants:deep_altar",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 1215456,
+    "spacing": 64,
+    "separation": 24,
+    "spread_type": "linear",
+    "type": "minecraft:random_spread"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "Wither Slash Focus",
+  "icon": "someillagerservants:wither_slash_focus",
+  "category": "goety:mmcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "You are able to infuse the withering essence of the Mutant Wither Skeleton into thin yet sharp wind razor, replicating the Wither Slash that the Mutant Wither Skeleton delivers with its sword, damaging creatures while restoring some of your health."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:wither_slash_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "Casting this spell with a Nether Staff increases the size of the Wither Slash, dealing higher damage and restoring more health."
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "小苦力怕仆从",
+  "icon": "minecraft:creeper_head",
+  "category": "goety:savageandravagecompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "这些小苦力怕活泼，可爱又忠诚，虽然爆炸威力比起成年体来说差了许多，但它们数量众多且速度很快，足以弥补这一缺陷。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:creepie_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:creepie_servant",
+      "text": "！？小苦小？！"
+    }
+  ]
+}

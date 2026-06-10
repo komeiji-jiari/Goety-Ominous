@@ -1,0 +1,20 @@
+{
+  "name": "Spore Cloud Focus",
+  "icon": "someillagerservants:spore_cloud_focus",
+  "category": "goety:savageandravagecompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "You've noticed that the Griefers in raids can use a peculiar spore to instantly cultivate a large number of Creepies. You believe you can replicate their spore pods through a focus, thereby cultivating your own army of Creepies."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:spore_cloud_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "The Wild Staff has a natural affinity with Creepie spores, allowing you to fire two spore clouds at once."
+    }
+  ]
+}
