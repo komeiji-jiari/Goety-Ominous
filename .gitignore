@@ -42,3 +42,6 @@ forge*changelog.txt
 # 前置模组 libs 目录（只跟踪 jar 文件）
 libs/*
 !libs/*.jar
+
+# 前置模组的 mixin 配置
+/goetyawaken.mixins.json
