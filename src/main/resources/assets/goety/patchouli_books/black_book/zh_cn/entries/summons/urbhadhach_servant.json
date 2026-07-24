@@ -1,0 +1,24 @@
+{
+  "name": "霜猎兽仆从",
+  "icon": "someillagerservants:cold_heart",
+  "category": "goety:summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "即使是这些贪婪而黑暗的亡灵也可以作为黑魔法师的仆从。你可以用这颗仍在跳动的心脏召唤忠诚于你的霜猎兽，尽管它们不会再主动引诱幼年生物，但最好还是让它们远离你的养殖场或是村庄。"
+    },
+ 	{
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:urbhadhach_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:urbhadhach_servant",
+      "text": "仍然对幼年生物充满敌意。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "空手右键可以骑乘你的霜猎兽仆从。如果你穿戴了冰霜长袍或是死灵长袍，这些亡灵能获得被动的自然治疗。此外新鲜的血肉也可以用于恢复这些亡灵的血量。"
+    }
+  ]
+}

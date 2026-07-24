@@ -295,6 +295,15 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
         return (Boolean)MutantWitherSkeletonCommonConfig.walks_on_lava.get() && p_204067_.is(FluidTags.LAVA);
     }
 
+    private static boolean isCataclysmWeapon(Item item) {
+        try {
+            Class<?> clazz = Class.forName("com.github.L_Ender.cataclysm.items.Cataclysm_Weapon_Item");
+            return clazz.isInstance(item);
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
+    }
+
     public void die(DamageSource source) {
         if (!this.level().isClientSide) {
             this.dropAllDeathLoot(source);
@@ -361,7 +370,9 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
                     itemstack.is(ItemTags.HOES) ||
                     itemstack.is(ItemTags.TOOLS) ||
                     item instanceof PhilosophersMaceItem ||
-                    item instanceof TieredItem) {
+                    item instanceof TieredItem ||
+                    isCataclysmWeapon(item))
+            {
                 if (pPlayer.isShiftKeyDown()) {
                     equipmentslot = EquipmentSlot.OFFHAND;
                 } else {
@@ -397,7 +408,8 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
                         itemstack.is(ItemTags.HOES) ||
                         itemstack.is(ItemTags.TOOLS) ||
                         item instanceof PhilosophersMaceItem ||
-                        item instanceof TieredItem;
+                        item instanceof TieredItem ||
+                        item instanceof com.github.L_Ender.cataclysm.items.Cataclysm_Weapon_Item;
             } else if (item instanceof ArmorItem) {
                 canEquip = true;
             } else if (item instanceof BlockItem blockItem && blockItem.getBlock() instanceof SkullBlock) {

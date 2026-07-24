@@ -25,7 +25,7 @@ public class WitherBreathSpell extends Spell {
 
     @Override
     public int defaultSoulCost() {
-        return 24;
+        return com.qiuyue.someillagerservants.config.SpellConfig.WitherBreathSoulCost.get();
     }
 
     @Override
@@ -35,7 +35,7 @@ public class WitherBreathSpell extends Spell {
 
     @Override
     public int defaultSpellCooldown() {
-        return 400;
+        return com.qiuyue.someillagerservants.config.SpellConfig.WitherBreathCooldown.get();
     }
 
     @Nullable

@@ -9,6 +9,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.SlotTypeMessage;
+import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import java.util.function.Supplier;
 
@@ -24,9 +26,12 @@ public class CuriosIntegration {
         Supplier<top.theillusivec4.curios.api.SlotTypeMessage> messageSupplier =
                 () -> new top.theillusivec4.curios.api.SlotTypeMessage.Builder("charm").build();
         InterModComms.sendTo("curios", top.theillusivec4.curios.api.SlotTypeMessage.REGISTER_TYPE, messageSupplier);
+        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE,
+                () -> new SlotTypeMessage.Builder("back").build());
     }
 
     private void registerCapabilities(RegisterCapabilitiesEvent event) {
         CuriosApi.registerCurio(ModItems.DARK_ANKH.get(), new DarkAnkh());
+        CuriosApi.registerCurio(ModItems.FUNGUS_PACK.get(), (ICurioItem) ModItems.FUNGUS_PACK.get());
     }
 }

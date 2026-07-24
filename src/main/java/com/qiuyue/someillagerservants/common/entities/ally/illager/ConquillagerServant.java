@@ -3,6 +3,7 @@ package com.qiuyue.someillagerservants.common.entities.ally.illager;
 import com.Polarice3.Goety.client.particles.ModParticleTypes;
 import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.common.entities.ally.illager.SpellcasterIllagerServant;
+import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.config.AttributesConfig;
 import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.MobUtil;
@@ -102,7 +103,10 @@ public class ConquillagerServant extends SpellcasterIllagerServant implements Cr
             // 检查条件：生物存活、不是盟友、不是亡灵生物
             // 这里原本的逻辑不适用于仆从版本，故改为使用MobUtil.areAllies判断
             if (entity.isAlive() && !MobUtil.areAllies(this, entity)
-                    && entity.getMobType() != MobType.UNDEAD) {
+                    && entity.getMobType() != MobType.UNDEAD
+                    && !(entity instanceof Player)
+                    && !(entity instanceof Owned)
+                    && !(entity instanceof com.Polarice3.Goety.common.entities.ally.Summoned)) {
                 // 每 100 tick（5 秒）且有 1/20 概率（5%）施加效果
                 if (this.tickCount % 100 == 0 && this.getRandom().nextInt(20) == 0) {
                     entity.addEffect(new MobEffectInstance(GoetyEffects.ILLAGUE.get(), 2000, 0, false, false));

@@ -1,0 +1,17 @@
+{
+  "name": "Thunder Horn",
+  "icon": "someillagerservants:thunder_horn",
+  "category": "goety:crafts",
+  "advancement": "goety:goety/unlock_necromancer",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "By studying ancient techniques, you have crafted a horn that can produce the sound of thunder to attract powerful Storm Necromancers who wander among the peaks. With a goat horn and the power of the storm, you can devise a trap to ensnare their arrogant lives."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "someillagerservants:thunder_horn",
+      "text": "However, you realize that this replica horn still has room for improvement. If you could find a way to craft a horn from the broken crown of a Storm Necromancer you have defeated... perhaps someone might answer the challenge you send forth?"
+    }
+  ]
+}

@@ -6,7 +6,7 @@
   },
   "craftType": "expert_nether",
   "entity_to_convert": {
-    "tag": "goety:cultist_convert",
+    "tag": "goety:heresiarch_convert",
     "display_name": "entity.goety.heretic_servant"
   },
   "entity_to_convert_into": "someillagerservants:heresiarch_servant",
@@ -15,19 +15,28 @@
   "research": "bygone",
   "ingredients": [
     {
-      "item": "goety:hogging_focus"
+      "item": "goety:ectoplasm"
+    },
+    {
+      "item": "minecraft:ghast_tear"
+    },
+    {
+      "item": "minecraft:crying_obsidian"
+    },
+    {
+      "item": "goety:fire_blast_focus"
     },
     {
       "item": "goety:bombardment_focus"
     },
     {
-      "item": "goety_equipped:soul_knife"
+      "item": "goety:fanged_dagger"
     },
     {
       "item": "goety:updraft_focus"
     },
     {
-      "item": "goety:nether_robe"
+      "item": "goety:nether_robe_warped"
     }
   ],
   "result": {

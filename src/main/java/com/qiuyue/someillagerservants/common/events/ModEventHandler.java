@@ -32,6 +32,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
 
+import java.util.Collection;
 import java.util.Optional;
 
 @Mod.EventBusSubscriber(modid = SomeIllagerServants.MOD_ID)
@@ -134,6 +135,25 @@ public class ModEventHandler {
         LivingEntity killedEntity = event.getEntity();
         Entity sourceEntity = event.getSource().getEntity();
 
+        com.qiuyue.someillagerservants.common.entities.ally.neutral.AbstractPiglinServant piglin = null;
+        if (sourceEntity instanceof com.qiuyue.someillagerservants.common.entities.ally.neutral.AbstractPiglinServant direct) {
+            piglin = direct;
+        } else if (sourceEntity instanceof com.Polarice3.Goety.api.entities.IOwned owned
+                && owned.getTrueOwner() instanceof com.qiuyue.someillagerservants.common.entities.ally.neutral.AbstractPiglinServant owner) {
+            piglin = owner;
+        }
+        if (piglin != null && piglin.getTrueOwner() != null) {
+            Collection<ItemEntity> drops = event.getDrops();
+            for (ItemEntity item : drops) {
+                ItemStack stack = item.getItem();
+                if (piglin.getInventory().canAddItem(stack)) {
+                    piglin.getInventory().addItem(stack.copyAndClear());
+                }
+            }
+            drops.clear();
+            return;
+        }
+
         if (!(sourceEntity instanceof ExecutionerServant executionerServant)) {
             return;
         }
@@ -161,6 +181,9 @@ public class ModEventHandler {
             dropChance = 0.75F;
         } else if (killedEntity instanceof Villager) {
             headStack = new ItemStack(ModBlocks.TALL_SKULL_ITEM.get());
+            dropChance = 1.0F;
+        } else if (entityType == EntityType.GOAT) {
+            headStack = new ItemStack(Items.GOAT_HORN);
             dropChance = 1.0F;
         }
 

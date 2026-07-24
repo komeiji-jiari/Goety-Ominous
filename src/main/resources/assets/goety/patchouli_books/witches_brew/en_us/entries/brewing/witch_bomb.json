@@ -1,0 +1,21 @@
+{
+  "name": "Witch Bomb",
+  "icon": "someillagerservants:witch_bomb",
+  "category": "goety:brewing",
+  "sortnum": 9,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Think throwing potion bottles at your enemies isn't painful enough? I can teach you how to make a bomb that only a witch knows how to use! Just hold your lovely, deadly brew in your offhand, combine it with an empty bomb in your main hand, then hurl it with all your might and relish the sweet sound of screams! Oh, and if you see anyone else holding one of these, you'd better watch out! (*witch wink)"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "someillagerservants:witch_bomb",
+      "text": "Granny's seen some mad lads just swinging these bombs around with their bare hands! HAHAHA, you definitely don't want to mess with them!"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Oh, and I forgot to tell you! You can put these bombs right into your Brew Bag! Why shouldn't a witch be able to stash a bunch of bombs that can knock you flat in her brew bag, HAHAHA!"
+    }
+  ]
+}

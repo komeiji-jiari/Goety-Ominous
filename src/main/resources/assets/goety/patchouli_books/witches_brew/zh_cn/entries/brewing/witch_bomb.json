@@ -1,0 +1,21 @@
+{
+  "name": "女巫炸弹",
+  "icon": "someillagerservants:witch_bomb",
+  "category": "goety:brewing",
+  "sortnum": 9,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "觉得药瓶砸在你的敌人脸上还不够痛？我可以教你做一种女巫才懂得如何使用的炸弹！只需要副手拿着你那美丽恶毒的药酿，主手拿着空炸弹把它们结合，然后用力丢出去尽情欣赏悦耳的惨叫吧哈哈哈哈！哦，如果你看到其他人拿着这玩意，最好还是小心点！(*老巫婆眨眼)"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "someillagerservants:witch_bomb",
+      "text": "奶奶见过一些疯子就这么用手挥舞着这些炸弹！哈哈哈你肯定不想惹上他们的！"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "忘了和你说！这些炸弹可以放进你的药酿包里！哈哈哈一个女巫为什么不能在她的药酿包里放一堆能把你麻倒的炸弹呢！"
+    }
+  ]
+}

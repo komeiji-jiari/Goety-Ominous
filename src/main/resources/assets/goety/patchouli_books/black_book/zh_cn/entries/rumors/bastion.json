@@ -1,0 +1,17 @@
+{
+  "name": "堡垒秘辛",
+  "icon": "minecraft:gilded_blackstone",
+  "category": "goety:rumors",
+  "read_by_default": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "据说传奇时代的猪灵对主世界发动过战争，在他们败退消亡后留下了$(l)不复昔日辉煌的断壁残垣$()。有说法认为猪灵们仍然保有一份记载着过往知识的卷轴，就存在于$(l)下界$()之中。"
+    },
+    {
+      "type": "patchouli:quest",
+      "trigger": "someillagerservants:someillagerservants/read_bastion_scroll",
+      "text": "据说这些卷轴是在$(l)堡垒遗迹$()中发现的"
+    }
+  ]
+}

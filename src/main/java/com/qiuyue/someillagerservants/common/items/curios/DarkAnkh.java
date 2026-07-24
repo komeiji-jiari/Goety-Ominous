@@ -1,6 +1,7 @@
 package com.qiuyue.someillagerservants.common.items.curios;
 
 import com.Polarice3.Goety.api.entities.IOwned;
+import com.Polarice3.Goety.api.items.magic.IFocus;
 import com.Polarice3.Goety.api.items.magic.IWand;
 import com.Polarice3.Goety.api.magic.ISpell;
 import com.Polarice3.Goety.api.magic.SpellType;
@@ -31,7 +32,17 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.WeakHashMap;
 
-public class DarkAnkh extends Item implements ICurioItem {
+public class DarkAnkh extends Item implements ICurioItem, IFocus {
+
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return true;
+    }
+
+    @Override
+    public int getEnchantmentValue() {
+        return 10;
+    }
 
     private static final Map<Player, Integer> LAST_HEAL_TICK_MAP = new WeakHashMap<>();
     private static final int HEAL_INTERVAL_TICKS = 20;
@@ -51,6 +62,13 @@ public class DarkAnkh extends Item implements ICurioItem {
     @Override
     public boolean canEquipFromUse(SlotContext context, ItemStack stack) {
         return true;
+    }
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, net.minecraft.world.item.enchantment.Enchantment enchantment) {
+        return enchantment == ModEnchantments.DURATION.get()
+                || enchantment == ModEnchantments.VELOCITY.get()
+                || enchantment == ModEnchantments.POTENCY.get();
     }
 
     @Override
@@ -99,6 +117,11 @@ public class DarkAnkh extends Item implements ICurioItem {
             default:
                 return 5;
         }
+    }
+
+    @Override
+    public com.Polarice3.Goety.api.magic.ISpell getSpell() {
+        return null;
     }
 
     public static void tryHealServant(LivingEntity servant, Player owner) {

@@ -1,16 +1,24 @@
 package com.qiuyue.someillagerservants.client.render;
 
+import com.Polarice3.Goety.client.render.model.CultistModel;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.qiuyue.someillagerservants.SomeIllagerServants;
 import com.qiuyue.someillagerservants.client.init.ModEntityLayers;
 import com.qiuyue.someillagerservants.client.render.model.*;
+import com.qiuyue.someillagerservants.client.render.model.equipment.BoneCudgelModel;
 import com.qiuyue.someillagerservants.client.render.model.mm.MutantHoglinServantModel;
-import com.qiuyue.someillagerservants.common.entities.ally.mobs.AxolotlServant;
+import com.qiuyue.someillagerservants.client.render.model.projectile.AcidFungus;
+import com.qiuyue.someillagerservants.client.render.model.projectile.PitchforkModel;
+import com.qiuyue.someillagerservants.client.render.projectile.AcidFungusRenderer;
 import com.qiuyue.someillagerservants.common.init.ModEntityTypes;
-import com.qiuyue.someillagerservants.compat.mod.IllageAndSpillageCompat;
-import com.qiuyue.someillagerservants.compat.mod.LegendaryMonstersCompat;
-import com.qiuyue.someillagerservants.compat.mod.SavageRavageCompat;
-import com.qiuyue.someillagerservants.compat.mod.UpgradeAquaticCompat;
-import net.minecraft.world.entity.animal.axolotl.Axolotl;
+import com.qiuyue.someillagerservants.compat.mod.*;
+import com.qiuyue.someillagerservants.client.render.projectile.PitchforkRenderer;
+import com.qiuyue.someillagerservants.client.render.projectile.BurningPotionRenderer;
+import com.qiuyue.someillagerservants.client.render.projectile.WitchBombRenderer;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.world.entity.Mob;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -43,6 +51,8 @@ public class ModModelLayers {
         event.registerLayerDefinition(ModEntityLayers.INQUILLAGER_SERVANT_LAYER,
                 InquillagerServantModel::createBodyLayer);
 
+        event.registerLayerDefinition(BoneCudgelModel.LAYER_LOCATION, BoneCudgelModel::createBodyLayer);
+
         if (IllageAndSpillageCompat.isIllageAndSpillageLoaded()) {
             event.registerLayerDefinition(ModEntityLayers.TWITTOLLAGER_SERVANT_LAYER,
                     TwittollagerServantModel::createBodyLayer);
@@ -72,6 +82,31 @@ public class ModModelLayers {
                     MagispellerServantModel::createBodyLayer);
         }
 
+        event.registerLayerDefinition(ModEntityLayers.ACID_FUNGUS_LAYER,
+                AcidFungus::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.URBHADHACH_LAYER,
+                UrbhadhachModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.URBHADHACH_SERVANT_LAYER,
+                UrbhadhachServantModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.FANATIC_LAYER,
+                FanaticModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.BELDAM_LAYER,
+                ModWitchModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.ZEALOT_LAYER,
+                ZealotModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.THUG_LAYER,
+                ThugModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.FUNGUS_PACK_LAYER, FungusPackModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.PITCHFORK_LAYER, PitchforkModel::createBodyLayer);
+
         event.registerLayerDefinition(ModEntityLayers.SUNKEN_NECROMANCER_LAYER,
                 SunkenNecromancerModel::createBodyLayer);
 
@@ -81,12 +116,31 @@ public class ModModelLayers {
         event.registerLayerDefinition(ModEntityLayers.HERESIARCH_SERVANT_LAYER,
                 HeresiarchServantModel::createBodyLayer);
 
+        event.registerLayerDefinition(ModEntityLayers.HERESIARCH_SERVANT_SHADOW_LAYER,
+                HeresiarchServantModel::createShadowLayer);
+
         event.registerLayerDefinition(ModEntityLayers.ACOLYTE_LAYER,
                 AcolyteModel::createBodyLayer);
 
         event.registerLayerDefinition(ModEntityLayers.ACOLYTE_SERVANT_LAYER,
                 AcolyteModel::createBodyLayer);
 
+        event.registerLayerDefinition(ModEntityLayers.STORM_NECROMANCER_LAYER,
+                StormNecromancerModel::createBodyLayer);
+
+        event.registerLayerDefinition(PiglinMerchantModel.LAYER_LOCATION,
+                PiglinMerchantModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.PIGLIN_SERVANT_LAYER,
+                () -> net.minecraft.client.model.geom.builders.LayerDefinition.create(
+                        PiglinServantModel.createMesh(net.minecraft.client.model.geom.builders.CubeDeformation.NONE), 64, 64));
+
+        event.registerLayerDefinition(ModEntityLayers.PIGLIN_SERVANT_INNER_ARMOR_LAYER,
+                () -> LayerDefinition.create(
+                        HumanoidModel.createMesh(new CubeDeformation(0.5F), 1.0F), 64, 32));
+        event.registerLayerDefinition(ModEntityLayers.PIGLIN_SERVANT_OUTER_ARMOR_LAYER,
+                () -> LayerDefinition.create(
+                        HumanoidModel.createMesh(new CubeDeformation(1.0F), 1.0F), 64, 32));
 
         if (SavageRavageCompat.isSavageRavageLoaded()) {
             event.registerLayerDefinition(ModEntityLayers.CREEPIE_SERVANT_LAYER,
@@ -165,6 +219,93 @@ public class ModModelLayers {
         // 注册巡查官仆从的渲染器，使用 InquillagerServantRenderer
         event.registerEntityRenderer(ModEntityTypes.INQUILLAGER_SERVANT.get(), InquillagerServantRenderer::new);
 
+        event.registerEntityRenderer(ModEntityTypes.FUNGUS_THROWER.get(),
+                context -> new PiglinServantRenderer(context,
+                        ModEntityLayers.PIGLIN_SERVANT_LAYER,
+                        ModEntityLayers.PIGLIN_SERVANT_INNER_ARMOR_LAYER,
+                        ModEntityLayers.PIGLIN_SERVANT_OUTER_ARMOR_LAYER));
+
+        event.registerEntityRenderer(ModEntityTypes.PIGLIN_SERVANT.get(),
+                (context) -> new PiglinServantRenderer(context,
+                        ModEntityLayers.PIGLIN_SERVANT_LAYER,
+                        ModEntityLayers.PIGLIN_SERVANT_INNER_ARMOR_LAYER,
+                        ModEntityLayers.PIGLIN_SERVANT_OUTER_ARMOR_LAYER));
+
+        event.registerEntityRenderer(ModEntityTypes.PIGLIN_BRUTE_SERVANT.get(),
+                (context) -> new PiglinServantRenderer(context,
+                        ModEntityLayers.PIGLIN_SERVANT_LAYER,
+                        ModEntityLayers.PIGLIN_SERVANT_INNER_ARMOR_LAYER,
+                        ModEntityLayers.PIGLIN_SERVANT_OUTER_ARMOR_LAYER));
+
+        event.registerEntityRenderer(ModEntityTypes.STRONG_PIGLIN_BRUTE_SERVANT.get(),
+                (context) -> new PiglinServantRenderer(context,
+                        ModEntityLayers.PIGLIN_SERVANT_LAYER,
+                        ModEntityLayers.PIGLIN_SERVANT_INNER_ARMOR_LAYER,
+                        ModEntityLayers.PIGLIN_SERVANT_OUTER_ARMOR_LAYER));
+
+        event.registerEntityRenderer(ModEntityTypes.ELITE_PIGLIN_BRUTE_SERVANT.get(),
+                (context) -> new PiglinServantRenderer(context,
+                        ModEntityLayers.PIGLIN_SERVANT_LAYER,
+                        ModEntityLayers.PIGLIN_SERVANT_INNER_ARMOR_LAYER,
+                        ModEntityLayers.PIGLIN_SERVANT_OUTER_ARMOR_LAYER) {
+                    @Override
+                    protected void scale(Mob entity, PoseStack poseStack, float partialTicks) {
+                        poseStack.scale(1.25F, 1.25F, 1.25F);
+                        super.scale(entity, poseStack, partialTicks);
+                    }
+                });
+
+        event.registerEntityRenderer(ModEntityTypes.STRONG_ZPIGLIN_BRUTE_SERVANT.get(),
+                (context) -> new ZPiglinBruteServantRenderer(context));
+
+        event.registerEntityRenderer(ModEntityTypes.ELITE_ZPIGLIN_BRUTE_SERVANT.get(),
+                (context) -> new ZPiglinBruteServantRenderer(context) {
+                    @Override
+                    protected void scale(Mob entity, PoseStack poseStack, float partialTicks) {
+                        poseStack.scale(1.25F, 1.25F, 1.25F);
+                        super.scale(entity, poseStack, partialTicks);
+                    }
+                });
+
+        event.registerEntityRenderer(ModEntityTypes.PIGLIN_HUNTER_SERVANT.get(),
+                (context) -> new PiglinServantRenderer(context,
+                        ModEntityLayers.PIGLIN_SERVANT_LAYER,
+                        ModEntityLayers.PIGLIN_SERVANT_INNER_ARMOR_LAYER,
+                        ModEntityLayers.PIGLIN_SERVANT_OUTER_ARMOR_LAYER));
+
+        event.registerEntityRenderer(ModEntityTypes.STRONG_PIGLIN_HUNTER_SERVANT.get(),
+                (context) -> new PiglinServantRenderer(context,
+                        ModEntityLayers.PIGLIN_SERVANT_LAYER,
+                        ModEntityLayers.PIGLIN_SERVANT_INNER_ARMOR_LAYER,
+                        ModEntityLayers.PIGLIN_SERVANT_OUTER_ARMOR_LAYER));
+
+        event.registerEntityRenderer(ModEntityTypes.ELITE_PIGLIN_HUNTER_SERVANT.get(),
+                (context) -> new PiglinServantRenderer(context,
+                        ModEntityLayers.PIGLIN_SERVANT_LAYER,
+                        ModEntityLayers.PIGLIN_SERVANT_INNER_ARMOR_LAYER,
+                        ModEntityLayers.PIGLIN_SERVANT_OUTER_ARMOR_LAYER) {
+                    @Override
+                    protected void scale(Mob entity, PoseStack poseStack, float partialTicks) {
+                        poseStack.scale(1.25F, 1.25F, 1.25F);
+                        super.scale(entity, poseStack, partialTicks);
+                    }
+                });
+
+        event.registerEntityRenderer(ModEntityTypes.ZPIGLIN_HUNTER_SERVANT.get(),
+                (context) -> new ZPiglinBruteServantRenderer(context));
+
+        event.registerEntityRenderer(ModEntityTypes.STRONG_ZPIGLIN_HUNTER_SERVANT.get(),
+                (context) -> new ZPiglinBruteServantRenderer(context));
+
+        event.registerEntityRenderer(ModEntityTypes.ELITE_ZPIGLIN_HUNTER_SERVANT.get(),
+                (context) -> new ZPiglinBruteServantRenderer(context) {
+                    @Override
+                    protected void scale(Mob entity, PoseStack poseStack, float partialTicks) {
+                        poseStack.scale(1.25F, 1.25F, 1.25F);
+                        super.scale(entity, poseStack, partialTicks);
+                    }
+                });
+
         if (IllageAndSpillageCompat.isIllageAndSpillageLoaded()) {
             event.registerEntityRenderer(
                     com.qiuyue.someillagerservants.compat.ias.IasEntityRegistry.TWITTOLLAGER_SERVANT.get(),
@@ -211,6 +352,32 @@ public class ModModelLayers {
                     MagispellerServantRenderer::new);
         }
 
+        event.registerEntityRenderer(ModEntityTypes.BURNING_POTION.get(), BurningPotionRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.BURNING_GROUND.get(), BurningGroundRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.WITCH_BOMB.get(), WitchBombRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.ACID_FUNGUS.get(), AcidFungusRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.PITCHFORK.get(), PitchforkRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.URBHADHACH.get(), UrbhadhachRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.URBHADHACH_SERVANT.get(), UrbhadhachServantRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.ZEALOT.get(), ZealotRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.FANATIC.get(), FanaticRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.BELDAM.get(), BeldamRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.THUG.get(), ThugRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.CRIMSON_SPIDER_SERVANT.get(), CrimsonSpiderServantRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.ZFUNGUS_THROWER.get(), ZFungusThrowerRenderer::new);
+
         event.registerEntityRenderer(ModEntityTypes.SUNKEN_NECROMANCER.get(), SunkenNecromancerRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.SUNKEN_NECROMANCER_SERVANT.get(), SunkenNecromancerServantRenderer::new);
@@ -223,6 +390,13 @@ public class ModModelLayers {
 
         event.registerEntityRenderer(ModEntityTypes.ACOLYTE_SERVANT.get(), AcolyteServantRenderer::new);
 
+        event.registerEntityRenderer(ModEntityTypes.PIGLIN_MERCHANT.get(), PiglinMerchantRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.STORM_NECROMANCER.get(),
+                com.qiuyue.someillagerservants.client.render.StormNecromancerRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.STORM_NECROMANCER_SERVANT.get(),
+                com.qiuyue.someillagerservants.client.render.StormNecromancerRenderer::new);
 
         if (SavageRavageCompat.isSavageRavageLoaded()) {
             event.registerEntityRenderer(

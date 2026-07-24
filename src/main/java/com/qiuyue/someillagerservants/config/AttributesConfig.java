@@ -112,7 +112,6 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> AcolyteMovementSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> AcolyteFollowRange;
 
-
     public static final ForgeConfigSpec.ConfigValue<Double> MutantWitherSkeletonServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> MutantWitherSkeletonServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> MutantWitherSkeletonServantArmorToughness;
@@ -139,6 +138,62 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantAttackKnockback;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> StormNecromancerHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> StormNecromancerArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> StormNecromancerDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> StormNecromancerFollowRange;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinServantFollowRange;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantFollowRange;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantEvolvedHealthBonus;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantEvolvedDamageBonus;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantEvolved2HealthBonus;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantEvolved2DamageBonus;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantFollowRange;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantEvolvedHealthBonus;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantEvolvedDamageBonus;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantEvolved2HealthBonus;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantEvolved2DamageBonus;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> FungusThrowerServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> FungusThrowerServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> FungusThrowerServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> FungusThrowerServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> FungusThrowerServantFollowRange;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonSpiderServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonSpiderServantDamage;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> BeldamHealth;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> ZealotHealth;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> FanaticHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> FanaticDamage;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> MartyrHealth;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> ThugHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> ThugDamage;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> UrbhadhachHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> UrbhadhachDamage;
 
     static {
         BUILDER.push("Servants Attributes");
@@ -151,8 +206,145 @@ public class AttributesConfig {
                 .defineInRange("SunkenNecromancerFollowRange", 16.0, 1.0, 2048.0);
         SunkenNecromancerDamage = BUILDER.comment("How much damage Sunken Necromancers deals, Default: 5.0")
                 .defineInRange("SunkenNecromancerDamage", 5.0, 1.0, Double.MAX_VALUE);
-
         BUILDER.pop();
+
+        BUILDER.push("Storm Necromancer");
+        StormNecromancerHealth = BUILDER.comment("How much Max Health Storm Necromancers have, Default: 220.0")
+                .defineInRange("stormNecromancerHealth", 220.0, 1.0, Double.MAX_VALUE);
+        StormNecromancerArmor = BUILDER.comment("How much natural Armor Storm Necromancers have, Default: 4.0")
+                .defineInRange("stormNecromancerArmor", 4.0, 0.0, Double.MAX_VALUE);
+        StormNecromancerFollowRange = BUILDER.comment("How much following/detection range Storm Necromancers have, Default: 32.0")
+                .defineInRange("stormNecromancerFollowRange", 32.0, 1.0, 2048.0);
+        StormNecromancerDamage = BUILDER.comment("How much damage Storm Necromancers deals, Default: 3.0")
+                .defineInRange("stormNecromancerDamage", 3.0, 1.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Beldam");
+        BeldamHealth = BUILDER
+                .comment("How much Max Health Beldam have, Default: 26.0")
+                .defineInRange("beldamHealth", 26.0, 1.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Zealot");
+        ZealotHealth = BUILDER
+                .comment("How much Max Health Zealot have, Default: 24.0")
+                .defineInRange("zealotHealth", 24.0, 1.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Fanatic");
+        FanaticHealth = BUILDER
+                .comment("How much Max Health Fanatic have, Default: 24.0")
+                .defineInRange("fanaticHealth", 24.0, 1.0, Double.MAX_VALUE);
+        FanaticDamage = BUILDER
+                .comment("How much damage Fanatic deals, Default: 2.0")
+                .defineInRange("fanaticDamage", 2.0, 1.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Thug");
+        ThugHealth = BUILDER.comment("How much Max Health Thug have, Default: 50.0")
+                .defineInRange("thugHealth", 50.0, 1.0, Double.MAX_VALUE);
+        ThugDamage = BUILDER.comment("How much damage Thug deals, Default: 7.0")
+                .defineInRange("thugDamage", 7.0, 1.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Martyr");
+        MartyrHealth = BUILDER
+                .comment("How much Max Health Martyr have, Default: 26.0")
+                .defineInRange("martyrHealth", 26.0, 1.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Urbhadhach");
+        UrbhadhachHealth = BUILDER.comment("How much Max Health Urbhadhach have, Default: 50.0")
+                .defineInRange("urbhadhachHealth", 50.0, 1.0, Double.MAX_VALUE);
+        UrbhadhachDamage = BUILDER.comment("How much damage Urbhadhach deals, Default: 12.0")
+                .defineInRange("urbhadhachDamage", 12.0, 1.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Piglin Servant");
+        PiglinServantHealth = BUILDER.comment("How much Max Health Piglin Servants have, Default: 16.0")
+                .defineInRange("piglinServantHealth", 16.0, 1.0, Double.MAX_VALUE);
+        PiglinServantArmor = BUILDER.comment("How much natural Armor Piglin Servants have, Default: 0.0")
+                .defineInRange("piglinServantArmor", 0.0, 0.0, Double.MAX_VALUE);
+        PiglinServantDamage = BUILDER.comment("How much damage Piglin Servants deals, Default: 5.0")
+                .defineInRange("piglinServantDamage", 5.0, 1.0, Double.MAX_VALUE);
+        PiglinServantMovementSpeed = BUILDER.comment("How fast Piglin Servants move, Default: 0.35")
+                .defineInRange("piglinServantMovementSpeed", 0.35, 0.0, Double.MAX_VALUE);
+        PiglinServantFollowRange = BUILDER.comment("How much following/detection range Piglin Servants have, Default: 16.0")
+                .defineInRange("piglinServantFollowRange", 16.0, 1.0, 2048.0);
+        BUILDER.pop();
+
+        BUILDER.push("Piglin Brute Servant");
+        PiglinBruteServantHealth = BUILDER.comment("How much Max Health Piglin Brute Servants have, Default: 50.0")
+                .defineInRange("piglinBruteServantHealth", 50.0, 1.0, Double.MAX_VALUE);
+        PiglinBruteServantArmor = BUILDER.comment("How much natural Armor Piglin Brute Servants have, Default: 0.0")
+                .defineInRange("piglinBruteServantArmor", 0.0, 0.0, Double.MAX_VALUE);
+        PiglinBruteServantDamage = BUILDER.comment("How much damage Piglin Brute Servants deals, Default: 7.0")
+                .defineInRange("piglinBruteServantDamage", 7.0, 1.0, Double.MAX_VALUE);
+        PiglinBruteServantMovementSpeed = BUILDER.comment("How fast Piglin Brute Servants move, Default: 0.35")
+                .defineInRange("piglinBruteServantMovementSpeed", 0.35, 0.0, Double.MAX_VALUE);
+        PiglinBruteServantFollowRange = BUILDER.comment("How much following/detection range Piglin Brute Servants have, Default: 16.0")
+                .defineInRange("piglinBruteServantFollowRange", 16.0, 1.0, 2048.0);
+        PiglinBruteServantEvolvedHealthBonus = BUILDER
+                .comment("How much bonus Max Health Evolved Piglin Brute Servants gain, Default: 20.0")
+                .defineInRange("piglinBruteServantEvolvedHealthBonus", 20.0, 0.0, Double.MAX_VALUE);
+        PiglinBruteServantEvolvedDamageBonus = BUILDER
+                .comment("How much bonus damage Evolved Piglin Brute Servants deal, Default: 3.0")
+                .defineInRange("piglinBruteServantEvolvedDamageBonus", 3.0, 0.0, Double.MAX_VALUE);
+        PiglinBruteServantEvolved2HealthBonus = BUILDER
+                .comment("How much bonus Max Health Stage 2 Evolved Piglin Brute Servants gain, Default: 20.0")
+                .defineInRange("piglinBruteServantEvolved2HealthBonus", 20.0, 0.0, Double.MAX_VALUE);
+        PiglinBruteServantEvolved2DamageBonus = BUILDER
+                .comment("How much bonus damage Stage 2 Evolved Piglin Brute Servants deal, Default: 3.0")
+                .defineInRange("piglinBruteServantEvolved2DamageBonus", 3.0, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Piglin Hunter Servant");
+        PiglinHunterServantHealth = BUILDER.comment("How much Max Health Piglin Hunter Servants have, Default: 50.0")
+                .defineInRange("piglinHunterServantHealth", 50.0, 1.0, Double.MAX_VALUE);
+        PiglinHunterServantArmor = BUILDER.comment("How much natural Armor Piglin Hunter Servants have, Default: 0.0")
+                .defineInRange("piglinHunterServantArmor", 0.0, 0.0, Double.MAX_VALUE);
+        PiglinHunterServantDamage = BUILDER.comment("How much damage Piglin Hunter Servants deal, Default: 7.0")
+                .defineInRange("piglinHunterServantDamage", 7.0, 1.0, Double.MAX_VALUE);
+        PiglinHunterServantMovementSpeed = BUILDER.comment("How fast Piglin Hunter Servants move, Default: 0.35")
+                .defineInRange("piglinHunterServantMovementSpeed", 0.35, 0.0, Double.MAX_VALUE);
+        PiglinHunterServantFollowRange = BUILDER.comment("How much following/detection range Piglin Hunter Servants have, Default: 16.0")
+                .defineInRange("piglinHunterServantFollowRange", 16.0, 1.0, 2048.0);
+        PiglinHunterServantEvolvedHealthBonus = BUILDER
+                .comment("How much bonus Max Health Evolved Piglin Hunter Servants gain, Default: 20.0")
+                .defineInRange("piglinHunterServantEvolvedHealthBonus", 20.0, 0.0, Double.MAX_VALUE);
+        PiglinHunterServantEvolvedDamageBonus = BUILDER
+                .comment("How much bonus damage Evolved Piglin Hunter Servants deal, Default: 3.0")
+                .defineInRange("piglinHunterServantEvolvedDamageBonus", 3.0, 0.0, Double.MAX_VALUE);
+        PiglinHunterServantEvolved2HealthBonus = BUILDER
+                .comment("How much bonus Max Health Stage 2 Evolved Piglin Hunter Servants gain, Default: 20.0")
+                .defineInRange("piglinHunterServantEvolved2HealthBonus", 20.0, 0.0, Double.MAX_VALUE);
+        PiglinHunterServantEvolved2DamageBonus = BUILDER
+                .comment("How much bonus damage Stage 2 Evolved Piglin Hunter Servants deal, Default: 3.0")
+                .defineInRange("piglinHunterServantEvolved2DamageBonus", 3.0, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Fungus Thrower");
+        FungusThrowerServantHealth = BUILDER.comment("How much Max Health Fungus Thrower have, Default: 20.0")
+                .defineInRange("fungusThrowerHealth", 16.0, 1.0, Double.MAX_VALUE);
+        FungusThrowerServantArmor = BUILDER.comment("How much natural Armor Fungus Thrower have, Default: 0.0")
+                .defineInRange("fungusThrowerArmor", 0.0, 0.0, Double.MAX_VALUE);
+        FungusThrowerServantDamage = BUILDER.comment("How much damage Fungus Thrower deal, Default: 3.0")
+                .defineInRange("fungusThrowerDamage", 2.0, 1.0, Double.MAX_VALUE);
+        FungusThrowerServantMovementSpeed = BUILDER.comment("How fast Fungus Thrower move, Default: 0.25")
+                .defineInRange("fungusThrowerMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
+        FungusThrowerServantFollowRange = BUILDER.comment("How much following/detection range Fungus Thrower have, Default: 32.0")
+                .defineInRange("fungusThrowerFollowRange", 32.0, 1.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Crimson Spider Servant");
+        CrimsonSpiderServantHealth = BUILDER
+                .comment("How much Max Health Crimson Spider Servants have, Default: 24.0")
+                .defineInRange("crimsonSpiderServantHealth", 24.0, 1.0, Double.MAX_VALUE);
+        CrimsonSpiderServantDamage = BUILDER
+                .comment("How much damage Crimson Spider Servants deal, Default: 5.0")
+                .defineInRange("crimsonSpiderServantDamage", 5.0, 1.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
         BUILDER.push("Magispeller Servant");
         MagispellerServantHealth = BUILDER.comment("How much Max Health Magispeller Servants have, Default: 250.0")
                 .defineInRange("magispellerServantHealth", 250.0, 1.0, Double.MAX_VALUE);

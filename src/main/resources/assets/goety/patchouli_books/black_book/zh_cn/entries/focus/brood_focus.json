@@ -1,0 +1,20 @@
+{
+  "name": "育母聚晶",
+  "icon": "someillagerservants:brood_focus",
+  "category": "goety:focuses/wild",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "蜘蛛是一种简单而低级的生物，不过你仍有兴趣开发它们剩余的潜力。通过研究蜘蛛，你设计出一个法术，允许你召唤可怕的育母蜘蛛仆从。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:brood_focus",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "使用荒野魔杖施法时，有概率额外多召唤一只育母蜘蛛仆从。"
+    }
+  ]
+}

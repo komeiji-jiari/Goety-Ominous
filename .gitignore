@@ -13,6 +13,21 @@ out
 *.iml
 .idea
 
+# 其他模组的源码文件夹
+/mutantmore/
+/referencemod/
+/FireNBlood-master/
+/Goety-master/
+
+# 编译输出
+/build/
+/out/
+/bin/
+/com/
+/assets/
+/data/
+.class
+
 # gradle
 build
 .gradle

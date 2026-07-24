@@ -1,0 +1,30 @@
+{
+  "name": "Urbhadhach",
+  "icon": "someillagerservants:cold_heart",
+  "category": "goety:world/bestiary",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Many polar folktales and legends speak of an undead creature known as the Urbhadhach, with various theories regarding its origin—ranging from being born from a polar bear that perished in the dead of winter, to being stillborn from a polar bear that died in childbirth."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Regardless of its origin, this dreadful undead stalks the cold wilderness with an appetite for children. Village tales speak of how it blends into its surroundings while producing a bell-like sound that lures children into a trance, drawing them closer. Once near, the Urbhadhach reveals itself and devours the child, and after digesting, begins its call once more—for its hunger can never be sated."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Heroic tales involving this creature speak of its might and ferocity. One story recounts how an Urbhadhach reveals itself from its surroundings when a threat approaches while it is calling. Most stories tell of its terrifying roar that weakens the hearts of all living things, and how it leaps from afar to maul its foes. They also mention that the Urbhadhach's heart is exposed, and that striking it while it stands causes greater damage to the beast."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:urbhadhach",
+      "text": "Their frosty hearts make them immune to frost damage. Stories also mention that they are excellent swimmers."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "someillagerservants:cold_heart",
+      "title": "Cold Heart",
+      "text": "Consuming the heart dropped by a slain Urbhadhach can temporarily grant the power of frost. The heart can also be used to craft the weapons of ancient northern royalty, or to enlighten your Iceologer servants."
+    }
+  ]
+}

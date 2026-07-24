@@ -39,12 +39,12 @@ public class HogChargeSpell extends EverChargeSpell {
 
     @Override
     public int defaultSoulCost() {
-        return 4;
+        return com.qiuyue.someillagerservants.config.SpellConfig.HogChargeSoulCost.get();
     }
 
     @Override
     public int defaultSpellCooldown() {
-        return 60;
+        return com.qiuyue.someillagerservants.config.SpellConfig.HogChargeCooldown.get();
     }
 
     @Override
@@ -124,7 +124,8 @@ public class HogChargeSpell extends EverChargeSpell {
                 if (target instanceof Player player && (player.isCreative() || player.isSpectator())) continue;
                 if (!caster.canAttack(target)) continue;
 
-                target.hurt(worldIn.damageSources().mobAttack(caster), 4.0F);
+                float dmg = com.qiuyue.someillagerservants.config.SpellConfig.HogChargeDamage.get().floatValue();
+                target.hurt(worldIn.damageSources().mobAttack(caster), dmg);
                 target.setSecondsOnFire(5);
                 target.setDeltaMovement(target.getDeltaMovement().add(lookVec.scale(1.5)));
                 target.hurtMarked = true;
@@ -157,7 +158,8 @@ public class HogChargeSpell extends EverChargeSpell {
                 || state.is(Tags.Blocks.ORES) || state.is(net.minecraft.tags.BlockTags.BASE_STONE_OVERWORLD)
                 || state.is(net.minecraft.tags.BlockTags.BASE_STONE_NETHER)
                 || state.is(Blocks.NETHERRACK) || state.is(Blocks.BLACKSTONE)
-                || state.is(Blocks.BASALT) || state.is(Blocks.SMOOTH_BASALT);
+                || state.is(Blocks.BASALT) || state.is(Blocks.SMOOTH_BASALT)
+                || state.is(Blocks.GRAVEL) || state.is(Blocks.END_STONE);
     }
 
     private void breakAndSmelt(ServerLevel worldIn, BlockPos pos, BlockState state, LivingEntity caster) {

@@ -1,28 +1,45 @@
 package com.qiuyue.someillagerservants;
 
 import com.Polarice3.Goety.api.entities.ally.illager.IllagerType;
+import com.Polarice3.Goety.common.entities.neutral.ZPiglinServant;
+import com.qiuyue.someillagerservants.common.entities.ally.spider.CrimsonSpiderServant;
 import com.qiuyue.someillagerservants.common.entities.hostile.Acolyte;
-import com.qiuyue.someillagerservants.common.init.ModSounds;
+import com.qiuyue.someillagerservants.common.entities.hostile.Martyr;
+import com.qiuyue.someillagerservants.common.entities.hostile.UrbhadhachEntity;
+import com.qiuyue.someillagerservants.common.entities.hostile.cultists.Beldam;
+import com.qiuyue.someillagerservants.common.entities.hostile.cultists.Fanatic;
+import com.qiuyue.someillagerservants.common.entities.hostile.cultists.Thug;
+import com.qiuyue.someillagerservants.common.entities.hostile.cultists.Zealot;
+import com.qiuyue.someillagerservants.common.init.*;
+import com.qiuyue.someillagerservants.common.items.CogCrossbowItem;
 import com.qiuyue.someillagerservants.common.network.ModNetwork;
-import com.qiuyue.someillagerservants.compat.mod.IllageAndSpillageCompat;
-import com.qiuyue.someillagerservants.compat.mod.LegendaryMonstersCompat;
-import com.qiuyue.someillagerservants.compat.mod.MutantMoreCompat;
+import com.qiuyue.someillagerservants.common.research.ResearchList;
+import com.qiuyue.someillagerservants.common.world.ModMobSpawnBiomeModifier;
+import com.qiuyue.someillagerservants.compat.mod.*;
 import com.qiuyue.someillagerservants.config.MobsConfig;
+import com.qiuyue.someillagerservants.config.SpellConfig;
 import com.qiuyue.someillagerservants.common.entities.ally.illager.*;
 import com.qiuyue.someillagerservants.common.entities.ally.illager.train.SomeIllagerType;
 import com.qiuyue.someillagerservants.common.entities.ally.mobs.*;
+import com.qiuyue.someillagerservants.common.entities.ally.neutral.AbstractStormNecromancer;
 import com.qiuyue.someillagerservants.common.entities.hostile.SunkenNecromancer;
-import com.qiuyue.someillagerservants.common.init.ModCreativeTab;
-import com.qiuyue.someillagerservants.common.init.ModEntityTypes;
 import com.qiuyue.someillagerservants.common.items.ModItems;
-import com.qiuyue.someillagerservants.compat.mod.SavageRavageCompat;
-import com.qiuyue.someillagerservants.compat.mod.UpgradeAquaticCompat;
 import com.qiuyue.someillagerservants.config.AttributesConfig;
 import com.qiuyue.someillagerservants.compat.curios.CuriosIntegration;
+import com.qiuyue.someillagerservants.config.WeaponConfig;
 import com.qiuyue.someillagerservants.utils.BuiltinPacksRegistry;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -31,6 +48,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,12 +84,26 @@ public class SomeIllagerServants {
         modEventBus.addListener(this::addAttributes);
         modEventBus.addListener(this::loadComplete); // 注册加载完成事件
         modEventBus.addListener(BuiltinPacksRegistry::register); // 注册内置资源包
+        modEventBus.addListener(this::onClientSetup);
         ModNetwork.init();
-
         ModEntityTypes.register(modEventBus);
+        ModContainerTypes.register(modEventBus);
+        var biomeModifiers = DeferredRegister.create(
+                ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, SomeIllagerServants.MOD_ID);
+        biomeModifiers.register(modEventBus);
+        biomeModifiers.register("mob_spawns", ModMobSpawnBiomeModifier::makeCodec);
         ModItems.init();
         ModSounds.init();
+        ModBlocks.register(modEventBus);
+        ModProcessorTypes.register(modEventBus);
+        ModBlockEntities.register(modEventBus);
         ModCreativeTab.CREATIVE_MODE_TABS.register(modEventBus);
+        MinecraftForge.EVENT_BUS.addListener((LivingAttackEvent event) -> {
+            if (event.getSource().getDirectEntity() instanceof AbstractArrow arrow
+                    && arrow.getPersistentData().getBoolean("someillagerservants:no_invul")) {
+                event.getEntity().invulnerableTime = 0;
+            }
+        });
 
         if (SavageRavageCompat.isSavageRavageLoaded()) {
             com.qiuyue.someillagerservants.compat.sar.SarCompatManager.init(modEventBus);
@@ -102,6 +135,16 @@ public class SomeIllagerServants {
                 "someillagerservants/someillagerservants-mobs.toml");
         MobsConfig.loadConfig(MobsConfig.SPEC,
                 FMLPaths.CONFIGDIR.get().resolve("someillagerservants/someillagerservants-mobs.toml").toString());
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, SpellConfig.SPEC,
+                "someillagerservants/someillagerservants-spells.toml");
+        SpellConfig.loadConfig(SpellConfig.SPEC,
+                FMLPaths.CONFIGDIR.get().resolve("someillagerservants/someillagerservants-spells.toml").toString());
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, WeaponConfig.SPEC,
+                "someillagerservants/someillagerservants-weapons.toml");
+        WeaponConfig.loadConfig(WeaponConfig.SPEC,
+                FMLPaths.CONFIGDIR.get().resolve("someillagerservants/someillagerservants-weapons.toml").toString());
     }
 
     /**
@@ -109,6 +152,31 @@ public class SomeIllagerServants {
      */
     private void commonSetup(final FMLCommonSetupEvent event) {
         new CuriosIntegration().setup(event);
+
+        event.enqueueWork(() -> {
+            net.minecraftforge.common.brewing.BrewingRecipeRegistry.addRecipe(
+                    new com.Polarice3.Goety.utils.ModPotionUtil(
+                            net.minecraft.world.item.Items.WARPED_FUNGUS.getDefaultInstance(),
+                            net.minecraft.world.item.crafting.Ingredient.of(
+                                    net.minecraft.world.item.Items.LILY_OF_THE_VALLEY),
+                            new net.minecraft.world.item.ItemStack(
+                                    com.qiuyue.someillagerservants.common.items.ModItems.ACID_FUNGUS.get())
+                    ));
+        });
+        SpawnPlacements.register(ModEntityTypes.BELDAM.get(), SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
+        SpawnPlacements.register(ModEntityTypes.FANATIC.get(), SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
+        SpawnPlacements.register(ModEntityTypes.ZEALOT.get(), SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
+        SpawnPlacements.register(ModEntityTypes.URBHADHACH.get(), SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                (type, level, spawnType, pos, random) -> {
+                    if (MobsConfig.UrbhadhachSpawnWeight.get() <= 0) return false;
+                    if (level.getMoonPhase() != 0) return false;
+                    return Monster.checkMonsterSpawnRules(type, level, spawnType, pos, random);
+                });
+        ResearchList.register();
     }
 
     /**
@@ -120,12 +188,69 @@ public class SomeIllagerServants {
         if (IllageAndSpillageCompat.isIllageAndSpillageLoaded()) {
             com.qiuyue.someillagerservants.compat.ias.IasCompatManager.setCustomAttributes(event);
         }
+        event.put(ModEntityTypes.URBHADHACH.get(), UrbhadhachEntity.setCustomAttributes().build());
+        event.put(ModEntityTypes.URBHADHACH_SERVANT.get(), UrbhadhachServant.setCustomAttributes().build());
         event.put(ModEntityTypes.SUNKEN_NECROMANCER_SERVANT.get(), SunkenNecromancerServant.setCustomAttributes().build());
         event.put(ModEntityTypes.SUNKEN_NECROMANCER.get(), SunkenNecromancer.setCustomAttributes().build());
         event.put(ModEntityTypes.AXOLOTL_SERVANT.get(), AxolotlServant.setCustomAttributes().build());
         event.put(ModEntityTypes.HERESIARCH_SERVANT.get(), HeresiarchServant.setCustomAttributes().build());
         event.put(ModEntityTypes.ACOLYTE.get(), Acolyte.setCustomAttributes().build());
+        event.put(ModEntityTypes.CRIMSON_SPIDER_SERVANT.get(), CrimsonSpiderServant.setCustomAttributes().build());
+        event.put(ModEntityTypes.BELDAM.get(), Beldam.setCustomAttributes().build());
+        event.put(ModEntityTypes.FANATIC.get(), Fanatic.setCustomAttributes().build());
+        event.put(ModEntityTypes.ZEALOT.get(), Zealot.setCustomAttributes().build());
+        event.put(ModEntityTypes.MARTYR.get(), Martyr.setCustomAttributes().build());
+        event.put(ModEntityTypes.THUG.get(), Thug.setCustomAttributes().build());
         event.put(ModEntityTypes.ACOLYTE_SERVANT.get(), AcolyteServant.setCustomAttributes().build());
+        event.put(ModEntityTypes.STORM_NECROMANCER_SERVANT.get(), AbstractStormNecromancer.setCustomAttributes().build());
+        event.put(ModEntityTypes.STORM_NECROMANCER.get(), AbstractStormNecromancer.setCustomAttributes().build());
+        event.put(ModEntityTypes.FUNGUS_THROWER.get(), FungusThrower.createAttributes().build());
+        event.put(ModEntityTypes.ZFUNGUS_THROWER.get(), ZPiglinServant.setCustomAttributes().build());
+        event.put(ModEntityTypes.PIGLIN_MERCHANT.get(), PiglinMerchant.createAttributes().build());
+        event.put(ModEntityTypes.PIGLIN_SERVANT.get(), PiglinServant.createAttributes().build());
+        event.put(ModEntityTypes.PIGLIN_BRUTE_SERVANT.get(), PiglinBruteServant.createAttributes().build());
+        event.put(ModEntityTypes.STRONG_PIGLIN_BRUTE_SERVANT.get(), StrongPiglinBruteServant.createAttributes().build());
+        event.put(ModEntityTypes.ELITE_PIGLIN_BRUTE_SERVANT.get(), ElitePiglinBruteServant.createAttributes().build());
+        event.put(ModEntityTypes.STRONG_ZPIGLIN_BRUTE_SERVANT.get(), Monster.createMonsterAttributes()
+                .add(Attributes.MAX_HEALTH, AttributesConfig.PiglinBruteServantHealth.get()
+                        + AttributesConfig.PiglinBruteServantEvolvedHealthBonus.get())
+                .add(Attributes.ARMOR, com.Polarice3.Goety.config.AttributesConfig.ZPiglinBruteServantArmor.get())
+                .add(Attributes.FOLLOW_RANGE, 35.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.23)
+                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.PiglinBruteServantDamage.get()
+                        + AttributesConfig.PiglinBruteServantEvolvedDamageBonus.get()).build());
+        event.put(ModEntityTypes.ELITE_ZPIGLIN_BRUTE_SERVANT.get(), Monster.createMonsterAttributes()
+                .add(Attributes.MAX_HEALTH, AttributesConfig.PiglinBruteServantHealth.get()
+                        + AttributesConfig.PiglinBruteServantEvolvedHealthBonus.get()
+                        + AttributesConfig.PiglinBruteServantEvolved2HealthBonus.get())
+                .add(Attributes.ARMOR, com.Polarice3.Goety.config.AttributesConfig.ZPiglinBruteServantArmor.get())
+                .add(Attributes.FOLLOW_RANGE, 35.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.23)
+                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.PiglinBruteServantDamage.get()
+                        + AttributesConfig.PiglinBruteServantEvolvedDamageBonus.get()
+                        + AttributesConfig.PiglinBruteServantEvolved2DamageBonus.get()).build());
+        event.put(ModEntityTypes.PIGLIN_HUNTER_SERVANT.get(), PiglinHunterServant.createAttributes().build());
+        event.put(ModEntityTypes.STRONG_PIGLIN_HUNTER_SERVANT.get(), StrongPiglinHunterServant.createAttributes().build());
+        event.put(ModEntityTypes.ELITE_PIGLIN_HUNTER_SERVANT.get(), ElitePiglinHunterServant.createAttributes().build());
+        event.put(ModEntityTypes.ZPIGLIN_HUNTER_SERVANT.get(), ZPiglinHunterServant.createAttributes().build());
+        event.put(ModEntityTypes.STRONG_ZPIGLIN_HUNTER_SERVANT.get(), Monster.createMonsterAttributes()
+                .add(Attributes.MAX_HEALTH, AttributesConfig.PiglinHunterServantHealth.get()
+                        + AttributesConfig.PiglinHunterServantEvolvedHealthBonus.get())
+                .add(Attributes.ARMOR, com.Polarice3.Goety.config.AttributesConfig.ZPiglinBruteServantArmor.get())
+                .add(Attributes.FOLLOW_RANGE, 35.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.23)
+                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.PiglinHunterServantDamage.get()
+                        + AttributesConfig.PiglinHunterServantEvolvedDamageBonus.get()).build());
+        event.put(ModEntityTypes.ELITE_ZPIGLIN_HUNTER_SERVANT.get(), Monster.createMonsterAttributes()
+                .add(Attributes.MAX_HEALTH, AttributesConfig.PiglinHunterServantHealth.get()
+                        + AttributesConfig.PiglinHunterServantEvolvedHealthBonus.get()
+                        + AttributesConfig.PiglinHunterServantEvolved2HealthBonus.get())
+                .add(Attributes.ARMOR, com.Polarice3.Goety.config.AttributesConfig.ZPiglinBruteServantArmor.get())
+                .add(Attributes.FOLLOW_RANGE, 35.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.23)
+                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.PiglinHunterServantDamage.get()
+                        + AttributesConfig.PiglinHunterServantEvolvedDamageBonus.get()
+                        + AttributesConfig.PiglinHunterServantEvolved2DamageBonus.get()).build());
 
         if (SavageRavageCompat.isSavageRavageLoaded()) {
             com.qiuyue.someillagerservants.compat.sar.SarCompatManager.setCustomAttributes(event);
@@ -158,10 +283,43 @@ public class SomeIllagerServants {
     /**
      * 客户端设置方法
      */
-    @SubscribeEvent
-    public void onClientSetup(FMLClientSetupEvent event) {
-        // 客户端专属设置代码
-    }
+    public void onClientSetup(final FMLClientSetupEvent event) {
+        event.enqueueWork(() -> {
+            ItemProperties.register(ModItems.COG_CROSSBOW.get(), new ResourceLocation("pull"),
+                    (stack, level, entity, seed) -> {
+                        if (entity == null || !entity.isUsingItem() || entity.getUseItem() != stack) return 0.0F;
+                        return (float) (stack.getUseDuration() - entity.getUseItemRemainingTicks())
+                                / CogCrossbowItem.getChargeDuration(stack);
+                    });
+            ItemProperties.register(ModItems.COG_CROSSBOW.get(), new ResourceLocation("pulling"),
+                    (stack, level, entity, seed) ->
+                            entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
+            ItemProperties.register(ModItems.COG_CROSSBOW.get(), new ResourceLocation("charged"),
+                    (stack, level, entity, seed) -> CogCrossbowItem.isCharged(stack) ? 1.0F : 0.0F);
+            ItemProperties.register(ModItems.COG_CROSSBOW.get(), new ResourceLocation("firework"),
+                    (stack, level, entity, seed) ->
+                            CogCrossbowItem.isCharged(stack) && CogCrossbowItem.containsChargedProjectile(stack, Items.FIREWORK_ROCKET) ? 1.0F : 0.0F);
+
+            ItemProperties.register(ModItems.PIGLIN_PRIDE.get(), new ResourceLocation("pull"),
+                    (stack, level, entity, seed) -> {
+                        if (entity == null || !entity.isUsingItem() || entity.getUseItem() != stack) return 0.0F;
+                        return (float) (stack.getUseDuration() - entity.getUseItemRemainingTicks())
+                                / CogCrossbowItem.getChargeDuration(stack);
+                    });
+            ItemProperties.register(ModItems.PIGLIN_PRIDE.get(), new ResourceLocation("pulling"),
+                    (stack, level, entity, seed) ->
+                            entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
+            ItemProperties.register(ModItems.PIGLIN_PRIDE.get(), new ResourceLocation("charged"),
+                    (stack, level, entity, seed) -> CogCrossbowItem.isCharged(stack) ? 1.0F : 0.0F);
+            ItemProperties.register(ModItems.PIGLIN_PRIDE.get(), new ResourceLocation("firework"),
+                    (stack, level, entity, seed) ->
+                            CogCrossbowItem.isCharged(stack) && CogCrossbowItem.containsChargedProjectile(stack, Items.FIREWORK_ROCKET) ? 1.0F : 0.0F);
+        });
+        net.minecraft.client.gui.screens.MenuScreens.register(
+                com.qiuyue.someillagerservants.common.init.ModContainerTypes.FUNGUS_PACK.get(),
+                com.qiuyue.someillagerservants.client.gui.screen.inventory.FungusPackScreen::new);
+
+}
 
     public static Path getOrCreateDirectory(Path dirPath, String dirLabel) {
         if (!Files.isDirectory(dirPath.getParent())) {

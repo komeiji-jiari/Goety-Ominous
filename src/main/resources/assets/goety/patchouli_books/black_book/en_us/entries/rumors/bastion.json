@@ -1,0 +1,17 @@
+{
+  "name": "Bastion Secrets",
+  "icon": "minecraft:gilded_blackstone",
+  "category": "goety:rumors",
+  "read_by_default": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "It is said that during the age of legends, the Piglins waged war against the Overworld. After their defeat and decline, they left behind $(l)ruins that no longer shine with their former glory$(). Some claim that the Piglins still preserve a scroll containing their ancient knowledge, hidden somewhere within the $(l)Nether$()."
+    },
+    {
+      "type": "patchouli:quest",
+      "trigger": "someillagerservants:someillagerservants/read_bastion_scroll",
+      "text": "These scrolls are said to be found within $(l)Bastion Remnant$()."
+    }
+  ]
+}

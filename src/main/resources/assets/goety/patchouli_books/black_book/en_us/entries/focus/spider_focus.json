@@ -1,0 +1,19 @@
+{
+  "name": "Spider Focus",
+  "icon": "someillagerservants:spider_focus",
+  "category": "goety:focuses/wild",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Spiders are large, greedy arthropods. By luring them with their favorite meat, you have devised a spell to summon these agile assassins to fight for you at a moment's notice."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "someillagerservants:spider_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Using a $(l:crafts/staff/wild_staff)Wild Staff$() summons Web Spider Servants, while using a $(l:crafts/staff/geo_staff)Geo Staff$() summons Cave Spider Servants instead. A $(l:crafts/staff/frost_staff)Frost Staff$() summons Ice Spider Servants, and a $(l:crafts/staff/necro_staff)Necro Staff$() can summon Bone Spider Servants, while a $(l:crafts/staff/nether_staff)Nether Staff$() summons Crimson Spider Servants."
+    }
+  ]
+}

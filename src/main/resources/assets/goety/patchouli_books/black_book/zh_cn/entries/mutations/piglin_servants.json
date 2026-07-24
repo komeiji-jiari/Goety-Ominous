@@ -1,0 +1,71 @@
+{
+  "name": "猪灵们",
+  "icon": "someillagerservants:firebrand",
+  "category": "goety:mutations",
+  "advancement": "someillagerservants:someillagerservants/read_bastion_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "当一头猪被闪电击中时，它会被转化成没什么特别的僵尸猪灵。然而堡垒中的卷轴记载着一些古代猪灵用来防止自己僵尸化的部分知识，根据启发你想到了一种在转化猪的过程中设法防止僵尸化发生的方法。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:convert_pig_to_piglin"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:piglin_servant",
+      "text": "你可以为他们装备剑，斧或者弩。他们也可以接受任意盔甲。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "someillagerservants:nether_wart_potion",
+      "text": "但是，即使你能暂时阻止你的猪灵仆从变成僵尸猪灵，你依旧需要一种下界疣制成的药剂来喂食给他们。一旦得到了免疫力，你的猪灵将不会再被转化成僵尸猪灵，除非他们在你穿着无名套装时死亡。此外，如果参与繁殖的猪灵都有免疫力，繁殖出的小猪灵也将获得天然的免疫。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:piglin_brute_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "和刌民们不同，基础的猪灵战士需要战斗来变成更强大的兵种。持剑或斧的猪灵在造成了足够的伤害之后，他们将会升级为强悍的猪灵蛮兵。这些既有力又坚韧的猪灵还可以继续通过战斗来变得更强大。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:piglin_hunter_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "装备了普通弩的猎手是猪灵族群中的中坚力量。虽然他们不会使用原理稍微复杂一些的弩，但你依旧可以通过让他们参与战斗训练的方式来增强他们的力量与耐力。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:fungus_thrower"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:convert_piglin_to_fungus_thrower"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "你设法用仪式启发了你的猪灵新的知识。这些擅长投掷酸性真菌的猪灵延续了古代猪灵的部分习性，他们丢出的酸液菌接触地面后会化成一团酸液池，对其中的敌人造成大量伤害。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "minecraft:cooked_porkchop",
+      "title": "喂食、治愈与繁殖",
+      "text": "你可以直接把食物给予猪灵，或是扔给他们，当他们受伤或想要繁殖时，他们会吃下这些食物来恢复血量；如果猪灵在血量已满、且不处于战斗状态或跟随模式下的时候，这些食物就可以让他们相互繁殖（就像村民一样），并诞下一名幼年猪灵。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "当某名猪灵物品栏中持有的食物过多时，他们会把食物扔给其他持有较少食物的猪灵；他们通常可以接受的食物有胡萝卜，金胡萝卜，猪排和熟猪排。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "minecraft:chest",
+      "title": "箱子交互",
+      "text": "手持指路石右键一个猪灵，如果该指路石存储的坐标指定了一个未注册过的箱子，那么这名猪灵会将这个箱子注册为一个有效的容器，他们靠近会从里面拿取食物以及将猎获的战利品存入其中。"
+    }
+  ]
+}

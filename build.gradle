@@ -54,7 +54,7 @@ minecraft {
     // However, it must be at "META-INF/accesstransformer.cfg" in the final mod jar to be loaded by Forge.
     // This default location is a best practice to automatically put the file in the right place in the final jar.
     // See https://docs.minecraftforge.net/en/latest/advanced/accesstransformers/ for more information.
-    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     // Default run configurations.
     // These can be tweaked, removed, or duplicated as needed.
@@ -147,23 +147,37 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    implementation fg.deobf("libs:goety-2.5.54.0:${minecraft_version}")
+    implementation fg.deobf("libs:goety-2.5.55.2:${minecraft_version}")
     compileOnly fg.deobf("libs:illageandspillagerespillaged-1.2.8:${minecraft_version}")
     implementation fg.deobf("top.theillusivec4.curios:curios-forge:5.14.1+1.20.1")
     
-    // Goety Spillage + GR + GA - 仅编译时使用，运行时可选
+    // 仅编译时使用，运行时可选
     compileOnly fg.deobf("libs:goety_spillage-1.20-1.4.7:${minecraft_version}")
-    compileOnly fg.deobf("libs:goetyawaken-1.3.7:${minecraft_version}")
-    compileOnly fg.deobf("libs:GoetyRevelation-2.3.2:${minecraft_version}")
-    
-    // Savage and Ravage + Blueprint + MM + LM- 可选软前置（仅编译时）
+    compileOnly fg.deobf("libs:goetyawaken-1.3.8:${minecraft_version}")
+    compileOnly fg.deobf("libs:GoetyRevelation-2.3.3fix:${minecraft_version}")
+
     compileOnly fg.deobf("libs:savage_and_ravage-1.20.1-6.0.1:${minecraft_version}")
     compileOnly fg.deobf("libs:blueprint-1.20.1-7.1.4:${minecraft_version}")
     compileOnly fg.deobf("libs:upgrade_aquatic-1.20.1-6.0.3:${minecraft_version}")
     compileOnly fg.deobf("libs:mutantmore-1.20.1-early_access-2.0.0:${minecraft_version}")
-    compileOnly fg.deobf("libs:legendarymonsters-2.1.12:${minecraft_version}")
+    compileOnly fg.deobf("libs:legendarymonsters-2.1.20:${minecraft_version}")
+    compileOnly fg.deobf("libs:EndingLibrary-1.20.1-2.1.19-all:${minecraft_version}")
+    compileOnly fg.deobf("libs:Jade-1.20.1-Forge-11.13.2:${minecraft_version}")
+    compileOnly fg.deobf("libs:goety_equipped-1.7.0-forge-1.20.1:${minecraft_version}")
+    compileOnly fg.deobf("libs:[Forge]RevelationFix-1.20.1-4.4:${minecraft_version}")
 
-
+    compileOnly fg.deobf("libs:goetydelight-1.3.2+20260510:${minecraft_version}")
+    compileOnly fg.deobf("libs:goeticlegacy-0.4.0-early-release:${minecraft_version}")
+    compileOnly fg.deobf("libs:goety_cataclysm-1.20-1.8.2:${minecraft_version}")
+    compileOnly fg.deobf("libs:goety_ladder[oldGoety]-1.1.5.3:${minecraft_version}")
+    compileOnly fg.deobf("libs:goety_mastery_of_magic-1.6.1-forge-1.20.1:${minecraft_version}")
+    compileOnly fg.deobf("libs:goetytranscended-0.1.2:${minecraft_version}")
+    compileOnly fg.deobf("libs:L_Enders_Cataclysm-3.31:${minecraft_version}")
+    compileOnly fg.deobf("libs:lionfishapi-3.0:${minecraft_version}")
+    compileOnly fg.deobf("libs:irons_spellbooks-1.20.1-3.16.1:${minecraft_version}")
+    compileOnly fg.deobf("libs:everyonecanbeservant-1.0.0:${minecraft_version}")
+    compileOnly fg.deobf("libs:rootoffear-1.20.1-1.0.10:${minecraft_version}")
+    compileOnly fg.deobf("libs:StackablePotions-forge-1.20.1-1.0.0:${minecraft_version}")
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 

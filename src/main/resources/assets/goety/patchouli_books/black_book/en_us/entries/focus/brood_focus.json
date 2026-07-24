@@ -1,0 +1,20 @@
+{
+  "name": "Brood Focus",
+  "icon": "someillagerservants:brood_focus",
+  "category": "goety:focuses/wild",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Spiders are simple and lowly creatures, yet you are still interested in unlocking their remaining potential. Through studying them, you have devised a spell that allows you to summon fearsome Brood Mother Servants."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:brood_focus",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Casting this spell with a Wild Staff has a chance to summon an additional Brood Mother Servant."
+    }
+  ]
+}

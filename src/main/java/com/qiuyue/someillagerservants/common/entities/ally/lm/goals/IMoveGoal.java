@@ -54,12 +54,17 @@ public class IMoveGoal extends Goal {
         this.monster.getNavigation().stop();
     }
 
+    private int delayCounter;
+
     @Override
     public void tick() {
         LivingEntity target = this.monster.getTarget();
         if (target != null) {
             this.monster.getLookControl().setLookAt(target, 30.0F, 30.0F);
-            this.monster.getNavigation().moveTo(target, this.moveSpeed);
+            if (--this.delayCounter <= 0) {
+                this.delayCounter = 4 + this.monster.getRandom().nextInt(7);
+                this.monster.getNavigation().moveTo(target, this.moveSpeed);
+            }
         }
     }
 

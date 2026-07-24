@@ -1,0 +1,26 @@
+{
+  "name": "Fiery Bulwark",
+  "icon": "someillagerservants:firebrand",
+  "category": "goety:world",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Nether adventurers whisper rumors of bulwarks far grander than Bastion Remnants, standing above the lava seas. Any who dare approach are treated as enemies by the Piglin Hordes stationed there—perhaps they guard extraordinary treasures within?"
+    },
+    {
+      "type": "patchouli:image",
+      "images": ["someillagerservants:textures/gui/entries/fiery_bulwark.png"],
+      "border": true,
+      "text": "A fortress heavily guarded by Piglin Hordes"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:piglin_merchant",
+      "text": "Don't forget to bring your gold! Genuine goods, fair prices!"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "A Piglin merchant residing in a private chamber within the bastion. He seems to only be interested in your gold—as long as you have gold, you can acquire some fine goods from him. If you accidentally attack him, you can apologize with a gold block to resume trading."
+    }
+  ]
+}

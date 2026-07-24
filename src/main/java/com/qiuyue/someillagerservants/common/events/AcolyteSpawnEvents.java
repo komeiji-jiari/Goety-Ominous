@@ -143,6 +143,8 @@ public class AcolyteSpawnEvents {
                 0.0,
                 2.0F
         );
+        ServerParticleUtil.summonUndeadParticles(serverLevel, acolyte,
+                new com.Polarice3.Goety.utils.ColorUtil(0xffa300), 0xffa300, 0xffff6e);
         serverLevel.addFreshEntity(acolyte);
     }
 

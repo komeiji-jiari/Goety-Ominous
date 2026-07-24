@@ -1,0 +1,54 @@
+{
+  "name": "下界教团",
+  "icon": "someillagerservants:burning_potion",
+  "category": "goety:world/bestiary",
+  "advancement": "goety:goety/kill_a_heretic",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "在发现诡异的黑色怪圈和身披长袍的神秘人之后，你开始调查下界教团的身份与来历。总体而言，这些邪教徒不如灾厄村民那般纪律严明，装备精良，但这并不意味着他们没有威胁。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "如前所述，这些教徒与女巫有很多共同之处。身份尚未正式的教徒为了传播下界教义常与灾厄村民合作袭击村庄，或是游荡在荒野里袭击过路的商旅，而高阶的教徒则据守在他们的据点里，研究被称为“门徒”与“使徒”的人留下的启示与神迹。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "然而邪教徒之所以可以被称为威胁的原因不止于此。有传言说，他们会主动将教义传播给村民，甚至村庄中有一些人还是潜伏的卧底...当一个教徒受到攻击时，他们会积极呼唤同伴的帮助。奇怪的是这些现象只在此类更为激进的教徒身上出现。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:fanatic"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "鉴于他们制服和武器的多样性，这些狂热者似乎是普通的村民被某种对下界的奇异崇拜所转化。与卫道士相比，他们似乎没有强大的力量或韧性，但他们的武器种类更丰富，从镐、干草叉到剑和斧头，甚至还有一些疯狂到挥舞女巫炸弹的。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:zealot"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "与狂热者类似，这些狂信徒满足于向无知者传播扭曲的信仰，他们积极外出骚扰像你或村民这样的存在，有时甚至和灾厄村民沆瀣一气。与装备统一的掠夺者不同，这些狂信徒似乎只是随手使用任何能找到的远程武器，因此有些人用弩，另一些人用弓。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:beldam",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "女巫通常是独来独往的，但当她们遇到一群崇拜下界的狂热者时，她们会不由自主地被吸引过去。似乎加入教团让她们变得更加合作且更加狡诈。当被杀死时，这些女巫会给凶手留下一个诅咒。她们会投掷各种邪恶的药水甚至是燃烧药水来毒害敌人。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:thug",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "这些强壮，野蛮的教徒类似于铁傀儡和劫掠兽，只是比它们都弱一些。然而，当他们受到足够的伤害时，会进入某种邪恶的愤怒状态，提升攻击力和速度，同时会周期性地受到伤害。他们要么是魔法实验的产物，要么是被教团激进化的大块头村民。"
+    }
+  ]
+}

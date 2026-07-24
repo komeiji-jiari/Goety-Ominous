@@ -4,7 +4,6 @@ import com.Polarice3.Goety.common.items.ServantSpawnEggItem;
 import com.qiuyue.someillagerservants.SomeIllagerServants;
 import com.qiuyue.someillagerservants.common.items.revive.MysteriousContract;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Rarity;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;

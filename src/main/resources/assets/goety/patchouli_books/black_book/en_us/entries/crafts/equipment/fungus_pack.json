@@ -1,0 +1,25 @@
+{
+  "name": "Fungus Pack",
+  "icon": "someillagerservants:fungus_pack",
+  "category": "goety:crafts/equipment",
+  "advancement": "someillagerservants:someillagerservants/read_bastion_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "By delving deeper into the habits of ancient Piglins, you have crafted a fungus-rich backpack to contain your unstable fungal clusters. This pack serves both as a back accessory and as a chestplate, offering modest protection."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:fungus_pack"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The true use of the Fungus Pack is its ability to hold a fungal cluster (default key: num0). By opening its internal storage, you can place one type of fungal cluster inside. The pack enhances your thrown fungi and reduces their consumption cost. For example, Snap Fungus and Blast Fungus gain increased explosive power, while Berserk Fungus no longer inflicts nausea on you."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Acceptable fungi include Snap Fungus, Blast Fungus, Berserk Fungus, and Acid Fungus."
+    }
+  ]
+}

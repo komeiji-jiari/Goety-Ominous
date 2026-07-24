@@ -1,0 +1,19 @@
+{
+  "name": "红石聚晶",
+  "icon": "someillagerservants:redstone_focus",
+  "category": "goety:focuses/geomancy",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "使用这个法术，你像村民传说中古代的战争巨兽那样从大地之中召唤出滚动的红石块来淹没你的敌人，仿佛你自己就是战争的化身。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "someillagerservants:redstone_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "使用地卜魔杖施法可以召唤更多红石怪。如果你穿着地卜长袍，那么你召唤的红石怪会获得铁皮效果。"
+    }
+  ]
+}

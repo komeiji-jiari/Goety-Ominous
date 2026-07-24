@@ -1,0 +1,6 @@
+{
+  "parent": "someillagerservants:item/cog_crossbow",
+  "textures": {
+    "layer0": "someillagerservants:item/cog_crossbow_pulling_2"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "name": "Storm Necromancer",
+  "icon": "goety:thunderstorm_focus",
+  "category": "goety:mutations",
+  "advancement": "goety:goety/unlock_necromancer",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You have discovered a variant of Necromancer that wields the power of storms. Having been tempered by lightning, they do not shudder like those freshly struck by thunder, and are able to call down bolts from the heavens to strike the earth."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:convert_rattled_to_storm_necromancer"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Not only do they possess the power to command storms, they can also summon loyal servants with their staff. Right-clicking them with certain focus allows them to summon additional types of servants. Right-clicking them with an empty hand commands the Necromancer to summon servants for you. They are healed in the same way as ordinary Skeleton Servants."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:storm_necromancer_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "These storm magicians are masters of summoning wind and rain. If you right-click them while holding a Lightning Rod, they will call forth a storm for you, sparing you the trouble of performing the tedious ritual yourself while you attend to other matters."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "someillagerservants:storm_soul_jar",
+      "text": "If a Storm Necromancer dies and you happen to have an $(l:crafts/empty_soul_jar)Empty Soul Jar$(), their soul will fill it. Right-clicking on a Rattled with this filled Soul Jar will resurrect the Necromancer, using that Rattled as a new body."
+    }
+  ]
+}

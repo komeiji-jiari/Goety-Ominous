@@ -3,8 +3,18 @@ package com.qiuyue.someillagerservants.common.init;
 import com.qiuyue.someillagerservants.common.entities.ally.illager.*;
 import com.qiuyue.someillagerservants.common.entities.ally.mobs.*;
 
-import com.qiuyue.someillagerservants.common.entities.hostile.Acolyte;
-import com.qiuyue.someillagerservants.common.entities.hostile.SunkenNecromancer;
+import com.qiuyue.someillagerservants.common.entities.ally.mobs.StormNecromancerServant;
+import com.qiuyue.someillagerservants.common.entities.ally.spider.CrimsonSpiderServant;
+import com.qiuyue.someillagerservants.common.entities.hostile.*;
+import com.qiuyue.someillagerservants.common.entities.hostile.cultists.Beldam;
+import com.qiuyue.someillagerservants.common.entities.hostile.cultists.Fanatic;
+import com.qiuyue.someillagerservants.common.entities.hostile.cultists.Thug;
+import com.qiuyue.someillagerservants.common.entities.hostile.cultists.Zealot;
+import com.qiuyue.someillagerservants.common.entities.projectile.AcidFungus;
+import com.qiuyue.someillagerservants.common.entities.projectile.BurningPotionEntity;
+import com.qiuyue.someillagerservants.common.entities.projectile.PitchforkEntity;
+import com.qiuyue.someillagerservants.common.entities.projectile.WitchBombEntity;
+import com.qiuyue.someillagerservants.common.entities.util.BurningGroundEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -73,6 +83,101 @@ public class ModEntityTypes {
                     .clientTrackingRange(8)
                     .build(MOD_ID + ":sunken_necromancer"));
 
+    public static final RegistryObject<EntityType<PiglinServant>> PIGLIN_SERVANT = ENTITY_TYPES.register(
+            "piglin_servant",
+            () -> EntityType.Builder.of(PiglinServant::new, MobCategory.MISC)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":piglin_servant"));
+
+    public static final RegistryObject<EntityType<PiglinBruteServant>> PIGLIN_BRUTE_SERVANT = ENTITY_TYPES.register(
+            "piglin_brute_servant",
+            () -> EntityType.Builder.of(PiglinBruteServant::new, MobCategory.MISC)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":piglin_brute_servant"));
+
+    public static final RegistryObject<EntityType<StrongPiglinBruteServant>> STRONG_PIGLIN_BRUTE_SERVANT = ENTITY_TYPES.register(
+            "piglin_brute_servant_strong",
+            () -> EntityType.Builder.of(StrongPiglinBruteServant::new, MobCategory.MISC)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":piglin_brute_servant_strong"));
+
+    public static final RegistryObject<EntityType<ElitePiglinBruteServant>> ELITE_PIGLIN_BRUTE_SERVANT = ENTITY_TYPES.register(
+            "piglin_brute_servant_elite",
+            () -> EntityType.Builder.of(ElitePiglinBruteServant::new, MobCategory.MISC)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":piglin_brute_servant_elite"));
+
+    public static final RegistryObject<EntityType<StrongZPiglinBruteServant>> STRONG_ZPIGLIN_BRUTE_SERVANT = ENTITY_TYPES.register(
+            "strong_zpiglin_brute_servant",
+            () -> EntityType.Builder.of(StrongZPiglinBruteServant::new, MobCategory.MONSTER)
+                    .fireImmune()
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":strong_zpiglin_brute_servant"));
+
+    public static final RegistryObject<EntityType<EliteZPiglinBruteServant>> ELITE_ZPIGLIN_BRUTE_SERVANT = ENTITY_TYPES.register(
+            "elite_zpiglin_brute_servant",
+            () -> EntityType.Builder.of(EliteZPiglinBruteServant::new, MobCategory.MONSTER)
+                    .fireImmune()
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":elite_zpiglin_brute_servant"));
+
+    public static final RegistryObject<EntityType<PiglinHunterServant>> PIGLIN_HUNTER_SERVANT = ENTITY_TYPES.register(
+            "piglin_hunter_servant",
+            () -> EntityType.Builder.of(PiglinHunterServant::new, MobCategory.MISC)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":piglin_hunter_servant"));
+
+    public static final RegistryObject<EntityType<StrongPiglinHunterServant>> STRONG_PIGLIN_HUNTER_SERVANT = ENTITY_TYPES.register(
+            "strong_piglin_hunter_servant",
+            () -> EntityType.Builder.of(StrongPiglinHunterServant::new, MobCategory.MISC)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":strong_piglin_hunter_servant"));
+
+    public static final RegistryObject<EntityType<ElitePiglinHunterServant>> ELITE_PIGLIN_HUNTER_SERVANT = ENTITY_TYPES.register(
+            "elite_piglin_hunter_servant",
+            () -> EntityType.Builder.of(ElitePiglinHunterServant::new, MobCategory.MISC)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":elite_piglin_hunter_servant"));
+
+    public static final RegistryObject<EntityType<ZPiglinHunterServant>> ZPIGLIN_HUNTER_SERVANT = ENTITY_TYPES.register(
+            "zpiglin_hunter_servant",
+            () -> EntityType.Builder.of(ZPiglinHunterServant::new, MobCategory.MONSTER)
+                    .fireImmune()
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":zpiglin_hunter_servant"));
+
+    public static final RegistryObject<EntityType<StrongZPiglinHunterServant>> STRONG_ZPIGLIN_HUNTER_SERVANT = ENTITY_TYPES.register(
+            "strong_zpiglin_hunter_servant",
+            () -> EntityType.Builder.of(StrongZPiglinHunterServant::new, MobCategory.MONSTER)
+                    .fireImmune()
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":strong_zpiglin_hunter_servant"));
+
+    public static final RegistryObject<EntityType<EliteZPiglinHunterServant>> ELITE_ZPIGLIN_HUNTER_SERVANT = ENTITY_TYPES.register(
+            "elite_zpiglin_hunter_servant",
+            () -> EntityType.Builder.of(EliteZPiglinHunterServant::new, MobCategory.MONSTER)
+                    .fireImmune()
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":elite_zpiglin_hunter_servant"));
+
+    public static final RegistryObject<EntityType<PiglinMerchant>> PIGLIN_MERCHANT = ENTITY_TYPES.register("piglin_merchant",
+            () -> EntityType.Builder.of(PiglinMerchant::new, MobCategory.CREATURE)
+                    .sized(1.0F, 2.4375F)
+                    .clientTrackingRange(10)
+                    .build(MOD_ID + ":piglin_merchant"));
+
     public static final RegistryObject<EntityType<AxolotlServant>> AXOLOTL_SERVANT = ENTITY_TYPES.register(
             "axolotl_servant",
             () -> EntityType.Builder.of(AxolotlServant::new, MobCategory.UNDERGROUND_WATER_CREATURE)
@@ -86,6 +191,20 @@ public class ModEntityTypes {
                     .sized(0.75F, 2.4375F)
                     .clientTrackingRange(8)
                     .build(MOD_ID + ":heresiarch_servant"));
+
+    public static final RegistryObject<EntityType<StormNecromancerServant>> STORM_NECROMANCER_SERVANT = ENTITY_TYPES.register(
+            "storm_necromancer_servant",
+            () -> EntityType.Builder.of(StormNecromancerServant::new, MobCategory.MONSTER)
+                    .sized(0.75F, 2.4875F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":storm_necromancer_servant"));
+
+    public static final RegistryObject<EntityType<StormNecromancer>> STORM_NECROMANCER = ENTITY_TYPES.register(
+            "storm_necromancer",
+            () -> EntityType.Builder.of(StormNecromancer::new, MobCategory.MONSTER)
+                    .sized(0.75F, 2.4875F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":storm_necromancer"));
 
     public static final RegistryObject<EntityType<Acolyte>> ACOLYTE = ENTITY_TYPES.register(
             "acolyte",
@@ -101,7 +220,102 @@ public class ModEntityTypes {
                     .clientTrackingRange(8)
                     .build(MOD_ID + ":acolyte_servant"));
 
+    public static final RegistryObject<EntityType<FungusThrower>> FUNGUS_THROWER = ENTITY_TYPES.register(
+            "fungus_thrower",
+            () -> EntityType.Builder.of(FungusThrower::new, MobCategory.MISC)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":fungus_thrower"));
 
+    public static final RegistryObject<EntityType<ZFungusThrower>> ZFUNGUS_THROWER = ENTITY_TYPES.register(
+            "zfungus_thrower",
+            () -> EntityType.Builder.of(ZFungusThrower::new, MobCategory.MISC)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":zfungus_thrower"));
+
+    public static final RegistryObject<EntityType<AcidFungus>> ACID_FUNGUS = ENTITY_TYPES.register(
+            "acid_fungus",
+            () -> EntityType.Builder.<AcidFungus>of(AcidFungus::new, MobCategory.MISC)
+                    .sized(0.25F, 0.25F)
+                    .build(MOD_ID + ":acid_fungus"));
+
+    public static final RegistryObject<EntityType<Fanatic>> FANATIC = ENTITY_TYPES.register("fanatic",
+            () -> EntityType.Builder.of(Fanatic::new, MobCategory.MONSTER)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":fanatic"));
+
+    public static final RegistryObject<EntityType<Zealot>> ZEALOT = ENTITY_TYPES.register("zealot",
+            () -> EntityType.Builder.of(Zealot::new, MobCategory.MONSTER)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":zealot"));
+
+    public static final RegistryObject<EntityType<Beldam>> BELDAM = ENTITY_TYPES.register("beldam",
+            () -> EntityType.Builder.of(Beldam::new, MobCategory.MONSTER)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":beldam"));
+
+    public static final RegistryObject<EntityType<UrbhadhachEntity>> URBHADHACH = ENTITY_TYPES.register("urbhadhach",
+            () -> EntityType.Builder.of(UrbhadhachEntity::new, MobCategory.MONSTER)
+                    .sized(1.7F, 1.7F)
+                    .clientTrackingRange(10)
+                    .build(MOD_ID + ":urbhadhach"));
+
+    public static final RegistryObject<EntityType<UrbhadhachServant>> URBHADHACH_SERVANT = ENTITY_TYPES.register("urbhadhach_servant",
+            () -> EntityType.Builder.of(UrbhadhachServant::new, MobCategory.MISC)
+                    .sized(1.7F, 1.7F)
+                    .clientTrackingRange(10)
+                    .build(MOD_ID + ":urbhadhach_servant"));
+
+    public static final RegistryObject<EntityType<Martyr>> MARTYR = ENTITY_TYPES.register("martyr",
+            () -> EntityType.Builder.of(Martyr::new, MobCategory.MONSTER)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":martyr"));
+
+    public static final RegistryObject<EntityType<Thug>> THUG = ENTITY_TYPES.register("thug",
+            () -> EntityType.Builder.of(Thug::new, MobCategory.MONSTER)
+                    .sized(1.4F, 2.7F)
+                    .clientTrackingRange(10)
+                    .build(MOD_ID + ":thug"));
+
+    public static final RegistryObject<EntityType<CrimsonSpiderServant>> CRIMSON_SPIDER_SERVANT = ENTITY_TYPES.register("crimson_spider_servant",
+            () -> EntityType.Builder.of(CrimsonSpiderServant::new, MobCategory.MISC)
+                    .sized(1.4F, 0.9F)
+                    .clientTrackingRange(8)
+                    .fireImmune()
+                    .build(MOD_ID + ":crimson_spider_servant"));
+
+    public static final RegistryObject<EntityType<BurningPotionEntity>> BURNING_POTION = ENTITY_TYPES.register("burning_potion",
+            () -> EntityType.Builder.<BurningPotionEntity>of(BurningPotionEntity::new, MobCategory.MISC)
+                    .sized(0.25F, 0.25F)
+                    .clientTrackingRange(4)
+                    .updateInterval(10)
+                    .build(MOD_ID + ":burning_potion"));
+
+    public static final RegistryObject<EntityType<BurningGroundEntity>> BURNING_GROUND = ENTITY_TYPES.register("burning_ground",
+            () -> EntityType.Builder.<BurningGroundEntity>of(BurningGroundEntity::new, MobCategory.MISC)
+                    .sized(0.0F, 0.0F)
+                    .clientTrackingRange(10)
+                    .updateInterval(Integer.MAX_VALUE)
+                    .build(MOD_ID + ":burning_ground"));
+
+    public static final RegistryObject<EntityType<WitchBombEntity>> WITCH_BOMB = ENTITY_TYPES.register("witch_bomb",
+            () -> EntityType.Builder.<WitchBombEntity>of(WitchBombEntity::new, MobCategory.MISC)
+                    .sized(0.25F, 0.25F)
+                    .clientTrackingRange(4)
+                    .updateInterval(10)
+                    .build(MOD_ID + ":witch_bomb"));
+
+    public static final RegistryObject<EntityType<PitchforkEntity>> PITCHFORK = ENTITY_TYPES.register("pitchfork",
+            () -> EntityType.Builder.<PitchforkEntity>of(PitchforkEntity::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(4)
+                    .updateInterval(20)
+                    .build(MOD_ID + ":pitchfork"));
 
     /**
      * 注册实体类型到模组事件总线

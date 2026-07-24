@@ -105,9 +105,12 @@ public class AcolyteServant extends CultistServant {
     }
 
     public void setConfigurableAttributes() {
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), 50.0D);
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), 2.0D);
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), 3.0D);
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH),
+                com.qiuyue.someillagerservants.config.AttributesConfig.AcolyteHealth.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR),
+                com.qiuyue.someillagerservants.config.AttributesConfig.AcolyteArmor.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE),
+                com.qiuyue.someillagerservants.config.AttributesConfig.AcolyteDamage.get());
     }
 
     protected void defineSynchedData() {

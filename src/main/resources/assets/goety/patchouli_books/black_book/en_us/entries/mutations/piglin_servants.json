@@ -1,0 +1,71 @@
+{
+  "name": "Piglin Servants",
+  "icon": "someillagerservants:firebrand",
+  "category": "goety:mutations",
+  "advancement": "someillagerservants:someillagerservants/read_bastion_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "When a pig is struck by lightning, it transforms into nothing special—a zombified piglin. However, scrolls found within Bastions contain fragments of ancient Piglin knowledge on how they prevented themselves from zombifying. Inspired by this, you've devised a way to prevent zombification during the process of transforming a pig."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:convert_pig_to_piglin"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:piglin_servant",
+      "text": "You can equip them with swords, axes, or crossbows. They can also accept any type of armor."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "someillagerservants:nether_wart_potion",
+      "text": "However, even if you can temporarily prevent your Piglin servants from turning into zombified piglins, you still need a potion made from Nether Wart to feed them. Once they gain immunity, your Piglins will no longer be transformed into zombified piglins, unless they die while you are wearing the Nameless Set. Additionally, if both Piglins involved in breeding have immunity, the resulting baby Piglin will also be naturally immune."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:piglin_brute_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Unlike Illagers, basic Piglin warriors need to fight in order to become stronger variants. Piglins wielding swords or axes will upgrade into powerful Piglin Brutes after dealing enough damage. These strong and resilient Piglins can continue to grow even stronger through combat."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:piglin_hunter_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Hunters equipped with standard crossbows are the backbone of Piglin society. Although they cannot wield slightly more complex crossbows, you can still strengthen their power and endurance through combat training."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:fungus_thrower"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:convert_piglin_to_fungus_thrower"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "You've managed to enlighten your Piglins with new knowledge through a ritual. These Piglins, skilled at throwing acidic fungus, continue the ancient Piglin traditions. Their acid fungus bombs form pools of acid upon landing, dealing massive damage to enemies caught within."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "minecraft:cooked_porkchop",
+      "title": "Feeding, Healing & Breeding",
+      "text": "You can give food directly to Piglins or toss it to them. When injured or seeking to breed, they will eat the food to recover health. If a Piglin is at full health and not in combat or follow mode, the food can cause them to breed with one another—much like villagers—producing a baby Piglin."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "When a Piglin has too much food in its inventory, it will toss some to other Piglins that have less. They generally accept carrots, golden carrots, porkchops, and cooked porkchops."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "minecraft:chest",
+      "title": "Chest Interaction",
+      "text": "Right-click a Piglin while holding a Waystone. If the coordinates stored in the Waystone point to an unregistered chest, that Piglin will register it as a valid container. They will take food from it and deposit loot they gather into it."
+    }
+  ]
+}

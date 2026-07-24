@@ -17,8 +17,16 @@ public class ModKeyBindings {
             "key.categories.someillagerservants"
     );
 
+    public static final KeyMapping OPEN_FUNGUS_PACK_KEY = new KeyMapping(
+            "key.someillagerservants.open_fungus_pack",
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_KP_0,
+            "key.categories.someillagerservants"
+    );
+
     @SubscribeEvent
     public static void registerKeys(RegisterKeyMappingsEvent event) {
         event.register(RIDER_CHARGE_KEY);
+        event.register(OPEN_FUNGUS_PACK_KEY);
     }
 }

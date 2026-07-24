@@ -24,6 +24,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -33,6 +34,7 @@ public class WitherSlash extends ThrowableProjectile {
     private static final EntityDataAccessor<Float> SIZE;
     private static final EntityDataAccessor<Float> FIXED_YAW;
     public int textureChange = 0;
+    private ItemStack weapon = ItemStack.EMPTY;
     public float damage = 0.0F;
     public float leechAmount = 0.0F;
     public int witherLength = 0;
@@ -83,6 +85,10 @@ public class WitherSlash extends ThrowableProjectile {
         }
     }
 
+    public void setWeapon(ItemStack stack) {
+        this.weapon = stack;
+    }
+
     public EntityDimensions getDimensions(Pose p_19975_) {
         return super.getDimensions(p_19975_).scale(this.getSize());
     }
@@ -128,7 +134,7 @@ public class WitherSlash extends ThrowableProjectile {
     }
 
     public void tick() {
-        if (!this.level().isClientSide && this.tickCount > 160) {
+        if (!this.level().isClientSide && this.tickCount > 80) {
             this.discard();
             return;
         }
@@ -148,7 +154,11 @@ public class WitherSlash extends ThrowableProjectile {
                         target.invulnerableTime = 0;
                     }
 
-                    boolean flag = target.hurt(MMDamageTypes.witherSlashAttack(this.damageSources(), this, owner), this.damage);
+                    float bonusDamage = 0;
+                    if (target instanceof LivingEntity livingTarget && !this.weapon.isEmpty()) {
+                        bonusDamage = net.minecraft.world.item.enchantment.EnchantmentHelper.getDamageBonus(this.weapon, livingTarget.getMobType());
+                    }
+                    boolean flag = target.hurt(MMDamageTypes.witherSlashAttack(this.damageSources(), this, owner), this.damage + bonusDamage);
                     LivingEntity livingTarget;
                     if (target instanceof LivingEntity) {
                         livingTarget = (LivingEntity)target;
@@ -159,8 +169,17 @@ public class WitherSlash extends ThrowableProjectile {
                             }
 
                             livingTarget.addEffect(new MobEffectInstance(MobEffects.WITHER, this.witherLength, this.witherLevel), owner);
+                            if (!this.weapon.isEmpty() && this.weapon.getItem() instanceof com.qiuyue.someillagerservants.common.items.mm.WitherScytheItem) {
+                                for (var effect : net.minecraftforge.registries.ForgeRegistries.MOB_EFFECTS) {
+                                    if (net.minecraftforge.registries.ForgeRegistries.MOB_EFFECTS.getKey(effect) != null
+                                            && net.minecraftforge.registries.ForgeRegistries.MOB_EFFECTS.getKey(effect).equals(
+                                            new net.minecraft.resources.ResourceLocation("goety", "cursed"))) {
+                                        livingTarget.addEffect(new MobEffectInstance(effect, this.witherLength, this.witherLevel), owner);
+                                        break;
+                                    }
+                                }
+                            }
                         }
-
                         flag = true;
                     } else {
                         flag = false;

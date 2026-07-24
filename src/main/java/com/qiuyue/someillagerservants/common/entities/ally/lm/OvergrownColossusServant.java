@@ -11,7 +11,6 @@ import net.miauczel.legendary_monsters.config.ModConfig;
 import net.miauczel.legendary_monsters.entity.AnimatedMonster.Effect.CameraShakeEntity;
 import net.miauczel.legendary_monsters.item.ModItems;
 import net.miauczel.legendary_monsters.entity.ai.navigation.EntityRotationPatcher;
-import net.miauczel.legendary_monsters.entity.ai.navigation.ModPathNavigation;
 import net.miauczel.legendary_monsters.sound.ModSounds;
 import com.qiuyue.someillagerservants.common.entities.ally.lm.goals.IAttackGoal;
 import com.qiuyue.someillagerservants.common.entities.ally.lm.goals.IMoveGoal;
@@ -306,6 +305,7 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
         float multiplier = huge ? 1.2F : 0.5F;
         entity.push(deltaX / distanceSquared * (double) multiplier, huge ? 0.3 : 0.2, deltaZ / distanceSquared * (double) multiplier);
     }
+
     @Override
     protected void registerGoals() {
         super.registerGoals();
@@ -314,7 +314,7 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.goalSelector.addGoal(2, new IMoveGoal(this, false, 3.0D));
+        this.goalSelector.addGoal(2, new IMoveGoal(this, false, 1.0D));
 
         this.goalSelector.addGoal(1, new IAttackGoal(this, 0, 9, 0, 44, 44, 3.75F) {
             public boolean canUse() {
@@ -373,6 +373,8 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
                 entity2.setRadius(6);
                 entity2.setDamage(4);
                 entity2.setCanHealOwner(true);
+                entity2.setUseAcidVenom(OvergrownColossusServant.this.getTrueOwner() != null
+                        && CuriosFinder.hasWildRobe(OvergrownColossusServant.this.getTrueOwner()));
                 entity2.setLifeTicks(60);
                 entity2.setPos(getX(),getY(),getZ());
                 // level().addFreshEntity(entity2);
@@ -446,8 +448,9 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
         return true;
     }
     protected PathNavigation createNavigation(Level worldIn) {
-        return new ModPathNavigation(this, worldIn);
+        return new net.minecraft.world.entity.ai.navigation.GroundPathNavigation(this, worldIn);
     }
+
     @Nullable
     public ItemEntity LGspawnatlocation(ItemStack pStack) {
 
@@ -801,16 +804,11 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
     }
 
 
-    @Override
-    public void push(Entity entity) {
-        if (entity != this.getTrueOwner()) {
-            super.push(entity);
-        }
-    }
+
 
     @Override
-    public boolean canCollideWith(Entity entity) {
-        return true;
+    public boolean isPushable() {
+        return false;
     }
 
     private void updateWithAttack(){
@@ -837,6 +835,7 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
                 entity2.setRadius(3);
                 entity2.setDamage(4);
                 entity2.setCanHealOwner(true);
+                entity2.setUseAcidVenom(this.getTrueOwner() != null && CuriosFinder.hasWildRobe(this.getTrueOwner()));
                 entity2.setLifeTicks(60);
                 entity2.setPos(this.getX(),this.getY(),this.getZ());
                 level().addFreshEntity(entity2);

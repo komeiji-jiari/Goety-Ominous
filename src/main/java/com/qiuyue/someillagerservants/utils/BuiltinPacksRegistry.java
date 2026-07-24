@@ -1,10 +1,6 @@
 package com.qiuyue.someillagerservants.utils;
 
-import com.qiuyue.someillagerservants.compat.ias.IasCompatManager;
-import com.qiuyue.someillagerservants.compat.mod.IllageAndSpillageCompat;
-import com.qiuyue.someillagerservants.compat.mod.MutantMoreCompat;
-import com.qiuyue.someillagerservants.compat.mod.SavageRavageCompat;
-import com.qiuyue.someillagerservants.compat.mod.UpgradeAquaticCompat;
+import com.qiuyue.someillagerservants.compat.mod.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.PathPackResources;
@@ -85,6 +81,27 @@ public class BuiltinPacksRegistry {
             }
         }
 
+        // --- 客户端资源包（MM 联动内容）---
+        if (event.getPackType() == PackType.CLIENT_RESOURCES && MutantMoreCompat.isMutantMoreLoaded()) {
+            Path packPath = modFile.findResource("resourcepacks/mm_compat");
+            if (packPath != null) {
+                event.addRepositorySource(consumer -> {
+                    Pack pack = Pack.readMetaAndCreate(
+                            "someillagerservants/mm_compat",
+                            Component.literal("MM Compatibility Pack"),
+                            true,
+                            id -> new PathPackResources(id, packPath, true),
+                            PackType.CLIENT_RESOURCES,
+                            Pack.Position.TOP,
+                            PackSource.BUILT_IN
+                    );
+                    if (pack != null) {
+                        consumer.accept(pack);
+                    }
+                });
+            }
+        }
+
         // --- 客户端资源包（IAS 联动内容）---
         if (event.getPackType() == PackType.CLIENT_RESOURCES && IllageAndSpillageCompat.isIllageAndSpillageLoaded()) {
             Path packPath = modFile.findResource("resourcepacks/ias_compat");
@@ -106,6 +123,26 @@ public class BuiltinPacksRegistry {
             }
         }
 
+        // --- 客户端资源包（旧版本纹理内容）---
+        if (event.getPackType() == PackType.CLIENT_RESOURCES) {
+            Path packPath = modFile.findResource("resourcepacks/old_textures");
+            if (packPath != null) {
+                event.addRepositorySource(consumer -> {
+                    Pack pack = Pack.readMetaAndCreate(
+                            "someillagerservants/old_textures",
+                            Component.literal("GO Old Textures"),
+                            false,
+                            id -> new PathPackResources(id, packPath, true),
+                            PackType.CLIENT_RESOURCES,
+                            Pack.Position.TOP,
+                            PackSource.BUILT_IN
+                    );
+                    if (pack != null) {
+                        consumer.accept(pack);
+                    }
+                });
+            }
+        }
         // --- 服务端数据包（advancement）---
         if (event.getPackType() == PackType.SERVER_DATA && SavageRavageCompat.isSavageRavageLoaded()) {
             Path packPath = modFile.findResource("datapacks/sar_compat");

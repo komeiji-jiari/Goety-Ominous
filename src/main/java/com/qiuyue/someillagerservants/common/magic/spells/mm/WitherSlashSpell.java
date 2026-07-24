@@ -21,12 +21,12 @@ public class WitherSlashSpell extends Spell {
 
     @Override
     public int defaultSoulCost() {
-        return 24;
+        return com.qiuyue.someillagerservants.config.SpellConfig.WitherSlashSoulCost.get();
     }
 
     @Override
     public int defaultSpellCooldown() {
-        return 60;
+        return com.qiuyue.someillagerservants.config.SpellConfig.WitherSlashCooldown.get();
     }
 
     @Override
@@ -63,7 +63,8 @@ public class WitherSlashSpell extends Spell {
             velocity += WandUtil.getLevels(ModEnchantments.VELOCITY.get(), caster);
         }
 
-        float damage = usingNetherStaff ? 16.0F + potency : 6.0F + potency;
+        float baseDamage = com.qiuyue.someillagerservants.config.SpellConfig.WitherSlashDamage.get().floatValue();
+        float damage = (usingNetherStaff ? baseDamage * 2.5F : baseDamage) + potency;
         float leech = usingNetherStaff ? 8.0F : 4.0F;
         int witherLength = 300;
         int witherLevel = 1;

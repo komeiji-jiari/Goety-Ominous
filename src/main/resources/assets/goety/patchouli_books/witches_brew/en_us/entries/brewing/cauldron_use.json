@@ -1,0 +1,28 @@
+{
+  "name": "More Cauldron Uses",
+  "icon": "goety:witch_cauldron",
+  "category": "goety:brewing",
+  "sortnum": 8,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "A true witch can use their cauldron to satisfy every need! Grandma Baba Yaga's first rule for every witch before using the cauldron—always keep it in mind! And don't forget dear Granny ToeFungus's warm smile and guidance! No other witch teaches as well as Granny does HAHAHA!"
+    },
+    {
+      "type": "goety:cauldron",
+      "recipe": "someillagerservants:cauldron/nether_wart_bottle"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "A potion perfectly suited for Piglin babies! It even stops them from zombifying outside the Nether! As for how to get a Piglin to listen to you in the first place—that's your problem, HAHAHA!"
+    },
+    {
+      "type": "goety:cauldron",
+      "recipe": "someillagerservants:cauldron/burning_potion"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "But Granny wants to see your face get a proper fiery funeral! Burn, kid, burn! Nobody's here to fine Granny for illegal fire usage, HAHAHA!"
+    }
+  ]
+}

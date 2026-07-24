@@ -1,0 +1,17 @@
+{
+  "name": "凋亡死镰",
+  "icon": "someillagerservants:wither_scythe",
+  "category": "goety:mmcompat",
+  "advancement": "goety:goety/kill_a_apostle",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "通过将突变凋灵骷髅的枯萎气息注入镰刀，你制作出了这把可怕的凋亡死镰。其不仅可以像突变凋灵骷髅那样发射凋零斩击，伤害距离很远的目标并吸收他们的生命回复你的血量，还能够让被命中的生物无法再生。它通过吸收使用者的灵魂能量来自我修复。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:wither_scythe"
+    }
+  ]
+}

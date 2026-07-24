@@ -1,0 +1,24 @@
+{
+  "name": "Crimson Spider Servant",
+  "icon": "minecraft:spider_eye",
+  "category": "goety:summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The members of the Nether cult summon and control fierce Crimson Spiders to launch fanatical attacks against you. You have discovered that the spiders they summon are created by infusing ordinary spiders with the twisted energy of the Nether. However, the Nether's extreme temperatures prevent you from hatching such spiders from Spider Nests, but you can still summon them through a ritual."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:crimson_spider_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:crimson_spider_servant",
+      "text": "Starscream"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "You can also summon them directly in the Nether using the Spider Focus. Like other Nether creatures, they are immune to fire and can set prey ablaze. If you are wearing Nether Robes, they gain passive natural healing. Additionally, meat can be used to restore their health."
+    }
+  ]
+}

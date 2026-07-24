@@ -1,0 +1,25 @@
+{
+  "name": "大骨棒",
+  "icon": "someillagerservants:bone_cudgel",
+  "category": "goety:crafts/equipment",
+  "advancement": "someillagerservants:someillagerservants/read_bastion_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你制作了一把古代猪灵中的狩猎族群在狩猎疣猪兽时使用的骨头大棒。虽然看起来沉重无比，实际上也确实很笨重，但它威力巨大，很适合用来砸碎敌人的头颅。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:bone_cudgel"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "这把大棒能够使得被它攻击的生物进入短暂的震撼状态，并造成强力击退。不知为何，你手持这把武器的时候能够提升对灾厄村民造成的伤害。如果你觉得举起大棒实在过于费力，锤击手套可以帮助你更好的挥动它。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "可在铁砧上使用骨块进行修复。"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "Acid Fungus",
+  "icon": "someillagerservants:acid_fungus",
+  "category": "goety:crafts",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You have discovered a new type of fungus. By processing Warped Fungus with a Lily of the Valley in a Brewing Stand, you realized that the resulting blue fungus is highly unstable—simply throwing it causes it to explode, leaving behind a large pool of acid that deals sustained damage to creatures."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "someillagerservants:acid_fungus",
+      "text": "Of course, for certain arcane reasons, the acid produced by the Acid Fungus does not affect you or your servants."
+    }
+  ]
+}

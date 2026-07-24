@@ -1,0 +1,25 @@
+{
+  "name": "齿轮弩",
+  "icon": "someillagerservants:cog_crossbow",
+  "category": "goety:crafts/equipment",
+  "advancement": "someillagerservants:someillagerservants/read_bastion_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "守卫卷轴上记载了一些失落的武器。你决定尝试用手头的材料复刻出远古族群曾经使用的弩，最终得到的成品可比猪灵那粗糙落后的技术产物要好用多了。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:cog_crossbow"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "齿轮弩是一种具有自动装填功能的发条远程武器。当玩家没有手动装填时，这把弩会自动装填5支箭，连续右键即可迅速射出此5支箭。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "可在铁砧上使用金锭进行修复。"
+    }
+  ]
+}

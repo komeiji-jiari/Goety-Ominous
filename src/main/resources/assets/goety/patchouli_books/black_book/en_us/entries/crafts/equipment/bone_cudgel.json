@@ -1,0 +1,25 @@
+{
+  "name": "Bone Cudgel",
+  "icon": "someillagerservants:bone_cudgel",
+  "category": "goety:crafts/equipment",
+  "advancement": "someillagerservants:someillagerservants/read_bastion_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You have crafted a bone cudgel once used by the Horde of the Hunt of ancient Piglins when hunting Hoglins. Though it appears heavy—and indeed, it is quite cumbersome—its power is immense, perfect for crushing the skulls of your foes."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:bone_cudgel"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "This cudgel inflicts a brief stunned effect on struck creatures and delivers powerful knockback. For reasons unknown, wielding this weapon also increases the damage you deal to Illagers. If you find the cudgel too tiring to lift, Thrash Gloves can help you swing it more effectively."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Can be repaired with Bone Blocks on an Anvil."
+    }
+  ]
+}

@@ -2,51 +2,36 @@ package com.qiuyue.someillagerservants.client.render.model;
 
 import com.Polarice3.Goety.utils.ModelUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
+import java.util.List;
+import java.util.stream.Stream;
+
 import com.qiuyue.someillagerservants.client.render.model.animation.HeresiarchServantAnimations;
 import com.qiuyue.someillagerservants.common.entities.ally.mobs.HeresiarchServant;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-import java.util.List;
-import java.util.stream.Stream;
-
+@OnlyIn(Dist.CLIENT)
 public class HeresiarchServantModel<T extends Entity> extends HierarchicalModel<T> implements ArmedModel {
     private final ModelPart root;
     private final ModelPart witch;
     private final ModelPart upper_body;
     private final ModelPart head;
     private final ModelPart nose;
-    private final ModelPart skull;
-    private final ModelPart body;
-    private final ModelPart cape;
-    private final ModelPart cape1;
-    private final ModelPart cape7;
-    private final ModelPart cape8;
-    private final ModelPart cape3;
-    private final ModelPart cape2;
-    private final ModelPart cape4;
-    private final ModelPart cape5;
-    private final ModelPart cape6;
     private final ModelPart right_arm;
-    private final ModelPart righth_arm1;
-    private final ModelPart doll;
-    private final ModelPart doll_head;
-    private final ModelPart doll1;
-    private final ModelPart doll2;
-    private final ModelPart doll3;
-    private final ModelPart doll4;
-    private final ModelPart right_shouldpad;
     private final ModelPart left_arm;
-    private final ModelPart lefth_arm1;
     private final ModelPart knife;
-    private final ModelPart left_shouldpad;
-    private final ModelPart lower_body;
     public final List<String> allPartNames;
 
     public HeresiarchServantModel(ModelPart root) {
@@ -55,36 +40,14 @@ public class HeresiarchServantModel<T extends Entity> extends HierarchicalModel<
         this.upper_body = this.witch.getChild("upper_body");
         this.head = this.upper_body.getChild("head");
         this.nose = this.head.getChild("nose");
-        this.skull = this.head.getChild("skull");
-        this.body = this.upper_body.getChild("body");
-        this.cape = this.body.getChild("cape");
-        this.cape1 = this.cape.getChild("cape1");
-        this.cape7 = this.cape1.getChild("cape7");
-        this.cape8 = this.cape1.getChild("cape8");
-        this.cape3 = this.cape1.getChild("cape3");
-        this.cape2 = this.cape.getChild("cape2");
-        this.cape4 = this.cape2.getChild("cape4");
-        this.cape5 = this.cape2.getChild("cape5");
-        this.cape6 = this.cape2.getChild("cape6");
         this.right_arm = this.upper_body.getChild("right_arm");
-        this.righth_arm1 = this.right_arm.getChild("righth_arm1");
-        this.doll = this.righth_arm1.getChild("doll");
-        this.doll_head = this.doll.getChild("doll_head");
-        this.doll1 = this.doll.getChild("doll1");
-        this.doll2 = this.doll.getChild("doll2");
-        this.doll3 = this.doll.getChild("doll3");
-        this.doll4 = this.doll.getChild("doll4");
-        this.right_shouldpad = this.right_arm.getChild("right_shouldpad");
         this.left_arm = this.upper_body.getChild("left_arm");
-        this.lefth_arm1 = this.left_arm.getChild("lefth_arm1");
-        this.knife = this.lefth_arm1.getChild("knife");
-        this.left_shouldpad = this.left_arm.getChild("left_shouldpad");
-        this.lower_body = this.witch.getChild("lower_body");
+        this.knife = this.left_arm.getChild("knife");
         this.allPartNames = Stream.concat(Stream.of("root"), ModelUtil.getAllPartNames(this.root)).toList();
     }
 
     public static LayerDefinition createBodyLayer() {
-        return createBodyLayer(0);
+        return createBodyLayer(0.0F);
     }
 
     public static LayerDefinition createShadowLayer() {
@@ -94,132 +57,42 @@ public class HeresiarchServantModel<T extends Entity> extends HierarchicalModel<
     public static LayerDefinition createBodyLayer(float deformation) {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
-
-        PartDefinition witch = partdefinition.addOrReplaceChild("witch", CubeListBuilder.create(), PartPose.offset(0.0F, 11.0F, 0.0F));
-
-        PartDefinition upper_body = witch.addOrReplaceChild("upper_body", CubeListBuilder.create(), PartPose.offset(0.0F, -1.0F, 0.0F));
-
-        PartDefinition head = upper_body.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -10.0F, -4.0F, 8.0F, 10.0F, 8.0F, new CubeDeformation(deformation))
-                .texOffs(1, 103).addBox(-4.0F, -10.0F, -4.0F, 8.0F, 10.0F, 8.0F, new CubeDeformation(deformation + 0.25F)), PartPose.offset(0.0F, -12.0F, 0.0F));
-
-        PartDefinition nose = head.addOrReplaceChild("nose", CubeListBuilder.create().texOffs(24, 0).addBox(-1.0F, 0.0F, -2.0F, 2.0F, 4.0F, 2.0F, new CubeDeformation(deformation))
-                .texOffs(0, 0).addBox(0.0F, 1.0F, -2.75F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation - 0.25F)), PartPose.offset(0.0F, -3.0F, -4.0F));
-
-        PartDefinition skull = head.addOrReplaceChild("skull", CubeListBuilder.create().texOffs(60, 31).addBox(-4.5F, -5.0F, -4.5F, 9.0F, 7.0F, 9.0F, new CubeDeformation(deformation + 0.2F))
-                .texOffs(80, 47).addBox(-2.5F, -1.5F, -11.5F, 5.0F, 4.0F, 7.0F, new CubeDeformation(deformation + 0.2F)), PartPose.offset(0.0F, -5.0F, 0.0F));
-
-        PartDefinition skull_r1 = skull.addOrReplaceChild("skull_r1", CubeListBuilder.create().texOffs(60, 47).mirror().addBox(-0.5F, -12.5F, 0.0F, 10.0F, 13.0F, 0.0F, new CubeDeformation(deformation)).mirror(false), PartPose.offsetAndRotation(5.0F, -3.0F, 1.0F, 0.0F, -0.7854F, 0.0F));
-
-        PartDefinition skull_r2 = skull.addOrReplaceChild("skull_r2", CubeListBuilder.create().texOffs(60, 47).addBox(-9.5F, -12.5F, 0.0F, 10.0F, 13.0F, 0.0F, new CubeDeformation(deformation)), PartPose.offsetAndRotation(-5.0F, -3.0F, 1.0F, 0.0F, 0.7854F, 0.0F));
-
-        PartDefinition body = upper_body.addOrReplaceChild("body", CubeListBuilder.create().texOffs(16, 20).addBox(-4.0F, 0.0F, -3.0F, 8.0F, 11.0F, 6.0F, new CubeDeformation(deformation))
-                .texOffs(0, 38).addBox(-4.0F, 0.0F, -3.0F, 8.0F, 11.0F, 6.0F, new CubeDeformation(deformation + 0.25F)), PartPose.offset(0.0F, -12.0F, 0.0F));
-
-        PartDefinition cape = body.addOrReplaceChild("cape", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 3.1F));
-
-        PartDefinition cape1 = cape.addOrReplaceChild("cape1", CubeListBuilder.create().texOffs(69, 0).addBox(-5.0F, 0.0F, -6.5F, 9.0F, 24.0F, 7.0F, new CubeDeformation(deformation)), PartPose.offset(5.0F, 0.0F, 0.0F));
-
-        PartDefinition cape7 = cape1.addOrReplaceChild("cape7", CubeListBuilder.create().texOffs(56, 7).addBox(0.0F, -7.0F, 0.0F, 2.0F, 15.0F, 0.0F, new CubeDeformation(deformation)), PartPose.offsetAndRotation(4.0F, 14.0F, -6.5F, 0.0F, 0.6545F, 0.0F));
-
-        PartDefinition cape8 = cape1.addOrReplaceChild("cape8", CubeListBuilder.create().texOffs(56, 7).addBox(0.0F, -7.0F, 0.0F, 2.0F, 15.0F, 0.0F, new CubeDeformation(deformation)), PartPose.offsetAndRotation(4.0F, 14.0F, 0.5F, 0.0F, -0.6545F, 0.0F));
-
-        PartDefinition cape3 = cape1.addOrReplaceChild("cape3", CubeListBuilder.create().texOffs(56, 7).addBox(0.0F, -5.0F, 0.0F, 2.0F, 9.0F, 0.0F, new CubeDeformation(deformation)), PartPose.offsetAndRotation(-4.0F, 6.0F, 0.5F, 0.0F, -0.8727F, 0.0F));
-
-        PartDefinition cape2 = cape.addOrReplaceChild("cape2", CubeListBuilder.create().texOffs(69, 0).mirror().addBox(-4.0F, 0.0F, -6.5F, 9.0F, 24.0F, 7.0F, new CubeDeformation(deformation)).mirror(false), PartPose.offset(-5.0F, 0.0F, 0.0F));
-
-        PartDefinition cape4 = cape2.addOrReplaceChild("cape4", CubeListBuilder.create().texOffs(56, 7).mirror().addBox(-2.0F, -5.0F, 0.0F, 2.0F, 9.0F, 0.0F, new CubeDeformation(deformation)).mirror(false), PartPose.offsetAndRotation(4.0F, 6.0F, 0.5F, 0.0F, 0.8727F, 0.0F));
-
-        PartDefinition cape5 = cape2.addOrReplaceChild("cape5", CubeListBuilder.create().texOffs(56, 7).mirror().addBox(-2.0F, -7.0F, 0.0F, 2.0F, 15.0F, 0.0F, new CubeDeformation(deformation)).mirror(false), PartPose.offsetAndRotation(-4.0F, 14.0F, -6.5F, 0.0F, -0.6545F, 0.0F));
-
-        PartDefinition cape6 = cape2.addOrReplaceChild("cape6", CubeListBuilder.create().texOffs(56, 7).mirror().addBox(-2.0F, -7.0F, 0.0F, 2.0F, 15.0F, 0.0F, new CubeDeformation(deformation)).mirror(false), PartPose.offsetAndRotation(-4.0F, 14.0F, 0.5F, 0.0F, 0.6545F, 0.0F));
-
-        PartDefinition right_arm = upper_body.addOrReplaceChild("right_arm", CubeListBuilder.create(), PartPose.offset(-5.0F, -10.0F, 0.0F));
-
-        PartDefinition righth_arm1 = right_arm.addOrReplaceChild("righth_arm1", CubeListBuilder.create().texOffs(44, 22).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(deformation)), PartPose.offset(0.0F, 0.0F, 0.0F));
-
-        PartDefinition doll = righth_arm1.addOrReplaceChild("doll", CubeListBuilder.create().texOffs(61, 69).addBox(-2.0F, -3.0F, -2.0F, 4.0F, 6.0F, 3.0F, new CubeDeformation(deformation - 0.25F)), PartPose.offsetAndRotation(0.0F, 9.0F, 0.0F, 1.5708F, 0.0F, -1.5708F));
-
-        PartDefinition doll_head = doll.addOrReplaceChild("doll_head", CubeListBuilder.create().texOffs(60, 60).addBox(-2.0F, -3.0F, -1.5F, 4.0F, 4.0F, 4.0F, new CubeDeformation(deformation - 0.5F)), PartPose.offset(0.0F, -3.0F, -1.0F));
-
-        PartDefinition doll1 = doll.addOrReplaceChild("doll1", CubeListBuilder.create().texOffs(80, 62).addBox(-0.5F, -3.0F, -0.5F, 1.0F, 3.0F, 0.0F, new CubeDeformation(deformation)), PartPose.offsetAndRotation(-1.5F, -2.0F, 0.0F, 0.0F, 0.0F, -1.2654F));
-
-        PartDefinition doll2 = doll.addOrReplaceChild("doll2", CubeListBuilder.create().texOffs(80, 62).addBox(-0.5F, -4.0F, -0.5F, 1.0F, 4.0F, 0.0F, new CubeDeformation(deformation)), PartPose.offsetAndRotation(-0.5F, 2.0F, 0.0F, 0.0F, 0.0F, -2.3562F));
-
-        PartDefinition doll3 = doll.addOrReplaceChild("doll3", CubeListBuilder.create().texOffs(80, 62).addBox(-0.5F, -3.0F, -0.5F, 1.0F, 3.0F, 0.0F, new CubeDeformation(deformation)), PartPose.offsetAndRotation(1.5F, -2.0F, -1.0F, 3.1416F, 0.0F, -1.8762F));
-
-        PartDefinition doll4 = doll.addOrReplaceChild("doll4", CubeListBuilder.create().texOffs(80, 62).addBox(-0.5F, -4.0F, -0.5F, 1.0F, 4.0F, 0.0F, new CubeDeformation(deformation)), PartPose.offsetAndRotation(0.5F, 2.0F, -1.0F, 3.1416F, 0.0F, -0.7854F));
-
-        PartDefinition right_shouldpad = right_arm.addOrReplaceChild("right_shouldpad", CubeListBuilder.create().texOffs(34, 38).mirror().addBox(-4.0F, -2.0F, -3.5F, 6.0F, 12.0F, 7.0F, new CubeDeformation(deformation + 0.35F)).mirror(false), PartPose.offset(0.0F, -1.0F, 0.0F));
-
-        PartDefinition left_arm = upper_body.addOrReplaceChild("left_arm", CubeListBuilder.create(), PartPose.offset(5.0F, -10.0F, 0.0F));
-
-        PartDefinition lefth_arm1 = left_arm.addOrReplaceChild("lefth_arm1", CubeListBuilder.create().texOffs(44, 22).mirror().addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(deformation)).mirror(false), PartPose.offset(0.0F, 0.0F, 0.0F));
-
-        PartDefinition knife = lefth_arm1.addOrReplaceChild("knife", CubeListBuilder.create().texOffs(34, 110).addBox(-3.0F, -12.0F, -0.5F, 15.0F, 15.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(74, 125).addBox(-3.0F, 2.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(82, 123).addBox(-3.0F, 1.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(78, 125).addBox(-2.0F, 0.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(78, 125).addBox(-1.0F, -1.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(78, 125).addBox(0.0F, -2.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(74, 125).addBox(1.0F, -3.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(74, 125).addBox(2.0F, -4.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(74, 125).addBox(0.0F, -4.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(82, 123).addBox(1.0F, -4.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(82, 123).addBox(-1.0F, -4.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(78, 123).addBox(-1.0F, -5.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(82, 123).addBox(-2.0F, 2.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(78, 125).addBox(-1.0F, 1.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(78, 125).addBox(0.0F, 0.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(78, 125).addBox(1.0F, -1.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(74, 125).addBox(2.0F, -2.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(82, 123).addBox(3.0F, -2.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(74, 125).addBox(3.0F, -1.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(82, 123).addBox(3.0F, 0.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(78, 123).addBox(4.0F, 0.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(70, 123).addBox(4.0F, -3.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(82, 121).addBox(5.0F, -4.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(82, 121).addBox(6.0F, -5.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(74, 123).addBox(6.0F, -6.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(74, 123).addBox(6.0F, -7.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(82, 121).addBox(7.0F, -8.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(82, 121).addBox(8.0F, -8.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(82, 121).addBox(9.0F, -8.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(82, 121).addBox(9.0F, -9.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(74, 123).addBox(9.0F, -10.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(82, 121).addBox(10.0F, -11.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(78, 121).addBox(11.0F, -12.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(78, 121).addBox(10.0F, -12.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(74, 121).addBox(9.0F, -12.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(74, 121).addBox(8.0F, -12.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(78, 121).addBox(8.0F, -11.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(78, 121).addBox(8.0F, -10.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(78, 121).addBox(7.0F, -9.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(74, 121).addBox(6.0F, -9.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(74, 121).addBox(5.0F, -9.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(78, 121).addBox(5.0F, -8.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(78, 121).addBox(5.0F, -7.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(78, 121).addBox(5.0F, -6.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(78, 121).addBox(4.0F, -5.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation))
-                .texOffs(74, 121).addBox(3.0F, -5.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)), PartPose.offsetAndRotation(0.0F, 10.0F, -0.5F, -1.5708F, -0.7854F, -1.5708F));
-
-        PartDefinition left_shouldpad = left_arm.addOrReplaceChild("left_shouldpad", CubeListBuilder.create().texOffs(34, 38).addBox(-2.0F, -2.0F, -3.5F, 6.0F, 12.0F, 7.0F, new CubeDeformation(deformation + 0.35F)), PartPose.offset(0.0F, -1.0F, 0.0F));
-
-        PartDefinition lower_body = witch.addOrReplaceChild("lower_body", CubeListBuilder.create().texOffs(28, 78).addBox(-4.0F, 0.5F, -3.0F, 8.0F, 14.0F, 6.0F, new CubeDeformation(deformation + 0.5F)), PartPose.offset(0.0F, -2.0F, 0.0F));
-
-        PartDefinition boby1_r1 = lower_body.addOrReplaceChild("boby1_r1", CubeListBuilder.create().texOffs(0, 76).addBox(-2.0F, -25.75F, -3.0F, 6.0F, 15.75F, 8.0F, new CubeDeformation(deformation - 0.5F)), PartPose.offsetAndRotation(-1.0F, 27.0F, 1.0F, 0.0F, 1.5708F, 0.0F));
-
-        PartDefinition boby1_r2 = lower_body.addOrReplaceChild("boby1_r2", CubeListBuilder.create().texOffs(0, 78).addBox(-4.0F, -25.0F, -3.0F, 8.0F, 15.75F, 6.0F, new CubeDeformation(deformation - 0.1F)), PartPose.offsetAndRotation(0.0F, 25.0F, 0.0F, 0.0F, 3.1416F, 0.0F));
-
+        PartDefinition witch = partdefinition.addOrReplaceChild("witch", CubeListBuilder.create(), PartPose.offset(0.0F, 8.0F, 0.0F));
+        PartDefinition upper_body = witch.addOrReplaceChild("upper_body", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
+        PartDefinition head = upper_body.addOrReplaceChild("head", CubeListBuilder.create().texOffs(74, 0).addBox(-4.0F, -10.0F, -4.0F, 8.0F, 10.0F, 8.0F, new CubeDeformation(deformation)).texOffs(32, 20).addBox(-4.5F, -10.5F, -4.5F, 9.0F, 11.0F, 9.0F, new CubeDeformation(deformation)), PartPose.offset(0.0F, -15.0F, 0.0F));
+        head.addOrReplaceChild("nose", CubeListBuilder.create().texOffs(18, 97).addBox(-1.0F, 0.0F, -2.0F, 2.0F, 4.0F, 2.0F, new CubeDeformation(deformation)), PartPose.offset(0.0F, -3.0F, -4.0F));
+        PartDefinition skull = head.addOrReplaceChild("skull", CubeListBuilder.create().texOffs(32, 0).addBox(-5.0F, -2.75F, -5.5F, 10.0F, 9.0F, 11.0F, new CubeDeformation(deformation)).texOffs(68, 43).addBox(-3.0F, 1.25F, -16.5F, 6.0F, 5.0F, 11.0F, new CubeDeformation(deformation)).texOffs(92, 77).addBox(-3.0F, 3.25F, -16.5F, 6.0F, 0.0F, 11.0F, new CubeDeformation(deformation)), PartPose.offset(0.0F, -9.0F, 0.0F));
+        skull.addOrReplaceChild("skull1", CubeListBuilder.create().texOffs(32, 40).addBox(-17.5F, -15.75F, 0.5F, 18.0F, 19.0F, 0.0F, new CubeDeformation(deformation)), PartPose.offsetAndRotation(-5.0F, 0.0F, 2.0F, 0.0F, 0.3927F, 0.1309F));
+        skull.addOrReplaceChild("skull2", CubeListBuilder.create().texOffs(32, 40).mirror().addBox(-0.5F, -15.75F, 0.5F, 18.0F, 19.0F, 0.0F, new CubeDeformation(deformation)).mirror(false), PartPose.offsetAndRotation(5.0F, 0.0F, 2.0F, 0.0F, -0.3927F, -0.1309F));
+        PartDefinition body = upper_body.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 97).addBox(-7.0F, 14.0F, -3.5F, 2.0F, 7.0F, 7.0F, new CubeDeformation(deformation + 0.2F)).texOffs(32, 96).addBox(-7.0F, 14.0F, -3.5F, 2.0F, 7.0F, 7.0F, new CubeDeformation(deformation)).texOffs(64, 59).addBox(-5.5F, -0.5F, -3.5F, 11.0F, 11.0F, 7.0F, new CubeDeformation(deformation + 0.25F)).texOffs(0, 36).addBox(-5.0F, 0.0F, -3.0F, 10.0F, 18.0F, 6.0F, new CubeDeformation(deformation + 0.25F)).texOffs(0, 60).addBox(-5.0F, 0.0F, -3.0F, 10.0F, 15.0F, 6.0F, new CubeDeformation(deformation)), PartPose.offset(0.0F, -15.0F, 0.0F));
+        PartDefinition cape = body.addOrReplaceChild("cape", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0873F, 0.0F, 0.0F));
+        PartDefinition cape1 = cape.addOrReplaceChild("cape1", CubeListBuilder.create().texOffs(0, 0).addBox(-5.0F, 0.0F, -3.0F, 10.0F, 30.0F, 6.0F, new CubeDeformation(deformation)), PartPose.offset(5.0F, 0.0F, 0.0F));
+        cape1.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(56, 96).addBox(0.0F, -10.0F, -3.0F, 0.0F, 14.0F, 3.0F, new CubeDeformation(deformation)), PartPose.offsetAndRotation(-5.0F, 15.0F, 3.0F, 0.0F, -2.3562F, 0.0F));
+        cape1.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(50, 96).addBox(0.0F, -10.0F, -3.0F, 0.0F, 23.0F, 3.0F, new CubeDeformation(deformation)), PartPose.offsetAndRotation(5.0F, 15.0F, 3.0F, 0.0F, -2.3562F, 0.0F));
+        cape1.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(50, 96).addBox(0.0F, -10.0F, -3.0F, 0.0F, 23.0F, 3.0F, new CubeDeformation(deformation)), PartPose.offsetAndRotation(5.0F, 15.0F, -3.0F, 0.0F, -0.7854F, 0.0F));
+        PartDefinition cape2 = cape.addOrReplaceChild("cape2", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-5.0F, 0.0F, -3.0F, 10.0F, 30.0F, 6.0F, new CubeDeformation(deformation)).mirror(false), PartPose.offset(-5.0F, 0.0F, 0.0F));
+        cape2.addOrReplaceChild("cube_r4", CubeListBuilder.create().texOffs(56, 96).addBox(0.0F, -10.0F, -3.0F, 0.0F, 14.0F, 3.0F, new CubeDeformation(deformation)), PartPose.offsetAndRotation(5.0F, 15.0F, 3.0F, 0.0F, 2.3562F, 0.0F));
+        cape2.addOrReplaceChild("cube_r5", CubeListBuilder.create().texOffs(50, 96).mirror().addBox(0.0F, -10.0F, -3.0F, 0.0F, 23.0F, 3.0F, new CubeDeformation(deformation)).mirror(false), PartPose.offsetAndRotation(-5.0F, 15.0F, 3.0F, 0.0F, 2.3562F, 0.0F));
+        cape2.addOrReplaceChild("cube_r6", CubeListBuilder.create().texOffs(50, 96).mirror().addBox(0.0F, -10.0F, -3.0F, 0.0F, 23.0F, 3.0F, new CubeDeformation(deformation)).mirror(false), PartPose.offsetAndRotation(-5.0F, 15.0F, -3.0F, 0.0F, 0.7854F, 0.0F));
+        PartDefinition right_arm = upper_body.addOrReplaceChild("right_arm", CubeListBuilder.create(), PartPose.offset(-6.0F, -13.0F, 0.0F));
+        right_arm.addOrReplaceChild("righth_arm1", CubeListBuilder.create().texOffs(96, 18).addBox(-7.0F, -29.0F, -3.5F, 4.0F, 15.0F, 5.0F, new CubeDeformation(deformation)).texOffs(32, 81).addBox(-7.5F, -21.5F, -4.25F, 5.0F, 6.0F, 9.0F, new CubeDeformation(deformation)), PartPose.offset(4.0F, 27.0F, 1.0F));
+        right_arm.addOrReplaceChild("right_shouldpad", CubeListBuilder.create().texOffs(92, 88).addBox(-10.25F, -27.25F, -4.0F, 8.0F, 6.0F, 6.0F, new CubeDeformation(deformation + 0.25F)), PartPose.offset(4.0F, 25.0F, 1.0F));
+        PartDefinition left_arm = upper_body.addOrReplaceChild("left_arm", CubeListBuilder.create(), PartPose.offset(6.0F, -13.0F, 0.0F));
+        left_arm.addOrReplaceChild("lefth_arm1", CubeListBuilder.create().texOffs(96, 18).mirror().addBox(-7.0F, -29.0F, -3.5F, 4.0F, 15.0F, 5.0F, new CubeDeformation(deformation)).mirror(false).texOffs(32, 81).mirror().addBox(-7.5F, -21.5F, -4.25F, 5.0F, 6.0F, 9.0F, new CubeDeformation(deformation)).mirror(false), PartPose.offset(6.0F, 27.0F, 1.0F));
+        left_arm.addOrReplaceChild("left_shouldpad", CubeListBuilder.create().texOffs(92, 88).mirror().addBox(-8.75F, -28.25F, -3.0F, 8.0F, 6.0F, 6.0F, new CubeDeformation(deformation + 0.25F)).mirror(false), PartPose.offset(7.0F, 26.0F, 0.0F));
+        left_arm.addOrReplaceChild("knife", CubeListBuilder.create().texOffs(0, 81).addBox(-3.0F, -12.0F, -0.5F, 15.0F, 15.0F, 1.0F, new CubeDeformation(deformation)).texOffs(74, 18).addBox(-3.0F, 2.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(78, 18).addBox(-3.0F, 1.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(60, 81).addBox(-2.0F, 0.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(60, 81).addBox(-1.0F, -1.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(60, 81).addBox(0.0F, -2.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(74, 18).addBox(1.0F, -3.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(74, 18).addBox(2.0F, -4.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(74, 18).addBox(0.0F, -4.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(78, 18).addBox(1.0F, -4.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(78, 18).addBox(-1.0F, -4.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(82, 18).addBox(-1.0F, -5.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(78, 18).addBox(-2.0F, 2.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(60, 81).addBox(-1.0F, 1.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(60, 81).addBox(0.0F, 0.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(60, 81).addBox(1.0F, -1.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(74, 18).addBox(2.0F, -2.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(78, 18).addBox(3.0F, -2.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(74, 18).addBox(3.0F, -1.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(78, 18).addBox(3.0F, 0.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(82, 18).addBox(4.0F, 0.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(60, 83).addBox(4.0F, -3.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(60, 85).addBox(5.0F, -4.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(60, 85).addBox(6.0F, -5.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(86, 18).addBox(6.0F, -6.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(86, 18).addBox(6.0F, -7.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(60, 85).addBox(7.0F, -8.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(60, 85).addBox(8.0F, -8.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(60, 85).addBox(9.0F, -8.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(60, 85).addBox(9.0F, -9.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(86, 18).addBox(9.0F, -10.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(60, 85).addBox(10.0F, -11.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(60, 87).addBox(11.0F, -12.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(60, 87).addBox(10.0F, -12.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(60, 89).addBox(9.0F, -12.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(60, 89).addBox(8.0F, -12.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(60, 87).addBox(8.0F, -11.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(60, 87).addBox(8.0F, -10.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(60, 87).addBox(7.0F, -9.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(60, 89).addBox(6.0F, -9.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(60, 89).addBox(5.0F, -9.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(60, 87).addBox(5.0F, -8.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(60, 87).addBox(5.0F, -7.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(60, 87).addBox(5.0F, -6.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(60, 87).addBox(4.0F, -5.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)).texOffs(60, 89).addBox(3.0F, -5.0F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(deformation)), PartPose.offsetAndRotation(0.0F, 13.0F, -0.5F, -1.5708F, -0.7854F, -1.5708F));
+        PartDefinition lower_body = witch.addOrReplaceChild("lower_body", CubeListBuilder.create().texOffs(32, 59).addBox(-5.0F, 0.0F, -3.0F, 10.0F, 16.0F, 6.0F, new CubeDeformation(deformation)), PartPose.offset(0.0F, 0.0F, 0.0F));
+        lower_body.addOrReplaceChild("boby1_r1", CubeListBuilder.create().texOffs(64, 77).addBox(-4.0F, -25.0F, -3.0F, 8.0F, 16.75F, 6.0F, new CubeDeformation(deformation + -0.1F)), PartPose.offsetAndRotation(0.0F, 25.0F, 0.0F, 0.0F, 3.1416F, 0.0F));
+        lower_body.addOrReplaceChild("boby1_r2", CubeListBuilder.create().texOffs(68, 20).addBox(-2.0F, -26.25F, -3.0F, 6.0F, 15.75F, 8.0F, new CubeDeformation(deformation + -0.5F)), PartPose.offsetAndRotation(-1.0F, 27.0F, 1.0F, 0.0F, 1.5708F, 0.0F));
         return LayerDefinition.create(meshdefinition, 128, 128);
     }
 
-    @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.root().getAllParts().forEach(ModelPart::resetPose);
         float f = 0.01F * (float)(entity.getId() % 10);
-        this.nose.xRot = Mth.sin((float)entity.tickCount * f) * 4.5F * ((float)Math.PI / 180F);
+        this.nose.xRot = Mth.sin((float)entity.tickCount * f) * 4.5F * 0.017453292F;
         this.nose.yRot = 0.0F;
-        this.nose.zRot = Mth.cos((float)entity.tickCount * f) * 2.5F * ((float)Math.PI / 180F);
+        this.nose.zRot = Mth.cos((float)entity.tickCount * f) * 2.5F * 0.017453292F;
         if (entity instanceof HeresiarchServant heresiarch) {
             this.animate(heresiarch.idleAnimationState, HeresiarchServantAnimations.IDLE, ageInTicks);
             this.animate(heresiarch.blessAnimationState, HeresiarchServantAnimations.BLESS, ageInTicks);
@@ -229,7 +102,6 @@ public class HeresiarchServantModel<T extends Entity> extends HierarchicalModel<
             this.animate(heresiarch.barrageAnimationState, HeresiarchServantAnimations.BARRAGE, ageInTicks);
             this.animate(heresiarch.meleeAnimationState, HeresiarchServantAnimations.MELEE, ageInTicks);
             this.animate(heresiarch.chantAnimationState, HeresiarchServantAnimations.CHANT, ageInTicks);
-
             if (heresiarch.isCurrentAnimation(HeresiarchServant.IDLE) || heresiarch.isCurrentAnimation(HeresiarchServant.INSPECT)) {
                 this.animateWalk(HeresiarchServantAnimations.WALK, limbSwing, limbSwingAmount, 2.5F, 20.0F);
             }
@@ -247,24 +119,23 @@ public class HeresiarchServantModel<T extends Entity> extends HierarchicalModel<
             } else {
                 this.animateHeadLookTarget(netHeadYaw, headPitch);
             }
-            this.doll.visible = false;
+
             this.knife.visible = heresiarch.isCurrentAnimation(HeresiarchServant.MELEE);
         } else {
             this.disableItems();
         }
+
     }
 
     public void disableItems() {
-        this.doll.visible = false;
         this.knife.visible = false;
     }
 
     private void animateHeadLookTarget(float netHeadYaw, float headPitch) {
-        this.head.yRot = netHeadYaw * ((float)Math.PI / 180F);
-        this.head.xRot = headPitch * ((float)Math.PI / 180F);
+        this.head.yRot = netHeadYaw * 0.017453292F;
+        this.head.xRot = headPitch * 0.017453292F;
     }
 
-    @Override
     public ModelPart root() {
         return this.root;
     }
@@ -273,7 +144,6 @@ public class HeresiarchServantModel<T extends Entity> extends HierarchicalModel<
         return p_191216_1_ == HumanoidArm.LEFT ? this.left_arm : this.right_arm;
     }
 
-    @Override
     public void translateToHand(HumanoidArm sideIn, PoseStack matrixStackIn) {
         this.witch.translateAndRotate(matrixStackIn);
         this.upper_body.translateAndRotate(matrixStackIn);

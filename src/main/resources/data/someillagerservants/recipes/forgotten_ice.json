@@ -1,0 +1,39 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "someillagerservants:cold_heart"
+  },
+  "craftType": "frost",
+  "soulCost": 50,
+  "duration": 20,
+  "ingredients": [
+    {
+      "item": "goety:chill_fabric"
+    },
+    {
+      "item": "minecraft:blue_ice"
+    },
+    {
+      "item": "minecraft:blue_ice"
+    },
+    {
+      "item": "goety:frost_nova_focus"
+    },
+    {
+      "item": "goety:soul_emerald"
+    },
+    {
+      "item": "goety:ectoplasm"
+    },
+    {
+      "item": "goety:ectoplasm"
+    },
+    {
+      "item": "minecraft:snow_block"
+    }
+  ],
+  "result": {
+    "item": "enigmaticaddons:forgotten_ice"
+  }
+}

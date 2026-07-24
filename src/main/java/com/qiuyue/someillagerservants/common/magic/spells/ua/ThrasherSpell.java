@@ -31,7 +31,7 @@ public class ThrasherSpell extends SummonSpell {
 
     @Override
     public int defaultSoulCost() {
-        return 64;
+        return com.qiuyue.someillagerservants.config.SpellConfig.ThrasherSoulCost.get();
     }
 
     @Override
@@ -47,7 +47,7 @@ public class ThrasherSpell extends SummonSpell {
 
     @Override
     public int defaultSpellCooldown() {
-        return 200;
+        return com.qiuyue.someillagerservants.config.SpellConfig.ThrasherCooldown.get();
     }
 
     @Override

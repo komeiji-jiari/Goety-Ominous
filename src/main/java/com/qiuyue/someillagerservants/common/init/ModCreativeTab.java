@@ -15,9 +15,10 @@ import com.qiuyue.someillagerservants.compat.mod.SavageRavageCompat;
 import com.qiuyue.someillagerservants.compat.mod.UpgradeAquaticCompat;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.*;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -40,32 +41,34 @@ public class ModCreativeTab {
                     .displayItems((parameters, output) -> {
                         List<Item> spawnEggs = new ArrayList<>();
                         List<Item> foci = new ArrayList<>();
+                        List<Item> weapons = new ArrayList<>();
                         List<Item> otherItems = new ArrayList<>();
 
-                        collectFrom(ModItems.ITEMS, spawnEggs, foci, otherItems);
+                        collectFrom(ModItems.ITEMS, spawnEggs, foci, weapons, otherItems);
 
                         if (IllageAndSpillageCompat.isIllageAndSpillageLoaded()) {
-                            collectFrom(IasItems.IAS_ITEMS, spawnEggs, foci, otherItems);
+                            collectFrom(IasItems.IAS_ITEMS, spawnEggs, foci, weapons, otherItems);
                         }
 
                         if (SavageRavageCompat.isSavageRavageLoaded()) {
-                            collectFrom(SarItems.SAR_ITEMS, spawnEggs, foci, otherItems);
+                            collectFrom(SarItems.SAR_ITEMS, spawnEggs, foci, weapons, otherItems);
                         }
 
                         if (UpgradeAquaticCompat.isUpgradeAquaticLoaded()) {
-                            collectFrom(UaItems.UA_ITEMS, spawnEggs, foci, otherItems);
+                            collectFrom(UaItems.UA_ITEMS, spawnEggs, foci, weapons, otherItems);
                         }
 
                         if (MutantMoreCompat.isMutantMoreLoaded()) {
-                            collectFrom(MmItems.MM_ITEMS, spawnEggs, foci, otherItems);
+                            collectFrom(MmItems.MM_ITEMS, spawnEggs, foci, weapons, otherItems);
                         }
 
                         if (LegendaryMonstersCompat.isLegendaryMonstersLoaded()) {
-                            collectFrom(LmItems.LM_ITEMS, spawnEggs, foci, otherItems);
+                            collectFrom(LmItems.LM_ITEMS, spawnEggs, foci, weapons, otherItems);
                         }
 
                         spawnEggs.forEach(output::accept);
                         foci.forEach(output::accept);
+                        weapons.forEach(output::accept);
                         otherItems.forEach(output::accept);
                     }).build());
 
@@ -73,7 +76,8 @@ public class ModCreativeTab {
      * 将注册表中的物品按类别归类
      */
     private static void collectFrom(DeferredRegister<Item> registry,
-                                     List<Item> spawnEggs, List<Item> foci, List<Item> other) {
+                                     List<Item> spawnEggs, List<Item> foci,
+                                     List<Item> weapons, List<Item> other) {
         registry.getEntries().forEach(entry -> {
             if (entry.isPresent()) {
                 Item item = entry.get();
@@ -81,10 +85,22 @@ public class ModCreativeTab {
                     spawnEggs.add(item);
                 } else if (item instanceof MagicFocus) {
                     foci.add(item);
+                } else if (isWeapon(item)) {
+                    weapons.add(item);
                 } else {
                     other.add(item);
                 }
             }
         });
+    }
+
+    private static boolean isWeapon(Item item) {
+        if (item instanceof TieredItem) return true;
+        if (item instanceof com.qiuyue.someillagerservants.common.items.BoneCudgelItem) return true;
+        if (item instanceof com.qiuyue.someillagerservants.common.items.FirebrandItem) return true;
+        if (item instanceof com.qiuyue.someillagerservants.common.items.CogCrossbowItem) return true;
+        if (item instanceof com.qiuyue.someillagerservants.common.items.PiglinPrideItem) return true;
+        if (item instanceof com.qiuyue.someillagerservants.common.items.PitchforkItem) return true;
+        return false;
     }
 }

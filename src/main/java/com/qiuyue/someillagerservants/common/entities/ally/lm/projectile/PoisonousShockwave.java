@@ -19,7 +19,6 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -51,8 +50,6 @@ PoisonousShockwave extends Entity implements ISpellEntity {
         super(p_i50170_1_, p_i50170_2_);
     }
     private BlockState blockState;
-
-
 
 
     public PoisonousShockwave(Level worldIn, double x, double y, double z, float p_i47276_8_, int p_i47276_9_, LivingEntity casterIn, int lifeTicks, float bbwidth, float damage) {
@@ -98,6 +95,11 @@ PoisonousShockwave extends Entity implements ISpellEntity {
     boolean healingOwner = true;
     public void setCanHealOwner(boolean input){
         healingOwner = input;
+    }
+
+    boolean useAcidVenom = false;
+    public void setUseAcidVenom(boolean input) {
+        this.useAcidVenom = input;
     }
 
     public EntityDimensions getDimensions(Pose pPose) {
@@ -259,26 +261,17 @@ PoisonousShockwave extends Entity implements ISpellEntity {
                     if (MobUtil.areAllies(livingentity, ImpactEntity)) {
                         return;
                     }
-                    if (this.getCaster() instanceof Player) {
-                        ImpactEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 80, 2));
-                        livingentity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 2));
+                    DamageSource damageSource = new DamageSource(this.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK), this.caster);
+                    ImpactEntity.hurt(damageSource, getDamage());
 
-                        DamageSource damageSource = new DamageSource(this.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK), this.caster);
-                        ImpactEntity.hurt(damageSource, getDamage());
+                    if (tickCount % 5 == 0 && healingOwner) {
+                        livingentity.heal(2);
+                    }
+
+                    if (useAcidVenom) {
+                        ImpactEntity.addEffect(new MobEffectInstance(com.Polarice3.Goety.common.effects.GoetyEffects.ACID_VENOM.get(), 80, 2));
                     } else {
-
-                        DamageSource damageSource = new DamageSource(this.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK), this.caster);
-                        ImpactEntity.hurt(damageSource, getDamage());
-                        if (tickCount %5==0 && healingOwner) {
-                            livingentity.heal(2);
-                        }
-                        if (livingentity instanceof com.qiuyue.someillagerservants.common.entities.ally.lm.OvergrownColossusServant colossus
-                                && colossus.getTrueOwner() != null
-                                && com.Polarice3.Goety.utils.CuriosFinder.hasWildRobe(colossus.getTrueOwner())) {
-                            ImpactEntity.addEffect(new MobEffectInstance(com.Polarice3.Goety.common.effects.GoetyEffects.ACID_VENOM.get(), 80, 2));
-                        } else {
-                            ImpactEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 80, 2));
-                        }
+                        ImpactEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 80, 2));
                     }
                 }
             }

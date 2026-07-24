@@ -44,6 +44,8 @@ public class MmItems {
             "hog_charge_focus",
             () -> new MagicFocus(new HogChargeSpell()));
 
+    public static final RegistryObject<WitherScytheItem> WITHER_SCYTHE = MM_ITEMS.register(
+            "wither_scythe", WitherScytheItem::new);
 
 
 

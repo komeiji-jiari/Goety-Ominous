@@ -1,0 +1,19 @@
+{
+  "name": "Redstone Focus",
+  "icon": "someillagerservants:redstone_focus",
+  "category": "goety:focuses/geomancy",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "With this spell, you summon rolling Redstone Cubes from the earth to overwhelm your enemies, as if you yourself were the embodiment of war, just like the ancient war monstrosities of village legends."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "someillagerservants:redstone_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Casting this spell with a Geo Staff summons more Redstone Cubes. If you are wearing Geo Robe, the Redstone Cubes you summon will gain Iron Hide effect."
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "name": "Storm Necromancer",
+  "icon": "goety:thunderstorm_focus",
+  "category": "goety:world/bestiary",
+  "advancement": "goety:goety/unlock_necromancer",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You have heard rumors of a forgotten kingdom, where a necromancer once wielded storm power that made even his own kind tremble. Though his power no longer required the weather to summon clouds and lightning, he was unfortunately betrayed when the jealous mages banded together to siege him, even such might was overwhelmed by the treacherous usurpers' schemes... Some of the necromancers who claimed fragments of his power still wander the high peaks of the Overworld after the fall of that nameless kingdom, seeking to master the secrets of the storm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:storm_necromancer",
+      "text": "Some say that a significant portion of the thunderstorms that occasionally occur in the Overworld originate from their power."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "You realize that you may be able to call them with some signal of the storm. However, they do not often answer such invitations—unless you stand upon the mountaintops at their level, and the weather itself is a thunderstorm."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "someillagerservants:broken_storm_crown",
+      "text": "After defeating these Storm Necromancers, you discover that their shattered crowns hold far greater magical power than the version you possess, and can be used to craft certain magical items, such as the Stormlander."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:stormlander"
+    }
+  ]
+}

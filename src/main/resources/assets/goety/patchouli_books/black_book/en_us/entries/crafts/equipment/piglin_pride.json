@@ -1,0 +1,25 @@
+{
+  "name": "Pride of the Piglins",
+  "icon": "someillagerservants:piglin_pride",
+  "category": "goety:crafts/equipment",
+  "advancement": "someillagerservants:someillagerservants/read_bastion_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "In the past, only the most experienced hunters among the Piglins were qualified to wield this brutal weapon. It is said that skilled Piglins could even bring down the largest Ghasts with this crossbow... After deciphering the scroll and actually crafting the weapon, you find that it indeed lives up to such a fearsome reputation."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:piglin_pride"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "This upgraded version of the Cog Crossbow fires ammunition with greater velocity, resulting in increased lethality. Additionally, it possesses the same enchantability as gold-tier items."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Can be repaired with Gold Ingots on an Anvil."
+    }
+  ]
+}

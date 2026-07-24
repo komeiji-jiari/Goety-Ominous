@@ -1,0 +1,17 @@
+{
+  "name": "Wither Scythe",
+  "icon": "someillagerservants:wither_scythe",
+  "category": "goety:mmcompat",
+  "advancement": "goety:goety/kill_a_apostle",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "By infusing the withering essence of the Mutant Wither Skeleton into a scythe, you have forged this dread Wither Scythe. Not only can it launch Wither Slashes like the Mutant Wither Skeleton, striking distant targets and draining their life to restore your health, but it also prevents hit creatures from regenerating. It repairs itself by absorbing its wielder's Soul Energy."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:wither_scythe"
+    }
+  ]
+}

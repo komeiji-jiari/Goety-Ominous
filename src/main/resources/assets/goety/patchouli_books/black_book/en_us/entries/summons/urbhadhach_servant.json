@@ -1,0 +1,24 @@
+{
+  "name": "Urbhadhach Servant",
+  "icon": "someillagerservants:cold_heart",
+  "category": "goety:summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Even these greedy and dark undead can serve as servants to a dark magician. You can use this still-beating heart to summon a loyal Urbhadhach. Although they will no longer actively lure young creatures, it is still best to keep them away from your farms or villages."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:urbhadhach_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:urbhadhach_servant",
+      "text": "Still hostile towards young creatures."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Right-click with an empty hand to ride your Urbhadhach servant. If you wear Frost Robes or Necro Robes, these undead gain passive natural healing. Additionally, fresh meat can be used to restore their health."
+    }
+  ]
+}

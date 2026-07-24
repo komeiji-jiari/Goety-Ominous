@@ -20,7 +20,7 @@ public class ConfusionBoltSpell extends Spell {
 
     @Override
     public int defaultSoulCost() {
-        return 4;
+        return com.qiuyue.someillagerservants.config.SpellConfig.ConfusionBoltSoulCost.get();
     }
 
     @Override
@@ -35,7 +35,7 @@ public class ConfusionBoltSpell extends Spell {
 
     @Override
     public int defaultSpellCooldown() {
-        return 60;
+        return com.qiuyue.someillagerservants.config.SpellConfig.ConfusionBoltCooldown.get();
     }
 
     @Override

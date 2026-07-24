@@ -1,0 +1,25 @@
+{
+  "name": "Cog Crossbow",
+  "icon": "someillagerservants:cog_crossbow",
+  "category": "goety:crafts/equipment",
+  "advancement": "someillagerservants:someillagerservants/read_bastion_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Bastion Scroll records some lost weapons. You decide to attempt recreating the crossbow once used by ancient hordes using the materials at hand. The finished product proves to be far more practical than the crude technology of the Piglins."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:cog_crossbow"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The Cog Crossbow is a clockwork ranged weapon with automatic loading. When the player does not manually load it, the crossbow automatically loads 5 arrows. Continuous right-clicking fires these 5 arrows in rapid succession."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Can be repaired with Gold Ingots on an Anvil."
+    }
+  ]
+}

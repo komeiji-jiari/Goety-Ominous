@@ -1,0 +1,25 @@
+{
+  "name": "烙火",
+  "icon": "someillagerservants:firebrand",
+  "category": "goety:crafts/equipment",
+  "advancement": "someillagerservants:someillagerservants/read_bastion_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你尝试用猪灵的古老技艺为狂暴之斧淬火，得到了一把燃烧着火焰的斧头，你觉得这种风格很适合你这个下界魔法师。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:firebrand"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "拥有狂暴之斧的一切功能以外，这把斧头可以对生物造成燃烧效果，并且对正在燃烧的生物造成额外的伤害。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "可在铁砧上使用诅咒金属锭进行修复。"
+    }
+  ]
+}

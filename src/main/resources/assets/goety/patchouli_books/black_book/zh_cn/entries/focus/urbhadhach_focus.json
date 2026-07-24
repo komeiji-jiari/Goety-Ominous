@@ -1,0 +1,20 @@
+{
+  "name": "霜狩聚晶",
+  "icon": "someillagerservants:urbhadhach_focus",
+  "category": "goety:focuses/necromancy",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "这些可怕的亡灵熊不仅渴望吞噬孩童的血肉，也能用强大的蛮力和刺骨的冰霜粉碎你的敌人。当然，要创建这么一个黑暗的咒语需要准备霜猎兽仆从最爱的小村民作为祭品。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:urbhadhach_focus",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "使用死灵魔杖施法允许你召唤更多霜猎兽仆从。无名魔杖能够将召唤的霜猎兽数量固定为3头。"
+    }
+  ]
+}

@@ -69,8 +69,6 @@ public class SunkenSoulJar extends SoulJar {
         return super.interactLivingEntity(stack, player, target, hand);
     }
 
-
-
     public static boolean isSunken(ItemStack stack) {
         CompoundTag compoundtag = stack.getTag();
         return stack.getItem() instanceof SunkenSoulJar && compoundtag != null && compoundtag.contains(TAG_SUNKEN);

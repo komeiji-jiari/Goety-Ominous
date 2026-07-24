@@ -1,0 +1,11 @@
+{
+  "loader": "forge:separate_transforms",
+  "gui_light": "front",
+  "base": {
+    "parent": "someillagerservants:item/pitchfork_handheld"
+  },
+  "perspectives": {
+    "gui": { "parent": "someillagerservants:item/pitchfork_gui" },
+    "fixed": { "parent": "someillagerservants:item/pitchfork_gui" }
+  }
+}

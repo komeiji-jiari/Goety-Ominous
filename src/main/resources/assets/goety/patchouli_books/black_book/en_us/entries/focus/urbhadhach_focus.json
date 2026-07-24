@@ -1,0 +1,20 @@
+{
+  "name": "Urbhadhach Focus",
+  "icon": "someillagerservants:urbhadhach_focus",
+  "category": "goety:focuses/necromancy",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "These dread undead bears hunger not only for the flesh of children, but can also crush your enemies with brute force and biting frost. Naturally, creating such a dark spell requires a baby villager offering—the Urbhadhach's favorite prey."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:urbhadhach_focus",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Casting this spell with a Necro Staff allows you to summon more Urbhadhach servants. The Nameless Staff fixes the number of summoned Urbhadhach to 3."
+    }
+  ]
+}

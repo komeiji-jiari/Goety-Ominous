@@ -1,0 +1,30 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:convert_complete_tamed",
+  "activation_item": {
+    "item": "goety:mystic_core"
+  },
+  "craftType": "adept_nether",
+  "entity_to_convert": {
+    "tag": "goety:fungus_thrower_convert",
+    "display_name": "entity.someillagerservants.piglin_servant"
+  },
+  "entity_to_convert_into": "someillagerservants:fungus_thrower",
+  "soulCost": 1,
+  "duration": 10,
+  "research": "bastion",
+  "ingredients": [
+    {
+      "item": "someillagerservants:acid_fungus"
+    },
+    {
+      "tag": "forge:ingots/gold"
+    },
+    {
+      "item": "someillagerservants:fungus_pack"
+    }
+  ],
+  "result": {
+    "item": "goety:jei_dummy/none"
+  }
+}

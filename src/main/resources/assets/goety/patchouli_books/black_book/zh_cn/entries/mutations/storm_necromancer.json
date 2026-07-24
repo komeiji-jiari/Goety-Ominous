@@ -1,0 +1,33 @@
+{
+  "name": "风暴死灵法师",
+  "icon": "goety:thunderstorm_focus",
+  "category": "goety:mutations",
+  "advancement": "goety:goety/unlock_necromancer",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你发现了一种掌握着风暴之力的死灵法师变体，他们经历了闪电的洗礼不会像那些刚被劈死的亡灵那样因为触电而颤抖，还能够驱使来自高天之上的雷电劈向大地。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:convert_rattled_to_storm_necromancer"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "不仅拥有着驱使风暴的力量，他们也能够以魔杖唤起忠诚的仆从。使用特定的聚晶右键点击，能让他们召唤更多类型的仆从。空手右键点击他们，会让死灵法师为你召唤仆从。他们的治疗方式和普通骷髅仆从相同。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:storm_necromancer_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "这些风暴法师精通如何呼风唤雨。如果你手持避雷针右键他们，可以让他们为你召唤一场风暴，无需你在忙碌之余亲手分出心神操作那低效的仪式。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "someillagerservants:storm_soul_jar",
+      "text": "如果一个风暴死灵法师死亡，而你正好有一个$(l:crafts/empty_soul_jar)空灵魂罐$()将会使他们的灵魂填充进去，当在响骷身上右键点击这个魂罐时，将会用该响骷作为新的躯体来复活死灵法师。"
+    }
+  ]
+}

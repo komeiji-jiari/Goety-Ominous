@@ -1,0 +1,28 @@
+{
+  "name": "坩埚的更多用处",
+  "icon": "goety:witch_cauldron",
+  "category": "goety:brewing",
+  "sortnum": 8,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "一个真正的女巫能用她们的坩埚满足所有需要！祖奶奶芭芭雅加给每个女巫使用坩埚前定下的第一条规矩，记得要时刻记在心里！当然也不忘了你亲爱的ToeFungus奶奶亲切的笑脸和指导！其他女巫可没有奶奶教得好哈哈哈哈！"
+    },
+    {
+      "type": "goety:cauldron",
+      "recipe": "someillagerservants:cauldron/nether_wart_potion"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "很适合猪灵宝宝体质的药水！还能防止他们在下界之外的地方僵尸化！至于该怎么搞头听你话的猪灵过来，那就是你自己的事了哈哈哈！"
+    },
+    {
+      "type": "goety:cauldron",
+      "recipe": "someillagerservants:cauldron/burning_potion"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "可是奶奶想看着你的脸被风光火葬！烧吧孩子烧吧！这里可没人罚奶奶违规用火哈哈哈！"
+    }
+  ]
+}

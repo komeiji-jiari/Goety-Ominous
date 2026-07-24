@@ -59,6 +59,356 @@
       "someillagerservants:acolyte/death2"
     ]
   },
+  "cog_crossbow_shoot_1": {
+    "subtitle": "subtitles.someillagerservants.cog_crossbow.shoot",
+    "sounds": [
+      "someillagerservants:cog_crossbow/shoot1"
+    ]
+  },
+  "cog_crossbow_shoot_2": {
+    "subtitle": "subtitles.someillagerservants.cog_crossbow.shoot",
+    "sounds": [
+      "someillagerservants:cog_crossbow/shoot2"
+    ]
+  },
+  "cog_crossbow_shoot_3": {
+    "subtitle": "subtitles.someillagerservants.cog_crossbow.shoot",
+    "sounds": [
+      "someillagerservants:cog_crossbow/shoot3"
+    ]
+  },
+  "piglin_pride_shoot_1": {
+    "subtitle": "subtitles.someillagerservants.piglin_pride.shoot",
+    "sounds": [
+      {"name": "someillagerservants:piglin_pride/shoot1", "volume": 0.6}
+    ]
+  },
+  "piglin_pride_shoot_2": {
+    "subtitle": "subtitles.someillagerservants.piglin_pride.shoot",
+    "sounds": [
+      {"name": "someillagerservants:piglin_pride/shoot2", "volume": 0.6}
+    ]
+  },
+  "piglin_pride_shoot_3": {
+    "subtitle": "subtitles.someillagerservants.piglin_pride.shoot",
+    "sounds": [
+      {"name": "someillagerservants:piglin_pride/shoot3", "volume": 0.6}
+    ]
+  },
+  "bone_cudgel_1": {
+    "subtitle": "subtitles.someillagerservants.bone_cudgel.hit",
+    "sounds": [
+      "someillagerservants:bone_cudgel/bone_cudgel_1"
+    ]
+  },
+  "bone_cudgel_2": {
+    "subtitle": "subtitles.someillagerservants.bone_cudgel.hit",
+    "sounds": [
+      "someillagerservants:bone_cudgel/bone_cudgel_2"
+    ]
+  },
+  "bone_cudgel_3": {
+    "subtitle": "subtitles.someillagerservants.bone_cudgel.hit",
+    "sounds": [
+      "someillagerservants:bone_cudgel/bone_cudgel_3"
+    ]
+  },
+  "fungus_thrower_idle_1": {
+    "subtitle": "subtitles.someillagerservants.fungus_thrower.idle",
+    "sounds": [
+      "someillagerservants:fungus_thrower/idle1"
+    ]
+  },
+  "fungus_thrower_idle_2": {
+    "subtitle": "subtitles.someillagerservants.fungus_thrower.idle",
+    "sounds": [
+      "someillagerservants:fungus_thrower/idle2"
+    ]
+  },
+  "fungus_thrower_idle_3": {
+    "subtitle": "subtitles.someillagerservants.fungus_thrower.idle",
+    "sounds": [
+      "someillagerservants:fungus_thrower/idle3"
+    ]
+  },
+  "fungus_thrower_idle_4": {
+    "subtitle": "subtitles.someillagerservants.fungus_thrower.idle",
+    "sounds": [
+      "someillagerservants:fungus_thrower/idle4"
+    ]
+  },
+  "fungus_thrower_hurt_1": {
+    "subtitle": "subtitles.someillagerservants.fungus_thrower.hurt",
+    "sounds": [
+      "someillagerservants:fungus_thrower/hurt1"
+    ]
+  },
+  "fungus_thrower_hurt_2": {
+    "subtitle": "subtitles.someillagerservants.fungus_thrower.hurt",
+    "sounds": [
+      "someillagerservants:fungus_thrower/hurt2"
+    ]
+  },
+  "fungus_thrower_hurt_3": {
+    "subtitle": "subtitles.someillagerservants.fungus_thrower.hurt",
+    "sounds": [
+      "someillagerservants:fungus_thrower/hurt3"
+    ]
+  },
+  "fungus_thrower_death_1": {
+    "subtitle": "subtitles.someillagerservants.fungus_thrower.death",
+    "sounds": [
+      "someillagerservants:fungus_thrower/death1"
+    ]
+  },
+  "fungus_thrower_death_2": {
+    "subtitle": "subtitles.someillagerservants.fungus_thrower.death",
+    "sounds": [
+      "someillagerservants:fungus_thrower/death2"
+    ]
+  },
+  "fungus_thrower_death_3": {
+    "subtitle": "subtitles.someillagerservants.fungus_thrower.death",
+    "sounds": [
+      "someillagerservants:fungus_thrower/death3"
+    ]
+  },
+  "fungus_thrower_throw_1": {
+    "subtitle": "subtitles.someillagerservants.fungus_thrower.throw",
+    "sounds": [
+      "someillagerservants:fungus_thrower/throw1"
+    ]
+  },
+  "fungus_thrower_throw_2": {
+    "subtitle": "subtitles.someillagerservants.fungus_thrower.throw",
+    "sounds": [
+      "someillagerservants:fungus_thrower/throw2"
+    ]
+  },
+  "fungus_thrower_throw_3": {
+    "subtitle": "subtitles.someillagerservants.fungus_thrower.throw",
+    "sounds": [
+      "someillagerservants:fungus_thrower/throw3"
+    ]
+  },
+  "fanatic_ambient_1": {
+    "subtitle": "subtitles.someillagerservants.fanatic.ambient",
+    "sounds": [
+      "someillagerservants:fanatic/fanatic_ambient_1"
+    ]
+  },
+  "fanatic_ambient_2": {
+    "subtitle": "subtitles.someillagerservants.fanatic.ambient",
+    "sounds": [
+      "someillagerservants:fanatic/fanatic_ambient_2"
+    ]
+  },
+  "fanatic_ambient_3": {
+    "subtitle": "subtitles.someillagerservants.fanatic.ambient",
+    "sounds": [
+      "someillagerservants:fanatic/fanatic_ambient_3"
+    ]
+  },
+  "fanatic_ambient_4": {
+    "subtitle": "subtitles.someillagerservants.fanatic.ambient",
+    "sounds": [
+      "someillagerservants:fanatic/fanatic_ambient_4"
+    ]
+  },
+  "fanatic_ambient_5": {
+    "subtitle": "subtitles.someillagerservants.fanatic.ambient",
+    "sounds": [
+      "someillagerservants:fanatic/fanatic_ambient_5"
+    ]
+  },
+  "fanatic_ambient_6": {
+    "subtitle": "subtitles.someillagerservants.fanatic.ambient",
+    "sounds": [
+      "someillagerservants:fanatic/fanatic_ambient_6"
+    ]
+  },
+  "fanatic_hurt_1": {
+    "subtitle": "subtitles.someillagerservants.fanatic.hurt",
+    "sounds": [
+      "someillagerservants:fanatic/fanatic_hurt_1"
+    ]
+  },
+  "fanatic_hurt_2": {
+    "subtitle": "subtitles.someillagerservants.fanatic.hurt",
+    "sounds": [
+      "someillagerservants:fanatic/fanatic_hurt_2"
+    ]
+  },
+  "fanatic_hurt_3": {
+    "subtitle": "subtitles.someillagerservants.fanatic.hurt",
+    "sounds": [
+      "someillagerservants:fanatic/fanatic_hurt_3"
+    ]
+  },
+  "fanatic_hurt_4": {
+    "subtitle": "subtitles.someillagerservants.fanatic.hurt",
+    "sounds": [
+      "someillagerservants:fanatic/fanatic_hurt_4"
+    ]
+  },
+  "fanatic_hurt_5": {
+    "subtitle": "subtitles.someillagerservants.fanatic.hurt",
+    "sounds": [
+      "someillagerservants:fanatic/fanatic_hurt_5"
+    ]
+  },
+  "fanatic_death_1": {
+    "subtitle": "subtitles.someillagerservants.fanatic.death",
+    "sounds": [
+      "someillagerservants:fanatic/fanatic_death_1"
+    ]
+  },
+  "fanatic_death_2": {
+    "subtitle": "subtitles.someillagerservants.fanatic.death",
+    "sounds": [
+      "someillagerservants:fanatic/fanatic_death_2"
+    ]
+  },
+  "fanatic_death_3": {
+    "subtitle": "subtitles.someillagerservants.fanatic.death",
+    "sounds": [
+      "someillagerservants:fanatic/fanatic_death_3"
+    ]
+  },
+  "fanatic_death_4": {
+    "subtitle": "subtitles.someillagerservants.fanatic.death",
+    "sounds": [
+      "someillagerservants:fanatic/fanatic_death_4"
+    ]
+  },
+  "fanatic_celebrate_1": {
+    "subtitle": "subtitles.someillagerservants.fanatic.celebrate",
+    "sounds": [
+      "someillagerservants:fanatic/fanatic_celebrate_1"
+    ]
+  },
+  "fanatic_celebrate_2": {
+    "subtitle": "subtitles.someillagerservants.fanatic.celebrate",
+    "sounds": [
+      "someillagerservants:fanatic/fanatic_celebrate_2"
+    ]
+  },
+  "fanatic_celebrate_3": {
+    "subtitle": "subtitles.someillagerservants.fanatic.celebrate",
+    "sounds": [
+      "someillagerservants:fanatic/fanatic_celebrate_3"
+    ]
+  },
+  "fanatic_celebrate_4": {
+    "subtitle": "subtitles.someillagerservants.fanatic.celebrate",
+    "sounds": [
+      "someillagerservants:fanatic/fanatic_celebrate_4"
+    ]
+  },
+  "thug_ambient": {
+    "subtitle": "subtitles.someillagerservants.thug.ambient",
+    "sounds": [
+      "someillagerservants:thug/idle1",
+      "someillagerservants:thug/idle2",
+      "someillagerservants:thug/idle3",
+      "someillagerservants:thug/idle4"
+    ]
+  },
+  "thug_hurt": {
+    "subtitle": "subtitles.someillagerservants.thug.hurt",
+    "sounds": [
+      "someillagerservants:thug/hurt1",
+      "someillagerservants:thug/hurt2",
+      "someillagerservants:thug/hurt3"
+    ]
+  },
+  "thug_death": {
+    "subtitle": "subtitles.someillagerservants.thug.death",
+    "sounds": [
+      "someillagerservants:thug/death1",
+      "someillagerservants:thug/death2",
+      "someillagerservants:thug/death3"
+    ]
+  },
+  "thug_step": {
+    "subtitle": "subtitles.someillagerservants.thug.step",
+    "sounds": [
+      "mob/irongolem/walk1",
+      "mob/irongolem/walk2",
+      "mob/irongolem/walk3",
+      "mob/irongolem/walk4"
+    ]
+  },
+  "thug_celebrate": {
+    "subtitle": "subtitles.someillagerservants.thug.celebrate",
+    "sounds": [
+      "someillagerservants:thug/idle1"
+    ]
+  },
+  "urbhadhach_cry": {
+    "subtitle": "subtitles.someillagerservants.urbhadhach.cry",
+    "sounds": [
+      "someillagerservants:urbhadhach/cry"
+    ]
+  },
+  "urbhadhach_ambient": {
+    "subtitle": "subtitles.someillagerservants.urbhadhach.ambient",
+    "sounds": [
+      {"name": "someillagerservants:urbhadhach/ambient1", "volume": 0.8},
+      {"name": "someillagerservants:urbhadhach/ambient2", "volume": 0.8},
+      {"name": "someillagerservants:urbhadhach/ambient3", "volume": 0.8}
+    ]
+  },
+  "urbhadhach_hurt": {
+    "subtitle": "subtitles.someillagerservants.urbhadhach.hurt",
+    "sounds": [
+      {"name": "someillagerservants:urbhadhach/hurt1", "volume": 0.8},
+      {"name": "someillagerservants:urbhadhach/hurt2", "volume": 0.8},
+      {"name": "someillagerservants:urbhadhach/hurt3", "volume": 0.8}
+    ]
+  },
+  "urbhadhach_roar": {
+    "subtitle": "subtitles.someillagerservants.urbhadhach.roar",
+    "sounds": [
+      {"name": "someillagerservants:urbhadhach/roar1", "volume": 0.8},
+      {"name": "someillagerservants:urbhadhach/roar2", "volume": 0.8},
+      {"name": "someillagerservants:urbhadhach/roar3", "volume": 0.8},
+      {"name": "someillagerservants:urbhadhach/roar4", "volume": 0.8},
+      {"name": "someillagerservants:urbhadhach/roar5", "volume": 0.8}
+    ]
+  },
+  "urbhadhach_strong_roar": {
+    "subtitle": "subtitles.someillagerservants.urbhadhach.strong_roar",
+    "sounds": [
+      {"name": "mob/polarbear/warning1", "pitch": 0.05},
+      {"name": "mob/polarbear/warning2", "pitch": 0.05},
+      {"name": "mob/polarbear/warning3", "pitch": 0.05}
+    ]
+  },
+  "urbhadhach_attack": {
+    "subtitle": "subtitles.someillagerservants.urbhadhach.attack",
+    "sounds": [
+      {"name": "someillagerservants:urbhadhach/attack1", "volume": 0.8},
+      {"name": "someillagerservants:urbhadhach/attack2", "volume": 0.8},
+      {"name": "someillagerservants:urbhadhach/attack3", "volume": 0.8},
+      {"name": "someillagerservants:urbhadhach/attack4", "volume": 0.8}
+    ]
+  },
+  "urbhadhach_step": {
+    "subtitle": "subtitles.someillagerservants.urbhadhach.step",
+    "sounds": [
+      "mob/polarbear/step1",
+      "mob/polarbear/step2",
+      "mob/polarbear/step3",
+      "mob/polarbear/step4"
+    ]
+  },
+  "urbhadhach_death": {
+    "subtitle": "subtitles.someillagerservants.urbhadhach.death",
+    "sounds": [
+      {"name": "someillagerservants:urbhadhach/death", "volume": 0.8}
+    ]
+  },
   "lm_music_disc": {
     "sounds": [
       {

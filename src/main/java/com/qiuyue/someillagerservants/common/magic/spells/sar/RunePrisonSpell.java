@@ -28,17 +28,17 @@ public class RunePrisonSpell extends Spell {
 
     @Override
     public int defaultSoulCost() {
-        return 2;
+        return com.qiuyue.someillagerservants.config.SpellConfig.RunePrisonSoulCost.get();
     }
 
     @Override
     public int defaultCastDuration() {
-        return 60;
+        return 10;
     }
 
     @Override
     public int defaultSpellCooldown() {
-        return 80;
+        return com.qiuyue.someillagerservants.config.SpellConfig.RunePrisonCooldown.get();
     }
 
     @Override
@@ -103,7 +103,7 @@ public class RunePrisonSpell extends Spell {
         this.playSound(worldIn, caster, 1.0F, 1.0F);
 
         if (staff.is(ModItems.OMINOUS_STAFF.get())) {
-            float damage = 5.0F + potency;
+            float damage = com.qiuyue.someillagerservants.config.SpellConfig.RunePrisonDamage.get().floatValue() + potency;
             for (LivingEntity entity : worldIn.getEntitiesOfClass(LivingEntity.class, runePrison.getBoundingBox())) {
                 if (entity == caster) {
                     continue;

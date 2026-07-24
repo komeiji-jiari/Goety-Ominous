@@ -1,0 +1,6 @@
+{
+  "parent": "someillagerservants:item/piglin_pride",
+  "textures": {
+    "layer0": "someillagerservants:item/piglin_pride_firework"
+  }
+}

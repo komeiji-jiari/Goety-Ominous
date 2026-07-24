@@ -1,0 +1,22 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:summon",
+  "activation_item": {
+    "item": "minecraft:emerald_block"
+  },
+  "craftType": "magic",
+  "entity_to_summon": "minecraft:wandering_trader",
+  "soulCost": 1,
+  "duration": 5,
+  "ingredients": [
+    {
+      "item": "goety:magic_fabric"
+    },
+    {
+      "item": "minecraft:black_dye"
+    }
+  ],
+  "result": {
+    "item": "goety:jei_dummy/none"
+  }
+}

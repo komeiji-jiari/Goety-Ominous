@@ -36,6 +36,8 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import com.qiuyue.someillagerservants.config.MobsConfig;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -328,6 +330,12 @@ public class HeresiarchServant extends CultistServant {
         return this.goetyAwakenMonolith.position();
     }
 
+    private int countServants(Player player, Class<? extends HeresiarchServant> servantClass) {
+        return (int) player.level().getEntitiesOfClass(servantClass,
+                        player.getBoundingBox().inflate(64.0D))
+                .stream().filter(s -> s.getTrueOwner() == player).count();
+    }
+
     @Override
     public void setCommandPosEntityOrder(LivingEntity living) {
         if (living instanceof AbstractObsidianMonolith monolith1 && MobUtil.areAllies(this, monolith1)) {
@@ -482,11 +490,16 @@ public class HeresiarchServant extends CultistServant {
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         this.populateDefaultEquipmentSlots(worldIn.getRandom(), difficultyIn);
         this.populateDefaultEquipmentEnchantments(worldIn.getRandom(), difficultyIn);
+        if (reason == MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player) {
+            if (countServants(player, this.getClass()) >= MobsConfig.HeresiarchServantLimit.get()) {
+                return null;
+            }
+        }
         if (!this.hasCustomName()) {
-            int random = this.random.nextInt(4);
-            int random2 = this.random.nextInt(12);
-            Component component = Component.translatable("title.goety.heresiarch." + random);
-            Component component1 = Component.translatable("name.goety.heresiarch." + random2);
+            int random = this.random.nextInt(25);
+            int random2 = this.random.nextInt(25);
+            Component component = Component.translatable("title.someillagerservants.heresiarch_servant." + random);
+            Component component1 = Component.translatable("name.someillagerservants.heresiarch_servant." + random2);
             this.setCustomName(Component.translatable(component.getString() + component1.getString()));
         }
         this.setOutfitType(this.random.nextInt(this.OutfitTypeNumber()));
@@ -498,10 +511,10 @@ public class HeresiarchServant extends CultistServant {
 
     private void initializeDefaultName() {
         if (!this.hasCustomName()) {
-            int random = this.random.nextInt(4);
-            int random2 = this.random.nextInt(12);
-            Component component = Component.translatable("title.goety.heresiarch." + random);
-            Component component1 = Component.translatable("name.goety.heresiarch." + random2);
+            int random = this.random.nextInt(25);
+            int random2 = this.random.nextInt(25);
+            Component component = Component.translatable("title.someillagerservants.heresiarch_servant." + random);
+            Component component1 = Component.translatable("name.someillagerservants.heresiarch_servant." + random2);
             this.setCustomName(Component.translatable(component.getString() + component1.getString()));
         }
         if (this.getOutfitType() == 0 && this.random.nextInt(this.OutfitTypeNumber()) > 0) {

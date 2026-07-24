@@ -5,11 +5,20 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "someillagerservants.mixins.refmap.json",
   "mixins": [
-    "IllagerSpawnerMixin"
+    "IllagerSpawnerMixin",
+    "MixinArrowFriendlyFire",
+    "SnapFungusItemMixin",
+    "BlastFungusItemMixin",
+    "BerserkFungusItemMixin",
+    "BerserkFungusMixin",
+    "RaidMixin",
+    "SpiderEggMixin",
+    "RitualMixin",
+    "MutantMoreItemMixin"
   ],
   "client": [],
   "server": [],
   "injectors": {
-    "defaultRequire": 1
+    "defaultRequire": 0
   }
 }

@@ -1,0 +1,15 @@
+{
+  "name": "Wandering Trader",
+  "icon": "minecraft:emerald",
+  "category": "goety:summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Wandering Traders are elusive. Sometimes they appear when you least need them, and other times you wish you could lure one in for your own purposes. Regardless, you can send out a signal of 'trades available' with a ritual to attract them."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:sis_wandering_trader"
+    }
+  ]
+}

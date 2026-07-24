@@ -1,0 +1,24 @@
+{
+  "name": "绯红蜘蛛仆从",
+  "icon": "minecraft:spider_eye",
+  "category": "goety:summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "下界教团的成员们召唤并控制着凶猛的赤焰蜘蛛向你发动狂热的袭击。你发现他们所召唤的蜘蛛实际上是将下界的扭曲能量注入蜘蛛从而产生的，然而下界过于极端的温度无法让你通过蜘蛛巢孵化出这种蜘蛛，但你仍然可以通过一个仪式来召唤它们。"
+    },
+ 	{
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:crimson_spider_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:crimson_spider_servant",
+      "text": "红蜘蛛"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "你也可以通过垂丝聚晶在下界直接召唤它们。就像其他下界生物一样，它们对火焰免疫而且能让猎物着火。如果你穿戴了下界长袍，它们能获得被动的自然治疗。此外肉也可以用于恢复这些蜘蛛的血量。"
+    }
+  ]
+}

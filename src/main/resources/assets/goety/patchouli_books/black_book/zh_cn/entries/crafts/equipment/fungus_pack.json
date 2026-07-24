@@ -1,0 +1,25 @@
+{
+  "name": "真菌背囊",
+  "icon": "someillagerservants:fungus_pack",
+  "category": "goety:crafts/equipment",
+  "advancement": "someillagerservants:someillagerservants/read_bastion_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "通过深入了解古代猪灵的习性，你制作出了一个富含真菌的背囊，用来盛纳你手里那些不稳定的菌团们。这件背囊既是一件背饰，也可以作为胸甲为你提供微不足道的保护。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:fungus_pack"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "真菌背囊的真正用处在于它的内部可以容纳一种菌团(默认打开按键为num0)。打开内部空间后，你可以将一种菌团放入其中，真菌背囊能够使得你投掷的菌团获得强化，并减少菌团的使用消耗。比如啪啪菌团和爆裂菌团的爆炸威力会得到加强，而狂暴菌团不会再对你造成反胃效果。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "允许放入的菌团有啪啪菌团，爆裂菌团，狂暴菌团和酸液菌。"
+    }
+  ]
+}

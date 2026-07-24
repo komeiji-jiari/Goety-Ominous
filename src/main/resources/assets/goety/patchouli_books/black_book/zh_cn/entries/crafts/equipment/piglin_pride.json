@@ -1,0 +1,25 @@
+{
+  "name": "猪灵之傲",
+  "icon": "someillagerservants:piglin_pride",
+  "category": "goety:crafts/equipment",
+  "advancement": "someillagerservants:someillagerservants/read_bastion_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "过去只有猪灵中最有经验的猎手才有资格装备这把凶残的武器。据说老练的猪灵甚至能用此弩击落最为庞大的恶魂...解读了卷轴并实际制作出了这把武器之后，你发现它确实有配得上如此声誉的威力。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:piglin_pride"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "这把齿轮弩的升级版发射的弹药拥有更快的弹速，从而带来了更强的杀伤力。除此以外，它拥有与金质物品相同的附魔能力。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "可在铁砧上使用金锭进行修复。"
+    }
+  ]
+}

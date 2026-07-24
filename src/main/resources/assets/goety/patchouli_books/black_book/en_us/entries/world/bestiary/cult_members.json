@@ -1,0 +1,54 @@
+{
+  "name": "Nether Cult",
+  "icon": "someillagerservants:burning_potion",
+  "category": "goety:world/bestiary",
+  "advancement": "goety:goety/kill_a_heretic",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "After discovering strange black circles and robed figures, you began investigating the identity and origins of the Nether Cult. Overall, these cultists are less disciplined and well-equipped than the Illagers, but that does not mean they are without threat."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "As mentioned, these cultists share much in common with Witches. The lower-ranking members often collaborate with Illagers to raid villages in order to spread the Nether's doctrine, or roam the wilderness attacking travelers. Meanwhile, the higher-ranking cultists hold out in their strongholds, studying the revelations and miracles left behind by some beings."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "However, the cultists' threat extends beyond that. It is rumored that they actively spread their faith to villagers, and that some villagers are even undercover sleeper agents... When a cultist is attacked, they will actively call for help from their comrades. Curiously, this behavior only appears among the more fanatical members of the cult."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:fanatic"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Given the variety of their uniforms and weapons, these Fanatics appear to be ordinary villagers transformed by some strange worship of the Nether. Compared to Vindicators, they lack strength and resilience, but their arsenal is far more diverse—ranging from pickaxes and pitchforks to swords and axes, with some even mad enough to wield Witch Bombs."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:zealot"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Similar to Fanatics, these Zealots are content to spread their twisted faith to the ignorant. They actively venture out to harass beings like you or villagers, sometimes even colluding with Illagers. Unlike the uniformly equipped Pillagers, these Zealots seem to use whatever ranged weapons they can find—some carry crossbows, others bows."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:beldam",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Witches are usually solitary, but when they encounter a group of Nether-worshipping fanatics, they cannot help but be drawn to them. Joining the cult seems to make them more cooperative and more devious. When slain, these Witches leave a curse upon their killer. They hurl various vile potions—even burning potions, to poison and destroy their enemies."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:thug",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Strong, brutish Cultists that are akin to Iron Golems and Ravagers, only weaker than either of them. However, should they take enough damage, they will enter into some sort of unholy rage that boosts their attack and speed while causing them to periodically take damage. They're either a result of magical experiments or simply big meaty Villagers radicalized with the Cult."
+    }
+  ]
+}

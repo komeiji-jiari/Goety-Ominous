@@ -1,0 +1,26 @@
+{
+  "name": "淬焰堡垒",
+  "icon": "someillagerservants:firebrand",
+  "category": "goety:world",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "下界冒险者们传闻称一些人在岩浆海之上发现了远远比堡垒遗迹更加宏伟的要塞。任何胆敢靠近者将会被驻守此地的猪灵族群视为敌人——或许他们正守护着其中非凡的财宝？"
+    },
+    {
+      "type": "patchouli:image",
+      "images": ["someillagerservants:textures/gui/entries/fiery_bulwark.png"],
+      "border": true,
+      "text": "猪灵族群重兵看守的堡垒"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "someillagerservants:piglin_merchant",
+      "text": "别忘了带上你的黄金！货真价实，童叟无欺！"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "一位猪灵旅商，居住在堡垒中的个人房间内。他似乎只对你身上的黄金感兴趣，只要你出得起价钱，就能从他手里淘到不少好东西。如果你不小心攻击了他，用金块向他赔礼道歉就可以重新交易了。"
+    }
+  ]
+}

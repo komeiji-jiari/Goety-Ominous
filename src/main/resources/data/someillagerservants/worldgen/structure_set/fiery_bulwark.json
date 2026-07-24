@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "someillagerservants:fiery_bulwark",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 168,
+    "separation": 16,
+    "salt": 542563474
+  }
+}

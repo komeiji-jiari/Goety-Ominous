@@ -21,5 +21,13 @@ public class ModNetwork {
                 RiderChargePacket::encode,
                 RiderChargePacket::decode,
                 RiderChargePacket::handle);
+        CHANNEL.registerMessage(id++, OpenFungusPackPacket.class,
+                OpenFungusPackPacket::encode,
+                OpenFungusPackPacket::decode,
+                OpenFungusPackPacket::handle);
+        CHANNEL.registerMessage(id++, CWitherScytheStrikePacket.class,
+                CWitherScytheStrikePacket::encode,
+                CWitherScytheStrikePacket::decode,
+                CWitherScytheStrikePacket::handle);
     }
 }

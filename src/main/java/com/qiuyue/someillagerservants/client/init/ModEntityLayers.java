@@ -60,6 +60,9 @@ public class ModEntityLayers {
     public static final ModelLayerLocation HERESIARCH_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(SomeIllagerServants.MOD_ID, "heresiarch_servant"), "main");
 
+    public static final ModelLayerLocation HERESIARCH_SERVANT_SHADOW_LAYER = new ModelLayerLocation(
+            new ResourceLocation(SomeIllagerServants.MOD_ID, "heresiarch_servant"), "shadow");
+
     public static final ModelLayerLocation CREEPIE_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(SomeIllagerServants.MOD_ID, "creepie_servant"), "main");
 
@@ -117,6 +120,49 @@ public class ModEntityLayers {
     public static final ModelLayerLocation MUTANT_HOGLIN_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(SomeIllagerServants.MOD_ID, "mutant_hoglin_servant"), "main");
 
+    public static final ModelLayerLocation STORM_NECROMANCER_LAYER = new ModelLayerLocation(
+            new ResourceLocation(SomeIllagerServants.MOD_ID, "storm_necromancer"), "main");
+
     public static final ModelLayerLocation OVERGROWN_COLOSSUS_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(SomeIllagerServants.MOD_ID, "overgrown_colossus_servant"), "main");
-}
+
+    public static final ModelLayerLocation PIGLIN_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(SomeIllagerServants.MOD_ID, "piglin_servant"), "main");
+
+    public static final ModelLayerLocation PIGLIN_SERVANT_INNER_ARMOR_LAYER = new ModelLayerLocation(
+            new ResourceLocation(SomeIllagerServants.MOD_ID, "piglin_servant"), "inner_armor");
+
+    public static final ModelLayerLocation PIGLIN_SERVANT_OUTER_ARMOR_LAYER = new ModelLayerLocation(
+            new ResourceLocation(SomeIllagerServants.MOD_ID, "piglin_servant"), "outer_armor");
+
+    public static final ModelLayerLocation ACID_FUNGUS_LAYER = new ModelLayerLocation(
+            new ResourceLocation(SomeIllagerServants.MOD_ID, "acid_fungus"), "main");
+
+    public static final ModelLayerLocation FUNGUS_PACK_LAYER = new ModelLayerLocation(
+            new ResourceLocation(SomeIllagerServants.MOD_ID, "fungus_pack"), "main");
+
+    public static final ModelLayerLocation PIGLIN_MERCHANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(SomeIllagerServants.MOD_ID, "piglin_merchant"), "main");
+
+    public static final ModelLayerLocation BELDAM_LAYER = new ModelLayerLocation(
+            new ResourceLocation(SomeIllagerServants.MOD_ID, "beldam"), "main");
+
+    public static final ModelLayerLocation PITCHFORK_LAYER = new ModelLayerLocation(
+            new ResourceLocation(SomeIllagerServants.MOD_ID, "pitchfork"), "main");
+
+    public static final ModelLayerLocation FANATIC_LAYER = new ModelLayerLocation(
+            new ResourceLocation(SomeIllagerServants.MOD_ID, "fanatic"), "main");
+
+    public static final ModelLayerLocation ZEALOT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(SomeIllagerServants.MOD_ID, "zealot"), "main");
+
+    public static final ModelLayerLocation URBHADHACH_LAYER = new ModelLayerLocation(
+            new ResourceLocation(SomeIllagerServants.MOD_ID, "urbhadhach"), "main");
+
+    public static final ModelLayerLocation URBHADHACH_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(SomeIllagerServants.MOD_ID, "urbhadhach_servant"), "main");
+
+    public static final ModelLayerLocation THUG_LAYER = new ModelLayerLocation(
+            new ResourceLocation(SomeIllagerServants.MOD_ID, "thug"), "main");
+
+	}

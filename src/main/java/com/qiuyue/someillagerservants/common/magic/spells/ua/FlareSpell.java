@@ -29,7 +29,7 @@ public class FlareSpell extends SummonSpell {
 
     @Override
     public int defaultSoulCost() {
-        return 36;
+        return com.qiuyue.someillagerservants.config.SpellConfig.FlareSoulCost.get();
     }
 
     @Override
@@ -45,7 +45,7 @@ public class FlareSpell extends SummonSpell {
 
     @Override
     public int defaultSpellCooldown() {
-        return 160;
+        return com.qiuyue.someillagerservants.config.SpellConfig.FlareCooldown.get();
     }
 
     @Override

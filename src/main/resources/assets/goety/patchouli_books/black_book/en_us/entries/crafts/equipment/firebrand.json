@@ -1,0 +1,25 @@
+{
+  "name": "Firebrand",
+  "icon": "someillagerservants:firebrand",
+  "category": "goety:crafts/equipment",
+  "advancement": "someillagerservants:someillagerservants/read_bastion_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You attempt to temper the Rampaging Axe using the ancient techniques of the Piglins, resulting in an axe wreathed in flames. You feel that this style suits you well as a Nether mage."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "someillagerservants:firebrand"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Retaining all the functions of the Rampaging Axe, this axe also sets creatures on fire and deals additional damage to burning targets."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Can be repaired with Cursed Metal Ingots on an Anvil."
+    }
+  ]
+}

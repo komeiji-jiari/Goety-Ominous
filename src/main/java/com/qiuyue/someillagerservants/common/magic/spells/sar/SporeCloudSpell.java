@@ -22,7 +22,7 @@ public class SporeCloudSpell extends Spell {
 
     @Override
     public int defaultSoulCost() {
-        return 16;
+        return com.qiuyue.someillagerservants.config.SpellConfig.SporeCloudSoulCost.get();
     }
 
     @Override
@@ -37,7 +37,7 @@ public class SporeCloudSpell extends Spell {
 
     @Override
     public int defaultSpellCooldown() {
-        return 200;
+        return com.qiuyue.someillagerservants.config.SpellConfig.SporeCloudCooldown.get();
     }
 
     @Override

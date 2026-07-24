@@ -1,0 +1,19 @@
+{
+  "name": "垂丝聚晶",
+  "icon": "someillagerservants:spider_focus",
+  "category": "goety:focuses/wild",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "蜘蛛是一种巨大而贪婪的节肢动物。通过利用它们最喜欢的血肉来吸引它们，你想到了如何制作一个法术来随时召唤这些敏捷的刺客为你而战。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "someillagerservants:spider_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "使用$(l:crafts/staff/wild_staff)荒野魔杖$()能召唤出织网蜘蛛仆从，使用$(l:crafts/staff/geo_staff)地卜魔杖$()则改为召唤洞穴蜘蛛仆从，$(l:crafts/staff/frost_staff)冰霜魔杖$()则能召唤冰蜘蛛仆从，$(l:crafts/staff/necro_staff)死灵魔杖$()则可以召唤骸骨蜘蛛仆从，$(l:crafts/staff/nether_staff)下界魔杖$()还可以召唤绯红蜘蛛仆从。"
+    }
+  ]
+}

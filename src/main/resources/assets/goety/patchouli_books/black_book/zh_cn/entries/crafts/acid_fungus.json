@@ -1,0 +1,16 @@
+{
+  "name": "酸液菌",
+  "icon": "someillagerservants:acid_fungus",
+  "category": "goety:crafts",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你发现了一种新型真菌。通过在酿造台中使用铃兰处理诡异菌，你意识到如此创造的蓝色真菌十分不稳定，只需丢出就会爆炸，留下一大滩会对生物造成持续伤害的酸液。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "someillagerservants:acid_fungus",
+      "text": "当然，出于某些奥术层面的原因，酸液菌产生的酸液不会对你和你的仆从造成任何影响。"
+    }
+  ]
+}
