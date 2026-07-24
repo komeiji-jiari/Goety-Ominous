@@ -19,13 +19,16 @@ out
 /FireNBlood-master/
 /Goety-master/
 
-# 编译输出
+# 编译输出 & 反编译临时文件
 /build/
 /out/
 /bin/
 /com/
 /assets/
 /data/
+/temp_decompile/
+/tmp_goety_decompile/
+/temporary/
 .class
 
 # gradle
