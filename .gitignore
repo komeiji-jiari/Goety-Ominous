@@ -39,5 +39,6 @@ run
 # Files from Forge MDK
 forge*changelog.txt
 
-# Local mod jars (not committed to repository)
-libs/*.jar
+# 前置模组 libs 目录（只跟踪 jar 文件）
+libs/*
+!libs/*.jar
