@@ -9,7 +9,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "someillagerservants:flare_servant"
+      "recipe": "goetyominus:flare_servant"
     },
     {
       "type": "patchouli:text",
@@ -17,7 +17,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "someillagerservants:flare_servant",
+      "entity": "goetyominus:flare_servant",
       "text": "24小时宿管"
     }
   ]

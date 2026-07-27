@@ -1,0 +1,6 @@
+{
+  "parent": "goetyominus:item/cog_crossbow",
+  "textures": {
+    "layer0": "goetyominus:item/cog_crossbow_pulling_2"
+  }
+}

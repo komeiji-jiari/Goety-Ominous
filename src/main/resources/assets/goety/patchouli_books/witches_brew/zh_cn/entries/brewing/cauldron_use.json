@@ -10,7 +10,7 @@
     },
     {
       "type": "goety:cauldron",
-      "recipe": "someillagerservants:cauldron/nether_wart_potion"
+      "recipe": "goetyominus:cauldron/nether_wart_potion"
     },
     {
       "type": "patchouli:text",
@@ -18,7 +18,7 @@
     },
     {
       "type": "goety:cauldron",
-      "recipe": "someillagerservants:cauldron/burning_potion"
+      "recipe": "goetyominus:cauldron/burning_potion"
     },
     {
       "type": "patchouli:text",

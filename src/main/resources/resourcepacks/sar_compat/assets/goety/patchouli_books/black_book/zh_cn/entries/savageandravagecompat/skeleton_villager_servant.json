@@ -9,11 +9,11 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "someillagerservants:skeleton_villager_servant"
+      "recipe": "goetyominus:skeleton_villager_servant"
     },
     {
       "type": "patchouli:entity",
-      "entity": "someillagerservants:skeleton_villager_servant",
+      "entity": "goetyominus:skeleton_villager_servant",
       "text": "老资历，你没死啊，你还活着..."
     }
   ]

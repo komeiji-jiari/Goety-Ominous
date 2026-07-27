@@ -1,6 +1,6 @@
 {
   "name": "Acid Fungus",
-  "icon": "someillagerservants:acid_fungus",
+  "icon": "goetyominus:acid_fungus",
   "category": "goety:crafts",
   "pages": [
     {
@@ -9,7 +9,7 @@
     },
     {
       "type": "patchouli:spotlight",
-      "item": "someillagerservants:acid_fungus",
+      "item": "goetyominus:acid_fungus",
       "text": "Of course, for certain arcane reasons, the acid produced by the Acid Fungus does not affect you or your servants."
     }
   ]

@@ -1,6 +1,6 @@
 {
   "name": "Dark Ankh",
-  "icon": "someillagerservants:dark_ankh",
+  "icon": "goetyominus:dark_ankh",
   "category": "goety:crafts/garment",
   "pages": [
     {
@@ -9,7 +9,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "someillagerservants:dark_ankh"
+      "recipe": "goetyominus:dark_ankh"
     },
     {
         "type": "patchouli:text",

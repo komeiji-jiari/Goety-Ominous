@@ -9,7 +9,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "someillagerservants:twittollager_servant"
+      "entity": "goetyominus:twittollager_servant"
     },
     {
       "type": "patchouli:text",
@@ -17,7 +17,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "someillagerservants:absorber_servant"
+      "entity": "goetyominus:absorber_servant"
     },
     {
       "type": "patchouli:text",

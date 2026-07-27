@@ -1,6 +1,6 @@
 {
   "name": "符文监狱聚晶",
-  "icon": "someillagerservants:rune_prison_focus",
+  "icon": "goetyominus:rune_prison_focus",
   "category": "goety:savageandravagecompat",
   "pages": [
     {
@@ -9,7 +9,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "someillagerservants:rune_prison_focus",
+      "recipe": "goetyominus:rune_prison_focus",
       "text": ""
     },
     {

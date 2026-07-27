@@ -1,6 +1,6 @@
 {
   "name": "Confusion Bolt Focus",
-  "icon": "someillagerservants:confusion_bolt_focus",
+  "icon": "goetyominus:confusion_bolt_focus",
   "category": "goety:savageandravagecompat",
   "pages": [
     {
@@ -9,7 +9,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "someillagerservants:confusion_bolt_focus",
+      "recipe": "goetyominus:confusion_bolt_focus",
       "text": ""
     }
   ]

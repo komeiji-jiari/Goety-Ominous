@@ -9,7 +9,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "someillagerservants:sis_wandering_trader"
+      "recipe": "goetyominus:sis_wandering_trader"
     }
   ]
 }

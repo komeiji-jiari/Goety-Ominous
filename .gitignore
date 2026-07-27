@@ -29,7 +29,8 @@ out
 /temp_decompile/
 /tmp_goety_decompile/
 /temporary/
-.class
+/net/
+*.class
 
 # gradle
 build

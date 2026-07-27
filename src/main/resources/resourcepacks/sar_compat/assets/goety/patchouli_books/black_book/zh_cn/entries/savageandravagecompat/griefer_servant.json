@@ -9,7 +9,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "someillagerservants:griefer_servant",
+      "entity": "goetyominus:griefer_servant",
       "text": "爆炸是一门艺术！"
     }
   ]

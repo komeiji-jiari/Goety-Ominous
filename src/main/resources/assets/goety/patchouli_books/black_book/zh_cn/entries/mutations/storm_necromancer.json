@@ -10,7 +10,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "someillagerservants:convert_rattled_to_storm_necromancer"
+      "recipe": "goetyominus:convert_rattled_to_storm_necromancer"
     },
     {
       "type": "patchouli:text",
@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "someillagerservants:storm_necromancer_servant"
+      "entity": "goetyominus:storm_necromancer_servant"
     },
     {
       "type": "patchouli:text",
@@ -26,7 +26,7 @@
     },
     {
       "type": "patchouli:spotlight",
-      "item": "someillagerservants:storm_soul_jar",
+      "item": "goetyominus:storm_soul_jar",
       "text": "如果一个风暴死灵法师死亡，而你正好有一个$(l:crafts/empty_soul_jar)空灵魂罐$()将会使他们的灵魂填充进去，当在响骷身上右键点击这个魂罐时，将会用该响骷作为新的躯体来复活死灵法师。"
     }
   ]

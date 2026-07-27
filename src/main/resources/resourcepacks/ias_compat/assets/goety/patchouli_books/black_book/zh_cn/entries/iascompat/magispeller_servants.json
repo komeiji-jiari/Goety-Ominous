@@ -1,6 +1,6 @@
 {
   "name": "友方魔法师",
-  "icon": "someillagerservants:mysterious_contract",
+  "icon": "goetyominus:mysterious_contract",
   "category": "goety:iascompat",
   "advancement": "goety:goety/read_ravaging_scroll",
   "pages": [
@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "someillagerservants:magispeller_servant",
+      "entity": "goetyominus:magispeller_servant",
       "text": "当然，他认为这只是简单的雇佣关系而已。"
     },
     {
@@ -19,7 +19,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "someillagerservants:magispeller_servant"
+      "recipe": "goetyominus:magispeller_servant"
     }
   ]
 }

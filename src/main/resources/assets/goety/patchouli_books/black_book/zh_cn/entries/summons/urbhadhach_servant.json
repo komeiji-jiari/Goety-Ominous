@@ -1,6 +1,6 @@
 {
   "name": "霜猎兽仆从",
-  "icon": "someillagerservants:cold_heart",
+  "icon": "goetyominus:cold_heart",
   "category": "goety:summons",
   "pages": [
     {
@@ -9,11 +9,11 @@
     },
  	{
       "type": "goety:ritual",
-      "recipe": "someillagerservants:urbhadhach_servant"
+      "recipe": "goetyominus:urbhadhach_servant"
     },
     {
       "type": "patchouli:entity",
-      "entity": "someillagerservants:urbhadhach_servant",
+      "entity": "goetyominus:urbhadhach_servant",
       "text": "仍然对幼年生物充满敌意。"
     },
     {

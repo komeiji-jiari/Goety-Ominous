@@ -1,0 +1,15 @@
+{
+  "name": "goetyominus:fiery_bulwark",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "goetyominus:fiery_bulwark",
+        "processors": "goetyominus:fiery_bulwark_loot",
+        "projection": "rigid"
+      }
+    }
+  ]
+}

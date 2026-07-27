@@ -1,0 +1,43 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:mauling_focus"
+  },
+  "craftType": "necroturgy",
+  "entity_to_sacrifice": {
+    "tag": "forge:villagers",
+    "display_name": "entity.minecraft.villager.none"
+  },
+  "soulCost": 1,
+  "duration": 15,
+  "ingredients": [
+    {
+      "item": "goetyominus:cold_heart"
+    },
+    {
+      "item": "goetyominus:cold_heart"
+    },
+    {
+      "item": "goety:ectoplasm"
+    },
+    {
+      "item": "goety:tall_skull"
+    },
+    {
+      "tag": "goety:meat"
+    },
+    {
+      "item": "minecraft:powder_snow_bucket"
+    },
+    {
+      "item": "minecraft:blue_ice"
+    },
+    {
+      "item": "goety:hunger_core"
+    }
+  ],
+  "result": {
+    "item": "goetyominus:urbhadhach_focus"
+  }
+}

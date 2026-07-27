@@ -1,6 +1,6 @@
 {
   "name": "凋零斩切聚晶",
-  "icon": "someillagerservants:wither_slash_focus",
+  "icon": "goetyominus:wither_slash_focus",
   "category": "goety:mmcompat",
   "pages": [
     {
@@ -9,7 +9,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "someillagerservants:wither_slash_focus",
+      "recipe": "goetyominus:wither_slash_focus",
       "text": ""
     },
     {

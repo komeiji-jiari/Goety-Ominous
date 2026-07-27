@@ -1,6 +1,6 @@
 {
   "name": "魔法闪光聚晶",
-  "icon": "someillagerservants:confusion_bolt_focus",
+  "icon": "goetyominus:confusion_bolt_focus",
   "category": "goety:savageandravagecompat",
   "pages": [
     {
@@ -9,7 +9,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "someillagerservants:confusion_bolt_focus",
+      "recipe": "goetyominus:confusion_bolt_focus",
       "text": ""
     }
   ]

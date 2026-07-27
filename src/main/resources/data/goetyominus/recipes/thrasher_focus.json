@@ -1,0 +1,39 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:mauling_focus"
+  },
+  "craftType": "deep",
+  "soulCost": 1,
+  "duration": 10,
+  "ingredients": [
+    {
+      "item": "minecraft:kelp"
+    },
+    {
+      "item": "minecraft:prismarine_shard"
+    },
+    {
+      "item": "minecraft:prismarine_shard"
+    },
+    {
+      "tag": "minecraft:fishes"
+    },
+    {
+      "tag": "minecraft:fishes"
+    },
+    {
+      "item": "upgrade_aquatic:thrasher_tooth"
+    },
+    {
+      "item": "upgrade_aquatic:thrasher_tooth"
+    },
+    {
+      "item": "upgrade_aquatic:thrasher_tooth"
+    }
+  ],
+  "result": {
+    "item": "goetyominus:thrasher_focus"
+  }
+}

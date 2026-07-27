@@ -1,0 +1,37 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:razor_wind_focus"
+  },
+  "craftType": "expert_nether",
+  "soulCost": 1,
+  "duration": 10,
+  "research": "bygone",
+  "ingredients": [
+    {
+      "item": "goety:shadow_essence"
+    },
+    {
+      "item": "mutantmore:mutant_wither_skeleton_rib"
+    },
+    {
+      "item": "mutantmore:mutant_wither_skeleton_rib"
+    },
+    {
+      "item": "mutantmore:mutant_wither_skeleton_limb"
+    },
+    {
+      "item": "goety:hunger_core"
+    },
+    {
+      "item": "minecraft:wither_rose"
+    },
+    {
+      "item": "mutantmore:mutant_wither_skeleton_rib"
+    }
+  ],
+  "result": {
+    "item": "goetyominus:wither_slash_focus"
+  }
+}

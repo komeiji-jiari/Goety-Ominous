@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:quest",
-      "trigger": "someillagerservants:someillagerservants/read_bastion_scroll",
+      "trigger": "goetyominus:goetyominus/read_bastion_scroll",
       "text": "据说这些卷轴是在$(l)堡垒遗迹$()中发现的"
     }
   ]

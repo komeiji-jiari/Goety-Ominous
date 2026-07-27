@@ -1,6 +1,6 @@
 {
   "name": "Witch Bomb",
-  "icon": "someillagerservants:witch_bomb",
+  "icon": "goetyominus:witch_bomb",
   "category": "goety:brewing",
   "sortnum": 9,
   "pages": [
@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "someillagerservants:witch_bomb",
+      "recipe": "goetyominus:witch_bomb",
       "text": "Granny's seen some mad lads just swinging these bombs around with their bare hands! HAHAHA, you definitely don't want to mess with them!"
     },
     {

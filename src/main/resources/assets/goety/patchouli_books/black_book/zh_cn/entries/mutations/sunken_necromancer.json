@@ -10,7 +10,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "someillagerservants:convert_sunken_skeleton_to_sunken_necromancer"
+      "recipe": "goetyominus:convert_sunken_skeleton_to_sunken_necromancer"
     },
     {
       "type": "patchouli:text",
@@ -18,11 +18,11 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "someillagerservants:sunken_necromancer_servant"
+      "entity": "goetyominus:sunken_necromancer_servant"
     },
     {
       "type": "patchouli:spotlight",
-      "item": "someillagerservants:sunken_soul_jar",
+      "item": "goetyominus:sunken_soul_jar",
       "text": "如果一个沉溺死灵法师死亡，而你正好有一个$(l:crafts/empty_soul_jar)空灵魂罐$()将会使他们的灵魂填充进去，当在一个沉溺骷髅身上右键点击这个魂罐时，将会用该沉溺骷髅作为新的躯体来复活死灵法师。"
     }
   ]

@@ -10,7 +10,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "someillagerservants:convert_sunken_skeleton_to_sunken_necromancer"
+      "recipe": "goetyominus:convert_sunken_skeleton_to_sunken_necromancer"
     },
     {
       "type": "patchouli:text",
@@ -18,11 +18,11 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "someillagerservants:sunken_necromancer_servant"
+      "entity": "goetyominus:sunken_necromancer_servant"
     },
     {
       "type": "patchouli:spotlight",
-      "item": "someillagerservants:sunken_soul_jar",
+      "item": "goetyominus:sunken_soul_jar",
       "text": "Se um Necromante Submerso morrer e você tiver um $(l:crafts/empty_soul_jar)Jarra de Alma Vazio$(), sua alma o preencherá. Clicar com o botão direito em um Esqueleto Submerso com esta Jarra de Alma preenchido ressuscitará o Necromante, usando aquele Esqueleto Submerso como um novo corpo."
     }
   ]

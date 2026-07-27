@@ -1,9 +1,10 @@
 {
   "replace": false,
   "values": [
-    "someillagerservants:beldam",
-    "someillagerservants:fanatic",
-    "someillagerservants:zealot",
-    "someillagerservants:thug"
+    "goetyominus:beldam",
+    "goetyominus:fanatic",
+    "goetyominus:zealot",
+    "goetyominus:thug",
+    "goetyominus:channeller"
   ]
 }

@@ -1,8 +1,8 @@
 {
   "name": "大骨棒",
-  "icon": "someillagerservants:bone_cudgel",
+  "icon": "goetyominus:bone_cudgel",
   "category": "goety:crafts/equipment",
-  "advancement": "someillagerservants:someillagerservants/read_bastion_scroll",
+  "advancement": "goetyominus:goetyominus/read_bastion_scroll",
   "secret": true,
   "pages": [
     {
@@ -11,7 +11,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "someillagerservants:bone_cudgel"
+      "recipe": "goetyominus:bone_cudgel"
     },
     {
       "type": "patchouli:text",

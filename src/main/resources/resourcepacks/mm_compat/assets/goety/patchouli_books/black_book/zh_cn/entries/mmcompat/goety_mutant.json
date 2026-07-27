@@ -9,13 +9,13 @@
     },
     {
       "type": "patchouli:image",
-      "images": ["someillagerservants:textures/gui/entries/mutant1.png"],
+      "images": ["goetyominus:textures/gui/entries/mutant1.png"],
       "border": true,
       "text": "一个让仆从发生突变的例子"
     },
     {
       "type": "patchouli:image",
-      "images": ["someillagerservants:textures/gui/entries/mutant2.png"],
+      "images": ["goetyominus:textures/gui/entries/mutant2.png"],
       "border": true,
       "text": "应对恶战的的准备是必须的"
     }

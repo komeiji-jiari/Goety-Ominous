@@ -1,0 +1,426 @@
+{
+  "acolyte_idle_1": {
+    "subtitle": "subtitles.goetyominus.acolyte.idle",
+    "sounds": [
+      "goetyominus:acolyte/idle1"
+    ]
+  },
+  "acolyte_idle_2": {
+    "subtitle": "subtitles.goetyominus.acolyte.idle",
+    "sounds": [
+      "goetyominus:acolyte/idle2"
+    ]
+  },
+  "acolyte_idle_3": {
+    "subtitle": "subtitles.goetyominus.acolyte.idle",
+    "sounds": [
+      "goetyominus:acolyte/idle3"
+    ]
+  },
+  "acolyte_idle_4": {
+    "subtitle": "subtitles.goetyominus.acolyte.idle",
+    "sounds": [
+      "goetyominus:acolyte/idle4"
+    ]
+  },
+  "acolyte_idle_5": {
+    "subtitle": "subtitles.goetyominus.acolyte.idle",
+    "sounds": [
+      "goetyominus:acolyte/idle5"
+    ]
+  },
+  "acolyte_hurt_1": {
+    "subtitle": "subtitles.goetyominus.acolyte.hurt",
+    "sounds": [
+      "goetyominus:acolyte/hurt1"
+    ]
+  },
+  "acolyte_hurt_2": {
+    "subtitle": "subtitles.goetyominus.acolyte.hurt",
+    "sounds": [
+      "goetyominus:acolyte/hurt2"
+    ]
+  },
+  "acolyte_hurt_3": {
+    "subtitle": "subtitles.goetyominus.acolyte.hurt",
+    "sounds": [
+      "goetyominus:acolyte/hurt3"
+    ]
+  },
+  "acolyte_death_1": {
+    "subtitle": "subtitles.goetyominus.acolyte.death",
+    "sounds": [
+      "goetyominus:acolyte/death1"
+    ]
+  },
+  "acolyte_death_2": {
+    "subtitle": "subtitles.goetyominus.acolyte.death",
+    "sounds": [
+      "goetyominus:acolyte/death2"
+    ]
+  },
+  "cog_crossbow_shoot_1": {
+    "subtitle": "subtitles.goetyominus.cog_crossbow.shoot",
+    "sounds": [
+      "goetyominus:cog_crossbow/shoot1"
+    ]
+  },
+  "cog_crossbow_shoot_2": {
+    "subtitle": "subtitles.goetyominus.cog_crossbow.shoot",
+    "sounds": [
+      "goetyominus:cog_crossbow/shoot2"
+    ]
+  },
+  "cog_crossbow_shoot_3": {
+    "subtitle": "subtitles.goetyominus.cog_crossbow.shoot",
+    "sounds": [
+      "goetyominus:cog_crossbow/shoot3"
+    ]
+  },
+  "piglin_pride_shoot_1": {
+    "subtitle": "subtitles.goetyominus.piglin_pride.shoot",
+    "sounds": [
+      {"name": "goetyominus:piglin_pride/shoot1", "volume": 0.6}
+    ]
+  },
+  "piglin_pride_shoot_2": {
+    "subtitle": "subtitles.goetyominus.piglin_pride.shoot",
+    "sounds": [
+      {"name": "goetyominus:piglin_pride/shoot2", "volume": 0.6}
+    ]
+  },
+  "piglin_pride_shoot_3": {
+    "subtitle": "subtitles.goetyominus.piglin_pride.shoot",
+    "sounds": [
+      {"name": "goetyominus:piglin_pride/shoot3", "volume": 0.6}
+    ]
+  },
+  "bone_cudgel_1": {
+    "subtitle": "subtitles.goetyominus.bone_cudgel.hit",
+    "sounds": [
+      "goetyominus:bone_cudgel/bone_cudgel_1"
+    ]
+  },
+  "bone_cudgel_2": {
+    "subtitle": "subtitles.goetyominus.bone_cudgel.hit",
+    "sounds": [
+      "goetyominus:bone_cudgel/bone_cudgel_2"
+    ]
+  },
+  "bone_cudgel_3": {
+    "subtitle": "subtitles.goetyominus.bone_cudgel.hit",
+    "sounds": [
+      "goetyominus:bone_cudgel/bone_cudgel_3"
+    ]
+  },
+  "fungus_thrower_idle_1": {
+    "subtitle": "subtitles.goetyominus.fungus_thrower.idle",
+    "sounds": [
+      "goetyominus:fungus_thrower/idle1"
+    ]
+  },
+  "fungus_thrower_idle_2": {
+    "subtitle": "subtitles.goetyominus.fungus_thrower.idle",
+    "sounds": [
+      "goetyominus:fungus_thrower/idle2"
+    ]
+  },
+  "fungus_thrower_idle_3": {
+    "subtitle": "subtitles.goetyominus.fungus_thrower.idle",
+    "sounds": [
+      "goetyominus:fungus_thrower/idle3"
+    ]
+  },
+  "fungus_thrower_idle_4": {
+    "subtitle": "subtitles.goetyominus.fungus_thrower.idle",
+    "sounds": [
+      "goetyominus:fungus_thrower/idle4"
+    ]
+  },
+  "fungus_thrower_hurt_1": {
+    "subtitle": "subtitles.goetyominus.fungus_thrower.hurt",
+    "sounds": [
+      "goetyominus:fungus_thrower/hurt1"
+    ]
+  },
+  "fungus_thrower_hurt_2": {
+    "subtitle": "subtitles.goetyominus.fungus_thrower.hurt",
+    "sounds": [
+      "goetyominus:fungus_thrower/hurt2"
+    ]
+  },
+  "fungus_thrower_hurt_3": {
+    "subtitle": "subtitles.goetyominus.fungus_thrower.hurt",
+    "sounds": [
+      "goetyominus:fungus_thrower/hurt3"
+    ]
+  },
+  "fungus_thrower_death_1": {
+    "subtitle": "subtitles.goetyominus.fungus_thrower.death",
+    "sounds": [
+      "goetyominus:fungus_thrower/death1"
+    ]
+  },
+  "fungus_thrower_death_2": {
+    "subtitle": "subtitles.goetyominus.fungus_thrower.death",
+    "sounds": [
+      "goetyominus:fungus_thrower/death2"
+    ]
+  },
+  "fungus_thrower_death_3": {
+    "subtitle": "subtitles.goetyominus.fungus_thrower.death",
+    "sounds": [
+      "goetyominus:fungus_thrower/death3"
+    ]
+  },
+  "fungus_thrower_throw_1": {
+    "subtitle": "subtitles.goetyominus.fungus_thrower.throw",
+    "sounds": [
+      "goetyominus:fungus_thrower/throw1"
+    ]
+  },
+  "fungus_thrower_throw_2": {
+    "subtitle": "subtitles.goetyominus.fungus_thrower.throw",
+    "sounds": [
+      "goetyominus:fungus_thrower/throw2"
+    ]
+  },
+  "fungus_thrower_throw_3": {
+    "subtitle": "subtitles.goetyominus.fungus_thrower.throw",
+    "sounds": [
+      "goetyominus:fungus_thrower/throw3"
+    ]
+  },
+  "fanatic_ambient_1": {
+    "subtitle": "subtitles.goetyominus.fanatic.ambient",
+    "sounds": [
+      "goetyominus:fanatic/fanatic_ambient_1"
+    ]
+  },
+  "fanatic_ambient_2": {
+    "subtitle": "subtitles.goetyominus.fanatic.ambient",
+    "sounds": [
+      "goetyominus:fanatic/fanatic_ambient_2"
+    ]
+  },
+  "fanatic_ambient_3": {
+    "subtitle": "subtitles.goetyominus.fanatic.ambient",
+    "sounds": [
+      "goetyominus:fanatic/fanatic_ambient_3"
+    ]
+  },
+  "fanatic_ambient_4": {
+    "subtitle": "subtitles.goetyominus.fanatic.ambient",
+    "sounds": [
+      "goetyominus:fanatic/fanatic_ambient_4"
+    ]
+  },
+  "fanatic_ambient_5": {
+    "subtitle": "subtitles.goetyominus.fanatic.ambient",
+    "sounds": [
+      "goetyominus:fanatic/fanatic_ambient_5"
+    ]
+  },
+  "fanatic_ambient_6": {
+    "subtitle": "subtitles.goetyominus.fanatic.ambient",
+    "sounds": [
+      "goetyominus:fanatic/fanatic_ambient_6"
+    ]
+  },
+  "fanatic_hurt_1": {
+    "subtitle": "subtitles.goetyominus.fanatic.hurt",
+    "sounds": [
+      "goetyominus:fanatic/fanatic_hurt_1"
+    ]
+  },
+  "fanatic_hurt_2": {
+    "subtitle": "subtitles.goetyominus.fanatic.hurt",
+    "sounds": [
+      "goetyominus:fanatic/fanatic_hurt_2"
+    ]
+  },
+  "fanatic_hurt_3": {
+    "subtitle": "subtitles.goetyominus.fanatic.hurt",
+    "sounds": [
+      "goetyominus:fanatic/fanatic_hurt_3"
+    ]
+  },
+  "fanatic_hurt_4": {
+    "subtitle": "subtitles.goetyominus.fanatic.hurt",
+    "sounds": [
+      "goetyominus:fanatic/fanatic_hurt_4"
+    ]
+  },
+  "fanatic_hurt_5": {
+    "subtitle": "subtitles.goetyominus.fanatic.hurt",
+    "sounds": [
+      "goetyominus:fanatic/fanatic_hurt_5"
+    ]
+  },
+  "fanatic_death_1": {
+    "subtitle": "subtitles.goetyominus.fanatic.death",
+    "sounds": [
+      "goetyominus:fanatic/fanatic_death_1"
+    ]
+  },
+  "fanatic_death_2": {
+    "subtitle": "subtitles.goetyominus.fanatic.death",
+    "sounds": [
+      "goetyominus:fanatic/fanatic_death_2"
+    ]
+  },
+  "fanatic_death_3": {
+    "subtitle": "subtitles.goetyominus.fanatic.death",
+    "sounds": [
+      "goetyominus:fanatic/fanatic_death_3"
+    ]
+  },
+  "fanatic_death_4": {
+    "subtitle": "subtitles.goetyominus.fanatic.death",
+    "sounds": [
+      "goetyominus:fanatic/fanatic_death_4"
+    ]
+  },
+  "fanatic_celebrate_1": {
+    "subtitle": "subtitles.goetyominus.fanatic.celebrate",
+    "sounds": [
+      "goetyominus:fanatic/fanatic_celebrate_1"
+    ]
+  },
+  "fanatic_celebrate_2": {
+    "subtitle": "subtitles.goetyominus.fanatic.celebrate",
+    "sounds": [
+      "goetyominus:fanatic/fanatic_celebrate_2"
+    ]
+  },
+  "fanatic_celebrate_3": {
+    "subtitle": "subtitles.goetyominus.fanatic.celebrate",
+    "sounds": [
+      "goetyominus:fanatic/fanatic_celebrate_3"
+    ]
+  },
+  "fanatic_celebrate_4": {
+    "subtitle": "subtitles.goetyominus.fanatic.celebrate",
+    "sounds": [
+      "goetyominus:fanatic/fanatic_celebrate_4"
+    ]
+  },
+  "thug_ambient": {
+    "subtitle": "subtitles.goetyominus.thug.ambient",
+    "sounds": [
+      "goetyominus:thug/idle1",
+      "goetyominus:thug/idle2",
+      "goetyominus:thug/idle3",
+      "goetyominus:thug/idle4"
+    ]
+  },
+  "thug_hurt": {
+    "subtitle": "subtitles.goetyominus.thug.hurt",
+    "sounds": [
+      "goetyominus:thug/hurt1",
+      "goetyominus:thug/hurt2",
+      "goetyominus:thug/hurt3"
+    ]
+  },
+  "thug_death": {
+    "subtitle": "subtitles.goetyominus.thug.death",
+    "sounds": [
+      "goetyominus:thug/death1",
+      "goetyominus:thug/death2",
+      "goetyominus:thug/death3"
+    ]
+  },
+  "thug_step": {
+    "subtitle": "subtitles.goetyominus.thug.step",
+    "sounds": [
+      "mob/irongolem/walk1",
+      "mob/irongolem/walk2",
+      "mob/irongolem/walk3",
+      "mob/irongolem/walk4"
+    ]
+  },
+  "thug_celebrate": {
+    "subtitle": "subtitles.goetyominus.thug.celebrate",
+    "sounds": [
+      "goetyominus:thug/idle1"
+    ]
+  },
+  "urbhadhach_cry": {
+    "subtitle": "subtitles.goetyominus.urbhadhach.cry",
+    "sounds": [
+      "goetyominus:urbhadhach/cry"
+    ]
+  },
+  "urbhadhach_ambient": {
+    "subtitle": "subtitles.goetyominus.urbhadhach.ambient",
+    "sounds": [
+      {"name": "goetyominus:urbhadhach/ambient1", "volume": 0.8},
+      {"name": "goetyominus:urbhadhach/ambient2", "volume": 0.8},
+      {"name": "goetyominus:urbhadhach/ambient3", "volume": 0.8}
+    ]
+  },
+  "urbhadhach_hurt": {
+    "subtitle": "subtitles.goetyominus.urbhadhach.hurt",
+    "sounds": [
+      {"name": "goetyominus:urbhadhach/hurt1", "volume": 0.8},
+      {"name": "goetyominus:urbhadhach/hurt2", "volume": 0.8},
+      {"name": "goetyominus:urbhadhach/hurt3", "volume": 0.8}
+    ]
+  },
+  "urbhadhach_roar": {
+    "subtitle": "subtitles.goetyominus.urbhadhach.roar",
+    "sounds": [
+      {"name": "goetyominus:urbhadhach/roar1", "volume": 0.8},
+      {"name": "goetyominus:urbhadhach/roar2", "volume": 0.8},
+      {"name": "goetyominus:urbhadhach/roar3", "volume": 0.8},
+      {"name": "goetyominus:urbhadhach/roar4", "volume": 0.8},
+      {"name": "goetyominus:urbhadhach/roar5", "volume": 0.8}
+    ]
+  },
+  "urbhadhach_strong_roar": {
+    "subtitle": "subtitles.goetyominus.urbhadhach.strong_roar",
+    "sounds": [
+      {"name": "mob/polarbear/warning1", "pitch": 0.05},
+      {"name": "mob/polarbear/warning2", "pitch": 0.05},
+      {"name": "mob/polarbear/warning3", "pitch": 0.05}
+    ]
+  },
+  "urbhadhach_attack": {
+    "subtitle": "subtitles.goetyominus.urbhadhach.attack",
+    "sounds": [
+      {"name": "goetyominus:urbhadhach/attack1", "volume": 0.8},
+      {"name": "goetyominus:urbhadhach/attack2", "volume": 0.8},
+      {"name": "goetyominus:urbhadhach/attack3", "volume": 0.8},
+      {"name": "goetyominus:urbhadhach/attack4", "volume": 0.8}
+    ]
+  },
+  "urbhadhach_step": {
+    "subtitle": "subtitles.goetyominus.urbhadhach.step",
+    "sounds": [
+      "mob/polarbear/step1",
+      "mob/polarbear/step2",
+      "mob/polarbear/step3",
+      "mob/polarbear/step4"
+    ]
+  },
+  "urbhadhach_death": {
+    "subtitle": "subtitles.goetyominus.urbhadhach.death",
+    "sounds": [
+      {"name": "goetyominus:urbhadhach/death", "volume": 0.8}
+    ]
+  },
+  "lm_music_disc": {
+    "sounds": [
+      {
+        "name": "goetyominus:lm_music_disc",
+        "stream": true
+      }
+    ]
+  },
+  "acolyte_death_3": {
+    "subtitle": "subtitles.goetyominus.acolyte.death",
+    "sounds": [
+      "goetyominus:acolyte/death3"
+    ]
+  }
+}

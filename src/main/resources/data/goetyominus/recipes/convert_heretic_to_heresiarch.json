@@ -1,0 +1,45 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:convert_tamed",
+  "activation_item": {
+    "item": "goety:malefic_helm"
+  },
+  "craftType": "expert_nether",
+  "entity_to_convert": {
+    "tag": "goety:heresiarch_convert",
+    "display_name": "entity.goety.heretic_servant"
+  },
+  "entity_to_convert_into": "goetyominus:heresiarch_servant",
+  "soulCost": 66,
+  "duration": 10,
+  "research": "bygone",
+  "ingredients": [
+    {
+      "item": "goety:ectoplasm"
+    },
+    {
+      "item": "minecraft:ghast_tear"
+    },
+    {
+      "item": "minecraft:crying_obsidian"
+    },
+    {
+      "item": "goety:fire_blast_focus"
+    },
+    {
+      "item": "goety:bombardment_focus"
+    },
+    {
+      "item": "goety:fanged_dagger"
+    },
+    {
+      "item": "goety:updraft_focus"
+    },
+    {
+      "item": "goety:nether_robe"
+    }
+  ],
+  "result": {
+    "item": "goety:jei_dummy/none"
+  }
+}

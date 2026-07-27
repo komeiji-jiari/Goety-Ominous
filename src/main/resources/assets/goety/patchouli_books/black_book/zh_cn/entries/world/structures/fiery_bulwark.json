@@ -1,6 +1,6 @@
 {
   "name": "淬焰堡垒",
-  "icon": "someillagerservants:firebrand",
+  "icon": "goetyominus:firebrand",
   "category": "goety:world",
   "pages": [
     {
@@ -9,13 +9,13 @@
     },
     {
       "type": "patchouli:image",
-      "images": ["someillagerservants:textures/gui/entries/fiery_bulwark.png"],
+      "images": ["goetyominus:textures/gui/entries/fiery_bulwark.png"],
       "border": true,
       "text": "猪灵族群重兵看守的堡垒"
     },
     {
       "type": "patchouli:entity",
-      "entity": "someillagerservants:piglin_merchant",
+      "entity": "goetyominus:piglin_merchant",
       "text": "别忘了带上你的黄金！货真价实，童叟无欺！"
     },
     {

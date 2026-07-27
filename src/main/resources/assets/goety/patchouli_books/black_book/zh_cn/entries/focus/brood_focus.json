@@ -1,6 +1,6 @@
 {
   "name": "育母聚晶",
-  "icon": "someillagerservants:brood_focus",
+  "icon": "goetyominus:brood_focus",
   "category": "goety:focuses/wild",
   "pages": [
     {
@@ -9,7 +9,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "someillagerservants:brood_focus",
+      "recipe": "goetyominus:brood_focus",
       "text": ""
     },
     {

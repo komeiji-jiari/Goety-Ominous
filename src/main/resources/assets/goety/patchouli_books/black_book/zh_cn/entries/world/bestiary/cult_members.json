@@ -1,6 +1,6 @@
 {
   "name": "下界教团",
-  "icon": "someillagerservants:burning_potion",
+  "icon": "goetyominus:burning_potion",
   "category": "goety:world/bestiary",
   "advancement": "goety:goety/kill_a_heretic",
   "pages": [
@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "someillagerservants:fanatic"
+      "entity": "goetyominus:fanatic"
     },
     {
       "type": "patchouli:text",
@@ -26,7 +26,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "someillagerservants:zealot"
+      "entity": "goetyominus:zealot"
     },
     {
       "type": "patchouli:text",
@@ -34,7 +34,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "someillagerservants:beldam",
+      "entity": "goetyominus:beldam",
       "text": ""
     },
     {
@@ -43,7 +43,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "someillagerservants:thug",
+      "entity": "goetyominus:thug",
       "text": ""
     },
     {

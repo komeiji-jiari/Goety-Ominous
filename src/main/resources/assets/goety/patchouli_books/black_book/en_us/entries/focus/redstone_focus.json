@@ -1,6 +1,6 @@
 {
   "name": "Redstone Focus",
-  "icon": "someillagerservants:redstone_focus",
+  "icon": "goetyominus:redstone_focus",
   "category": "goety:focuses/geomancy",
   "pages": [
     {
@@ -9,7 +9,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "someillagerservants:redstone_focus"
+      "recipe": "goetyominus:redstone_focus"
     },
     {
       "type": "patchouli:text",

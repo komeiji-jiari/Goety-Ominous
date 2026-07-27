@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "someillagerservants:storm_necromancer",
+      "entity": "goetyominus:storm_necromancer",
       "text": "Some say that a significant portion of the thunderstorms that occasionally occur in the Overworld originate from their power."
     },
     {
@@ -19,12 +19,12 @@
     },
     {
       "type": "patchouli:spotlight",
-      "item": "someillagerservants:broken_storm_crown",
+      "item": "goetyominus:broken_storm_crown",
       "text": "After defeating these Storm Necromancers, you discover that their shattered crowns hold far greater magical power than the version you possess, and can be used to craft certain magical items, such as the Stormlander."
     },
     {
       "type": "goety:ritual",
-      "recipe": "someillagerservants:stormlander"
+      "recipe": "goetyominus:stormlander"
     }
   ]
 }

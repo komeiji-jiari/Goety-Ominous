@@ -1,8 +1,8 @@
 {
   "name": "真菌背囊",
-  "icon": "someillagerservants:fungus_pack",
+  "icon": "goetyominus:fungus_pack",
   "category": "goety:crafts/equipment",
-  "advancement": "someillagerservants:someillagerservants/read_bastion_scroll",
+  "advancement": "goetyominus:goetyominus/read_bastion_scroll",
   "secret": true,
   "pages": [
     {
@@ -11,7 +11,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "someillagerservants:fungus_pack"
+      "recipe": "goetyominus:fungus_pack"
     },
     {
       "type": "patchouli:text",

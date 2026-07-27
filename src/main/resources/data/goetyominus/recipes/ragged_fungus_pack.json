@@ -1,0 +1,8 @@
+{
+  "type": "goety:cursed_infuser_recipes",
+  "ingredient": {
+    "item": "goetyominus:fungus_pack"
+  },
+  "result": "goetyominus:ragged_fungus_pack",
+  "cookingTime": 60
+}

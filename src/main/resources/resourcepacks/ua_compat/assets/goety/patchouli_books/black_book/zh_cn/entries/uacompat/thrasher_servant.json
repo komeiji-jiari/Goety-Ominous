@@ -9,11 +9,11 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "someillagerservants:thrasher_servant"
+      "recipe": "goetyominus:thrasher_servant"
     },
     {
       "type": "patchouli:entity",
-      "entity": "someillagerservants:thrasher_servant",
+      "entity": "goetyominus:thrasher_servant",
       "text": "白鲨糖"
     },
     {
@@ -22,11 +22,11 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "someillagerservants:great_thrasher_servant"
+      "recipe": "goetyominus:great_thrasher_servant"
     },
     {
       "type": "patchouli:entity",
-      "entity": "someillagerservants:great_thrasher_servant",
+      "entity": "goetyominus:great_thrasher_servant",
       "text": "巨大白鲨糖"
     },
     {

@@ -1,8 +1,8 @@
 {
   "name": "Firebrand",
-  "icon": "someillagerservants:firebrand",
+  "icon": "goetyominus:firebrand",
   "category": "goety:crafts/equipment",
-  "advancement": "someillagerservants:someillagerservants/read_bastion_scroll",
+  "advancement": "goetyominus:goetyominus/read_bastion_scroll",
   "secret": true,
   "pages": [
     {
@@ -11,7 +11,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "someillagerservants:firebrand"
+      "recipe": "goetyominus:firebrand"
     },
     {
       "type": "patchouli:text",

@@ -1,6 +1,6 @@
 {
   "name": "Flare Focus",
-  "icon": "someillagerservants:flare_focus",
+  "icon": "goetyominus:flare_focus",
   "category": "goety:uacompat",
   "pages": [
     {
@@ -9,7 +9,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "someillagerservants:flare_focus",
+      "recipe": "goetyominus:flare_focus",
       "text": ""
     },
     {

@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "nbn",
+    "heh",
+    "nbn"
+  ],
+  "key":
+  {
+    "b":
+    {
+      "item": "minecraft:redstone_block"
+    },
+    "h":
+    {
+      "item": "minecraft:lava_bucket"
+    },
+    "n":
+    {
+      "item": "minecraft:cobblestone"
+    },
+    "e":
+    {
+      "item": "goety:animation_core"
+    }
+  },
+  "result":
+  {
+    "item": "goetyominus:redstone_focus",
+    "count": 1
+  }
+}

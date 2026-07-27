@@ -9,11 +9,11 @@
     },
  	{
       "type": "goety:ritual",
-      "recipe": "someillagerservants:crimson_spider_servant"
+      "recipe": "goetyominus:crimson_spider_servant"
     },
     {
       "type": "patchouli:entity",
-      "entity": "someillagerservants:crimson_spider_servant",
+      "entity": "goetyominus:crimson_spider_servant",
       "text": "红蜘蛛"
     },
     {

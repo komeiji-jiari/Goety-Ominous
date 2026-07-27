@@ -1,6 +1,6 @@
 {
   "name": "Hog Charge Focus",
-  "icon": "someillagerservants:hog_charge_focus",
+  "icon": "goetyominus:hog_charge_focus",
   "category": "goety:mmcompat",
   "pages": [
     {
@@ -9,7 +9,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "someillagerservants:hog_charge_focus",
+      "recipe": "goetyominus:hog_charge_focus",
       "text": ""
     },
     {

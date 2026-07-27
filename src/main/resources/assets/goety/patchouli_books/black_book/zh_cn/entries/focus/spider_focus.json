@@ -1,6 +1,6 @@
 {
   "name": "垂丝聚晶",
-  "icon": "someillagerservants:spider_focus",
+  "icon": "goetyominus:spider_focus",
   "category": "goety:focuses/wild",
   "pages": [
     {
@@ -9,7 +9,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "someillagerservants:spider_focus"
+      "recipe": "goetyominus:spider_focus"
     },
     {
       "type": "patchouli:text",

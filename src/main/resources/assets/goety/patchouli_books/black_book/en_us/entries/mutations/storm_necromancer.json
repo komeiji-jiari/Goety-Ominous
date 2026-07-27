@@ -10,7 +10,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "someillagerservants:convert_rattled_to_storm_necromancer"
+      "recipe": "goetyominus:convert_rattled_to_storm_necromancer"
     },
     {
       "type": "patchouli:text",
@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "someillagerservants:storm_necromancer_servant"
+      "entity": "goetyominus:storm_necromancer_servant"
     },
     {
       "type": "patchouli:text",
@@ -26,7 +26,7 @@
     },
     {
       "type": "patchouli:spotlight",
-      "item": "someillagerservants:storm_soul_jar",
+      "item": "goetyominus:storm_soul_jar",
       "text": "If a Storm Necromancer dies and you happen to have an $(l:crafts/empty_soul_jar)Empty Soul Jar$(), their soul will fill it. Right-clicking on a Rattled with this filled Soul Jar will resurrect the Necromancer, using that Rattled as a new body."
     }
   ]

@@ -1,6 +1,6 @@
 {
   "name": "Screaming Skull Jar",
-  "icon": "someillagerservants:screaming_skull_jar",
+  "icon": "goetyominus:screaming_skull_jar",
   "category": "goety:crafts/garment",
   "pages": [
     {
@@ -9,7 +9,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "someillagerservants:screaming_skull_jar"
+      "recipe": "goetyominus:screaming_skull_jar"
     },
     {
       "type": "patchouli:text",

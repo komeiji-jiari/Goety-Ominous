@@ -1,0 +1,42 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:convert_tamed",
+  "activation_item": {
+    "item": "mutantmore:compound_z"
+  },
+  "craftType": "expert_nether",
+  "entity_to_convert": {
+    "tag": "goety:wither_skeleton_convert",
+    "display_name": "entity.goety.wither_skeleton_servant"
+  },
+  "entity_to_convert_into": "goetyominus:mutant_wither_skeleton_servant",
+  "soulCost": 5,
+  "duration": 30,
+  "research": "bygone",
+  "ingredients": [
+    {
+      "item": "mutantmore:mutant_wither_skeleton_skull"
+    },
+    {
+      "item": "mutantmore:mutant_wither_skeleton_chestplate"
+    },
+    {
+      "item": "mutantmore:mutant_wither_skeleton_leggings"
+    },
+    {
+      "item": "mutantmore:mutant_wither_skeleton_boots"
+    },
+    {
+      "item": "goety:ectoplasm"
+    },
+    {
+      "item": "minecraft:netherite_scrap"
+    },
+    {
+      "item": "minecraft:netherite_scrap"
+    }
+  ],
+  "result": {
+    "item": "goety:jei_dummy/none"
+  }
+}

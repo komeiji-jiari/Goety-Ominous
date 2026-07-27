@@ -1,0 +1,26 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:convert_complete_tamed",
+  "activation_item": {
+    "tag": "minecraft:fishes"
+  },
+  "craftType": "deep",
+  "entity_to_convert": {
+    "tag": "goetyominus:thrasher_convert",
+    "display_name": "entity.goetyominus.thrasher_servant"
+  },
+  "entity_to_convert_into": "goetyominus:great_thrasher_servant",
+  "soulCost": 5,
+  "duration": 10,
+  "ingredients": [
+    {
+      "item": "upgrade_aquatic:thrasher_tooth"
+    },
+    {
+      "item": "upgrade_aquatic:thrasher_tooth"
+    }
+  ],
+  "result": {
+    "item": "goety:jei_dummy/none"
+  }
+}

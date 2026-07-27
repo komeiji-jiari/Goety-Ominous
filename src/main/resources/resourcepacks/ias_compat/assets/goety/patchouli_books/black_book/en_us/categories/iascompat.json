@@ -1,7 +1,7 @@
 {
   "name": "Illager and Spillage Compat",
   "description": "Scheme ever stranger plots.",
-  "icon": "someillagerservants:mysterious_contract",
+  "icon": "goetyominus:mysterious_contract",
   "sortnum": 4,
   "parent": "goety:goetyominous"
 }
