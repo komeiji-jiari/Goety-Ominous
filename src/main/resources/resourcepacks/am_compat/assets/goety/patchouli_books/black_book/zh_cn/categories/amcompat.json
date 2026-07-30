@@ -1,0 +1,7 @@
+{
+  "name": "Alex生物联动",
+  "description": "从自然与超自然之中攫取黑暗。",
+  "icon": "alexsmobs:blood_sac",
+  "sortnum": 5,
+  "parent": "goety:goetyominous"
+}

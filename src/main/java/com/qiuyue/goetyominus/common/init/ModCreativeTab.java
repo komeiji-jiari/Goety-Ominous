@@ -3,21 +3,15 @@ package com.qiuyue.goetyominus.common.init;
 import com.Polarice3.Goety.common.items.magic.MagicFocus;
 import com.qiuyue.goetyominus.GoetyOminous;
 import com.qiuyue.goetyominus.common.items.ModItems;
+import com.qiuyue.goetyominus.common.items.am.AmItems;
 import com.qiuyue.goetyominus.common.items.lm.LmItems;
 import com.qiuyue.goetyominus.common.items.mm.MmItems;
 import com.qiuyue.goetyominus.common.items.sar.SarItems;
 import com.qiuyue.goetyominus.common.items.ua.UaItems;
 import com.qiuyue.goetyominus.compat.ias.IasItems;
-import com.qiuyue.goetyominus.compat.mod.IllageAndSpillageCompat;
-import com.qiuyue.goetyominus.compat.mod.LegendaryMonstersCompat;
-import com.qiuyue.goetyominus.compat.mod.MutantMoreCompat;
-import com.qiuyue.goetyominus.compat.mod.SavageRavageCompat;
-import com.qiuyue.goetyominus.compat.mod.UpgradeAquaticCompat;
+import com.qiuyue.goetyominus.compat.mod.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.*;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
@@ -64,6 +58,10 @@ public class ModCreativeTab {
 
                         if (LegendaryMonstersCompat.isLegendaryMonstersLoaded()) {
                             collectFrom(LmItems.LM_ITEMS, spawnEggs, foci, weapons, otherItems);
+                        }
+
+                        if (AlexMobsCompat.isAlexMobsLoaded()) {
+                            collectFrom(AmItems.AM_ITEMS, spawnEggs, foci, weapons, otherItems);
                         }
 
                         spawnEggs.forEach(output::accept);

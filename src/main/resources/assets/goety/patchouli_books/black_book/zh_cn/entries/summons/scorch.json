@@ -1,0 +1,16 @@
+{
+  "name": "怨鬼",
+  "icon": "minecraft:blaze_powder",
+  "category": "goety:summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "这些看起来像是恼鬼的小生物其实是一种下界恶魔，只不过更小一些，也更容易受到召唤成为仆从。他们快速冲向目标并发射火球，烧死别人。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominus:scorch",
+      "text": "有趣的是，你不是唯一一个尝试将这些小恶魔纳入麾下的人..."
+    }
+  ]
+}

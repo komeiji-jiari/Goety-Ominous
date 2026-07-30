@@ -1,0 +1,20 @@
+{
+  "name": "Murmur Focus",
+  "icon": "goetyominus:murmur_focus",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "You have crafted a spell that constantly whispers to you in a dark tongue. Through these dark whispers, you summon Murmur servants loyal to you. These specters extend their necks to strike enemies from afar."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominus:murmur_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "Casting with a Necro Staff allows you to summon more Murmur servants. Even more terrifying, isn't it?"
+    }
+  ]
+}

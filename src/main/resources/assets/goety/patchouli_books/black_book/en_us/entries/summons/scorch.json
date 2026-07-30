@@ -1,0 +1,16 @@
+{
+  "name": "Scorch",
+  "icon": "minecraft:blaze_powder",
+  "category": "goety:summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "These small creatures resemble Vexes but are actually Nether demons—smaller and more easily summoned as servants. They dart swiftly toward their targets and launch fireballs to burn their foes to death."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominus:scorch",
+      "text": "Interestingly, you're not the only one who has tried to bring these little devils under their control..."
+    }
+  ]
+}

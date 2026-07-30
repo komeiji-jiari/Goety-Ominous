@@ -143,6 +143,7 @@ public class SporeCloud extends SpellThrowableProjectile {
 
             if (this.potencyLevel > 0) {
                 creepie.addEffect(new MobEffectInstance(GoetyEffects.BUFF.get(), -1, this.potencyLevel - 1, false, false));
+                creepie.setExplosionDamageBonus(this.potencyLevel);
             }
 
             int baseLifespan = 1200;

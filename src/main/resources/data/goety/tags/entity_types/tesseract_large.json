@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "__comment": "ownable entities that takes up all spaces in Esoteric Tesseracts",
+  "values": [
+    "goetyominous:mutant_hoglin_servant",
+    "goetyominous:mutant_wither_skeleton_servant"
+  ]
+}

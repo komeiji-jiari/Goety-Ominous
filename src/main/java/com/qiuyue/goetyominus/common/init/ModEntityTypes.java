@@ -285,6 +285,14 @@ public class ModEntityTypes {
                     .clientTrackingRange(8)
                     .build(MOD_ID + ":channeller"));
 
+    public static final RegistryObject<EntityType<Scorch>> SCORCH = ENTITY_TYPES.register(
+            "scorch",
+            () -> EntityType.Builder.of(Scorch::new, MobCategory.MONSTER)
+                    .sized(0.4F, 0.8F)
+                    .fireImmune()
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":scorch"));
+
     public static final RegistryObject<EntityType<CrimsonSpiderServant>> CRIMSON_SPIDER_SERVANT = ENTITY_TYPES.register("crimson_spider_servant",
             () -> EntityType.Builder.of(CrimsonSpiderServant::new, MobCategory.MISC)
                     .sized(1.4F, 0.9F)

@@ -27,7 +27,6 @@ public class OpenFungusPackPacket {
             ServerPlayer player = ctx.get().getSender();
             if (player == null) return;
 
-            // 检查主手 / 副手
             for (InteractionHand hand : InteractionHand.values()) {
                 ItemStack stack = player.getItemInHand(hand);
                 if (stack.is(ModTags.FUNGUS_PACKS)) {

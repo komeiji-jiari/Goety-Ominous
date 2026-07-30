@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "__comment": "ownable entities that takes up 4 spaces in Esoteric Tesseracts",
+  "values": [
+    "goetyominous:heresiarch_servant",
+    "goetyominous:storm_necromancer_servant",
+    "goetyominous:magispeller_servant",
+    "goetyominous:great_thrasher_servant",
+    "goetyominous:overgrown_colossus_servant"
+  ]
+}

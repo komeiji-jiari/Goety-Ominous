@@ -10,6 +10,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -26,6 +27,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level.ExplosionInteraction;
 import net.minecraft.world.phys.HitResult;
 
@@ -42,6 +44,7 @@ public class CreepieServant extends Summoned implements PowerableMob {
     private int swell;
     private int maxSwell = 30;
     private float explosionRadius = 1.2F;
+    private int explosionDamageBonus = 0;
 
     public CreepieServant(EntityType<? extends Summoned> type, Level worldIn) {
         super(type, worldIn);
@@ -117,6 +120,7 @@ public class CreepieServant extends Summoned implements PowerableMob {
         }
         compound.putShort("Fuse", (short) this.maxSwell);
         compound.putFloat("ExplosionRadius", this.explosionRadius);
+        compound.putInt("ExplosionDamageBonus", this.explosionDamageBonus);
         compound.putBoolean("ignited", this.entityData.get(DATA_IS_IGNITED));
     }
 
@@ -128,6 +132,9 @@ public class CreepieServant extends Summoned implements PowerableMob {
         }
         if (compound.contains("ExplosionRadius", 99)) {
             this.explosionRadius = compound.getFloat("ExplosionRadius");
+        }
+        if (compound.contains("ExplosionDamageBonus", 99)) {
+            this.explosionDamageBonus = compound.getInt("ExplosionDamageBonus");
         }
         if (compound.contains("ignited", 99)) {
             this.entityData.set(DATA_IS_IGNITED, compound.getBoolean("ignited"));
@@ -196,6 +203,10 @@ public class CreepieServant extends Summoned implements PowerableMob {
 
     public void setCharged(boolean charged) {
         this.entityData.set(DATA_IS_POWERED, charged);
+    }
+
+    public void setExplosionDamageBonus(int bonus) {
+        this.explosionDamageBonus = bonus;
     }
 
     public boolean hasIgnited() {
@@ -267,8 +278,24 @@ public class CreepieServant extends Summoned implements PowerableMob {
             this.dead = true;
             ExplosionInteraction interaction = shouldExplosionDestroyBlocks() ?
                     ExplosionInteraction.MOB : ExplosionInteraction.NONE;
-            this.level().explode(this, this.getX(), this.getY(), this.getZ(),
+            Explosion explosion = this.level().explode(this, this.getX(), this.getY(), this.getZ(),
                     this.explosionRadius * chargedModifier, interaction);
+
+            if (this.explosionDamageBonus > 0) {
+                float radius = this.explosionRadius * chargedModifier;
+                AABB aabb = this.getBoundingBox().inflate(radius);
+                for (Entity entity : this.level().getEntities(this, aabb)) {
+                    if (entity instanceof LivingEntity living
+                            && living != this.getOwner()
+                            && !living.isAlliedTo(this.getOwner())) {
+                        double distance = this.distanceTo(living);
+                        if (distance <= radius) {
+                            living.hurt(this.damageSources().explosion(explosion), this.explosionDamageBonus);
+                        }
+                    }
+                }
+            }
+
             this.discard();
             this.spawnLingeringCloud();
         }

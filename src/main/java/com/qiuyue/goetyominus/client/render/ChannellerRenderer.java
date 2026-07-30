@@ -46,7 +46,7 @@ public class ChannellerRenderer extends MobRenderer<Channeller, ChannellerModel<
 
         Vec3 cameraPos = this.entityRenderDispatcher.camera.getPosition();
 
-        double startHeight = entity.getBbHeight() * 0.5D;
+        double startHeight = entity.getBbHeight() * 0.65D;
         Vec3 start = this.getLerpedPosition(entity, startHeight, partialTicks);
         Vec3 end = this.getLerpedPosition(ally, ally.getBbHeight() * 0.5D, partialTicks);
 

@@ -167,5 +167,4 @@ public class ModEntityLayers {
 
     public static final ModelLayerLocation CHANNELLER_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "channeller"), "main");
-
-	}
+}

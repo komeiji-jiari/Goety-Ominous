@@ -1,0 +1,24 @@
+{
+  "name": "Murmur Servant",
+  "icon": "alexsmobs:unsettling_kimono",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Though called Murmurs, these undead creatures are best known for stretching out their long necks to attack while letting out terrifying screams. You believe such fearsome dark beings would make fitting servants for you—a simple ritual is all it takes to summon them."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominus:murmur_servant",
+      "text": "ろくろくび"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Right-click your Murmur Servant with Ectoplasm to heal it. Additionally, wearing the Necro Set provides it with extra passive healing."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominus:murmur_servant"
+    }
+  ]
+}

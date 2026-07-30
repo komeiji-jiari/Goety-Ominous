@@ -15,6 +15,11 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachSummonDown;
     public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachCoolDown;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> ScorchSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ScorchCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ScorchSummonDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ScorchCoolDown;
+
     public static final ForgeConfigSpec.ConfigValue<Integer> BroodSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> BroodSummonDown;
     public static final ForgeConfigSpec.ConfigValue<Integer> BroodCoolDown;
@@ -57,11 +62,27 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> FlareSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> FlareCooldown;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> MurmurSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MurmurCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MurmurSummonDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MurmurCoolDown;
+
     static {
         BUILDER.push("Spells");
 
+        BUILDER.push("Murmur");
+        MurmurSoulCost = BUILDER.comment("Soul cost of Murmur Servant spell (Default: 16)")
+                .defineInRange("murmurSoulCost", 16, 1, 100);
+        MurmurCastDuration = BUILDER.comment("Cast duration of Murmur Servant spell in ticks (Default: 120)")
+                .defineInRange("murmurCastDuration", 120, 0, 500);
+        MurmurSummonDown = BUILDER.comment("Summon down duration of Murmur Servant spell in ticks (Default: 160)")
+                .defineInRange("murmurSummonDown", 160, 0, 5000);
+        MurmurCoolDown = BUILDER.comment("Cooldown of Murmur Servant spell in ticks (Default: 100)")
+                .defineInRange("murmurCoolDown", 100, 0, 5000);
+        BUILDER.pop();
+
         BUILDER.push("Urbhadhach");
-        UrbhadhachSoulCost = BUILDER.comment("Soul cost of Urbhadhach Servant spell (Default: 32)")
+        UrbhadhachSoulCost = BUILDER.comment("Soul cost of Urbhadhach Servant spell (Default: 48)")
                 .defineInRange("urbhadhachSoulCost", 48, 1, 100);
         UrbhadhachCastDuration = BUILDER.comment("Cast duration of Urbhadhach Servant spell in ticks (Default: 60)")
                 .defineInRange("urbhadhachCastDuration", 60, 0, 500);
@@ -69,6 +90,17 @@ public class SpellConfig {
                 .defineInRange("urbhadhachSummonDown", 200, 0, 5000);
         UrbhadhachCoolDown = BUILDER.comment("Cooldown of Urbhadhach Servant spell in ticks (Default: 300)")
                 .defineInRange("urbhadhachCoolDown", 300, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("Scorch");
+        ScorchSoulCost = BUILDER.comment("Soul cost of Scorch spell (Default: 18)")
+                .defineInRange("scorchSoulCost", 18, 1, 100);
+        ScorchCastDuration = BUILDER.comment("Cast duration of Scorch spell in ticks (Default: 100)")
+                .defineInRange("scorchCastDuration", 100, 0, 500);
+        ScorchSummonDown = BUILDER.comment("Summon down duration of Scorch spell in ticks (Default: 340)")
+                .defineInRange("scorchSummonDown", 340, 0, 5000);
+        ScorchCoolDown = BUILDER.comment("Cooldown of Scorch spell in ticks (Default: 340)")
+                .defineInRange("scorchCoolDown", 340, 0, 5000);
         BUILDER.pop();
 
         BUILDER.push("Brood");

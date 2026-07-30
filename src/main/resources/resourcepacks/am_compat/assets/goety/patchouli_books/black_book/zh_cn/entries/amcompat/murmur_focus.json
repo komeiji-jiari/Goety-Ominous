@@ -1,0 +1,20 @@
+{
+  "name": "轻语聚晶",
+  "icon": "goetyominus:murmur_focus",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "你创造出一个无时无刻不在对你低声轻语的法术。通过黑暗的声音，你可以召唤忠诚于你的轻语灵仆从，这些鬼怪通过延长它们的脖子攻击远处的敌人。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominus:murmur_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "使用死灵魔杖允许你召唤更多轻语灵仆从。更可怕了不是吗？"
+    }
+  ]
+}

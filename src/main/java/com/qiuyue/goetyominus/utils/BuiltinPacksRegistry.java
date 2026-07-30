@@ -123,6 +123,48 @@ public class BuiltinPacksRegistry {
             }
         }
 
+        // --- 客户端资源包（AM 联动内容）---
+        if (event.getPackType() == PackType.CLIENT_RESOURCES && AlexMobsCompat.isAlexMobsLoaded()) {
+            Path packPath = modFile.findResource("resourcepacks/am_compat");
+            if (packPath != null) {
+                event.addRepositorySource(consumer -> {
+                    Pack pack = Pack.readMetaAndCreate(
+                            "goetyominus/am_compat",
+                            Component.literal("AlexMobs Compatibility Pack"),
+                            true,
+                            id -> new PathPackResources(id, packPath, true),
+                            PackType.CLIENT_RESOURCES,
+                            Pack.Position.TOP,
+                            PackSource.BUILT_IN
+                    );
+                    if (pack != null) {
+                        consumer.accept(pack);
+                    }
+                });
+            }
+        }
+
+        // --- 服务端数据包（UA 联动内容）---
+        if (event.getPackType() == PackType.SERVER_DATA && UpgradeAquaticCompat.isUpgradeAquaticLoaded()) {
+            Path packPath = modFile.findResource("resourcepacks/ua_compat");
+            if (packPath != null) {
+                event.addRepositorySource(consumer -> {
+                    Pack pack = Pack.readMetaAndCreate(
+                            "goetyominus/ua_compat_data",
+                            Component.literal("UA Compatibility Data"),
+                            true,
+                            id -> new PathPackResources(id, packPath, true),
+                            PackType.SERVER_DATA,
+                            Pack.Position.TOP,
+                            PackSource.BUILT_IN
+                    );
+                    if (pack != null) {
+                        consumer.accept(pack);
+                    }
+                });
+            }
+        }
+
         // --- 客户端资源包（旧版本纹理内容）---
         if (event.getPackType() == PackType.CLIENT_RESOURCES) {
             Path packPath = modFile.findResource("resourcepacks/old_textures");
@@ -143,14 +185,35 @@ public class BuiltinPacksRegistry {
                 });
             }
         }
-        // --- 服务端数据包（advancement）---
+        // --- 服务端数据包（SAR 联动内容）---
         if (event.getPackType() == PackType.SERVER_DATA && SavageRavageCompat.isSavageRavageLoaded()) {
-            Path packPath = modFile.findResource("datapacks/sar_compat");
+            Path packPath = modFile.findResource("resourcepacks/sar_compat");
             if (packPath != null) {
                 event.addRepositorySource(consumer -> {
                     Pack pack = Pack.readMetaAndCreate(
                             "goetyominus/sar_compat_data",
                             Component.literal("SAR Compatibility Data"),
+                            true,
+                            id -> new PathPackResources(id, packPath, true),
+                            PackType.SERVER_DATA,
+                            Pack.Position.TOP,
+                            PackSource.BUILT_IN
+                    );
+                    if (pack != null) {
+                        consumer.accept(pack);
+                    }
+                });
+            }
+        }
+
+        // --- 服务端数据包（AM 联动内容）---
+        if (event.getPackType() == PackType.SERVER_DATA && AlexMobsCompat.isAlexMobsLoaded()) {
+            Path packPath = modFile.findResource("resourcepacks/am_compat");
+            if (packPath != null) {
+                event.addRepositorySource(consumer -> {
+                    Pack pack = Pack.readMetaAndCreate(
+                            "goetyominus/am_compat_data",
+                            Component.literal("AlexMobs Compatibility Data"),
                             true,
                             id -> new PathPackResources(id, packPath, true),
                             PackType.SERVER_DATA,

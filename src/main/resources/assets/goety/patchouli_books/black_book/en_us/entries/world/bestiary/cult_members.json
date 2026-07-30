@@ -6,11 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "After discovering strange black circles and robed figures, you began investigating the identity and origins of the Nether Cult. Overall, these cultists are less disciplined and well-equipped than the Illagers, but that does not mean they are without threat."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "As mentioned, these cultists share much in common with Witches. The lower-ranking members often collaborate with Illagers to raid villages in order to spread the Nether's doctrine, or roam the wilderness attacking travelers. Meanwhile, the higher-ranking cultists hold out in their strongholds, studying the revelations and miracles left behind by some beings."
+      "text": "You have already discovered some of the more dangerous and fanatical members of this cult. The fanatical cultists among them often collaborate with Illagers to raid villages in order to spread the Nether's doctrine, or roam the wilderness attacking travelers. Meanwhile, the more dangerous high-ranking members hold out in their strongholds, studying the revelations and miracles left behind by someone."
     },
     {
       "type": "patchouli:text",
@@ -49,6 +45,14 @@
     {
       "type": "patchouli:text",
       "text": "Strong, brutish Cultists that are akin to Iron Golems and Ravagers, only weaker than either of them. However, should they take enough damage, they will enter into some sort of unholy rage that boosts their attack and speed while causing them to periodically take damage. They're either a result of magical experiments or simply big meaty Villagers radicalized with the Cult."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominus:channeller"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "You once assumed these figures to be the local leaders of the cult—the Channelers rely on their brethren to defend them by channeling their power into a servant or another being. While channeling, they take less damage and siphon health from their host, but the host becomes stronger and faster through the Channeler's power. Additionally, they can also use fire blast traps to attack enemies."
     }
   ]
 }

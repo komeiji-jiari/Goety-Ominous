@@ -1,6 +1,5 @@
 package com.qiuyue.goetyominus.client.render;
 
-import com.Polarice3.Goety.client.render.model.CultistModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.qiuyue.goetyominus.GoetyOminous;
 import com.qiuyue.goetyominus.client.init.ModEntityLayers;
@@ -205,6 +204,10 @@ public class ModModelLayers {
             event.registerLayerDefinition(ModEntityLayers.MUTANT_HOGLIN_SERVANT_LAYER,
                     MutantHoglinServantModel::createBodyLayer);
         }
+
+        if (AlexMobsCompat.isAlexMobsLoaded()) {
+            // 徒弟：在这里添加 AlexMobs 联动仆从的模型层注册
+        }
     }
 
     /**
@@ -379,6 +382,8 @@ public class ModModelLayers {
 
         event.registerEntityRenderer(ModEntityTypes.CHANNELLER.get(), ChannellerRenderer::new);
 
+        event.registerEntityRenderer(ModEntityTypes.SCORCH.get(), ScorchRenderer::new);
+
         event.registerEntityRenderer(ModEntityTypes.CRIMSON_SPIDER_SERVANT.get(), CrimsonSpiderServantRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.ZFUNGUS_THROWER.get(), ZFungusThrowerRenderer::new);
@@ -474,6 +479,17 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominus.common.init.mm.MmEntityRegistry.MUTANT_HOGLIN_SERVANT.get(),
                     MutantHoglinServantRenderer::new);
+        }
+
+        if (AlexMobsCompat.isAlexMobsLoaded()) {
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominus.common.init.am.AmEntityRegistry.MURMUR_SERVANT.get(),
+                    com.qiuyue.goetyominus.client.render.am.RenderMurmurServantBody::new);
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominus.common.init.am.AmEntityRegistry.MURMUR_SERVANT_HEAD.get(),
+                    com.qiuyue.goetyominus.client.render.am.RenderMurmurServantHead::new);
+
+            // 在这里添加 AlexMobs 联动仆从的渲染器注册
         }
     }
 }

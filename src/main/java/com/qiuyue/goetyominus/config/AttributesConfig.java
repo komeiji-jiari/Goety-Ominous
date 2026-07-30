@@ -11,6 +11,12 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> MurmurServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> MurmurServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> MurmurServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> MurmurServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> MurmurServantKnockbackResistance;
+
     public static final ForgeConfigSpec.ConfigValue<Double> MagispellerServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> MagispellerServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> MagispellerServantMovementSpeed;
@@ -180,6 +186,9 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> CrimsonSpiderServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> CrimsonSpiderServantDamage;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> ScorchHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> ScorchDamage;
+
     public static final ForgeConfigSpec.ConfigValue<Double> BeldamHealth;
 
     public static final ForgeConfigSpec.ConfigValue<Double> ZealotHealth;
@@ -251,13 +260,20 @@ public class AttributesConfig {
 
         BUILDER.push("Martyr");
         MartyrHealth = BUILDER
-                .comment("How much Max Health Martyr have, Default: 26.0")
-                .defineInRange("martyrHealth", 26.0, 1.0, Double.MAX_VALUE);
+                .comment("How much Max Health Martyr have, Default: 32.0")
+                .defineInRange("martyrHealth", 32.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.push("Channeller");
         ChannellerHealth = BUILDER.comment("How much Max Health Channeller have, Default: 32.0")
                 .defineInRange("channellerHealth", 32.0, 1.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Scorch");
+        ScorchHealth = BUILDER.comment("How much Max Health Scorch have, Default: 14.0")
+                .defineInRange("scorchHealth", 14.0, 1.0, Double.MAX_VALUE);
+        ScorchDamage = BUILDER.comment("How much damage Scorch deals, Default: 6.0")
+                .defineInRange("scorchDamage", 6.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.push("Urbhadhach");
@@ -584,6 +600,19 @@ public class AttributesConfig {
                 .defineInRange("mutantHoglinServantAttackDamage", 8.0, 1.0, Double.MAX_VALUE);
         MutantHoglinServantAttackKnockback = BUILDER.comment("How much Attack Knockback Mutant Hoglin Servants have, Default: 1.75")
                 .defineInRange("mutantHoglinServantAttackKnockback", 1.75, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("AM Servants (Optional)");
+        MurmurServantHealth = BUILDER.comment("How much Max Health Murmur Servants have, Default: 30.0")
+                .defineInRange("murmurServantHealth", 30.0, 1.0, Double.MAX_VALUE);
+        MurmurServantDamage = BUILDER.comment("How much damage Murmur Servants deal, Default: 3.0")
+                .defineInRange("murmurServantDamage", 3.0, 1.0, Double.MAX_VALUE);
+        MurmurServantMovementSpeed = BUILDER.comment("How fast Murmur Servants move, Default: 0.2")
+                .defineInRange("murmurServantMovementSpeed", 0.2, 0.0, Double.MAX_VALUE);
+        MurmurServantFollowRange = BUILDER.comment("How much following/detection range Murmur Servants have, Default: 48.0")
+                .defineInRange("murmurServantFollowRange", 48.0, 0.0, Double.MAX_VALUE);
+        MurmurServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Murmur Servants have, Default: 0.3")
+                .defineInRange("murmurServantKnockbackResistance", 0.3, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.push("Overgrown Colossus Servant (Optional - LM)");

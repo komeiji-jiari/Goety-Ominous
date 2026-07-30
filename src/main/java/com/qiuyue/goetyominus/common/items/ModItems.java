@@ -124,6 +124,9 @@ public class ModItems {
     public static final RegistryObject<Item> URBHADHACH_FOCUS = ITEMS.register("urbhadhach_focus",
             () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominus.common.magic.spells.UrbhadhachSpell()));
 
+    public static final RegistryObject<Item> SCORCH_FOCUS = ITEMS.register("scorch_focus",
+            () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominus.common.magic.spells.ScorchSpell()));
+
     /**
      * 征服者仆从刷怪蛋
      * 使用 ServantSpawnEggItem (这是北极冰的仆从刷怪蛋)类型，继承自 Forge 的原版刷怪蛋
@@ -262,6 +265,10 @@ public class ModItems {
     public static final RegistryObject<ServantSpawnEggItem> CRIMSON_SPIDER_SERVANT_SPAWN_EGG = ITEMS.register(
             "crimson_spider_servant_spawn_egg",
             () -> new ServantSpawnEggItem(ModEntityTypes.CRIMSON_SPIDER_SERVANT, 0xCC0000, 0xFFAA00, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> SCORCH_SPAWN_EGG = ITEMS.register(
+            "scorch_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.SCORCH, 0x3b1414, 0xFFD700, egg()));
 
     public static final RegistryObject<ForgeSpawnEggItem> URBHADHACH_SPAWN_EGG = ITEMS.register(
             "urbhadhach_spawn_egg",

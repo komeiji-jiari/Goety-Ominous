@@ -33,12 +33,15 @@ public class UrbhadhachSpawnEvents {
         if (event.phase != TickEvent.Phase.START) return;
         if (!(event.level instanceof ServerLevel level)) return;
         if (level.dimension() != Level.OVERWORLD) return;
+        if (level.isDay()) return;
         if (level.getMoonPhase() != 0) return;
         if (level.getGameTime() % 200 != 0) return;
         if (level.getGameTime() - globalCooldown < COOLDOWN) return;
 
         for (ServerPlayer player : level.players()) {
             BlockPos pos = player.blockPosition();
+
+            if (!level.getBiome(pos).value().coldEnoughToSnow(pos)) continue;
 
             boolean hasAdults = level.getEntitiesOfClass(Villager.class,
                             player.getBoundingBox().inflate(64)).stream()

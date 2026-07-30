@@ -1,0 +1,20 @@
+{
+  "name": "怨鬼聚晶",
+  "icon": "goetyominus:scorch_focus",
+  "category": "goety:focuses/nether",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "下界是一个奇怪的位面。要塞居民的古老的日志和典籍记载了居住于此的魔鬼和小恶魔...你发现你可以用一个简单的下界咒语，来约束和绑定这些小恶魔为你服务。多么有趣..."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominus:scorch_focus",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "如果你穿戴了不洁套装，那么你召唤的怨鬼将会发射狱火束。"
+    }
+  ]
+}

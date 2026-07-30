@@ -461,7 +461,9 @@ public class Channeller extends AbstractGOCultist {
     @Override
     public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
         ItemStack itemstack = pPlayer.getItemInHand(pHand);
-        if (!this.level().isClientSide && itemstack.is(com.Polarice3.Goety.init.ModTags.Items.WITCH_CURRENCY) && this.getMainHandItem().isEmpty()) {
+        if (!this.level().isClientSide && itemstack.is(com.Polarice3.Goety.init.ModTags.Items.WITCH_CURRENCY)
+                && this.getMainHandItem().isEmpty()
+                && com.Polarice3.Goety.utils.CuriosFinder.isWitchFriendly(pPlayer)) {
             this.setItemInHand(InteractionHand.MAIN_HAND, itemstack.split(1));
             com.Polarice3.Goety.utils.WitchBarterHelper.setTrader(this, pPlayer);
             return InteractionResult.SUCCESS;

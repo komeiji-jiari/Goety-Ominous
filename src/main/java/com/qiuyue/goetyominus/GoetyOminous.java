@@ -3,6 +3,7 @@ package com.qiuyue.goetyominus;
 import com.Polarice3.Goety.api.entities.ally.illager.IllagerType;
 import com.Polarice3.Goety.common.entities.neutral.ZPiglinServant;
 import com.qiuyue.goetyominus.common.entities.ally.spider.CrimsonSpiderServant;
+import com.qiuyue.goetyominus.common.entities.hostile.Scorch;
 import com.qiuyue.goetyominus.common.entities.hostile.cultists.Acolyte;
 import com.qiuyue.goetyominus.common.entities.hostile.cultists.Martyr;
 import com.qiuyue.goetyominus.common.entities.hostile.UrbhadhachEntity;
@@ -122,6 +123,10 @@ public class GoetyOminous {
             com.qiuyue.goetyominus.compat.lm.LmCompatManager.init(modEventBus);
         }
 
+        if (AlexMobsCompat.isAlexMobsLoaded()) {
+            com.qiuyue.goetyominus.compat.am.AmCompatManager.init(modEventBus);
+        }
+
         getOrCreateDirectory(FMLPaths.CONFIGDIR.get().resolve("goetyominus"), "goetyominus");
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, AttributesConfig.SPEC,
                 "goetyominus/goetyominus-attributes.toml");
@@ -199,6 +204,7 @@ public class GoetyOminous {
         event.put(ModEntityTypes.MARTYR.get(), Martyr.setCustomAttributes().build());
         event.put(ModEntityTypes.THUG.get(), Thug.setCustomAttributes().build());
         event.put(ModEntityTypes.CHANNELLER.get(), Channeller.setCustomAttributes().build());
+        event.put(ModEntityTypes.SCORCH.get(), Scorch.setCustomAttributes().build());
         event.put(ModEntityTypes.ACOLYTE_SERVANT.get(), AcolyteServant.setCustomAttributes().build());
         event.put(ModEntityTypes.STORM_NECROMANCER_SERVANT.get(), AbstractStormNecromancer.setCustomAttributes().build());
         event.put(ModEntityTypes.STORM_NECROMANCER.get(), AbstractStormNecromancer.setCustomAttributes().build());
@@ -264,6 +270,10 @@ public class GoetyOminous {
 
         if (LegendaryMonstersCompat.isLegendaryMonstersLoaded()) {
             com.qiuyue.goetyominus.compat.lm.LmCompatManager.setCustomAttributes(event);
+        }
+
+        if (AlexMobsCompat.isAlexMobsLoaded()) {
+            com.qiuyue.goetyominus.compat.am.AmCompatManager.setCustomAttributes(event);
         }
     }
 

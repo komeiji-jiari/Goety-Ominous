@@ -1,0 +1,24 @@
+{
+  "name": "轻语灵仆从",
+  "icon": "alexsmobs:unsettling_kimono",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "尽管被称为轻语灵，但这些亡灵生物最擅长的是伸出它们长长的脖子发动攻击，同时产生可怕的尖叫。你认为如此可怕的黑暗生物很适合作为你手下的黑暗仆从，只需要用一个仪式就可以召唤它们了。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominus:murmur_servant",
+      "text": "飞头蛮"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "用灵质右键即可治愈你的轻语灵仆从。此外，装备死灵套装也可以让它们获得额外的治疗。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominus:murmur_servant"
+    }
+  ]
+}

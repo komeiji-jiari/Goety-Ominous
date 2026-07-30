@@ -1,0 +1,20 @@
+{
+  "name": "Scorch Focus",
+  "icon": "goetyominus:scorch_focus",
+  "category": "goety:focuses/nether",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Nether is a strange plane. Ancient logs and tomes from fortress inhabitants speak of demons and imps dwelling within... You've discovered that you can use a simple Nether spell to bind these little devils into your service. How intriguing..."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominus:scorch_focus",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "If you wear the Unholy Set, the Scorches you summon will fire Hell bolts."
+    }
+  ]
+}
