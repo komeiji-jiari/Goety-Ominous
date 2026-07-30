@@ -1,0 +1,81 @@
+package com.qiuyue.goetyominus.common.events;
+
+import com.qiuyue.goetyominus.GoetyOminous;
+import com.qiuyue.goetyominus.common.init.ModEntityTypes;
+import com.qiuyue.goetyominus.common.init.lm.LmEntityRegistry;
+import com.qiuyue.goetyominus.common.init.mm.MmEntityRegistry;
+import com.qiuyue.goetyominus.common.init.ua.UaEntityRegistry;
+import com.qiuyue.goetyominus.compat.ias.IasEntityRegistry;
+import com.qiuyue.goetyominus.compat.mod.IllageAndSpillageCompat;
+import com.qiuyue.goetyominus.compat.mod.LegendaryMonstersCompat;
+import com.qiuyue.goetyominus.compat.mod.MutantMoreCompat;
+import com.qiuyue.goetyominus.compat.mod.UpgradeAquaticCompat;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntityType;
+import net.minecraftforge.event.TagsUpdatedEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
+
+import java.util.HashSet;
+import java.util.Set;
+
+@Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID)
+public class TesseractTagHandler {
+
+    private static final TagKey<EntityType<?>> TESSERACT_SMALL =
+            TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("goety", "tesseract_small"));
+    private static final TagKey<EntityType<?>> TESSERACT_MEDIUM =
+            TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("goety", "tesseract_medium"));
+    private static final TagKey<EntityType<?>> TESSERACT_LARGE =
+            TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("goety", "tesseract_large"));
+
+    @SubscribeEvent
+    public static void onTagsUpdated(TagsUpdatedEvent event) {
+        addToTag(TESSERACT_SMALL, ModEntityTypes.URBHADHACH_SERVANT);
+        if (IllageAndSpillageCompat.isIllageAndSpillageLoaded()) {
+            addToTag(TESSERACT_SMALL, IasEntityRegistry.ABSORBER_SERVANT);
+        }
+        if (UpgradeAquaticCompat.isUpgradeAquaticLoaded()) {
+            addToTag(TESSERACT_SMALL, UaEntityRegistry.THRASHER_SERVANT);
+        }
+
+        addToTag(TESSERACT_MEDIUM, ModEntityTypes.HERESIARCH_SERVANT);
+        addToTag(TESSERACT_MEDIUM, ModEntityTypes.STORM_NECROMANCER_SERVANT);
+        if (IllageAndSpillageCompat.isIllageAndSpillageLoaded()) {
+            addToTag(TESSERACT_MEDIUM, IasEntityRegistry.MAGISPELLER_SERVANT);
+        }
+        if (UpgradeAquaticCompat.isUpgradeAquaticLoaded()) {
+            addToTag(TESSERACT_MEDIUM, UaEntityRegistry.GREAT_THRASHER_SERVANT);
+        }
+        if (LegendaryMonstersCompat.isLegendaryMonstersLoaded()) {
+            addToTag(TESSERACT_MEDIUM, LmEntityRegistry.OVERGROWN_COLOSSUS_SERVANT);
+        }
+
+        if (MutantMoreCompat.isMutantMoreLoaded()) {
+            addToTag(TESSERACT_LARGE, MmEntityRegistry.MUTANT_HOGLIN_SERVANT);
+            addToTag(TESSERACT_LARGE, MmEntityRegistry.MUTANT_WITHER_SKELETON_SERVANT);
+        }
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private static void addToTag(TagKey<EntityType<?>> tag, RegistryObject<?> reg) {
+        if (!reg.isPresent()) return;
+
+        ForgeRegistries.ENTITY_TYPES.getResourceKey((EntityType<?>) reg.get()).flatMap(
+                ForgeRegistries.ENTITY_TYPES::getHolder
+        ).ifPresent(holder -> {
+            if (holder instanceof Holder.Reference) {
+                Holder.Reference ref = (Holder.Reference) holder;
+                Set<TagKey> tags = new HashSet<>();
+                ref.tags().forEach(t -> tags.add((TagKey) t));
+                tags.add(tag);
+                ref.bindTags(tags);
+            }
+        });
+    }
+}

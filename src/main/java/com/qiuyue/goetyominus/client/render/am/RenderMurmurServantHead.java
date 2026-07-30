@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.qiuyue.goetyominus.client.render.model.am.ModelMurmurServantHead;
 import com.qiuyue.goetyominus.client.render.model.am.ModelMurmurServantNeck;
+import com.qiuyue.goetyominus.common.entities.ally.am.MurmurServant;
 import com.qiuyue.goetyominus.common.entities.ally.am.MurmurServantHead;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -15,6 +16,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -112,6 +114,11 @@ public class RenderMurmurServantHead extends MobRenderer<MurmurServantHead, Mode
     }
 
     public ResourceLocation getTextureLocation(MurmurServantHead entity) {
+        Entity body = entity.getBody();
+        if (body instanceof MurmurServant murmur && murmur.hasCustomName()
+                && "sekibanki".equals(murmur.getCustomName().getString().toLowerCase())) {
+            return RenderMurmurServantBody.SEKIBANKI_TEXTURE;
+        }
         return entity.isAngry() ? RenderMurmurServantBody.TEXTURE_ANGRY : RenderMurmurServantBody.TEXTURE;
     }
 }

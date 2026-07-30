@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "__comment": "ownable entities that takes up 2 spaces in Esoteric Tesseracts",
-  "values": [
-    "goetyominous:absorber_servant",
-    "goetyominous:urbhadhach_servant",
-    "goetyominous:thrasher_servant"
-  ]
-}

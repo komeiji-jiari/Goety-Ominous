@@ -18,6 +18,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class RenderMurmurServantBody extends MobRenderer<MurmurServant, ModelMurmurServantBody> {
     public static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/murmur.png");
     public static final ResourceLocation TEXTURE_ANGRY = new ResourceLocation("alexsmobs:textures/entity/murmur_angry.png");
+    public static final ResourceLocation SEKIBANKI_TEXTURE = new ResourceLocation("goetyominus", "textures/entity/sekibanki.png");
     public static boolean renderWithHead = false;
     private static final ModelMurmurServantNeck NECK_MODEL = new ModelMurmurServantNeck();
     private static final ModelMurmurServantHead HEAD_MODEL = new ModelMurmurServantHead();
@@ -57,6 +58,12 @@ public class RenderMurmurServantBody extends MobRenderer<MurmurServant, ModelMur
     }
 
     public ResourceLocation getTextureLocation(MurmurServant entity) {
+        if (entity.hasCustomName()) {
+            String name = entity.getCustomName().getString().toLowerCase();
+            if (name.equals("sekibanki")) {
+                return SEKIBANKI_TEXTURE;
+            }
+        }
         return entity.isAngry() ? TEXTURE_ANGRY : TEXTURE;
     }
 }
