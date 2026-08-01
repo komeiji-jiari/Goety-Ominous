@@ -147,7 +147,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    implementation fg.deobf("libs:goety-2.5.55.2:${minecraft_version}")
+    implementation fg.deobf("libs:goety-2.5.56.0:${minecraft_version}")
     compileOnly fg.deobf("libs:illageandspillagerespillaged-1.2.8:${minecraft_version}")
     implementation fg.deobf("top.theillusivec4.curios:curios-forge:5.14.1+1.20.1")
     
@@ -180,7 +180,7 @@ dependencies {
     compileOnly fg.deobf("libs:alexscaves-2.0.2:${minecraft_version}")
     compileOnly fg.deobf("libs:alexsmobs-1.22.9:${minecraft_version}")
     compileOnly fg.deobf("libs:citadel-2.6.3-1.20.1:${minecraft_version}")
-    compileOnly fg.deobf("libs:StackablePotions-forge-1.20.1-1.0.0:${minecraft_version}")
+    compileOnly fg.deobf("libs:VanillaBackport-forge-1.20.1-1.1.7.10:${minecraft_version}")
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 

@@ -9,11 +9,11 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "goetyominus:crimson_spider_servant"
+      "recipe": "goetyominous:crimson_spider_servant"
     },
     {
       "type": "patchouli:entity",
-      "entity": "goetyominus:crimson_spider_servant",
+      "entity": "goetyominous:crimson_spider_servant",
       "text": "Starscream"
     },
     {

@@ -9,12 +9,17 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "goetyominus:skeleton_villager_servant"
+      "recipe": "goetyominous:skeleton_villager_servant"
     },
     {
       "type": "patchouli:entity",
-      "entity": "goetyominus:skeleton_villager_servant",
+      "entity": "goetyominous:skeleton_villager_servant",
       "text": "Old-timer, you're not dead... you're still alive..."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Skeleton Villager Servants",
+      "text": "Requirements: $(li)Gravestone is located in a village $(br)$(l)OR$()$() $(li)14 Dirt Paths"
     }
   ]
 }

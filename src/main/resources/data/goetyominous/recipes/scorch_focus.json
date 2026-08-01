@@ -1,0 +1,33 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:animation_core"
+  },
+  "craftType": "adept_nether",
+  "soulCost": 1,
+  "duration": 10,
+  "ingredients": [
+    {
+      "tag": "forge:rods/blaze"
+    },
+    {
+      "item": "minecraft:ender_pearl"
+    },
+    {
+      "item": "goety:fireball_focus"
+    },
+    {
+      "item": "goety:ectoplasm"
+    },
+    {
+      "item": "minecraft:ghast_tear"
+    },
+    {
+      "item": "minecraft:crying_obsidian"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:scorch_focus"
+  }
+}

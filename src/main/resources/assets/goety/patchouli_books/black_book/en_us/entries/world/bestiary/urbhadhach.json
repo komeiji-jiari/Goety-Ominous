@@ -1,6 +1,6 @@
 {
   "name": "Urbhadhach",
-  "icon": "goetyominus:cold_heart",
+  "icon": "goetyominous:cold_heart",
   "category": "goety:world/bestiary",
   "pages": [
     {
@@ -17,12 +17,12 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "goetyominus:urbhadhach",
+      "entity": "goetyominous:urbhadhach",
       "text": "Their frosty hearts make them immune to frost damage. Stories also mention that they are excellent swimmers."
     },
     {
       "type": "patchouli:spotlight",
-      "item": "goetyominus:cold_heart",
+      "item": "goetyominous:cold_heart",
       "title": "Cold Heart",
       "text": "Consuming the heart dropped by a slain Urbhadhach can temporarily grant the power of frost. The heart can also be used to craft the weapons of ancient northern royalty, or to enlighten your Iceologer servants."
     }

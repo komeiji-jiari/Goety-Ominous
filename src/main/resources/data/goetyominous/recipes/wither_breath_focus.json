@@ -1,0 +1,37 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:fire_breath_focus"
+  },
+  "craftType": "expert_nether",
+  "soulCost": 1,
+  "duration": 15,
+  "research": "bygone",
+  "ingredients": [
+    {
+      "item": "goety:shadow_essence"
+    },
+    {
+      "item": "mutantmore:formula_y"
+    },
+    {
+      "item": "goety:poison_quill_seed"
+    },
+    {
+      "item": "minecraft:crying_obsidian"
+    },
+    {
+      "item": "mutantmore:wither_bomb"
+    },
+    {
+      "item": "minecraft:wither_rose"
+    },
+    {
+      "item": "minecraft:rotten_flesh"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:wither_breath_focus"
+  }
+}

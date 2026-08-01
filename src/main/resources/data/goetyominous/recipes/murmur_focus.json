@@ -1,0 +1,33 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:skull_focus"
+  },
+  "craftType": "necroturgy",
+  "soulCost": 1,
+  "duration": 10,
+  "ingredients": [
+    {
+      "item": "alexsmobs:unsettling_kimono"
+    },
+    {
+      "item": "alexsmobs:elastic_tendon"
+    },
+    {
+      "item": "goety:ectoplasm"
+    },
+    {
+      "item": "goety:occult_fabric"
+    },
+    {
+      "item": "minecraft:red_wool"
+    },
+    {
+      "item": "minecraft:red_wool"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:murmur_focus"
+  }
+}

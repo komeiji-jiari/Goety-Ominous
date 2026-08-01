@@ -1,8 +1,8 @@
 {
   "name": "Bone Cudgel",
-  "icon": "goetyominus:bone_cudgel",
+  "icon": "goetyominous:bone_cudgel",
   "category": "goety:crafts/equipment",
-  "advancement": "goetyominus:goetyominus/read_bastion_scroll",
+  "advancement": "goetyominous:goetyominous/read_bastion_scroll",
   "secret": true,
   "pages": [
     {
@@ -11,7 +11,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "goetyominus:bone_cudgel"
+      "recipe": "goetyominous:bone_cudgel"
     },
     {
       "type": "patchouli:text",

@@ -1,0 +1,6 @@
+{
+  "parent": "goetyominous:item/cog_crossbow",
+  "textures": {
+    "layer0": "goetyominous:item/cog_crossbow_firework"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "name": "轻语聚晶",
-  "icon": "goetyominus:murmur_focus",
+  "icon": "goetyominous:murmur_focus",
   "category": "goety:amcompat",
   "pages": [
     {
@@ -9,7 +9,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "goetyominus:murmur_focus",
+      "recipe": "goetyominous:murmur_focus",
       "text": ""
     },
     {

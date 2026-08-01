@@ -10,7 +10,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "goetyominus:convert_sunken_skeleton_to_sunken_necromancer"
+      "recipe": "goetyominous:convert_sunken_skeleton_to_sunken_necromancer"
     },
     {
       "type": "patchouli:text",
@@ -18,11 +18,11 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "goetyominus:sunken_necromancer_servant"
+      "entity": "goetyominous:sunken_necromancer_servant"
     },
     {
       "type": "patchouli:spotlight",
-      "item": "goetyominus:sunken_soul_jar",
+      "item": "goetyominous:sunken_soul_jar",
       "text": "If a Sunken Necromancer dies and you happen to have an $(l:crafts/empty_soul_jar)Empty Soul Jar$(), their soul will fill it. Right-clicking on a Sunken Skeleton with this filled Soul Jar will resurrect the Necromancer, using that Sunken Skeleton as a new body."
     }
   ]

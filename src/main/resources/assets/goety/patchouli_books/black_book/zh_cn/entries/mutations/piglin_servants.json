@@ -1,8 +1,8 @@
 {
   "name": "猪灵们",
-  "icon": "goetyominus:firebrand",
+  "icon": "goetyominous:firebrand",
   "category": "goety:mutations",
-  "advancement": "goetyominus:goetyominus/read_bastion_scroll",
+  "advancement": "goetyominous:goetyominous/read_bastion_scroll",
   "secret": true,
   "pages": [
     {
@@ -11,21 +11,21 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "goetyominus:convert_pig_to_piglin"
+      "recipe": "goetyominous:convert_pig_to_piglin"
     },
     {
       "type": "patchouli:entity",
-      "entity": "goetyominus:piglin_servant",
+      "entity": "goetyominous:piglin_servant",
       "text": "你可以为他们装备剑，斧或者弩。他们也可以接受任意盔甲。"
     },
     {
       "type": "patchouli:spotlight",
-      "item": "goetyominus:nether_wart_potion",
+      "item": "goetyominous:nether_wart_potion",
       "text": "但是，即使你能暂时阻止你的猪灵仆从变成僵尸猪灵，你依旧需要一种下界疣制成的药剂来喂食给他们。一旦得到了免疫力，你的猪灵将不会再被转化成僵尸猪灵，除非他们在你穿着无名套装时死亡。此外，如果参与繁殖的猪灵都有免疫力，繁殖出的小猪灵也将获得天然的免疫。"
     },
     {
       "type": "patchouli:entity",
-      "entity": "goetyominus:piglin_brute_servant"
+      "entity": "goetyominous:piglin_brute_servant"
     },
     {
       "type": "patchouli:text",
@@ -33,7 +33,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "goetyominus:piglin_hunter_servant"
+      "entity": "goetyominous:piglin_hunter_servant"
     },
     {
       "type": "patchouli:text",
@@ -41,11 +41,11 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "goetyominus:fungus_thrower"
+      "entity": "goetyominous:fungus_thrower"
     },
     {
       "type": "goety:ritual",
-      "recipe": "goetyominus:convert_piglin_to_fungus_thrower"
+      "recipe": "goetyominous:convert_piglin_to_fungus_thrower"
     },
     {
       "type": "patchouli:text",

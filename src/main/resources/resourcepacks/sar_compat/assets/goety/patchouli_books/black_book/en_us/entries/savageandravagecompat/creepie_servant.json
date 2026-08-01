@@ -9,11 +9,11 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "goetyominus:creepie_servant"
+      "recipe": "goetyominous:creepie_servant"
     },
     {
       "type": "patchouli:entity",
-      "entity": "goetyominus:creepie_servant",
+      "entity": "goetyominous:creepie_servant",
       "text": "Creepie?Aww Man~"
     }
   ]

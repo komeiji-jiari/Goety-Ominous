@@ -1,6 +1,6 @@
 {
   "name": "耀斑聚晶",
-  "icon": "goetyominus:flare_focus",
+  "icon": "goetyominous:flare_focus",
   "category": "goety:uacompat",
   "pages": [
     {
@@ -9,7 +9,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "goetyominus:flare_focus",
+      "recipe": "goetyominous:flare_focus",
       "text": ""
     },
     {

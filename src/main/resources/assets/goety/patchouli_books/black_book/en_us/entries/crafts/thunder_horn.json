@@ -1,6 +1,6 @@
 {
   "name": "Thunder Horn",
-  "icon": "goetyominus:thunder_horn",
+  "icon": "goetyominous:thunder_horn",
   "category": "goety:crafts",
   "advancement": "goety:goety/unlock_necromancer",
   "pages": [
@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "goetyominus:thunder_horn",
+      "recipe": "goetyominous:thunder_horn",
       "text": "However, you realize that this replica horn still has room for improvement. If you could find a way to craft a horn from the broken crown of a Storm Necromancer you have defeated... perhaps someone might answer the challenge you send forth?"
     }
   ]

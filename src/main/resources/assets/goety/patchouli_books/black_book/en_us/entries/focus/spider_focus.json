@@ -1,6 +1,6 @@
 {
   "name": "Spider Focus",
-  "icon": "goetyominus:spider_focus",
+  "icon": "goetyominous:spider_focus",
   "category": "goety:focuses/wild",
   "pages": [
     {
@@ -9,7 +9,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "goetyominus:spider_focus"
+      "recipe": "goetyominous:spider_focus"
     },
     {
       "type": "patchouli:text",

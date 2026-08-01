@@ -18,7 +18,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "goetyominus:formula_y",
+      "recipe": "goetyominous:formula_y",
       "text": ""
     },
     {
@@ -32,7 +32,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "goetyominus:compound_z",
+      "recipe": "goetyominous:compound_z",
       "text": ""
     }
   ]

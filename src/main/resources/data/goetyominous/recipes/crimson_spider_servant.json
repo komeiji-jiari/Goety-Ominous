@@ -1,0 +1,25 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:summon_tamed",
+  "activation_item": {
+    "item": "minecraft:spider_eye"
+  },
+  "craftType": "adept_nether",
+  "entity_to_summon": "goetyominous:crimson_spider_servant",
+  "soulCost": 1,
+  "duration": 5,
+  "ingredients": [
+    {
+      "item": "minecraft:string"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    },
+    {
+      "tag": "goety:meat"
+    }
+  ],
+  "result": {
+    "item": "goety:jei_dummy/none"
+  }
+}

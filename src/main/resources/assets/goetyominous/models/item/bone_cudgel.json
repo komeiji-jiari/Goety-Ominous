@@ -1,0 +1,15 @@
+{
+  "parent": "minecraft:item/handheld",
+  "loader": "forge:separate_transforms",
+  "base": {
+    "parent": "goetyominous:item/bone_cudgel_handheld"
+  },
+  "perspectives": {
+    "gui": {
+      "parent": "goetyominous:item/bone_cudgel_gui"
+    },
+    "fixed": {
+      "parent": "goetyominous:item/bone_cudgel_gui"
+    }
+  }
+}

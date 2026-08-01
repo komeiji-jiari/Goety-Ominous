@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:quest",
-      "trigger": "goetyominus:goetyominus/read_bastion_scroll",
+      "trigger": "goetyominous:goetyominous/read_bastion_scroll",
       "text": "These scrolls are said to be found within $(l)Bastion Remnant$()."
     }
   ]

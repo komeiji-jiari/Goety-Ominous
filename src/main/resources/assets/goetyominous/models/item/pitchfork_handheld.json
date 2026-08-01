@@ -1,0 +1,9 @@
+{
+  "parent": "goetyominous:item/pitchfork_3d",
+  "display": {
+    "thirdperson_righthand": { "rotation": [0, -90, 0], "translation": [0, -12, 0] },
+    "thirdperson_lefthand": { "rotation": [0, 90, 0], "translation": [0, -12, 0] },
+    "firstperson_righthand": { "rotation": [-5, -90, 0], "translation": [4, -10, 0] },
+    "firstperson_lefthand": { "rotation": [-5, -90, 0], "translation": [4, -10, 0] }
+  }
+}

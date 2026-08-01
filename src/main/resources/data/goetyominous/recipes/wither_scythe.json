@@ -1,0 +1,40 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:dark_metal_scythe"
+  },
+  "craftType": "expert_nether",
+  "soulCost": 1,
+  "duration": 30,
+  "research": "bygone",
+  "ingredients": [
+    {
+      "item": "mutantmore:mutant_wither_skeleton_skull"
+    },
+    {
+      "item": "mutantmore:withered_scimitar"
+    },
+    {
+      "tag": "minecraft:soul_fire_base_blocks"
+    },
+    {
+      "tag": "forge:ingots/netherite"
+    },
+    {
+      "item": "goety:unholy_blood"
+    },
+    {
+      "item": "minecraft:dragon_breath"
+    },
+    {
+      "item": "goety:ectoplasm"
+    },
+    {
+      "item": "goety:occult_fabric"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:wither_scythe"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "name": "Nether Cult",
-  "icon": "goetyominus:burning_potion",
+  "icon": "goetyominous:burning_potion",
   "category": "goety:world/bestiary",
   "advancement": "goety:goety/kill_a_heretic",
   "pages": [
@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "goetyominus:fanatic"
+      "entity": "goetyominous:fanatic"
     },
     {
       "type": "patchouli:text",
@@ -22,7 +22,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "goetyominus:zealot"
+      "entity": "goetyominous:zealot"
     },
     {
       "type": "patchouli:text",
@@ -30,7 +30,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "goetyominus:beldam",
+      "entity": "goetyominous:beldam",
       "text": ""
     },
     {
@@ -39,7 +39,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "goetyominus:thug",
+      "entity": "goetyominous:thug",
       "text": ""
     },
     {
@@ -48,7 +48,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "goetyominus:channeller"
+      "entity": "goetyominous:channeller"
     },
     {
       "type": "patchouli:text",

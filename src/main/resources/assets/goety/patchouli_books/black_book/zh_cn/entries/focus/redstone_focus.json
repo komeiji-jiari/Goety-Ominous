@@ -1,6 +1,6 @@
 {
   "name": "红石聚晶",
-  "icon": "goetyominus:redstone_focus",
+  "icon": "goetyominous:redstone_focus",
   "category": "goety:focuses/geomancy",
   "pages": [
     {
@@ -9,7 +9,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "goetyominus:redstone_focus"
+      "recipe": "goetyominous:redstone_focus"
     },
     {
       "type": "patchouli:text",

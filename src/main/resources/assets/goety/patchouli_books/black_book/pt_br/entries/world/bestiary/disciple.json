@@ -1,0 +1,21 @@
+{
+  "name": "Acólito",
+  "icon": "goety:unholy_fabric",
+  "category": "goety:world/bestiary",
+  "advancement": "goety:goety/kill_a_heretic",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Dos membros heréticos do culto do Nether, você aprendeu sobre os cultistas de posição mais alta entre eles. Conhecidos como seguidores leais e estudantes de um ser chamado 'o Apóstolo', esses Acólitos detêm um alto status dentro do culto. Eles são capazes de empunhar várias magias do Nether, e até mesmo parte do poder do próprio Apóstolo, para devastar aqueles que consideram hereges."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:disciple",
+      "text": "Devido aos seus laços estreitos com o Apóstolo, eles também se tornaram mortos-vivos."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Se você destruir um Monólito de Obsidiana pertencente ao culto, um Acólito enfurecido pode aparecer e chover 'Fogo Sagrado' sobre você, julgando-o como herege."
+    }
+  ]
+}

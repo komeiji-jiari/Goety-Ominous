@@ -1,8 +1,8 @@
 {
   "name": "Pride of the Piglins",
-  "icon": "goetyominus:piglin_pride",
+  "icon": "goetyominous:piglin_pride",
   "category": "goety:crafts/equipment",
-  "advancement": "goetyominus:goetyominus/read_bastion_scroll",
+  "advancement": "goetyominous:goetyominous/read_bastion_scroll",
   "secret": true,
   "pages": [
     {
@@ -11,7 +11,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "goetyominus:piglin_pride"
+      "recipe": "goetyominous:piglin_pride"
     },
     {
       "type": "patchouli:text",

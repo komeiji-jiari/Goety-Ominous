@@ -9,7 +9,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "goetyominus:convert_wither_skeleton_to_mutant_wither_skeleton"
+      "recipe": "goetyominous:convert_wither_skeleton_to_mutant_wither_skeleton"
     },
     {
       "type": "patchouli:text",
@@ -17,7 +17,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "goetyominus:mutant_wither_skeleton_servant",
+      "entity": "goetyominous:mutant_wither_skeleton_servant",
       "text": "Your Wither Bro is absolutely cracked"
     },
     {

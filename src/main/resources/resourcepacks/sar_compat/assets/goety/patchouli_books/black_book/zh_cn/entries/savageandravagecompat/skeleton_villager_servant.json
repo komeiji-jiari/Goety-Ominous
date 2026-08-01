@@ -9,12 +9,17 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "goetyominus:skeleton_villager_servant"
+      "recipe": "goetyominous:skeleton_villager_servant"
     },
     {
       "type": "patchouli:entity",
-      "entity": "goetyominus:skeleton_villager_servant",
+      "entity": "goetyominous:skeleton_villager_servant",
       "text": "老资历，你没死啊，你还活着..."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "骷髅村民仆从仆从",
+      "text": "需求：$(li)墓碑位于村庄之中 $(br)$(l)或$()$() $(li)14 个土径"
     }
   ]
 }

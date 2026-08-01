@@ -1,6 +1,6 @@
 {
   "name": "猛袭聚晶",
-  "icon": "goetyominus:thrasher_focus",
+  "icon": "goetyominous:thrasher_focus",
   "category": "goety:uacompat",
   "pages": [
     {
@@ -9,7 +9,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "goetyominus:thrasher_focus",
+      "recipe": "goetyominous:thrasher_focus",
       "text": ""
     },
     {

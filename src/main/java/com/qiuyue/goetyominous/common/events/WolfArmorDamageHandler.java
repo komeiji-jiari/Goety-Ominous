@@ -1,0 +1,54 @@
+package com.qiuyue.goetyominous.common.events;
+
+import com.Polarice3.Goety.common.entities.ally.BlackWolf;
+import com.Polarice3.Goety.common.entities.ally.undead.skeleton.SkeletonWolf;
+import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.common.init.ModSounds;
+import com.qiuyue.goetyominous.common.items.ModItems;
+import com.qiuyue.goetyominous.utils.WolfArmorCrackiness;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Wolf;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+
+@Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID)
+public class WolfArmorDamageHandler {
+
+    @SubscribeEvent
+    public static void onLivingHurt(LivingHurtEvent event) {
+        if (event.getEntity().level().isClientSide) return;
+
+        LivingEntity entity = event.getEntity();
+        boolean isWolf = entity instanceof Wolf
+                || entity instanceof BlackWolf
+                || entity instanceof SkeletonWolf;
+        if (!isWolf) return;
+
+        ItemStack armor = entity.getItemBySlot(EquipmentSlot.CHEST);
+        if (!armor.is(ModItems.CURSED_METAL_WOLF_ARMOR.get())) return;
+
+        if (event.getSource().is(DamageTypeTags.IS_FIRE)) return;
+
+        float amount = event.getAmount();
+        if (amount <= 0.0F) return;
+
+        entity.playSound(ModSounds.WOLF_ARMOR_DAMAGE.get(), 1.0F, 1.0F);
+
+        WolfArmorCrackiness before = WolfArmorCrackiness.byDamage(armor);
+        int durabilityDamage = Math.max(1, Mth.floor(amount));
+        armor.hurtAndBreak(durabilityDamage, entity, (wolf) ->
+                wolf.playSound(ModSounds.WOLF_ARMOR_BREAK.get(), 1.0F, 1.0F));
+
+        WolfArmorCrackiness after = WolfArmorCrackiness.byDamage(armor);
+        if (after != before && after != WolfArmorCrackiness.NONE) {
+            entity.playSound(ModSounds.WOLF_ARMOR_CRACK.get(), 1.0F, 1.0F);
+        }
+
+        event.setAmount(0.0F);
+    }
+}

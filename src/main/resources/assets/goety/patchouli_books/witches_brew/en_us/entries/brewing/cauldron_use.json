@@ -9,8 +9,12 @@
       "text": "A true witch can use their cauldron to satisfy every need! Grandma Baba Yaga's first rule for every witch before using the cauldron—always keep it in mind! And don't forget dear Granny ToeFungus's warm smile and guidance! No other witch teaches as well as Granny does HAHAHA!"
     },
     {
+      "type": "patchouli:text",
+      "text": "Oh, and by the way if you happen to have Goety Revelation installed, too bad! Your crafting cauldron has been sealed by the purest malice from the Nether itself, HAHA! Use your crafting table to make those little stuff instead. Don't come crying to Granny that she didn't teach you well!"
+    },
+    {
       "type": "goety:cauldron",
-      "recipe": "goetyominus:cauldron/nether_wart_bottle"
+      "recipe": "goetyominous:cauldron/nether_wart_bottle"
     },
     {
       "type": "patchouli:text",
@@ -18,7 +22,7 @@
     },
     {
       "type": "goety:cauldron",
-      "recipe": "goetyominus:cauldron/burning_potion"
+      "recipe": "goetyominous:cauldron/burning_potion"
     },
     {
       "type": "patchouli:text",

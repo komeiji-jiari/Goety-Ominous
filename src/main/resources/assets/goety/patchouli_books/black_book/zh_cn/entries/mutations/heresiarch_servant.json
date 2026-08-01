@@ -10,7 +10,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "goetyominus:convert_heretic_to_heresiarch"
+      "recipe": "goetyominous:convert_heretic_to_heresiarch"
     },
     {
       "type": "patchouli:text",
@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "goetyominus:heresiarch_servant"
+      "entity": "goetyominous:heresiarch_servant"
     },
     {
       "type": "patchouli:text",

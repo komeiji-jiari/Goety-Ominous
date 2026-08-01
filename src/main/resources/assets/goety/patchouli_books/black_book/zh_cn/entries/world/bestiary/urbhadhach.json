@@ -1,6 +1,6 @@
 {
   "name": "霜猎兽",
-  "icon": "goetyominus:cold_heart",
+  "icon": "goetyominous:cold_heart",
   "category": "goety:world/bestiary",
   "pages": [
     {
@@ -17,12 +17,12 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "goetyominus:urbhadhach",
+      "entity": "goetyominous:urbhadhach",
       "text": "它们冰霜般的心脏使其免疫霜冻伤害。故事中还提到它们是出色的游泳者。"
     },
     {
       "type": "patchouli:spotlight",
-      "item": "goetyominus:cold_heart",
+      "item": "goetyominous:cold_heart",
       "title": "冰寒之心",
       "text": "食用击杀霜猎兽掉落的心脏可以暂时获得冰霜的力量，当然心脏也可以用于制作一些古代寒冷之地的王族的武器，或是启迪你的冰术师仆从。"
     }

@@ -1,0 +1,45 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:soul_ruby"
+  },
+  "craftType": "forge",
+  "soulCost": 1,
+  "duration": 20,
+  "ingredients": [
+    {
+      "item": "minecraft:sculk_shrieker"
+    },
+    {
+      "item": "goety:ectoplasm"
+    },
+    {
+      "item": "goety:tall_skull"
+    },
+    {
+      "item": "goety:ectoplasm"
+    },
+    {
+      "item": "goety:tall_skull"
+    },
+    {
+      "item": "goety:pale_steel_ingot"
+    },
+    {
+      "item": "goety:pale_steel_ingot"
+    },
+    {
+      "item": "goety:tall_skull"
+    },    
+    {
+      "item": "goety:cursed_ingot"
+    },
+    {
+      "item": "goety:dark_ingot"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:screaming_skull_jar"
+  }
+}

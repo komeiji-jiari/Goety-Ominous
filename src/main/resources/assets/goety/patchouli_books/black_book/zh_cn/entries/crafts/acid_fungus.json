@@ -1,6 +1,6 @@
 {
   "name": "酸液菌",
-  "icon": "goetyominus:acid_fungus",
+  "icon": "goetyominous:acid_fungus",
   "category": "goety:crafts",
   "pages": [
     {
@@ -9,7 +9,7 @@
     },
     {
       "type": "patchouli:spotlight",
-      "item": "goetyominus:acid_fungus",
+      "item": "goetyominous:acid_fungus",
       "text": "当然，出于某些奥术层面的原因，酸液菌产生的酸液不会对你和你的仆从造成任何影响。"
     }
   ]

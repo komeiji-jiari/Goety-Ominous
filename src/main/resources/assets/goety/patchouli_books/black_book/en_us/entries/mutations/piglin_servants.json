@@ -1,8 +1,8 @@
 {
   "name": "Piglin Servants",
-  "icon": "goetyominus:firebrand",
+  "icon": "goetyominous:firebrand",
   "category": "goety:mutations",
-  "advancement": "goetyominus:goetyominus/read_bastion_scroll",
+  "advancement": "goetyominous:goetyominous/read_bastion_scroll",
   "secret": true,
   "pages": [
     {
@@ -11,21 +11,21 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "goetyominus:convert_pig_to_piglin"
+      "recipe": "goetyominous:convert_pig_to_piglin"
     },
     {
       "type": "patchouli:entity",
-      "entity": "goetyominus:piglin_servant",
+      "entity": "goetyominous:piglin_servant",
       "text": "You can equip them with swords, axes, or crossbows. They can also accept any type of armor."
     },
     {
       "type": "patchouli:spotlight",
-      "item": "goetyominus:nether_wart_potion",
+      "item": "goetyominous:nether_wart_potion",
       "text": "However, even if you can temporarily prevent your Piglin servants from turning into zombified piglins, you still need a potion made from Nether Wart to feed them. Once they gain immunity, your Piglins will no longer be transformed into zombified piglins, unless they die while you are wearing the Nameless Set. Additionally, if both Piglins involved in breeding have immunity, the resulting baby Piglin will also be naturally immune."
     },
     {
       "type": "patchouli:entity",
-      "entity": "goetyominus:piglin_brute_servant"
+      "entity": "goetyominous:piglin_brute_servant"
     },
     {
       "type": "patchouli:text",
@@ -33,7 +33,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "goetyominus:piglin_hunter_servant"
+      "entity": "goetyominous:piglin_hunter_servant"
     },
     {
       "type": "patchouli:text",
@@ -41,11 +41,11 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "goetyominus:fungus_thrower"
+      "entity": "goetyominous:fungus_thrower"
     },
     {
       "type": "goety:ritual",
-      "recipe": "goetyominus:convert_piglin_to_fungus_thrower"
+      "recipe": "goetyominous:convert_piglin_to_fungus_thrower"
     },
     {
       "type": "patchouli:text",

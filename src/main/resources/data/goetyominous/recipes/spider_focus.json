@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "nbg",
+    "bhb",
+    "gbn"
+  ],
+  "key":
+  {
+    "b":
+    {
+      "tag": "goety:meat"
+    },
+    "h":
+    {
+      "item": "goety:hunger_core"
+    },
+    "n":
+    {
+      "item": "minecraft:string"
+    },
+    "g":
+    {
+      "item": "minecraft:spider_eye"
+    }
+  },
+  "result":
+  {
+    "item": "goetyominous:spider_focus",
+    "count": 1
+  }
+}

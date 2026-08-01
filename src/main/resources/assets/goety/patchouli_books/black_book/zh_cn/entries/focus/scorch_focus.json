@@ -1,6 +1,6 @@
 {
   "name": "怨鬼聚晶",
-  "icon": "goetyominus:scorch_focus",
+  "icon": "goetyominous:scorch_focus",
   "category": "goety:focuses/nether",
   "pages": [
     {
@@ -9,7 +9,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "goetyominus:scorch_focus",
+      "recipe": "goetyominous:scorch_focus",
       "text": ""
     },
     {

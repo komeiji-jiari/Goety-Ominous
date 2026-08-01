@@ -1,0 +1,38 @@
+{
+  "type": "goety:cauldron",
+  "soulCost": 100,
+  "color": 8072507,
+  "levelLeft": 1,
+  "take_with": {
+    "item": "minecraft:glass_bottle"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:nether_wart"
+    },
+    {
+      "item": "minecraft:golden_apple"
+    },
+    {
+      "item": "minecraft:crimson_fungus"
+    },
+    {
+      "item": "goety:ectoplasm"
+    },
+    {
+      "item": "minecraft:glowstone_dust"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:nether_wart_potion"
+  },
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:mod_loaded",
+        "modid": "goety_revelation"
+      }
+    }
+  ]
+}

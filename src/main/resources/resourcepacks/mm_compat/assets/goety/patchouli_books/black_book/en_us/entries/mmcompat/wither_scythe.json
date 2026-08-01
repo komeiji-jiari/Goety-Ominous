@@ -1,6 +1,6 @@
 {
   "name": "Wither Scythe",
-  "icon": "goetyominus:wither_scythe",
+  "icon": "goetyominous:wither_scythe",
   "category": "goety:mmcompat",
   "advancement": "goety:goety/kill_a_apostle",
   "secret": true,
@@ -11,7 +11,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "goetyominus:wither_scythe"
+      "recipe": "goetyominous:wither_scythe"
     }
   ]
 }

@@ -9,7 +9,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "goetyominus:murmur_servant",
+      "entity": "goetyominous:murmur_servant",
       "text": "ろくろくび"
     },
     {
@@ -18,7 +18,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "goetyominus:murmur_servant"
+      "recipe": "goetyominous:murmur_servant"
     }
   ]
 }

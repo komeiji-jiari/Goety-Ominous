@@ -1,0 +1,21 @@
+{
+  "name": "Disciple",
+  "icon": "goety:unholy_fabric",
+  "category": "goety:world/bestiary",
+  "advancement": "goety:goety/kill_a_heretic",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "From the heretical members of the Nether cult, you learned about the higher-ranking cultists among them. Known as loyal followers and students of a being called 'the Apostle', these Disciples hold a high status within the cult. They are capable of wielding various Nether spells, and even some of the Apostle's own power, to devastate those they deem heretics."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:disciple",
+      "text": "Because of their close ties to the Apostle, they too have become undead."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "If you shatter an Obsidian Monolith belonging to the cult, an enraged Disciple may appear and rain down 'Sacred Fire' upon you, judging you as a heretic."
+    }
+  ]
+}

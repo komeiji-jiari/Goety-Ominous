@@ -1,0 +1,40 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goetyominous:cog_crossbow"
+  },
+  "craftType": "adept_nether",
+  "soulCost": 1,
+  "duration": 20,
+  "research": "bastion",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/gold"
+    },
+    {
+      "tag": "forge:ingots/gold"
+    },
+    {
+      "item": "minecraft:ghast_tear"
+    },
+    {
+      "tag": "forge:rods/blaze"
+    },
+    {
+      "item": "minecraft:crying_obsidian"
+    },
+    {
+      "item": "goety:soul_emerald"
+    },
+    {
+      "tag": "forge:ingots/netherite"
+    },
+    {
+      "tag": "minecraft:wart_blocks"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:piglin_pride"
+  }
+}

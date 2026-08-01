@@ -1,8 +1,8 @@
 {
   "name": "Cog Crossbow",
-  "icon": "goetyominus:cog_crossbow",
+  "icon": "goetyominous:cog_crossbow",
   "category": "goety:crafts/equipment",
-  "advancement": "goetyominus:goetyominus/read_bastion_scroll",
+  "advancement": "goetyominous:goetyominous/read_bastion_scroll",
   "secret": true,
   "pages": [
     {
@@ -11,7 +11,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "goetyominus:cog_crossbow"
+      "recipe": "goetyominous:cog_crossbow"
     },
     {
       "type": "patchouli:text",

@@ -1,0 +1,13 @@
+{
+  "type": "goety:add_loot",
+  "chance": 0.8,
+  "replace": false,
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/bastion_treasure"
+    }
+  ],
+  "count": 1,
+  "item": "goetyominous:bastion_scroll"
+}

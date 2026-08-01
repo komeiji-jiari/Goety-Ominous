@@ -1,0 +1,15 @@
+{
+  "name": "goetyominous:deep_altar",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "goetyominous:deep_altar",
+        "processors": "goetyominous:deep_altar_loot",
+        "projection": "rigid"
+      }
+    }
+  ]
+}

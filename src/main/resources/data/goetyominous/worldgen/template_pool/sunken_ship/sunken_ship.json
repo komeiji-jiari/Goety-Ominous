@@ -1,0 +1,15 @@
+{
+  "name": "goetyominous:sunken_ship",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "goetyominous:sunken_ship",
+        "processors": "goetyominous:sunken_ship_loot",
+        "projection": "rigid"
+      }
+    }
+  ]
+}

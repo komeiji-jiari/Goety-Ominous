@@ -1,6 +1,6 @@
 {
   "name": "Rune Prison Focus",
-  "icon": "goetyominus:rune_prison_focus",
+  "icon": "goetyominous:rune_prison_focus",
   "category": "goety:savageandravagecompat",
   "pages": [
     {
@@ -9,7 +9,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "goetyominus:rune_prison_focus",
+      "recipe": "goetyominous:rune_prison_focus",
       "text": ""
     },
     {

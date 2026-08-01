@@ -1,0 +1,36 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:launch_focus"
+  },
+  "craftType": "adept_nether",
+  "soulCost": 1,
+  "duration": 10,
+  "ingredients": [
+    {
+      "item": "minecraft:crying_obsidian"
+    },
+    {
+      "item": "minecraft:ghast_tear"
+    },
+    {
+      "item": "minecraft:feather"
+    },
+    {
+      "item": "goety:savage_tooth"
+    },
+    {
+      "item": "goety:savage_tooth"
+    },
+    {
+      "item": "goety:animation_core"
+    },
+    {
+      "item": "mutantmore:hoglance"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:hog_charge_focus"
+  }
+}

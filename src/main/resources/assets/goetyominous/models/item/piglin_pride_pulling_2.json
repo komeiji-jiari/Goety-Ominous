@@ -1,0 +1,6 @@
+{
+  "parent": "goetyominous:item/piglin_pride",
+  "textures": {
+    "layer0": "goetyominous:item/piglin_pride_pulling_2"
+  }
+}

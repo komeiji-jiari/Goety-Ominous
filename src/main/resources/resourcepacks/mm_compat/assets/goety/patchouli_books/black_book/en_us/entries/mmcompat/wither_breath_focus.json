@@ -1,6 +1,6 @@
 {
   "name": "Wither Breath Focus",
-  "icon": "goetyominus:wither_breath_focus",
+  "icon": "goetyominous:wither_breath_focus",
   "category": "goety:mmcompat",
   "pages": [
     {
@@ -9,7 +9,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "goetyominus:wither_breath_focus",
+      "recipe": "goetyominous:wither_breath_focus",
       "text": ""
     },
     {

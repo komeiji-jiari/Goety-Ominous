@@ -9,13 +9,13 @@
     },
     {
       "type": "patchouli:image",
-      "images": ["goetyominus:textures/gui/entries/mutant1.png"],
+      "images": ["goetyominous:textures/gui/entries/mutant1.png"],
       "border": true,
       "text": "An example of mutating a servant"
     },
     {
       "type": "patchouli:image",
-      "images": ["goetyominus:textures/gui/entries/mutant2.png"],
+      "images": ["goetyominous:textures/gui/entries/mutant2.png"],
       "border": true,
       "text": "Preparation for a brutal battle is essential"
     }

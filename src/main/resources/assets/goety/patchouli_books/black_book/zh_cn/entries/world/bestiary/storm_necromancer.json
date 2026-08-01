@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "goetyominus:storm_necromancer",
+      "entity": "goetyominous:storm_necromancer",
       "text": "有说法认为，主世界偶尔发生的雷暴天气有很相当一部分源自他们的力量。"
     },
     {
@@ -19,12 +19,12 @@
     },
     {
       "type": "patchouli:spotlight",
-      "item": "goetyominus:broken_storm_crown",
+      "item": "goetyominous:broken_storm_crown",
       "text": "打败这些风暴法师之后，你发现他们碎裂的王冠相比你手中的版本有着强大的魔法力量，可以用于制作一些魔法物品，比如雷霆之锤。"
     },
     {
       "type": "goety:ritual",
-      "recipe": "goetyominus:stormlander"
+      "recipe": "goetyominous:stormlander"
     }
   ]
 }

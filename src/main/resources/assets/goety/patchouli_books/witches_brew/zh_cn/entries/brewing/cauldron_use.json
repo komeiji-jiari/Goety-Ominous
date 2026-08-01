@@ -9,8 +9,12 @@
       "text": "一个真正的女巫能用她们的坩埚满足所有需要！祖奶奶芭芭雅加给每个女巫使用坩埚前定下的第一条规矩，记得要时刻记在心里！当然也不忘了你亲爱的ToeFungus奶奶亲切的笑脸和指导！其他女巫可没有奶奶教得好哈哈哈哈！"
     },
     {
+      "type": "patchouli:text",
+      "text": "哦对了，如果你碰巧安装了Goety Revelation模组，那很可惜！你的合成大锅被炼狱之中至纯的恶意封印了哈哈！用你的工作台去合成那些小玩意，别到时候回来怪奶奶教得不好！"
+    },
+    {
       "type": "goety:cauldron",
-      "recipe": "goetyominus:cauldron/nether_wart_potion"
+      "recipe": "goetyominous:cauldron/nether_wart_potion"
     },
     {
       "type": "patchouli:text",
@@ -18,7 +22,7 @@
     },
     {
       "type": "goety:cauldron",
-      "recipe": "goetyominus:cauldron/burning_potion"
+      "recipe": "goetyominous:cauldron/burning_potion"
     },
     {
       "type": "patchouli:text",

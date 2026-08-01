@@ -1,6 +1,6 @@
 {
   "name": "Brood Focus",
-  "icon": "goetyominus:brood_focus",
+  "icon": "goetyominous:brood_focus",
   "category": "goety:focuses/wild",
   "pages": [
     {
@@ -9,7 +9,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "goetyominus:brood_focus",
+      "recipe": "goetyominous:brood_focus",
       "text": ""
     },
     {

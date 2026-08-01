@@ -1,6 +1,6 @@
 {
   "name": "Fiery Bulwark",
-  "icon": "goetyominus:firebrand",
+  "icon": "goetyominous:firebrand",
   "category": "goety:world",
   "pages": [
     {
@@ -9,13 +9,13 @@
     },
     {
       "type": "patchouli:image",
-      "images": ["goetyominus:textures/gui/entries/fiery_bulwark.png"],
+      "images": ["goetyominous:textures/gui/entries/fiery_bulwark.png"],
       "border": true,
       "text": "A fortress heavily guarded by Piglin Hordes"
     },
     {
       "type": "patchouli:entity",
-      "entity": "goetyominus:piglin_merchant",
+      "entity": "goetyominous:piglin_merchant",
       "text": "Don't forget to bring your gold! Genuine goods, fair prices!"
     },
     {

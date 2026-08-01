@@ -1,6 +1,6 @@
 {
   "name": "雷鸣号角",
-  "icon": "goetyominus:thunder_horn",
+  "icon": "goetyominous:thunder_horn",
   "category": "goety:crafts",
   "advancement": "goety:goety/unlock_necromancer",
   "pages": [
@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "goetyominus:thunder_horn",
+      "recipe": "goetyominous:thunder_horn",
       "text": "不过你意识到这个仿制版的号角仍有改进之处。如果你能想到一种办法用被你击败的风暴死灵法师的王冠制作号角...或许某人能够回应你向他下达的挑战？"
     }
   ]

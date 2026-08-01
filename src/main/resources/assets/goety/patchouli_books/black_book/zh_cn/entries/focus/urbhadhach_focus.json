@@ -1,6 +1,6 @@
 {
   "name": "霜狩聚晶",
-  "icon": "goetyominus:urbhadhach_focus",
+  "icon": "goetyominous:urbhadhach_focus",
   "category": "goety:focuses/necromancy",
   "pages": [
     {
@@ -9,7 +9,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "goetyominus:urbhadhach_focus",
+      "recipe": "goetyominous:urbhadhach_focus",
       "text": ""
     },
     {

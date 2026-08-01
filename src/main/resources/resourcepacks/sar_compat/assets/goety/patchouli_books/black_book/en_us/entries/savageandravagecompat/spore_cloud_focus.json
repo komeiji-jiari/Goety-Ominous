@@ -1,6 +1,6 @@
 {
   "name": "Spore Cloud Focus",
-  "icon": "goetyominus:spore_cloud_focus",
+  "icon": "goetyominous:spore_cloud_focus",
   "category": "goety:savageandravagecompat",
   "pages": [
     {
@@ -9,7 +9,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "goetyominus:spore_cloud_focus",
+      "recipe": "goetyominous:spore_cloud_focus",
       "text": ""
     },
     {
