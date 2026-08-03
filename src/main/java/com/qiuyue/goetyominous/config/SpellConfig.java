@@ -67,6 +67,11 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> MurmurSummonDown;
     public static final ForgeConfigSpec.ConfigValue<Integer> MurmurCoolDown;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> CrimsonMosquitoSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> CrimsonMosquitoCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> CrimsonMosquitoSummonDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> CrimsonMosquitoCoolDown;
+
     static {
         BUILDER.push("Spells");
 
@@ -79,6 +84,17 @@ public class SpellConfig {
                 .defineInRange("murmurSummonDown", 160, 0, 5000);
         MurmurCoolDown = BUILDER.comment("Cooldown of Murmur Servant spell in ticks (Default: 100)")
                 .defineInRange("murmurCoolDown", 100, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("Crimson Mosquito");
+        CrimsonMosquitoSoulCost = BUILDER.comment("Soul cost of Crimson Mosquito Servant spell (Default: 20)")
+                .defineInRange("crimsonMosquitoSoulCost", 20, 1, 100);
+        CrimsonMosquitoCastDuration = BUILDER.comment("Cast duration of Crimson Mosquito Servant spell in ticks (Default: 120)")
+                .defineInRange("crimsonMosquitoCastDuration", 120, 0, 500);
+        CrimsonMosquitoSummonDown = BUILDER.comment("Summon down duration of Crimson Mosquito Servant spell in ticks (Default: 160)")
+                .defineInRange("crimsonMosquitoSummonDown", 160, 0, 5000);
+        CrimsonMosquitoCoolDown = BUILDER.comment("Cooldown of Crimson Mosquito Servant spell in ticks (Default: 100)")
+                .defineInRange("crimsonMosquitoCoolDown", 100, 0, 5000);
         BUILDER.pop();
 
         BUILDER.push("Urbhadhach");
