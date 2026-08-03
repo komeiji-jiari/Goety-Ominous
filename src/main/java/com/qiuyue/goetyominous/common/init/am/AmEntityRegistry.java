@@ -1,9 +1,14 @@
 package com.qiuyue.goetyominous.common.init.am;
 
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.common.entities.ally.am.CrimsonMosquitoServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.MurmurServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.MurmurServantHead;
+import com.qiuyue.goetyominous.common.entities.projectile.EntityMosquitoServantSpit;
+import java.util.function.Predicate;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -31,6 +36,27 @@ public class AmEntityRegistry {
                             .sized(0.55F, 0.55F)
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":murmur_servant_head"));
+
+    public static final RegistryObject<EntityType<CrimsonMosquitoServant>> CRIMSON_MOSQUITO_SERVANT =
+            AM_ENTITIES.register("crimson_mosquito_servant",
+                    () -> EntityType.Builder.<CrimsonMosquitoServant>of((type, worldIn) -> new CrimsonMosquitoServant(type, worldIn), MobCategory.MISC)
+                            .sized(1.25F, 1.15F)
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":crimson_mosquito_servant"));
+
+    public static final RegistryObject<EntityType<EntityMosquitoServantSpit>> MOSQUITO_SERVANT_SPIT =
+            AM_ENTITIES.register("mosquito_servant_spit",
+                    () -> EntityType.Builder.<EntityMosquitoServantSpit>of((type, worldIn) -> new EntityMosquitoServantSpit(type, worldIn), MobCategory.MISC)
+                            .sized(0.25F, 0.25F)
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":mosquito_servant_spit"));
+
+    public static Predicate<LivingEntity> buildPredicateFromTag(TagKey<EntityType<?>> tagKey) {
+        if (tagKey == null) {
+            return (mob) -> false;
+        }
+        return (mob) -> mob.isAlive() && mob.getType().is(tagKey);
+    }
 
     // === 在这里添加实体注册 ===
     // 示例：

@@ -27,6 +27,10 @@ public class AmItems {
             "murmur_focus",
             () -> new MagicFocus(new MurmurSpell()));
 
+    public static final RegistryObject<ServantSpawnEggItem> CRIMSON_MOSQUITO_SERVANT_SPAWN_EGG =
+            AM_ITEMS.register("crimson_mosquito_servant_spawn_egg",
+                    () -> new ServantSpawnEggItem(AmEntityRegistry.CRIMSON_MOSQUITO_SERVANT, 0xC21E2B, 0x1C1C1C, egg()));
+
     // === 在这里添加物品注册 ===
     // 示例：
     // public static final RegistryObject<ServantSpawnEggItem> XXX_SERVANT_SPAWN_EGG =

@@ -17,6 +17,12 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> MurmurServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> MurmurServantKnockbackResistance;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonMosquitoServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonMosquitoServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonMosquitoServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonMosquitoServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonMosquitoServantKnockbackResistance;
+
     public static final ForgeConfigSpec.ConfigValue<Double> MagispellerServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> MagispellerServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> MagispellerServantMovementSpeed;
@@ -626,6 +632,16 @@ public class AttributesConfig {
                 .defineInRange("murmurServantFollowRange", 48.0, 0.0, Double.MAX_VALUE);
         MurmurServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Murmur Servants have, Default: 0.3")
                 .defineInRange("murmurServantKnockbackResistance", 0.3, 0.0, Double.MAX_VALUE);
+        CrimsonMosquitoServantHealth = BUILDER.comment("How much Max Health Crimson Mosquito Servants have, Default: 10.0")
+                .defineInRange("crimsonMosquitoServantHealth", 10.0, 1.0, Double.MAX_VALUE);
+        CrimsonMosquitoServantDamage = BUILDER.comment("How much damage Crimson Mosquito Servants deal, Default: 5.0")
+                .defineInRange("crimsonMosquitoServantDamage", 5.0, 1.0, Double.MAX_VALUE);
+        CrimsonMosquitoServantMovementSpeed = BUILDER.comment("How fast Crimson Mosquito Servants move, Default: 0.25")
+                .defineInRange("crimsonMosquitoServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
+        CrimsonMosquitoServantFollowRange = BUILDER.comment("How much following/detection range Crimson Mosquito Servants have, Default: 32.0")
+                .defineInRange("crimsonMosquitoServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
+        CrimsonMosquitoServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Crimson Mosquito Servants have, Default: 0.0")
+                .defineInRange("crimsonMosquitoServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.push("Overgrown Colossus Servant (Optional - LM)");
