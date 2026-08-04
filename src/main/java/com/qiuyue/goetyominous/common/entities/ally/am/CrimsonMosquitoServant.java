@@ -129,7 +129,7 @@ public class CrimsonMosquitoServant extends Summoned {
         this.goalSelector.addGoal(2, new FlyTowardsTarget(this));
         this.goalSelector.addGoal(2, new FlyAwayFromTarget(this));
         this.goalSelector.addGoal(3, new AvoidEntityGoal(this, EntityTriops.class, 16, 1.3D, 1.0D));
-        // 空闲时的随机盘旋，优先级最低，不干扰跟随/战斗/躲避
+
         this.goalSelector.addGoal(4, new RandomFlyGoal(this));
     }
 
@@ -143,7 +143,6 @@ public class CrimsonMosquitoServant extends Summoned {
         boolean spawnBlock = worldIn.getBlockState(blockpos).canOcclude();
         return reason == MobSpawnType.SPAWNER || spawnBlock && worldIn.getBlockState(blockpos).isValidSpawn(worldIn, blockpos, typeIn) && Monster.isDarkEnoughToSpawn(worldIn, pos, randomIn) && checkMobSpawnRules(AMEntityRegistry.CRIMSON_MOSQUITO.get(), worldIn, reason, pos, randomIn);
     }
-
 
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
@@ -305,9 +304,7 @@ public class CrimsonMosquitoServant extends Summoned {
     }
 
     private float getFleeHealthThreshold() {
-        // 用 getMasterOwner() 沿主人链攀到最终主人（通常是玩家），而非 getTrueOwner() 的直接主人。
-        // CuriosFinder.hasCurio 内部有 instanceof Player 守卫，非 Player 一律返回 false，
-        // 所以中间主人若是其他仆从/NPC，直接主人检测会静默失败。
+
         LivingEntity owner = this.getMasterOwner();
         boolean unholyDressed = owner != null
                 && CuriosFinder.hasUnholyHat(owner)
@@ -340,7 +337,6 @@ public class CrimsonMosquitoServant extends Summoned {
     public void setMosquitoScale(float scale) {
         this.entityData.set(MOSQUITO_SCALE, scale);
     }
-
 
     public boolean isSick() {
         return this.entityData.get(SICK);
@@ -387,7 +383,7 @@ public class CrimsonMosquitoServant extends Summoned {
                 if (target == null && tickCount - repellentCheckTime > 50) {
                     repellentCheckTime = tickCount;
                     LivingEntity closestRepel = null;
-                    // 仆从不应逃离主人或友方单位，只对真正的强敌产生惧意
+
                     for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(30), e -> this.shouldFleeFrom(e) && !this.isAlliedTo(e))) {
                         if(closestRepel == null || entity.distanceTo(this) < closestRepel.distanceTo(this)){
                             closestRepel = entity;
@@ -419,7 +415,7 @@ public class CrimsonMosquitoServant extends Summoned {
                     }
                 } else {
                     this.setFleeingEntityId(-1);
-                    // 逃离结束必须清空残留的 fleePos，否则下次进入逃离状态时会朝旧的逃离点飞回去
+
                     fleePos = null;
                 }
             }
@@ -502,7 +498,6 @@ public class CrimsonMosquitoServant extends Summoned {
                 this.setShrink(false);
                 this.setMosquitoScale(this.getMosquitoScale() + 0.015F);
                 if (sickTicks > 160) {
-                    // 患病蚊子转化出的应是疣猪蚊“仆从”，并继承当前主人的所有权，而非原版敌对疣猪蚊
                     WarpedMoscoServant mosco = AmEntityRegistry.WARPED_MOSCO_SERVANT.get().create(level());
                     mosco.copyPosition(this);
                     if (!this.level().isClientSide) {
@@ -564,7 +559,7 @@ public class CrimsonMosquitoServant extends Summoned {
         InteractionResult type = super.mobInteract(player, hand);
         if (item == AMItemRegistry.WARPED_MIXTURE.get() && !this.isSick()) {
             if (!player.getAbilities().instabuild) {
-                // 仅生存模式消耗物品并返还空瓶，避免创造模式刷瓶
+
                 this.spawnAtLocation(item.getCraftingRemainingItem(itemstack));
                 itemstack.shrink(1);
             }
@@ -597,7 +592,7 @@ public class CrimsonMosquitoServant extends Summoned {
 
         public boolean canUse() {
             MoveControl movementcontroller = this.parentEntity.getMoveControl();
-            // 停留/被命令状态下不允许随机盘旋（与基类 WanderGoal 的 canUse 语义一致）
+
             if (!parentEntity.isFlying() || parentEntity.isStaying() || parentEntity.isCommanded() || parentEntity.getTarget() != null || parentEntity.getFleeingEntityId() != -1) {
                 return false;
             }
@@ -617,7 +612,7 @@ public class CrimsonMosquitoServant extends Summoned {
 
         public void stop() {
             target = null;
-            // 取消移动，避免切换为停留状态后蚊子仍朝最后的目标位置滑行（与 FlyToOwnerGoal.stop 一致）
+
             this.parentEntity.getMoveControl().setWantedPosition(this.parentEntity.getX(), this.parentEntity.getY(), this.parentEntity.getZ(), 0.0D);
         }
 
@@ -652,12 +647,6 @@ public class CrimsonMosquitoServant extends Summoned {
 
     }
 
-    /**
-     * 跟随主人的飞行版 FollowOwnerGoal。
-     * 蚊子用 MoveHelperController 飞行移动（不走地面寻路），所以基类 Summoned.FollowOwnerGoal
-     * 的 navigation.moveTo 对飞行状态完全无效。这里直接通过 moveControl.setWantedPosition 飞向主人，
-     * 过远时仍沿用基类的传送逻辑。
-     */
     public static class FlyToOwnerGoal extends Goal {
         public final CrimsonMosquitoServant summonedEntity;
         public LivingEntity owner;
@@ -715,7 +704,7 @@ public class CrimsonMosquitoServant extends Summoned {
 
         public void stop() {
             this.owner = null;
-            // 取消移动，避免跟随目标结束后蚊子继续朝最后的目标位置滑行
+
             this.summonedEntity.getMoveControl().setWantedPosition(this.summonedEntity.getX(), this.summonedEntity.getY(), this.summonedEntity.getZ(), 0.0D);
         }
 
@@ -737,7 +726,7 @@ public class CrimsonMosquitoServant extends Summoned {
                     if (flag) {
                         this.tryToTeleportNearEntity();
                     } else {
-                        // 飞到主人头顶高度，避免直接怼进主人身体里
+
                         this.summonedEntity.getMoveControl().setWantedPosition(this.owner.getX(), this.owner.getY() + this.summonedEntity.getBbHeight() * 0.5F, this.owner.getZ(), this.followSpeed);
                     }
                 }

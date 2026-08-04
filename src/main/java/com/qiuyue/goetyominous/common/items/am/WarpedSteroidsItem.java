@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.items.am;
 
+import com.Polarice3.Goety.config.ItemConfig;
 import com.Polarice3.Goety.utils.MathHelper;
 import com.Polarice3.Goety.utils.SEHelper;
 import com.qiuyue.goetyominous.common.entities.ally.am.CrimsonMosquitoServant;
@@ -39,6 +40,11 @@ public class WarpedSteroidsItem extends Item {
 
     @Override
     public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
+        // Goety 通用冷却：冷却期间直接拦截（对齐 Goety 对 ReviveServantItem 由 ItemEvents 取消交互的门禁）。
+        // 客户端与服务端都会走到这里；冷却中返回 FAIL 不发送交互包、不消耗物品、不挥动手臂
+        if (SEHelper.isOnCooldown(player, stack)) {
+            return InteractionResult.FAIL;
+        }
         // 只能对属于自己的绯红蚊子仆从使用
         if (!(target instanceof CrimsonMosquitoServant mosquito) || mosquito.getTrueOwner() != player) {
             return InteractionResult.PASS;
@@ -74,8 +80,9 @@ public class WarpedSteroidsItem extends Item {
                 stack.shrink(1);
             }
             player.swing(hand);
-            // Goety 通用冷却 5 分钟（300 秒），与疣猪蚊仆从死亡掉落物 FlyingItem.setSecondsCool(300) 的拾取冷却保持一致
-            SEHelper.addCooldown(player, this, MathHelper.secondsToTicks(300));
+            // Goety 通用冷却（ItemConfig.ReviveSecondsCool，默认 90 秒）：转化成功后进入冷却，
+            // 冷却期间 interactLivingEntity 开头的检查会拦截下一次使用
+            SEHelper.addCooldown(player, this, MathHelper.secondsToTicks(ItemConfig.ReviveSecondsCool.get()));
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.FAIL;

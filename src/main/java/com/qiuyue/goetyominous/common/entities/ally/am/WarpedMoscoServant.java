@@ -4,6 +4,7 @@ import com.Polarice3.Goety.client.particles.ModParticleTypes;
 import com.Polarice3.Goety.common.entities.ModEntityType;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.projectiles.FlyingItem;
+import com.Polarice3.Goety.config.ItemConfig;
 import com.Polarice3.Goety.config.MobsConfig;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
@@ -133,12 +134,6 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
         return AMSoundRegistry.WARPED_MOSCO_HURT.get();
     }
 
-    /**
-     * 死亡后掉落一个 Warped Steroids。
-     * 参照 Goety 的 BlackBeast 掉落 HowlingSoul：用 FlyingItem 把物品送到主人背包里。
-     * 这里先走 vanilla {@code super.tickDeath()}（deathTime==20 时广播死亡事件并移除实体），
-     * 实体被移除后对象仍可用，因此在其后补上掉落逻辑。
-     */
     @Override
     protected void tickDeath() {
         super.tickDeath();
@@ -148,8 +143,8 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
             flyingItem.setOwner(this.getTrueOwner());
             flyingItem.setItem(itemStack);
             flyingItem.setParticle(ModParticleTypes.TOTEM_EFFECT.get());
-            // 拾取后冷却 5 分钟（FlyingItem 内部按秒换算 tick）
-            flyingItem.setSecondsCool(300);
+
+            flyingItem.setSecondsCool(ItemConfig.ReviveSecondsCool.get());
             this.level().addFreshEntity(flyingItem);
         }
     }
@@ -157,17 +152,16 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (stack.is(AMItemRegistry.BLOOD_SAC.get())  // 拿着 Alex Mobs 的"血囊"
-                && this.getMasterOwner() == player  // 玩家是最终主人(沿主人链向上,兼容仆从的仆从)
-                && this.getHealth() < this.getMaxHealth()) {  // 生命未满
+        if (stack.is(AMItemRegistry.BLOOD_SAC.get())
+                && this.getMasterOwner() == player
+                && this.getHealth() < this.getMaxHealth()) {
             if (!this.level().isClientSide) {
-                this.heal(20.0F);  // 治疗 20 点生命
+                this.heal(20.0F);
                 if (!player.getAbilities().instabuild) {
-                    stack.shrink(1);  // 消耗 1 个物品
+                    stack.shrink(1);
                 }
                 this.playSound(SoundEvents.ITEM_PICKUP, 1.0F, 1.0F);
-                // 爱心粒子:随机散布在身体表面并向外飘(参照 ThrasherServant),
-                // 避免集中在碰撞箱正中心而被大模型挡住,出现"渲染失败/看不见"
+
                 for (int i = 0; i < 7; ++i) {
                     double d0 = this.random.nextGaussian() * 0.02D;
                     double d1 = this.random.nextGaussian() * 0.02D;
@@ -193,10 +187,7 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
 
     @Override
     public void followGoal() {
-        // 基类 Summoned.FollowOwnerGoal 在构造时捕获 getNavigation()，
-        // 但本类构造函数随后 switchNavigator(false) 会把 navigation 换成 DirectPathNavigator，
-        // 于是基类 followGoal 持有的是一份永不 tick 的孤儿导航，仆从永远不跟随主人。
-        // 这里仿照 CrimsonMosquitoServant，用飞行版 FlyToOwnerGoal 直接走 moveControl。
+
         this.goalSelector.addGoal(2, new WarpedMoscoServant.FlyToOwnerGoal(this, 1.0D, 10.0F, 2.0F));
     }
 
@@ -212,12 +203,6 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
         }
     }
 
-    /**
-     * 跟随主人的飞行版 FollowOwnerGoal。
-     * 疣猪蚊仆从飞行时用 FlightMoveController 移动（不走地面寻路），所以基类 Summoned.FollowOwnerGoal
-     * 的 navigation.moveTo 对飞行状态完全无效。这里直接通过 moveControl.setWantedPosition 飞向主人，
-     * 过远时仍沿用基类的传送逻辑。
-     */
     public static class FlyToOwnerGoal extends Goal {
         public final WarpedMoscoServant summonedEntity;
         public LivingEntity owner;
@@ -275,7 +260,7 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
 
         public void stop() {
             this.owner = null;
-            // 取消移动，避免跟随目标结束后继续朝最后的目标位置滑行
+
             this.summonedEntity.getMoveControl().setWantedPosition(this.summonedEntity.getX(), this.summonedEntity.getY(), this.summonedEntity.getZ(), 0.0D);
         }
 
@@ -297,7 +282,7 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
                     if (flag) {
                         this.tryToTeleportNearEntity();
                     } else {
-                        // 飞到主人头顶高度，避免直接怼进主人身体里
+
                         this.summonedEntity.getMoveControl().setWantedPosition(this.owner.getX(), this.owner.getY() + this.summonedEntity.getBbHeight() * 0.5F, this.owner.getZ(), this.followSpeed);
                     }
                 }
@@ -840,7 +825,7 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
 
         public BlockPos getAvoidTarget(LivingEntity target) {
             final float radius = 10 + WarpedMoscoServant.this.getRandom().nextInt(8);
-            //float neg = WarpedMoscoServant.this.getRandom().nextBoolean() ? 1 : -1;
+
             final float angle = (Maths.STARTING_ANGLE * (target.yHeadRot + 90F + WarpedMoscoServant.this.getRandom().nextInt(180)));
             final double extraX = radius * Mth.sin(Mth.PI + angle);
             final double extraZ = radius * Mth.cos(angle);
@@ -865,7 +850,7 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
         if(this.getHealth() < Math.floor(this.getMaxHealth() * 0.25F)){
             return true;
         }
-        // 上游 AlexMobs 的 typo：0.5F 应乘在 getMaxHealth() 上，否则 h < h*0.5 恒为假，半血远程分支永不触发
+
         return this.getHealth() < this.getMaxHealth() * 0.5F && this.distanceTo(target) > 10;
     }
 }
