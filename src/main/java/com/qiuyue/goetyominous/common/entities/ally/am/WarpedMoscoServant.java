@@ -1,0 +1,871 @@
+package com.qiuyue.goetyominous.common.entities.ally.am;
+
+import com.Polarice3.Goety.client.particles.ModParticleTypes;
+import com.Polarice3.Goety.common.entities.ModEntityType;
+import com.Polarice3.Goety.common.entities.ally.Summoned;
+import com.Polarice3.Goety.common.entities.projectiles.FlyingItem;
+import com.Polarice3.Goety.config.MobsConfig;
+import com.github.alexthe666.alexsmobs.config.AMConfig;
+import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
+import com.github.alexthe666.alexsmobs.entity.EntityCrimsonMosquito;
+import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
+import com.github.alexthe666.alexsmobs.entity.ai.FlightMoveController;
+import com.github.alexthe666.alexsmobs.entity.ai.GroundPathNavigatorWide;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
+import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+
+import java.util.EnumSet;
+import javax.annotation.Nullable;
+
+import com.github.alexthe666.citadel.animation.Animation;
+import com.github.alexthe666.citadel.animation.AnimationHandler;
+import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import com.qiuyue.goetyominous.config.AttributesConfig;
+import com.qiuyue.goetyominous.common.entities.projectile.EntityServantHemolymph;
+import com.qiuyue.goetyominous.common.items.am.AmItems;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+
+public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
+
+    public static final Animation ANIMATION_PUNCH_R = Animation.create(25);
+    public static final Animation ANIMATION_PUNCH_L = Animation.create(25);
+    public static final Animation ANIMATION_SLAM = Animation.create(35);
+    public static final Animation ANIMATION_SUCK = Animation.create(60);
+    public static final Animation ANIMATION_SPIT = Animation.create(60);
+    private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(WarpedMoscoServant.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> HAND_SIDE = SynchedEntityData.defineId(WarpedMoscoServant.class, EntityDataSerializers.BOOLEAN);
+    public float flyLeftProgress;
+    public float prevLeftFlyProgress;
+    public float flyRightProgress;
+    public float prevFlyRightProgress;
+    private int animationTick;
+    private Animation currentAnimation;
+    private boolean isLandNavigator;
+    private int timeFlying;
+    private int loopSoundTick = 0;
+
+    public WarpedMoscoServant(EntityType entityType, Level world) {
+        super(entityType, world);
+        this.xpReward = 30;
+        switchNavigator(false);
+    }
+
+    public static AttributeSupplier.Builder setCustomAttributes() {
+        return Monster.createMonsterAttributes()
+                .add(Attributes.MAX_HEALTH, AttributesConfig.WarpedMoscoServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AttributesConfig.WarpedMoscoServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.WarpedMoscoServantDamage.get())
+                .add(Attributes.ARMOR, AttributesConfig.WarpedMoscoServantArmor.get())
+                .add(Attributes.ARMOR_TOUGHNESS, AttributesConfig.WarpedMoscoServantArmorToughness.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.WarpedMoscoServantKnockbackResistance.get())
+                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.WarpedMoscoServantMovementSpeed.get());
+    }
+
+    public MobType getMobType() {
+        return MobType.ARTHROPOD;
+    }
+
+    private static Animation getRandomAttack(RandomSource rand) {
+        return switch (rand.nextInt(4)) {
+            case 0 -> ANIMATION_PUNCH_L;
+            case 1 -> ANIMATION_PUNCH_R;
+            case 2 -> ANIMATION_SLAM;
+            case 3 -> ANIMATION_SUCK;
+            default -> ANIMATION_SUCK;
+        };
+    }
+
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.WARPED_MOSCO_IDLE.get();
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.WARPED_MOSCO_HURT.get();
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.WARPED_MOSCO_HURT.get();
+    }
+
+    /**
+     * 死亡后掉落一个 Warped Steroids。
+     * 参照 Goety 的 BlackBeast 掉落 HowlingSoul：用 FlyingItem 把物品送到主人背包里。
+     * 这里先走 vanilla {@code super.tickDeath()}（deathTime==20 时广播死亡事件并移除实体），
+     * 实体被移除后对象仍可用，因此在其后补上掉落逻辑。
+     */
+    @Override
+    protected void tickDeath() {
+        super.tickDeath();
+        if (this.deathTime == 20 && !this.level().isClientSide() && this.getTrueOwner() != null) {
+            ItemStack itemStack = new ItemStack(AmItems.WARPED_STEROIDS.get());
+            FlyingItem flyingItem = new FlyingItem(ModEntityType.FLYING_ITEM.get(), this.level(), this.getX(), this.getY(), this.getZ());
+            flyingItem.setOwner(this.getTrueOwner());
+            flyingItem.setItem(itemStack);
+            flyingItem.setParticle(ModParticleTypes.TOTEM_EFFECT.get());
+            // 拾取后冷却 5 分钟（FlyingItem 内部按秒换算 tick）
+            flyingItem.setSecondsCool(300);
+            this.level().addFreshEntity(flyingItem);
+        }
+    }
+
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (stack.is(AMItemRegistry.BLOOD_SAC.get())  // 拿着 Alex Mobs 的"血囊"
+                && this.getMasterOwner() == player  // 玩家是最终主人(沿主人链向上,兼容仆从的仆从)
+                && this.getHealth() < this.getMaxHealth()) {  // 生命未满
+            if (!this.level().isClientSide) {
+                this.heal(20.0F);  // 治疗 20 点生命
+                if (!player.getAbilities().instabuild) {
+                    stack.shrink(1);  // 消耗 1 个物品
+                }
+                this.playSound(SoundEvents.ITEM_PICKUP, 1.0F, 1.0F);
+                // 爱心粒子:随机散布在身体表面并向外飘(参照 ThrasherServant),
+                // 避免集中在碰撞箱正中心而被大模型挡住,出现"渲染失败/看不见"
+                for (int i = 0; i < 7; ++i) {
+                    double d0 = this.random.nextGaussian() * 0.02D;
+                    double d1 = this.random.nextGaussian() * 0.02D;
+                    double d2 = this.random.nextGaussian() * 0.02D;
+                    ((ServerLevel) this.level()).sendParticles(ParticleTypes.HEART,
+                            this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D),
+                            1, d0, d1, d2, 0.5F);
+                }
+            }
+            return InteractionResult.SUCCESS;
+        }
+        return super.mobInteract(player, hand);
+    }
+
+    protected void registerGoals() {
+        super.registerGoals();
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(0, new AttackGoal());
+        this.goalSelector.addGoal(4, new AIWalkIdle());
+        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this, EntityCrimsonMosquito.class, WarpedMoscoServant.class));
+    }
+
+    @Override
+    public void followGoal() {
+        // 基类 Summoned.FollowOwnerGoal 在构造时捕获 getNavigation()，
+        // 但本类构造函数随后 switchNavigator(false) 会把 navigation 换成 DirectPathNavigator，
+        // 于是基类 followGoal 持有的是一份永不 tick 的孤儿导航，仆从永远不跟随主人。
+        // 这里仿照 CrimsonMosquitoServant，用飞行版 FlyToOwnerGoal 直接走 moveControl。
+        this.goalSelector.addGoal(2, new WarpedMoscoServant.FlyToOwnerGoal(this, 1.0D, 10.0F, 2.0F));
+    }
+
+    private void switchNavigator(boolean onLand) {
+        if (onLand) {
+            this.moveControl = new MoveControl(this);
+            this.navigation = new GroundPathNavigatorWide(this, level());
+            this.isLandNavigator = true;
+        } else {
+            this.moveControl = new FlightMoveController(this, 0.7F, false);
+            this.navigation = new DirectPathNavigator(this, level());
+            this.isLandNavigator = false;
+        }
+    }
+
+    /**
+     * 跟随主人的飞行版 FollowOwnerGoal。
+     * 疣猪蚊仆从飞行时用 FlightMoveController 移动（不走地面寻路），所以基类 Summoned.FollowOwnerGoal
+     * 的 navigation.moveTo 对飞行状态完全无效。这里直接通过 moveControl.setWantedPosition 飞向主人，
+     * 过远时仍沿用基类的传送逻辑。
+     */
+    public static class FlyToOwnerGoal extends Goal {
+        public final WarpedMoscoServant summonedEntity;
+        public LivingEntity owner;
+        public final double followSpeed;
+        public int timeToRecalcPath;
+        public final float stopDistance;
+        public final float startDistance;
+
+        public FlyToOwnerGoal(WarpedMoscoServant summonedEntity, double speed, float startDistance, float stopDistance) {
+            this.summonedEntity = summonedEntity;
+            this.followSpeed = speed;
+            this.startDistance = startDistance;
+            this.stopDistance = stopDistance;
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        }
+
+        public boolean canUse() {
+            LivingEntity livingentity = this.summonedEntity.getTrueOwner();
+            if (livingentity == null) {
+                return false;
+            } else if (livingentity.isSpectator()) {
+                return false;
+            } else if (this.summonedEntity.distanceToSqr(livingentity) < (double) (Mth.square(this.startDistance))) {
+                return false;
+            } else if (!this.summonedEntity.isFollowing() || this.summonedEntity.isCommanded()) {
+                return false;
+            } else if (this.summonedEntity.getTarget() != null) {
+                return false;
+            } else {
+                this.owner = livingentity;
+                return true;
+            }
+        }
+
+        public boolean canContinueToUse() {
+            if (this.summonedEntity.getTarget() != null) {
+                return false;
+            } else if (this.summonedEntity.isPassenger()) {
+                return false;
+            } else if (this.owner == null || !this.owner.isAlive()) {
+                return false;
+            } else if (!this.summonedEntity.isFollowing() || this.summonedEntity.isCommanded()) {
+                return false;
+            } else {
+                return !(this.summonedEntity.distanceToSqr(this.owner) <= (double) (Mth.square(this.stopDistance)));
+            }
+        }
+
+        public void start() {
+            this.timeToRecalcPath = 0;
+            if (!this.summonedEntity.isFlying()) {
+                this.summonedEntity.setFlying(true);
+            }
+        }
+
+        public void stop() {
+            this.owner = null;
+            // 取消移动，避免跟随目标结束后继续朝最后的目标位置滑行
+            this.summonedEntity.getMoveControl().setWantedPosition(this.summonedEntity.getX(), this.summonedEntity.getY(), this.summonedEntity.getZ(), 0.0D);
+        }
+
+        public void tick() {
+            if (this.owner != null) {
+                this.summonedEntity.getLookControl().setLookAt(this.owner, 10.0F, (float) this.summonedEntity.getMaxHeadXRot());
+                if (!this.summonedEntity.isFlying()) {
+                    this.summonedEntity.setFlying(true);
+                }
+                if (--this.timeToRecalcPath <= 0) {
+                    this.timeToRecalcPath = 10;
+                    double range = this.owner instanceof Mob ? 32.0D : 16.0D;
+                    boolean flag = this.summonedEntity.distanceToSqr(this.owner) >= Mth.square(range);
+                    if (this.owner instanceof Mob) {
+                        flag |= !this.summonedEntity.hasLineOfSight(this.owner) && this.summonedEntity.distanceToSqr(this.owner) >= Mth.square(8.0D);
+                    } else {
+                        flag &= this.canTeleport();
+                    }
+                    if (flag) {
+                        this.tryToTeleportNearEntity();
+                    } else {
+                        // 飞到主人头顶高度，避免直接怼进主人身体里
+                        this.summonedEntity.getMoveControl().setWantedPosition(this.owner.getX(), this.owner.getY() + this.summonedEntity.getBbHeight() * 0.5F, this.owner.getZ(), this.followSpeed);
+                    }
+                }
+            }
+        }
+
+        protected boolean canTeleport() {
+            return MobsConfig.ServantTeleport.get();
+        }
+
+        protected void tryToTeleportNearEntity() {
+            BlockPos blockpos = this.owner.blockPosition();
+
+            for (int i = 0; i < 10; ++i) {
+                int j = this.getRandomNumber(-3, 3);
+                int k = this.getRandomNumber(-1, 1);
+                int l = this.getRandomNumber(-3, 3);
+                boolean flag = this.tryToTeleportToLocation(blockpos.getX() + j, blockpos.getY() + k, blockpos.getZ() + l);
+                if (flag) {
+                    return;
+                }
+            }
+
+        }
+
+        protected boolean tryToTeleportToLocation(int x, int y, int z) {
+            if (Math.abs((double) x - this.owner.getX()) < 2.0D && Math.abs((double) z - this.owner.getZ()) < 2.0D) {
+                return false;
+            } else if (!this.isTeleportFriendlyBlock(new BlockPos(x, y, z))) {
+                return false;
+            } else {
+                this.summonedEntity.moveTo((double) x + 0.5D, (double) y, (double) z + 0.5D, this.summonedEntity.getYRot(), this.summonedEntity.getXRot());
+                this.summonedEntity.getMoveControl().setWantedPosition(this.summonedEntity.getX(), this.summonedEntity.getY(), this.summonedEntity.getZ(), 0.0D);
+                return true;
+            }
+        }
+
+        protected boolean isTeleportFriendlyBlock(BlockPos pos) {
+            BlockPathTypes pathnodetype = WalkNodeEvaluator.getBlockPathTypeStatic(this.summonedEntity.level(), pos.mutable());
+            if (pathnodetype != BlockPathTypes.WALKABLE) {
+                return false;
+            } else {
+                BlockState blockstate = this.summonedEntity.level().getBlockState(pos.below());
+                if (blockstate.getBlock() instanceof LeavesBlock) {
+                    return false;
+                } else {
+                    BlockPos blockpos = pos.subtract(this.summonedEntity.blockPosition());
+                    return this.summonedEntity.level().noCollision(this.summonedEntity, this.summonedEntity.getBoundingBox().move(blockpos));
+                }
+            }
+        }
+
+        protected int getRandomNumber(int min, int max) {
+            return this.summonedEntity.getRandom().nextInt(max - min + 1) + min;
+        }
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(FLYING, false);
+        this.entityData.define(HAND_SIDE, true);
+    }
+
+    public boolean causeFallDamage(float distance, float damageMultiplier) {
+        return false;
+    }
+
+    protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
+    }
+
+    public boolean isFlying() {
+        return this.entityData.get(FLYING);
+    }
+
+    public void setFlying(boolean flying) {
+        setDashRight(flying != this.isFlying() ? random.nextBoolean() : this.isDashRight());
+        this.entityData.set(FLYING, flying);
+    }
+
+    public boolean isDashRight() {
+        return this.entityData.get(HAND_SIDE);
+    }
+
+    public void setDashRight(boolean right) {
+        this.entityData.set(HAND_SIDE, right);
+    }
+
+    public void tick() {
+        super.tick();
+        prevFlyRightProgress = flyRightProgress;
+        prevLeftFlyProgress = flyLeftProgress;
+        final boolean dashRight = isDashRight();
+        final boolean flying = isFlying();
+        if (flying && dashRight && flyRightProgress < 5F) {
+            flyRightProgress++;
+        }
+        if ((!flying || !dashRight) && flyRightProgress > 0F) {
+            flyRightProgress--;
+        }
+        if (flying && !dashRight && flyLeftProgress < 5F) {
+            flyLeftProgress++;
+        }
+        if ((!flying || dashRight) && flyLeftProgress > 0F) {
+            flyLeftProgress--;
+        }
+        if (!this.level().isClientSide) {
+            if (flying) {
+                if (this.isLandNavigator)
+                    switchNavigator(false);
+            } else {
+                if (!this.isLandNavigator)
+                    switchNavigator(true);
+            }
+        }
+        if (flying) {
+            if (loopSoundTick == 0) {
+                this.playSound(AMSoundRegistry.MOSQUITO_LOOP.get(), this.getSoundVolume(), this.getVoicePitch() * 0.3F);
+            }
+            loopSoundTick++;
+            if (loopSoundTick > 100) {
+                loopSoundTick = 0;
+            }
+            timeFlying++;
+            this.setNoGravity(true);
+            if (this.isPassenger() || this.isVehicle()) {
+                this.setFlying(false);
+            }
+        } else {
+            timeFlying = 0;
+            this.setNoGravity(false);
+        }
+        if (this.horizontalCollision && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
+            boolean flag = false;
+            AABB axisalignedbb = this.getBoundingBox().inflate(0.2D);
+            for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(axisalignedbb.minX), Mth.floor(axisalignedbb.minY), Mth.floor(axisalignedbb.minZ), Mth.floor(axisalignedbb.maxX), Mth.floor(axisalignedbb.maxY), Mth.floor(axisalignedbb.maxZ))) {
+                BlockState blockstate = this.level().getBlockState(blockpos);
+                if (blockstate.is(AMTagRegistry.WARPED_MOSCO_BREAKABLES)) {
+                    flag = this.level().destroyBlock(blockpos, true, this) || flag;
+                }
+            }
+            if (!flag && this.onGround()) {
+                this.jumpFromGround();
+            }
+        }
+
+        LivingEntity target = this.getTarget();
+        if (target != null && this.isAlive()) {
+            if (this.getAnimation() == ANIMATION_SUCK && this.getAnimationTick() == 3 && this.distanceTo(target) < 4.7F) {
+                target.startRiding(this, true);
+            }
+            if (this.getAnimation() == ANIMATION_SLAM) {
+                if (this.getAnimationTick() == 19) {
+                    for (Entity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(5.0D))) {
+                        if (!isAlliedTo(entity) && !(entity instanceof WarpedMoscoServant) && entity != this) {
+                            entity.hurt(this.damageSources().mobAttack(this), 10.0F + random.nextFloat() * 8.0F);
+                            launch(entity, true);
+                        }
+                    }
+
+                }
+            }
+            if ((this.getAnimation() == ANIMATION_PUNCH_R || this.getAnimation() == ANIMATION_PUNCH_L) && this.getAnimationTick() == 13) {
+                if (this.distanceTo(target) < 4.7F) {
+                    target.hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                    knockbackRidiculous(target, 0.9F);
+                }
+            }
+        }
+        if (this.getAnimation() == ANIMATION_SLAM && this.getAnimationTick() == 19) {
+            spawnGroundEffects();
+        }
+
+        AnimationHandler.INSTANCE.updateAnimations(this);
+    }
+
+    public void spawnGroundEffects() {
+        final float radius = 2.3F;
+        final double extraY = 0.8F;
+        for (int i = 0; i < 4; i++) {
+            for (int i1 = 0; i1 < 20 + random.nextInt(12); i1++) {
+                final double motionX = getRandom().nextGaussian() * 0.07D;
+                final double motionY = getRandom().nextGaussian() * 0.07D;
+                final double motionZ = getRandom().nextGaussian() * 0.07D;
+                final float angle = (Maths.STARTING_ANGLE * this.yBodyRot) + i1;
+                final double extraX = radius * Mth.sin(Mth.PI + angle);
+                final double extraZ = radius * Mth.cos(angle);
+                BlockPos ground = getMoscoGround(new BlockPos(Mth.floor(this.getX() + extraX), Mth.floor(this.getY() + extraY) - 1, Mth.floor(this.getZ() + extraZ)));
+                BlockState state = this.level().getBlockState(ground);
+                if (state.isSolid()) {
+                    if (this.level().isClientSide) {
+                        level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, state), true, this.getX() + extraX, ground.getY() + extraY, this.getZ() + extraZ, motionX, motionY, motionZ);
+                    }
+                }
+            }
+        }
+    }
+
+    private void launch(Entity e, boolean huge) {
+        if (e.onGround()) {
+            final double d0 = e.getX() - this.getX();
+            final double d1 = e.getZ() - this.getZ();
+            final double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
+            final float f = huge ? 2F : 0.5F;
+            e.push(d0 / d2 * f, huge ? 0.5D : 0.2F, d1 / d2 * f);
+        }
+    }
+
+    @Override
+    public Animation getAnimation() {
+        return currentAnimation;
+    }
+
+    @Override
+    public void setAnimation(Animation animation) {
+        currentAnimation = animation;
+    }
+
+    @Override
+    public int getAnimationTick() {
+        return animationTick;
+    }
+
+    @Override
+    public void setAnimationTick(int i) {
+        animationTick = i;
+    }
+
+    @Override
+    public Animation[] getAnimations() {
+        return new Animation[]{ANIMATION_PUNCH_L, ANIMATION_PUNCH_R, ANIMATION_SLAM, ANIMATION_SUCK, ANIMATION_SPIT};
+    }
+
+    private BlockPos getMoscoGround(BlockPos in) {
+        BlockPos position = new BlockPos(in.getX(),
+                (int) this.getY(),
+                in.getZ());
+        while (position.getY() > -62 && !level().getBlockState(position).isSolid() && level().getFluidState(position).isEmpty()) {
+            position = position.below();
+        }
+        return position;
+    }
+
+    public Vec3 getBlockGrounding(Vec3 fleePos) {
+        float radius = 0.75F * (0.7F * 6) * -3 - this.getRandom().nextInt(24);
+        float neg = this.getRandom().nextBoolean() ? 1 : -1;
+        float renderYawOffset = this.yBodyRot;
+        float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
+        double extraX = radius * Mth.sin(Mth.PI + angle);
+        double extraZ = radius * Mth.cos(angle);
+        BlockPos radialPos = AMBlockPos.fromCoords(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
+        BlockPos ground = this.getMoscoGround(radialPos);
+        if (ground.getY() == -62) {
+            return this.position();
+        } else {
+            ground = this.blockPosition();
+            while (ground.getY() > -62 && !level().getBlockState(ground).isSolid()) {
+                ground = ground.below();
+            }
+        }
+        if (!this.isTargetBlocked(Vec3.atCenterOf(ground.above()))) {
+            return Vec3.atCenterOf(ground);
+        }
+        return null;
+    }
+
+    public Vec3 getBlockInViewAway(Vec3 fleePos, float radiusAdd) {
+        float radius = 0.75F * (0.7F * 6) * -3 - this.getRandom().nextInt(24) - radiusAdd;
+        float neg = this.getRandom().nextBoolean() ? 1 : -1;
+        float renderYawOffset = this.yBodyRot;
+        float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
+        double extraX = radius * Mth.sin(Mth.PI + angle);
+        double extraZ = radius * Mth.cos(angle);
+        BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), 0, (int) (fleePos.z() + extraZ));
+        BlockPos ground = getMoscoGround(radialPos);
+        int distFromGround = (int) this.getY() - ground.getY();
+        int flightHeight = 4 + this.getRandom().nextInt(10);
+        BlockPos newPos = ground.above(distFromGround > 8 ? flightHeight : this.getRandom().nextInt(6) + 1);
+        if (!this.isTargetBlocked(Vec3.atCenterOf(newPos)) && this.distanceToSqr(Vec3.atCenterOf(newPos)) > 1) {
+            return Vec3.atCenterOf(newPos);
+        }
+        return null;
+    }
+
+    public void knockbackRidiculous(LivingEntity target, float power) {
+        target.knockback(power, this.getX() - target.getX(), this.getZ() - target.getZ());
+        float knockbackResist = (float) Mth.clamp((1.0D - this.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE)), 0, 1);
+        target.setDeltaMovement(target.getDeltaMovement().add(0, knockbackResist * power * 0.45F, 0));
+    }
+
+    public boolean isTargetBlocked(Vec3 target) {
+        Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
+
+        return this.level().clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
+    }
+
+    private boolean isOverLiquid() {
+        BlockPos position = this.blockPosition();
+        while (position.getY() > 2 && level().isEmptyBlock(position)) {
+            position = position.below();
+        }
+        return !level().getFluidState(position).isEmpty();
+    }
+
+    public void travel(Vec3 travelVector) {
+        if ((this.getAnimation() == ANIMATION_SUCK || this.getAnimation() == ANIMATION_SLAM) && this.getAnimationTick() > 8) {
+            if (this.getNavigation().getPath() != null) {
+                this.getNavigation().stop();
+            }
+            travelVector = Vec3.ZERO;
+            super.travel(travelVector);
+            return;
+        }
+        super.travel(travelVector);
+    }
+
+    public void positionRider(Entity passenger, Entity.MoveFunction moveFunc) {
+        super.positionRider(passenger, moveFunc);
+        if (hasPassenger(passenger)) {
+            int tick = 5;
+            if (this.getAnimation() == ANIMATION_SUCK) {
+                tick = this.getAnimationTick();
+            } else {
+                passenger.stopRiding();
+            }
+            float radius = 2F;
+            float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
+            double extraX = radius * Mth.sin(Mth.PI + angle);
+            double extraZ = radius * Mth.cos(angle);
+            double extraY = tick < 10 ? 0 : 0.15F * Mth.clamp(tick - 10, 0, 15);
+            passenger.setPos(this.getX() + extraX, this.getY() + extraY + 0.1F, this.getZ() + extraZ);
+            if ((tick - 10) % 4 == 0) {
+                this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 1));
+                passenger.hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+            }
+        }
+    }
+
+    @Override
+    public boolean canRiderInteract() {
+        return true;
+    }
+
+    public boolean shouldRiderSit() {
+        return false;
+    }
+
+    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.warpedMoscoSpawnRolls, this.getRandom(), spawnReasonIn);
+    }
+
+    private void spit(LivingEntity target) {
+        if (this.getAnimation() != ANIMATION_SPIT) {
+            return;
+        }
+        this.lookAt(target, 100, 100);
+        this.yBodyRot = yHeadRot;
+        for (int i = 0; i < 2 + random.nextInt(2); i++) {
+            EntityServantHemolymph llamaspitentity = new EntityServantHemolymph(this.level(), this);
+            double d0 = target.getX() - this.getX();
+            double d1 = target.getY(0.3333333333333333D) - llamaspitentity.getY();
+            double d2 = target.getZ() - this.getZ();
+            float f = Mth.sqrt((float) (d0 * d0 + d2 * d2)) * 0.2F;
+            llamaspitentity.shoot(d0, d1 + (double) f, d2, 1.5F, 5.0F);
+            if (!this.isSilent()) {
+                this.gameEvent(GameEvent.PROJECTILE_SHOOT);
+                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.LLAMA_SPIT, this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
+            }
+            this.level().addFreshEntity(llamaspitentity);
+        }
+    }
+
+    private class AIWalkIdle extends Goal {
+        protected final WarpedMoscoServant mosco;
+        protected double x;
+        protected double y;
+        protected double z;
+        private boolean flightTarget = false;
+
+        public AIWalkIdle() {
+            super();
+            this.setFlags(EnumSet.of(Flag.MOVE));
+            this.mosco = WarpedMoscoServant.this;
+        }
+
+        @Override
+        public boolean canUse() {
+            if (this.mosco.isVehicle() || (mosco.getTarget() != null && mosco.getTarget().isAlive()) || this.mosco.isPassenger()) {
+                return false;
+            } else {
+                if (this.mosco.getRandom().nextInt(30) != 0 && !mosco.isFlying()) {
+                    return false;
+                }
+                if (this.mosco.onGround()) {
+                    this.flightTarget = random.nextInt(8) == 0;
+                } else {
+                    this.flightTarget = random.nextInt(5) > 0 && mosco.timeFlying < 200;
+                }
+                Vec3 lvt_1_1_ = this.getPosition();
+                if (lvt_1_1_ == null) {
+                    return false;
+                } else {
+                    this.x = lvt_1_1_.x;
+                    this.y = lvt_1_1_.y;
+                    this.z = lvt_1_1_.z;
+                    return true;
+                }
+            }
+        }
+
+        public void tick() {
+            if (flightTarget) {
+                mosco.getMoveControl().setWantedPosition(x, y, z, 1F);
+            } else {
+                this.mosco.getNavigation().moveTo(this.x, this.y, this.z, 1F);
+            }
+            if (!flightTarget && isFlying() && mosco.onGround()) {
+                mosco.setFlying(false);
+            }
+            if (isFlying() && mosco.onGround() && mosco.timeFlying > 10) {
+                mosco.setFlying(false);
+            }
+        }
+
+        @Nullable
+        protected Vec3 getPosition() {
+            Vec3 vector3d = mosco.position();
+
+            if (mosco.isOverLiquid()) {
+                flightTarget = true;
+            }
+            if (flightTarget) {
+                if (mosco.timeFlying < 50 || mosco.isOverLiquid()) {
+                    return mosco.getBlockInViewAway(vector3d, 0);
+                } else {
+                    return mosco.getBlockGrounding(vector3d);
+                }
+            } else {
+
+                return LandRandomPos.getPos(this.mosco, 20, 7);
+            }
+        }
+
+        public boolean canContinueToUse() {
+            if (flightTarget) {
+                return mosco.isFlying() && mosco.distanceToSqr(x, y, z) > 20F && !mosco.horizontalCollision;
+            } else {
+                return (!this.mosco.getNavigation().isDone()) && !this.mosco.isVehicle();
+            }
+        }
+
+        public void start() {
+            if (flightTarget) {
+                mosco.setFlying(true);
+                mosco.getMoveControl().setWantedPosition(x, y, z, 1F);
+            } else {
+                this.mosco.getNavigation().moveTo(this.x, this.y, this.z, 1F);
+            }
+        }
+
+        public void stop() {
+            this.mosco.getNavigation().stop();
+            super.stop();
+        }
+    }
+
+    private class AttackGoal extends Goal {
+        private int upTicks = 0;
+        private int dashCooldown = 0;
+        private boolean ranged = false;
+        private BlockPos farTarget = null;
+
+        public AttackGoal() {
+        }
+
+        public boolean canUse() {
+            return WarpedMoscoServant.this.getTarget() != null;
+        }
+
+        public void tick() {
+            if (dashCooldown > 0) {
+                dashCooldown--;
+            }
+            if (WarpedMoscoServant.this.getTarget() != null) {
+                LivingEntity target = WarpedMoscoServant.this.getTarget();
+                ranged = WarpedMoscoServant.this.shouldRangeAttack(target);
+                if (WarpedMoscoServant.this.isFlying() || ranged || WarpedMoscoServant.this.distanceTo(target) > 12 && !WarpedMoscoServant.this.isTargetBlocked(target.position().add(0, target.getBbHeight() * 0.6F, 0))) {
+                    float speedRush = 5F;
+                    upTicks++;
+                    WarpedMoscoServant.this.setFlying(true);
+                    if (ranged) {
+                        if (farTarget == null || WarpedMoscoServant.this.distanceToSqr(Vec3.atCenterOf(farTarget)) < 9) {
+                            farTarget = this.getAvoidTarget(target);
+                        }
+                        if (farTarget != null) {
+                            WarpedMoscoServant.this.getMoveControl().setWantedPosition(farTarget.getX(), farTarget.getY() + target.getEyeHeight() * 0.6F, farTarget.getZ(), 3D);
+                        }
+                        WarpedMoscoServant.this.setAnimation(ANIMATION_SPIT);
+                        if(upTicks % 30 == 0){
+                            WarpedMoscoServant.this.heal(1);
+                        }
+                        final int tick = WarpedMoscoServant.this.getAnimationTick();
+                        switch (tick) {
+                            case 10, 20, 30, 40 -> WarpedMoscoServant.this.spit(target);
+                        }
+                    } else {
+                        if (upTicks > 20 || WarpedMoscoServant.this.distanceTo(target) < 6) {
+                            WarpedMoscoServant.this.getMoveControl().setWantedPosition(target.getX(), target.getY() + target.getEyeHeight() * 0.6F, target.getZ(), speedRush);
+                        } else {
+                            WarpedMoscoServant.this.getMoveControl().setWantedPosition(WarpedMoscoServant.this.getX(), WarpedMoscoServant.this.getY() + 3, WarpedMoscoServant.this.getZ(), 0.5F);
+                        }
+                    }
+                } else {
+                    WarpedMoscoServant.this.getNavigation().moveTo(WarpedMoscoServant.this.getTarget(), 1.25F);
+                }
+                if (WarpedMoscoServant.this.isFlying()) {
+                    if (WarpedMoscoServant.this.distanceTo(target) < 4.3F) {
+                        if (dashCooldown == 0 || target.onGround() || target.isInLava() || target.isInWater()) {
+                            target.hurt(WarpedMoscoServant.this.damageSources().mobAttack(WarpedMoscoServant.this), 5F);
+                            WarpedMoscoServant.this.knockbackRidiculous(target, 1.0F);
+                            dashCooldown = 30;
+                        }
+                        final float groundHeight = WarpedMoscoServant.this.getMoscoGround(WarpedMoscoServant.this.blockPosition()).getY();
+                        if (Math.abs(WarpedMoscoServant.this.getY() - groundHeight) < 3.0F && !WarpedMoscoServant.this.isOverLiquid()) {
+                            WarpedMoscoServant.this.timeFlying += 300;
+                            WarpedMoscoServant.this.setFlying(false);
+                        }
+                    }
+                } else {
+                    if (WarpedMoscoServant.this.distanceTo(target) < 4F && WarpedMoscoServant.this.getAnimation() == NO_ANIMATION) {
+                        Animation animation = getRandomAttack(random);
+                        if (animation == ANIMATION_SUCK && target.isPassenger()) {
+                            animation = ANIMATION_SLAM;
+                        }
+                        WarpedMoscoServant.this.setAnimation(animation);
+                    }
+                }
+            }
+        }
+
+        public BlockPos getAvoidTarget(LivingEntity target) {
+            final float radius = 10 + WarpedMoscoServant.this.getRandom().nextInt(8);
+            //float neg = WarpedMoscoServant.this.getRandom().nextBoolean() ? 1 : -1;
+            final float angle = (Maths.STARTING_ANGLE * (target.yHeadRot + 90F + WarpedMoscoServant.this.getRandom().nextInt(180)));
+            final double extraX = radius * Mth.sin(Mth.PI + angle);
+            final double extraZ = radius * Mth.cos(angle);
+            BlockPos radialPos = AMBlockPos.fromCoords(target.getX() + extraX, target.getY() + 1, target.getZ() + extraZ);
+            BlockPos ground = radialPos;
+            if (WarpedMoscoServant.this.distanceToSqr(Vec3.atCenterOf(ground)) > 30) {
+                if (!WarpedMoscoServant.this.isTargetBlocked(Vec3.atCenterOf(ground)) && WarpedMoscoServant.this.distanceToSqr(Vec3.atCenterOf(ground)) > 6) {
+                    return ground;
+                }
+            }
+            return WarpedMoscoServant.this.blockPosition();
+        }
+
+        public void stop() {
+            upTicks = 0;
+            dashCooldown = 0;
+            ranged = false;
+        }
+    }
+
+    private boolean shouldRangeAttack(LivingEntity target) {
+        if(this.getHealth() < Math.floor(this.getMaxHealth() * 0.25F)){
+            return true;
+        }
+        // 上游 AlexMobs 的 typo：0.5F 应乘在 getMaxHealth() 上，否则 h < h*0.5 恒为假，半血远程分支永不触发
+        return this.getHealth() < this.getMaxHealth() * 0.5F && this.distanceTo(target) > 10;
+    }
+}

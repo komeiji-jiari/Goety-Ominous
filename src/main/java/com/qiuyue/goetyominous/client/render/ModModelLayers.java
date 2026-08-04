@@ -500,8 +500,14 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.CRIMSON_MOSQUITO_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderCrimsonMosquitoServant::new);
             event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.WARPED_MOSCO_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.am.RenderWarpedMoscoServant::new);
+            event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.MOSQUITO_SERVANT_SPIT.get(),
                     com.qiuyue.goetyominous.client.render.projectile.RenderMosquitoServantSpit::new);
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.SERVANT_HEMOLYMPH.get(),
+                    com.qiuyue.goetyominous.client.render.projectile.RenderServantHemolymph::new);
 
             // 在这里添加 AlexMobs 联动仆从的渲染器注册
         }

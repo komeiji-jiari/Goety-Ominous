@@ -4,7 +4,9 @@ import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.am.CrimsonMosquitoServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.MurmurServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.MurmurServantHead;
+import com.qiuyue.goetyominous.common.entities.ally.am.WarpedMoscoServant;
 import com.qiuyue.goetyominous.common.entities.projectile.EntityMosquitoServantSpit;
+import com.qiuyue.goetyominous.common.entities.projectile.EntityServantHemolymph;
 import java.util.function.Predicate;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
@@ -50,6 +52,33 @@ public class AmEntityRegistry {
                             .sized(0.25F, 0.25F)
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":mosquito_servant_spit"));
+
+    /**
+     * 疣猪蚊仆从，由患病（变蓝）的 CrimsonMosquitoServant 转化而来。
+     * 体型/追踪范围对齐原版 AlexMobs 的 warped_mosco（1.99 x 3.25，tracking 10）。
+     */
+    public static final RegistryObject<EntityType<WarpedMoscoServant>> WARPED_MOSCO_SERVANT =
+            AM_ENTITIES.register("warped_mosco_servant",
+                    () -> EntityType.Builder.<WarpedMoscoServant>of((type, worldIn) -> new WarpedMoscoServant(type, worldIn), MobCategory.MISC)
+                            .sized(1.99F, 3.25F)
+                            .fireImmune()
+                            .setTrackingRange(10)
+                            .build(GoetyOminous.MOD_ID + ":warped_mosco_servant"));
+
+    /**
+     * 蚊仆从喷射的血红液投射物（EntityServantHemolymph）。
+     * 几何/类别对齐 AlexMobs 原版 HEMOLYMPH（MobCategory.MISC、0.5 x 0.5、fireImmune）。
+     * 注册本模组自己的实体类型，避免借用 AlexMobs 的 HEMOLYMPH——其客户端工厂会生成
+     * AlexMobs 的 EntityHemolymph，与服务端的 EntityServantHemolymph 类不一致，导致
+     * 位置/粒子/命中存在客户端-服务端不一致风险。
+     */
+    public static final RegistryObject<EntityType<EntityServantHemolymph>> SERVANT_HEMOLYMPH =
+            AM_ENTITIES.register("servant_hemolymph",
+                    () -> EntityType.Builder.<EntityServantHemolymph>of((type, worldIn) -> new EntityServantHemolymph(type, worldIn), MobCategory.MISC)
+                            .sized(0.5F, 0.5F)
+                            .fireImmune()
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":servant_hemolymph"));
 
     public static Predicate<LivingEntity> buildPredicateFromTag(TagKey<EntityType<?>> tagKey) {
         if (tagKey == null) {

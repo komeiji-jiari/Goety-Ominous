@@ -5,6 +5,7 @@ import com.Polarice3.Goety.config.MobsConfig;
 import com.Polarice3.Goety.utils.CuriosFinder;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.qiuyue.goetyominous.common.entities.projectile.EntityMosquitoServantSpit;
+import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.*;
@@ -15,7 +16,7 @@ import com.github.alexthe666.alexsmobs.message.MessageMosquitoMountPlayer;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
-import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+
 import java.util.EnumSet;
 
 import net.minecraft.core.BlockPos;
@@ -41,8 +42,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -313,7 +312,9 @@ public class CrimsonMosquitoServant extends Summoned {
         boolean unholyDressed = owner != null
                 && CuriosFinder.hasUnholyHat(owner)
                 && CuriosFinder.hasUnholyRobe(owner);
-        return unholyDressed ? 200.0F : 100.0F;
+        return unholyDressed
+                ? AttributesConfig.CrimsonMosquitoFleeHealthThresholdUnholy.get().floatValue()
+                : AttributesConfig.CrimsonMosquitoFleeHealthThreshold.get().floatValue();
     }
 
     public int getBloodLevel() {
@@ -418,6 +419,8 @@ public class CrimsonMosquitoServant extends Summoned {
                     }
                 } else {
                     this.setFleeingEntityId(-1);
+                    // 逃离结束必须清空残留的 fleePos，否则下次进入逃离状态时会朝旧的逃离点飞回去
+                    fleePos = null;
                 }
             }
         }
@@ -427,7 +430,7 @@ public class CrimsonMosquitoServant extends Summoned {
         if (randomWingFlapTick > 0) {
             randomWingFlapTick--;
         }
-        if (!this.level().isClientSide && onGround() && !this.isFlying() && (flightTicks >= 0 && random.nextInt(5) == 0 || this.getTarget() != null)) {
+        if (!this.level().isClientSide && onGround() && !this.isFlying() && (!this.isStaying() && flightTicks >= 0 && random.nextInt(5) == 0 || this.getTarget() != null)) {
             this.setFlying(true);
             this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.2F, 0.5D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F));
             this.setOnGround(false);
@@ -499,13 +502,12 @@ public class CrimsonMosquitoServant extends Summoned {
                 this.setShrink(false);
                 this.setMosquitoScale(this.getMosquitoScale() + 0.015F);
                 if (sickTicks > 160) {
-                    EntityWarpedMosco mosco = AMEntityRegistry.WARPED_MOSCO.get().create(level());
+                    // 患病蚊子转化出的应是疣猪蚊“仆从”，并继承当前主人的所有权，而非原版敌对疣猪蚊
+                    WarpedMoscoServant mosco = AmEntityRegistry.WARPED_MOSCO_SERVANT.get().create(level());
                     mosco.copyPosition(this);
                     if (!this.level().isClientSide) {
+                        mosco.setTrueOwner(this.getTrueOwner());
                         mosco.finalizeSpawn((ServerLevelAccessor) level(), level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null, null);
-                    }
-
-                    if (!this.level().isClientSide) {
                         this.level().broadcastEntityEvent(this, (byte) 79);
                         level().addFreshEntity(mosco);
                     }
@@ -561,8 +563,9 @@ public class CrimsonMosquitoServant extends Summoned {
         Item item = itemstack.getItem();
         InteractionResult type = super.mobInteract(player, hand);
         if (item == AMItemRegistry.WARPED_MIXTURE.get() && !this.isSick()) {
-            this.spawnAtLocation(item.getCraftingRemainingItem(itemstack));
-            if (!player.isCreative()) {
+            if (!player.getAbilities().instabuild) {
+                // 仅生存模式消耗物品并返还空瓶，避免创造模式刷瓶
+                this.spawnAtLocation(item.getCraftingRemainingItem(itemstack));
                 itemstack.shrink(1);
             }
             this.setSick(true);
@@ -594,7 +597,8 @@ public class CrimsonMosquitoServant extends Summoned {
 
         public boolean canUse() {
             MoveControl movementcontroller = this.parentEntity.getMoveControl();
-            if (!parentEntity.isFlying() || parentEntity.getTarget() != null || parentEntity.getFleeingEntityId() != -1) {
+            // 停留/被命令状态下不允许随机盘旋（与基类 WanderGoal 的 canUse 语义一致）
+            if (!parentEntity.isFlying() || parentEntity.isStaying() || parentEntity.isCommanded() || parentEntity.getTarget() != null || parentEntity.getFleeingEntityId() != -1) {
                 return false;
             }
             if (!movementcontroller.hasWanted() || target == null) {
@@ -608,11 +612,13 @@ public class CrimsonMosquitoServant extends Summoned {
         }
 
         public boolean canContinueToUse() {
-            return target != null && parentEntity.isFlying() && parentEntity.distanceToSqr(Vec3.atCenterOf(target)) > 2.4D && parentEntity.getMoveControl().hasWanted() && !parentEntity.horizontalCollision;
+            return target != null && !parentEntity.isStaying() && !parentEntity.isCommanded() && parentEntity.isFlying() && parentEntity.distanceToSqr(Vec3.atCenterOf(target)) > 2.4D && parentEntity.getMoveControl().hasWanted() && !parentEntity.horizontalCollision;
         }
 
         public void stop() {
             target = null;
+            // 取消移动，避免切换为停留状态后蚊子仍朝最后的目标位置滑行（与 FlyToOwnerGoal.stop 一致）
+            this.parentEntity.getMoveControl().setWantedPosition(this.parentEntity.getX(), this.parentEntity.getY(), this.parentEntity.getZ(), 0.0D);
         }
 
         public void tick() {
