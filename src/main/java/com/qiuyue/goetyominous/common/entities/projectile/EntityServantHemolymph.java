@@ -86,6 +86,8 @@ public class EntityServantHemolymph extends SpellThrowableProjectile {
             if (living != null) {
                 result.getEntity().hurt(this.damageSources().mobProjectile(this, living), this.getExtraDamage());
             }
+            // 对齐原版 EntityHemolymph：命中实体即消散，避免投射物穿透造成重复伤害
+            this.remove(RemovalReason.DISCARDED);
         }
     }
 

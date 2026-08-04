@@ -224,7 +224,7 @@ public class CrimsonMosquitoServant extends Summoned {
                     if (!this.level().isClientSide) {
                         if (drinkTime % 20 == 0 && this.isAlive()) {
                             final boolean mungus = AMConfig.warpedMoscoTransformation && mount instanceof EntityMungus && ((EntityMungus) mount).isWarpedMoscoReady();
-                            if (mount.hurt(this.damageSources().mobAttack(this), mungus ? 7F : AttributesConfig.CrimsonMosquitoServantDamage.get().floatValue())) {
+                            if (mount.hurt(this.getServantAttack(), mungus ? 7F : AttributesConfig.CrimsonMosquitoServantDamage.get().floatValue())) {
                                 if (mungus) {
                                     ((EntityMungus) mount).disableExplosion();
                                 }
@@ -498,6 +498,7 @@ public class CrimsonMosquitoServant extends Summoned {
                 this.setShrink(false);
                 this.setMosquitoScale(this.getMosquitoScale() + 0.015F);
                 if (sickTicks > 160) {
+
                     WarpedMoscoServant mosco = AmEntityRegistry.WARPED_MOSCO_SERVANT.get().create(level());
                     mosco.copyPosition(this);
                     if (!this.level().isClientSide) {

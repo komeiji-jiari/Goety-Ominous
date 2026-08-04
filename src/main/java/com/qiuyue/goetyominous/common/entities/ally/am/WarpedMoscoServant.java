@@ -36,11 +36,13 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -89,6 +91,7 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
     private Animation currentAnimation;
     private boolean isLandNavigator;
     private int timeFlying;
+    private int idleFlightTimeLimit = 0;
     private int loopSoundTick = 0;
 
     public WarpedMoscoServant(EntityType entityType, Level world) {
@@ -110,6 +113,11 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
 
     public MobType getMobType() {
         return MobType.ARTHROPOD;
+    }
+
+    @Override
+    public boolean isInvulnerableTo(DamageSource source) {
+        return source.is(DamageTypes.FALL) || source.is(DamageTypes.DROWN) || source.is(DamageTypes.IN_WALL) || source.is(DamageTypes.LAVA) || source.is(DamageTypeTags.IS_FIRE) || super.isInvulnerableTo(source);
     }
 
     private static Animation getRandomAttack(RandomSource rand) {
@@ -375,6 +383,23 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
         super.tick();
         prevFlyRightProgress = flyRightProgress;
         prevLeftFlyProgress = flyLeftProgress;
+        // 飞行许可: 待命禁止飞行直接落地; 游荡/警戒无索敌时仅允许短暂飞行(3~5秒)后落地; 液体/战斗/跟随仍可飞行
+        if (!this.level().isClientSide && this.isFlying()) {
+            boolean allowFlight;
+            if (this.isStaying()) {
+                allowFlight = false;
+            } else {
+                LivingEntity owner = this.getTrueOwner();
+                boolean followAlive = this.isFollowing() && owner != null && owner.isAlive();
+                allowFlight = this.isOverLiquid() || this.getTarget() != null || followAlive;
+                if (!allowFlight && (this.isWandering() || this.isGuardingArea())) {
+                    allowFlight = this.timeFlying < this.idleFlightTimeLimit;
+                }
+            }
+            if (!allowFlight) {
+                this.setFlying(false);
+            }
+        }
         final boolean dashRight = isDashRight();
         final boolean flying = isFlying();
         if (flying && dashRight && flyRightProgress < 5F) {
@@ -430,7 +455,7 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
         }
 
         LivingEntity target = this.getTarget();
-        if (target != null && this.isAlive()) {
+        if (!this.level().isClientSide && target != null && this.isAlive()) {
             if (this.getAnimation() == ANIMATION_SUCK && this.getAnimationTick() == 3 && this.distanceTo(target) < 4.7F) {
                 target.startRiding(this, true);
             }
@@ -438,7 +463,7 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
                 if (this.getAnimationTick() == 19) {
                     for (Entity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(5.0D))) {
                         if (!isAlliedTo(entity) && !(entity instanceof WarpedMoscoServant) && entity != this) {
-                            entity.hurt(this.damageSources().mobAttack(this), 10.0F + random.nextFloat() * 8.0F);
+                            entity.hurt(this.getServantAttack(), 10.0F + random.nextFloat() * 8.0F);
                             launch(entity, true);
                         }
                     }
@@ -447,7 +472,7 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
             }
             if ((this.getAnimation() == ANIMATION_PUNCH_R || this.getAnimation() == ANIMATION_PUNCH_L) && this.getAnimationTick() == 13) {
                 if (this.distanceTo(target) < 4.7F) {
-                    target.hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                    target.hurt(this.getServantAttack(), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
                     knockbackRidiculous(target, 0.9F);
                 }
             }
@@ -516,6 +541,59 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
         return new Animation[]{ANIMATION_PUNCH_L, ANIMATION_PUNCH_R, ANIMATION_SLAM, ANIMATION_SUCK, ANIMATION_SPIT};
     }
 
+    private static final byte EVENT_ANIM_PUNCH_R = 100;
+    private static final byte EVENT_ANIM_PUNCH_L = 101;
+    private static final byte EVENT_ANIM_SLAM = 102;
+    private static final byte EVENT_ANIM_SUCK = 103;
+    private static final byte EVENT_ANIM_SPIT = 104;
+
+    // 攻击动画只在服务端 AttackGoal 里设置, 必须通过 entity event 广播给客户端,
+    // 否则客户端的 ModelWarpedMoscoServant 读到的 getAnimation() 恒为 NO_ANIMATION, 攻击动作永远不播。
+    private void setAttackAnimation(Animation animation) {
+        if (this.getAnimation() == animation) {
+            return;
+        }
+        this.setAnimation(animation);
+        this.setAnimationTick(0);
+        if (!this.level().isClientSide) {
+            byte event;
+            if (animation == ANIMATION_PUNCH_R) {
+                event = EVENT_ANIM_PUNCH_R;
+            } else if (animation == ANIMATION_PUNCH_L) {
+                event = EVENT_ANIM_PUNCH_L;
+            } else if (animation == ANIMATION_SLAM) {
+                event = EVENT_ANIM_SLAM;
+            } else if (animation == ANIMATION_SUCK) {
+                event = EVENT_ANIM_SUCK;
+            } else {
+                event = EVENT_ANIM_SPIT;
+            }
+            this.level().broadcastEntityEvent(this, event);
+        }
+    }
+
+    @Override
+    public void handleEntityEvent(byte id) {
+        if (id == EVENT_ANIM_PUNCH_R) {
+            this.setAnimation(ANIMATION_PUNCH_R);
+            this.setAnimationTick(0);
+        } else if (id == EVENT_ANIM_PUNCH_L) {
+            this.setAnimation(ANIMATION_PUNCH_L);
+            this.setAnimationTick(0);
+        } else if (id == EVENT_ANIM_SLAM) {
+            this.setAnimation(ANIMATION_SLAM);
+            this.setAnimationTick(0);
+        } else if (id == EVENT_ANIM_SUCK) {
+            this.setAnimation(ANIMATION_SUCK);
+            this.setAnimationTick(0);
+        } else if (id == EVENT_ANIM_SPIT) {
+            this.setAnimation(ANIMATION_SPIT);
+            this.setAnimationTick(0);
+        } else {
+            super.handleEntityEvent(id);
+        }
+    }
+
     private BlockPos getMoscoGround(BlockPos in) {
         BlockPos position = new BlockPos(in.getX(),
                 (int) this.getY(),
@@ -537,11 +615,6 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
         BlockPos ground = this.getMoscoGround(radialPos);
         if (ground.getY() == -62) {
             return this.position();
-        } else {
-            ground = this.blockPosition();
-            while (ground.getY() > -62 && !level().getBlockState(ground).isSolid()) {
-                ground = ground.below();
-            }
         }
         if (!this.isTargetBlocked(Vec3.atCenterOf(ground.above()))) {
             return Vec3.atCenterOf(ground);
@@ -606,7 +679,9 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
             if (this.getAnimation() == ANIMATION_SUCK) {
                 tick = this.getAnimationTick();
             } else {
-                passenger.stopRiding();
+                if (!this.level().isClientSide) {
+                    passenger.stopRiding();
+                }
             }
             float radius = 2F;
             float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
@@ -614,9 +689,9 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
             double extraZ = radius * Mth.cos(angle);
             double extraY = tick < 10 ? 0 : 0.15F * Mth.clamp(tick - 10, 0, 15);
             passenger.setPos(this.getX() + extraX, this.getY() + extraY + 0.1F, this.getZ() + extraZ);
-            if ((tick - 10) % 4 == 0) {
+            if (!this.level().isClientSide && (tick - 10) % 4 == 0) {
                 this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 1));
-                passenger.hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                passenger.hurt(this.getServantAttack(), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
             }
         }
     }
@@ -672,14 +747,23 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
         public boolean canUse() {
             if (this.mosco.isVehicle() || (mosco.getTarget() != null && mosco.getTarget().isAlive()) || this.mosco.isPassenger()) {
                 return false;
+            } else if (mosco.isStaying()) {
+                return false; // 待命: 完全不动
+            } else if (mosco.isFollowing()) {
+                return false; // 跟随模式完全交给 FlyToOwnerGoal: 不做游荡, 避免随机起飞后永久悬空
             } else {
                 if (this.mosco.getRandom().nextInt(30) != 0 && !mosco.isFlying()) {
                     return false;
                 }
-                if (this.mosco.onGround()) {
-                    this.flightTarget = random.nextInt(8) == 0;
+                if (mosco.isFlying()) {
+                    // 空中过渡状态: 继续飞向落点, 时长到后由 tick 强制落地
+                    this.flightTarget = true;
                 } else {
-                    this.flightTarget = random.nextInt(5) > 0 && mosco.timeFlying < 200;
+                    // 游荡/警戒: 小概率起飞; 脚下是液体时始终允许飞行
+                    this.flightTarget = mosco.isOverLiquid() || random.nextInt(8) == 0;
+                    if (this.flightTarget) {
+                        mosco.idleFlightTimeLimit = 60 + mosco.getRandom().nextInt(41); // 起飞 3~5 秒后落地
+                    }
                 }
                 Vec3 lvt_1_1_ = this.getPosition();
                 if (lvt_1_1_ == null) {
@@ -705,6 +789,11 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
             if (isFlying() && mosco.onGround() && mosco.timeFlying > 10) {
                 mosco.setFlying(false);
             }
+            // 游荡/警戒模式下超过本次允许的飞行时长且脚下无液体 → 强制落地, 不能连续飞行
+            if (isFlying() && (mosco.isWandering() || mosco.isGuardingArea())
+                    && mosco.timeFlying >= mosco.idleFlightTimeLimit && !mosco.isOverLiquid()) {
+                mosco.setFlying(false);
+            }
         }
 
         @Nullable
@@ -715,7 +804,7 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
                 flightTarget = true;
             }
             if (flightTarget) {
-                if (mosco.timeFlying < 50 || mosco.isOverLiquid()) {
+                if (mosco.timeFlying < mosco.idleFlightTimeLimit || mosco.isOverLiquid()) {
                     return mosco.getBlockInViewAway(vector3d, 0);
                 } else {
                     return mosco.getBlockGrounding(vector3d);
@@ -769,7 +858,9 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
             if (WarpedMoscoServant.this.getTarget() != null) {
                 LivingEntity target = WarpedMoscoServant.this.getTarget();
                 ranged = WarpedMoscoServant.this.shouldRangeAttack(target);
-                if (WarpedMoscoServant.this.isFlying() || ranged || WarpedMoscoServant.this.distanceTo(target) > 12 && !WarpedMoscoServant.this.isTargetBlocked(target.position().add(0, target.getBbHeight() * 0.6F, 0))) {
+                boolean staying = WarpedMoscoServant.this.isStaying();
+                // 待命仆从不追击/不起飞: 原地迎击即可, 避免与飞行许可块(待命禁止飞行)冲突
+                if (!staying && (WarpedMoscoServant.this.isFlying() || ranged || WarpedMoscoServant.this.distanceTo(target) > 12 && !WarpedMoscoServant.this.isTargetBlocked(target.position().add(0, target.getBbHeight() * 0.6F, 0)))) {
                     float speedRush = 5F;
                     upTicks++;
                     WarpedMoscoServant.this.setFlying(true);
@@ -780,7 +871,7 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
                         if (farTarget != null) {
                             WarpedMoscoServant.this.getMoveControl().setWantedPosition(farTarget.getX(), farTarget.getY() + target.getEyeHeight() * 0.6F, farTarget.getZ(), 3D);
                         }
-                        WarpedMoscoServant.this.setAnimation(ANIMATION_SPIT);
+                        WarpedMoscoServant.this.setAttackAnimation(ANIMATION_SPIT);
                         if(upTicks % 30 == 0){
                             WarpedMoscoServant.this.heal(1);
                         }
@@ -801,13 +892,12 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
                 if (WarpedMoscoServant.this.isFlying()) {
                     if (WarpedMoscoServant.this.distanceTo(target) < 4.3F) {
                         if (dashCooldown == 0 || target.onGround() || target.isInLava() || target.isInWater()) {
-                            target.hurt(WarpedMoscoServant.this.damageSources().mobAttack(WarpedMoscoServant.this), 5F);
+                            target.hurt(WarpedMoscoServant.this.getServantAttack(), 5F);
                             WarpedMoscoServant.this.knockbackRidiculous(target, 1.0F);
                             dashCooldown = 30;
                         }
                         final float groundHeight = WarpedMoscoServant.this.getMoscoGround(WarpedMoscoServant.this.blockPosition()).getY();
                         if (Math.abs(WarpedMoscoServant.this.getY() - groundHeight) < 3.0F && !WarpedMoscoServant.this.isOverLiquid()) {
-                            WarpedMoscoServant.this.timeFlying += 300;
                             WarpedMoscoServant.this.setFlying(false);
                         }
                     }
@@ -817,7 +907,7 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
                         if (animation == ANIMATION_SUCK && target.isPassenger()) {
                             animation = ANIMATION_SLAM;
                         }
-                        WarpedMoscoServant.this.setAnimation(animation);
+                        WarpedMoscoServant.this.setAttackAnimation(animation);
                     }
                 }
             }
