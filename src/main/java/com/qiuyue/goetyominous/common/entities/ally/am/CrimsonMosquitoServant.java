@@ -530,11 +530,17 @@ public class CrimsonMosquitoServant extends Summoned {
                 this.setShrink(false);
                 this.setMosquitoScale(this.getMosquitoScale() + 0.015F);
                 if (sickTicks > convertThreshold) {
-
-                    WarpedMoscoServant mosco = AmEntityRegistry.WARPED_MOSCO_SERVANT.get().create(level());
+                    // 只有类固醇（WarpedSteroids）触发的病变才转化为可跟随主人的疣猪蚊仆从；
+                    // 自然患病（喝血/喂诡异混合物）按 AlexMobs 原版逻辑转化为野生 WarpedMosco
+                    final boolean steroid = this.isSteroidConversion();
+                    Mob mosco = steroid
+                            ? AmEntityRegistry.WARPED_MOSCO_SERVANT.get().create(level())
+                            : AMEntityRegistry.WARPED_MOSCO.get().create(level());
                     mosco.copyPosition(this);
                     if (!this.level().isClientSide) {
-                        mosco.setTrueOwner(this.getTrueOwner());
+                        if (mosco instanceof WarpedMoscoServant servant) {
+                            servant.setTrueOwner(this.getTrueOwner());
+                        }
                         mosco.finalizeSpawn((ServerLevelAccessor) level(), level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null, null);
                         // 不用 broadcastEntityEvent(79)：它与同一 tick 的 remove(DISCARDED) 存在发包先后竞态，
                         // 移除包先到客户端时事件包会因按 ID 找不到实体而静默丢失爆炸粒子。

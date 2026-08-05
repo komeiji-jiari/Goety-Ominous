@@ -9,7 +9,6 @@ import com.Polarice3.Goety.config.ItemConfig;
 import com.Polarice3.Goety.config.MobsConfig;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
-import com.github.alexthe666.alexsmobs.entity.EntityCrimsonMosquito;
 import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.FlightMoveController;
 import com.github.alexthe666.alexsmobs.entity.ai.GroundPathNavigatorWide;
@@ -60,7 +59,6 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -98,7 +96,6 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
 
     public WarpedMoscoServant(EntityType entityType, Level world) {
         super(entityType, world);
-        this.xpReward = 30;
         switchNavigator(false);
     }
 
@@ -199,7 +196,6 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
         this.goalSelector.addGoal(4, new AIWalkIdle());
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 15.0F, 1.0F));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this, EntityCrimsonMosquito.class, WarpedMoscoServant.class));
     }
 
     @Override
