@@ -26,6 +26,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -73,6 +74,7 @@ public class CrimsonMosquitoServant extends Summoned {
     private static final EntityDataAccessor<Float> MOSQUITO_SCALE = SynchedEntityData.defineId(CrimsonMosquitoServant.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> SICK = SynchedEntityData.defineId(CrimsonMosquitoServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> FLEEING_ENTITY = SynchedEntityData.defineId(CrimsonMosquitoServant.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> STEROID_CONVERSION = SynchedEntityData.defineId(CrimsonMosquitoServant.class, EntityDataSerializers.BOOLEAN);
     public float prevFlyProgress;
     public float flyProgress;
     public float prevShootProgress;
@@ -152,6 +154,7 @@ public class CrimsonMosquitoServant extends Summoned {
         compound.putBoolean("Flying", this.isFlying());
         compound.putBoolean("Shrinking", this.isShrinking());
         compound.putBoolean("Sick", this.isSick());
+        compound.putBoolean("SteroidConversion", this.isSteroidConversion());
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
@@ -162,6 +165,7 @@ public class CrimsonMosquitoServant extends Summoned {
         this.setFlying(compound.getBoolean("Flying"));
         this.setShrink(compound.getBoolean("Shrinking"));
         this.setSick(compound.getBoolean("Sick"));
+        this.setSteroidConversion(compound.getBoolean("SteroidConversion"));
     }
 
     private void spit(LivingEntity target) {
@@ -190,6 +194,10 @@ public class CrimsonMosquitoServant extends Summoned {
     }
 
     public boolean hurt(DamageSource source, float amount) {
+        // 类固醇强化转化期间无敌：避免转化演出被中途打断、类固醇白白消耗
+        if (this.isSteroidConversion()) {
+            return false;
+        }
         if (source.getEntity() != null && this.getRootVehicle() == source.getEntity().getRootVehicle()) {
             return super.hurt(source, amount * 0.333F);
         }
@@ -276,6 +284,7 @@ public class CrimsonMosquitoServant extends Summoned {
         this.entityData.define(SHRINKING, false);
         this.entityData.define(MOSQUITO_SCALE, 1F);
         this.entityData.define(FLEEING_ENTITY, -1);
+        this.entityData.define(STEROID_CONVERSION, false);
     }
 
     public boolean isFlying() {
@@ -344,6 +353,26 @@ public class CrimsonMosquitoServant extends Summoned {
 
     public void setSick(boolean shrink) {
         this.entityData.set(SICK, shrink);
+    }
+
+    /** 是否由类固醇（WarpedSteroids）触发的强化快转：患病转化阈值压缩到约 4 秒 */
+    public boolean isSteroidConversion() {
+        return this.entityData.get(STEROID_CONVERSION);
+    }
+
+    public void setSteroidConversion(boolean steroid) {
+        this.entityData.set(STEROID_CONVERSION, steroid);
+    }
+
+    /**
+     * 类固醇触发强化快转：进入患病状态并强制落地，复刻自然患病（喝血触发）的落地序列，
+     * 保证转化期间贴地演出（地面蓝色贴图 + 抖动 + 爆炸），避免飞行中转化。
+     */
+    public void startSteroidConversion() {
+        this.setSick(true);
+        this.setSteroidConversion(true);
+        this.setFlying(false);
+        this.flightTicks = -150 - random.nextInt(200);
     }
 
     public void tick() {
@@ -494,17 +523,35 @@ public class CrimsonMosquitoServant extends Summoned {
             if (this.getTarget() != null && !this.isPassenger()) {
                 this.setTarget(null);
             }
-            if (sickTicks > 100) {
+            // 类固醇强化的快转：比自然患病(100/160 tick ≈ 8秒)压缩到 30/80 tick(≈4秒)，渲染过程完全一致
+            final int growThreshold = this.isSteroidConversion() ? 30 : 100;
+            final int convertThreshold = this.isSteroidConversion() ? 80 : 160;
+            if (sickTicks > growThreshold) {
                 this.setShrink(false);
                 this.setMosquitoScale(this.getMosquitoScale() + 0.015F);
-                if (sickTicks > 160) {
+                if (sickTicks > convertThreshold) {
 
                     WarpedMoscoServant mosco = AmEntityRegistry.WARPED_MOSCO_SERVANT.get().create(level());
                     mosco.copyPosition(this);
                     if (!this.level().isClientSide) {
                         mosco.setTrueOwner(this.getTrueOwner());
                         mosco.finalizeSpawn((ServerLevelAccessor) level(), level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null, null);
-                        this.level().broadcastEntityEvent(this, (byte) 79);
+                        // 不用 broadcastEntityEvent(79)：它与同一 tick 的 remove(DISCARDED) 存在发包先后竞态，
+                        // 移除包先到客户端时事件包会因按 ID 找不到实体而静默丢失爆炸粒子。
+                        // 改为服务端粒子复刻原 handleEntityEvent(79) 的爆炸粒子分布，包序不再有约束。
+                        if (this.level() instanceof ServerLevel serverLevel) {
+                            for (int i = 0; i < 27; ++i) {
+                                serverLevel.sendParticles(ParticleTypes.EXPLOSION,
+                                        this.getRandomX(1.6D),
+                                        this.getY() + this.random.nextFloat() * 3.4F,
+                                        this.getRandomZ(1.6D),
+                                        1,
+                                        this.random.nextGaussian() * 0.02D,
+                                        this.random.nextGaussian() * 0.02D,
+                                        this.random.nextGaussian() * 0.02D,
+                                        0D);
+                            }
+                        }
                         level().addFreshEntity(mosco);
                     }
                     this.remove(RemovalReason.DISCARDED);

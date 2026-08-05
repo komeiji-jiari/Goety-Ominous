@@ -4,30 +4,22 @@ import com.Polarice3.Goety.config.ItemConfig;
 import com.Polarice3.Goety.utils.MathHelper;
 import com.Polarice3.Goety.utils.SEHelper;
 import com.qiuyue.goetyominous.common.entities.ally.am.CrimsonMosquitoServant;
-import com.qiuyue.goetyominous.common.entities.ally.am.WarpedMoscoServant;
-import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
 
 /**
  * 诡异类固醇（Warped Steroids）：由疣猪蚊仆从死亡掉落。
  * <p>
- * 参照 Goety 的 HowlingSoul：对属于玩家的绯红蚊子仆从右键使用时，
- * 把绯红蚊子仆从直接转化为疣猪蚊仆从（对齐 CrimsonMosquitoServant 患病转化的流程），
- * 并消耗一个物品。
+ * 对属于自己的绯红蚊子仆从右键使用时，不再瞬间替换实体，而是复用
+ * {@link CrimsonMosquitoServant#tick()} 里患病转化为疣猪蚊仆从的完整流程：
+ * 进入患病状态（变蓝/抖动/停战），但把转化阈值从自然患病的 100/160 tick
+ * 压缩到 30/80 tick（约 4 秒），渲染过程与"转化成 WarpedMosco"完全一致。
  */
 public class WarpedSteroidsItem extends Item {
 
@@ -49,42 +41,26 @@ public class WarpedSteroidsItem extends Item {
         if (!(target instanceof CrimsonMosquitoServant mosquito) || mosquito.getTrueOwner() != player) {
             return InteractionResult.PASS;
         }
+        // 已在患病转化中（例如喂过诡异混合物）：不重复触发，避免打乱转化节奏。
+        // 放在客户端判断之前，保证两端返回一致
+        if (mosquito.isSick()) {
+            return InteractionResult.PASS;
+        }
         Level level = player.level();
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         }
-        // 复用 CrimsonMosquitoServant.tick() 里患病转化为疣猪蚊仆从的流程
-        WarpedMoscoServant mosco = AmEntityRegistry.WARPED_MOSCO_SERVANT.get().create(level);
-        if (mosco == null) {
-            return InteractionResult.FAIL;
-        }
-        mosco.copyPosition(mosquito);
-        mosco.setTrueOwner(player);
-        // 转化后直接满血，符合"强化"的体验
-        mosco.setHealth(mosco.getMaxHealth());
-        mosco.finalizeSpawn((ServerLevelAccessor) level, level.getCurrentDifficultyAt(mosquito.blockPosition()), MobSpawnType.CONVERSION, null, null);
-        // 先加入新实体并播生成动画（对齐 Goety HowlingSoul 的 addFreshEntity -> spawnAnim -> discard 顺序），
-        // 成功后再移除旧实体。不要对即将被移除的 mosquito 广播实体事件：broadcastEntityEvent(79) 与
-        // remove(DISCARDED) 依赖同一 tick 的发包先后顺序，一旦移除包先到客户端，事件包就会因按 ID
-        // 找不到实体而静默丢失粒子。这里改用服务端粒子直接在旧蚊子处复刻原 handleEntityEvent(79)
-        // 的爆炸粒子，与实体是否还存在无关，包序不再有约束。
-        if (level.addFreshEntity(mosco)) {
-            mosco.spawnAnim();
-            if (level instanceof ServerLevel serverLevel) {
-                serverLevel.sendParticles(ParticleTypes.EXPLOSION, mosquito.getX(), mosquito.getY() + 1.7D, mosquito.getZ(), 27, 1.6D, 1.7D, 1.6D, 0.02D);
-            }
-            level.playSound(null, mosquito.getX(), mosquito.getY(), mosquito.getZ(), SoundEvents.GENERIC_EXPLODE, SoundSource.HOSTILE, 1.0F, 0.5F);
-            mosquito.remove(Entity.RemovalReason.DISCARDED);
+        // 复用患病转化流程：进入患病状态 + 强制落地 + 启用"强化快转"。
+        // 后续由 CrimsonMosquitoServant.tick() 完成 变蓝/抖动/变大/爆炸粒子 -> 原地生成 WarpedMoscoServant
+        mosquito.startSteroidConversion();
 
-            if (!player.getAbilities().instabuild) {
-                stack.shrink(1);
-            }
-            player.swing(hand);
-            // Goety 通用冷却（ItemConfig.ReviveSecondsCool，默认 90 秒）：转化成功后进入冷却，
-            // 冷却期间 interactLivingEntity 开头的检查会拦截下一次使用
-            SEHelper.addCooldown(player, this, MathHelper.secondsToTicks(ItemConfig.ReviveSecondsCool.get()));
-            return InteractionResult.SUCCESS;
+        if (!player.getAbilities().instabuild) {
+            stack.shrink(1);
         }
-        return InteractionResult.FAIL;
+        player.swing(hand);
+        // Goety 通用冷却（ItemConfig.ReviveSecondsCool，默认 90 秒）：转化成功后进入冷却，
+        // 冷却期间 interactLivingEntity 开头的检查会拦截下一次使用
+        SEHelper.addCooldown(player, this, MathHelper.secondsToTicks(ItemConfig.ReviveSecondsCool.get()));
+        return InteractionResult.SUCCESS;
     }
 }

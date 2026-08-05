@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.am;
 
+import com.Polarice3.Goety.api.entities.ally.IServant;
 import com.Polarice3.Goety.client.particles.ModParticleTypes;
 import com.Polarice3.Goety.common.entities.ModEntityType;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
@@ -56,6 +57,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
@@ -160,11 +162,17 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (stack.is(AMItemRegistry.BLOOD_SAC.get())
+        float healAmount = 0.0F;
+        if (stack.is(AMItemRegistry.BLOOD_SAC.get())) {
+            healAmount = 20.0F;
+        } else if (stack.is(AMItemRegistry.HEMOLYMPH_SAC.get())) {
+            healAmount = 50.0F;
+        }
+        if (healAmount > 0.0F
                 && this.getMasterOwner() == player
                 && this.getHealth() < this.getMaxHealth()) {
             if (!this.level().isClientSide) {
-                this.heal(20.0F);
+                this.heal(healAmount);
                 if (!player.getAbilities().instabuild) {
                     stack.shrink(1);
                 }
@@ -190,6 +198,7 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
         this.goalSelector.addGoal(0, new AttackGoal());
         this.goalSelector.addGoal(4, new AIWalkIdle());
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 15.0F, 1.0F));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this, EntityCrimsonMosquito.class, WarpedMoscoServant.class));
     }
 
@@ -392,7 +401,7 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
                 LivingEntity owner = this.getTrueOwner();
                 boolean followAlive = this.isFollowing() && owner != null && owner.isAlive();
                 allowFlight = this.isOverLiquid() || this.getTarget() != null || followAlive;
-                if (!allowFlight && (this.isWandering() || this.isGuardingArea())) {
+                if (!allowFlight && this.isWandering()) {
                     allowFlight = this.timeFlying < this.idleFlightTimeLimit;
                 }
             }
@@ -751,6 +760,29 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
                 return false; // 待命: 完全不动
             } else if (mosco.isFollowing()) {
                 return false; // 跟随模式完全交给 FlyToOwnerGoal: 不做游荡, 避免随机起飞后永久悬空
+            } else if (mosco.isGuardingArea()) {
+                // 警戒(符合 Goety): 受命时交给 commandMode; 水上悬浮守位; 陆地小范围游荡, 目标约束在守位半径内, 绝不起飞
+                if (mosco.isCommanded()) {
+                    return false;
+                }
+                if (mosco.isOverLiquid()) {
+                    this.flightTarget = true;
+                } else if (mosco.isFlying()) {
+                    return false; // 陆地飞行残留: 由 tick() 飞行许可直接落地待机
+                } else {
+                    this.flightTarget = false;
+                    if (mosco.getRandom().nextInt(60) != 0) {
+                        return false; // 小概率挪一小步, 其余时间定岗
+                    }
+                }
+                Vec3 guardPos = this.getPosition();
+                if (guardPos == null) {
+                    return false;
+                }
+                this.x = guardPos.x;
+                this.y = guardPos.y;
+                this.z = guardPos.z;
+                return true;
             } else {
                 if (this.mosco.getRandom().nextInt(30) != 0 && !mosco.isFlying()) {
                     return false;
@@ -759,7 +791,7 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
                     // 空中过渡状态: 继续飞向落点, 时长到后由 tick 强制落地
                     this.flightTarget = true;
                 } else {
-                    // 游荡/警戒: 小概率起飞; 脚下是液体时始终允许飞行
+                    // 游荡: 小概率起飞; 脚下是液体时始终允许飞行
                     this.flightTarget = mosco.isOverLiquid() || random.nextInt(8) == 0;
                     if (this.flightTarget) {
                         mosco.idleFlightTimeLimit = 60 + mosco.getRandom().nextInt(41); // 起飞 3~5 秒后落地
@@ -789,16 +821,66 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
             if (isFlying() && mosco.onGround() && mosco.timeFlying > 10) {
                 mosco.setFlying(false);
             }
-            // 游荡/警戒模式下超过本次允许的飞行时长且脚下无液体 → 强制落地, 不能连续飞行
-            if (isFlying() && (mosco.isWandering() || mosco.isGuardingArea())
+            // 游荡模式下超过本次允许的飞行时长且脚下无液体 → 强制落地, 不能连续飞行
+            if (isFlying() && mosco.isWandering()
                     && mosco.timeFlying >= mosco.idleFlightTimeLimit && !mosco.isOverLiquid()) {
                 mosco.setFlying(false);
             }
         }
 
         @Nullable
+        protected Vec3 getGuardHoverPos() {
+            BlockPos bound = mosco.getBoundPos();
+            if (bound == null) {
+                return null;
+            }
+            // 悬浮锚定守位上方, 避免飘离警戒点
+            Vec3 hover = mosco.vec3BoundPos().add(0, 4.0, 0);
+            if (!mosco.isTargetBlocked(hover)) {
+                return hover;
+            }
+            return null;
+        }
+
+        @Nullable
+        protected Vec3 getGuardWanderPos() {
+            BlockPos bound = mosco.getBoundPos();
+            if (bound == null) {
+                return null;
+            }
+            int safeRadius = Math.max(2, (int) (IServant.GUARDING_RANGE * 0.75F));
+            // 距守位过远时不游荡: 交给 servantTick 走回; 同时保证游荡路径始终在守位半径内
+            if (mosco.distanceToSqr(mosco.vec3BoundPos()) > Mth.square(safeRadius)) {
+                return null;
+            }
+            for (int i = 0; i < 8; ++i) {
+                double angle = mosco.getRandom().nextDouble() * Math.PI * 2.0;
+                double radius = 3.0 + mosco.getRandom().nextDouble() * Math.max(0.0, safeRadius - 3.0);
+                double x = bound.getX() + 0.5 + Math.cos(angle) * radius;
+                double z = bound.getZ() + 0.5 + Math.sin(angle) * radius;
+                BlockPos ground = mosco.getMoscoGround(new BlockPos((int) x, (int) mosco.getY(), (int) z));
+                if (ground.getY() == -62) {
+                    continue;
+                }
+                Vec3 target = Vec3.atCenterOf(ground.above());
+                if (!mosco.isTargetBlocked(target)) {
+                    return target;
+                }
+            }
+            return null;
+        }
+
+        @Nullable
         protected Vec3 getPosition() {
             Vec3 vector3d = mosco.position();
+
+            if (mosco.isGuardingArea()) {
+                // 警戒: 水上悬浮守位; 陆地小范围游荡
+                if (flightTarget) {
+                    return getGuardHoverPos();
+                }
+                return getGuardWanderPos();
+            }
 
             if (mosco.isOverLiquid()) {
                 flightTarget = true;
