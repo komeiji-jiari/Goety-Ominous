@@ -11,6 +11,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec SPEC;
 
     public static final ForgeConfigSpec.ConfigValue<Integer> MurmurServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> CrimsonMosquitoServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> ThrasherServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> GreatThrasherServantLimit;
@@ -56,6 +57,10 @@ public class MobsConfig {
         MurmurServantLimit = BUILDER
                 .comment("Maximum number of Murmur Servants that can be summoned (Default: 16)")
                 .defineInRange("murmurServantLimit", 16, 1, 100);
+
+        CrimsonMosquitoServantLimit = BUILDER
+                .comment("Maximum number of Crimson Mosquito Servants that can be summoned (Default: 8)")
+                .defineInRange("crimsonMosquitoServantLimit", 8, 1, 100);
 
         UrbhadhachServantLimit = BUILDER
                 .comment("Maximum number of Urbhadhach Servants that can be summoned (Default: 8)")

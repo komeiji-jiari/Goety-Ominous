@@ -334,14 +334,6 @@ PoisonousShockwave extends Entity implements ISpellEntity {
     public void onAddedToWorld() {
         super.onAddedToWorld();
         this.setAttackState(1);
-        BlockState block = level().getBlockState(blockPosition().below());
-        double d0 = this.getX();
-        double d1 = this.getY() + 2D;
-        double d2 = this.getZ();
-        double d3 = (this.random.nextGaussian() * 0.07D);
-        double d4 = (this.random.nextGaussian() * 0.07D);
-        double d5 = (this.random.nextGaussian() * 0.07D);
-        //this.level().addParticle(ModParticles.WARNING.get(), d0, d1, d2, d3, d4, d5);
     }
 
     public void setAttackState(int input) {

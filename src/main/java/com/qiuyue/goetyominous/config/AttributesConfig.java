@@ -17,6 +17,29 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> MurmurServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> MurmurServantKnockbackResistance;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> FarseerServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> FarseerServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> FarseerServantFlyingSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> FarseerServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> FarseerServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> FarseerServantFollowRange;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonMosquitoServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonMosquitoServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonMosquitoServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonMosquitoServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonMosquitoServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonMosquitoFleeHealthThreshold;
+    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonMosquitoFleeHealthThresholdUnholy;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> WarpedMoscoServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> WarpedMoscoServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> WarpedMoscoServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> WarpedMoscoServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> WarpedMoscoServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> WarpedMoscoServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> WarpedMoscoServantArmorToughness;
+
     public static final ForgeConfigSpec.ConfigValue<Double> MagispellerServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> MagispellerServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> MagispellerServantMovementSpeed;
@@ -636,6 +659,46 @@ public class AttributesConfig {
                 .defineInRange("murmurServantFollowRange", 48.0, 0.0, Double.MAX_VALUE);
         MurmurServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Murmur Servants have, Default: 0.3")
                 .defineInRange("murmurServantKnockbackResistance", 0.3, 0.0, Double.MAX_VALUE);
+        FarseerServantHealth = BUILDER.comment("How much Max Health Farseer Servants have, Default: 70.0")
+                .defineInRange("farseerServantHealth", 70.0, 1.0, Double.MAX_VALUE);
+        FarseerServantArmor = BUILDER.comment("How much natural Armor Farseer Servants have, Default: 6.0")
+                .defineInRange("farseerServantArmor", 6.0, 0.0, Double.MAX_VALUE);
+        FarseerServantFlyingSpeed = BUILDER.comment("How fast Farseer Servants fly, Default: 0.5")
+                .defineInRange("farseerServantFlyingSpeed", 0.5, 0.0, Double.MAX_VALUE);
+        FarseerServantDamage = BUILDER.comment("How much damage Farseer Servants deal, Default: 4.5")
+                .defineInRange("farseerServantDamage", 4.5, 1.0, Double.MAX_VALUE);
+        FarseerServantMovementSpeed = BUILDER.comment("How fast Farseer Servants move, Default: 0.35")
+                .defineInRange("farseerServantMovementSpeed", 0.35, 0.0, Double.MAX_VALUE);
+        FarseerServantFollowRange = BUILDER.comment("How much following/detection range Farseer Servants have, Default: 16.0")
+                .defineInRange("farseerServantFollowRange", 16.0, 0.0, Double.MAX_VALUE);
+        CrimsonMosquitoServantHealth = BUILDER.comment("How much Max Health Crimson Mosquito Servants have, Default: 10.0")
+                .defineInRange("crimsonMosquitoServantHealth", 10.0, 1.0, Double.MAX_VALUE);
+        CrimsonMosquitoServantDamage = BUILDER.comment("How much damage Crimson Mosquito Servants deal, Default: 5.0")
+                .defineInRange("crimsonMosquitoServantDamage", 5.0, 1.0, Double.MAX_VALUE);
+        CrimsonMosquitoServantMovementSpeed = BUILDER.comment("How fast Crimson Mosquito Servants move, Default: 0.25")
+                .defineInRange("crimsonMosquitoServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
+        CrimsonMosquitoServantFollowRange = BUILDER.comment("How much following/detection range Crimson Mosquito Servants have, Default: 32.0")
+                .defineInRange("crimsonMosquitoServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
+        CrimsonMosquitoServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Crimson Mosquito Servants have, Default: 0.0")
+                .defineInRange("crimsonMosquitoServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
+        CrimsonMosquitoFleeHealthThreshold = BUILDER.comment("Max Health threshold for Crimson Mosquito Servants to flee, Default: 100.0")
+                .defineInRange("crimsonMosquitoFleeHealthThreshold", 100.0, 1.0, Double.MAX_VALUE);
+        CrimsonMosquitoFleeHealthThresholdUnholy = BUILDER.comment("Max Health threshold for Crimson Mosquito Servants to flee when the owner wears Unholy equipment, Default: 200.0")
+                .defineInRange("crimsonMosquitoFleeHealthThresholdUnholy", 200.0, 1.0, Double.MAX_VALUE);
+        WarpedMoscoServantHealth = BUILDER.comment("How much Max Health Warped Mosco Servants have, Default: 100.0")
+                .defineInRange("warpedMoscoServantHealth", 100.0, 1.0, Double.MAX_VALUE);
+        WarpedMoscoServantDamage = BUILDER.comment("How much damage Warped Mosco Servants deal, Default: 10.0")
+                .defineInRange("warpedMoscoServantDamage", 10.0, 1.0, Double.MAX_VALUE);
+        WarpedMoscoServantMovementSpeed = BUILDER.comment("How fast Warped Mosco Servants move, Default: 0.3")
+                .defineInRange("warpedMoscoServantMovementSpeed", 0.3, 0.0, Double.MAX_VALUE);
+        WarpedMoscoServantFollowRange = BUILDER.comment("How much following/detection range Warped Mosco Servants have, Default: 64.0")
+                .defineInRange("warpedMoscoServantFollowRange", 64.0, 0.0, Double.MAX_VALUE);
+        WarpedMoscoServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Warped Mosco Servants have, Default: 1.0")
+                .defineInRange("warpedMoscoServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
+        WarpedMoscoServantArmor = BUILDER.comment("How much natural Armor Warped Mosco Servants have, Default: 10.0")
+                .defineInRange("warpedMoscoServantArmor", 10.0, 0.0, Double.MAX_VALUE);
+        WarpedMoscoServantArmorToughness = BUILDER.comment("How much natural Armor Toughness Warped Mosco Servants have, Default: 2.0")
+                .defineInRange("warpedMoscoServantArmorToughness", 2.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.push("Overgrown Colossus Servant (Optional - LM)");
