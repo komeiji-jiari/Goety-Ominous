@@ -1,0 +1,38 @@
+{
+  "type": "goety:cauldron",
+  "soulCost": 500,
+  "color": 3777184,
+  "levelLeft": 1,
+  "take_with": {
+    "item": "minecraft:glass_bottle"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:warped_fungus"
+    },
+    {
+      "item": "minecraft:warped_fungus"
+    },
+    {
+      "item": "alexsmobs:hemolymph_sac"
+    },
+    {
+      "item": "alexsmobs:mosquito_larva"
+    },
+    {
+      "item": "alexsmobs:warped_muscle"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:warped_steroids"
+  },
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:mod_loaded",
+        "modid": "goety_revelation"
+      }
+    }
+  ]
+}

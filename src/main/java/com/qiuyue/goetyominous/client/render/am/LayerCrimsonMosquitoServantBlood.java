@@ -12,10 +12,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * 吸血后的红色（或患病时蓝色）血纹贴图覆盖层，移植自 AlexMobs 的 LayerCrimsonMosquitoBlood。
- * 当蚊子的血液等级 > 0 时，将身体再次用血纹贴图绘制，表现出饱食血液的状态。
- */
 @OnlyIn(Dist.CLIENT)
 public class LayerCrimsonMosquitoServantBlood extends RenderLayer<CrimsonMosquitoServant, ModelCrimsonMosquitoServant> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs", "textures/entity/crimson_mosquito_blood.png");

@@ -1,0 +1,15 @@
+{
+  "name": "Warped Steroids",
+  "icon": "goetyominous:warped_steroids",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Well, the truth is, you can't mutate your Crimson Mosquito Servant by having it suck the blood of a specific Mungus. But if you carefully brew a steroid to feed to your Crimson Mosquito Servant, you might just be able to cultivate a loyal, high-quality mosquito specimen."
+    },
+    {
+      "type": "goety:cauldron",
+      "recipe": "goetyominous:cauldron/warped_steroids"
+    }
+  ]
+}

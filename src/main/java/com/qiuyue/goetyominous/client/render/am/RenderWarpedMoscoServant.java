@@ -15,13 +15,9 @@ import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * 疣猪蚊仆从渲染器，移植自 AlexMobs 的 RenderWarpedMosco。
- * 贴图直接复用 AlexMobs 的 warped_mosco / warped_mosco_glow。
- */
 @OnlyIn(Dist.CLIENT)
 public class RenderWarpedMoscoServant extends MobRenderer<WarpedMoscoServant, ModelWarpedMoscoServant> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/warped_mosco.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation("goetyominous", "textures/entity/warped_mosco_servant.png");
     private static final ResourceLocation TEXTURE_EYES = new ResourceLocation("alexsmobs:textures/entity/warped_mosco_glow.png");
 
     public RenderWarpedMoscoServant(EntityRendererProvider.Context renderManagerIn) {

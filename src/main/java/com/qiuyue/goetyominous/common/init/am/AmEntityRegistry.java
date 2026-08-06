@@ -54,10 +54,6 @@ public class AmEntityRegistry {
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":mosquito_servant_spit"));
 
-    /**
-     * 疣猪蚊仆从，由患病（变蓝）的 CrimsonMosquitoServant 转化而来。
-     * 体型/追踪范围对齐原版 AlexMobs 的 warped_mosco（1.99 x 3.25，tracking 10）。
-     */
     public static final RegistryObject<EntityType<WarpedMoscoServant>> WARPED_MOSCO_SERVANT =
             AM_ENTITIES.register("warped_mosco_servant",
                     () -> EntityType.Builder.<WarpedMoscoServant>of((type, worldIn) -> new WarpedMoscoServant(type, worldIn), MobCategory.MISC)
@@ -66,13 +62,6 @@ public class AmEntityRegistry {
                             .setTrackingRange(10)
                             .build(GoetyOminous.MOD_ID + ":warped_mosco_servant"));
 
-    /**
-     * 蚊仆从喷射的血红液投射物（EntityServantHemolymph）。
-     * 几何/类别对齐 AlexMobs 原版 HEMOLYMPH（MobCategory.MISC、0.5 x 0.5、fireImmune）。
-     * 注册本模组自己的实体类型，避免借用 AlexMobs 的 HEMOLYMPH——其客户端工厂会生成
-     * AlexMobs 的 EntityHemolymph，与服务端的 EntityServantHemolymph 类不一致，导致
-     * 位置/粒子/命中存在客户端-服务端不一致风险。
-     */
     public static final RegistryObject<EntityType<EntityServantHemolymph>> SERVANT_HEMOLYMPH =
             AM_ENTITIES.register("servant_hemolymph",
                     () -> EntityType.Builder.<EntityServantHemolymph>of((type, worldIn) -> new EntityServantHemolymph(type, worldIn), MobCategory.MISC)
@@ -81,11 +70,6 @@ public class AmEntityRegistry {
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":servant_hemolymph"));
 
-    /**
-     * 先知仆从，由 AlexMobs 的 farseer 转化而来。
-     * 体型/追踪范围对齐原版 AlexMobs 的 farseer（0.99 x 1.5，tracking 8，fireImmune，
-     * setUpdateInterval(1) 保证延迟偏移/残影渲染的位置历史精度）。
-     */
     public static final RegistryObject<EntityType<FarseerServant>> FARSEER_SERVANT =
             AM_ENTITIES.register("farseer_servant",
                     () -> EntityType.Builder.<FarseerServant>of((type, worldIn) -> new FarseerServant(type, worldIn), MobCategory.MISC)
@@ -102,15 +86,6 @@ public class AmEntityRegistry {
         }
         return (mob) -> mob.isAlive() && mob.getType().is(tagKey);
     }
-
-    // === 在这里添加实体注册 ===
-    // 示例：
-    // public static final RegistryObject<EntityType<XXXServant>> XXX_SERVANT =
-    //         AM_ENTITIES.register("xxx_servant",
-    //                 () -> EntityType.Builder.of(XXXServant::new, MobCategory.MISC)
-    //                         .sized(0.6F, 1.95F)
-    //                         .clientTrackingRange(8)
-    //                         .build(GoetyOminous.MOD_ID + ":xxx_servant"));
 
     public static void register(IEventBus modEventBus) {
         AM_ENTITIES.register(modEventBus);

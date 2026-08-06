@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.events;
 
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
+import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
 import com.qiuyue.goetyominous.common.init.ua.UaEntityRegistry;
@@ -40,6 +41,9 @@ public class TesseractTagHandler {
         if (UpgradeAquaticCompat.isUpgradeAquaticLoaded()) {
             addToTag(TESSERACT_SMALL, UaEntityRegistry.THRASHER_SERVANT);
         }
+        if (AlexMobsCompat.isAlexMobsLoaded()) {
+            addToTag(TESSERACT_SMALL, AmEntityRegistry.FARSEER_SERVANT);
+        }
 
         addToTag(TESSERACT_MEDIUM, ModEntityTypes.HERESIARCH_SERVANT);
         addToTag(TESSERACT_MEDIUM, ModEntityTypes.STORM_NECROMANCER_SERVANT);
@@ -51,6 +55,9 @@ public class TesseractTagHandler {
         }
         if (LegendaryMonstersCompat.isLegendaryMonstersLoaded()) {
             addToTag(TESSERACT_MEDIUM, LmEntityRegistry.OVERGROWN_COLOSSUS_SERVANT);
+        }
+        if (AlexMobsCompat.isAlexMobsLoaded()) {
+            addToTag(TESSERACT_MEDIUM, AmEntityRegistry.WARPED_MOSCO_SERVANT);
         }
 
         if (MutantMoreCompat.isMutantMoreLoaded()) {

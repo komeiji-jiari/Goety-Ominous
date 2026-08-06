@@ -168,6 +168,18 @@ public class CrimsonMosquitoServant extends Summoned {
         this.setSteroidConversion(compound.getBoolean("SteroidConversion"));
     }
 
+    private int countWarpedMoscoServants(Player owner) {
+        int count = 0;
+        if (this.level() instanceof ServerLevel serverLevel) {
+            for (Entity entity : serverLevel.getAllEntities()) {
+                if (entity instanceof WarpedMoscoServant servant && servant.getTrueOwner() == owner) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
     private void spit(LivingEntity target) {
         if (this.isSick()) {
             return;
@@ -194,7 +206,6 @@ public class CrimsonMosquitoServant extends Summoned {
     }
 
     public boolean hurt(DamageSource source, float amount) {
-        // 类固醇强化转化期间无敌：避免转化演出被中途打断、类固醇白白消耗
         if (this.isSteroidConversion()) {
             return false;
         }
@@ -355,7 +366,6 @@ public class CrimsonMosquitoServant extends Summoned {
         this.entityData.set(SICK, shrink);
     }
 
-    /** 是否由类固醇（WarpedSteroids）触发的强化快转：患病转化阈值压缩到约 4 秒 */
     public boolean isSteroidConversion() {
         return this.entityData.get(STEROID_CONVERSION);
     }
@@ -364,10 +374,6 @@ public class CrimsonMosquitoServant extends Summoned {
         this.entityData.set(STEROID_CONVERSION, steroid);
     }
 
-    /**
-     * 类固醇触发强化快转：进入患病状态并强制落地，复刻自然患病（喝血触发）的落地序列，
-     * 保证转化期间贴地演出（地面蓝色贴图 + 抖动 + 爆炸），避免飞行中转化。
-     */
     public void startSteroidConversion() {
         this.setSick(true);
         this.setSteroidConversion(true);
@@ -523,17 +529,17 @@ public class CrimsonMosquitoServant extends Summoned {
             if (this.getTarget() != null && !this.isPassenger()) {
                 this.setTarget(null);
             }
-            // 类固醇强化的快转：比自然患病(100/160 tick ≈ 8秒)压缩到 30/80 tick(≈4秒)，渲染过程完全一致
             final int growThreshold = this.isSteroidConversion() ? 30 : 100;
             final int convertThreshold = this.isSteroidConversion() ? 80 : 160;
             if (sickTicks > growThreshold) {
                 this.setShrink(false);
                 this.setMosquitoScale(this.getMosquitoScale() + 0.015F);
                 if (sickTicks > convertThreshold) {
-                    // 只有类固醇（WarpedSteroids）触发的病变才转化为可跟随主人的疣猪蚊仆从；
-                    // 自然患病（喝血/喂诡异混合物）按 AlexMobs 原版逻辑转化为野生 WarpedMosco
                     final boolean steroid = this.isSteroidConversion();
-                    Mob mosco = steroid
+                    boolean overLimit = steroid && this.getTrueOwner() instanceof Player owner
+                            && countWarpedMoscoServants(owner)
+                            >= com.qiuyue.goetyominous.config.MobsConfig.WarpedMoscoServantLimit.get();
+                    Mob mosco = (steroid && !overLimit)
                             ? AmEntityRegistry.WARPED_MOSCO_SERVANT.get().create(level())
                             : AMEntityRegistry.WARPED_MOSCO.get().create(level());
                     mosco.copyPosition(this);
@@ -542,9 +548,6 @@ public class CrimsonMosquitoServant extends Summoned {
                             servant.setTrueOwner(this.getTrueOwner());
                         }
                         mosco.finalizeSpawn((ServerLevelAccessor) level(), level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null, null);
-                        // 不用 broadcastEntityEvent(79)：它与同一 tick 的 remove(DISCARDED) 存在发包先后竞态，
-                        // 移除包先到客户端时事件包会因按 ID 找不到实体而静默丢失爆炸粒子。
-                        // 改为服务端粒子复刻原 handleEntityEvent(79) 的爆炸粒子分布，包序不再有约束。
                         if (this.level() instanceof ServerLevel serverLevel) {
                             for (int i = 0; i < 27; ++i) {
                                 serverLevel.sendParticles(ParticleTypes.EXPLOSION,

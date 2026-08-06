@@ -23,10 +23,6 @@ public class AmItems {
             AM_ITEMS.register("murmur_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AmEntityRegistry.MURMUR_SERVANT, 0x445566, 0x8899AA, egg()));
 
-    public static final RegistryObject<MagicFocus> MURMUR_FOCUS = AM_ITEMS.register(
-            "murmur_focus",
-            () -> new MagicFocus(new MurmurSpell()));
-
     public static final RegistryObject<ServantSpawnEggItem> CRIMSON_MOSQUITO_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("crimson_mosquito_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AmEntityRegistry.CRIMSON_MOSQUITO_SERVANT, 0xC21E2B, 0x1C1C1C, egg()));
@@ -39,17 +35,13 @@ public class AmItems {
             AM_ITEMS.register("farseer_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AmEntityRegistry.FARSEER_SERVANT, 0x33374F, 0x91FF59, egg()));
 
-    /**
-     * 诡异类固醇：由疣猪蚊仆从死亡掉落，右键自己的绯红蚊子仆从可将其转化为疣猪蚊仆从。
-     */
     public static final RegistryObject<WarpedSteroidsItem> WARPED_STEROIDS =
             AM_ITEMS.register("warped_steroids", WarpedSteroidsItem::new);
 
-    // === 在这里添加物品注册 ===
-    // 示例：
-    // public static final RegistryObject<ServantSpawnEggItem> XXX_SERVANT_SPAWN_EGG =
-    //         AM_ITEMS.register("xxx_servant_spawn_egg",
-    //                 () -> new ServantSpawnEggItem(AmEntityRegistry.XXX_SERVANT, 0xFFFFFF, 0x000000, egg()));
+    public static final RegistryObject<MagicFocus> MURMUR_FOCUS = AM_ITEMS.register(
+            "murmur_focus",
+            () -> new MagicFocus(new MurmurSpell()));
+
 
     public static Item.Properties egg() {
         return new Item.Properties();

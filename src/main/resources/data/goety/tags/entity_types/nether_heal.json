@@ -2,6 +2,8 @@
   "replace": false,
   "__comment": "servants that heals and lose limited lifespan through Nether set.",
   "values": [
-    "goetyominous:mutant_wither_skeleton_servant"
+    "goetyominous:mutant_wither_skeleton_servant",
+    "goetyominous:crimson_mosquito_servant",
+    "goetyominous:warped_mosco_servant"
   ]
 }

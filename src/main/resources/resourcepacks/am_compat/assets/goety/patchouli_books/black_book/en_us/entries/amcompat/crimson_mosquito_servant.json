@@ -1,0 +1,28 @@
+{
+  "name": "Crimson Mosquito Servant",
+  "icon": "alexsmobs:blood_sac",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "A detestable flying pest that plagues all Nether travelers, yet in your arts, it becomes a nightmare that enemies dread. These bloodthirsty flying demons latch onto creatures to drain their blood, then spit it back out to deal damage."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "For certain arcane reasons, you have discovered that your Mosquito Servants can only drain the blood of weaker creatures (those with less than 100 health). However, equipping the Unholy Set doubles the health threshold they can target (configurable)."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:crimson_mosquito_servant",
+      "text": "Not an OC person's kaomoji"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Wearing Wild Robes or Nether Robes grants your Mosquito Servants additional passive healing."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:crimson_mosquito_servant"
+    }
+  ]
+}

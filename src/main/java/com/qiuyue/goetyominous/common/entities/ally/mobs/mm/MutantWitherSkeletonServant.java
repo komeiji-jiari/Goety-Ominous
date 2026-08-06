@@ -471,7 +471,6 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
     protected void dropAllDieLoot(DamageSource source) {
     }
 
-
     public ItemEntity spawnAtLocation(ItemStack p_19985_, float p_19986_) {
         if (p_19985_.isEmpty()) {
             return null;

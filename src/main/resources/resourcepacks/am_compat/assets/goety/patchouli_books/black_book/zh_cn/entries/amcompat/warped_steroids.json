@@ -1,0 +1,15 @@
+{
+  "name": "诡异类固醇",
+  "icon": "goetyominous:warped_steroids",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "好吧，事实是你没办法通过让你的绯红蚊子仆从吸食特定蘑菇君的血来发生变异。但如果你精心制作一种类固醇用来喂食给你的绯红蚊子仆从的话，或许你能够培养一名忠诚的蚊类高质量男性。"
+    },
+    {
+      "type": "goety:cauldron",
+      "recipe": "goetyominous:cauldron/warped_steroids"
+    }
+  ]
+}

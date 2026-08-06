@@ -1,0 +1,28 @@
+{
+  "name": "绯红蚊子仆从",
+  "icon": "alexsmobs:blood_sac",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "令所有下界旅行者不胜其烦的可憎飞虫，但在你的艺术中却是敌人避之不及的梦魇。这些嗜血的飞行恶魔会趴在生物身上吸血，再将血液吐回去造成伤害。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "出于某种奥术的原因，你发现你的蚊子仆从只能吸食较弱的生物的血液(100血量以下)。但如果你装备了不洁套装，则允许攻击的血量上限翻倍(可配置)。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:crimson_mosquito_servant",
+      "text": "不是OC人的颜文字"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "装备荒野长袍或下界长袍可以让你的蚊子获得额外的治疗。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:crimson_mosquito_servant"
+    }
+  ]
+}

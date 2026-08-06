@@ -30,6 +30,7 @@ import com.qiuyue.goetyominous.common.items.am.AmItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -39,18 +40,14 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
@@ -65,6 +62,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
@@ -112,6 +110,33 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
 
     public MobType getMobType() {
         return MobType.ARTHROPOD;
+    }
+
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_,
+                                        MobSpawnType p_21436_, @Nullable SpawnGroupData p_21437_,
+                                        @Nullable CompoundTag p_21438_) {
+        if (p_21436_ == MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player) {
+            if (countServants(player) >= com.qiuyue.goetyominous.config.MobsConfig.WarpedMoscoServantLimit.get()) {
+                return null;
+            }
+        }
+        return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
+    }
+
+    private int countServants(Player player) {
+        int count = 0;
+        if (player.level() instanceof ServerLevel serverLevel) {
+            for (Entity entity : serverLevel.getAllEntities()) {
+                if (entity instanceof WarpedMoscoServant servant) {
+                    if (servant.getTrueOwner() == player) {
+                        count++;
+                    }
+                }
+            }
+        }
+        return count;
     }
 
     @Override
@@ -354,6 +379,15 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
     }
 
     @Override
+    public void tryKill(Player player) {
+        if (this.killChance <= 0) {
+            this.warnKill(player);
+        } else {
+            super.tryKill(player);
+        }
+    }
+
+    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(FLYING, false);
@@ -388,7 +422,6 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
         super.tick();
         prevFlyRightProgress = flyRightProgress;
         prevLeftFlyProgress = flyLeftProgress;
-        // 飞行许可: 待命禁止飞行直接落地; 游荡/警戒无索敌时仅允许短暂飞行(3~5秒)后落地; 液体/战斗/跟随仍可飞行
         if (!this.level().isClientSide && this.isFlying()) {
             boolean allowFlight;
             if (this.isStaying()) {
@@ -552,8 +585,6 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
     private static final byte EVENT_ANIM_SUCK = 103;
     private static final byte EVENT_ANIM_SPIT = 104;
 
-    // 攻击动画只在服务端 AttackGoal 里设置, 必须通过 entity event 广播给客户端,
-    // 否则客户端的 ModelWarpedMoscoServant 读到的 getAnimation() 恒为 NO_ANIMATION, 攻击动作永远不播。
     private void setAttackAnimation(Animation animation) {
         if (this.getAnimation() == animation) {
             return;
@@ -753,22 +784,21 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
             if (this.mosco.isVehicle() || (mosco.getTarget() != null && mosco.getTarget().isAlive()) || this.mosco.isPassenger()) {
                 return false;
             } else if (mosco.isStaying()) {
-                return false; // 待命: 完全不动
+                return false;
             } else if (mosco.isFollowing()) {
-                return false; // 跟随模式完全交给 FlyToOwnerGoal: 不做游荡, 避免随机起飞后永久悬空
+                return false;
             } else if (mosco.isGuardingArea()) {
-                // 警戒(符合 Goety): 受命时交给 commandMode; 水上悬浮守位; 陆地小范围游荡, 目标约束在守位半径内, 绝不起飞
                 if (mosco.isCommanded()) {
                     return false;
                 }
                 if (mosco.isOverLiquid()) {
                     this.flightTarget = true;
                 } else if (mosco.isFlying()) {
-                    return false; // 陆地飞行残留: 由 tick() 飞行许可直接落地待机
+                    return false;
                 } else {
                     this.flightTarget = false;
                     if (mosco.getRandom().nextInt(60) != 0) {
-                        return false; // 小概率挪一小步, 其余时间定岗
+                        return false;
                     }
                 }
                 Vec3 guardPos = this.getPosition();
@@ -784,13 +814,11 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
                     return false;
                 }
                 if (mosco.isFlying()) {
-                    // 空中过渡状态: 继续飞向落点, 时长到后由 tick 强制落地
                     this.flightTarget = true;
                 } else {
-                    // 游荡: 小概率起飞; 脚下是液体时始终允许飞行
                     this.flightTarget = mosco.isOverLiquid() || random.nextInt(8) == 0;
                     if (this.flightTarget) {
-                        mosco.idleFlightTimeLimit = 60 + mosco.getRandom().nextInt(41); // 起飞 3~5 秒后落地
+                        mosco.idleFlightTimeLimit = 60 + mosco.getRandom().nextInt(41);
                     }
                 }
                 Vec3 lvt_1_1_ = this.getPosition();
@@ -817,7 +845,6 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
             if (isFlying() && mosco.onGround() && mosco.timeFlying > 10) {
                 mosco.setFlying(false);
             }
-            // 游荡模式下超过本次允许的飞行时长且脚下无液体 → 强制落地, 不能连续飞行
             if (isFlying() && mosco.isWandering()
                     && mosco.timeFlying >= mosco.idleFlightTimeLimit && !mosco.isOverLiquid()) {
                 mosco.setFlying(false);
@@ -830,7 +857,6 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
             if (bound == null) {
                 return null;
             }
-            // 悬浮锚定守位上方, 避免飘离警戒点
             Vec3 hover = mosco.vec3BoundPos().add(0, 4.0, 0);
             if (!mosco.isTargetBlocked(hover)) {
                 return hover;
@@ -845,7 +871,6 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
                 return null;
             }
             int safeRadius = Math.max(2, (int) (IServant.GUARDING_RANGE * 0.75F));
-            // 距守位过远时不游荡: 交给 servantTick 走回; 同时保证游荡路径始终在守位半径内
             if (mosco.distanceToSqr(mosco.vec3BoundPos()) > Mth.square(safeRadius)) {
                 return null;
             }
@@ -871,7 +896,6 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
             Vec3 vector3d = mosco.position();
 
             if (mosco.isGuardingArea()) {
-                // 警戒: 水上悬浮守位; 陆地小范围游荡
                 if (flightTarget) {
                     return getGuardHoverPos();
                 }
@@ -937,7 +961,6 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
                 LivingEntity target = WarpedMoscoServant.this.getTarget();
                 ranged = WarpedMoscoServant.this.shouldRangeAttack(target);
                 boolean staying = WarpedMoscoServant.this.isStaying();
-                // 待命仆从不追击/不起飞: 原地迎击即可, 避免与飞行许可块(待命禁止飞行)冲突
                 if (!staying && (WarpedMoscoServant.this.isFlying() || ranged || WarpedMoscoServant.this.distanceTo(target) > 12 && !WarpedMoscoServant.this.isTargetBlocked(target.position().add(0, target.getBbHeight() * 0.6F, 0)))) {
                     float speedRush = 5F;
                     upTicks++;

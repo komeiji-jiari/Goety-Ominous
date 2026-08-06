@@ -6,8 +6,6 @@ import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.config.MobsConfig;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
-import com.github.alexthe666.alexsmobs.config.AMConfig;
-import com.github.alexthe666.alexsmobs.entity.*;
 import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.message.MessageSendVisualFlagFromServer;
 import com.github.alexthe666.alexsmobs.misc.AMDamageTypes;
@@ -27,8 +25,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -45,8 +41,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
@@ -102,10 +96,6 @@ public class FarseerServant extends Summoned implements IAnimatedEntity {
                 .add(Attributes.FOLLOW_RANGE, AttributesConfig.FarseerServantFollowRange.get());
     }
 
-    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
-        return AMEntityRegistry.rollSpawn(AMConfig.farseerSpawnRolls, this.getRandom(), spawnReasonIn);
-    }
-
     public boolean isNoGravity() {
         return true;
     }
@@ -138,10 +128,6 @@ public class FarseerServant extends Summoned implements IAnimatedEntity {
         this.goalSelector.addGoal(3, new RandomFlyGoal(this));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 15.0F, 1.0F));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
-        // 索敌全部交给 Summoned 注册的 SummonTargetGoal / ServantHurtByTargetGoal / OwnerHurt*Goal。
-        // 野生 farseer 无条件索敌玩家的 EntityAINearestTarget3D 会绕过 Goety 仆从的 isHostile()
-        // 门控——中立仆从也会攻击所有玩家；原版 HurtByTargetGoal 无同阵营检查，与
-        // ServantHurtByTargetGoal 重复且可能把主人误判为报复目标。两者一并移除。
     }
 
     @Override
@@ -159,7 +145,6 @@ public class FarseerServant extends Summoned implements IAnimatedEntity {
         this.setHasEmerged(compound.getBoolean("Emerged"));
     }
 
-
     protected SoundEvent getAmbientSound() {
         return AMSoundRegistry.FARSEER_IDLE.get();
     }
@@ -170,14 +155,6 @@ public class FarseerServant extends Summoned implements IAnimatedEntity {
 
     protected SoundEvent getDeathSound() {
         return AMSoundRegistry.FARSEER_HURT.get();
-    }
-
-    public static boolean checkFarseerSpawnRules(EntityType<? extends Monster> animal, ServerLevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        return worldIn.getDifficulty() != Difficulty.PEACEFUL && Monster.isDarkEnoughToSpawn(worldIn, pos, random) && isFarseerArea(worldIn, pos);
-    }
-
-    private static boolean isFarseerArea(ServerLevelAccessor iServerWorld, BlockPos pos) {
-        return !AMConfig.restrictFarseerSpawns || iServerWorld.getWorldBorder().getDistanceToBorder(pos.getX(), pos.getZ()) < AMConfig.farseerBorderSpawnDistance;
     }
 
     protected void defineSynchedData() {
@@ -303,11 +280,9 @@ public class FarseerServant extends Summoned implements IAnimatedEntity {
                 }
             }
             if (!this.hasEmerged()) {
-                // 生成时立即进入隐身并播放登场动画，不再等玩家靠近
                 this.setInvisible(true);
                 this.setAnimation(ANIMATION_EMERGE);
             } else {
-                // 登场后不再自动隐身，仅受隐身药水影响
                 this.setInvisible(this.hasEffect(MobEffects.INVISIBILITY));
             }
             if (this.getAnimation() == ANIMATION_EMERGE) {
@@ -447,7 +422,6 @@ public class FarseerServant extends Summoned implements IAnimatedEntity {
         this.currentAnimation = animation;
     }
 
-
     @Override
     public Animation[] getAnimations() {
         return new Animation[]{ANIMATION_EMERGE};
@@ -544,8 +518,6 @@ public class FarseerServant extends Summoned implements IAnimatedEntity {
         }
 
         public boolean canUse() {
-            // 待命/受命仆从不随机飞行，交给 servantTick 的 stayingMode/commandMode 控制。
-            // 否则 Goety 的 stayingMode 每 tick 停导航会让 isDone() 恒真，25% 概率起飞乱飞，"待命"失效。
             if (this.parentEntity.getNavigation().isDone() && this.parentEntity.getTarget() == null
                     && !this.parentEntity.isStaying() && !this.parentEntity.isCommanded()
                     && this.parentEntity.getRandom().nextInt(4) == 0) {
@@ -593,11 +565,9 @@ public class FarseerServant extends Summoned implements IAnimatedEntity {
             float radius;
             BlockPos center;
             if (parentEntity.isGuardingArea() && parentEntity.getBoundPos() != null) {
-                // 警戒: 选点锚定守位并约束在守位半径内, 避免漂出警戒圈被 servantTick 反复拉回
                 center = parentEntity.getBoundPos();
                 radius = 2 + parentEntity.getRandom().nextInt(Math.max(2, (int) (IServant.GUARDING_RANGE * 0.5F)));
             } else if (parentEntity.isFollowing() && parentEntity.getTrueOwner() != null) {
-                // 跟随: 选点锚定主人附近, 避免越飘越远
                 center = parentEntity.getTrueOwner().blockPosition();
                 radius = 3 + parentEntity.getRandom().nextInt(5);
             } else {
@@ -689,7 +659,6 @@ public class FarseerServant extends Summoned implements IAnimatedEntity {
                     FarseerServant.this.entityData.set(LASER_ATTACK_LVL, laserUseTime);
                     FarseerServant.this.lookAt(target, 180F, 180F);
                     if (FarseerServant.this.isStaying() || (dist < 17F && canLaserHit)) {
-                        // 待命仆从原地激光，不追击
                         FarseerServant.this.getNavigation().stop();
                     } else {
                         FarseerServant.this.getNavigation().moveTo(target, 1F);
@@ -706,7 +675,6 @@ public class FarseerServant extends Summoned implements IAnimatedEntity {
                     if (dist < 4F) {
                         timeSinceLastSuccessfulAttack = 0;
                     } else if (!FarseerServant.this.isStaying()) {
-                        // 待命仆从不追击，原地迎击
                         FarseerServant.this.getNavigation().moveTo(target, 1F);
                         FarseerServant.this.moveControl.setWantedPosition(target.getX(), target.getEyeY(), target.getZ(), 1F);
                     }
@@ -730,9 +698,6 @@ public class FarseerServant extends Summoned implements IAnimatedEntity {
         }
 
         public void tick() {
-            // 受命/待命时关闭轨道偏移: 受命需要精确落到命令格, 待命需要悬停原地;
-            // 其余模式保留 farseer 的环绕飞行演出
-            // parentEntity 在此类中是 Mob 类型, 仆从模式方法须经外层 FarseerServant 调用
             boolean preciseMode = FarseerServant.this.isCommanded() || FarseerServant.this.isStaying();
             float angle = (Maths.STARTING_ANGLE * (parentEntity.yBodyRot + 90));
             float radius = preciseMode ? 0.0F : (float) Math.sin(parentEntity.tickCount * 0.2F) * 2;
@@ -753,11 +718,6 @@ public class FarseerServant extends Summoned implements IAnimatedEntity {
                 }
 
                 if (d0 < width) {
-                    // 到达目标点: 转入悬停减速, 避免绕点反复弹跳导致受命/回守判定不到达。
-                    // 必须先判 d0 再做除法: FlyToOwnerGoal.stop()/tryToTeleportToLocation()
-                    // 会把 wanted 设为当前坐标 (d0 == 0 且 speedModifier == 0), 若先算
-                    // vector3d.scale(speedModifier * 0.05 / d0) 会得到 0/0 = NaN,
-                    // setDeltaMovement(NaN) 使实体位置变 NaN 永久卡死 —— 表现为召唤后不跟随玩家。
                     this.operation = MoveControl.Operation.WAIT;
                     parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().scale(0.5D));
                 } else {

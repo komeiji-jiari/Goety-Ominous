@@ -1,0 +1,20 @@
+{
+  "name": "Warped Mosco Servant",
+  "icon": "alexsmobs:hemolymph_sac",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Bulk Mosquito! These powerful, mutated mosquito brethren retain their blood-draining abilities while gaining immense physical strength. Though they look dangerous, fortunately, they are completely loyal to you—as long as you're careful not to exceed the summoning limit..."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:warped_mosco_servant",
+      "text": "Destroyer of Chads"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "You can right-click your Warped Mosco Servant with a Blood Sac to restore its health. Using a Hemolymph Sac restores even more health in one go."
+    }
+  ]
+}

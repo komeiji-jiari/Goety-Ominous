@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:glass_bottle"
+    },
+    {
+      "item": "minecraft:warped_fungus"
+    },
+    {
+      "item": "minecraft:warped_fungus"
+    },
+    {
+      "item": "alexsmobs:hemolymph_sac"
+    },
+    {
+      "item": "alexsmobs:mosquito_larva"
+    },
+    {
+      "item": "alexsmobs:warped_muscle"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:warped_steroids"
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "goety_revelation"
+    }
+  ]
+}
