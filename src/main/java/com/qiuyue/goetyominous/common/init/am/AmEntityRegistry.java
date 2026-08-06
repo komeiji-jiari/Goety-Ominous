@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.init.am;
 
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.am.CrimsonMosquitoServant;
+import com.qiuyue.goetyominous.common.entities.ally.am.FarseerServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.MurmurServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.MurmurServantHead;
 import com.qiuyue.goetyominous.common.entities.ally.am.WarpedMoscoServant;
@@ -79,6 +80,21 @@ public class AmEntityRegistry {
                             .fireImmune()
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":servant_hemolymph"));
+
+    /**
+     * 先知仆从，由 AlexMobs 的 farseer 转化而来。
+     * 体型/追踪范围对齐原版 AlexMobs 的 farseer（0.99 x 1.5，tracking 8，fireImmune，
+     * setUpdateInterval(1) 保证延迟偏移/残影渲染的位置历史精度）。
+     */
+    public static final RegistryObject<EntityType<FarseerServant>> FARSEER_SERVANT =
+            AM_ENTITIES.register("farseer_servant",
+                    () -> EntityType.Builder.<FarseerServant>of((type, worldIn) -> new FarseerServant(type, worldIn), MobCategory.MISC)
+                            .sized(0.99F, 1.5F)
+                            .fireImmune()
+                            .setShouldReceiveVelocityUpdates(true)
+                            .setUpdateInterval(1)
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":farseer_servant"));
 
     public static Predicate<LivingEntity> buildPredicateFromTag(TagKey<EntityType<?>> tagKey) {
         if (tagKey == null) {

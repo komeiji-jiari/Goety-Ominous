@@ -35,6 +35,10 @@ public class AmItems {
             AM_ITEMS.register("warped_mosco_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AmEntityRegistry.WARPED_MOSCO_SERVANT, 0x322F58, 0x5B5EF1, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> FARSEER_SERVANT_SPAWN_EGG =
+            AM_ITEMS.register("farseer_servant_spawn_egg",
+                    () -> new ServantSpawnEggItem(AmEntityRegistry.FARSEER_SERVANT, 0x33374F, 0x91FF59, egg()));
+
     /**
      * 诡异类固醇：由疣猪蚊仆从死亡掉落，右键自己的绯红蚊子仆从可将其转化为疣猪蚊仆从。
      */

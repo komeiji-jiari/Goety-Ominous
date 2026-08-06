@@ -508,6 +508,9 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.SERVANT_HEMOLYMPH.get(),
                     com.qiuyue.goetyominous.client.render.projectile.RenderServantHemolymph::new);
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.FARSEER_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.am.RenderFarseerServant::new);
 
             // 在这里添加 AlexMobs 联动仆从的渲染器注册
         }
