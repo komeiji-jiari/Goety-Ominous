@@ -7,7 +7,6 @@ import com.Polarice3.Goety.common.enchantments.ModEnchantments;
 import com.Polarice3.Goety.common.entities.ModEntityType;
 import com.Polarice3.Goety.common.entities.ai.SurroundGoal;
 import com.Polarice3.Goety.common.entities.ally.undead.zombie.ZombieVillagerServant;
-import com.Polarice3.Goety.common.entities.hostile.cultists.Cultist;
 import com.Polarice3.Goety.common.entities.hostile.servants.Damned;
 import com.Polarice3.Goety.common.entities.projectiles.Lavaball;
 import com.Polarice3.Goety.common.entities.projectiles.ModWitherSkull;
@@ -56,7 +55,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-public class Disciple extends Cultist {
+public class Disciple extends AbstractGOCultist {
     private static final EntityDataAccessor<Boolean> CASTING;
     private static final EntityDataAccessor<Integer> CURRENT_SPELL;
 
@@ -78,7 +77,7 @@ public class Disciple extends Cultist {
 
     private int currentAnimationState = IDLE;
 
-    public Disciple(EntityType<? extends Cultist> type, Level worldIn) {
+    public Disciple(EntityType<? extends AbstractGOCultist> type, Level worldIn) {
         super(type, worldIn);
         this.xpReward = 100;
     }
@@ -89,8 +88,8 @@ public class Disciple extends Cultist {
         this.goalSelector.addGoal(2, new CastingSpellGoal());
         this.goalSelector.addGoal(2, new FireBlastDefenseGoal(this));
         this.goalSelector.addGoal(3, new SpellGoal());
-        this.goalSelector.addGoal(4, new SurroundGoal<>(this, 0.5F, 8.0F));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, null));
+        this.goalSelector.addGoal(4, new SurroundGoal<>(this, 0.5F, 8.0F));
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {

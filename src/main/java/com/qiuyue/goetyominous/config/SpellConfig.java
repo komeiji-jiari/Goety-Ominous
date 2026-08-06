@@ -10,6 +10,9 @@ public class SpellConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> BrainEaterDrainPerSecond;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BrainEaterSoulsPerDrain;
+
     public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachCastDuration;
     public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachSummonDown;
@@ -79,6 +82,13 @@ public class SpellConfig {
                 .defineInRange("murmurSummonDown", 160, 0, 5000);
         MurmurCoolDown = BUILDER.comment("Cooldown of Murmur Servant spell in ticks (Default: 100)")
                 .defineInRange("murmurCoolDown", 100, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("Brain Eater");
+        BrainEaterDrainPerSecond = BUILDER.comment("Experience drained per second while channeling (Default: 10)")
+                .defineInRange("brainEaterDrainPerSecond", 10, 1, 1000);
+        BrainEaterSoulsPerDrain = BUILDER.comment("Souls gained per drain (Default: 100)")
+                .defineInRange("brainEaterSoulsPerDrain", 100, 1, 100000);
         BUILDER.pop();
 
         BUILDER.push("Urbhadhach");

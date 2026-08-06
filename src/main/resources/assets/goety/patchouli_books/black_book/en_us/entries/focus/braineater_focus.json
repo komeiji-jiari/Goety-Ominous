@@ -1,0 +1,22 @@
+{
+  "name": "Brain Eater Focus",
+  "icon": "goetyominous:braineater_focus",
+  "advancement": "goetyominous:goetyominous/witch_lesson",
+  "secret": true,
+  "category": "goety:focuses/fel",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Well, Granny's not around... Anyway, let me introduce this! This focus consumes your experience points... Huh? You don't know what experience points are? Oh, you should know that! I—I can't really explain it easily... In short, it trades your experience for soul energy! Just doesn't smell very good..."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:braineater_focus",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "HAHAHA! Even if that little brat forgot, Granny takes her students seriously! Using a Fel Staff doubles the soul gain! And if you enchant this spell with Velocity, the experience conversion efficiency doubles as well!"
+    }
+  ]
+}

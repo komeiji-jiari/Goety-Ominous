@@ -80,6 +80,9 @@ public class ModItems {
     public static final RegistryObject<Item> FIREBRAND = ITEMS.register("firebrand",
             () -> new FirebrandItem());
 
+    public static final RegistryObject<WitchBowItem> WITCH_BOW = ITEMS.register("witch_bow",
+            () -> new WitchBowItem());
+
     public static final RegistryObject<Item> COG_CROSSBOW = ITEMS.register("cog_crossbow",
             () -> new CogCrossbowItem());
 
@@ -130,6 +133,9 @@ public class ModItems {
 
     public static final RegistryObject<Item> SCORCH_FOCUS = ITEMS.register("scorch_focus",
             () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.ScorchSpell()));
+
+    public static final RegistryObject<Item> BRAINEATER_FOCUS = ITEMS.register("braineater_focus",
+            () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.BrainEaterSpell()));
 
     /**
      * 征服者仆从刷怪蛋
@@ -258,10 +264,6 @@ public class ModItems {
             "thug_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntityTypes.THUG, 0x8B0000, 0x191919, egg()));
 
-    public static final RegistryObject<ForgeSpawnEggItem> MARTYR_SPAWN_EGG = ITEMS.register(
-            "martyr_spawn_egg",
-            () -> new ForgeSpawnEggItem(ModEntityTypes.MARTYR, 0x1a1a2e, 0x8b0000, egg()));
-
     public static final RegistryObject<ForgeSpawnEggItem> CHANNELLER_SPAWN_EGG = ITEMS.register(
             "channeller_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntityTypes.CHANNELLER, 0x4a0e4e, 0xe5c07f, egg()));
@@ -273,6 +275,10 @@ public class ModItems {
     public static final RegistryObject<ServantSpawnEggItem> RETURNED_SPAWN_EGG = ITEMS.register(
             "returned_spawn_egg",
             () -> new ServantSpawnEggItem(ModEntityTypes.RETURNED, 0x191919, 0x8b0000, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> AGONY_SPAWN_EGG = ITEMS.register(
+            "agony_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.AGONY, 0x2b0f0f, 0x8b0000, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> SCORCH_SPAWN_EGG = ITEMS.register(
             "scorch_spawn_egg",

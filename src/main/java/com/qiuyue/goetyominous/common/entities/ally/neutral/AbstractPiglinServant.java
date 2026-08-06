@@ -442,7 +442,8 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
 
     public boolean validFood(ItemStack itemStack) {
         return itemStack.is(Items.CARROT) || itemStack.is(Items.PORKCHOP)
-                || itemStack.is(Items.COOKED_PORKCHOP) || itemStack.is(Items.GOLDEN_CARROT);
+                || itemStack.is(Items.COOKED_PORKCHOP) || itemStack.is(Items.GOLDEN_CARROT)
+                || itemStack.is(Items.POTATO) || itemStack.is(Items.BAKED_POTATO) || itemStack.is(Items.BEETROOT);
     }
 
     public Map<Item, Integer> getFoodPoints() {

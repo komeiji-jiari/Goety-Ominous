@@ -1,0 +1,22 @@
+{
+  "name": "黑暗矛",
+  "icon": "goetyominous:dark_spear",
+  "category": "goety:crafts/equipment",
+  "advancement": "goety:goety/craft_dark_ingot",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "不止于常见的工具和盔甲，你也可以用手头的黑暗金属锻造一把趁手的长矛。这种矛拥有矛和黑暗金属工具的一切功能。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goetyominous:dark_spear",
+      "text": "黑色高级大运"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "可通过吸收使用者的灵魂能量或在铁砧上使用黑暗金属锭修复。"
+    }
+  ]
+}

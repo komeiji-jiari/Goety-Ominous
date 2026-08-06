@@ -4,12 +4,9 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -27,7 +24,6 @@ public class ScreamingSkullJar extends Item implements ICurioItem {
     private static final int MAX_SKULLS = 8;
     private static final String SKULL_COUNT_TAG = "SkullCount";
     private static final int AUTO_FEED_INTERVAL = 20;
-    private static final TagKey<Item> TALL_SKULL_TAG = ItemTags.create(new ResourceLocation("goety", "skulls"));
 
     public ScreamingSkullJar() {
         super(new Properties().stacksTo(1));
@@ -86,7 +82,7 @@ public class ScreamingSkullJar extends Item implements ICurioItem {
     }
 
     public static boolean isTallSkull(ItemStack stack) {
-        return stack.is(TALL_SKULL_TAG);
+        return stack.is(com.Polarice3.Goety.common.blocks.ModBlocks.TALL_SKULL_ITEM.get());
     }
 
     @Override

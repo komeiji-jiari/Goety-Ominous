@@ -267,11 +267,12 @@ public class ModEntityTypes {
                     .clientTrackingRange(10)
                     .build(MOD_ID + ":urbhadhach_servant"));
 
-    public static final RegistryObject<EntityType<Martyr>> MARTYR = ENTITY_TYPES.register("martyr",
-            () -> EntityType.Builder.of(Martyr::new, MobCategory.MONSTER)
-                    .sized(0.6F, 1.95F)
-                    .clientTrackingRange(8)
-                    .build(MOD_ID + ":martyr"));
+    // No longer used:Martyr
+    // public static final RegistryObject<EntityType<Martyr>> MARTYR = ENTITY_TYPES.register("martyr",
+    //         () -> EntityType.Builder.of(Martyr::new, MobCategory.MONSTER)
+    //                 .sized(0.6F, 1.95F)
+    //                 .clientTrackingRange(8)
+    //                 .build(MOD_ID + ":martyr"));
 
     public static final RegistryObject<EntityType<Thug>> THUG = ENTITY_TYPES.register("thug",
             () -> EntityType.Builder.of(Thug::new, MobCategory.MONSTER)
@@ -307,6 +308,14 @@ public class ModEntityTypes {
                     .fireImmune()
                     .clientTrackingRange(8)
                     .build(MOD_ID + ":returned"));
+
+    public static final RegistryObject<EntityType<Agony>> AGONY = ENTITY_TYPES.register(
+            "agony",
+            () -> EntityType.Builder.of(Agony::new, MobCategory.MISC)
+                    .sized(0.6F, 1.95F)
+                    .fireImmune()
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":agony"));
 
     public static final RegistryObject<EntityType<BurningPotionEntity>> BURNING_POTION = ENTITY_TYPES.register("burning_potion",
             () -> EntityType.Builder.<BurningPotionEntity>of(BurningPotionEntity::new, MobCategory.MISC)

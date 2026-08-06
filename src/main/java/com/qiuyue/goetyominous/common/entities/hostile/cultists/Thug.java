@@ -13,10 +13,13 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
@@ -25,6 +28,7 @@ import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -36,10 +40,15 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
+import java.util.UUID;
 
 public class Thug extends AbstractGOCultist {
     private static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(Thug.class, EntityDataSerializers.BYTE);
     private int attackTick;
+    private static final UUID PATROL_SPEED_UUID = UUID.fromString("f2d2b8a6-1c3e-4b5a-8d7f-2c9a0e1b4d56");
+    private static final AttributeModifier PATROL_SPEED_MODIFIER = new AttributeModifier(
+            PATROL_SPEED_UUID, "Cultist patrol speed boost",
+            0.12, AttributeModifier.Operation.ADDITION);
 
     public Thug(EntityType<? extends AbstractGOCultist> type, Level level) {
         super(type, level);
@@ -78,6 +87,27 @@ public class Thug extends AbstractGOCultist {
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.attackTick = compound.getInt("AttackTick");
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (!this.level().isClientSide) {
+            this.updatePatrolSpeed();
+        }
+    }
+
+    private void updatePatrolSpeed() {
+        AttributeInstance speed = this.getAttribute(Attributes.MOVEMENT_SPEED);
+        if (speed == null) return;
+        boolean inPatrol = this.isPatrolling() && this.getTarget() == null;
+        if (inPatrol) {
+            if (!speed.hasModifier(PATROL_SPEED_MODIFIER)) {
+                speed.addPermanentModifier(PATROL_SPEED_MODIFIER);
+            }
+        } else {
+            speed.removeModifier(PATROL_SPEED_UUID);
+        }
     }
 
     private boolean getThugFlag(int mask) {

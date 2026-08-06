@@ -1,0 +1,24 @@
+{
+  "name": "邪能仪式",
+  "icon": "goety:witch_cauldron",
+  "advancement": "goetyominous:goetyominous/witch_lesson",
+  "secret": true,
+  "category": "goety:rituals",
+  "sortnum": 9,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "需求：$(li)祭坛位于沼泽生物群系 $(br)$(l)或是$()$() $(li)1 个女巫坩埚 $(li)1 个水晶球 $(li)6 个朽木书架"
+    },
+    {
+      "type": "patchouli:image",
+      "images": ["goetyominous:textures/gui/entries/fel_ritual.png"],
+      "border": true,
+      "text": "一个正确摆放仪式的例子"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "奶奶的邪能仪式是不是很简单！一个女巫的家里总会有这些东西的！哦对，小心别和奶奶的学徒一样掉进自己的锅里哈哈哈！"
+    }
+  ]
+}

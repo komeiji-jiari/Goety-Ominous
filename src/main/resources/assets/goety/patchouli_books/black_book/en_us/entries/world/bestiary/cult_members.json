@@ -1,5 +1,5 @@
 {
-  "name": "Nether Cult",
+  "name": "A Nether Cult",
   "icon": "goetyominous:burning_potion",
   "category": "goety:world/bestiary",
   "advancement": "goety:goety/kill_a_heretic",
@@ -30,8 +30,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "goetyominous:beldam",
-      "text": ""
+      "entity": "goetyominous:beldam"
     },
     {
       "type": "patchouli:text",
@@ -39,8 +38,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "goetyominous:thug",
-      "text": ""
+      "entity": "goetyominous:thug"
     },
     {
       "type": "patchouli:text",
@@ -52,7 +50,23 @@
     },
     {
       "type": "patchouli:text",
-      "text": "You once assumed these figures to be the local leaders of the cult—the Channelers rely on their brethren to defend them by channeling their power into a servant or another being. While channeling, they take less damage and siphon health from their host, but the host becomes stronger and faster through the Channeler's power. Additionally, they can also use fire blast traps to attack enemies."
+      "text": "You once assumed these figures to be the local leaders of the cult—the Channellers rely on their brethren to defend them by channeling their power into a servant or another being. While channeling, they take less damage and siphon health from their host, but the host becomes stronger and faster through the Channeller's power. Additionally, they can also use fire blast traps to attack enemies."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:returned"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "It is said that the most fanatical cultists would even offer themselves as sacrifices to the Nether. Though this may sound like foolishness, the cult's secret texts describe their journey to the Nether after being sacrificed. Some cultists with special power are able to call their spirits back. These searing souls can attack foes with a variety of Nether spells."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:agony"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Similar to the Returned, these lingering souls of cultists who favored close-quarters combat in life have been brought back by certain cultists wielding power from the Nether. It is said that their souls have been invaded and possessed by some unholy devils, granting these spirits formidable strength and endurance."
     }
   ]
 }

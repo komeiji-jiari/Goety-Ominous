@@ -30,8 +30,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "goetyominous:beldam",
-      "text": ""
+      "entity": "goetyominous:beldam"
     },
     {
       "type": "patchouli:text",
@@ -39,8 +38,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "goetyominous:thug",
-      "text": ""
+      "entity": "goetyominous:thug"
     },
     {
       "type": "patchouli:text",
@@ -53,6 +51,22 @@
     {
       "type": "patchouli:text",
       "text": "你曾以为这些人是该教团的当地领袖，引导者依靠同伴来保护自己，通过将自己的力量传导给仆从或其他人。传导力量时，他们受到更少的伤害，并从宿主身上汲取生命，但宿主会因引导者的力量变得更强更快。此外他们也能使用炎爆陷阱来攻击敌人。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:returned"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "据说，最狂热的教徒甚至会将自己作为祭品献给下界。虽然听起来这种行为很是愚昧，然而教团的秘语描述了他们在被献祭后前往下界的朝圣之旅，一些拥有特殊力量的教徒能够使他们的亡魂重现归来。这些烧灼的亡魂能够使用多种下界法术。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:agony"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "和归来者类似，这些生前更倾向于近距离战斗的邪教徒亡魂被拥有着特殊力量的教徒自下界带回再起。有说法认为苦痛的灵魂已经被来自下界的不洁恶魔侵袭占据，从而使得这些亡魂获得了惊人的力量和耐力。"
     }
   ]
 }

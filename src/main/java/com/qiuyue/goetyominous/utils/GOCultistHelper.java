@@ -11,6 +11,7 @@ import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerType;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.level.Level;
+
 public class GOCultistHelper {
 
     public static final String SECRET_CULTIST_TAG = "sis_secret_cultist";

@@ -105,6 +105,9 @@ public class ModModelLayers {
         event.registerLayerDefinition(ModEntityLayers.CHANNELLER_LAYER,
                 ChannellerModel::createBodyLayer);
 
+        event.registerLayerDefinition(ModEntityLayers.AGONY_LAYER,
+                AgonyModel::createBodyLayer);
+
         event.registerLayerDefinition(ModEntityLayers.FUNGUS_PACK_LAYER, FungusPackModel::createBodyLayer);
 
         event.registerLayerDefinition(ModEntityLayers.PITCHFORK_LAYER, PitchforkModel::createBodyLayer);
@@ -387,6 +390,8 @@ public class ModModelLayers {
         event.registerEntityRenderer(ModEntityTypes.THUG.get(), ThugRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.CHANNELLER.get(), ChannellerRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.AGONY.get(), AgonyRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.RETURNED.get(), ReturnedRenderer::new);
 

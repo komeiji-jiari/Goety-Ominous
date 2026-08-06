@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.common.entities.hostile.cultists;
 import com.Polarice3.Goety.client.particles.ModParticleTypes;
 import com.Polarice3.Goety.common.entities.ModEntityType;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
+import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.common.entities.util.FireBlastTrap;
 import com.Polarice3.Goety.common.entities.util.SummonCircle;
 import com.Polarice3.Goety.init.ModSounds;
@@ -201,7 +202,9 @@ public class Channeller extends AbstractGOCultist {
                     if (!this.level().isClientSide) {
                         this.getNavigation().stop();
                         this.noActionTime = 0;
-                        ally.setTarget(this.getTarget());
+                        if (this.getTarget() != null) {
+                            ally.setTarget(this.getTarget());
+                        }
                         ally.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 60, 1));
                         ally.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 60, 1));
                         ally.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 60, 1));
@@ -253,21 +256,27 @@ public class Channeller extends AbstractGOCultist {
         if (this.level().isClientSide) return;
         ServerLevel serverLevel = (ServerLevel) this.level();
 
-        Returned returned = ModEntityTypes.RETURNED.get().create(serverLevel);
-        if (returned != null) {
-            returned.setTrueOwner(this);
-            BlockPos summonPos = BlockFinder.SummonRadius(this.blockPosition(), returned, serverLevel);
-            returned.setPos(summonPos.getX() + 0.5D, summonPos.getY(), summonPos.getZ() + 0.5D);
-            MobUtil.moveDownToGround(returned);
+        Owned initial;
+        if (this.random.nextFloat() < 0.5F) {
+            initial = ModEntityTypes.AGONY.get().create(serverLevel);
+        } else {
+            initial = ModEntityTypes.RETURNED.get().create(serverLevel);
+        }
 
-            returned.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()),
+        if (initial != null) {
+            initial.setTrueOwner(this);
+            BlockPos summonPos = BlockFinder.SummonRadius(this.blockPosition(), initial, serverLevel);
+            initial.setPos(summonPos.getX() + 0.5D, summonPos.getY(), summonPos.getZ() + 0.5D);
+            MobUtil.moveDownToGround(initial);
+
+            initial.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()),
                     MobSpawnType.MOB_SUMMONED, null, null);
-            serverLevel.addFreshEntity(returned);
-            returned.setTarget(null);
-            this.setAlly(returned);
+            serverLevel.addFreshEntity(initial);
+            initial.setTarget(null);
+            this.setAlly(initial);
 
             SummonCircle circle = new SummonCircle(
-                    serverLevel, returned.position(), returned, true, true, this);
+                    serverLevel, initial.position(), initial, true, true, this);
             circle.setLifeSpan(20);
             serverLevel.addFreshEntity(circle);
 
@@ -278,7 +287,7 @@ public class Channeller extends AbstractGOCultist {
                 double d2 = 0.01D + random.nextDouble() * 0.5D;
                 double d3 = Mth.sin(f1) * f2;
                 serverLevel.sendParticles(ParticleTypes.SMOKE,
-                        returned.getX() + d1 * 0.1D, returned.getY() + 0.3D, returned.getZ() + d3 * 0.1D,
+                        initial.getX() + d1 * 0.1D, initial.getY() + 0.3D, initial.getZ() + d3 * 0.1D,
                         0, d1, d2, d3, 0.25F);
             }
         }

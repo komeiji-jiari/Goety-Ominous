@@ -59,7 +59,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "When a Piglin has too much food in its inventory, it will toss some to other Piglins that have less. They generally accept carrots, golden carrots, porkchops, and cooked porkchops."
+      "text": "When a Piglin has too much food in its inventory, it will toss some to other Piglins that have less. They generally accept carrots, golden carrots, porkchops, cooked porkchops, potatoes, baked potatoes and beetroots."
     },
     {
       "type": "patchouli:spotlight",

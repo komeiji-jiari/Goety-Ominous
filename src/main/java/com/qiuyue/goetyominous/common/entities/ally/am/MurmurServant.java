@@ -21,15 +21,12 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -38,6 +35,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
@@ -203,7 +201,22 @@ public class MurmurServant extends Summoned implements ISemiAquatic {
     private LivingEntity createHead() {
         MurmurServantHead head = new MurmurServantHead(this);
         this.level().addFreshEntity(head);
+        for (MobEffectInstance effect : this.getActiveEffects()) {
+            head.addEffect(new MobEffectInstance(effect), this);
+        }
         return head;
+    }
+
+    @Override
+    public boolean addEffect(MobEffectInstance effectInstance, @Nullable Entity source) {
+        boolean result = super.addEffect(effectInstance, source);
+        if (result && !this.level().isClientSide) {
+            Entity head = this.getHead();
+            if (head instanceof LivingEntity livingHead) {
+                livingHead.addEffect(new MobEffectInstance(effectInstance), source);
+            }
+        }
+        return result;
     }
 
     @Override

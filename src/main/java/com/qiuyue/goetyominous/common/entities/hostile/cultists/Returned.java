@@ -1,37 +1,44 @@
 package com.qiuyue.goetyominous.common.entities.hostile.cultists;
 
+import com.Polarice3.Goety.client.particles.ModParticleTypes;
 import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.common.entities.ModEntityType;
 import com.Polarice3.Goety.common.entities.ai.AvoidTargetGoal;
 import com.Polarice3.Goety.common.entities.ai.SurroundGoal;
 import com.Polarice3.Goety.common.entities.ally.Hellhound;
 import com.Polarice3.Goety.common.entities.ally.HoglinServant;
+import com.Polarice3.Goety.common.entities.neutral.Owned;
+import com.Polarice3.Goety.common.entities.projectiles.Lavaball;
+import com.Polarice3.Goety.common.items.ModItems;
 import com.Polarice3.Goety.common.magic.Spell;
 import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.common.magic.SummonSpell;
 import com.Polarice3.Goety.common.magic.spells.IronHideSpell;
 import com.Polarice3.Goety.common.magic.spells.SoulHealSpell;
-import com.Polarice3.Goety.common.magic.spells.nether.FireBreathSpell;
+import com.Polarice3.Goety.common.magic.spells.nether.LavaballSpell;
 import com.Polarice3.Goety.common.magic.spells.nether.MagmaSpell;
 import com.Polarice3.Goety.common.magic.spells.wild.HuntingSpell;
 import com.Polarice3.Goety.common.magic.spells.wild.MaulingSpell;
+import com.Polarice3.Goety.init.ModMobType;
 import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.BlockFinder;
 import com.Polarice3.Goety.utils.CuriosFinder;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
+import com.qiuyue.goetyominous.common.entities.hostile.Scorch;
 import com.qiuyue.goetyominous.common.magic.spells.ScorchSpell;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -47,16 +54,21 @@ public class Returned extends AbstractReturned {
     protected int[] spellWeights;
     public int coolDown;
     private SorcererSpell currentSpell;
+    private int lavaBombShots;
+    private int lavaBombTick;
 
     public Returned(EntityType<? extends Returned> type, Level worldIn) {
         super(type, worldIn);
         this.spellCoolDown = new int[SorcererSpell.values().length + 1];
         this.spellWeights = new int[SorcererSpell.values().length + 1];
         this.coolDown = 0;
-        this.currentSpell = SorcererSpell.FIRE_BREATH;
+        this.currentSpell = SorcererSpell.IRON_HIDE;
         for (int i = 0; i < this.spellWeights.length; ++i) {
             this.spellWeights[i] = 20;
         }
+        this.spellWeights[SorcererSpell.LAVA_BOMB.id] = 40;
+        this.spellWeights[SorcererSpell.MAULING.id] = 10;
+        this.spellWeights[SorcererSpell.MAGMA.id] = 10;
         this.xpReward = 10;
     }
 
@@ -66,9 +78,9 @@ public class Returned extends AbstractReturned {
         this.goalSelector.addGoal(1, new BoundCastingSpellGoal());
         this.goalSelector.addGoal(2, new SpellGoal());
         this.goalSelector.addGoal(3, new AvoidTargetGoal(this, LivingEntity.class, 8.0F, 0.6D, 1.0D));
-        this.goalSelector.addGoal(4, new SurroundGoal<>(this, 1.0D, 8.0F));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false,
                 target -> target instanceof Player player && !CuriosFinder.isWitchFriendly(player)));
+        this.goalSelector.addGoal(4, new SurroundGoal<>(this, 1.0D, 8.0F));
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
@@ -91,6 +103,47 @@ public class Returned extends AbstractReturned {
                 --this.spellCoolDown[i];
             }
         }
+
+        if (this.lavaBombShots > 0) {
+            if (--this.lavaBombTick <= 0) {
+                this.lavaBombTick = 20;
+                this.fireLavaBomb();
+                this.lavaBombShots--;
+            }
+        }
+    }
+
+    @Override
+    public boolean isAlliedTo(net.minecraft.world.entity.Entity entity) {
+        if (entity instanceof net.minecraft.world.entity.raid.Raider
+                && !(this.getTrueOwner() instanceof Player)) {
+            return true;
+        }
+        return super.isAlliedTo(entity);
+    }
+
+    public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
+        if (!this.level().isClientSide) {
+            ItemStack itemstack = pPlayer.getItemInHand(pHand);
+            if (this.getTrueOwner() != null && pPlayer == this.getTrueOwner() && itemstack.is(ModItems.ECTOPLASM.get()) && this.getHealth() < this.getMaxHealth()) {
+                if (!pPlayer.getAbilities().instabuild) {
+                    itemstack.shrink(1);
+                }
+                this.heal(2.0F);
+                Level var5 = this.level();
+                if (var5 instanceof ServerLevel serverLevel) {
+                    for (int i = 0; i < 7; ++i) {
+                        double d0 = this.random.nextGaussian() * 0.02;
+                        double d1 = this.random.nextGaussian() * 0.02;
+                        double d2 = this.random.nextGaussian() * 0.02;
+                        serverLevel.sendParticles(ModParticleTypes.HEAL_EFFECT.get(), this.getRandomX(1.0), this.getRandomY() + 0.5, this.getRandomZ(1.0), 0, d0, d1, d2, 0.5);
+                    }
+                }
+                pPlayer.swing(pHand);
+                return InteractionResult.SUCCESS;
+            }
+        }
+        return super.mobInteract(pPlayer, pHand);
     }
 
     public void setIsCastingSpell(SorcererSpell spell) {
@@ -104,6 +157,10 @@ public class Returned extends AbstractReturned {
 
     protected void resetSpellWeight(SorcererSpell spell) {
         this.spellWeights[spell.id] = 20;
+    }
+
+    public MobType getMobType() {
+        return ModMobType.NETHER;
     }
 
     public float getVoicePitch() {
@@ -139,13 +196,13 @@ public class Returned extends AbstractReturned {
     }
 
     public enum SorcererSpell {
-        FIRE_BREATH(1, new FireBreathSpell()),
-        IRON_HIDE(2, new IronHideSpell()),
-        HUNTING(3, new HuntingSpell()),
-        HEAL(4, new SoulHealSpell()),
-        MAULING(5, new MaulingSpell()),
-        SCORCH(6, new ScorchSpell()),
-        MAGMA(7, new MagmaSpell());
+        IRON_HIDE(1, new IronHideSpell()),
+        HUNTING(2, new HuntingSpell()),
+        HEAL(3, new SoulHealSpell()),
+        MAULING(4, new MaulingSpell()),
+        SCORCH(5, new ScorchSpell()),
+        MAGMA(6, new MagmaSpell()),
+        LAVA_BOMB(7, new LavaballSpell());
 
         final int id;
         final Spell spell;
@@ -158,6 +215,18 @@ public class Returned extends AbstractReturned {
         public Spell getSpell() {
             return this.spell;
         }
+    }
+
+    private int countOwnedMobs(Class<? extends Mob> entityClass) {
+        List<? extends Mob> list = this.level().getEntitiesOfClass(entityClass,
+                this.getBoundingBox().inflate(64.0D));
+        int count = 0;
+        for (Mob mob : list) {
+            if (mob instanceof Owned owned && owned.getTrueOwner() == this) {
+                count++;
+            }
+        }
+        return count;
     }
 
     private void summonHellhound(int duration) {
@@ -182,6 +251,7 @@ public class Returned extends AbstractReturned {
         if (!(this.level() instanceof ServerLevel serverLevel)) return;
         HoglinServant hoglin = new HoglinServant(ModEntityType.HOGLIN_SERVANT.get(), serverLevel);
         hoglin.setTrueOwner(this);
+        hoglin.setImmuneToZombification(true);
         BlockPos pos = BlockFinder.SummonRadius(this.blockPosition(), hoglin, serverLevel);
         if (pos == null) return;
         hoglin.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, this.getYHeadRot(), 0.0F);
@@ -196,13 +266,91 @@ public class Returned extends AbstractReturned {
         serverLevel.addFreshEntity(hoglin);
     }
 
-    class SpellGoal extends BoundUseSpellGoal {
+    private void fireLavaBomb() {
+        if (!(this.level() instanceof ServerLevel serverLevel)) return;
+        LivingEntity target = this.getTarget();
+        if (target == null) return;
+        double dx = target.getX() - this.getX();
+        double dy = target.getY(0.5D) - this.getY(0.5D);
+        double dz = target.getZ() - this.getZ();
+        Lavaball fireball = new Lavaball(serverLevel, this, dx, dy, dz);
+        fireball.setPos(fireball.getX(), this.getY(0.5D), fireball.getZ());
+        fireball.setDangerous(false);
+        serverLevel.addFreshEntity(fireball);
+        this.playSound(SoundEvents.BLAZE_SHOOT, 1.0F, 1.0F);
+    }
+
+    protected abstract class ReturnedUseSpellGoal extends Goal {
+        protected int attackWarmupDelay;
+
+        protected ReturnedUseSpellGoal() {
+        }
+
+        @Override
+        public boolean canUse() {
+            LivingEntity target = Returned.this.getTarget();
+            if (target == null || !target.isAlive()) return false;
+            if (Returned.this.isCastingSpell()) return false;
+            if (!Returned.this.hasLineOfSight(target)) return false;
+            return Returned.this.coolDown <= 0;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            LivingEntity target = Returned.this.getTarget();
+            return target != null && target.isAlive() && this.attackWarmupDelay > 0;
+        }
+
+        @Override
+        public void start() {
+            this.attackWarmupDelay = this.adjustedTickDelay(this.getCastWarmupTime());
+            Returned.this.spellCastingTickCount = this.getCastingTime();
+            Returned.this.spellCoolDown[this.getSpell().id] = this.getCastingInterval();
+            SoundEvent soundevent = this.getSpellPrepareSound();
+            if (soundevent != null) {
+                Returned.this.playSound(soundevent, 1.0F, 1.0F);
+            }
+            Returned.this.setIsCastingSpell(this.getSpell());
+        }
+
+        @Override
+        public void tick() {
+            --this.attackWarmupDelay;
+            if (this.attackWarmupDelay == 0) {
+                this.performSpellCasting();
+                if (Returned.this.getCastingSoundEvent() != null) {
+                    Returned.this.playSound(Returned.this.getCastingSoundEvent(), 1.0F, 1.0F);
+                }
+            }
+        }
+
+        @Override
+        public void stop() {
+            Returned.this.setIsCastingSpell(BoundSpell.NONE);
+        }
+
+        protected abstract void performSpellCasting();
+
+        protected int getCastWarmupTime() {
+            return 20;
+        }
+
+        protected abstract int getCastingTime();
+
+        protected abstract int getCastingInterval();
+
+        @Nullable
+        protected abstract SoundEvent getSpellPrepareSound();
+
+        protected abstract SorcererSpell getSpell();
+    }
+
+    class SpellGoal extends ReturnedUseSpellGoal {
         public SorcererSpell spell;
 
         @Override
         public boolean canUse() {
             if (!super.canUse()) return false;
-            if (Returned.this.coolDown > 0) return false;
 
             List<SorcererSpell> available = new ArrayList<>();
             List<Integer> weights = new ArrayList<>();
@@ -210,10 +358,18 @@ public class Returned extends AbstractReturned {
 
             for (SorcererSpell s : SorcererSpell.values()) {
                 Spell spell = s.getSpell();
-                if (!spell.conditionsMet(Returned.this.level(), Returned.this)) continue;
+                if (s != SorcererSpell.LAVA_BOMB
+                        && !spell.conditionsMet(Returned.this.level(), Returned.this)) continue;
                 if (Returned.this.spellCoolDown[s.id] > 0) continue;
                 if (spell instanceof SummonSpell
                         && Returned.this.hasEffect(GoetyEffects.SUMMON_DOWN.get())) continue;
+
+                if (s == SorcererSpell.SCORCH
+                        && Returned.this.countOwnedMobs(Scorch.class) >= 5) continue;
+                if (s == SorcererSpell.MAULING
+                        && Returned.this.countOwnedMobs(HoglinServant.class) >= 1) continue;
+                if (s == SorcererSpell.HUNTING
+                        && Returned.this.countOwnedMobs(Hellhound.class) >= 4) continue;
 
                 available.add(s);
                 int weight = Returned.this.spellWeights[s.id];
@@ -247,13 +403,31 @@ public class Returned extends AbstractReturned {
             Returned.this.level().broadcastEntityEvent(Returned.this, (byte) 7);
 
             switch (this.spell) {
-                case HUNTING -> summonHellhound(Math.max(1, spellStat.getDuration()));
-                case MAULING -> summonHoglinServant(Math.max(1, spellStat.getDuration()));
+                case HUNTING -> {
+                    if (Returned.this.countOwnedMobs(Hellhound.class) < 4) {
+                        summonHellhound(Math.max(1, spellStat.getDuration()));
+                    }
+                }
+                case MAULING -> {
+                    if (Returned.this.countOwnedMobs(HoglinServant.class) < 1) {
+                        summonHoglinServant(Math.max(1, spellStat.getDuration()));
+                    }
+                }
+                case SCORCH -> {
+                    if (Returned.this.countOwnedMobs(Scorch.class) < 5) {
+                        spell.mobSpellResult(Returned.this, ItemStack.EMPTY, spellStat);
+                    }
+                }
+                case LAVA_BOMB -> {
+                    Returned.this.lavaBombShots = 3;
+                    Returned.this.lavaBombTick = 20;
+                    Returned.this.fireLavaBomb();
+                    Returned.this.lavaBombShots--;
+                }
                 default -> spell.mobSpellResult(Returned.this, ItemStack.EMPTY, spellStat);
             }
 
             Returned.this.resetSpellWeight(this.spell);
-            Returned.this.spellCoolDown[this.spell.id] = this.getCastingInterval();
         }
 
         @Override
@@ -290,8 +464,8 @@ public class Returned extends AbstractReturned {
         }
 
         @Override
-        protected BoundSpell getSpell() {
-            return BoundSpell.byId(this.spell.id);
+        protected SorcererSpell getSpell() {
+            return this.spell;
         }
     }
 }

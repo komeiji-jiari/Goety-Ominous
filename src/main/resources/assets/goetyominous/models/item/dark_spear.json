@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "goetyominous:item/dark_spear"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "spears:in_gui": 0
+      },
+      "model": "goetyominous:item/dark_spear_in_hand"
+    }
+  ]
+}

@@ -156,6 +156,9 @@ public class ModEntityLayers {
     public static final ModelLayerLocation ZEALOT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "zealot"), "main");
 
+    public static final ModelLayerLocation AGONY_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "agony"), "main");
+
     public static final ModelLayerLocation URBHADHACH_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "urbhadhach"), "main");
 

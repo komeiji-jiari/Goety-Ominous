@@ -1,0 +1,8 @@
+{
+  "name": "邪能",
+  "advancement": "goetyominous:goetyominous/witch_lesson",
+  "secret": true,
+  "description": "哈哈哈！欢迎你，虫子！如果你有礼貌的话，可以叫我维德尼娜奶奶。奶奶和奶奶的学徒会负责教会你真正的邪能艺术哈哈哈！哦你肯定想问什么是邪能，闭嘴然后专心听讲！",
+  "icon": "goetyominous:braineater_focus",
+  "parent": "goety:focuses"
+}

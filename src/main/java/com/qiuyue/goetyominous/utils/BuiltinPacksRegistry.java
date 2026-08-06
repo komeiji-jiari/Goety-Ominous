@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.utils;
 
 import com.qiuyue.goetyominous.compat.mod.*;
+import com.qiuyue.goetyominous.compat.spear.SpearBackportCompat;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.PathPackResources;
@@ -17,6 +18,27 @@ public class BuiltinPacksRegistry {
         var modFileInfo = ModList.get().getModFileById("goetyominous");
         if (modFileInfo == null) return;
         var modFile = modFileInfo.getFile();
+
+        // --- 客户端资源包（SPEAR BACKPORT 联动内容）---
+        if (event.getPackType() == PackType.CLIENT_RESOURCES && SpearBackportCompat.isSpearBackportLoaded()) {
+            Path packPath = modFile.findResource("resourcepacks/spear_compat");
+            if (packPath != null) {
+                event.addRepositorySource(consumer -> {
+                    Pack pack = Pack.readMetaAndCreate(
+                            "goetyominous/spear_compat",
+                            Component.literal("SPEAR Compatibility Pack"),
+                            true,
+                            id -> new PathPackResources(id, packPath, true),
+                            PackType.CLIENT_RESOURCES,
+                            Pack.Position.TOP,
+                            PackSource.BUILT_IN
+                    );
+                    if (pack != null) {
+                        consumer.accept(pack);
+                    }
+                });
+            }
+        }
 
         // --- 客户端资源包（SAR 联动内容）---
         if (event.getPackType() == PackType.CLIENT_RESOURCES && SavageRavageCompat.isSavageRavageLoaded()) {

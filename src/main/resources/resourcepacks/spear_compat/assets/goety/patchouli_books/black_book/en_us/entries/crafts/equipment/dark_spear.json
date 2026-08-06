@@ -1,0 +1,22 @@
+{
+  "name": "Dark Spear",
+  "icon": "goetyominous:dark_spear",
+  "category": "goety:crafts/equipment",
+  "advancement": "goety:goety/craft_dark_ingot",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Beyond common tools and armor, you can also forge a sturdy spear from Dark Metal. This spear combines the functionality of both a spear and Dark Metal tools."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goetyominous:dark_spear",
+      "text": "Black High-End Transport"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Can be repaired by absorbing the wielder's Soul Energy or by using Dark Metal Ingots on an Anvil."
+    }
+  ]
+}

@@ -77,12 +77,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Turtle;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.TieredItem;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
@@ -371,6 +366,7 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
                     itemstack.is(ItemTags.TOOLS) ||
                     item instanceof PhilosophersMaceItem ||
                     item instanceof TieredItem ||
+                    item instanceof ShieldItem ||
                     isCataclysmWeapon(item))
             {
                 if (pPlayer.isShiftKeyDown()) {
@@ -409,6 +405,7 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
                         itemstack.is(ItemTags.TOOLS) ||
                         item instanceof PhilosophersMaceItem ||
                         item instanceof TieredItem ||
+                        item instanceof ShieldItem ||
                         item instanceof com.github.L_Ender.cataclysm.items.Cataclysm_Weapon_Item;
             } else if (item instanceof ArmorItem) {
                 canEquip = true;

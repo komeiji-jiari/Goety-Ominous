@@ -1,0 +1,21 @@
+{
+  "name": "女巫弓",
+  "icon": "goetyominous:witch_bow",
+  "advancement": "goetyominous:goetyominous/witch_lesson",
+  "secret": true,
+  "category": "goety:crafts/equipment",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你不会觉得女巫就不能用除了药水以外的东西把你收拾一顿了吧？哈哈哈！奶奶可以用奶奶的扫帚兼魔杖打扫你的脑袋！还可以用一把弓射穿你的心脏！想要一把吗？很简单！奶奶教你做！"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:witch_bow"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "这把弓可不是用来发射你那些没用的箭的，而是发射药水箭！而且还能不消耗！尽管奶奶必须警告你，你必须在弓上附魔无限才能不浪费你的宝贵药水箭！"
+    }
+  ]
+}

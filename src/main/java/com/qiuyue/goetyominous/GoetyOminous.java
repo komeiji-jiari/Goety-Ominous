@@ -5,15 +5,16 @@ import com.Polarice3.Goety.common.entities.neutral.ZPiglinServant;
 import com.qiuyue.goetyominous.common.entities.ally.spider.CrimsonSpiderServant;
 import com.qiuyue.goetyominous.common.entities.hostile.Scorch;
 import com.qiuyue.goetyominous.common.entities.hostile.cultists.Disciple;
-import com.qiuyue.goetyominous.common.entities.hostile.cultists.Martyr;
 import com.qiuyue.goetyominous.common.entities.hostile.UrbhadhachEntity;
 import com.qiuyue.goetyominous.common.entities.hostile.cultists.*;
 import com.qiuyue.goetyominous.common.init.*;
 import com.qiuyue.goetyominous.common.items.CogCrossbowItem;
 import com.qiuyue.goetyominous.common.network.ModNetwork;
 import com.qiuyue.goetyominous.common.research.ResearchList;
+import com.qiuyue.goetyominous.common.ritual.FelRitualType;
 import com.qiuyue.goetyominous.common.world.ModMobSpawnBiomeModifier;
 import com.qiuyue.goetyominous.compat.mod.*;
+import com.qiuyue.goetyominous.compat.spear.SpearBackportCompat;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.config.SpellConfig;
 import com.qiuyue.goetyominous.common.entities.ally.illager.*;
@@ -71,6 +72,7 @@ public class GoetyOminous {
      */
     public static final String MOD_ID = "goetyominous";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+    public static com.Polarice3.Goety.api.magic.SpellType FEL;
 
     /**
      * 模组构造函数
@@ -96,12 +98,18 @@ public class GoetyOminous {
         ModProcessorTypes.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModCreativeTab.CREATIVE_MODE_TABS.register(modEventBus);
+        com.Polarice3.Goety.api.ritual.RitualType.addRitualType("fel",
+                new FelRitualType("fel"));
         MinecraftForge.EVENT_BUS.addListener((LivingAttackEvent event) -> {
             if (event.getSource().getDirectEntity() instanceof AbstractArrow arrow
                     && arrow.getPersistentData().getBoolean("goetyominous:no_invul")) {
                 event.getEntity().invulnerableTime = 0;
             }
         });
+
+        if (SpearBackportCompat.isSpearBackportLoaded()) {
+            com.qiuyue.goetyominous.compat.spear.SpearBackportCompat.init(modEventBus);
+        }
 
         if (SavageRavageCompat.isSavageRavageLoaded()) {
             com.qiuyue.goetyominous.compat.sar.SarCompatManager.init(modEventBus);
@@ -147,6 +155,8 @@ public class GoetyOminous {
                 "goetyominous/goetyominous-weapons.toml");
         WeaponConfig.loadConfig(WeaponConfig.SPEC,
                 FMLPaths.CONFIGDIR.get().resolve("goetyominous/goetyominous-weapons.toml").toString());
+
+        FEL = com.Polarice3.Goety.api.magic.SpellType.create("FEL", "fel");
     }
 
     /**
@@ -201,11 +211,12 @@ public class GoetyOminous {
         event.put(ModEntityTypes.BELDAM.get(), Beldam.setCustomAttributes().build());
         event.put(ModEntityTypes.FANATIC.get(), Fanatic.setCustomAttributes().build());
         event.put(ModEntityTypes.ZEALOT.get(), Zealot.setCustomAttributes().build());
-        event.put(ModEntityTypes.MARTYR.get(), Martyr.setCustomAttributes().build());
+        // event.put(ModEntityTypes.MARTYR.get(), Martyr.setCustomAttributes().build());
         event.put(ModEntityTypes.THUG.get(), Thug.setCustomAttributes().build());
         event.put(ModEntityTypes.CHANNELLER.get(), Channeller.setCustomAttributes().build());
         event.put(ModEntityTypes.SCORCH.get(), Scorch.setCustomAttributes().build());
         event.put(ModEntityTypes.RETURNED.get(), Returned.setCustomAttributes().build());
+        event.put(ModEntityTypes.AGONY.get(), Agony.setCustomAttributes().build());
         event.put(ModEntityTypes.DISCIPLE_SERVANT.get(), DiscipleServant.setCustomAttributes().build());
         event.put(ModEntityTypes.STORM_NECROMANCER_SERVANT.get(), AbstractStormNecromancer.setCustomAttributes().build());
         event.put(ModEntityTypes.STORM_NECROMANCER.get(), AbstractStormNecromancer.setCustomAttributes().build());
@@ -294,6 +305,15 @@ public class GoetyOminous {
      */
     public void onClientSetup(final FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
+            ItemProperties.register(ModItems.WITCH_BOW.get(), new ResourceLocation("pull"),
+                    (stack, level, entity, seed) -> {
+                        if (entity == null || entity.getUseItem() != stack) return 0.0F;
+                        return (float) (stack.getUseDuration() - entity.getUseItemRemainingTicks()) / 20.0F;
+                    });
+            ItemProperties.register(ModItems.WITCH_BOW.get(), new ResourceLocation("pulling"),
+                    (stack, level, entity, seed) ->
+                            entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
+
             ItemProperties.register(ModItems.COG_CROSSBOW.get(), new ResourceLocation("pull"),
                     (stack, level, entity, seed) -> {
                         if (entity == null || !entity.isUsingItem() || entity.getUseItem() != stack) return 0.0F;

@@ -1,11 +1,13 @@
 package com.qiuyue.goetyominous.common.events;
 
 import com.Polarice3.Goety.common.entities.ally.BlackWolf;
+import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.ally.undead.skeleton.SkeletonWolf;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.common.items.ModItems;
+import com.qiuyue.goetyominous.utils.GoetyOminousWolfArmorUtil;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -13,6 +15,7 @@ import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
@@ -20,6 +23,14 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID)
 public class WolfArmorEquipHandler {
+
+    @SubscribeEvent
+    public static void onEntityJoin(EntityJoinLevelEvent event) {
+        if (event.getEntity() instanceof Summoned summoned
+                && (summoned instanceof BlackWolf || summoned instanceof SkeletonWolf)) {
+            GoetyOminousWolfArmorUtil.equipRingGrantedArmor(summoned);
+        }
+    }
 
     @SubscribeEvent
     public static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
@@ -61,7 +72,8 @@ public class WolfArmorEquipHandler {
         }
 
         if (held.is(Items.SHEARS)
-                && armor.is(ModItems.CURSED_METAL_WOLF_ARMOR.get())) {
+                && armor.is(ModItems.CURSED_METAL_WOLF_ARMOR.get())
+                && !armor.getOrCreateTag().getBoolean(GoetyOminousWolfArmorUtil.SUMMONED_ARMOR_TAG)) {
             held.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(event.getHand()));
             target.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
             target.spawnAtLocation(armor);

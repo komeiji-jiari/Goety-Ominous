@@ -3,8 +3,12 @@ package com.qiuyue.goetyominous.common.events;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.hostile.cultists.AbstractGOCultist;
 import com.qiuyue.goetyominous.common.entities.hostile.cultists.Beldam;
+import com.qiuyue.goetyominous.common.world.GOCultistPatrolSpawner;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.utils.GOCultistHelper;
+import net.minecraftforge.event.TickEvent;
+import java.util.HashMap;
+import java.util.Map;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,6 +22,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.MobSpawnEvent;
+import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -25,6 +30,34 @@ import java.util.List;
 
 @Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class GOCultistEvents {
+
+    private static final Map<ServerLevel, GOCultistPatrolSpawner> CULTIST_PATROL_SPAWNERS = new HashMap<>();
+
+    @SubscribeEvent
+    public static void onLevelLoad(LevelEvent.Load event) {
+        if (!event.getLevel().isClientSide() && event.getLevel() instanceof ServerLevel serverLevel) {
+            CULTIST_PATROL_SPAWNERS.put(serverLevel, new GOCultistPatrolSpawner());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onLevelUnload(LevelEvent.Unload event) {
+        if (!event.getLevel().isClientSide() && event.getLevel() instanceof ServerLevel serverLevel) {
+            CULTIST_PATROL_SPAWNERS.remove(serverLevel);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onLevelTick(TickEvent.LevelTickEvent event) {
+        if (event.phase == TickEvent.Phase.END
+                && !event.level.isClientSide
+                && event.level instanceof ServerLevel serverLevel) {
+            GOCultistPatrolSpawner spawner = CULTIST_PATROL_SPAWNERS.get(serverLevel);
+            if (spawner != null) {
+                spawner.tick(serverLevel);
+            }
+        }
+    }
 
     @SubscribeEvent
     public static void onVillagerSpawn(MobSpawnEvent.FinalizeSpawn event) {

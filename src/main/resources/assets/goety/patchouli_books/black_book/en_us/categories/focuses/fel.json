@@ -1,0 +1,8 @@
+{
+  "name": "Fel",
+  "advancement": "goetyominous:goetyominous/witch_lesson",
+  "secret": true,
+  "description": "HAHAHA! Welcome, little worm! If you're polite, you may call me Granny Vidomina. Granny and her apprentice will teach you the true art of Fel, HAHAHA! Oh, I bet you're wondering what Fel is—shut up and pay attention!",
+  "icon": "goetyominous:braineater_focus",
+  "parent": "goety:focuses"
+}

@@ -7,9 +7,11 @@ import com.qiuyue.goetyominous.common.items.am.AmItems;
 import com.qiuyue.goetyominous.common.items.lm.LmItems;
 import com.qiuyue.goetyominous.common.items.mm.MmItems;
 import com.qiuyue.goetyominous.common.items.sar.SarItems;
+import com.qiuyue.goetyominous.common.items.spear.SpearItems;
 import com.qiuyue.goetyominous.common.items.ua.UaItems;
 import com.qiuyue.goetyominous.compat.ias.IasItems;
 import com.qiuyue.goetyominous.compat.mod.*;
+import com.qiuyue.goetyominous.compat.spear.SpearBackportCompat;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
@@ -39,6 +41,10 @@ public class ModCreativeTab {
                         List<Item> otherItems = new ArrayList<>();
 
                         collectFrom(ModItems.ITEMS, spawnEggs, foci, weapons, otherItems);
+
+                        if (SpearBackportCompat.isSpearBackportLoaded()) {
+                            collectFrom(SpearItems.SPEAR_ITEMS, spawnEggs, foci, weapons, otherItems);
+                        }
 
                         if (IllageAndSpillageCompat.isIllageAndSpillageLoaded()) {
                             collectFrom(IasItems.IAS_ITEMS, spawnEggs, foci, weapons, otherItems);
@@ -99,6 +105,7 @@ public class ModCreativeTab {
         if (item instanceof com.qiuyue.goetyominous.common.items.CogCrossbowItem) return true;
         if (item instanceof com.qiuyue.goetyominous.common.items.PiglinPrideItem) return true;
         if (item instanceof com.qiuyue.goetyominous.common.items.PitchforkItem) return true;
+        if (item instanceof com.qiuyue.goetyominous.common.items.WitchBowItem) return true;
         return false;
     }
 }

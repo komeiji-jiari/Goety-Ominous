@@ -1,0 +1,24 @@
+{
+  "name": "Fel Ritual",
+  "icon": "goety:witch_cauldron",
+  "advancement": "goetyominous:goetyominous/witch_lesson",
+  "secret": true,
+  "category": "goety:rituals",
+  "sortnum": 9,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Requirements: $(li)Altar placed in a Swamp biome $(br)$(l)OR$()$() $(li)1 Witch Cauldron $(li)1 Crystal Ball $(li)6 Rotten Bookshelves"
+    },
+    {
+      "type": "patchouli:image",
+      "images": ["goetyominous:textures/gui/entries/fel_ritual.png"],
+      "border": true,
+      "text": "An example of a properly arranged ritual"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Granny's Fel Ritual is simple enough, isn't it! Every witch's home is bound to have these things! Oh, and be careful not to fall into your own cauldron like Granny's apprentice did, HAHAHA!"
+    }
+  ]
+}

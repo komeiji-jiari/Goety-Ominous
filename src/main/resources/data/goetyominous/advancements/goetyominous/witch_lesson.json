@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "goety:witch_hat_hedge"
+    },
+    "title": {
+      "translate": "advancements.goetyominous.witch_lesson.title"
+    },
+    "description": {
+      "translate": "advancements.goetyominous.witch_lesson.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "goety:goety/root",
+  "criteria": {
+    "traded": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    ["traded"]
+  ]
+}

@@ -193,6 +193,9 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> ReturnedArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> ReturnedFollowRange;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> AgonyHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> AgonyDamage;
+
     public static final ForgeConfigSpec.ConfigValue<Double> BeldamHealth;
 
     public static final ForgeConfigSpec.ConfigValue<Double> ZealotHealth;
@@ -241,6 +244,13 @@ public class AttributesConfig {
                 .defineInRange("returnedArmor", 2.0, 0.0, Double.MAX_VALUE);
         ReturnedFollowRange = BUILDER.comment("How much following/detection range Returned have, Default: 32.0")
                 .defineInRange("returnedFollowRange", 32.0, 1.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Agony");
+        AgonyHealth = BUILDER.comment("How much Max Health Agony have, Default: 50.0")
+                .defineInRange("agonyHealth", 50.0, 1.0, Double.MAX_VALUE);
+        AgonyDamage = BUILDER.comment("How much damage Agony deals, Default: 9.0")
+                .defineInRange("agonyDamage", 9.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.push("Beldam");

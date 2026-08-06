@@ -1,0 +1,22 @@
+{
+  "name": "噬脑聚晶",
+  "icon": "goetyominous:braineater_focus",
+  "advancement": "goetyominous:goetyominous/witch_lesson",
+  "secret": true,
+  "category": "goety:focuses/fel",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "那个，奶奶不在...总之先介绍一下！这个聚晶的功能是消耗你的经验值...啊？经验值是？那个，你应该知道的！我，我解释起来很麻烦...简单解释就是用你的经验值恢复你的灵魂能量！虽然味道不太好闻..."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:braineater_focus",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "哈哈哈！虽然那小家伙忘记了但奶奶对待学生可是很负责的！用邪能魔杖可以翻倍灵魂的获取！如果你给这个法术附魔了高速，那经验的转换效率会翻倍！"
+    }
+  ]
+}

@@ -15,6 +15,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.Witch;
 import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.raid.Raider;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -26,6 +27,8 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.raid.Raid;
+import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
 
@@ -91,6 +94,7 @@ public abstract class AbstractGOCultist extends Cultist {
                 int k = Mth.floor(this.getZ());
 
                 if (livingentity != null
+                        && source.getEntity() instanceof Player
                         && this.level().getDifficulty() == Difficulty.HARD
                         && this.random.nextFloat() < this.getReinforcementChance()
                         && this.level().getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
@@ -177,7 +181,17 @@ public abstract class AbstractGOCultist extends Cultist {
             this.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, Integer.MAX_VALUE, 0, false, false));
         }
 
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        SpawnGroupData data = super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        ItemStack head = this.getItemBySlot(EquipmentSlot.HEAD);
+        if (!head.isEmpty() && ItemStack.matches(head, Raid.getLeaderBannerInstance())) {
+            this.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
+        }
+        return data;
+    }
+
+    @Override
+    public boolean canBeLeader() {
+        return false;
     }
 
     @Override

@@ -1,0 +1,21 @@
+{
+  "name": "Witch Bow",
+  "icon": "goetyominous:witch_bow",
+  "advancement": "goetyominous:goetyominous/witch_lesson",
+  "secret": true,
+  "category": "goety:crafts/equipment",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You don't think a witch can't take you down with more than just potions, do you? HAHAHA! Granny can use her broom-cum-wand to sweep your head clean off! Or pierce your heart with a bow! Want one? Simple! Granny will teach you how to make it!"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:witch_bow"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "This bow isn't for firing those useless arrows of yours, it fires potion arrows! And it doesn't consume them! Though Granny must warn you, you'll need to enchant the bow with Infinity so you don't waste your precious potion arrows!"
+    }
+  ]
+}

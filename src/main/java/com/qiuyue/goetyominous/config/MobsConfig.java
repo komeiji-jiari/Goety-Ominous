@@ -19,6 +19,8 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> OvergrownColossusServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> HeresiarchServantLimit;
 
+    public static final ForgeConfigSpec.ConfigValue<Boolean> CultistPatrol;
+    public static final ForgeConfigSpec.ConfigValue<Integer> CultistPatrolInterval;
     public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachSpawnWeight;
     public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachSpawnMinCount;
     public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachSpawnMaxCount;
@@ -101,6 +103,14 @@ public class MobsConfig {
         ChannellerMaxStealHealth = BUILDER
                 .comment("Maximum health for mobs that Channeller can steal/control (Default: 40)")
                 .defineInRange("channellerMaxStealHealth", 40, 1, 1000);
+
+        CultistPatrol = BUILDER
+                .comment("Whether AbstractGOCultists can spawn in night patrols near players (Default: true)")
+                .define("cultistPatrol", true);
+
+        CultistPatrolInterval = BUILDER
+                .comment("Ticks between cultist patrol spawn attempts (Default: 18000)")
+                .defineInRange("cultistPatrolInterval", 18000, 1200, 72000);
 
         MonolithConversionEnabled = BUILDER
                 .comment("Whether Obsidian Monolith can convert nearby villagers/witches/wandering traders into cultists (Default: true)")
