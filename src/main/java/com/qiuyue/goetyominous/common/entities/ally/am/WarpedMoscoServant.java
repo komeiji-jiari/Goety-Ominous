@@ -1,7 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.am;
 
 import com.Polarice3.Goety.api.entities.ally.IServant;
-import com.Polarice3.Goety.client.particles.ModParticleTypes;
 import com.Polarice3.Goety.common.entities.ModEntityType;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.projectiles.FlyingItem;
@@ -174,7 +173,7 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
             FlyingItem flyingItem = new FlyingItem(ModEntityType.FLYING_ITEM.get(), this.level(), this.getX(), this.getY(), this.getZ());
             flyingItem.setOwner(this.getTrueOwner());
             flyingItem.setItem(itemStack);
-            flyingItem.setParticle(ModParticleTypes.TOTEM_EFFECT.get());
+            flyingItem.setParticle(ParticleTypes.WARPED_SPORE);
 
             flyingItem.setSecondsCool(ItemConfig.ReviveSecondsCool.get());
             this.level().addFreshEntity(flyingItem);

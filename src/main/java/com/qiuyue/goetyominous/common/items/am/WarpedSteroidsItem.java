@@ -73,12 +73,6 @@ public class WarpedSteroidsItem extends Item {
         }
         if (living instanceof ServerPlayer player) {
             CriteriaTriggers.CONSUME_ITEM.trigger(player, stack);
-            if (!player.getAbilities().instabuild) {
-                ItemStack bottle = new ItemStack(Items.GLASS_BOTTLE);
-                if (!player.getInventory().add(bottle)) {
-                    player.drop(bottle, false);
-                }
-            }
         }
         stack.shrink(1);
         return stack.isEmpty() ? new ItemStack(Items.GLASS_BOTTLE) : stack;

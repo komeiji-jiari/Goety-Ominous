@@ -589,6 +589,11 @@ public class CrimsonMosquitoServant extends Summoned {
         return false;
     }
 
+    @Override
+    public boolean canBeCommanded() {
+        return false;
+    }
+
     public MobType getMobType() {
         return MobType.ARTHROPOD;
     }

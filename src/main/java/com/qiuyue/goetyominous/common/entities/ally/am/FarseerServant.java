@@ -108,6 +108,11 @@ public class FarseerServant extends Summoned implements IAnimatedEntity {
     }
 
     @Override
+    public boolean canBeCommanded() {
+        return false;
+    }
+
+    @Override
     protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
         return dimensions.height * 0.7F;
     }

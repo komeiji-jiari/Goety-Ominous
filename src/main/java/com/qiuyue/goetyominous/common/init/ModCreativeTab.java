@@ -68,6 +68,7 @@ public class ModCreativeTab {
 
                         if (AlexMobsCompat.isAlexMobsLoaded()) {
                             collectFrom(AmItems.AM_ITEMS, spawnEggs, foci, weapons, otherItems);
+                            moveAfter(otherItems, AmItems.WARPED_STEROIDS.get(), ModItems.NETHER_WART_POTION.get());
                         }
 
                         spawnEggs.forEach(output::accept);
@@ -96,6 +97,18 @@ public class ModCreativeTab {
                 }
             }
         });
+    }
+
+    private static void moveAfter(List<Item> list, Item item, Item after) {
+        if (item == null || after == null) return;
+        if (list.remove(item)) {
+            int index = list.indexOf(after);
+            if (index >= 0) {
+                list.add(index + 1, item);
+            } else {
+                list.add(item);
+            }
+        }
     }
 
     private static boolean isWeapon(Item item) {
