@@ -22,6 +22,7 @@ import com.qiuyue.goetyominous.common.entities.ally.illager.train.GoetyOminousTy
 import com.qiuyue.goetyominous.common.entities.ally.mobs.*;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractStormNecromancer;
 import com.qiuyue.goetyominous.common.entities.hostile.SunkenNecromancer;
+import com.qiuyue.goetyominous.common.entities.hostile.illagers.ArchGeomancerEntity;
 import com.qiuyue.goetyominous.common.items.ModItems;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.compat.curios.CuriosIntegration;
@@ -217,6 +218,7 @@ public class GoetyOminous {
         event.put(ModEntityTypes.SCORCH.get(), Scorch.setCustomAttributes().build());
         event.put(ModEntityTypes.RETURNED.get(), Returned.setCustomAttributes().build());
         event.put(ModEntityTypes.AGONY.get(), Agony.setCustomAttributes().build());
+        event.put(ModEntityTypes.ARCH_GEOMANCER.get(), ArchGeomancerEntity.setCustomAttributes().build());
         event.put(ModEntityTypes.DISCIPLE_SERVANT.get(), DiscipleServant.setCustomAttributes().build());
         event.put(ModEntityTypes.STORM_NECROMANCER_SERVANT.get(), AbstractStormNecromancer.setCustomAttributes().build());
         event.put(ModEntityTypes.STORM_NECROMANCER.get(), AbstractStormNecromancer.setCustomAttributes().build());

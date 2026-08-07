@@ -167,6 +167,10 @@ public class ModItems {
             "sunken_necromancer_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntityTypes.SUNKEN_NECROMANCER, 0x1B4F72, 0x7D6608, egg()));
 
+    public static final RegistryObject<ForgeSpawnEggItem> ARCH_GEOMANCER_SPAWN_EGG = ITEMS.register(
+            "arch_geomancer_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.ARCH_GEOMANCER, 0x2F4F4F, 0xC9A227, egg()));
+
     public static final RegistryObject<ForgeSpawnEggItem> STORM_NECROMANCER_SPAWN_EGG = ITEMS.register(
             "storm_necromancer_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntityTypes.STORM_NECROMANCER, 0x2E4053, 0x85C1E9, egg()));

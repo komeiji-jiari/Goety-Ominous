@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.common.entities.ally.mobs;
 import com.Polarice3.Goety.client.particles.ModParticleTypes;
 import com.Polarice3.Goety.common.entities.ally.AnimalSummon;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
+import com.Polarice3.Goety.config.MobsConfig;
 import com.Polarice3.Goety.utils.ServerParticleUtil;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import net.minecraft.core.BlockPos;
@@ -24,6 +25,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
 import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
@@ -34,6 +36,7 @@ import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.navigation.AmphibiousPathNavigation;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
@@ -62,11 +65,12 @@ public class AxolotlServant extends AnimalSummon implements LerpingModel{
     private final Map<String, Vector3f> modelRotationValues = new HashMap<>();
     private int explosionCountdown = -1;
     private boolean shouldExplode = false;
+    private boolean isLandNavigator = true;
 
     public AxolotlServant(EntityType<? extends Owned> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-        this.moveControl = new AxolotlMoveControl(this);
+        this.moveControl = new AxolotlLandMoveControl(this);
         this.lookControl = new AxolotlLookControl(this);
         this.setMaxUpStep(1.0F);
     }
@@ -130,7 +134,28 @@ public class AxolotlServant extends AnimalSummon implements LerpingModel{
 
     @Override
     protected PathNavigation createNavigation(Level pLevel) {
-        return new AmphibiousPathNavigation(this, pLevel);
+        return this.createLandNavigation(pLevel);
+    }
+
+    private GroundPathNavigation createLandNavigation(Level pLevel) {
+        return new GroundPathNavigation(this, pLevel) {
+            @Override
+            public boolean isStableDestination(BlockPos pos) {
+                return !pLevel.getBlockState(pos.below()).isAir();
+            }
+        };
+    }
+
+    private void switchNavigator(boolean onLand) {
+        if (onLand) {
+            this.moveControl = new AxolotlLandMoveControl(this);
+            this.navigation = this.createLandNavigation(this.level());
+            this.isLandNavigator = true;
+        } else {
+            this.moveControl = new AxolotlWaterMoveControl(this);
+            this.navigation = new AmphibiousPathNavigation(this, this.level());
+            this.isLandNavigator = false;
+        }
     }
 
     @Override
@@ -292,9 +317,13 @@ public class AxolotlServant extends AnimalSummon implements LerpingModel{
                     this.setPlayingDead(false);
                 }
             }
-
-            if (!this.isInWater()) {
-                this.setYRot(this.yRotO);
+        }
+        if (!this.level().isClientSide) {
+            boolean inWater = this.isInWater();
+            if (inWater && this.isLandNavigator) {
+                this.switchNavigator(false);
+            } else if (!inWater && !this.isLandNavigator) {
+                this.switchNavigator(true);
             }
         }
         super.aiStep();
@@ -408,17 +437,34 @@ public class AxolotlServant extends AnimalSummon implements LerpingModel{
         return !this.isPlayingDead() && super.canBeSeenAsEnemy();
     }
 
-    static class AxolotlMoveControl extends SmoothSwimmingMoveControl {
+    static class AxolotlLandMoveControl extends MoveControl {
         private final AxolotlServant axolotl;
 
-        public AxolotlMoveControl(AxolotlServant pAxolotl) {
+        public AxolotlLandMoveControl(AxolotlServant pAxolotl) {
+            super(pAxolotl);
+            this.axolotl = pAxolotl;
+        }
+
+        @Override
+        public void tick() {
+            if (!this.axolotl.isPlayingDead()) {
+                super.tick();
+                this.mob.setSpeed(this.mob.getSpeed() * 0.35F);
+            }
+        }
+    }
+
+    static class AxolotlWaterMoveControl extends SmoothSwimmingMoveControl {
+        private final AxolotlServant axolotl;
+
+        public AxolotlWaterMoveControl(AxolotlServant pAxolotl) {
             super(pAxolotl, 85, 10, 0.1F, 0.5F, false);
             this.axolotl = pAxolotl;
         }
 
         @Override
         public void tick() {
-            if (!this.axolotl.isPlayingDead() && this.axolotl.isInWater()) {
+            if (!this.axolotl.isPlayingDead()) {
                 super.tick();
             }
         }
@@ -445,7 +491,6 @@ public class AxolotlServant extends AnimalSummon implements LerpingModel{
         private LivingEntity owner;
         private final Level level;
         private final double speed;
-        private final PathNavigation navigation;
         private final float startDistance;
         private final float stopDistance;
         private int timeToRecalcPath;
@@ -455,7 +500,6 @@ public class AxolotlServant extends AnimalSummon implements LerpingModel{
             this.axolotl = pAxolotl;
             this.level = pAxolotl.level();
             this.speed = pSpeed;
-            this.navigation = pAxolotl.getNavigation();
             this.startDistance = pStartDistance;
             this.stopDistance = pStopDistance;
             this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
@@ -480,7 +524,7 @@ public class AxolotlServant extends AnimalSummon implements LerpingModel{
         }
 
         public boolean canContinueToUse() {
-            if (this.navigation.isDone()) {
+            if (this.axolotl.getNavigation().isDone()) {
                 return false;
             } else if (this.axolotl.getTarget() != null) {
                 return false;
@@ -497,7 +541,7 @@ public class AxolotlServant extends AnimalSummon implements LerpingModel{
 
         public void stop() {
             this.owner = null;
-            this.navigation.stop();
+            this.axolotl.getNavigation().stop();
             this.axolotl.setPathfindingMalus(BlockPathTypes.WATER, this.oldWaterCost);
         }
 
@@ -511,20 +555,25 @@ public class AxolotlServant extends AnimalSummon implements LerpingModel{
                         boolean flag = this.axolotl.distanceToSqr(this.owner) >= Mth.square(range);
                         if (this.owner instanceof Mob) {
                             flag |= !this.axolotl.hasLineOfSight(this.owner) && this.axolotl.distanceToSqr(this.owner) >= Mth.square(8.0D);
+                        } else {
+                            flag &= this.canTeleport();
                         }
                         if (flag) {
                             this.teleportToOwner();
                         } else {
-                            this.navigation.moveTo(this.owner, this.speed);
+                            this.axolotl.getNavigation().moveTo(this.owner, this.speed);
                         }
                     }
                 }
             }
         }
 
+        protected boolean canTeleport() {
+            return MobsConfig.ServantTeleport.get();
+        }
+
         protected void teleportToOwner() {
             BlockPos blockpos = this.owner.blockPosition();
-
             for (int i = 0; i < 10; ++i) {
                 int j = this.getRandomNumber(-3, 3);
                 int k = this.getRandomNumber(-1, 1);

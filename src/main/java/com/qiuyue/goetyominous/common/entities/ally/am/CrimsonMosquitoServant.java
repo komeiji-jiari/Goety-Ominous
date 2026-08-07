@@ -16,12 +16,11 @@ import com.github.alexthe666.alexsmobs.message.MessageMosquitoMountPlayer;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
-
 import java.util.EnumSet;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -461,18 +460,21 @@ public class CrimsonMosquitoServant extends Summoned {
         if (randomWingFlapTick > 0) {
             randomWingFlapTick--;
         }
-        if (!this.level().isClientSide && onGround() && !this.isFlying() && (!this.isStaying() && flightTicks >= 0 && random.nextInt(5) == 0 || this.getTarget() != null)) {
+        if (!this.level().isClientSide && onGround() && !this.isFlying() && (!this.isStaying() && flightTicks >= 0 && random.nextInt(5) == 0 || this.getTarget() != null || this.isFollowing() || this.isCommanded())) {
             this.setFlying(true);
             this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.2F, 0.5D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F));
             this.setOnGround(false);
             this.hasImpulse = true;
+            if (flightTicks < 0) {
+                flightTicks = 0;
+            }
         }
         if (flightTicks < 0) {
             flightTicks++;
         }
         if (!this.level().isClientSide && isFlying()) {
             flightTicks++;
-            if (flightTicks > 200 && (this.getTarget() == null || !this.getTarget().isAlive()) && !this.isFollowing()) {
+            if (flightTicks > 200 && (this.getTarget() == null || !this.getTarget().isAlive()) && !this.isFollowing() && !this.isCommanded()) {
                 BlockPos above = this.getGroundPosition(this.blockPosition().above());
                 if (level().getFluidState(above).isEmpty() && !level().getBlockState(above).isAir()) {
                     this.getDeltaMovement().add(0, -0.2D, 0);
@@ -590,8 +592,47 @@ public class CrimsonMosquitoServant extends Summoned {
     }
 
     @Override
-    public boolean canBeCommanded() {
-        return false;
+    public void commandMode() {
+        if (this.isCommanded()) {
+            LivingEntity commandEntity = this.getCommandPosEntity();
+            if (commandEntity != null && commandEntity.isAlive()) {
+                this.setCommandTick(this.getCommandTick() - 1);
+                if (!this.isFlying()) {
+                    this.setFlying(true);
+                }
+                Vec3 targetVec = commandEntity.position().add(0.0D, commandEntity.getBbHeight() * 0.5F, 0.0D);
+                this.getMoveControl().setWantedPosition(targetVec.x, targetVec.y, targetVec.z, this.getCommandSpeed());
+                if (this.getCommandTick() <= 0) {
+                    this.setCommandPosEntity(null);
+                    this.setCommandPos(null);
+                } else if (this.getBoundingBox().inflate(1.25D).intersects(commandEntity.getBoundingBox())) {
+                    if (this.isAbleToRide(commandEntity)) {
+                        if (this.startRiding(commandEntity)) {
+                            if (this.getTrueOwner() instanceof Player player) {
+                                player.displayClientMessage(Component.translatable("info.goety.servant.dismount"), true);
+                            }
+                        }
+                    }
+                    this.setCommandPosEntity(null);
+                    this.setCommandPos(null);
+                }
+            } else {
+                BlockPos commandPos = this.getCommandPos();
+                if (commandPos != null) {
+                    this.setCommandTick(this.getCommandTick() - 1);
+                    if (!this.isFlying()) {
+                        this.setFlying(true);
+                    }
+                    AABB aabb = new AABB(commandPos);
+                    if (this.getCommandTick() <= 0 || this.getBoundingBox().inflate(0.5F).intersects(aabb)) {
+                        this.getMoveControl().setWantedPosition(this.getX(), this.getY(), this.getZ(), 0.0D);
+                        this.setCommandPos(null);
+                    } else {
+                        this.getMoveControl().setWantedPosition(commandPos.getX() + 0.5D, commandPos.getY() + 0.5D, commandPos.getZ() + 0.5D, this.getCommandSpeed());
+                    }
+                }
+            }
+        }
     }
 
     public MobType getMobType() {
@@ -697,7 +738,11 @@ public class CrimsonMosquitoServant extends Summoned {
             final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (parentEntity.getRandom().nextFloat() * neg);
             final double extraX = radius * Mth.sin(Mth.PI + angle);
             final double extraZ = radius * Mth.cos(angle);
-            final BlockPos radialPos = AMBlockPos.fromCoords(parentEntity.getX() + extraX, parentEntity.getY() + 2, parentEntity.getZ() + extraZ);
+            BlockPos center = parentEntity.blockPosition();
+            if (parentEntity.isFollowing() && parentEntity.getTrueOwner() != null) {
+                center = parentEntity.getTrueOwner().blockPosition();
+            }
+            final BlockPos radialPos = AMBlockPos.fromCoords(center.getX() + extraX, center.getY() + 2, center.getZ() + extraZ);
             final BlockPos ground = parentEntity.getGroundPosition(radialPos);
             final int up = parentEntity.isSick() ? 2 : 6;
             final BlockPos newPos = ground.above(1 + parentEntity.getRandom().nextInt(up));
@@ -761,6 +806,9 @@ public class CrimsonMosquitoServant extends Summoned {
             this.timeToRecalcPath = 0;
             if (!this.summonedEntity.isFlying()) {
                 this.summonedEntity.setFlying(true);
+            }
+            if (this.summonedEntity.flightTicks < 0) {
+                this.summonedEntity.flightTicks = 0;
             }
         }
 

@@ -7,8 +7,11 @@ import com.qiuyue.goetyominous.common.entities.ally.mobs.StormNecromancerServant
 import com.qiuyue.goetyominous.common.entities.ally.spider.CrimsonSpiderServant;
 import com.qiuyue.goetyominous.common.entities.hostile.*;
 import com.qiuyue.goetyominous.common.entities.hostile.cultists.*;
+import com.qiuyue.goetyominous.common.entities.hostile.illagers.ArchGeomancerEntity;
 import com.qiuyue.goetyominous.common.entities.projectile.AcidFungus;
 import com.qiuyue.goetyominous.common.entities.projectile.BurningPotionEntity;
+import com.qiuyue.goetyominous.common.entities.projectile.ImpactBlockEntity;
+import com.qiuyue.goetyominous.common.entities.projectile.TremorBlockEntity;
 import com.qiuyue.goetyominous.common.entities.projectile.PitchforkEntity;
 import com.qiuyue.goetyominous.common.entities.projectile.WitchBombEntity;
 import com.qiuyue.goetyominous.common.entities.util.BurningGroundEntity;
@@ -344,6 +347,29 @@ public class ModEntityTypes {
                     .clientTrackingRange(4)
                     .updateInterval(20)
                     .build(MOD_ID + ":pitchfork"));
+
+    public static final RegistryObject<EntityType<ArchGeomancerEntity>> ARCH_GEOMANCER = ENTITY_TYPES.register(
+            "arch_geomancer",
+            () -> EntityType.Builder.of(ArchGeomancerEntity::new, MobCategory.MONSTER)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":arch_geomancer"));
+
+    public static final RegistryObject<EntityType<ImpactBlockEntity>> IMPACT_BLOCK = ENTITY_TYPES.register(
+            "impact_block",
+            () -> EntityType.Builder.<ImpactBlockEntity>of(ImpactBlockEntity::new, MobCategory.MISC)
+                    .sized(0.98F, 0.98F)
+                    .clientTrackingRange(10)
+                    .updateInterval(1)
+                    .build(MOD_ID + ":impact_block"));
+
+    public static final RegistryObject<EntityType<TremorBlockEntity>> TREMOR_BLOCK = ENTITY_TYPES.register(
+            "tremor_block",
+            () -> EntityType.Builder.<TremorBlockEntity>of(TremorBlockEntity::new, MobCategory.MISC)
+                    .sized(0.98F, 0.98F)
+                    .clientTrackingRange(10)
+                    .updateInterval(1)
+                    .build(MOD_ID + ":tremor_block"));
 
     /**
      * 注册实体类型到模组事件总线

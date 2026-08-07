@@ -20,6 +20,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -47,6 +48,7 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -107,9 +109,43 @@ public class FarseerServant extends Summoned implements IAnimatedEntity {
     protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
     }
 
+
     @Override
-    public boolean canBeCommanded() {
-        return false;
+    public void commandMode() {
+        if (this.isCommanded()) {
+            LivingEntity commandEntity = this.getCommandPosEntity();
+            if (commandEntity != null && commandEntity.isAlive()) {
+                this.setCommandTick(this.getCommandTick() - 1);
+                Vec3 targetVec = commandEntity.position().add(0.0D, commandEntity.getBbHeight() * 0.5F, 0.0D);
+                this.getMoveControl().setWantedPosition(targetVec.x, targetVec.y, targetVec.z, this.getCommandSpeed());
+                if (this.getCommandTick() <= 0) {
+                    this.setCommandPosEntity(null);
+                    this.setCommandPos(null);
+                } else if (this.getBoundingBox().inflate(1.25D).intersects(commandEntity.getBoundingBox())) {
+                    if (this.isAbleToRide(commandEntity)) {
+                        if (this.startRiding(commandEntity)) {
+                            if (this.getTrueOwner() instanceof Player player) {
+                                player.displayClientMessage(Component.translatable("info.goety.servant.dismount"), true);
+                            }
+                        }
+                    }
+                    this.setCommandPosEntity(null);
+                    this.setCommandPos(null);
+                }
+            } else {
+                BlockPos commandPos = this.getCommandPos();
+                if (commandPos != null) {
+                    this.setCommandTick(this.getCommandTick() - 1);
+                    AABB aabb = new AABB(commandPos);
+                    if (this.getCommandTick() <= 0 || this.getBoundingBox().inflate(0.5F).intersects(aabb)) {
+                        this.getMoveControl().setWantedPosition(this.getX(), this.getY(), this.getZ(), 0.0D);
+                        this.setCommandPos(null);
+                    } else {
+                        this.getMoveControl().setWantedPosition(commandPos.getX() + 0.5D, commandPos.getY() + 0.5D, commandPos.getZ() + 0.5D, this.getCommandSpeed());
+                    }
+                }
+            }
+        }
     }
 
     @Override

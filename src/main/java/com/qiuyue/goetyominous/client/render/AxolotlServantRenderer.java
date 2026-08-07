@@ -5,13 +5,10 @@ import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.init.ModEntityLayers;
 import com.qiuyue.goetyominous.client.render.model.AxolotlServantModel;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.AxolotlServant;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.Util;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -36,16 +33,5 @@ public class AxolotlServantRenderer extends MobRenderer<AxolotlServant, AxolotlS
     public ResourceLocation getTextureLocation(AxolotlServant pEntity) {
         return TEXTURE_BY_TYPE.getOrDefault(pEntity.getVariant(),
                 TEXTURE_BY_TYPE.get(AxolotlServant.Variant.LUCY));
-    }
-
-    @Override
-    protected void setupRotations(AxolotlServant pEntity, PoseStack pPoseStack,
-                                  float pAgeInTicks, float pRotationYaw, float pPartialTicks) {
-        super.setupRotations(pEntity, pPoseStack, pAgeInTicks, pRotationYaw, pPartialTicks);
-
-        if (!pEntity.isInWater()) {
-            pPoseStack.translate(0.0F, 0.1F, 0.0F);
-            pPoseStack.mulPose(Axis.ZP.rotationDegrees(90.0F));
-        }
     }
 }

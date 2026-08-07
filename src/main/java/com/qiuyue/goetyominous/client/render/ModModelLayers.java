@@ -142,6 +142,9 @@ public class ModModelLayers {
         event.registerLayerDefinition(ModEntityLayers.CURSED_WOLF_ARMOR_LAYER,
                 CursedWolfArmorModel::createBodyLayer);
 
+        event.registerLayerDefinition(ModEntityLayers.ARCH_GEOMANCER_LAYER,
+                ArchGeomancerModel::createBodyLayer);
+
         event.registerLayerDefinition(ModEntityLayers.PIGLIN_SERVANT_LAYER,
                 () -> net.minecraft.client.model.geom.builders.LayerDefinition.create(
                         PiglinServantModel.createMesh(net.minecraft.client.model.geom.builders.CubeDeformation.NONE), 64, 64));
@@ -493,6 +496,14 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.MUTANT_HOGLIN_SERVANT.get(),
                     MutantHoglinServantRenderer::new);
         }
+
+        event.registerEntityRenderer(ModEntityTypes.ARCH_GEOMANCER.get(), ArchGeomancerRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.IMPACT_BLOCK.get(),
+                com.qiuyue.goetyominous.client.render.projectile.ImpactBlockRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.TREMOR_BLOCK.get(),
+                com.qiuyue.goetyominous.client.render.projectile.TremorBlockRenderer::new);
 
         if (AlexMobsCompat.isAlexMobsLoaded()) {
             event.registerEntityRenderer(
