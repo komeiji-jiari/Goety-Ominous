@@ -527,6 +527,11 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.FARSEER_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderFarseerServant::new);
+            // 猪灵战獠仆从：RenderTusklinServant 是标准的 MobRenderer<TusklinServant, ModelTusklinServant>，
+            // 不再做不安全转换（复用原版 RenderTusklin 会在桥接方法里 checkcast EntityTusklin 崩溃）。
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.TUSKLIN_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.am.RenderTusklinServant::new);
 
             // 在这里添加 AlexMobs 联动仆从的渲染器注册
         }

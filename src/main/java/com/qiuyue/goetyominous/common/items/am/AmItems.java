@@ -38,6 +38,10 @@ public class AmItems {
             AM_ITEMS.register("farseer_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AmEntityRegistry.FARSEER_SERVANT, 0x33374F, 0x91FF59, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> TUSKLIN_SERVANT_SPAWN_EGG =
+            AM_ITEMS.register("tusklin_servant_spawn_egg",
+                    () -> new ServantSpawnEggItem(AmEntityRegistry.TUSKLIN_SERVANT, 0x5A3B24, 0xC1A15C, egg()));
+
     public static final RegistryObject<WarpedSteroidsItem> WARPED_STEROIDS =
             AM_ITEMS.register("warped_steroids", WarpedSteroidsItem::new);
 
@@ -52,6 +56,7 @@ public class AmItems {
     public static final RegistryObject<MagicFocus> BLOODSPRAY_FOCUS = AM_ITEMS.register(
             "bloodspray_focus",
             () -> new MagicFocus(new BloodSpraySpell()));
+
 
     public static final RegistryObject<MagicFocus> FARSEER_FOCUS = AM_ITEMS.register(
             "farseer_focus",

@@ -5,6 +5,7 @@ import com.qiuyue.goetyominous.common.entities.ally.am.CrimsonMosquitoServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.FarseerServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.MurmurServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.MurmurServantHead;
+import com.qiuyue.goetyominous.common.entities.ally.am.TusklinServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.WarpedMoscoServant;
 import com.qiuyue.goetyominous.common.entities.projectile.EntityMosquitoServantSpit;
 import com.qiuyue.goetyominous.common.entities.projectile.EntityServantHemolymph;
@@ -79,6 +80,17 @@ public class AmEntityRegistry {
                             .setUpdateInterval(1)
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":farseer_servant"));
+
+    public static final RegistryObject<EntityType<TusklinServant>> TUSKLIN_SERVANT =
+            AM_ENTITIES.register("tusklin_servant",
+                    () -> EntityType.Builder.<TusklinServant>of((type, worldIn) -> new TusklinServant(type, worldIn), MobCategory.MISC)
+                            // 碰撞箱贴合模型实际尺寸（1.3F 宽≈模型躯干横截面 1.125，1.8F 高≈盖住头 1.63+行走起伏）：
+                            // 原版 2.2F 宽度对 1.125 宽的模型每侧多出约 0.54 格，看起来明显偏大。
+                            // 注：模型全长约 3.56（吻部 -2.44~臀部 +1.13），碰撞箱为正方形棱柱无法同时贴合
+                            // 横截面与长度，此处按原版惯例取宽≈横截面（同牛/疣猪），转身时吻部/尾部会略穿出箱体。
+                            .sized(1.3F, 1.8F)
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":tusklin_servant"));
 
     public static Predicate<LivingEntity> buildPredicateFromTag(TagKey<EntityType<?>> tagKey) {
         if (tagKey == null) {
