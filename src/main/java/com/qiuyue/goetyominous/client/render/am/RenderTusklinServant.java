@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.client.render.am;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.qiuyue.goetyominous.client.render.model.am.ModelTusklinServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.TusklinServant;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -37,9 +38,18 @@ public class RenderTusklinServant extends MobRenderer<TusklinServant, ModelTuskl
 
     @Override
     protected void scale(TusklinServant entity, PoseStack matrixStack, float partialTicks) {
-        if (entity.isBaby()) {
-            matrixStack.scale(0.5F, 0.5F, 0.5F);
-        }
+        // 触发模型里已移植的 young 分支：幼崽显示 AM 式大头/厚肢/隐藏獠牙外观，
+        // 尺寸由模型 young 分支自带的 0.45 缩放控制。
+        // 注意不能在这里再叠加 0.5 缩放，否则会与模型内 0.45 相乘缩到 0.225（太小，
+        // 且与幼崽碰撞箱 0.5 倍严重不匹配）。
+        this.model.young = entity.isBaby();
+    }
+
+    @Override
+    public void render(TusklinServant entity, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int packedLight) {
+        // 阴影半径随碰撞箱一起收小：原 1.0 对 1.3 宽的新碰撞箱过大，0.65≈箱宽一半
+        this.shadowRadius = entity.isBaby() ? 0.29F : 0.65F;
+        super.render(entity, entityYaw, partialTicks, matrixStack, buffer, packedLight);
     }
 
     @Override

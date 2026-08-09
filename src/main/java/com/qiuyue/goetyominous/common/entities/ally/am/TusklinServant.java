@@ -70,6 +70,45 @@ public class TusklinServant extends AnimalSummon implements IAnimatedEntity {
         this.setMaxUpStep(1.1F);
     }
 
+    /**
+     * 特性1&2（复刻 Goety 红石傀儡的阻挡逻辑）：
+     * 1. isPushable/canBeCollidedWith 返回 true，碰撞箱变为实心，主人无法穿过。
+     * 2. canCollideWith 对主人返回 false、push/doPush 跳过主人，避免它与主人互相挤动。
+     * 注：canCollideWith/push/doPush 在 Owned 基类已对主人做过相同特判，这里显式覆写以保持与红石傀儡完全一致并防止上层行为变更。
+     */
+    @Override
+    public boolean isPushable() {
+        return !this.isDeadOrDying();
+    }
+
+    @Override
+    public boolean canBeCollidedWith() {
+        return !this.isDeadOrDying();
+    }
+
+    @Override
+    public boolean canCollideWith(Entity entity) {
+        if (entity != this.getTrueOwner()) {
+            return super.canCollideWith(entity);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public void push(Entity entity) {
+        if (entity != this.getTrueOwner()) {
+            super.push(entity);
+        }
+    }
+
+    @Override
+    protected void doPush(Entity entity) {
+        if (entity != this.getTrueOwner()) {
+            super.doPush(entity);
+        }
+    }
+
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AttributesConfig.TusklinServantHealth.get())
