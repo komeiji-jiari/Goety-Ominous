@@ -4,16 +4,17 @@
   "advancement": "goetyominous:goetyominous/witch_lesson",
   "secret": true,
   "category": "goety:rituals",
+  "sortnum": 9,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Requirements: $(li)Altar is in Swamp biome $(br)$(l)OR$()$() $(li)1 Witch Cauldron $(li)1 Crystal Ball $(li)6 Rotten Bookshelves"
+      "text": "Requirements: $(li)Altar placed in a Swamp biome $(br)$(l)OR$()$() $(li)1 Witch Cauldron $(li)1 Crystal Ball $(li)6 Rotten Bookshelves"
     },
     {
       "type": "patchouli:image",
       "images": ["goetyominous:textures/gui/entries/fel_ritual.png"],
       "border": true,
-      "text": "An example of how the ritual can be placed."
+      "text": "An example of a properly arranged ritual"
     },
     {
       "type": "patchouli:text",

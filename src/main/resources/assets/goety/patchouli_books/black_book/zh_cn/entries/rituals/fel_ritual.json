@@ -4,6 +4,7 @@
   "advancement": "goetyominous:goetyominous/witch_lesson",
   "secret": true,
   "category": "goety:rituals",
+  "sortnum": 9,
   "pages": [
     {
       "type": "patchouli:text",

@@ -103,8 +103,6 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> THUG_STEP = create("thug_step");
     public static final RegistryObject<SoundEvent> THUG_CELEBRATE = create("thug_celebrate");
 
-    public static final RegistryObject<SoundEvent> ARCHGEOMANCER_MUSIC = create("archgeomancer");
-
     private static RegistryObject<SoundEvent> create(String name) {
         return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(GoetyOminous.MOD_ID, name)));
     }
