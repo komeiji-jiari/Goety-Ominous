@@ -1,0 +1,20 @@
+{
+  "name": "瞻远聚晶",
+  "icon": "goetyominous:farseer_focus",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "瞻远者与你所熟悉的任何生物都没有任何相似之处。你无法理解它们究竟来自何种维度，但你仍然可以通过这个法术，从另一边呼唤一名为你而战的瞻远者。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:farseer_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "不幸的是，这个法术无法与你的任何魔杖产生共鸣，因此你无法通过特定魔杖呼唤更多瞻远者。"
+    }
+  ]
+}

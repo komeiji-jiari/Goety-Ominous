@@ -1,0 +1,20 @@
+{
+  "name": "呕血聚晶",
+  "icon": "goetyominous:bloodspray_focus",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "通过研究绯红蚊子，你想到了一种方式制作一个法术。这个法术不需要消耗血囊，而是消耗灵魂来向你的敌人喷射腐蚀性血液。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:bloodspray_focus",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "穿戴下界套装并使用下界魔杖施法时，你能够喷射一种伤害更高的血淋巴液体，类似诡异蚊鬼从口器中喷吐的血液。"
+    }
+  ]
+}

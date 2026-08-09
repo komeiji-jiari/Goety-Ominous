@@ -1,0 +1,20 @@
+{
+  "name": "Farseer Focus",
+  "icon": "goetyominous:farseer_focus",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "The Farseer bears no resemblance to any creature you know. You cannot fathom which dimension they come from, yet you can still call one to fight for you from the other side with this spell."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:farseer_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "Unfortunately, this spell does not resonate with any of your staffs, so you cannot summon more Farseers through specific staffs."
+    }
+  ]
+}

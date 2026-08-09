@@ -115,7 +115,7 @@ public abstract class AbstractGOCultist extends Cultist {
                             int k1 = k + Mth.nextInt(this.random, 7, 16) * Mth.nextInt(this.random, -1, 1);
                             BlockPos blockpos = serverLevel.getHeightmapPos(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, new BlockPos(i1, j, k1));
                             EntityType<?> entitytype = cultist.getType();
-                            if (SpawnPlacements.checkSpawnRules(entitytype, serverLevel, MobSpawnType.REINFORCEMENT, blockpos, this.level().random)) {
+                            if (serverLevel.getBlockState(blockpos.below()).isValidSpawn(serverLevel, blockpos.below(), entitytype)) {
                                 cultist.setPos(blockpos.getX() + 0.5D, blockpos.getY(), blockpos.getZ() + 0.5D);
                                 if (!this.level().hasNearbyAlivePlayer(blockpos.getX(), blockpos.getY(), blockpos.getZ(), 7.0D)
                                         && this.level().isUnobstructed(cultist)

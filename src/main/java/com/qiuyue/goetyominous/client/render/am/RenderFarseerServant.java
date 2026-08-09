@@ -36,8 +36,8 @@ import org.joml.Quaternionf;
 
 @OnlyIn(Dist.CLIENT)
 public class RenderFarseerServant extends MobRenderer<FarseerServant, ModelFarseerServant> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/farseer/farseer.png");
-    private static final ResourceLocation TEXTURE_ANGRY = new ResourceLocation("alexsmobs:textures/entity/farseer/farseer_angry.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation("goetyominous", "textures/entity/farseer_servant.png");
+    private static final ResourceLocation TEXTURE_ANGRY = new ResourceLocation("goetyominous", "textures/entity/farseer_servant_angry.png");
     private static final ResourceLocation TEXTURE_CLAWS = new ResourceLocation("alexsmobs:textures/entity/farseer/farseer_claws.png");
     private static final ResourceLocation TEXTURE_EYE = new ResourceLocation("alexsmobs:textures/entity/farseer/farseer_eye.png");
     private static final ResourceLocation TEXTURE_SCARS = new ResourceLocation("alexsmobs:textures/entity/farseer/farseer_scars.png");

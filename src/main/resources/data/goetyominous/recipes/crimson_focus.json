@@ -1,0 +1,30 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:carrion_focus"
+  },
+  "craftType": "adept_nether",
+  "soulCost": 1,
+  "duration": 10,
+  "ingredients": [
+    {
+      "item": "minecraft:nether_wart_block"
+    },
+    {
+      "item": "alexsmobs:mosquito_larva"
+    },
+    {
+      "item": "alexsmobs:blood_sac"
+    },
+    {
+      "item": "alexsmobs:blood_sac"
+    },
+    {
+      "item": "minecraft:crimson_fungus"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:crimson_focus"
+  }
+}

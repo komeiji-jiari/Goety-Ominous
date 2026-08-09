@@ -1,0 +1,20 @@
+{
+  "name": "Bloodspray Focus",
+  "icon": "goetyominous:bloodspray_focus",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "By studying the Crimson Mosquito, you devised a way to craft a spell that does not consume Blood Sacs, but instead uses Soul Energy to spray corrosive blood at your enemies."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:bloodspray_focus",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "When wearing Nether Set and cast with a Nether Staff, you spray a more potent hemolymph blood, similar to the attacks used by the Warped Mosco."
+    }
+  ]
+}

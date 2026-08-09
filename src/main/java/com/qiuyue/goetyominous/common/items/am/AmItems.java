@@ -4,6 +4,9 @@ import com.Polarice3.Goety.common.items.ServantSpawnEggItem;
 import com.Polarice3.Goety.common.items.magic.MagicFocus;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
+import com.qiuyue.goetyominous.common.magic.spells.am.BloodSpraySpell;
+import com.qiuyue.goetyominous.common.magic.spells.am.CrimsonSpell;
+import com.qiuyue.goetyominous.common.magic.spells.am.FarseerSpell;
 import com.qiuyue.goetyominous.common.magic.spells.am.MurmurSpell;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -41,6 +44,18 @@ public class AmItems {
     public static final RegistryObject<MagicFocus> MURMUR_FOCUS = AM_ITEMS.register(
             "murmur_focus",
             () -> new MagicFocus(new MurmurSpell()));
+
+    public static final RegistryObject<MagicFocus> CRIMSON_FOCUS = AM_ITEMS.register(
+            "crimson_focus",
+            () -> new MagicFocus(new CrimsonSpell()));
+
+    public static final RegistryObject<MagicFocus> BLOODSPRAY_FOCUS = AM_ITEMS.register(
+            "bloodspray_focus",
+            () -> new MagicFocus(new BloodSpraySpell()));
+
+    public static final RegistryObject<MagicFocus> FARSEER_FOCUS = AM_ITEMS.register(
+            "farseer_focus",
+            () -> new MagicFocus(new FarseerSpell()));
 
 
     public static Item.Properties egg() {

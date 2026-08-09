@@ -93,8 +93,8 @@ public class GoetyOminous {
                 ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, GoetyOminous.MOD_ID);
         biomeModifiers.register(modEventBus);
         biomeModifiers.register("mob_spawns", ModMobSpawnBiomeModifier::makeCodec);
-        ModItems.init();
         ModSounds.init();
+        ModItems.init();
         ModBlocks.register(modEventBus);
         ModProcessorTypes.register(modEventBus);
         ModBlockEntities.register(modEventBus);

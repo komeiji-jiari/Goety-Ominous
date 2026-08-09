@@ -64,7 +64,7 @@ public class GOCultistEvents {
         if (event.getEntity() instanceof Villager villager) {
             if (MobsConfig.CultistSpread.get()) {
                 if (!villager.isBaby() && event.getSpawnType() == MobSpawnType.STRUCTURE) {
-                    if (villager.level().random.nextFloat() <= 0.05F) {
+                    if (villager.getRandom().nextFloat() <= 0.05F) {
                         villager.addTag(GOCultistHelper.SECRET_CULTIST_TAG);
                     }
                 }

@@ -55,7 +55,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-public class Disciple extends AbstractGOCultist {
+public class Disciple extends AbstractGOCultist implements ICultist {
     private static final EntityDataAccessor<Boolean> CASTING;
     private static final EntityDataAccessor<Integer> CURRENT_SPELL;
 

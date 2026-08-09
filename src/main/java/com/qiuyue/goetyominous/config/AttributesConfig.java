@@ -336,8 +336,8 @@ public class AttributesConfig {
         BUILDER.pop();
 
         BUILDER.push("Arch Geomancer");
-        ArchGeomancerHealth = BUILDER.comment("How much Max Health Arch Geomancers have, Default: 120.0")
-                .defineInRange("archGeomancerHealth", 120.0, 1.0, Double.MAX_VALUE);
+        ArchGeomancerHealth = BUILDER.comment("How much Max Health Arch Geomancers have, Default: 160.0")
+                .defineInRange("archGeomancerHealth", 160.0, 1.0, Double.MAX_VALUE);
         ArchGeomancerArmor = BUILDER.comment("How much natural Armor Arch Geomancers have, Default: 4.0")
                 .defineInRange("archGeomancerArmor", 4.0, 0.0, Double.MAX_VALUE);
         ArchGeomancerArmorToughness = BUILDER.comment("How much natural Armor Toughness Arch Geomancers have, Default: 0.0")

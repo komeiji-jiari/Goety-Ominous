@@ -13,10 +13,10 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class RenderCrimsonMosquitoServant extends MobRenderer<CrimsonMosquitoServant, ModelCrimsonMosquitoServant> {
-    public static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs", "textures/entity/crimson_mosquito.png");
-    public static final ResourceLocation TEXTURE_SICK = new ResourceLocation("alexsmobs", "textures/entity/crimson_mosquito_blue.png");
-    public static final ResourceLocation TEXTURE_FLY = new ResourceLocation("alexsmobs", "textures/entity/crimson_mosquito_fly.png");
-    public static final ResourceLocation TEXTURE_SICK_FLY = new ResourceLocation("alexsmobs", "textures/entity/crimson_mosquito_fly_blue.png");
+    public static final ResourceLocation TEXTURE = new ResourceLocation("goetyominous", "textures/entity/crimson_mosquito_servant.png");
+    public static final ResourceLocation TEXTURE_SICK = new ResourceLocation("goetyominous", "textures/entity/crimson_mosquito_servant_blue.png");
+    public static final ResourceLocation TEXTURE_FLY = new ResourceLocation("goetyominous", "textures/entity/crimson_mosquito_servant_fly.png");
+    public static final ResourceLocation TEXTURE_SICK_FLY = new ResourceLocation("goetyominous", "textures/entity/crimson_mosquito_servant_fly_blue.png");
 
     public RenderCrimsonMosquitoServant(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelCrimsonMosquitoServant(), 0.6F);

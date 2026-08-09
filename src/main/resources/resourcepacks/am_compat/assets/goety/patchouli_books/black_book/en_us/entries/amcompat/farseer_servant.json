@@ -1,0 +1,25 @@
+{
+  "name": "Farseer Servant",
+  "icon": "alexsmobs:farseer_arm",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "These eerie entities wandering the FarLands unsettle you. It is said that they come from a dimension beyond the Overworld, constantly observing everything that happens in this world—including your every action, watched by eyes from beyond..."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:farseer_servant",
+      "text": ""
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:farseer_servant",
+      "text": "FarLand Security"
+    },
+    {
+      "type": "text",
+      "text": "Using the arm left behind by a Farseer, you can call upon and entice one to serve you for a purpose. As long as you don't mind the feeling of being constantly watched..."
+    }
+  ]
+}
