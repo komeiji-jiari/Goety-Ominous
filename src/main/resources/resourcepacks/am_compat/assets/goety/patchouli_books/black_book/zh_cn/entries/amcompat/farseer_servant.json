@@ -1,0 +1,20 @@
+{
+  "name": "瞻远者仆从",
+  "icon": "alexsmobs:farseer_arm",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "这些游荡在边境之地的诡异实体让你感到不安。有说法认为，它们来自某个超越于主世界的维度，并且时刻观察着这个世界发生的一切，包括你的所作所为都被维度之上的眼睛瞻望着..."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:farseer_servant",
+      "text": "边界之地的保卫者"
+    },
+    {
+      "type": "text",
+      "text": "借由瞻远者留下的手臂，你能够出于某种目的呼唤并引诱一个瞻远者为你服务。只要你不觉得被一直注视着的感觉很糟糕就行..."
+    }
+  ]
+}

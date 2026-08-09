@@ -1,0 +1,20 @@
+{
+  "name": "绯红集群聚晶",
+  "icon": "goetyominous:crimson_focus",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "绯红蚊子毫无疑问成为了你下界旅途中最令人不快的生物之一。你不想只有一个人被叮，通过这个法术，你能让其他人感受到这份来自下界的血色噩梦。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:crimson_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "使用下界魔杖施法可以增加召唤的绯红蚊子的数量。"
+    }
+  ]
+}

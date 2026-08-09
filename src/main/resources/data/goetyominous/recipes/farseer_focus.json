@@ -1,0 +1,30 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:empty_focus"
+  },
+  "craftType": "magic",
+  "soulCost": 1,
+  "duration": 10,
+  "ingredients": [
+    {
+      "item": "alexsmobs:farseer_arm"
+    },
+    {
+      "item": "alexsmobs:farseer_arm"
+    },
+    {
+      "item": "minecraft:obsidian"
+    },
+    {
+      "item": "goety:mystic_core"
+    },
+    {
+      "item": "minecraft:nether_star"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:farseer_focus"
+  }
+}

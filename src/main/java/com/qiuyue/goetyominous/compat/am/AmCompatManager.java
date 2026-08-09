@@ -4,6 +4,7 @@ import com.qiuyue.goetyominous.common.entities.ally.am.CrimsonMosquitoServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.FarseerServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.MurmurServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.MurmurServantHead;
+import com.qiuyue.goetyominous.common.entities.ally.am.TusklinServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.WarpedMoscoServant;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
 import com.qiuyue.goetyominous.common.items.am.AmItems;
@@ -35,5 +36,6 @@ public class AmCompatManager {
         event.put(AmEntityRegistry.CRIMSON_MOSQUITO_SERVANT.get(), CrimsonMosquitoServant.setCustomAttributes().build());
         event.put(AmEntityRegistry.WARPED_MOSCO_SERVANT.get(), WarpedMoscoServant.setCustomAttributes().build());
         event.put(AmEntityRegistry.FARSEER_SERVANT.get(), FarseerServant.bakeAttributes().build());
+        event.put(AmEntityRegistry.TUSKLIN_SERVANT.get(), TusklinServant.setCustomAttributes().build());
     }
 }

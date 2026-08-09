@@ -1,0 +1,20 @@
+{
+  "name": "CrimsonFocus",
+  "icon": "goetyominous:crimson_focus",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "The Crimson Mosquito has undoubtedly become one of the most unpleasant creatures of your Nether journeys. You don't want to be the only one getting bitten—with this spell, you can let others share in this crimson nightmare from the Nether."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:crimson_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "Casting this spell with a Nether Staff increases the number of Crimson Mosquitoes summoned."
+    }
+  ]
+}

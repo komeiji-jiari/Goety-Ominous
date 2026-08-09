@@ -4,6 +4,8 @@ import com.Polarice3.Goety.common.items.ServantSpawnEggItem;
 import com.Polarice3.Goety.common.items.magic.MagicFocus;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
+import com.qiuyue.goetyominous.common.magic.spells.am.CrimsonSpell;
+import com.qiuyue.goetyominous.common.magic.spells.am.FarseerSpell;
 import com.qiuyue.goetyominous.common.magic.spells.am.MurmurSpell;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -35,12 +37,24 @@ public class AmItems {
             AM_ITEMS.register("farseer_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AmEntityRegistry.FARSEER_SERVANT, 0x33374F, 0x91FF59, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> TUSKLIN_SERVANT_SPAWN_EGG =
+            AM_ITEMS.register("tusklin_servant_spawn_egg",
+                    () -> new ServantSpawnEggItem(AmEntityRegistry.TUSKLIN_SERVANT, 0x5A3B24, 0xC1A15C, egg()));
+
     public static final RegistryObject<WarpedSteroidsItem> WARPED_STEROIDS =
             AM_ITEMS.register("warped_steroids", WarpedSteroidsItem::new);
 
     public static final RegistryObject<MagicFocus> MURMUR_FOCUS = AM_ITEMS.register(
             "murmur_focus",
             () -> new MagicFocus(new MurmurSpell()));
+
+    public static final RegistryObject<MagicFocus> CRIMSON_FOCUS = AM_ITEMS.register(
+            "crimson_focus",
+            () -> new MagicFocus(new CrimsonSpell()));
+
+    public static final RegistryObject<MagicFocus> FARSEER_FOCUS = AM_ITEMS.register(
+            "farseer_focus",
+            () -> new MagicFocus(new FarseerSpell()));
 
 
     public static Item.Properties egg() {

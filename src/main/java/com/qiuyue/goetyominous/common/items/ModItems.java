@@ -4,6 +4,7 @@ import com.Polarice3.Goety.common.items.ServantSpawnEggItem;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.render.item.BoneCudgelRenderer;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
+import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.common.items.curios.DarkAnkh;
 import com.qiuyue.goetyominous.common.items.curios.FungusPackItem;
 import com.qiuyue.goetyominous.common.items.curios.RaggedFungusPackItem;
@@ -16,6 +17,8 @@ import com.qiuyue.goetyominous.common.research.ResearchList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.RecordItem;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
@@ -118,6 +121,11 @@ public class ModItems {
 
     public static final RegistryObject<Item> NETHER_WART_POTION = ITEMS.register("nether_wart_potion",
             () -> new NetherWartPotion());
+
+    public static final RegistryObject<RecordItem> ARCHGEOMANCER_MUSIC_DISC = ITEMS.register(
+            "archgeomancer_music_disc",
+            () -> new RecordItem(15, ModSounds.ARCHGEOMANCER_MUSIC.get(),
+                    new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 3040));
 
     public static final RegistryObject<Item> BROOD_FOCUS = ITEMS.register("brood_focus",
             () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.BroodSpell()));

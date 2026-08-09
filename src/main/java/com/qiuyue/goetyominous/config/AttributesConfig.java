@@ -40,6 +40,12 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> WarpedMoscoServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> WarpedMoscoServantArmorToughness;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> TusklinServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> TusklinServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> TusklinServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> TusklinServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> TusklinServantKnockbackResistance;
+
     public static final ForgeConfigSpec.ConfigValue<Double> MagispellerServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> MagispellerServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> MagispellerServantMovementSpeed;
@@ -336,8 +342,8 @@ public class AttributesConfig {
         BUILDER.pop();
 
         BUILDER.push("Arch Geomancer");
-        ArchGeomancerHealth = BUILDER.comment("How much Max Health Arch Geomancers have, Default: 120.0")
-                .defineInRange("archGeomancerHealth", 120.0, 1.0, Double.MAX_VALUE);
+        ArchGeomancerHealth = BUILDER.comment("How much Max Health Arch Geomancers have, Default: 168.0")
+                .defineInRange("archGeomancerHealth", 168.0, 1.0, Double.MAX_VALUE);
         ArchGeomancerArmor = BUILDER.comment("How much natural Armor Arch Geomancers have, Default: 4.0")
                 .defineInRange("archGeomancerArmor", 4.0, 0.0, Double.MAX_VALUE);
         ArchGeomancerArmorToughness = BUILDER.comment("How much natural Armor Toughness Arch Geomancers have, Default: 0.0")
@@ -718,6 +724,16 @@ public class AttributesConfig {
                 .defineInRange("warpedMoscoServantArmor", 10.0, 0.0, Double.MAX_VALUE);
         WarpedMoscoServantArmorToughness = BUILDER.comment("How much natural Armor Toughness Warped Mosco Servants have, Default: 2.0")
                 .defineInRange("warpedMoscoServantArmorToughness", 2.0, 0.0, Double.MAX_VALUE);
+        TusklinServantHealth = BUILDER.comment("How much Max Health Tusklin Servants have, Default: 40.0")
+                .defineInRange("tusklinServantHealth", 40.0, 1.0, Double.MAX_VALUE);
+        TusklinServantDamage = BUILDER.comment("How much damage Tusklin Servants deal, Default: 9.0")
+                .defineInRange("tusklinServantDamage", 9.0, 1.0, Double.MAX_VALUE);
+        TusklinServantMovementSpeed = BUILDER.comment("How fast Tusklin Servants move, Default: 0.3")
+                .defineInRange("tusklinServantMovementSpeed", 0.3, 0.0, Double.MAX_VALUE);
+        TusklinServantFollowRange = BUILDER.comment("How much following/detection range Tusklin Servants have, Default: 32.0")
+                .defineInRange("tusklinServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
+        TusklinServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Tusklin Servants have, Default: 0.9")
+                .defineInRange("tusklinServantKnockbackResistance", 0.9, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.push("Overgrown Colossus Servant (Optional - LM)");

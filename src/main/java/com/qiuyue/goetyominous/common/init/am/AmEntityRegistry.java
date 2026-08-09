@@ -5,6 +5,7 @@ import com.qiuyue.goetyominous.common.entities.ally.am.CrimsonMosquitoServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.FarseerServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.MurmurServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.MurmurServantHead;
+import com.qiuyue.goetyominous.common.entities.ally.am.TusklinServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.WarpedMoscoServant;
 import com.qiuyue.goetyominous.common.entities.projectile.EntityMosquitoServantSpit;
 import com.qiuyue.goetyominous.common.entities.projectile.EntityServantHemolymph;
@@ -79,6 +80,14 @@ public class AmEntityRegistry {
                             .setUpdateInterval(1)
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":farseer_servant"));
+
+    public static final RegistryObject<EntityType<TusklinServant>> TUSKLIN_SERVANT =
+            AM_ENTITIES.register("tusklin_servant",
+                    () -> EntityType.Builder.<TusklinServant>of((type, worldIn) -> new TusklinServant(type, worldIn), MobCategory.MISC)
+                            // 尺寸必须与原版 EntityTusklin(2.2F, 1.9F) 一致：模型是原版移植，碰撞箱小于模型会穿模
+                            .sized(2.2F, 1.9F)
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":tusklin_servant"));
 
     public static Predicate<LivingEntity> buildPredicateFromTag(TagKey<EntityType<?>> tagKey) {
         if (tagKey == null) {

@@ -4,7 +4,7 @@
   "activation_item": {
     "item": "alexsmobs:farseer_arm"
   },
-  "craftType": "adept_nether",
+  "craftType": "magic",
   "entity_to_summon": "goetyominous:farseer_servant",
   "soulCost": 10,
   "duration": 5,

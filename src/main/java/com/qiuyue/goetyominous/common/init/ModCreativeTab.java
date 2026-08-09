@@ -64,6 +64,7 @@ public class ModCreativeTab {
 
                         if (LegendaryMonstersCompat.isLegendaryMonstersLoaded()) {
                             collectFrom(LmItems.LM_ITEMS, spawnEggs, foci, weapons, otherItems);
+                            moveAfter(otherItems, ModItems.ARCHGEOMANCER_MUSIC_DISC.get(), LmItems.LM_MUSIC_DISC.get());
                         }
 
                         if (AlexMobsCompat.isAlexMobsLoaded()) {

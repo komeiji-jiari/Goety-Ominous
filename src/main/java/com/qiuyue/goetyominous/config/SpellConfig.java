@@ -75,6 +75,11 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> CrimsonMosquitoSummonDown;
     public static final ForgeConfigSpec.ConfigValue<Integer> CrimsonMosquitoCoolDown;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> FarseerSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FarseerCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FarseerSummonDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FarseerCoolDown;
+
     static {
         BUILDER.push("Spells");
 
@@ -89,22 +94,33 @@ public class SpellConfig {
                 .defineInRange("murmurCoolDown", 100, 0, 5000);
         BUILDER.pop();
 
-        BUILDER.push("Brain Eater");
-        BrainEaterDrainPerSecond = BUILDER.comment("Experience drained per second while channeling (Default: 10)")
-                .defineInRange("brainEaterDrainPerSecond", 10, 1, 1000);
-        BrainEaterSoulsPerDrain = BUILDER.comment("Souls gained per drain (Default: 100)")
-                .defineInRange("brainEaterSoulsPerDrain", 100, 1, 100000);
-        BUILDER.pop();
-
         BUILDER.push("Crimson Mosquito");
         CrimsonMosquitoSoulCost = BUILDER.comment("Soul cost of Crimson Mosquito Servant spell (Default: 20)")
                 .defineInRange("crimsonMosquitoSoulCost", 20, 1, 100);
         CrimsonMosquitoCastDuration = BUILDER.comment("Cast duration of Crimson Mosquito Servant spell in ticks (Default: 120)")
                 .defineInRange("crimsonMosquitoCastDuration", 120, 0, 500);
-        CrimsonMosquitoSummonDown = BUILDER.comment("Summon down duration of Crimson Mosquito Servant spell in ticks (Default: 160)")
-                .defineInRange("crimsonMosquitoSummonDown", 160, 0, 5000);
-        CrimsonMosquitoCoolDown = BUILDER.comment("Cooldown of Crimson Mosquito Servant spell in ticks (Default: 100)")
-                .defineInRange("crimsonMosquitoCoolDown", 100, 0, 5000);
+        CrimsonMosquitoSummonDown = BUILDER.comment("Summon down duration of Crimson Mosquito Servant spell in ticks (Default: 200)")
+                .defineInRange("crimsonMosquitoSummonDown", 200, 0, 5000);
+        CrimsonMosquitoCoolDown = BUILDER.comment("Cooldown of Crimson Mosquito Servant spell in ticks (Default: 160)")
+                .defineInRange("crimsonMosquitoCoolDown", 160, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("Farseer");
+        FarseerSoulCost = BUILDER.comment("Soul cost of Farseer Servant spell (Default: 128)")
+                .defineInRange("farseerSoulCost", 128, 1, 100);
+        FarseerCastDuration = BUILDER.comment("Cast duration of Farseer Servant spell in ticks (Default: 100)")
+                .defineInRange("farseerCastDuration", 100, 0, 500);
+        FarseerSummonDown = BUILDER.comment("Summon down duration of Farseer Servant spell in ticks (Default: 200)")
+                .defineInRange("farseerSummonDown", 200, 0, 5000);
+        FarseerCoolDown = BUILDER.comment("Cooldown of Farseer Servant spell in ticks (Default: 1200)")
+                .defineInRange("farseerCoolDown", 1200, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("Brain Eater");
+        BrainEaterDrainPerSecond = BUILDER.comment("Experience drained per second while channeling (Default: 10)")
+                .defineInRange("brainEaterDrainPerSecond", 10, 1, 1000);
+        BrainEaterSoulsPerDrain = BUILDER.comment("Souls gained per drain (Default: 100)")
+                .defineInRange("brainEaterSoulsPerDrain", 100, 1, 100000);
         BUILDER.pop();
 
         BUILDER.push("Urbhadhach");

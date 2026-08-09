@@ -464,6 +464,15 @@
       }
     ]
   },
+  "archgeomancer": {
+    "subtitle": "subtitles.goetyominous.archgeomancer.music",
+    "sounds": [
+      {
+        "name": "goetyominous:archgeomancer",
+        "stream": true
+      }
+    ]
+  },
   "disciple_death_3": {
     "subtitle": "subtitles.goetyominous.disciple.death",
     "sounds": [
