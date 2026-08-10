@@ -532,10 +532,10 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.TUSKLIN_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderTusklinServant::new);
-            // 鳄鱼仆从：RenderCrocodileServant 同理是标准的 MobRenderer<CrocodileServant, ModelCrocodileServant>
+            // 鳄鱼仆从：RenderZombieCrocodileServant 同理是标准的 MobRenderer<ZombieCrocodileServant, ModelZombieCrocodileServant>
             event.registerEntityRenderer(
-                    com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.CROCODILE_SERVANT.get(),
-                    com.qiuyue.goetyominous.client.render.am.RenderCrocodileServant::new);
+                    com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.ZOMBIE_CROCODILE_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.am.RenderZombieCrocodileServant::new);
 
             // 在这里添加 AlexMobs 联动仆从的渲染器注册
         }

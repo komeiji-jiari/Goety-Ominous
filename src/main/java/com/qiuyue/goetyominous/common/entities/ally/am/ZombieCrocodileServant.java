@@ -1,13 +1,13 @@
 package com.qiuyue.goetyominous.common.entities.ally.am;
 
 import com.Polarice3.Goety.common.entities.ally.AnimalSummon;
+import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.github.alexthe666.alexsmobs.entity.EntityCrocodile;
 import com.github.alexthe666.alexsmobs.entity.ISemiAquatic;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIFindWater;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAILeaveWater;
 import com.github.alexthe666.alexsmobs.entity.ai.AquaticMoveController;
-import com.github.alexthe666.alexsmobs.entity.ai.GroundPathNavigatorWide;
 import com.github.alexthe666.alexsmobs.entity.ai.SemiAquaticPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
@@ -16,7 +16,6 @@ import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
-import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 
 import javax.annotation.Nullable;
@@ -26,13 +25,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -42,12 +41,11 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.BreathAirGoal;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -56,6 +54,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathComputationType;
@@ -63,29 +63,15 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.event.ForgeEventFactory;
 
-/**
- * 鳄鱼仆从，移植 AlexMobs 原版 EntityCrocodile 的水陆两栖/扑咬/死亡翻滚行为。
- *
- * 与 TusklinServant 同一套模式：继承 Goety 的 AnimalSummon（可繁殖）。
- * 动画常量直接复用 EntityCrocodile.ANIMATION_* 实例——RenderCrocodileServant /
- * ModelCrocodileServant 内部用 `getAnimation() == EntityCrocodile.ANIMATION_*`
- * 做对象恒等比较，若这里自己 create 新实例，恒等比较永远不成立，动画将无法播放。
- *
- * 由于 CrocodileServant 并非 EntityCrocodile，原版里对 EntityCrocodile 硬转型的
- * CrocodileAIMelee / CrocodileAIRandomSwimming 不能直接用，改写为内部静态类；
- * AnimalAIFindWater / AnimalAILeaveWater / AquaticMoveController /
- * SemiAquaticPathNavigator / GroundPathNavigatorWide 只依赖 ISemiAquatic / PathfinderMob，
- * 可直接复用。
- */
-public class CrocodileServant extends AnimalSummon implements IAnimatedEntity, ISemiAquatic {
+public class ZombieCrocodileServant extends Summoned implements IAnimatedEntity, ISemiAquatic {
 
     public static final Animation ANIMATION_LUNGE = EntityCrocodile.ANIMATION_LUNGE;
     public static final Animation ANIMATION_DEATHROLL = EntityCrocodile.ANIMATION_DEATHROLL;
-    private static final EntityDataAccessor<Byte> CLIMBING = SynchedEntityData.defineId(CrocodileServant.class, EntityDataSerializers.BYTE);
-    private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(CrocodileServant.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> DESERT = SynchedEntityData.defineId(CrocodileServant.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> STUN_TICKS = SynchedEntityData.defineId(CrocodileServant.class, EntityDataSerializers.INT);
-    /** 以下进度字段供 ModelCrocodileServant 的 setupAnim 读取 */
+    private static final EntityDataAccessor<Byte> CLIMBING = SynchedEntityData.defineId(ZombieCrocodileServant.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(ZombieCrocodileServant.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DESERT = SynchedEntityData.defineId(ZombieCrocodileServant.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> STUN_TICKS = SynchedEntityData.defineId(ZombieCrocodileServant.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> BASKING_TYPE = SynchedEntityData.defineId(ZombieCrocodileServant.class, EntityDataSerializers.INT);
     public float groundProgress = 0;
     public float prevGroundProgress = 0;
     public float swimProgress = 0;
@@ -94,8 +80,6 @@ public class CrocodileServant extends AnimalSummon implements IAnimatedEntity, I
     public float prevBaskingProgress = 0;
     public float grabProgress = 0;
     public float prevGrabProgress = 0;
-    public int baskingType = 0;
-    public boolean forcedSit = false;
     private int baskingTimer = 0;
     private int swimTimer = -1000;
     private int passengerTimer = 0;
@@ -104,26 +88,41 @@ public class CrocodileServant extends AnimalSummon implements IAnimatedEntity, I
     private int animationTick;
     private Animation currentAnimation;
 
-    public CrocodileServant(EntityType<? extends Owned> type, Level level) {
+    public ZombieCrocodileServant(EntityType<? extends Owned> type, Level level) {
         super(type, level);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
         switchNavigator(false);
-        this.baskingType = random.nextInt(1);
+        this.setBaskingType(random.nextInt(2));
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.CrocodileServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.CrocodileServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.CrocodileServantDamage.get())
-                .add(Attributes.ARMOR, AttributesConfig.CrocodileServantArmor.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.CrocodileServantKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.CrocodileServantMovementSpeed.get());
+                .add(Attributes.MAX_HEALTH, AttributesConfig.ZombieCrocodileServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AttributesConfig.ZombieCrocodileServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.ZombieCrocodileServantDamage.get())
+                .add(Attributes.ARMOR, AttributesConfig.ZombieCrocodileServantArmor.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.ZombieCrocodileServantKnockbackResistance.get())
+                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.ZombieCrocodileServantMovementSpeed.get());
+    }
+
+    @Override
+    public MobType getMobType() {
+        return MobType.UNDEAD;
+    }
+
+    @Override
+    public boolean isSunSensitive() {
+        return true;
+    }
+
+    @Override
+    public boolean isBaby() {
+        return false;
     }
 
     protected SoundEvent getAmbientSound() {
-        return isBaby() ? AMSoundRegistry.CROCODILE_BABY.get() : AMSoundRegistry.CROCODILE_IDLE.get();
+        return AMSoundRegistry.CROCODILE_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
@@ -138,8 +137,7 @@ public class CrocodileServant extends AnimalSummon implements IAnimatedEntity, I
         super.addAdditionalSaveData(compound);
         compound.putBoolean("CrocodileSitting", this.isSitting());
         compound.putBoolean("Desert", this.isDesert());
-        compound.putBoolean("ForcedToSit", this.forcedSit);
-        compound.putInt("BaskingStyle", this.baskingType);
+        compound.putInt("BaskingStyle", this.getBaskingType());
         compound.putInt("BaskingTimer", this.baskingTimer);
         compound.putInt("SwimTimer", this.swimTimer);
         compound.putInt("StunTimer", this.getStunTicks());
@@ -149,23 +147,29 @@ public class CrocodileServant extends AnimalSummon implements IAnimatedEntity, I
         super.readAdditionalSaveData(compound);
         this.setOrderedToSit(compound.getBoolean("CrocodileSitting"));
         this.setDesert(compound.getBoolean("Desert"));
-        this.forcedSit = compound.getBoolean("ForcedToSit");
-        this.baskingType = compound.getInt("BaskingStyle");
+        this.setBaskingType(compound.getInt("BaskingStyle"));
         this.baskingTimer = compound.getInt("BaskingTimer");
         this.swimTimer = compound.getInt("SwimTimer");
         this.setStunTicks(compound.getInt("StunTimer"));
     }
 
+    @Override
+    protected PathNavigation createNavigation(Level level) {
+        return new SemiAquaticPathNavigator(this, level);
+    }
+
     private void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);
-            this.navigation = new GroundPathNavigatorWide(this, level());
             this.isLandNavigator = true;
         } else {
             this.moveControl = new AquaticMoveController(this, 1F);
-            this.navigation = new SemiAquaticPathNavigator(this, level());
             this.isLandNavigator = false;
         }
+    }
+
+    private boolean isFollowingOwner() {
+        return this.getTrueOwner() != null && this.isFollowing();
     }
 
     protected void defineSynchedData() {
@@ -174,6 +178,7 @@ public class CrocodileServant extends AnimalSummon implements IAnimatedEntity, I
         this.entityData.define(DESERT, false);
         this.entityData.define(CLIMBING, (byte) 0);
         this.entityData.define(STUN_TICKS, 0);
+        this.entityData.define(BASKING_TYPE, 0);
     }
 
     public boolean isBesideClimbableBlock() {
@@ -239,7 +244,6 @@ public class CrocodileServant extends AnimalSummon implements IAnimatedEntity, I
                 this.grabProgress--;
         }
 
-        // 追击目标时小幅加速，原版为 0.25 -> 0.28，这里基准取配置值
         if (this.getTarget() == null) {
             if (hasSpedUp) {
                 hasSpedUp = false;
@@ -268,7 +272,6 @@ public class CrocodileServant extends AnimalSummon implements IAnimatedEntity, I
                 swimTimer--;
             }
 
-            // 未认主的鳄鱼才会在岸边自动趴窝晒太阳；仆从不会自动坐下
             if (!this.isInWater() && this.onGround() && this.getTrueOwner() == null) {
                 if (!this.isSitting() && baskingTimer == 0 && this.getTarget() == null && this.getNavigation().isDone()) {
                     this.setOrderedToSit(true);
@@ -282,7 +285,6 @@ public class CrocodileServant extends AnimalSummon implements IAnimatedEntity, I
                     baskingTimer--;
                 }
             }
-            // 扑咬（Lunge）：向前冲一段并把体型较小的目标叼到背上
             if (this.getStunTicks() == 0 && this.isAlive() && this.getTarget() != null && this.getAnimation() == ANIMATION_LUNGE && (level().getDifficulty() != Difficulty.PEACEFUL || !(this.getTarget() instanceof Player)) && this.getAnimationTick() > 5 && this.getAnimationTick() < 9) {
                 final float f1 = this.getYRot() * Mth.DEG_TO_RAD;
                 this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.02F, 0.0D, Mth.cos(f1) * 0.02F));
@@ -306,7 +308,6 @@ public class CrocodileServant extends AnimalSummon implements IAnimatedEntity, I
                     this.playSound(AMSoundRegistry.CROCODILE_BITE.get(), this.getSoundVolume(), this.getVoicePitch());
                 }
             }
-            // 死亡翻滚（Death Roll）：水下对背上叼着的目标持续伤害
             if (this.isAlive() && this.getTarget() != null && this.isInWater() && (level().getDifficulty() != Difficulty.PEACEFUL || !(this.getTarget() instanceof Player))) {
                 if (this.getTarget().getVehicle() != null && this.getTarget().getVehicle() == this) {
                     if (this.getAnimation() == NO_ANIMATION) {
@@ -320,9 +321,6 @@ public class CrocodileServant extends AnimalSummon implements IAnimatedEntity, I
         }
         if (this.getAnimation() == ANIMATION_DEATHROLL) {
             this.getNavigation().stop();
-        }
-        if (this.isInLove() && this.getTarget() != null) {
-            this.setTarget(null);
         }
         if (this.getStunTicks() > 0) {
             this.setStunTicks(this.getStunTicks() - 1);
@@ -342,7 +340,7 @@ public class CrocodileServant extends AnimalSummon implements IAnimatedEntity, I
     }
 
     private double getBaseSpeed() {
-        return AttributesConfig.CrocodileServantMovementSpeed.get();
+        return AttributesConfig.ZombieCrocodileServantMovementSpeed.get();
     }
 
     protected void damageShieldFor(Player holder, float damage) {
@@ -416,8 +414,6 @@ public class CrocodileServant extends AnimalSummon implements IAnimatedEntity, I
         if (this.getAnimation() == NO_ANIMATION && this.getPassengers().isEmpty() && this.getStunTicks() == 0) {
             this.setAnimation(ANIMATION_LUNGE);
         }
-        // 伤害由 tick() 里的扑咬/翻滚判定打出（与 TusklinServant 一致），
-        // 不再调用 super.doHurtTarget，避免与 tick 的伤害叠加。
         return true;
     }
 
@@ -428,7 +424,7 @@ public class CrocodileServant extends AnimalSummon implements IAnimatedEntity, I
             this.moveRelative(this.getSpeed(), travelVector);
             this.move(MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
-            if (this.getTarget() == null) {
+            if (this.getTarget() == null && !this.isFollowingOwner()) {
                 this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.005D, 0.0D));
             }
         } else {
@@ -448,6 +444,9 @@ public class CrocodileServant extends AnimalSummon implements IAnimatedEntity, I
     public boolean shouldLeaveWater() {
         if (!this.getPassengers().isEmpty()) {
             return false;
+        }
+        if (this.isFollowingOwner() && !this.getTrueOwner().isInWater()) {
+            return true;
         }
         if (this.getTarget() != null && !this.getTarget().isInWater()) {
             return true;
@@ -481,6 +480,16 @@ public class CrocodileServant extends AnimalSummon implements IAnimatedEntity, I
         this.entityData.set(DESERT, Boolean.valueOf(desert));
     }
 
+    public boolean isBiomeDesert(LevelAccessor world, BlockPos pos) {
+        return world.getBiome(pos).is(AMTagRegistry.SPAWNS_DESERT_CROCODILES);
+    }
+
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+        this.setDesert(this.isBiomeDesert(worldIn, this.blockPosition()));
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+    }
+
     public int getStunTicks() {
         return this.entityData.get(STUN_TICKS);
     }
@@ -489,24 +498,28 @@ public class CrocodileServant extends AnimalSummon implements IAnimatedEntity, I
         this.entityData.set(STUN_TICKS, stun);
     }
 
+    public int getBaskingType() {
+        return this.entityData.get(BASKING_TYPE);
+    }
+
+    public void setBaskingType(int baskingType) {
+        this.entityData.set(BASKING_TYPE, baskingType);
+    }
+
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(2, new BreathAirGoal(this));
         this.goalSelector.addGoal(2, new AnimalAIFindWater(this));
         this.goalSelector.addGoal(2, new AnimalAILeaveWater(this));
-        this.goalSelector.addGoal(4, new CrocodileServantAIMelee(this, 1, true));
-        this.goalSelector.addGoal(5, new CrocodileServantAIRandomSwimming(this, 1.0D, 7));
+        this.goalSelector.addGoal(4, new ZombieCrocodileServantAIMelee(this, 1, true));
+        this.goalSelector.addGoal(5, new ZombieCrocodileServantAIRandomSwimming(this, 1.0D, 7));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0F));
-        this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
     }
 
-    public void setTarget(@Nullable LivingEntity entitylivingbaseIn) {
-        if (!this.isBaby()) {
-            super.setTarget(entitylivingbaseIn);
-        }
+    @Override
+    public void followGoal() {
+        this.goalSelector.addGoal(4, new Summoned.FollowOwnerWaterGoal(this, 1.0D, 10.0F, 2.0F));
     }
 
     public boolean hurt(DamageSource source, float amount) {
@@ -522,67 +535,37 @@ public class CrocodileServant extends AnimalSummon implements IAnimatedEntity, I
         }
     }
 
-    @Nullable
-    @Override
-    public AnimalSummon getBreedOffspring(ServerLevel pLevel, AnimalSummon pOtherParent) {
-        CrocodileServant baby = AmEntityRegistry.CROCODILE_SERVANT.get().create(pLevel);
-        if (baby != null) {
-            baby.setPersistenceRequired();
-        }
-        return baby;
-    }
-
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         final ItemStack itemstack = player.getItemInHand(hand);
         final Item item = itemstack.getItem();
         if (item == Items.NAME_TAG) {
             return super.mobInteract(player, hand);
         }
-        // 喂肉治疗（仅主人）
         if (item.isEdible() && item.getFoodProperties() != null && item.getFoodProperties().isMeat() && this.getTrueOwner() == player && this.getHealth() < this.getMaxHealth()) {
-            this.usePlayerItem(player, hand, itemstack);
+            if (!player.getAbilities().instabuild) {
+                itemstack.shrink(1);
+            }
             this.heal(10);
             this.gameEvent(GameEvent.EAT);
             this.playSound(SoundEvents.GENERIC_EAT, this.getSoundVolume(), this.getVoicePitch());
             return InteractionResult.SUCCESS;
         }
-        // 繁殖/催熟（仅主人）
-        if (isFood(itemstack) && this.getTrueOwner() == player) {
-            if (this.isBaby()) {
-                this.usePlayerItem(player, hand, itemstack);
-                this.ageUp(this.getSpeedUpSecondsWhenFeeding(-this.getAge()), true);
-                return InteractionResult.sidedSuccess(this.level().isClientSide);
-            } else if (this.getAge() >= 0 && this.canFallInLove()) {
-                this.usePlayerItem(player, hand, itemstack);
-                this.setInLove(player);
-                return InteractionResult.sidedSuccess(this.level().isClientSide);
-            }
-            return InteractionResult.SUCCESS;
-        }
         InteractionResult type = super.mobInteract(player, hand);
-        InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
-        // 坐下/站起（仅主人）
-        if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && this.getTrueOwner() == player && !isFood(itemstack)) {
-            if (this.isSitting()) {
-                this.forcedSit = false;
-                this.setOrderedToSit(false);
-            } else {
-                this.forcedSit = true;
-                this.setOrderedToSit(true);
-            }
-            return InteractionResult.SUCCESS;
-        }
+        itemstack.interactLivingEntity(player, this, hand);
         return type;
     }
 
     public boolean isFood(ItemStack stack) {
-        return stack.is(AMTagRegistry.CROCODILE_BREEDABLES);
+        return false;
     }
 
     @Override
     public boolean shouldEnterWater() {
         if (!this.getPassengers().isEmpty()) {
             return true;
+        }
+        if (this.isFollowingOwner() && !this.getTrueOwner().isInWater()) {
+            return false;
         }
         return this.getTarget() == null && !this.isSitting() && this.baskingTimer <= 0 && !shouldLeaveWater() && swimTimer <= -1000;
     }
@@ -617,28 +600,15 @@ public class CrocodileServant extends AnimalSummon implements IAnimatedEntity, I
         return s != null && (s.toLowerCase().contains("crown") || s.toLowerCase().contains("king") || s.toLowerCase().contains("rool"));
     }
 
-    /**
-     * 幼崽碰撞箱跟随模型 young 分支（整体 0.15 缩放、头 1.5 倍），避免箱体远大于渲染。
-     */
     @Override
     public EntityDimensions getDimensions(Pose pPose) {
-        return this.getType().getDimensions().scale(this.isBaby() ? 0.15F : 1.0F);
+        return this.getType().getDimensions();
     }
 
-    @Override
-    protected void ageBoundaryReached() {
-        super.ageBoundaryReached();
-        this.refreshDimensions();
-    }
+    static class ZombieCrocodileServantAIMelee extends MeleeAttackGoal {
+        private final ZombieCrocodileServant crocodile;
 
-    /**
-     * 原版 CrocodileAIMelee 构造器强类型 EntityCrocodile 且目标判定用到
-     * getPassengers()，直接复用会对 CrocodileServant 抛 ClassCastException，这里改写。
-     */
-    static class CrocodileServantAIMelee extends MeleeAttackGoal {
-        private final CrocodileServant crocodile;
-
-        public CrocodileServantAIMelee(CrocodileServant crocodile, double speedIn, boolean useLongMemory) {
+        public ZombieCrocodileServantAIMelee(ZombieCrocodileServant crocodile, double speedIn, boolean useLongMemory) {
             super(crocodile, speedIn, useLongMemory);
             this.crocodile = crocodile;
         }
@@ -661,17 +631,13 @@ public class CrocodileServant extends AnimalSummon implements IAnimatedEntity, I
         }
     }
 
-    /**
-     * 原版 CrocodileAIRandomSwimming 的 canUse 里对 mob 强转 EntityCrocodile 调用
-     * isSitting()，直接复用会抛 ClassCastException，这里把转型改成 CrocodileServant。
-     */
-    static class CrocodileServantAIRandomSwimming extends RandomStrollGoal {
-        public CrocodileServantAIRandomSwimming(PathfinderMob creature, double speed, int chance) {
+    static class ZombieCrocodileServantAIRandomSwimming extends RandomStrollGoal {
+        public ZombieCrocodileServantAIRandomSwimming(PathfinderMob creature, double speed, int chance) {
             super(creature, speed, chance, false);
         }
 
         public boolean canUse() {
-            if (this.mob.isVehicle() || ((CrocodileServant) mob).isSitting() || mob.getTarget() != null || !this.mob.isInWater() && this.mob instanceof ISemiAquatic && !((ISemiAquatic) this.mob).shouldEnterWater()) {
+            if (this.mob.isVehicle() || ((ZombieCrocodileServant) mob).isSitting() || mob.getTarget() != null || !this.mob.isInWater() && this.mob instanceof ISemiAquatic && !((ISemiAquatic) this.mob).shouldEnterWater()) {
                 return false;
             } else {
                 if (!this.forceTrigger) {

@@ -46,12 +46,12 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> TusklinServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> TusklinServantKnockbackResistance;
 
-    public static final ForgeConfigSpec.ConfigValue<Double> CrocodileServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> CrocodileServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> CrocodileServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> CrocodileServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> CrocodileServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> CrocodileServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> ZombieCrocodileServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> ZombieCrocodileServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> ZombieCrocodileServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> ZombieCrocodileServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> ZombieCrocodileServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> ZombieCrocodileServantArmor;
 
     public static final ForgeConfigSpec.ConfigValue<Double> MagispellerServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> MagispellerServantDamage;
@@ -741,18 +741,18 @@ public class AttributesConfig {
                 .defineInRange("tusklinServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
         TusklinServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Tusklin Servants have, Default: 0.9")
                 .defineInRange("tusklinServantKnockbackResistance", 0.9, 0.0, Double.MAX_VALUE);
-        CrocodileServantHealth = BUILDER.comment("How much Max Health Crocodile Servants have, Default: 30.0")
-                .defineInRange("crocodileServantHealth", 30.0, 1.0, Double.MAX_VALUE);
-        CrocodileServantDamage = BUILDER.comment("How much damage Crocodile Servants deal, Default: 10.0")
-                .defineInRange("crocodileServantDamage", 10.0, 1.0, Double.MAX_VALUE);
-        CrocodileServantMovementSpeed = BUILDER.comment("How fast Crocodile Servants move, Default: 0.25")
-                .defineInRange("crocodileServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
-        CrocodileServantFollowRange = BUILDER.comment("How much following/detection range Crocodile Servants have, Default: 15.0")
-                .defineInRange("crocodileServantFollowRange", 15.0, 0.0, Double.MAX_VALUE);
-        CrocodileServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Crocodile Servants have, Default: 0.4")
-                .defineInRange("crocodileServantKnockbackResistance", 0.4, 0.0, Double.MAX_VALUE);
-        CrocodileServantArmor = BUILDER.comment("How much natural Armor Crocodile Servants have, Default: 8.0")
-                .defineInRange("crocodileServantArmor", 8.0, 0.0, Double.MAX_VALUE);
+        ZombieCrocodileServantHealth = BUILDER.comment("How much Max Health Zombie Crocodile Servants have, Default: 30.0")
+                .defineInRange("zombieCrocodileServantHealth", 30.0, 1.0, Double.MAX_VALUE);
+        ZombieCrocodileServantDamage = BUILDER.comment("How much damage Zombie Crocodile Servants deal, Default: 10.0")
+                .defineInRange("zombieCrocodileServantDamage", 10.0, 1.0, Double.MAX_VALUE);
+        ZombieCrocodileServantMovementSpeed = BUILDER.comment("How fast Zombie Crocodile Servants move, Default: 0.25")
+                .defineInRange("zombieCrocodileServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
+        ZombieCrocodileServantFollowRange = BUILDER.comment("How much following/detection range Zombie Crocodile Servants have, Default: 15.0")
+                .defineInRange("zombieCrocodileServantFollowRange", 15.0, 0.0, Double.MAX_VALUE);
+        ZombieCrocodileServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Zombie Crocodile Servants have, Default: 0.4")
+                .defineInRange("zombieCrocodileServantKnockbackResistance", 0.4, 0.0, Double.MAX_VALUE);
+        ZombieCrocodileServantArmor = BUILDER.comment("How much natural Armor Zombie Crocodile Servants have, Default: 8.0")
+                .defineInRange("zombieCrocodileServantArmor", 8.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.push("Overgrown Colossus Servant (Optional - LM)");

@@ -9,28 +9,28 @@ import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.qiuyue.goetyominous.common.entities.ally.am.CrocodileServant;
+import com.qiuyue.goetyominous.common.entities.ally.am.ZombieCrocodileServant;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * 鳄鱼仆从模型，完整移植 AlexMobs 原版 ModelCrocodile 的几何与动画关键帧，
- * 只是把泛型从 EntityCrocodile 换成 CrocodileServant（AnimalSummon 而非原版鳄鱼实体）。
+ * 只是把泛型从 EntityCrocodile 换成 ZombieCrocodileServant（AnimalSummon 而非原版鳄鱼实体）。
  *
  * 不能直接复用 ModelCrocodile：它是 AdvancedEntityModel{@code <EntityCrocodile>}，编译器为
- * setupAnim/renderToBuffer 生成桥接方法并强制 checkcast EntityCrocodile，而 CrocodileServant
+ * setupAnim/renderToBuffer 生成桥接方法并强制 checkcast EntityCrocodile，而 ZombieCrocodileServant
  * 并非 EntityCrocodile，渲染时必然抛 ClassCastException。因此这里照搬几何/动画逻辑，重新
- * 以 CrocodileServant 为泛型参数声明。
+ * 以 ZombieCrocodileServant 为泛型参数声明。
  *
- * 动画常量用 CrocodileServant.ANIMATION_*，它们与 EntityCrocodile.ANIMATION_* 是同一对象实例，
+ * 动画常量用 ZombieCrocodileServant.ANIMATION_*，它们与 EntityCrocodile.ANIMATION_* 是同一对象实例，
  * 模型内 Animator 与实体 getAnimation() 的对象恒等比较仍然成立。
  *
  * 实体 tick() 里维护 groundProgress / swimProgress / baskingProgress / grabProgress 进度字段，
  * 模型 setupAnim 按进度插值出陆行/游泳/趴窝/叼抓等姿态。
  */
 @OnlyIn(Dist.CLIENT)
-public class ModelCrocodileServant extends AdvancedEntityModel<CrocodileServant> {
+public class ModelZombieCrocodileServant extends AdvancedEntityModel<ZombieCrocodileServant> {
     private final AdvancedModelBox root;
     private final AdvancedModelBox body;
     private final AdvancedModelBox left_leg;
@@ -54,7 +54,7 @@ public class ModelCrocodileServant extends AdvancedEntityModel<CrocodileServant>
     private final AdvancedModelBox right_lowerteeth;
     private final ModelAnimator animator;
 
-    public ModelCrocodileServant() {
+    public ModelZombieCrocodileServant() {
         texWidth = 256;
         texHeight = 256;
 
@@ -178,7 +178,7 @@ public class ModelCrocodileServant extends AdvancedEntityModel<CrocodileServant>
     public void animate(IAnimatedEntity entity, float f, float f1, float f2, float f3, float f4) {
         this.resetToDefaultPose();
         animator.update(entity);
-        animator.setAnimation(CrocodileServant.ANIMATION_LUNGE);
+        animator.setAnimation(ZombieCrocodileServant.ANIMATION_LUNGE);
         animator.startKeyframe(2);
         animator.move(body, 0, 0, 2);
         animator.rotate(head, Maths.rad(-55), 0, 0);
@@ -200,7 +200,7 @@ public class ModelCrocodileServant extends AdvancedEntityModel<CrocodileServant>
         animator.rotate(jaw, Maths.rad(15), 0, 0);
         animator.endKeyframe();
         animator.resetKeyframe(10);
-        animator.setAnimation(CrocodileServant.ANIMATION_DEATHROLL);
+        animator.setAnimation(ZombieCrocodileServant.ANIMATION_DEATHROLL);
         animator.startKeyframe(30);
         int rolls = 3;
         animator.rotate(body, 0, 0, Maths.rad(-360 * rolls));
@@ -209,7 +209,7 @@ public class ModelCrocodileServant extends AdvancedEntityModel<CrocodileServant>
     }
 
     @Override
-    public void setupAnim(CrocodileServant entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(ZombieCrocodileServant entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
         animate(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         boolean swimAnimate = entityIn.isInWater();
@@ -226,7 +226,7 @@ public class ModelCrocodileServant extends AdvancedEntityModel<CrocodileServant>
         }
         progressRotationPrev(jaw, grabProgress, Maths.rad(30), 0, 0, 10F);
         progressRotationPrev(head, grabProgress, Maths.rad(-10), 0, 0, 10F);
-        if (entityIn.baskingType == 0) {
+        if (entityIn.getBaskingType() == 0) {
             progressRotationPrev(body, baskProgress, 0, Maths.rad(-7), 0, 10F);
             progressRotationPrev(tail1, baskProgress, 0, Maths.rad(30), 0, 10F);
             progressRotationPrev(tail2, baskProgress, 0, Maths.rad(20), 0, 10F);
@@ -234,7 +234,7 @@ public class ModelCrocodileServant extends AdvancedEntityModel<CrocodileServant>
             progressRotationPrev(neck, baskProgress, 0, Maths.rad(-10), 0, 10F);
             progressRotationPrev(head, baskProgress, Maths.rad(-60), Maths.rad(-10), 0, 10F);
             progressRotationPrev(jaw, baskProgress, Maths.rad(60), 0, 0, 10F);
-        } else if (entityIn.baskingType == 1) {
+        } else if (entityIn.getBaskingType() == 1) {
             progressRotationPrev(body, baskProgress, 0, Maths.rad(7), 0, 10F);
             progressRotationPrev(tail1, baskProgress, 0, Maths.rad(-30), 0, 10F);
             progressRotationPrev(tail2, baskProgress, 0, Maths.rad(-20), 0, 10F);
