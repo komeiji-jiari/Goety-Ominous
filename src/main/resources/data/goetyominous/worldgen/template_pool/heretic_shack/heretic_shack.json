@@ -1,0 +1,15 @@
+{
+  "name": "goetyominous:heretic_shack/heretic_shack",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "location": "goetyominous:heretic_shack",
+        "processors": "goetyominous:heretic_shack_loot",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}

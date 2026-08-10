@@ -22,7 +22,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class Martyr extends AbstractGOCultist {
+public class Martyr extends AbstractGOCultist implements ICultist {
     private static final EntityDataAccessor<Integer> DATA_CONVERT_TIME = SynchedEntityData.defineId(Martyr.class, EntityDataSerializers.INT);
     private static final int CONVERT_DURATION = 200;
 

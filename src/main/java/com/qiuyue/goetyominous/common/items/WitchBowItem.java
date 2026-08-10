@@ -17,6 +17,10 @@ public class WitchBowItem extends BowItem {
         super(new Item.Properties().durability(384));
     }
 
+    public boolean isValidRepairItem(ItemStack pToRepair, ItemStack pRepair) {
+        return pRepair.getItem() instanceof BowItem;
+    }
+
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
         if (entity instanceof Player player) {

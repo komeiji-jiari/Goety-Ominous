@@ -137,24 +137,20 @@ public class ModItems {
     public static final RegistryObject<Item> BRAINEATER_FOCUS = ITEMS.register("braineater_focus",
             () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.BrainEaterSpell()));
 
-    /**
-     * 征服者仆从刷怪蛋
-     * 使用 ServantSpawnEggItem (这是北极冰的仆从刷怪蛋)类型，继承自 Forge 的原版刷怪蛋
-     * 参数说明:
-     * - ModEntityTypes.CONQUILLAGER_SERVANT: 对应的实体类型
-     * - 0xD3D3D3: 刷怪蛋主颜色
-     * - 0x0F0F0F: 刷怪蛋副颜色
-     * - egg(): 物品属性配置
-     */
+
+
+
+
+
+
+    public static final RegistryObject<ServantSpawnEggItem> AXOLOTL_SERVANT_SPAWN_EGG = ITEMS.register(
+            "axolotl_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.AXOLOTL_SERVANT, 0xFBC1E3, 0xA62D74, egg()));
+
     public static final RegistryObject<ServantSpawnEggItem> CONQUILLAGER_SERVANT_SPAWN_EGG = ITEMS.register(
             "conquillager_servant_spawn_egg",
             () -> new ServantSpawnEggItem(ModEntityTypes.CONQUILLAGER_SERVANT, 0xD3D3D3, 0x0F0F0F, egg()));
 
-    /**
-     * 巡查官仆从刷怪蛋
-     * - 0xBCA341: 主颜色
-     * - 0x5C121B: 副颜色
-     */
     public static final RegistryObject<ServantSpawnEggItem> INQUILLAGER_SERVANT_SPAWN_EGG = ITEMS.register(
             "inquillager_servant_spawn_egg",
             () -> new ServantSpawnEggItem(ModEntityTypes.INQUILLAGER_SERVANT, 0xBCA341, 0x5C121B, egg()));

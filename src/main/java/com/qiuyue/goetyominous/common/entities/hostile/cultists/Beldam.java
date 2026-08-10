@@ -192,6 +192,10 @@ public class Beldam extends AbstractGOCultist implements RangedAttackMob, ICulti
                         List<MobEffectInstance> effects = PotionUtils.getMobEffects(held);
                         for (MobEffectInstance effect : effects) {
                             this.addEffect(new MobEffectInstance(effect));
+                            if (effect.getEffect() == MobEffects.INVISIBILITY) {
+                                this.addEffect(new MobEffectInstance(MobEffects.GLOWING,
+                                        effect.getDuration(), effect.getAmplifier(), false, true));
+                            }
                         }
                     } else if (held.is(Items.MILK_BUCKET)) {
                         this.removeAllEffects();

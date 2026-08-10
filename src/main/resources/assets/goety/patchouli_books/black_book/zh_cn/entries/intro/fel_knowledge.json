@@ -1,0 +1,18 @@
+{
+  "name": "邪能知识",
+  "icon": "goety:witch_hat",
+  "category": "goety:intro",
+  "sortnum": 10,
+  "priority": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "世界各地的女巫们似乎密语着一些新的知识。如果你能打扮成一名女巫的样子并将这本书交给她们，或许她们会愿意和你分享关于这种知识的指南。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goety:witch_robe",
+      "text": "你注意到女巫们所持有的典籍其实是一本教科书。据女巫们所说，是某个非常喜欢和人打交道的巫婆和她的小魔女学徒一起编写的故事书...？"
+    }
+  ]
+}

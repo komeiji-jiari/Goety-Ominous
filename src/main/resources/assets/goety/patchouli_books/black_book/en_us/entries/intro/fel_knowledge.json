@@ -1,0 +1,18 @@
+{
+  "name": "Fel Knowledge",
+  "icon": "goety:witch_hat",
+  "category": "goety:intro",
+  "sortnum": 10,
+  "priority": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Witches across the world seem to whisper of new knowledge. If you dress as one of them and present this book to them, perhaps they will be willing to share a guide to such knowledge with you."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goety:witch_robe",
+      "text": "You notice that the tome held by the witches is actually a textbook. According to them, it was a storybook written by a certain sociable old crone and her little apprentice...?"
+    }
+  ]
+}

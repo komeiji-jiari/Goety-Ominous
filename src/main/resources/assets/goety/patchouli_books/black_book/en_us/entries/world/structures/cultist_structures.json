@@ -1,0 +1,23 @@
+{
+  "name": "Unsettling Structures",
+  "icon": "goety:infernal_tome",
+  "category": "goety:world",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "During your travels, you have discovered more outposts and manors occupied by mysterious cults. The people here seem fervently devoted to some entity, and are quite hostile toward you. It would be wise not to disturb them without proper preparation..."
+    },
+    {
+      "type": "patchouli:image",
+      "images": ["goetyominous:textures/gui/entries/heretic_watch_tower.png"],
+      "border": true,
+      "text": "An occupied watchtower."
+    },
+    {
+      "type": "patchouli:image",
+      "images": ["goetyominous:textures/gui/entries/heretic_shack.png"],
+      "border": true,
+      "text": "An occupied manor. There seem to be rooms beneath the surface... Perhaps there is some mechanism hidden beneath those vases?"
+    }
+  ]
+}

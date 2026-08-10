@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.init;
 
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.worldgen.LootInjectorProcessor;
+import com.qiuyue.goetyominous.common.worldgen.HereticShackLootProcessor;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -14,6 +15,9 @@ public class ModProcessorTypes {
 
     public static final RegistryObject<StructureProcessorType<LootInjectorProcessor>> LOOT_INJECTOR =
             PROCESSOR_TYPES.register("loot_injector", () -> () -> LootInjectorProcessor.CODEC);
+
+    public static final RegistryObject<StructureProcessorType<HereticShackLootProcessor>> HERETIC_SHACK_LOOT =
+            PROCESSOR_TYPES.register("heretic_shack_loot", () -> () -> HereticShackLootProcessor.CODEC);
 
     public static void register(IEventBus modEventBus) {
         PROCESSOR_TYPES.register(modEventBus);

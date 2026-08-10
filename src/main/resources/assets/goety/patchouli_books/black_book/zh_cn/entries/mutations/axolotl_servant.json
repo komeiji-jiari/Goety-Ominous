@@ -1,0 +1,23 @@
+{
+  "name": "美西螈",
+  "icon": "minecraft:tropical_fish",
+  "category": "goety:mutations",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你不满足于让美西螈帮助你战斗。你想让它们彻底屈服于你。通过一个转化仪式，你可以出于黑暗的目的控制一只可爱的美西螈。好吧，你可真是个怪胎，不是吗？"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_axolotl_to_axolotl_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "拥有野生美西螈的一切特性以外，你可以通过热带鱼喂食你的美西螈仆从恢复它们的血量，当然你也可以如此繁殖你的美西螈仆从。可惜的是，你不能再用桶装起它们。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:axolotl_servant"
+    }
+  ]
+}

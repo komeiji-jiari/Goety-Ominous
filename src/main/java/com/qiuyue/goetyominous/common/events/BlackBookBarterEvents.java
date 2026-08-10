@@ -4,6 +4,7 @@ import com.Polarice3.Goety.common.entities.ally.illager.cultist.WitchServant;
 import com.Polarice3.Goety.common.entities.hostile.cultists.Crone;
 import com.Polarice3.Goety.utils.CuriosFinder;
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.common.entities.ai.BlackBookBarterGoal;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -32,8 +33,8 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class BlackBookBarterEvents {
 
-    private static final String BARTER_TIMER = "GoetyOminousBarterTimer";
-    private static final String BARTER_TRADER = "GoetyOminousBarterTrader";
+    public static final String BARTER_TIMER = "GoetyOminousBarterTimer";
+    public static final String BARTER_TRADER = "GoetyOminousBarterTrader";
     private static final int BARTER_DURATION = 100;
 
     @SubscribeEvent
@@ -66,6 +67,7 @@ public class BlackBookBarterEvents {
         target.setItemSlot(EquipmentSlot.OFFHAND, book);
         target.getPersistentData().putInt(BARTER_TIMER, BARTER_DURATION);
         target.getPersistentData().putUUID(BARTER_TRADER, player.getUUID());
+        ((Mob) target).goalSelector.addGoal(1, new BlackBookBarterGoal((Mob) target));
 
         SoundEvent celebrate;
         if (target instanceof Witch) {

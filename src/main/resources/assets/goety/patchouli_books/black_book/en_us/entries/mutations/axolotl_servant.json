@@ -1,0 +1,23 @@
+{
+  "name": "Axolotl",
+  "icon": "minecraft:tropical_fish",
+  "category": "goety:mutations",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You are not satisfied with merely having axolotls aid you in battle. You want them to fully submit to you. Through a transformation ritual, you can bend a cute axolotl to your dark purposes. Well, you're quite the odd one, aren't you."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_axolotl_to_axolotl_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "In addition to possessing all the traits of wild axolotls, you can restore the health of your axolotl servants by feeding them Tropical Fish. Naturally, you can also breed your axolotl servants. Unfortunately, you can no longer pick them up with buckets."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:axolotl_servant"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "name": "令人不安的结构",
+  "icon": "goety:infernal_tome",
+  "category": "goety:world",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "旅途中，你发现了更多被神秘组织占据的哨站和宅邸。这里的人似乎对某种存在十分狂热，而且对你十分不友好。没有做好准备之前还是不要贸然打扰比较合适..."
+    },
+    {
+      "type": "patchouli:image",
+      "images": ["goetyominous:textures/gui/entries/heretic_watch_tower.png"],
+      "border": true,
+      "text": "一座被占据的哨塔。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": ["goetyominous:textures/gui/entries/heretic_shack.png"],
+      "border": true,
+      "text": "一座被占据的庄园。地下似乎还有一些房间...或许那些花瓶下藏着某种机关？"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "goetyominous:heretic_shack",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 1467514628,
+    "spacing": 60,
+    "separation": 20,
+    "type": "minecraft:random_spread"
+  }
+}

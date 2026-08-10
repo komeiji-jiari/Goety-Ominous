@@ -6,6 +6,7 @@ import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.config.MobsConfig;
 import com.Polarice3.Goety.utils.ServerParticleUtil;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
+import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -39,6 +40,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -76,16 +78,16 @@ public class AxolotlServant extends AnimalSummon implements LerpingModel{
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.2D, true));
-        this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(3, new RandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 0.6D, true));
+        this.goalSelector.addGoal(2, new BreedGoal(this, 0.2D));
+        this.goalSelector.addGoal(3, new RandomStrollGoal(this, 0.5D));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
     }
 
     @Override
     public boolean isFood(ItemStack pStack) {
-        return false;
+        return pStack.is(net.minecraft.tags.ItemTags.AXOLOTL_TEMPT_ITEMS) || pStack.is(Items.TROPICAL_FISH);
     }
 
     @Nullable
@@ -99,7 +101,9 @@ public class AxolotlServant extends AnimalSummon implements LerpingModel{
 
         if (offspring != null) {
             Variant variant;
-            if (this.random.nextBoolean()) {
+            if (this.random.nextInt(1200) == 0) {
+                variant = Variant.BLUE;
+            } else if (this.random.nextBoolean()) {
                 variant = this.getVariant();
             } else {
                 variant = otherAxolotl.getVariant();
@@ -119,15 +123,23 @@ public class AxolotlServant extends AnimalSummon implements LerpingModel{
 
     @Override
     public void followGoal() {
-        this.goalSelector.addGoal(2, new AxolotlFollowOwnerGoal(this, 1.0D, 10.0F, 2.0F));
+        this.goalSelector.addGoal(2, new AxolotlFollowOwnerGoal(this, 0.6D, 10.0F, 2.0F));
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 14.0D)
-                .add(Attributes.MOVEMENT_SPEED, 1.0D)
-                .add(Attributes.ATTACK_DAMAGE, 2.0D)
-                .add(Attributes.FOLLOW_RANGE, 16.0D);
+                .add(Attributes.MAX_HEALTH, AttributesConfig.AxolotlServantHealth.get())
+                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.AxolotlServantMovementSpeed.get())
+                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.AxolotlServantDamage.get())
+                .add(Attributes.FOLLOW_RANGE, AttributesConfig.AxolotlServantFollowRange.get());
+    }
+
+    @Override
+    public void setConfigurableAttributes() {
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(AttributesConfig.AxolotlServantHealth.get());
+        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AttributesConfig.AxolotlServantMovementSpeed.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AttributesConfig.AxolotlServantDamage.get());
+        this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(AttributesConfig.AxolotlServantFollowRange.get());
     }
 
     @Override
@@ -257,22 +269,37 @@ public class AxolotlServant extends AnimalSummon implements LerpingModel{
     }
 
     @Override
+    protected SoundEvent getSwimSplashSound() {
+        return SoundEvents.AXOLOTL_SPLASH;
+    }
+
+    @Override
     public void aiStep() {
         if (this.isAlive()) {
             String customName = this.getCustomName() != null ? this.getCustomName().getString() : "";
 
-            if ("!?skillupper?!".equals(customName)) {
+            if ("skillupper".equalsIgnoreCase(customName) || "sk".equalsIgnoreCase(customName)) {
                 if (this.getVariant() != Variant.BLUE) {
                     this.setVariant(Variant.BLUE);
                 }
-            } else if ("skillupper".equalsIgnoreCase(customName)) {
                 if (!this.shouldExplode) {
                     this.shouldExplode = true;
                     this.explosionCountdown = 60;
+                    this.playSound(SoundEvents.AXOLOTL_HURT, 1.0F, 1.0F);
                 }
                 if (this.shouldExplode && this.explosionCountdown > 0) {
                     this.explosionCountdown--;
                     if (!this.level().isClientSide) {
+                        LivingEntity owner = this.getTrueOwner();
+                        if (owner != null) {
+                            if (this.distanceToSqr(owner) <= 256.0D && this.hasLineOfSight(owner)) {
+                                if (this.distanceTo(owner) > 1.0D) {
+                                    this.getNavigation().moveTo(owner, 1.5D);
+                                } else {
+                                    this.getNavigation().stop();
+                                }
+                            }
+                        }
                         if (this.level() instanceof ServerLevel serverLevel) {
                             for (int i = 0; i < 5; ++i) {
                                 double d0 = this.random.nextGaussian() * 0.02D;
@@ -286,12 +313,11 @@ public class AxolotlServant extends AnimalSummon implements LerpingModel{
                     }
                     if (this.explosionCountdown <= 0) {
                         if (!this.level().isClientSide) {
-                            float explosionPower = 6.0F;
-                            this.level().explode(this, this.getX(), this.getY(), this.getZ(), explosionPower, Level.ExplosionInteraction.MOB);
+                            float explosionPower = 7.0F;
+                            this.level().explode(null, this.getX(), this.getY(), this.getZ(), explosionPower, Level.ExplosionInteraction.MOB);
 
                             if (this.getTrueOwner() instanceof Player owner) {
-                                float damageAmount = explosionPower * 2.0F;
-                                owner.hurt(this.damageSources().mobAttack(this), damageAmount);
+                                owner.hurt(this.damageSources().explosion(this, null), 100.0F);
                             }
 
                             this.discard();
@@ -338,12 +364,30 @@ public class AxolotlServant extends AnimalSummon implements LerpingModel{
         }
     }
 
+    @Override
+    public void baseTick() {
+        int i = this.getAirSupply();
+        super.baseTick();
+        this.handleAirSupply(i);
+    }
+
+    protected void handleAirSupply(int pCurrentAir) {
+        if (this.isAlive() && !this.isInWaterRainOrBubble()) {
+            this.setAirSupply(pCurrentAir - 1);
+            if (this.getAirSupply() == -20) {
+                this.setAirSupply(0);
+                this.hurt(this.damageSources().dryOut(), 2.0F);
+            }
+        } else {
+            this.setAirSupply(this.getMaxAirSupply());
+        }
+    }
 
     @Override
     public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
         ItemStack itemstack = pPlayer.getItemInHand(pHand);
         if (this.getTrueOwner() != null && pPlayer == this.getTrueOwner()) {
-            if (itemstack.is(net.minecraft.tags.ItemTags.AXOLOTL_TEMPT_ITEMS)) {
+            if (itemstack.is(net.minecraft.tags.ItemTags.AXOLOTL_TEMPT_ITEMS) || itemstack.is(Items.TROPICAL_FISH)) {
                 if (this.getHealth() < this.getMaxHealth()) {
                     FoodProperties foodproperties = itemstack.getFoodProperties(this);
                     if (foodproperties != null) {
@@ -447,7 +491,7 @@ public class AxolotlServant extends AnimalSummon implements LerpingModel{
         public void tick() {
             if (!this.axolotl.isPlayingDead()) {
                 super.tick();
-                this.mob.setSpeed(this.mob.getSpeed() * 0.35F);
+                this.mob.setSpeed(this.mob.getSpeed() * 0.2F);
             }
         }
     }
@@ -546,6 +590,7 @@ public class AxolotlServant extends AnimalSummon implements LerpingModel{
         public void tick() {
             if (this.owner != null) {
                 this.axolotl.getLookControl().setLookAt(this.owner, 10.0F, (float)this.axolotl.getMaxHeadXRot());
+                this.axolotl.yBodyRot = this.axolotl.yHeadRot;
                 if (--this.timeToRecalcPath <= 0) {
                     this.timeToRecalcPath = 10;
                     if (!this.axolotl.isLeashed() && !this.axolotl.isPassenger()) {
