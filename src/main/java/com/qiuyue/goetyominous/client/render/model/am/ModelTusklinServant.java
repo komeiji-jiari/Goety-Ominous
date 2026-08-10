@@ -13,18 +13,6 @@ import com.qiuyue.goetyominous.common.entities.ally.am.TusklinServant;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * 獠牙兽仆从模型，完整移植 AlexMobs 原版 ModelTusklin 的几何与动画关键帧，
- * 只是把泛型从 EntityTusklin 换成 TusklinServant（AnimalSummon 而非原版猪灵战獠实体）。
- *
- * 不能直接复用 ModelTusklin：它是 AdvancedEntityModel{@code <EntityTusklin>}，编译器为
- * setupAnim/renderToBuffer 生成桥接方法并强制 checkcast EntityTusklin，而 TusklinServant
- * 并非 EntityTusklin，渲染时必然抛 ClassCastException。因此这里照搬几何/动画逻辑，重新
- * 以 TusklinServant 为泛型参数声明。
- *
- * 动画常量用 TusklinServant.ANIMATION_*，它们与 EntityTusklin.ANIMATION_* 是同一对象实例，
- * 模型内 Animator 与实体 getAnimation() 的对象恒等比较仍然成立。
- */
 @OnlyIn(Dist.CLIENT)
 public class ModelTusklinServant extends AdvancedEntityModel<TusklinServant> {
    private final AdvancedModelBox root;

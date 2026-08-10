@@ -28,11 +28,7 @@ public class ModelCrimsonMosquitoServant extends AdvancedEntityModel<CrimsonMosq
     private final AdvancedModelBox antennaL;
     private final AdvancedModelBox antennaR;
     private final AdvancedModelBox mouth;
-    /**
-     * 渲染器在每次 render 前写入的插值系数，用于平滑 lerp flyProgress / shootProgress。
-     * （setupAnim 拿不到 partialTicks，AlexMobs 用 Minecraft.getInstance().getDeltaFrameTime()，
-     * 这里由渲染器直接注入，避免依赖 Minecraft 客户端计时 API。）
-     */
+
     public float renderPartialTicks;
 
     public ModelCrimsonMosquitoServant() {

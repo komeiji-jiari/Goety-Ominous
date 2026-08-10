@@ -53,9 +53,6 @@ import net.minecraft.world.phys.Vec3;
 
 public class TusklinServant extends AnimalSummon implements IAnimatedEntity {
 
-    // 复用 AlexMobs 原版 EntityTusklin 的 Animation 实例。RenderTusklin/ModelTusklin 内部用
-    // `getAnimation() == EntityTusklin.ANIMATION_*` 做对象恒等比较，若这里自己 create 新实例，
-    // 恒等比较永远不成立，冲刺/顶撞/拱地动画将无法播放。
     public static final Animation ANIMATION_RUT = EntityTusklin.ANIMATION_RUT;
     public static final Animation ANIMATION_GORE_L = EntityTusklin.ANIMATION_GORE_L;
     public static final Animation ANIMATION_GORE_R = EntityTusklin.ANIMATION_GORE_R;
@@ -68,45 +65,6 @@ public class TusklinServant extends AnimalSummon implements IAnimatedEntity {
     public TusklinServant(EntityType<? extends Owned> type, Level level) {
         super(type, level);
         this.setMaxUpStep(1.1F);
-    }
-
-    /**
-     * 特性1&2（复刻 Goety 红石傀儡的阻挡逻辑）：
-     * 1. isPushable/canBeCollidedWith 返回 true，碰撞箱变为实心，主人无法穿过。
-     * 2. canCollideWith 对主人返回 false、push/doPush 跳过主人，避免它与主人互相挤动。
-     * 注：canCollideWith/push/doPush 在 Owned 基类已对主人做过相同特判，这里显式覆写以保持与红石傀儡完全一致并防止上层行为变更。
-     */
-    @Override
-    public boolean isPushable() {
-        return !this.isDeadOrDying();
-    }
-
-    @Override
-    public boolean canBeCollidedWith() {
-        return !this.isDeadOrDying();
-    }
-
-    @Override
-    public boolean canCollideWith(Entity entity) {
-        if (entity != this.getTrueOwner()) {
-            return super.canCollideWith(entity);
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public void push(Entity entity) {
-        if (entity != this.getTrueOwner()) {
-            super.push(entity);
-        }
-    }
-
-    @Override
-    protected void doPush(Entity entity) {
-        if (entity != this.getTrueOwner()) {
-            super.doPush(entity);
-        }
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
@@ -166,6 +124,7 @@ public class TusklinServant extends AnimalSummon implements IAnimatedEntity {
     protected Vec3 getRiddenInput(Player player, Vec3 deltaIn) {
         return new Vec3(0, 0, 1);
     }
+
     @Override
     protected void tickRidden(Player player, Vec3 vec3) {
         super.tickRidden(player, vec3);
@@ -176,7 +135,6 @@ public class TusklinServant extends AnimalSummon implements IAnimatedEntity {
         this.setTarget(null);
         this.setSprinting(true);
     }
-
 
     @Override
     protected float getRiddenSpeed(Player rider) {
@@ -294,7 +252,6 @@ public class TusklinServant extends AnimalSummon implements IAnimatedEntity {
         }
         InteractionResult type = super.mobInteract(player, hand);
         if (type != InteractionResult.SUCCESS && !isFood(itemstack) && !isMushroom(itemstack)) {
-            // 只有主人可以骑乘
             if (!player.isShiftKeyDown() && !this.isBaby() && this.getAnimation() != ANIMATION_BUCK && this.getTrueOwner() == player) {
                 player.startRiding(this);
                 return InteractionResult.SUCCESS;
@@ -355,10 +312,6 @@ public class TusklinServant extends AnimalSummon implements IAnimatedEntity {
         return this.getType().getDimensions().scale(this.getAgeScale());
     }
 
-    /**
-     * Goety 的 AnimalSummon 只在船里处理年龄边界变化，不会刷新尺寸。
-     * 这里补充刷新，保证繁殖出生的幼崽（以及长大）时碰撞箱与 0.5 倍渲染一致。
-     */
     @Override
     protected void ageBoundaryReached() {
         super.ageBoundaryReached();

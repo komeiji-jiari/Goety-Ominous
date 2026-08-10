@@ -56,7 +56,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class Channeller extends AbstractGOCultist {
+public class Channeller extends AbstractGOCultist implements ICultist {
     private static final EntityDataAccessor<Boolean> IS_PRAYING = SynchedEntityData.defineId(Channeller.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Optional<UUID>> ALLY_UUID = SynchedEntityData.defineId(Channeller.class, EntityDataSerializers.OPTIONAL_UUID);
     private int prayingTick;
@@ -208,6 +208,7 @@ public class Channeller extends AbstractGOCultist {
                         ally.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 60, 1));
                         ally.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 60, 1));
                         ally.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 60, 1));
+                        ally.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 60, 0));
                         ally.setPersistenceRequired();
                         if (this.getHealth() < this.getMaxHealth()) {
                             if (this.tickCount % 10 == 0) {
@@ -347,6 +348,7 @@ public class Channeller extends AbstractGOCultist {
                 }
             }
         }
+
         List<Monster> monsterList = this.level().getEntitiesOfClass(Monster.class,
                 this.getBoundingBox().inflate(64.0D, 8.0D, 64.0D));
         for (Monster monster : monsterList) {
@@ -367,7 +369,7 @@ public class Channeller extends AbstractGOCultist {
         if (roll == 0) {
             minion = ModEntityType.WITHER_SKELETON_SERVANT.get().create(serverLevel);
         } else if (roll == 1) {
-            minion = ModEntityType.BLAZE_SERVANT.get().create(serverLevel);
+            minion = ModEntityType.SKELETON_PILLAGER_SERVANT.get().create(serverLevel);
         } else if (roll == 2) {
             minion = ModEntityType.ZPIGLIN_SERVANT.get().create(serverLevel);
         } else {
