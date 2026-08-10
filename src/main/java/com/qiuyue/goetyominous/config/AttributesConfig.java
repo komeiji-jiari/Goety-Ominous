@@ -53,6 +53,11 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> ZombieCrocodileServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> ZombieCrocodileServantArmor;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> BunfungusServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> BunfungusServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> BunfungusServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> BunfungusServantFollowRange;
+
     public static final ForgeConfigSpec.ConfigValue<Double> MagispellerServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> MagispellerServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> MagispellerServantMovementSpeed;
@@ -753,6 +758,14 @@ public class AttributesConfig {
                 .defineInRange("zombieCrocodileServantKnockbackResistance", 0.4, 0.0, Double.MAX_VALUE);
         ZombieCrocodileServantArmor = BUILDER.comment("How much natural Armor Zombie Crocodile Servants have, Default: 8.0")
                 .defineInRange("zombieCrocodileServantArmor", 8.0, 0.0, Double.MAX_VALUE);
+        BunfungusServantHealth = BUILDER.comment("How much Max Health Bunfungus Servants have, Default: 80.0")
+                .defineInRange("bunfungusServantHealth", 80.0, 1.0, Double.MAX_VALUE);
+        BunfungusServantDamage = BUILDER.comment("How much damage Bunfungus Servants deal, Default: 8.0")
+                .defineInRange("bunfungusServantDamage", 8.0, 1.0, Double.MAX_VALUE);
+        BunfungusServantMovementSpeed = BUILDER.comment("How fast Bunfungus Servants move, Default: 0.21")
+                .defineInRange("bunfungusServantMovementSpeed", 0.21, 0.0, Double.MAX_VALUE);
+        BunfungusServantFollowRange = BUILDER.comment("How much following/detection range Bunfungus Servants have, Default: 32.0")
+                .defineInRange("bunfungusServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.push("Overgrown Colossus Servant (Optional - LM)");

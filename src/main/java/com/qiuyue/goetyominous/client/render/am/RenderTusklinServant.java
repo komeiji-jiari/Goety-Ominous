@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class RenderTusklinServant extends MobRenderer<TusklinServant, ModelTusklinServant> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/tusklin.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation("goetyominous:textures/entity/tusklin_servant.png");
 
     public RenderTusklinServant(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelTusklinServant(), 1.0F);

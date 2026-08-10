@@ -14,17 +14,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * 鳄鱼仆从渲染器。
- *
- * 注意：不能像其他复用方案那样继承 AlexMobs 原版 RenderCrocodile——它是
- * MobRenderer{@code <EntityCrocodile, ModelCrocodile>}，而 ZombieCrocodileServant 继承 Goety 的
- * AnimalSummon、并非 EntityCrocodile。原版渲染器/模型里编译器生成的桥接方法会对传入实体
- * 无条件 checkcast EntityCrocodile，一旦注册给 ZombieCrocodileServant，每次渲染都会抛 ClassCastException。
- *
- * 这里改为标准的 MobRenderer{@code <ZombieCrocodileServant, ModelZombieCrocodileServant>}，普通纹理用本模组
- * 的 crocodile_0.png，沙漠色变体仍用 AlexMobs 原版 crocodile_1.png，王冠层用 crocodile_crown.png。
- */
 @OnlyIn(Dist.CLIENT)
 public class RenderZombieCrocodileServant extends MobRenderer<ZombieCrocodileServant, ModelZombieCrocodileServant> {
     private static final ResourceLocation TEXTURE_0 = new ResourceLocation("goetyominous:textures/entity/crocodile_0.png");
@@ -38,8 +27,6 @@ public class RenderZombieCrocodileServant extends MobRenderer<ZombieCrocodileSer
 
     @Override
     protected void scale(ZombieCrocodileServant entity, PoseStack matrixStack, float partialTicks) {
-        // 触发模型里已移植的 young 分支：幼崽整体 0.15 缩放 + 头部 1.5 倍大头外观，
-        // 与实体 getDimensions() 的 0.15 倍碰撞箱保持一致。
         this.model.young = entity.isBaby();
         matrixStack.scale(0.9F, 0.9F, 0.9F);
     }

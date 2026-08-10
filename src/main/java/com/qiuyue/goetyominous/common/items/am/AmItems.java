@@ -46,6 +46,10 @@ public class AmItems {
             AM_ITEMS.register("zombie_crocodile_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AmEntityRegistry.ZOMBIE_CROCODILE_SERVANT, 0x4E5B31, 0xD6C77E, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> BUNFUNGUS_SERVANT_SPAWN_EGG =
+            AM_ITEMS.register("bunfungus_servant_spawn_egg",
+                    () -> new ServantSpawnEggItem(AmEntityRegistry.BUNFUNGUS_SERVANT, 0x6F6D91, 0xC92B29, egg()));
+
     public static final RegistryObject<WarpedSteroidsItem> WARPED_STEROIDS =
             AM_ITEMS.register("warped_steroids", WarpedSteroidsItem::new);
 

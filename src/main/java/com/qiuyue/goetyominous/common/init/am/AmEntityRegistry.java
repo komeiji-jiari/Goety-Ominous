@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.common.init.am;
 
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.common.entities.ally.am.BunfungusServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.CrimsonMosquitoServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.ZombieCrocodileServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.FarseerServant;
@@ -100,6 +101,14 @@ public class AmEntityRegistry {
                             .sized(2.15F, 0.75F)
                             .setTrackingRange(10)
                             .build(GoetyOminous.MOD_ID + ":zombie_crocodile_servant"));
+
+    public static final RegistryObject<EntityType<BunfungusServant>> BUNFUNGUS_SERVANT =
+            AM_ENTITIES.register("bunfungus_servant",
+                    () -> EntityType.Builder.<BunfungusServant>of((type, worldIn) -> new BunfungusServant(type, worldIn), MobCategory.MISC)
+                            // 尺寸与原版 AlexMobs 巨型真菌一致（巨型形态 1.85 x 2.1）
+                            .sized(1.85F, 2.1F)
+                            .setTrackingRange(10)
+                            .build(GoetyOminous.MOD_ID + ":bunfungus_servant"));
 
     public static Predicate<LivingEntity> buildPredicateFromTag(TagKey<EntityType<?>> tagKey) {
         if (tagKey == null) {

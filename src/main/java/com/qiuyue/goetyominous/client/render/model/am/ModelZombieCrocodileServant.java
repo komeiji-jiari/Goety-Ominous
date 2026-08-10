@@ -14,21 +14,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * 鳄鱼仆从模型，完整移植 AlexMobs 原版 ModelCrocodile 的几何与动画关键帧，
- * 只是把泛型从 EntityCrocodile 换成 ZombieCrocodileServant（AnimalSummon 而非原版鳄鱼实体）。
- *
- * 不能直接复用 ModelCrocodile：它是 AdvancedEntityModel{@code <EntityCrocodile>}，编译器为
- * setupAnim/renderToBuffer 生成桥接方法并强制 checkcast EntityCrocodile，而 ZombieCrocodileServant
- * 并非 EntityCrocodile，渲染时必然抛 ClassCastException。因此这里照搬几何/动画逻辑，重新
- * 以 ZombieCrocodileServant 为泛型参数声明。
- *
- * 动画常量用 ZombieCrocodileServant.ANIMATION_*，它们与 EntityCrocodile.ANIMATION_* 是同一对象实例，
- * 模型内 Animator 与实体 getAnimation() 的对象恒等比较仍然成立。
- *
- * 实体 tick() 里维护 groundProgress / swimProgress / baskingProgress / grabProgress 进度字段，
- * 模型 setupAnim 按进度插值出陆行/游泳/趴窝/叼抓等姿态。
- */
 @OnlyIn(Dist.CLIENT)
 public class ModelZombieCrocodileServant extends AdvancedEntityModel<ZombieCrocodileServant> {
     private final AdvancedModelBox root;

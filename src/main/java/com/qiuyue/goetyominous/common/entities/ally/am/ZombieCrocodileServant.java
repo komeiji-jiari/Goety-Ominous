@@ -25,6 +25,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
@@ -410,6 +411,14 @@ public class ZombieCrocodileServant extends Summoned implements IAnimatedEntity,
         return false;
     }
 
+    // Wide hitbox (2.15) + Path.getEntityPosAt offset makes MoveControl's jump-proximity check
+    // unreliable for 1-block steps, and AquaticMoveController has no jump at all. Stepping up
+    // natively (needs maxUpStep strictly > 1.0) fixes climbing over 1-block ledges on land and at water banks.
+    @Override
+    public float maxUpStep() {
+        return 1.25F;
+    }
+
     public boolean doHurtTarget(Entity entityIn) {
         if (this.getAnimation() == NO_ANIMATION && this.getPassengers().isEmpty() && this.getStunTicks() == 0) {
             this.setAnimation(ANIMATION_LUNGE);
@@ -442,11 +451,11 @@ public class ZombieCrocodileServant extends Summoned implements IAnimatedEntity,
     }
 
     public boolean shouldLeaveWater() {
-        if (!this.getPassengers().isEmpty()) {
+        if (this.isFollowingOwner()) {
             return false;
         }
-        if (this.isFollowingOwner() && !this.getTrueOwner().isInWater()) {
-            return true;
+        if (!this.getPassengers().isEmpty()) {
+            return false;
         }
         if (this.getTarget() != null && !this.getTarget().isInWater()) {
             return true;
@@ -548,6 +557,11 @@ public class ZombieCrocodileServant extends Summoned implements IAnimatedEntity,
             this.heal(10);
             this.gameEvent(GameEvent.EAT);
             this.playSound(SoundEvents.GENERIC_EAT, this.getSoundVolume(), this.getVoicePitch());
+            if (!this.level().isClientSide) {
+                ((ServerLevel) this.level()).sendParticles(ParticleTypes.HEART,
+                        this.getX(), this.getY() + this.getBbHeight() + 0.4D, this.getZ(),
+                        6, 0.5D, 0.2D, 0.5D, 0.0D);
+            }
             return InteractionResult.SUCCESS;
         }
         InteractionResult type = super.mobInteract(player, hand);
@@ -561,11 +575,11 @@ public class ZombieCrocodileServant extends Summoned implements IAnimatedEntity,
 
     @Override
     public boolean shouldEnterWater() {
+        if (this.isFollowingOwner()) {
+            return this.getTrueOwner().isInWater();
+        }
         if (!this.getPassengers().isEmpty()) {
             return true;
-        }
-        if (this.isFollowingOwner() && !this.getTrueOwner().isInWater()) {
-            return false;
         }
         return this.getTarget() == null && !this.isSitting() && this.baskingTimer <= 0 && !shouldLeaveWater() && swimTimer <= -1000;
     }

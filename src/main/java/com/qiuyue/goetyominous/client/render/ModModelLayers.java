@@ -536,6 +536,11 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.ZOMBIE_CROCODILE_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderZombieCrocodileServant::new);
+            // 蘑菇兔仆从：RenderBunfungusServant 是标准的 MobRenderer<BunfungusServant, ModelBunfungusServant>，
+            // 复用 alexsmobs 的 bunfungus 贴图与几何/动画
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.BUNFUNGUS_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.am.RenderBunfungusServant::new);
 
             // 在这里添加 AlexMobs 联动仆从的渲染器注册
         }
