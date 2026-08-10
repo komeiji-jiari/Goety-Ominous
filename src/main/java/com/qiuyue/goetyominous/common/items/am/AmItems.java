@@ -28,7 +28,7 @@ public class AmItems {
 
     public static final RegistryObject<ServantSpawnEggItem> CRIMSON_MOSQUITO_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("crimson_mosquito_servant_spawn_egg",
-                    () -> new ServantSpawnEggItem(AmEntityRegistry.CRIMSON_MOSQUITO_SERVANT, 0xC21E2B, 0x1C1C1C, egg()));
+                    () -> new ServantSpawnEggItem(AmEntityRegistry.CRIMSON_MOSQUITO_SERVANT, 0x53403F, 0xC11A1A, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> WARPED_MOSCO_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("warped_mosco_servant_spawn_egg",
@@ -41,6 +41,10 @@ public class AmItems {
     public static final RegistryObject<ServantSpawnEggItem> TUSKLIN_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("tusklin_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AmEntityRegistry.TUSKLIN_SERVANT, 0x5A3B24, 0xC1A15C, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> ZOMBIE_CROCODILE_SERVANT_SPAWN_EGG =
+            AM_ITEMS.register("zombie_crocodile_servant_spawn_egg",
+                    () -> new ServantSpawnEggItem(AmEntityRegistry.ZOMBIE_CROCODILE_SERVANT, 0x4E5B31, 0xD6C77E, egg()));
 
     public static final RegistryObject<WarpedSteroidsItem> WARPED_STEROIDS =
             AM_ITEMS.register("warped_steroids", WarpedSteroidsItem::new);

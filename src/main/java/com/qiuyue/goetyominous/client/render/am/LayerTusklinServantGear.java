@@ -15,12 +15,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * 獠牙兽仆从的装备层，移植 AlexMobs 原版 LayerTusklinGear：
- * 有鞍具（isSaddled()）时渲染 tusklin_saddle 纹理，蹄铁槽（getShoeStack()）非空时渲染蹄铁纹理。
+ * 蹄铁槽（getShoeStack()）非空时渲染蹄铁纹理。不渲染鞍具。
  * 泛型从 EntityTusklin 换成 TusklinServant / ModelTusklinServant。
  */
 @OnlyIn(Dist.CLIENT)
 public class LayerTusklinServantGear extends RenderLayer<TusklinServant, ModelTusklinServant> {
-   private static final ResourceLocation TEXTURE_SADDLE = new ResourceLocation("alexsmobs:textures/entity/tusklin_saddle.png");
    private static final ResourceLocation TEXTURE_SHOES = new ResourceLocation("alexsmobs:textures/entity/tusklin_hooves.png");
 
    public LayerTusklinServantGear(RenderTusklinServant render) {
@@ -29,11 +28,6 @@ public class LayerTusklinServantGear extends RenderLayer<TusklinServant, ModelTu
 
    @Override
    public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, TusklinServant entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-      if (entitylivingbaseIn.isSaddled()) {
-         VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.entityCutout(TEXTURE_SADDLE));
-         this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
-      }
-
       if (!entitylivingbaseIn.getShoeStack().isEmpty()) {
          VertexConsumer ivertexbuilder = ItemRenderer.getArmorFoilBuffer(bufferIn, RenderType.armorCutoutNoCull(TEXTURE_SHOES), false, entitylivingbaseIn.getShoeStack().hasFoil());
          this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);

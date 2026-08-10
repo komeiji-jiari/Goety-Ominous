@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.init.am;
 
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.am.CrimsonMosquitoServant;
+import com.qiuyue.goetyominous.common.entities.ally.am.ZombieCrocodileServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.FarseerServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.MurmurServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.MurmurServantHead;
@@ -91,6 +92,14 @@ public class AmEntityRegistry {
                             .sized(1.3F, 1.8F)
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":tusklin_servant"));
+
+    public static final RegistryObject<EntityType<ZombieCrocodileServant>> ZOMBIE_CROCODILE_SERVANT =
+            AM_ENTITIES.register("zombie_crocodile_servant",
+                    () -> EntityType.Builder.<ZombieCrocodileServant>of((type, worldIn) -> new ZombieCrocodileServant(type, worldIn), MobCategory.MISC)
+                            // 尺寸与原版 AlexMobs 鳄鱼一致；幼崽碰撞箱由 getDimensions() 缩放为 0.15 倍
+                            .sized(2.15F, 0.75F)
+                            .setTrackingRange(10)
+                            .build(GoetyOminous.MOD_ID + ":zombie_crocodile_servant"));
 
     public static Predicate<LivingEntity> buildPredicateFromTag(TagKey<EntityType<?>> tagKey) {
         if (tagKey == null) {

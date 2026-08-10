@@ -299,10 +299,6 @@ public class TusklinServant extends AnimalSummon implements IAnimatedEntity {
         return stack.is(AMTagRegistry.TUSKLIN_FOODSTUFFS);
     }
 
-    public boolean isSaddled() {
-        return !this.getShoeStack().isEmpty();
-    }
-
     public float getAgeScale() {
         return this.isBaby() ? 0.5F : 1.0F;
     }
@@ -335,6 +331,17 @@ public class TusklinServant extends AnimalSummon implements IAnimatedEntity {
 
     public void setShoeStack(ItemStack shoe) {
         this.setItemSlot(EquipmentSlot.FEET, shoe);
+    }
+
+    @Override
+    public boolean causeFallDamage(float pFallDistance, float pMultiplier, DamageSource pSource) {
+        if (this.getShoeStack().is(AMItemRegistry.PIGSHOES.get())) {
+            if (pFallDistance <= 6.0F) {
+                return super.causeFallDamage(pFallDistance, 0.0F, pSource);
+            }
+            pMultiplier *= 0.5F;
+        }
+        return super.causeFallDamage(pFallDistance, pMultiplier, pSource);
     }
 
     @Override
@@ -385,7 +392,7 @@ public class TusklinServant extends AnimalSummon implements IAnimatedEntity {
                 }
             }
         }
-        if (this.getAnimation() == ANIMATION_RUT && this.getAnimationTick() == 23) {
+        if (this.getAnimation() == ANIMATION_RUT && this.getAnimationTick() == 23 && this.getControllingPassenger() == null) {
             if (level().getBlockState(this.blockPosition().below()).is(Blocks.GRASS_BLOCK) && getRandom().nextInt(3) == 0) {
                 if (this.isBaby()) {
                     if (level().getBlockState(this.blockPosition()).canBeReplaced() && random.nextInt(3) == 0) {
@@ -399,7 +406,7 @@ public class TusklinServant extends AnimalSummon implements IAnimatedEntity {
                 this.heal(5);
             }
         }
-        if (!this.level().isClientSide && this.getAnimation() == NO_ANIMATION && getRandom().nextInt(isBaby() ? 140 : 70) == 0 && (this.getLastHurtByMob() == null || this.distanceTo(this.getLastHurtByMob()) > 30)) {
+        if (!this.level().isClientSide && this.getAnimation() == NO_ANIMATION && this.getControllingPassenger() == null && getRandom().nextInt(isBaby() ? 140 : 70) == 0 && (this.getLastHurtByMob() == null || this.distanceTo(this.getLastHurtByMob()) > 30)) {
             if (level().getBlockState(this.blockPosition().below()).is(Blocks.GRASS_BLOCK) && getRandom().nextInt(3) == 0) {
                 this.setAnimation(ANIMATION_RUT);
             }
