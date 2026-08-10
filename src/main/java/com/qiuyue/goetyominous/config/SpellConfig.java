@@ -120,7 +120,7 @@ public class SpellConfig {
 
         BUILDER.push("Farseer");
         FarseerSoulCost = BUILDER.comment("Soul cost of Farseer Servant spell (Default: 128)")
-                .defineInRange("farseerSoulCost", 128, 1, 100);
+                .defineInRange("farseerSoulCost", 128, 1, 128);
         FarseerCastDuration = BUILDER.comment("Cast duration of Farseer Servant spell in ticks (Default: 100)")
                 .defineInRange("farseerCastDuration", 100, 0, 500);
         FarseerSummonDown = BUILDER.comment("Summon down duration of Farseer Servant spell in ticks (Default: 200)")

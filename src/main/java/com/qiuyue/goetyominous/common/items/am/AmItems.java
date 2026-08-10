@@ -57,7 +57,6 @@ public class AmItems {
             "bloodspray_focus",
             () -> new MagicFocus(new BloodSpraySpell()));
 
-
     public static final RegistryObject<MagicFocus> FARSEER_FOCUS = AM_ITEMS.register(
             "farseer_focus",
             () -> new MagicFocus(new FarseerSpell()));

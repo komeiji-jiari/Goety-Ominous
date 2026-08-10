@@ -12,10 +12,6 @@ import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * 疣猪蚊仆从模型，移植自 AlexMobs 的 ModelWarpedMosco。
- * 动画常量改用 WarpedMoscoServant 自身的 ANIMATION_*（与 AlexMobs 相同帧长）。
- */
 @OnlyIn(Dist.CLIENT)
 public class ModelWarpedMoscoServant extends AdvancedEntityModel<WarpedMoscoServant> {
     private final AdvancedModelBox root;

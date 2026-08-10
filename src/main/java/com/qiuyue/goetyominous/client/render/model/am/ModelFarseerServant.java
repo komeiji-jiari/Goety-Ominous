@@ -12,10 +12,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * 先知仆从模型，移植自 AlexMobs 的 ModelFarseer。
- * 几何/动画与原版 farseer 完全一致，贴图复用 AlexMobs 的 farseer 系列贴图。
- */
 @OnlyIn(Dist.CLIENT)
 public class ModelFarseerServant extends AdvancedEntityModel<FarseerServant> {
     public final AdvancedModelBox eye;
