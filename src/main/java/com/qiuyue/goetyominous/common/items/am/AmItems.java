@@ -50,6 +50,11 @@ public class AmItems {
             AM_ITEMS.register("bunfungus_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AmEntityRegistry.BUNFUNGUS_SERVANT, 0x6F6D91, 0xC92B29, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> ILLAGER_ELEPHANT_SERVANT_SPAWN_EGG =
+            AM_ITEMS.register("illager_elephant_servant_spawn_egg",
+                    // 基色 0x3E2E2F = 贴图主色(深红棕身体)；高光 0xEDE5D1 = 贴图象牙/肚皮奶油色
+                    () -> new ServantSpawnEggItem(AmEntityRegistry.ILLAGER_ELEPHANT_SERVANT, 0x3E2E2F, 0xEDE5D1, egg()));
+
     public static final RegistryObject<WarpedSteroidsItem> WARPED_STEROIDS =
             AM_ITEMS.register("warped_steroids", WarpedSteroidsItem::new);
 

@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.common.init.am;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.am.BunfungusServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.CrimsonMosquitoServant;
+import com.qiuyue.goetyominous.common.entities.ally.am.IllagerElephantServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.ZombieCrocodileServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.FarseerServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.MurmurServant;
@@ -109,6 +110,14 @@ public class AmEntityRegistry {
                             .sized(1.85F, 2.1F)
                             .setTrackingRange(10)
                             .build(GoetyOminous.MOD_ID + ":bunfungus_servant"));
+
+    public static final RegistryObject<EntityType<IllagerElephantServant>> ILLAGER_ELEPHANT_SERVANT =
+            AM_ENTITIES.register("illager_elephant_servant",
+                    () -> EntityType.Builder.<IllagerElephantServant>of((type, worldIn) -> new IllagerElephantServant(type, worldIn), MobCategory.MISC)
+                            // 尺寸与原版 AlexMobs 大象一致，带战箱的可骑乘巨兽
+                            .sized(3.7F, 3.75F)
+                            .setTrackingRange(10)
+                            .build(GoetyOminous.MOD_ID + ":illager_elephant_servant"));
 
     public static Predicate<LivingEntity> buildPredicateFromTag(TagKey<EntityType<?>> tagKey) {
         if (tagKey == null) {

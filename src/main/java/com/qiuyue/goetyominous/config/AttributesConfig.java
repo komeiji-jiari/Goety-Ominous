@@ -58,6 +58,12 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> BunfungusServantMovementSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> BunfungusServantFollowRange;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> IllagerElephantServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> IllagerElephantServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> IllagerElephantServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> IllagerElephantServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> IllagerElephantServantKnockbackResistance;
+
     public static final ForgeConfigSpec.ConfigValue<Double> MagispellerServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> MagispellerServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> MagispellerServantMovementSpeed;
@@ -766,6 +772,16 @@ public class AttributesConfig {
                 .defineInRange("bunfungusServantMovementSpeed", 0.21, 0.0, Double.MAX_VALUE);
         BunfungusServantFollowRange = BUILDER.comment("How much following/detection range Bunfungus Servants have, Default: 32.0")
                 .defineInRange("bunfungusServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
+        IllagerElephantServantHealth = BUILDER.comment("How much Max Health Illager Elephant Servants have, Default: 150.0 (matches Alex's Mobs tusked elephant spawn health)")
+                .defineInRange("illagerElephantServantHealth", 150.0, 1.0, Double.MAX_VALUE);
+        IllagerElephantServantDamage = BUILDER.comment("How much damage Illager Elephant Servants deal, Default: 15.0 (matches Alex's Mobs tusked elephant)")
+                .defineInRange("illagerElephantServantDamage", 15.0, 1.0, Double.MAX_VALUE);
+        IllagerElephantServantMovementSpeed = BUILDER.comment("How fast Illager Elephant Servants move, Default: 0.35 (matches Alex's Mobs tusked elephant)")
+                .defineInRange("illagerElephantServantMovementSpeed", 0.35, 0.0, Double.MAX_VALUE);
+        IllagerElephantServantFollowRange = BUILDER.comment("How much following/detection range Illager Elephant Servants have, Default: 32.0")
+                .defineInRange("illagerElephantServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
+        IllagerElephantServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Illager Elephant Servants have, Default: 0.9")
+                .defineInRange("illagerElephantServantKnockbackResistance", 0.9, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.push("Overgrown Colossus Servant (Optional - LM)");

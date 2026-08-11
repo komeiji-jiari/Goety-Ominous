@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.compat.am;
 
 import com.qiuyue.goetyominous.common.entities.ally.am.BunfungusServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.CrimsonMosquitoServant;
+import com.qiuyue.goetyominous.common.entities.ally.am.IllagerElephantServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.ZombieCrocodileServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.FarseerServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.MurmurServant;
@@ -41,5 +42,6 @@ public class AmCompatManager {
         event.put(AmEntityRegistry.TUSKLIN_SERVANT.get(), TusklinServant.setCustomAttributes().build());
         event.put(AmEntityRegistry.ZOMBIE_CROCODILE_SERVANT.get(), ZombieCrocodileServant.setCustomAttributes().build());
         event.put(AmEntityRegistry.BUNFUNGUS_SERVANT.get(), BunfungusServant.setCustomAttributes().build());
+        event.put(AmEntityRegistry.ILLAGER_ELEPHANT_SERVANT.get(), IllagerElephantServant.setCustomAttributes().build());
     }
 }

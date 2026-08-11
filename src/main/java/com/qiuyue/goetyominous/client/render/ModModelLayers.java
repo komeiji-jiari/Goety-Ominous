@@ -541,6 +541,10 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.BUNFUNGUS_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderBunfungusServant::new);
+            // 大象仆从：RenderIllagerElephantServant 是标准的 MobRenderer<IllagerElephantServant, ModelIllagerElephantServant>
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.ILLAGER_ELEPHANT_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.am.RenderIllagerElephantServant::new);
 
             // 在这里添加 AlexMobs 联动仆从的渲染器注册
         }

@@ -29,5 +29,9 @@ public class ModNetwork {
                 CWitherScytheStrikePacket::encode,
                 CWitherScytheStrikePacket::decode,
                 CWitherScytheStrikePacket::handle);
+        CHANNEL.registerMessage(id++, ElephantChargePacket.class,
+                ElephantChargePacket::encode,
+                ElephantChargePacket::decode,
+                ElephantChargePacket::handle);
     }
 }

@@ -14,6 +14,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> FarseerServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> CrimsonMosquitoServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> IllagerElephantServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> ThrasherServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> GreatThrasherServantLimit;
@@ -71,6 +72,10 @@ public class MobsConfig {
         WarpedMoscoServantLimit = BUILDER
                 .comment("Maximum number of Warped Mosco Servants that can be summoned (Default: 2)")
                 .defineInRange("warpedMoscoServantLimit", 2, 1, 100);
+
+        IllagerElephantServantLimit = BUILDER
+                .comment("Maximum number of Illager Elephant Servants that can be summoned (Default: 2)")
+                .defineInRange("illagerElephantServantLimit", 2, 1, 100);
 
         UrbhadhachServantLimit = BUILDER
                 .comment("Maximum number of Urbhadhach Servants that can be summoned (Default: 8)")
