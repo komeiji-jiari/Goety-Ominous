@@ -1,0 +1,38 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:convert_tamed",
+  "activation_item": {
+    "item": "minecraft:brown_mushroom"
+  },
+  "craftType": "frost",
+  "entity_to_convert": {
+    "tag": "goety:tusklin_convert",
+    "display_name": "entity.minecraft.pig"
+  },
+  "entity_to_convert_into": "goetyominous:tusklin_servant",
+  "soulCost": 1,
+  "duration": 10,
+  "ingredients": [
+    {
+      "item": "minecraft:red_mushroom"
+    },
+    {
+      "item": "minecraft:red_mushroom"
+    },
+    {
+      "item": "goety:savage_tooth"
+    },
+    {
+      "item": "goety:savage_tooth"
+    },
+    {
+      "item": "minecraft:sweet_berries"
+    },
+    {
+      "item": "minecraft:sweet_berries"
+    }
+  ],
+  "result": {
+    "item": "goety:jei_dummy/none"
+  }
+}

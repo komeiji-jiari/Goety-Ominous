@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.ally.sar;
 
 import com.Polarice3.Goety.common.entities.ally.Summoned;
+import com.Polarice3.Goety.init.ModMobType;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.teamabnormals.savage_and_ravage.core.registry.SRSoundEvents;
 import net.minecraft.nbt.CompoundTag;
@@ -72,6 +73,10 @@ public class CreepieServant extends Summoned implements PowerableMob {
         this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
 
         super.registerGoals();
+    }
+
+    public MobType getMobType() {
+        return ModMobType.NATURAL;
     }
 
     class CreeperSwellGoal extends Goal {

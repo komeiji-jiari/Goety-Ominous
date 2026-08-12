@@ -1,0 +1,47 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:convert_tamed",
+  "activation_item": {
+    "item": "goety:ominous_saddle"
+  },
+  "craftType": "magic",
+  "entity_to_convert": {
+    "tag": "goety:elephant_convert",
+    "display_name": "entity.alexsmobs.elephant"
+  },
+  "entity_to_convert_into": "goetyominous:illager_elephant_servant",
+  "soulCost": 1,
+  "duration": 30,
+  "ingredients": [
+    {
+      "item": "goety:resilience_lotion"
+    },
+    {
+      "item": "goety:soul_emerald"
+    },
+    {
+      "item": "goety:savage_tooth"
+    },
+    {
+      "item": "minecraft:lapis_lazuli"
+    },
+    {
+      "item": "goety:jade"
+    },
+    {
+      "item": "goety:pale_steel_ingot"
+    },
+    {
+      "item": "goety:pale_steel_ingot"
+    },
+    {
+      "item": "minecraft:hay_block"
+    },
+    {
+      "item": "alexsmobs:acacia_blossom"
+    }
+  ],
+  "result": {
+    "item": "goety:jei_dummy/none"
+  }
+}

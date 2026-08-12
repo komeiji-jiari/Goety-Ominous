@@ -1,0 +1,32 @@
+{
+  "name": "Tusklin Servant",
+  "icon": "goety:savage_tooth",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "These creatures inhabiting the cold snowy biomes of the Overworld appear to be distant relatives of the Hoglin. You can mutate a Tusklin servant from a Pig, or use a ritual to bind a wild Tusklin to your will."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "You can ride these powerful beasts. However, they are not fond of being ridden—even by their owner. Riding a Tusklin will cause it to start charging uncontrollably. Additionally, Ancient Hogshoes can be used to reduce fall damage for your Tusklin."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:tusklin_servant",
+      "text": "Some say that these Tusklins are descendants of Hoglins left behind in the Overworld after the Piglin invasions of Legend Ages."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Equipping Frost Robes or Wild Robes grants your Tusklin additional passive healing. You can heal your Tusklin with Brown Mushrooms, and use Red Mushrooms to breed them."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_pig_to_tusklin"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_tusklin_to_tusklin_servant"
+    }
+  ]
+}

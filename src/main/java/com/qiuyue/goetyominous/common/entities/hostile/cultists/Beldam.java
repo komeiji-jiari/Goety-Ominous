@@ -261,7 +261,7 @@ public class Beldam extends AbstractGOCultist implements RangedAttackMob, ICulti
 
     private void tryRemoveDebuffs() {
         for (MobEffectInstance effect : this.getActiveEffects()) {
-            if (!effect.getEffect().isBeneficial()) {
+            if (!effect.getEffect().isBeneficial() && effect.getEffect() != MobEffects.GLOWING) {
                 this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.MILK_BUCKET));
                 this.usingTime = new ItemStack(Items.MILK_BUCKET).getUseDuration();
                 this.setUsingItem(true);

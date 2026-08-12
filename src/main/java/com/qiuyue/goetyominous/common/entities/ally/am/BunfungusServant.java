@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.entities.ally.am;
 
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
+import com.Polarice3.Goety.init.ModMobType;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.entity.*;
@@ -79,6 +80,10 @@ public class BunfungusServant extends Summoned implements IAnimatedEntity {
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.BunfungusServantDamage.get())
                 .add(Attributes.FOLLOW_RANGE, AttributesConfig.BunfungusServantFollowRange.get())
                 .add(Attributes.MOVEMENT_SPEED, AttributesConfig.BunfungusServantMovementSpeed.get());
+    }
+
+    public MobType getMobType() {
+        return ModMobType.NATURAL;
     }
 
     @Override

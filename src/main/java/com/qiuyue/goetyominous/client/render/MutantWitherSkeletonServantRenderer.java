@@ -5,6 +5,7 @@ import com.alexander.mutantmore.util.MiscUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.client.render.layer.mm.WitherShieldLayer;
 import com.qiuyue.goetyominous.client.render.model.mm.MutantWitherSkeletonServantModel;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantWitherSkeletonServant;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -24,6 +25,7 @@ public class MutantWitherSkeletonServantRenderer extends MobRenderer<MutantWithe
         super(context, new MutantWitherSkeletonServantModel(context.bakeLayer(com.qiuyue.goetyominous.client.render.model.mm.MutantWitherSkeletonServantModel.MAIN)), 1.25F);
         AdvancedArmourLayer.addCustomArmourLayers(this, context, com.qiuyue.goetyominous.client.render.model.mm.MutantWitherSkeletonServantModel.INNER_ARMOUR, com.qiuyue.goetyominous.client.render.model.mm.MutantWitherSkeletonServantModel.OUTER_ARMOUR);
         this.addLayer(new ItemInHandLayer(this, context.getItemInHandRenderer()));
+        this.addLayer(new WitherShieldLayer(this));
     }
 
 

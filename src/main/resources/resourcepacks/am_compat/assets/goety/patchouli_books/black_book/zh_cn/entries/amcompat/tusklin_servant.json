@@ -1,0 +1,32 @@
+{
+  "name": "獠牙兽仆从",
+  "icon": "goety:savage_tooth",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "这些居住在主世界寒冷雪原上的生物似乎是疣猪兽的远亲。你可以通过利用猪来变异一只獠牙兽仆从，或是用一个仪式将一只野生的獠牙兽绑定于你的意志之下。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "你可以骑乘这些强大的野兽。然而，它们并不喜欢被骑着，即使是主人也不例外。骑着獠牙兽会让它们开始不受控制地不断冲刺。另外，远古疣猪靴子可以用来为你的獠牙兽减少摔落伤害。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:tusklin_servant",
+      "text": "有说法认为，这些獠牙兽是传奇时代的猪灵入侵后留在主世界的疣猪兽演化而来。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "装备霜冻长袍或荒野长袍可以让你的獠牙兽获得额外的治疗。你可以用棕色蘑菇喂食獠牙兽来治愈它们，红色蘑菇可以用于繁殖你的獠牙兽。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_pig_to_tusklin"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_tusklin_to_tusklin_servant"
+    }
+  ]
+}

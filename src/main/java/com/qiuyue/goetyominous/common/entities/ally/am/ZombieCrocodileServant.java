@@ -1,6 +1,5 @@
 package com.qiuyue.goetyominous.common.entities.ally.am;
 
-import com.Polarice3.Goety.common.entities.ally.AnimalSummon;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.github.alexthe666.alexsmobs.entity.EntityCrocodile;

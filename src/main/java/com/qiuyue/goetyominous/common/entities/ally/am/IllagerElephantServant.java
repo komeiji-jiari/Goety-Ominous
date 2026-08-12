@@ -25,7 +25,6 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -37,7 +36,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
-import net.minecraft.world.Container;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -49,9 +47,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.PlayerRideable;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -61,7 +57,6 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.AbstractIllager;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -74,7 +69,6 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -293,9 +287,6 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
 
     @Override
     protected boolean canAddPassenger(Entity passenger) {
-        // 类型闸门只管"谁能坐上座位"：玩家 + 任意 Goety 仆从(IServant)。
-        // 归属校验由 isAbleToRide/canBeRidden 的 getTrueOwner()== 把关，这里不重复收窄。
-        // 不能用 instanceof RaiderServant，否则漏掉 ZombieVindicatorServant(→ZombieServant→Summoned)等非 illager 仆从。
         return this.getPassengers().size() < 2 && (passenger instanceof Player || passenger instanceof IServant);
     }
 
@@ -348,13 +339,11 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
             this.standProgress -= 0.5f;
         }
         if (this.isStaying()) {
-            // 待命模式：保持正常四腿站立，不触发后腿站立
             if (this.isStanding()) {
                 this.setStanding(false);
             }
             this.standingTime = 0;
         } else {
-            // 后腿站立只允许在游荡模式、非战斗空闲时偶尔触发
             boolean rearUpAllowed = this.isWandering() && this.getTarget() == null && !this.hasRider() && this.getNavigation().isDone();
             if (this.isStanding()) {
                 if (++this.standingTime > this.maxStandTime) {
@@ -362,7 +351,6 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
                     this.standingTime = 0;
                     this.maxStandTime = 75 + this.random.nextInt(50);
                 } else if (!rearUpAllowed) {
-                    // 离开游荡空闲状态(进入战斗/被骑乘/跟随等)时立即落下
                     this.setStanding(false);
                     this.standingTime = 0;
                 }
@@ -427,9 +415,6 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
                 this.chestFeedCooldown = 200;
             }
         }
-        // CHARGE_PREPARE → 冲刺启动为无条件全局块(AM 长牙大象同款)：
-        // 骑手按键 triggerCharge 的起手动画也能真正启动冲刺(无需 target)。
-        // 冲刺期间的移动交给 AI/骑手驱动(getRiddenSpeed 取移速，冲锋时已提到 0.65)，不再手动 setDeltaMovement。
         if (!this.level().isClientSide && this.getAnimation() == ANIMATION_CHARGE_PREPARE) {
             this.yBodyRot = this.getYRot();
             if (this.getAnimationTick() == 20 && !this.isStaying()) {
@@ -439,7 +424,6 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
         LivingEntity target = this.getTarget();
         double maxAttackMod = 0.0;
         if (this.getControllingPassenger() instanceof Player rider2 && rider2.getLastHurtMob() != null && !this.isAlliedTo(rider2.getLastHurtMob())) {
-            // 骑乘者的最近攻击目标 = 大象的冲刺目标(AM 长牙大象行为)，甩击/践踏命中距离 +4.0
             target = rider2.getLastHurtMob();
             maxAttackMod = 4.0;
         }
@@ -460,7 +444,6 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
                 this.setAnimation(ANIMATION_FLING);
             }
             if (dist < 2.1 && this.isCharging()) {
-                // 冲锋撞击：2.4 倍基础伤害 + 强上抛 + 长冷却(AM 长牙大象)
                 target.knockback(1.0, target.getX() - this.getX(), target.getZ() - this.getZ());
                 target.hasImpulse = true;
                 target.setDeltaMovement(target.getDeltaMovement().add(0.0, 0.7, 0.0));
@@ -470,14 +453,12 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
                 this.chargeCooldown = 400;
             }
             if (dist < 4.5 + maxAttackMod && this.getAnimation() == ANIMATION_FLING && this.getAnimationTick() == 15) {
-                // 甩击：基础伤害 + 小上抛(AM 长牙大象)
                 target.knockback(1.0, target.getX() - this.getX(), target.getZ() - this.getZ());
                 target.setDeltaMovement(target.getDeltaMovement().add(0.0, 0.3, 0.0));
                 this.launch(target, false);
                 target.hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
             }
             if (dist < 4.5 + maxAttackMod && this.getAnimation() == ANIMATION_STOMP && this.getAnimationTick() == 17) {
-                // 践踏：基础伤害 + 弱击退(AM 长牙大象)
                 target.knockback(0.3, target.getX() - this.getX(), target.getZ() - this.getZ());
                 target.hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
             }
@@ -486,7 +467,6 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
             this.setCharging(false);
         }
         if (!this.level().isClientSide && this.isStaying() && this.isCharging()) {
-            // 待命时禁止冲锋：立即停下并清空冲锋动画，避免脱离待命点
             this.setCharging(false);
             this.chargeCooldown = 200;
             if (this.getAnimation() == ANIMATION_CHARGE_PREPARE || this.getAnimation() == ANIMATION_FLING) {
@@ -680,9 +660,6 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
             return InteractionResult.SUCCESS;
         }
         if (owner && !this.isBaby() && type == InteractionResult.PASS) {
-            // 按 Goety 逻辑：指挥仆从需通过法杖（IWand，如 DarkWand）右键进行，
-            // 由 DarkWand.interactLivingEntity 处理（命令目标/切换移动模式）。
-            // 裸持法术焦点（CommandFocus 等）在 Goety 中没有右键实体交互，应回落为骑乘。
             if (stack.getItem() instanceof IWand) {
                 return InteractionResult.PASS;
             }

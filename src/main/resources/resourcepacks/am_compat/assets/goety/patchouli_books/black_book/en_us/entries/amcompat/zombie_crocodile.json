@@ -1,0 +1,24 @@
+{
+  "name": "Zombie Crocodile",
+  "icon": "alexsmobs:crocodile_scute",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "What's more fearsome than a crocodile? An undead one! A perfect gift for necromancy enthusiasts! These undead crocodiles are born deadly hunters, capable of biting onto creatures and dragging them into the water for a devastating death roll."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:zombie_crocodile_servant",
+      "text": "Who's the next meat on the chopping block"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Feeding your crocodile any kind of meat will heal it. The Necro Set also grants your undead crocodile additional regeneration."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:zombie_crocodile_servant"
+    }
+  ]
+}

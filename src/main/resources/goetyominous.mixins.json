@@ -14,6 +14,7 @@
     "RaidMixin",
     "SpiderEggMixin",
     "RitualMixin",
+    "RitualRequirementsMixin",
     "MutantMoreItemMixin",
     "MixinOssuaryBlockEntity",
     "MixinBlackWolfRenderer",

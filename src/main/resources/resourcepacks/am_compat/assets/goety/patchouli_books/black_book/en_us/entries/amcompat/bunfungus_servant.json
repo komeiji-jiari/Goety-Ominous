@@ -1,0 +1,28 @@
+{
+  "name": "Friendly Bunfungus",
+  "icon": "alexsmobs:mungal_spores",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You have managed to befriend the natural guardians of the Mushroom Fields with some carrots. These large, powerful rabbits will actively attack enemies for you. Feeding them Carrots or Golden Carrots grants them Strength and Regeneration effects."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:bunfungus_servant",
+      "text": "Bon-Bon, go get him!"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Unfortunately, these friendly Bunfungi still sleep during the day while on standby. They seem to regard you as a friendly presence rather than a master, unlike your other servants."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_rabbit_to_bunfungus_servant"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_bunfungus_to_bunfungus_servant"
+    }
+  ]
+}

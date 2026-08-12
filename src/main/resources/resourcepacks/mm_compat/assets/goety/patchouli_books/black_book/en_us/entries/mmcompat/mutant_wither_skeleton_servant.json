@@ -22,6 +22,10 @@
     },
     {
       "type": "patchouli:text",
+      "text": "To cultivate this powerful servant, you can strengthen it with several items. Howling Soul can enchant its blade with Doom and Curse, Soul Shield Amulet allows it to deflect projectiles when below half health, and Unholy Blood makes its body more resilient."
+    },
+    {
+      "type": "patchouli:text",
       "text": "Right-clicking your Mutant Wither Skeleton Servant with bones will heal them. Of course, wearing the Necro Set or the Nether Robe also provides additional passive healing."
     }
   ]

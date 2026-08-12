@@ -1,0 +1,24 @@
+{
+  "name": "僵尸鳄鱼",
+  "icon": "alexsmobs:crocodile_scute",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "有什么比鳄鱼更让人讨厌的？一条不死的！送给热爱死灵术的巫师！这些亡灵鳄鱼是天生的致命猎手，它们能够咬住生物并将它们拖入水中展开致命的翻滚。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:zombie_crocodile_servant",
+      "text": "谁是砧板上的下一块肉"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "用任意肉喂食你的鳄鱼可以为它们治疗。死灵套装也可以让你的不死鳄鱼获得额外的再生效果。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_crocodile_to_zombie_crocodile"
+    }
+  ]
+}

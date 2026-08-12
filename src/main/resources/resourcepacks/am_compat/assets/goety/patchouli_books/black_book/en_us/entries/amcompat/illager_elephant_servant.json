@@ -1,0 +1,28 @@
+{
+  "name": "Illager Elephant",
+  "icon": "alexsmobs:acacia_blossom",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "By studying the Evoker's ritual notes, you have learned how to transform and train a tusk-bearing war elephant loyal to you. This war elephant is far more powerful than any Ravager or Trampler under your command, serving as an excellent siege unit. The ritual requires a tusk-bearing elephant, not an ordinary one."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:illager_elephant_servant",
+      "text": "Gramps, let me give your back a good stomp."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Your war elephant can accommodate two passenger seats. Right-clicking with an empty hand puts your elephant into a charging state. Right-clicking with a Chest places a chest on its back. If food is placed inside the chest, the elephant will consume it to heal itself when its health is low, and will also attempt to heal passengers when they are low on health."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_elephant_to_illager_elephant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Like ordinary elephants, you can decorate your war elephant with carpets. Ominous Idol can be used to protect your elephant. They can be assigned as part of a raiding party, though they cannot serve as captains."
+    }
+  ]
+}

@@ -87,10 +87,6 @@ public class AmEntityRegistry {
     public static final RegistryObject<EntityType<TusklinServant>> TUSKLIN_SERVANT =
             AM_ENTITIES.register("tusklin_servant",
                     () -> EntityType.Builder.<TusklinServant>of((type, worldIn) -> new TusklinServant(type, worldIn), MobCategory.MISC)
-                            // 碰撞箱贴合模型实际尺寸（1.3F 宽≈模型躯干横截面 1.125，1.8F 高≈盖住头 1.63+行走起伏）：
-                            // 原版 2.2F 宽度对 1.125 宽的模型每侧多出约 0.54 格，看起来明显偏大。
-                            // 注：模型全长约 3.56（吻部 -2.44~臀部 +1.13），碰撞箱为正方形棱柱无法同时贴合
-                            // 横截面与长度，此处按原版惯例取宽≈横截面（同牛/疣猪），转身时吻部/尾部会略穿出箱体。
                             .sized(1.3F, 1.8F)
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":tusklin_servant"));
@@ -98,7 +94,6 @@ public class AmEntityRegistry {
     public static final RegistryObject<EntityType<ZombieCrocodileServant>> ZOMBIE_CROCODILE_SERVANT =
             AM_ENTITIES.register("zombie_crocodile_servant",
                     () -> EntityType.Builder.<ZombieCrocodileServant>of((type, worldIn) -> new ZombieCrocodileServant(type, worldIn), MobCategory.MISC)
-                            // 尺寸与原版 AlexMobs 鳄鱼一致；幼崽碰撞箱由 getDimensions() 缩放为 0.15 倍
                             .sized(2.15F, 0.75F)
                             .setTrackingRange(10)
                             .build(GoetyOminous.MOD_ID + ":zombie_crocodile_servant"));
@@ -106,7 +101,6 @@ public class AmEntityRegistry {
     public static final RegistryObject<EntityType<BunfungusServant>> BUNFUNGUS_SERVANT =
             AM_ENTITIES.register("bunfungus_servant",
                     () -> EntityType.Builder.<BunfungusServant>of((type, worldIn) -> new BunfungusServant(type, worldIn), MobCategory.MISC)
-                            // 尺寸与原版 AlexMobs 巨型真菌一致（巨型形态 1.85 x 2.1）
                             .sized(1.85F, 2.1F)
                             .setTrackingRange(10)
                             .build(GoetyOminous.MOD_ID + ":bunfungus_servant"));
@@ -114,7 +108,6 @@ public class AmEntityRegistry {
     public static final RegistryObject<EntityType<IllagerElephantServant>> ILLAGER_ELEPHANT_SERVANT =
             AM_ENTITIES.register("illager_elephant_servant",
                     () -> EntityType.Builder.<IllagerElephantServant>of((type, worldIn) -> new IllagerElephantServant(type, worldIn), MobCategory.MISC)
-                            // 尺寸与原版 AlexMobs 大象一致，带战箱的可骑乘巨兽
                             .sized(3.7F, 3.75F)
                             .setTrackingRange(10)
                             .build(GoetyOminous.MOD_ID + ":illager_elephant_servant"));

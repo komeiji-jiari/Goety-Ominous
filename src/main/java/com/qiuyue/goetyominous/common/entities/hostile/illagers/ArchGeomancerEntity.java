@@ -271,6 +271,13 @@ public class ArchGeomancerEntity extends HuntingIllagerEntity {
     }
 
     @Override
+    protected void actuallyHurt(DamageSource pSource, float pAmount) {
+        float reduced = pAmount * 0.8F;
+        float capped = Math.min(reduced, 25.0F);
+        super.actuallyHurt(pSource, capped);
+    }
+
+    @Override
     protected SoundEvent getAmbientSound() {
         return ModSounds.GEOMANCER_AMBIENT.get();
     }
@@ -367,7 +374,9 @@ public class ArchGeomancerEntity extends HuntingIllagerEntity {
                 for (LivingEntity target : serverLevel.getEntitiesOfClass(LivingEntity.class,
                         new AABB(x - 2.0D, y - 2.0D, z - 2.0D, x + 2.0D, y + 2.0D, z + 2.0D))) {
                     if (target != this && !MobUtil.areAllies(target, this) && target.distanceToSqr(x, y, z) <= 4.0D) {
-                        this.doHurtTarget(target);
+                        if (this.doHurtTarget(target)) {
+                            target.knockback(1.2D, target.getX() - this.getX(), target.getZ() - this.getZ());
+                        }
                     }
                 }
                 BlockPos groundPos = BlockPos.containing(x, groundY - 1.0D, z);
@@ -423,7 +432,9 @@ public class ArchGeomancerEntity extends HuntingIllagerEntity {
                     double sideDist = Math.abs(rel.dot(side));
                     if (forward >= 0.0D && forward <= 1.5D && sideDist <= 0.5D && target.getY() >= minY
                             && target.getY() <= maxY) {
-                        this.doHurtTarget(target);
+                        if (this.doHurtTarget(target)) {
+                            target.knockback(1.2D, target.getX() - this.getX(), target.getZ() - this.getZ());
+                        }
                     }
                 }
             }

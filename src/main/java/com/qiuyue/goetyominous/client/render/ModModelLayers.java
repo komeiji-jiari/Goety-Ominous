@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.client.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.init.ModEntityLayers;
+import com.qiuyue.goetyominous.client.render.layer.CursedWolfArmorLayer;
 import com.qiuyue.goetyominous.client.render.model.*;
 import com.qiuyue.goetyominous.client.render.model.equipment.BoneCudgelModel;
 import com.qiuyue.goetyominous.client.render.model.mm.MutantHoglinServantModel;
@@ -17,6 +18,8 @@ import com.qiuyue.goetyominous.client.render.projectile.WitchBombRenderer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.renderer.entity.WolfRenderer;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -527,12 +530,11 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.FARSEER_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderFarseerServant::new);
-            // 猪灵战獠仆从：RenderTusklinServant 是标准的 MobRenderer<TusklinServant, ModelTusklinServant>，
-            // 不再做不安全转换（复用原版 RenderTusklin 会在桥接方法里 checkcast EntityTusklin 崩溃）。
+
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.TUSKLIN_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderTusklinServant::new);
-            // 鳄鱼仆从：RenderZombieCrocodileServant 同理是标准的 MobRenderer<ZombieCrocodileServant, ModelZombieCrocodileServant>
+
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.ZOMBIE_CROCODILE_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderZombieCrocodileServant::new);
@@ -546,7 +548,14 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.ILLAGER_ELEPHANT_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderIllagerElephantServant::new);
 
-            // 在这里添加 AlexMobs 联动仆从的渲染器注册
+        }
+    }
+
+    @SubscribeEvent
+    public static void onAddLayers(EntityRenderersEvent.AddLayers event) {
+        WolfRenderer wolfRenderer = event.getRenderer(EntityType.WOLF);
+        if (wolfRenderer != null) {
+            wolfRenderer.addLayer(new CursedWolfArmorLayer(wolfRenderer, event.getEntityModels()));
         }
     }
 }

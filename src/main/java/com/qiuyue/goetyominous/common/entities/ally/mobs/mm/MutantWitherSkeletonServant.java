@@ -37,6 +37,9 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -77,6 +80,8 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Turtle;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -114,6 +119,103 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
     public int repeatedHits;
     public float lungingXRot;
     private int lastHurtTick;
+    private static final EntityDataAccessor<Boolean> DATA_SOUL_SHIELD =
+            SynchedEntityData.defineId(MutantWitherSkeletonServant.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_HOWLING_SOUL =
+            SynchedEntityData.defineId(MutantWitherSkeletonServant.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_UNHOLY_BLOOD =
+            SynchedEntityData.defineId(MutantWitherSkeletonServant.class, EntityDataSerializers.BOOLEAN);
+    private int unholyBloodInvulnTime = 0;
+    private static final UUID SOUL_SHIELD_HEALTH_UUID = UUID.fromString("a1111111-0000-4000-8000-000000000001");
+    private static final UUID SOUL_SHIELD_ATTACK_UUID = UUID.fromString("a1111111-0000-4000-8000-000000000002");
+    private static final UUID HOWLING_SOUL_HEALTH_UUID = UUID.fromString("b2222222-0000-4000-8000-000000000001");
+    private static final UUID HOWLING_SOUL_ATTACK_UUID = UUID.fromString("b2222222-0000-4000-8000-000000000002");
+    private static final UUID UNHOLY_BLOOD_HEALTH_UUID = UUID.fromString("c3333333-0000-4000-8000-000000000001");
+    private static final UUID UNHOLY_BLOOD_ATTACK_UUID = UUID.fromString("c3333333-0000-4000-8000-000000000002");
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_SOUL_SHIELD, false);
+        this.entityData.define(DATA_HOWLING_SOUL, false);
+        this.entityData.define(DATA_UNHOLY_BLOOD, false);
+    }
+
+    public void setSoulShield(boolean value) {
+        this.entityData.set(DATA_SOUL_SHIELD, value);
+    }
+
+    public boolean hasSoulShield() {
+        return this.entityData.get(DATA_SOUL_SHIELD);
+    }
+
+    public boolean isSoulShieldActive() {
+        return this.hasSoulShield() && this.getHealth() <= this.getMaxHealth() / 2.0F;
+    }
+
+    public void setHowlingSoul(boolean value) {
+        this.entityData.set(DATA_HOWLING_SOUL, value);
+    }
+
+    public boolean hasHowlingSoul() {
+        return this.entityData.get(DATA_HOWLING_SOUL);
+    }
+
+    public void setUnholyBlood(boolean value) {
+        this.entityData.set(DATA_UNHOLY_BLOOD, value);
+    }
+
+    public boolean hasUnholyBlood() {
+        return this.entityData.get(DATA_UNHOLY_BLOOD);
+    }
+
+    private void addModIfMissing(AttributeInstance instance, UUID uuid, String name, double value) {
+        if (instance != null && instance.getModifier(uuid) == null) {
+            instance.addPermanentModifier(new AttributeModifier(uuid, name, value, AttributeModifier.Operation.ADDITION));
+        }
+    }
+
+    private void applyEnhancementModifiers() {
+        AttributeInstance health = this.getAttribute(Attributes.MAX_HEALTH);
+        AttributeInstance attack = this.getAttribute(Attributes.ATTACK_DAMAGE);
+        if (this.hasSoulShield()) {
+            this.addModIfMissing(health, SOUL_SHIELD_HEALTH_UUID, "Soul Shield Health", 30.0D);
+            this.addModIfMissing(attack, SOUL_SHIELD_ATTACK_UUID, "Soul Shield Attack", 2.0D);
+        }
+        if (this.hasHowlingSoul()) {
+            this.addModIfMissing(health, HOWLING_SOUL_HEALTH_UUID, "Howling Soul Health", 20.0D);
+            this.addModIfMissing(attack, HOWLING_SOUL_ATTACK_UUID, "Howling Soul Attack", 1.0D);
+        }
+        if (this.hasUnholyBlood()) {
+            this.addModIfMissing(health, UNHOLY_BLOOD_HEALTH_UUID, "Unholy Blood Health", 50.0D);
+            this.addModIfMissing(attack, UNHOLY_BLOOD_ATTACK_UUID, "Unholy Blood Attack", 3.0D);
+        }
+    }
+
+    public float getLifestealBonus() {
+        float bonus = 0.0F;
+        if (this.hasSoulShield()) bonus += 2.5F;
+        if (this.hasHowlingSoul()) bonus += 2.0F;
+        if (this.hasUnholyBlood()) bonus += 3.5F;
+        return bonus;
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putBoolean("SoulShield", this.hasSoulShield());
+        compound.putBoolean("HowlingSoul", this.hasHowlingSoul());
+        compound.putBoolean("UnholyBlood", this.hasUnholyBlood());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.setSoulShield(compound.getBoolean("SoulShield"));
+        this.setHowlingSoul(compound.getBoolean("HowlingSoul"));
+        this.setUnholyBlood(compound.getBoolean("UnholyBlood"));
+        this.applyEnhancementModifiers();
+    }
 
     public MutantWitherSkeletonServant(EntityType<? extends Owned> p_i50189_1_, Level p_i50189_2_) {
         super(p_i50189_1_, p_i50189_2_);
@@ -257,9 +359,38 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
     }
 
     public boolean hurt(DamageSource p_21016_, float p_21017_) {
+        if (this.isSoulShieldActive()) {
+            if (p_21016_.getDirectEntity() instanceof AbstractArrow arrow && arrow.getOwner() != this) {
+                if (arrow.getOwner() instanceof LivingEntity shooter && shooter != this) {
+                    Vec3 toShooter = shooter.getEyePosition().subtract(this.getEyePosition()).normalize();
+                    arrow.setDeltaMovement(toShooter.scale(arrow.getDeltaMovement().length()).add(0.0D, 0.1D, 0.0D));
+                } else {
+                    arrow.setDeltaMovement(arrow.getDeltaMovement().multiply(-1.0D, 0.0D, -1.0D));
+                }
+                arrow.setOwner(null);
+                arrow.hurtMarked = true;
+                return false;
+            }
+            if (p_21016_.getDirectEntity() instanceof Projectile) {
+                return false;
+            }
+        }
+        if (this.hasUnholyBlood()) {
+            if (this.unholyBloodInvulnTime > 0) {
+                return false;
+            }
+            boolean inNether = this.level().dimension() == Level.NETHER;
+            p_21017_ = inNether ? p_21017_ * 0.5F : p_21017_ * 0.85F;
+            if (p_21017_ <= 0.0F) {
+                return false;
+            }
+        }
         boolean flag = this.getAnimation("block").isPlaying() ? false : super.hurt(p_21016_, p_21017_);
         if (flag) {
             this.getAnimation("hurt").start(0.25F, 0);
+            if (this.hasUnholyBlood()) {
+                this.unholyBloodInvulnTime = 30;
+            }
             if (!this.level().isClientSide) {
                 this.lastHurtTick = this.tickCount;
 
@@ -351,6 +482,45 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
         Item item = itemstack.getItem();
 
         if (this.getTrueOwner() != null && pPlayer == this.getTrueOwner()) {
+            if (item == com.Polarice3.Goety.common.items.ModItems.STAR_AMULET.get()) {
+                if (!this.hasSoulShield()) {
+                    if (!pPlayer.getAbilities().instabuild) {
+                        itemstack.shrink(1);
+                    }
+                    this.setSoulShield(true);
+                    this.applyEnhancementModifiers();
+                    this.heal(30.0F);
+                    this.playSound(SoundEvents.WITHER_AMBIENT, 1.0F, 1.0F);
+                    return InteractionResult.SUCCESS;
+                }
+                return InteractionResult.CONSUME;
+            }
+            if (item == com.Polarice3.Goety.common.items.ModItems.HOWLING_SOUL.get()) {
+                if (!this.hasHowlingSoul()) {
+                    if (!pPlayer.getAbilities().instabuild) {
+                        itemstack.shrink(1);
+                    }
+                    this.setHowlingSoul(true);
+                    this.applyEnhancementModifiers();
+                    this.heal(20.0F);
+                    this.playSound(SoundEventInit.MUTANT_WITHER_SKELETON_ROAR.get(), 1.0F, 1.0F);
+                    return InteractionResult.SUCCESS;
+                }
+                return InteractionResult.CONSUME;
+            }
+            if (item == com.Polarice3.Goety.common.items.ModItems.UNHOLY_BLOOD.get()) {
+                if (!this.hasUnholyBlood()) {
+                    if (!pPlayer.getAbilities().instabuild) {
+                        itemstack.shrink(1);
+                    }
+                    this.setUnholyBlood(true);
+                    this.applyEnhancementModifiers();
+                    this.heal(50.0F);
+                    this.playSound(SoundEventInit.MUTANT_WITHER_SKELETON_ROAR.get(), 1.0F, 1.0F);
+                    return InteractionResult.SUCCESS;
+                }
+                return InteractionResult.CONSUME;
+            }
             EquipmentSlot equipmentslot;
 
             if (item instanceof ArmorItem) {
@@ -528,6 +698,10 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
         this.refreshDimensions();
         this.getAnimationTracker().tick();
 
+        if (this.unholyBloodInvulnTime > 0) {
+            --this.unholyBloodInvulnTime;
+        }
+
         if (!this.level().isClientSide && this.getTrueOwner() != null) {
             if (this.tickCount - this.lastHurtTick >= 100) {
                 ServantUtil.healServant(this.getTrueOwner(), this);
@@ -650,11 +824,15 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
 
             this.doEnchantDamageEffects(this, target);
             this.setLastHurtMob(target);
-            this.leechHealth(((Double)MutantWitherSkeletonCommonConfig.melee_attack_leech_amount.get()).floatValue(), target.position().add(0.0, (double)(target.getBbHeight() / 2.0F), 0.0));
+            this.leechHealth(((Double)MutantWitherSkeletonCommonConfig.melee_attack_leech_amount.get()).floatValue() + this.getLifestealBonus(), target.position().add(0.0, (double)(target.getBbHeight() / 2.0F), 0.0));
         }
 
         if (flag && target instanceof LivingEntity) {
             ((LivingEntity)target).addEffect(new MobEffectInstance(MobEffects.WITHER, (Integer)MutantWitherSkeletonCommonConfig.melee_attack_wither_length.get(), (Integer)MutantWitherSkeletonCommonConfig.melee_attack_wither_level.get()), this);
+            if (this.hasHowlingSoul()) {
+                ((LivingEntity)target).addEffect(new MobEffectInstance(com.Polarice3.Goety.common.effects.GoetyEffects.DOOM.get(), 200, 0), this);
+                ((LivingEntity)target).addEffect(new MobEffectInstance(com.Polarice3.Goety.common.effects.GoetyEffects.CURSED.get(), 200, 0), this);
+            }
         }
 
         return flag;

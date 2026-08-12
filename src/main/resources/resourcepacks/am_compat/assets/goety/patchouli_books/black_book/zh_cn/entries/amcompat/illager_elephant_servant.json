@@ -1,0 +1,28 @@
+{
+  "name": "灾厄战象",
+  "icon": "alexsmobs:acacia_blossom",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "通过研究唤魔者的仪式备忘录，你了解并设法转化并训练出了一种忠诚于你的长牙战象。这种战象比你手下的劫掠兽还是践踏者都更加强大，可以作为很好的攻坚单位。仪式必须使用长牙象而不是普通大象。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:illager_elephant_servant",
+      "text": "老爷爷，我来给您踩踩背咯。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "你的战象可以容纳两个乘客位置，空手右键可以让你的战象进入冲刺状态。用箱子右击战象可以为它们背上箱子，如果你在战象背着的箱子里放入了食物，它们在自身血量较低的情况下会食用容器内的食物治疗，如果乘客血量较低，它们也会尝试用食物治疗乘客。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_elephant_to_illager_elephant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "和普通大象一样，你可以用地毯装饰你的战象。不祥神像可以用于保护你的战象。它们可以被设置为袭击队伍中的一员，但显然不能作为队长。"
+    }
+  ]
+}

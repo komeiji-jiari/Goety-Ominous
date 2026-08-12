@@ -4,6 +4,7 @@ import com.Polarice3.Goety.common.entities.ModEntityType;
 import com.Polarice3.Goety.common.entities.ally.HoglinServant;
 import com.Polarice3.Goety.common.entities.ally.AnimalSummon;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
+import com.Polarice3.Goety.init.ModMobType;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.EntityTusklin;
 import com.github.alexthe666.alexsmobs.entity.ai.AdvancedPathNavigateNoTeleport;
@@ -95,6 +96,10 @@ public class TusklinServant extends AnimalSummon implements IAnimatedEntity {
 
     public boolean isInNether() {
         return this.level().dimension() == Level.NETHER && !this.isNoAi();
+    }
+
+    public MobType getMobType() {
+        return ModMobType.FROST;
     }
 
     @Override

@@ -13,11 +13,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * 獠牙兽仆从的装备层，移植 AlexMobs 原版 LayerTusklinGear：
- * 蹄铁槽（getShoeStack()）非空时渲染蹄铁纹理。不渲染鞍具。
- * 泛型从 EntityTusklin 换成 TusklinServant / ModelTusklinServant。
- */
 @OnlyIn(Dist.CLIENT)
 public class LayerTusklinServantGear extends RenderLayer<TusklinServant, ModelTusklinServant> {
    private static final ResourceLocation TEXTURE_SHOES = new ResourceLocation("alexsmobs:textures/entity/tusklin_hooves.png");
