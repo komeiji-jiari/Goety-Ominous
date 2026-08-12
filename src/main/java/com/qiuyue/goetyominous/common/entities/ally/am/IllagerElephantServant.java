@@ -7,7 +7,6 @@ import com.Polarice3.Goety.common.entities.ally.illager.AbstractIllagerServant;
 import com.Polarice3.Goety.common.entities.ally.illager.raider.RaiderServant;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.github.alexthe666.alexsmobs.entity.ITargetsDroppedItems;
-import com.github.alexthe666.alexsmobs.entity.ai.AdvancedPathNavigateNoTeleport;
 import com.github.alexthe666.alexsmobs.entity.ai.CreatureAITargetItems;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
@@ -54,8 +53,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
@@ -91,11 +88,11 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
     public static final Animation ANIMATION_STOMP = Animation.create(20);
     public static final Animation ANIMATION_FLING = Animation.create(25);
     public static final Animation ANIMATION_EAT = Animation.create(30);
-    private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(IllagerElephantServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> STANDING = SynchedEntityData.defineId(IllagerElephantServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(IllagerElephantServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> CARPET_COLOR = SynchedEntityData.defineId(IllagerElephantServant.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> CHARGING = SynchedEntityData.defineId(IllagerElephantServant.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> CHARGE_COOLDOWN = SynchedEntityData.defineId(IllagerElephantServant.class, EntityDataSerializers.INT);
     public static final Map<DyeColor, Item> DYE_COLOR_ITEM_MAP = Util.make(Maps.newHashMap(), map -> {
         map.put(DyeColor.WHITE, Items.WHITE_CARPET);
         map.put(DyeColor.ORANGE, Items.ORANGE_CARPET);
@@ -114,8 +111,6 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
         map.put(DyeColor.RED, Items.RED_CARPET);
         map.put(DyeColor.BLACK, Items.BLACK_CARPET);
     });
-    public float prevSitProgress;
-    public float sitProgress;
     public float prevStandProgress;
     public float standProgress;
     public int maxStandTime = 75;
@@ -126,7 +121,6 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
     private int standingTime = 0;
     private boolean hasChestVarChanged = false;
     private boolean hasChargedSpeed = false;
-    private int chargeCooldown = 0;
     private int chargingTicks = 0;
     private int chestFeedCooldown = 0;
 
@@ -158,12 +152,23 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
                                         MobSpawnType spawnType, @Nullable SpawnGroupData spawnData,
                                         @Nullable CompoundTag tag) {
-        if (spawnType == MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player) {
-            if (countServants(player) >= MobsConfig.IllagerElephantServantLimit.get()) {
-                return null;
+        return super.finalizeSpawn(level, difficulty, spawnType, spawnData, tag);
+    }
+
+    @Override
+    public void setTrueOwner(LivingEntity owner) {
+        LivingEntity previousOwner = this.getTrueOwner();
+        if (owner != null) {
+            this.setOwnerId(owner.getUUID());
+            this.setOwnerClientId(owner.getId());
+        } else {
+            this.removeTrueOwner();
+        }
+        if (!this.level().isClientSide && previousOwner != owner && owner instanceof Player player) {
+            if (countServants(player) > MobsConfig.IllagerElephantServantLimit.get()) {
+                this.discard();
             }
         }
-        return super.finalizeSpawn(level, difficulty, spawnType, spawnData, tag);
     }
 
     private int countServants(Player player) {
@@ -225,25 +230,16 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
     }
 
     @Override
-    protected PathNavigation createNavigation(Level worldIn) {
-        return new AdvancedPathNavigateNoTeleport(this, worldIn, true);
-    }
-
-    @Override
     protected boolean isImmobile() {
-        return super.isImmobile() || this.isSitting() || this.getAnimation() == ANIMATION_CHARGE_PREPARE && this.getAnimationTick() < 10;
+        return super.isImmobile() || this.getAnimation() == ANIMATION_CHARGE_PREPARE && this.getAnimationTick() < 10;
     }
 
     @Override
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(1, new ElephantMeleeAttackGoal(this, 1.0, true));
-        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new CreatureAITargetItems(this, false));
-    }
-
-    public boolean isFood(ItemStack stack) {
-        return false;
+        this.goalSelector.addGoal(2, new ElephantChestFeedGoal());
+        this.targetSelector.addGoal(6, new ElephantPickupItemsGoal(this));
     }
 
     @Override
@@ -258,6 +254,11 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
         } else {
             super.playStepSound(pos, state);
         }
+    }
+
+    @Override
+    public boolean isControlledByLocalInstance() {
+        return this.isEffectiveAi();
     }
 
     @Nullable
@@ -277,12 +278,19 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
 
     @Override
     protected void updateControlFlags() {
-        boolean playerDrives = this.getControllingPassenger() instanceof Player;
+        super.updateControlFlags();
+        boolean steering = this.isActivelySteering();
         boolean notInBoat = !(this.getVehicle() instanceof Boat);
-        this.goalSelector.setControlFlag(Goal.Flag.MOVE, !playerDrives);
-        this.goalSelector.setControlFlag(Goal.Flag.JUMP, !playerDrives && notInBoat);
-        this.goalSelector.setControlFlag(Goal.Flag.LOOK, !playerDrives);
-        this.goalSelector.setControlFlag(Goal.Flag.TARGET, !playerDrives);
+        this.goalSelector.setControlFlag(Goal.Flag.MOVE, !steering);
+        this.goalSelector.setControlFlag(Goal.Flag.JUMP, !steering && notInBoat);
+        this.goalSelector.setControlFlag(Goal.Flag.LOOK, !steering);
+    }
+
+    private boolean isActivelySteering() {
+        if (this.getControllingPassenger() instanceof Player player) {
+            return player.zza != 0.0f || player.xxa != 0.0f;
+        }
+        return false;
     }
 
     @Override
@@ -294,6 +302,9 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
     public boolean canBeRidden(LivingEntity livingEntity) {
         if (this.getPassengers().size() >= 2) {
             return false;
+        }
+        if (livingEntity instanceof Player player) {
+            return player == this.getTrueOwner();
         }
         if (livingEntity instanceof IOwned) {
             return ((IOwned) livingEntity).getTrueOwner() == this.getTrueOwner();
@@ -309,28 +320,28 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
         this.entityData.set(CHARGING, charging);
     }
 
+    public int getChargeCooldown() {
+        return this.entityData.get(CHARGE_COOLDOWN);
+    }
+
+    public void setChargeCooldown(int cooldown) {
+        this.entityData.set(CHARGE_COOLDOWN, cooldown);
+    }
+
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(SITTING, false);
         this.entityData.define(STANDING, false);
         this.entityData.define(CHESTED, false);
         this.entityData.define(CARPET_COLOR, -1);
         this.entityData.define(CHARGING, false);
+        this.entityData.define(CHARGE_COOLDOWN, 0);
     }
 
     @Override
     public void tick() {
         super.tick();
-        this.prevSitProgress = this.sitProgress;
         this.prevStandProgress = this.standProgress;
-        if (this.isSitting()) {
-            if (this.sitProgress < 5.0f) {
-                this.sitProgress += 1.0f;
-            }
-        } else if (this.sitProgress > 0.0f) {
-            this.sitProgress -= 1.0f;
-        }
         if (this.isStanding()) {
             if (this.standProgress < 5.0f) {
                 this.standProgress += 0.5f;
@@ -355,14 +366,10 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
                     this.standingTime = 0;
                 }
             }
-            if (this.isSitting() && this.isStanding()) {
-                this.setStanding(false);
-            }
             if (!this.level().isClientSide && !this.isStanding() && rearUpAllowed && this.getRandom().nextInt(600) == 0) {
                 this.setStanding(true);
             }
         }
-        this.setOrderedToSit(false);
         if (this.hasChestVarChanged && this.elephantInventory != null && !this.isChested()) {
             if (!this.level().isClientSide) {
                 for (int i = 0; i < this.elephantInventory.getContainerSize(); ++i) {
@@ -374,10 +381,12 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
             this.hasChestVarChanged = false;
         }
         this.chargingTicks = this.isCharging() ? ++this.chargingTicks : 0;
-        if (this.chargeCooldown > 0) {
-            --this.chargeCooldown;
+        Player rider = this.getControllingPassenger() instanceof Player player ? player : null;
+        boolean riderCombat = rider != null && rider.getLastHurtMob() != null && !this.isAlliedTo(rider.getLastHurtMob());
+        if (!this.level().isClientSide && this.getChargeCooldown() > 0) {
+            this.setChargeCooldown(this.getChargeCooldown() - 1);
         }
-        if (!this.level().isClientSide && !this.getMainHandItem().isEmpty() && this.canTargetItem(this.getMainHandItem())) {
+        if (!this.level().isClientSide && !riderCombat && this.getTarget() == null && !this.getMainHandItem().isEmpty() && this.canTargetItem(this.getMainHandItem()) && this.getHealth() < this.getMaxHealth()) {
             if (this.getAnimation() == NO_ANIMATION) {
                 this.setAnimation(ANIMATION_EAT);
             }
@@ -387,33 +396,8 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
                 this.heal(10.0f);
             }
         }
-        if (!this.level().isClientSide && this.isChested() && this.elephantInventory != null) {
-            if (this.chestFeedCooldown > 0) {
-                --this.chestFeedCooldown;
-            } else {
-                boolean fed = false;
-                for (Entity passenger : this.getPassengers()) {
-                    if (passenger instanceof AbstractIllagerServant) {
-                        AbstractIllagerServant servant = (AbstractIllagerServant) passenger;
-                        if (servant.getHealth() < servant.getMaxHealth() * 0.5f) {
-                            ItemStack feed2 = this.takeFoodFromChest(stack -> this.isServantFood(stack, servant));
-                            if (!feed2.isEmpty()) {
-                                this.feedServantFood(servant, feed2);
-                                fed = true;
-                                break;
-                            }
-                        }
-                    }
-                }
-                if (!fed && this.getHealth() < this.getMaxHealth() * 0.5f && this.getMainHandItem().isEmpty()) {
-                    ItemStack feed = this.takeFoodFromChest(this::canTargetItem);
-                    if (!feed.isEmpty()) {
-                        this.setItemInHand(InteractionHand.MAIN_HAND, feed);
-                        fed = true;
-                    }
-                }
-                this.chestFeedCooldown = 200;
-            }
+        if (!this.level().isClientSide && this.chestFeedCooldown > 0) {
+            --this.chestFeedCooldown;
         }
         if (!this.level().isClientSide && this.getAnimation() == ANIMATION_CHARGE_PREPARE) {
             this.yBodyRot = this.getYRot();
@@ -423,61 +407,54 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
         }
         LivingEntity target = this.getTarget();
         double maxAttackMod = 0.0;
-        if (this.getControllingPassenger() instanceof Player rider2 && rider2.getLastHurtMob() != null && !this.isAlliedTo(rider2.getLastHurtMob())) {
-            target = rider2.getLastHurtMob();
+        if (riderCombat) {
+            target = rider.getLastHurtMob();
             maxAttackMod = 4.0;
         }
-        if (!this.level().isClientSide && this.getControllingPassenger() != null && this.isCharging() && this.chargingTicks > 100) {
+        if (!this.level().isClientSide && this.isCharging() && this.chargingTicks > 100) {
             this.setCharging(false);
-            this.chargeCooldown = 200;
+            this.setChargeCooldown(200);
         }
         if (!this.level().isClientSide && target != null) {
-            if (this.distanceTo(target) > this.getBbWidth() * 0.5f + 0.5f && this.getControllingPassenger() == null && this.hasLineOfSight(target) && this.getAnimation() == NO_ANIMATION && !this.isCharging() && this.chargeCooldown == 0 && !this.isStaying()) {
+            if (this.distanceTo(target) > this.getBbWidth() * 2.0f + 0.5f && !this.isActivelySteering() && this.hasLineOfSight(target) && this.getAnimation() == NO_ANIMATION && !this.isCharging() && this.getChargeCooldown() == 0 && !this.isStaying()) {
                 this.setAnimation(ANIMATION_CHARGE_PREPARE);
             }
-            if (this.getAnimation() == ANIMATION_CHARGE_PREPARE && this.getControllingPassenger() == null) {
+            if (this.getAnimation() == ANIMATION_CHARGE_PREPARE && !this.isActivelySteering()) {
                 this.lookAt(target, 360.0f, 30.0f);
                 this.yBodyRot = this.getYRot();
             }
             double dist = this.distanceTo(target);
-            if (dist < 10.0 && this.isCharging()) {
+            if (this.getControllingPassenger() != null && this.getAnimation() == NO_ANIMATION && !this.isCharging() && dist < 4.5 + maxAttackMod) {
+                this.doHurtTarget(target);
+            }
+            if (dist < 10.0 && this.isCharging() && this.getAnimation() != ANIMATION_FLING) {
                 this.setAnimation(ANIMATION_FLING);
             }
-            if (dist < 2.1 && this.isCharging()) {
+            if (dist < this.getBbWidth() * 0.5f + target.getBbWidth() * 0.5f && this.isCharging()) {
                 target.knockback(1.0, target.getX() - this.getX(), target.getZ() - this.getZ());
                 target.hasImpulse = true;
                 target.setDeltaMovement(target.getDeltaMovement().add(0.0, 0.7, 0.0));
                 target.hurt(this.damageSources().mobAttack(this), 2.4f * (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
                 this.launch(target, true);
                 this.setCharging(false);
-                this.chargeCooldown = 400;
-            }
-            if (dist < 4.5 + maxAttackMod && this.getAnimation() == ANIMATION_FLING && this.getAnimationTick() == 15) {
-                target.knockback(1.0, target.getX() - this.getX(), target.getZ() - this.getZ());
-                target.setDeltaMovement(target.getDeltaMovement().add(0.0, 0.3, 0.0));
-                this.launch(target, false);
-                target.hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
-            }
-            if (dist < 4.5 + maxAttackMod && this.getAnimation() == ANIMATION_STOMP && this.getAnimationTick() == 17) {
-                target.knockback(0.3, target.getX() - this.getX(), target.getZ() - this.getZ());
-                target.hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                this.setChargeCooldown(400);
             }
         }
-        if (!this.level().isClientSide && this.getTarget() == null && this.getControllingPassenger() == null) {
+        if (!this.level().isClientSide && this.getTarget() == null && !riderCombat) {
             this.setCharging(false);
         }
         if (!this.level().isClientSide && this.isStaying() && this.isCharging()) {
             this.setCharging(false);
-            this.chargeCooldown = 200;
+            this.setChargeCooldown(200);
             if (this.getAnimation() == ANIMATION_CHARGE_PREPARE || this.getAnimation() == ANIMATION_FLING) {
                 this.setAnimation(NO_ANIMATION);
             }
         }
-        if (!this.level().isClientSide && this.isCharging() && !this.hasChargedSpeed) {
+        if (this.isCharging() && !this.hasChargedSpeed) {
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AttributesConfig.IllagerElephantServantMovementSpeed.get() + 0.3);
             this.hasChargedSpeed = true;
         }
-        if (!this.level().isClientSide && !this.isCharging() && this.hasChargedSpeed) {
+        if (!this.isCharging() && this.hasChargedSpeed) {
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AttributesConfig.IllagerElephantServantMovementSpeed.get());
             this.hasChargedSpeed = false;
         }
@@ -546,6 +523,15 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
         return ItemStack.EMPTY;
     }
 
+    private boolean hasFoodInChest(Predicate<ItemStack> foodPredicate) {
+        if (this.elephantInventory == null) return false;
+        for (int i = 0; i < this.elephantInventory.getContainerSize(); ++i) {
+            ItemStack stack = this.elephantInventory.getItem(i);
+            if (!stack.isEmpty() && foodPredicate.test(stack)) return true;
+        }
+        return false;
+    }
+
     private boolean isServantFood(ItemStack stack, AbstractIllagerServant servant) {
         if (stack.is(Items.ROTTEN_FLESH)) {
             return false;
@@ -587,8 +573,20 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
 
     @Override
     public boolean doHurtTarget(Entity entityIn) {
-        if (!this.level().isClientSide && this.getAnimation() == NO_ANIMATION && !this.isCharging()) {
-            this.setAnimation(this.random.nextBoolean() ? ANIMATION_FLING : ANIMATION_STOMP);
+        if (!this.level().isClientSide && entityIn instanceof LivingEntity target) {
+            if (!this.isCharging()) {
+                boolean fling = this.random.nextBoolean();
+                this.setAnimation(fling ? ANIMATION_FLING : ANIMATION_STOMP);
+                float damage = (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue();
+                if (fling) {
+                    target.knockback(1.0, target.getX() - this.getX(), target.getZ() - this.getZ());
+                    target.setDeltaMovement(target.getDeltaMovement().add(0.0, 0.3, 0.0));
+                    this.launch(target, false);
+                } else {
+                    target.knockback(0.3, target.getX() - this.getX(), target.getZ() - this.getZ());
+                }
+                target.hurt(this.damageSources().mobAttack(this), damage);
+            }
         }
         return true;
     }
@@ -685,7 +683,7 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
         if (this.getControllingPassenger() == null) {
             return false;
         }
-        if (this.isCharging() || this.chargeCooldown > 0 || this.getAnimation() != NO_ANIMATION) {
+        if (this.isCharging() || this.getChargeCooldown() > 0 || this.getAnimation() != NO_ANIMATION) {
             return false;
         }
         this.setAnimation(ANIMATION_CHARGE_PREPARE);
@@ -697,7 +695,10 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
     }
 
     public void setAnimation(Animation animation) {
-        this.currentAnimation = animation;
+        if (this.currentAnimation != animation) {
+            this.animationTick = 0;
+            this.currentAnimation = animation;
+        }
     }
 
     public Animation[] getAnimations() {
@@ -743,10 +744,9 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        compound.putBoolean("ElephantSitting", this.isSitting());
         compound.putBoolean("Standing", this.isStanding());
         compound.putBoolean("Chested", this.isChested());
-        compound.putInt("ChargeCooldown", this.chargeCooldown);
+        compound.putInt("ChargeCooldown", this.getChargeCooldown());
         compound.putInt("Carpet", this.entityData.get(CARPET_COLOR));
         if (this.elephantInventory != null) {
             ListTag nbttaglist = new ListTag();
@@ -774,10 +774,11 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.setStanding(compound.getBoolean("Standing"));
-        this.setOrderedToSit(compound.getBoolean("ElephantSitting"));
         this.setChested(compound.getBoolean("Chested"));
-        this.chargeCooldown = compound.getInt("ChargeCooldown");
-        this.entityData.set(CARPET_COLOR, compound.getInt("Carpet"));
+        this.setChargeCooldown(compound.getInt("ChargeCooldown"));
+        if (compound.contains("Carpet")) {
+            this.entityData.set(CARPET_COLOR, compound.getInt("Carpet"));
+        }
         if (this.elephantInventory != null) {
             ListTag nbttaglist = compound.getList("Items", 10);
             this.initElephantInventory();
@@ -828,14 +829,6 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
         this.entityData.set(STANDING, standing);
     }
 
-    public boolean isSitting() {
-        return this.entityData.get(SITTING);
-    }
-
-    public void setOrderedToSit(boolean sit) {
-        this.entityData.set(SITTING, sit);
-    }
-
     @Nullable
     public DyeColor getColor() {
         int color = this.entityData.get(CARPET_COLOR);
@@ -874,8 +867,7 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
             int seat = this.getPassengers().indexOf(passenger);
             float standAdd = -0.3f * this.standProgress;
             float scale = 1.1f;
-            float sitAdd = -0.065f * this.sitProgress;
-            float scaleY = scale * (2.4f * sitAdd - 0.4f * standAdd);
+            float scaleY = scale * (-0.4f * standAdd);
             float radius = scale * (0.5f + standAdd);
             float angle = (float) Math.PI / 180 * this.yBodyRot;
             if (this.getAnimation() == ANIMATION_CHARGE_PREPARE) {
@@ -898,9 +890,19 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
 
     @Override
     protected Vec3 getRiddenInput(Player player, Vec3 deltaIn) {
-        if (player.zza != 0.0f) {
+        if (player.zza != 0.0f || player.xxa != 0.0f) {
             float f = player.zza < 0.0f ? 0.5f : 1.0f;
             return new Vec3(player.xxa * 0.25f, 0.0, player.zza * 0.5f * f);
+        }
+        // 骑乘空闲时自动向目标追击（战象冲锋），停留/蓄力起手时保持原地
+        LivingEntity target = this.getTarget();
+        if (target != null && target.isAlive() && !this.isStaying() && !this.isImmobile()) {
+            double dx = target.getX() - this.getX();
+            double dz = target.getZ() - this.getZ();
+            double dist = Math.sqrt(dx * dx + dz * dz);
+            if (dist > 1.5) {
+                return new Vec3(dx / dist * 0.5, 0.0, dz / dist * 0.5);
+            }
         }
         this.setSprinting(false);
         return Vec3.ZERO;
@@ -913,9 +915,7 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
             this.setRot(player.getYRot(), player.getXRot() * 0.25f);
             this.yBodyRot = this.yHeadRot = this.getYRot();
             this.yRotO = this.yHeadRot;
-            this.setMaxUpStep(1.0f);
             this.getNavigation().stop();
-            this.setTarget(null);
             this.setSprinting(true);
         }
     }
@@ -931,17 +931,6 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
         float f = Math.min(0.25f, this.walkAnimation.speed());
         float f1 = this.walkAnimation.position();
         return this.getBbHeight() - 0.05f - scale * (0.1f * Mth.cos(f1 * 1.4f) * 1.4f * f);
-    }
-
-    @Override
-    public void travel(Vec3 vec3d) {
-        if (this.isSitting()) {
-            if (this.getNavigation().getPath() != null) {
-                this.getNavigation().stop();
-            }
-            vec3d = Vec3.ZERO;
-        }
-        super.travel(vec3d);
     }
 
     public void openGUI(Player playerEntity) {
@@ -960,7 +949,66 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
         }
     }
 
+    class ElephantChestFeedGoal extends Goal {
+        @Override
+        public boolean canUse() {
+            if (IllagerElephantServant.this.chestFeedCooldown > 0 || !IllagerElephantServant.this.isChested()
+                    || IllagerElephantServant.this.elephantInventory == null) {
+                return false;
+            }
+            for (Entity passenger : IllagerElephantServant.this.getPassengers()) {
+                if (passenger instanceof AbstractIllagerServant servant
+                        && servant.getHealth() < servant.getMaxHealth()
+                        && IllagerElephantServant.this.hasFoodInChest(stack -> IllagerElephantServant.this.isServantFood(stack, servant))) {
+                    return true;
+                }
+            }
+            return selfNeedsChestFood();
+        }
+
+        @Override
+        public void start() {
+            for (Entity passenger : IllagerElephantServant.this.getPassengers()) {
+                if (passenger instanceof AbstractIllagerServant servant && servant.getHealth() < servant.getMaxHealth()) {
+                    ItemStack feed2 = IllagerElephantServant.this.takeFoodFromChest(stack -> IllagerElephantServant.this.isServantFood(stack, servant));
+                    if (!feed2.isEmpty()) {
+                        IllagerElephantServant.this.feedServantFood(servant, feed2);
+                    }
+                }
+            }
+            if (selfNeedsChestFood()) {
+                ItemStack feed = IllagerElephantServant.this.takeFoodFromChest(IllagerElephantServant.this::canTargetItem);
+                if (!feed.isEmpty()) {
+                    IllagerElephantServant.this.setItemInHand(InteractionHand.MAIN_HAND, feed);
+                }
+            }
+            IllagerElephantServant.this.chestFeedCooldown = 200;
+        }
+
+        private boolean selfNeedsChestFood() {
+            Player rider = IllagerElephantServant.this.getControllingPassenger() instanceof Player player ? player : null;
+            boolean riderCombat = rider != null && rider.getLastHurtMob() != null && !IllagerElephantServant.this.isAlliedTo(rider.getLastHurtMob());
+            return !riderCombat && IllagerElephantServant.this.getTarget() == null
+                    && IllagerElephantServant.this.getHealth() < IllagerElephantServant.this.getMaxHealth()
+                    && IllagerElephantServant.this.getMainHandItem().isEmpty()
+                    && IllagerElephantServant.this.hasFoodInChest(IllagerElephantServant.this::canTargetItem);
+        }
+    }
+
+    class ElephantPickupItemsGoal extends CreatureAITargetItems {
+        public ElephantPickupItemsGoal(IllagerElephantServant e) {
+            super(e, false);
+        }
+
+        @Override
+        public boolean canUse() {
+            return IllagerElephantServant.this.getTarget() == null && super.canUse();
+        }
+    }
+
     class ElephantMeleeAttackGoal extends MeleeAttackGoal {
+        private int attackCooldown = 0;
+
         public ElephantMeleeAttackGoal(IllagerElephantServant e, double speedModifier, boolean followingTargetEvenIfNotSeen) {
             super(e, speedModifier, followingTargetEvenIfNotSeen);
         }
@@ -968,6 +1016,21 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
         @Override
         protected int getAttackInterval() {
             return 30;
+        }
+
+        @Override
+        protected void checkAndPerformAttack(LivingEntity target, double dist) {
+            if (this.attackCooldown > 0) {
+                --this.attackCooldown;
+            }
+            double reach = this.getAttackReachSqr(target);
+            if (dist <= reach && this.attackCooldown <= 0 && this.mob.getSensing().hasLineOfSight(target)) {
+                if (!IllagerElephantServant.this.isCharging()) {
+                    this.attackCooldown = this.getAttackInterval();
+                    this.mob.swing(InteractionHand.MAIN_HAND);
+                    this.mob.doHurtTarget(target);
+                }
+            }
         }
     }
 }
