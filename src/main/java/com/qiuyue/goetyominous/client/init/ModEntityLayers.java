@@ -179,4 +179,16 @@ public class ModEntityLayers {
 
     public static final ModelLayerLocation CURSED_WOLF_ARMOR_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "cursed_wolf_armor"), "main");
+
+    public static final ModelLayerLocation WARG = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "warg"), "main");
+
+    public static final ModelLayerLocation WARG_ARMOR = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "warg_armor"), "main");
+
+    public static final ModelLayerLocation WARG_SADDLE = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "warg_saddle"), "main");
+
+    public static final ModelLayerLocation CURSED_BLACK_BEAST_ARMOR_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "cursed_black_beast_armor"), "main");
 }

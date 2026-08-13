@@ -1,0 +1,23 @@
+{
+  "name": "Warg Armor",
+  "icon": "goetyominous:warg_cursed_armor",
+  "category": "goety:crafts",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Wargs require armor tailored specifically for their larger frames. Their harnesses cannot be exchanged with ordinary Wolf Armor, and must be equipped by their owner."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:warg_cursed_armor"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:warg_dark_armor"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "You can remove the armor from your Warg using Shears. If the armor is damaged, you can repair it on an Anvil with the corresponding metal ingot, or simply right-click the armored Warg while holding the corresponding metal ingot—though this will restore less durability."
+    }
+  ]
+}

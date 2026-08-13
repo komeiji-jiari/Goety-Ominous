@@ -389,7 +389,7 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
         if (flag) {
             this.getAnimation("hurt").start(0.25F, 0);
             if (this.hasUnholyBlood()) {
-                this.unholyBloodInvulnTime = 30;
+                this.unholyBloodInvulnTime = 10;
             }
             if (!this.level().isClientSide) {
                 this.lastHurtTick = this.tickCount;

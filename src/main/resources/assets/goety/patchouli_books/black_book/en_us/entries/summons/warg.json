@@ -1,0 +1,32 @@
+{
+  "name": "Warg",
+  "icon": "minecraft:bone",
+  "category": "goety:summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Wargs are great war hounds created from Black Wolves. They are stronger, tougher, resistant to knockback, able to leap over obstacles, and unharmed by short falls. Like their smaller kin, they remain loyal to their master and can be healed with meat."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:warg",
+      "scale": 0.35
+    },
+    {
+      "type": "patchouli:text",
+      "text": "To create one, keep at least four owned tamed Black Wolves and their variants within eight blocks of a Howling Totem. Bind a Waystone to the Totem and use it on an eligible Black Wolf. The wolf becomes a Warg of the corresponding breed."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Each Totem can create only one Warg, and a master may normally command no more than three. Breaking the Totem does not free its Warg slot while that Warg lives. A Warg remains bound to its original Totem and can benefit from its protection."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "An owned Warg accepts a Saddle and can be ridden, with charged jumps carrying both hound and rider over great distances. It can also hold any sword in its mouth, replacing its bite with a sweeping spin and a lunging vertical slash. Use an empty hand to retrieve the sword."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Similar to their smaller kin, Wargs can use larger armor harnesses, though they must be their own specialized set."
+    }
+  ]
+}

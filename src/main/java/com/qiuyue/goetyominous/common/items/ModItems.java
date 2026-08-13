@@ -1,8 +1,10 @@
 package com.qiuyue.goetyominous.common.items;
 
 import com.Polarice3.Goety.common.items.ServantSpawnEggItem;
+import com.Polarice3.Goety.common.items.block.BlockItemBase;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.render.item.BoneCudgelRenderer;
+import com.qiuyue.goetyominous.common.init.ModBlocks;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.common.items.curios.DarkAnkh;
 import com.qiuyue.goetyominous.common.items.curios.FungusPackItem;
@@ -59,6 +61,22 @@ public class ModItems {
     public static final RegistryObject<CursedMetalWolfArmorItem> CURSED_METAL_WOLF_ARMOR = ITEMS.register(
             "cursed_wolf_armor",
             () -> new CursedMetalWolfArmorItem(new Item.Properties()));
+
+    public static final RegistryObject<DarkWolfArmorItem> DARK_WOLF_ARMOR = ITEMS.register(
+            "dark_wolf_armor",
+            () -> new DarkWolfArmorItem(new Item.Properties()));
+
+    public static final RegistryObject<CursedWargArmorItem> CURSED_WARG_ARMOR = ITEMS.register(
+            "warg_cursed_armor", () -> new CursedWargArmorItem(new Item.Properties()));
+
+    public static final RegistryObject<DarkWargArmorItem> DARK_WARG_ARMOR = ITEMS.register(
+            "warg_dark_armor", () -> new DarkWargArmorItem(new Item.Properties()));
+
+    public static final RegistryObject<CursedBlackBeastArmorItem> CURSED_BLACK_BEAST_ARMOR = ITEMS.register(
+            "black_beast_cursed_armor", () -> new CursedBlackBeastArmorItem(new Item.Properties()));
+
+    public static final RegistryObject<DarkBlackBeastArmorItem> DARK_BLACK_BEAST_ARMOR = ITEMS.register(
+            "black_beast_dark_armor", () -> new DarkBlackBeastArmorItem(new Item.Properties()));
 
     public static final RegistryObject<PitchforkItem> PITCHFORK = ITEMS.register("pitchfork",
             () -> new PitchforkItem());
@@ -137,7 +155,8 @@ public class ModItems {
     public static final RegistryObject<Item> BRAINEATER_FOCUS = ITEMS.register("braineater_focus",
             () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.BrainEaterSpell()));
 
-
+    public static final RegistryObject<Item> WOLF_TOTEM = ITEMS.register("wolf_totem",
+            () -> new BlockItemBase(ModBlocks.WOLF_TOTEM.get()));
 
 
 
@@ -291,6 +310,10 @@ public class ModItems {
     public static final RegistryObject<ServantSpawnEggItem> URBHADHACH_SERVANT_SPAWN_EGG = ITEMS.register(
             "urbhadhach_servant_spawn_egg",
             () -> new ServantSpawnEggItem(ModEntityTypes.URBHADHACH_SERVANT, 0x484848, 0x88CCFF, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> WARG_SPAWN_EGG = ITEMS.register(
+            "warg_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.WARG, 0x17141B, 0x6B6572, egg()));
 
     /**
      * 物品属性配置方法

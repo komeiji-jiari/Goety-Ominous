@@ -22,7 +22,10 @@
     "MixinSkeletonWolfRenderer",
     "MixinStormhoundRenderer",
     "MixinWinterWolfRenderer",
-    "MixinHellhoundRenderer"
+    "MixinHellhoundRenderer",
+    "MixinBlackBeastRenderer",
+    "MixinBlackBeastModel",
+    "MixinBlackBeastHowlingSoul"
   ],
   "client": [],
   "server": [],

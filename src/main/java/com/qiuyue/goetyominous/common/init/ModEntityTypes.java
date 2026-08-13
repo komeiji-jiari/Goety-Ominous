@@ -371,6 +371,13 @@ public class ModEntityTypes {
                     .updateInterval(1)
                     .build(MOD_ID + ":tremor_block"));
 
+    public static final RegistryObject<EntityType<Warg>> WARG = ENTITY_TYPES.register(
+            "warg",
+            () -> EntityType.Builder.of(Warg::new, MobCategory.MONSTER)
+                    .sized(1.25F, 1.65F)
+                    .clientTrackingRange(10)
+                    .build(MOD_ID + ":warg"));
+
     /**
      * 注册实体类型到模组事件总线
      * 必须在模组构造函数中调用此方法以完成注册

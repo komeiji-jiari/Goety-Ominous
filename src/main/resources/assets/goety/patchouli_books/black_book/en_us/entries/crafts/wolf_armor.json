@@ -1,0 +1,27 @@
+{
+  "name": "Wolf Armor",
+  "icon": "goetyominous:cursed_wolf_armor",
+  "category": "goety:crafts",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You've devised a way to forge wolf armor using dark materials. This armor effectively protects your wolf companions, including those you summon, such as Black Wolves and their variants."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:cursed_wolf_armor"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:dark_wolf_armor"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "You can remove the armor from your wolf using Shears. If the armor is damaged, you can repair it on an Anvil with the corresponding metal ingot, or simply right-click the armored wolf while holding the corresponding metal ingot—though this will restore less durability."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Additionally, if you are equipped with a Ring of the Forge, the Black Wolf servants you summon may spawn wearing Cursed Metal Wolf Armor. However, armor worn by Black Wolves summoned via a focus cannot be repaired."
+    }
+  ]
+}

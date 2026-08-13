@@ -6,7 +6,7 @@ import com.Polarice3.Goety.common.entities.ally.undead.skeleton.SkeletonWolf;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.ModSounds;
-import com.qiuyue.goetyominous.common.items.ModItems;
+import com.qiuyue.goetyominous.common.items.CursedMetalWolfArmorItem;
 import com.qiuyue.goetyominous.utils.GoetyOminousWolfArmorUtil;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -58,7 +58,7 @@ public class WolfArmorEquipHandler {
         }
         if (!owned) return;
 
-        if (held.is(ModItems.CURSED_METAL_WOLF_ARMOR.get())) {
+        if (held.getItem() instanceof CursedMetalWolfArmorItem) {
             if (!armor.isEmpty()) return;
             if (player.getAbilities().instabuild) {
                 target.setItemSlot(EquipmentSlot.CHEST, held.copy());
@@ -72,7 +72,7 @@ public class WolfArmorEquipHandler {
         }
 
         if (held.is(Items.SHEARS)
-                && armor.is(ModItems.CURSED_METAL_WOLF_ARMOR.get())
+                && armor.getItem() instanceof CursedMetalWolfArmorItem
                 && !armor.getOrCreateTag().getBoolean(GoetyOminousWolfArmorUtil.SUMMONED_ARMOR_TAG)) {
             held.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(event.getHand()));
             target.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
@@ -83,8 +83,8 @@ public class WolfArmorEquipHandler {
             return;
         }
 
-        if (held.is(com.Polarice3.Goety.common.items.ModItems.CURSED_METAL_INGOT.get())
-                && armor.is(ModItems.CURSED_METAL_WOLF_ARMOR.get())
+        if (armor.isDamageableItem()
+                && armor.getItem().isValidRepairItem(armor, held)
                 && armor.isDamaged()) {
             if (!player.getAbilities().instabuild) {
                 held.shrink(1);

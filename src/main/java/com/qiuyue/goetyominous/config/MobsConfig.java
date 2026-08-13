@@ -22,6 +22,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> MutantHoglinServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> OvergrownColossusServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> HeresiarchServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> WargLimit;
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> CultistPatrol;
     public static final ForgeConfigSpec.ConfigValue<Integer> CultistPatrolInterval;
@@ -60,6 +61,10 @@ public class MobsConfig {
         MurmurServantLimit = BUILDER
                 .comment("Maximum number of Murmur Servants that can be summoned (Default: 16)")
                 .defineInRange("murmurServantLimit", 16, 1, 100);
+
+        WargLimit = BUILDER
+                .comment("Maximum number of Wargs that can be summoned (Default: 3)")
+                .defineInRange("wargLimit", 3, 1, 100);
 
         FarseerServantLimit = BUILDER
                 .comment("Maximum number of Farseer Servants that can be summoned (Default: 2)")

@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.init;
 
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.blocks.PiglinMerchantSpawnerBlockEntity;
+import com.qiuyue.goetyominous.common.blocks.entities.WolfTotemBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -17,6 +18,12 @@ public class ModBlockEntities {
                     () -> BlockEntityType.Builder.of(
                             PiglinMerchantSpawnerBlockEntity::new,
                             ModBlocks.PIGLIN_MERCHANT_SPAWNER.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<WolfTotemBlockEntity>> WOLF_TOTEM =
+            BLOCK_ENTITIES.register("wolf_totem",
+                    () -> BlockEntityType.Builder.of(
+                            WolfTotemBlockEntity::new,
+                            ModBlocks.WOLF_TOTEM.get()).build(null));
 
     public static void register(IEventBus modEventBus) {
         BLOCK_ENTITIES.register(modEventBus);

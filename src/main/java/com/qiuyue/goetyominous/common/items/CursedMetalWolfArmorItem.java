@@ -13,9 +13,22 @@ public class CursedMetalWolfArmorItem extends Item {
     public static final ResourceLocation BLACK_WOLF_TEXTURE = new ResourceLocation(
             GoetyOminous.MOD_ID, "textures/entity/cursed_metal_black_wolf_armor.png");
 
+    private final ResourceLocation vanillaWolfTexture;
+    private final ResourceLocation blackWolfTexture;
+
     public CursedMetalWolfArmorItem(Properties properties) {
-        super(properties.stacksTo(1).durability(78).fireResistant());
+        this(properties, VANILLA_WOLF_TEXTURE, BLACK_WOLF_TEXTURE, 78);
     }
+
+    protected CursedMetalWolfArmorItem(Properties properties,
+                                       ResourceLocation vanillaWolfTexture, ResourceLocation blackWolfTexture, int durability) {
+        super(properties.stacksTo(1).durability(durability).fireResistant());
+        this.vanillaWolfTexture = vanillaWolfTexture;
+        this.blackWolfTexture = blackWolfTexture;
+    }
+
+    public ResourceLocation getTexture() { return this.vanillaWolfTexture; }
+    public ResourceLocation getBlackWolfTexture() { return this.blackWolfTexture; }
 
     public static ResourceLocation getCrackTexture(WolfArmorCrackiness crack) {
         String name = switch (crack) {

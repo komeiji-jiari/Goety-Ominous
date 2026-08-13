@@ -1,0 +1,30 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:cursed_metal_block"
+  },
+  "craftType": "forge",
+  "soulCost": 1,
+  "duration": 10,
+  "ingredients": [
+    {
+      "item": "goety:spirit_fabric"
+    },
+    {
+      "item": "goety:spirit_fabric"
+    },
+    {
+      "item": "minecraft:chain"
+    },
+    {
+      "tag": "forge:bones"
+    },
+    {
+      "item": "minecraft:chain"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:warg_cursed_armor"
+  }
+}

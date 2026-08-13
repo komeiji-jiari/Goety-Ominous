@@ -1,0 +1,27 @@
+{
+  "name": "Howling Totem",
+  "icon": "goetyominous:wolf_totem",
+  "category": "goety:crafts",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "It is said that certain ancient tribes worshipped totems representing the spirit of the wolf. You have crafted a replica of one such totem, which can be used to summon permanent wolf servants, bind canine servants to its protection, and elevate a qualified Black Wolf into a Warg."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:wolf_totem"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The upper half of a placed Howling Totem can take on several different decorative carvings. Right-click the Totem with any pickaxe to cycle through its decorative carvings. This changes only its appearance and does not affect its servants or stored state."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Offer the Totem one piece of raw meat and one bone to summon two permanent Black Wolves with greater vitality. Hoppers can supply both offerings. The summoned breed follows the Totem's surroundings: Crypt blocks yield Skeleton Wolves, cold biomes yield Winter Wolves, storms may yield Stormhounds, and the Nether yields Hellhounds."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Bind a Waystone to the Totem, then use it on a compatible canine servant to make the Totem its respawn point. A filled Cursed Cage directly beneath it must supply the Soul Energy, with each resurrection costing 100 Soul Energy. A resurrected servant is left Wounded and cannot be resurrected again until it recovers."
+    }
+  ]
+}

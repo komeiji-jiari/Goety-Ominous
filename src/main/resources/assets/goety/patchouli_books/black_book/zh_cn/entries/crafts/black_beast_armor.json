@@ -1,0 +1,23 @@
+{
+  "name": "暗兽护甲",
+  "icon": "goetyominous:black_beast_cursed_armor",
+  "category": "goety:crafts",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "既然你可以为你的狼和座狼设计出一种狼铠，你也同样可以用手头的金属锻造一种给暗兽穿的护甲。当然，因为暗兽的体型更大，需要耗费的材料也更多。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:black_beast_cursed_armor"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:black_beast_dark_armor"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "你可以用剪刀剪掉你的暗兽身上的暗兽铠，如果暗兽铠损坏了，你可以在铁砧上用对应的金属锭修复它，或者直接手持对应金属锭右键穿着暗兽铠的暗兽，但是这样只能修复更少的耐久。"
+    }
+  ]
+}

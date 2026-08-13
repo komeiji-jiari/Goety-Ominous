@@ -11,6 +11,10 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> WargHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> WargArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> WargDamage;
+
     public static final ForgeConfigSpec.ConfigValue<Double> MurmurServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> MurmurServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> MurmurServantMovementSpeed;
@@ -268,6 +272,16 @@ public class AttributesConfig {
 
     static {
         BUILDER.push("Servants Attributes");
+
+        BUILDER.push("Warg");
+        WargHealth = BUILDER.comment("How much Max Health Wargs have, Default: 50.0")
+                .defineInRange("wargHealth", 50.0, 1.0, Double.MAX_VALUE);
+        WargArmor = BUILDER.comment("How much armor Wargs have, Default: 0.0")
+                .defineInRange("wargArmor", 0.0, 0.0, Double.MAX_VALUE);
+        WargDamage = BUILDER.comment("How much damage Wargs deal, Default: 8.0")
+                .defineInRange("wargDamage", 8.0, 1.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
         BUILDER.push("Necromancer");
         SunkenNecromancerHealth = BUILDER.comment("How much Max Health Sunken Necromancers have, Default: 50.0")
                 .defineInRange("SunkenNecromancerHealth", 50.0, 1.0, Double.MAX_VALUE);

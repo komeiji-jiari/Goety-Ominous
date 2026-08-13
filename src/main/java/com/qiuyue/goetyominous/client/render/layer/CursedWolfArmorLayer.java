@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.qiuyue.goetyominous.client.init.ModEntityLayers;
 import com.qiuyue.goetyominous.client.render.model.CursedWolfArmorModel;
 import com.qiuyue.goetyominous.common.items.CursedMetalWolfArmorItem;
-import com.qiuyue.goetyominous.common.items.ModItems;
 import com.qiuyue.goetyominous.utils.WolfArmorCrackiness;
 import net.minecraft.client.model.WolfModel;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -30,10 +29,10 @@ public class CursedWolfArmorLayer extends RenderLayer<Wolf, WolfModel<Wolf>> {
     @Override
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, Wolf wolf, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         ItemStack armor = wolf.getItemBySlot(EquipmentSlot.CHEST);
-        if (armor.is(ModItems.CURSED_METAL_WOLF_ARMOR.get())) {
+        if (armor.getItem() instanceof CursedMetalWolfArmorItem armorItem) {
             WolfModel<Wolf> parentModel = this.getParentModel();
 
-            coloredCutoutModelCopyLayerRender(parentModel, this.armorModel, CursedMetalWolfArmorItem.VANILLA_WOLF_TEXTURE,
+            coloredCutoutModelCopyLayerRender(parentModel, this.armorModel, armorItem.getTexture(),
                     poseStack, buffer, packedLight, wolf,
                     limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, partialTicks,
                     1.0F, 1.0F, 1.0F);

@@ -1,0 +1,27 @@
+{
+  "name": "狼铠",
+  "icon": "goetyominous:cursed_wolf_armor",
+  "category": "goety:crafts",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你想到一种办法用黑暗的材料锻造适合给你的狼穿戴的盔甲。这种狼铠能够有效地保护你的狼伙伴，当然也包括你召唤的黑狼及其变种仆从。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:cursed_wolf_armor"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:dark_wolf_armor"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "你可以用剪刀剪掉你的狼身上的狼铠，如果狼铠损坏了，你可以在铁砧上用对应金属锭修复它，或者直接手持对应金属锭右键穿着狼铠的狼，但是这样只能修复更少的耐久。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "此外，如果你装备了锻造之戒，那么你召唤的黑狼仆从可能会装备诅咒金属狼铠。然而，如果是聚晶召唤的黑狼所穿的狼铠是无法被修复的。"
+    }
+  ]
+}

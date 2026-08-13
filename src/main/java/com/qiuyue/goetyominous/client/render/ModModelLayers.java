@@ -111,6 +111,18 @@ public class ModModelLayers {
         event.registerLayerDefinition(ModEntityLayers.AGONY_LAYER,
                 AgonyModel::createBodyLayer);
 
+        event.registerLayerDefinition(ModEntityLayers.WARG,
+                WargModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.WARG_ARMOR,
+                WargArmorModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.WARG_SADDLE,
+                WargSaddleModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.CURSED_BLACK_BEAST_ARMOR_LAYER,
+                CursedBlackBeastArmorModel::createBodyLayer);
+
         event.registerLayerDefinition(ModEntityLayers.FUNGUS_PACK_LAYER, FungusPackModel::createBodyLayer);
 
         event.registerLayerDefinition(ModEntityLayers.PITCHFORK_LAYER, PitchforkModel::createBodyLayer);
@@ -405,6 +417,8 @@ public class ModModelLayers {
 
         event.registerEntityRenderer(ModEntityTypes.CRIMSON_SPIDER_SERVANT.get(), CrimsonSpiderServantRenderer::new);
 
+        event.registerEntityRenderer(ModEntityTypes.WARG.get(), WargRenderer::new);
+
         event.registerEntityRenderer(ModEntityTypes.ZFUNGUS_THROWER.get(), ZFungusThrowerRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.SUNKEN_NECROMANCER.get(), SunkenNecromancerRenderer::new);
@@ -512,21 +526,27 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.MURMUR_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderMurmurServantBody::new);
+
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.MURMUR_SERVANT_HEAD.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderMurmurServantHead::new);
+
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.CRIMSON_MOSQUITO_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderCrimsonMosquitoServant::new);
+
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.WARPED_MOSCO_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderWarpedMoscoServant::new);
+
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.MOSQUITO_SERVANT_SPIT.get(),
                     com.qiuyue.goetyominous.client.render.projectile.RenderMosquitoServantSpit::new);
+
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.SERVANT_HEMOLYMPH.get(),
                     com.qiuyue.goetyominous.client.render.projectile.RenderServantHemolymph::new);
+
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.FARSEER_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderFarseerServant::new);
@@ -538,12 +558,11 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.ZOMBIE_CROCODILE_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderZombieCrocodileServant::new);
-            // 蘑菇兔仆从：RenderBunfungusServant 是标准的 MobRenderer<BunfungusServant, ModelBunfungusServant>，
-            // 复用 alexsmobs 的 bunfungus 贴图与几何/动画
+
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.BUNFUNGUS_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderBunfungusServant::new);
-            // 大象仆从：RenderIllagerElephantServant 是标准的 MobRenderer<IllagerElephantServant, ModelIllagerElephantServant>
+
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.ILLAGER_ELEPHANT_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderIllagerElephantServant::new);

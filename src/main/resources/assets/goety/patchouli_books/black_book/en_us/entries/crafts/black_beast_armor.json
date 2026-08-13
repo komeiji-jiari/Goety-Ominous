@@ -1,0 +1,23 @@
+{
+  "name": "Black Beast Armor",
+  "icon": "goetyominous:black_beast_cursed_armor",
+  "category": "goety:crafts",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Just as you can craft armor for your Wolves and Wargs, you can also forge protective gear for Black Beasts using the same metals at your disposal. Naturally, due to their larger size, crafting such armor requires more materials."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:black_beast_cursed_armor"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:black_beast_dark_armor"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "You can remove the armor from your Black Beast using Shears. If the armor is damaged, you can repair it on an Anvil with the corresponding metal ingot, or simply right-click the armored Black Beast while holding the corresponding metal ingot—though this will restore less durability."
+    }
+  ]
+}

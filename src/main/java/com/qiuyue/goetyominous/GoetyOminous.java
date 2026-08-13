@@ -206,6 +206,7 @@ public class GoetyOminous {
         event.put(ModEntityTypes.SUNKEN_NECROMANCER_SERVANT.get(), SunkenNecromancerServant.setCustomAttributes().build());
         event.put(ModEntityTypes.SUNKEN_NECROMANCER.get(), SunkenNecromancer.setCustomAttributes().build());
         event.put(ModEntityTypes.AXOLOTL_SERVANT.get(), AxolotlServant.setCustomAttributes().build());
+        event.put(ModEntityTypes.WARG.get(), Warg.setCustomAttributes().build());
         event.put(ModEntityTypes.HERESIARCH_SERVANT.get(), HeresiarchServant.setCustomAttributes().build());
         event.put(ModEntityTypes.DISCIPLE.get(), Disciple.setCustomAttributes().build());
         event.put(ModEntityTypes.CRIMSON_SPIDER_SERVANT.get(), CrimsonSpiderServant.setCustomAttributes().build());

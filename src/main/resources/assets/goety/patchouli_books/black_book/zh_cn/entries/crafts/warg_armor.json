@@ -1,0 +1,23 @@
+{
+  "name": "座狼铠",
+  "icon": "goetyominous:warg_cursed_armor",
+  "category": "goety:crafts",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "座狼需要为它们更大的体型量身定制的护甲。它们的护甲不能与普通狼甲互换，且必须由主人装备。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:warg_cursed_armor"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:warg_dark_armor"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "你可以用剪刀剪掉你的座狼身上的座狼铠，如果座狼铠损坏了，你可以在铁砧上用对应的金属锭修复它，或者直接手持对应金属锭右键穿着座狼铠的座狼，但是这样只能修复更少的耐久。"
+    }
+  ]
+}

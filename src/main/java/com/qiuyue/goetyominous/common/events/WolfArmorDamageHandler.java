@@ -4,7 +4,8 @@ import com.Polarice3.Goety.common.entities.ally.BlackWolf;
 import com.Polarice3.Goety.common.entities.ally.undead.skeleton.SkeletonWolf;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.ModSounds;
-import com.qiuyue.goetyominous.common.items.ModItems;
+import com.qiuyue.goetyominous.common.items.CursedMetalWolfArmorItem;
+import com.qiuyue.goetyominous.common.items.DarkWolfArmorItem;
 import com.qiuyue.goetyominous.utils.WolfArmorCrackiness;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
@@ -30,7 +31,7 @@ public class WolfArmorDamageHandler {
         if (!isWolf) return;
 
         ItemStack armor = entity.getItemBySlot(EquipmentSlot.CHEST);
-        if (!armor.is(ModItems.CURSED_METAL_WOLF_ARMOR.get())) return;
+        if (!(armor.getItem() instanceof CursedMetalWolfArmorItem)) return;
 
         if (event.getSource().is(DamageTypeTags.IS_FIRE)) return;
 
@@ -41,6 +42,12 @@ public class WolfArmorDamageHandler {
 
         WolfArmorCrackiness before = WolfArmorCrackiness.byDamage(armor);
         int durabilityDamage = Math.max(1, Mth.floor(amount));
+        if (armor.getItem() instanceof DarkWolfArmorItem
+                && (event.getSource().is(DamageTypeTags.IS_FIRE)
+                || event.getSource().is(DamageTypeTags.IS_EXPLOSION)
+                || event.getSource().is(DamageTypeTags.WITCH_RESISTANT_TO))) {
+            durabilityDamage = Math.max(1, durabilityDamage / 2);
+        }
         armor.hurtAndBreak(durabilityDamage, entity, (wolf) ->
                 wolf.playSound(ModSounds.WOLF_ARMOR_BREAK.get(), 1.0F, 1.0F));
 
