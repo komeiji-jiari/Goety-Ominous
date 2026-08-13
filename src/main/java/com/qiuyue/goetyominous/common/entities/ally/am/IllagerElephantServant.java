@@ -894,7 +894,7 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
             float f = player.zza < 0.0f ? 0.5f : 1.0f;
             return new Vec3(player.xxa * 0.25f, 0.0, player.zza * 0.5f * f);
         }
-        // 骑乘空闲时自动向目标追击（战象冲锋），停留/蓄力起手时保持原地
+        // When idle on a mount, auto-pursue the target (war elephant charge); stay put while sitting/charging
         LivingEntity target = this.getTarget();
         if (target != null && target.isAlive() && !this.isStaying() && !this.isImmobile()) {
             double dx = target.getX() - this.getX();

@@ -49,6 +49,11 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> TusklinServantMovementSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> TusklinServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> TusklinServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantArmor;
 
     public static final ForgeConfigSpec.ConfigValue<Double> ZombieCrocodileServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> ZombieCrocodileServantDamage;
@@ -57,10 +62,18 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> ZombieCrocodileServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> ZombieCrocodileServantArmor;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> SkelewagServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> SkelewagServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> SkelewagServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> SkelewagServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> SkelewagServantKnockbackResistance;
+
     public static final ForgeConfigSpec.ConfigValue<Double> BunfungusServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> BunfungusServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> BunfungusServantMovementSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> BunfungusServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> BunfungusServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> BunfungusServantContactDamage;
 
     public static final ForgeConfigSpec.ConfigValue<Double> IllagerElephantServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> IllagerElephantServantDamage;
@@ -766,6 +779,16 @@ public class AttributesConfig {
                 .defineInRange("tusklinServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
         TusklinServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Tusklin Servants have, Default: 0.9")
                 .defineInRange("tusklinServantKnockbackResistance", 0.9, 0.0, Double.MAX_VALUE);
+        FroststalkerServantHealth = BUILDER.comment("How much Max Health Froststalker Servants have, Default: 24.0 (matches Alex's Mobs Froststalker)")
+                .defineInRange("froststalkerServantHealth", 24.0, 1.0, Double.MAX_VALUE);
+        FroststalkerServantDamage = BUILDER.comment("How much damage Froststalker Servants deal, Default: 4.5 (matches Alex's Mobs Froststalker)")
+                .defineInRange("froststalkerServantDamage", 4.5, 1.0, Double.MAX_VALUE);
+        FroststalkerServantFollowRange = BUILDER.comment("How much following/detection range Froststalker Servants have, Default: 16.0 (Alex's Mobs vanilla monster default)")
+                .defineInRange("froststalkerServantFollowRange", 16.0, 0.0, Double.MAX_VALUE);
+        FroststalkerServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Froststalker Servants have, Default: 0.0 (Alex's Mobs Froststalker has none)")
+                .defineInRange("froststalkerServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
+        FroststalkerServantArmor = BUILDER.comment("How much natural Armor Froststalker Servants have, Default: 2.0 (matches Alex's Mobs Froststalker)")
+                .defineInRange("froststalkerServantArmor", 2.0, 0.0, Double.MAX_VALUE);
         ZombieCrocodileServantHealth = BUILDER.comment("How much Max Health Zombie Crocodile Servants have, Default: 30.0")
                 .defineInRange("zombieCrocodileServantHealth", 30.0, 1.0, Double.MAX_VALUE);
         ZombieCrocodileServantDamage = BUILDER.comment("How much damage Zombie Crocodile Servants deal, Default: 10.0")
@@ -778,14 +801,28 @@ public class AttributesConfig {
                 .defineInRange("zombieCrocodileServantKnockbackResistance", 0.4, 0.0, Double.MAX_VALUE);
         ZombieCrocodileServantArmor = BUILDER.comment("How much natural Armor Zombie Crocodile Servants have, Default: 8.0")
                 .defineInRange("zombieCrocodileServantArmor", 8.0, 0.0, Double.MAX_VALUE);
-        BunfungusServantHealth = BUILDER.comment("How much Max Health Bunfungus Servants have, Default: 80.0")
+        SkelewagServantHealth = BUILDER.comment("How much Max Health Skelewag Servants have, Default: 20.0 (matches Alex's Mobs Skelewag)")
+                .defineInRange("skelewagServantHealth", 20.0, 1.0, Double.MAX_VALUE);
+        SkelewagServantDamage = BUILDER.comment("How much damage Skelewag Servants deal, Default: 3.0 (matches Alex's Mobs Skelewag)")
+                .defineInRange("skelewagServantDamage", 3.0, 1.0, Double.MAX_VALUE);
+        SkelewagServantMovementSpeed = BUILDER.comment("How fast Skelewag Servants move, Default: 0.45 (matches Alex's Mobs Skelewag)")
+                .defineInRange("skelewagServantMovementSpeed", 0.45, 0.0, Double.MAX_VALUE);
+        SkelewagServantFollowRange = BUILDER.comment("How much following/detection range Skelewag Servants have, Default: 16.0 (Alex's Mobs vanilla monster default)")
+                .defineInRange("skelewagServantFollowRange", 16.0, 0.0, Double.MAX_VALUE);
+        SkelewagServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Skelewag Servants have, Default: 0.0 (Alex's Mobs Skelewag has none)")
+                .defineInRange("skelewagServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
+        BunfungusServantHealth = BUILDER.comment("How much Max Health Bunfungus Servants have, Default: 80.0 (matches Alex's Mobs bunfungus)")
                 .defineInRange("bunfungusServantHealth", 80.0, 1.0, Double.MAX_VALUE);
-        BunfungusServantDamage = BUILDER.comment("How much damage Bunfungus Servants deal, Default: 8.0")
+        BunfungusServantDamage = BUILDER.comment("How much damage Bunfungus Servants deal, Default: 8.0 (matches Alex's Mobs bunfungus)")
                 .defineInRange("bunfungusServantDamage", 8.0, 1.0, Double.MAX_VALUE);
-        BunfungusServantMovementSpeed = BUILDER.comment("How fast Bunfungus Servants move, Default: 0.21")
-                .defineInRange("bunfungusServantMovementSpeed", 0.21, 0.0, Double.MAX_VALUE);
-        BunfungusServantFollowRange = BUILDER.comment("How much following/detection range Bunfungus Servants have, Default: 32.0")
-                .defineInRange("bunfungusServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
+        BunfungusServantMovementSpeed = BUILDER.comment("How fast Bunfungus Servants move, Default: 0.32 (matches Alex's Mobs bunfungus)")
+                .defineInRange("bunfungusServantMovementSpeed", 0.32, 0.0, Double.MAX_VALUE);
+        BunfungusServantArmor = BUILDER.comment("How much Armor Bunfungus Servants have, Default: 0.21 (matches Alex's Mobs bunfungus)")
+                .defineInRange("bunfungusServantArmor", 0.21, 0.0, Double.MAX_VALUE);
+        BunfungusServantFollowRange = BUILDER.comment("How much following/detection range Bunfungus Servants have, Default: 16.0 (Alex's Mobs bunfungus uses the vanilla Mob default of 16)")
+                .defineInRange("bunfungusServantFollowRange", 16.0, 0.0, Double.MAX_VALUE);
+        BunfungusServantContactDamage = BUILDER.comment("Mid-air contact damage Bunfungus Servants deal when landing on a target, Default: 10.0 (matches Alex's Mobs hardcoded value)")
+                .defineInRange("bunfungusServantContactDamage", 10.0, 1.0, Double.MAX_VALUE);
         IllagerElephantServantHealth = BUILDER.comment("How much Max Health Illager Elephant Servants have, Default: 150.0 (matches Alex's Mobs tusked elephant spawn health)")
                 .defineInRange("illagerElephantServantHealth", 150.0, 1.0, Double.MAX_VALUE);
         IllagerElephantServantDamage = BUILDER.comment("How much damage Illager Elephant Servants deal, Default: 15.0 (matches Alex's Mobs tusked elephant)")

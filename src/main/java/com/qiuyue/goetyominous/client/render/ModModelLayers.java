@@ -556,6 +556,10 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.client.render.am.RenderTusklinServant::new);
 
             event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.FROSTSTALKER_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.am.RenderFroststalkerServant::new);
+
+            event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.ZOMBIE_CROCODILE_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderZombieCrocodileServant::new);
 
@@ -566,6 +570,18 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.ILLAGER_ELEPHANT_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderIllagerElephantServant::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.SKELEWAG_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.am.RenderSkelewagServant::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.WITHER_SKELEWAG_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.am.RenderWitherSkelewagServant::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.STRAY_SKELEWAG_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.am.RenderStraySkelewagServant::new);
 
         }
     }

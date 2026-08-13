@@ -6,7 +6,11 @@ import com.qiuyue.goetyominous.common.entities.ally.am.CrimsonMosquitoServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.IllagerElephantServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.ZombieCrocodileServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.FarseerServant;
+import com.qiuyue.goetyominous.common.entities.ally.am.FroststalkerServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.MurmurServant;
+import com.qiuyue.goetyominous.common.entities.ally.am.SkelewagServant;
+import com.qiuyue.goetyominous.common.entities.ally.am.StraySkelewagServant;
+import com.qiuyue.goetyominous.common.entities.ally.am.WitherSkelewagServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.MurmurServantHead;
 import com.qiuyue.goetyominous.common.entities.ally.am.TusklinServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.WarpedMoscoServant;
@@ -17,6 +21,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -91,6 +96,14 @@ public class AmEntityRegistry {
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":tusklin_servant"));
 
+    public static final RegistryObject<EntityType<FroststalkerServant>> FROSTSTALKER_SERVANT =
+            AM_ENTITIES.register("froststalker_servant",
+                    () -> EntityType.Builder.<FroststalkerServant>of((type, worldIn) -> new FroststalkerServant(type, worldIn), MobCategory.MISC)
+                            .sized(0.95F, 1.15F)
+                            .immuneTo(Blocks.POWDER_SNOW)
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":froststalker_servant"));
+
     public static final RegistryObject<EntityType<ZombieCrocodileServant>> ZOMBIE_CROCODILE_SERVANT =
             AM_ENTITIES.register("zombie_crocodile_servant",
                     () -> EntityType.Builder.<ZombieCrocodileServant>of((type, worldIn) -> new ZombieCrocodileServant(type, worldIn), MobCategory.MISC)
@@ -111,6 +124,34 @@ public class AmEntityRegistry {
                             .sized(3.7F, 3.75F)
                             .setTrackingRange(10)
                             .build(GoetyOminous.MOD_ID + ":illager_elephant_servant"));
+
+    public static final RegistryObject<EntityType<SkelewagServant>> SKELEWAG_SERVANT =
+            AM_ENTITIES.register("skelewag_servant",
+                    () -> EntityType.Builder.<SkelewagServant>of((type, worldIn) -> new SkelewagServant(type, worldIn), MobCategory.MISC)
+                            .sized(2.0F, 1.2F)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .setUpdateInterval(1)
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":skelewag_servant"));
+
+    public static final RegistryObject<EntityType<WitherSkelewagServant>> WITHER_SKELEWAG_SERVANT =
+            AM_ENTITIES.register("wither_skelewag_servant",
+                    () -> EntityType.Builder.<WitherSkelewagServant>of((type, worldIn) -> new WitherSkelewagServant(type, worldIn), MobCategory.MISC)
+                            .sized(2.0F, 1.2F)
+                            .fireImmune()
+                            .setShouldReceiveVelocityUpdates(true)
+                            .setUpdateInterval(1)
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":wither_skelewag_servant"));
+
+    public static final RegistryObject<EntityType<StraySkelewagServant>> STRAY_SKELEWAG_SERVANT =
+            AM_ENTITIES.register("stray_skelewag_servant",
+                    () -> EntityType.Builder.<StraySkelewagServant>of((type, worldIn) -> new StraySkelewagServant(type, worldIn), MobCategory.MISC)
+                            .sized(2.0F, 1.2F)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .setUpdateInterval(1)
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":stray_skelewag_servant"));
 
     public static Predicate<LivingEntity> buildPredicateFromTag(TagKey<EntityType<?>> tagKey) {
         if (tagKey == null) {

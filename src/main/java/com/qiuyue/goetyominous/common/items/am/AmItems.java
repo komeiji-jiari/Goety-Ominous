@@ -42,6 +42,11 @@ public class AmItems {
             AM_ITEMS.register("tusklin_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AmEntityRegistry.TUSKLIN_SERVANT, 0x5A3B24, 0xC1A15C, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> FROSTSTALKER_SERVANT_SPAWN_EGG =
+            AM_ITEMS.register("froststalker_servant_spawn_egg",
+                    // 基色 0x788AC1 = 贴图主色(灰蓝皮毛)；高光 0xA1C3FF = 贴图冰刺/冰面亮蓝色
+                    () -> new ServantSpawnEggItem(AmEntityRegistry.FROSTSTALKER_SERVANT, 0x788AC1, 0xA1C3FF, egg()));
+
     public static final RegistryObject<ServantSpawnEggItem> ZOMBIE_CROCODILE_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("zombie_crocodile_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AmEntityRegistry.ZOMBIE_CROCODILE_SERVANT, 0x4E5B31, 0xD6C77E, egg()));
@@ -54,6 +59,21 @@ public class AmItems {
             AM_ITEMS.register("illager_elephant_servant_spawn_egg",
                     // 基色 0x3E2E2F = 贴图主色(深红棕身体)；高光 0xEDE5D1 = 贴图象牙/肚皮奶油色
                     () -> new ServantSpawnEggItem(AmEntityRegistry.ILLAGER_ELEPHANT_SERVANT, 0x3E2E2F, 0xEDE5D1, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> SKELEWAG_SERVANT_SPAWN_EGG =
+            AM_ITEMS.register("skelewag_servant_spawn_egg",
+                    // Base 0xD4D4AC = texture main color (pale yellow-green); highlight 0x9C9C74 = texture olive spots
+                    () -> new ServantSpawnEggItem(AmEntityRegistry.SKELEWAG_SERVANT, 0xD4D4AC, 0x9C9C74, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> WITHER_SKELEWAG_SERVANT_SPAWN_EGG =
+            AM_ITEMS.register("wither_skelewag_servant_spawn_egg",
+                    // Base 0x262626 = texture main color (charred black bone); highlight 0x6E1414 = texture dark red accents
+                    () -> new ServantSpawnEggItem(AmEntityRegistry.WITHER_SKELEWAG_SERVANT, 0x262626, 0x6E1414, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> STRAY_SKELEWAG_SERVANT_SPAWN_EGG =
+            AM_ITEMS.register("stray_skelewag_servant_spawn_egg",
+                    // Base 0xC8D8D8 = texture main color (icy pale blue); highlight 0x6E8FA0 = texture frost blue-gray shading
+                    () -> new ServantSpawnEggItem(AmEntityRegistry.STRAY_SKELEWAG_SERVANT, 0xC8D8D8, 0x6E8FA0, egg()));
 
     public static final RegistryObject<WarpedSteroidsItem> WARPED_STEROIDS =
             AM_ITEMS.register("warped_steroids", WarpedSteroidsItem::new);

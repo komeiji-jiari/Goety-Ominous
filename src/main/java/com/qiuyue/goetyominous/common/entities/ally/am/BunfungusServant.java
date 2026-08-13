@@ -79,7 +79,8 @@ public class BunfungusServant extends Summoned implements IAnimatedEntity {
                 .add(Attributes.MAX_HEALTH, AttributesConfig.BunfungusServantHealth.get())
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.BunfungusServantDamage.get())
                 .add(Attributes.FOLLOW_RANGE, AttributesConfig.BunfungusServantFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.BunfungusServantMovementSpeed.get());
+                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.BunfungusServantMovementSpeed.get())
+                .add(Attributes.ARMOR, AttributesConfig.BunfungusServantArmor.get());
     }
 
     public MobType getMobType() {
@@ -228,7 +229,8 @@ public class BunfungusServant extends Summoned implements IAnimatedEntity {
                 if (this.isSleeping()) {
                     this.setSleeping(false);
                 }
-                double dist = this.distanceTo(target);
+                // AM uses distanceToSqr for these thresholds (3.5/2.5 are squared), so vanilla reach is ~1.9/~1.6 blocks
+                double dist = this.distanceToSqr(target);
                 boolean hit = false;
                 if (this.getAnimationTick() == 5) {
                     if (dist < 3.5D && this.getAnimation() == ANIMATION_BELLY) {
@@ -317,13 +319,16 @@ public class BunfungusServant extends Summoned implements IAnimatedEntity {
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
 
+    // Vanilla AM uses squared distance as divisor (close targets flung dozens of blocks, far targets barely moved).
+    // Switched to true-distance normalization (constant strength * direction), scaled to AM's effective fling at
+    // normal attack range: max ~9 blocks horizontal, ~3 blocks vertical.
     private void launch(LivingEntity entity) {
         if (entity.onGround()) {
             double dx = entity.getX() - this.getX();
             double dz = entity.getZ() - this.getZ();
-            double dist = Math.max(dx * dx + dz * dz, 0.001D);
-            float strength = 6.0F + this.random.nextFloat() * 2.0F;
-            entity.push(dx / dist * strength, 0.6F + this.random.nextFloat() * 0.7F, dz / dist * strength);
+            double dist = Math.max(Math.sqrt(dx * dx + dz * dz), 0.001D);
+            float strength = 0.7F + this.random.nextFloat() * 0.3F;
+            entity.push(dx / dist * strength, 0.4F + this.random.nextFloat() * 0.3F, dz / dist * strength);
         }
     }
 
@@ -461,11 +466,13 @@ public class BunfungusServant extends Summoned implements IAnimatedEntity {
             if (this.jumpCooldown > 0) {
                 this.jumpCooldown--;
             }
-            double dist = this.chungus.distanceTo(this.chungus.getTarget()) - this.chungus.getTarget().getBbWidth();
+            // AM thresholds (2.0/5.0) are compared against squared distance minus bbWidth, not linear distance
+            double dist = this.chungus.distanceToSqr(this.chungus.getTarget()) - this.chungus.getTarget().getBbWidth();
             if (dist < 2.0D) {
                 if (this.hasJumped) {
                     if (!this.chungus.onGround()) {
-                        this.chungus.getTarget().hurt(this.chungus.damageSources().mobAttack(this.chungus), (float) this.chungus.getAttribute(Attributes.ATTACK_DAMAGE).getValue());
+                        // AM mid-air contact damage is hardcoded 10.0F (BunfungusAIMelee); exposed as a config value here, default 10.0
+                        this.chungus.getTarget().hurt(this.chungus.damageSources().mobAttack(this.chungus), AttributesConfig.BunfungusServantContactDamage.get().floatValue());
                     }
                     this.hasJumped = false;
                 } else {
@@ -475,7 +482,11 @@ public class BunfungusServant extends Summoned implements IAnimatedEntity {
                         this.chungus.setAnimation(BunfungusServant.ANIMATION_BELLY);
                     }
                 }
-            } else if (dist >= 2.0D && dist < 5.0D && !this.chungus.isStaying() && this.chungus.hasLineOfSight(this.chungus.getTarget()) && this.jumpCooldown <= 0 && !this.chungus.isInWaterOrBubble()) {
+            } else if (dist < 5.0D || !this.chungus.hasLineOfSight(this.chungus.getTarget()) || this.jumpCooldown > 0 || this.chungus.isInWaterOrBubble()) {
+                if (!this.chungus.isStaying()) {
+                    this.chungus.getNavigation().moveTo(this.chungus.getTarget(), 1.0D);
+                }
+            } else if (!this.chungus.isStaying()) {
                 this.chungus.getNavigation().stop();
                 if (this.chungus.onGround()) {
                     Vec3 vec3 = this.chungus.getDeltaMovement();
@@ -490,8 +501,6 @@ public class BunfungusServant extends Summoned implements IAnimatedEntity {
                     this.hasJumped = true;
                     this.jumpCooldown = 10;
                 }
-            } else if (!this.chungus.isStaying()) {
-                this.chungus.getNavigation().moveTo(this.chungus.getTarget(), 1.0D);
             }
         }
     }

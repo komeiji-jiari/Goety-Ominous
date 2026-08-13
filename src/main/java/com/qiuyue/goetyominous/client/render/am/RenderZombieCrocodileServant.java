@@ -17,7 +17,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class RenderZombieCrocodileServant extends MobRenderer<ZombieCrocodileServant, ModelZombieCrocodileServant> {
     private static final ResourceLocation TEXTURE_0 = new ResourceLocation("goetyominous:textures/entity/crocodile_0.png");
-    private static final ResourceLocation TEXTURE_1 = new ResourceLocation("alexsmobs:textures/entity/crocodile_1.png");
     private static final ResourceLocation TEXTURE_CROWN = new ResourceLocation("alexsmobs:textures/entity/crocodile_crown.png");
 
     public RenderZombieCrocodileServant(EntityRendererProvider.Context renderManagerIn) {
@@ -33,7 +32,7 @@ public class RenderZombieCrocodileServant extends MobRenderer<ZombieCrocodileSer
 
     @Override
     public ResourceLocation getTextureLocation(ZombieCrocodileServant entity) {
-        return entity.isDesert() ? TEXTURE_1 : TEXTURE_0;
+        return TEXTURE_0;
     }
 
     static class CrownLayer extends RenderLayer<ZombieCrocodileServant, ModelZombieCrocodileServant> {

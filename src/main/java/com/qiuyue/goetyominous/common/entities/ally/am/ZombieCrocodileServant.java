@@ -11,7 +11,6 @@ import com.github.alexthe666.alexsmobs.entity.ai.SemiAquaticPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
-import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
@@ -31,7 +30,6 @@ import net.minecraft.stats.Stats;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -54,8 +52,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathComputationType;
@@ -69,7 +65,6 @@ public class ZombieCrocodileServant extends Summoned implements IAnimatedEntity,
     public static final Animation ANIMATION_DEATHROLL = EntityCrocodile.ANIMATION_DEATHROLL;
     private static final EntityDataAccessor<Byte> CLIMBING = SynchedEntityData.defineId(ZombieCrocodileServant.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(ZombieCrocodileServant.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> DESERT = SynchedEntityData.defineId(ZombieCrocodileServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> STUN_TICKS = SynchedEntityData.defineId(ZombieCrocodileServant.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> BASKING_TYPE = SynchedEntityData.defineId(ZombieCrocodileServant.class, EntityDataSerializers.INT);
     public float groundProgress = 0;
@@ -136,7 +131,6 @@ public class ZombieCrocodileServant extends Summoned implements IAnimatedEntity,
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putBoolean("CrocodileSitting", this.isSitting());
-        compound.putBoolean("Desert", this.isDesert());
         compound.putInt("BaskingStyle", this.getBaskingType());
         compound.putInt("BaskingTimer", this.baskingTimer);
         compound.putInt("SwimTimer", this.swimTimer);
@@ -146,7 +140,6 @@ public class ZombieCrocodileServant extends Summoned implements IAnimatedEntity,
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.setOrderedToSit(compound.getBoolean("CrocodileSitting"));
-        this.setDesert(compound.getBoolean("Desert"));
         this.setBaskingType(compound.getInt("BaskingStyle"));
         this.baskingTimer = compound.getInt("BaskingTimer");
         this.swimTimer = compound.getInt("SwimTimer");
@@ -175,7 +168,6 @@ public class ZombieCrocodileServant extends Summoned implements IAnimatedEntity,
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(SITTING, false);
-        this.entityData.define(DESERT, false);
         this.entityData.define(CLIMBING, (byte) 0);
         this.entityData.define(STUN_TICKS, 0);
         this.entityData.define(BASKING_TYPE, 0);
@@ -478,24 +470,6 @@ public class ZombieCrocodileServant extends Summoned implements IAnimatedEntity,
 
     public void setOrderedToSit(boolean sit) {
         this.entityData.set(SITTING, Boolean.valueOf(sit));
-    }
-
-    public boolean isDesert() {
-        return this.entityData.get(DESERT);
-    }
-
-    public void setDesert(boolean desert) {
-        this.entityData.set(DESERT, Boolean.valueOf(desert));
-    }
-
-    public boolean isBiomeDesert(LevelAccessor world, BlockPos pos) {
-        return world.getBiome(pos).is(AMTagRegistry.SPAWNS_DESERT_CROCODILES);
-    }
-
-    @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
-        this.setDesert(this.isBiomeDesert(worldIn, this.blockPosition()));
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
     public int getStunTicks() {

@@ -7,7 +7,11 @@ import com.qiuyue.goetyominous.common.entities.ally.am.ZombieCrocodileServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.FarseerServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.MurmurServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.MurmurServantHead;
+import com.qiuyue.goetyominous.common.entities.ally.am.FroststalkerServant;
+import com.qiuyue.goetyominous.common.entities.ally.am.SkelewagServant;
+import com.qiuyue.goetyominous.common.entities.ally.am.StraySkelewagServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.TusklinServant;
+import com.qiuyue.goetyominous.common.entities.ally.am.WitherSkelewagServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.WarpedMoscoServant;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
 import com.qiuyue.goetyominous.common.items.am.AmItems;
@@ -40,8 +44,12 @@ public class AmCompatManager {
         event.put(AmEntityRegistry.WARPED_MOSCO_SERVANT.get(), WarpedMoscoServant.setCustomAttributes().build());
         event.put(AmEntityRegistry.FARSEER_SERVANT.get(), FarseerServant.bakeAttributes().build());
         event.put(AmEntityRegistry.TUSKLIN_SERVANT.get(), TusklinServant.setCustomAttributes().build());
+        event.put(AmEntityRegistry.FROSTSTALKER_SERVANT.get(), FroststalkerServant.setCustomAttributes().build());
         event.put(AmEntityRegistry.ZOMBIE_CROCODILE_SERVANT.get(), ZombieCrocodileServant.setCustomAttributes().build());
         event.put(AmEntityRegistry.BUNFUNGUS_SERVANT.get(), BunfungusServant.setCustomAttributes().build());
         event.put(AmEntityRegistry.ILLAGER_ELEPHANT_SERVANT.get(), IllagerElephantServant.setCustomAttributes().build());
+        event.put(AmEntityRegistry.SKELEWAG_SERVANT.get(), SkelewagServant.setCustomAttributes().build());
+        event.put(AmEntityRegistry.WITHER_SKELEWAG_SERVANT.get(), WitherSkelewagServant.setCustomAttributes().build());
+        event.put(AmEntityRegistry.STRAY_SKELEWAG_SERVANT.get(), StraySkelewagServant.setCustomAttributes().build());
     }
 }

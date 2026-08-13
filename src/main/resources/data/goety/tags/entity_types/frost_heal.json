@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
-    "goetyominous:urbhadhach_servant"
+    "goetyominous:urbhadhach_servant",
+    "goetyominous:froststalker_servant",
+    "goetyominous:stray_skelewag_servant"
   ]
 }

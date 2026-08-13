@@ -1,0 +1,780 @@
+package com.qiuyue.goetyominous.common.entities.ally.am;
+
+import com.Polarice3.Goety.common.entities.ally.AnimalSummon;
+import com.Polarice3.Goety.common.entities.neutral.Owned;
+import com.Polarice3.Goety.init.ModMobType;
+import com.Polarice3.Goety.utils.CuriosFinder;
+import com.Polarice3.Goety.utils.MobUtil;
+import com.qiuyue.goetyominous.config.AttributesConfig;
+import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
+import com.github.alexthe666.alexsmobs.entity.EntityIceShard;
+import com.github.alexthe666.alexsmobs.entity.ISemiAquatic;
+import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIFindWater;
+import com.github.alexthe666.alexsmobs.entity.ai.AnimalAILeaveWater;
+import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIWanderRanged;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import com.github.alexthe666.citadel.animation.Animation;
+import com.github.alexthe666.citadel.animation.AnimationHandler;
+import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+
+import java.util.EnumSet;
+
+import javax.annotation.Nullable;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.util.Mth;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.enchantment.FrostWalkerEnchantment;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.tags.BiomeTags;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.phys.Vec3;
+
+public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity, ISemiAquatic {
+
+    public static final Animation ANIMATION_BITE = Animation.create(13);
+    public static final Animation ANIMATION_SPEAK = Animation.create(11);
+    public static final Animation ANIMATION_SLASH_L = Animation.create(12);
+    public static final Animation ANIMATION_SLASH_R = Animation.create(12);
+    public static final Animation ANIMATION_SHOVE = Animation.create(12);
+    private static final EntityDataAccessor<Boolean> SPIKES = SynchedEntityData.defineId(FroststalkerServant.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> TACKLING = SynchedEntityData.defineId(FroststalkerServant.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> SPIKE_SHAKING = SynchedEntityData.defineId(FroststalkerServant.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> BIPEDAL = SynchedEntityData.defineId(FroststalkerServant.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> TURN_ANGLE = SynchedEntityData.defineId(FroststalkerServant.class, EntityDataSerializers.FLOAT);
+    public float bipedProgress;
+    public float prevBipedProgress;
+    public float tackleProgress;
+    public float prevTackleProgress;
+    public float spikeShakeProgress;
+    public float prevSpikeShakeProgress;
+    public float prevTurnAngle;
+    private int animationTick;
+    private Animation currentAnimation;
+    private int standingTime = 400 - random.nextInt(700);
+    private int currentSpeedMode = -1;
+    private int shakeTime = 0;
+    private boolean hasSpikedArmor = false;
+    private int fleeFireFlag;
+
+    public FroststalkerServant(EntityType<? extends Owned> type, Level level) {
+        super(type, level);
+        this.setMaxUpStep(1.1F);
+        this.setPathfindingMalus(BlockPathTypes.LAVA, -1.0F);
+        // Limited lifespan by default; removed permanently while the owner wears the Frost or Wild set.
+        this.setLimitedLife(MobUtil.getSummonLifespan(level));
+    }
+
+    @Nullable
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+        // Spawn eggs create permanent servants. The summon-limited lifespan set in the
+        // constructor is meant for summoned (focus) entities only, and would otherwise
+        // expire a freshly-spawned egg entity within a minute or two.
+        if (reason == MobSpawnType.SPAWN_EGG) {
+            this.setHasLifespan(false);
+            this.setLifespan(0);
+        }
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+    }
+
+    public static AttributeSupplier.Builder setCustomAttributes() {
+        return Monster.createMonsterAttributes()
+                .add(Attributes.MAX_HEALTH, AttributesConfig.FroststalkerServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AttributesConfig.FroststalkerServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.FroststalkerServantDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.FroststalkerServantKnockbackResistance.get())
+                .add(Attributes.ARMOR, AttributesConfig.FroststalkerServantArmor.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.3D);
+    }
+
+    @Override
+    public void setConfigurableAttributes() {
+        if (this.getAttribute(Attributes.MAX_HEALTH) != null) {
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(AttributesConfig.FroststalkerServantHealth.get());
+        }
+        if (this.getAttribute(Attributes.ATTACK_DAMAGE) != null) {
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AttributesConfig.FroststalkerServantDamage.get());
+        }
+        if (this.getAttribute(Attributes.FOLLOW_RANGE) != null) {
+            this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(AttributesConfig.FroststalkerServantFollowRange.get());
+        }
+        if (this.getAttribute(Attributes.KNOCKBACK_RESISTANCE) != null) {
+            this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(AttributesConfig.FroststalkerServantKnockbackResistance.get());
+        }
+        if (this.getAttribute(Attributes.ARMOR) != null) {
+            this.getAttribute(Attributes.ARMOR).setBaseValue(AttributesConfig.FroststalkerServantArmor.get());
+        }
+    }
+
+    @Override
+    public MobType getMobType() {
+        return ModMobType.FROST;
+    }
+
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.FROSTSTALKER_IDLE.get();
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.FROSTSTALKER_HURT.get();
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.FROSTSTALKER_HURT.get();
+    }
+
+    public boolean causeFallDamage(float distance, float damageMultiplier) {
+        return false;
+    }
+
+    protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
+    }
+
+    public boolean hurt(DamageSource source, float amount) {
+        if (source.is(DamageTypeTags.IS_FIRE)) {
+            amount *= 2F;
+        }
+        boolean prev = super.hurt(source, amount);
+        if (prev && this.hasSpikes() && !this.isSpikeShaking() && source.getEntity() != null && source.getEntity().distanceTo(this) < 10) {
+            this.setSpikeShaking(true);
+            shakeTime = 20 + random.nextInt(60);
+            standFor(shakeTime + 10);
+        }
+        return prev;
+    }
+
+    @Override
+    protected void registerGoals() {
+        super.registerGoals();
+        this.goalSelector.addGoal(0, new FloatGoal(this) {
+            @Override
+            public void tick() {
+                if (FroststalkerServant.this.getRandom().nextFloat() < 0.8F) {
+                    if (FroststalkerServant.this.hasSpikes()) {
+                        FroststalkerServant.this.jumpUnderwater();
+                    } else {
+                        FroststalkerServant.this.getJumpControl().jump();
+                    }
+                }
+            }
+        });
+        this.goalSelector.addGoal(1, new AIAvoidFire());
+        this.goalSelector.addGoal(2, new FroststalkerServantAIMelee(this));
+        this.goalSelector.addGoal(2, new AnimalAIFindWater(this));
+        this.goalSelector.addGoal(2, new AnimalAILeaveWater(this));
+        this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(6, new AnimalAIWanderRanged(this, 90, 1.0D, 7, 7) {
+            @Override
+            public boolean canUse() {
+                return !FroststalkerServant.this.isSitting() && super.canUse();
+            }
+        });
+        this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, LivingEntity.class, 15.0F));
+        this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+    }
+
+    private void jumpUnderwater() {
+        BlockPos pos = this.getOnPos();
+        if (this.level().isWaterAt(pos) && !this.level().isWaterAt(pos.above())) {
+            this.setPos(this.getX(), this.getY() + 1, this.getZ());
+            this.level().setBlockAndUpdate(pos, Blocks.FROSTED_ICE.defaultBlockState());
+            this.level().scheduleTick(pos, Blocks.FROSTED_ICE, Mth.nextInt(this.getRandom(), 60, 120));
+        }
+        double d0 = 0.2F;
+        Vec3 vec3 = this.getDeltaMovement();
+        this.setDeltaMovement(vec3.x, d0, vec3.z);
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(TURN_ANGLE, 0F);
+        this.entityData.define(SPIKES, true);
+        this.entityData.define(BIPEDAL, false);
+        this.entityData.define(SPIKE_SHAKING, false);
+        this.entityData.define(TACKLING, false);
+    }
+
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putBoolean("Spiked", this.hasSpikes());
+        compound.putBoolean("Bipedal", this.isBipedal());
+        compound.putBoolean("SpikeShaking", this.isSpikeShaking());
+        compound.putInt("StandingTime", standingTime);
+    }
+
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.setSpiked(compound.getBoolean("Spiked"));
+        this.setBipedal(compound.getBoolean("Bipedal"));
+        this.setSpikeShaking(compound.getBoolean("SpikeShaking"));
+        this.standingTime = compound.getInt("StandingTime");
+    }
+
+    public boolean isFood(ItemStack stack) {
+        return stack.is(AMTagRegistry.FROSTSTALKER_BREEDABLES);
+    }
+
+    public void tick() {
+        super.tick();
+        this.prevBipedProgress = bipedProgress;
+        this.prevTackleProgress = tackleProgress;
+        this.prevSpikeShakeProgress = spikeShakeProgress;
+        this.prevTurnAngle = getTurnAngle();
+
+        if (this.isBipedal()) {
+            if (bipedProgress < 5.0F)
+                bipedProgress++;
+        } else {
+            if (bipedProgress > 0F)
+                bipedProgress--;
+        }
+
+        if (this.isTackling()) {
+            if (tackleProgress < 5.0F)
+                tackleProgress++;
+        } else {
+            if (tackleProgress > 0F)
+                tackleProgress--;
+        }
+
+        if (this.isSpikeShaking()) {
+            if (spikeShakeProgress < 5.0F)
+                spikeShakeProgress++;
+
+            if (currentSpeedMode != 2) {
+                currentSpeedMode = 2;
+                this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.1F);
+            }
+        } else {
+            if (spikeShakeProgress > 0F)
+                spikeShakeProgress--;
+
+            if (isBipedal()) {
+                if (currentSpeedMode != 0) {
+                    currentSpeedMode = 0;
+                    this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F);
+                }
+            } else {
+                if (currentSpeedMode != 1) {
+                    currentSpeedMode = 1;
+                    this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25F);
+                }
+            }
+        }
+
+        if (this.hasSpikes()) {
+            if (!hasSpikedArmor) {
+                hasSpikedArmor = true;
+                this.getAttribute(Attributes.ARMOR).setBaseValue(12.0F + AttributesConfig.FroststalkerServantArmor.get());
+            }
+        } else {
+            if (hasSpikedArmor) {
+                hasSpikedArmor = false;
+                this.getAttribute(Attributes.ARMOR).setBaseValue(0F);
+            }
+        }
+
+        // School-set lifespan: while the owner wears the Frost or Wild set, this servant never expires.
+        if (!this.level().isClientSide && this.getTrueOwner() != null) {
+            if (CuriosFinder.hasFrostSet(this.getTrueOwner()) || CuriosFinder.hasWildSet(this.getTrueOwner())) {
+                this.setHasLifespan(false);
+            } else if (this.getLifespan() > 0) {
+                this.setHasLifespan(true);
+            }
+        }
+
+        if (!this.level().isClientSide) {
+            if (this.tickCount % 200 == 0) {
+                if (isInWaterRainOrBubble() && !this.hasSpikes()) {
+                    this.setSpiked(true);
+                }
+                if (this.isHotBiome() && !isInWaterRainOrBubble()) {
+                    this.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 400));
+                    if (random.nextInt(2) == 0 && !this.isInWaterRainOrBubble() && !this.hasFrostSetOwner()) {
+                        this.setSpiked(false);
+                    }
+                }
+            }
+            float threshold = 1F;
+            boolean flag = false;
+            if (isBipedal() && this.yRotO - this.getYRot() > threshold) {
+                this.setTurnAngle(this.getTurnAngle() + 5);
+                flag = true;
+            }
+            if (isBipedal() && this.yRotO - this.getYRot() < -threshold) {
+                this.setTurnAngle(this.getTurnAngle() - 5);
+                flag = true;
+            }
+            if (!flag) {
+                if (this.getTurnAngle() > 0) {
+                    this.setTurnAngle(Math.max(this.getTurnAngle() - 10, 0));
+                }
+                if (this.getTurnAngle() < 0) {
+                    this.setTurnAngle(Math.min(this.getTurnAngle() + 10, 0));
+                }
+            }
+            this.setTurnAngle(Mth.clamp(this.getTurnAngle(), -60, 60));
+            if (standingTime > 0) {
+                standingTime--;
+            }
+            if (standingTime < 0) {
+                standingTime++;
+            }
+
+            if (standingTime <= 0 && this.isBipedal()) {
+                standingTime = -200 - random.nextInt(400);
+                this.setBipedal(false);
+            }
+            if (standingTime == 0 && !this.isBipedal() && this.getDeltaMovement().lengthSqr() >= 0.03D) {
+                standingTime = 200 + random.nextInt(600);
+                this.setBipedal(true);
+            }
+            if (shakeTime > 0) {
+                if (this.shakeTime % 5 == 0) {
+                    int spikeCount = 2 + random.nextInt(4);
+                    for (int i = 0; i < spikeCount; i++) {
+                        float f = ((i + 1) / (float) spikeCount) * 360F;
+                        EntityIceShard shard = new EntityIceShard(AMEntityRegistry.ICE_SHARD.get(), level());
+                        shard.setShooter(this);
+                        shard.setPos(this.getRandomX(0.5F), this.getEyeY() + 0.1F, this.getRandomZ(0.5F));
+                        shard.shootFromRotation(this, this.getXRot() - random.nextInt(40), f, 0.0F, 0.15F + random.nextFloat() * 0.2F, 1.0F);
+                        level().addFreshEntity(shard);
+                    }
+                }
+                shakeTime--;
+            }
+            if (shakeTime == 0 && this.isSpikeShaking()) {
+                this.setSpikeShaking(false);
+                if (random.nextInt(2) == 0 && !this.hasFrostSetOwner()) {
+                    this.setSpiked(false);
+                }
+            }
+            boolean attackAnim = this.getAnimation() == ANIMATION_BITE && this.getAnimationTick() == 5 ||
+                    this.getAnimation() == ANIMATION_SHOVE && this.getAnimationTick() == 8 ||
+                    this.getAnimation() == ANIMATION_SLASH_L && this.getAnimationTick() == 7 ||
+                    this.getAnimation() == ANIMATION_SLASH_R && this.getAnimationTick() == 7;
+            if (this.getTarget() != null && attackAnim) {
+                getTarget().knockback(0.2F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
+                this.getTarget().hurt(this.getServantAttack(), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+            }
+        }
+        if (fleeFireFlag > 0) {
+            fleeFireFlag--;
+        }
+        AnimationHandler.INSTANCE.updateAnimations(this);
+    }
+
+    public boolean isFleeingFire() {
+        return fleeFireFlag > 0;
+    }
+
+    /**
+     * When the owner wears both FrostRobe and FrostCrown (frost set), spikes are never consumed.
+     */
+    public boolean hasFrostSetOwner() {
+        LivingEntity owner = this.getMasterOwner();
+        return owner != null && CuriosFinder.hasFrostSet(owner);
+    }
+
+    public boolean isHotBiome() {
+        if (this.isNoAi()) {
+            return false;
+        }
+        if (this.level().dimension() == Level.NETHER) {
+            return true;
+        } else {
+            int i = Mth.floor(this.getX());
+            int k = Mth.floor(this.getZ());
+            return this.level().getBiome(new BlockPos(i, 0, k)).is(BiomeTags.SNOW_GOLEM_MELTS);
+        }
+    }
+
+    public void standFor(int time) {
+        this.setBipedal(true);
+        standingTime = time;
+    }
+
+    @Override
+    protected float getJumpPower() {
+        return 0.52F * this.getBlockJumpFactor();
+    }
+
+    @Override
+    protected void jumpFromGround() {
+        double d0 = (double) this.getJumpPower() + this.getJumpBoostPower();
+        Vec3 vec3 = this.getDeltaMovement();
+        this.setDeltaMovement(vec3.x, d0, vec3.z);
+        float f = this.getYRot() * Mth.DEG_TO_RAD;
+        this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f) * 0.2F, 0, Mth.cos(f) * 0.2F));
+        this.hasImpulse = true;
+        net.minecraftforge.common.ForgeHooks.onLivingJump(this);
+    }
+
+    public void frostJump() {
+        jumpFromGround();
+    }
+
+    @Override
+    public int getAnimationTick() {
+        return animationTick;
+    }
+
+    @Override
+    public void setAnimationTick(int tick) {
+        animationTick = tick;
+    }
+
+    @Override
+    public Animation getAnimation() {
+        return currentAnimation;
+    }
+
+    @Override
+    public void setAnimation(Animation animation) {
+        currentAnimation = animation;
+    }
+
+    @Override
+    public Animation[] getAnimations() {
+        return new Animation[]{ANIMATION_BITE, ANIMATION_SPEAK, ANIMATION_SLASH_L, ANIMATION_SLASH_R, ANIMATION_SHOVE};
+    }
+
+    public float getTurnAngle() {
+        return this.entityData.get(TURN_ANGLE);
+    }
+
+    public void setTurnAngle(float progress) {
+        this.entityData.set(TURN_ANGLE, progress);
+    }
+
+    public boolean hasSpikes() {
+        return this.entityData.get(SPIKES);
+    }
+
+    public void setSpiked(boolean bar) {
+        this.entityData.set(SPIKES, Boolean.valueOf(bar));
+    }
+
+    public boolean isTackling() {
+        return this.entityData.get(TACKLING);
+    }
+
+    public void setTackling(boolean bar) {
+        this.entityData.set(TACKLING, Boolean.valueOf(bar));
+    }
+
+    public boolean isBipedal() {
+        return this.entityData.get(BIPEDAL);
+    }
+
+    public void setBipedal(boolean bar) {
+        this.entityData.set(BIPEDAL, Boolean.valueOf(bar));
+    }
+
+    public boolean isSpikeShaking() {
+        return this.entityData.get(SPIKE_SHAKING);
+    }
+
+    public void setSpikeShaking(boolean bar) {
+        this.entityData.set(SPIKE_SHAKING, Boolean.valueOf(bar));
+    }
+
+    public boolean doHurtTarget(Entity entityIn) {
+        if (this.getAnimation() == NO_ANIMATION) {
+            final int anim = this.random.nextInt(4);
+            switch (anim) {
+                case 0 -> this.setAnimation(ANIMATION_SHOVE);
+                case 1 -> this.setAnimation(ANIMATION_BITE);
+                case 2 -> this.setAnimation(ANIMATION_SLASH_L);
+                case 3 -> this.setAnimation(ANIMATION_SLASH_R);
+            }
+        }
+        return true;
+    }
+
+    @Override
+    protected void onChangedBlock(BlockPos pos) {
+        int i = EnchantmentHelper.getEnchantmentLevel(Enchantments.FROST_WALKER, this);
+        if (i > 0 || this.hasSpikes()) {
+            FrostWalkerEnchantment.onEntityMoved(this, this.level(), pos, i == 0 ? -1 : i);
+        }
+        if (this.shouldRemoveSoulSpeed(this.getBlockStateOn())) {
+            this.removeSoulSpeed();
+        }
+        this.tryAddSoulSpeed();
+    }
+
+    @Override
+    public boolean shouldEnterWater() {
+        return !this.hasSpikes() && (this.getTarget() == null || !this.getTarget().isAlive());
+    }
+
+    @Override
+    public boolean shouldLeaveWater() {
+        return this.hasSpikes() || (this.getTarget() != null && this.getTarget().isAlive());
+    }
+
+    @Override
+    public boolean shouldStopMoving() {
+        return false;
+    }
+
+    // Goety's servant "stay" command (DarkWand / OrderFocus) routes through IServant.isStaying().
+    // Expose it as isSitting() (same pattern as the fish servant) so our goals can gate on it;
+    // without this, a commanded-to-stay Froststalker would still chase, tackle and wander.
+    public boolean isSitting() {
+        return this.isStaying();
+    }
+
+    @Override
+    public int getWaterSearchRange() {
+        return 10;
+    }
+
+    private class FroststalkerServantAIMelee extends Goal {
+        private final FroststalkerServant froststalker;
+        private boolean willJump = false;
+        private boolean hasJumped = false;
+        private boolean clockwise = false;
+        private int pursuitTime = 0;
+        private int maxPursuitTime = 0;
+        private BlockPos pursuitPos = null;
+        private int startingOrbit = 0;
+
+        private FroststalkerServantAIMelee(FroststalkerServant froststalker) {
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+            this.froststalker = froststalker;
+        }
+
+        @Override
+        public boolean canUse() {
+            if (froststalker.getTarget() != null && froststalker.getTarget().isAlive()) {
+                return !froststalker.isSitting() && !froststalker.isFleeingFire();
+            }
+            return false;
+        }
+
+        public boolean canContinueToUse() {
+            LivingEntity target = froststalker.getTarget();
+            return target != null && !froststalker.isSitting();
+        }
+
+        public void start() {
+            willJump = froststalker.getRandom().nextInt(2) == 0;
+            hasJumped = false;
+            clockwise = froststalker.getRandom().nextBoolean();
+            pursuitPos = null;
+            pursuitTime = 0;
+            maxPursuitTime = 40 + froststalker.getRandom().nextInt(40);
+            startingOrbit = froststalker.getRandom().nextInt(360);
+            this.froststalker.frostJump();
+        }
+
+        public void tick() {
+            froststalker.setBipedal(true);
+            froststalker.standFor(20);
+            LivingEntity target = froststalker.getTarget();
+            boolean flag = false;
+            if ((hasJumped || froststalker.isTackling()) && froststalker.onGround()) {
+                hasJumped = false;
+                willJump = false;
+                froststalker.setTackling(false);
+            }
+            if (target != null && target.isAlive()) {
+                if (pursuitTime < maxPursuitTime) {
+                    pursuitTime++;
+                    pursuitPos = getBlockNearTarget(target);
+
+                    float extraSpeed = 0.2F * Math.max(5F - froststalker.distanceTo(target), 0F);
+                    if (pursuitPos != null) {
+                        froststalker.getNavigation().moveTo(pursuitPos.getX(), pursuitPos.getY(), pursuitPos.getZ(), 1.0F + extraSpeed);
+                    } else {
+                        froststalker.getNavigation().moveTo(target, 1.0F);
+                    }
+                } else if (willJump && pursuitTime == maxPursuitTime) {
+                    froststalker.lookAt(target, 180F, 10F);
+                    if (froststalker.distanceTo(target) > 10F) {
+                        froststalker.getNavigation().moveTo(target, 1.0F);
+                    } else if (froststalker.onGround() && froststalker.hasLineOfSight(target)) {
+                        this.froststalker.setTackling(true);
+                        hasJumped = true;
+                        Vec3 vector3d = this.froststalker.getDeltaMovement();
+                        Vec3 vector3d1 = new Vec3(target.getX() - this.froststalker.getX(), 0.0D, target.getZ() - this.froststalker.getZ());
+                        if (vector3d1.lengthSqr() > 1.0E-7D) {
+                            vector3d1 = vector3d1.normalize().scale(0.9D).add(vector3d.scale(0.8D));
+                        }
+                        this.froststalker.setDeltaMovement(vector3d1.x, 0.6F, vector3d1.z);
+                    } else {
+                        flag = true;
+                    }
+                } else {
+                    if (!froststalker.isTackling()) {
+                        froststalker.getNavigation().moveTo(target, 1.0F);
+                    }
+                }
+                if (froststalker.isTackling() && froststalker.distanceTo(target) <= froststalker.getBbWidth() + target.getBbWidth() + 1.1F && froststalker.hasLineOfSight(target)) {
+                    target.hurt(froststalker.getServantAttack(), (float) froststalker.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                    start();
+                }
+                if (!flag) {
+                    if (froststalker.distanceTo(target) <= froststalker.getBbWidth() + target.getBbWidth() + 1.1F && froststalker.hasLineOfSight(target)) {
+                        if (pursuitTime == maxPursuitTime) {
+                            if (!froststalker.isTackling()) {
+                                froststalker.doHurtTarget(target);
+                            }
+                            start();
+                        }
+                    }
+                }
+            }
+            if (target != null && !froststalker.onGround()) {
+                froststalker.lookAt(target, 180F, 10F);
+                froststalker.yBodyRot = froststalker.getYRot();
+            }
+        }
+
+        public BlockPos getBlockNearTarget(LivingEntity target) {
+            float radius = froststalker.getRandom().nextInt(5) + 3 + target.getBbWidth();
+            int orbit = (int) (startingOrbit + (pursuitTime / (float) maxPursuitTime) * 360);
+            float angle = (Maths.STARTING_ANGLE * (clockwise ? -orbit : orbit));
+            double extraX = radius * Mth.sin(Mth.PI + angle);
+            double extraZ = radius * Mth.cos(angle);
+            BlockPos circlePos = AMBlockPos.fromCoords(target.getX() + extraX, target.getEyeY(), target.getZ() + extraZ);
+            while (!froststalker.level().getBlockState(circlePos).isAir() && circlePos.getY() < froststalker.level().getMaxBuildHeight()) {
+                circlePos = circlePos.above();
+            }
+            while (!froststalker.level().getBlockState(circlePos.below()).entityCanStandOn(froststalker.level(), circlePos.below(), froststalker) && circlePos.getY() > 1) {
+                circlePos = circlePos.below();
+            }
+            if (froststalker.getWalkTargetValue(circlePos) > -1) {
+                return circlePos;
+            }
+            return null;
+        }
+
+        public void stop() {
+            froststalker.setTackling(false);
+        }
+    }
+
+    private class AIAvoidFire extends Goal {
+        private final int searchLength;
+        private final int verticalSearchRange;
+        protected BlockPos destinationBlock;
+        protected int runDelay = 20;
+        private Vec3 fleeTarget;
+
+        private AIAvoidFire() {
+            searchLength = 20;
+            verticalSearchRange = 1;
+        }
+
+        public boolean canContinueToUse() {
+            return destinationBlock != null && isFire(FroststalkerServant.this.level(), destinationBlock.mutable()) && isCloseToFire(16);
+        }
+
+        public boolean isCloseToFire(double dist) {
+            return destinationBlock == null || FroststalkerServant.this.distanceToSqr(Vec3.atCenterOf(destinationBlock)) < dist * dist;
+        }
+
+        @Override
+        public boolean canUse() {
+            if (this.runDelay > 0) {
+                --this.runDelay;
+                return false;
+            } else {
+                this.runDelay = 30 + FroststalkerServant.this.random.nextInt(100);
+                return this.searchForDestination();
+            }
+        }
+
+        public void start() {
+            FroststalkerServant.this.fleeFireFlag = 200;
+            Vec3 vec = LandRandomPos.getPosAway(FroststalkerServant.this, 15, 5, Vec3.atCenterOf(destinationBlock));
+            if (vec != null) {
+                FroststalkerServant.this.standFor(100 + random.nextInt(100));
+                fleeTarget = vec;
+                FroststalkerServant.this.getNavigation().moveTo(vec.x, vec.y, vec.z, 1.2F);
+            }
+        }
+
+        public void tick() {
+            if (this.isCloseToFire(16)) {
+                FroststalkerServant.this.fleeFireFlag = 200;
+                if (fleeTarget == null || FroststalkerServant.this.distanceToSqr(fleeTarget) < 2F) {
+                    Vec3 vec = LandRandomPos.getPosAway(FroststalkerServant.this, 15, 5, Vec3.atCenterOf(destinationBlock));
+                    if (vec != null) {
+                        fleeTarget = vec;
+                    }
+                }
+                if (fleeTarget != null) {
+                    FroststalkerServant.this.getNavigation().moveTo(fleeTarget.x, fleeTarget.y, fleeTarget.z, 1F);
+                }
+            }
+        }
+
+        public void stop() {
+            fleeTarget = null;
+        }
+
+        protected boolean searchForDestination() {
+            int lvt_1_1_ = this.searchLength;
+            int lvt_2_1_ = this.verticalSearchRange;
+            BlockPos lvt_3_1_ = FroststalkerServant.this.blockPosition();
+            BlockPos.MutableBlockPos lvt_4_1_ = new BlockPos.MutableBlockPos();
+
+            for (int lvt_5_1_ = -8; lvt_5_1_ <= 2; lvt_5_1_++) {
+                for (int lvt_6_1_ = 0; lvt_6_1_ < lvt_1_1_; ++lvt_6_1_) {
+                    for (int lvt_7_1_ = 0; lvt_7_1_ <= lvt_6_1_; lvt_7_1_ = lvt_7_1_ > 0 ? -lvt_7_1_ : 1 - lvt_7_1_) {
+                        for (int lvt_8_1_ = lvt_7_1_ < lvt_6_1_ && lvt_7_1_ > -lvt_6_1_ ? lvt_6_1_ : 0; lvt_8_1_ <= lvt_6_1_; lvt_8_1_ = lvt_8_1_ > 0 ? -lvt_8_1_ : 1 - lvt_8_1_) {
+                            lvt_4_1_.setWithOffset(lvt_3_1_, lvt_7_1_, lvt_5_1_ - 1, lvt_8_1_);
+                            if (this.isFire(FroststalkerServant.this.level(), lvt_4_1_)) {
+                                this.destinationBlock = lvt_4_1_;
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private boolean isFire(Level world, BlockPos.MutableBlockPos lvt_4_1_) {
+            return world.getBlockState(lvt_4_1_).is(AMTagRegistry.FROSTSTALKER_FEARS);
+        }
+
+    }
+}
