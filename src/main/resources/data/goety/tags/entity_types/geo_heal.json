@@ -1,0 +1,5 @@
+{
+  "replace": false,
+  "__comment": "servants that heals and lose limited lifespan through Geo set.",
+  "values": ["goetyominous:rocky_roller_servant"]
+}

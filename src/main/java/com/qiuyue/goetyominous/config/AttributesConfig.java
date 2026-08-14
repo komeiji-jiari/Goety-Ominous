@@ -55,6 +55,13 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantArmor;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> RockyRollerServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> RockyRollerServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> RockyRollerServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> RockyRollerServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> RockyRollerServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> RockyRollerServantArmor;
+
     public static final ForgeConfigSpec.ConfigValue<Double> ZombieCrocodileServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> ZombieCrocodileServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> ZombieCrocodileServantMovementSpeed;
@@ -789,6 +796,18 @@ public class AttributesConfig {
                 .defineInRange("froststalkerServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
         FroststalkerServantArmor = BUILDER.comment("How much natural Armor Froststalker Servants have, Default: 2.0 (matches Alex's Mobs Froststalker)")
                 .defineInRange("froststalkerServantArmor", 2.0, 0.0, Double.MAX_VALUE);
+        RockyRollerServantHealth = BUILDER.comment("How much Max Health Rocky Roller Servants have, Default: 10.0 (matches Alex's Mobs rocky roller)")
+                .defineInRange("rockyRollerServantHealth", 10.0, 1.0, Double.MAX_VALUE);
+        RockyRollerServantDamage = BUILDER.comment("How much damage Rocky Roller Servants deal, Default: 2.0 (matches Alex's Mobs rocky roller)")
+                .defineInRange("rockyRollerServantDamage", 2.0, 1.0, Double.MAX_VALUE);
+        RockyRollerServantMovementSpeed = BUILDER.comment("How fast Rocky Roller Servants move, Default: 0.25 (matches Alex's Mobs rocky roller)")
+                .defineInRange("rockyRollerServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
+        RockyRollerServantFollowRange = BUILDER.comment("How much following/detection range Rocky Roller Servants have, Default: 20.0 (Alex's Mobs rocky roller)")
+                .defineInRange("rockyRollerServantFollowRange", 20.0, 0.0, Double.MAX_VALUE);
+        RockyRollerServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Rocky Roller Servants have, Default: 0.7 (matches Alex's Mobs rocky roller)")
+                .defineInRange("rockyRollerServantKnockbackResistance", 0.7, 0.0, Double.MAX_VALUE);
+        RockyRollerServantArmor = BUILDER.comment("How much natural Armor Rocky Roller Servants have, Default: 20.0 (matches Alex's Mobs rocky roller)")
+                .defineInRange("rockyRollerServantArmor", 20.0, 0.0, Double.MAX_VALUE);
         ZombieCrocodileServantHealth = BUILDER.comment("How much Max Health Zombie Crocodile Servants have, Default: 30.0")
                 .defineInRange("zombieCrocodileServantHealth", 30.0, 1.0, Double.MAX_VALUE);
         ZombieCrocodileServantDamage = BUILDER.comment("How much damage Zombie Crocodile Servants deal, Default: 10.0")

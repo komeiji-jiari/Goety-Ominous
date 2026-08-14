@@ -12,6 +12,7 @@ import com.qiuyue.goetyominous.common.entities.ally.am.SkelewagServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.StraySkelewagServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.WitherSkelewagServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.MurmurServantHead;
+import com.qiuyue.goetyominous.common.entities.ally.am.RockyRollerServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.TusklinServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.WarpedMoscoServant;
 import com.qiuyue.goetyominous.common.entities.projectile.EntityMosquitoServantSpit;
@@ -103,6 +104,13 @@ public class AmEntityRegistry {
                             .immuneTo(Blocks.POWDER_SNOW)
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":froststalker_servant"));
+
+    public static final RegistryObject<EntityType<RockyRollerServant>> ROCKY_ROLLER_SERVANT =
+            AM_ENTITIES.register("rocky_roller_servant",
+                    () -> EntityType.Builder.<RockyRollerServant>of((type, worldIn) -> new RockyRollerServant(type, worldIn), MobCategory.MISC)
+                            .sized(1.0F, 1.0F)
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":rocky_roller_servant"));
 
     public static final RegistryObject<EntityType<ZombieCrocodileServant>> ZOMBIE_CROCODILE_SERVANT =
             AM_ENTITIES.register("zombie_crocodile_servant",

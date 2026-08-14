@@ -8,6 +8,7 @@ import com.qiuyue.goetyominous.common.entities.ally.am.FarseerServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.MurmurServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.MurmurServantHead;
 import com.qiuyue.goetyominous.common.entities.ally.am.FroststalkerServant;
+import com.qiuyue.goetyominous.common.entities.ally.am.RockyRollerServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.SkelewagServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.StraySkelewagServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.TusklinServant;
@@ -45,6 +46,7 @@ public class AmCompatManager {
         event.put(AmEntityRegistry.FARSEER_SERVANT.get(), FarseerServant.bakeAttributes().build());
         event.put(AmEntityRegistry.TUSKLIN_SERVANT.get(), TusklinServant.setCustomAttributes().build());
         event.put(AmEntityRegistry.FROSTSTALKER_SERVANT.get(), FroststalkerServant.setCustomAttributes().build());
+        event.put(AmEntityRegistry.ROCKY_ROLLER_SERVANT.get(), RockyRollerServant.setCustomAttributes().build());
         event.put(AmEntityRegistry.ZOMBIE_CROCODILE_SERVANT.get(), ZombieCrocodileServant.setCustomAttributes().build());
         event.put(AmEntityRegistry.BUNFUNGUS_SERVANT.get(), BunfungusServant.setCustomAttributes().build());
         event.put(AmEntityRegistry.ILLAGER_ELEPHANT_SERVANT.get(), IllagerElephantServant.setCustomAttributes().build());

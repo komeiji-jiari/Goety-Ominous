@@ -47,6 +47,11 @@ public class AmItems {
                     // 基色 0x788AC1 = 贴图主色(灰蓝皮毛)；高光 0xA1C3FF = 贴图冰刺/冰面亮蓝色
                     () -> new ServantSpawnEggItem(AmEntityRegistry.FROSTSTALKER_SERVANT, 0x788AC1, 0xA1C3FF, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> ROCKY_ROLLER_SERVANT_SPAWN_EGG =
+            AM_ITEMS.register("rocky_roller_servant_spawn_egg",
+                    // 基色 0x8F8F8F = 贴图主色(灰石头)；高光 0xC7A86B = 贴图苔藓/泥土斑驳色
+                    () -> new ServantSpawnEggItem(AmEntityRegistry.ROCKY_ROLLER_SERVANT, 0x8F8F8F, 0xC7A86B, egg()));
+
     public static final RegistryObject<ServantSpawnEggItem> ZOMBIE_CROCODILE_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("zombie_crocodile_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AmEntityRegistry.ZOMBIE_CROCODILE_SERVANT, 0x4E5B31, 0xD6C77E, egg()));

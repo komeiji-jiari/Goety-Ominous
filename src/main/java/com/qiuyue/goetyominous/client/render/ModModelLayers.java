@@ -560,6 +560,10 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.client.render.am.RenderFroststalkerServant::new);
 
             event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.ROCKY_ROLLER_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.am.RenderRockyRollerServant::new);
+
+            event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.ZOMBIE_CROCODILE_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderZombieCrocodileServant::new);
 
