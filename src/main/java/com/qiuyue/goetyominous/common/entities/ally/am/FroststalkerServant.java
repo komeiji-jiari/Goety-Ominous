@@ -141,7 +141,10 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
 
     @Override
     public boolean canMate(AnimalSummon p_27569_) {
-        return !this.temporary && super.canMate(p_27569_);
+        if (this.isTemporary() || (p_27569_ instanceof FroststalkerServant froststalker && froststalker.isTemporary())) {
+            return false;
+        }
+        return super.canMate(p_27569_);
     }
 
     protected SoundEvent getAmbientSound() {
@@ -313,6 +316,7 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
         if (!this.level().isClientSide && this.getTrueOwner() != null) {
             if (CuriosFinder.hasFrostSet(this.getTrueOwner()) || CuriosFinder.hasWildSet(this.getTrueOwner())) {
                 this.setHasLifespan(false);
+                this.setTemporary(false);
             } else if (this.temporary) {
                 this.setHasLifespan(true);
             } else if (this.getLifespan() > 0) {
@@ -540,12 +544,16 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
 
     @Override
     public boolean shouldEnterWater() {
-        return !this.hasSpikes() && (this.getTarget() == null || !this.getTarget().isAlive());
+        return this.canSeekWater() && !this.hasSpikes() && (this.getTarget() == null || !this.getTarget().isAlive());
     }
 
     @Override
     public boolean shouldLeaveWater() {
-        return this.hasSpikes() || (this.getTarget() != null && this.getTarget().isAlive());
+        return this.canSeekWater() && (this.hasSpikes() || (this.getTarget() != null && this.getTarget().isAlive()));
+    }
+
+    private boolean canSeekWater() {
+        return this.getTrueOwner() == null || this.isWandering();
     }
 
     @Override
@@ -715,7 +723,7 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
                 return false;
             } else {
                 this.runDelay = 30 + FroststalkerServant.this.random.nextInt(100);
-                return this.searchForDestination();
+                return !FroststalkerServant.this.isFollowing() && this.searchForDestination();
             }
         }
 
