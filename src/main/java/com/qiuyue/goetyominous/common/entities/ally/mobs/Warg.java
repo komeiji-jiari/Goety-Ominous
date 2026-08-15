@@ -35,6 +35,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -113,6 +114,17 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
         this.entityData.define(VARIANT, Variant.BLACK.ordinal());
         this.entityData.define(ATTACK_TYPE, ATTACK_NONE);
         this.entityData.define(ATTACK_TICKS, 0);
+    }
+
+    @Override
+    public boolean causeFallDamage(float distance, float multiplier, DamageSource source) {
+        boolean result = super.causeFallDamage(distance, multiplier, source);
+        if (!this.level().isClientSide) {
+            for (Entity passenger : this.getPassengers()) {
+                passenger.resetFallDistance();
+            }
+        }
+        return result;
     }
 
     @Override
@@ -386,55 +398,93 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
             if (held.getItem() instanceof DarkWolfArmorItem) {
                 return InteractionResult.FAIL;
             }
+            boolean sneaking = player.isShiftKeyDown();
             ItemStack wargArmor = this.getItemBySlot(EquipmentSlot.CHEST);
-            if (held.getItem() instanceof CursedWargArmorItem && wargArmor.isEmpty()) {
-                this.setItemSlot(EquipmentSlot.CHEST, held.copyWithCount(1));
-                this.setDropChance(EquipmentSlot.CHEST, 2.0F);
-                consumeOne(player, held);
-                return InteractionResult.sidedSuccess(this.level().isClientSide);
-            }
-            if (held.is(Items.SHEARS) && this.hasWargArmor()
-                    && (!EnchantmentHelper.hasBindingCurse(this.getItemBySlot(EquipmentSlot.CHEST)) || player.isCreative())) {
-                held.hurtAndBreak(1, player, (e) -> {});
-                this.spawnAtLocation(this.getItemBySlot(EquipmentSlot.CHEST).copy());
-                this.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
-                return InteractionResult.sidedSuccess(this.level().isClientSide);
-            }
-            if (held.is(ItemTags.SWORDS) && this.getMainHandItem().isEmpty()) {
-                this.setItemSlot(EquipmentSlot.MAINHAND, held.copyWithCount(1));
-                this.setDropChance(EquipmentSlot.MAINHAND, 2.0F);
-                consumeOne(player, held);
-                return InteractionResult.sidedSuccess(this.level().isClientSide);
-            }
-            if (held.is(Items.SADDLE) && !this.isSaddled()) {
-                this.setSaddled(true);
-                this.playSound(SoundEvents.HORSE_SADDLE, 0.5F, 0.85F);
-                consumeOne(player, held);
-                return InteractionResult.sidedSuccess(this.level().isClientSide);
-            }
-            if (held.isEmpty() && this.hasSword()) {
-                if (!this.level().isClientSide) {
-                    ItemStack sword = this.getMainHandItem().copy();
-                    this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
-                    player.setItemInHand(hand, sword);
-                    this.playSound(SoundEvents.ITEM_PICKUP, 0.35F, 1.0F);
+
+            if (sneaking) {
+
+                if (held.is(ItemTags.SWORDS) && this.getMainHandItem().isEmpty()) {
+
+                    this.setItemSlot(EquipmentSlot.MAINHAND, held.copyWithCount(1));
+                    this.setDropChance(EquipmentSlot.MAINHAND, 2.0F);
+                    consumeOne(player, held);
+                    return InteractionResult.sidedSuccess(this.level().isClientSide);
                 }
-                return InteractionResult.sidedSuccess(this.level().isClientSide);
-            }
-            if (player.isCrouching() && held.isEmpty()) {
-                if (this.isSaddled()) {
+                if (wargArmor.getItem() instanceof CursedWargArmorItem
+                        && wargArmor.isDamaged() && wargArmor.getItem().isValidRepairItem(wargArmor, held)) {
+
+                    if (!player.getAbilities().instabuild) {
+                        held.shrink(1);
+                    }
+                    int repair = (int) (wargArmor.getMaxDamage() * 0.125F);
+                    wargArmor.setDamageValue(Math.max(0, wargArmor.getDamageValue() - repair));
+                    this.playSound(SoundEvents.ANVIL_USE, 1.0F, 1.0F);
+                    return InteractionResult.sidedSuccess(this.level().isClientSide);
+                }
+                if (this.isFood(held) && this.getHealth() < this.getMaxHealth()) {
+
+                    if (!this.level().isClientSide) {
+                        FoodProperties food = held.getFoodProperties(this);
+                        if (food != null) {
+                            this.heal(food.getNutrition());
+                            this.playSound(SoundEvents.GENERIC_EAT, 1.0F, 1.0F);
+                        }
+                    }
+                    consumeOne(player, held);
+                    return InteractionResult.sidedSuccess(this.level().isClientSide);
+                }
+                if (held.isEmpty() && this.isSaddled()) {
+
                     this.setSaddled(false);
                     this.spawnAtLocation(Items.SADDLE);
                     return InteractionResult.sidedSuccess(this.level().isClientSide);
                 }
-            }
-            if (!player.isCrouching() && held.isEmpty() && this.isSaddled()) {
-                if (!this.level().isClientSide) {
-                    player.setYRot(this.getYRot());
-                    player.setXRot(this.getXRot());
-                    player.startRiding(this);
+            } else {
+
+                if (held.getItem() instanceof CursedWargArmorItem && wargArmor.isEmpty()) {
+
+                    this.setItemSlot(EquipmentSlot.CHEST, held.copyWithCount(1));
+                    this.setDropChance(EquipmentSlot.CHEST, 2.0F);
+                    consumeOne(player, held);
+                    return InteractionResult.sidedSuccess(this.level().isClientSide);
                 }
-                return InteractionResult.sidedSuccess(this.level().isClientSide);
+                if (held.is(Items.SHEARS) && this.hasWargArmor()
+                        && (!EnchantmentHelper.hasBindingCurse(this.getItemBySlot(EquipmentSlot.CHEST)) || player.isCreative())) {
+
+                    held.hurtAndBreak(1, player, (e) -> {});
+                    this.spawnAtLocation(this.getItemBySlot(EquipmentSlot.CHEST).copy());
+                    this.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
+                    return InteractionResult.sidedSuccess(this.level().isClientSide);
+                }
+                if (held.is(Items.STICK) && this.hasSword()) {
+
+                    if (!this.level().isClientSide) {
+                        ItemStack sword = this.getMainHandItem().copy();
+                        this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+                        player.setItemInHand(hand, sword);
+                        this.playSound(SoundEvents.ITEM_PICKUP, 0.35F, 1.0F);
+                    }
+                    return InteractionResult.sidedSuccess(this.level().isClientSide);
+                }
+                if (held.is(Items.SADDLE) && !this.isSaddled()) {
+
+                    this.setSaddled(true);
+                    this.playSound(SoundEvents.HORSE_SADDLE, 0.5F, 0.85F);
+                    consumeOne(player, held);
+                    return InteractionResult.sidedSuccess(this.level().isClientSide);
+                }
+                if (held.isEmpty() && this.isSaddled()) {
+
+                    if (!this.level().isClientSide) {
+                        player.setYRot(this.getYRot());
+                        player.setXRot(this.getXRot());
+                        player.startRiding(this);
+                    }
+                    return InteractionResult.sidedSuccess(this.level().isClientSide);
+                }
+                if (this.isFood(held) && this.getHealth() < this.getMaxHealth()) {
+                    return InteractionResult.FAIL;
+                }
             }
         }
         return super.mobInteract(player, hand);

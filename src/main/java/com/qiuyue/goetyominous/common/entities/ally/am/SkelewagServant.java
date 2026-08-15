@@ -86,6 +86,11 @@ public class SkelewagServant extends Summoned implements IAnimatedEntity, ISemiA
     }
 
     @Override
+    public int getSummonLimit(LivingEntity owner) {
+        return com.qiuyue.goetyominous.config.MobsConfig.SkelewagLimit.get();
+    }
+
+    @Override
     public MobType getMobType() {
         return MobType.UNDEAD;
     }
@@ -131,10 +136,6 @@ public class SkelewagServant extends Summoned implements IAnimatedEntity, ISemiA
         }
     }
 
-    // Goety's servant commands (DarkWand + OrderFocus) route "stay" through IServant.isStaying()
-    // (a vanilla Mob flag), never through Mob.setOrderedToSit. Delegate the fish's sit-freeze state
-    // to it so the stay command actually freezes the fish, instead of a custom flag nothing sets.
-    // (Vanilla 1.20.1 Mob has no isSitting(), so this is a plain fish-only method, not an override.)
     public boolean isSitting() {
         return this.isStaying();
     }
@@ -234,8 +235,6 @@ public class SkelewagServant extends Summoned implements IAnimatedEntity, ISemiA
         }
     }
 
-    // Riding logic mirrors Goety's Gnasher: a Player (or non-autonomous rider) controls the fish,
-    // while a Mob rider is only allowed when ServantRideAutonomous is off (the default).
     @Nullable
     @Override
     public LivingEntity getControllingPassenger() {
@@ -281,8 +280,6 @@ public class SkelewagServant extends Summoned implements IAnimatedEntity, ISemiA
     @Override
     protected void tickRidden(Player player, Vec3 vec3) {
         super.tickRidden(player, vec3);
-        // Same math as the vanilla LivingEntity#getRiddenRotation (absent from 1.20.1): half pitch,
-        // full yaw. This lets the player steer the fish's pitch by looking up/down.
         Vec2 rot = new Vec2(player.getXRot() * 0.5F, player.getYRot());
         this.setRot(rot.y, rot.x);
         this.yHeadRot = this.yBodyRot = this.yRotO = this.getYRot();
@@ -320,9 +317,6 @@ public class SkelewagServant extends Summoned implements IAnimatedEntity, ISemiA
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         this.setVariant(this.getRandom().nextFloat() < 0.3F ? 1 : 0);
-        // Spawn eggs create permanent servants. The summon-limited lifespan set in the
-        // Stray/Wither variants' constructors is meant for summoned (focus) entities only,
-        // and would otherwise expire a freshly-spawned egg entity within a minute or two.
         if (reason == MobSpawnType.SPAWN_EGG) {
             this.setHasLifespan(false);
             this.setLifespan(0);
@@ -370,8 +364,7 @@ public class SkelewagServant extends Summoned implements IAnimatedEntity, ISemiA
             }
             return InteractionResult.SUCCESS;
         }
-        // Right-click to ride (owner only, not while sneaking). If someone else is already riding,
-        // kick them off first. Wands are left to super.mobInteract so they can still command.
+
         if (!this.level().isClientSide && this.getTrueOwner() == player && !player.isCrouching()) {
             if (this.getFirstPassenger() != null && this.getFirstPassenger() != player) {
                 this.getFirstPassenger().stopRiding();

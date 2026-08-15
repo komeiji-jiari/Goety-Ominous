@@ -113,6 +113,9 @@ public class MutantHoglinStompAttackGoal extends Goal {
 
     public void stop() {
         super.stop();
+        if (this.mob.hasSoulJar()) {
+            this.mob.summonFlameRings();
+        }
         int randomAddedCooldown = (Integer)MutantHoglinCommonConfig.max_stomp_cooldown.get() - (Integer)MutantHoglinCommonConfig.min_stomp_cooldown.get() <= 0 ? 0 : this.mob.getRandom().nextInt((Integer)MutantHoglinCommonConfig.max_stomp_cooldown.get() - (Integer)MutantHoglinCommonConfig.min_stomp_cooldown.get());
         int cooldown = (Integer)MutantHoglinCommonConfig.min_stomp_cooldown.get() + randomAddedCooldown;
         this.nextUseTime = this.mob.tickCount + cooldown;

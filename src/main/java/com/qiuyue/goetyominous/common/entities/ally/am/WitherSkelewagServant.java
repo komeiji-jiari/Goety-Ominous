@@ -21,10 +21,7 @@ public class WitherSkelewagServant extends SkelewagServant {
 
     public WitherSkelewagServant(EntityType<? extends Owned> type, Level level) {
         super(type, level);
-        // Allow pathfinding through lava like water (default LAVA malus is -1.0F, untraversable)
         this.setPathfindingMalus(BlockPathTypes.LAVA, 0.0F);
-        // Limited lifespan by default; removed permanently while the owner wears the Nether set.
-        this.setLimitedLife(MobUtil.getSummonLifespan(level));
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
@@ -36,8 +33,6 @@ public class WitherSkelewagServant extends SkelewagServant {
                 .add(Attributes.MOVEMENT_SPEED, AttributesConfig.SkelewagServantMovementSpeed.get());
     }
 
-    // Treat lava as water so the AquaticMoveController buoyancy and the semi-aquatic travel()
-    // swim logic (inherited from SkelewagServant) also work while submerged in lava.
     @Override
     public boolean isInWater() {
         return super.isInWater() || this.isInLava();
@@ -52,9 +47,6 @@ public class WitherSkelewagServant extends SkelewagServant {
         return super.getWalkTargetValue(pos, level());
     }
 
-    // Like the vanilla Wither Skeleton, attacks inflict Wither I for 10 seconds.
-    // Skelewag damage is animation-driven inside tick(), so we mirror the damage ticks here
-    // (STAB lands on tick 7; SLASH lands every 5 ticks within (0,25)).
     @Override
     public void tick() {
         LivingEntity target = this.getTarget();
@@ -68,7 +60,6 @@ public class WitherSkelewagServant extends SkelewagServant {
         if (attackTick) {
             target.addEffect(new MobEffectInstance(MobEffects.WITHER, 200), this);
         }
-        // School-set lifespan: while the owner wears the Nether set, this servant never expires.
         if (!this.level().isClientSide && this.getTrueOwner() != null) {
             if (CuriosFinder.hasNetherSet(this.getTrueOwner())) {
                 this.setHasLifespan(false);

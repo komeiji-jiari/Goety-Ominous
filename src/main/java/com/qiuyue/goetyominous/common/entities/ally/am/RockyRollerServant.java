@@ -3,8 +3,7 @@ package com.qiuyue.goetyominous.common.entities.ally.am;
 import com.Polarice3.Goety.api.entities.IOwned;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
-import com.Polarice3.Goety.init.ModMobType;
-import com.Polarice3.Goety.utils.MobUtil;
+import com.Polarice3.Goety.utils.CuriosFinder;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.AdvancedPathNavigateNoTeleport;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIWanderRanged;
@@ -17,6 +16,8 @@ import java.util.EnumSet;
 import java.util.List;
 
 import javax.annotation.Nullable;
+
+import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -34,7 +35,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.item.FallingBlockEntity;
@@ -77,7 +77,11 @@ public class RockyRollerServant extends Summoned implements ICustomCollisions {
 
     public RockyRollerServant(EntityType<? extends Owned> type, Level level) {
         super(type, level);
-        this.setLimitedLife(MobUtil.getSummonLifespan(level));
+    }
+
+    @Override
+    public int getSummonLimit(LivingEntity owner) {
+        return MobsConfig.RockyRollerLimit.get();
     }
 
     @Nullable
@@ -119,11 +123,6 @@ public class RockyRollerServant extends Summoned implements ICustomCollisions {
         if (this.getAttribute(Attributes.MOVEMENT_SPEED) != null) {
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AttributesConfig.RockyRollerServantMovementSpeed.get());
         }
-    }
-
-    @Override
-    public MobType getMobType() {
-        return ModMobType.NATURAL;
     }
 
     protected SoundEvent getAmbientSound() {
@@ -186,6 +185,11 @@ public class RockyRollerServant extends Summoned implements ICustomCollisions {
         }
 
         if (!this.level().isClientSide) {
+            if (this.getTrueOwner() != null && CuriosFinder.hasAmethystNecklace(this.getTrueOwner())) {
+                this.setHasLifespan(false);
+            } else if (this.getLifespan() > 0) {
+                this.setHasLifespan(true);
+            }
             this.setAngry(this.getTarget() != null && this.getTarget().isAlive() && this.distanceToSqr(this.getTarget()) < 20 * 20);
         }
         if (this.isRolling() && rollCooldown <= 0) {

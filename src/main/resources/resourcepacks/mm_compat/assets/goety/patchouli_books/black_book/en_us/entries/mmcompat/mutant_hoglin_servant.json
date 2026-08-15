@@ -22,6 +22,10 @@
     },
     {
       "type": "patchouli:text",
+      "text": "Certain specific items can enhance your Mutant Hoglin servant. A Wither Necromancer's Soul Jar causes its stomps to erupt with pillars of fire, a Blazing Helmet fuels its rage even further, and Unholy Blood makes the beast's body even harder to shake."
+    },
+    {
+      "type": "patchouli:text",
       "text": "Sneak + right-click your Mutant Hoglin Servant with Crimson Fungus to heal them. If their owner wears Nether Robes, they can also heal themselves using their owner's Soul Energy."
     }
   ]

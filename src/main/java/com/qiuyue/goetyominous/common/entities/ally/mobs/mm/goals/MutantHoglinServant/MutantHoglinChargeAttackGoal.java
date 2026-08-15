@@ -79,6 +79,9 @@ public class MutantHoglinChargeAttackGoal extends Goal {
 
         if (this.mob.charging) {
             ++this.chargingFor;
+            if (this.mob.hasSoulJar() && this.chargingFor % 10 == 1) {
+                this.mob.spawnChargeFlame();
+            }
             double moveSpeed = this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED);
             this.mob.setDeltaMovement(this.mob.getDeltaMovement().add(PositionUtils.getOffsetMotion(this.mob, 0.0, 0.0, this.mob.onGround() ? moveSpeed * 1.25 : moveSpeed * 0.75, 0.0F, this.mob.yBodyRot)));
         }

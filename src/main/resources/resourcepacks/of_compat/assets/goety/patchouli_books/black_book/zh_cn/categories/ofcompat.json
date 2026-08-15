@@ -1,0 +1,7 @@
+{
+  "name": "针锋相对联动",
+  "description": "利用黑暗艺术与你的敌人针锋相对。",
+  "icon": "opposing_force:frowzy_head",
+  "sortnum": 6,
+  "parent": "goety:goetyominous"
+}

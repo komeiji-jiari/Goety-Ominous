@@ -1,0 +1,24 @@
+{
+  "name": "岩磙兽仆从",
+  "icon": "alexsmobs:rocky_shell",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "这些岩磙兽仆从会通过滚动来碾压敌人，它们滚动时甚至会让大地震颤。你可以通过仪式来召唤一个永续的岩磙兽仆从。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:rocky_roller_servant",
+      "text": "巨石怪点了个赞"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "你可以通过穿戴占卜长袍来治疗你的岩磙兽仆从。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:rocky_roller_servant"
+    }
+  ]
+}

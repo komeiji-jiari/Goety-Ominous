@@ -4,10 +4,7 @@ import com.Polarice3.Goety.common.items.ServantSpawnEggItem;
 import com.Polarice3.Goety.common.items.magic.MagicFocus;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
-import com.qiuyue.goetyominous.common.magic.spells.am.BloodSpraySpell;
-import com.qiuyue.goetyominous.common.magic.spells.am.CrimsonSpell;
-import com.qiuyue.goetyominous.common.magic.spells.am.FarseerSpell;
-import com.qiuyue.goetyominous.common.magic.spells.am.MurmurSpell;
+import com.qiuyue.goetyominous.common.magic.spells.am.*;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -44,7 +41,6 @@ public class AmItems {
 
     public static final RegistryObject<ServantSpawnEggItem> FROSTSTALKER_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("froststalker_servant_spawn_egg",
-                    // 基色 0x788AC1 = 贴图主色(灰蓝皮毛)；高光 0xA1C3FF = 贴图冰刺/冰面亮蓝色
                     () -> new ServantSpawnEggItem(AmEntityRegistry.FROSTSTALKER_SERVANT, 0x788AC1, 0xA1C3FF, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> ROCKY_ROLLER_SERVANT_SPAWN_EGG =
@@ -62,7 +58,6 @@ public class AmItems {
 
     public static final RegistryObject<ServantSpawnEggItem> ILLAGER_ELEPHANT_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("illager_elephant_servant_spawn_egg",
-                    // 基色 0x3E2E2F = 贴图主色(深红棕身体)；高光 0xEDE5D1 = 贴图象牙/肚皮奶油色
                     () -> new ServantSpawnEggItem(AmEntityRegistry.ILLAGER_ELEPHANT_SERVANT, 0x3E2E2F, 0xEDE5D1, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> SKELEWAG_SERVANT_SPAWN_EGG =
@@ -98,6 +93,14 @@ public class AmItems {
     public static final RegistryObject<MagicFocus> FARSEER_FOCUS = AM_ITEMS.register(
             "farseer_focus",
             () -> new MagicFocus(new FarseerSpell()));
+
+    public static final RegistryObject<MagicFocus> FROSTSTALKER_FOCUS = AM_ITEMS.register(
+            "froststalker_focus",
+            () -> new MagicFocus(new FrostStalkerSpell()));
+
+    public static final RegistryObject<MagicFocus> ROLLER_FOCUS = AM_ITEMS.register(
+            "roller_focus",
+            () -> new MagicFocus(new RollerSpell()));
 
 
     public static Item.Properties egg() {

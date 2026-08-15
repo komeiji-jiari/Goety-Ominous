@@ -10,6 +10,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
@@ -70,8 +71,8 @@ public abstract class AbstractGOCultist extends Cultist {
         return this.entityData.get(DATA_REINFORCEMENT_CHANCE);
     }
 
-    protected void randomizeReinforcementsChance() {
-        this.setReinforcementChance((float) (this.random.nextDouble() * 0.1D));
+    protected void randomizeReinforcementsChance(RandomSource random) {
+        this.setReinforcementChance((float) (random.nextDouble() * 0.1D));
     }
 
     @Override
@@ -168,10 +169,11 @@ public abstract class AbstractGOCultist extends Cultist {
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         if (this instanceof ICultist) {
-            this.randomizeReinforcementsChance();
-            if (this.random.nextFloat() < difficultyIn.getSpecialMultiplier() * 0.05F) {
+            RandomSource random = worldIn.getRandom();
+            this.randomizeReinforcementsChance(random);
+            if (random.nextFloat() < difficultyIn.getSpecialMultiplier() * 0.05F) {
                 this.setReinforcementChance(
-                        this.getReinforcementChance() + (float) (this.random.nextDouble() * 0.25D + 0.5D)
+                        this.getReinforcementChance() + (float) (random.nextDouble() * 0.25D + 0.5D)
                 );
             }
         }

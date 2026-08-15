@@ -132,6 +132,10 @@ public class GoetyOminous {
             com.qiuyue.goetyominous.compat.lm.LmCompatManager.init(modEventBus);
         }
 
+        if (OpposingForceCompat.isOpposingForceLoaded()) {
+            com.qiuyue.goetyominous.compat.of.OfCompatManager.init(modEventBus);
+        }
+
         if (AlexMobsCompat.isAlexMobsLoaded()) {
             com.qiuyue.goetyominous.compat.am.AmCompatManager.init(modEventBus);
         }
@@ -285,6 +289,10 @@ public class GoetyOminous {
 
         if (LegendaryMonstersCompat.isLegendaryMonstersLoaded()) {
             com.qiuyue.goetyominous.compat.lm.LmCompatManager.setCustomAttributes(event);
+        }
+
+        if (OpposingForceCompat.isOpposingForceLoaded()) {
+            com.qiuyue.goetyominous.compat.of.OfCompatManager.setCustomAttributes(event);
         }
 
         if (AlexMobsCompat.isAlexMobsLoaded()) {

@@ -75,6 +75,11 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> CrimsonMosquitoSummonDown;
     public static final ForgeConfigSpec.ConfigValue<Integer> CrimsonMosquitoCoolDown;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> FrostStalkerSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FrostStalkerCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FrostStalkerSummonDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FrostStalkerCoolDown;
+
     public static final ForgeConfigSpec.ConfigValue<Integer> BloodSpraySoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> BloodSprayCastDuration;
     public static final ForgeConfigSpec.ConfigValue<Integer> BloodSprayCoolDown;
@@ -83,6 +88,11 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> FarseerCastDuration;
     public static final ForgeConfigSpec.ConfigValue<Integer> FarseerSummonDown;
     public static final ForgeConfigSpec.ConfigValue<Integer> FarseerCoolDown;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> RollerCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> RollerDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> RollerSummonDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> RollerCoolDown;
 
     static {
         BUILDER.push("Spells");
@@ -116,6 +126,28 @@ public class SpellConfig {
                 .defineInRange("crimsonMosquitoSummonDown", 200, 0, 5000);
         CrimsonMosquitoCoolDown = BUILDER.comment("Cooldown of Crimson Mosquito Servant spell in ticks (Default: 160)")
                 .defineInRange("crimsonMosquitoCoolDown", 160, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("FrostStalker");
+        FrostStalkerSoulCost = BUILDER.comment("Soul cost of FrostStalker Servant spell (Default: 24)")
+                .defineInRange("frostStalkerSoulCost", 24, 1, 100);
+        FrostStalkerCastDuration = BUILDER.comment("Cast duration of FrostStalker Servant spell in ticks (Default: 60)")
+                .defineInRange("frostStalkerCastDuration", 60, 0, 500);
+        FrostStalkerSummonDown = BUILDER.comment("Summon down duration of FrostStalker Servant spell in ticks (Default: 120)")
+                .defineInRange("frostStalkerSummonDown", 120, 0, 5000);
+        FrostStalkerCoolDown = BUILDER.comment("Cooldown of FrostStalker Servant spell in ticks (Default: 100)")
+                .defineInRange("frostStalkerCoolDown", 100, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("Roller");
+        RollerCost = BUILDER.comment("Soul cost of Rocky Roller Servant spell (Default: 24)")
+                .defineInRange("rockyRollerSoulCost", 24, 1, 100);
+        RollerDuration = BUILDER.comment("Cast duration of Rocky Roller Servant spell in ticks (Default: 100)")
+                .defineInRange("rockyRollerCastDuration", 100, 0, 500);
+        RollerSummonDown = BUILDER.comment("Summon down duration of Rocky Roller Servant spell in ticks (Default: 120)")
+                .defineInRange("rockyRollerSummonDown", 120, 0, 5000);
+        RollerCoolDown = BUILDER.comment("Cooldown of Rocky Roller Servant spell in ticks (Default: 100)")
+                .defineInRange("rockyRollerCoolDown", 100, 0, 5000);
         BUILDER.pop();
 
         BUILDER.push("Farseer");

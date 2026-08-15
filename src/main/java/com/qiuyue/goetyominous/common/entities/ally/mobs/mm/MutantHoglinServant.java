@@ -25,11 +25,8 @@ import com.alexander.mutantmore.init.TagInit.Blocks;
 import com.alexander.mutantmore.init.TagInit.EntityTypes;
 import com.alexander.mutantmore.util.MiscUtils;
 import com.alexander.mutantmore.util.PositionUtils;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.Objects;
+
+import java.util.*;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
@@ -37,6 +34,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -49,6 +47,8 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -112,10 +112,44 @@ public class MutantHoglinServant extends AbstractMutantServant implements Player
     public int enrageDuration;
     public boolean wantsToCharge;
     public boolean riderChargeRequested;
+    private boolean soulJarEnhancement;
+    private boolean blazingHelmEnhancement;
+    private boolean unholyBloodEnhancement;
+    private int unholyBloodInvulnTime;
+    private static final UUID SOUL_JAR_HEALTH_UUID = UUID.fromString("f0d8f8f0-0000-0000-0000-000000000201");
+    private static final UUID SOUL_JAR_ATTACK_UUID = UUID.fromString("f0d8f8f0-0000-0000-0000-000000000202");
+    private static final UUID BLAZING_HELM_HEALTH_UUID = UUID.fromString("f0d8f8f0-0000-0000-0000-000000000203");
+    private static final UUID BLAZING_HELM_ATTACK_UUID = UUID.fromString("f0d8f8f0-0000-0000-0000-000000000204");
+    private static final UUID UNHOLY_BLOOD_HEALTH_UUID = UUID.fromString("f0d8f8f0-0000-0000-0000-000000000101");
+    private static final UUID UNHOLY_BLOOD_ATTACK_UUID = UUID.fromString("f0d8f8f0-0000-0000-0000-000000000102");
     public DamageSource killedBy = this.damageSources().cramming();
 
     public MutantHoglinServant(EntityType<? extends Owned> p_i50189_1_, Level p_i50189_2_) {
         super(p_i50189_1_, p_i50189_2_);
+    }
+
+    public boolean hasSoulJar() { return this.soulJarEnhancement; }
+    public void setSoulJar(boolean value) { this.soulJarEnhancement = value; }
+    public boolean hasBlazingHelm() { return this.blazingHelmEnhancement; }
+    public void setBlazingHelm(boolean value) { this.blazingHelmEnhancement = value; }
+    public boolean hasUnholyBlood() { return this.unholyBloodEnhancement; }
+    public void setUnholyBlood(boolean value) { this.unholyBloodEnhancement = value; }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putBoolean("SoulJarEnhancement", this.soulJarEnhancement);
+        compound.putBoolean("BlazingHelmEnhancement", this.blazingHelmEnhancement);
+        compound.putBoolean("UnholyBloodEnhancement", this.unholyBloodEnhancement);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.soulJarEnhancement = compound.getBoolean("SoulJarEnhancement");
+        this.blazingHelmEnhancement = compound.getBoolean("BlazingHelmEnhancement");
+        this.unholyBloodEnhancement = compound.getBoolean("UnholyBloodEnhancement");
+        this.applyEnhancementModifiers();
     }
 
     @Override
@@ -144,11 +178,57 @@ public class MutantHoglinServant extends AbstractMutantServant implements Player
             return InteractionResult.SUCCESS;
         }
 
+        if (isWitherNecromancerSoulJar(itemstack) && !this.hasSoulJar()) {
+            if (!pPlayer.getAbilities().instabuild) {
+                itemstack.shrink(1);
+            }
+            this.setSoulJar(true);
+            this.applyEnhancementModifiers();
+            this.heal(30.0F);
+            this.playSound(SoundEventInit.MUTANT_HOGLIN_IDLE.get(), 1.0F, 1.0F);
+            return InteractionResult.SUCCESS;
+        }
+        if (item == com.Polarice3.Goety.common.items.ModItems.BLAZING_HELM.get() && !this.hasBlazingHelm()) {
+            if (!pPlayer.getAbilities().instabuild) {
+                itemstack.shrink(1);
+            }
+            this.setBlazingHelm(true);
+            this.applyEnhancementModifiers();
+            this.heal(20.0F);
+            this.playSound(SoundEventInit.MUTANT_HOGLIN_IDLE.get(), 1.0F, 1.0F);
+            return InteractionResult.SUCCESS;
+        }
+        if (item == com.Polarice3.Goety.common.items.ModItems.UNHOLY_BLOOD.get() && !this.hasUnholyBlood()) {
+            if (!pPlayer.getAbilities().instabuild) {
+                itemstack.shrink(1);
+            }
+            this.setUnholyBlood(true);
+            this.applyEnhancementModifiers();
+            this.heal(50.0F);
+            this.playSound(SoundEventInit.MUTANT_HOGLIN_IDLE.get(), 1.0F, 1.0F);
+            return InteractionResult.SUCCESS;
+        }
+
         if (!this.isVehicle()) {
             pPlayer.startRiding(this);
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
+    }
+
+    private static boolean isWitherNecromancerSoulJar(ItemStack stack) {
+        if (stack.getItem() != com.Polarice3.Goety.common.items.ModItems.SOUL_JAR.get()) {
+            return false;
+        }
+        CompoundTag tag = stack.getOrCreateTag();
+        if (tag.contains("entity", net.minecraft.nbt.Tag.TAG_COMPOUND)) {
+            String entityType = tag.getCompound("entity").getString("entity");
+            ResourceLocation entityLoc = ResourceLocation.tryParse(entityType);
+            return entityLoc != null && entityLoc.equals(
+                    net.minecraftforge.registries.ForgeRegistries.ENTITY_TYPES.getKey(
+                            com.Polarice3.Goety.common.entities.ModEntityType.WITHER_NECROMANCER_SERVANT.get()));
+        }
+        return false;
     }
 
     @Override
@@ -381,6 +461,9 @@ public class MutantHoglinServant extends AbstractMutantServant implements Player
     public void baseTick() {
         super.baseTick();
         this.tickDownAnimTimers();
+        if (this.unholyBloodInvulnTime > 0) {
+            --this.unholyBloodInvulnTime;
+        }
         this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AttributesConfig.MutantHoglinServantMovementSpeed.get() * (double)this.enragedSpeedMultiplier());
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AttributesConfig.MutantHoglinServantAttackDamage.get() * (double)this.enragedDamageMultiplier());
         this.getAttribute(Attributes.ATTACK_KNOCKBACK).setBaseValue(AttributesConfig.MutantHoglinServantAttackKnockback.get() * (double)this.enragedKnockbackMultiplier());
@@ -420,8 +503,8 @@ public class MutantHoglinServant extends AbstractMutantServant implements Player
         if (!this.level().isClientSide) {
             this.level().broadcastEntityEvent(this, (byte)16);
         }
-
-        this.enragedAmount = Mth.clamp(this.getEnragedAmount() + (Float)MutantHoglinCommonConfig.enrage_amount.get(), 0.0F, 1.0F);
+        float amount = this.hasBlazingHelm() ? 0.25F : (Float)MutantHoglinCommonConfig.enrage_amount.get();
+        this.enragedAmount = Mth.clamp(this.getEnragedAmount() + amount, 0.0F, 1.0F);
         this.enrageDuration = Mth.clamp(this.enrageDuration + (Integer)MutantHoglinCommonConfig.enrage_duration.get(), 0, (Integer)MutantHoglinCommonConfig.max_enrage_duration.get());
     }
 
@@ -547,15 +630,92 @@ public class MutantHoglinServant extends AbstractMutantServant implements Player
     }
 
     public boolean hurt(DamageSource p_21016_, float p_21017_) {
-        boolean flag = super.hurt(p_21016_, p_21017_);
-        if (flag && !this.level().isClientSide) {
-            this.enrage();
-            if (p_21016_.getEntity() != null && p_21016_.getEntity() instanceof ServerPlayer && this.getEnragedAmount() >= 1.0F) {
-                MiscUtils.awardMutantMoreAdvancement((ServerPlayer)p_21016_.getEntity(), "mutantmore/enrage_mutant_hoglin", "enraged");
+        if (this.hasUnholyBlood()) {
+            if (this.unholyBloodInvulnTime > 0) {
+                return false;
+            }
+            boolean inNether = this.level().dimension() == Level.NETHER;
+            p_21017_ = inNether ? p_21017_ * 0.5F : p_21017_ * 0.85F;
+            if (p_21017_ <= 0.0F) {
+                return false;
             }
         }
-
+        boolean flag = super.hurt(p_21016_, p_21017_);
+        if (flag) {
+            if (this.hasUnholyBlood()) {
+                this.unholyBloodInvulnTime = 10;
+            }
+            if (!this.level().isClientSide) {
+                this.enrage();
+                if (p_21016_.getEntity() != null && p_21016_.getEntity() instanceof ServerPlayer && this.getEnragedAmount() >= 1.0F) {
+                    MiscUtils.awardMutantMoreAdvancement((ServerPlayer)p_21016_.getEntity(), "mutantmore/enrage_mutant_hoglin", "enraged");
+                }
+            }
+        }
         return flag;
+    }
+
+    private void addModIfMissing(AttributeInstance instance, UUID uuid, String name, double value) {
+        if (instance != null && instance.getModifier(uuid) == null) {
+            instance.addPermanentModifier(new AttributeModifier(uuid, name, value, AttributeModifier.Operation.ADDITION));
+        }
+    }
+
+    private void applyEnhancementModifiers() {
+        AttributeInstance health = this.getAttribute(Attributes.MAX_HEALTH);
+        AttributeInstance attack = this.getAttribute(Attributes.ATTACK_DAMAGE);
+        if (this.hasSoulJar()) {
+            this.addModIfMissing(health, SOUL_JAR_HEALTH_UUID, "Soul Jar Health", 30.0D);
+            this.addModIfMissing(attack, SOUL_JAR_ATTACK_UUID, "Soul Jar Attack", 2.0D);
+        }
+        if (this.hasBlazingHelm()) {
+            this.addModIfMissing(health, BLAZING_HELM_HEALTH_UUID, "Blazing Helm Health", 20.0D);
+            this.addModIfMissing(attack, BLAZING_HELM_ATTACK_UUID, "Blazing Helm Attack", 2.0D);
+        }
+        if (this.hasUnholyBlood()) {
+            this.addModIfMissing(health, UNHOLY_BLOOD_HEALTH_UUID, "Unholy Blood Health", 50.0D);
+            this.addModIfMissing(attack, UNHOLY_BLOOD_ATTACK_UUID, "Unholy Blood Attack", 3.0D);
+        }
+    }
+
+    public void summonFlameRings() {
+        if (this.level() instanceof ServerLevel serverLevel) {
+            int duration = 180;
+            int warmUp = 10;
+            double r1 = 3.0D;
+            double r2 = 6.0D;
+            float yaw = this.getYRot() * ((float)Math.PI / 180.0F);
+            int innerCount = 16;
+            int outerCount = 8;
+            for (int i = 0; i < innerCount; i++) {
+                float angle = yaw + (float)i * (float)(Math.PI * 2.0 / innerCount);
+                Vec3 pos = new Vec3(this.getX() + (double)(Mth.cos(angle) * (float)r1),
+                        this.getY(), this.getZ() + (double)(Mth.sin(angle) * (float)r1));
+                this.spawnFlame(serverLevel, pos, duration, warmUp);
+            }
+            float outerOffset = (float)(Math.PI / outerCount);
+            for (int i = 0; i < outerCount; i++) {
+                float angle = yaw + outerOffset + (float)i * (float)(Math.PI * 2.0 / outerCount);
+                Vec3 pos = new Vec3(this.getX() + (double)(Mth.cos(angle) * (float)r2),
+                        this.getY(), this.getZ() + (double)(Mth.sin(angle) * (float)r2));
+                this.spawnFlame(serverLevel, pos, duration, warmUp);
+            }
+        }
+    }
+
+    public void spawnChargeFlame() {
+        if (this.level() instanceof ServerLevel serverLevel) {
+            this.spawnFlame(serverLevel, this.position(), 180, 10);
+        }
+    }
+
+    private void spawnFlame(ServerLevel level, Vec3 vec3, int duration, int warmUp) {
+        com.Polarice3.Goety.common.entities.util.FirePillar flames = new com.Polarice3.Goety.common.entities.util.FirePillar(level, vec3.x, vec3.y, vec3.z);
+        flames.setOwner(this);
+        flames.setDuration(duration);
+        flames.setWarmUp(warmUp);
+        com.Polarice3.Goety.utils.MobUtil.moveDownToGround(flames);
+        level.addFreshEntity(flames);
     }
 
     public boolean isInvulnerableTo(DamageSource p_20122_) {

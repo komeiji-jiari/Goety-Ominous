@@ -1,0 +1,49 @@
+{
+  "name": "Skelewags",
+  "icon": "alexsmobs:fish_bones",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "With the fish bones of a Skelewag, you attempted to summon undead fish to serve you using the same method. These skeletal fish can not only support your weight without collapsing, but also offer impressive speed when ridden."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:skelewag_servant",
+      "text": ""
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:skelewag_servant",
+      "text": "He's Number One!"
+    },
+    {
+      "type": "text",
+      "text": "Just as your Skeletons have various biome-specific variants, you can create a frozen fish bone using a Frost Ritual, which applies Slowness to creatures it strikes, much like a Stray."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:stray_skelewag_servant",
+      "text": ""
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:stray_skelewag_servant",
+      "text": "Dude, that pun is not funny"
+    },
+    {
+      "type": "text",
+      "text": "The Nether variant of the Skelewag can swim through lava with ease. Unfortunately, while they are immune to the heat, you are not. It would be wise to have Fire Resistance before attempting any lava pools..."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:wither_skelewag_servant",
+      "text": ""
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:wither_skelewag_servant",
+      "text": "You think this is hot?!"
+    }
+  ]
+}

@@ -10,6 +10,10 @@ public class MobsConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> SkelewagLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> RockyRollerLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BunfungusLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FrostStalkerLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> MurmurServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> FarseerServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> CrimsonMosquitoServantLimit;
@@ -23,6 +27,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> OvergrownColossusServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> HeresiarchServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> WargLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> RamblerServantLimit;
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> CultistPatrol;
     public static final ForgeConfigSpec.ConfigValue<Integer> CultistPatrolInterval;
@@ -58,9 +63,25 @@ public class MobsConfig {
     static {
         BUILDER.push("Servant Limits");
 
+        SkelewagLimit = BUILDER
+                .comment("Maximum number of Skelewag Servants that can be summoned (Default: 32)")
+                .defineInRange("skelewagServantLimit", 32, 1, 100);
+
+        RockyRollerLimit = BUILDER
+                .comment("Maximum number of Rocky Roller Servants that can be summoned (Default: 16)")
+                .defineInRange("rockyRollerServantLimit", 16, 1, 100);
+
+        BunfungusLimit = BUILDER
+                .comment("Maximum number of Bunfungus Servants that can be summoned (Default: 6)")
+                .defineInRange("BunfungusServantLimit", 6, 1, 100);
+
         MurmurServantLimit = BUILDER
                 .comment("Maximum number of Murmur Servants that can be summoned (Default: 16)")
                 .defineInRange("murmurServantLimit", 16, 1, 100);
+
+        FrostStalkerLimit = BUILDER
+                .comment("Maximum number of FrostStalker Servants that can be summoned (Default: 32)")
+                .defineInRange("frostStalkerServantLimit", 32, 1, 100);
 
         WargLimit = BUILDER
                 .comment("Maximum number of Wargs that can be summoned (Default: 3)")
@@ -81,6 +102,10 @@ public class MobsConfig {
         IllagerElephantServantLimit = BUILDER
                 .comment("Maximum number of Illager Elephant Servants that can be summoned (Default: 2)")
                 .defineInRange("illagerElephantServantLimit", 2, 1, 100);
+
+        RamblerServantLimit = BUILDER
+                .comment("Maximum number of Rambler Servants that can be summoned (Default: 8)")
+                .defineInRange("ramblerServantLimit", 8, 1, 100);
 
         UrbhadhachServantLimit = BUILDER
                 .comment("Maximum number of Urbhadhach Servants that can be summoned (Default: 8)")

@@ -1,0 +1,24 @@
+{
+  "name": "忠诚的寒霜潜伏者",
+  "icon": "alexsmobs:froststalker_horn",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你设法用猪排和同类的气味吸引来了一些生活在寒带的长得像小龙的生物。发现这些寒霜潜伏者只为食物生存之后，你已经想到一种用它们最爱的猪排让它们为你服务的方法了。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:froststalker_servant",
+      "text": "An Imposter Among Us"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "你可以通过用猪排繁殖你的寒霜潜伏者族群。但需要注意的是，它们的身体无法抵挡高温，除非它们的主人穿着冰霜套装。冰霜长袍或是荒野长袍也能为它们提供额外的治疗。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:froststalker_servant"
+    }
+  ]
+}

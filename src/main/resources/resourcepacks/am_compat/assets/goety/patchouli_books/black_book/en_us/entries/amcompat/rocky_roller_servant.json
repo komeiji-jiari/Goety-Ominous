@@ -1,0 +1,24 @@
+{
+  "name": "Rocky Roller Servant",
+  "icon": "alexsmobs:rocky_shell",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "These Rocky Roller servants crush enemies by rolling over them, causing the very earth to tremble as they move. You can summon a permanent Rocky Roller servant through a ritual."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:rocky_roller_servant",
+      "text": "Bouldersprite approves"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "You can heal your Rocky Roller servant by wearing Geo Robes."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:rocky_roller_servant"
+    }
+  ]
+}

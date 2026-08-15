@@ -6,6 +6,7 @@ import com.qiuyue.goetyominous.common.items.ModItems;
 import com.qiuyue.goetyominous.common.items.am.AmItems;
 import com.qiuyue.goetyominous.common.items.lm.LmItems;
 import com.qiuyue.goetyominous.common.items.mm.MmItems;
+import com.qiuyue.goetyominous.common.items.of.OfItems;
 import com.qiuyue.goetyominous.common.items.sar.SarItems;
 import com.qiuyue.goetyominous.common.items.spear.SpearItems;
 import com.qiuyue.goetyominous.common.items.ua.UaItems;
@@ -64,6 +65,10 @@ public class ModCreativeTab {
 
                         if (LegendaryMonstersCompat.isLegendaryMonstersLoaded()) {
                             collectFrom(LmItems.LM_ITEMS, spawnEggs, foci, weapons, otherItems);
+                        }
+
+                        if (OpposingForceCompat.isOpposingForceLoaded()) {
+                            collectFrom(OfItems.OF_ITEMS, spawnEggs, foci, weapons, otherItems);
                         }
 
                         if (AlexMobsCompat.isAlexMobsLoaded()) {

@@ -1,0 +1,28 @@
+{
+  "name": "无章骨",
+  "icon": "opposing_force:heavy_bone",
+  "category": "goety:ofcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你创造出一种巨大的移动骨堆，尽管看起来十分令人毛骨悚然，但实际上这些大家伙对你绝对忠诚。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:rambler_servant",
+      "text": "你可以用不同的无章骨头颅自定义你的无章骨的外观，死灵法师最喜欢的一集。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "作为死灵仆从，穿着死灵长袍可以被动恢复你的无章骨的血量。手持骨粉，骨头或骨块右键无章骨也可以手动为它们提供治疗。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:rambler_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "要自定义无章骨的头颅外观，手持想要替换的骷髅头右键无章骨，空手右键可以切换需要调整的位置。潜行时空手右键可取回当前位置的骷髅头。"
+    }
+  ]
+}

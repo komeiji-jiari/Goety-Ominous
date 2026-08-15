@@ -1,0 +1,20 @@
+{
+  "name": "霜伏聚晶",
+  "icon": "goetyominous:froststalker_focus",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "这个法术让你随时召唤出忠诚的寒霜潜伏者，好像你是它们族群中的统领一般。尽管你需要注意的是，这些生活在寒冷地带的生物对高温有着天然的弱点，而且会受到更高的火焰伤害。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:froststalker_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "使用冰霜魔杖施法可以增加召唤的寒霜潜伏者的数量。"
+    }
+  ]
+}

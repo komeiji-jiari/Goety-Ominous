@@ -1,0 +1,28 @@
+{
+  "name": "Ramblers",
+  "icon": "opposing_force:heavy_bone",
+  "category": "goety:ofcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You have created a massive mobile pile of bones. Despite its rather unsettling appearance, these hulking creatures are absolutely loyal to you."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:rambler_servant",
+      "text": "You can customize your Rambler's appearance with different Rambler skulls—a necromancer's favorite feature."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "As an undead servant, wearing Necro Robes passively regenerates your Rambler's health. You can also manually heal them by right-clicking with Bone Meal, Bones, or Bone Blocks."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:rambler_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "To customize your Rambler's skull appearance, right-click it with the skull you wish to apply. Right-click with an empty hand cycles through the available slots. Sneak + right-click with an empty hand removes the skull from the current slot."
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "name": "骷髅剑鱼们",
+  "icon": "alexsmobs:fish_bones",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "有了骷髅剑鱼的鱼骨头，你尝试用相同的方法召唤亡灵鱼为你服务。这些骷髅构成的鱼不仅能够承受你的重量不被压垮，而且作为座驾骑乘起来也有着不俗的速度。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:skelewag_servant",
+      "text": ""
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:skelewag_servant",
+      "text": "他是第一名！"
+    },
+    {
+      "type": "text",
+      "text": "就像你的骷髅根据环境有多种变种一般，你可以用冰霜仪式制造一个冰冻的鱼骨头，它能够像流浪者一样对戳刺到的生物施加缓慢效果。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:stray_skelewag_servant",
+      "text": ""
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:stray_skelewag_servant",
+      "text": "伙计，这个冷笑话可不好笑"
+    },
+    {
+      "type": "text",
+      "text": "下界版的骷髅剑鱼可以在岩浆中畅游，然而不幸的是虽然它们能免疫高温，但骑着它们的你却不能。最好在拥有防火的情况下再尝试岩浆泳池..."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:wither_skelewag_servant",
+      "text": ""
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:wither_skelewag_servant",
+      "text": "你觉得这很火辣吗？！"
+    }
+  ]
+}

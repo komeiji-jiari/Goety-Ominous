@@ -1,0 +1,24 @@
+{
+  "name": "Loyal Froststalker",
+  "icon": "alexsmobs:froststalker_horn",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You have managed to attract some small dragon-like creatures from cold biomes using porkchops and the scent of their own kind. After discovering that these Froststalkers live only for food, you've devised a way to make them serve you using their favorite porkchops."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:froststalker_servant",
+      "text": "An Imposter Among Us"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "You can breed your Froststalker population using porkchops. However, be aware that their bodies cannot withstand high temperatures unless their owner wears a Frost Set. Frost Robes or Wild Robes also grant them additional passive healing."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:froststalker_servant"
+    }
+  ]
+}

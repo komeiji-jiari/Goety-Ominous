@@ -1,0 +1,20 @@
+{
+  "name": "磙岩聚晶",
+  "icon": "goetyominous:roller_focus",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "这个法术允许你召唤那些横冲直撞的岩磙兽到你的麾下，让你的敌人感受被碾压的滋味。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:roller_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "使用占卜魔杖施法可以让你额外多召唤一只岩磙兽。"
+    }
+  ]
+}

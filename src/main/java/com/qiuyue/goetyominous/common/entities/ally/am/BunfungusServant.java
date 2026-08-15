@@ -14,6 +14,8 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import java.util.EnumSet;
+
+import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -126,6 +128,11 @@ public class BunfungusServant extends Summoned implements IAnimatedEntity {
     }
 
     @Override
+    public int getSummonLimit(LivingEntity owner) {
+        return MobsConfig.BunfungusLimit.get();
+    }
+
+    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(JUMP_ACTIVE, false);
@@ -229,7 +236,7 @@ public class BunfungusServant extends Summoned implements IAnimatedEntity {
                 if (this.isSleeping()) {
                     this.setSleeping(false);
                 }
-                // AM uses distanceToSqr for these thresholds (3.5/2.5 are squared), so vanilla reach is ~1.9/~1.6 blocks
+
                 double dist = this.distanceToSqr(target);
                 boolean hit = false;
                 if (this.getAnimationTick() == 5) {
@@ -319,9 +326,6 @@ public class BunfungusServant extends Summoned implements IAnimatedEntity {
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
 
-    // Vanilla AM uses squared distance as divisor (close targets flung dozens of blocks, far targets barely moved).
-    // Switched to true-distance normalization (constant strength * direction), scaled to AM's effective fling at
-    // normal attack range: max ~9 blocks horizontal, ~3 blocks vertical.
     private void launch(LivingEntity entity) {
         if (entity.onGround()) {
             double dx = entity.getX() - this.getX();

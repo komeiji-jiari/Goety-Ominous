@@ -17,8 +17,6 @@ public class StraySkelewagServant extends SkelewagServant {
 
     public StraySkelewagServant(EntityType<? extends Owned> type, Level level) {
         super(type, level);
-        // Limited lifespan by default; removed permanently while the owner wears the Frost set.
-        this.setLimitedLife(MobUtil.getSummonLifespan(level));
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
@@ -30,16 +28,11 @@ public class StraySkelewagServant extends SkelewagServant {
                 .add(Attributes.MOVEMENT_SPEED, AttributesConfig.SkelewagServantMovementSpeed.get());
     }
 
-    // Immune to powder-snow freezing, like the vanilla Stray (tagged freeze_immune_entity_types).
-    // Returning false prevents freeze ticks from accumulating, so no freezing damage is ever applied.
     @Override
     public boolean canFreeze() {
         return false;
     }
 
-    // Like the vanilla Stray, attacks inflict Slowness I for 30 seconds (its arrows carry a 600-tick
-    // MOVEMENT_SLOWDOWN). The fish deals damage from animation ticks inside tick(), so we mirror the
-    // damage ticks here (STAB lands on tick 7; SLASH lands every 5 ticks within (0,25)).
     @Override
     public void tick() {
         LivingEntity target = this.getTarget();
@@ -53,7 +46,7 @@ public class StraySkelewagServant extends SkelewagServant {
         if (attackTick) {
             target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 600), this);
         }
-        // School-set lifespan: while the owner wears the Frost set, this servant never expires.
+
         if (!this.level().isClientSide && this.getTrueOwner() != null) {
             if (CuriosFinder.hasFrostSet(this.getTrueOwner())) {
                 this.setHasLifespan(false);

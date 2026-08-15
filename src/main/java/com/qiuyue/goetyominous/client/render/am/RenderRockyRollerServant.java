@@ -11,9 +11,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class RenderRockyRollerServant extends MobRenderer<RockyRollerServant, ModelRockyRollerServant> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/rocky_roller.png");
-    private static final ResourceLocation TEXTURE_ANGRY = new ResourceLocation("alexsmobs:textures/entity/rocky_roller_angry.png");
-    private static final ResourceLocation TEXTURE_ROLLING = new ResourceLocation("alexsmobs:textures/entity/rocky_roller_rolling.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation("goetyominous:textures/entity/rocky_roller.png");
+    private static final ResourceLocation TEXTURE_ANGRY = new ResourceLocation("goetyominous:textures/entity/rocky_roller_angry.png");
+    private static final ResourceLocation TEXTURE_ROLLING = new ResourceLocation("goetyominous:textures/entity/rocky_roller_rolling.png");
 
     public RenderRockyRollerServant(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelRockyRollerServant(), 0.7F);

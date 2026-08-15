@@ -1,0 +1,7 @@
+{
+  "name": "Opposing Force Compat",
+  "description": "Use the dark arts to go toe-to-toe with your enemies.",
+  "icon": "opposing_force:frowzy_head",
+  "sortnum": 6,
+  "parent": "goety:goetyominous"
+}

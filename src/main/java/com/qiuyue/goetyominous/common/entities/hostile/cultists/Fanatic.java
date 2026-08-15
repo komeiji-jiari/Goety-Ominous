@@ -12,6 +12,7 @@ import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.google.common.collect.Maps;
 import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -204,9 +205,10 @@ public class Fanatic extends AbstractGOCultist implements RangedAttackMob, ICult
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn,
                                         MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn,
                                         @Nullable CompoundTag dataTag) {
-        this.populateDefaultEquipmentSlots(difficultyIn);
-        this.populateDefaultEquipmentEnchantments(worldIn.getRandom(), difficultyIn);
-        if (worldIn.getRandom().nextInt(100) == 0) {
+        RandomSource random = worldIn.getRandom();
+        this.populateDefaultEquipmentSlots(random, difficultyIn);
+        this.populateDefaultEquipmentEnchantments(random, difficultyIn);
+        if (random.nextInt(100) == 0) {
             CrimsonSpiderServant spider = new CrimsonSpiderServant(ModEntityTypes.CRIMSON_SPIDER_SERVANT.get(), level());
             if (this.isPersistenceRequired()) spider.setPersistenceRequired();
             spider.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
@@ -215,17 +217,17 @@ public class Fanatic extends AbstractGOCultist implements RangedAttackMob, ICult
             this.startRiding(spider);
             worldIn.addFreshEntity(spider);
         }
-        this.setOutfitType(this.random.nextInt(this.getOutfitTypeNumber()));
+        this.setOutfitType(random.nextInt(this.getOutfitTypeNumber()));
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
-    protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty) {
-        int random = this.random.nextInt(12);
-        int witchbomb = this.random.nextInt(8);
-        int pitchfork = this.random.nextInt(6);
+    protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
+        int r = random.nextInt(12);
+        int witchbomb = random.nextInt(8);
+        int pitchfork = random.nextInt(6);
 
         if (pitchfork != 0) {
-            switch (random) {
+            switch (r) {
                 case 0 -> this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.STONE_SWORD));
                 case 1 -> this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.STONE_AXE));
                 case 2 -> this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.STONE_PICKAXE));
@@ -248,10 +250,10 @@ public class Fanatic extends AbstractGOCultist implements RangedAttackMob, ICult
         for (EquipmentSlot slot : EquipmentSlot.values()) {
             if (slot.getType() == EquipmentSlot.Type.ARMOR) {
                 ItemStack stack = this.getItemBySlot(slot);
-                if (!flag && this.random.nextFloat() < 0.5F) break;
+                if (!flag && random.nextFloat() < 0.5F) break;
                 flag = false;
                 if (stack.isEmpty()) {
-                    int i = this.random.nextInt(8);
+                    int i = random.nextInt(8);
                     if (i == 4) --i;
                     Item item = getEquipmentForSlot(slot, i);
                     if (item != null) {
@@ -268,10 +270,10 @@ public class Fanatic extends AbstractGOCultist implements RangedAttackMob, ICult
 
         if (witchbomb == 0) {
             this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(ModItems.WITCH_BOMB.get()));
-        } else if (this.level().random.nextFloat() <= 0.25F) {
-            int offhandChoice = this.level().random.nextInt(3);
+        } else if (random.nextFloat() <= 0.25F) {
+            int offhandChoice = random.nextInt(3);
             if (offhandChoice == 0) {
-                Item torch = this.level().random.nextBoolean()
+                Item torch = random.nextBoolean()
                         ? com.Polarice3.Goety.common.blocks.ModBlocks.IRON_DUNGEON_TORCH_ITEM.get()
                         : com.Polarice3.Goety.common.blocks.ModBlocks.GOLD_DUNGEON_TORCH_ITEM.get();
                 this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(torch));

@@ -191,4 +191,7 @@ public class ModEntityLayers {
 
     public static final ModelLayerLocation CURSED_BLACK_BEAST_ARMOR_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "cursed_black_beast_armor"), "main");
+
+    public static final ModelLayerLocation RAMBLER_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "rambler_servant"), "main");
 }

@@ -7,6 +7,7 @@ import com.qiuyue.goetyominous.client.render.layer.CursedWolfArmorLayer;
 import com.qiuyue.goetyominous.client.render.model.*;
 import com.qiuyue.goetyominous.client.render.model.equipment.BoneCudgelModel;
 import com.qiuyue.goetyominous.client.render.model.mm.MutantHoglinServantModel;
+import com.qiuyue.goetyominous.client.render.model.of.RamblerServantModel;
 import com.qiuyue.goetyominous.client.render.model.projectile.AcidFungus;
 import com.qiuyue.goetyominous.client.render.model.projectile.PitchforkModel;
 import com.qiuyue.goetyominous.client.render.projectile.AcidFungusRenderer;
@@ -215,6 +216,11 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.client.render.model.lm.OvergrownColossusServantModel::createBodyLayer);
         }
 
+        if (OpposingForceCompat.isOpposingForceLoaded()) {
+            event.registerLayerDefinition(ModEntityLayers.RAMBLER_SERVANT_LAYER,
+                    RamblerServantModel::createBodyLayer);
+        }
+
         if (com.qiuyue.goetyominous.compat.mod.MutantMoreCompat.isMutantMoreLoaded()) {
             event.registerLayerDefinition(com.qiuyue.goetyominous.client.render.model.mm.MutantWitherSkeletonServantModel.MAIN,
                     com.qiuyue.goetyominous.client.render.model.mm.MutantWitherSkeletonServantModel::createBodyLayer);
@@ -232,9 +238,11 @@ public class ModModelLayers {
                     MutantHoglinServantModel::createBodyLayer);
         }
 
-        if (AlexMobsCompat.isAlexMobsLoaded()) {
-            // 徒弟：在这里添加 AlexMobs 联动仆从的模型层注册
+        if (OpposingForceCompat.isOpposingForceLoaded()) {
+            // TODO: 每个 OF 仆从的模型层注册
+
         }
+
     }
 
     /**
@@ -522,6 +530,12 @@ public class ModModelLayers {
         event.registerEntityRenderer(ModEntityTypes.TREMOR_BLOCK.get(),
                 com.qiuyue.goetyominous.client.render.projectile.TremorBlockRenderer::new);
 
+        if (OpposingForceCompat.isOpposingForceLoaded()) {
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.RAMBLER_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.of.RamblerServantRenderer::new);
+        }
+
         if (AlexMobsCompat.isAlexMobsLoaded()) {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.MURMUR_SERVANT.get(),
@@ -588,6 +602,7 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.client.render.am.RenderStraySkelewagServant::new);
 
         }
+
     }
 
     @SubscribeEvent

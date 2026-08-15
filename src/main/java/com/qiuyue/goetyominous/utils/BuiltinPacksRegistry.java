@@ -166,6 +166,27 @@ public class BuiltinPacksRegistry {
             }
         }
 
+        // --- 客户端资源包（OF 联动内容）---
+        if (event.getPackType() == PackType.CLIENT_RESOURCES && OpposingForceCompat.isOpposingForceLoaded()) {
+            Path packPath = modFile.findResource("resourcepacks/of_compat");
+            if (packPath != null) {
+                event.addRepositorySource(consumer -> {
+                    Pack pack = Pack.readMetaAndCreate(
+                            "goetyominous/of_compat",
+                            Component.literal("OpposingForce Compatibility Pack"),
+                            true,
+                            id -> new PathPackResources(id, packPath, true),
+                            PackType.CLIENT_RESOURCES,
+                            Pack.Position.TOP,
+                            PackSource.BUILT_IN
+                    );
+                    if (pack != null) {
+                        consumer.accept(pack);
+                    }
+                });
+            }
+        }
+
         // --- 服务端数据包（UA 联动内容）---
         if (event.getPackType() == PackType.SERVER_DATA && UpgradeAquaticCompat.isUpgradeAquaticLoaded()) {
             Path packPath = modFile.findResource("resourcepacks/ua_compat");

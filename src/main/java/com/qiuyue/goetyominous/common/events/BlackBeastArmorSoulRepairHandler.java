@@ -32,7 +32,7 @@ public class BlackBeastArmorSoulRepairHandler {
         if (!SEHelper.getSoulsContainer(owner)) return;
 
         int cost = ItemConfig.ItemsRepairAmount.get();
-        if (SEHelper.getSoulsAmount(owner, cost) && entity.tickCount % 100 == 0) {
+        if (SEHelper.getSoulsAmount(owner, cost) && entity.tickCount % 40 == 0) {
             armor.setDamageValue(armor.getDamageValue() - 1);
             SEHelper.decreaseSouls(owner, cost);
         }

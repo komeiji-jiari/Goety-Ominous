@@ -290,6 +290,11 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> ArchGeomancerMovementSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> ArchGeomancerAttackDamage;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> RamblerServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> RamblerServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> RamblerServantAttackDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> RamblerServantAttackKnockback;
+
     static {
         BUILDER.push("Servants Attributes");
 
@@ -869,6 +874,17 @@ public class AttributesConfig {
                 .defineInRange("overgrownColossusServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
         OvergrownColossusServantAttackKnockback = BUILDER.comment("How much Attack Knockback Overgrown Colossus Servants have, Default: 1.5")
                 .defineInRange("overgrownColossusServantAttackKnockback", 1.5, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Rambler Servant");
+        RamblerServantHealth = BUILDER.comment("How much Max Health Rambler Servants have, Default: 60.0 (matches Opposing Force Rambler)")
+                .defineInRange("ramblerServantHealth", 60.0, 1.0, Double.MAX_VALUE);
+        RamblerServantMovementSpeed = BUILDER.comment("How much Movement Speed Rambler Servants have, Default: 0.15 (matches Opposing Force Rambler)")
+                .defineInRange("ramblerServantMovementSpeed", 0.15, 0.0, Double.MAX_VALUE);
+        RamblerServantAttackDamage = BUILDER.comment("How much Attack Damage Rambler Servants have, Default: 5.0 (matches Opposing Force Rambler)")
+                .defineInRange("ramblerServantAttackDamage", 5.0, 0.0, Double.MAX_VALUE);
+        RamblerServantAttackKnockback = BUILDER.comment("How much Attack Knockback Rambler Servants have, Default: 0.3 (matches Opposing Force Rambler)")
+                .defineInRange("ramblerServantAttackKnockback", 0.3, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.pop();

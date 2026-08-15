@@ -4,7 +4,6 @@ import com.Polarice3.Goety.common.entities.ally.AnimalSummon;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.init.ModMobType;
 import com.Polarice3.Goety.utils.CuriosFinder;
-import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityIceShard;
@@ -87,20 +86,18 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
     private int shakeTime = 0;
     private boolean hasSpikedArmor = false;
     private int fleeFireFlag;
+    private boolean temporary;
+    public boolean isTemporary() { return this.temporary; }
+    public void setTemporary(boolean temporary) { this.temporary = temporary; }
 
     public FroststalkerServant(EntityType<? extends Owned> type, Level level) {
         super(type, level);
         this.setMaxUpStep(1.1F);
         this.setPathfindingMalus(BlockPathTypes.LAVA, -1.0F);
-        // Limited lifespan by default; removed permanently while the owner wears the Frost or Wild set.
-        this.setLimitedLife(MobUtil.getSummonLifespan(level));
     }
 
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
-        // Spawn eggs create permanent servants. The summon-limited lifespan set in the
-        // constructor is meant for summoned (focus) entities only, and would otherwise
-        // expire a freshly-spawned egg entity within a minute or two.
         if (reason == MobSpawnType.SPAWN_EGG) {
             this.setHasLifespan(false);
             this.setLifespan(0);
@@ -140,6 +137,11 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
     @Override
     public MobType getMobType() {
         return ModMobType.FROST;
+    }
+
+    @Override
+    public boolean canMate(AnimalSummon p_27569_) {
+        return !this.temporary && super.canMate(p_27569_);
     }
 
     protected SoundEvent getAmbientSound() {
@@ -232,6 +234,7 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
         compound.putBoolean("Bipedal", this.isBipedal());
         compound.putBoolean("SpikeShaking", this.isSpikeShaking());
         compound.putInt("StandingTime", standingTime);
+        compound.putBoolean("Temporary", this.temporary);
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
@@ -240,6 +243,7 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
         this.setBipedal(compound.getBoolean("Bipedal"));
         this.setSpikeShaking(compound.getBoolean("SpikeShaking"));
         this.standingTime = compound.getInt("StandingTime");
+        this.temporary = compound.getBoolean("Temporary");
     }
 
     public boolean isFood(ItemStack stack) {
@@ -306,10 +310,11 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
             }
         }
 
-        // School-set lifespan: while the owner wears the Frost or Wild set, this servant never expires.
         if (!this.level().isClientSide && this.getTrueOwner() != null) {
             if (CuriosFinder.hasFrostSet(this.getTrueOwner()) || CuriosFinder.hasWildSet(this.getTrueOwner())) {
                 this.setHasLifespan(false);
+            } else if (this.temporary) {
+                this.setHasLifespan(true);
             } else if (this.getLifespan() > 0) {
                 this.setHasLifespan(true);
             }
@@ -400,9 +405,6 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
         return fleeFireFlag > 0;
     }
 
-    /**
-     * When the owner wears both FrostRobe and FrostCrown (frost set), spikes are never consumed.
-     */
     public boolean hasFrostSetOwner() {
         LivingEntity owner = this.getMasterOwner();
         return owner != null && CuriosFinder.hasFrostSet(owner);
@@ -551,9 +553,6 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
         return false;
     }
 
-    // Goety's servant "stay" command (DarkWand / OrderFocus) routes through IServant.isStaying().
-    // Expose it as isSitting() (same pattern as the fish servant) so our goals can gate on it;
-    // without this, a commanded-to-stay Froststalker would still chase, tackle and wander.
     public boolean isSitting() {
         return this.isStaying();
     }
