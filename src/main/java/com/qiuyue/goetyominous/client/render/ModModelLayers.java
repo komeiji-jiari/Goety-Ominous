@@ -10,12 +10,9 @@ import com.qiuyue.goetyominous.client.render.model.mm.MutantHoglinServantModel;
 import com.qiuyue.goetyominous.client.render.model.of.RamblerServantModel;
 import com.qiuyue.goetyominous.client.render.model.projectile.AcidFungus;
 import com.qiuyue.goetyominous.client.render.model.projectile.PitchforkModel;
-import com.qiuyue.goetyominous.client.render.projectile.AcidFungusRenderer;
+import com.qiuyue.goetyominous.client.render.projectile.*;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.compat.mod.*;
-import com.qiuyue.goetyominous.client.render.projectile.PitchforkRenderer;
-import com.qiuyue.goetyominous.client.render.projectile.BurningPotionRenderer;
-import com.qiuyue.goetyominous.client.render.projectile.WitchBombRenderer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
@@ -600,6 +597,10 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.STRAY_SKELEWAG_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderStraySkelewagServant::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.ICE_SHARD.get(),
+                    RenderIceShard::new);
 
         }
 

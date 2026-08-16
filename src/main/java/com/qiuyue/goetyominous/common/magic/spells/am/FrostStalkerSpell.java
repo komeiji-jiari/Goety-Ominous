@@ -81,7 +81,7 @@ public class FrostStalkerSpell extends SummonSpell {
         if (!this.isShifting(caster)) {
             int i = 1;
             if (this.rightStaff(staff)) {
-                i = 2 + caster.getRandom().nextInt(2);
+                i = 2;
             }
 
             for(int i1 = 0; i1 < i; ++i1) {

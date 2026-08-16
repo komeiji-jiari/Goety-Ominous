@@ -5,6 +5,7 @@ import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.ally.undead.skeleton.SkeletonWolf;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.common.entities.ally.mobs.Warg;
 import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.common.items.CursedMetalWolfArmorItem;
 import com.qiuyue.goetyominous.utils.GoetyOminousWolfArmorUtil;
@@ -39,10 +40,10 @@ public class WolfArmorEquipHandler {
         LivingEntity target = event.getTarget() instanceof LivingEntity le ? le : null;
         if (target == null) return;
 
-        boolean isWolf = target instanceof Wolf
+        boolean isWolf = !(target instanceof Warg)
+                && (target instanceof Wolf
                 || target instanceof BlackWolf
-                || target instanceof SkeletonWolf;
-        if (!isWolf) return;
+                || target instanceof SkeletonWolf);
 
         Player player = event.getEntity();
         ItemStack held = event.getItemStack();

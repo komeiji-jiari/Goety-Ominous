@@ -5,6 +5,7 @@ import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.blocks.entities.WolfTotemBlockEntity;
 import com.qiuyue.goetyominous.common.blocks.entities.WolfTotemHooks;
+import com.qiuyue.goetyominous.common.items.CursedMetalWolfArmorItem;
 import com.qiuyue.goetyominous.common.items.CursedWargArmorItem;
 import com.qiuyue.goetyominous.common.items.DarkWolfArmorItem;
 import com.qiuyue.goetyominous.common.world.WargTotemData;
@@ -395,7 +396,7 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack held = player.getItemInHand(hand);
         if (this.isOwnedByPlayer(player)) {
-            if (held.getItem() instanceof DarkWolfArmorItem) {
+            if (held.getItem() instanceof CursedMetalWolfArmorItem) {
                 return InteractionResult.FAIL;
             }
             boolean sneaking = player.isShiftKeyDown();

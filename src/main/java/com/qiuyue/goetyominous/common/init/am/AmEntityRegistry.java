@@ -18,6 +18,8 @@ import com.qiuyue.goetyominous.common.entities.ally.am.WarpedMoscoServant;
 import com.qiuyue.goetyominous.common.entities.projectile.EntityMosquitoServantSpit;
 import com.qiuyue.goetyominous.common.entities.projectile.EntityServantHemolymph;
 import java.util.function.Predicate;
+
+import com.qiuyue.goetyominous.common.entities.projectile.IceShard;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -160,6 +162,13 @@ public class AmEntityRegistry {
                             .setUpdateInterval(1)
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":stray_skelewag_servant"));
+
+    public static final RegistryObject<EntityType<IceShard>> ICE_SHARD =
+            AM_ENTITIES.register("ice_shard",
+                    () -> EntityType.Builder.<IceShard>of((type, worldIn) -> new IceShard(type, worldIn), MobCategory.MISC)
+                            .sized(0.45F, 0.45F)
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":ice_shard"));
 
     public static Predicate<LivingEntity> buildPredicateFromTag(TagKey<EntityType<?>> tagKey) {
         if (tagKey == null) {

@@ -4,9 +4,8 @@ import com.Polarice3.Goety.common.entities.ally.AnimalSummon;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.init.ModMobType;
 import com.Polarice3.Goety.utils.CuriosFinder;
+import com.qiuyue.goetyominous.common.entities.projectile.IceShard;
 import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
-import com.github.alexthe666.alexsmobs.entity.EntityIceShard;
 import com.github.alexthe666.alexsmobs.entity.ISemiAquatic;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIFindWater;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAILeaveWater;
@@ -102,7 +101,11 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
             this.setHasLifespan(false);
             this.setLifespan(0);
         }
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        SpawnGroupData data = super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        if (reason == MobSpawnType.SPAWN_EGG || reason == MobSpawnType.MOB_SUMMONED) {
+            this.setBaby(true);
+        }
+        return data;
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
@@ -375,8 +378,7 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
                     int spikeCount = 2 + random.nextInt(4);
                     for (int i = 0; i < spikeCount; i++) {
                         float f = ((i + 1) / (float) spikeCount) * 360F;
-                        EntityIceShard shard = new EntityIceShard(AMEntityRegistry.ICE_SHARD.get(), level());
-                        shard.setShooter(this);
+                        IceShard shard = new IceShard(level(), this);
                         shard.setPos(this.getRandomX(0.5F), this.getEyeY() + 0.1F, this.getRandomZ(0.5F));
                         shard.shootFromRotation(this, this.getXRot() - random.nextInt(40), f, 0.0F, 0.15F + random.nextFloat() * 0.2F, 1.0F);
                         level().addFreshEntity(shard);
