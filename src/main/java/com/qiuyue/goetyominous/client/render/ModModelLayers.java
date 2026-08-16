@@ -602,6 +602,10 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.ICE_SHARD.get(),
                     RenderIceShard::new);
 
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.DROPBEAR_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.am.RenderDropBearServant::new);
+
         }
 
     }

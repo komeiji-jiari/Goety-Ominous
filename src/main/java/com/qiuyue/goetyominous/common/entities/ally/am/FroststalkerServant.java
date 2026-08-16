@@ -150,6 +150,12 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
         return super.canMate(p_27569_);
     }
 
+    // 幼崽 300 秒（6000 tick）长大，取代 AnimalSummon 默认的 1200 秒（-24000）
+    @Override
+    public void setBaby(boolean baby) {
+        this.setAge(baby ? -6000 : 0);
+    }
+
     protected SoundEvent getAmbientSound() {
         return AMSoundRegistry.FROSTSTALKER_IDLE.get();
     }

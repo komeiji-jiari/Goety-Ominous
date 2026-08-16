@@ -31,6 +31,7 @@ out
 /temp_decompile/
 /tmp_goety_decompile/
 /temporary/
+/.tmp_inspect/
 /net/
 *.class
 

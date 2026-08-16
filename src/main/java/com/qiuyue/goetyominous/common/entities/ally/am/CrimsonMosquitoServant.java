@@ -49,7 +49,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -104,10 +103,6 @@ public class CrimsonMosquitoServant extends Summoned {
 
     protected SoundEvent getDeathSound() {
         return AMSoundRegistry.MOSQUITO_DIE.get();
-    }
-
-    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
-        return AMEntityRegistry.rollSpawn(AMConfig.crimsonMosquitoSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
