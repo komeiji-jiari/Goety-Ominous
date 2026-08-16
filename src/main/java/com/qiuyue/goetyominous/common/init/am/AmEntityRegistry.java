@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.common.init.am;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.am.BunfungusServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.CrimsonMosquitoServant;
+import com.qiuyue.goetyominous.common.entities.ally.am.DropBearServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.IllagerElephantServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.ZombieCrocodileServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.FarseerServant;
@@ -120,6 +121,14 @@ public class AmEntityRegistry {
                             .sized(2.15F, 0.75F)
                             .setTrackingRange(10)
                             .build(GoetyOminous.MOD_ID + ":zombie_crocodile_servant"));
+
+    public static final RegistryObject<EntityType<DropBearServant>> DROPBEAR_SERVANT =
+            AM_ENTITIES.register("dropbear_servant",
+                    () -> EntityType.Builder.<DropBearServant>of((type, worldIn) -> new DropBearServant(type, worldIn), MobCategory.MISC)
+                            .sized(1.65F, 1.5F)
+                            .fireImmune()
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":dropbear_servant"));
 
     public static final RegistryObject<EntityType<BunfungusServant>> BUNFUNGUS_SERVANT =
             AM_ENTITIES.register("bunfungus_servant",

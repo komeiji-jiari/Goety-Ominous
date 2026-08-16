@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.compat.am;
 
 import com.qiuyue.goetyominous.common.entities.ally.am.BunfungusServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.CrimsonMosquitoServant;
+import com.qiuyue.goetyominous.common.entities.ally.am.DropBearServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.IllagerElephantServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.ZombieCrocodileServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.FarseerServant;
@@ -53,5 +54,6 @@ public class AmCompatManager {
         event.put(AmEntityRegistry.SKELEWAG_SERVANT.get(), SkelewagServant.setCustomAttributes().build());
         event.put(AmEntityRegistry.WITHER_SKELEWAG_SERVANT.get(), WitherSkelewagServant.setCustomAttributes().build());
         event.put(AmEntityRegistry.STRAY_SKELEWAG_SERVANT.get(), StraySkelewagServant.setCustomAttributes().build());
+        event.put(AmEntityRegistry.DROPBEAR_SERVANT.get(), DropBearServant.setCustomAttributes().build());
     }
 }

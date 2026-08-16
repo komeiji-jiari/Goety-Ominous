@@ -75,6 +75,11 @@ public class AmItems {
                     // Base 0xC8D8D8 = texture main color (icy pale blue); highlight 0x6E8FA0 = texture frost blue-gray shading
                     () -> new ServantSpawnEggItem(AmEntityRegistry.STRAY_SKELEWAG_SERVANT, 0xC8D8D8, 0x6E8FA0, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> DROPBEAR_SERVANT_SPAWN_EGG =
+            AM_ITEMS.register("dropbear_servant_spawn_egg",
+                    // Base 0x6B4A2F = texture main color (dark brown fur); highlight 0xC2A66E = texture tan belly
+                    () -> new ServantSpawnEggItem(AmEntityRegistry.DROPBEAR_SERVANT, 0x6B4A2F, 0xC2A66E, egg()));
+
     public static final RegistryObject<WarpedSteroidsItem> WARPED_STEROIDS =
             AM_ITEMS.register("warped_steroids", WarpedSteroidsItem::new);
 

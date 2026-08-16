@@ -6,8 +6,6 @@ import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.projectiles.FlyingItem;
 import com.Polarice3.Goety.config.ItemConfig;
 import com.Polarice3.Goety.config.MobsConfig;
-import com.github.alexthe666.alexsmobs.config.AMConfig;
-import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.FlightMoveController;
 import com.github.alexthe666.alexsmobs.entity.ai.GroundPathNavigatorWide;
@@ -60,7 +58,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -738,10 +735,6 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
 
     public boolean shouldRiderSit() {
         return false;
-    }
-
-    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
-        return AMEntityRegistry.rollSpawn(AMConfig.warpedMoscoSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
     private void spit(LivingEntity target) {
