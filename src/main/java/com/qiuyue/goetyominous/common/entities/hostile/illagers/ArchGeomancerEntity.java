@@ -375,7 +375,7 @@ public class ArchGeomancerEntity extends HuntingIllagerEntity {
                         new AABB(x - 2.0D, y - 2.0D, z - 2.0D, x + 2.0D, y + 2.0D, z + 2.0D))) {
                     if (target != this && !MobUtil.areAllies(target, this) && target.distanceToSqr(x, y, z) <= 4.0D) {
                         if (this.doHurtTarget(target)) {
-                            target.knockback(1.2D, target.getX() - this.getX(), target.getZ() - this.getZ());
+                            target.knockback(2.0D, this.getX() - target.getX(), this.getZ() - target.getZ());
                         }
                     }
                 }
@@ -433,7 +433,7 @@ public class ArchGeomancerEntity extends HuntingIllagerEntity {
                     if (forward >= 0.0D && forward <= 1.5D && sideDist <= 0.5D && target.getY() >= minY
                             && target.getY() <= maxY) {
                         if (this.doHurtTarget(target)) {
-                            target.knockback(1.2D, target.getX() - this.getX(), target.getZ() - this.getZ());
+                            target.knockback(1.2D, this.getX() - target.getX(), this.getZ() - target.getZ());
                         }
                     }
                 }
@@ -495,12 +495,12 @@ public class ArchGeomancerEntity extends HuntingIllagerEntity {
     private void whirlwindDamage() {
         if (this.level() instanceof ServerLevel serverLevel) {
             for (LivingEntity target : serverLevel.getEntitiesOfClass(LivingEntity.class,
-                    this.getBoundingBox().inflate(1.3D))) {
+                    this.getBoundingBox().inflate(2.0D))) {
                 if (target != this && !MobUtil.areAllies(target, this)) {
                     if (this.doHurtTarget(target)) {
-                        double dx = target.getX() - this.getX();
-                        double dz = target.getZ() - this.getZ();
-                        target.knockback(0.6D, dx, dz);
+                        double dx = this.getX() - target.getX();
+                        double dz = this.getZ() - target.getZ();
+                        target.knockback(1.6D, dx, dz);
                     }
                 }
             }
@@ -757,7 +757,8 @@ public class ArchGeomancerEntity extends HuntingIllagerEntity {
             return target != null && target.isAlive()
                     && ArchGeomancerEntity.this.getCurrentAnimation() == 0
                     && ArchGeomancerEntity.this.distanceTo(target) <= 3.0D
-                    && (ArchGeomancerEntity.this.distanceTo(target) > 2.0D || ArchGeomancerEntity.this.whirlwindCool > 0);
+                    && (ArchGeomancerEntity.this.distanceTo(target) > 2.0D
+                            || ArchGeomancerEntity.this.whirlwindCool > 0);
         }
 
         @Override
@@ -887,7 +888,7 @@ public class ArchGeomancerEntity extends HuntingIllagerEntity {
         @Override
         public void stop() {
             ArchGeomancerEntity.this.setAnimationState(0);
-            ArchGeomancerEntity.this.whirlwindCool = 200;
+            ArchGeomancerEntity.this.whirlwindCool = 100;
             this.attackTick = 0;
         }
 
@@ -963,7 +964,7 @@ public class ArchGeomancerEntity extends HuntingIllagerEntity {
         @Override
         public void stop() {
             ArchGeomancerEntity.this.setAnimationState(0);
-            ArchGeomancerEntity.this.summonCool = 200;
+            ArchGeomancerEntity.this.summonCool = 150;
             this.summonTick = 0;
             this.bombDir = null;
         }

@@ -75,7 +75,6 @@ public class ImpactBlockEntity extends Entity {
         this.prevZ = this.getZ();
     }
 
-
     public void initializePhase(int rising, int hover, double maxSpeed) {
         this.phaseInitialized = true;
         this.risingDuration = rising;
@@ -94,7 +93,7 @@ public class ImpactBlockEntity extends Entity {
         this.entityData.define(PHASE, 0);
         this.entityData.define(RISING_DURATION, 30);
         this.entityData.define(HOVER_DURATION, 20);
-        this.entityData.define(MAX_DASH_SPEED, 0.65F);
+        this.entityData.define(MAX_DASH_SPEED, 0.85F);
         this.entityData.define(DASH_DIRECTION, new Vector3f(0.0F, -1.0F, 0.0F));
         this.entityData.define(EXTRA_DAMAGE, 0.0F);
     }
