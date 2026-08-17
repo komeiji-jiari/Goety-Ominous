@@ -4,6 +4,7 @@ import com.Polarice3.Goety.common.entities.ally.AnimalSummon;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.init.ModMobType;
 import com.Polarice3.Goety.utils.CuriosFinder;
+import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.entities.projectile.IceShard;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.github.alexthe666.alexsmobs.entity.ISemiAquatic;
@@ -23,9 +24,12 @@ import java.util.EnumSet;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
@@ -66,11 +70,16 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
     public static final Animation ANIMATION_SLASH_L = Animation.create(12);
     public static final Animation ANIMATION_SLASH_R = Animation.create(12);
     public static final Animation ANIMATION_SHOVE = Animation.create(12);
-    private static final EntityDataAccessor<Boolean> SPIKES = SynchedEntityData.defineId(FroststalkerServant.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> TACKLING = SynchedEntityData.defineId(FroststalkerServant.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> SPIKE_SHAKING = SynchedEntityData.defineId(FroststalkerServant.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> BIPEDAL = SynchedEntityData.defineId(FroststalkerServant.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Float> TURN_ANGLE = SynchedEntityData.defineId(FroststalkerServant.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Boolean> SPIKES = SynchedEntityData.defineId(FroststalkerServant.class,
+            EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> TACKLING = SynchedEntityData.defineId(FroststalkerServant.class,
+            EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> SPIKE_SHAKING = SynchedEntityData
+            .defineId(FroststalkerServant.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> BIPEDAL = SynchedEntityData.defineId(FroststalkerServant.class,
+            EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> TURN_ANGLE = SynchedEntityData.defineId(FroststalkerServant.class,
+            EntityDataSerializers.FLOAT);
     public float bipedProgress;
     public float prevBipedProgress;
     public float tackleProgress;
@@ -86,8 +95,14 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
     private boolean hasSpikedArmor = false;
     private int fleeFireFlag;
     private boolean temporary;
-    public boolean isTemporary() { return this.temporary; }
-    public void setTemporary(boolean temporary) { this.temporary = temporary; }
+
+    public boolean isTemporary() {
+        return this.temporary;
+    }
+
+    public void setTemporary(boolean temporary) {
+        this.temporary = temporary;
+    }
 
     public FroststalkerServant(EntityType<? extends Owned> type, Level level) {
         super(type, level);
@@ -96,7 +111,8 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
     }
 
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn,
+            MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         if (reason == MobSpawnType.SPAWN_EGG) {
             this.setHasLifespan(false);
             this.setLifespan(0);
@@ -105,7 +121,38 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
         if (reason == MobSpawnType.SPAWN_EGG || reason == MobSpawnType.MOB_SUMMONED) {
             this.setBaby(true);
         }
+        this.ensurePathfindingPosition();
         return data;
+    }
+
+    private void ensurePathfindingPosition() {
+        if (this.level().isClientSide) {
+            return;
+        }
+        if (!this.level().noCollision(this, this.getBoundingBox())) {
+            int guard = 0;
+            while (!this.level().noCollision(this, this.getBoundingBox()) && guard++ < 8) {
+                this.setPos(this.getX(), this.getY() + 0.5D, this.getZ());
+            }
+            this.syncPositionToClients();
+            return;
+        }
+
+        if (!this.onGround() && !this.isInWater() && this.getDeltaMovement().y < -0.05D) {
+            MobUtil.moveDownToGround(this);
+            return;
+        }
+
+        if (this.onGround() && !this.level().getBlockState(this.blockPosition().below())
+                .isSolidRender(this.level(), this.blockPosition().below())) {
+            MobUtil.moveDownToGround(this);
+        }
+    }
+
+    private void syncPositionToClients() {
+        if (this.level() instanceof ServerLevel serverLevel) {
+            serverLevel.getChunkSource().broadcastAndSend(this, new ClientboundTeleportEntityPacket(this));
+        }
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
@@ -127,10 +174,12 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AttributesConfig.FroststalkerServantDamage.get());
         }
         if (this.getAttribute(Attributes.FOLLOW_RANGE) != null) {
-            this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(AttributesConfig.FroststalkerServantFollowRange.get());
+            this.getAttribute(Attributes.FOLLOW_RANGE)
+                    .setBaseValue(AttributesConfig.FroststalkerServantFollowRange.get());
         }
         if (this.getAttribute(Attributes.KNOCKBACK_RESISTANCE) != null) {
-            this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(AttributesConfig.FroststalkerServantKnockbackResistance.get());
+            this.getAttribute(Attributes.KNOCKBACK_RESISTANCE)
+                    .setBaseValue(AttributesConfig.FroststalkerServantKnockbackResistance.get());
         }
         if (this.getAttribute(Attributes.ARMOR) != null) {
             this.getAttribute(Attributes.ARMOR).setBaseValue(AttributesConfig.FroststalkerServantArmor.get());
@@ -144,13 +193,13 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
 
     @Override
     public boolean canMate(AnimalSummon p_27569_) {
-        if (this.isTemporary() || (p_27569_ instanceof FroststalkerServant froststalker && froststalker.isTemporary())) {
+        if (this.isTemporary()
+                || (p_27569_ instanceof FroststalkerServant froststalker && froststalker.isTemporary())) {
             return false;
         }
         return super.canMate(p_27569_);
     }
 
-    // 幼崽 300 秒（6000 tick）长大，取代 AnimalSummon 默认的 1200 秒（-24000）
     @Override
     public void setBaby(boolean baby) {
         this.setAge(baby ? -6000 : 0);
@@ -180,7 +229,8 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
             amount *= 2F;
         }
         boolean prev = super.hurt(source, amount);
-        if (prev && this.hasSpikes() && !this.isSpikeShaking() && source.getEntity() != null && source.getEntity().distanceTo(this) < 10) {
+        if (prev && this.hasSpikes() && !this.isSpikeShaking() && source.getEntity() != null
+                && source.getEntity().distanceTo(this) < 10) {
             this.setSpikeShaking(true);
             shakeTime = 20 + random.nextInt(60);
             standFor(shakeTime + 10);
@@ -313,7 +363,8 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
         if (this.hasSpikes()) {
             if (!hasSpikedArmor) {
                 hasSpikedArmor = true;
-                this.getAttribute(Attributes.ARMOR).setBaseValue(12.0F + AttributesConfig.FroststalkerServantArmor.get());
+                this.getAttribute(Attributes.ARMOR)
+                        .setBaseValue(12.0F + AttributesConfig.FroststalkerServantArmor.get());
             }
         } else {
             if (hasSpikedArmor) {
@@ -334,6 +385,9 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
         }
 
         if (!this.level().isClientSide) {
+            if (this.tickCount % 20 == 0) {
+                this.ensurePathfindingPosition();
+            }
             if (this.tickCount % 200 == 0) {
                 if (isInWaterRainOrBubble() && !this.hasSpikes()) {
                     this.setSpiked(true);
@@ -386,7 +440,8 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
                         float f = ((i + 1) / (float) spikeCount) * 360F;
                         IceShard shard = new IceShard(level(), this);
                         shard.setPos(this.getRandomX(0.5F), this.getEyeY() + 0.1F, this.getRandomZ(0.5F));
-                        shard.shootFromRotation(this, this.getXRot() - random.nextInt(40), f, 0.0F, 0.15F + random.nextFloat() * 0.2F, 1.0F);
+                        shard.shootFromRotation(this, this.getXRot() - random.nextInt(40), f, 0.0F,
+                                0.15F + random.nextFloat() * 0.2F, 1.0F);
                         level().addFreshEntity(shard);
                     }
                 }
@@ -404,7 +459,8 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
                     this.getAnimation() == ANIMATION_SLASH_R && this.getAnimationTick() == 7;
             if (this.getTarget() != null && attackAnim) {
                 getTarget().knockback(0.2F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
-                this.getTarget().hurt(this.getServantAttack(), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                this.getTarget().hurt(this.getServantAttack(),
+                        (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
             }
         }
         if (fleeFireFlag > 0) {
@@ -482,7 +538,8 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
 
     @Override
     public Animation[] getAnimations() {
-        return new Animation[]{ANIMATION_BITE, ANIMATION_SPEAK, ANIMATION_SLASH_L, ANIMATION_SLASH_R, ANIMATION_SHOVE};
+        return new Animation[] { ANIMATION_BITE, ANIMATION_SPEAK, ANIMATION_SLASH_L, ANIMATION_SLASH_R,
+                ANIMATION_SHOVE };
     }
 
     public float getTurnAngle() {
@@ -634,7 +691,8 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
 
                     float extraSpeed = 0.2F * Math.max(5F - froststalker.distanceTo(target), 0F);
                     if (pursuitPos != null) {
-                        froststalker.getNavigation().moveTo(pursuitPos.getX(), pursuitPos.getY(), pursuitPos.getZ(), 1.0F + extraSpeed);
+                        froststalker.getNavigation().moveTo(pursuitPos.getX(), pursuitPos.getY(), pursuitPos.getZ(),
+                                1.0F + extraSpeed);
                     } else {
                         froststalker.getNavigation().moveTo(target, 1.0F);
                     }
@@ -646,7 +704,8 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
                         this.froststalker.setTackling(true);
                         hasJumped = true;
                         Vec3 vector3d = this.froststalker.getDeltaMovement();
-                        Vec3 vector3d1 = new Vec3(target.getX() - this.froststalker.getX(), 0.0D, target.getZ() - this.froststalker.getZ());
+                        Vec3 vector3d1 = new Vec3(target.getX() - this.froststalker.getX(), 0.0D,
+                                target.getZ() - this.froststalker.getZ());
                         if (vector3d1.lengthSqr() > 1.0E-7D) {
                             vector3d1 = vector3d1.normalize().scale(0.9D).add(vector3d.scale(0.8D));
                         }
@@ -659,12 +718,16 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
                         froststalker.getNavigation().moveTo(target, 1.0F);
                     }
                 }
-                if (froststalker.isTackling() && froststalker.distanceTo(target) <= froststalker.getBbWidth() + target.getBbWidth() + 1.1F && froststalker.hasLineOfSight(target)) {
-                    target.hurt(froststalker.getServantAttack(), (float) froststalker.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                if (froststalker.isTackling()
+                        && froststalker.distanceTo(target) <= froststalker.getBbWidth() + target.getBbWidth() + 1.1F
+                        && froststalker.hasLineOfSight(target)) {
+                    target.hurt(froststalker.getServantAttack(),
+                            (float) froststalker.getAttributeValue(Attributes.ATTACK_DAMAGE));
                     start();
                 }
                 if (!flag) {
-                    if (froststalker.distanceTo(target) <= froststalker.getBbWidth() + target.getBbWidth() + 1.1F && froststalker.hasLineOfSight(target)) {
+                    if (froststalker.distanceTo(target) <= froststalker.getBbWidth() + target.getBbWidth() + 1.1F
+                            && froststalker.hasLineOfSight(target)) {
                         if (pursuitTime == maxPursuitTime) {
                             if (!froststalker.isTackling()) {
                                 froststalker.doHurtTarget(target);
@@ -686,11 +749,14 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
             float angle = (Maths.STARTING_ANGLE * (clockwise ? -orbit : orbit));
             double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
-            BlockPos circlePos = AMBlockPos.fromCoords(target.getX() + extraX, target.getEyeY(), target.getZ() + extraZ);
-            while (!froststalker.level().getBlockState(circlePos).isAir() && circlePos.getY() < froststalker.level().getMaxBuildHeight()) {
+            BlockPos circlePos = AMBlockPos.fromCoords(target.getX() + extraX, target.getEyeY(),
+                    target.getZ() + extraZ);
+            while (!froststalker.level().getBlockState(circlePos).isAir()
+                    && circlePos.getY() < froststalker.level().getMaxBuildHeight()) {
                 circlePos = circlePos.above();
             }
-            while (!froststalker.level().getBlockState(circlePos.below()).entityCanStandOn(froststalker.level(), circlePos.below(), froststalker) && circlePos.getY() > 1) {
+            while (!froststalker.level().getBlockState(circlePos.below()).entityCanStandOn(froststalker.level(),
+                    circlePos.below(), froststalker) && circlePos.getY() > 1) {
                 circlePos = circlePos.below();
             }
             if (froststalker.getWalkTargetValue(circlePos) > -1) {
@@ -717,11 +783,13 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
         }
 
         public boolean canContinueToUse() {
-            return destinationBlock != null && isFire(FroststalkerServant.this.level(), destinationBlock.mutable()) && isCloseToFire(16);
+            return destinationBlock != null && isFire(FroststalkerServant.this.level(), destinationBlock.mutable())
+                    && isCloseToFire(16);
         }
 
         public boolean isCloseToFire(double dist) {
-            return destinationBlock == null || FroststalkerServant.this.distanceToSqr(Vec3.atCenterOf(destinationBlock)) < dist * dist;
+            return destinationBlock == null
+                    || FroststalkerServant.this.distanceToSqr(Vec3.atCenterOf(destinationBlock)) < dist * dist;
         }
 
         @Override
@@ -749,7 +817,8 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
             if (this.isCloseToFire(16)) {
                 FroststalkerServant.this.fleeFireFlag = 200;
                 if (fleeTarget == null || FroststalkerServant.this.distanceToSqr(fleeTarget) < 2F) {
-                    Vec3 vec = LandRandomPos.getPosAway(FroststalkerServant.this, 15, 5, Vec3.atCenterOf(destinationBlock));
+                    Vec3 vec = LandRandomPos.getPosAway(FroststalkerServant.this, 15, 5,
+                            Vec3.atCenterOf(destinationBlock));
                     if (vec != null) {
                         fleeTarget = vec;
                     }
@@ -773,7 +842,8 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
             for (int lvt_5_1_ = -8; lvt_5_1_ <= 2; lvt_5_1_++) {
                 for (int lvt_6_1_ = 0; lvt_6_1_ < lvt_1_1_; ++lvt_6_1_) {
                     for (int lvt_7_1_ = 0; lvt_7_1_ <= lvt_6_1_; lvt_7_1_ = lvt_7_1_ > 0 ? -lvt_7_1_ : 1 - lvt_7_1_) {
-                        for (int lvt_8_1_ = lvt_7_1_ < lvt_6_1_ && lvt_7_1_ > -lvt_6_1_ ? lvt_6_1_ : 0; lvt_8_1_ <= lvt_6_1_; lvt_8_1_ = lvt_8_1_ > 0 ? -lvt_8_1_ : 1 - lvt_8_1_) {
+                        for (int lvt_8_1_ = lvt_7_1_ < lvt_6_1_ && lvt_7_1_ > -lvt_6_1_ ? lvt_6_1_
+                                : 0; lvt_8_1_ <= lvt_6_1_; lvt_8_1_ = lvt_8_1_ > 0 ? -lvt_8_1_ : 1 - lvt_8_1_) {
                             lvt_4_1_.setWithOffset(lvt_3_1_, lvt_7_1_, lvt_5_1_ - 1, lvt_8_1_);
                             if (this.isFire(FroststalkerServant.this.level(), lvt_4_1_)) {
                                 this.destinationBlock = lvt_4_1_;
