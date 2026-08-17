@@ -152,23 +152,12 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
                                         MobSpawnType spawnType, @Nullable SpawnGroupData spawnData,
                                         @Nullable CompoundTag tag) {
-        return super.finalizeSpawn(level, difficulty, spawnType, spawnData, tag);
-    }
-
-    @Override
-    public void setTrueOwner(LivingEntity owner) {
-        LivingEntity previousOwner = this.getTrueOwner();
-        if (owner != null) {
-            this.setOwnerId(owner.getUUID());
-            this.setOwnerClientId(owner.getId());
-        } else {
-            this.removeTrueOwner();
-        }
-        if (!this.level().isClientSide && previousOwner != owner && owner instanceof Player player) {
-            if (countServants(player) > MobsConfig.IllagerElephantServantLimit.get()) {
-                this.discard();
+        if (spawnType == MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player) {
+            if (countServants(player) >= MobsConfig.IllagerElephantServantLimit.get()) {
+                return null;
             }
         }
+        return super.finalizeSpawn(level, difficulty, spawnType, spawnData, tag);
     }
 
     private int countServants(Player player) {

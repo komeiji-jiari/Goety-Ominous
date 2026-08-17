@@ -11,6 +11,7 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.qiuyue.goetyominous.config.AttributesConfig;
+import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -61,6 +62,10 @@ public class DropBearServant extends Summoned implements IAnimatedEntity {
     private int upwardsFallingTicks = 0;
     private boolean isUpsideDownNavigator;
 
+    private final GroundPathNavigatorWide groundNavigator;
+
+    private final DirectPathNavigator directNavigator;
+
     private int ceilingTravelCooldown;
 
     private boolean ceilingTraveling;
@@ -88,6 +93,8 @@ public class DropBearServant extends Summoned implements IAnimatedEntity {
 
     public DropBearServant(EntityType type, Level world) {
         super(type, world);
+        this.groundNavigator = new GroundPathNavigatorWide(this, level());
+        this.directNavigator = new DirectPathNavigator(this, level());
         switchNavigator(true);
     }
 
@@ -114,6 +121,11 @@ public class DropBearServant extends Summoned implements IAnimatedEntity {
         if (this.getAttribute(Attributes.KNOCKBACK_RESISTANCE) != null) {
             this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(AttributesConfig.DropBearServantKnockbackResistance.get());
         }
+    }
+
+    @Override
+    public int getSummonLimit(LivingEntity owner) {
+        return MobsConfig.DropBearServantLimit.get();
     }
 
     public static BlockPos getLowestPos(LevelAccessor world, BlockPos pos) {
@@ -174,11 +186,11 @@ public class DropBearServant extends Summoned implements IAnimatedEntity {
     private void switchNavigator(boolean rightsideUp) {
         if (rightsideUp) {
             this.moveControl = new MoveControl(this);
-            this.navigation = new GroundPathNavigatorWide(this, level());
+            this.navigation = this.groundNavigator;
             this.isUpsideDownNavigator = false;
         } else {
             this.moveControl = new FlightMoveController(this, 1.1F, false);
-            this.navigation = new DirectPathNavigator(this, level());
+            this.navigation = this.directNavigator;
             this.isUpsideDownNavigator = true;
         }
     }
@@ -280,6 +292,11 @@ public class DropBearServant extends Summoned implements IAnimatedEntity {
         }
     }
 
+    private boolean isOwnerSneaking() {
+        LivingEntity owner = this.getTrueOwner();
+        return owner != null && owner.isShiftKeyDown();
+    }
+
     private void updateAmbushState() {
         LivingEntity owner = this.getTrueOwner();
 
@@ -304,6 +321,16 @@ public class DropBearServant extends Summoned implements IAnimatedEntity {
                 this.setUpsideDown(false);
             }
             this.cancelClimb();
+            return;
+        }
+
+        // Sneaking owner: land and keep following on the ground instead of clinging to the ceiling.
+        if (this.isOwnerSneaking()) {
+            if (this.isUpsideDown()) {
+                this.startLanding();
+            } else {
+                this.cancelClimb();
+            }
             return;
         }
 
@@ -356,6 +383,9 @@ public class DropBearServant extends Summoned implements IAnimatedEntity {
     }
 
     private boolean isCeilingTravelEligible() {
+        if (this.isOwnerSneaking()) {
+            return false;
+        }
         if (this.ceilingTravelCooldown > 0) {
             return false;
         }
@@ -842,6 +872,9 @@ public class DropBearServant extends Summoned implements IAnimatedEntity {
             if (owner == null || owner.isSpectator()) {
                 return false;
             }
+            if (this.servant.isOwnerSneaking()) {
+                return false;
+            }
             if (!this.servant.isFollowing() || this.servant.isCommanded()) {
                 return false;
             }
@@ -874,6 +907,9 @@ public class DropBearServant extends Summoned implements IAnimatedEntity {
         public boolean canContinueToUse() {
             LivingEntity owner = this.servant.getTrueOwner();
             if (owner == null) {
+                return false;
+            }
+            if (this.servant.isOwnerSneaking()) {
                 return false;
             }
             if (this.servant.isUpsideDown() || this.servant.ceilingTraveling || this.servant.jumpingUp) {
