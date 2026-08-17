@@ -4,6 +4,7 @@ import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.am.BunfungusServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.CrimsonMosquitoServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.DropBearServant;
+import com.qiuyue.goetyominous.common.entities.ally.am.GusterServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.IllagerElephantServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.ZombieCrocodileServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.FarseerServant;
@@ -18,6 +19,7 @@ import com.qiuyue.goetyominous.common.entities.ally.am.TusklinServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.WarpedMoscoServant;
 import com.qiuyue.goetyominous.common.entities.projectile.EntityMosquitoServantSpit;
 import com.qiuyue.goetyominous.common.entities.projectile.EntityServantHemolymph;
+import com.qiuyue.goetyominous.common.entities.projectile.EntityServentSandShot;
 import java.util.function.Predicate;
 
 import com.qiuyue.goetyominous.common.entities.projectile.IceShard;
@@ -66,6 +68,13 @@ public class AmEntityRegistry {
                             .sized(0.25F, 0.25F)
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":mosquito_servant_spit"));
+
+    public static final RegistryObject<EntityType<EntityServentSandShot>> SERVANT_SAND_SHOT =
+            AM_ENTITIES.register("servant_sand_shot",
+                    () -> EntityType.Builder.<EntityServentSandShot>of((type, worldIn) -> new EntityServentSandShot(type, worldIn), MobCategory.MISC)
+                            .sized(0.25F, 0.25F)
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":servant_sand_shot"));
 
     public static final RegistryObject<EntityType<WarpedMoscoServant>> WARPED_MOSCO_SERVANT =
             AM_ENTITIES.register("warped_mosco_servant",
@@ -129,6 +138,14 @@ public class AmEntityRegistry {
                             .fireImmune()
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":dropbear_servant"));
+
+    public static final RegistryObject<EntityType<GusterServant>> GUSTER_SERVANT =
+            AM_ENTITIES.register("guster_servant",
+                    () -> EntityType.Builder.<GusterServant>of((type, worldIn) -> new GusterServant(type, worldIn), MobCategory.MISC)
+                            .sized(1.42F, 2.35F)
+                            .fireImmune()
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":guster_servant"));
 
     public static final RegistryObject<EntityType<BunfungusServant>> BUNFUNGUS_SERVANT =
             AM_ENTITIES.register("bunfungus_servant",
