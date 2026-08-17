@@ -60,6 +60,11 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> DropBearServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> DropBearServantKnockbackResistance;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> GusterServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> GusterServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> GusterServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> GusterServantKnockbackResistance;
+
     public static final ForgeConfigSpec.ConfigValue<Double> RockyRollerServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> RockyRollerServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> RockyRollerServantMovementSpeed;
@@ -814,6 +819,14 @@ public class AttributesConfig {
                 .defineInRange("dropBearServantFollowRange", 20.0, 0.0, Double.MAX_VALUE);
         DropBearServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Drop Bear Servants have, Default: 0.7 (matches Alex's Mobs drop bear)")
                 .defineInRange("dropBearServantKnockbackResistance", 0.7, 0.0, Double.MAX_VALUE);
+        GusterServantHealth = BUILDER.comment("How much Max Health Guster Servants have, Default: 16.0 (matches Alex's Mobs guster)")
+                .defineInRange("gusterServantHealth", 16.0, 1.0, Double.MAX_VALUE);
+        GusterServantDamage = BUILDER.comment("How much damage Guster Servants deal, Default: 1.0 (matches Alex's Mobs guster)")
+                .defineInRange("gusterServantDamage", 1.0, 1.0, Double.MAX_VALUE);
+        GusterServantFollowRange = BUILDER.comment("How much following/detection range Guster Servants have, Default: 32.0 (matches Alex's Mobs guster)")
+                .defineInRange("gusterServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
+        GusterServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Guster Servants have, Default: 0.0 (matches Alex's Mobs guster)")
+                .defineInRange("gusterServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
         RockyRollerServantHealth = BUILDER.comment("How much Max Health Rocky Roller Servants have, Default: 10.0 (matches Alex's Mobs rocky roller)")
                 .defineInRange("rockyRollerServantHealth", 10.0, 1.0, Double.MAX_VALUE);
         RockyRollerServantDamage = BUILDER.comment("How much damage Rocky Roller Servants deal, Default: 2.0 (matches Alex's Mobs rocky roller)")

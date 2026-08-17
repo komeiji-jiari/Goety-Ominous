@@ -20,6 +20,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> IllagerElephantServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> DropBearServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> GusterServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> ThrasherServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> GreatThrasherServantLimit;
@@ -107,6 +108,10 @@ public class MobsConfig {
         DropBearServantLimit = BUILDER
                 .comment("Maximum number of Drop Bear Servants that can be summoned (Default: 32)")
                 .defineInRange("dropBearServantLimit", 32, 1, 100);
+
+        GusterServantLimit = BUILDER
+                .comment("Maximum number of Guster Servants that can be summoned (Default: 32)")
+                .defineInRange("gusterServantLimit", 32, 1, 100);
 
         RamblerServantLimit = BUILDER
                 .comment("Maximum number of Rambler Servants that can be summoned (Default: 8)")

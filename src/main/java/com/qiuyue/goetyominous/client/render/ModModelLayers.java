@@ -555,6 +555,10 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.client.render.projectile.RenderMosquitoServantSpit::new);
 
             event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.SERVANT_SAND_SHOT.get(),
+                    com.qiuyue.goetyominous.client.render.projectile.RenderServantSandShot::new);
+
+            event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.SERVANT_HEMOLYMPH.get(),
                     com.qiuyue.goetyominous.client.render.projectile.RenderServantHemolymph::new);
 
@@ -605,6 +609,10 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.DROPBEAR_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderDropBearServant::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.GUSTER_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.am.RenderGusterServant::new);
 
         }
 
