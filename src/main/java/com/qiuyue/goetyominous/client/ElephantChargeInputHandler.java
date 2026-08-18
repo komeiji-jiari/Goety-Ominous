@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.client;
 import com.qiuyue.goetyominous.common.entities.ally.am.IllagerElephantServant;
 import com.qiuyue.goetyominous.common.network.ElephantChargePacket;
 import com.qiuyue.goetyominous.common.network.ModNetwork;
+import com.qiuyue.goetyominous.compat.mod.AlexMobsCompat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.InteractionHand;
@@ -28,6 +29,10 @@ public class ElephantChargeInputHandler {
             return;
         }
         if (!player.getMainHandItem().isEmpty()) {
+            return;
+        }
+        // 未安装 Alex's Mobs 时大象仆从实体不存在,直接禁用充能(避免加载 Alex's Mobs 类导致 NoClassDefFoundError)
+        if (!AlexMobsCompat.isAlexMobsLoaded()) {
             return;
         }
         Entity entity = player.getVehicle();

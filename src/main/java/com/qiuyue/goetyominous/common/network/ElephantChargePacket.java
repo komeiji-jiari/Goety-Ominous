@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.common.network;
 
 import com.qiuyue.goetyominous.common.entities.ally.am.IllagerElephantServant;
+import com.qiuyue.goetyominous.compat.mod.AlexMobsCompat;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -28,7 +29,8 @@ public class ElephantChargePacket {
             ServerPlayer player = ctx.get().getSender();
             if (player != null) {
                 Entity vehicle = player.getVehicle();
-                if (vehicle instanceof IllagerElephantServant elephant && vehicle.getId() == msg.entityId) {
+                if (AlexMobsCompat.isAlexMobsLoaded()
+                        && vehicle instanceof IllagerElephantServant elephant && vehicle.getId() == msg.entityId) {
                     elephant.triggerCharge();
                 }
             }
