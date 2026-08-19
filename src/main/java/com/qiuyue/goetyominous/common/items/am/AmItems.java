@@ -88,6 +88,9 @@ public class AmItems {
     public static final RegistryObject<WarpedSteroidsItem> WARPED_STEROIDS =
             AM_ITEMS.register("warped_steroids", WarpedSteroidsItem::new);
 
+    public static final RegistryObject<JerboaAmuletItem> JERBOA_AMULET =
+            AM_ITEMS.register("jerboa_amulet", JerboaAmuletItem::new);
+
     public static final RegistryObject<MagicFocus> MURMUR_FOCUS = AM_ITEMS.register(
             "murmur_focus",
             () -> new MagicFocus(new MurmurSpell()));
