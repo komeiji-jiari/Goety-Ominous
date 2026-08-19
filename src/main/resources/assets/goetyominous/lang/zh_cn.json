@@ -353,5 +353,8 @@
   "info.goety.focus.spellType": "法术类型: %s",
   "item.goety.focus.info": "当用法杖施放时：",
   "jade.goetyominous.melee_progress": "蛮兵升级进度 %s/%s",
-  "jade.goetyominous.ranged_progress": "猎手升级进度 %s/%s"
+  "jade.goetyominous.ranged_progress": "猎手升级进度 %s/%s",
+  "item.goetyominous.jerboa_amulet": "跳鼠护符",
+  "info.goetyominous.jerboa_amulet": "自动吸收背包中的作物种子（土豆除外），并在健步如飞即将失效时消耗一颗，获得60秒健步如飞。",
+  "info.goetyominous.jerboa_amulet.seeds": "存储种子: %d/%d"
 }

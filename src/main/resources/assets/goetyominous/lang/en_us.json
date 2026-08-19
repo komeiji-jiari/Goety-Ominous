@@ -353,5 +353,8 @@
   "info.goety.focus.spellType": "Spell Type: %s",
   "item.goety.focus.info": "When Cast in Wand or Staff:",
   "jade.goetyominous.melee_progress": "Brute Upgrade Progress %s/%s",
-  "jade.goetyominous.ranged_progress": "Hunter Upgrade Progress %s/%s"
+  "jade.goetyominous.ranged_progress": "Hunter Upgrade Progress %s/%s",
+  "item.goetyominous.jerboa_amulet": "Jerboa Amulet",
+  "info.goetyominous.jerboa_amulet": "Automatically absorbs crop seeds (except potatoes) from your inventory, and consumes one to grant 60 seconds of Fleet Footed when it's about to run out.",
+  "info.goetyominous.jerboa_amulet.seeds": "Stored Seeds: %d/%d"
 }
