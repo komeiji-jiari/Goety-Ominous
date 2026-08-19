@@ -1,9 +1,7 @@
 package com.qiuyue.goetyominous.compat.curios;
 
 import com.qiuyue.goetyominous.common.items.ModItems;
-import com.qiuyue.goetyominous.common.items.am.AmItems;
 import com.qiuyue.goetyominous.common.items.curios.DarkAnkh;
-import com.qiuyue.goetyominous.compat.mod.AlexMobsCompat;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.fml.InterModComms;
@@ -35,8 +33,5 @@ public class CuriosIntegration {
     private void registerCapabilities(RegisterCapabilitiesEvent event) {
         CuriosApi.registerCurio(ModItems.DARK_ANKH.get(), new DarkAnkh());
         CuriosApi.registerCurio(ModItems.FUNGUS_PACK.get(), (ICurioItem) ModItems.FUNGUS_PACK.get());
-        if (AlexMobsCompat.isAlexMobsLoaded()) {
-            CuriosApi.registerCurio(AmItems.JERBOA_AMULET.get(), (ICurioItem) AmItems.JERBOA_AMULET.get());
-        }
     }
 }

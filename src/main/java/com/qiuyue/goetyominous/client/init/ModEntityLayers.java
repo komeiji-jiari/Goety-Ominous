@@ -6,9 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * 客户端模型层位置注册类
- */
+
 @OnlyIn(Dist.CLIENT)
 public class ModEntityLayers {
 

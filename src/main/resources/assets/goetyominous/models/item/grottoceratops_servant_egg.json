@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "goetyominous:item/grottoceratops_servant_egg"
+  }
+}

@@ -49,6 +49,12 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> TusklinServantMovementSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> TusklinServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> TusklinServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> GrottoceratopsServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> GrottoceratopsServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> GrottoceratopsServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> GrottoceratopsServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> GrottoceratopsServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> GrottoceratopsServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantFollowRange;
@@ -801,6 +807,18 @@ public class AttributesConfig {
                 .defineInRange("tusklinServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
         TusklinServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Tusklin Servants have, Default: 0.9")
                 .defineInRange("tusklinServantKnockbackResistance", 0.9, 0.0, Double.MAX_VALUE);
+        GrottoceratopsServantHealth = BUILDER.comment("How much Max Health Grottoceratops Servants have, Default: 50.0 (matches Alex's Caves Grottoceratops)")
+                .defineInRange("grottoceratopsServantHealth", 50.0, 1.0, Double.MAX_VALUE);
+        GrottoceratopsServantDamage = BUILDER.comment("How much damage Grottoceratops Servants deal, Default: 10.0 (matches Alex's Caves Grottoceratops)")
+                .defineInRange("grottoceratopsServantDamage", 10.0, 1.0, Double.MAX_VALUE);
+        GrottoceratopsServantMovementSpeed = BUILDER.comment("How fast Grottoceratops Servants move, Default: 0.2")
+                .defineInRange("grottoceratopsServantMovementSpeed", 0.2, 0.0, Double.MAX_VALUE);
+        GrottoceratopsServantFollowRange = BUILDER.comment("How much following/detection range Grottoceratops Servants have, Default: 32.0")
+                .defineInRange("grottoceratopsServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
+        GrottoceratopsServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Grottoceratops Servants have, Default: 0.9 (matches Alex's Caves Grottoceratops)")
+                .defineInRange("grottoceratopsServantKnockbackResistance", 0.9, 0.0, Double.MAX_VALUE);
+        GrottoceratopsServantArmor = BUILDER.comment("How much natural Armor Grottoceratops Servants have, Default: 8.0 (matches Alex's Caves Grottoceratops)")
+                .defineInRange("grottoceratopsServantArmor", 8.0, 0.0, Double.MAX_VALUE);
         FroststalkerServantHealth = BUILDER.comment("How much Max Health Froststalker Servants have, Default: 24.0 (matches Alex's Mobs Froststalker)")
                 .defineInRange("froststalkerServantHealth", 24.0, 1.0, Double.MAX_VALUE);
         FroststalkerServantDamage = BUILDER.comment("How much damage Froststalker Servants deal, Default: 4.5 (matches Alex's Mobs Froststalker)")

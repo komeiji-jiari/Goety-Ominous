@@ -24,31 +24,16 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-/**
- * 客户端模型层注册类
- * 仅在客户端加载，负责注册实体的模型层定义和实体渲染器
- * 使用@Mod.EventBusSubscriber 注解自动注册到模组事件总线
- *
- * bus = Mod.EventBusSubscriber.Bus.MOD - 监听模组事件总线 (而非 Forge 通用事件总线)
- * value = Dist.CLIENT - 仅在客户端生效
- */
+
 @Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ModModelLayers {
 
-    /**
-     * 注册模型层定义方法
-     * 在模型层注册事件中被调用，用于将模型层位置与模型创建方法关联
-     * Minecraft 使用此映射来加载对应的模型数据
-     *
-     * @param event 模型层注册事件对象
-     */
+
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        // 注册征服者仆从的模型层，绑定到 ConquillagerServantModel 的 createBodyLayer 方法
-        event.registerLayerDefinition(ModEntityLayers.CONQUILLAGER_SERVANT_LAYER,
+                event.registerLayerDefinition(ModEntityLayers.CONQUILLAGER_SERVANT_LAYER,
                 ConquillagerServantModel::createBodyLayer);
-        // 注册巡查官仆从的模型层，绑定到 InquillagerServantModel 的 createBodyLayer 方法
-        event.registerLayerDefinition(ModEntityLayers.INQUILLAGER_SERVANT_LAYER,
+                event.registerLayerDefinition(ModEntityLayers.INQUILLAGER_SERVANT_LAYER,
                 InquillagerServantModel::createBodyLayer);
 
         event.registerLayerDefinition(BoneCudgelModel.LAYER_LOCATION, BoneCudgelModel::createBodyLayer);
@@ -236,26 +221,17 @@ public class ModModelLayers {
         }
 
         if (OpposingForceCompat.isOpposingForceLoaded()) {
-            // TODO: 每个 OF 仆从的模型层注册
 
         }
 
     }
 
-    /**
-     * 注册实体渲染器方法
-     * 在实体渲染器注册事件中被调用，用于为每个实体类型指定对应的渲染器
-     * 渲染器负责将 3D 模型渲染到游戏中
-     *
-     * @param event 实体渲染器注册事件对象
-     */
+
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        // 注册征服者仆从的渲染器，使用 ConquillagerServantRenderer
-        event.registerEntityRenderer(ModEntityTypes.CONQUILLAGER_SERVANT.get(),
+                event.registerEntityRenderer(ModEntityTypes.CONQUILLAGER_SERVANT.get(),
                 ConquillagerServantRenderer::new);
-        // 注册巡查官仆从的渲染器，使用 InquillagerServantRenderer
-        event.registerEntityRenderer(ModEntityTypes.INQUILLAGER_SERVANT.get(), InquillagerServantRenderer::new);
+                event.registerEntityRenderer(ModEntityTypes.INQUILLAGER_SERVANT.get(), InquillagerServantRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.FUNGUS_THROWER.get(),
                 context -> new PiglinServantRenderer(context,
@@ -614,6 +590,12 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.GUSTER_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderGusterServant::new);
 
+        }
+
+        if (AlexCavesCompat.isAlexCavesLoaded()) {
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.GROTTOCERATOPS_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderGrottoceratopsServant::new);
         }
 
     }

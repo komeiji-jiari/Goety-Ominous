@@ -60,31 +60,23 @@ import java.nio.file.Path;
 
 import static net.minecraftforge.fml.loading.LogMarkers.CORE;
 
-/**
- * 模组主类
- *
- * @author qiuyue
- */
+
 @Mod(GoetyOminous.MOD_ID)
 public class GoetyOminous {
 
-    /**
-     * 模组 ID，用于唯一标识本模组
-     */
+
     public static final String MOD_ID = "goetyominous";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     public static com.Polarice3.Goety.api.magic.SpellType FEL;
 
-    /**
-     * 模组构造函数
-     */
+
     public GoetyOminous() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::addAttributes);
-        modEventBus.addListener(this::loadComplete); // 注册加载完成事件
-        modEventBus.addListener(BuiltinPacksRegistry::register); // 注册内置资源包
+        modEventBus.addListener(this::loadComplete);
+        modEventBus.addListener(BuiltinPacksRegistry::register);
         modEventBus.addListener(this::onClientSetup);
         ModNetwork.init();
         ModEntityTypes.register(modEventBus);
@@ -140,6 +132,10 @@ public class GoetyOminous {
             com.qiuyue.goetyominous.compat.am.AmCompatManager.init(modEventBus);
         }
 
+        if (AlexCavesCompat.isAlexCavesLoaded()) {
+            com.qiuyue.goetyominous.compat.ac.AcCompatManager.init(modEventBus);
+        }
+
         getOrCreateDirectory(FMLPaths.CONFIGDIR.get().resolve("goetyominous"), "goetyominous");
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, AttributesConfig.SPEC,
                 "goetyominous/goetyominous-attributes.toml");
@@ -164,9 +160,7 @@ public class GoetyOminous {
         FEL = com.Polarice3.Goety.api.magic.SpellType.create("FEL", "fel");
     }
 
-    /**
-     * 通用设置方法
-     */
+
     private void commonSetup(final FMLCommonSetupEvent event) {
         new CuriosIntegration().setup(event);
 
@@ -196,9 +190,7 @@ public class GoetyOminous {
         ResearchList.register();
     }
 
-    /**
-     * 添加实体属性方法
-     */
+
     private void addAttributes(final EntityAttributeCreationEvent event) {
         event.put(ModEntityTypes.CONQUILLAGER_SERVANT.get(), ConquillagerServant.setCustomAttributes().build());
         event.put(ModEntityTypes.INQUILLAGER_SERVANT.get(), InquillagerServant.setCustomAttributes().build());
@@ -298,22 +290,20 @@ public class GoetyOminous {
         if (AlexMobsCompat.isAlexMobsLoaded()) {
             com.qiuyue.goetyominous.compat.am.AmCompatManager.setCustomAttributes(event);
         }
+
+        if (AlexCavesCompat.isAlexCavesLoaded()) {
+            com.qiuyue.goetyominous.compat.ac.AcCompatManager.setCustomAttributes(event);
+        }
     }
 
-    /**
-     * 模组加载完成事件
-     * 在所有模组都加载完成后执行
-     */
+
     private void loadComplete(final FMLLoadCompleteEvent event) {
         event.enqueueWork(() -> {
-            // 注册训练类型
-            IllagerType.create("GoetyOminous", new GoetyOminousType());
+                        IllagerType.create("GoetyOminous", new GoetyOminousType());
         });
     }
 
-    /**
-     * 客户端设置方法
-     */
+
     public void onClientSetup(final FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             ItemProperties.register(ModItems.WITCH_BOW.get(), new ResourceLocation("pull"),
