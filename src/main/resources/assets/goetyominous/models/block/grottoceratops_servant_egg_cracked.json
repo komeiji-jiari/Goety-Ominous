@@ -1,0 +1,8 @@
+{
+  "parent": "alexscaves:block/grottoceratops_egg_template",
+  "textures": {
+    "side": "goetyominous:block/egg/grottoceratops_servant_egg_side_cracked",
+    "bottom": "goetyominous:block/egg/grottoceratops_servant_egg_bottom_cracked",
+    "top": "goetyominous:block/egg/grottoceratops_servant_egg_top_cracked"
+  }
+}

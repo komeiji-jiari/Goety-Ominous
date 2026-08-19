@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.common.init;
 import com.Polarice3.Goety.common.items.magic.MagicFocus;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.items.ModItems;
+import com.qiuyue.goetyominous.common.items.ac.AcItems;
 import com.qiuyue.goetyominous.common.items.am.AmItems;
 import com.qiuyue.goetyominous.common.items.lm.LmItems;
 import com.qiuyue.goetyominous.common.items.mm.MmItems;
@@ -22,10 +23,7 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 模组创造模式物品栏注册类
- * 负责创建本模组的创造模式物品栏标签页
- */
+
 public class ModCreativeTab {
 
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister
@@ -76,15 +74,17 @@ public class ModCreativeTab {
                             moveAfter(otherItems, AmItems.WARPED_STEROIDS.get(), ModItems.NETHER_WART_POTION.get());
                         }
 
+                        if (AlexCavesCompat.isAlexCavesLoaded()) {
+                            collectFrom(AcItems.AC_ITEMS, spawnEggs, foci, weapons, otherItems);
+                        }
+
                         spawnEggs.forEach(output::accept);
                         foci.forEach(output::accept);
                         weapons.forEach(output::accept);
                         otherItems.forEach(output::accept);
                     }).build());
 
-    /**
-     * 将注册表中的物品按类别归类
-     */
+
     private static void collectFrom(DeferredRegister<Item> registry,
                                      List<Item> spawnEggs, List<Item> foci,
                                      List<Item> weapons, List<Item> other) {

@@ -30,6 +30,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> HeresiarchServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> WargLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> RamblerServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> GrottoceratopsServantLimit;
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> CultistPatrol;
     public static final ForgeConfigSpec.ConfigValue<Integer> CultistPatrolInterval;
@@ -144,6 +145,10 @@ public class MobsConfig {
         OvergrownColossusServantLimit = BUILDER
                 .comment("Maximum number of Overgrown Colossus Servants that can be summoned (Default: 2)")
                 .defineInRange("overgrownColossusServantLimit", 2, 1, 100);
+
+        GrottoceratopsServantLimit = BUILDER
+                .comment("Maximum number of Grottoceratops Servants that can be summoned (Default: 16)")
+                .defineInRange("grottoceratopsServantLimit", 16, 1, 100);
 
         BUILDER.pop();
 

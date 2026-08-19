@@ -11,9 +11,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-/**
- * AlexMobs 联动物品注册类，在这里添加刷怪蛋等物品的注册
- */
+
 public class AmItems {
 
     public static final DeferredRegister<Item> AM_ITEMS =
@@ -45,8 +43,7 @@ public class AmItems {
 
     public static final RegistryObject<ServantSpawnEggItem> ROCKY_ROLLER_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("rocky_roller_servant_spawn_egg",
-                    // 基色 0x8F8F8F = 贴图主色(灰石头)；高光 0xC7A86B = 贴图苔藓/泥土斑驳色
-                    () -> new ServantSpawnEggItem(AmEntityRegistry.ROCKY_ROLLER_SERVANT, 0x8F8F8F, 0xC7A86B, egg()));
+                                        () -> new ServantSpawnEggItem(AmEntityRegistry.ROCKY_ROLLER_SERVANT, 0x8F8F8F, 0xC7A86B, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> ZOMBIE_CROCODILE_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("zombie_crocodile_servant_spawn_egg",
@@ -87,9 +84,6 @@ public class AmItems {
 
     public static final RegistryObject<WarpedSteroidsItem> WARPED_STEROIDS =
             AM_ITEMS.register("warped_steroids", WarpedSteroidsItem::new);
-
-    public static final RegistryObject<JerboaAmuletItem> JERBOA_AMULET =
-            AM_ITEMS.register("jerboa_amulet", JerboaAmuletItem::new);
 
     public static final RegistryObject<MagicFocus> MURMUR_FOCUS = AM_ITEMS.register(
             "murmur_focus",

@@ -176,6 +176,7 @@
   "entity.goetyominous.stray_skelewag_servant": "流浪骷髅剑鱼仆从",
   "entity.goetyominous.dropbear_servant": "悬熊仆从",
   "entity.goetyominous.guster_servant": "沙风怪仆从",
+  "entity.goetyominous.grottoceratops_servant": "洞穴角龙仆从",
   "entity.goetyominous.overgrown_colossus_servant": "蔓生巨像",
   "entity.goetyominous.storm_necromancer": "风暴死灵法师",
   "entity.goetyominous.storm_necromancer_servant": "风暴死灵法师仆从",
@@ -246,6 +247,8 @@
   "item.goetyominous.stray_skelewag_servant_spawn_egg": "流浪骷髅剑鱼仆从刷怪蛋",
   "item.goetyominous.dropbear_servant_spawn_egg": "悬熊仆从刷怪蛋",
   "item.goetyominous.guster_servant_spawn_egg": "沙风怪仆从刷怪蛋",
+  "item.goetyominous.grottoceratops_servant_spawn_egg": "洞穴角龙仆从刷怪蛋",
+  "block.goetyominous.grottoceratops_servant_egg": "洞穴角龙仆从蛋",
   "item.goetyominous.overgrown_colossus_servant_spawn_egg": "蔓生巨像刷怪蛋",
   "item.goetyominous.arch_geomancer_spawn_egg": "高位地卜师刷怪蛋",
   "item.goetyominous.warped_steroids": "诡异类固醇",
@@ -353,8 +356,5 @@
   "info.goety.focus.spellType": "法术类型: %s",
   "item.goety.focus.info": "当用法杖施放时：",
   "jade.goetyominous.melee_progress": "蛮兵升级进度 %s/%s",
-  "jade.goetyominous.ranged_progress": "猎手升级进度 %s/%s",
-  "item.goetyominous.jerboa_amulet": "跳鼠护符",
-  "info.goetyominous.jerboa_amulet": "自动吸收背包中的作物种子（土豆除外），并在健步如飞即将失效时消耗一颗，获得60秒健步如飞。",
-  "info.goetyominous.jerboa_amulet.seeds": "存储种子: %d/%d"
+  "jade.goetyominous.ranged_progress": "猎手升级进度 %s/%s"
 }
