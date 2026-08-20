@@ -400,12 +400,12 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
             target = rider.getLastHurtMob();
             maxAttackMod = 4.0;
         }
-        if (!this.level().isClientSide && this.isCharging() && this.chargingTicks > 100) {
+        if (!this.level().isClientSide && this.isCharging() && this.chargingTicks > 400) {
             this.setCharging(false);
             this.setChargeCooldown(200);
         }
         if (!this.level().isClientSide && target != null) {
-            if (this.distanceTo(target) > this.getBbWidth() * 2.0f + 0.5f && !this.isActivelySteering() && this.hasLineOfSight(target) && this.getAnimation() == NO_ANIMATION && !this.isCharging() && this.getChargeCooldown() == 0 && !this.isStaying()) {
+            if (!this.isActivelySteering() && this.hasLineOfSight(target) && this.getAnimation() == NO_ANIMATION && !this.isCharging() && this.getChargeCooldown() == 0 && !this.isStaying()) {
                 this.setAnimation(ANIMATION_CHARGE_PREPARE);
             }
             if (this.getAnimation() == ANIMATION_CHARGE_PREPARE && !this.isActivelySteering()) {
@@ -675,8 +675,16 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
         if (this.isCharging() || this.getChargeCooldown() > 0 || this.getAnimation() != NO_ANIMATION) {
             return false;
         }
+        if (this.getTarget() == null && !this.hasRiderCombatTarget()) {
+            return false;
+        }
         this.setAnimation(ANIMATION_CHARGE_PREPARE);
         return true;
+    }
+
+    private boolean hasRiderCombatTarget() {
+        Player rider = this.getControllingPassenger() instanceof Player player ? player : null;
+        return rider != null && rider.getLastHurtMob() != null && !this.isAlliedTo(rider.getLastHurtMob());
     }
 
     public Animation getAnimation() {
@@ -1014,7 +1022,7 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
             }
             double reach = this.getAttackReachSqr(target);
             if (dist <= reach && this.attackCooldown <= 0 && this.mob.getSensing().hasLineOfSight(target)) {
-                if (!IllagerElephantServant.this.isCharging()) {
+                if (!IllagerElephantServant.this.isCharging() && IllagerElephantServant.this.getAnimation() == IllagerElephantServant.NO_ANIMATION) {
                     this.attackCooldown = this.getAttackInterval();
                     this.mob.swing(InteractionHand.MAIN_HAND);
                     this.mob.doHurtTarget(target);
