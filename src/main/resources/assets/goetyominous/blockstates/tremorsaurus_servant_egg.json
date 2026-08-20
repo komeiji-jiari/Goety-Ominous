@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "hatch=0": [
+      {
+        "model": "goetyominous:block/tremorsaurus_servant_egg"
+      }
+    ],
+    "hatch=1": [
+      {
+        "model": "goetyominous:block/tremorsaurus_servant_egg_cracked"
+      }
+    ],
+    "hatch=2": [
+      {
+        "model": "goetyominous:block/tremorsaurus_servant_egg_very_cracked"
+      }
+    ]
+  }
+}
