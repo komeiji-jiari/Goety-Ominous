@@ -18,14 +18,12 @@ import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * 征服者仆从渲染器
- */
+
 @OnlyIn(Dist.CLIENT)
 public class ConquillagerServantRenderer<T extends ConquillagerServant>
         extends MobRenderer<T, ConquillagerServantModel<T>> {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(GoetyOminous.MOD_ID,
-            "textures/entity/illager/conquillager.png");// 纹理路径，Goety.MOD_ID是从Goety主类中引用了MOD_ID，也可以改成goety（直接定义）而不引用
+            "textures/entity/illager/conquillager.png");
 
     public ConquillagerServantRenderer(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ConquillagerServantModel<>(renderManagerIn.bakeLayer(ModModelLayer.CONQUILLAGER)),
@@ -56,6 +54,6 @@ public class ConquillagerServantRenderer<T extends ConquillagerServant>
 
     @Override
     public ResourceLocation getTextureLocation(T entity) {
-        return TEXTURE;// 与巡查官不同，这里在渲染器中定义了纹理资源
+        return TEXTURE;
     }
 }

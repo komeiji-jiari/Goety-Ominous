@@ -20,22 +20,7 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * 巡查官仆从模型类
- * 基于 HumanoidModel(人形模型)的自定义 3D 模型
- * 
- * 模型特点:
- * - 包含头部、身体、手臂、腿部等标准人形部件
- * - 特殊的帽子 (hat, hat2)、衣服 (clothes)、手臂装饰 (arms)等部件
- * - 支持施法动画 (SPELLCASTING)
- * - 支持攻击动画 (ATTACKING)
- * - 交叉手臂姿态 (CROSSED)
- * - 根据装备自动隐藏对应部位的模型
- * - 支持多种纹理变体 (通过 OutfitType 切换)
- * 
- * 纹理大小：64x128
- * 直接使用 goety 模组的 Inquillager 模型和纹理
- */
+
 @OnlyIn(Dist.CLIENT)
 public class InquillagerServantModel<T extends AbstractIllagerServant> extends HumanoidModel<T> {
 	private final ModelPart hat;

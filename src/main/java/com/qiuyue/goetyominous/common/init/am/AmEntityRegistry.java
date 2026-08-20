@@ -33,9 +33,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-/**
- * AlexMobs 联动实体注册类，在这里添加 AlexMobs 仆从的实体类型注册
- */
+
 public class AmEntityRegistry {
 
     private static final DeferredRegister<EntityType<?>> AM_ENTITIES =
