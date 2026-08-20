@@ -55,6 +55,12 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> GrottoceratopsServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> GrottoceratopsServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> GrottoceratopsServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> TremorsaurusServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> TremorsaurusServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> TremorsaurusServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> TremorsaurusServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> TremorsaurusServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> TremorsaurusServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantFollowRange;
@@ -819,6 +825,18 @@ public class AttributesConfig {
                 .defineInRange("grottoceratopsServantKnockbackResistance", 0.9, 0.0, Double.MAX_VALUE);
         GrottoceratopsServantArmor = BUILDER.comment("How much natural Armor Grottoceratops Servants have, Default: 8.0 (matches Alex's Caves Grottoceratops)")
                 .defineInRange("grottoceratopsServantArmor", 8.0, 0.0, Double.MAX_VALUE);
+        TremorsaurusServantHealth = BUILDER.comment("How much Max Health Tremorsaurus Servants have, Default: 150.0 (matches Alex's Caves Tremorsaurus)")
+                .defineInRange("tremorsaurusServantHealth", 150.0, 1.0, Double.MAX_VALUE);
+        TremorsaurusServantDamage = BUILDER.comment("How much damage Tremorsaurus Servants deal, Default: 14.0 (matches Alex's Caves Tremorsaurus)")
+                .defineInRange("tremorsaurusServantDamage", 14.0, 1.0, Double.MAX_VALUE);
+        TremorsaurusServantMovementSpeed = BUILDER.comment("How fast Tremorsaurus Servants move, Default: 0.2")
+                .defineInRange("tremorsaurusServantMovementSpeed", 0.2, 0.0, Double.MAX_VALUE);
+        TremorsaurusServantFollowRange = BUILDER.comment("How much following/detection range Tremorsaurus Servants have, Default: 32.0")
+                .defineInRange("tremorsaurusServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
+        TremorsaurusServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Tremorsaurus Servants have, Default: 0.9 (matches Alex's Caves Tremorsaurus)")
+                .defineInRange("tremorsaurusServantKnockbackResistance", 0.9, 0.0, Double.MAX_VALUE);
+        TremorsaurusServantArmor = BUILDER.comment("How much natural Armor Tremorsaurus Servants have, Default: 8.0 (matches Alex's Caves Tremorsaurus)")
+                .defineInRange("tremorsaurusServantArmor", 8.0, 0.0, Double.MAX_VALUE);
         FroststalkerServantHealth = BUILDER.comment("How much Max Health Froststalker Servants have, Default: 24.0 (matches Alex's Mobs Froststalker)")
                 .defineInRange("froststalkerServantHealth", 24.0, 1.0, Double.MAX_VALUE);
         FroststalkerServantDamage = BUILDER.comment("How much damage Froststalker Servants deal, Default: 4.5 (matches Alex's Mobs Froststalker)")

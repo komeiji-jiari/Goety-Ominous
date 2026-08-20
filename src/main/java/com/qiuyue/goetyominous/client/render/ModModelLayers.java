@@ -596,6 +596,9 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.GROTTOCERATOPS_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderGrottoceratopsServant::new);
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.TREMORSAURUS_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderTremorsaurusServant::new);
         }
 
     }

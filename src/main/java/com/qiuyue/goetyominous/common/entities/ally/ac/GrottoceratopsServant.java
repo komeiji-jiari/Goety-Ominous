@@ -10,6 +10,7 @@ import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.config.MobsConfig;
 import com.Polarice3.Goety.init.ModMobType;
 import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
+import com.github.alexmodguy.alexscaves.server.block.DinosaurEggBlock;
 import com.github.alexmodguy.alexscaves.server.entity.living.VallumraptorEntity;
 import com.github.alexmodguy.alexscaves.server.entity.util.LaysEggs;
 import com.github.alexmodguy.alexscaves.server.misc.ACMath;
@@ -117,8 +118,8 @@ public class GrottoceratopsServant extends AnimalSummon implements IAnimatedEnti
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new GrottoceratopsServantMeleeAttackGoal(1.35D, true));
         // 与原版 grotto 一致：繁殖优先级 2、下蛋优先级 3
-        this.goalSelector.addGoal(2, new ServantBreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(3, new ServantLayEggGoal(this, 100, 1.0D));
+        this.goalSelector.addGoal(2, new ServantBreedGoal<>(this, 1.0D));
+        this.goalSelector.addGoal(3, new ServantLayEggGoal<>(this, (DinosaurEggBlock) AcBlockRegistry.GROTTOCERATOPS_SERVANT_EGG.get(), 100, 1.0D));
         this.goalSelector.addGoal(5, new Summoned.WanderGoal<>(this, 0.8D));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));

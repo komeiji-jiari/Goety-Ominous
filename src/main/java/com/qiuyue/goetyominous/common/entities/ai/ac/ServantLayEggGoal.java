@@ -1,10 +1,10 @@
 package com.qiuyue.goetyominous.common.entities.ai.ac;
 
+import com.Polarice3.Goety.api.blocks.entities.IOwnedBlock;
+import com.Polarice3.Goety.common.entities.ally.AnimalSummon;
+import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
 import com.github.alexmodguy.alexscaves.server.block.DinosaurEggBlock;
-import com.qiuyue.goetyominous.common.blocks.ac.GrottoceratopsServantEggBlock;
-import com.qiuyue.goetyominous.common.blocks.entities.ac.GrottoceratopsServantEggBlockEntity;
-import com.qiuyue.goetyominous.common.entities.ally.ac.GrottoceratopsServant;
-import com.qiuyue.goetyominous.common.init.ac.AcBlockRegistry;
+import com.github.alexmodguy.alexscaves.server.entity.util.LaysEggs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -13,22 +13,23 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 
 
-public class ServantLayEggGoal extends MoveToBlockGoal {
+public class ServantLayEggGoal<T extends AnimalSummon & LaysEggs> extends MoveToBlockGoal {
 
-    private final GrottoceratopsServant mob;
+    private final T mob;
     private final DinosaurEggBlock eggBlock;
     private final int maxTime;
     private int layEggCounter;
 
-    public ServantLayEggGoal(GrottoceratopsServant mob, int maxTime, double speed) {
+    public ServantLayEggGoal(T mob, DinosaurEggBlock eggBlock, int maxTime, double speed) {
         super(mob, speed, 16);
         this.mob = mob;
         this.maxTime = maxTime;
-        this.eggBlock = (GrottoceratopsServantEggBlock) AcBlockRegistry.GROTTOCERATOPS_SERVANT_EGG.get();
+        this.eggBlock = eggBlock;
     }
 
     @Override
@@ -64,22 +65,25 @@ public class ServantLayEggGoal extends MoveToBlockGoal {
                 level.playSound(null, this.blockPos, SoundEvents.TURTLE_LAY_EGG, SoundSource.BLOCKS, 0.3F, 0.9F + level.random.nextFloat() * 0.2F);
                 BlockState eggState = this.mob.createEggBlockState();
                 level.setBlockAndUpdate(eggPos, eggState);
-                if (level.getBlockEntity(eggPos) instanceof GrottoceratopsServantEggBlockEntity eggBe) {
+                // 两个仆从蛋方块实体都实现 IOwnedBlock，统一在此记录主人
+                BlockEntity be = level.getBlockEntity(eggPos);
+                if (be instanceof IOwnedBlock eggBe) {
                     if (this.mob.getOwnerId() != null) {
                         eggBe.setOwnerUUID(this.mob.getOwnerId());
                         LivingEntity owner = this.mob.getTrueOwner();
                         eggBe.setOwnerId(owner != null ? owner.getId() : -1);
                     }
-                    eggBe.setChanged();
+                    be.setChanged();
                     level.sendBlockUpdated(eggPos, eggState, eggState, 3);
                 }
                 level.gameEvent(GameEvent.BLOCK_PLACE, eggPos, GameEvent.Context.of(this.mob, eggState));
                 this.mob.setHasEgg(false);
                 this.mob.setInLoveTime(600);
                 level.broadcastEntityEvent(this.mob, (byte) 78);
-                // 与原版一致：泥土地面换成蕨垫（DinosaurEggBlock.canGrow 在蕨垫上孵化概率 1/10，其余 1/20）
+                // 与原版一致：泥土地面换成蕨垫（DinosaurEggBlock.canGrow 在蕨垫上孵化概率 1/10，其余 1/20）。
+                // 所有恐龙仆从的蛋垫都用 AC 蕨垫，故直接引用而非依赖实体方法
                 if (level.getBlockState(this.blockPos).is(BlockTags.DIRT)) {
-                    level.setBlockAndUpdate(this.blockPos, this.mob.createEggBeddingBlockState());
+                    level.setBlockAndUpdate(this.blockPos, ACBlockRegistry.FERN_THATCH.get().defaultBlockState());
                 }
             }
         } else {

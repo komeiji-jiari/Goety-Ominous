@@ -31,6 +31,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> WargLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> RamblerServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> GrottoceratopsServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> TremorsaurusServantLimit;
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> CultistPatrol;
     public static final ForgeConfigSpec.ConfigValue<Integer> CultistPatrolInterval;
@@ -149,6 +150,10 @@ public class MobsConfig {
         GrottoceratopsServantLimit = BUILDER
                 .comment("Maximum number of Grottoceratops Servants that can be summoned (Default: 16)")
                 .defineInRange("grottoceratopsServantLimit", 16, 1, 100);
+
+        TremorsaurusServantLimit = BUILDER
+                .comment("Maximum number of Tremorsaurus Servants that can be summoned (Default: 4)")
+                .defineInRange("tremorsaurusServantLimit", 4, 1, 100);
 
         BUILDER.pop();
 
