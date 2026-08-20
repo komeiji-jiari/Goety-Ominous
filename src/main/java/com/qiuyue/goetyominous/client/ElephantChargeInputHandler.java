@@ -31,8 +31,7 @@ public class ElephantChargeInputHandler {
         if (!player.getMainHandItem().isEmpty()) {
             return;
         }
-        // 未安装 Alex's Mobs 时大象仆从实体不存在,直接禁用充能(避免加载 Alex's Mobs 类导致 NoClassDefFoundError)
-        if (!AlexMobsCompat.isAlexMobsLoaded()) {
+                if (!AlexMobsCompat.isAlexMobsLoaded()) {
             return;
         }
         Entity entity = player.getVehicle();

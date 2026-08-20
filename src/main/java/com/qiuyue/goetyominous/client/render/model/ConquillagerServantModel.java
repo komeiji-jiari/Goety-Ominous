@@ -20,10 +20,7 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * 征服者仆从模型类
- * 复制自北极冰的征服者模型类，修改AbstractIllager为AbstractIllagerServant以便能够接受征服者仆从实体类，下面的ArmPose也应当改为刌民仆从类的ArmPose
- */
+
 @OnlyIn(Dist.CLIENT)
 public class ConquillagerServantModel<T extends AbstractIllagerServant> extends HumanoidModel<T> {
 	public final ModelPart clothes;
