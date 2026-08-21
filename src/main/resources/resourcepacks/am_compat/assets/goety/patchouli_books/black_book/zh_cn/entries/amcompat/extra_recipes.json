@@ -1,0 +1,21 @@
+{
+  "name": "更多魔法配方",
+  "icon": "goety:cursed_infuser",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "除了用图腾和工作台合成魔法物品，显然你手头的诅咒注入器应该可以接受更多的转化配方。通过研究自然与超自然的生物们，你发现了一些可以被改变性质的物品配方。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goetyominous:feather_craft",
+      "recipe2": "goetyominous:wind_core_craft"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goetyominous:scute_craft",
+      "recipe2": "goetyominous:goat_horn_craft"
+    }
+  ]
+}

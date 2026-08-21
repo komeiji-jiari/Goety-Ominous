@@ -1,0 +1,24 @@
+{
+  "name": "Guster",
+  "icon": "alexsmobs:guster_eye",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You have discovered that small sentient whirlwinds sometimes spontaneously form in the desert. It seems that the wind itself carries some arcane power. Through Sky Ritual, you can create a Guster loyal to you."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:guster_servant",
+      "text": "Sandstorm"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "These whirlwinds hurl sand, drawing nearby entities in and throwing them away—though thankfully, this does not affect you or your other servants. Right-clicking a Guster servant with Sand heals it."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:guster_servant"
+    }
+  ]
+}

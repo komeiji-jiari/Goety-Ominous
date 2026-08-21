@@ -137,6 +137,9 @@ public class ModItems {
     public static final RegistryObject<Item> NETHER_WART_POTION = ITEMS.register("nether_wart_potion",
             () -> new NetherWartPotion());
 
+    public static final RegistryObject<Item> HAUNT_FOCUS = ITEMS.register("haunt_focus",
+            () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.HauntSpell()));
+
     public static final RegistryObject<Item> BROOD_FOCUS = ITEMS.register("brood_focus",
             () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.BroodSpell()));
 

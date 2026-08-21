@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    " s ",
+    "sts",
+    " s "
+  ],
+  "key":
+  {
+    "s":
+    {
+      "item": "alexsmobs:emu_feather"
+    },
+    "t":
+    {
+      "tag": "goety:totems"
+    }
+  },
+  "result":
+  {
+    "item": "minecraft:feather",
+    "count": 2
+  }
+}

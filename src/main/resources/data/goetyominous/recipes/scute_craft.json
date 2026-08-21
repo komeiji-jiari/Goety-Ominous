@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    " s ",
+    "sts",
+    " s "
+  ],
+  "key":
+  {
+    "s":
+    {
+      "item": "alexsmobs:spiked_scute"
+    },
+    "t":
+    {
+      "tag": "goety:totems"
+    }
+  },
+  "result":
+  {
+    "item": "minecraft:scute",
+    "count": 2
+  }
+}

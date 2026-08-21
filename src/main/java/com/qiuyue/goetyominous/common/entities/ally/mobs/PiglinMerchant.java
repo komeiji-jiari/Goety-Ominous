@@ -32,11 +32,17 @@ public class PiglinMerchant extends PathfinderMob implements Merchant {
             net.minecraft.network.syncher.SynchedEntityData.defineId(PiglinMerchant.class, net.minecraft.network.syncher.EntityDataSerializers.BOOLEAN);
     private static final net.minecraft.network.syncher.EntityDataAccessor<Boolean> DATA_PLAYING_SEE2 =
             net.minecraft.network.syncher.SynchedEntityData.defineId(PiglinMerchant.class, net.minecraft.network.syncher.EntityDataSerializers.BOOLEAN);
+    private static final net.minecraft.network.syncher.EntityDataAccessor<Boolean> DATA_PLAYING_TRADE =
+            net.minecraft.network.syncher.SynchedEntityData.defineId(PiglinMerchant.class, net.minecraft.network.syncher.EntityDataSerializers.BOOLEAN);
+    private static final net.minecraft.network.syncher.EntityDataAccessor<Boolean> DATA_PLAYING_RARE_SUCCESS =
+            net.minecraft.network.syncher.SynchedEntityData.defineId(PiglinMerchant.class, net.minecraft.network.syncher.EntityDataSerializers.BOOLEAN);
 
     public final AnimationState seeAnimationState = new AnimationState();
     public final AnimationState see2AnimationState = new AnimationState();
     public final AnimationState restAnimationState = new AnimationState();
     public final AnimationState rest2AnimationState = new AnimationState();
+    public final AnimationState tradeAnimationState = new AnimationState();
+    public final AnimationState rareSuccessAnimationState = new AnimationState();
 
     private final java.util.Set<java.util.UUID> angryPlayers = new java.util.HashSet<>();
     private boolean tradedRecently;
@@ -45,6 +51,8 @@ public class PiglinMerchant extends PathfinderMob implements Merchant {
     private int see2Cooldown;
     private int see2Timer;
     private int seeTimer;
+    private int tradeTimer;
+    private int rareSuccessTimer;
     private int tradeSoundCooldown;
     private net.minecraft.world.item.trading.MerchantOffers offers;
     private Player tradingPlayer;
@@ -63,6 +71,8 @@ public class PiglinMerchant extends PathfinderMob implements Merchant {
         super.defineSynchedData();
         this.entityData.define(DATA_PLAYING_SEE, false);
         this.entityData.define(DATA_PLAYING_SEE2, false);
+        this.entityData.define(DATA_PLAYING_TRADE, false);
+        this.entityData.define(DATA_PLAYING_RARE_SUCCESS, false);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -117,6 +127,7 @@ public class PiglinMerchant extends PathfinderMob implements Merchant {
         }
 
         this.openTradingScreen(player, this.getDisplayName(), 1);
+        this.entityData.set(DATA_PLAYING_TRADE, true);
         return InteractionResult.SUCCESS;
     }
 
@@ -363,7 +374,7 @@ public class PiglinMerchant extends PathfinderMob implements Merchant {
         if (this.entityData.get(DATA_PLAYING_SEE)) {
             this.seeAnimationState.startIfStopped(this.tickCount);
             this.seeTimer++;
-            if (this.seeTimer > 40) {
+            if (this.seeTimer > 25) {            // REJECT 1.25s = 25 ticks
                 this.seeAnimationState.stop();
                 this.seeTimer = 0;
                 this.entityData.set(DATA_PLAYING_SEE, false);
@@ -373,10 +384,30 @@ public class PiglinMerchant extends PathfinderMob implements Merchant {
         if (this.entityData.get(DATA_PLAYING_SEE2)) {
             this.see2AnimationState.startIfStopped(this.tickCount);
             this.see2Timer++;
-            if (this.see2Timer > 30) {
+            if (this.see2Timer > 40) {           // TRADE_SUCCESS 2.0s = 40 ticks
                 this.see2AnimationState.stop();
                 this.see2Timer = 0;
                 this.entityData.set(DATA_PLAYING_SEE2, false);
+            }
+        }
+
+        if (this.entityData.get(DATA_PLAYING_TRADE)) {
+            this.tradeAnimationState.startIfStopped(this.tickCount);
+            this.tradeTimer++;
+            if (this.tradeTimer > 65) {          // TRADE 3.25s = 65 ticks
+                this.tradeAnimationState.stop();
+                this.tradeTimer = 0;
+                this.entityData.set(DATA_PLAYING_TRADE, false);
+            }
+        }
+
+        if (this.entityData.get(DATA_PLAYING_RARE_SUCCESS)) {
+            this.rareSuccessAnimationState.startIfStopped(this.tickCount);
+            this.rareSuccessTimer++;
+            if (this.rareSuccessTimer > 88) {    // TRADE_SUCCESS_RARE 4.375s ≈ 88 ticks
+                this.rareSuccessAnimationState.stop();
+                this.rareSuccessTimer = 0;
+                this.entityData.set(DATA_PLAYING_RARE_SUCCESS, false);
             }
         }
 
@@ -384,16 +415,13 @@ public class PiglinMerchant extends PathfinderMob implements Merchant {
             this.see2Cooldown--;
         }
 
+        if (!this.restAnimationState.isStarted()) {
+            this.restAnimationState.start(this.tickCount);
+        }
         if (--this.restTimer <= 0) {
-            this.restAnimationState.stop();
             this.rest2AnimationState.stop();
             if (this.random.nextInt(3) == 0) {
-                this.playingRest2 = !this.playingRest2;
-                if (this.playingRest2) {
-                    this.rest2AnimationState.start(this.tickCount);
-                } else {
-                    this.restAnimationState.start(this.tickCount);
-                }
+                this.rest2AnimationState.start(this.tickCount);
             }
             this.restTimer = 100 + this.random.nextInt(200);
         }
@@ -404,6 +432,8 @@ public class PiglinMerchant extends PathfinderMob implements Merchant {
         this.see2AnimationState.stop();
         this.restAnimationState.stop();
         this.rest2AnimationState.stop();
+        this.tradeAnimationState.stop();
+        this.rareSuccessAnimationState.stop();
     }
 
     public static boolean isWearingGold(Player player) {
@@ -434,7 +464,11 @@ public class PiglinMerchant extends PathfinderMob implements Merchant {
     public void onTradeSuccess() {
         if (this.see2Cooldown > 0) return;
         this.see2Cooldown = 600;
-        this.entityData.set(DATA_PLAYING_SEE2, true);
+        if (this.random.nextFloat() < 0.1F) {
+            this.entityData.set(DATA_PLAYING_RARE_SUCCESS, true);
+        } else {
+            this.entityData.set(DATA_PLAYING_SEE2, true);
+        }
     }
 
     @Override

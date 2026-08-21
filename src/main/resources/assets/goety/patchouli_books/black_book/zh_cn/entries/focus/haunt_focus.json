@@ -1,0 +1,20 @@
+{
+  "name": "墓魂聚晶",
+  "icon": "goetyominous:haunt_focus",
+  "category": "goety:focuses/necromancy",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "这个法术允许你从坟壤中惊起精灵般的灵魂并控制它们攻击你的敌人。虽然这些灵魂稍显孱弱，但它们数量众多，足以弥补这一不足。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goetyominous:haunt_focus",
+      "text": "打扰死者..."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "使用死灵魔杖施法，则可以允许你召唤更多墓灵仆从。"
+    }
+  ]
+}

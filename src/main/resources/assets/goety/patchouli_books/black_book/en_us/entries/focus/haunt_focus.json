@@ -1,0 +1,20 @@
+{
+  "name": "Haunt Focus",
+  "icon": "goetyominous:haunt_focus",
+  "category": "goety:focuses/necromancy",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "This spell allows you to rouse spectral spirits from grave soil and command them to attack your enemies. Though these souls are somewhat fragile, their numbers more than make up for this weakness."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goetyominous:haunt_focus",
+      "text": "Disturbing the dead..."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Casting this spell with a Necro Staff allows you to summon more Haunt servants."
+    }
+  ]
+}

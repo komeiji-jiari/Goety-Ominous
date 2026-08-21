@@ -1,0 +1,8 @@
+{
+  "type": "goety:cursed_infuser_recipes",
+  "ingredient": {
+    "item": "alexsmobs:emu_feather"
+  },
+  "result": "minecraft:feather",
+  "cookingTime": 60
+}

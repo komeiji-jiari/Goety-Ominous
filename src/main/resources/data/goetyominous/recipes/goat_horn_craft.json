@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    " t ",
+    "svs",
+    " s "
+  ],
+  "key":
+  {
+    "s":
+    {
+      "item": "minecraft:phantom_membrane"
+    },
+    "v":
+    {
+      "tag": "goety:totems"
+    },
+    "t":
+    {
+      "item": "alexsmobs:gazelle_horn"
+    }
+  },
+  "result":
+  {
+    "item": "minecraft:goat_horn"
+  }
+}

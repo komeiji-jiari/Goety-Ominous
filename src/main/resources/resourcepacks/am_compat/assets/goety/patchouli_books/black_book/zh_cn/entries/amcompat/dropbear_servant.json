@@ -1,0 +1,24 @@
+{
+  "name": "悬熊仆从",
+  "icon": "alexsmobs:dropbear_claw",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "这些下界版的熊忠诚而凶残，会用利爪和撕咬猛烈地攻击敌人。他们平时倾向于倒挂在高处，不过当主人潜行时他们会主动降落下来。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:dropbear_servant",
+      "text": "睡熊猛醒！"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "喂食任意肉来治愈你的悬熊仆从。此外下界长袍也能缓慢治愈它们。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:dropbear_servant"
+    }
+  ]
+}

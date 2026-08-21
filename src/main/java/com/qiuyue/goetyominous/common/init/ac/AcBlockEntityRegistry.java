@@ -10,7 +10,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-
 public class AcBlockEntityRegistry {
 
     private static final DeferredRegister<BlockEntityType<?>> AC_BLOCK_ENTITIES =

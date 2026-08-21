@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.items;
 
 import com.Polarice3.Goety.common.items.ModItems;
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.config.WeaponConfig;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -13,7 +14,7 @@ public class CursedBlackBeastArmorItem extends Item {
             GoetyOminous.MOD_ID, "textures/entity/black_beast_cursed_armor.png");
 
     public CursedBlackBeastArmorItem(Item.Properties properties) {
-        this(properties, TEXTURE, 78);
+        this(properties, TEXTURE, WeaponConfig.BlackBeastArmorDurability.get());
     }
 
     protected CursedBlackBeastArmorItem(Item.Properties properties, ResourceLocation texture, int durability) {

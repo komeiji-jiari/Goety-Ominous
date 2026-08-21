@@ -37,6 +37,8 @@ public abstract class AbstractGOCultist extends Cultist {
 
     private static final EntityDataAccessor<Float> DATA_REINFORCEMENT_CHANCE =
             SynchedEntityData.defineId(AbstractGOCultist.class, EntityDataSerializers.FLOAT);
+    private static long lastGlobalReinforcementTime = -600L;
+    private static final int GLOBAL_REINFORCEMENT_COOLDOWN = 600;
 
     protected AbstractGOCultist(EntityType<? extends AbstractGOCultist> type, Level worldIn) {
         super(type, worldIn);
@@ -72,7 +74,7 @@ public abstract class AbstractGOCultist extends Cultist {
     }
 
     protected void randomizeReinforcementsChance(RandomSource random) {
-        this.setReinforcementChance((float) (random.nextDouble() * 0.1D));
+        this.setReinforcementChance((float) (random.nextDouble() * 0.05D));
     }
 
     @Override
@@ -94,9 +96,11 @@ public abstract class AbstractGOCultist extends Cultist {
                 int j = Mth.floor(this.getY());
                 int k = Mth.floor(this.getZ());
 
+                long gameTime = serverLevel.getGameTime();
                 if (livingentity != null
                         && source.getEntity() instanceof Player
                         && this.level().getDifficulty() == Difficulty.HARD
+                        && gameTime - lastGlobalReinforcementTime >= GLOBAL_REINFORCEMENT_COOLDOWN
                         && this.random.nextFloat() < this.getReinforcementChance()
                         && this.level().getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
 
@@ -125,6 +129,7 @@ public abstract class AbstractGOCultist extends Cultist {
                                     cultist.setTarget(livingentity);
                                     cultist.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(cultist.blockPosition()), MobSpawnType.REINFORCEMENT, null, null);
                                     serverLevel.addFreshEntityWithPassengers(cultist);
+                                    lastGlobalReinforcementTime = gameTime;
                                     this.setReinforcementChance(this.getReinforcementChance() - 0.05F);
                                     if (cultist instanceof ICultist) {
                                         cultist.setReinforcementChance(cultist.getReinforcementChance() - 0.05F);
@@ -173,7 +178,7 @@ public abstract class AbstractGOCultist extends Cultist {
             this.randomizeReinforcementsChance(random);
             if (random.nextFloat() < difficultyIn.getSpecialMultiplier() * 0.05F) {
                 this.setReinforcementChance(
-                        this.getReinforcementChance() + (float) (random.nextDouble() * 0.25D + 0.5D)
+                        this.getReinforcementChance() + (float) (random.nextDouble() * 0.1D + 0.15D)
                 );
             }
         }
@@ -213,7 +218,7 @@ public abstract class AbstractGOCultist extends Cultist {
     }
 
     public static boolean spawnCultistsRules(EntityType<?> pType, ServerLevelAccessor pLevel, MobSpawnType pReason, BlockPos pPos, java.util.Random pRandom) {
-        return pLevel.getBrightness(net.minecraft.world.level.LightLayer.BLOCK, pPos) <= 8
+        return pLevel.getMaxLocalRawBrightness(pPos) <= 7
                 && pLevel.getDifficulty() != Difficulty.PEACEFUL
                 && (pReason == MobSpawnType.SPAWNER || pLevel.getBlockState(pPos.below()).isValidSpawn(pLevel, pPos.below(), pType));
     }

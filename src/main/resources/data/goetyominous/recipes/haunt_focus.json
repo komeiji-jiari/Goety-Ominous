@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "nbn",
+    "beb",
+    "nbn"
+  ],
+  "key":
+  {
+    "b":
+    {
+      "item": "goety:ectoplasm"
+    },
+    "e":
+    {
+      "item": "goety:animation_core"
+    },
+    "n":
+    {
+      "item": "goety:grave_soil"
+    }
+  },
+  "result": {
+    "item": "goetyominous:haunt_focus"
+  }
+}

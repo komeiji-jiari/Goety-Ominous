@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.items;
 
 import com.Polarice3.Goety.common.items.ModItems;
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.config.WeaponConfig;
 import com.qiuyue.goetyominous.utils.WolfArmorCrackiness;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -17,7 +18,7 @@ public class CursedMetalWolfArmorItem extends Item {
     private final ResourceLocation blackWolfTexture;
 
     public CursedMetalWolfArmorItem(Properties properties) {
-        this(properties, VANILLA_WOLF_TEXTURE, BLACK_WOLF_TEXTURE, 78);
+        this(properties, VANILLA_WOLF_TEXTURE, BLACK_WOLF_TEXTURE, WeaponConfig.WolfArmorDurability.get());
     }
 
     protected CursedMetalWolfArmorItem(Properties properties,
