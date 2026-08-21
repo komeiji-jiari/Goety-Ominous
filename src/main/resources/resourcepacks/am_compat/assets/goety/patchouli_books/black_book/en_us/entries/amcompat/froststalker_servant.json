@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "You have managed to attract some small dragon-like creatures from cold biomes using porkchops and the scent of their own kind. After discovering that these Froststalkers live only for food, you've devised a way to make them serve you using their favorite porkchops."
+      "text": "You have managed to attract some small dragon-like creatures from cold biomes using porkchops and the scent of their own kind. However, adult individuals are far more difficult to bond with than their younger counterparts, so only young Froststalkers will answer your call. Regardless, you have devised a way to make them serve you using their favorite porkchops."
     },
     {
       "type": "patchouli:entity",
@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "You can breed your Froststalker population using porkchops. However, be aware that their bodies cannot withstand high temperatures unless their owner wears a Frost Set. Frost Robes or Wild Robes also grant them additional passive healing."
+      "text": "After your young Froststalkers reach adulthood, you can breed your Froststalker population using porkchops. However, be aware that their bodies cannot withstand high temperatures unless their owner wears a Frost Set. Frost Robes or Wild Robes also grant them additional passive healing."
     },
     {
       "type": "goety:ritual",

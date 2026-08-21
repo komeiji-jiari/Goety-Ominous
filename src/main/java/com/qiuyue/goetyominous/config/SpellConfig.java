@@ -38,6 +38,12 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> RedstoneSummonDown;
     public static final ForgeConfigSpec.ConfigValue<Integer> RedstoneCubeLimit;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> HauntSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> HauntCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> HauntCoolDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> HauntSummonDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> HauntLimit;
+
     public static final ForgeConfigSpec.ConfigValue<Integer> HogChargeSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> HogChargeCooldown;
     public static final ForgeConfigSpec.ConfigValue<Double> HogChargeDamage;
@@ -94,6 +100,16 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> RollerSummonDown;
     public static final ForgeConfigSpec.ConfigValue<Integer> RollerCoolDown;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> SkelewagCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SkelewagDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SkelewagSummonDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SkelewagCoolDown;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> GusterCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> GusterDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> GusterSummonDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> GusterCoolDown;
+
     static {
         BUILDER.push("Spells");
 
@@ -148,6 +164,28 @@ public class SpellConfig {
                 .defineInRange("rockyRollerSummonDown", 120, 0, 5000);
         RollerCoolDown = BUILDER.comment("Cooldown of Rocky Roller Servant spell in ticks (Default: 100)")
                 .defineInRange("rockyRollerCoolDown", 100, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("Skelewag");
+        SkelewagCost = BUILDER.comment("Soul cost of Skelewag Servant spell (Default: 16)")
+                .defineInRange("skelewagSoulCost", 16, 1, 100);
+        SkelewagDuration = BUILDER.comment("Cast duration of Skelewag Servant spell in ticks (Default: 100)")
+                .defineInRange("skelewagCastDuration", 100, 0, 500);
+        SkelewagSummonDown = BUILDER.comment("Summon down duration of Skelewag Servant spell in ticks (Default: 100)")
+                .defineInRange("skelewagSummonDown", 100, 0, 5000);
+        SkelewagCoolDown = BUILDER.comment("Cooldown of Skelewag Servant spell in ticks (Default: 60)")
+                .defineInRange("skelewagCoolDown", 60, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("Guster");
+        GusterCost = BUILDER.comment("Soul cost of Guster Servant spell (Default: 8)")
+                .defineInRange("gusterSoulCost", 8, 1, 100);
+        GusterDuration = BUILDER.comment("Cast duration of Guster Servant spell in ticks (Default: 40)")
+                .defineInRange("gusterCastDuration", 40, 0, 500);
+        GusterSummonDown = BUILDER.comment("Summon down duration of Guster Servant spell in ticks (Default: 60)")
+                .defineInRange("gusterSummonDown", 60, 0, 5000);
+        GusterCoolDown = BUILDER.comment("Cooldown of Guster Servant spell in ticks (Default: 40)")
+                .defineInRange("gusterCoolDown", 40, 0, 5000);
         BUILDER.pop();
 
         BUILDER.push("Farseer");
@@ -221,6 +259,19 @@ public class SpellConfig {
                 .defineInRange("redstoneSummonDown", 100, 0, 5000);
         RedstoneCubeLimit = BUILDER.comment("Max number of Redstone Cubes summoned (Default: 16)")
                 .defineInRange("redstoneCubeLimit", 16, 1, 100);
+        BUILDER.pop();
+
+        BUILDER.push("Haunt");
+        HauntSoulCost = BUILDER.comment("Soul cost of Haunt spell (Default: 6)")
+                .defineInRange("hauntCost", 6, 1, 100);
+        HauntCastDuration = BUILDER.comment("Cast duration of Haunt spell in ticks (Default: 20)")
+                .defineInRange("hauntDuration", 20, 0, 500);
+        HauntCoolDown = BUILDER.comment("Cooldown of Haunt spell in ticks (Default: 60)")
+                .defineInRange("hauntCoolDown", 60, 0, 5000);
+        HauntSummonDown = BUILDER.comment("Summon down duration of Haunt spell in ticks (Default: 60)")
+                .defineInRange("hauntSummonDown", 60, 0, 5000);
+        HauntLimit = BUILDER.comment("Max number of Haunt summoned (Default: 32)")
+                .defineInRange("hauntLimit", 32, 1, 100);
         BUILDER.pop();
 
         BUILDER.push("Hog Charge");

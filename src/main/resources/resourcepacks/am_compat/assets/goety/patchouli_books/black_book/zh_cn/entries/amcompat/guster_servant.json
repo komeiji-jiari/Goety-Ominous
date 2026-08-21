@@ -1,0 +1,24 @@
+{
+  "name": "沙风怪",
+  "icon": "alexsmobs:guster_eye",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你发现沙漠中有时会自发地产生一些有知觉的小型旋风。看起来风本身也拥有某些奥术魔力，通过一个天空仪式，你可以生成一个对你忠诚的沙风怪。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:guster_servant",
+      "text": "Sandstorm"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "这些旋风会抛射沙子，将周围的实体吸入再丢出去，不过好在这并不会影响你和你的其他仆从。用沙子右键沙风怪仆从即可治愈它们。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:guster_servant"
+    }
+  ]
+}

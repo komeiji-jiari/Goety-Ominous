@@ -32,7 +32,7 @@ public class WargArmorSoulRepairHandler {
         if (!SEHelper.getSoulsContainer(owner)) return;
 
         int cost = ItemConfig.ItemsRepairAmount.get();
-        if (SEHelper.getSoulsAmount(owner, cost) && entity.tickCount % 40 == 0) {
+        if (SEHelper.getSoulsAmount(owner, cost) && entity.tickCount % com.qiuyue.goetyominous.config.WeaponConfig.WargArmorSoulRepairInterval.get() == 0) {
             armor.setDamageValue(armor.getDamageValue() - 1);
             SEHelper.decreaseSouls(owner, cost);
         }

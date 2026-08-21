@@ -11,13 +11,12 @@ import com.Polarice3.Goety.common.entities.projectiles.FlyingItem;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.google.common.collect.Multimap;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.*;
-import com.qiuyue.goetyominous.common.items.ModItems;
+import com.qiuyue.goetyominous.compat.mod.IllageAndSpillageCompat;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.yellowbrossproductions.illageandspillage.client.model.animation.ICanBeAnimated;
 import com.yellowbrossproductions.illageandspillage.Config;
 import com.yellowbrossproductions.illageandspillage.entities.CameraShakeEntity;
 import com.yellowbrossproductions.illageandspillage.entities.goal.MeleeButStopGoal;
-import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.compat.ias.IasEntityRegistry;
 import com.qiuyue.goetyominous.compat.ias.IasItems;
 import com.yellowbrossproductions.illageandspillage.packet.PacketHandler;
@@ -142,6 +141,7 @@ public class MagispellerServant extends AbstractIllagerServant implements ICanBe
     public int customDeathTime;
     private ItemEntity totem = null;
     private DamageSource lastDamageSource;
+    private int dismissCount;
 
     public MagispellerServant(EntityType<? extends AbstractIllagerServant> p_i48556_1_, Level p_i48556_2_) {
         super(p_i48556_1_, p_i48556_2_);
@@ -326,6 +326,7 @@ public class MagispellerServant extends AbstractIllagerServant implements ICanBe
 
     public void addAdditionalSaveData(CompoundTag p_213281_1_) {
         super.addAdditionalSaveData(p_213281_1_);
+        p_213281_1_.putInt("DismissCount", this.dismissCount);
         if (this.isActive()) {
             p_213281_1_.putBoolean("active", true);
         }
@@ -338,6 +339,7 @@ public class MagispellerServant extends AbstractIllagerServant implements ICanBe
 
     public void readAdditionalSaveData(CompoundTag p_70037_1_) {
         super.readAdditionalSaveData(p_70037_1_);
+        this.dismissCount = p_70037_1_.getInt("DismissCount");
         this.setActive(p_70037_1_.getBoolean("active"));
         this.setActive(true);
         this.setBalloon(p_70037_1_.getBoolean("IsBalloon"));
@@ -1616,6 +1618,16 @@ public class MagispellerServant extends AbstractIllagerServant implements ICanBe
     }
 
     public boolean hurt(DamageSource source, float amount) {
+        if (!this.level().isClientSide
+                && source.is(com.Polarice3.Goety.utils.ModDamageSource.DISMISSED)) {
+            if (IllageAndSpillageCompat.isIllageAndSpillageLoaded()) {
+                this.dismissCount++;
+                if (this.dismissCount >= 3) {
+                    this.turnHostile();
+                }
+                return false;
+            }
+        }
         if (this.areIllagersNearby() && !source.is(DamageTypes.FELL_OUT_OF_WORLD)
                 && !source.is(DamageTypes.GENERIC_KILL)) {
             return false;
@@ -1652,6 +1664,22 @@ public class MagispellerServant extends AbstractIllagerServant implements ICanBe
                 return super.hurt(source, amount);
             }
         }
+    }
+
+    private void turnHostile() {
+        if (this.level().isClientSide || !(this.level() instanceof ServerLevel serverLevel)) return;
+        LivingEntity owner = this.getTrueOwner();
+        com.yellowbrossproductions.illageandspillage.entities.MagispellerEntity magi =
+                new com.yellowbrossproductions.illageandspillage.entities.MagispellerEntity(
+                        com.yellowbrossproductions.illageandspillage.init.ModEntityTypes.Magispeller.get(), this.level());
+        magi.getPersistentData().putBoolean("GoetyOminousBetrayed", true);
+        magi.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
+        magi.setActive(true);
+        if (owner instanceof Player player) {
+            magi.setTarget(player);
+        }
+        serverLevel.addFreshEntity(magi);
+        this.discard();
     }
 
     public void addDamageTaken(float damage) {

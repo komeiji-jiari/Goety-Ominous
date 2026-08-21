@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.items;
 
 import com.Polarice3.Goety.common.items.ModItems;
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.config.WeaponConfig;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -13,7 +14,7 @@ public class CursedWargArmorItem extends Item {
             GoetyOminous.MOD_ID, "textures/entity/warg_cursed_metal_armor.png");
 
     public CursedWargArmorItem(Item.Properties properties) {
-        this(properties, TEXTURE, 78);
+        this(properties, TEXTURE, WeaponConfig.WargArmorDurability.get());
     }
 
     protected CursedWargArmorItem(Item.Properties properties, ResourceLocation texture, int durability) {

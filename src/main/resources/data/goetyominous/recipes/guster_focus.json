@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "nen",
+    "bhb",
+    "nbn"
+  ],
+  "key":
+  {
+    "b":
+    {
+      "item": "minecraft:feather"
+    },
+    "h":
+    {
+      "item": "goety:animation_core"
+    },
+    "n":
+    {
+      "item": "minecraft:sand"
+    },
+    "e":
+    {
+      "item": "alexsmobs:guster_eye"
+    }
+  },
+  "result":
+  {
+    "item": "goetyominous:guster_focus",
+    "count": 1
+  }
+}

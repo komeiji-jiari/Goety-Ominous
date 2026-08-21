@@ -1,0 +1,20 @@
+{
+  "name": "鱼骨聚晶",
+  "icon": "goetyominous:skelewag_focus",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "这个法术允许你指挥迷失在深渊中的剑鱼亡灵。根据所处环境的不同，你可以额外召唤这些鱼骨头的变种，流浪者变种需要在寒冷群系，而凋灵变种则需要在下界。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:skelewag_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "死灵魔杖允许召唤更多骷髅剑鱼。冰霜魔杖在增加召唤量的前提下召唤流髑变种，而下界魔杖则召唤凋灵变种。"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "Skelewag Focus",
+  "icon": "goetyominous:skelewag_focus",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "This spell allows you to command the spectral swordfish lost in the abyss. Depending on your environment, you can summon variant Skelewags—Stray variants require a cold biome, while Wither variants require the Nether."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:skelewag_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "A Necro Staff allows you to summon more Skelewags. A Frost Staff increases the summon count and summons Stray variants instead, while a Nether Staff summons Wither variants."
+    }
+  ]
+}

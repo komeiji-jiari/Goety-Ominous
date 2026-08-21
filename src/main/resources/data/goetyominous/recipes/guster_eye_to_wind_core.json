@@ -1,0 +1,8 @@
+{
+  "type": "goety:cursed_infuser_recipes",
+  "ingredient": {
+    "item": "alexsmobs:guster_eye"
+  },
+  "result": "goety:wind_core",
+  "cookingTime": 60
+}

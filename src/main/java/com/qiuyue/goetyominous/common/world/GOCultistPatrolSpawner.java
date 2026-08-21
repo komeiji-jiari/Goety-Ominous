@@ -43,6 +43,7 @@ public class GOCultistPatrolSpawner {
         this.ticksUntilSpawn += MobsConfig.CultistPatrolInterval.get() + random.nextInt(1200);
 
         if (level.getDayTime() / 24000L < 5) return 0;
+        if (!level.isNight()) return 0;
         if (random.nextInt(5) != 0) return 0;
 
         int playerCount = level.players().size();
@@ -109,6 +110,7 @@ public class GOCultistPatrolSpawner {
             BlockState state = level.getBlockState(pos);
             if (!NaturalSpawner.isValidEmptySpawnBlock(level, pos, state, state.getFluidState(), type)) return false;
             if (!PatrollingMonster.checkPatrollingMonsterSpawnRules(type, level, MobSpawnType.PATROL, pos, random)) return false;
+            if (level.getMaxLocalRawBrightness(pos) > 7) return false;
         }
 
         PatrollingMonster cultist = type.create(level);

@@ -21,16 +21,13 @@ import com.qiuyue.goetyominous.common.items.am.AmItems;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 
-
 public class AmCompatManager {
-
 
     public static void init(IEventBus modEventBus) {
                 AmEntityRegistry.register(modEventBus);
 
                 AmItems.register(modEventBus);
     }
-
 
     public static void setCustomAttributes(EntityAttributeCreationEvent event) {
         event.put(AmEntityRegistry.MURMUR_SERVANT.get(), MurmurServant.setCustomAttributes().build());

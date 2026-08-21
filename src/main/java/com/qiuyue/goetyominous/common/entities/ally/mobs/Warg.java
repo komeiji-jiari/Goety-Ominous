@@ -7,7 +7,6 @@ import com.qiuyue.goetyominous.common.blocks.entities.WolfTotemBlockEntity;
 import com.qiuyue.goetyominous.common.blocks.entities.WolfTotemHooks;
 import com.qiuyue.goetyominous.common.items.CursedMetalWolfArmorItem;
 import com.qiuyue.goetyominous.common.items.CursedWargArmorItem;
-import com.qiuyue.goetyominous.common.items.DarkWolfArmorItem;
 import com.qiuyue.goetyominous.common.world.WargTotemData;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.minecraft.core.BlockPos;
@@ -417,7 +416,7 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
                     if (!player.getAbilities().instabuild) {
                         held.shrink(1);
                     }
-                    int repair = (int) (wargArmor.getMaxDamage() * 0.125F);
+                    int repair = (int) (wargArmor.getMaxDamage() * com.qiuyue.goetyominous.config.WeaponConfig.WargArmorIngotRepair.get().floatValue());
                     wargArmor.setDamageValue(Math.max(0, wargArmor.getDamageValue() - repair));
                     this.playSound(SoundEvents.ANVIL_USE, 1.0F, 1.0F);
                     return InteractionResult.sidedSuccess(this.level().isClientSide);

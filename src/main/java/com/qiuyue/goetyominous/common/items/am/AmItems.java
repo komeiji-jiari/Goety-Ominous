@@ -43,7 +43,7 @@ public class AmItems {
 
     public static final RegistryObject<ServantSpawnEggItem> ROCKY_ROLLER_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("rocky_roller_servant_spawn_egg",
-                                        () -> new ServantSpawnEggItem(AmEntityRegistry.ROCKY_ROLLER_SERVANT, 0x8F8F8F, 0xC7A86B, egg()));
+                    () -> new ServantSpawnEggItem(AmEntityRegistry.ROCKY_ROLLER_SERVANT, 0x8F8F8F, 0xC7A86B, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> ZOMBIE_CROCODILE_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("zombie_crocodile_servant_spawn_egg",
@@ -108,6 +108,14 @@ public class AmItems {
     public static final RegistryObject<MagicFocus> ROLLER_FOCUS = AM_ITEMS.register(
             "roller_focus",
             () -> new MagicFocus(new RollerSpell()));
+
+    public static final RegistryObject<MagicFocus> SKELEWAG_FOCUS = AM_ITEMS.register(
+            "skelewag_focus",
+            () -> new MagicFocus(new SkelewagSpell()));
+
+    public static final RegistryObject<MagicFocus> GUSTER_FOCUS = AM_ITEMS.register(
+            "guster_focus",
+            () -> new MagicFocus(new GusterSpell()));
 
 
     public static Item.Properties egg() {

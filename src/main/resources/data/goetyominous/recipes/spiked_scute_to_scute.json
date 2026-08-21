@@ -1,0 +1,8 @@
+{
+  "type": "goety:cursed_infuser_recipes",
+  "ingredient": {
+    "item": "alexsmobs:spiked_scute"
+  },
+  "result": "minecraft:scute",
+  "cookingTime": 60
+}

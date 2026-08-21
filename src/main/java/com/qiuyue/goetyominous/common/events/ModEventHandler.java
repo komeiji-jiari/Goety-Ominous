@@ -114,6 +114,10 @@ public class ModEventHandler {
 
         LivingEntity entity = event.getEntity();
 
+        if (entity.getPersistentData().getBoolean("GoetyOminousBetrayed")) {
+            return;
+        }
+
         ResourceLocation entityId = ForgeRegistries.ENTITY_TYPES.getKey(entity.getType());
         if (entityId == null || !entityId.getPath().equals("magispeller")) {
             return;

@@ -90,7 +90,7 @@ public class WolfArmorEquipHandler {
             if (!player.getAbilities().instabuild) {
                 held.shrink(1);
             }
-            int repair = (int) (armor.getMaxDamage() * 0.125F);
+            int repair = (int) (armor.getMaxDamage() * com.qiuyue.goetyominous.config.WeaponConfig.WolfArmorIngotRepair.get().floatValue());
             armor.setDamageValue(Math.max(0, armor.getDamageValue() - repair));
             target.playSound(ModSounds.WOLF_ARMOR_REPAIR.get(), 1.0F, 1.0F);
             event.setCancellationResult(InteractionResult.SUCCESS);

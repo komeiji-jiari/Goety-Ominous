@@ -1,6 +1,5 @@
 package com.qiuyue.goetyominous.client.render.model.ac;
 
-import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.animation.LegSolverQuadruped;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
@@ -13,7 +12,6 @@ import com.qiuyue.goetyominous.common.entities.ally.ac.GrottoceratopsServant;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
 
 @OnlyIn(Dist.CLIENT)
 public class ModelGrottoceratopsServant extends AdvancedEntityModel<GrottoceratopsServant> {

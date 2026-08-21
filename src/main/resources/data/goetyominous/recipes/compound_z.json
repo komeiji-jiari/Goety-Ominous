@@ -4,7 +4,7 @@
   "activation_item": {
     "item": "mutantmore:incomplete_compound_z"
   },
-  "craftType": "animation",
+  "craftType": "fel",
   "soulCost": 1,
   "duration": 10,
   "ingredients": [

@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "text",
-      "text": "This spell allows you to summon loyal Froststalkers at will, as if you were the leader of their pack. However, be aware that these cold-dwelling creatures possess a natural weakness to heat, and take increased fire damage."
+      "text": "This spell allows you to summon loyal young Froststalkers at will. However, be aware that these cold-dwelling creatures possess a natural weakness to heat, and take increased fire damage."
     },
     {
       "type": "goety:ritual",
@@ -14,7 +14,7 @@
     },
     {
       "type": "text",
-      "text": "Casting this spell with a Frost Staff increases the number of Froststalkers summoned."
+      "text": "Casting this spell with a Frost Staff increases the number of Froststalkers summoned. However, for certain arcane reasons, Froststalkers summoned through this spell cannot be bred."
     }
   ]
 }

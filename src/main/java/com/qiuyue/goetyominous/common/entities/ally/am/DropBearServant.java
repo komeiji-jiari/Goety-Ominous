@@ -1,6 +1,8 @@
 package com.qiuyue.goetyominous.common.entities.ally.am;
 
+import com.Polarice3.Goety.client.particles.ModParticleTypes;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
+import com.Polarice3.Goety.init.ModMobType;
 import com.Polarice3.Goety.utils.CuriosFinder;
 import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.FlightMoveController;
@@ -16,14 +18,18 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
@@ -32,10 +38,15 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
@@ -195,6 +206,48 @@ public class DropBearServant extends Summoned implements IAnimatedEntity {
         }
     }
 
+    @Override
+    public MobType getMobType() {
+        return ModMobType.NETHER;
+    }
+
+    public boolean isFood(ItemStack p_30440_) {
+        Item item = p_30440_.getItem();
+        return item.isEdible() && p_30440_.getFoodProperties(this).isMeat();
+    }
+
+    public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
+        ItemStack itemstack = pPlayer.getItemInHand(pHand);
+        if (this.getTrueOwner() != null && pPlayer == this.getTrueOwner() && this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
+            FoodProperties foodProperties = itemstack.getFoodProperties(this);
+            if (foodProperties != null) {
+                this.heal((float)foodProperties.getNutrition());
+                if (!pPlayer.getAbilities().instabuild) {
+                    itemstack.shrink(1);
+                }
+
+                this.gameEvent(GameEvent.EAT, this);
+                this.eat(this.level(), itemstack);
+                Level var6 = this.level();
+                if (var6 instanceof ServerLevel) {
+                    ServerLevel serverLevel = (ServerLevel)var6;
+
+                    for(int i = 0; i < 7; ++i) {
+                        double d0 = this.random.nextGaussian() * 0.02;
+                        double d1 = this.random.nextGaussian() * 0.02;
+                        double d2 = this.random.nextGaussian() * 0.02;
+                        serverLevel.sendParticles((SimpleParticleType) ModParticleTypes.HEAL_EFFECT.get(), this.getRandomX(1.0), this.getRandomY() + 0.5, this.getRandomZ(1.0), 0, d0, d1, d2, 0.5);
+                    }
+                }
+
+                pPlayer.swing(pHand);
+                return InteractionResult.SUCCESS;
+            }
+        }
+
+        return super.mobInteract(pPlayer, pHand);
+    }
+
     public void tick() {
         super.tick();
         AnimationHandler.INSTANCE.updateAnimations(this);
@@ -324,7 +377,6 @@ public class DropBearServant extends Summoned implements IAnimatedEntity {
             return;
         }
 
-        // Sneaking owner: land and keep following on the ground instead of clinging to the ceiling.
         if (this.isOwnerSneaking()) {
             if (this.isUpsideDown()) {
                 this.startLanding();

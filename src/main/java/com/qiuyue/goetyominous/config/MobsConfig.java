@@ -110,8 +110,8 @@ public class MobsConfig {
                 .defineInRange("illagerElephantServantLimit", 2, 1, 100);
 
         DropBearServantLimit = BUILDER
-                .comment("Maximum number of Drop Bear Servants that can be summoned (Default: 32)")
-                .defineInRange("dropBearServantLimit", 32, 1, 100);
+                .comment("Maximum number of Drop Bear Servants that can be summoned (Default: 16)")
+                .defineInRange("dropBearServantLimit", 16, 1, 100);
 
         GusterServantLimit = BUILDER
                 .comment("Maximum number of Guster Servants that can be summoned (Default: 32)")

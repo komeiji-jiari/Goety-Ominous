@@ -1,0 +1,20 @@
+{
+  "name": "沙风聚晶",
+  "icon": "goetyominous:guster_focus",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "利用活力核心，你可以将运动的沙子塑造为一个沙风怪仆从。然而要想召唤更多的沙风怪，你仍然需要制作一个简易的法术。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goetyominous:guster_focus",
+      "text": "请自行佩戴护目镜"
+    },
+    {
+      "type": "text",
+      "text": "风之魔杖允许召唤更多沙风怪。"
+    }
+  ]
+}

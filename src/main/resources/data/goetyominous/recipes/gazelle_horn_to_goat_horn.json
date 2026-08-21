@@ -1,0 +1,8 @@
+{
+  "type": "goety:cursed_infuser_recipes",
+  "ingredient": {
+    "item": "alexsmobs:gazelle_horn"
+  },
+  "result": "minecraft:goat_horn",
+  "cookingTime": 60
+}

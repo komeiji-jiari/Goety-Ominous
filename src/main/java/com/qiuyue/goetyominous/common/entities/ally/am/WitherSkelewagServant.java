@@ -38,7 +38,6 @@ public class WitherSkelewagServant extends SkelewagServant {
         return super.isInWater() || this.isInLava();
     }
 
-    // Prefer lava as a pathfinding destination just like water.
     @Override
     public float getWalkTargetValue(BlockPos pos, LevelReader level) {
         if (level.getFluidState(pos).is(FluidTags.WATER) || level.getFluidState(pos).is(FluidTags.LAVA)) {

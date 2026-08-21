@@ -13,12 +13,10 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-
 public class AcBlockRegistry {
 
     private static final DeferredRegister<Block> AC_BLOCKS =
             DeferredRegister.create(ForgeRegistries.BLOCKS, GoetyOminous.MOD_ID);
-
 
     public static final RegistryObject<Block> GROTTOCERATOPS_SERVANT_EGG =
             AC_BLOCKS.register("grottoceratops_servant_egg",

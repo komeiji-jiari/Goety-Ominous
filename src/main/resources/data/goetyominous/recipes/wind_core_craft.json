@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    " s ",
+    "sts",
+    " s "
+  ],
+  "key":
+  {
+    "s":
+    {
+      "item": "alexsmobs:guster_eye"
+    },
+    "t":
+    {
+      "tag": "goety:totems"
+    }
+  },
+  "result":
+  {
+    "item": "goety:wind_core",
+    "count": 2
+  }
+}

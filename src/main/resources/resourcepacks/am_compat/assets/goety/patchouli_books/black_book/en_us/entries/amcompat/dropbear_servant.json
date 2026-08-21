@@ -1,0 +1,24 @@
+{
+  "name": "Dropbear Servant",
+  "icon": "alexsmobs:dropbear_claw",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "These Nether-dwelling bears are loyal and ferocious, attacking enemies viciously with claws and bites. They tend to hang from high places, but will descend when their owner sneaks."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:dropbear_servant",
+      "text": "Slumbering Bear Greets The Dawn!"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Feed them any kind of meat to heal your Dropbear servant. Additionally, Nether Robes provide them with slow passive healing."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:dropbear_servant"
+    }
+  ]
+}

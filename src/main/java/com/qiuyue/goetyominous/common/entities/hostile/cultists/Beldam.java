@@ -170,7 +170,7 @@ public class Beldam extends AbstractGOCultist implements RangedAttackMob, ICulti
     @Override
     public void die(DamageSource pCause) {
         if (pCause.getEntity() instanceof LivingEntity killer) {
-            killer.addEffect(new MobEffectInstance(GoetyEffects.CURSED.get(), 600, 0));
+            killer.addEffect(new MobEffectInstance(GoetyEffects.CURSED.get(), 100, 0));
         }
         super.die(pCause);
     }
