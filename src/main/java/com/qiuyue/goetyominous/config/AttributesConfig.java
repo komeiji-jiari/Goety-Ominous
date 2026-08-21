@@ -61,6 +61,14 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> TremorsaurusServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> TremorsaurusServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> TremorsaurusServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantElderHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantElderArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantFollowRange;
@@ -837,6 +845,22 @@ public class AttributesConfig {
                 .defineInRange("tremorsaurusServantKnockbackResistance", 0.9, 0.0, Double.MAX_VALUE);
         TremorsaurusServantArmor = BUILDER.comment("How much natural Armor Tremorsaurus Servants have, Default: 8.0 (matches Alex's Caves Tremorsaurus)")
                 .defineInRange("tremorsaurusServantArmor", 8.0, 0.0, Double.MAX_VALUE);
+        VallumraptorServantHealth = BUILDER.comment("How much Max Health Vallumraptor Servants have, Default: 28.0 (matches Alex's Caves Vallumraptor)")
+                .defineInRange("vallumraptorServantHealth", 28.0, 1.0, Double.MAX_VALUE);
+        VallumraptorServantDamage = BUILDER.comment("How much damage Vallumraptor Servants deal, Default: 3.0 (matches Alex's Caves Vallumraptor)")
+                .defineInRange("vallumraptorServantDamage", 3.0, 1.0, Double.MAX_VALUE);
+        VallumraptorServantMovementSpeed = BUILDER.comment("How fast Vallumraptor Servants move, Default: 0.2")
+                .defineInRange("vallumraptorServantMovementSpeed", 0.2, 0.0, Double.MAX_VALUE);
+        VallumraptorServantFollowRange = BUILDER.comment("How much following/detection range Vallumraptor Servants have, Default: 32.0")
+                .defineInRange("vallumraptorServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
+        VallumraptorServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Vallumraptor Servants have, Default: 0.0 (matches Alex's Caves Vallumraptor)")
+                .defineInRange("vallumraptorServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
+        VallumraptorServantArmor = BUILDER.comment("How much natural Armor Vallumraptor Servants have, Default: 0.0 (matches Alex's Caves Vallumraptor)")
+                .defineInRange("vallumraptorServantArmor", 0.0, 0.0, Double.MAX_VALUE);
+        VallumraptorServantElderHealth = BUILDER.comment("How much Max Health Vallumraptor Servant Elders have, Default: 32.0 (matches Alex's Caves Vallumraptor elder)")
+                .defineInRange("vallumraptorServantElderHealth", 32.0, 1.0, Double.MAX_VALUE);
+        VallumraptorServantElderArmor = BUILDER.comment("How much natural Armor Vallumraptor Servant Elders have, Default: 5.0 (matches Alex's Caves Vallumraptor elder)")
+                .defineInRange("vallumraptorServantElderArmor", 5.0, 0.0, Double.MAX_VALUE);
         FroststalkerServantHealth = BUILDER.comment("How much Max Health Froststalker Servants have, Default: 24.0 (matches Alex's Mobs Froststalker)")
                 .defineInRange("froststalkerServantHealth", 24.0, 1.0, Double.MAX_VALUE);
         FroststalkerServantDamage = BUILDER.comment("How much damage Froststalker Servants deal, Default: 4.5 (matches Alex's Mobs Froststalker)")

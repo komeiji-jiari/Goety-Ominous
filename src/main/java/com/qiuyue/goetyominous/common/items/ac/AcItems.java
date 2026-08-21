@@ -33,6 +33,14 @@ public class AcItems {
             AC_ITEMS.register("tremorsaurus_servant_egg",
                     () -> new BlockItem(AcBlockRegistry.TREMORSAURUS_SERVANT_EGG.get(), egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> VALLUMRAPTOR_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("vallumraptor_servant_spawn_egg",
+                                        () -> new ServantSpawnEggItem(AcEntityRegistry.VALLUMRAPTOR_SERVANT, 0x22389A, 0xEEE5AB, egg()));
+
+    public static final RegistryObject<BlockItem> VALLUMRAPTOR_SERVANT_EGG =
+            AC_ITEMS.register("vallumraptor_servant_egg",
+                    () -> new BlockItem(AcBlockRegistry.VALLUMRAPTOR_SERVANT_EGG.get(), egg()));
+
     public static Item.Properties egg() {
         return new Item.Properties();
     }
