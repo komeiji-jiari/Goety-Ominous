@@ -69,6 +69,14 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantElderHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantElderArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> NucleeperServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> NucleeperServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> NucleeperServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> NucleeperServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> NucleeperServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> NucleeperServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> NucleeperServantTauntRange;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> NucleeperServantExplosionGriefing;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantFollowRange;
@@ -861,6 +869,22 @@ public class AttributesConfig {
                 .defineInRange("vallumraptorServantElderHealth", 32.0, 1.0, Double.MAX_VALUE);
         VallumraptorServantElderArmor = BUILDER.comment("How much natural Armor Vallumraptor Servant Elders have, Default: 5.0 (matches Alex's Caves Vallumraptor elder)")
                 .defineInRange("vallumraptorServantElderArmor", 5.0, 0.0, Double.MAX_VALUE);
+        NucleeperServantHealth = BUILDER.comment("How much Max Health Nucleeper Servants have, Default: 40.0 (matches Alex's Caves Nucleeper)")
+                .defineInRange("nucleeperServantHealth", 40.0, 1.0, Double.MAX_VALUE);
+        NucleeperServantDamage = BUILDER.comment("How much damage Nucleeper Servants deal, Default: 2.0 (vanilla monster default; Nucleeper's real threat is its explosion)")
+                .defineInRange("nucleeperServantDamage", 2.0, 1.0, Double.MAX_VALUE);
+        NucleeperServantMovementSpeed = BUILDER.comment("How fast Nucleeper Servants move, Default: 0.2 (matches Alex's Caves Nucleeper)")
+                .defineInRange("nucleeperServantMovementSpeed", 0.2, 0.0, Double.MAX_VALUE);
+        NucleeperServantFollowRange = BUILDER.comment("How much following/detection range Nucleeper Servants have, Default: 32.0")
+                .defineInRange("nucleeperServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
+        NucleeperServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Nucleeper Servants have, Default: 0.0 (Alex's Caves Nucleeper has none)")
+                .defineInRange("nucleeperServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
+        NucleeperServantArmor = BUILDER.comment("How much natural Armor Nucleeper Servants have, Default: 4.0 (matches Alex's Caves Nucleeper)")
+                .defineInRange("nucleeperServantArmor", 4.0, 0.0, Double.MAX_VALUE);
+        NucleeperServantTauntRange = BUILDER.comment("How far (in blocks) Nucleeper Servants taunt mobs that are attacking their owner, pulling the mob's aggro onto the servant. Default: 12.0 (set to 0.0 to disable taunting)")
+                .defineInRange("nucleeperServantTauntRange", 12.0, 0.0, Double.MAX_VALUE);
+        NucleeperServantExplosionGriefing = BUILDER.comment("Whether Nucleeper Servant nuclear explosions destroy blocks, Default: false (set to true to allow block destruction, which also respects the mobGriefing game rule)")
+                .define("nucleeperServantExplosionGriefing", false);
         FroststalkerServantHealth = BUILDER.comment("How much Max Health Froststalker Servants have, Default: 24.0 (matches Alex's Mobs Froststalker)")
                 .defineInRange("froststalkerServantHealth", 24.0, 1.0, Double.MAX_VALUE);
         FroststalkerServantDamage = BUILDER.comment("How much damage Froststalker Servants deal, Default: 4.5 (matches Alex's Mobs Froststalker)")

@@ -599,6 +599,9 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.VALLUMRAPTOR_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderVallumraptorServant::new);
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.NUCLEEPER_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderNucleeperServant::new);
         }
 
     }

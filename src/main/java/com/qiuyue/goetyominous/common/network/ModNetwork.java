@@ -33,5 +33,9 @@ public class ModNetwork {
                 ElephantChargePacket::encode,
                 ElephantChargePacket::decode,
                 ElephantChargePacket::handle);
+        CHANNEL.registerMessage(id++, NucleeperExplosionZonePacket.class,
+                NucleeperExplosionZonePacket::encode,
+                NucleeperExplosionZonePacket::decode,
+                NucleeperExplosionZonePacket::handle);
     }
 }

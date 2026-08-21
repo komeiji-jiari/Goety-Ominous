@@ -20,6 +20,7 @@ import com.qiuyue.goetyominous.config.SpellConfig;
 import com.qiuyue.goetyominous.common.entities.ally.illager.*;
 import com.qiuyue.goetyominous.common.entities.ally.illager.train.GoetyOminousType;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.*;
+import com.qiuyue.goetyominous.common.events.NucleeperNukeProtectionHandler;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractStormNecromancer;
 import com.qiuyue.goetyominous.common.entities.hostile.SunkenNecromancer;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.ArchGeomancerEntity;
@@ -134,6 +135,9 @@ public class GoetyOminous {
 
         if (AlexCavesCompat.isAlexCavesLoaded()) {
             com.qiuyue.goetyominous.compat.ac.AcCompatManager.init(modEventBus);
+            // 双保险:除了 @Mod.EventBusSubscriber 自动扫描,再显式注册一次
+            // (幂等,重复注册无副作用),确保核爆保护事件一定挂在 FORGE 总线。
+            MinecraftForge.EVENT_BUS.register(NucleeperNukeProtectionHandler.class);
         }
 
         getOrCreateDirectory(FMLPaths.CONFIGDIR.get().resolve("goetyominous"), "goetyominous");
