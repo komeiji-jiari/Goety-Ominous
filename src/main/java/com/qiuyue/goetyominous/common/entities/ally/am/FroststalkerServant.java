@@ -4,7 +4,6 @@ import com.Polarice3.Goety.common.entities.ally.AnimalSummon;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.init.ModMobType;
 import com.Polarice3.Goety.utils.CuriosFinder;
-import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.entities.projectile.IceShard;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.github.alexthe666.alexsmobs.entity.ISemiAquatic;
@@ -24,11 +23,9 @@ import java.util.EnumSet;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
@@ -119,40 +116,9 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
         }
         SpawnGroupData data = super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
         if (reason == MobSpawnType.SPAWN_EGG || reason == MobSpawnType.MOB_SUMMONED) {
-            this.setBaby(true);
+            this.setAge(-200); // -200 ticks = 10s baby growth to adult
         }
-        this.ensurePathfindingPosition();
         return data;
-    }
-
-    private void ensurePathfindingPosition() {
-        if (this.level().isClientSide) {
-            return;
-        }
-        if (!this.level().noCollision(this, this.getBoundingBox())) {
-            int guard = 0;
-            while (!this.level().noCollision(this, this.getBoundingBox()) && guard++ < 8) {
-                this.setPos(this.getX(), this.getY() + 0.5D, this.getZ());
-            }
-            this.syncPositionToClients();
-            return;
-        }
-
-        if (!this.onGround() && !this.isInWater() && this.getDeltaMovement().y < -0.05D) {
-            MobUtil.moveDownToGround(this);
-            return;
-        }
-
-        if (this.onGround() && !this.level().getBlockState(this.blockPosition().below())
-                .isSolidRender(this.level(), this.blockPosition().below())) {
-            MobUtil.moveDownToGround(this);
-        }
-    }
-
-    private void syncPositionToClients() {
-        if (this.level() instanceof ServerLevel serverLevel) {
-            serverLevel.getChunkSource().broadcastAndSend(this, new ClientboundTeleportEntityPacket(this));
-        }
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
@@ -385,9 +351,6 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
         }
 
         if (!this.level().isClientSide) {
-            if (this.tickCount % 20 == 0) {
-                this.ensurePathfindingPosition();
-            }
             if (this.tickCount % 200 == 0) {
                 if (isInWaterRainOrBubble() && !this.hasSpikes()) {
                     this.setSpiked(true);
