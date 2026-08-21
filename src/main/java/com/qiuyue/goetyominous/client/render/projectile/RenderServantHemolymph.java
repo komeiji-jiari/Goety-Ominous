@@ -16,10 +16,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
-/**
- * 蚊仆从血红液投射物的渲染器，逐行对齐 AlexMobs 的 RenderHemolymph（billboard 精灵渲染），
- * 只是泛型换成本模组的 EntityServantHemolymph。贴图仍复用 AlexMobs 的 hemolymph.png。
- */
+
 @OnlyIn(Dist.CLIENT)
 public class RenderServantHemolymph extends EntityRenderer<EntityServantHemolymph> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/hemolymph.png");

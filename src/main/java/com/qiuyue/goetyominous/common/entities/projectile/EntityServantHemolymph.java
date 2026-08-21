@@ -17,16 +17,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.PlayMessages;
 
-/**
- * 血红液（Hemolymph）投射物，由蚊仆从喷射。
- * 原版为 AlexMobs 的 EntityHemolymph（直接继承 Entity），
- * 这里改为继承 Goety 的 SpellThrowableProjectile，
- * 复用基类的命中检测 / 位移 / 重力 / Owner 追踪与序列化，
- * 只保留血红液特有的粒子与离体（leftOwner）逻辑。
- * 使用本模组注册的 AmEntityRegistry.SERVANT_HEMOLYMPH 实体类型，
- * 不借用 AlexMobs 的 HEMOLYMPH（其客户端工厂会生成 EntityHemolymph，
- * 造成客户端-服务端类不一致）。
- */
+
 public class EntityServantHemolymph extends SpellThrowableProjectile {
     private boolean leftOwner;
 
@@ -73,8 +64,7 @@ public class EntityServantHemolymph extends SpellThrowableProjectile {
             this.level().addParticle(AMParticleRegistry.HEMOLYMPH.get(), this.getX() + r1, this.getY() + r2, this.getZ() + r3, r1 * 0.1F, r2 * 0.1F, r3 * 0.1F);
         }
         super.tick();
-        // 原版血红液入水即消散；基类仅减速，这里保留原版行为
-        if (this.isInWaterOrBubble()) {
+                if (this.isInWaterOrBubble()) {
             this.remove(RemovalReason.DISCARDED);
         }
     }
@@ -86,8 +76,7 @@ public class EntityServantHemolymph extends SpellThrowableProjectile {
             if (living != null) {
                 result.getEntity().hurt(this.damageSources().mobProjectile(this, living), this.getExtraDamage());
             }
-            // 对齐原版 EntityHemolymph：命中实体即消散，避免投射物穿透造成重复伤害
-            this.remove(RemovalReason.DISCARDED);
+                        this.remove(RemovalReason.DISCARDED);
         }
     }
 
