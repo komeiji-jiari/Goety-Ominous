@@ -34,6 +34,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> TremorsaurusServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> VallumraptorServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> VallumraptorElderChance;
+    public static final ForgeConfigSpec.ConfigValue<Integer> NucleeperServantLimit;
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> CultistPatrol;
     public static final ForgeConfigSpec.ConfigValue<Integer> CultistPatrolInterval;
@@ -164,6 +165,10 @@ public class MobsConfig {
         VallumraptorElderChance = BUILDER
                 .comment("Chance (percent) for a Vallumraptor Servant to spawn as an Elder/leader variant with boosted health and armor (Default: 15)")
                 .defineInRange("vallumraptorElderChance", 15, 0, 100);
+
+        NucleeperServantLimit = BUILDER
+                .comment("Maximum number of Nucleeper Servants that can be summoned (Default: 8)")
+                .defineInRange("nucleeperServantLimit", 8, 1, 100);
 
         BUILDER.pop();
 

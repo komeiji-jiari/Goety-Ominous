@@ -40,6 +40,10 @@ public class AcItems {
             AC_ITEMS.register("vallumraptor_servant_egg",
                     () -> new BlockItem(AcBlockRegistry.VALLUMRAPTOR_SERVANT_EGG.get(), egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> NUCLEEPER_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("nucleeper_servant_spawn_egg",
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.NUCLEEPER_SERVANT, 0x95A1A5, 0xFF00, egg()));
+
     public static Item.Properties egg() {
         return new Item.Properties();
     }

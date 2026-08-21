@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.init.ac;
 
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.ac.GrottoceratopsServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.NucleeperServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TremorsaurusServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.VallumraptorServant;
 import net.minecraft.world.entity.EntityType;
@@ -36,6 +37,13 @@ public class AcEntityRegistry {
                             .sized(0.8F, 1.5F)
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":vallumraptor_servant"));
+
+    public static final RegistryObject<EntityType<NucleeperServant>> NUCLEEPER_SERVANT =
+            AC_ENTITIES.register("nucleeper_servant",
+                    () -> EntityType.Builder.<NucleeperServant>of((type, worldIn) -> new NucleeperServant(type, worldIn), MobCategory.MISC)
+                            .sized(0.98F, 3.95F)
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":nucleeper_servant"));
 
     public static void register(IEventBus modEventBus) {
         AC_ENTITIES.register(modEventBus);
