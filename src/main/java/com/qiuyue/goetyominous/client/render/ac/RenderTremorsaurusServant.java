@@ -15,6 +15,8 @@ public class RenderTremorsaurusServant extends MobRenderer<TremorsaurusServant, 
 
     public RenderTremorsaurusServant(EntityRendererProvider.Context context) {
         super(context, new ModelTremorsaurusServant(), 1.1F);
+        this.addLayer(new TremorsaurusRiderLayer(this));
+        this.addLayer(new TremorsaurusHeldMobLayer(this));
     }
 
     @Override

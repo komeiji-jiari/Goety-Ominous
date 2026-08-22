@@ -103,6 +103,9 @@ public class TremorsaurusServant extends AnimalSummon implements KeybindUsingMou
     private float screenShakeAmount;
     private float prevSitProgress;
     private float sitProgress;
+    private float prevBuryEggsProgress;
+    private float buryEggsProgress;
+    public boolean buryingEggs;
     private int lastScareTimestamp = 0;
     private boolean hasRunningAttributes = false;
     private int roarCooldown = 0;
@@ -206,6 +209,7 @@ public class TremorsaurusServant extends AnimalSummon implements KeybindUsingMou
     @Override
     public void tick() {
         super.tick();
+        this.prevBuryEggsProgress = this.buryEggsProgress;
         this.prevScreenShakeAmount = screenShakeAmount;
         this.yBodyRot = Mth.approachDegrees(this.yBodyRotO, this.yBodyRot, (float) this.getHeadRotSpeed());
         this.legSolver.update(this, this.yBodyRot, this.getScale());
@@ -216,6 +220,13 @@ public class TremorsaurusServant extends AnimalSummon implements KeybindUsingMou
         }
         if (!this.isStaying() && this.sitProgress > 0.0F) {
             --this.sitProgress;
+        }
+        // 与原版 DinosaurEntity 一致：下蛋埋蛋期间 buryEggsProgress 升至 5（乘 0.2 后为 0~1），结束后回落
+        if (this.buryingEggs && this.buryEggsProgress < 5.0F) {
+            ++this.buryEggsProgress;
+        }
+        if (!this.buryingEggs && this.buryEggsProgress > 0.0F) {
+            --this.buryEggsProgress;
         }
         if (screenShakeAmount > 0) {
             screenShakeAmount = Math.max(0, screenShakeAmount - 0.34F);
@@ -488,6 +499,8 @@ public class TremorsaurusServant extends AnimalSummon implements KeybindUsingMou
     @Override
     public void handleEntityEvent(byte b) {
         if (b == 77) {
+            // 与原版 DinosaurEntity 一致：下蛋站立期间向四周扬起地面碎屑，并进入埋蛋姿态
+            this.buryingEggs = true;
             float radius = this.getBbWidth() * 0.55F;
             float particleCount = (5 + random.nextInt(5)) * radius;
             for (int i1 = 0; i1 < particleCount; i1++) {
@@ -505,6 +518,8 @@ public class TremorsaurusServant extends AnimalSummon implements KeybindUsingMou
                 }
             }
         } else if (b == 78) {
+            // 与原版 DinosaurEntity 一致：下蛋结束，复位埋蛋姿态
+            this.buryingEggs = false;
         } else {
             super.handleEntityEvent(b);
         }
@@ -816,6 +831,11 @@ public class TremorsaurusServant extends AnimalSummon implements KeybindUsingMou
 
     public float getSitProgress(float partialTicks) {
         return (this.prevSitProgress + (this.sitProgress - this.prevSitProgress) * partialTicks) / 10.0F;
+    }
+
+    // 与原版 DinosaurEntity 一致：埋蛋进度 0~5，*0.2 后供模型驱动埋蛋扭动姿态
+    public float getBuryEggsProgress(float partialTicks) {
+        return (this.prevBuryEggsProgress + (this.buryEggsProgress - this.prevBuryEggsProgress) * partialTicks) * 0.2F;
     }
 
     private class TremorsaurusServantMeleeAttackGoal extends Goal {

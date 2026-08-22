@@ -35,6 +35,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> VallumraptorServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> VallumraptorElderChance;
     public static final ForgeConfigSpec.ConfigValue<Integer> NucleeperServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BrainiacServantLimit;
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> CultistPatrol;
     public static final ForgeConfigSpec.ConfigValue<Integer> CultistPatrolInterval;
@@ -169,6 +170,10 @@ public class MobsConfig {
         NucleeperServantLimit = BUILDER
                 .comment("Maximum number of Nucleeper Servants that can be summoned (Default: 8)")
                 .defineInRange("nucleeperServantLimit", 8, 1, 100);
+
+        BrainiacServantLimit = BUILDER
+                .comment("Maximum number of Brainiac Servants that can be summoned (Default: 16)")
+                .defineInRange("brainiacServantLimit", 16, 1, 100);
 
         BUILDER.pop();
 

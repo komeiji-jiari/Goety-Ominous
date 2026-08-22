@@ -48,6 +48,10 @@ public class AcItems {
         return new Item.Properties();
     }
 
+    public static final RegistryObject<ServantSpawnEggItem> BRAINIAC_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("brainiac_servant_spawn_egg",
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.BRAINIAC_SERVANT, 0x3A4A2E, 0xE35FA0, egg()));
+
     public static void register(IEventBus modEventBus) {
         AC_ITEMS.register(modEventBus);
     }

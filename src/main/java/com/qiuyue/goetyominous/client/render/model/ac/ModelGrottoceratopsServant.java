@@ -305,6 +305,15 @@ public class ModelGrottoceratopsServant extends AdvancedEntityModel<Grottocerato
 
                 this.body.rotateAngleY += Mth.wrapDegrees(entity.getTailSwingRot(partialTick)) / 57.295776F;
 
+                // 与原版 GrottoceratopsModel 一致：下蛋埋蛋期间身体与脖子左右扭动
+                float buryEggsProgress = entity.getBuryEggsProgress(partialTick);
+                if (buryEggsProgress > 0.0F) {
+                    limbSwing = ageInTicks;
+                    limbSwingAmount = buryEggsProgress * 0.5F;
+                    this.body.swing(0.25F, 0.4F, false, 0.0F, 0.0F, ageInTicks, buryEggsProgress);
+                    this.neck.swing(0.25F, 0.4F, true, -1.0F, 0.0F, ageInTicks, buryEggsProgress);
+                }
+
                 this.progressRotationPrev(this.tail, chewProgress, toRad(-10.0F), 0.0F, 0.0F, 1.0F);
         this.progressPositionPrev(this.neck, 1.0F, 0.0F, 0.0F, 5.0F, 1.0F);
 

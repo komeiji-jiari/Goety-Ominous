@@ -13,8 +13,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TremorsaurusServant;
 import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.joml.Vector4f;
 
 @OnlyIn(Dist.CLIENT)
 public class ModelTremorsaurusServant extends AdvancedEntityModel<TremorsaurusServant> {
@@ -344,6 +346,7 @@ public class ModelTremorsaurusServant extends AdvancedEntityModel<TremorsaurusSe
 
         float partialTicks = ageInTicks - (float) entity.tickCount;
         float sitAmount = entity.getSitProgress(partialTicks);
+        float buryEggsProgress = entity.getBuryEggsProgress(partialTicks);
         float walkSpeed = 0.8F;
         float walkDegree = 1.0F;
         this.glasses.showModel = false;
@@ -357,6 +360,14 @@ public class ModelTremorsaurusServant extends AdvancedEntityModel<TremorsaurusSe
         this.progressRotationPrev(this.lleg, sitAmount, toRad(-20.0F), toRad(-15.0F), 0.0F, 1.0F);
         this.progressRotationPrev(this.lleg2, sitAmount, toRad(-50.0F), 0.0F, 0.0F, 1.0F);
         this.progressRotationPrev(this.lfoot, sitAmount, toRad(70.0F), 0.0F, 0.0F, 1.0F);
+
+        // 与原版 TremorsaurusModel 一致：下蛋埋蛋期间身体与脖子左右扭动
+        if (buryEggsProgress > 0.0F) {
+            limbSwing = ageInTicks;
+            limbSwingAmount = buryEggsProgress * 0.5F;
+            this.body.swing(0.25F, 0.4F, false, 0.0F, 0.0F, ageInTicks, buryEggsProgress);
+            this.neck.swing(0.25F, 0.4F, true, -1.0F, 0.0F, ageInTicks, buryEggsProgress);
+        }
 
         float bodyIdleBob = this.walkValue(ageInTicks, 1.0F, 0.1F, -1.0F, 1.0F, false);
         this.walk(this.neck, 0.1F, 0.03F, false, 1.0F, 0.0F, ageInTicks, 1.0F);
@@ -375,6 +386,8 @@ public class ModelTremorsaurusServant extends AdvancedEntityModel<TremorsaurusSe
         this.swing(this.body, walkSpeed, walkDegree * 0.3F, false, 0.0F, 0.0F, limbSwing, limbSwingAmount);
         this.swing(this.tail, walkSpeed, walkDegree * 0.5F, false, -1.0F, 0.0F, limbSwing, limbSwingAmount);
         this.swing(this.tailTip, walkSpeed, walkDegree * 0.5F, false, -2.0F, 0.0F, limbSwing, limbSwingAmount);
+        // 与原版 TremorsaurusModel 一致:swing 为累加,需调用两次才恢复原版身体横向摇摆幅度
+        this.swing(this.body, walkSpeed, walkDegree * 0.3F, false, 0.0F, 0.0F, limbSwing, limbSwingAmount);
         this.swing(this.neck, walkSpeed, walkDegree * 0.3F, true, 0.0F, 0.0F, limbSwing, limbSwingAmount);
         this.swing(this.lleg, walkSpeed, walkDegree * 0.3F, true, 0.0F, 0.0F, limbSwing, limbSwingAmount);
         this.swing(this.rleg, walkSpeed, walkDegree * 0.3F, true, 0.0F, 0.0F, limbSwing, limbSwingAmount);
@@ -406,6 +419,23 @@ public class ModelTremorsaurusServant extends AdvancedEntityModel<TremorsaurusSe
         this.body.rotationPointY += max * 16.0F;
         this.rleg.rotationPointY += (heightBackRight - max) * 16.0F;
         this.lleg.rotationPointY += (heightBackLeft - max) * 16.0F;
+    }
+
+    public void translateToMouth(PoseStack pose) {
+        this.body.translateAndRotate(pose);
+        this.neck.translateAndRotate(pose);
+        this.head.translateAndRotate(pose);
+    }
+
+    public Vec3 getRiderPosition(Vec3 riderPos) {
+        PoseStack stack = new PoseStack();
+        stack.pushPose();
+        this.body.translateAndRotate(stack);
+        Vector4f vec = new Vector4f((float) riderPos.x, (float) riderPos.y, (float) riderPos.z, 1.0F);
+        vec.mul(stack.last().pose());
+        Vec3 result = new Vec3(vec.x(), vec.y(), vec.z());
+        stack.popPose();
+        return result;
     }
 
     private float walkValue(float limbSwing, float limbSwingAmount, float speed, float offset, float degree, boolean inverse) {

@@ -67,6 +67,8 @@ public class NucleeperServant extends Summoned implements ActivatesSirens, Power
     private int catScareTime = 0;
 
     private boolean spawnedExplosion = false;
+    /** 打火石手动点火:手动点火的引信不因目标消失而解除 */
+    private boolean manuallyIgnited = false;
     private static final EntityDataAccessor<Boolean> TRIGGERED = SynchedEntityData.defineId(NucleeperServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> CLOSE_TIME = SynchedEntityData.defineId(NucleeperServant.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> EXPLODING = SynchedEntityData.defineId(NucleeperServant.class, EntityDataSerializers.BOOLEAN);
@@ -183,12 +185,14 @@ public class NucleeperServant extends Summoned implements ActivatesSirens, Power
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putBoolean("Charged", this.isCharged());
         compoundTag.putInt("CloseTime", this.getCloseTime());
+        compoundTag.putBoolean("ManuallyIgnited", this.manuallyIgnited);
     }
 
     public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
         this.setCharged(compoundTag.getBoolean("Charged"));
         this.setCloseTime(compoundTag.getInt("CloseTime"));
+        this.manuallyIgnited = compoundTag.getBoolean("ManuallyIgnited");
     }
 
     public void thunderHit(ServerLevel serverLevel, LightningBolt lightningBolt) {
@@ -205,6 +209,7 @@ public class NucleeperServant extends Summoned implements ActivatesSirens, Power
             SoundEvent soundevent = itemstack.is(Items.FIRE_CHARGE) ? SoundEvents.FIRECHARGE_USE : SoundEvents.FLINTANDSTEEL_USE;
             this.level().playSound(player, this.getX(), this.getY(), this.getZ(), soundevent, this.getSoundSource(), 1.0F, this.random.nextFloat() * 0.4F + 0.8F);
             if (!this.level().isClientSide) {
+                this.manuallyIgnited = true;
                 this.setTriggered(true);
                 itemstack.hurtAndBreak(1, player, (p_32290_) -> {
                     p_32290_.broadcastBreakEvent(hand);
@@ -231,11 +236,15 @@ public class NucleeperServant extends Summoned implements ActivatesSirens, Power
             explodeProgress--;
         }
         if (this.isTriggered() && !level().isClientSide) {
-            if (this.catScareTime > 0 && !this.isExploding()) {
+            LivingEntity target = this.getTarget();
+            boolean noTarget = !this.manuallyIgnited && !this.isExploding() && (target == null || !target.isAlive());
+            if ((this.catScareTime > 0 && !this.isExploding()) || noTarget) {
+                // 被雷猫吓到,或目标跑掉/死亡:引信回退,归零即解除(手动点火不受影响)
                 if (time > 0) {
                     this.setCloseTime(time - 1);
                 } else {
                     this.setTriggered(false);
+                    this.manuallyIgnited = false;
                 }
             } else if (time < AlexsCaves.COMMON_CONFIG.nucleeperFuseTime.get()) {
                 this.setCloseTime(time + 1);
@@ -419,10 +428,9 @@ public class NucleeperServant extends Summoned implements ActivatesSirens, Power
         public void tick() {
             LivingEntity target = NucleeperServant.this.getTarget();
             if (target != null && target.isAlive()) {
+                // 锁敌即点燃引信:不再需要走近到近战距离才开始倒计时
+                NucleeperServant.this.setTriggered(true);
                 NucleeperServant.this.getNavigation().moveTo(target, 1.0D);
-                if (NucleeperServant.this.distanceTo(target) < 3.5F + target.getBbWidth()) {
-                    NucleeperServant.this.setTriggered(true);
-                }
             }
         }
     }

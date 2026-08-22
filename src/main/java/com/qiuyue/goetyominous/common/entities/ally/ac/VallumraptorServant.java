@@ -32,6 +32,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.SpawnGroupData;
@@ -41,6 +42,7 @@ import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -70,6 +72,7 @@ public class VallumraptorServant extends AnimalSummon implements IAnimatedEntity
     private static final EntityDataAccessor<Float> PUZZLED_HEAD_ROT = SynchedEntityData.defineId(VallumraptorServant.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> DATA_HAS_EGG = SynchedEntityData.defineId(VallumraptorServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> ELDER = SynchedEntityData.defineId(VallumraptorServant.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> HIDING_FOR = SynchedEntityData.defineId(VallumraptorServant.class, EntityDataSerializers.INT);
     private Animation currentAnimation;
     private int animationTick;
     private float leapProgress;
@@ -79,9 +82,16 @@ public class VallumraptorServant extends AnimalSummon implements IAnimatedEntity
     private float prevPuzzleHeadRot;
     private float prevSitProgress;
     private float sitProgress;
+    private float hideProgress;
+    private float prevHideProgress;
+    private float prevBuryEggsProgress;
+    private float buryEggsProgress;
+    public boolean buryingEggs;
     private float tailYaw;
     private float prevTailYaw;
     private float targetPuzzleRot;
+    private int fleeTicks = 0;
+    private Vec3 fleeFromPosition;
     private boolean hasRunningAttributes = false;
     private boolean hasElderAttributes = false;
     private boolean leapImpulseApplied = false;
@@ -162,12 +172,14 @@ public class VallumraptorServant extends AnimalSummon implements IAnimatedEntity
         this.entityData.define(PUZZLED_HEAD_ROT, 0.0F);
         this.entityData.define(DATA_HAS_EGG, false);
         this.entityData.define(ELDER, false);
+        this.entityData.define(HIDING_FOR, 0);
     }
 
     @Override
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(0, new FleeGoal());
         this.goalSelector.addGoal(1, new VallumraptorServantMeleeAttackGoal());
         this.goalSelector.addGoal(2, new ServantBreedGoal<>(this, 1.0D));
         this.goalSelector.addGoal(3, new ServantLayEggGoal<>(this, (com.github.alexmodguy.alexscaves.server.block.DinosaurEggBlock) AcBlockRegistry.VALLUMRAPTOR_SERVANT_EGG.get(), 100, 1.0D));
@@ -188,6 +200,8 @@ public class VallumraptorServant extends AnimalSummon implements IAnimatedEntity
         prevLeapProgress = leapProgress;
         prevTailYaw = tailYaw;
         prevSitProgress = sitProgress;
+        prevHideProgress = hideProgress;
+        prevBuryEggsProgress = buryEggsProgress;
         float headPuzzleRot = getPuzzledHeadRot();
         if (isRunning() && runProgress < 5.0F) {
             runProgress++;
@@ -206,6 +220,19 @@ public class VallumraptorServant extends AnimalSummon implements IAnimatedEntity
         }
         if (!isStaying() && sitProgress > 0.0F) {
             sitProgress--;
+        }
+        if (getHideFor() > 0 && hideProgress < 20.0F) {
+            hideProgress++;
+        }
+        if (getHideFor() <= 0 && hideProgress > 0.0F) {
+            hideProgress--;
+        }
+        // 与原版 DinosaurEntity 一致：下蛋埋蛋期间 buryEggsProgress 升至 5（乘 0.2 后为 0~1），结束后回落
+        if (buryingEggs && buryEggsProgress < 5.0F) {
+            buryEggsProgress++;
+        }
+        if (!buryingEggs && buryEggsProgress > 0.0F) {
+            buryEggsProgress--;
         }
         if (isRunning() && !hasRunningAttributes) {
             hasRunningAttributes = true;
@@ -227,7 +254,7 @@ public class VallumraptorServant extends AnimalSummon implements IAnimatedEntity
             this.getAttribute(Attributes.ARMOR).setBaseValue(AttributesConfig.VallumraptorServantArmor.get());
             this.heal(28.0F);
         }
-        if (this.tickCount % 100 == 0 && this.getHealth() < this.getMaxHealth()) {
+        if (this.tickCount % (this.getHideFor() > 0 ? 15 : 100) == 0 && this.getHealth() < this.getMaxHealth()) {
             this.heal(2);
         }
         if (!level().isClientSide) {
@@ -261,6 +288,26 @@ public class VallumraptorServant extends AnimalSummon implements IAnimatedEntity
             if (this.isLeaping() && this.getAnimation() != ANIMATION_STARTLEAP) {
                 this.setLeaping(false);
                 this.leapImpulseApplied = false;
+            }
+            if (fleeTicks > 0) {
+                fleeTicks--;
+            }
+            if (getHideFor() > 0) {
+                this.setHideFor(this.getHideFor() - 1);
+            }
+            LivingEntity target = this.getTarget();
+            if (target != null && target.isAlive() && !(target instanceof Player player && player.isCreative())) {
+                if (this.getHealth() < this.getMaxHealth() * 0.45F && this.getHideFor() <= 0) {
+                    int i = 80 + this.random.nextInt(40);
+                    this.setHideFor(i);
+                    this.fleeFromPosition = target.position();
+                    this.fleeTicks = i;
+                    if (target instanceof Mob mob) {
+                        mob.setTarget(null);
+                        mob.setLastHurtByMob(null);
+                        mob.setLastHurtMob(null);
+                    }
+                }
             }
         }
         if (this.isLeaping()) {
@@ -328,6 +375,23 @@ public class VallumraptorServant extends AnimalSummon implements IAnimatedEntity
 
     public float getSitProgress(float partialTick) {
         return (prevSitProgress + (sitProgress - prevSitProgress) * partialTick) / 10.0F;
+    }
+
+    public float getHideProgress(float partialTick) {
+        return (prevHideProgress + (hideProgress - prevHideProgress) * partialTick) * 0.05F;
+    }
+
+    // 与原版 DinosaurEntity 一致：埋蛋进度 0~5，*0.2 后供模型驱动埋蛋扭动姿态
+    public float getBuryEggsProgress(float partialTick) {
+        return (prevBuryEggsProgress + (buryEggsProgress - prevBuryEggsProgress) * partialTick) * 0.2F;
+    }
+
+    public int getHideFor() {
+        return this.entityData.get(HIDING_FOR);
+    }
+
+    public void setHideFor(int ticks) {
+        this.entityData.set(HIDING_FOR, ticks);
     }
 
     public boolean isRunning() {
@@ -427,6 +491,8 @@ public class VallumraptorServant extends AnimalSummon implements IAnimatedEntity
     @Override
     public void handleEntityEvent(byte b) {
         if (b == 77) {
+            // 与原版 DinosaurEntity 一致：下蛋站立期间向四周扬起地面碎屑，并进入埋蛋姿态
+            this.buryingEggs = true;
             float radius = this.getBbWidth() * 0.55F;
             float particleCount = (5 + random.nextInt(5)) * radius;
             for (int i1 = 0; i1 < particleCount; i1++) {
@@ -443,6 +509,9 @@ public class VallumraptorServant extends AnimalSummon implements IAnimatedEntity
                     level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, groundState), true, this.getX() + extraX, ground.getY(), this.getZ() + extraZ, motionX, motionY, motionZ);
                 }
             }
+        } else if (b == 78) {
+            // 与原版 DinosaurEntity 一致：下蛋结束，复位埋蛋姿态
+            this.buryingEggs = false;
         } else {
             super.handleEntityEvent(b);
         }
@@ -519,6 +588,36 @@ public class VallumraptorServant extends AnimalSummon implements IAnimatedEntity
     @Override
     protected SoundEvent getDeathSound() {
         return ACSoundRegistry.VALLUMRAPTOR_DEATH.get();
+    }
+
+    private class FleeGoal extends Goal {
+
+        private FleeGoal() {
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+        }
+
+        @Override
+        public boolean canUse() {
+            return VallumraptorServant.this.fleeTicks > 0 && VallumraptorServant.this.fleeFromPosition != null;
+        }
+
+        @Override
+        public void stop() {
+            VallumraptorServant.this.fleeFromPosition = null;
+            VallumraptorServant.this.setRunning(false);
+        }
+
+        @Override
+        public void tick() {
+            VallumraptorServant.this.setRunning(true);
+            if (VallumraptorServant.this.getNavigation().isDone()) {
+                int dist = VallumraptorServant.this.getHideFor() > 0 ? 4 : 8;
+                Vec3 vec3 = LandRandomPos.getPosAway(VallumraptorServant.this, dist, dist, VallumraptorServant.this.fleeFromPosition);
+                if (vec3 != null) {
+                    VallumraptorServant.this.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, 1.0F);
+                }
+            }
+        }
     }
 
     private class VallumraptorServantMeleeAttackGoal extends Goal {

@@ -462,6 +462,7 @@ public class ModelVallumraptorServant extends AdvancedEntityModel<VallumraptorSe
         float sprintAmount = limbSwingAmount * sprintProgress * (1 - jumpProgress);
         float stillAmount = 1 - limbSwingAmount;
         float sitAmount = entity.getSitProgress(partialTick);
+        float buryEggsProgress = entity.getBuryEggsProgress(partialTick);
         float puzzleRot = entity.getPuzzledHeadRot(partialTick);
         float puzzleRotRad = (float) Math.toRadians(puzzleRot);
         float puzzleRotPoint = puzzleRot * 0.05F;
@@ -473,6 +474,13 @@ public class ModelVallumraptorServant extends AdvancedEntityModel<VallumraptorSe
         if (entity.getAnimation() != VallumraptorServant.ANIMATION_CALL_2) {
             progressPositionPrev(head, walkAmount, 0, 1, -1, 1F);
             progressPositionPrev(head, sprintAmount, 0, -2, 2, 1F);
+        }
+        // 与原版 VallumraptorModel 一致：下蛋埋蛋期间身体与脖子左右扭动
+        if (buryEggsProgress > 0.0F) {
+            limbSwing = ageInTicks;
+            limbSwingAmount = buryEggsProgress * 0.5F;
+            body.swing(0.25F, 0.4F, false, 0F, 0F, ageInTicks, buryEggsProgress);
+            neck.swing(0.25F, 0.4F, true, -1F, 0F, ageInTicks, buryEggsProgress);
         }
         progressPositionPrev(body, jumpProgress, 0, 0, 2, 1F);
         progressPositionPrev(larm, jumpProgress, 0, 0, -2, 1F);
