@@ -97,7 +97,7 @@ public class NucleeperNukeProtectionHandler {
     /**
      * 客户端收到 NucleeperExplosionZonePacket 后登记 zone。
      * 注意:不要在这里按 until 清理旧 zone——用新 zone 的 until 做阈值会误删仍在生效的
-     * 其它爆炸 zone(两枚先后爆炸时)。过期 zone 由 isClientInNucleeperZone 惰性清理。
+     * 其它爆炸 zone(两枚先后爆炸时)。过期 zone 由 clientZoneCovering 惰性清理。
      */
     public static void registerClientZone(ResourceKey<Level> dimension, double x, double y, double z,
                                           double hRadius, double vRadius, long untilGameTime, Set<UUID> ownerIds) {
@@ -135,7 +135,7 @@ public class NucleeperNukeProtectionHandler {
         if (!isNukeDamage(event.getSource())) {
             return;
         }
-        if (coveringNuke(event.getEntity()) == null) {
+        if (coveringZone(event.getEntity()) == null) {
             return;
         }
         event.setCanceled(true);
@@ -151,15 +151,16 @@ public class NucleeperNukeProtectionHandler {
         LivingEntity target = event.getEntity();
         Level level = target.level();
         if (level.isClientSide) {
-            // 客户端:爆炸 tick 也会对客户端实体直接施加辐照。命中同步来的 zone 就拒绝,
-            // 否则绿色视觉/血条着色/时长显示会永久残留(服务端 deny 后不会同步移除)。
-            if (isClientInNucleeperZone(target)) {
+            // 客户端:爆炸 tick 也会对客户端实体直接施加辐照。只对友方(主人/友军)拒绝,
+            // 否则绿色视觉/血条着色/时长显示会永久残留(服务端 deny 后不会同步移除);
+            // 敌人保留原版辐照,必须放行,避免客户端 deny 与服务端不同步。
+            if (clientZoneCovering(target) != null) {
                 event.setResult(Event.Result.DENY);
             }
             return;
         }
-        // 核能苦力怕仆从的爆炸不再对爆炸范围内任何生物施加辐照效果。
-        if (coveringZone(target, false) == null) {
+        // 核能苦力怕仆从的爆炸只对主人/友军拒绝辐照,敌人保留原版 40 分钟辐照。
+        if (coveringZone(target) == null) {
             return;
         }
         event.setResult(Event.Result.DENY);
@@ -184,7 +185,7 @@ public class NucleeperNukeProtectionHandler {
         }
         NukeProtection zone = entity.level().isClientSide
                 ? clientZoneCovering(entity)
-                : coveringZone(entity, true); // 服务端:只对友方(主人/友军),敌人照常被掀飞
+                : coveringZone(entity); // 服务端:只对友方(主人/友军),敌人照常被掀飞
         if (zone == null) {
             return;
         }
@@ -235,27 +236,6 @@ public class NucleeperNukeProtectionHandler {
         }
     }
 
-    /** 客户端:目标是否处于某个已同步的无辐照 zone 内。 */
-    private static boolean isClientInNucleeperZone(LivingEntity entity) {
-        Level level = entity.level();
-        long now = level.getGameTime();
-        ResourceKey<Level> dim = level.dimension();
-        synchronized (CLIENT_NUCKS) {
-            Iterator<NukeProtection> it = CLIENT_NUCKS.iterator();
-            while (it.hasNext()) {
-                NukeProtection zone = it.next();
-                if (zone.until() < now) {
-                    it.remove();
-                    continue;
-                }
-                if (zone.dimension().equals(dim) && isWithin(zone, entity)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     private static boolean isNukeDamage(DamageSource source) {
         return source.is(ACDamageTypes.NUKE) || source.is(ACDamageTypes.INTENTIONAL_GAME_DESIGN);
     }
@@ -269,11 +249,7 @@ public class NucleeperNukeProtectionHandler {
         }
     }
 
-    private static NukeProtection coveringNuke(LivingEntity entity) {
-        return coveringZone(entity, true);
-    }
-
-    private static NukeProtection coveringZone(LivingEntity entity, boolean requireProtected) {
+    private static NukeProtection coveringZone(LivingEntity entity) {
         if (!(entity.level() instanceof ServerLevel serverLevel)) {
             return null;
         }
@@ -290,10 +266,8 @@ public class NucleeperNukeProtectionHandler {
                 it.remove();
                 continue;
             }
-            if (!protection.dimension().equals(dim) || !isWithin(protection, entity)) {
-                continue;
-            }
-            if (!requireProtected || isProtected(entity, protection)) {
+            if (protection.dimension().equals(dim) && isWithin(protection, entity)
+                    && isProtected(entity, protection)) {
                 return protection;
             }
         }
