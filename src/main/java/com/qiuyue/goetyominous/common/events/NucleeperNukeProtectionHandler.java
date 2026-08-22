@@ -5,6 +5,7 @@ import com.github.alexmodguy.alexscaves.server.misc.ACDamageTypes;
 import com.github.alexmodguy.alexscaves.server.potion.ACEffectRegistry;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.ac.NucleeperServant;
+import com.qiuyue.goetyominous.compat.mod.AlexCavesCompat;
 import com.qiuyue.goetyominous.common.network.ModNetwork;
 import com.qiuyue.goetyominous.common.network.NucleeperExplosionZonePacket;
 import net.minecraft.resources.ResourceKey;
@@ -129,6 +130,10 @@ public class NucleeperNukeProtectionHandler {
 
     @SubscribeEvent
     public static void onLivingAttack(LivingAttackEvent event) {
+        // alexscaves 为可选联动:isNukeDamage 会访问 ACDamageTypes,未加载时抛 NoClassDefFoundError。
+        if (!AlexCavesCompat.isAlexCavesLoaded()) {
+            return;
+        }
         if (event.getEntity().level().isClientSide) {
             return;
         }
@@ -144,6 +149,10 @@ public class NucleeperNukeProtectionHandler {
 
     @SubscribeEvent
     public static void onEffectApplicable(MobEffectEvent.Applicable event) {
+        // alexscaves 为可选联动:ACEffectRegistry.IRRADIATED 依赖 alexscaves。
+        if (!AlexCavesCompat.isAlexCavesLoaded()) {
+            return;
+        }
         MobEffect effect = event.getEffectInstance().getEffect();
         if (effect != ACEffectRegistry.IRRADIATED.get()) {
             return;
@@ -177,6 +186,10 @@ public class NucleeperNukeProtectionHandler {
      */
     @SubscribeEvent
     public static void onLivingTick(LivingEvent.LivingTickEvent event) {
+        // alexscaves 为可选联动:本 handler 只服务于核能苦力怕仆从,未加载时无需任何处理。
+        if (!AlexCavesCompat.isAlexCavesLoaded()) {
+            return;
+        }
         LivingEntity entity = event.getEntity();
         Vec3 v = entity.getDeltaMovement();
         double horizSpeedSqr = v.x * v.x + v.z * v.z;

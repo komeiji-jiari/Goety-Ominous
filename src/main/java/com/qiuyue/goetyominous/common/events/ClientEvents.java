@@ -5,6 +5,7 @@ import com.qiuyue.goetyominous.client.particle.ac.NucleeperMushroomCloudParticle
 import com.qiuyue.goetyominous.client.render.EmptyRenderer;
 import com.qiuyue.goetyominous.common.init.ac.AcParticles;
 import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
+import com.qiuyue.goetyominous.compat.mod.AlexCavesCompat;
 import com.qiuyue.goetyominous.compat.mod.MutantMoreCompat;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -27,6 +28,11 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void registerParticles(RegisterParticleProvidersEvent event) {
+        // alexscaves 为可选联动:未加载时 NucleeperMushroomCloudParticle 直接继承 alexscaves
+        // 的 MushroomCloudParticle,实例化会抛 NoClassDefFoundError,这里提前返回。
+        if (!AlexCavesCompat.isAlexCavesLoaded()) {
+            return;
+        }
         event.registerSpecial((ParticleType<SimpleParticleType>) AcParticles.NUCLEEPER_MUSHROOM_CLOUD.get(),
                 new NucleeperMushroomCloudParticle.Provider());
     }

@@ -8,6 +8,7 @@ import com.Polarice3.Goety.utils.SEHelper;
 import com.github.alexmodguy.alexscaves.server.misc.ACDamageTypes;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.ac.NucleeperServant;
+import com.qiuyue.goetyominous.compat.mod.AlexCavesCompat;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -55,6 +56,10 @@ public class NucleeperNukeKillHandler {
 
     @SubscribeEvent
     public static void onLivingDeath(LivingDeathEvent event) {
+        // alexscaves 为可选联动:ACDamageTypes.NUKE 依赖 alexscaves,未加载时提前返回。
+        if (!AlexCavesCompat.isAlexCavesLoaded()) {
+            return;
+        }
         LivingEntity victim = event.getEntity();
         if (victim.level().isClientSide) {
             return;
