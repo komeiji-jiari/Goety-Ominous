@@ -602,6 +602,9 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.NUCLEEPER_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderNucleeperServant::new);
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.BRAINIAC_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderBrainiacServant::new);
         }
 
     }

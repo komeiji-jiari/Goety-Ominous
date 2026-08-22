@@ -77,6 +77,12 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> NucleeperServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> NucleeperServantTauntRange;
     public static final ForgeConfigSpec.ConfigValue<Boolean> NucleeperServantExplosionGriefing;
+    public static final ForgeConfigSpec.ConfigValue<Double> BrainiacServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> BrainiacServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> BrainiacServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> BrainiacServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> BrainiacServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> BrainiacServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantFollowRange;
@@ -885,6 +891,18 @@ public class AttributesConfig {
                 .defineInRange("nucleeperServantTauntRange", 12.0, 0.0, Double.MAX_VALUE);
         NucleeperServantExplosionGriefing = BUILDER.comment("Whether Nucleeper Servant nuclear explosions destroy blocks, Default: false (set to true to allow block destruction, which also respects the mobGriefing game rule)")
                 .define("nucleeperServantExplosionGriefing", false);
+        BrainiacServantHealth = BUILDER.comment("How much Max Health Brainiac Servants have, Default: 40.0 (matches Alex's Caves Brainiac)")
+                .defineInRange("brainiacServantHealth", 40.0, 1.0, Double.MAX_VALUE);
+        BrainiacServantDamage = BUILDER.comment("How much damage Brainiac Servants deal, Default: 5.0 (matches Alex's Caves Brainiac)")
+                .defineInRange("brainiacServantDamage", 5.0, 1.0, Double.MAX_VALUE);
+        BrainiacServantMovementSpeed = BUILDER.comment("How fast Brainiac Servants move, Default: 0.25 (matches Alex's Caves Brainiac)")
+                .defineInRange("brainiacServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
+        BrainiacServantFollowRange = BUILDER.comment("How much following/detection range Brainiac Servants have, Default: 32.0")
+                .defineInRange("brainiacServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
+        BrainiacServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Brainiac Servants have, Default: 0.0 (Alex's Caves Brainiac has none)")
+                .defineInRange("brainiacServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
+        BrainiacServantArmor = BUILDER.comment("How much natural Armor Brainiac Servants have, Default: 8.0 (matches Alex's Caves Brainiac)")
+                .defineInRange("brainiacServantArmor", 8.0, 0.0, Double.MAX_VALUE);
         FroststalkerServantHealth = BUILDER.comment("How much Max Health Froststalker Servants have, Default: 24.0 (matches Alex's Mobs Froststalker)")
                 .defineInRange("froststalkerServantHealth", 24.0, 1.0, Double.MAX_VALUE);
         FroststalkerServantDamage = BUILDER.comment("How much damage Froststalker Servants deal, Default: 4.5 (matches Alex's Mobs Froststalker)")

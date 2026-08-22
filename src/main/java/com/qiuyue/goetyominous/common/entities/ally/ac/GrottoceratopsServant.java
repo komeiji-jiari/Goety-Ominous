@@ -73,6 +73,9 @@ public class GrottoceratopsServant extends AnimalSummon implements IAnimatedEnti
     private Animation currentAnimation;
     private int animationTick;
     private float prevTailSwingRot;
+    private float prevBuryEggsProgress;
+    private float buryEggsProgress;
+    public boolean buryingEggs;
 
     public GrottoceratopsServant(EntityType<? extends Owned> type, Level level) {
         super(type, level);
@@ -167,6 +170,7 @@ public class GrottoceratopsServant extends AnimalSummon implements IAnimatedEnti
     @Override
     public void tick() {
         super.tick();
+        this.prevBuryEggsProgress = this.buryEggsProgress;
         float tailSwing = getTailSwingRot();
         this.prevTailSwingRot = tailSwing;
         if (this.getAnimation() == ANIMATION_MELEE_TAIL_1 || this.getAnimation() == ANIMATION_MELEE_TAIL_2) {
@@ -196,6 +200,13 @@ public class GrottoceratopsServant extends AnimalSummon implements IAnimatedEnti
                 this.doHurtTarget(target);
             }
         }
+        // 与原版 DinosaurEntity 一致：下蛋埋蛋期间 buryEggsProgress 升至 5（乘 0.2 后为 0~1），结束后回落
+        if (this.buryingEggs && this.buryEggsProgress < 5.0F) {
+            ++this.buryEggsProgress;
+        }
+        if (!this.buryingEggs && this.buryEggsProgress > 0.0F) {
+            --this.buryEggsProgress;
+        }
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
 
@@ -209,6 +220,11 @@ public class GrottoceratopsServant extends AnimalSummon implements IAnimatedEnti
 
     public void setTailSwingRot(float rot) {
         entityData.set(TAIL_SWING_ROT, rot);
+    }
+
+    // 与原版 DinosaurEntity 一致：埋蛋进度 0~5，*0.2 后供模型驱动埋蛋扭动姿态
+    public float getBuryEggsProgress(float partialTicks) {
+        return (this.prevBuryEggsProgress + (this.buryEggsProgress - this.prevBuryEggsProgress) * partialTicks) * 0.2F;
     }
 
     @Override
@@ -388,7 +404,8 @@ public class GrottoceratopsServant extends AnimalSummon implements IAnimatedEnti
     @Override
     public void handleEntityEvent(byte b) {
         if (b == 77) {
-            // 与原版 DinosaurEntity 一致：下蛋站立期间向四周扬起地面碎屑
+            // 与原版 DinosaurEntity 一致：下蛋站立期间向四周扬起地面碎屑，并进入埋蛋姿态
+            this.buryingEggs = true;
             float radius = this.getBbWidth() * 0.55F;
             float particleCount = (5 + random.nextInt(5)) * radius;
             for (int i1 = 0; i1 < particleCount; i1++) {
@@ -406,7 +423,8 @@ public class GrottoceratopsServant extends AnimalSummon implements IAnimatedEnti
                 }
             }
         } else if (b == 78) {
-            // 下蛋结束：无额外动画状态需要复位，交由模型/动画按需处理
+            // 与原版 DinosaurEntity 一致：下蛋结束，复位埋蛋姿态
+            this.buryingEggs = false;
         } else {
             super.handleEntityEvent(b);
         }
@@ -511,9 +529,10 @@ public class GrottoceratopsServant extends AnimalSummon implements IAnimatedEnti
 
         @Override
         protected void checkAndPerformAttack(LivingEntity target, double dist) {
-            // 与 IllagerElephantServant.ElephantMeleeAttackGoal 一致：需要视线，命中时播放动画并结算
+            // 与原版 MeleeAttackGoal 一致：命中前先检查 20-tick 攻击冷却，再结算
             double reach = this.getAttackReachSqr(target);
-            if (dist <= reach && this.mob.getSensing().hasLineOfSight(target)) {
+            if (dist <= reach && this.mob.getSensing().hasLineOfSight(target) && this.isTimeToAttack()) {
+                this.resetAttackCooldown();
                 this.mob.swing(InteractionHand.MAIN_HAND);
                 this.mob.doHurtTarget(target);
             }

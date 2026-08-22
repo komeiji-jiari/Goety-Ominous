@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.common.init.ac;
 
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.common.entities.ally.ac.BrainiacServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.GrottoceratopsServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.NucleeperServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TremorsaurusServant;
@@ -44,6 +45,13 @@ public class AcEntityRegistry {
                             .sized(0.98F, 3.95F)
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":nucleeper_servant"));
+
+    public static final RegistryObject<EntityType<BrainiacServant>> BRAINIAC_SERVANT =
+            AC_ENTITIES.register("brainiac_servant",
+                    () -> EntityType.Builder.<BrainiacServant>of((type, worldIn) -> new BrainiacServant(type, worldIn), MobCategory.MISC)
+                            .sized(1.1F, 2.5F)
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":brainiac_servant"));
 
     public static void register(IEventBus modEventBus) {
         AC_ENTITIES.register(modEventBus);

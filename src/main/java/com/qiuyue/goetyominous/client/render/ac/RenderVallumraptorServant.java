@@ -2,6 +2,8 @@ package com.qiuyue.goetyominous.client.render.ac;
 
 import com.qiuyue.goetyominous.client.render.model.ac.ModelVallumraptorServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.VallumraptorServant;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -16,6 +18,23 @@ public class RenderVallumraptorServant extends MobRenderer<VallumraptorServant, 
 
     public RenderVallumraptorServant(EntityRendererProvider.Context context) {
         super(context, new ModelVallumraptorServant(), 0.4F);
+    }
+
+    @Override
+    protected void scale(VallumraptorServant entity, PoseStack poseStack, float partialTick) {
+        if (entity.isElder()) {
+            poseStack.scale(1.1F, 1.1F, 1.1F);
+        }
+        float f = 1.0F - 0.9F * entity.getHideProgress(partialTick);
+        this.model.setAlpha(f);
+    }
+
+    @Override
+    protected RenderType getRenderType(VallumraptorServant entity, boolean bodyVisible, boolean translucent, boolean glint) {
+        if (entity.getHideProgress(1.0F) > 0.0F) {
+            return RenderType.entityTranslucent(this.getTextureLocation(entity));
+        }
+        return super.getRenderType(entity, bodyVisible, translucent, glint);
     }
 
     @Override

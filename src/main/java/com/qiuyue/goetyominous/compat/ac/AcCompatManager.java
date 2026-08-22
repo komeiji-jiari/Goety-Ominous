@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.compat.ac;
 
+import com.qiuyue.goetyominous.common.entities.ally.ac.BrainiacServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.GrottoceratopsServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.NucleeperServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TremorsaurusServant;
@@ -27,5 +28,6 @@ public class AcCompatManager {
         event.put(AcEntityRegistry.TREMORSAURUS_SERVANT.get(), TremorsaurusServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.VALLUMRAPTOR_SERVANT.get(), VallumraptorServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.NUCLEEPER_SERVANT.get(), NucleeperServant.setCustomAttributes().build());
+        event.put(AcEntityRegistry.BRAINIAC_SERVANT.get(), BrainiacServant.setCustomAttributes().build());
     }
 }
