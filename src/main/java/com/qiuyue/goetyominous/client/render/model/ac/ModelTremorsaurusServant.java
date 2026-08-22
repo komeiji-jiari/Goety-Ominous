@@ -13,10 +13,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TremorsaurusServant;
 import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.Vector4f;
 
 @OnlyIn(Dist.CLIENT)
 public class ModelTremorsaurusServant extends AdvancedEntityModel<TremorsaurusServant> {
@@ -425,17 +423,6 @@ public class ModelTremorsaurusServant extends AdvancedEntityModel<TremorsaurusSe
         this.body.translateAndRotate(pose);
         this.neck.translateAndRotate(pose);
         this.head.translateAndRotate(pose);
-    }
-
-    public Vec3 getRiderPosition(Vec3 riderPos) {
-        PoseStack stack = new PoseStack();
-        stack.pushPose();
-        this.body.translateAndRotate(stack);
-        Vector4f vec = new Vector4f((float) riderPos.x, (float) riderPos.y, (float) riderPos.z, 1.0F);
-        vec.mul(stack.last().pose());
-        Vec3 result = new Vec3(vec.x(), vec.y(), vec.z());
-        stack.popPose();
-        return result;
     }
 
     private float walkValue(float limbSwing, float limbSwingAmount, float speed, float offset, float degree, boolean inverse) {
