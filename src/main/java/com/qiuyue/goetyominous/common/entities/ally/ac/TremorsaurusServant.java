@@ -863,7 +863,7 @@ public class TremorsaurusServant extends AnimalSummon implements KeybindUsingMou
         public void tick() {
             LivingEntity target = TremorsaurusServant.this.getTarget();
             if (target != null) {
-                boolean grab = isFlyingTarget(target);
+                boolean grab = isFlyingTarget(target) || Math.max(target.getBbHeight(), target.getBbWidth()) < 2.0F;
                 TremorsaurusServant.this.lookAt(EntityAnchorArgument.Anchor.EYES, target.getEyePosition());
                 if (!TremorsaurusServant.this.isVehicle()) {
                     TremorsaurusServant.this.tryRoar();
@@ -871,7 +871,7 @@ public class TremorsaurusServant extends AnimalSummon implements KeybindUsingMou
                 double dist = TremorsaurusServant.this.distanceTo(target);
                 TremorsaurusServant.this.getNavigation().moveTo(target, 1.0F);
                 if (dist < TremorsaurusServant.this.getBbWidth() + target.getBbWidth() + 1.0F && TremorsaurusServant.this.getAnimation() == IAnimatedEntity.NO_ANIMATION) {
-                    if ((!TremorsaurusServant.this.getRandom().nextBoolean() && !(Math.max(target.getBbHeight(), target.getBbWidth()) >= 2.0F) || grab) && !TremorsaurusServant.this.isBaby()) {
+                    if (grab && !TremorsaurusServant.this.isBaby()) {
                         tryAnimation(ANIMATION_SHAKE_PREY);
                     } else {
                         tryAnimation(ANIMATION_BITE);
