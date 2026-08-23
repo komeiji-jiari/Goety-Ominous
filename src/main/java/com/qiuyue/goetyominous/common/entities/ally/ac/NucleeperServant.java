@@ -17,6 +17,7 @@ import com.google.common.base.Predicates;
 import com.qiuyue.goetyominous.client.sound.NucleeperServantSoundHandler;
 import com.qiuyue.goetyominous.common.events.NucleeperNukeKillHandler;
 import com.qiuyue.goetyominous.common.events.NucleeperNukeProtectionHandler;
+import com.qiuyue.goetyominous.common.items.ac.RaycatAmuletItem;
 import com.qiuyue.goetyominous.common.init.ac.AcParticles;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
@@ -82,6 +83,16 @@ public class NucleeperServant extends Summoned implements ActivatesSirens, Power
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, RaycatEntity.class, 10.0F, 1.0D, 1.2D) {
+            public void tick() {
+                super.tick();
+                NucleeperServant.this.catScareTime = 20;
+            }
+        });
+        // Raycat护符佩戴者等效于雷猫:其他玩家的仆从与无主仆从被吓退并退引信,自己的仆从不被驱赶
+        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Player.class, 10.0F, 1.0D, 1.2D,
+                target -> target instanceof Player player
+                        && RaycatAmuletItem.hasAmulet(player)
+                        && player != this.getTrueOwner()) {
             public void tick() {
                 super.tick();
                 NucleeperServant.this.catScareTime = 20;

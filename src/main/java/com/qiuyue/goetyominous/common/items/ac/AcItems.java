@@ -52,6 +52,9 @@ public class AcItems {
             AC_ITEMS.register("brainiac_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AcEntityRegistry.BRAINIAC_SERVANT, 0x3A4A2E, 0xE35FA0, egg()));
 
+    public static final RegistryObject<Item> RAYCAT_AMULET =
+            AC_ITEMS.register("raycat_amulet", () -> new RaycatAmuletItem());
+
     public static void register(IEventBus modEventBus) {
         AC_ITEMS.register(modEventBus);
     }

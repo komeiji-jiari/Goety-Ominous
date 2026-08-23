@@ -1,7 +1,9 @@
 package com.qiuyue.goetyominous.compat.curios;
 
 import com.qiuyue.goetyominous.common.items.ModItems;
+import com.qiuyue.goetyominous.common.items.ac.AcItems;
 import com.qiuyue.goetyominous.common.items.curios.DarkAnkh;
+import com.qiuyue.goetyominous.compat.mod.AlexCavesCompat;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.fml.InterModComms;
@@ -28,10 +30,16 @@ public class CuriosIntegration {
         InterModComms.sendTo("curios", top.theillusivec4.curios.api.SlotTypeMessage.REGISTER_TYPE, messageSupplier);
         InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE,
                 () -> new SlotTypeMessage.Builder("back").build());
+        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE,
+                () -> new SlotTypeMessage.Builder("necklace").build());
     }
 
     private void registerCapabilities(RegisterCapabilitiesEvent event) {
         CuriosApi.registerCurio(ModItems.DARK_ANKH.get(), new DarkAnkh());
         CuriosApi.registerCurio(ModItems.FUNGUS_PACK.get(), (ICurioItem) ModItems.FUNGUS_PACK.get());
+        // Raycat 护符是 Alex's Caves 联动物品,仅在 AC 加载时才注册
+        if (AlexCavesCompat.isAlexCavesLoaded()) {
+            CuriosApi.registerCurio(AcItems.RAYCAT_AMULET.get(), (ICurioItem) AcItems.RAYCAT_AMULET.get());
+        }
     }
 }
