@@ -312,6 +312,10 @@ public class GoetyOminous {
 
 
     public void onClientSetup(final FMLClientSetupEvent event) {
+        if (AlexCavesCompat.isAlexCavesLoaded()) {
+            // 撼地龙仆从的骑乘槽位条 HUD:引用客户端类与 AC 类型,只在客户端且 AC 加载时注册
+            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.TremorsaurusHudEvents.class);
+        }
         event.enqueueWork(() -> {
             ItemProperties.register(ModItems.WITCH_BOW.get(), new ResourceLocation("pull"),
                     (stack, level, entity, seed) -> {

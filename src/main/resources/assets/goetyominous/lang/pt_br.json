@@ -61,7 +61,7 @@
   "item.goetyominous.wither_breath_focus": "Foco do Sopro do Wither",
   "info.goetyominous.dark_ankh": "Consome energia da alma para curar servos.",
   "info.goetyominous.raycat_amulet": "Espanta Creepers próximos quando usado.",
-  "info.goetyominous.raycat_amulet.radiation": "Converte a radiação em você e aliados em Regeneração I (15s) quando usado.",
+  "info.goetyominous.raycat_amulet.radiation": "Converte a radiação em você e aliados em Regeneração II e Resistência I (ambos 30s) quando usado.",
   "info.goetyominous.dark_ankh.duration": "Duração %d: Aumenta a chance de salvar da morte para servos com pouca vida para %d%% (máx 15%%).",
   "info.goetyominous.screaming_skull_jar": "Absorve automaticamente Crânios Altos do inventário quando equipado. Consome crânios para prevenir Ataques Illager.",
   "info.goetyominous.screaming_skull_jar.effect": "Reduz o dano causado por Illagers em 15%%.",
