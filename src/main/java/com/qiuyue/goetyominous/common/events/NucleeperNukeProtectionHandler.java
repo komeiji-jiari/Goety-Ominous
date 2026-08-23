@@ -2,7 +2,6 @@ package com.qiuyue.goetyominous.common.events;
 
 import com.Polarice3.Goety.api.entities.IOwned;
 import com.github.alexmodguy.alexscaves.server.misc.ACDamageTypes;
-import com.github.alexmodguy.alexscaves.server.potion.ACEffectRegistry;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.ac.NucleeperServant;
 import com.qiuyue.goetyominous.compat.mod.AlexCavesCompat;
@@ -12,16 +11,13 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
-import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
@@ -80,8 +76,8 @@ public class NucleeperNukeProtectionHandler {
     }
 
     /**
-     * 把同一个"无辐照 zone"(含 ownerIds)同步给爆炸附近客户端,让客户端 onEffectApplicable
-     * 同样拒绝辐照、onLivingTick 中和冲击波击退。必须在 addFreshEntity(explosion) 之前调用,
+     * 把同一个"保护 zone"(含 ownerIds)同步给爆炸附近客户端,让客户端 onLivingTick
+     * 同样中和冲击波击退(辐照不再拦截,与原版一致)。必须在 addFreshEntity(explosion) 之前调用,
      * 确保客户端 tick 到爆炸实体时 zone 已就绪(同连接内包按序处理,先登记的 zone 一定先于
      * spawn 包生效)。
      */
@@ -147,34 +143,8 @@ public class NucleeperNukeProtectionHandler {
         GoetyOminous.LOGGER.debug("[Nucleeper] 已取消 {} 受到的核爆伤害", event.getEntity().getName().getString());
     }
 
-    @SubscribeEvent
-    public static void onEffectApplicable(MobEffectEvent.Applicable event) {
-        // alexscaves 为可选联动:ACEffectRegistry.IRRADIATED 依赖 alexscaves。
-        if (!AlexCavesCompat.isAlexCavesLoaded()) {
-            return;
-        }
-        MobEffect effect = event.getEffectInstance().getEffect();
-        if (effect != ACEffectRegistry.IRRADIATED.get()) {
-            return;
-        }
-        LivingEntity target = event.getEntity();
-        Level level = target.level();
-        if (level.isClientSide) {
-            // 客户端:爆炸 tick 也会对客户端实体直接施加辐照。只对友方(主人/友军)拒绝,
-            // 否则绿色视觉/血条着色/时长显示会永久残留(服务端 deny 后不会同步移除);
-            // 敌人保留原版辐照,必须放行,避免客户端 deny 与服务端不同步。
-            if (clientZoneCovering(target) != null) {
-                event.setResult(Event.Result.DENY);
-            }
-            return;
-        }
-        // 核能苦力怕仆从的爆炸只对主人/友军拒绝辐照,敌人保留原版 40 分钟辐照。
-        if (coveringZone(target) == null) {
-            return;
-        }
-        event.setResult(Event.Result.DENY);
-        GoetyOminous.LOGGER.debug("[Nucleeper] 已阻止 {} 受到核爆辐照效果", target.getName().getString());
-    }
+    // 辐照(IRRADIATED)不再拦截:与原版 Alex's Caves 一致,核爆范围内的敌人、友军、主人
+    // 都会中招(原版 40 分钟 IRRADIATED III)。zone 仅用于抵消爆炸直接伤害与冲击波击退。
 
     /**
      * 冲击波击退: NuclearExplosionEntity 对爆炸范围内生物直接 setDeltaMovement(方向 * damage * 0.1 * factor),
