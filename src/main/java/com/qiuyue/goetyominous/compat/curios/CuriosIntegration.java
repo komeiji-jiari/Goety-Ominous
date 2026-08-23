@@ -30,8 +30,8 @@ public class CuriosIntegration {
         InterModComms.sendTo("curios", top.theillusivec4.curios.api.SlotTypeMessage.REGISTER_TYPE, messageSupplier);
         InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE,
                 () -> new SlotTypeMessage.Builder("back").build());
-        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE,
-                () -> new SlotTypeMessage.Builder("necklace").build());
+        // necklace 是 Curios 内置默认槽,无需 IMC 注册;Raycat 护符挂槽走
+        // data/curios/tags/items/necklace.json(与原版 Feline Amulet 一致)
     }
 
     private void registerCapabilities(RegisterCapabilitiesEvent event) {
