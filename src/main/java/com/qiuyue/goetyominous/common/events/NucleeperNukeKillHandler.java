@@ -6,7 +6,6 @@ import com.Polarice3.Goety.utils.CuriosFinder;
 import com.Polarice3.Goety.utils.ItemHelper;
 import com.Polarice3.Goety.utils.SEHelper;
 import com.github.alexmodguy.alexscaves.server.misc.ACDamageTypes;
-import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.ac.NucleeperServant;
 import com.qiuyue.goetyominous.compat.mod.AlexCavesCompat;
 import net.minecraft.resources.ResourceKey;
@@ -20,14 +19,18 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-@Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID)
+/**
+ * 注意:不能加 @Mod.EventBusSubscriber 注解——该注解会被 Forge 在 mod 构造时无条件
+ * Class.forName,而本类直接引用 Alex's Caves 类型(ACDamageTypes),AC 未加载时会
+ * NoClassDefFoundError。由 GoetyOminous 构造器的 isAlexCavesLoaded() 门内手动
+ * MinecraftForge.EVENT_BUS.register 本类。
+ */
 public class NucleeperNukeKillHandler {
 
     private record NukeCredit(ResourceKey<Level> dimension, UUID ownerId, Vec3 origin, double radiusSq, long until) {}
