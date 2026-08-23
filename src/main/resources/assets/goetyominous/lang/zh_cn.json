@@ -319,7 +319,7 @@
   "item.goetyominous.bastion_scroll": "守卫卷轴",
   "info.goetyominous.dark_ankh": "消耗灵魂能量为仆从恢复生命值。",
   "info.goetyominous.raycat_amulet": "佩戴时吓跑附近的苦力怕。",
-  "info.goetyominous.raycat_amulet.radiation": "佩戴时将自身与友军的辐照转化为生命恢复 I(15秒)。",
+  "info.goetyominous.raycat_amulet.radiation": "佩戴时将自身与友军的辐照转化为生命恢复 II 与抗性提升 I(均 30秒)。",
   "info.goetyominous.dark_ankh.duration": "持久%d: 低血量仆从逃过死亡的几率提升至%d%%（最高15%%）。",
   "info.goetyominous.screaming_skull_jar": "灾厄猎杀触发时消耗高头骨阻止灾厄猎杀发生。",
   "info.goetyominous.screaming_skull_jar.effect": "受到来自灾厄村民伤害降低15%。",

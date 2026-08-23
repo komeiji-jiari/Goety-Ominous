@@ -319,7 +319,7 @@
   "item.goetyominous.bastion_scroll": "Bastion Scroll",
   "info.goetyominous.dark_ankh": "Consumes soul energy to heal servants.",
   "info.goetyominous.raycat_amulet": "Scares away nearby Creepers when worn.",
-  "info.goetyominous.raycat_amulet.radiation": "Converts radiation on yourself and allies into Regeneration I (15s) when worn.",
+  "info.goetyominous.raycat_amulet.radiation": "Converts radiation on yourself and allies into Regeneration II and Resistance I (both 30s) when worn.",
   "info.goetyominous.dark_ankh.duration": "Duration %d: Increases death save chance for low-health servants to %d%% (max 15%%).",
   "info.goetyominous.screaming_skull_jar": "Consumes skulls to prevent Illager Assaults.",
   "info.goetyominous.screaming_skull_jar.effect": "Reduces damage taken from Illagers by 15%.",

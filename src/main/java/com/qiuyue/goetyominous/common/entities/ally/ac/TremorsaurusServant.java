@@ -863,7 +863,8 @@ public class TremorsaurusServant extends AnimalSummon implements KeybindUsingMou
         public void tick() {
             LivingEntity target = TremorsaurusServant.this.getTarget();
             if (target != null) {
-                boolean grab = isFlyingTarget(target) || Math.max(target.getBbHeight(), target.getBbWidth()) < 2.0F;
+                // 与原版 TremorsaurusMeleeGoal 一致：小体型目标仅 50% 概率抓取甩头，否则咬击；飞行目标必抓
+                boolean grab = isFlyingTarget(target) || (TremorsaurusServant.this.getRandom().nextBoolean() && Math.max(target.getBbHeight(), target.getBbWidth()) < 2.0F);
                 TremorsaurusServant.this.lookAt(EntityAnchorArgument.Anchor.EYES, target.getEyePosition());
                 if (!TremorsaurusServant.this.isVehicle()) {
                     TremorsaurusServant.this.tryRoar();

@@ -254,8 +254,22 @@ public class GrottoceratopsServant extends AnimalSummon implements IAnimatedEnti
     @Override
     public void positionRider(Entity rider, Entity.MoveFunction moveFunction) {
         if (this.hasPassenger(rider)) {
-            rider.setPos(this.getX(), this.getY() + this.getPassengersRidingOffset() + rider.getMyRidingOffset(), this.getZ());
+            double y = this.getY() + this.getPassengersRidingOffset() + rider.getMyRidingOffset() - this.getMaxLegSolverHeight();
+            rider.setPos(this.getX(), y, this.getZ());
         }
+    }
+
+    /**
+     * 与模型 articulateLegs 完全一致：四条腿高度取最大后乘 0.8，得到模型身体因地形起伏
+     * 相对碰撞箱下移的方块数。骑乘位置须减去该量，使玩家跟随身体姿态，
+     * 避免上下坡时陷入角龙体内或渲染浮空（参考 TremorsaurusServant.positionRider）。
+     */
+    private float getMaxLegSolverHeight() {
+        float backLeftH = legSolver.backLeft.getHeight(1.0F);
+        float backRightH = legSolver.backRight.getHeight(1.0F);
+        float frontLeftH = legSolver.frontLeft.getHeight(1.0F);
+        float frontRightH = legSolver.frontRight.getHeight(1.0F);
+        return Math.max(backLeftH, Math.max(backRightH, Math.max(frontLeftH, frontRightH))) * 0.8F;
     }
 
     @Override
