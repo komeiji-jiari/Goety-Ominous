@@ -19,7 +19,6 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 
 import java.util.ArrayList;
@@ -29,7 +28,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-@Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID)
+/**
+ * 注意:不能加 @Mod.EventBusSubscriber 注解——该注解会被 Forge 在 mod 构造时无条件
+ * Class.forName,而本类直接引用 Alex's Caves 类型(ACDamageTypes),AC 未加载时会
+ * NoClassDefFoundError。由 GoetyOminous 构造器的 isAlexCavesLoaded() 门内手动
+ * MinecraftForge.EVENT_BUS.register 本类。
+ */
 public class NucleeperNukeProtectionHandler {
 
     private record NukeProtection(ResourceKey<Level> dimension, Vec3 origin, double hRadius, double vRadius, long until, Set<UUID> ownerIds) {

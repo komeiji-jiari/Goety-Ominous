@@ -135,9 +135,12 @@ public class GoetyOminous {
 
         if (AlexCavesCompat.isAlexCavesLoaded()) {
             com.qiuyue.goetyominous.compat.ac.AcCompatManager.init(modEventBus);
-            // 双保险:除了 @Mod.EventBusSubscriber 自动扫描,再显式注册一次
-            // (幂等,重复注册无副作用),确保核爆保护事件一定挂在 FORGE 总线。
+            // AC 为可选前置:这三个事件类都直接引用 AC 类型,不能加 @Mod.EventBusSubscriber
+            // (会被 Forge 无条件 Class.forName 导致 AC 缺失时 NoClassDefFoundError)。
+            // 只在 AC 加载时手动注册到 FORGE 总线。
             MinecraftForge.EVENT_BUS.register(NucleeperNukeProtectionHandler.class);
+            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.NucleeperNukeKillHandler.class);
+            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.RaycatAmuletEvents.class);
         }
 
         getOrCreateDirectory(FMLPaths.CONFIGDIR.get().resolve("goetyominous"), "goetyominous");
