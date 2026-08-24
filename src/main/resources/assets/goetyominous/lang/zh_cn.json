@@ -383,7 +383,5 @@
   "info.goety.focus.spellType": "法术类型: %s",
   "item.goety.focus.info": "当用法杖施放时：",
   "jade.goetyominous.melee_progress": "蛮兵升级进度 %s/%s",
-  "jade.goetyominous.ranged_progress": "猎手升级进度 %s/%s",
-  "info.goetyominous.nucleeper_summon.invalid_structure": "核能图腾结构不完整:需要自下而上为废金属、核炉组件、铀块、核炉组件与警笛灯的五格柱。",
-  "info.goetyominous.nucleeper_summon.limit": "你已拥有太多核能苦力怕仆从!"
+  "jade.goetyominous.ranged_progress": "猎手升级进度 %s/%s"
 }

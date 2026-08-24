@@ -383,7 +383,5 @@
   "info.goety.focus.spellType": "Spell Type: %s",
   "item.goety.focus.info": "When Cast in Wand or Staff:",
   "jade.goetyominous.melee_progress": "Brute Upgrade Progress %s/%s",
-  "jade.goetyominous.ranged_progress": "Hunter Upgrade Progress %s/%s",
-  "info.goetyominous.nucleeper_summon.invalid_structure": "The nuclear totem is incomplete: build a 5-tall pillar of Scrap Metal, Nuclear Furnace Component, Block of Uranium, Nuclear Furnace Component and Siren Light.",
-  "info.goetyominous.nucleeper_summon.limit": "You already have too many Nucleeper Servants!"
+  "jade.goetyominous.ranged_progress": "Hunter Upgrade Progress %s/%s"
 }

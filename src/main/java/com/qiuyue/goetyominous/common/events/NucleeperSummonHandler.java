@@ -6,7 +6,6 @@ import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -73,11 +72,9 @@ public class NucleeperSummonHandler {
             return;
         }
         if (!underLimit(serverLevel, player)) {
-            player.displayClientMessage(Component.translatable("info.goetyominous.nucleeper_summon.limit"), true);
             return;
         }
         if (!checkStructure(level, pos)) {
-            player.displayClientMessage(Component.translatable("info.goetyominous.nucleeper_summon.invalid_structure"), true);
             return;
         }
         summon(serverLevel, level, pos, stack, player, event);
