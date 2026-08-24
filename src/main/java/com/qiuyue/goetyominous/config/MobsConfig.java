@@ -50,6 +50,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> MHBlazingHelmDamageBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> MHUnholyBloodHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> MHUnholyBloodDamageBouns;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DicerServantLimit;
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> CultistPatrol;
     public static final ForgeConfigSpec.ConfigValue<Integer> CultistPatrolInterval;
@@ -139,6 +140,10 @@ public class MobsConfig {
         RamblerServantLimit = BUILDER
                 .comment("Maximum number of Rambler Servants that can be summoned (Default: 8)")
                 .defineInRange("ramblerServantLimit", 8, 1, 100);
+
+        DicerServantLimit = BUILDER
+                .comment("Maximum number of Dicer Servants that can be summoned (Default: 8)")
+                .defineInRange("dicerServantLimit", 8, 1, 100);
 
         UrbhadhachServantLimit = BUILDER
                 .comment("Maximum number of Urbhadhach Servants that can be summoned (Default: 8)")

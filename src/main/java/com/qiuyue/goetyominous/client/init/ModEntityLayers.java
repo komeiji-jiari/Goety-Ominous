@@ -191,4 +191,13 @@ public class ModEntityLayers {
 
     public static final ModelLayerLocation RAMBLER_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "rambler_servant"), "main");
+
+    public static final ModelLayerLocation DICER_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "dicer_servant"), "main");
+
+    public static final ModelLayerLocation VOLT_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "volt_servant"), "main");
+
+    public static final ModelLayerLocation TREMBLER_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "trembler_servant"), "main");
 }
