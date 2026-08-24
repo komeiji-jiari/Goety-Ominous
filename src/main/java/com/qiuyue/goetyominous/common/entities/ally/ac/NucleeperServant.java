@@ -68,7 +68,6 @@ public class NucleeperServant extends Summoned implements ActivatesSirens, Power
     private int catScareTime = 0;
 
     private boolean spawnedExplosion = false;
-    /** 打火石手动点火:手动点火的引信不因目标消失而解除 */
     private boolean manuallyIgnited = false;
     private static final EntityDataAccessor<Boolean> TRIGGERED = SynchedEntityData.defineId(NucleeperServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> CLOSE_TIME = SynchedEntityData.defineId(NucleeperServant.class, EntityDataSerializers.INT);
@@ -88,7 +87,6 @@ public class NucleeperServant extends Summoned implements ActivatesSirens, Power
                 NucleeperServant.this.catScareTime = 20;
             }
         });
-        // Raycat护符佩戴者等效于雷猫:其他玩家的仆从与无主仆从被吓退并退引信,自己的仆从不被驱赶
         this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Player.class, 10.0F, 1.0D, 1.2D,
                 target -> target instanceof Player player
                         && RaycatAmuletItem.hasAmulet(player)
@@ -250,7 +248,6 @@ public class NucleeperServant extends Summoned implements ActivatesSirens, Power
             LivingEntity target = this.getTarget();
             boolean noTarget = !this.manuallyIgnited && !this.isExploding() && (target == null || !target.isAlive());
             if ((this.catScareTime > 0 && !this.isExploding()) || noTarget) {
-                // 被雷猫吓到,或目标跑掉/死亡:引信回退,归零即解除(手动点火不受影响)
                 if (time > 0) {
                     this.setCloseTime(time - 1);
                 } else {
@@ -439,7 +436,6 @@ public class NucleeperServant extends Summoned implements ActivatesSirens, Power
         public void tick() {
             LivingEntity target = NucleeperServant.this.getTarget();
             if (target != null && target.isAlive()) {
-                // 锁敌即点燃引信:不再需要走近到近战距离才开始倒计时
                 NucleeperServant.this.setTriggered(true);
                 NucleeperServant.this.getNavigation().moveTo(target, 1.0D);
             }

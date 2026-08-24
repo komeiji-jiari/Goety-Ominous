@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "nbn",
+    "bhb",
+    "nbn"
+  ],
+  "key":
+  {
+    "b":
+    {
+      "item": "minecraft:sand"
+    },
+    "h":
+    {
+      "item": "goety:empty_focus"
+    },
+    "n":
+    {
+      "item": "minecraft:feather"
+    }
+  },
+  "result":
+  {
+    "item": "goetyominous:sand_focus",
+    "count": 1
+  }
+}

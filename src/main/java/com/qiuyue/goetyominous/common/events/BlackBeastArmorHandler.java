@@ -59,7 +59,11 @@ public class BlackBeastArmorHandler {
             if (!player.getAbilities().instabuild) {
                 held.shrink(1);
             }
-            int repair = (int) (armor.getMaxDamage() * com.qiuyue.goetyominous.config.WeaponConfig.BlackBeastArmorIngotRepair.get().floatValue());
+            boolean isDarkAlloy = held.is(com.Polarice3.Goety.common.items.ModItems.DARK_ALLOY_INGOT.get());
+            float repairMult = isDarkAlloy
+                    ? com.qiuyue.goetyominous.config.WeaponConfig.BlackBeastArmorIngotRepair.get().floatValue() * 3.0F
+                    : com.qiuyue.goetyominous.config.WeaponConfig.BlackBeastArmorIngotRepair.get().floatValue();
+            int repair = (int) (armor.getMaxDamage() * repairMult);
             armor.setDamageValue(Math.max(0, armor.getDamageValue() - repair));
             blackBeast.playSound(ModSounds.WOLF_ARMOR_REPAIR.get(), 1.0F, 1.0F);
             event.setCancellationResult(InteractionResult.SUCCESS);

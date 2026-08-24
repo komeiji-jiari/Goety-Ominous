@@ -1,0 +1,33 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:hunger_core"
+  },
+  "craftType": "adept_nether",
+  "soulCost": 1,
+  "duration": 10,
+  "ingredients": [
+    {
+      "tag": "goety:meat"
+    },
+    {
+      "tag": "goety:meat"
+    },
+    {
+      "item": "goety:savage_tooth"
+    },
+    {
+      "item": "alexsmobs:dropbear_claw"
+    },
+    {
+      "item": "alexsmobs:dropbear_claw"
+    },
+    {
+      "item": "alexsmobs:dropbear_claw"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:dropbear_focus"
+  }
+}

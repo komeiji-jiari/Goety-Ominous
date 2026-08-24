@@ -1,0 +1,20 @@
+{
+  "name": "Plunging Focus",
+  "icon": "goetyominous:dropbear_focus",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "This spell summons loyal Dropbear servants. These Nether-dwelling bear variants serve as excellent siege units."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:dropbear_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "Casting this spell with a Nether Staff summons an additional Dropbear. If you cast it while wearing Nether Robes, it summons empowered versions of the Dropbear."
+    }
+  ]
+}

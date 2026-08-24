@@ -36,6 +36,18 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> VallumraptorElderChance;
     public static final ForgeConfigSpec.ConfigValue<Integer> NucleeperServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> BrainiacServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MWSSoulShieldHealthBouns;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MWSSoulShieldDamageBouns;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MWSHowlingSoulHealthBouns;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MWSHowlingSoulDamageBouns;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MWSUnholyBloodHealthBouns;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MWSUnholyBloodDamageBouns;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MHSoulJarHealthBouns;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MHSoulJarDamageBouns;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MHBlazingHelmHealthBouns;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MHBlazingHelmDamageBouns;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MHUnholyBloodHealthBouns;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MHUnholyBloodDamageBouns;
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> CultistPatrol;
     public static final ForgeConfigSpec.ConfigValue<Integer> CultistPatrolInterval;
@@ -175,6 +187,36 @@ public class MobsConfig {
                 .comment("Maximum number of Brainiac Servants that can be summoned (Default: 16)")
                 .defineInRange("brainiacServantLimit", 16, 1, 100);
 
+        BUILDER.pop();
+
+        BUILDER.push("Mutant Wither Skeleton Enhancements");
+        MWSSoulShieldHealthBouns = BUILDER.comment("Extra health bonus when Mutant Wither Skeleton has Soul Shield, Default: 30")
+                .defineInRange("mwsSoulShieldHealthBonus", 30, 0, Integer.MAX_VALUE);
+        MWSSoulShieldDamageBouns = BUILDER.comment("Extra attack damage bonus when Mutant Wither Skeleton has Soul Shield, Default: 2")
+                .defineInRange("mwsSoulShieldDamageBonus", 2, 0, Integer.MAX_VALUE);
+        MWSHowlingSoulHealthBouns = BUILDER.comment("Extra health bonus when Mutant Wither Skeleton has Howling Soul, Default: 20")
+                .defineInRange("mwsHowlingSoulHealthBonus", 20, 0, Integer.MAX_VALUE);
+        MWSHowlingSoulDamageBouns = BUILDER.comment("Extra attack damage bonus when Mutant Wither Skeleton has Howling Soul, Default: 1")
+                .defineInRange("mwsHowlingSoulDamageBonus", 1, 0, Integer.MAX_VALUE);
+        MWSUnholyBloodHealthBouns = BUILDER.comment("Extra health bonus when Mutant Wither Skeleton has Unholy Blood, Default: 50")
+                .defineInRange("mwsUnholyBloodHealthBonus", 50, 0, Integer.MAX_VALUE);
+        MWSUnholyBloodDamageBouns = BUILDER.comment("Extra attack damage bonus when Mutant Wither Skeleton has Unholy Blood, Default: 3")
+                .defineInRange("mwsUnholyBloodDamageBonus", 3, 0, Integer.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Mutant Hoglin Enhancements");
+        MHSoulJarHealthBouns = BUILDER.comment("Extra health bonus when Mutant Hoglin has Soul Jar, Default: 30")
+                .defineInRange("mhSoulJarHealthBonus", 30, 0, Integer.MAX_VALUE);
+        MHSoulJarDamageBouns = BUILDER.comment("Extra attack damage bonus when Mutant Hoglin has Soul Jar, Default: 2")
+                .defineInRange("mhSoulJarDamageBonus", 2, 0, Integer.MAX_VALUE);
+        MHBlazingHelmHealthBouns = BUILDER.comment("Extra health bonus when Mutant Hoglin has Blazing Helm, Default: 20")
+                .defineInRange("mhBlazingHelmHealthBonus", 20, 0, Integer.MAX_VALUE);
+        MHBlazingHelmDamageBouns = BUILDER.comment("Extra attack damage bonus when Mutant Hoglin has Blazing Helm, Default: 2")
+                .defineInRange("mhBlazingHelmDamageBonus", 2, 0, Integer.MAX_VALUE);
+        MHUnholyBloodHealthBouns = BUILDER.comment("Extra health bonus when Mutant Hoglin has Unholy Blood, Default: 50")
+                .defineInRange("mhUnholyBloodHealthBonus", 50, 0, Integer.MAX_VALUE);
+        MHUnholyBloodDamageBouns = BUILDER.comment("Extra attack damage bonus when Mutant Hoglin has Unholy Blood, Default: 3")
+                .defineInRange("mhUnholyBloodDamageBonus", 3, 0, Integer.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.push("Mechanics");

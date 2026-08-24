@@ -58,14 +58,14 @@ public class ColdHeartItem extends Item {
     public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
         if (!player.level().isClientSide) {
             if (target instanceof IceologerServant iceologer) {
-                return convertServant(player, iceologer, iceologer.getOwnerId(),
+                return convertServant(player, stack, iceologer, iceologer.getOwnerId(),
                         level -> {
                             CryologerServant c = ModEntityType.CRYOLOGER_SERVANT.get().create(level);
                             return c;
                         });
             }
             if (target instanceof BoundIceologer boundIce) {
-                return convertServant(player, boundIce, boundIce.getOwnerId(),
+                return convertServant(player, stack, boundIce, boundIce.getOwnerId(),
                         level -> {
                             BoundCryologer c = ModEntityType.BOUND_CRYOLOGER.get().create(level);
                             return c;
@@ -76,7 +76,7 @@ public class ColdHeartItem extends Item {
     }
 
     private <T extends Mob & com.Polarice3.Goety.api.entities.IOwned> InteractionResult convertServant(
-            Player player, Mob oldServant, java.util.UUID ownerId,
+            Player player, ItemStack stack, Mob oldServant, java.util.UUID ownerId,
             java.util.function.Function<ServerLevel, T> factory) {
         if (!ownerId.equals(player.getUUID())) {
             return InteractionResult.FAIL;
@@ -127,7 +127,12 @@ public class ColdHeartItem extends Item {
 
             oldServant.discard();
 
+            if (!player.getAbilities().instabuild) {
+                stack.shrink(1);
+            }
+
             return InteractionResult.SUCCESS;
+
         }
         return InteractionResult.FAIL;
     }

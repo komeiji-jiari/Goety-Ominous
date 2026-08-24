@@ -18,7 +18,7 @@
     },
     {
       "type": "goety:ritual",
-      "recipe": "goetyominous:zombie_crocodile_servant"
+      "recipe": "goetyominous:convert_crocodile_to_zombie_crocodile"
     }
   ]
 }

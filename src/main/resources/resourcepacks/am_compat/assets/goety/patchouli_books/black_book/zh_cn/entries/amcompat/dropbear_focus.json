@@ -1,0 +1,20 @@
+{
+  "name": "坠击聚晶",
+  "icon": "goetyominous:dropbear_focus",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "别误会，这个法术不会让你坠机，而是召唤出忠诚的悬熊仆从。这些居住在下界的熊变种可以作为很好的攻坚单位来使用。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:dropbear_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "使用下界魔杖施法可以让你额外多召唤一只悬熊。如果你穿着下界长袍使用这个法术，则允许你召唤强化版的悬熊。"
+    }
+  ]
+}

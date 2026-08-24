@@ -30,14 +30,11 @@ public class CuriosIntegration {
         InterModComms.sendTo("curios", top.theillusivec4.curios.api.SlotTypeMessage.REGISTER_TYPE, messageSupplier);
         InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE,
                 () -> new SlotTypeMessage.Builder("back").build());
-        // necklace 是 Curios 内置默认槽,无需 IMC 注册;Raycat 护符挂槽走
-        // data/curios/tags/items/necklace.json(与原版 Feline Amulet 一致)
     }
 
     private void registerCapabilities(RegisterCapabilitiesEvent event) {
         CuriosApi.registerCurio(ModItems.DARK_ANKH.get(), new DarkAnkh());
         CuriosApi.registerCurio(ModItems.FUNGUS_PACK.get(), (ICurioItem) ModItems.FUNGUS_PACK.get());
-        // Raycat 护符是 Alex's Caves 联动物品,仅在 AC 加载时才注册
         if (AlexCavesCompat.isAlexCavesLoaded()) {
             CuriosApi.registerCurio(AcItems.RAYCAT_AMULET.get(), (ICurioItem) AcItems.RAYCAT_AMULET.get());
         }

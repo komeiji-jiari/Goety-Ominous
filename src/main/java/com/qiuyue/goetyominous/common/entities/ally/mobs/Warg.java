@@ -416,7 +416,11 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
                     if (!player.getAbilities().instabuild) {
                         held.shrink(1);
                     }
-                    int repair = (int) (wargArmor.getMaxDamage() * com.qiuyue.goetyominous.config.WeaponConfig.WargArmorIngotRepair.get().floatValue());
+                    boolean isDarkAlloy = held.is(com.Polarice3.Goety.common.items.ModItems.DARK_ALLOY_INGOT.get());
+                    float repairMult = isDarkAlloy
+                            ? com.qiuyue.goetyominous.config.WeaponConfig.WargArmorIngotRepair.get().floatValue() * 3.0F
+                            : com.qiuyue.goetyominous.config.WeaponConfig.WargArmorIngotRepair.get().floatValue();
+                    int repair = (int) (wargArmor.getMaxDamage() * repairMult);
                     wargArmor.setDamageValue(Math.max(0, wargArmor.getDamageValue() - repair));
                     this.playSound(SoundEvents.ANVIL_USE, 1.0F, 1.0F);
                     return InteractionResult.sidedSuccess(this.level().isClientSide);
@@ -433,8 +437,9 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
                     consumeOne(player, held);
                     return InteractionResult.sidedSuccess(this.level().isClientSide);
                 }
-                if (held.isEmpty() && this.isSaddled()) {
+                if (held.is(Items.SHEARS) && this.isSaddled()) {
 
+                    held.hurtAndBreak(1, player, (e) -> {});
                     this.setSaddled(false);
                     this.spawnAtLocation(Items.SADDLE);
                     return InteractionResult.sidedSuccess(this.level().isClientSide);
@@ -461,7 +466,7 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
                     if (!this.level().isClientSide) {
                         ItemStack sword = this.getMainHandItem().copy();
                         this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
-                        player.setItemInHand(hand, sword);
+                        this.spawnAtLocation(sword);
                         this.playSound(SoundEvents.ITEM_PICKUP, 0.35F, 1.0F);
                     }
                     return InteractionResult.sidedSuccess(this.level().isClientSide);

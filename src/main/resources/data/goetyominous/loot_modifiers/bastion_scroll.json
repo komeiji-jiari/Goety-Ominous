@@ -1,6 +1,6 @@
 {
   "type": "goety:add_loot",
-  "chance": 0.8,
+  "chance": 0.15,
   "replace": false,
   "conditions": [
     {

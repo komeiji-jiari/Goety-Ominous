@@ -2,6 +2,8 @@
   "name": "暗兽护甲",
   "icon": "goetyominous:black_beast_cursed_armor",
   "category": "goety:crafts",
+  "advancement": "goety:goety/read_haunting_scroll",
+  "secret": true,
   "pages": [
     {
       "type": "patchouli:text",
@@ -17,7 +19,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "你可以用剪刀剪掉你的暗兽身上的暗兽铠，如果暗兽铠损坏了，你可以在铁砧上用对应的金属锭修复它，或者直接手持对应金属锭右键穿着暗兽铠的暗兽，但是这样只能修复更少的耐久。"
+      "text": "你可以用剪刀剪掉你的暗兽身上的暗兽铠，如果暗兽铠损坏了，你可以在铁砧上用金属锭(两种材质都可用于修复)修复它，或者直接手持诅咒金属锭或者黑暗金属锭右键穿着暗兽铠的暗兽，但是这样只能修复更少的耐久。"
     }
   ]
 }

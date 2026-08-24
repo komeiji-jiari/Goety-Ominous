@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "text",
-      "text": "This spell allows you to summon loyal young Froststalkers at will. However, be aware that these cold-dwelling creatures possess a natural weakness to heat, and take increased fire damage."
+      "text": "This spell allows you to summon loyal young Froststalkers that rapidly grow into adulthood. However, be aware that these cold-dwelling creatures possess a natural weakness to heat, and take increased fire damage."
     },
     {
       "type": "goety:ritual",
