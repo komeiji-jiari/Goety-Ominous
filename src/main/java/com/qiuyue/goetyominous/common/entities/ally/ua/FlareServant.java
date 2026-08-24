@@ -600,6 +600,3 @@ public class FlareServant extends SummonedFlying {
         }
     }
 }
-
-
-

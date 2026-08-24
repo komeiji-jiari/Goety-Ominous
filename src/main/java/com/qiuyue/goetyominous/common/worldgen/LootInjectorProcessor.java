@@ -28,7 +28,7 @@ public class LootInjectorProcessor extends StructureProcessor {
             if (nbt == null) {
                 nbt = new CompoundTag();
             }
-            nbt.putString("LootTable", "minecraft:chests/bastion_other");
+            nbt.putString("LootTable", "minecraft:chests/bastion_treasure");
             nbt.putLong("LootTableSeed", relativeBlockInfo.pos().asLong());
             return new StructureTemplate.StructureBlockInfo(relativeBlockInfo.pos(), relativeBlockInfo.state(), nbt);
         }

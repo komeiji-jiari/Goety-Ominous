@@ -74,6 +74,11 @@ public class SkelewagSpell extends SummonSpell {
         return this.typeStaff(stack, SpellType.FROST) || this.typeStaff(stack, SpellType.NETHER);
     }
 
+    @Override
+    public boolean rightStaff(ItemStack stack) {
+        return super.rightStaff(stack) || this.typeStaff(stack, SpellType.ABYSS);
+    }
+
     public void SpellResult(ServerLevel worldIn, LivingEntity caster, ItemStack staff, SpellStat spellStat) {
         this.commonResult(worldIn, caster);
         int potency = spellStat.getPotency();

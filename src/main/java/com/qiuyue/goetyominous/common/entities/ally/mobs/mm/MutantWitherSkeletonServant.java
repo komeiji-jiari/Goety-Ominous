@@ -179,16 +179,16 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
         AttributeInstance health = this.getAttribute(Attributes.MAX_HEALTH);
         AttributeInstance attack = this.getAttribute(Attributes.ATTACK_DAMAGE);
         if (this.hasSoulShield()) {
-            this.addModIfMissing(health, SOUL_SHIELD_HEALTH_UUID, "Soul Shield Health", 30.0D);
-            this.addModIfMissing(attack, SOUL_SHIELD_ATTACK_UUID, "Soul Shield Attack", 2.0D);
+            this.addModIfMissing(health, SOUL_SHIELD_HEALTH_UUID, "Soul Shield Health", MobsConfig.MWSSoulShieldHealthBouns.get());
+            this.addModIfMissing(attack, SOUL_SHIELD_ATTACK_UUID, "Soul Shield Attack", MobsConfig.MWSSoulShieldDamageBouns.get());
         }
         if (this.hasHowlingSoul()) {
-            this.addModIfMissing(health, HOWLING_SOUL_HEALTH_UUID, "Howling Soul Health", 20.0D);
-            this.addModIfMissing(attack, HOWLING_SOUL_ATTACK_UUID, "Howling Soul Attack", 1.0D);
+            this.addModIfMissing(health, HOWLING_SOUL_HEALTH_UUID, "Howling Soul Health", MobsConfig.MWSHowlingSoulHealthBouns.get());
+            this.addModIfMissing(attack, HOWLING_SOUL_ATTACK_UUID, "Howling Soul Attack", MobsConfig.MWSHowlingSoulDamageBouns.get());
         }
         if (this.hasUnholyBlood()) {
-            this.addModIfMissing(health, UNHOLY_BLOOD_HEALTH_UUID, "Unholy Blood Health", 50.0D);
-            this.addModIfMissing(attack, UNHOLY_BLOOD_ATTACK_UUID, "Unholy Blood Attack", 3.0D);
+            this.addModIfMissing(health, UNHOLY_BLOOD_HEALTH_UUID, "Unholy Blood Health", MobsConfig.MWSUnholyBloodHealthBouns.get());
+            this.addModIfMissing(attack, UNHOLY_BLOOD_ATTACK_UUID, "Unholy Blood Attack", MobsConfig.MWSUnholyBloodDamageBouns.get());
         }
     }
 

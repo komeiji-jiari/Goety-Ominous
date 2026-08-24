@@ -11,7 +11,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-
 public class AmItems {
 
     public static final DeferredRegister<Item> AM_ITEMS =
@@ -59,27 +58,22 @@ public class AmItems {
 
     public static final RegistryObject<ServantSpawnEggItem> SKELEWAG_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("skelewag_servant_spawn_egg",
-                    // Base 0xD4D4AC = texture main color (pale yellow-green); highlight 0x9C9C74 = texture olive spots
                     () -> new ServantSpawnEggItem(AmEntityRegistry.SKELEWAG_SERVANT, 0xD4D4AC, 0x9C9C74, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> WITHER_SKELEWAG_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("wither_skelewag_servant_spawn_egg",
-                    // Base 0x262626 = texture main color (charred black bone); highlight 0x6E1414 = texture dark red accents
                     () -> new ServantSpawnEggItem(AmEntityRegistry.WITHER_SKELEWAG_SERVANT, 0x262626, 0x6E1414, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> STRAY_SKELEWAG_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("stray_skelewag_servant_spawn_egg",
-                    // Base 0xC8D8D8 = texture main color (icy pale blue); highlight 0x6E8FA0 = texture frost blue-gray shading
                     () -> new ServantSpawnEggItem(AmEntityRegistry.STRAY_SKELEWAG_SERVANT, 0xC8D8D8, 0x6E8FA0, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> DROPBEAR_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("dropbear_servant_spawn_egg",
-                    // Base 0x701F30 = texture main color (deep crimson fur); highlight 0xBD4B4B = texture lighter red shading
                     () -> new ServantSpawnEggItem(AmEntityRegistry.DROPBEAR_SERVANT, 0x701F30, 0xBD4B4B, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> GUSTER_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("guster_servant_spawn_egg",
-                    // Base 0xF3C389 = texture main color (sand yellow); highlight 0xC66127 = texture red sand shading
                     () -> new ServantSpawnEggItem(AmEntityRegistry.GUSTER_SERVANT, 0xF3C389, 0xC66127, egg()));
 
     public static final RegistryObject<WarpedSteroidsItem> WARPED_STEROIDS =
@@ -116,6 +110,14 @@ public class AmItems {
     public static final RegistryObject<MagicFocus> GUSTER_FOCUS = AM_ITEMS.register(
             "guster_focus",
             () -> new MagicFocus(new GusterSpell()));
+
+    public static final RegistryObject<MagicFocus> DROPBEAR_FOCUS = AM_ITEMS.register(
+            "dropbear_focus",
+            () -> new MagicFocus(new DropBearSpell()));
+
+    public static final RegistryObject<MagicFocus> SAND_FOCUS = AM_ITEMS.register(
+            "sand_focus",
+            () -> new MagicFocus(new SandSpell()));
 
 
     public static Item.Properties egg() {

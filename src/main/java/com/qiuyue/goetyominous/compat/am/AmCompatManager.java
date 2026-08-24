@@ -25,7 +25,6 @@ public class AmCompatManager {
 
     public static void init(IEventBus modEventBus) {
                 AmEntityRegistry.register(modEventBus);
-
                 AmItems.register(modEventBus);
     }
 

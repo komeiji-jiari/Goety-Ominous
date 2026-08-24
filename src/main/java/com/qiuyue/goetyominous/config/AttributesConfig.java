@@ -49,18 +49,21 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> TusklinServantMovementSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> TusklinServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> TusklinServantKnockbackResistance;
+
     public static final ForgeConfigSpec.ConfigValue<Double> GrottoceratopsServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> GrottoceratopsServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> GrottoceratopsServantMovementSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> GrottoceratopsServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> GrottoceratopsServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> GrottoceratopsServantArmor;
+
     public static final ForgeConfigSpec.ConfigValue<Double> TremorsaurusServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> TremorsaurusServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> TremorsaurusServantMovementSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> TremorsaurusServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> TremorsaurusServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> TremorsaurusServantArmor;
+
     public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantMovementSpeed;
@@ -90,6 +93,7 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantArmor;
 
     public static final ForgeConfigSpec.ConfigValue<Double> DropBearServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> DropBearServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> DropBearServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> DropBearServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> DropBearServantKnockbackResistance;
@@ -580,8 +584,7 @@ public class AttributesConfig {
                 .defineInRange("twittollagerServantDamage", 5.0, 1.0, Double.MAX_VALUE);
         TwittollagerServantMovementSpeed = BUILDER.comment("How fast Twittollager Servants move, Default: 0.2")
                 .defineInRange("twittollagerServantMovementSpeed", 0.2, 0.0, Double.MAX_VALUE);
-        TwittollagerServantFollowRange = BUILDER
-                .comment("How much following/detection range Twittollager Servants have, Default: 32.0")
+        TwittollagerServantFollowRange = BUILDER.comment("How much following/detection range Twittollager Servants have, Default: 32.0")
                 .defineInRange("twittollagerServantFollowRange", 32.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Crashager Servant");
@@ -736,7 +739,7 @@ public class AttributesConfig {
                 .defineInRange("flareServantFollowRange", 64.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
 
-        BUILDER.push("MutantMore Servants (Optional)");
+        BUILDER.push("Mutant Wither Skeleton Servant");
         MutantWitherSkeletonServantHealth = BUILDER.comment("How much Max Health Mutant Wither Skeleton Servants have, Default: 200.0")
                 .defineInRange("mutantWitherSkeletonServantHealth", 200.0, 1.0, Double.MAX_VALUE);
         MutantWitherSkeletonServantArmor = BUILDER.comment("How much natural Armor Mutant Wither Skeleton Servants have, Default: 6.0")
@@ -921,6 +924,8 @@ public class AttributesConfig {
                 .defineInRange("dropBearServantFollowRange", 20.0, 0.0, Double.MAX_VALUE);
         DropBearServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Drop Bear Servants have, Default: 0.7 (matches Alex's Mobs drop bear)")
                 .defineInRange("dropBearServantKnockbackResistance", 0.7, 0.0, Double.MAX_VALUE);
+        DropBearServantArmor = BUILDER.comment("How much Armor Drop Bear Servants have, Default: 0 (matches Alex's Mobs drop bear)")
+                .defineInRange("dropBearServantKnockbackResistance", 0, 0.0, Double.MAX_VALUE);
         GusterServantHealth = BUILDER.comment("How much Max Health Guster Servants have, Default: 16.0 (matches Alex's Mobs guster)")
                 .defineInRange("gusterServantHealth", 16.0, 1.0, Double.MAX_VALUE);
         GusterServantDamage = BUILDER.comment("How much damage Guster Servants deal, Default: 1.0 (matches Alex's Mobs guster)")

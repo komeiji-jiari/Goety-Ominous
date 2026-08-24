@@ -665,16 +665,16 @@ public class MutantHoglinServant extends AbstractMutantServant implements Player
         AttributeInstance health = this.getAttribute(Attributes.MAX_HEALTH);
         AttributeInstance attack = this.getAttribute(Attributes.ATTACK_DAMAGE);
         if (this.hasSoulJar()) {
-            this.addModIfMissing(health, SOUL_JAR_HEALTH_UUID, "Soul Jar Health", 30.0D);
-            this.addModIfMissing(attack, SOUL_JAR_ATTACK_UUID, "Soul Jar Attack", 2.0D);
+            this.addModIfMissing(health, SOUL_JAR_HEALTH_UUID, "Soul Jar Health", MobsConfig.MHSoulJarHealthBouns.get());
+            this.addModIfMissing(attack, SOUL_JAR_ATTACK_UUID, "Soul Jar Attack", MobsConfig.MHSoulJarDamageBouns.get());
         }
         if (this.hasBlazingHelm()) {
-            this.addModIfMissing(health, BLAZING_HELM_HEALTH_UUID, "Blazing Helm Health", 20.0D);
-            this.addModIfMissing(attack, BLAZING_HELM_ATTACK_UUID, "Blazing Helm Attack", 2.0D);
+            this.addModIfMissing(health, BLAZING_HELM_HEALTH_UUID, "Blazing Helm Health", MobsConfig.MHBlazingHelmHealthBouns.get());
+            this.addModIfMissing(attack, BLAZING_HELM_ATTACK_UUID, "Blazing Helm Attack", MobsConfig.MHBlazingHelmDamageBouns.get());
         }
         if (this.hasUnholyBlood()) {
-            this.addModIfMissing(health, UNHOLY_BLOOD_HEALTH_UUID, "Unholy Blood Health", 50.0D);
-            this.addModIfMissing(attack, UNHOLY_BLOOD_ATTACK_UUID, "Unholy Blood Attack", 3.0D);
+            this.addModIfMissing(health, UNHOLY_BLOOD_HEALTH_UUID, "Unholy Blood Health", MobsConfig.MHUnholyBloodHealthBouns.get());
+            this.addModIfMissing(attack, UNHOLY_BLOOD_ATTACK_UUID, "Unholy Blood Attack", MobsConfig.MHUnholyBloodDamageBouns.get());
         }
     }
 

@@ -465,12 +465,10 @@ public class BrainiacServant extends Summoned implements IAnimatedEntity {
             }
         }
 
-
         public void stop() {
             super.stop();
             this.blockPos = BlockPos.ZERO;
         }
-
 
         @Override
         protected boolean isValidTarget(LevelReader worldIn, BlockPos pos) {

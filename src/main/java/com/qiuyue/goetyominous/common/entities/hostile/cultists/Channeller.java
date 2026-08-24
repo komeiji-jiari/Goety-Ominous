@@ -304,7 +304,24 @@ public class Channeller extends AbstractGOCultist implements ICultist {
         return false;
     }
 
+    private void releaseStolenServantIfStillStolen() {
+        if (this.stolenServantId == null || this.originalOwnerId == null) return;
+        if (EntityFinder.getLivingEntityByUuiD(this.stolenServantId) instanceof Mob servant) {
+            if (servant instanceof Summoned summoned && this.equals(summoned.getTrueOwner())) {
+                LivingEntity originalOwner = EntityFinder.getLivingEntityByUuiD(this.originalOwnerId);
+                if (originalOwner != null) {
+                    summoned.setTrueOwner(originalOwner);
+                    summoned.setTarget(null);
+                    summoned.setLastHurtByMob(null);
+                }
+            }
+            this.stolenServantId = null;
+            this.originalOwnerId = null;
+        }
+    }
+
     private void findNewAlly() {
+        releaseStolenServantIfStillStolen();
         if (this.isAggressive()) {
             List<Returned> returnedList = this.level().getEntitiesOfClass(Returned.class,
                     this.getBoundingBox().inflate(64.0D, 8.0D, 64.0D));
@@ -469,15 +486,23 @@ public class Channeller extends AbstractGOCultist implements ICultist {
     }
 
     private void returnStolenServant() {
+        boolean restored = false;
         if (EntityFinder.getLivingEntityByUuiD(this.stolenServantId) instanceof Mob servant) {
             if (this.originalOwnerId != null) {
-                LivingEntity originalOwner = EntityFinder.getLivingEntityByUuiD(this.originalOwnerId);
-                if (originalOwner != null && servant instanceof Summoned summoned) {
-                    summoned.setTrueOwner(originalOwner);
-                    servant.setTarget(null);
-                    servant.setLastHurtByMob(null);
+                if (servant instanceof Summoned summoned) {
+                    LivingEntity originalOwner = EntityFinder.getLivingEntityByUuiD(this.originalOwnerId);
+                    if (originalOwner != null) {
+                        summoned.setTrueOwner(originalOwner);
+                        restored = true;
+                    }
                 }
+                servant.setTarget(null);
+                servant.setLastHurtByMob(null);
             }
+        }
+        if (restored) {
+            this.stolenServantId = null;
+            this.originalOwnerId = null;
         }
     }
 

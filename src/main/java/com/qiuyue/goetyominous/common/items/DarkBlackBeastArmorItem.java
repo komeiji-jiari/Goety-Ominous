@@ -21,7 +21,8 @@ public class DarkBlackBeastArmorItem extends CursedBlackBeastArmorItem implement
 
     @Override
     public boolean isValidRepairItem(ItemStack stack, ItemStack repairCandidate) {
-        return repairCandidate.is(ModItems.DARK_ALLOY_INGOT.get());
+        return repairCandidate.is(ModItems.DARK_ALLOY_INGOT.get())
+                || repairCandidate.is(ModItems.CURSED_METAL_INGOT.get());
     }
 
     @Override

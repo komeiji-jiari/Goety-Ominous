@@ -13,7 +13,9 @@
       "scale": 0.35
     },
     {
-      "type": "patchouli:text",
+      "type": "patchouli:spotlight",
+      "item": "goetyominous:wolf_totem",
+      "title": "Howling Totem",
       "text": "To create one, keep at least four owned tamed Black Wolves and their variants within eight blocks of a Howling Totem. Bind a Waystone to the Totem and use it on an eligible Black Wolf. The wolf becomes a Warg of the corresponding breed."
     },
     {
@@ -21,8 +23,10 @@
       "text": "Each Totem can create only one Warg, and a master may normally command no more than three. Breaking the Totem does not free its Warg slot while that Warg lives. A Warg remains bound to its original Totem and can benefit from its protection."
     },
     {
-      "type": "patchouli:text",
-      "text": "An owned Warg accepts a Saddle and can be ridden, with charged jumps carrying both hound and rider over great distances. It can also hold any sword in its mouth, replacing its bite with a sweeping spin and a lunging vertical slash. Use an empty hand to retrieve the sword."
+      "type": "patchouli:spotlight",
+      "item": "minecraft:saddle",
+      "title": "Saddle",
+      "text": "An owned Warg can be equipped with a Saddle and ridden. Sneak + right-click with Shears removes the Saddle. A charged jump carries both hound and rider over great distances. It can also hold any sword in its mouth, replacing its bite with a sweeping spin and a lunging vertical slash. Use a Stick while right-clicking to retrieve the sword."
     },
     {
       "type": "patchouli:text",

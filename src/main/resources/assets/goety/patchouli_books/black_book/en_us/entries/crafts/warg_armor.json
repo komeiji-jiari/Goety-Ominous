@@ -17,7 +17,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "You can remove the armor from your Warg using Shears. If the armor is damaged, you can repair it on an Anvil with the corresponding metal ingot, or simply right-click the armored Warg while holding the corresponding metal ingot—though this will restore less durability."
+      "text": "You can remove the armor from your Warg using Shears. If the armor is damaged, you can repair it on an Anvil with the metal ingot (either material can be used for repairs), or simply right-click the armored Warg while holding a Cursed Metal Ingot or Dark Metal Ingot—though this will restore less durability."
     }
   ]
 }

@@ -76,8 +76,8 @@ public class WeaponConfig {
                 .comment("Fraction of max durability repaired per Cursed Metal Ingot, Default: 0.125")
                 .defineInRange("wolfArmorIngotRepair", 0.125, 0.01, 1.0);
         WolfArmorSoulRepairInterval = BUILDER
-                .comment("Dark Wolf Armor soul repair interval in ticks (1 durability per N ticks), Default: 40")
-                .defineInRange("wolfArmorSoulRepairInterval", 40, 1, 10000);
+                .comment("Dark Wolf Armor soul repair interval in ticks (1 durability per N ticks), Default: 20")
+                .defineInRange("wolfArmorSoulRepairInterval", 20, 1, 10000);
         BUILDER.pop();
 
         BUILDER.push("Warg Armor");
@@ -88,8 +88,8 @@ public class WeaponConfig {
                 .comment("Fraction of max durability repaired per Cursed Metal Ingot, Default: 0.125")
                 .defineInRange("wargArmorIngotRepair", 0.125, 0.01, 1.0);
         WargArmorSoulRepairInterval = BUILDER
-                .comment("Dark Warg Armor soul repair interval in ticks (1 durability per N ticks), Default: 40")
-                .defineInRange("wargArmorSoulRepairInterval", 40, 1, 10000);
+                .comment("Dark Warg Armor soul repair interval in ticks (1 durability per N ticks), Default: 20")
+                .defineInRange("wargArmorSoulRepairInterval", 20, 1, 10000);
         BUILDER.pop();
 
         BUILDER.push("Black Beast Armor");
@@ -100,8 +100,8 @@ public class WeaponConfig {
                 .comment("Fraction of max durability repaired per Cursed Metal Ingot, Default: 0.125")
                 .defineInRange("blackBeastArmorIngotRepair", 0.125, 0.01, 1.0);
         BlackBeastArmorSoulRepairInterval = BUILDER
-                .comment("Dark Black Beast Armor soul repair interval in ticks (1 durability per N ticks), Default: 40")
-                .defineInRange("blackBeastArmorSoulRepairInterval", 40, 1, 10000);
+                .comment("Dark Black Beast Armor soul repair interval in ticks (1 durability per N ticks), Default: 20")
+                .defineInRange("blackBeastArmorSoulRepairInterval", 20, 1, 10000);
         BUILDER.pop();
 
         SPEC = BUILDER.build();

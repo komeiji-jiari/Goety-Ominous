@@ -1,0 +1,20 @@
+{
+  "name": "Sandy Focus",
+  "icon": "goetyominous:sand_focus",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Throwing sand into someone's eyes is a classic dirty trick, but with a spell, you can hurl large clumps of sand at your foes to deal some damage and inflict Blindness."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goetyominous:sand_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "Casting this spell with a Wind Staff doubles the damage of the thrown sand and adds additional knockback."
+    }
+  ]
+}

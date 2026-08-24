@@ -30,6 +30,10 @@ public class EntityServentSandShot extends SpellThrowableProjectile {
 
     private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntityServentSandShot.class, EntityDataSerializers.INT);
     private boolean leftOwner;
+    private static final EntityDataAccessor<Integer> BLINDNESS_DURATION =
+            SynchedEntityData.defineId(EntityServentSandShot.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> KNOCKBACK =
+            SynchedEntityData.defineId(EntityServentSandShot.class, EntityDataSerializers.FLOAT);
 
     public EntityServentSandShot(EntityType<? extends SpellThrowableProjectile> type, Level level) {
         super(type, level);
@@ -54,10 +58,20 @@ public class EntityServentSandShot extends SpellThrowableProjectile {
         this(AmEntityRegistry.SERVANT_SAND_SHOT.get(), world);
     }
 
+    public int getBlindnessDuration() {
+        return this.entityData.get(BLINDNESS_DURATION);
+    }
+
+    public void setBlindnessDuration(int ticks) {
+        this.entityData.set(BLINDNESS_DURATION, ticks);
+    }
+
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(VARIANT, 0);
+        this.entityData.define(BLINDNESS_DURATION, 100);
+        this.entityData.define(KNOCKBACK, 0.0F);
     }
 
     public int getVariant() {
@@ -88,14 +102,27 @@ public class EntityServentSandShot extends SpellThrowableProjectile {
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
-        Entity hitEntity = result.getEntity();
+        if (!(result.getEntity() instanceof LivingEntity livingHit)) {
+            return;
+        }
         LivingEntity owner = this.getOwner();
         if (owner != null) {
-            hitEntity.hurt(this.damageSources().mobProjectile(this, owner), this.getExtraDamage());
+            livingHit.hurt(this.damageSources().mobProjectile(this, owner), this.getExtraDamage());
         }
-        if (owner instanceof Player && hitEntity instanceof LivingEntity) {
-            ((LivingEntity) hitEntity).addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 100, 0, true, false));
+        if (owner instanceof Player) {
+            livingHit.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, this.getBlindnessDuration(), 0, true, false));
         }
+        if (this.getKnockback() > 0.0F) {
+            livingHit.knockback(this.getKnockback(), -this.getDeltaMovement().x, -this.getDeltaMovement().z);
+        }
+    }
+
+    public float getKnockback() {
+        return this.entityData.get(KNOCKBACK);
+    }
+
+    public void setKnockback(float knockback) {
+        this.entityData.set(KNOCKBACK, knockback);
     }
 
     @Override
@@ -129,7 +156,9 @@ public class EntityServentSandShot extends SpellThrowableProjectile {
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
+        compound.putInt("BlindnessDuration", this.getBlindnessDuration());
         compound.putInt("Variant", this.getVariant());
+        compound.putFloat("Knockback", this.getKnockback());
         if (this.leftOwner) {
             compound.putBoolean("LeftOwner", true);
         }
@@ -139,6 +168,8 @@ public class EntityServentSandShot extends SpellThrowableProjectile {
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.setVariant(compound.getInt("Variant"));
+        this.setBlindnessDuration(compound.getInt("BlindnessDuration"));
+        this.setKnockback(compound.getFloat("Knockback"));
         this.leftOwner = compound.getBoolean("LeftOwner");
     }
 

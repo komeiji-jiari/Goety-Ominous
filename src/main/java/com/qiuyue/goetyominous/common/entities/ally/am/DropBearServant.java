@@ -1,9 +1,11 @@
 package com.qiuyue.goetyominous.common.entities.ally.am;
 
 import com.Polarice3.Goety.client.particles.ModParticleTypes;
+import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.init.ModMobType;
 import com.Polarice3.Goety.utils.CuriosFinder;
+import com.Polarice3.Goety.utils.MathHelper;
 import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.FlightMoveController;
 import com.github.alexthe666.alexsmobs.entity.ai.GroundPathNavigatorWide;
@@ -32,7 +34,9 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
@@ -158,11 +162,35 @@ public class DropBearServant extends Summoned implements IAnimatedEntity {
         return AMSoundRegistry.DROPBEAR_HURT.get();
     }
 
+    @Override
     public boolean doHurtTarget(Entity entityIn) {
         if (this.getAnimation() == NO_ANIMATION) {
             this.setAnimation(random.nextBoolean() ? ANIMATION_BITE : random.nextBoolean() ? ANIMATION_SWIPE_L : ANIMATION_SWIPE_R);
         }
         return true;
+    }
+
+    public void setUpgraded(boolean upgraded) {
+        super.setUpgraded(upgraded);
+        AttributeInstance health = this.getAttribute(Attributes.MAX_HEALTH);
+        AttributeInstance attack = this.getAttribute(Attributes.ATTACK_DAMAGE);
+        AttributeInstance armor = this.getAttribute(Attributes.ARMOR);
+        AttributeInstance knockback = this.getAttribute(Attributes.KNOCKBACK_RESISTANCE);
+        if (health != null && attack != null && armor != null && knockback != null) {
+            if (upgraded) {
+                health.setBaseValue((Double) AttributesConfig.DropBearServantHealth.get() * 1.5);
+                armor.setBaseValue((Double) AttributesConfig.DropBearServantArmor.get() + 2.0);
+                attack.setBaseValue((Double) AttributesConfig.DropBearServantDamage.get() + 1.0);
+                knockback.setBaseValue(1.0);
+            } else {
+                health.setBaseValue((Double) AttributesConfig.DropBearServantHealth.get());
+                armor.setBaseValue((Double) AttributesConfig.DropBearServantArmor.get());
+                attack.setBaseValue((Double) AttributesConfig.DropBearServantDamage.get());
+                knockback.setBaseValue(0.0);
+            }
+        }
+
+        this.setHealth(this.getMaxHealth());
     }
 
     protected void registerGoals() {
@@ -209,6 +237,15 @@ public class DropBearServant extends Summoned implements IAnimatedEntity {
     @Override
     public MobType getMobType() {
         return ModMobType.NETHER;
+    }
+
+    @Override
+    public void spawnUpgraded() {
+        super.spawnUpgraded();
+        LivingEntity owner = this.getTrueOwner();
+        if (this.getMobType() == ModMobType.NETHER && owner != null && CuriosFinder.hasNetherRobe(owner)) {
+            this.setUpgraded(true);
+        }
     }
 
     public boolean isFood(ItemStack p_30440_) {
@@ -259,7 +296,7 @@ public class DropBearServant extends Summoned implements IAnimatedEntity {
             upsideDownProgress--;
         }
         if (!this.level().isClientSide) {
-            if (this.getTrueOwner() != null && CuriosFinder.hasAmethystNecklace(this.getTrueOwner())) {
+            if (this.getTrueOwner() != null && CuriosFinder.hasNetherCrown(this.getTrueOwner())) {
                 this.setHasLifespan(false);
             } else if (this.getLifespan() > 0) {
                 this.setHasLifespan(true);
@@ -270,11 +307,13 @@ public class DropBearServant extends Summoned implements IAnimatedEntity {
             boolean validBelowState = belowState.isFaceSturdy(level(), this.getBlockPosBelowThatAffectsMyMovement(), Direction.UP);
             LivingEntity attackTarget = this.getTarget();
             if (attackTarget != null && distanceTo(attackTarget) < attackTarget.getBbWidth() + this.getBbWidth() + 1 && this.hasLineOfSight(attackTarget)) {
+                boolean dealtAnimationDamage = false;
                 if (this.getAnimationTick() == 6) {
                     if (this.getAnimation() == ANIMATION_BITE) {
                         final float yRotRad = this.getYRot() * Mth.DEG_TO_RAD;
                         attackTarget.knockback(0.5F, Mth.sin(yRotRad), -Mth.cos(yRotRad));
                         attackTarget.hurt(this.getServantAttack(), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                        dealtAnimationDamage = true;
                     }
                 } else if (this.getAnimationTick() == 9) {
                     if (this.getAnimation() == ANIMATION_SWIPE_L) {
@@ -282,12 +321,17 @@ public class DropBearServant extends Summoned implements IAnimatedEntity {
                         final float rotRad = rot * Mth.DEG_TO_RAD;
                         attackTarget.knockback(0.5F, Mth.sin(rotRad), -Mth.cos(rotRad));
                         attackTarget.hurt(this.getServantAttack(), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                        dealtAnimationDamage = true;
                     } else if (this.getAnimation() == ANIMATION_SWIPE_R) {
                         final float rot = getYRot() - 90;
                         final float rotRad = rot * Mth.DEG_TO_RAD;
                         attackTarget.knockback(0.5F, Mth.sin(rotRad), -Mth.cos(rotRad));
                         attackTarget.hurt(this.getServantAttack(), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                        dealtAnimationDamage = true;
                     }
+                }
+                if (dealtAnimationDamage && this.isUpgraded()) {
+                    attackTarget.addEffect(new MobEffectInstance(GoetyEffects.SAPPED.get(), MathHelper.secondsToTicks(10), 0), this);
                 }
             }
             if (jumpingUp && this.getY() > worldHeight.getY()) {

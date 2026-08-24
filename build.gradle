@@ -201,6 +201,7 @@ dependencies {
     compileOnly fg.deobf("curse.maven:illager-invasion-891324:6192869")
     compileOnly fg.deobf("curse.maven:piglin-proliferation-657831:8065407")
 
+    compileOnly fg.deobf("curse.maven:touhou-little-maid-355044:8061847")
     compileOnly fg.deobf("curse.maven:goety-delight-1363736:8607569")
     compileOnly fg.deobf("curse.maven:goetic-legacy-1537404:8583148")
     compileOnly fg.deobf("curse.maven:goety-cataclysm-1224214:8645833")

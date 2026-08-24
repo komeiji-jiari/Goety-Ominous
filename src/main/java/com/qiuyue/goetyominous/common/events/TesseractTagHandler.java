@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.events;
 
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
+import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
@@ -43,6 +44,9 @@ public class TesseractTagHandler {
         }
         if (AlexMobsCompat.isAlexMobsLoaded()) {
             addToTag(TESSERACT_SMALL, AmEntityRegistry.FARSEER_SERVANT);
+            addToTag(TESSERACT_SMALL, AmEntityRegistry.ZOMBIE_CROCODILE_SERVANT);
+            addToTag(TESSERACT_SMALL, AmEntityRegistry.TUSKLIN_SERVANT);
+            addToTag(TESSERACT_SMALL, AmEntityRegistry.BUNFUNGUS_SERVANT);
         }
 
         addToTag(TESSERACT_MEDIUM, ModEntityTypes.HERESIARCH_SERVANT);
@@ -58,6 +62,11 @@ public class TesseractTagHandler {
         }
         if (AlexMobsCompat.isAlexMobsLoaded()) {
             addToTag(TESSERACT_MEDIUM, AmEntityRegistry.WARPED_MOSCO_SERVANT);
+            addToTag(TESSERACT_MEDIUM, AmEntityRegistry.ILLAGER_ELEPHANT_SERVANT);
+        }
+        if (AlexCavesCompat.isAlexCavesLoaded()) {
+            addToTag(TESSERACT_MEDIUM, AcEntityRegistry.TREMORSAURUS_SERVANT);
+            addToTag(TESSERACT_MEDIUM, AcEntityRegistry.GROTTOCERATOPS_SERVANT);
         }
 
         if (MutantMoreCompat.isMutantMoreLoaded()) {

@@ -12,6 +12,7 @@
   "entity_to_convert_into": "goetyominous:illager_elephant_servant",
   "soulCost": 1,
   "duration": 30,
+  "research": "ravaging",
   "ingredients": [
     {
       "item": "goety:resilience_lotion"

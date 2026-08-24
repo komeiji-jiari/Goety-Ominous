@@ -110,18 +110,39 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> GusterSummonDown;
     public static final ForgeConfigSpec.ConfigValue<Integer> GusterCoolDown;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> DropBearSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DropBearCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DropBearSummonDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DropBearCoolDown;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> SandSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SandCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SandCoolDown;
+    public static final ForgeConfigSpec.ConfigValue<Double> SandExtraDamage;
+
     static {
         BUILDER.push("Spells");
+
+        BUILDER.push("Sand Spell");
+        SandSoulCost = BUILDER.comment("Sand Spell Cost, Default: 6")
+                .defineInRange("sandCost", 6, 0, Integer.MAX_VALUE);
+        SandCastDuration = BUILDER.comment("Time to cast Sand Spell, Default: 0")
+                .defineInRange("sandTime", 0, 0, 72000);
+        SandCoolDown = BUILDER.comment("Sand Spell Cooldown, Default: 10")
+                .defineInRange("sandCoolDown", 10, 0, Integer.MAX_VALUE);
+        SandExtraDamage = BUILDER.comment("How much base damage Sand deals, Default: 2.5")
+                .defineInRange("sandDamage", 2.5, 1.0, Double.MAX_VALUE);
+        BUILDER.pop();
 
         BUILDER.push("Murmur");
         MurmurSoulCost = BUILDER.comment("Soul cost of Murmur Servant spell (Default: 16)")
                 .defineInRange("murmurSoulCost", 16, 1, 100);
-        MurmurCastDuration = BUILDER.comment("Cast duration of Murmur Servant spell in ticks (Default: 120)")
-                .defineInRange("murmurCastDuration", 120, 0, 500);
-        MurmurSummonDown = BUILDER.comment("Summon down duration of Murmur Servant spell in ticks (Default: 160)")
-                .defineInRange("murmurSummonDown", 160, 0, 5000);
-        MurmurCoolDown = BUILDER.comment("Cooldown of Murmur Servant spell in ticks (Default: 100)")
-                .defineInRange("murmurCoolDown", 100, 0, 5000);
+        MurmurCastDuration = BUILDER.comment("Cast duration of Murmur Servant spell in ticks (Default: 80)")
+                .defineInRange("murmurCastDuration", 80, 0, 500);
+        MurmurSummonDown = BUILDER.comment("Summon down duration of Murmur Servant spell in ticks (Default: 100)")
+                .defineInRange("murmurSummonDown", 100, 0, 5000);
+        MurmurCoolDown = BUILDER.comment("Cooldown of Murmur Servant spell in ticks (Default: 80)")
+                .defineInRange("murmurCoolDown", 80, 0, 5000);
         BUILDER.pop();
 
         BUILDER.push("BloodSpray");
@@ -136,10 +157,10 @@ public class SpellConfig {
         BUILDER.push("Crimson Mosquito");
         CrimsonMosquitoSoulCost = BUILDER.comment("Soul cost of Crimson Mosquito Servant spell (Default: 20)")
                 .defineInRange("crimsonMosquitoSoulCost", 20, 1, 100);
-        CrimsonMosquitoCastDuration = BUILDER.comment("Cast duration of Crimson Mosquito Servant spell in ticks (Default: 120)")
-                .defineInRange("crimsonMosquitoCastDuration", 120, 0, 500);
-        CrimsonMosquitoSummonDown = BUILDER.comment("Summon down duration of Crimson Mosquito Servant spell in ticks (Default: 200)")
-                .defineInRange("crimsonMosquitoSummonDown", 200, 0, 5000);
+        CrimsonMosquitoCastDuration = BUILDER.comment("Cast duration of Crimson Mosquito Servant spell in ticks (Default: 100)")
+                .defineInRange("crimsonMosquitoCastDuration", 100, 0, 500);
+        CrimsonMosquitoSummonDown = BUILDER.comment("Summon down duration of Crimson Mosquito Servant spell in ticks (Default: 100)")
+                .defineInRange("crimsonMosquitoSummonDown", 100, 0, 5000);
         CrimsonMosquitoCoolDown = BUILDER.comment("Cooldown of Crimson Mosquito Servant spell in ticks (Default: 160)")
                 .defineInRange("crimsonMosquitoCoolDown", 160, 0, 5000);
         BUILDER.pop();
@@ -149,8 +170,8 @@ public class SpellConfig {
                 .defineInRange("frostStalkerSoulCost", 24, 1, 100);
         FrostStalkerCastDuration = BUILDER.comment("Cast duration of FrostStalker Servant spell in ticks (Default: 60)")
                 .defineInRange("frostStalkerCastDuration", 60, 0, 500);
-        FrostStalkerSummonDown = BUILDER.comment("Summon down duration of FrostStalker Servant spell in ticks (Default: 120)")
-                .defineInRange("frostStalkerSummonDown", 120, 0, 5000);
+        FrostStalkerSummonDown = BUILDER.comment("Summon down duration of FrostStalker Servant spell in ticks (Default: 80)")
+                .defineInRange("frostStalkerSummonDown", 80, 0, 5000);
         FrostStalkerCoolDown = BUILDER.comment("Cooldown of FrostStalker Servant spell in ticks (Default: 100)")
                 .defineInRange("frostStalkerCoolDown", 100, 0, 5000);
         BUILDER.pop();
@@ -158,8 +179,8 @@ public class SpellConfig {
         BUILDER.push("Roller");
         RollerCost = BUILDER.comment("Soul cost of Rocky Roller Servant spell (Default: 24)")
                 .defineInRange("rockyRollerSoulCost", 24, 1, 100);
-        RollerDuration = BUILDER.comment("Cast duration of Rocky Roller Servant spell in ticks (Default: 100)")
-                .defineInRange("rockyRollerCastDuration", 100, 0, 500);
+        RollerDuration = BUILDER.comment("Cast duration of Rocky Roller Servant spell in ticks (Default: 60)")
+                .defineInRange("rockyRollerCastDuration", 60, 0, 500);
         RollerSummonDown = BUILDER.comment("Summon down duration of Rocky Roller Servant spell in ticks (Default: 120)")
                 .defineInRange("rockyRollerSummonDown", 120, 0, 5000);
         RollerCoolDown = BUILDER.comment("Cooldown of Rocky Roller Servant spell in ticks (Default: 100)")
@@ -169,10 +190,10 @@ public class SpellConfig {
         BUILDER.push("Skelewag");
         SkelewagCost = BUILDER.comment("Soul cost of Skelewag Servant spell (Default: 16)")
                 .defineInRange("skelewagSoulCost", 16, 1, 100);
-        SkelewagDuration = BUILDER.comment("Cast duration of Skelewag Servant spell in ticks (Default: 100)")
-                .defineInRange("skelewagCastDuration", 100, 0, 500);
-        SkelewagSummonDown = BUILDER.comment("Summon down duration of Skelewag Servant spell in ticks (Default: 100)")
-                .defineInRange("skelewagSummonDown", 100, 0, 5000);
+        SkelewagDuration = BUILDER.comment("Cast duration of Skelewag Servant spell in ticks (Default: 40)")
+                .defineInRange("skelewagCastDuration", 40, 0, 500);
+        SkelewagSummonDown = BUILDER.comment("Summon down duration of Skelewag Servant spell in ticks (Default: 80)")
+                .defineInRange("skelewagSummonDown", 80, 0, 5000);
         SkelewagCoolDown = BUILDER.comment("Cooldown of Skelewag Servant spell in ticks (Default: 60)")
                 .defineInRange("skelewagCoolDown", 60, 0, 5000);
         BUILDER.pop();
@@ -186,6 +207,17 @@ public class SpellConfig {
                 .defineInRange("gusterSummonDown", 60, 0, 5000);
         GusterCoolDown = BUILDER.comment("Cooldown of Guster Servant spell in ticks (Default: 40)")
                 .defineInRange("gusterCoolDown", 40, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("DropBear");
+        DropBearSoulCost = BUILDER.comment("Soul cost of DropBear Servant spell (Default: 20)")
+                .defineInRange("dropBearSoulCost", 20, 1, 100);
+        DropBearCastDuration = BUILDER.comment("Cast duration of DropBear Servant spell in ticks (Default: 20)")
+                .defineInRange("dropBearCastDuration", 20, 0, 500);
+        DropBearSummonDown = BUILDER.comment("Summon down duration of DropBear Servant spell in ticks (Default: 100)")
+                .defineInRange("dropBearSummonDown", 100, 0, 5000);
+        DropBearCoolDown = BUILDER.comment("Cooldown of DropBear Servant spell in ticks (Default: 160)")
+                .defineInRange("dropBearCoolDown", 160, 0, 5000);
         BUILDER.pop();
 
         BUILDER.push("Farseer");
@@ -213,19 +245,19 @@ public class SpellConfig {
                 .defineInRange("urbhadhachCastDuration", 60, 0, 500);
         UrbhadhachSummonDown = BUILDER.comment("Summon down duration of Urbhadhach Servant spell in ticks (Default: 200)")
                 .defineInRange("urbhadhachSummonDown", 200, 0, 5000);
-        UrbhadhachCoolDown = BUILDER.comment("Cooldown of Urbhadhach Servant spell in ticks (Default: 500)")
-                .defineInRange("urbhadhachCoolDown", 500, 0, 5000);
+        UrbhadhachCoolDown = BUILDER.comment("Cooldown of Urbhadhach Servant spell in ticks (Default: 300)")
+                .defineInRange("urbhadhachCoolDown", 300, 0, 5000);
         BUILDER.pop();
 
         BUILDER.push("Scorch");
         ScorchSoulCost = BUILDER.comment("Soul cost of Scorch spell (Default: 18)")
                 .defineInRange("scorchSoulCost", 18, 1, 100);
-        ScorchCastDuration = BUILDER.comment("Cast duration of Scorch spell in ticks (Default: 100)")
-                .defineInRange("scorchCastDuration", 100, 0, 500);
-        ScorchSummonDown = BUILDER.comment("Summon down duration of Scorch spell in ticks (Default: 340)")
-                .defineInRange("scorchSummonDown", 340, 0, 5000);
-        ScorchCoolDown = BUILDER.comment("Cooldown of Scorch spell in ticks (Default: 340)")
-                .defineInRange("scorchCoolDown", 340, 0, 5000);
+        ScorchCastDuration = BUILDER.comment("Cast duration of Scorch spell in ticks (Default: 40)")
+                .defineInRange("scorchCastDuration", 40, 0, 500);
+        ScorchSummonDown = BUILDER.comment("Summon down duration of Scorch spell in ticks (Default: 80)")
+                .defineInRange("scorchSummonDown", 80, 0, 5000);
+        ScorchCoolDown = BUILDER.comment("Cooldown of Scorch spell in ticks (Default: 100)")
+                .defineInRange("scorchCoolDown", 100, 0, 5000);
         BUILDER.pop();
 
         BUILDER.push("Brood");
@@ -244,8 +276,8 @@ public class SpellConfig {
                 .defineInRange("spiderDuration", 20, 0, 500);
         SpiderCoolDown = BUILDER.comment("Cooldown of Spider spell in ticks (Default: 100)")
                 .defineInRange("spiderCoolDown", 100, 0, 5000);
-        SpiderSummonDown = BUILDER.comment("Summon down duration of Spider spell in ticks (Default: 120)")
-                .defineInRange("spiderSummonDown", 120, 0, 5000);
+        SpiderSummonDown = BUILDER.comment("Summon down duration of Spider spell in ticks (Default: 80)")
+                .defineInRange("spiderSummonDown", 80, 0, 5000);
         BUILDER.pop();
 
         BUILDER.push("Redstone Cube");
@@ -253,10 +285,10 @@ public class SpellConfig {
                 .defineInRange("redstoneCost", 10, 1, 100);
         RedstoneDuration = BUILDER.comment("Cast duration of Redstone Cube spell in ticks (Default: 20)")
                 .defineInRange("redstoneDuration", 20, 0, 500);
-        RedstoneCoolDown = BUILDER.comment("Cooldown of Redstone Cube spell in ticks (Default: 200)")
-                .defineInRange("redstoneCoolDown", 200, 0, 5000);
-        RedstoneSummonDown = BUILDER.comment("Summon down duration of Redstone Cube spell in ticks (Default: 100)")
-                .defineInRange("redstoneSummonDown", 100, 0, 5000);
+        RedstoneCoolDown = BUILDER.comment("Cooldown of Redstone Cube spell in ticks (Default: 100)")
+                .defineInRange("redstoneCoolDown", 100, 0, 5000);
+        RedstoneSummonDown = BUILDER.comment("Summon down duration of Redstone Cube spell in ticks (Default: 80)")
+                .defineInRange("redstoneSummonDown", 80, 0, 5000);
         RedstoneCubeLimit = BUILDER.comment("Max number of Redstone Cubes summoned (Default: 16)")
                 .defineInRange("redstoneCubeLimit", 16, 1, 100);
         BUILDER.pop();
