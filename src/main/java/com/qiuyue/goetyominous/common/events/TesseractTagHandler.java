@@ -69,6 +69,10 @@ public class TesseractTagHandler {
             addToTag(TESSERACT_MEDIUM, AcEntityRegistry.GROTTOCERATOPS_SERVANT);
         }
 
+        if (AlexCavesCompat.isAlexCavesLoaded()) {
+            addToTag(TESSERACT_LARGE, AcEntityRegistry.HULLBREAKER_SERVANT);
+        }
+
         if (MutantMoreCompat.isMutantMoreLoaded()) {
             addToTag(TESSERACT_LARGE, MmEntityRegistry.MUTANT_HOGLIN_SERVANT);
             addToTag(TESSERACT_LARGE, MmEntityRegistry.MUTANT_WITHER_SKELETON_SERVANT);

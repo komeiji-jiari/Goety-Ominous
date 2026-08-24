@@ -141,6 +141,7 @@ public class GoetyOminous {
             MinecraftForge.EVENT_BUS.register(NucleeperNukeProtectionHandler.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.NucleeperNukeKillHandler.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.RaycatAmuletEvents.class);
+            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.MineGuardianExplosionProtectionHandler.class);
         }
 
         getOrCreateDirectory(FMLPaths.CONFIGDIR.get().resolve("goetyominous"), "goetyominous");

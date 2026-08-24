@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.common.events;
 
 import com.Polarice3.Goety.api.entities.IOwned;
+import com.Polarice3.Goety.utils.SEHelper;
 import com.github.alexmodguy.alexscaves.server.misc.ACDamageTypes;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.ac.NucleeperServant;
@@ -13,6 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -272,6 +274,24 @@ public class NucleeperNukeProtectionHandler {
             }
             LivingEntity master = owned.getMasterOwner();
             if (master != null && protection.ownerIds().contains(master.getUUID())) {
+                return true;
+            }
+        }
+        if (!entity.level().isClientSide && isGoodwillAlly(entity, protection)) {
+            return true;
+        }
+        return false;
+    }
+
+    /** 主人在 Grimoire of Goodwill 中记录了该生物(单个实体或按类型)则视为友方。 */
+    private static boolean isGoodwillAlly(LivingEntity entity, NukeProtection protection) {
+        MinecraftServer server = entity.level().getServer();
+        if (server == null) {
+            return false;
+        }
+        for (UUID ownerId : protection.ownerIds()) {
+            Player owner = server.getPlayerList().getPlayer(ownerId);
+            if (owner != null && SEHelper.isAlly(owner, entity)) {
                 return true;
             }
         }

@@ -18,6 +18,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> FarseerServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> CrimsonMosquitoServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> HullbreakerServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> IllagerElephantServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> DropBearServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> GusterServantLimit;
@@ -36,6 +37,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> VallumraptorElderChance;
     public static final ForgeConfigSpec.ConfigValue<Integer> NucleeperServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> BrainiacServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MineGuardianServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> MWSSoulShieldHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> MWSSoulShieldDamageBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> MWSHowlingSoulHealthBouns;
@@ -119,6 +121,9 @@ public class MobsConfig {
                 .comment("Maximum number of Warped Mosco Servants that can be summoned (Default: 2)")
                 .defineInRange("warpedMoscoServantLimit", 2, 1, 100);
 
+        HullbreakerServantLimit = BUILDER
+                .defineInRange("hullbreakerServantLimit", 16, 1, 100);
+
         IllagerElephantServantLimit = BUILDER
                 .comment("Maximum number of Illager Elephant Servants that can be summoned (Default: 2)")
                 .defineInRange("illagerElephantServantLimit", 2, 1, 100);
@@ -186,6 +191,9 @@ public class MobsConfig {
         BrainiacServantLimit = BUILDER
                 .comment("Maximum number of Brainiac Servants that can be summoned (Default: 16)")
                 .defineInRange("brainiacServantLimit", 16, 1, 100);
+
+        MineGuardianServantLimit = BUILDER
+                .defineInRange("mineGuardianServantLimit", 16, 1, 100);
 
         BUILDER.pop();
 
