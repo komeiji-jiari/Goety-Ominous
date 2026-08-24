@@ -11,10 +11,10 @@ import net.minecraft.core.particles.SimpleParticleType;
  *
  * 参考原版 Alex's Caves 的 MushroomCloudParticle,直接继承它的渲染/生长/子粒子逻辑,
  * 只覆写光照:
- * - 原版 noGriefing 蘑菇云会被 NuclearExplosionEntity 扫到世界底部,夜间/暗处光照为 0
- *   渲染成纯黑。这个粒子由 NucleeperServant 直接在地表生成,不再经过那个扫描。
  * - getLightColor 恒返回满亮度(block 15 &lt;&lt; 20 | sky 15 &lt;&lt; 4),等效永远处于亮区,
- *   无需任何 mixin。
+ *   夜间/暗处不会渲染成纯黑。
+ * - 原版那朵 MUSHROOM_CLOUD 由 NucleeperNukeProtectionHandler 在 noGriefing 时通过
+ *   置位 spawnedParticle 标志抑制(反射,不用 mixin),本粒子成为唯一一朵。
  */
 public class NucleeperMushroomCloudParticle extends MushroomCloudParticle {
 
