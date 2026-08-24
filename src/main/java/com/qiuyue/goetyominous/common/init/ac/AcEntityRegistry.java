@@ -3,6 +3,8 @@ package com.qiuyue.goetyominous.common.init.ac;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.ac.BrainiacServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.GrottoceratopsServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.MineGuardianServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.NucleeperServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TremorsaurusServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.VallumraptorServant;
@@ -52,6 +54,22 @@ public class AcEntityRegistry {
                             .sized(1.1F, 2.5F)
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":brainiac_servant"));
+
+    public static final RegistryObject<EntityType<MineGuardianServant>> MINE_GUARDIAN_SERVANT =
+            AC_ENTITIES.register("mine_guardian_servant",
+                    () -> EntityType.Builder.<MineGuardianServant>of((type, worldIn) -> new MineGuardianServant(type, worldIn), MobCategory.MISC)
+                            .sized(1.3F, 1.3F)
+                            .setTrackingRange(8)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .setUpdateInterval(1)
+                            .build(GoetyOminous.MOD_ID + ":mine_guardian_servant"));
+
+    public static final RegistryObject<EntityType<HullbreakerServant>> HULLBREAKER_SERVANT =
+            AC_ENTITIES.register("hullbreaker_servant",
+                    () -> EntityType.Builder.<HullbreakerServant>of((type, worldIn) -> new HullbreakerServant(type, worldIn), MobCategory.MISC)
+                            .sized(4.65F, 4.5F)
+                            .setTrackingRange(20)
+                            .build(GoetyOminous.MOD_ID + ":hullbreaker_servant"));
 
     public static void register(IEventBus modEventBus) {
         AC_ENTITIES.register(modEventBus);

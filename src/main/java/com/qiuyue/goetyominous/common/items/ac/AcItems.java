@@ -52,6 +52,14 @@ public class AcItems {
             AC_ITEMS.register("brainiac_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AcEntityRegistry.BRAINIAC_SERVANT, 0x3A4A2E, 0xE35FA0, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> MINE_GUARDIAN_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("mine_guardian_servant_spawn_egg",
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.MINE_GUARDIAN_SERVANT, 0x243B52, 0x8AC3D6, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> HULLBREAKER_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("hullbreaker_servant_spawn_egg",
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.HULLBREAKER_SERVANT, 0x182538, 0x76FFFD, egg()));
+
     public static final RegistryObject<Item> RAYCAT_AMULET =
             AC_ITEMS.register("raycat_amulet", () -> new RaycatAmuletItem());
 
