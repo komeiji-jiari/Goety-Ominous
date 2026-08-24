@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.events;
 
 import com.Polarice3.Goety.api.entities.IOwned;
 import com.Polarice3.Goety.utils.SEHelper;
+import com.github.alexmodguy.alexscaves.server.entity.item.NuclearExplosionEntity;
 import com.github.alexmodguy.alexscaves.server.misc.ACDamageTypes;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.ac.NucleeperServant;
@@ -17,12 +18,14 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.network.PacketDistributor;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -50,6 +53,93 @@ public class NucleeperNukeProtectionHandler {
      * 同样拒绝,保证两边一致。单机/联机都走包同步,不依赖共享静态区。
      */
     private static final List<NukeProtection> CLIENT_NUCKS = new ArrayList<>();
+
+    /**
+     * 反射句柄: NuclearExplosionEntity.spawnedParticle(私有字段,懒加载)。
+     * 该字段为真时, AC 的 tick() 会跳过 MUSHROOM_CLOUD 粒子生成(服务端不广播、
+     * 客户端不本地生成)。noGriefing 时原版云的位置/亮度并不受影响(之前"noGriefing 会把
+     * 云沉到世界底部"的假设是错的),我们靠置位这个标志来让自定义云成为唯一的一朵。
+     * 字段名是 AC 自身私有字段,编译产物中保持不变,dev 与生产环境反射均可靠。
+     */
+    private static Field spawnedParticleField;
+
+    private static Field getSpawnedParticleField() {
+        if (spawnedParticleField == null) {
+            try {
+                spawnedParticleField = NuclearExplosionEntity.class.getDeclaredField("spawnedParticle");
+                spawnedParticleField.setAccessible(true);
+            } catch (NoSuchFieldException e) {
+                GoetyOminous.LOGGER.error("[Nucleeper] 无法反射定位 NuclearExplosionEntity.spawnedParticle(AC 版本可能变化)", e);
+            }
+        }
+        return spawnedParticleField;
+    }
+
+    private static void suppressVanillaCloud(NuclearExplosionEntity explosion) {
+        Field field = getSpawnedParticleField();
+        if (field == null) {
+            return;
+        }
+        try {
+            field.setBoolean(explosion, true);
+        } catch (IllegalAccessException e) {
+            GoetyOminous.LOGGER.error("[Nucleeper] 设置 spawnedParticle 失败", e);
+        }
+    }
+
+    /**
+     * 在服务端/客户端爆炸实体加入世界时,若这是我们仆从的 noGriefing 爆炸,就置位
+     * spawnedParticle,跳过原版 MUSHROOM_CLOUD,只留自定义云。
+     * 服务端: PROTECTED_NUKES 已在 explode() 里先于 addFreshEntity 登记;
+     * 客户端: zone 包先于 spawn 包到达(同连接有序),CLIENT_NUCKS 已就绪。
+     * 通过"爆炸位置≈zone 原点"限定为仆从的爆炸,避免影响原版 AC 核能苦力怕。
+     */
+    @SubscribeEvent
+    public static void onExplosionJoin(EntityJoinLevelEvent event) {
+        if (!AlexCavesCompat.isAlexCavesLoaded()) {
+            return;
+        }
+        if (!(event.getEntity() instanceof NuclearExplosionEntity explosion)) {
+            return;
+        }
+        if (!explosion.isNoGriefing()) {
+            return;
+        }
+        if (!isOurServantExplosion(explosion)) {
+            return;
+        }
+        suppressVanillaCloud(explosion);
+    }
+
+    /** 该爆炸是否由我们仆从生成:爆炸位置与某个已登记的 zone 原点重合(爆炸 copyPosition 于仆从)。 */
+    private static boolean isOurServantExplosion(NuclearExplosionEntity explosion) {
+        Vec3 pos = explosion.position();
+        Level level = explosion.level();
+        if (level.isClientSide) {
+            long now = level.getGameTime();
+            synchronized (CLIENT_NUCKS) {
+                for (NukeProtection zone : CLIENT_NUCKS) {
+                    if (zone.until() >= now && zone.dimension().equals(level.dimension())
+                            && pos.distanceToSqr(zone.origin()) < 0.01) {
+                        return true;
+                    }
+                }
+            }
+        } else if (level instanceof ServerLevel serverLevel) {
+            MinecraftServer server = serverLevel.getServer();
+            if (server == null) {
+                return false;
+            }
+            long now = server.getTickCount();
+            for (NukeProtection zone : PROTECTED_NUKES) {
+                if (zone.until() >= now && zone.dimension().equals(level.dimension())
+                        && pos.distanceToSqr(zone.origin()) < 0.01) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     public static void protectOwnerAndServants(ServerLevel level, NucleeperServant nucleeper) {
         long until = level.getServer().getTickCount() + protectionTicks(nucleeper);
