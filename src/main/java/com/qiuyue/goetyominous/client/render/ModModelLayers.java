@@ -199,6 +199,15 @@ public class ModModelLayers {
         if (OpposingForceCompat.isOpposingForceLoaded()) {
             event.registerLayerDefinition(ModEntityLayers.RAMBLER_SERVANT_LAYER,
                     RamblerServantModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.DICER_SERVANT_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.of.DicerServantModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.VOLT_SERVANT_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.of.VoltServantModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.TREMBLER_SERVANT_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.of.TremblerServantModel::createBodyLayer);
         }
 
         if (com.qiuyue.goetyominous.compat.mod.MutantMoreCompat.isMutantMoreLoaded()) {
@@ -216,10 +225,6 @@ public class ModModelLayers {
 
             event.registerLayerDefinition(ModEntityLayers.MUTANT_HOGLIN_SERVANT_LAYER,
                     MutantHoglinServantModel::createBodyLayer);
-        }
-
-        if (OpposingForceCompat.isOpposingForceLoaded()) {
-
         }
 
     }
@@ -504,6 +509,18 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.RAMBLER_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.of.RamblerServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.DICER_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.of.DicerServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.VOLT_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.of.VoltServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.TREMBLER_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.of.TremblerServantRenderer::new);
         }
 
         if (AlexMobsCompat.isAlexMobsLoaded()) {
@@ -612,7 +629,6 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.HULLBREAKER_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderHullbreakerServant::new);
         }
-
     }
 
     @SubscribeEvent

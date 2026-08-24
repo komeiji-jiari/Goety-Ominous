@@ -58,3 +58,6 @@ libs/
 clean_comments.js
 detect_artifacts.js
 javap_init.gradle
+
+# Forge 模板残留（根目录 META-INF，非源码）
+/META-INF/

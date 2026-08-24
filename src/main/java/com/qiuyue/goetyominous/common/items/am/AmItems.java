@@ -120,6 +120,7 @@ public class AmItems {
             () -> new MagicFocus(new SandSpell()));
 
 
+
     public static Item.Properties egg() {
         return new Item.Properties();
     }

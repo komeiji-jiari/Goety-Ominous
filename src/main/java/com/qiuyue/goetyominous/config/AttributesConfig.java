@@ -345,6 +345,11 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> RamblerServantAttackDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> RamblerServantAttackKnockback;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> DicerServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> DicerServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> DicerServantAttackDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> DicerServantAttackKnockback;
+
     static {
         BUILDER.push("Servants Attributes");
 
@@ -1024,6 +1029,17 @@ public class AttributesConfig {
                 .defineInRange("ramblerServantAttackDamage", 5.0, 0.0, Double.MAX_VALUE);
         RamblerServantAttackKnockback = BUILDER.comment("How much Attack Knockback Rambler Servants have, Default: 0.3 (matches Opposing Force Rambler)")
                 .defineInRange("ramblerServantAttackKnockback", 0.3, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Dicer Servant");
+        DicerServantHealth = BUILDER.comment("How much Max Health Dicer Servants have, Default: 36.0 (matches Opposing Force Dicer)")
+                .defineInRange("dicerServantHealth", 36.0, 1.0, Double.MAX_VALUE);
+        DicerServantMovementSpeed = BUILDER.comment("How much Movement Speed Dicer Servants have, Default: 0.2 (matches Opposing Force Dicer)")
+                .defineInRange("dicerServantMovementSpeed", 0.2, 0.0, Double.MAX_VALUE);
+        DicerServantAttackDamage = BUILDER.comment("How much Attack Damage Dicer Servants have, Default: 8.0 (matches Opposing Force Dicer)")
+                .defineInRange("dicerServantAttackDamage", 8.0, 0.0, Double.MAX_VALUE);
+        DicerServantAttackKnockback = BUILDER.comment("How much Attack Knockback Dicer Servants have, Default: 0.3")
+                .defineInRange("dicerServantAttackKnockback", 0.3, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.pop();
