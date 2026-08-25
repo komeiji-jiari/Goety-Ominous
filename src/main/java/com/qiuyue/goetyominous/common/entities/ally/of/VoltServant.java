@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.entities.ally.of;
 
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
+import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.VoltServantLeapGoal;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.VoltServantShootGoal;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.VoltServantShootInWaterGoal;
@@ -30,7 +31,9 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.AmphibiousPathNavigation;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -108,6 +111,10 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        // 主动索敌：Goety 默认的 SummonTargetGoal 是"仇恨驱动"，不会见敌就打。
+        // 补上 NearestAttackableTargetGoal 才能像原版 Volt 一样主动追敌对生物（Enemy）。
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, false, false,
+                (target) -> target instanceof Enemy && !MobUtil.areAllies(this, target)));
         // 对齐原版优先级：1=跳扑（优先），2=陆地射击，2=水中射击（互斥），3=水中闲逛+陆地闲逛，5/6=观察
         this.goalSelector.addGoal(1, new VoltServantLeapGoal(this));
         this.goalSelector.addGoal(2, new VoltServantShootGoal(this));

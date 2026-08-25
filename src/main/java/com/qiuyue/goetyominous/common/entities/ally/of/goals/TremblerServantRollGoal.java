@@ -58,9 +58,10 @@ public class TremblerServantRollGoal extends RamblerServantAttackGoal {
     public void tick() {
         LivingEntity target = this.trembler.getTarget();
         if (target != null) {
-            double distance = this.trembler.distanceTo(target);
-            // 速度修正系数：被缓慢药水减速 / 被迅捷药水加速
-            float f = 0.15F * (float) (this.getSpeedEffect(MobEffects.MOVEMENT_SLOWDOWN) - this.getSpeedEffect(MobEffects.MOVEMENT_SPEED));
+            // 原版用"平方距离"比较：80.0 是平方值（实际约 8.9 格）
+            double distanceSqr = this.trembler.distanceToSqr(target.getX(), target.getY(), target.getZ());
+            // 速度修正系数：被缓慢药水减速 / 被迅捷药水加速（原版顺序：速度 - 缓慢）
+            float f = 0.15F * (float) (this.getSpeedEffect(MobEffects.MOVEMENT_SPEED) - this.getSpeedEffect(MobEffects.MOVEMENT_SLOWDOWN));
             BlockPos blockPos = this.trembler.blockPosition();
 
             if (this.trembler.isRolling()) {
@@ -93,26 +94,29 @@ public class TremblerServantRollGoal extends RamblerServantAttackGoal {
                     this.tryToHurt();
                 }
 
-                // 超过 53 tick 或落地：停止冲刺
-                if (this.timer > 53 || this.trembler.onGround()) {
+                // 超过 53 tick 或撞墙：停止冲刺
+                // ★ 原版结束条件是 horizontalCollision（撞到东西），不是 onGround！
+                //   蜗牛是贴地滚的，onGround 恒真会让滚动 1 tick 就结束，
+                //   setRolling(false) 瞬间触发 → ROLL 动画根本没机会播出来。
+                if (this.timer > 53 || this.trembler.horizontalCollision) {
                     this.trembler.setSprinting(false);
                     this.trembler.getNavigation().stop();
                     this.rollDirection = Vec3.ZERO;
                 }
 
-                // 超过 69 tick 或落地：本次滚动结束，进冷却
-                if (this.timer > 69 || this.trembler.onGround()) {
+                // 超过 69 tick 或撞墙：本次滚动结束，进冷却
+                if (this.timer > 69 || this.trembler.horizontalCollision) {
                     this.timer = 0;
                     this.trembler.setRolling(false);
                     this.trembler.rollCooldown();
                 }
             } else {
                 // ===== 还没滚：追目标/准备滚 =====
-                // 距离 80 格内 + 冷却好 + 目标在同一高度带(±3格) + 在地面 → 开滚
-                if (distance < 80.0D && this.trembler.getRollCooldown() <= 0
+                // 平方距离 < 80（≈8.9格）+ 冷却好 + 目标在同一高度带(±3格) + 在地面 → 开滚
+                if (distanceSqr < 80.0D && this.trembler.getRollCooldown() <= 0
                         && this.trembler.isWithinYRange(target) && this.trembler.onGround()) {
                     this.trembler.setRolling(true);
-                } else if (distance < 16.0D) {
+                } else if (distanceSqr < 16.0D) {
                     // 近：慢慢走近
                     this.trembler.getNavigation().moveTo(target, 1.0);
                 } else {
@@ -146,9 +150,10 @@ public class TremblerServantRollGoal extends RamblerServantAttackGoal {
                 return;
             }
 
-            float f = 0.15F * (float) (this.getSpeedEffect(MobEffects.MOVEMENT_SLOWDOWN) - this.getSpeedEffect(MobEffects.MOVEMENT_SPEED));
-            // 击退力度：由攻击力决定，夹在 0.2~3 之间再加速度系数
-            float dmg = Mth.clamp((float) this.trembler.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.65F, 0.2F, 3.0F) + f;
+            // 原版顺序：速度 - 缓慢（迅捷药水让击退更强，缓慢更弱）
+            float f = 0.15F * (float) (this.getSpeedEffect(MobEffects.MOVEMENT_SPEED) - this.getSpeedEffect(MobEffects.MOVEMENT_SLOWDOWN));
+            // 击退力度：原版按"移动速度"算（0.15*1.65≈0.25），夹在 0.2~3 之间再加速度系数
+            float dmg = Mth.clamp(this.trembler.getSpeed() * 1.65F, 0.2F, 3.0F) + f;
             boolean blocked = victim.isBlocking();          // 敌人举盾？
             float knockback = blocked ? 1.75F : 2.25F;      // 举盾时推得轻一点
 
