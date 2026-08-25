@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.entities.ally.of;
 
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
+import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.TremblerServantRollGoal;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
 import com.unusualmodding.opposing_force.entity.utils.EliteVariant;
@@ -28,7 +29,9 @@ import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.SoundType;
@@ -74,6 +77,10 @@ public class TremblerServant extends Summoned implements EliteVariant {
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        // 主动索敌：Goety 默认的 SummonTargetGoal 是"仇恨驱动"，不会见敌就打。
+        // 补上 NearestAttackableTargetGoal 才能像原版 Trembler 一样主动追敌对生物（Enemy）。
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, false, false,
+                (target) -> target instanceof Enemy && !MobUtil.areAllies(this, target)));
         // 优先级照抄原版：1=滚动，4=闲逛，5=看玩家，6=四处乱看
         this.goalSelector.addGoal(1, new TremblerServantRollGoal(this));
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0));

@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.entities.ally.of;
 
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
+import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.DicerServantAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.DicerServantLaserGoal;
 import com.qiuyue.goetyominous.config.AttributesConfig;
@@ -28,7 +29,9 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -83,6 +86,10 @@ public class DicerServant extends Summoned implements AttackState, EliteVariant 
 
     protected void registerGoals() {
         super.registerGoals();
+        // 主动索敌：Goety 默认的 SummonTargetGoal 是"仇恨驱动"，不会见敌就打。
+        // 补上 NearestAttackableTargetGoal 才能像原版 Dicer 一样主动追敌对生物（Enemy）。
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, false, false,
+                (target) -> target instanceof Enemy && !MobUtil.areAllies(this, target)));
         this.goalSelector.addGoal(1, new DicerServantLaserGoal(this));
         this.goalSelector.addGoal(2, new DicerServantAttackGoal(this));
         this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0));
