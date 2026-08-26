@@ -7,6 +7,7 @@ import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -107,7 +108,13 @@ public class NucleeperSummonHandler {
             return;
         }
         servant.setTrueOwner(player);
-        servant.moveTo(pos.getX() + 0.5D, pos.getY() + 0.05D, pos.getZ() + 0.5D, 0.0F, 0.0F);
+        // 生成在结构底座(地面)处而非铀块位置,避免整根结构拆除后仆从悬空落地。
+        BlockPos groundPos = pos.below(2);
+        double x = pos.getX() + 0.5D;
+        double z = pos.getZ() + 0.5D;
+        // 生成时面向召唤玩家
+        float yaw = (float) (Mth.atan2(player.getZ() - z, player.getX() - x) * (180.0F / (float) Math.PI)) - 90.0F;
+        servant.moveTo(x, groundPos.getY() + 0.05D, z, yaw, 0.0F);
         servant.finalizeSpawn(serverLevel, level.getCurrentDifficultyAt(servant.blockPosition()),
                 MobSpawnType.MOB_SUMMONED, null, null);
         if (serverLevel.addFreshEntity(servant)) {

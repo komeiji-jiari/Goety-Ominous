@@ -26,8 +26,11 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -45,17 +48,19 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 import java.util.UUID;
 
-public class VallumraptorServant extends AnimalSummon implements IAnimatedEntity, LaysEggs {
+public class VallumraptorServant extends AbstractDinosaurServant implements IAnimatedEntity, LaysEggs {
 
     public static final Animation ANIMATION_CALL_1 = Animation.create(15);
     public static final Animation ANIMATION_CALL_2 = Animation.create(25);
@@ -564,6 +569,44 @@ public class VallumraptorServant extends AnimalSummon implements IAnimatedEntity
         if (soundevent != null) {
             this.playSound(soundevent, volume, this.getVoicePitch());
         }
+    }
+
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        if (!this.level().isClientSide) {
+            InteractionResult altSkinResult = this.tryChangeAltSkin(player, hand);
+            if (altSkinResult != null) {
+                return altSkinResult;
+            }
+            ItemStack itemstack = player.getItemInHand(hand);
+            if (this.getTrueOwner() != null && player == this.getTrueOwner()) {
+                if (this.isFood(itemstack)) {
+                    return super.mobInteract(player, hand);
+                }
+                if (itemstack.getItem().isEdible() && itemstack.getFoodProperties(this).isMeat() && this.getHealth() < this.getMaxHealth()) {
+                    FoodProperties foodProperties = itemstack.getFoodProperties(this);
+                    if (foodProperties != null) {
+                        this.heal(4.0F);
+                        if (!player.getAbilities().instabuild) {
+                            itemstack.shrink(1);
+                        }
+                        this.playSound(SoundEvents.ITEM_PICKUP, 1.0F, 1.0F);
+                        this.gameEvent(GameEvent.EAT, this);
+                        if (this.level() instanceof ServerLevel serverLevel) {
+                            for (int i = 0; i < 8; ++i) {
+                                double d0 = this.random.nextGaussian() * 0.02;
+                                double d1 = this.random.nextGaussian() * 0.02 + 0.1;
+                                double d2 = this.random.nextGaussian() * 0.02;
+                                serverLevel.sendParticles(ParticleTypes.HEART, this.getRandomX(1.0F), this.getY() + this.getBbHeight() + 0.3F + this.random.nextDouble() * 0.5F, this.getRandomZ(1.0F), 0, d0, d1, d2, 0.5);
+                            }
+                        }
+                        player.swing(hand);
+                        return InteractionResult.SUCCESS;
+                    }
+                }
+            }
+        }
+        return super.mobInteract(player, hand);
     }
 
     @Override

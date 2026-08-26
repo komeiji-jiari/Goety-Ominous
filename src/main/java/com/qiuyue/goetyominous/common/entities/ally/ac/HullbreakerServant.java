@@ -1,12 +1,19 @@
 package com.qiuyue.goetyominous.common.entities.ally.ac;
 
+import com.Polarice3.Goety.client.particles.ModParticleTypes;
+import com.Polarice3.Goety.common.entities.ModEntityType;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
+import com.Polarice3.Goety.common.entities.ai.SummonTargetGoal;
+import com.Polarice3.Goety.common.entities.neutral.Owned;
+import com.Polarice3.Goety.common.entities.projectiles.FlyingItem;
+import com.Polarice3.Goety.utils.MobUtil;
 import com.github.alexmodguy.alexscaves.AlexsCaves;
 import com.github.alexmodguy.alexscaves.server.entity.ai.AnimalRandomlySwimGoal;
 import com.github.alexmodguy.alexscaves.server.entity.ai.VerticalSwimmingMoveControl;
 import com.github.alexmodguy.alexscaves.server.entity.item.SubmarineEntity;
 import com.github.alexmodguy.alexscaves.server.entity.util.KaijuMob;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
+import com.github.alexmodguy.alexscaves.server.item.ACItemRegistry;
 import com.github.alexmodguy.alexscaves.server.misc.ACTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
@@ -15,6 +22,7 @@ import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -32,6 +40,10 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WrappedGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.monster.Monster;
@@ -49,7 +61,9 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.fluids.FluidType;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 import javax.annotation.Nullable;
 
 public class HullbreakerServant extends Summoned implements IAnimatedEntity, KaijuMob {
@@ -140,6 +154,17 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
 
     protected void registerGoals() {
         super.registerGoals();
+        // 平时只反击:移除继承的"主动索敌"(SummonTargetGoal)和"主人的攻击目标"(OwnerHurtTargetGoal),
+        // 保留两条反击(主人被打/自己被揍)。防御性拷贝避免迭代时改集合。
+        List<WrappedGoal> inherited = new ArrayList<>(this.targetSelector.getAvailableGoals());
+        for (WrappedGoal wrapped : inherited) {
+            Goal goal = wrapped.getGoal();
+            if (goal instanceof SummonTargetGoal || goal instanceof Owned.OwnerHurtTargetGoal) {
+                this.targetSelector.removeGoal(goal);
+            }
+        }
+        // 主动只追发光目标(不打友军)
+        this.targetSelector.addGoal(2, new GlowingTargetGoal(this));
         this.goalSelector.addGoal(1, new MeleeGoal());
         this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(6, new AnimalRandomlySwimGoal(this, 10, 35, 15, 1.0D));
@@ -178,14 +203,38 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
         return MobType.WATER;
     }
 
+    @Override
+    public void tryKill(Player player) {
+        if (this.killChance <= 0) {
+            this.warnKill(player);
+        } else {
+            super.tryKill(player);
+        }
+    }
+
     protected void tickDeath() {
         this.deathTime++;
         this.setAnimation(ANIMATION_DIE);
         this.setXRot(0.0F);
         this.setYHeadRot(this.getYRot());
         if (this.getAnimation() == ANIMATION_DIE && this.getAnimationTick() > 45 && !this.level().isClientSide() && !this.isRemoved()) {
+            // 有主人的碎船兽死亡后返还胚胎:参考Goety暗兽生成FlyingItem飞回主人,不设粒子(用默认portal而非totem),可配置关闭
+            if (this.getTrueOwner() != null && MobsConfig.HullbreakerServantReturnEmbryo.get()) {
+                FlyingItem flyingItem = new FlyingItem(ModEntityType.FLYING_ITEM.get(), this.level(), this.getX(), this.getY(), this.getZ());
+                flyingItem.setOwner(this.getTrueOwner());
+                flyingItem.setItem(new ItemStack(ACItemRegistry.IMMORTAL_EMBRYO.get()));
+                this.level().addFreshEntity(flyingItem);
+            }
             this.level().broadcastEntityEvent(this, (byte) 60);
             this.remove(Entity.RemovalReason.KILLED);
+        }
+        // 暗兽同款幽灵粒子死亡特效
+        if (this.level() instanceof ServerLevel serverLevel) {
+            double d0 = this.random.nextGaussian() * 0.02;
+            double d1 = this.random.nextGaussian() * 0.02;
+            double d2 = this.random.nextGaussian() * 0.02;
+            serverLevel.sendParticles((SimpleParticleType) ModParticleTypes.WRAITH.get(), this.getRandomX(1.0D), this.getRandomY(), this.getRandomZ(1.0D), 0, d0, d1, d2, 0.5D);
+            serverLevel.sendParticles((SimpleParticleType) ModParticleTypes.WRAITH_BURST.get(), this.getRandomX(1.0D), this.getY(), this.getRandomZ(1.0D), 0, d0, d1, d2, 0.5D);
         }
     }
 
@@ -278,13 +327,16 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
         AABB damageBox = this.headPart.getBoundingBox().inflate(1.2F).move(this.calculateViewVector(this.getXRot(), this.getYRot()));
         boolean noGriefing = !AttributesConfig.HullbreakerServantBlockBreakGriefing.get()
                 || !level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
-        if (!level().isClientSide && !noGriefing && this.getTarget() != null) {
+        // 软体水生植物(海带/海草/珊瑚等)始终可撞碎,不受破坏方块配置与mobGriefing限制
+        if (!level().isClientSide && this.getTarget() != null) {
             for (int a = (int) Math.round(damageBox.minX); a <= (int) Math.round(damageBox.maxX); a++) {
                 for (int b = (int) Math.round(damageBox.minY) - 1; (b <= (int) Math.round(damageBox.maxY) + 1) && (b <= 127); b++) {
                     for (int c = (int) Math.round(damageBox.minZ); c <= (int) Math.round(damageBox.maxZ); c++) {
                         final BlockPos pos = new BlockPos(a, b, c);
                         final BlockState state = level().getBlockState(pos);
-                        if (!state.isAir() && !state.getShape(level(), pos).isEmpty() && !state.is(ACTagRegistry.UNMOVEABLE) && state.getBlock().getExplosionResistance() <= 15) {
+                        boolean softPlant = this.isSoftAquaticPlant(state);
+                        if (!state.isAir() && !state.getShape(level(), pos).isEmpty() && !state.is(ACTagRegistry.UNMOVEABLE)
+                                && (softPlant || (!noGriefing && state.getBlock().getExplosionResistance() <= 15))) {
                             final Block block = state.getBlock();
                             if (block != Blocks.AIR) {
                                 this.setDeltaMovement(this.getDeltaMovement().multiply(0.6F, 1, 0.6F));
@@ -302,6 +354,17 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
         if (flag) {
             blockBreakCooldown = 3;
         }
+    }
+
+    /**
+     * 软体水生植物判定:海带/珊瑚(块/管/扇,含死珊瑚)。再生软体,撞碎不视为破坏地形。
+     */
+    private boolean isSoftAquaticPlant(BlockState state) {
+        return state.is(BlockTags.CORALS)
+                || state.is(BlockTags.CORAL_BLOCKS)
+                || state.is(BlockTags.WALL_CORALS)
+                || state.is(Blocks.KELP)
+                || state.is(Blocks.KELP_PLANT);
     }
 
     private void tickMultipart() {
@@ -418,6 +481,27 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
         return super.getSoundVolume() + 2.0F;
     }
 
+    /**
+     * 主动索敌:只追带发光效果的活体。mustSee=false —— 发光本就可穿墙看见,隔墙也能锁定;5 tick 搜一次。
+     * 友军判定复用 Goety MobUtil.areAllies:同主人仆从/主人盟友/原版宠物/自己一律不打;
+     * 玩家目标沿用 EntitySelector 门槛,创造/旁观玩家不追。
+     */
+    private class GlowingTargetGoal extends NearestAttackableTargetGoal<LivingEntity> {
+
+        private GlowingTargetGoal(Mob mob) {
+            super(mob, LivingEntity.class, 5, false, false, target ->
+                    target.hasEffect(MobEffects.GLOWING)
+                            && !MobUtil.areAllies(HullbreakerServant.this, target)
+                            && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target));
+        }
+
+        // 发光目标检索范围独立放大(默认40格,普通FOLLOW_RANGE为16格),不影响其他索敌
+        @Override
+        protected double getFollowDistance() {
+            return AttributesConfig.HullbreakerServantGlowTargetRange.get();
+        }
+    }
+
     private class MeleeGoal extends Goal {
 
         private MeleeGoal() {
@@ -450,7 +534,11 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
             }
             if (dist > (double) (f + 2.0F)) {
                 HullbreakerServant.this.lookAt(EntityAnchorArgument.Anchor.EYES, target.getEyePosition());
-                HullbreakerServant.this.getNavigation().moveTo(target, 1.6);
+                // 追击发光目标时用更快的游速(配置可调),普通目标维持1.6
+                double chaseSpeed = target.hasEffect(MobEffects.GLOWING)
+                        ? AttributesConfig.HullbreakerServantGlowChaseSpeed.get()
+                        : 1.6D;
+                HullbreakerServant.this.getNavigation().moveTo(target, chaseSpeed);
             }
             if (HullbreakerServant.this.getAnimation() == HullbreakerServant.ANIMATION_BITE && HullbreakerServant.this.getAnimationTick() > 10 && HullbreakerServant.this.getAnimationTick() <= 14) {
                 this.checkAndDealDamage(target, 1.0F);

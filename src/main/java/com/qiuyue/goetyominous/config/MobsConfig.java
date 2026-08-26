@@ -19,6 +19,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> CrimsonMosquitoServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> HullbreakerServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> HullbreakerServantReturnEmbryo;
     public static final ForgeConfigSpec.ConfigValue<Integer> IllagerElephantServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> DropBearServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> GusterServantLimit;
@@ -124,6 +125,10 @@ public class MobsConfig {
 
         HullbreakerServantLimit = BUILDER
                 .defineInRange("hullbreakerServantLimit", 16, 1, 100);
+
+        HullbreakerServantReturnEmbryo = BUILDER
+                .comment("Whether Hullbreaker Servants drop an immortal embryo when they die while owned (Default: true)")
+                .define("hullbreakerServantReturnEmbryo", true);
 
         IllagerElephantServantLimit = BUILDER
                 .comment("Maximum number of Illager Elephant Servants that can be summoned (Default: 2)")
