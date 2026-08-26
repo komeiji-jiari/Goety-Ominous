@@ -4,6 +4,7 @@ import com.Polarice3.Goety.api.entities.ally.IServant;
 import com.Polarice3.Goety.common.entities.ModEntityType;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.projectiles.FlyingItem;
+import com.Polarice3.Goety.common.items.ModItems;
 import com.Polarice3.Goety.config.ItemConfig;
 import com.Polarice3.Goety.config.MobsConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
@@ -16,6 +17,7 @@ import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 
 import java.util.EnumSet;
+import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.github.alexthe666.citadel.animation.Animation;
@@ -45,6 +47,8 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
@@ -87,6 +91,11 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
     private int timeFlying;
     private int idleFlightTimeLimit = 0;
     private int loopSoundTick = 0;
+    private boolean unholyBloodEnhancement;
+    private boolean leechingFocusEnhancement;
+    private int unholyBloodInvulnTime;
+    private static final UUID UNHOLY_BLOOD_HEALTH_UUID = UUID.fromString("d4040404-0000-4000-8000-000000000001");
+    private static final UUID UNHOLY_BLOOD_ATTACK_UUID = UUID.fromString("d4040404-0000-4000-8000-000000000002");
 
     public WarpedMoscoServant(EntityType entityType, Level world) {
         super(entityType, world);
@@ -106,6 +115,54 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
 
     public MobType getMobType() {
         return MobType.ARTHROPOD;
+    }
+
+    // ===== 突变凋零骷髅同款 unholy blood 喂食强化 =====
+    public boolean hasUnholyBlood() {
+        return this.unholyBloodEnhancement;
+    }
+
+    public void setUnholyBlood(boolean value) {
+        this.unholyBloodEnhancement = value;
+    }
+
+    // ===== leeching focus 喂食:地面吸血攻击每次完整动画回复 5 血 =====
+    public boolean hasLeechingFocus() {
+        return this.leechingFocusEnhancement;
+    }
+
+    public void setLeechingFocus(boolean value) {
+        this.leechingFocusEnhancement = value;
+    }
+
+    private void addModIfMissing(AttributeInstance instance, UUID uuid, String name, double value) {
+        if (instance != null && instance.getModifier(uuid) == null) {
+            instance.addPermanentModifier(new AttributeModifier(uuid, name, value, AttributeModifier.Operation.ADDITION));
+        }
+    }
+
+    private void applyEnhancementModifiers() {
+        AttributeInstance health = this.getAttribute(Attributes.MAX_HEALTH);
+        AttributeInstance attack = this.getAttribute(Attributes.ATTACK_DAMAGE);
+        if (this.hasUnholyBlood()) {
+            this.addModIfMissing(health, UNHOLY_BLOOD_HEALTH_UUID, "Unholy Blood Health", com.qiuyue.goetyominous.config.MobsConfig.WarpedMoscoUnholyBloodHealthBouns.get());
+            this.addModIfMissing(attack, UNHOLY_BLOOD_ATTACK_UUID, "Unholy Blood Attack", com.qiuyue.goetyominous.config.MobsConfig.WarpedMoscoUnholyBloodDamageBouns.get());
+        }
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putBoolean("UnholyBloodEnhancement", this.unholyBloodEnhancement);
+        compound.putBoolean("LeechingFocusEnhancement", this.leechingFocusEnhancement);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.unholyBloodEnhancement = compound.getBoolean("UnholyBloodEnhancement");
+        this.leechingFocusEnhancement = compound.getBoolean("LeechingFocusEnhancement");
+        this.applyEnhancementModifiers();
     }
 
     @Nullable
@@ -138,6 +195,26 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
         return source.is(DamageTypes.FALL) || source.is(DamageTypes.DROWN) || source.is(DamageTypes.IN_WALL) || source.is(DamageTypes.LAVA) || source.is(DamageTypeTags.IS_FIRE) || super.isInvulnerableTo(source);
+    }
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        // 突变凋零骷髅同款:unholy blood 受击后短暂无敌,并减免 15%(下界 50%)伤害
+        if (this.hasUnholyBlood()) {
+            if (this.unholyBloodInvulnTime > 0) {
+                return false;
+            }
+            boolean inNether = this.level().dimension() == Level.NETHER;
+            amount = inNether ? amount * 0.5F : amount * 0.85F;
+            if (amount <= 0.0F) {
+                return false;
+            }
+        }
+        boolean flag = super.hurt(source, amount);
+        if (flag && this.hasUnholyBlood()) {
+            this.unholyBloodInvulnTime = 10;
+        }
+        return flag;
     }
 
     private static Animation getRandomAttack(RandomSource rand) {
@@ -180,6 +257,32 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
+        // 突变凋零骷髅同款:喂食邪恶之血获得永久属性强化(回复 50 血)
+        if (stack.is(ModItems.UNHOLY_BLOOD.get()) && this.getMasterOwner() == player) {
+            if (!this.hasUnholyBlood()) {
+                if (!player.getAbilities().instabuild) {
+                    stack.shrink(1);
+                }
+                this.setUnholyBlood(true);
+                this.applyEnhancementModifiers();
+                this.heal(50.0F);
+                this.playSound(AMSoundRegistry.WARPED_MOSCO_IDLE.get(), 1.0F, 1.0F);
+                return InteractionResult.SUCCESS;
+            }
+            return InteractionResult.CONSUME;
+        }
+        // leeching focus 喂食:地面吸血攻击每次完整动画回复 5 血
+        if (stack.is(ModItems.LEECHING_FOCUS.get()) && this.getMasterOwner() == player) {
+            if (!this.hasLeechingFocus()) {
+                if (!player.getAbilities().instabuild) {
+                    stack.shrink(1);
+                }
+                this.setLeechingFocus(true);
+                this.playSound(AMSoundRegistry.WARPED_MOSCO_IDLE.get(), 1.0F, 1.0F);
+                return InteractionResult.SUCCESS;
+            }
+            return InteractionResult.CONSUME;
+        }
         float healAmount = 0.0F;
         if (stack.is(AMItemRegistry.BLOOD_SAC.get())) {
             healAmount = 20.0F;
@@ -416,6 +519,9 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
 
     public void tick() {
         super.tick();
+        if (this.unholyBloodInvulnTime > 0) {
+            --this.unholyBloodInvulnTime;
+        }
         prevFlyRightProgress = flyRightProgress;
         prevLeftFlyProgress = flyLeftProgress;
         if (!this.level().isClientSide && this.isFlying()) {
@@ -492,6 +598,10 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
         if (!this.level().isClientSide && target != null && this.isAlive()) {
             if (this.getAnimation() == ANIMATION_SUCK && this.getAnimationTick() == 3 && this.distanceTo(target) < 4.7F) {
                 target.startRiding(this, true);
+                // leeching focus 强化:每次完整吸血动画回复最大生命值的 5%
+                if (this.hasLeechingFocus()) {
+                    this.heal(this.getMaxHealth() * com.qiuyue.goetyominous.config.MobsConfig.WarpedMoscoLeechingFocusHeal.get() / 100.0F);
+                }
             }
             if (this.getAnimation() == ANIMATION_SLAM) {
                 if (this.getAnimationTick() == 19) {
