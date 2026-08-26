@@ -59,7 +59,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-public class GrottoceratopsServant extends AnimalSummon implements IAnimatedEntity, PlayerRideable, IAutoRideable, LaysEggs {
+public class GrottoceratopsServant extends AbstractDinosaurServant implements IAnimatedEntity, PlayerRideable, IAutoRideable, LaysEggs {
 
     private static final EntityDataAccessor<Float> TAIL_SWING_ROT = SynchedEntityData.defineId(GrottoceratopsServant.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> AUTO_MODE = SynchedEntityData.defineId(GrottoceratopsServant.class, EntityDataSerializers.BOOLEAN);
@@ -347,6 +347,10 @@ public class GrottoceratopsServant extends AnimalSummon implements IAnimatedEnti
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (!this.level().isClientSide) {
+            InteractionResult altSkinResult = this.tryChangeAltSkin(player, hand);
+            if (altSkinResult != null) {
+                return altSkinResult;
+            }
             ItemStack itemstack = player.getItemInHand(hand);
             if (this.getTrueOwner() != null && player == this.getTrueOwner()) {
                 if (this.isFood(itemstack)) {

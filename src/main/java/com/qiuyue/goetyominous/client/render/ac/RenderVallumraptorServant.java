@@ -15,6 +15,10 @@ public class RenderVallumraptorServant extends MobRenderer<VallumraptorServant, 
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexscaves:textures/entity/vallumraptor.png");
     private static final ResourceLocation TEXTURE_ELDER = new ResourceLocation("alexscaves:textures/entity/vallumraptor_elder.png");
+    private static final ResourceLocation TEXTURE_RETRO = new ResourceLocation("alexscaves:textures/entity/vallumraptor_retro.png");
+    private static final ResourceLocation TEXTURE_RETRO_ELDER = new ResourceLocation("alexscaves:textures/entity/vallumraptor_retro_elder.png");
+    private static final ResourceLocation TEXTURE_TECTONIC = new ResourceLocation("alexscaves:textures/entity/vallumraptor_tectonic.png");
+    private static final ResourceLocation TEXTURE_TECTONIC_ELDER = new ResourceLocation("alexscaves:textures/entity/vallumraptor_tectonic_elder.png");
 
     public RenderVallumraptorServant(EntityRendererProvider.Context context) {
         super(context, new ModelVallumraptorServant(), 0.4F);
@@ -39,6 +43,19 @@ public class RenderVallumraptorServant extends MobRenderer<VallumraptorServant, 
 
     @Override
     public ResourceLocation getTextureLocation(VallumraptorServant entity) {
-        return entity.isElder() ? TEXTURE_ELDER : TEXTURE;
+        if (entity.isElder()) {
+            if (entity.getAltSkin() == 1) {
+                return TEXTURE_RETRO_ELDER;
+            } else if (entity.getAltSkin() >= 2) {
+                return TEXTURE_TECTONIC_ELDER;
+            }
+            return TEXTURE_ELDER;
+        }
+        if (entity.getAltSkin() == 1) {
+            return TEXTURE_RETRO;
+        } else if (entity.getAltSkin() >= 2) {
+            return TEXTURE_TECTONIC;
+        }
+        return TEXTURE;
     }
 }

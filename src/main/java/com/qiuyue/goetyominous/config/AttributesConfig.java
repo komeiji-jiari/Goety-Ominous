@@ -82,6 +82,8 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> NucleeperServantExplosionGriefing;
     public static final ForgeConfigSpec.ConfigValue<Boolean> MineGuardianServantExplosionGriefing;
     public static final ForgeConfigSpec.ConfigValue<Boolean> HullbreakerServantBlockBreakGriefing;
+    public static final ForgeConfigSpec.ConfigValue<Double> HullbreakerServantGlowTargetRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> HullbreakerServantGlowChaseSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> BrainiacServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> BrainiacServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> BrainiacServantMovementSpeed;
@@ -905,6 +907,10 @@ public class AttributesConfig {
                 .define("mineGuardianServantExplosionGriefing", false);
         HullbreakerServantBlockBreakGriefing = BUILDER.comment("Whether Hullbreaker Servants break blocks when bashing, Default: false (set to true to allow block destruction, which also respects the mobGriefing game rule)")
                 .define("hullbreakerServantBlockBreakGriefing", false);
+        HullbreakerServantGlowTargetRange = BUILDER.comment("How far (in blocks) Hullbreaker Servants search for glowing targets, Default: 40.0 (normal follow range is 16)")
+                .defineInRange("hullbreakerServantGlowTargetRange", 40.0, 8.0, Double.MAX_VALUE);
+        HullbreakerServantGlowChaseSpeed = BUILDER.comment("Swim speed Hullbreaker Servants use when chasing a glowing target, Default: 2.4 (normal approach speed is 1.6)")
+                .defineInRange("hullbreakerServantGlowChaseSpeed", 2.4, 0.1, Double.MAX_VALUE);
         BrainiacServantHealth = BUILDER.comment("How much Max Health Brainiac Servants have, Default: 40.0 (matches Alex's Caves Brainiac)")
                 .defineInRange("brainiacServantHealth", 40.0, 1.0, Double.MAX_VALUE);
         BrainiacServantDamage = BUILDER.comment("How much damage Brainiac Servants deal, Default: 5.0 (matches Alex's Caves Brainiac)")

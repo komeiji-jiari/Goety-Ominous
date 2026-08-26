@@ -12,6 +12,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class RenderTremorsaurusServant extends MobRenderer<TremorsaurusServant, ModelTremorsaurusServant> {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexscaves:textures/entity/tremorsaurus.png");
+    private static final ResourceLocation TEXTURE_RETRO = new ResourceLocation("alexscaves:textures/entity/tremorsaurus_retro.png");
+    private static final ResourceLocation TEXTURE_TECTONIC = new ResourceLocation("alexscaves:textures/entity/tremorsaurus_tectonic.png");
 
     public RenderTremorsaurusServant(EntityRendererProvider.Context context) {
         super(context, new ModelTremorsaurusServant(), 1.1F);
@@ -20,6 +22,11 @@ public class RenderTremorsaurusServant extends MobRenderer<TremorsaurusServant, 
 
     @Override
     public ResourceLocation getTextureLocation(TremorsaurusServant entity) {
+        if (entity.getAltSkin() == 1) {
+            return TEXTURE_RETRO;
+        } else if (entity.getAltSkin() >= 2) {
+            return TEXTURE_TECTONIC;
+        }
         return TEXTURE;
     }
 }

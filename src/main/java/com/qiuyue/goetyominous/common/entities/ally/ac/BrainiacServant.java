@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.ally.ac;
 
 import com.Polarice3.Goety.common.entities.ally.Summoned;
+import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
 import com.github.alexmodguy.alexscaves.server.entity.ACEntityRegistry;
 import com.github.alexmodguy.alexscaves.server.entity.ai.GroundPathNavigatorNoSpin;
@@ -22,6 +23,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -62,6 +65,8 @@ public class BrainiacServant extends Summoned implements IAnimatedEntity {
     private float shootTongueAmount = 0;
     private float prevLastTongueDistance = 0;
     private float lastTongueDistance = 0;
+    /** 服务端瞬态标记:上一 tick 自身是否处于辐照状态,用于检测辐照消退触发 iron hide 奖励。 */
+    private boolean wasIrradiated = false;
 
     public BrainiacServant(EntityType<? extends Summoned> entityType, Level level) {
         super(entityType, level);
@@ -176,6 +181,14 @@ public class BrainiacServant extends Summoned implements IAnimatedEntity {
                 }
             }
         }
+        // 外界施加的辐照效果结束后,获得 Goety iron hide 三级(30秒)奖励
+        if (!level().isClientSide) {
+            boolean irradiated = this.hasEffect(ACEffectRegistry.IRRADIATED.get());
+            if (this.wasIrradiated && !irradiated) {
+                this.addEffect(new MobEffectInstance(GoetyEffects.IRON_HIDE.get(), 600, 2));
+            }
+            this.wasIrradiated = irradiated;
+        }
         Entity tongueTarget = this.getTongueTarget();
         if (level().isClientSide) {
             if (tongueTarget != null && tongueTarget.isAlive()) {
@@ -197,7 +210,6 @@ public class BrainiacServant extends Summoned implements IAnimatedEntity {
         }
         if (tongueTarget instanceof LivingEntity living) {
             if (this.shootTongueAmount >= 5F) {
-                postAttackEffect(living);
                 tongueTarget.hurt(damageSources().mobAttack(this), 4);
                 living.knockback(0.3D, living.getX() - this.getX(), tongueTarget.getZ() - this.getZ());
                 this.setLickTicks(0);
@@ -296,12 +308,6 @@ public class BrainiacServant extends Summoned implements IAnimatedEntity {
         return false;
     }
 
-    public void postAttackEffect(LivingEntity entity) {
-        if (entity != null && entity.isAlive()) {
-            entity.addEffect(new MobEffectInstance(ACEffectRegistry.IRRADIATED.get(), 400));
-        }
-    }
-
     public void setTongueTargetId(int id) {
         this.entityData.set(TONGUE_TARGET_ID, id);
     }
@@ -320,6 +326,30 @@ public class BrainiacServant extends Summoned implements IAnimatedEntity {
 
     public void setHasBarrel(boolean barrel) {
         this.entityData.set(HAS_BARREL, barrel);
+    }
+
+    /**
+     * 主人手持 waste drum(方块物品)右键没有桶的脑怪仆从时,把桶交给它:
+     * 消耗手上物品(创造模式除外)→ 置位 HAS_BARREL 同步数据 → 播放抓取音效。
+     * 之后仆从即可正常喝桶回血/扔桶,且 PickupBarrelGoal 因已有桶而停止搜索地面桶。
+     * 非主人、已持桶或手持物不是桶时,交还 super 处理。
+     */
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        if (this.getTrueOwner() != null && player == this.getTrueOwner()
+                && !this.hasBarrel()
+                && itemstack.is(ACBlockRegistry.WASTE_DRUM.get().asItem())) {
+            if (!this.level().isClientSide) {
+                if (!player.getAbilities().instabuild) {
+                    itemstack.shrink(1);
+                }
+                this.setHasBarrel(true);
+                this.playSound(ACSoundRegistry.BRAINIAC_ATTACK.get(), 1.0F, this.getVoicePitch());
+            }
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
+        }
+        return super.mobInteract(player, hand);
     }
 
     protected SoundEvent getAmbientSound() {
@@ -401,7 +431,6 @@ public class BrainiacServant extends Summoned implements IAnimatedEntity {
         private void checkAndDealDamage(LivingEntity target, float damageMultiplier) {
             if (BrainiacServant.this.hasLineOfSight(target) && BrainiacServant.this.distanceTo(target) < BrainiacServant.this.getBbWidth() + target.getBbWidth() + 2.0D) {
                 target.hurt(damageSources().mobAttack(BrainiacServant.this), (float) BrainiacServant.this.getAttribute(Attributes.ATTACK_DAMAGE).getValue() * damageMultiplier);
-                BrainiacServant.this.postAttackEffect(target);
                 target.knockback(0.3D, BrainiacServant.this.getX() - target.getX(), BrainiacServant.this.getZ() - target.getZ());
             }
         }

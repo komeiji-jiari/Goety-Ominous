@@ -85,7 +85,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.UUID;
 
-public class TremorsaurusServant extends AnimalSummon implements KeybindUsingMount, IAnimatedEntity, ShakesScreen, LaysEggs, PlayerRideable {
+public class TremorsaurusServant extends AbstractDinosaurServant implements KeybindUsingMount, IAnimatedEntity, ShakesScreen, LaysEggs, PlayerRideable {
 
     private static final EntityDataAccessor<Boolean> RUNNING = SynchedEntityData.defineId(TremorsaurusServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> HELD_MOB_ID = SynchedEntityData.defineId(TremorsaurusServant.class, EntityDataSerializers.INT);
@@ -716,6 +716,10 @@ public class TremorsaurusServant extends AnimalSummon implements KeybindUsingMou
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (!this.level().isClientSide) {
+            InteractionResult altSkinResult = this.tryChangeAltSkin(player, hand);
+            if (altSkinResult != null) {
+                return altSkinResult;
+            }
             ItemStack itemstack = player.getItemInHand(hand);
             if (this.getTrueOwner() != null && player == this.getTrueOwner()) {
                 if (this.isFood(itemstack)) {
