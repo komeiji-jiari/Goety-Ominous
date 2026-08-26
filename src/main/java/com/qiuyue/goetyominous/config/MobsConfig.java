@@ -51,6 +51,9 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> MHBlazingHelmDamageBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> MHUnholyBloodHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> MHUnholyBloodDamageBouns;
+    public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoUnholyBloodHealthBouns;
+    public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoUnholyBloodDamageBouns;
+    public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoLeechingFocusHeal;
     public static final ForgeConfigSpec.ConfigValue<Integer> DicerServantLimit;
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> CultistPatrol;
@@ -235,6 +238,15 @@ public class MobsConfig {
                 .defineInRange("mhUnholyBloodHealthBonus", 50, 0, Integer.MAX_VALUE);
         MHUnholyBloodDamageBouns = BUILDER.comment("Extra attack damage bonus when Mutant Hoglin has Unholy Blood, Default: 3")
                 .defineInRange("mhUnholyBloodDamageBonus", 3, 0, Integer.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Warped Mosco Enhancements");
+        WarpedMoscoUnholyBloodHealthBouns = BUILDER.comment("Extra health bonus when Warped Mosco has Unholy Blood, Default: 50")
+                .defineInRange("warpedMoscoUnholyBloodHealthBonus", 50, 0, Integer.MAX_VALUE);
+        WarpedMoscoUnholyBloodDamageBouns = BUILDER.comment("Extra attack damage bonus when Warped Mosco has Unholy Blood, Default: 3")
+                .defineInRange("warpedMoscoUnholyBloodDamageBonus", 3, 0, Integer.MAX_VALUE);
+        WarpedMoscoLeechingFocusHeal = BUILDER.comment("Heal percent of max health per blood-drain (SUCK) attack when Warped Mosco has Leeching Focus, Default: 5")
+                .defineInRange("warpedMoscoLeechingFocusHeal", 5, 0, Integer.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.push("Mechanics");
