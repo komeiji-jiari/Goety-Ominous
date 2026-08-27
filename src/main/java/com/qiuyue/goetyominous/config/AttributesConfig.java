@@ -90,6 +90,12 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> BrainiacServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> BrainiacServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> BrainiacServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantFollowRange;
@@ -907,8 +913,8 @@ public class AttributesConfig {
                 .define("mineGuardianServantExplosionGriefing", false);
         HullbreakerServantBlockBreakGriefing = BUILDER.comment("Whether Hullbreaker Servants break blocks when bashing, Default: false (set to true to allow block destruction, which also respects the mobGriefing game rule)")
                 .define("hullbreakerServantBlockBreakGriefing", false);
-        HullbreakerServantGlowTargetRange = BUILDER.comment("How far (in blocks) Hullbreaker Servants search for glowing targets, Default: 40.0 (normal follow range is 16)")
-                .defineInRange("hullbreakerServantGlowTargetRange", 40.0, 8.0, Double.MAX_VALUE);
+        HullbreakerServantGlowTargetRange = BUILDER.comment("How far (in blocks) Hullbreaker Servants search for glowing targets, Default: 48.0 (normal follow range is 16)")
+                .defineInRange("hullbreakerServantGlowTargetRange", 48.0, 8.0, Double.MAX_VALUE);
         HullbreakerServantGlowChaseSpeed = BUILDER.comment("Swim speed Hullbreaker Servants use when chasing a glowing target, Default: 2.4 (normal approach speed is 1.6)")
                 .defineInRange("hullbreakerServantGlowChaseSpeed", 2.4, 0.1, Double.MAX_VALUE);
         BrainiacServantHealth = BUILDER.comment("How much Max Health Brainiac Servants have, Default: 40.0 (matches Alex's Caves Brainiac)")
@@ -923,6 +929,18 @@ public class AttributesConfig {
                 .defineInRange("brainiacServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
         BrainiacServantArmor = BUILDER.comment("How much natural Armor Brainiac Servants have, Default: 8.0 (matches Alex's Caves Brainiac)")
                 .defineInRange("brainiacServantArmor", 8.0, 0.0, Double.MAX_VALUE);
+        DeepOneServantHealth = BUILDER.comment("How much Max Health Deep One Servants have, Default: 30.0 (matches Alex's Caves Deep One)")
+                .defineInRange("deepOneServantHealth", 30.0, 1.0, Double.MAX_VALUE);
+        DeepOneServantDamage = BUILDER.comment("How much damage Deep One Servants deal, Default: 3.0 (matches Alex's Caves Deep One)")
+                .defineInRange("deepOneServantDamage", 3.0, 1.0, Double.MAX_VALUE);
+        DeepOneServantMovementSpeed = BUILDER.comment("How fast Deep One Servants move, Default: 0.25 (matches Alex's Caves Deep One)")
+                .defineInRange("deepOneServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
+        DeepOneServantFollowRange = BUILDER.comment("How much following/detection range Deep One Servants have, Default: 32.0")
+                .defineInRange("deepOneServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
+        DeepOneServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Deep One Servants have, Default: 0.0 (Alex's Caves Deep One has none)")
+                .defineInRange("deepOneServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
+        DeepOneServantArmor = BUILDER.comment("How much natural Armor Deep One Servants have, Default: 0.0 (Alex's Caves Deep One has none)")
+                .defineInRange("deepOneServantArmor", 0.0, 0.0, Double.MAX_VALUE);
         FroststalkerServantHealth = BUILDER.comment("How much Max Health Froststalker Servants have, Default: 24.0 (matches Alex's Mobs Froststalker)")
                 .defineInRange("froststalkerServantHealth", 24.0, 1.0, Double.MAX_VALUE);
         FroststalkerServantDamage = BUILDER.comment("How much damage Froststalker Servants deal, Default: 4.5 (matches Alex's Mobs Froststalker)")

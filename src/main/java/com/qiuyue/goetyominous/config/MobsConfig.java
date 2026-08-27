@@ -38,6 +38,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> VallumraptorElderChance;
     public static final ForgeConfigSpec.ConfigValue<Integer> NucleeperServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> BrainiacServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DeepOneServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> MineGuardianServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> MWSSoulShieldHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> MWSSoulShieldDamageBouns;
@@ -54,6 +55,8 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoUnholyBloodHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoUnholyBloodDamageBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoLeechingFocusHeal;
+    public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoLeechingFocusFlyHeal;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> WarpedMoscoUnholyBloodTexture;
     public static final ForgeConfigSpec.ConfigValue<Integer> DicerServantLimit;
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> CultistPatrol;
@@ -205,6 +208,10 @@ public class MobsConfig {
                 .comment("Maximum number of Brainiac Servants that can be summoned (Default: 16)")
                 .defineInRange("brainiacServantLimit", 16, 1, 100);
 
+        DeepOneServantLimit = BUILDER
+                .comment("Maximum number of Deep One Servants that can be summoned (Default: 16)")
+                .defineInRange("deepOneServantLimit", 16, 1, 100);
+
         MineGuardianServantLimit = BUILDER
                 .defineInRange("mineGuardianServantLimit", 16, 1, 100);
 
@@ -245,8 +252,12 @@ public class MobsConfig {
                 .defineInRange("warpedMoscoUnholyBloodHealthBonus", 50, 0, Integer.MAX_VALUE);
         WarpedMoscoUnholyBloodDamageBouns = BUILDER.comment("Extra attack damage bonus when Warped Mosco has Unholy Blood, Default: 3")
                 .defineInRange("warpedMoscoUnholyBloodDamageBonus", 3, 0, Integer.MAX_VALUE);
-        WarpedMoscoLeechingFocusHeal = BUILDER.comment("Heal percent of max health per blood-drain (SUCK) attack when Warped Mosco has Leeching Focus, Default: 5")
+        WarpedMoscoLeechingFocusHeal = BUILDER.comment("Health healed per blood-drain pulse during SUCK attack when Warped Mosco has Leeching Focus. 5 pulses per animation, Default: 5 (total 25)")
                 .defineInRange("warpedMoscoLeechingFocusHeal", 5, 0, Integer.MAX_VALUE);
+        WarpedMoscoLeechingFocusFlyHeal = BUILDER.comment("Health healed every 30 ticks while flying when Warped Mosco has Leeching Focus, Default: 2")
+                .defineInRange("warpedMoscoLeechingFocusFlyHeal", 2, 0, Integer.MAX_VALUE);
+        WarpedMoscoUnholyBloodTexture = BUILDER.comment("Use the alternate texture when Warped Mosco has Unholy Blood (Default: true)")
+                .define("warpedMoscoUnholyBloodTexture", true);
         BUILDER.pop();
 
         BUILDER.push("Mechanics");
