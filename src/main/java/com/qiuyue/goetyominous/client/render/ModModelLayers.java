@@ -631,6 +631,13 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.DEEP_ONE_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderDeepOneServant::new);
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.DEEP_ONE_KNIGHT_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderDeepOneKnightServant::new);
+            // 奥托兰长矛水浪弹射物:专用渲染器,贴图用 AC 原版 Ortholance 的水浪(与玩家发射外观一致)
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.DEEP_ONE_KNIGHT_SERVANT_WAVE.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderDeepOneKnightServantWave::new);
         }
     }
 

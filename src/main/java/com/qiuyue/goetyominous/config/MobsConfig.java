@@ -39,6 +39,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> NucleeperServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> BrainiacServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> DeepOneServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DeepOneKnightServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> MineGuardianServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> MWSSoulShieldHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> MWSSoulShieldDamageBouns;
@@ -209,8 +210,12 @@ public class MobsConfig {
                 .defineInRange("brainiacServantLimit", 16, 1, 100);
 
         DeepOneServantLimit = BUILDER
-                .comment("Maximum number of Deep One Servants that can be summoned (Default: 16)")
-                .defineInRange("deepOneServantLimit", 16, 1, 100);
+                .comment("Maximum number of Deep One Servants that can be summoned (Default: 32, same summon type as goety_cataclysm DeepingServant)")
+                .defineInRange("deepOneServantLimit", 32, 1, 100);
+
+        DeepOneKnightServantLimit = BUILDER
+                .comment("Maximum number of Deep One Knight Servants that can be summoned (Default: 16, same summon type as goety_cataclysm DeepingServant)")
+                .defineInRange("deepOneKnightServantLimit", 16, 1, 100);
 
         MineGuardianServantLimit = BUILDER
                 .defineInRange("mineGuardianServantLimit", 16, 1, 100);

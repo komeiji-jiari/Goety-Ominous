@@ -96,6 +96,22 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> DeepOneServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> DeepOneServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> DeepOneServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneKnightServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneKnightServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneKnightServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneKnightServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneKnightServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneKnightServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DeepOneKnightServantOrtholanceWaveCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneKnightServantOrtholanceWaveRange;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DeepOneKnightServantOrtholanceWaveCount;
+    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneKnightServantOrtholanceWaveScale;
+    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneKnightServantOrtholanceDashDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneKnightServantOrtholanceDashSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DeepOneKnightServantOrtholanceDashCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneKnightServantOrtholanceDashMinRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneKnightServantOrtholanceDashMaxRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneKnightServantOrtholanceChance;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantFollowRange;
@@ -941,6 +957,40 @@ public class AttributesConfig {
                 .defineInRange("deepOneServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
         DeepOneServantArmor = BUILDER.comment("How much natural Armor Deep One Servants have, Default: 0.0 (Alex's Caves Deep One has none)")
                 .defineInRange("deepOneServantArmor", 0.0, 0.0, Double.MAX_VALUE);
+        DeepOneKnightServantHealth = BUILDER.comment("How much Max Health Deep One Knight Servants have, Default: 60.0 (matches Alex's Caves Deep One Knight)")
+                .defineInRange("deepOneKnightServantHealth", 60.0, 1.0, Double.MAX_VALUE);
+        DeepOneKnightServantDamage = BUILDER.comment("How much damage Deep One Knight Servants deal, Default: 5.0 (matches Alex's Caves Deep One Knight)")
+                .defineInRange("deepOneKnightServantDamage", 5.0, 1.0, Double.MAX_VALUE);
+        DeepOneKnightServantMovementSpeed = BUILDER.comment("How fast Deep One Knight Servants move, Default: 0.25 (matches Alex's Caves Deep One Knight)")
+                .defineInRange("deepOneKnightServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
+        DeepOneKnightServantFollowRange = BUILDER.comment("How much following/detection range Deep One Knight Servants have, Default: 32.0")
+                .defineInRange("deepOneKnightServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
+        DeepOneKnightServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Deep One Knight Servants have, Default: 0.0 (Alex's Caves Deep One Knight has none)")
+                .defineInRange("deepOneKnightServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
+        DeepOneKnightServantArmor = BUILDER.comment("How much natural Armor Deep One Knight Servants have, Default: 0.0 (Alex's Caves Deep One Knight has none)")
+                .defineInRange("deepOneKnightServantArmor", 0.0, 0.0, Double.MAX_VALUE);
+        // 奥托兰长矛(Ortholance)专属:冲刺接战(6-10格触发,路径伤害,5秒冷却)+ 近距离扇形水浪(7秒冷却,无击退)
+        // (水浪伤害 scale+4 默认5;fan 图案 ±(60-15*wave)°;冲刺速度0.8格/tick、距离=速度×tick数)
+        DeepOneKnightServantOrtholanceDashDamage = BUILDER.comment("How much damage Deep One Knight Servants deal on Ortholance dash path hits, Default: 5.0")
+                .defineInRange("deepOneKnightServantOrtholanceDashDamage", 5.0, 0.0, Double.MAX_VALUE);
+        DeepOneKnightServantOrtholanceDashSpeed = BUILDER.comment("How fast (blocks/tick) Deep One Knight Servants dash toward the target, Default: 0.8")
+                .defineInRange("deepOneKnightServantOrtholanceDashSpeed", 0.8, 0.0, Double.MAX_VALUE);
+        DeepOneKnightServantOrtholanceDashCooldown = BUILDER.comment("Cooldown in ticks between Ortholance dashes, Default: 100 (5 seconds)")
+                .defineInRange("deepOneKnightServantOrtholanceDashCooldown", 100, 0, Integer.MAX_VALUE);
+        DeepOneKnightServantOrtholanceDashMinRange = BUILDER.comment("Minimum distance (blocks) from the target at which Ortholance knights dash, Default: 5.0")
+                .defineInRange("deepOneKnightServantOrtholanceDashMinRange", 5.0, 1.0, 64.0);
+        DeepOneKnightServantOrtholanceDashMaxRange = BUILDER.comment("Maximum distance (blocks) from the target at which Ortholance knights dash, Default: 8.0")
+                .defineInRange("deepOneKnightServantOrtholanceDashMaxRange", 8.0, 1.0, 64.0);
+        DeepOneKnightServantOrtholanceChance = BUILDER.comment("Chance (0.0-1.0) for Deep One Knight Servants to spawn as the Ortholance variant (holding an Ortholance), Default: 0.5 (50%)")
+                .defineInRange("deepOneKnightServantOrtholanceChance", 0.5, 0.0, 1.0);
+        DeepOneKnightServantOrtholanceWaveCooldown = BUILDER.comment("Cooldown in ticks between Ortholance wave volleys, Default: 140 (7 seconds; 0 = fire every tick)")
+                .defineInRange("deepOneKnightServantOrtholanceWaveCooldown", 140, 0, Integer.MAX_VALUE);
+        DeepOneKnightServantOrtholanceWaveRange = BUILDER.comment("Max distance (blocks) from the target at which Ortholance knights fire waves; beyond this they close in and fight with melee, Default: 8.0 (waves travel ~0.9 blocks/tick for 3-6 ticks, so ~5-7 blocks of reach)")
+                .defineInRange("deepOneKnightServantOrtholanceWaveRange", 8.0, 1.0, 64.0);
+        DeepOneKnightServantOrtholanceWaveCount = BUILDER.comment("How many fan wave indexes Deep One Knight Servants fire per Ortholance attack (each index spawns a left + right wave), Default: 4 (=8 waves), Ortholance maxes at 12 (=24 waves)")
+                .defineInRange("deepOneKnightServantOrtholanceWaveCount", 4, 1, 12);
+        DeepOneKnightServantOrtholanceWaveScale = BUILDER.comment("Wave scale of Ortholance waves, Default: 1.0 (matches Ortholance normal waves; scale+4 damage = 5.0)")
+                .defineInRange("deepOneKnightServantOrtholanceWaveScale", 1.0, 0.5, 10.0);
         FroststalkerServantHealth = BUILDER.comment("How much Max Health Froststalker Servants have, Default: 24.0 (matches Alex's Mobs Froststalker)")
                 .defineInRange("froststalkerServantHealth", 24.0, 1.0, Double.MAX_VALUE);
         FroststalkerServantDamage = BUILDER.comment("How much damage Froststalker Servants deal, Default: 4.5 (matches Alex's Mobs Froststalker)")

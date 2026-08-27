@@ -12,6 +12,7 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.qiuyue.goetyominous.common.entities.ai.ac.DeepOneBarterGoal;
+import com.qiuyue.goetyominous.common.entities.ai.ac.IDeepOneBarterer;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
@@ -32,6 +33,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import java.util.function.Predicate;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.MoverType;
@@ -65,7 +67,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 
-public class DeepOneServant extends Summoned implements IAnimatedEntity {
+public class DeepOneServant extends Summoned implements IDeepOneBarterer, IAnimatedEntity {
 
     public static final Animation ANIMATION_THROW = Animation.create(20);
     public static final Animation ANIMATION_BITE = Animation.create(8);
@@ -194,6 +196,16 @@ public class DeepOneServant extends Summoned implements IAnimatedEntity {
     @Override
     public MobType getMobType() {
         return MobType.WATER;
+    }
+
+    @Override
+    public int getSummonLimit(LivingEntity player) {
+        return MobsConfig.DeepOneServantLimit.get();
+    }
+
+    @Override
+    public Predicate<Entity> summonPredicate() {
+        return entity -> entity instanceof DeepOneServant;
     }
 
     @Override
