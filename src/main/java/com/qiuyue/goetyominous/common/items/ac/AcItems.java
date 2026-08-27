@@ -62,7 +62,13 @@ public class AcItems {
 
     public static final RegistryObject<ServantSpawnEggItem> DEEP_ONE_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("deep_one_servant_spawn_egg",
-                    () -> new ServantSpawnEggItem(AcEntityRegistry.DEEP_ONE_SERVANT, 0x9AB8A3, 0x2E4B47, egg()));
+                    // 贴图采样 deep_one.png:藏青身体(#081828)+ 青绿腮/背点缀(#085840)
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.DEEP_ONE_SERVANT, 0x081828, 0x085840, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> DEEP_ONE_KNIGHT_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("deep_one_knight_servant_spawn_egg",
+                    // 贴图采样 deep_one_knight.png:酒红外套(#402838)+ 奶油脸/牙(#d0c8c0)
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.DEEP_ONE_KNIGHT_SERVANT, 0x402838, 0xd0c8c0, egg()));
 
     public static final RegistryObject<Item> RAYCAT_AMULET =
             AC_ITEMS.register("raycat_amulet", () -> new RaycatAmuletItem());

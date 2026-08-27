@@ -1,11 +1,14 @@
 package com.qiuyue.goetyominous.common.entities.ally.ac;
 
 import com.Polarice3.Goety.common.entities.ally.Summoned;
+import com.Polarice3.Goety.utils.MobUtil;
+import com.github.alexmodguy.alexscaves.server.block.AbyssalAltarBlock;
+import com.github.alexmodguy.alexscaves.server.block.blockentity.AbyssalAltarBlockEntity;
 import com.github.alexmodguy.alexscaves.server.entity.ai.AnimalRandomlySwimGoal;
 import com.github.alexmodguy.alexscaves.server.entity.ai.SemiAquaticPathNavigator;
 import com.github.alexmodguy.alexscaves.server.entity.ai.VerticalSwimmingMoveControl;
-import com.github.alexmodguy.alexscaves.server.block.AbyssalAltarBlock;
-import com.github.alexmodguy.alexscaves.server.block.blockentity.AbyssalAltarBlockEntity;
+import com.github.alexmodguy.alexscaves.server.entity.living.DeepOneKnightEntity;
+import com.github.alexmodguy.alexscaves.server.item.ACItemRegistry;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.github.alexmodguy.alexscaves.server.misc.ACTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
@@ -13,8 +16,10 @@ import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.qiuyue.goetyominous.common.entities.ai.ac.DeepOneBarterGoal;
 import com.qiuyue.goetyominous.common.entities.ai.ac.IDeepOneBarterer;
+import com.qiuyue.goetyominous.common.entities.projectile.ac.DeepOneKnightServantWave;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -32,6 +37,7 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import java.util.function.Predicate;
 import net.minecraft.world.entity.MobSpawnType;
@@ -50,7 +56,9 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ThrownTrident;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -60,6 +68,7 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -67,20 +76,20 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 
-public class DeepOneServant extends Summoned implements IDeepOneBarterer, IAnimatedEntity {
+public class DeepOneKnightServant extends Summoned implements IDeepOneBarterer, IAnimatedEntity {
 
-    public static final Animation ANIMATION_THROW = Animation.create(20);
-    public static final Animation ANIMATION_BITE = Animation.create(8);
-    public static final Animation ANIMATION_SCRATCH = Animation.create(22);
-    public static final Animation ANIMATION_TRADE = Animation.create(55);
-    public static final ResourceLocation BARTER_LOOT = new ResourceLocation("alexscaves", "gameplay/deep_one_barter");
+    public static final Animation ANIMATION_THROW = DeepOneKnightEntity.ANIMATION_THROW;
+    public static final Animation ANIMATION_BITE = DeepOneKnightEntity.ANIMATION_BITE;
+    public static final Animation ANIMATION_SCRATCH = DeepOneKnightEntity.ANIMATION_SCRATCH;
+    public static final Animation ANIMATION_TRADE = DeepOneKnightEntity.ANIMATION_TRADE;
+    public static final ResourceLocation BARTER_LOOT = new ResourceLocation("alexscaves", "gameplay/deep_one_knight_barter");
 
-    private static final EntityDimensions SWIMMING_SIZE = new EntityDimensions(0.9F, 0.9F, false);
+    private static final EntityDimensions SWIMMING_SIZE = new EntityDimensions(1.2F, 1.3F, false);
 
-    private static final EntityDataAccessor<Boolean> SWIMMING = SynchedEntityData.defineId(DeepOneServant.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> SOUNDS_ANGRY = SynchedEntityData.defineId(DeepOneServant.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> FOCUS_SUMMONED = SynchedEntityData.defineId(DeepOneServant.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Optional<BlockPos>> ALTAR_POS = SynchedEntityData.defineId(DeepOneServant.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
+    private static final EntityDataAccessor<Boolean> SWIMMING = SynchedEntityData.defineId(DeepOneKnightServant.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> SOUNDS_ANGRY = SynchedEntityData.defineId(DeepOneKnightServant.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> FOCUS_SUMMONED = SynchedEntityData.defineId(DeepOneKnightServant.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Optional<BlockPos>> ALTAR_POS = SynchedEntityData.defineId(DeepOneKnightServant.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
 
     protected boolean isLandNavigator;
     private boolean hasSwimmingSize = false;
@@ -92,8 +101,13 @@ public class DeepOneServant extends Summoned implements IDeepOneBarterer, IAnima
     private int animationTick;
     private ItemStack swappedItem = ItemStack.EMPTY;
     private boolean spawnedLootItem = false;
+    private int throwCooldown = 0;
+    private int waveCooldown = 0;
+    private int dashCooldown = 0;
+    private int dashTicks = 0;
+    private Vec3 dashDirection = Vec3.ZERO;
 
-    public DeepOneServant(EntityType<? extends Summoned> entityType, Level level) {
+    public DeepOneKnightServant(EntityType<? extends Summoned> entityType, Level level) {
         super(entityType, level);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
@@ -102,12 +116,12 @@ public class DeepOneServant extends Summoned implements IDeepOneBarterer, IAnima
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.DeepOneServantMovementSpeed.get())
-                .add(Attributes.MAX_HEALTH, AttributesConfig.DeepOneServantHealth.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.DeepOneServantDamage.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.DeepOneServantFollowRange.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.DeepOneServantKnockbackResistance.get())
-                .add(Attributes.ARMOR, AttributesConfig.DeepOneServantArmor.get());
+                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.DeepOneKnightServantMovementSpeed.get())
+                .add(Attributes.MAX_HEALTH, AttributesConfig.DeepOneKnightServantHealth.get())
+                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.DeepOneKnightServantDamage.get())
+                .add(Attributes.FOLLOW_RANGE, AttributesConfig.DeepOneKnightServantFollowRange.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.DeepOneKnightServantKnockbackResistance.get())
+                .add(Attributes.ARMOR, AttributesConfig.DeepOneKnightServantArmor.get());
     }
 
     @Override
@@ -125,18 +139,20 @@ public class DeepOneServant extends Summoned implements IDeepOneBarterer, IAnima
                                         MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData,
                                         @Nullable CompoundTag tag) {
         if (spawnType == MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player) {
-            if (countServants(player) >= MobsConfig.DeepOneServantLimit.get()) {
+            if (countServants(player) >= MobsConfig.DeepOneKnightServantLimit.get()) {
                 return null;
             }
         }
-        return super.finalizeSpawn(levelAccessor, difficulty, spawnType, spawnGroupData, tag);
+        SpawnGroupData data = super.finalizeSpawn(levelAccessor, difficulty, spawnType, spawnGroupData, tag);
+        this.setItemSlot(EquipmentSlot.MAINHAND, this.random.nextFloat() < AttributesConfig.DeepOneKnightServantOrtholanceChance.get().floatValue() ? new ItemStack(ACItemRegistry.ORTHOLANCE.get()) : new ItemStack(Items.TRIDENT));
+        return data;
     }
 
     private int countServants(Player player) {
         int count = 0;
         if (player.level() instanceof ServerLevel serverLevel) {
             for (Entity entity : serverLevel.getAllEntities()) {
-                if (entity instanceof DeepOneServant servant && servant != this) {
+                if (entity instanceof DeepOneKnightServant servant && servant != this) {
                     if (servant.getTrueOwner() == player) {
                         count++;
                     }
@@ -150,7 +166,7 @@ public class DeepOneServant extends Summoned implements IDeepOneBarterer, IAnima
     public void setTrueOwner(@Nullable LivingEntity livingEntity) {
         super.setTrueOwner(livingEntity);
         if (!this.level().isClientSide && livingEntity instanceof Player player) {
-            if (countServants(player) >= MobsConfig.DeepOneServantLimit.get()) {
+            if (countServants(player) >= MobsConfig.DeepOneKnightServantLimit.get()) {
                 this.discard();
             }
         }
@@ -159,7 +175,7 @@ public class DeepOneServant extends Summoned implements IDeepOneBarterer, IAnima
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(1, new MeleeGoal());
+        this.goalSelector.addGoal(1, new KnightMeleeGoal());
         this.goalSelector.addGoal(1, new DeepOneBarterGoal(this));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 16.0F));
         this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
@@ -200,16 +216,21 @@ public class DeepOneServant extends Summoned implements IDeepOneBarterer, IAnima
 
     @Override
     public int getSummonLimit(LivingEntity player) {
-        return MobsConfig.DeepOneServantLimit.get();
+        return MobsConfig.DeepOneKnightServantLimit.get();
     }
 
     @Override
     public Predicate<Entity> summonPredicate() {
-        return entity -> entity instanceof DeepOneServant;
+        return entity -> entity instanceof DeepOneKnightServant;
     }
 
     @Override
     public void tick() {
+        if (this.dashTicks > 0) {
+            this.dashTicks--;
+            double dashSpeed = AttributesConfig.DeepOneKnightServantOrtholanceDashSpeed.get();
+            this.setDeltaMovement(this.dashDirection.x * dashSpeed, this.getDeltaMovement().y, this.dashDirection.z * dashSpeed);
+        }
         super.tick();
         this.prevFishPitch = this.fishPitch;
         this.prevSwimAmount = this.swimAmount;
@@ -274,6 +295,15 @@ public class DeepOneServant extends Summoned implements IDeepOneBarterer, IAnima
         if (this.spawnedLootItem && this.getAnimation() != this.getTradingAnimation()) {
             this.spawnedLootItem = false;
         }
+        if (this.throwCooldown > 0) {
+            this.throwCooldown--;
+        }
+        if (this.waveCooldown > 0) {
+            this.waveCooldown--;
+        }
+        if (this.dashCooldown > 0) {
+            this.dashCooldown--;
+        }
         this.fishPitch = Mth.approachDegrees(this.fishPitch, Mth.clamp(pitchTarget, -1.4F, 1.4F) * -57.295776F, 5.0F);
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
@@ -311,6 +341,10 @@ public class DeepOneServant extends Summoned implements IDeepOneBarterer, IAnima
         return this.isDeepOneSwimming() ? SWIMMING_SIZE : super.getDimensions(poseIn);
     }
 
+    public EntityDimensions getSwimmingSize() {
+        return SWIMMING_SIZE;
+    }
+
     @Override
     public void calculateEntityAnimation(boolean flying) {
         if (this.isDeepOneSwimming()) {
@@ -328,14 +362,55 @@ public class DeepOneServant extends Summoned implements IDeepOneBarterer, IAnima
     }
 
     public void startAttackBehavior(LivingEntity target) {
-        float f = this.getBbWidth() + target.getBbWidth();
-        double dist = this.distanceTo(target);
-        if (dist < (double) f + 1.0 && this.getAnimation() == IAnimatedEntity.NO_ANIMATION) {
-            this.setAnimation(this.getRandom().nextBoolean() ? ANIMATION_SCRATCH : ANIMATION_BITE);
-            this.playSound(ACSoundRegistry.DEEP_ONE_ATTACK.get());
+        if (this.dashTicks > 0) {
+            return;
         }
-        if (dist > (double) (f + 4.0F)) {
-            this.getNavigation().moveTo(target, 1.3);
+        double distance = this.distanceTo(target);
+        float f = this.getBbWidth() + target.getBbWidth();
+        boolean meleeOnly = this.getItemInHand(InteractionHand.MAIN_HAND).is(ACItemRegistry.ORTHOLANCE.get());
+        boolean hasTrident = this.getItemInHand(InteractionHand.MAIN_HAND).is(Items.TRIDENT);
+        if (hasTrident) {
+            if (this.hasLineOfSight(target) && distance < 35.0D) {
+                if (this.throwCooldown <= 0) {
+                    this.getNavigation().stop();
+                    if (this.getAnimation() == IAnimatedEntity.NO_ANIMATION) {
+                        this.setAnimation(ANIMATION_THROW);
+                    } else if (this.getAnimation() == ANIMATION_THROW && this.getAnimationTick() > 8) {
+                        this.throwTrident(target);
+                        this.throwCooldown = 20;
+                    }
+                } else {
+                    this.getNavigation().moveTo(target, 1.2);
+                }
+            } else {
+                this.getNavigation().moveTo(target, 1.2);
+            }
+            if (distance < (double) f + 1.0F && this.getAnimation() == IAnimatedEntity.NO_ANIMATION) {
+                this.setAnimation(this.getRandom().nextBoolean() ? ANIMATION_SCRATCH : ANIMATION_BITE);
+                this.playSound(ACSoundRegistry.DEEP_ONE_KNIGHT_ATTACK.get());
+            }
+        } else if (meleeOnly) {
+            boolean inDashRange = distance >= AttributesConfig.DeepOneKnightServantOrtholanceDashMinRange.get()
+                    && distance <= AttributesConfig.DeepOneKnightServantOrtholanceDashMaxRange.get();
+            if (this.hasLineOfSight(target) && inDashRange && this.dashCooldown <= 0) {
+                this.getNavigation().stop();
+                this.performOrtholanceDash(target);
+                this.dashCooldown = AttributesConfig.DeepOneKnightServantOrtholanceDashCooldown.get();
+            } else if (this.hasLineOfSight(target) && distance < AttributesConfig.DeepOneKnightServantOrtholanceWaveRange.get()) {
+                if (this.waveCooldown <= 0) {
+                    this.getNavigation().stop();
+                    this.performOrtholanceWaveAttack(target);
+                    this.waveCooldown = AttributesConfig.DeepOneKnightServantOrtholanceWaveCooldown.get();
+                } else {
+                    this.getNavigation().moveTo(target, 1.2);
+                }
+            } else {
+                this.getNavigation().moveTo(target, 1.2);
+            }
+            if (distance < (double) f + 1.0F && this.getAnimation() == IAnimatedEntity.NO_ANIMATION) {
+                this.setAnimation(this.getRandom().nextBoolean() ? ANIMATION_SCRATCH : ANIMATION_BITE);
+                this.playSound(ACSoundRegistry.DEEP_ONE_KNIGHT_ATTACK.get());
+            }
         }
         if (this.getAnimation() == ANIMATION_SCRATCH && (this.getAnimationTick() > 5 && this.getAnimationTick() < 9 || this.getAnimationTick() > 12 && this.getAnimationTick() < 16)) {
             this.checkAndDealMeleeDamage(target, 1.0F);
@@ -346,7 +421,7 @@ public class DeepOneServant extends Summoned implements IDeepOneBarterer, IAnima
     }
 
     protected void checkAndDealMeleeDamage(LivingEntity target, float multiplier) {
-        this.checkAndDealMeleeDamage(target, multiplier, 0.25F);
+        this.checkAndDealMeleeDamage(target, multiplier, 1.0F);
     }
 
     protected void checkAndDealMeleeDamage(LivingEntity target, float multiplier, float knockback) {
@@ -360,6 +435,87 @@ public class DeepOneServant extends Summoned implements IDeepOneBarterer, IAnima
                 entity.hurt(this.damageSources().mobAttack(this), f);
             }
         }
+    }
+
+    public void throwTrident(LivingEntity target) {
+        ThrownTrident thrownTrident = new ThrownTrident(this.level(), this, new ItemStack(Items.TRIDENT));
+        double d0 = target.getX() - this.getX();
+        double d1 = target.getY(0.3333333333333333D) - thrownTrident.getY();
+        double d2 = target.getZ() - this.getZ();
+        double d3 = Math.sqrt(d0 * d0 + d2 * d2);
+        thrownTrident.shoot(d0, d1 + d3 * (double) 0.2F, d2, 1.6F, (float) (14 - this.level().getDifficulty().getId() * 4));
+        this.playSound(SoundEvents.DROWNED_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+        this.level().addFreshEntity(thrownTrident);
+    }
+
+    public void performOrtholanceDash(LivingEntity target) {
+        Vec3 toTarget = new Vec3(target.getX() - this.getX(), 0.0D, target.getZ() - this.getZ());
+        if (toTarget.lengthSqr() < 1.0E-4D) {
+            toTarget = this.getLookAngle();
+        }
+        Vec3 direction = toTarget.normalize();
+        this.dashDirection = direction;
+        double dashSpeed = AttributesConfig.DeepOneKnightServantOrtholanceDashSpeed.get();
+        double dist = toTarget.horizontalDistance();
+        this.dashTicks = Mth.clamp((int) Math.ceil(dist / dashSpeed), 5, 20);
+        this.getNavigation().stop();
+        this.playSound(ACSoundRegistry.ORTHOLANCE_WAVE.get(), 4.0F, 1.0F);
+        this.dealOrtholanceDashDamage(this.dashTicks * dashSpeed);
+    }
+
+    protected void dealOrtholanceDashDamage(double dashDistance) {
+        AABB aabb = new AABB(this.position(), this.position().add(this.dashDirection.scale(dashDistance))).inflate(1.0D);
+        DamageSource source = this.damageSources().mobAttack(this);
+        float dashDamage = AttributesConfig.DeepOneKnightServantOrtholanceDashDamage.get().floatValue();
+        for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, aabb)) {
+            if (!entity.equals(this) && !MobUtil.areAllies(entity, this) && this.hasLineOfSight(entity)) {
+                entity.hurt(source, dashDamage);
+                entity.stopRiding();
+            }
+        }
+    }
+
+    public void performOrtholanceWaveAttack(LivingEntity target) {
+        Vec3 toTarget = new Vec3(target.getX() - this.getX(), 0.0D, target.getZ() - this.getZ());
+        if (toTarget.lengthSqr() < 1.0E-4D) {
+            toTarget = this.getLookAngle();
+        }
+        Vec3 direction = toTarget.normalize();
+        this.getNavigation().stop();
+        if (this.getAnimation() == IAnimatedEntity.NO_ANIMATION) {
+            this.setAnimation(ANIMATION_THROW);
+        }
+        this.playSound(ACSoundRegistry.ORTHOLANCE_WAVE.get(), 4.0F, 1.0F);
+        this.spawnOrtholanceWaves(direction);
+    }
+
+    protected void spawnOrtholanceWaves(Vec3 direction) {
+        int maxWaves = AttributesConfig.DeepOneKnightServantOrtholanceWaveCount.get();
+        float waveScale = AttributesConfig.DeepOneKnightServantOrtholanceWaveScale.get().floatValue();
+        float baseYaw = -(float) (Mth.atan2(direction.x, direction.z) * (180.0D / Math.PI));
+        for (int wave = 0; wave < maxWaves; wave++) {
+            float f1 = (float) wave / (float) maxWaves;
+            int lifespan = 3 + (int) ((1.0F - f1) * 3.0F);
+            Vec3 waveCenterPos = this.position().add(direction.scale(f1 * 2.0F));
+            DeepOneKnightServantWave leftWave = new DeepOneKnightServantWave(this.level(), this);
+            leftWave.moveTo(waveCenterPos.x, this.getY(), waveCenterPos.z);
+            leftWave.setLifespan(lifespan);
+            leftWave.setWaveScale(waveScale);
+            leftWave.setYRot(baseYaw + 60.0F - (float) (15 * wave));
+            this.level().addFreshEntity(leftWave);
+
+            DeepOneKnightServantWave rightWave = new DeepOneKnightServantWave(this.level(), this);
+            rightWave.moveTo(waveCenterPos.x, this.getY(), waveCenterPos.z);
+            rightWave.setLifespan(lifespan);
+            rightWave.setWaveScale(waveScale);
+            rightWave.setYRot(baseYaw - 60.0F + (float) (15 * wave));
+            this.level().addFreshEntity(rightWave);
+        }
+    }
+
+    public boolean isNoon() {
+        String s = ChatFormatting.stripFormatting(this.getName().getString());
+        return s != null && (s.toLowerCase().contains("noon") || s.toLowerCase().contains("stinkyfish"));
     }
 
     @Override
@@ -376,17 +532,17 @@ public class DeepOneServant extends Summoned implements IDeepOneBarterer, IAnima
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return this.soundsAngry() ? ACSoundRegistry.DEEP_ONE_HOSTILE.get() : ACSoundRegistry.DEEP_ONE_IDLE.get();
+        return this.soundsAngry() ? ACSoundRegistry.DEEP_ONE_KNIGHT_HOSTILE.get() : ACSoundRegistry.DEEP_ONE_KNIGHT_IDLE.get();
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return ACSoundRegistry.DEEP_ONE_HURT.get();
+        return ACSoundRegistry.DEEP_ONE_KNIGHT_HURT.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return ACSoundRegistry.DEEP_ONE_DEATH.get();
+        return ACSoundRegistry.DEEP_ONE_KNIGHT_DEATH.get();
     }
 
     @Override
@@ -477,7 +633,7 @@ public class DeepOneServant extends Summoned implements IDeepOneBarterer, IAnima
     }
 
     public SoundEvent getAdmireSound() {
-        return ACSoundRegistry.DEEP_ONE_ADMIRE.get();
+        return ACSoundRegistry.DEEP_ONE_KNIGHT_ADMIRE.get();
     }
 
     private List<ItemStack> generateBarterLoot() {
@@ -517,7 +673,7 @@ public class DeepOneServant extends Summoned implements IDeepOneBarterer, IAnima
     private class DeepOneNavigator extends SemiAquaticPathNavigator {
 
         public DeepOneNavigator(Level worldIn) {
-            super(DeepOneServant.this, worldIn);
+            super(DeepOneKnightServant.this, worldIn);
         }
 
         @Override
@@ -527,7 +683,7 @@ public class DeepOneServant extends Summoned implements IDeepOneBarterer, IAnima
 
         @Override
         protected double getGroundY(Vec3 vec3) {
-            if (DeepOneServant.this.isDeepOneSwimming() || !DeepOneServant.this.isInWaterOrBubble()) {
+            if (DeepOneKnightServant.this.isDeepOneSwimming() || !DeepOneKnightServant.this.isInWaterOrBubble()) {
                 return super.getGroundY(vec3);
             }
             BlockPos blockpos = BlockPos.containing(vec3);
@@ -535,38 +691,38 @@ public class DeepOneServant extends Summoned implements IDeepOneBarterer, IAnima
         }
     }
 
-    private class MeleeGoal extends Goal {
+    private class KnightMeleeGoal extends Goal {
 
-        private MeleeGoal() {
+        private KnightMeleeGoal() {
             this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
         }
 
         @Override
         public boolean canUse() {
-            LivingEntity target = DeepOneServant.this.getTarget();
-            return target != null && target.isAlive() && !DeepOneServant.this.isStaying() && !DeepOneServant.this.isTrading();
+            LivingEntity target = DeepOneKnightServant.this.getTarget();
+            return target != null && target.isAlive() && !DeepOneKnightServant.this.isStaying() && !DeepOneKnightServant.this.isTrading();
         }
 
         @Override
         public void start() {
             super.start();
-            DeepOneServant.this.setSoundsAngry(true);
+            DeepOneKnightServant.this.setSoundsAngry(true);
         }
 
         @Override
         public void stop() {
             super.stop();
-            DeepOneServant.this.setSoundsAngry(false);
+            DeepOneKnightServant.this.setSoundsAngry(false);
         }
 
         @Override
         public void tick() {
-            LivingEntity target = DeepOneServant.this.getTarget();
+            LivingEntity target = DeepOneKnightServant.this.getTarget();
             if (target == null) {
                 return;
             }
-            DeepOneServant.this.getLookControl().setLookAt(target.getX(), target.getEyeY(), target.getZ(), 20.0F, DeepOneServant.this.getMaxHeadXRot());
-            DeepOneServant.this.startAttackBehavior(target);
+            DeepOneKnightServant.this.getLookControl().setLookAt(target.getX(), target.getEyeY(), target.getZ(), 20.0F, DeepOneKnightServant.this.getMaxHeadXRot());
+            DeepOneKnightServant.this.startAttackBehavior(target);
         }
     }
 }
