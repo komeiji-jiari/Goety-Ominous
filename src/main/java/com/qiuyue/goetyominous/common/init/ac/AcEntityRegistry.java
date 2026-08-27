@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.init.ac;
 
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.ac.BrainiacServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.GrottoceratopsServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.MineGuardianServant;
@@ -70,6 +71,13 @@ public class AcEntityRegistry {
                             .sized(4.65F, 4.5F)
                             .setTrackingRange(20)
                             .build(GoetyOminous.MOD_ID + ":hullbreaker_servant"));
+
+    public static final RegistryObject<EntityType<DeepOneServant>> DEEP_ONE_SERVANT =
+            AC_ENTITIES.register("deep_one_servant",
+                    () -> EntityType.Builder.<DeepOneServant>of((type, worldIn) -> new DeepOneServant(type, worldIn), MobCategory.MISC)
+                            .sized(0.9F, 2.2F)
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":deep_one_servant"));
 
     public static void register(IEventBus modEventBus) {
         AC_ENTITIES.register(modEventBus);

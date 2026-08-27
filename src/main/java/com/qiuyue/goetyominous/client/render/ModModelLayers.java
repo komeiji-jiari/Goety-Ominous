@@ -628,6 +628,9 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.HULLBREAKER_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderHullbreakerServant::new);
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.DEEP_ONE_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderDeepOneServant::new);
         }
     }
 

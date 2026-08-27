@@ -18,7 +18,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class RenderWarpedMoscoServant extends MobRenderer<WarpedMoscoServant, ModelWarpedMoscoServant> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("goetyominous", "textures/entity/warped_mosco_servant.png");
+    private static final ResourceLocation TEXTURE_UNHOLY_BLOOD = new ResourceLocation("goetyominous", "textures/entity/warped_mosco_servant_unholy.png");
     private static final ResourceLocation TEXTURE_EYES = new ResourceLocation("alexsmobs:textures/entity/warped_mosco_glow.png");
+    private static final ResourceLocation TEXTURE_EYES_UNHOLY_BLOOD = new ResourceLocation("goetyominous", "textures/entity/warped_mosco_servant_unholy_glow.png");
 
     public RenderWarpedMoscoServant(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelWarpedMoscoServant(), 1F);
@@ -27,6 +29,9 @@ public class RenderWarpedMoscoServant extends MobRenderer<WarpedMoscoServant, Mo
 
     @Override
     public ResourceLocation getTextureLocation(WarpedMoscoServant entity) {
+        if (com.qiuyue.goetyominous.config.MobsConfig.WarpedMoscoUnholyBloodTexture.get() && entity.hasUnholyBlood()) {
+            return TEXTURE_UNHOLY_BLOOD;
+        }
         return TEXTURE;
     }
 
@@ -38,7 +43,9 @@ public class RenderWarpedMoscoServant extends MobRenderer<WarpedMoscoServant, Mo
         }
 
         public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, WarpedMoscoServant entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-            VertexConsumer ivertexbuilder = bufferIn.getBuffer(AMRenderTypes.getEyesFlickering(TEXTURE_EYES, 0));
+            boolean unholyVariant = com.qiuyue.goetyominous.config.MobsConfig.WarpedMoscoUnholyBloodTexture.get() && entitylivingbaseIn.hasUnholyBlood();
+            ResourceLocation glowTexture = unholyVariant ? TEXTURE_EYES_UNHOLY_BLOOD : TEXTURE_EYES;
+            VertexConsumer ivertexbuilder = bufferIn.getBuffer(AMRenderTypes.getEyesFlickering(glowTexture, 0));
             float alpha = 0.5F + (Mth.cos(ageInTicks * 0.2F) + 1F) * 0.2F;
             this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, 240, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), 0.5F, 1.0F, 1.0F, alpha);
 
