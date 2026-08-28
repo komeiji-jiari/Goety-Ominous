@@ -25,12 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 注意:不能加 @Mod.EventBusSubscriber 注解——该注解会被 Forge 在 mod 构造时无条件
- * Class.forName,而本类直接引用 Alex's Caves 类型(ACDamageTypes),AC 未加载时会
- * NoClassDefFoundError。由 GoetyOminous 构造器的 isAlexCavesLoaded() 门内手动
- * MinecraftForge.EVENT_BUS.register 本类。
- */
+
 public class NucleeperNukeKillHandler {
 
     private record NukeCredit(ResourceKey<Level> dimension, UUID ownerId, Vec3 origin, double radiusSq, long until) {}
@@ -59,7 +54,7 @@ public class NucleeperNukeKillHandler {
 
     @SubscribeEvent
     public static void onLivingDeath(LivingDeathEvent event) {
-        // alexscaves 为可选联动:ACDamageTypes.NUKE 依赖 alexscaves,未加载时提前返回。
+        
         if (!AlexCavesCompat.isAlexCavesLoaded()) {
             return;
         }

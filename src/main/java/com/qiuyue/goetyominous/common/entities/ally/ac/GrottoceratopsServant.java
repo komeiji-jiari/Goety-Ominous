@@ -120,7 +120,7 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new GrottoceratopsServantMeleeAttackGoal(1.35D, true));
-        // 与原版 grotto 一致：繁殖优先级 2、下蛋优先级 3
+        
         this.goalSelector.addGoal(2, new ServantBreedGoal<>(this, 1.0D));
         this.goalSelector.addGoal(3, new ServantLayEggGoal<>(this, (DinosaurEggBlock) AcBlockRegistry.GROTTOCERATOPS_SERVANT_EGG.get(), 100, 1.0D));
         this.goalSelector.addGoal(5, new Summoned.WanderGoal<>(this, 0.8D));
@@ -153,7 +153,7 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
                     this.syncAnimation(this.getRandom().nextBoolean() ? ANIMATION_MELEE_TAIL_1 : ANIMATION_MELEE_TAIL_2);
                 }
             }
-            // 尾巴扫击伤害更高，与原版行为一致
+            
             float multiplier = (this.getAnimation() == ANIMATION_MELEE_TAIL_1 || this.getAnimation() == ANIMATION_MELEE_TAIL_2) ? 1.5F : 1.0F;
             this.playSound(ACSoundRegistry.GROTTOCERATOPS_ATTACK.get());
             target.hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * multiplier);
@@ -185,13 +185,13 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
         } else if (Math.abs(tailSwing) > 0.0F) {
             this.setTailSwingRot(Mth.approachDegrees(tailSwing, 0, 20));
         }
-        // 动画现已同步到客户端，叫声只在服务端结算广播，避免客户端重复播放
+        
         if (!this.level().isClientSide && ((this.getAnimation() == ANIMATION_SPEAK_1 && this.getAnimationTick() == 5) || (this.getAnimation() == ANIMATION_SPEAK_2 && this.getAnimationTick() == 2))) {
             actuallyPlayAmbientSound();
         }
         this.legSolver.update(this, this.yBodyRot + getTailSwingRot(), this.getScale());
-        // 骑乘时攻击：与 IllagerElephantServant 一致，直接在 tick 里结算，不依赖 goal 的动画窗口；
-        // 玩家骑乘空闲时 getRiddenInput 会自动追敌，靠近即出手（操作方向时由玩家操控冲向目标也生效）
+        
+        
         if (!this.level().isClientSide) {
             LivingEntity target = this.getTarget();
             if (target != null && target.isAlive() && this.getControllingPassenger() instanceof Player
@@ -200,7 +200,7 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
                 this.doHurtTarget(target);
             }
         }
-        // 与原版 DinosaurEntity 一致：下蛋埋蛋期间 buryEggsProgress 升至 5（乘 0.2 后为 0~1），结束后回落
+        
         if (this.buryingEggs && this.buryEggsProgress < 5.0F) {
             ++this.buryEggsProgress;
         }
@@ -222,7 +222,7 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
         entityData.set(TAIL_SWING_ROT, rot);
     }
 
-    // 与原版 DinosaurEntity 一致：埋蛋进度 0~5，*0.2 后供模型驱动埋蛋扭动姿态
+    
     public float getBuryEggsProgress(float partialTicks) {
         return (this.prevBuryEggsProgress + (this.buryEggsProgress - this.prevBuryEggsProgress) * partialTicks) * 0.2F;
     }
@@ -259,11 +259,7 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
         }
     }
 
-    /**
-     * 与模型 articulateLegs 完全一致：四条腿高度取最大后乘 0.8，得到模型身体因地形起伏
-     * 相对碰撞箱下移的方块数。骑乘位置须减去该量，使玩家跟随身体姿态，
-     * 避免上下坡时陷入角龙体内或渲染浮空（参考 TremorsaurusServant.positionRider）。
-     */
+    
     private float getMaxLegSolverHeight() {
         float backLeftH = legSolver.backLeft.getHeight(1.0F);
         float backRightH = legSolver.backRight.getHeight(1.0F);
@@ -290,8 +286,8 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
     @Override
     protected void updateControlFlags() {
         super.updateControlFlags();
-        // 与 IllagerElephantServant 一致：玩家操控方向时关闭 AI 的移动/转向标志，空闲时开启（自动追敌）。
-        // 骑乘攻击在 tick() 里独立结算（见 tick），不依赖 goal 标志。
+        
+        
         boolean steering = this.getControllingPassenger() instanceof Player player && (player.zza != 0.0F || player.xxa != 0.0F);
         boolean notInBoat = !(this.getVehicle() instanceof Boat);
         this.goalSelector.setControlFlag(Goal.Flag.MOVE, !steering);
@@ -408,7 +404,7 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
         return AcBlockRegistry.GROTTOCERATOPS_SERVANT_EGG.get().defaultBlockState();
     }
 
-    // 非 LaysEggs 接口方法（原版定义在 DinosaurEntity 上），仆从不继承 DinosaurEntity，故无 @Override
+    
     public BlockState createEggBeddingBlockState() {
         return ACBlockRegistry.FERN_THATCH.get().defaultBlockState();
     }
@@ -422,7 +418,7 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
     @Override
     public void handleEntityEvent(byte b) {
         if (b == 77) {
-            // 与原版 DinosaurEntity 一致：下蛋站立期间向四周扬起地面碎屑，并进入埋蛋姿态
+            
             this.buryingEggs = true;
             float radius = this.getBbWidth() * 0.55F;
             float particleCount = (5 + random.nextInt(5)) * radius;
@@ -441,7 +437,7 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
                 }
             }
         } else if (b == 78) {
-            // 与原版 DinosaurEntity 一致：下蛋结束，复位埋蛋姿态
+            
             this.buryingEggs = false;
         } else {
             super.handleEntityEvent(b);
@@ -483,11 +479,7 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
         }
     }
 
-    /**
-     * 服务端设置动画并通过 Citadel 广播到所有客户端；客户端直接本地设置。
-     * 不能把广播写进 setAnimation：AnimationHandler.updateAnimations 在动画结束时
-     * 也会调 setAnimation(NO_ANIMATION)，那一步不该再广播。
-     */
+    
     public void syncAnimation(Animation animation) {
         if (this.level().isClientSide) {
             this.setAnimation(animation);
@@ -538,7 +530,7 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
 
         @Override
         public boolean canUse() {
-            // 与 Goety BearServant.BearMeleeAttackGoal 一致：幼体不攻击
+            
             if (GrottoceratopsServant.this.isBaby()) {
                 return false;
             }
@@ -547,7 +539,7 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
 
         @Override
         protected void checkAndPerformAttack(LivingEntity target, double dist) {
-            // 与原版 MeleeAttackGoal 一致：命中前先检查 20-tick 攻击冷却，再结算
+            
             double reach = this.getAttackReachSqr(target);
             if (dist <= reach && this.mob.getSensing().hasLineOfSight(target) && this.isTimeToAttack()) {
                 this.resetAttackCooldown();

@@ -36,11 +36,7 @@ public class RenderBrainiacServant extends MobRenderer<BrainiacServant, ModelBra
         return TEXTURE;
     }
 
-    /**
-     * 注:原版 BrainiacRenderer 里有个复制粘贴 bug —— scale(RadgillEntity, ...) 签名参数写错,
-     * 不覆盖 MobRenderer.scale(BrainiacEntity, ...),导致 0.9 缩放从不生效,游戏里脑怪以满模型尺寸渲染。
-     * 这里同样不做缩放,与 Alex's Caves 游戏内实际表现保持一致。
-     */
+    
 
     public static class LayerGlow extends RenderLayer<BrainiacServant, ModelBrainiacServant> {
 

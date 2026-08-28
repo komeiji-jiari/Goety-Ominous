@@ -17,9 +17,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * 甩咬层:把猎物实体渲染到撼地龙嘴里。移植自 Alex's Caves TremorsaurusHeldMobLayer。
- */
+
 @OnlyIn(Dist.CLIENT)
 public class TremorsaurusHeldMobLayer extends RenderLayer<TremorsaurusServant, ModelTremorsaurusServant> {
 

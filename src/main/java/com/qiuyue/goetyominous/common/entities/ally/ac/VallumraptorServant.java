@@ -232,7 +232,7 @@ public class VallumraptorServant extends AbstractDinosaurServant implements IAni
         if (getHideFor() <= 0 && hideProgress > 0.0F) {
             hideProgress--;
         }
-        // 与原版 DinosaurEntity 一致：下蛋埋蛋期间 buryEggsProgress 升至 5（乘 0.2 后为 0~1），结束后回落
+        
         if (buryingEggs && buryEggsProgress < 5.0F) {
             buryEggsProgress++;
         }
@@ -386,7 +386,7 @@ public class VallumraptorServant extends AbstractDinosaurServant implements IAni
         return (prevHideProgress + (hideProgress - prevHideProgress) * partialTick) * 0.05F;
     }
 
-    // 与原版 DinosaurEntity 一致：埋蛋进度 0~5，*0.2 后供模型驱动埋蛋扭动姿态
+    
     public float getBuryEggsProgress(float partialTick) {
         return (prevBuryEggsProgress + (buryEggsProgress - prevBuryEggsProgress) * partialTick) * 0.2F;
     }
@@ -496,7 +496,7 @@ public class VallumraptorServant extends AbstractDinosaurServant implements IAni
     @Override
     public void handleEntityEvent(byte b) {
         if (b == 77) {
-            // 与原版 DinosaurEntity 一致：下蛋站立期间向四周扬起地面碎屑，并进入埋蛋姿态
+            
             this.buryingEggs = true;
             float radius = this.getBbWidth() * 0.55F;
             float particleCount = (5 + random.nextInt(5)) * radius;
@@ -515,7 +515,7 @@ public class VallumraptorServant extends AbstractDinosaurServant implements IAni
                 }
             }
         } else if (b == 78) {
-            // 与原版 DinosaurEntity 一致：下蛋结束，复位埋蛋姿态
+            
             this.buryingEggs = false;
         } else {
             super.handleEntityEvent(b);

@@ -12,17 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 
-/**
- * 与原版 alexscaves 的 {@code AnimalBreedEggsGoal} 行为对齐的繁殖目标：
- * <ul>
- *   <li>带着蛋时不能再繁殖（{@code !hasEgg()} 守卫）；</li>
- *   <li>近距离判定用原版宽度公式 {@code max(bbWidth*2+0.5, 3.0)}，而非 Goety 固定的 3 格；</li>
- *   <li>交配成功后经由 {@code spawnChildFromBreeding}（各仆从覆写为下仆从蛋，不直接生幼崽）。</li>
- * </ul>
- * 与 Goety 自带 BreedGoal 的差异在于原版守卫与近距离判定；BRED_ANIMALS 进度因仆从非原版 Animal
- * 无法触发（会 ClassCastException），ANIMALS_BRED 统计由 spawnChildFromBreeding 内的 finalize 补上。
- * 泛型化以复用于不同恐龙仆从（Grottoceratops / Tremorsaurus）。
- */
+
 public class ServantBreedGoal<T extends AnimalSummon & LaysEggs> extends Goal {
 
     private static final TargetingConditions PARTNER_TARGETING = TargetingConditions.forNonCombat().range(8.0D).ignoreLineOfSight();
@@ -75,7 +65,7 @@ public class ServantBreedGoal<T extends AnimalSummon & LaysEggs> extends Goal {
     @Nullable
     @SuppressWarnings("unchecked")
     private T getFreePartner() {
-        // AnimalSummon.canMate 已校验 getClass() 相同，搜全量 AnimalSummon 再过滤即可保证同种
+        
         List<AnimalSummon> list = this.level.getNearbyEntities(AnimalSummon.class, PARTNER_TARGETING, this.animal, this.animal.getBoundingBox().inflate(8.0D));
         double d0 = Double.MAX_VALUE;
         T servant = null;

@@ -359,7 +359,7 @@ public class ModelTremorsaurusServant extends AdvancedEntityModel<TremorsaurusSe
         this.progressRotationPrev(this.lleg2, sitAmount, toRad(-50.0F), 0.0F, 0.0F, 1.0F);
         this.progressRotationPrev(this.lfoot, sitAmount, toRad(70.0F), 0.0F, 0.0F, 1.0F);
 
-        // 与原版 TremorsaurusModel 一致：下蛋埋蛋期间身体与脖子左右扭动
+        
         if (buryEggsProgress > 0.0F) {
             limbSwing = ageInTicks;
             limbSwingAmount = buryEggsProgress * 0.5F;
@@ -384,7 +384,7 @@ public class ModelTremorsaurusServant extends AdvancedEntityModel<TremorsaurusSe
         this.swing(this.body, walkSpeed, walkDegree * 0.3F, false, 0.0F, 0.0F, limbSwing, limbSwingAmount);
         this.swing(this.tail, walkSpeed, walkDegree * 0.5F, false, -1.0F, 0.0F, limbSwing, limbSwingAmount);
         this.swing(this.tailTip, walkSpeed, walkDegree * 0.5F, false, -2.0F, 0.0F, limbSwing, limbSwingAmount);
-        // 与原版 TremorsaurusModel 一致:swing 为累加,需调用两次才恢复原版身体横向摇摆幅度
+        
         this.swing(this.body, walkSpeed, walkDegree * 0.3F, false, 0.0F, 0.0F, limbSwing, limbSwingAmount);
         this.swing(this.neck, walkSpeed, walkDegree * 0.3F, true, 0.0F, 0.0F, limbSwing, limbSwingAmount);
         this.swing(this.lleg, walkSpeed, walkDegree * 0.3F, true, 0.0F, 0.0F, limbSwing, limbSwingAmount);

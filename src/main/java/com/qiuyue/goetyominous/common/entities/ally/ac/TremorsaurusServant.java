@@ -221,7 +221,7 @@ public class TremorsaurusServant extends AbstractDinosaurServant implements Keyb
         if (!this.isStaying() && this.sitProgress > 0.0F) {
             --this.sitProgress;
         }
-        // 与原版 DinosaurEntity 一致：下蛋埋蛋期间 buryEggsProgress 升至 5（乘 0.2 后为 0~1），结束后回落
+        
         if (this.buryingEggs && this.buryEggsProgress < 5.0F) {
             ++this.buryEggsProgress;
         }
@@ -499,7 +499,7 @@ public class TremorsaurusServant extends AbstractDinosaurServant implements Keyb
     @Override
     public void handleEntityEvent(byte b) {
         if (b == 77) {
-            // 与原版 DinosaurEntity 一致：下蛋站立期间向四周扬起地面碎屑，并进入埋蛋姿态
+            
             this.buryingEggs = true;
             float radius = this.getBbWidth() * 0.55F;
             float particleCount = (5 + random.nextInt(5)) * radius;
@@ -518,7 +518,7 @@ public class TremorsaurusServant extends AbstractDinosaurServant implements Keyb
                 }
             }
         } else if (b == 78) {
-            // 与原版 DinosaurEntity 一致：下蛋结束，复位埋蛋姿态
+            
             this.buryingEggs = false;
         } else {
             super.handleEntityEvent(b);
@@ -837,7 +837,7 @@ public class TremorsaurusServant extends AbstractDinosaurServant implements Keyb
         return (this.prevSitProgress + (this.sitProgress - this.prevSitProgress) * partialTicks) / 10.0F;
     }
 
-    // 与原版 DinosaurEntity 一致：埋蛋进度 0~5，*0.2 后供模型驱动埋蛋扭动姿态
+    
     public float getBuryEggsProgress(float partialTicks) {
         return (this.prevBuryEggsProgress + (this.buryEggsProgress - this.prevBuryEggsProgress) * partialTicks) * 0.2F;
     }
@@ -867,7 +867,7 @@ public class TremorsaurusServant extends AbstractDinosaurServant implements Keyb
         public void tick() {
             LivingEntity target = TremorsaurusServant.this.getTarget();
             if (target != null) {
-                // 与原版 TremorsaurusMeleeGoal 一致：小体型目标仅 50% 概率抓取甩头，否则咬击；飞行目标必抓
+                
                 boolean grab = isFlyingTarget(target) || (TremorsaurusServant.this.getRandom().nextBoolean() && Math.max(target.getBbHeight(), target.getBbWidth()) < 2.0F);
                 TremorsaurusServant.this.lookAt(EntityAnchorArgument.Anchor.EYES, target.getEyePosition());
                 if (!TremorsaurusServant.this.isVehicle()) {

@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractDinosaurServant extends AnimalSummon {
 
-    // 与原版 DinosaurEntity 的 ALT_SKIN 完全对应：0=默认，1=复古，2=构造
+    
     private static final EntityDataAccessor<Integer> ALT_SKIN =
             SynchedEntityData.defineId(AbstractDinosaurServant.class, EntityDataSerializers.INT);
 
@@ -31,7 +31,7 @@ public abstract class AbstractDinosaurServant extends AnimalSummon {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(ALT_SKIN, 0);   // 出生一律默认皮肤
+        this.entityData.define(ALT_SKIN, 0);   
     }
 
     public int getAltSkin() {
@@ -42,7 +42,7 @@ public abstract class AbstractDinosaurServant extends AnimalSummon {
         this.entityData.set(ALT_SKIN, altSkin);
     }
 
-    // 镜像原版 DinosaurEntity.getAltSkinForItem：琥珀奇物→1，构造碎片→2，其他→0
+    
     public int getAltSkinForItem(ItemStack stack) {
         if (stack.is(ACItemRegistry.AMBER_CURIOSITY.get())) {
             return 1;
@@ -53,11 +53,7 @@ public abstract class AbstractDinosaurServant extends AnimalSummon {
         return 0;
     }
 
-    /**
-     * 物品右键切换皮肤，镜像原版 DinosaurEntity.mobInteract 的换皮段：
-     * 消耗物品 → 播放音效 → 服务端切换(同皮肤再点=切回默认) → 广播 82/83 变换粒子。
-     * 手持物品与换皮无关或非主人时返回 null，交还后续喂食/骑乘逻辑。
-     */
+    
     @Nullable
     public InteractionResult tryChangeAltSkin(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
@@ -80,7 +76,7 @@ public abstract class AbstractDinosaurServant extends AnimalSummon {
         return null;
     }
 
-    // 皮肤状态存进 NBT，存档重进后保留
+    
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
@@ -93,7 +89,7 @@ public abstract class AbstractDinosaurServant extends AnimalSummon {
         this.setAltSkin(tag.getInt("AltSkin"));
     }
 
-    // 镜像原版 DinosaurEntity.handleEntityEvent 的 82/83：变换粒子
+    
     @Override
     public void handleEntityEvent(byte b) {
         if (b == 82 || b == 83) {
