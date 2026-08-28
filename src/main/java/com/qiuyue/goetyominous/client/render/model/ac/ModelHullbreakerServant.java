@@ -11,7 +11,7 @@ import com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-// 几何数据照搬 Alex's Caves 的 HullbreakerModel, 实体泛型换成 HullbreakerServant
+
 @OnlyIn(Dist.CLIENT)
 public class ModelHullbreakerServant extends AdvancedEntityModel<HullbreakerServant> {
 

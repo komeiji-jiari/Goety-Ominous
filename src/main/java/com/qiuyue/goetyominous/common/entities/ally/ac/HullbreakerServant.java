@@ -154,8 +154,8 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
 
     protected void registerGoals() {
         super.registerGoals();
-        // 平时只反击:移除继承的"主动索敌"(SummonTargetGoal)和"主人的攻击目标"(OwnerHurtTargetGoal),
-        // 保留两条反击(主人被打/自己被揍)。防御性拷贝避免迭代时改集合。
+        
+        
         List<WrappedGoal> inherited = new ArrayList<>(this.targetSelector.getAvailableGoals());
         for (WrappedGoal wrapped : inherited) {
             Goal goal = wrapped.getGoal();
@@ -163,7 +163,7 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
                 this.targetSelector.removeGoal(goal);
             }
         }
-        // 主动只追发光目标(不打友军)
+        
         this.targetSelector.addGoal(2, new GlowingTargetGoal(this));
         this.goalSelector.addGoal(1, new MeleeGoal());
         this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
@@ -218,7 +218,7 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
         this.setXRot(0.0F);
         this.setYHeadRot(this.getYRot());
         if (this.getAnimation() == ANIMATION_DIE && this.getAnimationTick() > 45 && !this.level().isClientSide() && !this.isRemoved()) {
-            // 有主人的碎船兽死亡后返还胚胎:参考Goety暗兽生成FlyingItem飞回主人,不设粒子(用默认portal而非totem),可配置关闭
+            
             if (this.getTrueOwner() != null && MobsConfig.HullbreakerServantReturnEmbryo.get()) {
                 FlyingItem flyingItem = new FlyingItem(ModEntityType.FLYING_ITEM.get(), this.level(), this.getX(), this.getY(), this.getZ());
                 flyingItem.setOwner(this.getTrueOwner());
@@ -228,7 +228,7 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
             this.level().broadcastEntityEvent(this, (byte) 60);
             this.remove(Entity.RemovalReason.KILLED);
         }
-        // 暗兽同款幽灵粒子死亡特效
+        
         if (this.level() instanceof ServerLevel serverLevel) {
             double d0 = this.random.nextGaussian() * 0.02;
             double d1 = this.random.nextGaussian() * 0.02;
@@ -327,7 +327,7 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
         AABB damageBox = this.headPart.getBoundingBox().inflate(1.2F).move(this.calculateViewVector(this.getXRot(), this.getYRot()));
         boolean noGriefing = !AttributesConfig.HullbreakerServantBlockBreakGriefing.get()
                 || !level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
-        // 软体水生植物(海带/海草/珊瑚等)始终可撞碎,不受破坏方块配置与mobGriefing限制
+        
         if (!level().isClientSide && this.getTarget() != null) {
             for (int a = (int) Math.round(damageBox.minX); a <= (int) Math.round(damageBox.maxX); a++) {
                 for (int b = (int) Math.round(damageBox.minY) - 1; (b <= (int) Math.round(damageBox.maxY) + 1) && (b <= 127); b++) {
@@ -356,9 +356,7 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
         }
     }
 
-    /**
-     * 软体水生植物判定:海带/珊瑚(块/管/扇,含死珊瑚)。再生软体,撞碎不视为破坏地形。
-     */
+    
     private boolean isSoftAquaticPlant(BlockState state) {
         return state.is(BlockTags.CORALS)
                 || state.is(BlockTags.CORAL_BLOCKS)
@@ -481,11 +479,7 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
         return super.getSoundVolume() + 2.0F;
     }
 
-    /**
-     * 主动索敌:只追带发光效果的活体。mustSee=false —— 发光本就可穿墙看见,隔墙也能锁定;5 tick 搜一次。
-     * 友军判定复用 Goety MobUtil.areAllies:同主人仆从/主人盟友/原版宠物/自己一律不打;
-     * 玩家目标沿用 EntitySelector 门槛,创造/旁观玩家不追。
-     */
+    
     private class GlowingTargetGoal extends NearestAttackableTargetGoal<LivingEntity> {
 
         private GlowingTargetGoal(Mob mob) {
@@ -495,7 +489,7 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
                             && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target));
         }
 
-        // 发光目标检索范围独立放大(默认40格,普通FOLLOW_RANGE为16格),不影响其他索敌
+        
         @Override
         protected double getFollowDistance() {
             return AttributesConfig.HullbreakerServantGlowTargetRange.get();
@@ -534,7 +528,7 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
             }
             if (dist > (double) (f + 2.0F)) {
                 HullbreakerServant.this.lookAt(EntityAnchorArgument.Anchor.EYES, target.getEyePosition());
-                // 追击发光目标时用更快的游速(配置可调),普通目标维持1.6
+                
                 double chaseSpeed = target.hasEffect(MobEffects.GLOWING)
                         ? AttributesConfig.HullbreakerServantGlowChaseSpeed.get()
                         : 1.6D;

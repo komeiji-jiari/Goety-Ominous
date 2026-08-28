@@ -99,12 +99,12 @@ public class RenderMineGuardianServant extends MobRenderer<MineGuardianServant, 
         @Override
         public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, MineGuardianServant entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
             float explodeProgress = entity.getExplodeProgress(partialTicks);
-            // 与 AC 原版一致: 闭眼睡觉时眼睛不发光。
+            
             if (!entity.isEyeClosed()) {
                 VertexConsumer glowBuffer = bufferSource.getBuffer(RenderType.eyes(TEXTURE_EYE));
                 this.getParentModel().renderToBuffer(poseStack, glowBuffer, packedLight, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
             }
-            // 爆炸白闪 overlay, alpha 随 explodeProgress 增强(AC 原版特性, 移植时漏掉)。
+            
             VertexConsumer explodeBuffer = bufferSource.getBuffer(ACRenderTypes.getEyesAlphaEnabled(TEXTURE_EXPLODE));
             this.getParentModel().renderToBuffer(poseStack, explodeBuffer, packedLight, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), 1.0F, 1.0F, 1.0F, explodeProgress);
         }

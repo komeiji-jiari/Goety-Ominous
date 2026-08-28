@@ -14,7 +14,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-// 几何数据照搬 Alex's Caves 的 MineGuardianModel, 实体泛型换成 MineGuardianServant
+
 @OnlyIn(Dist.CLIENT)
 public class ModelMineGuardianServant extends AdvancedEntityModel<MineGuardianServant> {
 
