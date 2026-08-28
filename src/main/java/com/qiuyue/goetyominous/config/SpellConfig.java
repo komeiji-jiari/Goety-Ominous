@@ -110,6 +110,11 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> GusterSummonDown;
     public static final ForgeConfigSpec.ConfigValue<Integer> GusterCoolDown;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> CentipedeCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> CentipedeDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> CentipedeSummonDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> CentipedeCoolDown;
+
     public static final ForgeConfigSpec.ConfigValue<Integer> DropBearSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> DropBearCastDuration;
     public static final ForgeConfigSpec.ConfigValue<Integer> DropBearSummonDown;
@@ -119,6 +124,12 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> SandCastDuration;
     public static final ForgeConfigSpec.ConfigValue<Integer> SandCoolDown;
     public static final ForgeConfigSpec.ConfigValue<Double> SandExtraDamage;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> VoidShotSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> VoidShotCoolDown;
+    public static final ForgeConfigSpec.ConfigValue<Double> VoidShotDamage;
+    public static final ForgeConfigSpec.ConfigValue<Integer> VoidShotCastUp;
+    public static final ForgeConfigSpec.ConfigValue<Integer> VoidShotDuration;
 
     static {
         BUILDER.push("Spells");
@@ -209,6 +220,17 @@ public class SpellConfig {
                 .defineInRange("gusterCoolDown", 40, 0, 5000);
         BUILDER.pop();
 
+        BUILDER.push("Centipede");
+        CentipedeCost = BUILDER.comment("Soul cost of Centipede Servant spell (Default: 16)")
+                .defineInRange("centipedeSoulCost", 16, 1, 100);
+        CentipedeDuration = BUILDER.comment("Cast duration of Centipede Servant spell in ticks (Default: 60)")
+                .defineInRange("centipedeCastDuration", 60, 0, 500);
+        CentipedeSummonDown = BUILDER.comment("Summon down duration of Centipede Servant spell in ticks (Default: 80)")
+                .defineInRange("centipedeSummonDown", 80, 0, 5000);
+        CentipedeCoolDown = BUILDER.comment("Cooldown of Centipede Servant spell in ticks (Default: 80)")
+                .defineInRange("centipedeCoolDown", 80, 0, 5000);
+        BUILDER.pop();
+
         BUILDER.push("DropBear");
         DropBearSoulCost = BUILDER.comment("Soul cost of DropBear Servant spell (Default: 20)")
                 .defineInRange("dropBearSoulCost", 20, 1, 100);
@@ -229,6 +251,19 @@ public class SpellConfig {
                 .defineInRange("farseerSummonDown", 200, 0, 5000);
         FarseerCoolDown = BUILDER.comment("Cooldown of Farseer Servant spell in ticks (Default: 1200)")
                 .defineInRange("farseerCoolDown", 1200, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("VoidShot");
+        VoidShotSoulCost = BUILDER.comment("Soul cost of Void Shot spell (Default: 48)")
+                .defineInRange("voidShotSoulCost", 48, 1, 100);
+        VoidShotCoolDown = BUILDER.comment("Cooldown of Void Shot in ticks (Default: 160)")
+                .defineInRange("voidShotCoolDown", 160, 0, 5000);
+        VoidShotDamage = BUILDER.comment("Base damage of Void Shot crystal (Default: 8)")
+                .defineInRange("voidShotDamage", 8.0D, 1.0D, 1000.0D);
+        VoidShotCastUp = BUILDER.comment("Charge-up (wind-up) time of Void Shot in ticks, no crystals fire during this (Default: 40)")
+                .defineInRange("voidShotCastUp", 40, 0, 500);
+        VoidShotDuration = BUILDER.comment("Maximum channel duration of Void Shot in ticks (Default: 200)")
+                .defineInRange("voidShotDuration", 200, 0, 5000);
         BUILDER.pop();
 
         BUILDER.push("Brain Eater");

@@ -16,6 +16,10 @@ public class AmItems {
     public static final DeferredRegister<Item> AM_ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, GoetyOminous.MOD_ID);
 
+    public static final RegistryObject<ServantSpawnEggItem> CENTIPEDE_SERVANT_SPAWN_EGG =
+            AM_ITEMS.register("servant_centipede_spawn_egg",
+                    () -> new ServantSpawnEggItem(AmEntityRegistry.SERVANT_CENTIPEDE_HEAD, 13064994, 3810323, egg()));
+
     public static final RegistryObject<ServantSpawnEggItem> MURMUR_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("murmur_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AmEntityRegistry.MURMUR_SERVANT, 0x445566, 0x8899AA, egg()));
@@ -119,6 +123,13 @@ public class AmItems {
             "sand_focus",
             () -> new MagicFocus(new SandSpell()));
 
+    public static final RegistryObject<MagicFocus> VOIDSHOT_FOCUS = AM_ITEMS.register(
+            "voidshot_focus",
+            () -> new MagicFocus(new VoidShotSpell()));
+
+    public static final RegistryObject<MagicFocus> CENTIPEDE_FOCUS = AM_ITEMS.register(
+            "centipede_focus",
+            () -> new MagicFocus(new CentipedeSpell()));
 
 
     public static Item.Properties egg() {

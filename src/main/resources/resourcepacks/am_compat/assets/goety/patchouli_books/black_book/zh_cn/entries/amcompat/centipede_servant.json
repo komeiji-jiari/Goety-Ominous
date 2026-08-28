@@ -1,0 +1,24 @@
+{
+  "name": "洞穴蜈蚣仆从",
+  "icon": "alexsmobs:centipede_leg",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "召唤一只洞穴蜈蚣对于你来说并不复杂，甚至比起变异一只可怕的巨型蜘蛛更加容易。经过一些尝试，你成功将这些可怕的巨人蜈蚣收入了你的麾下。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:servant_centipede_head",
+      "text": "探穴者最害怕的一集"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "装备荒野长袍或占卜长袍可以让你的蜈蚣获得自然治疗。此外，蟑螂残翼可以被用于喂食给它们来恢复血量。荒野套装将会使得你的蜈蚣毒性更强。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:centipede_servant"
+    }
+  ]
+}

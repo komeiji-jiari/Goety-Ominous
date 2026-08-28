@@ -17,7 +17,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.PlayMessages;
 
-
 public class EntityServantHemolymph extends SpellThrowableProjectile {
     private boolean leftOwner;
 

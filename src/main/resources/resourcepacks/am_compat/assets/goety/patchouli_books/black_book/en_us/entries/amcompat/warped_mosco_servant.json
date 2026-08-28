@@ -15,6 +15,10 @@
     {
       "type": "patchouli:text",
       "text": "You can right-click your Warped Mosco Servant with a Blood Sac to restore its health. Using a Hemolymph Sac restores even more health in one go."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Since Mungus blood can transform a mosquito into a Warped Mosco, what might happen if you were to use the blood of those pale Nether emissaries on a Warped Mosco...?"
     }
   ]
 }

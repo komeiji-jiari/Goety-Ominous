@@ -29,7 +29,7 @@ public class RaycatAmuletItem extends Item implements ICurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, world, tooltip, flag);
         tooltip.add(Component.translatable("info.goetyominous.raycat_amulet").withStyle(ChatFormatting.DARK_PURPLE));
-        tooltip.add(Component.translatable("info.goetyominous.raycat_amulet.radiation").withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("info.goetyominous.raycat_amulet.radiation").withStyle(ChatFormatting.BLUE));
     }
 
     public static boolean hasAmulet(LivingEntity entity) {

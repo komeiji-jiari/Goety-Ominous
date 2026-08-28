@@ -119,7 +119,6 @@ public class MineGuardianServant extends Summoned {
         return isInWaterOrBubble() ? ACSoundRegistry.MINE_GUARDIAN_DEATH.get() : ACSoundRegistry.MINE_GUARDIAN_LAND_DEATH.get();
     }
 
-
     public boolean isExploding() {
         return this.entityData.get(EXPLODING);
     }
