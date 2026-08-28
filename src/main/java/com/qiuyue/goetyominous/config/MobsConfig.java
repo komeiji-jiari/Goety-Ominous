@@ -10,6 +10,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> CentipedeLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> SkelewagLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> RockyRollerLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> BunfungusLimit;
@@ -41,6 +42,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> DeepOneServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> DeepOneKnightServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> MineGuardianServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DicerServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> MWSSoulShieldHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> MWSSoulShieldDamageBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> MWSHowlingSoulHealthBouns;
@@ -58,7 +60,6 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoLeechingFocusHeal;
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoLeechingFocusFlyHeal;
     public static final ForgeConfigSpec.ConfigValue<Boolean> WarpedMoscoUnholyBloodTexture;
-    public static final ForgeConfigSpec.ConfigValue<Integer> DicerServantLimit;
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> CultistPatrol;
     public static final ForgeConfigSpec.ConfigValue<Integer> CultistPatrolInterval;
@@ -93,6 +94,9 @@ public class MobsConfig {
 
     static {
         BUILDER.push("Servant Limits");
+
+        CentipedeLimit = BUILDER.comment("Maximum number of Centipede Servants that can exist at once (Default: 8)")
+                .defineInRange("centipedeLimit", 12, 1, 100);
 
         SkelewagLimit = BUILDER
                 .comment("Maximum number of Skelewag Servants that can be summoned (Default: 32)")

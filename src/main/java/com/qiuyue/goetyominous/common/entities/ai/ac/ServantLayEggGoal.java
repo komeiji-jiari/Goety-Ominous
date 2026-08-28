@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 
-
 public class ServantLayEggGoal<T extends AnimalSummon & LaysEggs> extends MoveToBlockGoal {
 
     private final T mob;
@@ -59,13 +58,11 @@ public class ServantLayEggGoal<T extends AnimalSummon & LaysEggs> extends MoveTo
         if (this.isReachedTarget()) {
             BlockPos eggPos = this.blockPos.above();
             this.mob.onLayEggTick(eggPos, this.layEggCounter);
-            // 与原版 AnimalLayEggGoal 一致：后自增，layEggCounter 旧值 > maxTime（即站立第 102 tick）才落蛋
             if (this.layEggCounter++ > this.maxTime) {
                 Level level = this.mob.level();
                 level.playSound(null, this.blockPos, SoundEvents.TURTLE_LAY_EGG, SoundSource.BLOCKS, 0.3F, 0.9F + level.random.nextFloat() * 0.2F);
                 BlockState eggState = this.mob.createEggBlockState();
                 level.setBlockAndUpdate(eggPos, eggState);
-                // 两个仆从蛋方块实体都实现 IOwnedBlock，统一在此记录主人
                 BlockEntity be = level.getBlockEntity(eggPos);
                 if (be instanceof IOwnedBlock eggBe) {
                     if (this.mob.getOwnerId() != null) {
@@ -80,8 +77,6 @@ public class ServantLayEggGoal<T extends AnimalSummon & LaysEggs> extends MoveTo
                 this.mob.setHasEgg(false);
                 this.mob.setInLoveTime(600);
                 level.broadcastEntityEvent(this.mob, (byte) 78);
-                // 与原版一致：泥土地面换成蕨垫（DinosaurEggBlock.canGrow 在蕨垫上孵化概率 1/10，其余 1/20）。
-                // 所有恐龙仆从的蛋垫都用 AC 蕨垫，故直接引用而非依赖实体方法
                 if (level.getBlockState(this.blockPos).is(BlockTags.DIRT)) {
                     level.setBlockAndUpdate(this.blockPos, ACBlockRegistry.FERN_THATCH.get().defaultBlockState());
                 }

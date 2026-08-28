@@ -44,10 +44,6 @@ public class AcItems {
             AC_ITEMS.register("nucleeper_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AcEntityRegistry.NUCLEEPER_SERVANT, 0x95A1A5, 0xFF00, egg()));
 
-    public static Item.Properties egg() {
-        return new Item.Properties();
-    }
-
     public static final RegistryObject<ServantSpawnEggItem> BRAINIAC_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("brainiac_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AcEntityRegistry.BRAINIAC_SERVANT, 0x3A4A2E, 0xE35FA0, egg()));
@@ -72,6 +68,10 @@ public class AcItems {
 
     public static final RegistryObject<Item> RAYCAT_AMULET =
             AC_ITEMS.register("raycat_amulet", () -> new RaycatAmuletItem());
+
+    public static Item.Properties egg() {
+        return new Item.Properties();
+    }
 
     public static void register(IEventBus modEventBus) {
         AC_ITEMS.register(modEventBus);

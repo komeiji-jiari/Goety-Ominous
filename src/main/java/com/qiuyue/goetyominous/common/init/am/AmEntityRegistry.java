@@ -1,28 +1,11 @@
 package com.qiuyue.goetyominous.common.init.am;
 
 import com.qiuyue.goetyominous.GoetyOminous;
-import com.qiuyue.goetyominous.common.entities.ally.am.BunfungusServant;
-import com.qiuyue.goetyominous.common.entities.ally.am.CrimsonMosquitoServant;
-import com.qiuyue.goetyominous.common.entities.ally.am.DropBearServant;
-import com.qiuyue.goetyominous.common.entities.ally.am.GusterServant;
-import com.qiuyue.goetyominous.common.entities.ally.am.IllagerElephantServant;
-import com.qiuyue.goetyominous.common.entities.ally.am.ZombieCrocodileServant;
-import com.qiuyue.goetyominous.common.entities.ally.am.FarseerServant;
-import com.qiuyue.goetyominous.common.entities.ally.am.FroststalkerServant;
-import com.qiuyue.goetyominous.common.entities.ally.am.MurmurServant;
-import com.qiuyue.goetyominous.common.entities.ally.am.SkelewagServant;
-import com.qiuyue.goetyominous.common.entities.ally.am.StraySkelewagServant;
-import com.qiuyue.goetyominous.common.entities.ally.am.WitherSkelewagServant;
-import com.qiuyue.goetyominous.common.entities.ally.am.MurmurServantHead;
-import com.qiuyue.goetyominous.common.entities.ally.am.RockyRollerServant;
-import com.qiuyue.goetyominous.common.entities.ally.am.TusklinServant;
-import com.qiuyue.goetyominous.common.entities.ally.am.WarpedMoscoServant;
-import com.qiuyue.goetyominous.common.entities.projectile.EntityMosquitoServantSpit;
-import com.qiuyue.goetyominous.common.entities.projectile.EntityServantHemolymph;
-import com.qiuyue.goetyominous.common.entities.projectile.EntityServentSandShot;
+import com.qiuyue.goetyominous.common.entities.ally.am.*;
+import com.qiuyue.goetyominous.common.entities.projectile.*;
+
 import java.util.function.Predicate;
 
-import com.qiuyue.goetyominous.common.entities.projectile.IceShard;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -193,6 +176,43 @@ public class AmEntityRegistry {
                             .sized(0.45F, 0.45F)
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":ice_shard"));
+
+    public static final RegistryObject<EntityType<EntityServantVoidWormShot>> SERVANT_VOID_WORM_SHOT =
+            AM_ENTITIES.register("servant_void_worm_shot",
+                    () -> EntityType.Builder.<EntityServantVoidWormShot>of((type, worldIn) -> new EntityServantVoidWormShot(type, worldIn), MobCategory.MISC)
+                            .sized(0.5F, 0.5F)
+                            .setCustomClientFactory((spawnEntity, world) -> new EntityServantVoidWormShot(spawnEntity, world))
+                            .fireImmune()
+                            .setShouldReceiveVelocityUpdates(true)
+                            .setUpdateInterval(1)
+                            .build(GoetyOminous.MOD_ID + ":servant_void_worm_shot"));
+
+    public static final RegistryObject<EntityType<ServantCentipedeHead>> SERVANT_CENTIPEDE_HEAD =
+            AM_ENTITIES.register("servant_centipede_head",
+                    () -> EntityType.Builder.<ServantCentipedeHead>of((type, worldIn) -> new ServantCentipedeHead(type, worldIn), MobCategory.MONSTER)
+                            .sized(0.9F, 0.9F)
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":servant_centipede_head"));
+
+    public static final RegistryObject<EntityType<ServantCentipedeBody>> SERVANT_CENTIPEDE_BODY =
+            AM_ENTITIES.register("servant_centipede_body",
+                    () -> EntityType.Builder.<ServantCentipedeBody>of((type, worldIn) -> new ServantCentipedeBody(type, worldIn), MobCategory.MISC)
+                            .sized(0.9F, 0.9F)
+                            .fireImmune()
+                            .setShouldReceiveVelocityUpdates(true)
+                            .setUpdateInterval(1)
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":servant_centipede_body"));
+
+    public static final RegistryObject<EntityType<ServantCentipedeTail>> SERVANT_CENTIPEDE_TAIL =
+            AM_ENTITIES.register("servant_centipede_tail",
+                    () -> EntityType.Builder.<ServantCentipedeTail>of((type, worldIn) -> new ServantCentipedeTail(type, worldIn), MobCategory.MISC)
+                            .sized(0.9F, 0.9F)
+                            .fireImmune()
+                            .setShouldReceiveVelocityUpdates(true)
+                            .setUpdateInterval(1)
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":servant_centipede_tail"));
 
     public static Predicate<LivingEntity> buildPredicateFromTag(TagKey<EntityType<?>> tagKey) {
         if (tagKey == null) {

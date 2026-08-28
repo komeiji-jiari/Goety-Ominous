@@ -98,7 +98,6 @@ public class Beldam extends AbstractGOCultist implements RangedAttackMob, ICulti
         };
         this.attackPlayersGoal.setFlags(EnumSet.of(Goal.Flag.TARGET));
         this.goalSelector.addGoal(1, new BeldamBarterGoal());
-
         this.goalSelector.addGoal(2, new PotionAttackGoal(this));
         this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(2, this.healRaidersGoal);

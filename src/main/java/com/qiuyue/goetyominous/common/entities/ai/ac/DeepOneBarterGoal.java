@@ -22,18 +22,6 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.stream.Stream;
 
-/**
- * 深潜者(Deep One)/深潜者骑士(Deep One Knight)仆从的交易目标 —— 祭坛中介式,复用 AC 原版渊海祭坛(AbyssalAltar)。
- *
- * 仅在游荡(自由漫游)状态下交易:跟随/停留/守卫/被命令的仆从都不会去交易,避免离队或被命令后跑去祭坛。
- * 聚晶(Goety Focus)召唤的仆从(DeepOneServant#isFocusSummoned)也不能交易。发现 64 格内有祭坛装着珍珠/海洋之心
- * (alexscaves:deep_one_barters)时走过去,把物品直接取进主手并播放交易动画;动画尾声由实体 tick
- * roll 战利品表把奖励放回祭坛 slot 0。
- *
- * 刻意不走原版 AbyssalAltarBlockEntity#queueItemDrop/onEntityInteract —— 原版祭坛的 tick 只把弹出去
- * 的物品塞给 instanceof DeepOneBaseEntity 的实体,本仆从是 Goety Summoned,会被它当作普通掉落吞掉且
- * 不触发交易动画。所以交易全程由本类 + 实体 tick 驱动,祭坛仅充当容器与 POI 锚点。
- */
 public class DeepOneBarterGoal extends Goal {
 
     private final Mob mob;

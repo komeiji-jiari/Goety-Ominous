@@ -72,6 +72,7 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantElderHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantElderArmor;
+
     public static final ForgeConfigSpec.ConfigValue<Double> NucleeperServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> NucleeperServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> NucleeperServantMovementSpeed;
@@ -79,6 +80,7 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> NucleeperServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> NucleeperServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> NucleeperServantTauntRange;
+
     public static final ForgeConfigSpec.ConfigValue<Boolean> NucleeperServantExplosionGriefing;
     public static final ForgeConfigSpec.ConfigValue<Boolean> MineGuardianServantExplosionGriefing;
     public static final ForgeConfigSpec.ConfigValue<Boolean> HullbreakerServantBlockBreakGriefing;
@@ -158,6 +160,15 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> IllagerElephantServantMovementSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> IllagerElephantServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> IllagerElephantServantKnockbackResistance;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> ServantCentipedeHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> ServantCentipedeFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> ServantCentipedeArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> ServantCentipedeAttackDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> ServantCentipedeKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> ServantCentipedeMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> ServantCentipedeBodyHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> ServantCentipedeBodyMovementSpeed;
 
     public static final ForgeConfigSpec.ConfigValue<Double> MagispellerServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> MagispellerServantDamage;
@@ -1066,6 +1077,22 @@ public class AttributesConfig {
                 .defineInRange("illagerElephantServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
         IllagerElephantServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Illager Elephant Servants have, Default: 0.9")
                 .defineInRange("illagerElephantServantKnockbackResistance", 0.9, 0.0, Double.MAX_VALUE);
+        ServantCentipedeHealth = BUILDER.comment("Max health of Servant Centipede Head (Default: 35)")
+                .defineInRange("servantCentipedeHealth", 35.0, 1.0, 1000.0);
+        ServantCentipedeFollowRange = BUILDER.comment("Follow range of Servant Centipede (Default: 32)")
+                .defineInRange("servantCentipedeFollowRange", 32.0, 1.0, 1000.0);
+        ServantCentipedeArmor = BUILDER.comment("Armor of Servant Centipede (Default: 6)")
+                .defineInRange("servantCentipedeArmor", 6.0, 0.0, 100.0);
+        ServantCentipedeAttackDamage = BUILDER.comment("Attack damage of Servant Centipede (Default: 8)")
+                .defineInRange("servantCentipedeAttackDamage", 8.0, 1.0, 1000.0);
+        ServantCentipedeKnockbackResistance = BUILDER.comment("Knockback resistance of Servant Centipede (Default: 0.5)")
+                .defineInRange("servantCentipedeKnockbackResistance", 0.5, 0.0, 1.0);
+        ServantCentipedeMovementSpeed = BUILDER.comment("Movement speed of Servant Centipede Head (Default: 0.22)")
+                .defineInRange("servantCentipedeMovementSpeed", 0.22, 0.0, 1.0);
+        ServantCentipedeBodyHealth = BUILDER.comment("Max health of Servant Centipede Body segments (Default: 10)")
+                .defineInRange("servantCentipedeBodyHealth", 10.0, 1.0, 1000.0);
+        ServantCentipedeBodyMovementSpeed = BUILDER.comment("Movement speed of Servant Centipede Body (Default: 0.25)")
+                .defineInRange("servantCentipedeBodyMovementSpeed", 0.25, 0.0, 1.0);
         BUILDER.pop();
 
         BUILDER.push("Overgrown Colossus Servant (Optional - LM)");
