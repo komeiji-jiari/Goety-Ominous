@@ -23,7 +23,6 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class ModCreativeTab {
 
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister
@@ -76,6 +75,7 @@ public class ModCreativeTab {
 
                         if (AlexCavesCompat.isAlexCavesLoaded()) {
                             collectFrom(AcItems.AC_ITEMS, spawnEggs, foci, weapons, otherItems);
+                            moveAfter(otherItems, AcItems.RAYCAT_AMULET.get(), ModItems.SCREAMING_SKULL_JAR.get());
                         }
 
                         spawnEggs.forEach(output::accept);

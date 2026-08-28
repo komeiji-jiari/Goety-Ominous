@@ -180,13 +180,13 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    implementation fg.deobf("curse.maven:goety-586095:8647359")
+    implementation fg.deobf("curse.maven:goety-586095:8736784")
     compileOnly fg.deobf("curse.maven:illage-and-spillage-respillaged-1079714:6156035")
     implementation fg.deobf("top.theillusivec4.curios:curios-forge:5.14.1+1.20.1")
 
     // 仅编译时使用，运行时可选
     compileOnly fg.deobf("curse.maven:goety-spillage-1108014:8157704")
-    compileOnly fg.deobf("curse.maven:goetyawaken-1412569:8641124")
+    compileOnly fg.deobf("curse.maven:goetyawaken-1412569:8724855")
     compileOnly fg.deobf("curse.maven:goety-revelation-1236817:8311906")
 
     compileOnly fg.deobf("curse.maven:savage-and-ravage-381736:7115735")
@@ -202,11 +202,11 @@ dependencies {
     compileOnly fg.deobf("curse.maven:piglin-proliferation-657831:8065407")
 
     compileOnly fg.deobf("curse.maven:touhou-little-maid-355044:8061847")
-    compileOnly fg.deobf("curse.maven:goety-delight-1363736:8607569")
+    compileOnly fg.deobf("curse.maven:goety-delight-1363736:8712123")
     compileOnly fg.deobf("curse.maven:goetic-legacy-1537404:8583148")
     compileOnly fg.deobf("curse.maven:goety-cataclysm-1224214:8645833")
     compileOnly fg.deobf("curse.maven:goety-ladder-1469146:8540268")
-    compileOnly fg.deobf("curse.maven:goety-mastery-of-magic-1402437:8450328")
+    compileOnly fg.deobf("curse.maven:goety-mastery-of-magic-1402437:8697318")
     compileOnly fg.deobf("curse.maven:goety-transcended-1476403:8365618")
     compileOnly fg.deobf("curse.maven:goety-integration-1453698:8187221")
     compileOnly fg.deobf("curse.maven:lendercataclysm-551586:8246047")

@@ -20,7 +20,6 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractDinosaurServant extends AnimalSummon {
 
-    
     private static final EntityDataAccessor<Integer> ALT_SKIN =
             SynchedEntityData.defineId(AbstractDinosaurServant.class, EntityDataSerializers.INT);
 
@@ -31,7 +30,7 @@ public abstract class AbstractDinosaurServant extends AnimalSummon {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(ALT_SKIN, 0);   
+        this.entityData.define(ALT_SKIN, 0);
     }
 
     public int getAltSkin() {
@@ -42,7 +41,6 @@ public abstract class AbstractDinosaurServant extends AnimalSummon {
         this.entityData.set(ALT_SKIN, altSkin);
     }
 
-    
     public int getAltSkinForItem(ItemStack stack) {
         if (stack.is(ACItemRegistry.AMBER_CURIOSITY.get())) {
             return 1;
@@ -53,7 +51,6 @@ public abstract class AbstractDinosaurServant extends AnimalSummon {
         return 0;
     }
 
-    
     @Nullable
     public InteractionResult tryChangeAltSkin(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
@@ -76,7 +73,6 @@ public abstract class AbstractDinosaurServant extends AnimalSummon {
         return null;
     }
 
-    
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
@@ -89,7 +85,6 @@ public abstract class AbstractDinosaurServant extends AnimalSummon {
         this.setAltSkin(tag.getInt("AltSkin"));
     }
 
-    
     @Override
     public void handleEntityEvent(byte b) {
         if (b == 82 || b == 83) {

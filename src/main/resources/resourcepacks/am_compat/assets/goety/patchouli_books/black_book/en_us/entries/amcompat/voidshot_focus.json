@@ -1,0 +1,20 @@
+{
+  "name": "Voidshot Focus",
+  "icon": "goetyominous:voidshot_focus",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Inspired by the Void Worms you have defeated, you have devised a spell that allows you to fire Void Crystals at nearby creatures, much like a dimensional traveler from the void. These crystals automatically lock onto and track the nearest enemy."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:voidshot_focus",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "A Void Staff increases the number of crystals fired, and upon hitting a creature, inflicts them with Void-Touched."
+    }
+  ]
+}

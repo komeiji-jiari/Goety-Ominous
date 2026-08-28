@@ -1,0 +1,24 @@
+{
+  "name": "Cave Centipede Servant",
+  "icon": "alexsmobs:centipede_leg",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Summoning a Cave Centipede is not particularly complicated for you—even easier than mutating a fearsome giant spider. After some attempts, you have successfully brought these terrifying giant centipedes under your command."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:servant_centipede_head",
+      "text": "A caver's worst nightmare"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Equipping Wild Robes or Geomancy Robes grants your centipede passive healing. Additionally, Cockroach Wings can be fed to them to restore health. Wearing the full Wild Set makes your centipede's venom even more potent."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:centipede_servant"
+    }
+  ]
+}

@@ -12,7 +12,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 
-
 public class ServantBreedGoal<T extends AnimalSummon & LaysEggs> extends Goal {
 
     private static final TargetingConditions PARTNER_TARGETING = TargetingConditions.forNonCombat().range(8.0D).ignoreLineOfSight();
@@ -65,7 +64,6 @@ public class ServantBreedGoal<T extends AnimalSummon & LaysEggs> extends Goal {
     @Nullable
     @SuppressWarnings("unchecked")
     private T getFreePartner() {
-        
         List<AnimalSummon> list = this.level.getNearbyEntities(AnimalSummon.class, PARTNER_TARGETING, this.animal, this.animal.getBoundingBox().inflate(8.0D));
         double d0 = Double.MAX_VALUE;
         T servant = null;

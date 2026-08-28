@@ -1,0 +1,20 @@
+{
+  "name": "虚晶聚晶",
+  "icon": "goetyominous:voidshot_focus",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "受你击败的虚空蠕虫启发，你设计了一种法术，允许你像虚空中的维度穿梭者那样向周围的生物发射虚空水晶。这些水晶会自动瞄准并持续锁定距离玩家最近的生物。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:voidshot_focus",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "虚空魔杖能够增加发射水晶的数量，并且在命中生物后给予其虚空之蚀效果。"
+    }
+  ]
+}

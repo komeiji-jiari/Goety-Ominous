@@ -120,7 +120,6 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new GrottoceratopsServantMeleeAttackGoal(1.35D, true));
-        
         this.goalSelector.addGoal(2, new ServantBreedGoal<>(this, 1.0D));
         this.goalSelector.addGoal(3, new ServantLayEggGoal<>(this, (DinosaurEggBlock) AcBlockRegistry.GROTTOCERATOPS_SERVANT_EGG.get(), 100, 1.0D));
         this.goalSelector.addGoal(5, new Summoned.WanderGoal<>(this, 0.8D));
@@ -153,7 +152,6 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
                     this.syncAnimation(this.getRandom().nextBoolean() ? ANIMATION_MELEE_TAIL_1 : ANIMATION_MELEE_TAIL_2);
                 }
             }
-            
             float multiplier = (this.getAnimation() == ANIMATION_MELEE_TAIL_1 || this.getAnimation() == ANIMATION_MELEE_TAIL_2) ? 1.5F : 1.0F;
             this.playSound(ACSoundRegistry.GROTTOCERATOPS_ATTACK.get());
             target.hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * multiplier);
@@ -185,13 +183,10 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
         } else if (Math.abs(tailSwing) > 0.0F) {
             this.setTailSwingRot(Mth.approachDegrees(tailSwing, 0, 20));
         }
-        
         if (!this.level().isClientSide && ((this.getAnimation() == ANIMATION_SPEAK_1 && this.getAnimationTick() == 5) || (this.getAnimation() == ANIMATION_SPEAK_2 && this.getAnimationTick() == 2))) {
             actuallyPlayAmbientSound();
         }
         this.legSolver.update(this, this.yBodyRot + getTailSwingRot(), this.getScale());
-        
-        
         if (!this.level().isClientSide) {
             LivingEntity target = this.getTarget();
             if (target != null && target.isAlive() && this.getControllingPassenger() instanceof Player
@@ -200,7 +195,6 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
                 this.doHurtTarget(target);
             }
         }
-        
         if (this.buryingEggs && this.buryEggsProgress < 5.0F) {
             ++this.buryEggsProgress;
         }
@@ -222,7 +216,6 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
         entityData.set(TAIL_SWING_ROT, rot);
     }
 
-    
     public float getBuryEggsProgress(float partialTicks) {
         return (this.prevBuryEggsProgress + (this.buryEggsProgress - this.prevBuryEggsProgress) * partialTicks) * 0.2F;
     }
@@ -259,7 +252,6 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
         }
     }
 
-    
     private float getMaxLegSolverHeight() {
         float backLeftH = legSolver.backLeft.getHeight(1.0F);
         float backRightH = legSolver.backRight.getHeight(1.0F);
@@ -286,8 +278,6 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
     @Override
     protected void updateControlFlags() {
         super.updateControlFlags();
-        
-        
         boolean steering = this.getControllingPassenger() instanceof Player player && (player.zza != 0.0F || player.xxa != 0.0F);
         boolean notInBoat = !(this.getVehicle() instanceof Boat);
         this.goalSelector.setControlFlag(Goal.Flag.MOVE, !steering);
@@ -404,7 +394,6 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
         return AcBlockRegistry.GROTTOCERATOPS_SERVANT_EGG.get().defaultBlockState();
     }
 
-    
     public BlockState createEggBeddingBlockState() {
         return ACBlockRegistry.FERN_THATCH.get().defaultBlockState();
     }
@@ -418,7 +407,6 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
     @Override
     public void handleEntityEvent(byte b) {
         if (b == 77) {
-            
             this.buryingEggs = true;
             float radius = this.getBbWidth() * 0.55F;
             float particleCount = (5 + random.nextInt(5)) * radius;
@@ -437,7 +425,6 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
                 }
             }
         } else if (b == 78) {
-            
             this.buryingEggs = false;
         } else {
             super.handleEntityEvent(b);
@@ -479,7 +466,6 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
         }
     }
 
-    
     public void syncAnimation(Animation animation) {
         if (this.level().isClientSide) {
             this.setAnimation(animation);
@@ -530,7 +516,6 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
 
         @Override
         public boolean canUse() {
-            
             if (GrottoceratopsServant.this.isBaby()) {
                 return false;
             }
@@ -539,7 +524,6 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
 
         @Override
         protected void checkAndPerformAttack(LivingEntity target, double dist) {
-            
             double reach = this.getAttackReachSqr(target);
             if (dist <= reach && this.mob.getSensing().hasLineOfSight(target) && this.isTimeToAttack()) {
                 this.resetAttackCooldown();

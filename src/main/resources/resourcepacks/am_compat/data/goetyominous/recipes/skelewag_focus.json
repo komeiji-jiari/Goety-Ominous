@@ -4,7 +4,7 @@
   "activation_item": {
     "item": "goety:animation_core"
   },
-  "craftType": "necroturgy",
+  "craftType": "deep",
   "soulCost": 1,
   "duration": 10,
   "ingredients": [

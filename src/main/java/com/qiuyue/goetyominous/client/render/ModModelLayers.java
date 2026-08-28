@@ -597,12 +597,28 @@ public class ModModelLayers {
                     RenderIceShard::new);
 
             event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.SERVANT_VOID_WORM_SHOT.get(),
+                    com.qiuyue.goetyominous.client.render.am.RenderServantVoidWormShot::new);
+
+            event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.DROPBEAR_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderDropBearServant::new);
 
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.GUSTER_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderGusterServant::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.SERVANT_CENTIPEDE_HEAD.get(),
+                    com.qiuyue.goetyominous.client.render.am.RenderServantCentipedeHead::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.SERVANT_CENTIPEDE_BODY.get(),
+                    com.qiuyue.goetyominous.client.render.am.RenderServantCentipedeBody::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.SERVANT_CENTIPEDE_TAIL.get(),
+                    com.qiuyue.goetyominous.client.render.am.RenderServantCentipedeTail::new);
 
         }
 

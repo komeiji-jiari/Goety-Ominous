@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 
-
 public class ServantLayEggGoal<T extends AnimalSummon & LaysEggs> extends MoveToBlockGoal {
 
     private final T mob;
@@ -59,13 +58,11 @@ public class ServantLayEggGoal<T extends AnimalSummon & LaysEggs> extends MoveTo
         if (this.isReachedTarget()) {
             BlockPos eggPos = this.blockPos.above();
             this.mob.onLayEggTick(eggPos, this.layEggCounter);
-            
             if (this.layEggCounter++ > this.maxTime) {
                 Level level = this.mob.level();
                 level.playSound(null, this.blockPos, SoundEvents.TURTLE_LAY_EGG, SoundSource.BLOCKS, 0.3F, 0.9F + level.random.nextFloat() * 0.2F);
                 BlockState eggState = this.mob.createEggBlockState();
                 level.setBlockAndUpdate(eggPos, eggState);
-                
                 BlockEntity be = level.getBlockEntity(eggPos);
                 if (be instanceof IOwnedBlock eggBe) {
                     if (this.mob.getOwnerId() != null) {
@@ -80,8 +77,6 @@ public class ServantLayEggGoal<T extends AnimalSummon & LaysEggs> extends MoveTo
                 this.mob.setHasEgg(false);
                 this.mob.setInLoveTime(600);
                 level.broadcastEntityEvent(this.mob, (byte) 78);
-                
-                
                 if (level.getBlockState(this.blockPos).is(BlockTags.DIRT)) {
                     level.setBlockAndUpdate(this.blockPos, ACBlockRegistry.FERN_THATCH.get().defaultBlockState());
                 }

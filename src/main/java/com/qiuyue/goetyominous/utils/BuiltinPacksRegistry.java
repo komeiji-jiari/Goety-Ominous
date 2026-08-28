@@ -82,17 +82,38 @@ public class BuiltinPacksRegistry {
             }
         }
 
-        // --- 客户端资源包（MM 联动内容）---
-        if (event.getPackType() == PackType.CLIENT_RESOURCES && MutantMoreCompat.isMutantMoreLoaded()) {
-            Path packPath = modFile.findResource("resourcepacks/mm_compat");
+        // --- 客户端资源包（AC 联动内容）---
+        if (event.getPackType() == PackType.CLIENT_RESOURCES && AlexCavesCompat.isAlexCavesLoaded()) {
+            Path packPath = modFile.findResource("resourcepacks/ac_compat");
             if (packPath != null) {
                 event.addRepositorySource(consumer -> {
                     Pack pack = Pack.readMetaAndCreate(
-                            "goetyominous/mm_compat",
-                            Component.literal("MM Compatibility Pack"),
+                            "goetyominous/ac_compat",
+                            Component.literal("AC Compatibility Pack"),
                             true,
                             id -> new PathPackResources(id, packPath, true),
                             PackType.CLIENT_RESOURCES,
+                            Pack.Position.TOP,
+                            PackSource.BUILT_IN
+                    );
+                    if (pack != null) {
+                        consumer.accept(pack);
+                    }
+                });
+            }
+        }
+
+        // --- 服务端数据包（AC 联动内容）---
+        if (event.getPackType() == PackType.SERVER_DATA && AlexCavesCompat.isAlexCavesLoaded()) {
+            Path packPath = modFile.findResource("resourcepacks/ac_compat");
+            if (packPath != null) {
+                event.addRepositorySource(consumer -> {
+                    Pack pack = Pack.readMetaAndCreate(
+                            "goetyominous/ac_compat_data",
+                            Component.literal("AC Compatibility Data"),
+                            true,
+                            id -> new PathPackResources(id, packPath, true),
+                            PackType.SERVER_DATA,
                             Pack.Position.TOP,
                             PackSource.BUILT_IN
                     );
@@ -114,6 +135,27 @@ public class BuiltinPacksRegistry {
                             true,
                             id -> new PathPackResources(id, packPath, true),
                             PackType.CLIENT_RESOURCES,
+                            Pack.Position.TOP,
+                            PackSource.BUILT_IN
+                    );
+                    if (pack != null) {
+                        consumer.accept(pack);
+                    }
+                });
+            }
+        }
+
+        // --- 服务端数据包（MM 联动内容）---
+        if (event.getPackType() == PackType.SERVER_DATA && MutantMoreCompat.isMutantMoreLoaded()) {
+            Path packPath = modFile.findResource("resourcepacks/mm_compat");
+            if (packPath != null) {
+                event.addRepositorySource(consumer -> {
+                    Pack pack = Pack.readMetaAndCreate(
+                            "goetyominous/mm_compat_data",
+                            Component.literal("MM Compatibility Data"),
+                            true,
+                            id -> new PathPackResources(id, packPath, true),
+                            PackType.SERVER_DATA,
                             Pack.Position.TOP,
                             PackSource.BUILT_IN
                     );
@@ -177,6 +219,27 @@ public class BuiltinPacksRegistry {
                             true,
                             id -> new PathPackResources(id, packPath, true),
                             PackType.CLIENT_RESOURCES,
+                            Pack.Position.TOP,
+                            PackSource.BUILT_IN
+                    );
+                    if (pack != null) {
+                        consumer.accept(pack);
+                    }
+                });
+            }
+        }
+
+        // --- 服务端数据包（OF 联动内容）---
+        if (event.getPackType() == PackType.SERVER_DATA && OpposingForceCompat.isOpposingForceLoaded()) {
+            Path packPath = modFile.findResource("resourcepacks/of_compat");
+            if (packPath != null) {
+                event.addRepositorySource(consumer -> {
+                    Pack pack = Pack.readMetaAndCreate(
+                            "goetyominous/of_compat_data",
+                            Component.literal("OpposingForce Compatibility Data"),
+                            true,
+                            id -> new PathPackResources(id, packPath, true),
+                            PackType.SERVER_DATA,
                             Pack.Position.TOP,
                             PackSource.BUILT_IN
                     );
