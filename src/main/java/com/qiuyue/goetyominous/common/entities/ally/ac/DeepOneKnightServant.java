@@ -102,8 +102,8 @@ public class DeepOneKnightServant extends Summoned implements IDeepOneBarterer, 
     private ItemStack swappedItem = ItemStack.EMPTY;
     private boolean spawnedLootItem = false;
     private int throwCooldown = 0;
-    private int waveCooldown = 0;
-    private int dashCooldown = 0;
+    private int comboCooldown = 0;
+    private boolean dashPending = false;
     private int dashTicks = 0;
     private Vec3 dashDirection = Vec3.ZERO;
 
@@ -298,11 +298,8 @@ public class DeepOneKnightServant extends Summoned implements IDeepOneBarterer, 
         if (this.throwCooldown > 0) {
             this.throwCooldown--;
         }
-        if (this.waveCooldown > 0) {
-            this.waveCooldown--;
-        }
-        if (this.dashCooldown > 0) {
-            this.dashCooldown--;
+        if (this.comboCooldown > 0) {
+            this.comboCooldown--;
         }
         this.fishPitch = Mth.approachDegrees(this.fishPitch, Mth.clamp(pitchTarget, -1.4F, 1.4F) * -57.295776F, 5.0F);
         AnimationHandler.INSTANCE.updateAnimations(this);
@@ -390,20 +387,16 @@ public class DeepOneKnightServant extends Summoned implements IDeepOneBarterer, 
                 this.playSound(ACSoundRegistry.DEEP_ONE_KNIGHT_ATTACK.get());
             }
         } else if (meleeOnly) {
-            boolean inDashRange = distance >= AttributesConfig.DeepOneKnightServantOrtholanceDashMinRange.get()
-                    && distance <= AttributesConfig.DeepOneKnightServantOrtholanceDashMaxRange.get();
-            if (this.hasLineOfSight(target) && inDashRange && this.dashCooldown <= 0) {
+            if (this.dashPending) {
+                this.dashPending = false;
                 this.getNavigation().stop();
                 this.performOrtholanceDash(target);
-                this.dashCooldown = AttributesConfig.DeepOneKnightServantOrtholanceDashCooldown.get();
-            } else if (this.hasLineOfSight(target) && distance < AttributesConfig.DeepOneKnightServantOrtholanceWaveRange.get()) {
-                if (this.waveCooldown <= 0) {
-                    this.getNavigation().stop();
-                    this.performOrtholanceWaveAttack(target);
-                    this.waveCooldown = AttributesConfig.DeepOneKnightServantOrtholanceWaveCooldown.get();
-                } else {
-                    this.getNavigation().moveTo(target, 1.2);
-                }
+            } else if (this.hasLineOfSight(target) && distance < AttributesConfig.DeepOneKnightServantOrtholanceWaveRange.get()
+                    && this.comboCooldown <= 0) {
+                this.getNavigation().stop();
+                this.performOrtholanceWaveAttack(target);
+                this.comboCooldown = AttributesConfig.DeepOneKnightServantOrtholanceWaveCooldown.get();
+                this.dashPending = true;
             } else {
                 this.getNavigation().moveTo(target, 1.2);
             }
