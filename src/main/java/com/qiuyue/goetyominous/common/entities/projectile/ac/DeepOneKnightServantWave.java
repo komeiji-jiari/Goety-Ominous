@@ -44,7 +44,7 @@ public class DeepOneKnightServantWave extends AbstractWave {
         for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class,
                 this.getBoundingBox().inflate(0.5F * scale, 0.5F, 0.5F * scale))) {
             if (!MobUtil.areAllies(entity, this.getOwner() != null ? this.getOwner() : this)) {
-                float damage = scale + 4.0F;
+                float damage = 5.0F;
                 entity.hurt(source, damage);
                 this.setSlamming(true);
                 entity.knockback(0.1D + 0.5D * scale,
