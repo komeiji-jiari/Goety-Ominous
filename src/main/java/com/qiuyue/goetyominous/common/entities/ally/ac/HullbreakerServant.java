@@ -59,7 +59,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.entity.PartEntity;
-import net.minecraftforge.fluids.FluidType;
 
 import java.util.ArrayList;
 import java.util.EnumSet;

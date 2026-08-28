@@ -1,0 +1,20 @@
+{
+  "name": "Centipede Focus",
+  "icon": "goetyominous:centipede_focus",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Using Cockroach Wing Fragments, you lure and summon fearsome Cave Centipedes. These many-legged giants excel at venomous attacks, and they certainly look terrifying, don't they."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:centipede_focus",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "A Wild Staff allows you to summon more Cave Centipedes. Additionally, since Cave Centipedes prefer dwelling underground, a Geo Staff also provides the same summoning enhancement."
+    }
+  ]
+}

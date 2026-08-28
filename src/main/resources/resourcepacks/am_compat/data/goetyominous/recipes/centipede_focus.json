@@ -1,0 +1,30 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:hunger_core"
+  },
+  "craftType": "overgrown",
+  "soulCost": 1,
+  "duration": 10,
+  "ingredients": [
+    {
+      "item": "alexsmobs:centipede_leg"
+    },
+    {
+      "item": "alexsmobs:centipede_leg"
+    },
+    {
+      "item": "alexsmobs:cockroach_wing_fragment"
+    },
+    {
+      "item": "alexsmobs:cockroach_wing_fragment"
+    },
+    {
+      "item": "goety:venomous_fang"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:centipede_focus"
+  }
+}

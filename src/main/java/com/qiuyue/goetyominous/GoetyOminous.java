@@ -61,15 +61,12 @@ import java.nio.file.Path;
 
 import static net.minecraftforge.fml.loading.LogMarkers.CORE;
 
-
 @Mod(GoetyOminous.MOD_ID)
 public class GoetyOminous {
-
 
     public static final String MOD_ID = "goetyominous";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     public static com.Polarice3.Goety.api.magic.SpellType FEL;
-
 
     public GoetyOminous() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -135,9 +132,6 @@ public class GoetyOminous {
 
         if (AlexCavesCompat.isAlexCavesLoaded()) {
             com.qiuyue.goetyominous.compat.ac.AcCompatManager.init(modEventBus);
-            // AC 为可选前置:这三个事件类都直接引用 AC 类型,不能加 @Mod.EventBusSubscriber
-            // (会被 Forge 无条件 Class.forName 导致 AC 缺失时 NoClassDefFoundError)。
-            // 只在 AC 加载时手动注册到 FORGE 总线。
             MinecraftForge.EVENT_BUS.register(NucleeperNukeProtectionHandler.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.NucleeperNukeKillHandler.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.RaycatAmuletEvents.class);
@@ -169,7 +163,6 @@ public class GoetyOminous {
         FEL = com.Polarice3.Goety.api.magic.SpellType.create("FEL", "fel");
     }
 
-
     private void commonSetup(final FMLCommonSetupEvent event) {
         new CuriosIntegration().setup(event);
 
@@ -198,7 +191,6 @@ public class GoetyOminous {
                 });
         ResearchList.register();
     }
-
 
     private void addAttributes(final EntityAttributeCreationEvent event) {
         event.put(ModEntityTypes.CONQUILLAGER_SERVANT.get(), ConquillagerServant.setCustomAttributes().build());
@@ -305,17 +297,14 @@ public class GoetyOminous {
         }
     }
 
-
     private void loadComplete(final FMLLoadCompleteEvent event) {
         event.enqueueWork(() -> {
                         IllagerType.create("GoetyOminous", new GoetyOminousType());
         });
     }
 
-
     public void onClientSetup(final FMLClientSetupEvent event) {
         if (AlexCavesCompat.isAlexCavesLoaded()) {
-            // 撼地龙仆从的骑乘槽位条 HUD:引用客户端类与 AC 类型,只在客户端且 AC 加载时注册
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.TremorsaurusHudEvents.class);
         }
         event.enqueueWork(() -> {

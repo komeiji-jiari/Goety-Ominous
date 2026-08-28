@@ -1,0 +1,20 @@
+{
+  "name": "百足聚晶",
+  "icon": "goetyominous:centipede_focus",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "利用蟑螂的残翼，你引诱并召唤出可怕的洞穴蜈蚣。这些百足的巨虫擅长使用毒性攻击，而且看起来很可怕不是吗。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:centipede_focus",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "荒野魔杖可以允许召唤更多洞穴蜈蚣。此外，由于洞穴蜈蚣喜欢居住在地下，地卜魔杖也可以起到相同的强化召唤效果。"
+    }
+  ]
+}

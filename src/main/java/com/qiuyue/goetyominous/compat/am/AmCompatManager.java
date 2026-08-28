@@ -1,21 +1,6 @@
 package com.qiuyue.goetyominous.compat.am;
 
-import com.qiuyue.goetyominous.common.entities.ally.am.BunfungusServant;
-import com.qiuyue.goetyominous.common.entities.ally.am.CrimsonMosquitoServant;
-import com.qiuyue.goetyominous.common.entities.ally.am.DropBearServant;
-import com.qiuyue.goetyominous.common.entities.ally.am.GusterServant;
-import com.qiuyue.goetyominous.common.entities.ally.am.IllagerElephantServant;
-import com.qiuyue.goetyominous.common.entities.ally.am.ZombieCrocodileServant;
-import com.qiuyue.goetyominous.common.entities.ally.am.FarseerServant;
-import com.qiuyue.goetyominous.common.entities.ally.am.MurmurServant;
-import com.qiuyue.goetyominous.common.entities.ally.am.MurmurServantHead;
-import com.qiuyue.goetyominous.common.entities.ally.am.FroststalkerServant;
-import com.qiuyue.goetyominous.common.entities.ally.am.RockyRollerServant;
-import com.qiuyue.goetyominous.common.entities.ally.am.SkelewagServant;
-import com.qiuyue.goetyominous.common.entities.ally.am.StraySkelewagServant;
-import com.qiuyue.goetyominous.common.entities.ally.am.TusklinServant;
-import com.qiuyue.goetyominous.common.entities.ally.am.WitherSkelewagServant;
-import com.qiuyue.goetyominous.common.entities.ally.am.WarpedMoscoServant;
+import com.qiuyue.goetyominous.common.entities.ally.am.*;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
 import com.qiuyue.goetyominous.common.items.am.AmItems;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -45,5 +30,8 @@ public class AmCompatManager {
         event.put(AmEntityRegistry.STRAY_SKELEWAG_SERVANT.get(), StraySkelewagServant.setCustomAttributes().build());
         event.put(AmEntityRegistry.DROPBEAR_SERVANT.get(), DropBearServant.setCustomAttributes().build());
         event.put(AmEntityRegistry.GUSTER_SERVANT.get(), GusterServant.setCustomAttributes().build());
+        event.put(AmEntityRegistry.SERVANT_CENTIPEDE_HEAD.get(), ServantCentipedeHead.bakeAttributes().build());
+        event.put(AmEntityRegistry.SERVANT_CENTIPEDE_BODY.get(), ServantCentipedeBody.bakeAttributes().build());
+        event.put(AmEntityRegistry.SERVANT_CENTIPEDE_TAIL.get(), ServantCentipedeBody.bakeAttributes().build());
     }
 }
