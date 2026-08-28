@@ -56,7 +56,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoUnholyBloodHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoUnholyBloodDamageBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoLeechingFocusHeal;
-    public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoLeechingFocusFlyHeal;
+    public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoLeechingFocusHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Boolean> WarpedMoscoUnholyBloodTexture;
     public static final ForgeConfigSpec.ConfigValue<Integer> DicerServantLimit;
 
@@ -257,10 +257,10 @@ public class MobsConfig {
                 .defineInRange("warpedMoscoUnholyBloodHealthBonus", 50, 0, Integer.MAX_VALUE);
         WarpedMoscoUnholyBloodDamageBouns = BUILDER.comment("Extra attack damage bonus when Warped Mosco has Unholy Blood, Default: 3")
                 .defineInRange("warpedMoscoUnholyBloodDamageBonus", 3, 0, Integer.MAX_VALUE);
-        WarpedMoscoLeechingFocusHeal = BUILDER.comment("Health healed per blood-drain pulse during SUCK attack when Warped Mosco has Leeching Focus. 5 pulses per animation, Default: 5 (total 25)")
-                .defineInRange("warpedMoscoLeechingFocusHeal", 5, 0, Integer.MAX_VALUE);
-        WarpedMoscoLeechingFocusFlyHeal = BUILDER.comment("Health healed every 30 ticks while flying when Warped Mosco has Leeching Focus, Default: 2")
-                .defineInRange("warpedMoscoLeechingFocusFlyHeal", 2, 0, Integer.MAX_VALUE);
+        WarpedMoscoLeechingFocusHeal = BUILDER.comment("Percent of max health healed per blood-drain pulse during SUCK attack when Warped Mosco has Leeching Focus. 5 pulses per animation, Default: 3 (total 15%)")
+                .defineInRange("warpedMoscoLeechingFocusHeal", 3, 0, Integer.MAX_VALUE);
+        WarpedMoscoLeechingFocusHealthBouns = BUILDER.comment("Extra health bonus when Warped Mosco has Leeching Focus, Default: 20")
+                .defineInRange("warpedMoscoLeechingFocusHealthBonus", 20, 0, Integer.MAX_VALUE);
         WarpedMoscoUnholyBloodTexture = BUILDER.comment("Use the alternate texture when Warped Mosco has Unholy Blood (Default: true)")
                 .define("warpedMoscoUnholyBloodTexture", true);
         BUILDER.pop();
