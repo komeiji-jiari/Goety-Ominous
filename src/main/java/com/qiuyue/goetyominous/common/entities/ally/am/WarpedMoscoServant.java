@@ -96,6 +96,7 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
     private int unholyBloodInvulnTime;
     private static final UUID UNHOLY_BLOOD_HEALTH_UUID = UUID.fromString("d4040404-0000-4000-8000-000000000001");
     private static final UUID UNHOLY_BLOOD_ATTACK_UUID = UUID.fromString("d4040404-0000-4000-8000-000000000002");
+    private static final UUID LEECHING_FOCUS_HEALTH_UUID = UUID.fromString("d4040404-0000-4000-8000-000000000003");
 
     public WarpedMoscoServant(EntityType entityType, Level world) {
         super(entityType, world);
@@ -153,6 +154,9 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
         if (this.hasUnholyBlood()) {
             this.addModIfMissing(health, UNHOLY_BLOOD_HEALTH_UUID, "Unholy Blood Health", com.qiuyue.goetyominous.config.MobsConfig.WarpedMoscoUnholyBloodHealthBouns.get());
             this.addModIfMissing(attack, UNHOLY_BLOOD_ATTACK_UUID, "Unholy Blood Attack", com.qiuyue.goetyominous.config.MobsConfig.WarpedMoscoUnholyBloodDamageBouns.get());
+        }
+        if (this.hasLeechingFocus()) {
+            this.addModIfMissing(health, LEECHING_FOCUS_HEALTH_UUID, "Leeching Focus Health", com.qiuyue.goetyominous.config.MobsConfig.WarpedMoscoLeechingFocusHealthBouns.get());
         }
     }
 
@@ -284,6 +288,7 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
                     stack.shrink(1);
                 }
                 this.setLeechingFocus(true);
+                this.applyEnhancementModifiers();
                 this.playSound(AMSoundRegistry.WARPED_MOSCO_IDLE.get(), 1.0F, 1.0F);
                 return InteractionResult.SUCCESS;
             }
@@ -621,10 +626,10 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
             if (this.getAnimation() == ANIMATION_SUCK && this.getAnimationTick() == 3 && this.distanceTo(target) < 4.7F) {
                 target.startRiding(this, true);
             }
-            // leeching focus 强化:吸血动画期间分 5 次回复,每次配置值(默认5),总吸血量 25
+            // leeching focus 强化:吸血动画期间分 5 次回复,每次回最大生命的 config 百分比(默认3%),总吸血量 15%
             if (this.hasLeechingFocus() && this.getAnimation() == ANIMATION_SUCK
                     && this.getAnimationTick() > 0 && (this.getAnimationTick() - 10) % 10 == 0) {
-                this.heal((float) com.qiuyue.goetyominous.config.MobsConfig.WarpedMoscoLeechingFocusHeal.get());
+                this.heal(this.getMaxHealth() * com.qiuyue.goetyominous.config.MobsConfig.WarpedMoscoLeechingFocusHeal.get() / 100.0F);
             }
             if (this.getAnimation() == ANIMATION_SLAM) {
                 if (this.getAnimationTick() == 19) {
@@ -1106,8 +1111,7 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
                         }
                         WarpedMoscoServant.this.setAttackAnimation(ANIMATION_SPIT);
                         if(upTicks % 30 == 0){
-                            float flyHeal = WarpedMoscoServant.this.hasLeechingFocus() ? com.qiuyue.goetyominous.config.MobsConfig.WarpedMoscoLeechingFocusFlyHeal.get() : 1.0F;
-                            WarpedMoscoServant.this.heal(flyHeal);
+                            WarpedMoscoServant.this.heal(1);
                         }
                         final int tick = WarpedMoscoServant.this.getAnimationTick();
                         switch (tick) {
@@ -1184,6 +1188,6 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
             return true;
         }
 
-        return this.getHealth() < this.getMaxHealth() * 0.5F && this.distanceTo(target) > 10;
+        return this.getHealth() < this.getMaxHealth() * 0.25F && this.distanceTo(target) > 10;
     }
 }
