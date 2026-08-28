@@ -974,8 +974,8 @@ public class AttributesConfig {
                 .defineInRange("deepOneKnightServantOrtholanceDashSpeed", 0.8, 0.0, Double.MAX_VALUE);
         DeepOneKnightServantOrtholanceChance = BUILDER.comment("Chance (0.0-1.0) for Deep One Knight Servants to spawn as the Ortholance variant (holding an Ortholance), Default: 0.5 (50%)")
                 .defineInRange("deepOneKnightServantOrtholanceChance", 0.5, 0.0, 1.0);
-        DeepOneKnightServantOrtholanceWaveCooldown = BUILDER.comment("Shared cooldown in ticks for the Ortholance wave+dash combo, Default: 100 (5 seconds; 0 = fire every tick)")
-                .defineInRange("deepOneKnightServantOrtholanceWaveCooldown", 100, 0, Integer.MAX_VALUE);
+        DeepOneKnightServantOrtholanceWaveCooldown = BUILDER.comment("Shared cooldown in ticks for the Ortholance wave+dash combo, Default: 60 (3 seconds; 0 = fire every tick)")
+                .defineInRange("deepOneKnightServantOrtholanceWaveCooldown", 60, 0, Integer.MAX_VALUE);
         DeepOneKnightServantOrtholanceWaveRange = BUILDER.comment("Max distance (blocks) from the target at which Ortholance knights fire waves; beyond this they close in and fight with melee, Default: 8.0 (waves travel ~0.9 blocks/tick for 3-6 ticks, so ~5-7 blocks of reach)")
                 .defineInRange("deepOneKnightServantOrtholanceWaveRange", 8.0, 1.0, 64.0);
         DeepOneKnightServantOrtholanceWaveCount = BUILDER.comment("How many fan wave indexes Deep One Knight Servants fire per Ortholance attack (each index spawns a left + right wave), Default: 4 (=8 waves), Ortholance maxes at 12 (=24 waves)")
