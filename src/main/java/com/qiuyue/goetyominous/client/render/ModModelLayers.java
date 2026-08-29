@@ -3,8 +3,10 @@ package com.qiuyue.goetyominous.client.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.init.ModEntityLayers;
+import com.qiuyue.goetyominous.client.render.curios.CroneRobeRenderer;
 import com.qiuyue.goetyominous.client.render.layer.CursedWolfArmorLayer;
 import com.qiuyue.goetyominous.client.render.model.*;
+import com.qiuyue.goetyominous.client.render.model.curios.CroneRobeModel;
 import com.qiuyue.goetyominous.client.render.model.equipment.BoneCudgelModel;
 import com.qiuyue.goetyominous.client.render.model.mm.MutantHoglinServantModel;
 import com.qiuyue.goetyominous.client.render.model.of.RamblerServantModel;
@@ -33,6 +35,8 @@ public class ModModelLayers {
                 ConquillagerServantModel::createBodyLayer);
                 event.registerLayerDefinition(ModEntityLayers.INQUILLAGER_SERVANT_LAYER,
                 InquillagerServantModel::createBodyLayer);
+
+        event.registerLayerDefinition(CroneRobeModel.LAYER_LOCATION, CroneRobeModel::createBodyLayer);
 
         event.registerLayerDefinition(BoneCudgelModel.LAYER_LOCATION, BoneCudgelModel::createBodyLayer);
 
@@ -103,6 +107,9 @@ public class ModModelLayers {
 
         event.registerLayerDefinition(ModEntityLayers.CURSED_BLACK_BEAST_ARMOR_LAYER,
                 CursedBlackBeastArmorModel::createBodyLayer);
+
+        event.registerLayerDefinition(CroneRobeModel.LAYER_LOCATION, CroneRobeModel::createBodyLayer);
+        CroneRobeRenderer.register();
 
         event.registerLayerDefinition(ModEntityLayers.FUNGUS_PACK_LAYER, FungusPackModel::createBodyLayer);
 
@@ -650,7 +657,6 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.DEEP_ONE_KNIGHT_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderDeepOneKnightServant::new);
-            // 奥托兰长矛水浪弹射物:专用渲染器,贴图用 AC 原版 Ortholance 的水浪(与玩家发射外观一致)
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.DEEP_ONE_KNIGHT_SERVANT_WAVE.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderDeepOneKnightServantWave::new);

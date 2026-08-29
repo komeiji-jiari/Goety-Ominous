@@ -267,7 +267,6 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        // 突变凋零骷髅同款:喂食邪恶之血获得永久属性强化(回复 50 血)
         if (stack.is(ModItems.UNHOLY_BLOOD.get()) && this.getMasterOwner() == player) {
             if (!this.hasUnholyBlood()) {
                 if (!player.getAbilities().instabuild) {
@@ -277,11 +276,22 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
                 this.applyEnhancementModifiers();
                 this.heal(50.0F);
                 this.playSound(AMSoundRegistry.WARPED_MOSCO_IDLE.get(), 1.0F, 1.0F);
+                if (this.level() instanceof ServerLevel serverLevel) {
+                    for (int k = 0; k < 60; ++k) {
+                        float f2 = this.random.nextFloat() * 4.0F;
+                        float f1 = this.random.nextFloat() * ((float) Math.PI * 2F);
+                        double d1 = (double) (Mth.cos(f1) * f2);
+                        double d2 = 0.01D + this.random.nextFloat() * 0.5D;
+                        double d3 = (double) (Mth.sin(f1) * f2);
+                        serverLevel.sendParticles(ParticleTypes.SOUL_FIRE_FLAME,
+                                this.getX() + d1 * 0.1D, this.getY() + 0.3D, this.getZ() + d3 * 0.1D,
+                                0, d1, d2, d3, 0.25F);
+                    }
+                }
                 return InteractionResult.SUCCESS;
             }
             return InteractionResult.CONSUME;
         }
-        // leeching focus 喂食:地面吸血攻击每次完整动画回复 5 血
         if (stack.is(ModItems.LEECHING_FOCUS.get()) && this.getMasterOwner() == player) {
             if (!this.hasLeechingFocus()) {
                 if (!player.getAbilities().instabuild) {

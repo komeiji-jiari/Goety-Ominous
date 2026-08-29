@@ -212,8 +212,9 @@ public class EntityServantVoidWormShot extends SpellThrowableProjectile {
         if (shooter != null && !(result.getEntity() instanceof EntityVoidWorm) && !(result.getEntity() instanceof EntityVoidWormPart)) {
             boolean b = this.wormAttack(result.getEntity(), this.damageSources().mobProjectile(this, shooter),
                     com.qiuyue.goetyominous.config.SpellConfig.VoidShotDamage.get().floatValue() + this.getExtraDamage());
-            if (this.voidStaff && result.getEntity() instanceof LivingEntity living) {
-                living.addEffect(new MobEffectInstance(GoetyEffects.VOID_TOUCHED.get(), 60, 0, false, true));
+            if (this.voidStaff && result.getEntity() instanceof LivingEntity living
+                    && !shooter.isAlliedTo(living)) {
+                living.addEffect(new MobEffectInstance(GoetyEffects.VOID_TOUCHED.get(), 80, 0, false, true));
             }
             if (b && result.getEntity() instanceof Player player) {
                 if (player.getUseItem().canPerformAction(ToolActions.SHIELD_BLOCK)) {

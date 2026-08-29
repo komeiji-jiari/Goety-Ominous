@@ -113,11 +113,18 @@ public class VoidShotSpell extends EverChargeSpell {
 
     private LivingEntity acquireTarget(ServerLevel worldIn, LivingEntity caster) {
         CompoundTag data = caster.getPersistentData();
+
+        LivingEntity aimed = this.getTarget(caster);
+        if (aimed != null && aimed.isAlive() && !aimed.isSpectator() && !caster.isAlliedTo(aimed)) {
+            data.putUUID("GoetyOminousVoidShotTarget", aimed.getUUID());
+            return aimed;
+        }
+
         UUID lockedId = data.hasUUID("GoetyOminousVoidShotTarget") ? data.getUUID("GoetyOminousVoidShotTarget") : null;
         if (lockedId != null) {
             LivingEntity locked = EntityFinder.getLivingEntityByUuiD(lockedId);
             if (locked != null && locked.isAlive() && !locked.isSpectator()
-                    && caster.distanceToSqr(locked) <= 16.0D * 16.0D
+                    && caster.distanceToSqr(locked) <= 64.0D * 64.0D
                     && !caster.isAlliedTo(locked)) {
                 return locked;
             }

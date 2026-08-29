@@ -37,5 +37,13 @@ public class ModNetwork {
                 NucleeperExplosionZonePacket::encode,
                 NucleeperExplosionZonePacket::decode,
                 NucleeperExplosionZonePacket::handle);
+        CHANNEL.registerMessage(id++, CCroneRobePacket.class,
+                CCroneRobePacket::encode,
+                CCroneRobePacket::decode,
+                CCroneRobePacket::handle);
+        CHANNEL.registerMessage(id++, CExtractPotionPacket.class,
+                CExtractPotionPacket::encode,
+                CExtractPotionPacket::decode,
+                CExtractPotionPacket::handle);
     }
 }
