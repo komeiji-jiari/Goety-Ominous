@@ -3,13 +3,11 @@ package com.qiuyue.goetyominous.common.events;
 import com.github.alexmodguy.alexscaves.AlexsCaves;
 import com.github.alexmodguy.alexscaves.server.message.UpdateEffectVisualityEntityMessage;
 import com.github.alexmodguy.alexscaves.server.potion.ACEffectRegistry;
-import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneMageServant;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 /**
  * BUBBLED 视觉清理:客户端 tickEffects 对过期效果不做移除(Forge 补丁把移除守卫在
@@ -20,8 +18,11 @@ import net.minecraftforge.fml.common.Mod;
  * 这里在服务端效果到期(Expired)或被移除(Remove)时,向所有玩家发送 AC 的
  * UpdateEffectVisualityEntityMessage(remove=true);其客户端处理器调用
  * removeEffectNoUpdate 无条件剥离本地效果,泡泡渲染随即消失。
+ *
+ * 仅在 Alex 的洞穴加载时注册(见 GoetyOminous#commonSetup),与其它 AC 联动处理器一致;
+ * 该类直接引用 AC 类,若被无条件注册会在无 AC 环境下对任意效果到期事件抛
+ * NoClassDefFoundError(com.github.alexmodguy.alexscaves.server.potion.ACEffectRegistry)。
  */
-@Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID)
 public class BubbledVisualCleanupHandler {
 
     @SubscribeEvent
