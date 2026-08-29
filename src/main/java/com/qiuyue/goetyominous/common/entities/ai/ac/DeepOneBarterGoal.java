@@ -52,11 +52,11 @@ public class DeepOneBarterGoal extends Goal {
         if (this.barterer.getAnimation() != IAnimatedEntity.NO_ANIMATION) {
             return false;
         }
-        // 只在游荡(自由漫游)状态下交易;跟随/停留/守卫/被命令时都不交易
+        
         if (!this.barterer.isWandering() || this.barterer.isCommanded()) {
             return false;
         }
-        // 聚晶召唤的仆从不能交易
+        
         if (this.barterer.isFocusSummoned()) {
             return false;
         }
@@ -98,7 +98,7 @@ public class DeepOneBarterGoal extends Goal {
         if (this.altarPos == null || target != null && target.isAlive()) {
             return false;
         }
-        // 模式中途变化(离开游荡)就停止拉近祭坛;已在播的交易动画仍会由实体 tick 自然收尾
+        
         if (!this.barterer.isWandering() || this.barterer.isCommanded()) {
             return false;
         }

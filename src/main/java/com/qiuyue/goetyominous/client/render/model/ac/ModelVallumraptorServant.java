@@ -475,7 +475,7 @@ public class ModelVallumraptorServant extends AdvancedEntityModel<VallumraptorSe
             progressPositionPrev(head, walkAmount, 0, 1, -1, 1F);
             progressPositionPrev(head, sprintAmount, 0, -2, 2, 1F);
         }
-        // 与原版 VallumraptorModel 一致：下蛋埋蛋期间身体与脖子左右扭动
+        
         if (buryEggsProgress > 0.0F) {
             limbSwing = ageInTicks;
             limbSwingAmount = buryEggsProgress * 0.5F;

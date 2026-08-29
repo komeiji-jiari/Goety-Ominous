@@ -118,13 +118,11 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
         return MobType.ARTHROPOD;
     }
 
-    // 方案D:放宽头部转向上限(默认50°)→ 90°,配合 spit() 里发射时把身体掰向目标,避免远程吐痰"头朝前、弹朝身后"
     @Override
     public int getMaxHeadYRot() {
         return 90;
     }
 
-    // ===== 突变凋零骷髅同款 unholy blood 喂食强化(synced 以支持贴图即时切换) =====
     public boolean hasUnholyBlood() {
         return this.entityData.get(UNHOLY_BLOOD);
     }
@@ -133,7 +131,6 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
         this.entityData.set(UNHOLY_BLOOD, value);
     }
 
-    // ===== leeching focus 喂食:地面吸血攻击每次完整动画回复 5 血 =====
     public boolean hasLeechingFocus() {
         return this.leechingFocusEnhancement;
     }
@@ -209,7 +206,6 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        // 突变凋零骷髅同款:unholy blood 受击后短暂无敌,并减免 15%(下界 50%)伤害
         if (this.hasUnholyBlood()) {
             if (this.unholyBloodInvulnTime > 0) {
                 return false;
@@ -386,7 +382,6 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
             } else if (this.summonedEntity.isPassenger()) {
                 return false;
             } else if (this.summonedEntity.distanceToSqr(livingentity) < (double) (Mth.square(this.startDistance))) {
-                // 与 Goety 原版 FollowOwnerGoal 一致:主人距离 <10 格不触发跟随,原地待命
                 return false;
             } else if (!this.summonedEntity.isFollowing() || this.summonedEntity.isCommanded()) {
                 return false;
@@ -409,7 +404,6 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
                 return false;
             } else if (!this.summonedEntity.isFlying() && this.summonedEntity.getNavigation().isDone()
                     && this.summonedEntity.distanceToSqr(this.owner) <= (double) (Mth.square(this.stopDistance + 2.0F))) {
-                // 与 Goety 原版 FollowOwnerGoal 一致:地面跟随导航路径走完(且已接近主人)即停止,原地等待主人走远后再重新跟随
                 return false;
             } else {
                 return !(this.summonedEntity.distanceToSqr(this.owner) <= (double) (Mth.square(this.stopDistance)));
@@ -433,7 +427,6 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
                     this.timeToRecalcPath = 10;
                     boolean far = this.summonedEntity.distanceToSqr(this.owner) >= Mth.square(this.startDistance);
                     if (far || this.summonedEntity.isOverLiquid()) {
-                        // 远距离(>10格)或跨越水域 → 飞行跟随
                         if (!this.summonedEntity.isFlying()) {
                             this.summonedEntity.setFlying(true);
                         }
@@ -451,7 +444,6 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
                             this.summonedEntity.getMoveControl().setWantedPosition(this.owner.getX(), this.owner.getY() + this.summonedEntity.getBbHeight() * 0.5F, this.owner.getZ(), this.followSpeed);
                         }
                     } else {
-                        // 近距离(<=10格) → 落地地面跟随
                         if (this.summonedEntity.isFlying()) {
                             this.summonedEntity.setFlying(false);
                         }
@@ -566,7 +558,6 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
                 allowFlight = false;
             } else {
                 LivingEntity owner = this.getTrueOwner();
-                // 跟随主人且距离>=10格(与FlyToOwnerGoal.startDistance一致)才允许飞行;近距离主人则落地地面跟随
                 boolean followFar = this.isFollowing() && owner != null && owner.isAlive() && this.distanceToSqr(owner) >= Mth.square(10.0F);
                 allowFlight = this.isOverLiquid() || this.getTarget() != null || followFar;
                 if (!allowFlight && this.isWandering()) {
@@ -636,7 +627,6 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
             if (this.getAnimation() == ANIMATION_SUCK && this.getAnimationTick() == 3 && this.distanceTo(target) < 4.7F) {
                 target.startRiding(this, true);
             }
-            // leeching focus 强化:吸血动画期间分 5 次回复,每次回最大生命的 config 百分比(默认3%),总吸血量 15%
             if (this.hasLeechingFocus() && this.getAnimation() == ANIMATION_SUCK
                     && this.getAnimationTick() > 0 && (this.getAnimationTick() - 10) % 10 == 0) {
                 this.heal(this.getMaxHealth() * com.qiuyue.goetyominous.config.MobsConfig.WarpedMoscoLeechingFocusHeal.get() / 100.0F);
@@ -892,7 +882,6 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
         this.lookAt(target, 100, 100);
         double d0 = target.getX() - this.getX();
         double d2 = target.getZ() - this.getZ();
-        // 方案A:发射瞬间把身体/头直接掰向目标(而非受钳制的 yBodyRot=yHeadRot),配合 getMaxHeadYRot()=90°,消除"头朝前、弹朝身后"
         float yawToTarget = (float) (Mth.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
         this.setYRot(yawToTarget);
         this.yBodyRot = yawToTarget;
@@ -1112,12 +1101,13 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
                     upTicks++;
                     WarpedMoscoServant.this.setFlying(true);
                     if (ranged) {
-                        // 原版:远程模式始终朝 farTarget(目标侧后方)拉开飞行,不做悬停瞄准,吐痰期间也持续移动
-                        if (farTarget == null || WarpedMoscoServant.this.distanceToSqr(Vec3.atCenterOf(farTarget)) < 9) {
+                        if (farTarget == null || WarpedMoscoServant.this.distanceToSqr(Vec3.atCenterOf(farTarget)) < Mth.square(WarpedMoscoServant.this.getBoundingBox().getSize() + 0.5F)) {
                             farTarget = this.getAvoidTarget(target);
                         }
                         if (farTarget != null) {
                             WarpedMoscoServant.this.getMoveControl().setWantedPosition(farTarget.getX(), farTarget.getY() + target.getEyeHeight() * 0.6F, farTarget.getZ(), 3D);
+                        } else {
+                            WarpedMoscoServant.this.getMoveControl().setWantedPosition(target.getX(), target.getY() + target.getEyeHeight() * 0.6F, target.getZ(), 5D);
                         }
                         WarpedMoscoServant.this.setAttackAnimation(ANIMATION_SPIT);
                         if(upTicks % 30 == 0){
@@ -1128,11 +1118,7 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
                             case 10, 20, 30, 40 -> WarpedMoscoServant.this.spit(target);
                         }
                     } else {
-                        if (upTicks > 20 || WarpedMoscoServant.this.distanceTo(target) < 6) {
-                            WarpedMoscoServant.this.getMoveControl().setWantedPosition(target.getX(), target.getY() + target.getEyeHeight() * 0.6F, target.getZ(), speedRush);
-                        } else {
-                            WarpedMoscoServant.this.getMoveControl().setWantedPosition(WarpedMoscoServant.this.getX(), WarpedMoscoServant.this.getY() + 3, WarpedMoscoServant.this.getZ(), 0.5F);
-                        }
+                        WarpedMoscoServant.this.getMoveControl().setWantedPosition(target.getX(), target.getY() + target.getEyeHeight() * 0.6F, target.getZ(), speedRush);
                     }
                 } else {
                     WarpedMoscoServant.this.getNavigation().moveTo(WarpedMoscoServant.this.getTarget(), 1.25F);
@@ -1145,7 +1131,6 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
                             dashCooldown = 30;
                         }
                     }
-                    // 原版只在"贴目标(<4.3)且贴地(<3)"时降落;这里拆出放宽:贴地且已接近目标(<6)或已盘旋够久(2s) → 降落转入地面近战
                     if (!ranged && !WarpedMoscoServant.this.isOverLiquid()) {
                         final float groundHeight = WarpedMoscoServant.this.getMoscoGround(WarpedMoscoServant.this.blockPosition()).getY();
                         boolean lowToGround = Math.abs(WarpedMoscoServant.this.getY() - groundHeight) < 3.0F;
@@ -1167,29 +1152,44 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
         }
 
         public BlockPos getAvoidTarget(LivingEntity target) {
-            // 修复:随机挑的拉开点若被墙挡/离自己太近,重试多次,避免回退到自身位置导致原地悬停
-            for (int i = 0; i < 8; ++i) {
+            final double minDistSqr = Mth.square(8.0D);
+            for (int i = 0; i < 10; ++i) {
                 final float radius = 10 + WarpedMoscoServant.this.getRandom().nextInt(8);
 
                 final float angle = (Maths.STARTING_ANGLE * (target.yHeadRot + 90F + WarpedMoscoServant.this.getRandom().nextInt(180)));
                 final double extraX = radius * Mth.sin(Mth.PI + angle);
                 final double extraZ = radius * Mth.cos(angle);
-                BlockPos radialPos = AMBlockPos.fromCoords(target.getX() + extraX, target.getY() + 1, target.getZ() + extraZ);
-                BlockPos ground = radialPos;
-                if (WarpedMoscoServant.this.distanceToSqr(Vec3.atCenterOf(ground)) > 30
-                        && !WarpedMoscoServant.this.isTargetBlocked(Vec3.atCenterOf(ground))
-                        && WarpedMoscoServant.this.distanceToSqr(Vec3.atCenterOf(ground)) > 6) {
+                BlockPos ground = AMBlockPos.fromCoords(target.getX() + extraX, target.getY() + 1, target.getZ() + extraZ);
+                if (WarpedMoscoServant.this.distanceToSqr(Vec3.atCenterOf(ground)) > minDistSqr
+                        && !WarpedMoscoServant.this.isTargetBlocked(Vec3.atCenterOf(ground))) {
                     return ground;
                 }
             }
-            // 全部重试失败(极小概率,如密封洞穴):回退自身,避免返回 null 导致 setWantedPosition 无目标
-            return WarpedMoscoServant.this.blockPosition();
+            for (int i = 0; i < 10; ++i) {
+                final float radius = 8 + WarpedMoscoServant.this.getRandom().nextInt(4);
+                final float angle = (Maths.STARTING_ANGLE * (WarpedMoscoServant.this.yBodyRot + 90F + WarpedMoscoServant.this.getRandom().nextInt(360)));
+                final double extraX = radius * Mth.sin(Mth.PI + angle);
+                final double extraZ = radius * Mth.cos(angle);
+                BlockPos ground = new BlockPos((int) (WarpedMoscoServant.this.getX() + extraX), (int) WarpedMoscoServant.this.getY(), (int) (WarpedMoscoServant.this.getZ() + extraZ));
+                if (WarpedMoscoServant.this.distanceToSqr(Vec3.atCenterOf(ground)) > minDistSqr
+                        && !WarpedMoscoServant.this.isTargetBlocked(Vec3.atCenterOf(ground))) {
+                    return ground;
+                }
+            }
+            for (int lift = 10; lift <= 26; lift += 4) {
+                BlockPos up = new BlockPos((int) WarpedMoscoServant.this.getX(), (int) (WarpedMoscoServant.this.getY() + lift), (int) WarpedMoscoServant.this.getZ());
+                if (!WarpedMoscoServant.this.isTargetBlocked(Vec3.atCenterOf(up))) {
+                    return up;
+                }
+            }
+            return null;
         }
 
         public void stop() {
             upTicks = 0;
             dashCooldown = 0;
             ranged = false;
+            farTarget = null;
         }
     }
 

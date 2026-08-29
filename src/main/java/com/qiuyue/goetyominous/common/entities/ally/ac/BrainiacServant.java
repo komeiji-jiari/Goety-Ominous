@@ -65,7 +65,7 @@ public class BrainiacServant extends Summoned implements IAnimatedEntity {
     private float shootTongueAmount = 0;
     private float prevLastTongueDistance = 0;
     private float lastTongueDistance = 0;
-    /** 服务端瞬态标记:上一 tick 自身是否处于辐照状态,用于检测辐照消退触发 iron hide 奖励。 */
+    
     private boolean wasIrradiated = false;
 
     public BrainiacServant(EntityType<? extends Summoned> entityType, Level level) {
@@ -181,7 +181,7 @@ public class BrainiacServant extends Summoned implements IAnimatedEntity {
                 }
             }
         }
-        // 外界施加的辐照效果结束后,获得 Goety iron hide 三级(30秒)奖励
+        
         if (!level().isClientSide) {
             boolean irradiated = this.hasEffect(ACEffectRegistry.IRRADIATED.get());
             if (this.wasIrradiated && !irradiated) {
@@ -328,12 +328,7 @@ public class BrainiacServant extends Summoned implements IAnimatedEntity {
         this.entityData.set(HAS_BARREL, barrel);
     }
 
-    /**
-     * 主人手持 waste drum(方块物品)右键没有桶的脑怪仆从时,把桶交给它:
-     * 消耗手上物品(创造模式除外)→ 置位 HAS_BARREL 同步数据 → 播放抓取音效。
-     * 之后仆从即可正常喝桶回血/扔桶,且 PickupBarrelGoal 因已有桶而停止搜索地面桶。
-     * 非主人、已持桶或手持物不是桶时,交还 super 处理。
-     */
+    
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);

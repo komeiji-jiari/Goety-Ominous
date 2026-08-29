@@ -28,8 +28,8 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void registerParticles(RegisterParticleProvidersEvent event) {
-        // alexscaves 为可选联动:未加载时 NucleeperMushroomCloudParticle 直接继承 alexscaves
-        // 的 MushroomCloudParticle,实例化会抛 NoClassDefFoundError,这里提前返回。
+        
+        
         if (!AlexCavesCompat.isAlexCavesLoaded()) {
             return;
         }
