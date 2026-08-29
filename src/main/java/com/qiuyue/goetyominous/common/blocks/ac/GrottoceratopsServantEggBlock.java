@@ -36,8 +36,8 @@ public class GrottoceratopsServantEggBlock extends DinosaurEggBlock implements E
 
     @Override
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
-        // 仆从不在 AC 的 dinosaurs 标签里，原版 stepOn 的 tryTrample 会放行它，导致它踩坏自己下的蛋；
-        // 仆从不触发踩踏（对应 AC 原版恐龙不踩蛋的行为），其余实体保持原版（canTrample 为 private 不可覆写）
+        
+        
         if (!(entity instanceof GrottoceratopsServant)) {
             super.stepOn(level, pos, state, entity);
         }
@@ -52,8 +52,8 @@ public class GrottoceratopsServantEggBlock extends DinosaurEggBlock implements E
         if (level.getBlockEntity(pos) instanceof GrottoceratopsServantEggBlockEntity eggBe) {
             owner = eggBe.getOwnerUUID();
         }
-        // 已达仆从上限时不破壳：蛋块保留在 hatch=2 状态，随机刻会重试，等数量降下来再孵化，
-        // 避免蛋块被移除却什么都没生成的静默损耗
+        
+        
         if (owner != null && GrottoceratopsServant.countServants(serverLevel, owner) >= MobsConfig.GrottoceratopsServantLimit.get()) {
             return;
         }

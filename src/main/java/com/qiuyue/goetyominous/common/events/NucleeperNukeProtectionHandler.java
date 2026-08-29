@@ -33,12 +33,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-/**
- * 注意:不能加 @Mod.EventBusSubscriber 注解——该注解会被 Forge 在 mod 构造时无条件
- * Class.forName,而本类直接引用 Alex's Caves 类型(ACDamageTypes),AC 未加载时会
- * NoClassDefFoundError。由 GoetyOminous 构造器的 isAlexCavesLoaded() 门内手动
- * MinecraftForge.EVENT_BUS.register 本类。
- */
+
 public class NucleeperNukeProtectionHandler {
 
     private record NukeProtection(ResourceKey<Level> dimension, Vec3 origin, double hRadius, double vRadius, long until, Set<UUID> ownerIds) {
@@ -46,21 +41,10 @@ public class NucleeperNukeProtectionHandler {
 
     private static final List<NukeProtection> PROTECTED_NUKES = new ArrayList<>();
 
-    /**
-     * 客户端侧 zone(由 NucleeperExplosionZonePacket 同步,按 level.getGameTime() 过期)。
-     * NuclearExplosionEntity.tick() 的辐照循环不受 isClientSide 门控,客户端实体会被
-     * 爆炸 tick 直接施加 IRRADIATED,服务端 deny 后不会同步移除 → 视觉残留。这里在客户端
-     * 同样拒绝,保证两边一致。单机/联机都走包同步,不依赖共享静态区。
-     */
+    
     private static final List<NukeProtection> CLIENT_NUCKS = new ArrayList<>();
 
-    /**
-     * 反射句柄: NuclearExplosionEntity.spawnedParticle(私有字段,懒加载)。
-     * 该字段为真时, AC 的 tick() 会跳过 MUSHROOM_CLOUD 粒子生成(服务端不广播、
-     * 客户端不本地生成)。noGriefing 时原版云的位置/亮度并不受影响(之前"noGriefing 会把
-     * 云沉到世界底部"的假设是错的),我们靠置位这个标志来让自定义云成为唯一的一朵。
-     * 字段名是 AC 自身私有字段,编译产物中保持不变,dev 与生产环境反射均可靠。
-     */
+    
     private static Field spawnedParticleField;
 
     private static Field getSpawnedParticleField() {
@@ -87,13 +71,7 @@ public class NucleeperNukeProtectionHandler {
         }
     }
 
-    /**
-     * 在服务端/客户端爆炸实体加入世界时,若这是我们仆从的 noGriefing 爆炸,就置位
-     * spawnedParticle,跳过原版 MUSHROOM_CLOUD,只留自定义云。
-     * 服务端: PROTECTED_NUKES 已在 explode() 里先于 addFreshEntity 登记;
-     * 客户端: zone 包先于 spawn 包到达(同连接有序),CLIENT_NUCKS 已就绪。
-     * 通过"爆炸位置≈zone 原点"限定为仆从的爆炸,避免影响原版 AC 核能苦力怕。
-     */
+    
     @SubscribeEvent
     public static void onExplosionJoin(EntityJoinLevelEvent event) {
         if (!AlexCavesCompat.isAlexCavesLoaded()) {
@@ -111,7 +89,7 @@ public class NucleeperNukeProtectionHandler {
         suppressVanillaCloud(explosion);
     }
 
-    /** 该爆炸是否由我们仆从生成:爆炸位置与某个已登记的 zone 原点重合(爆炸 copyPosition 于仆从)。 */
+    
     private static boolean isOurServantExplosion(NuclearExplosionEntity explosion) {
         Vec3 pos = explosion.position();
         Level level = explosion.level();
@@ -144,8 +122,8 @@ public class NucleeperNukeProtectionHandler {
     public static void protectOwnerAndServants(ServerLevel level, NucleeperServant nucleeper) {
         long until = level.getServer().getTickCount() + protectionTicks(nucleeper);
         Set<UUID> ownerIds = collectOwnerIds(nucleeper);
-        // 无兜底:owner 仅来自 Goety 认主链(刷怪蛋潜行放置时 setTrueOwner)。
-        // 若为空则记录警告便于排查。
+        
+        
         if (ownerIds.isEmpty()) {
             GoetyOminous.LOGGER.warn("[Nucleeper] 核爆仆从无主,无法提供保护");
         }
@@ -156,7 +134,7 @@ public class NucleeperNukeProtectionHandler {
                 nucleeper.blockPosition(), radii[0], radii[1], ownerIds, until);
     }
 
-    /** 从 Goety 认主链收集所有代表"主人"的 UUID(ownerId + 解析出的实体 + 上级主人)。 */
+    
     private static Set<UUID> collectOwnerIds(NucleeperServant nucleeper) {
         Set<UUID> ownerIds = new HashSet<>();
         addOwner(ownerIds, nucleeper.getOwnerId());
@@ -171,12 +149,7 @@ public class NucleeperNukeProtectionHandler {
         return ownerIds;
     }
 
-    /**
-     * 把同一个"保护 zone"(含 ownerIds)同步给爆炸附近客户端,让客户端 onLivingTick
-     * 同样中和冲击波击退(辐照不再拦截,与原版一致)。必须在 addFreshEntity(explosion) 之前调用,
-     * 确保客户端 tick 到爆炸实体时 zone 已就绪(同连接内包按序处理,先登记的 zone 一定先于
-     * spawn 包生效)。
-     */
+    
     public static void syncZoneToClients(ServerLevel level, NucleeperServant nucleeper) {
         double[] radii = zoneRadii(nucleeper);
         long until = level.getGameTime() + protectionTicks(nucleeper);
@@ -187,11 +160,7 @@ public class NucleeperNukeProtectionHandler {
                         radii[0], radii[1], until, collectOwnerIds(nucleeper)));
     }
 
-    /**
-     * 客户端收到 NucleeperExplosionZonePacket 后登记 zone。
-     * 注意:不要在这里按 until 清理旧 zone——用新 zone 的 until 做阈值会误删仍在生效的
-     * 其它爆炸 zone(两枚先后爆炸时)。过期 zone 由 clientZoneCovering 惰性清理。
-     */
+    
     public static void registerClientZone(ResourceKey<Level> dimension, double x, double y, double z,
                                           double hRadius, double vRadius, long untilGameTime, Set<UUID> ownerIds) {
         synchronized (CLIENT_NUCKS) {
@@ -200,7 +169,7 @@ public class NucleeperNukeProtectionHandler {
         }
     }
 
-    /** 与服务端一致:核爆伤害 AABB 半径 = inflate(chunks*22.5, chunks*9, chunks*22.5)。 */
+    
     private static double[] zoneRadii(NucleeperServant nucleeper) {
         float size = nucleeper.isCharged() ? 1.75F : 1.0F;
         int chunks = (int) Math.ceil(size);
@@ -222,7 +191,7 @@ public class NucleeperNukeProtectionHandler {
 
     @SubscribeEvent
     public static void onLivingAttack(LivingAttackEvent event) {
-        // alexscaves 为可选联动:isNukeDamage 会访问 ACDamageTypes,未加载时抛 NoClassDefFoundError。
+        
         if (!AlexCavesCompat.isAlexCavesLoaded()) {
             return;
         }
@@ -239,39 +208,32 @@ public class NucleeperNukeProtectionHandler {
         GoetyOminous.LOGGER.debug("[Nucleeper] 已取消 {} 受到的核爆伤害", event.getEntity().getName().getString());
     }
 
-    // 辐照(IRRADIATED)不再拦截:与原版 Alex's Caves 一致,核爆范围内的敌人、友军、主人
-    // 都会中招(原版 40 分钟 IRRADIATED III)。zone 仅用于抵消爆炸直接伤害与冲击波击退。
+    
+    
 
-    /**
-     * 冲击波击退: NuclearExplosionEntity 对爆炸范围内生物直接 setDeltaMovement(方向 * damage * 0.1 * factor),
-     * 不经过任何事件,无法在源头拦截,且客户端爆炸 tick 也会对客户端实体重复施加。这里对处于
-     * zone 内的友方(主人/友军),在每次 tick 前把爆炸级速度的"外向(径向)"分量消掉——
-     * LivingTickEvent 在 aiStep/travel 之前触发,所以友军永远不会被冲击波位移;正常移动速度
-     * (水平 < 0.5 blocks/tick、竖直 < 0.5)不受影响。
-     * 客户端同样要处理:单机本地玩家位置由客户端主导,服务端中和速度救不了本地玩家。
-     */
+    
     @SubscribeEvent
     public static void onLivingTick(LivingEvent.LivingTickEvent event) {
-        // alexscaves 为可选联动:本 handler 只服务于核能苦力怕仆从,未加载时无需任何处理。
+        
         if (!AlexCavesCompat.isAlexCavesLoaded()) {
             return;
         }
         LivingEntity entity = event.getEntity();
         Vec3 v = entity.getDeltaMovement();
         double horizSpeedSqr = v.x * v.x + v.z * v.z;
-        if (horizSpeedSqr < 0.25 && v.y < 0.5) { // 阈值 0.5 block/tick,低于任何爆炸击退,保留正常移动
+        if (horizSpeedSqr < 0.25 && v.y < 0.5) { 
             return;
         }
         NukeProtection zone = entity.level().isClientSide
                 ? clientZoneCovering(entity)
-                : coveringZone(entity); // 服务端:只对友方(主人/友军),敌人照常被掀飞
+                : coveringZone(entity); 
         if (zone == null) {
             return;
         }
         neutralizeBlastVelocity(entity, v, zone);
     }
 
-    /** 客户端:目标是否处于某个已同步的 zone 内且为友方(ownerIds 链命中)。 */
+    
     private static NukeProtection clientZoneCovering(LivingEntity entity) {
         Level level = entity.level();
         long now = level.getGameTime();
@@ -292,12 +254,12 @@ public class NucleeperNukeProtectionHandler {
         return null;
     }
 
-    /** 把爆炸施加的速度沿"外向(径向)"分量中和,保留切向/正常移动与下坠。 */
+    
     private static void neutralizeBlastVelocity(LivingEntity entity, Vec3 v, NukeProtection zone) {
         Vec3 rel = entity.position().subtract(zone.origin());
         double hLen = Math.sqrt(rel.x * rel.x + rel.z * rel.z);
         if (hLen < 1.0e-3) {
-            // 站在爆心正上方/正下方:水平速度全部来自爆炸,清水平;保留下落(负 v.y),清上升。
+            
             entity.setDeltaMovement(0.0, Math.min(v.y, 0.0), 0.0);
             return;
         }
@@ -306,7 +268,7 @@ public class NucleeperNukeProtectionHandler {
         double outward = v.x * hx + v.z * hz;
         double newY = v.y;
         if (newY > 0.5) {
-            newY = 0.0; // 压掉爆炸级上升速度(爆炸方向带 +0.3 上偏)
+            newY = 0.0; 
         }
         if (outward > 0.0) {
             entity.setDeltaMovement(v.x - hx * outward, newY, v.z - hz * outward);
@@ -322,7 +284,7 @@ public class NucleeperNukeProtectionHandler {
     @SubscribeEvent
     public static void onServerStopping(ServerStoppingEvent event) {
         PROTECTED_NUKES.clear();
-        // 单机时客户端与集成服务器同 JVM,顺带清掉客户端 zone,避免跨世界残留。
+        
         synchronized (CLIENT_NUCKS) {
             CLIENT_NUCKS.clear();
         }
@@ -373,7 +335,7 @@ public class NucleeperNukeProtectionHandler {
         return false;
     }
 
-    /** 主人在 Grimoire of Goodwill 中记录了该生物(单个实体或按类型)则视为友方。 */
+    
     private static boolean isGoodwillAlly(LivingEntity entity, NukeProtection protection) {
         MinecraftServer server = entity.level().getServer();
         if (server == null) {

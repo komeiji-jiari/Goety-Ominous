@@ -28,18 +28,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.registries.ForgeRegistries;
 
-/**
- * 注意:不能加 @Mod.EventBusSubscriber 注解——该注解会被 Forge 在 mod 构造时无条件
- * Class.forName,而本类直接引用 Alex's Caves 类型(ACBlockRegistry),AC 未加载时会
- * NoClassDefFoundError。由 GoetyOminous 构造器的 isAlexCavesLoaded() 门内手动
- * MinecraftForge.EVENT_BUS.register 本类。
- *
- * 核能苦力怕仆从多方块召唤:
- * 用 goety:animation_core 右键 alexscaves:block_of_uranium。若以铀块为中心,向上/下
- * 各搭 2 层的 1×1×5 垂直柱(从上到下:siren_light / nuclear_furnace_component /
- * block_of_uranium / nuclear_furnace_component / scrap_metal),则召唤一只
- * NucleeperServant(主人为右键玩家),并打碎整根结构、消耗 1 个动画核心。
- */
+
 public class NucleeperSummonHandler {
 
     private static final Item ANIMATION_CORE =
@@ -50,7 +39,7 @@ public class NucleeperSummonHandler {
         if (event.getSide() != LogicalSide.SERVER) {
             return;
         }
-        // 与 Goety 原版 AnimationCore.useOn 一致,只在主手生效。
+        
         if (event.getHand() != InteractionHand.MAIN_HAND) {
             return;
         }
@@ -61,11 +50,11 @@ public class NucleeperSummonHandler {
         Player player = event.getEntity();
         Level level = player.level();
         BlockPos pos = event.getPos();
-        // 被点方块必须是 block_of_uranium。
+        
         if (!level.getBlockState(pos).is(ACBlockRegistry.BLOCK_OF_URANIUM.get())) {
             return;
         }
-        // 该组合专属本功能,拦截掉 Goety 原版 AnimationCore.useOn 的后续逻辑。
+        
         event.setCanceled(true);
         event.setCancellationResult(InteractionResult.FAIL);
 
@@ -81,7 +70,7 @@ public class NucleeperSummonHandler {
         summon(serverLevel, level, pos, stack, player, event);
     }
 
-    /** 1×1×5 结构:上 2 层为 siren_light / nuclear_furnace_component,下 2 层为 nuclear_furnace_component / scrap_metal。 */
+    
     private static boolean checkStructure(Level level, BlockPos center) {
         return level.getBlockState(center.above(2)).is(ACBlockRegistry.SIREN_LIGHT.get())
                 && level.getBlockState(center.above(1)).is(ACBlockRegistry.NUCLEAR_FURNACE_COMPONENT.get())
@@ -108,11 +97,11 @@ public class NucleeperSummonHandler {
             return;
         }
         servant.setTrueOwner(player);
-        // 生成在结构底座(地面)处而非铀块位置,避免整根结构拆除后仆从悬空落地。
+        
         BlockPos groundPos = pos.below(2);
         double x = pos.getX() + 0.5D;
         double z = pos.getZ() + 0.5D;
-        // 生成时面向召唤玩家
+        
         float yaw = (float) (Mth.atan2(player.getZ() - z, player.getX() - x) * (180.0F / (float) Math.PI)) - 90.0F;
         servant.moveTo(x, groundPos.getY() + 0.05D, z, yaw, 0.0F);
         servant.finalizeSpawn(serverLevel, level.getCurrentDifficultyAt(servant.blockPosition()),
@@ -128,7 +117,7 @@ public class NucleeperSummonHandler {
         }
     }
 
-    /** 打碎整根 1×1×5 结构。 */
+    
     private static void removeStructure(Level level, BlockPos center) {
         BlockPos[] positions = {
                 center.above(2), center.above(1), center, center.below(1), center.below(2)
