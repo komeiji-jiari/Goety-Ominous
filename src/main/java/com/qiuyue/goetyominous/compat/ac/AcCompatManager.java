@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.compat.ac;
 
 import com.qiuyue.goetyominous.common.entities.ally.ac.BrainiacServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneKnightServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneMageServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.GrottoceratopsServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant;
@@ -37,5 +38,6 @@ public class AcCompatManager {
         event.put(AcEntityRegistry.HULLBREAKER_SERVANT.get(), HullbreakerServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.DEEP_ONE_SERVANT.get(), DeepOneServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.DEEP_ONE_KNIGHT_SERVANT.get(), DeepOneKnightServant.setCustomAttributes().build());
+        event.put(AcEntityRegistry.DEEP_ONE_MAGE_SERVANT.get(), DeepOneMageServant.setCustomAttributes().build());
     }
 }

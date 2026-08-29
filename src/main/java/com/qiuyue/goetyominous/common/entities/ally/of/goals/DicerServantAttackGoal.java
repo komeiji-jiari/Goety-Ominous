@@ -13,10 +13,6 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.List;
 
-/**
- * 复刻原版 DicerAttackGoal：攻击状态 1=斩击、2=尾旋、3=十字斩冲刺。
- * 继承仆从自己的 RamblerServantAttackGoal（等效于原版 OF AttackGoal 基类）。
- */
 public class DicerServantAttackGoal extends RamblerServantAttackGoal {
     private final DicerServant dicer;
 
@@ -115,7 +111,6 @@ public class DicerServantAttackGoal extends RamblerServantAttackGoal {
                     this.dicer.crossSlashCooldown = 80 + this.dicer.getRandom().nextInt(50);
                 }
             } else {
-                // 原版：待机时无条件先追击目标，靠近到攻击范围才随机选招
                 this.dicer.getNavigation().moveTo(target, 2.0);
                 if (distance < this.getAttackReachSqr(target)) {
                     if (this.dicer.getRandom().nextFloat() < 0.25F && this.dicer.crossSlashCooldown == 0) {

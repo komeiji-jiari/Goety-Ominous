@@ -42,6 +42,9 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -99,13 +102,14 @@ public class MutantHoglinServant extends AbstractMutantServant implements Player
     public final int kickAnimationActionPoint = 24;
     public AnimationState prepareChargeAnimationState = new AnimationState();
     public int prepareChargeAnimationTick;
-    public final int prepareChargeAnimationLength = 26;
+    public final int prepareChargeAnimationLength = 24;
     public AnimationState introAnimationState = new AnimationState();
     public int introAnimationTick;
     public final int introAnimationLength = 28;
     public AnimationState deathAnimationState = new AnimationState();
     public AnimationState danceAnimationState = new AnimationState();
     public final int deathAnimationActionPoint = 65;
+    private static final EntityDataAccessor<Boolean> CHARGING = SynchedEntityData.defineId(MutantHoglinServant.class, EntityDataSerializers.BOOLEAN);
     public boolean charging;
     public boolean dancing;
     public float enragedAmount;
@@ -126,6 +130,25 @@ public class MutantHoglinServant extends AbstractMutantServant implements Player
 
     public MutantHoglinServant(EntityType<? extends Owned> p_i50189_1_, Level p_i50189_2_) {
         super(p_i50189_1_, p_i50189_2_);
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(CHARGING, false);
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+        super.onSyncedDataUpdated(key);
+        if (CHARGING.equals(key)) {
+            this.charging = this.entityData.get(CHARGING);
+        }
+    }
+
+    public void setCharging(boolean charging) {
+        this.charging = charging;
+        this.entityData.set(CHARGING, charging);
     }
 
     public boolean hasSoulJar() { return this.soulJarEnhancement; }
@@ -234,9 +257,13 @@ public class MutantHoglinServant extends AbstractMutantServant implements Player
     @Override
     public void travel(Vec3 pTravelVector) {
         if (this.isAlive() && this.isVehicle() && this.getControllingPassenger() instanceof Player player) {
-            if (this.charging || this.prepareChargeAnimationTick > 0) {
+            if (this.charging) {
                 this.setSpeed((float) this.getAttributeValue(Attributes.MOVEMENT_SPEED) * 1.25F);
                 super.travel(new Vec3(0, 0, 1));
+                return;
+            }
+            if (this.prepareChargeAnimationTick > 0) {
+                super.travel(Vec3.ZERO);
                 return;
             }
 
@@ -586,7 +613,7 @@ public class MutantHoglinServant extends AbstractMutantServant implements Player
             this.noveltyAnimationState.stop();
         } else if (p_21375_ == 10) {
             Objects.requireNonNull(this);
-            this.prepareChargeAnimationTick = 26;
+            this.prepareChargeAnimationTick = 24;
             this.prepareChargeAnimationState.start(this.tickCount);
             this.noveltyAnimationTick = 0;
             this.noveltyAnimationState.stop();
@@ -597,11 +624,11 @@ public class MutantHoglinServant extends AbstractMutantServant implements Player
             this.noveltyAnimationTick = 0;
             this.noveltyAnimationState.stop();
         } else if (p_21375_ == 12) {
-            this.charging = true;
+            this.setCharging(true);
             this.noveltyAnimationTick = 0;
             this.noveltyAnimationState.stop();
         } else if (p_21375_ == 13) {
-            this.charging = false;
+            this.setCharging(false);
             this.noveltyAnimationTick = 0;
             this.noveltyAnimationState.stop();
         } else if (p_21375_ == 14) {

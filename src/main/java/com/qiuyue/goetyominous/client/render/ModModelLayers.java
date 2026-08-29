@@ -658,8 +658,20 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.DEEP_ONE_KNIGHT_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderDeepOneKnightServant::new);
             event.registerEntityRenderer(
-                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.DEEP_ONE_KNIGHT_SERVANT_WAVE.get(),
-                    com.qiuyue.goetyominous.client.render.ac.RenderDeepOneKnightServantWave::new);
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.DEEP_ONE_MAGE_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderDeepOneMageServant::new);
+            // 奥托兰长矛水浪弹射物:专用渲染器,贴图用 AC 原版 Ortholance 的水浪(与玩家发射外观一致)
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.DEEP_ONE_SERVANT_WAVE.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderDeepOneServantWave::new);
+            // 法师水浪:忠实移植 AC 原版 WaveEntity,渲染器与骑士水浪共用同套模型贴图
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.DEEP_ONE_MAGE_SERVANT_WAVE.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderDeepOneMageServantWave::new);
+            // 法师水弹:忠实移植 AC 原版 WaterBoltEntity,模型/贴图/尾迹渲染与 AC 原版一致
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.DEEP_ONE_MAGE_SERVANT_WATER_BOLT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderDeepOneMageServantWaterBolt::new);
         }
     }
 

@@ -16,7 +16,7 @@ import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.qiuyue.goetyominous.common.entities.ai.ac.DeepOneBarterGoal;
 import com.qiuyue.goetyominous.common.entities.ai.ac.IDeepOneBarterer;
-import com.qiuyue.goetyominous.common.entities.projectile.ac.DeepOneKnightServantWave;
+import com.qiuyue.goetyominous.common.entities.projectile.DeepOneServantWave;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.ChatFormatting;
@@ -490,14 +490,14 @@ public class DeepOneKnightServant extends Summoned implements IDeepOneBarterer, 
             float f1 = (float) wave / (float) maxWaves;
             int lifespan = 3 + (int) ((1.0F - f1) * 3.0F);
             Vec3 waveCenterPos = this.position().add(direction.scale(f1 * 2.0F));
-            DeepOneKnightServantWave leftWave = new DeepOneKnightServantWave(this.level(), this);
+            DeepOneServantWave leftWave = new DeepOneServantWave(this.level(), this);
             leftWave.moveTo(waveCenterPos.x, this.getY(), waveCenterPos.z);
             leftWave.setLifespan(lifespan);
             leftWave.setWaveScale(waveScale);
             leftWave.setYRot(baseYaw + 60.0F - (float) (15 * wave));
             this.level().addFreshEntity(leftWave);
 
-            DeepOneKnightServantWave rightWave = new DeepOneKnightServantWave(this.level(), this);
+            DeepOneServantWave rightWave = new DeepOneServantWave(this.level(), this);
             rightWave.moveTo(waveCenterPos.x, this.getY(), waveCenterPos.z);
             rightWave.setLifespan(lifespan);
             rightWave.setWaveScale(waveScale);

@@ -84,7 +84,18 @@ public class MineGuardianServant extends Summoned {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(1, new MeleeGoal());
-        this.goalSelector.addGoal(2, new RandomLookAroundGoal(this));
+        // 随机环顾仅限水中且非待命:岸上任意状态都保持静止不旋转
+        this.goalSelector.addGoal(2, new RandomLookAroundGoal(this) {
+            @Override
+            public boolean canUse() {
+                return super.canUse() && MineGuardianServant.this.isInWaterOrBubble() && !MineGuardianServant.this.isStaying();
+            }
+
+            @Override
+            public boolean canContinueToUse() {
+                return super.canContinueToUse() && MineGuardianServant.this.isInWaterOrBubble() && !MineGuardianServant.this.isStaying();
+            }
+        });
     }
 
     @Override
@@ -192,13 +203,8 @@ public class MineGuardianServant extends Summoned {
         if (!level().isClientSide) {
             if (this.isInWaterOrBubble()) {
                 this.setAirSupply(300);
-            } else if (this.onGround()) {
-                this.setDeltaMovement(this.getDeltaMovement().add((double) ((this.random.nextFloat() * 2.0F - 1.0F) * 0.6F), 0.6F, (double) ((this.random.nextFloat() * 2.0F - 1.0F) * 0.6F)));
-                this.setYRot(this.random.nextFloat() * 360.0F);
-                this.setOnGround(false);
-                this.playSound(ACSoundRegistry.MINE_GUARDIAN_FLOP.get());
-                this.hasImpulse = true;
             }
+            // 岸上完全不动:移除扑腾跳跃与随机旋转,像地雷一样静置
             Entity target = this.getTarget();
             if (target == null || !target.isAlive()) {
                 timeSinceHadTarget++;
@@ -430,12 +436,15 @@ public class MineGuardianServant extends Summoned {
             if (target != null) {
                 timer++;
                 double dist = MineGuardianServant.this.distanceTo(target);
-                MineGuardianServant.this.lookAt(EntityAnchorArgument.Anchor.EYES, target.getEyePosition());
-                if (dist > 2.0F) {
-                    if (MineGuardianServant.this.isInWaterOrBubble()) {
+                if (MineGuardianServant.this.isInWaterOrBubble()) {
+                    MineGuardianServant.this.lookAt(EntityAnchorArgument.Anchor.EYES, target.getEyePosition());
+                    if (dist > 2.0F) {
                         MineGuardianServant.this.getNavigation().moveTo(target, 1.6D);
+                    } else {
+                        MineGuardianServant.this.setExploding(true);
                     }
-                } else {
+                } else if (dist <= 1.5F) {
+                    // 岸上:不移动也不转向,敌人贴脸才引爆
                     MineGuardianServant.this.setExploding(true);
                 }
                 if (timer > 300) {

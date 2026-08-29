@@ -4,21 +4,15 @@ import com.Polarice3.Goety.common.entities.ally.AnimalSummon;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.init.ModMobType;
-import com.github.alexmodguy.alexscaves.server.entity.util.LaysEggs;
 import com.github.alexmodguy.alexscaves.server.item.ACItemRegistry;
-import com.github.alexmodguy.alexscaves.server.misc.ACMath;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
-import com.qiuyue.goetyominous.common.entities.ai.ac.ServantBreedGoal;
-import com.qiuyue.goetyominous.common.entities.ai.ac.ServantLayEggGoal;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -60,7 +54,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.EnumSet;
 import java.util.UUID;
 
-public class VallumraptorServant extends AbstractDinosaurServant implements IAnimatedEntity, LaysEggs {
+public class VallumraptorServant extends AbstractDinosaurServant implements IAnimatedEntity {
 
     public static final Animation ANIMATION_CALL_1 = Animation.create(15);
     public static final Animation ANIMATION_CALL_2 = Animation.create(25);
@@ -75,7 +69,6 @@ public class VallumraptorServant extends AbstractDinosaurServant implements IAni
     private static final EntityDataAccessor<Boolean> RUNNING = SynchedEntityData.defineId(VallumraptorServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> LEAPING = SynchedEntityData.defineId(VallumraptorServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Float> PUZZLED_HEAD_ROT = SynchedEntityData.defineId(VallumraptorServant.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Boolean> DATA_HAS_EGG = SynchedEntityData.defineId(VallumraptorServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> ELDER = SynchedEntityData.defineId(VallumraptorServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> HIDING_FOR = SynchedEntityData.defineId(VallumraptorServant.class, EntityDataSerializers.INT);
     private Animation currentAnimation;
@@ -89,9 +82,6 @@ public class VallumraptorServant extends AbstractDinosaurServant implements IAni
     private float sitProgress;
     private float hideProgress;
     private float prevHideProgress;
-    private float prevBuryEggsProgress;
-    private float buryEggsProgress;
-    public boolean buryingEggs;
     private float tailYaw;
     private float prevTailYaw;
     private float targetPuzzleRot;
@@ -175,7 +165,6 @@ public class VallumraptorServant extends AbstractDinosaurServant implements IAni
         this.entityData.define(RUNNING, false);
         this.entityData.define(LEAPING, false);
         this.entityData.define(PUZZLED_HEAD_ROT, 0.0F);
-        this.entityData.define(DATA_HAS_EGG, false);
         this.entityData.define(ELDER, false);
         this.entityData.define(HIDING_FOR, 0);
     }
@@ -186,8 +175,6 @@ public class VallumraptorServant extends AbstractDinosaurServant implements IAni
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(0, new FleeGoal());
         this.goalSelector.addGoal(1, new VallumraptorServantMeleeAttackGoal());
-        this.goalSelector.addGoal(2, new ServantBreedGoal<>(this, 1.0D));
-        this.goalSelector.addGoal(3, new ServantLayEggGoal<>(this, (com.github.alexmodguy.alexscaves.server.block.DinosaurEggBlock) AcBlockRegistry.VALLUMRAPTOR_SERVANT_EGG.get(), 100, 1.0D));
         this.goalSelector.addGoal(5, new Summoned.WanderGoal<>(this, 0.8D));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
@@ -206,7 +193,6 @@ public class VallumraptorServant extends AbstractDinosaurServant implements IAni
         prevTailYaw = tailYaw;
         prevSitProgress = sitProgress;
         prevHideProgress = hideProgress;
-        prevBuryEggsProgress = buryEggsProgress;
         float headPuzzleRot = getPuzzledHeadRot();
         if (isRunning() && runProgress < 5.0F) {
             runProgress++;
@@ -233,12 +219,6 @@ public class VallumraptorServant extends AbstractDinosaurServant implements IAni
             hideProgress--;
         }
         
-        if (buryingEggs && buryEggsProgress < 5.0F) {
-            buryEggsProgress++;
-        }
-        if (!buryingEggs && buryEggsProgress > 0.0F) {
-            buryEggsProgress--;
-        }
         if (isRunning() && !hasRunningAttributes) {
             hasRunningAttributes = true;
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(getRunningSpeed());
@@ -387,10 +367,6 @@ public class VallumraptorServant extends AbstractDinosaurServant implements IAni
     }
 
     
-    public float getBuryEggsProgress(float partialTick) {
-        return (prevBuryEggsProgress + (buryEggsProgress - prevBuryEggsProgress) * partialTick) * 0.2F;
-    }
-
     public int getHideFor() {
         return this.entityData.get(HIDING_FOR);
     }
@@ -467,72 +443,19 @@ public class VallumraptorServant extends AbstractDinosaurServant implements IAni
     }
 
     @Override
-    public void spawnChildFromBreeding(ServerLevel level, AnimalSummon partner) {
-        this.setHasEgg(true);
-        this.finalizeSpawnChildFromBreeding(level, partner, partner);
-    }
-
-    @Override
-    public boolean hasEgg() {
-        return this.entityData.get(DATA_HAS_EGG);
-    }
-
-    @Override
-    public void setHasEgg(boolean hasEgg) {
-        this.entityData.set(DATA_HAS_EGG, hasEgg);
-    }
-
-    @Override
     public BlockState createEggBlockState() {
         return AcBlockRegistry.VALLUMRAPTOR_SERVANT_EGG.get().defaultBlockState();
     }
 
     @Override
-    public void onLayEggTick(BlockPos belowEgg, int time) {
-        this.walkAnimation.update(0.5F, 0.4F);
-        this.level().broadcastEntityEvent(this, (byte) 77);
-    }
-
-    @Override
-    public void handleEntityEvent(byte b) {
-        if (b == 77) {
-            
-            this.buryingEggs = true;
-            float radius = this.getBbWidth() * 0.55F;
-            float particleCount = (5 + random.nextInt(5)) * radius;
-            for (int i1 = 0; i1 < particleCount; i1++) {
-                double motionX = (getRandom().nextFloat() - 0.5F) * 0.7D;
-                double motionY = getRandom().nextFloat() * 0.7D + 0.8F;
-                double motionZ = (getRandom().nextFloat() - 0.5F) * 0.7D;
-                float angle = (float) (0.01745329251F * (this.yBodyRot + (i1 / particleCount) * 360F));
-                double extraX = radius * Mth.sin((float) (Math.PI + angle));
-                double extraY = 1.2F;
-                double extraZ = radius * Mth.cos(angle);
-                BlockPos ground = BlockPos.containing(ACMath.getGroundBelowPosition(level(), new Vec3(Mth.floor(this.getX() + extraX), Mth.floor(this.getY() + extraY), Mth.floor(this.getZ() + extraZ))));
-                BlockState groundState = this.level().getBlockState(ground.below());
-                if (groundState.isSolid() && level().isClientSide) {
-                    level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, groundState), true, this.getX() + extraX, ground.getY(), this.getZ() + extraZ, motionX, motionY, motionZ);
-                }
-            }
-        } else if (b == 78) {
-            
-            this.buryingEggs = false;
-        } else {
-            super.handleEntityEvent(b);
-        }
-    }
-
-    @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putBoolean("HasEgg", this.hasEgg());
         tag.putBoolean("Elder", this.isElder());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        this.setHasEgg(tag.getBoolean("HasEgg"));
         this.setElder(tag.getBoolean("Elder"));
     }
 

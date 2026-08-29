@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.common.init.ac;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.ac.BrainiacServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneKnightServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneMageServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.GrottoceratopsServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant;
@@ -10,7 +11,9 @@ import com.qiuyue.goetyominous.common.entities.ally.ac.MineGuardianServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.NucleeperServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TremorsaurusServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.VallumraptorServant;
-import com.qiuyue.goetyominous.common.entities.projectile.ac.DeepOneKnightServantWave;
+import com.qiuyue.goetyominous.common.entities.projectile.DeepOneMageServantWaterBolt;
+import com.qiuyue.goetyominous.common.entities.projectile.DeepOneMageServantWave;
+import com.qiuyue.goetyominous.common.entities.projectile.DeepOneServantWave;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -88,14 +91,39 @@ public class AcEntityRegistry {
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":deep_one_knight_servant"));
 
-    public static final RegistryObject<EntityType<DeepOneKnightServantWave>> DEEP_ONE_KNIGHT_SERVANT_WAVE =
-            AC_ENTITIES.register("deep_one_knight_servant_wave",
-                    () -> EntityType.Builder.<DeepOneKnightServantWave>of((type, worldIn) -> new DeepOneKnightServantWave(type, worldIn), MobCategory.MISC)
+    public static final RegistryObject<EntityType<DeepOneMageServant>> DEEP_ONE_MAGE_SERVANT =
+            AC_ENTITIES.register("deep_one_mage_servant",
+                    () -> EntityType.Builder.<DeepOneMageServant>of((type, worldIn) -> new DeepOneMageServant(type, worldIn), MobCategory.MISC)
+                            .sized(1.2F, 2.4F)
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":deep_one_mage_servant"));
+
+    public static final RegistryObject<EntityType<DeepOneServantWave>> DEEP_ONE_SERVANT_WAVE =
+            AC_ENTITIES.register("deep_one_servant_wave",
+                    () -> EntityType.Builder.<DeepOneServantWave>of((type, worldIn) -> new DeepOneServantWave(type, worldIn), MobCategory.MISC)
                             .sized(0.8F, 0.9F)
                             .setTrackingRange(8)
                             .setShouldReceiveVelocityUpdates(true)
                             .setUpdateInterval(1)
-                            .build(GoetyOminous.MOD_ID + ":deep_one_knight_servant_wave"));
+                            .build(GoetyOminous.MOD_ID + ":deep_one_servant_wave"));
+
+    public static final RegistryObject<EntityType<DeepOneMageServantWave>> DEEP_ONE_MAGE_SERVANT_WAVE =
+            AC_ENTITIES.register("deep_one_mage_servant_wave",
+                    () -> EntityType.Builder.<DeepOneMageServantWave>of((type, worldIn) -> new DeepOneMageServantWave(type, worldIn), MobCategory.MISC)
+                            .sized(0.9F, 0.9F)
+                            .setTrackingRange(8)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .setUpdateInterval(1)
+                            .build(GoetyOminous.MOD_ID + ":deep_one_mage_servant_wave"));
+
+    public static final RegistryObject<EntityType<DeepOneMageServantWaterBolt>> DEEP_ONE_MAGE_SERVANT_WATER_BOLT =
+            AC_ENTITIES.register("deep_one_mage_servant_water_bolt",
+                    () -> EntityType.Builder.<DeepOneMageServantWaterBolt>of((type, worldIn) -> new DeepOneMageServantWaterBolt(type, worldIn), MobCategory.MISC)
+                            .sized(0.6F, 0.6F)
+                            .setTrackingRange(8)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .setUpdateInterval(1)
+                            .build(GoetyOminous.MOD_ID + ":deep_one_mage_servant_water_bolt"));
 
     public static void register(IEventBus modEventBus) {
         AC_ENTITIES.register(modEventBus);

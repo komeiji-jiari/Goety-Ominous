@@ -14,10 +14,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * Volt 仆从模型：直接复用原版 VoltModel 的几何（纯几何，与实体类型无关）。
- * 部件查找链照搬原版 VoltModel（javap 反汇编确认），动画直接用 OF 的 VoltAnimations。
- */
 @OnlyIn(Dist.CLIENT)
 public class VoltServantModel extends OPModel<VoltServant> {
     private final ModelPart root;
@@ -71,7 +67,6 @@ public class VoltServantModel extends OPModel<VoltServant> {
         this.animate(entity.fallingAnimationState, VoltAnimations.JUMP_FALL, ageInTicks);
         this.animate(entity.landingAnimationState, VoltAnimations.JUMP_END, ageInTicks);
         this.animate(entity.leapAnimationState, VoltAnimations.JUMP_START, ageInTicks);
-        // 随机抽搐动画（原版伏特鳐有 1/504、1/505 的抽搐，事件号 68/69）
         this.animate(entity.twitch1AnimationState, VoltAnimations.TWITCH1, ageInTicks);
         this.animate(entity.twitch2AnimationState, VoltAnimations.TWITCH2, ageInTicks);
     }

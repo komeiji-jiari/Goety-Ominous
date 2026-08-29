@@ -13,10 +13,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * Dicer 仆从渲染器：纹理沿用 OF 原版的三张（dicer / arch_dicer 精英 / gigan 命名彩蛋），
- * 外接一个发光面罩层。模型从 OF 的 Dicer 层烘焙。
- */
 @OnlyIn(Dist.CLIENT)
 public class DicerServantRenderer extends MobRenderer<DicerServant, DicerServantModel> {
     private static final ResourceLocation DICER = new ResourceLocation("opposing_force", "textures/entity/dicer/dicer.png");

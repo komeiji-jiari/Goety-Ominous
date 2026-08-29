@@ -40,31 +40,23 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
-/**
- * Trembler（震颤蜗牛）仆从 —— 滚动撞击型，行为逐字节复刻 OF 原版 Trembler。
- * 与原版唯一差别：继承 Summoned（仆从体系），而不是敌对 Monster。
- */
 public class TremblerServant extends Summoned implements EliteVariant {
-    // ===== 同步数据（服务端<->客户端传状态）：字段名照抄 OF 原版 Trembler =====
-    private static final EntityDataAccessor<Boolean> ROLLING;        // 正在滚动？
-    private static final EntityDataAccessor<Integer> ROLL_COOLDOWN;  // 滚动冷却
-    private static final EntityDataAccessor<Integer> STUNNED_TICKS;  // 眩晕剩余时间
-    private static final EntityDataAccessor<Boolean> TURBO;          // 涡轮精英变体？
+    private static final EntityDataAccessor<Boolean> ROLLING;
+    private static final EntityDataAccessor<Integer> ROLL_COOLDOWN;
+    private static final EntityDataAccessor<Integer> STUNNED_TICKS;
+    private static final EntityDataAccessor<Boolean> TURBO;
 
-    // ===== 动画状态：OF 原版 Trembler 就这三个 =====
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState rollAnimationState = new AnimationState();
     public final AnimationState stunnedAnimationState = new AnimationState();
 
     public TremblerServant(EntityType<? extends Owned> entityType, Level level) {
         super(entityType, level);
-        // 换用原版的三件套控制器：眩晕时会冻结移动/转头/转身
         this.moveControl = new TremblerServantMoveControl();
         this.lookControl = new TremblerServantLookControl(this);
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
-        // 数值照抄原版：16血 / 20甲 / 速度0.15(蜗牛慢) / 攻5 / 击退1 / 抗击退0.5
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 16.0D)
                 .add(Attributes.ARMOR, 20.0D)
@@ -77,18 +69,14 @@ public class TremblerServant extends Summoned implements EliteVariant {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        // 主动索敌：Goety 默认的 SummonTargetGoal 是"仇恨驱动"，不会见敌就打。
-        // 补上 NearestAttackableTargetGoal 才能像原版 Trembler 一样主动追敌对生物（Enemy）。
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, false, false,
                 (target) -> target instanceof Enemy && !MobUtil.areAllies(this, target)));
-        // 优先级照抄原版：1=滚动，4=闲逛，5=看玩家，6=四处乱看
         this.goalSelector.addGoal(1, new TremblerServantRollGoal(this));
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0));
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
     }
 
-    // 滚动时能翻越更高的台阶（1.1 格），平时 0.6 格
     @Override
     public float maxUpStep() {
         return this.isRolling() ? 1.1F : 0.6F;
@@ -108,12 +96,11 @@ public class TremblerServant extends Summoned implements EliteVariant {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(ROLLING, false);
-        this.entityData.define(ROLL_COOLDOWN, 60);   // 初始 60 tick 冷却，别一出生就滚
+        this.entityData.define(ROLL_COOLDOWN, 60);
         this.entityData.define(STUNNED_TICKS, 0);
         this.entityData.define(TURBO, false);
     }
 
-    // ===== 滚动 =====
     public boolean isRolling() {
         return this.entityData.get(ROLLING);
     }
@@ -122,7 +109,6 @@ public class TremblerServant extends Summoned implements EliteVariant {
         this.entityData.set(ROLLING, rolling);
     }
 
-    // ===== 滚动冷却 =====
     public int getRollCooldown() {
         return this.entityData.get(ROLL_COOLDOWN);
     }
@@ -135,7 +121,6 @@ public class TremblerServant extends Summoned implements EliteVariant {
         this.entityData.set(ROLL_COOLDOWN, 60);
     }
 
-    // ===== 眩晕 =====
     public int getStunnedTicks() {
         return this.entityData.get(STUNNED_TICKS);
     }
@@ -148,7 +133,6 @@ public class TremblerServant extends Summoned implements EliteVariant {
         this.entityData.set(STUNNED_TICKS, 54);
     }
 
-    // ===== 涡轮精英变体（EliteVariant 接口要求实现）=====
     @Override
     public boolean isElite() {
         return this.entityData.get(TURBO);
@@ -165,11 +149,9 @@ public class TremblerServant extends Summoned implements EliteVariant {
         if (this.level().isClientSide) {
             this.setupAnimationStates();
         }
-        // 冷却只在"没晕 + 冷却没走完"时递减（眩晕期间冷却冻结，醒来了还要等）
         if (this.getStunnedTicks() <= 0 && this.getRollCooldown() > 0) {
             this.setRollCooldown(this.getRollCooldown() - 1);
         }
-        // 眩晕中：关冲刺 + 倒计时 + 播眩晕粒子
         if (this.getStunnedTicks() > 0) {
             this.setSprinting(false);
             this.setStunnedTicks(this.getStunnedTicks() - 1);
@@ -177,14 +159,12 @@ public class TremblerServant extends Summoned implements EliteVariant {
         }
     }
 
-    // 动画触发（客户端）：照原版，idle=没在滚，roll=在滚，stunned=在晕
     private void setupAnimationStates() {
         this.idleAnimationState.animateWhen(!this.isRolling(), this.tickCount);
         this.rollAnimationState.animateWhen(this.isRolling(), this.tickCount);
         this.stunnedAnimationState.animateWhen(this.getStunnedTicks() > 0, this.tickCount);
     }
 
-    // 驱动腿部摆动动画的幅度（原版系数 16，比默认 4 更灵敏）
     @Override
     public void calculateEntityAnimation(boolean flying) {
         float f = (float) Mth.length(this.getX() - this.xo, this.getY() - this.yo, this.getZ() - this.zo);
@@ -192,7 +172,6 @@ public class TremblerServant extends Summoned implements EliteVariant {
         this.walkAnimation.update(f1, 0.4F);
     }
 
-    // 眩晕粒子：六分之一概率在身体旁冒一圈星光
     private void stunEffect() {
         if (this.random.nextInt(6) == 0) {
             double d = this.getX() - (double) this.getBbWidth() * Math.sin((double) (this.yBodyRot * ((float) Math.PI / 180F))) + (this.random.nextDouble() * 0.6 - 0.3);
@@ -202,7 +181,6 @@ public class TremblerServant extends Summoned implements EliteVariant {
         }
     }
 
-    // 撞到举盾的人：把自己撞晕 + 进冷却 + 停下，把防御者推开
     @Override
     protected void blockedByShield(LivingEntity defender) {
         this.stunnedTicks();
@@ -214,7 +192,6 @@ public class TremblerServant extends Summoned implements EliteVariant {
         super.blockedByShield(defender);
     }
 
-    // 能打坏盾牌
     @Override
     public boolean canDisableShield() {
         return true;
@@ -228,7 +205,6 @@ public class TremblerServant extends Summoned implements EliteVariant {
         super.handleEntityEvent(id);
     }
 
-    // 目标是否在可滚的高度范围（上下相差 < 3 格）
     public boolean isWithinYRange(LivingEntity target) {
         if (target == null) {
             return false;
@@ -236,7 +212,6 @@ public class TremblerServant extends Summoned implements EliteVariant {
         return Math.abs(target.getY() - this.getY()) < 3.0D;
     }
 
-    // 滚动时格挡大部分伤害（除非是能打穿滚动状态的伤害标签），播放格挡音效
     @Override
     public boolean hurt(@NotNull DamageSource damageSource, float amount) {
         if (this.isInvulnerableTo(damageSource)) {
@@ -249,7 +224,6 @@ public class TremblerServant extends Summoned implements EliteVariant {
         return super.hurt(damageSource, amount);
     }
 
-    // 滚动时免疫摔落伤害
     @Override
     public boolean causeFallDamage(float fallDistance, float multiplier, @NotNull DamageSource damageSource) {
         return !this.isRolling();
@@ -268,7 +242,6 @@ public class TremblerServant extends Summoned implements EliteVariant {
         return OPSoundEvents.TREMBLER_DEATH.get();
     }
 
-    // 脚步声：滚动时是滴水石块的摩擦声，平时是黏液滑行的声音
     @Override
     protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState state) {
         SoundType soundtype = state.getSoundType(this.level(), pos, this);
@@ -287,7 +260,6 @@ public class TremblerServant extends Summoned implements EliteVariant {
         TURBO = SynchedEntityData.defineId(TremblerServant.class, EntityDataSerializers.BOOLEAN);
     }
 
-    // ===== 眩晕时冻结移动/转头/转身的三个控制器（照抄原版）=====
     private class TremblerServantMoveControl extends MoveControl {
         public TremblerServantMoveControl() {
             super(TremblerServant.this);

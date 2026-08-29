@@ -12,10 +12,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * Volt 仆从渲染器：纹理沿用 OF 原版的两张（volt 普通 / quasar_volt 精英变体）。
- * 模型从 OF 的 Volt 层烘焙，几何和动画都由原版 VoltModel 提供。
- */
 @OnlyIn(Dist.CLIENT)
 public class VoltServantRenderer extends MobRenderer<VoltServant, VoltServantModel> {
     private static final ResourceLocation VOLT = new ResourceLocation("opposing_force", "textures/entity/volt/volt.png");
