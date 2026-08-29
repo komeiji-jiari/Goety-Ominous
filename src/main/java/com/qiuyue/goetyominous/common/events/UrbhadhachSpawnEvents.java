@@ -26,7 +26,7 @@ public class UrbhadhachSpawnEvents {
     private static final int COOLDOWN = 6000;
     private static final int MIN_BABY = 4;
     private static final int MAX_COUNT = 3;
-    private static final float CHANCE = 0.35F;
+    private static final float CHANCE = 0.25F;
 
     @SubscribeEvent
     public static void onWorldTick(TickEvent.LevelTickEvent event) {
@@ -35,7 +35,7 @@ public class UrbhadhachSpawnEvents {
         if (level.dimension() != Level.OVERWORLD) return;
         if (level.isDay()) return;
         if (level.getMoonPhase() != 0) return;
-        if (level.getGameTime() % 200 != 0) return;
+        if (level.getGameTime() % 600 != 0) return;
         if (level.getGameTime() - globalCooldown < COOLDOWN) return;
 
         for (ServerPlayer player : level.players()) {

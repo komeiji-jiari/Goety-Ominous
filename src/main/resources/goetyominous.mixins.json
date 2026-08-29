@@ -25,7 +25,10 @@
     "MixinHellhoundRenderer",
     "MixinBlackBeastRenderer",
     "MixinBlackBeastModel",
-    "MixinBlackBeastHowlingSoul"
+    "MixinBlackBeastHowlingSoul",
+    "CuriosFinderMixin",
+    "BrewCauldronBlockEntityMixin",
+    "SingleStackItemMixin"
   ],
   "client": [],
   "server": [],

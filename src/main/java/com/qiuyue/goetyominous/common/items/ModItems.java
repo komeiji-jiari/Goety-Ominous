@@ -6,10 +6,7 @@ import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.render.item.BoneCudgelRenderer;
 import com.qiuyue.goetyominous.common.init.ModBlocks;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
-import com.qiuyue.goetyominous.common.items.curios.DarkAnkh;
-import com.qiuyue.goetyominous.common.items.curios.FungusPackItem;
-import com.qiuyue.goetyominous.common.items.curios.RaggedFungusPackItem;
-import com.qiuyue.goetyominous.common.items.curios.ScreamingSkullJar;
+import com.qiuyue.goetyominous.common.items.curios.*;
 import com.qiuyue.goetyominous.common.items.revive.BrokenStormCrown;
 import com.qiuyue.goetyominous.common.items.revive.StormSoulJar;
 import com.qiuyue.goetyominous.common.items.revive.SunkenSoulJar;
@@ -128,6 +125,12 @@ public class ModItems {
     public static final RegistryObject<Item> SCREAMING_SKULL_JAR = ITEMS.register("screaming_skull_jar",
             () -> new ScreamingSkullJar());
 
+    public static final RegistryObject<CroneRobeItem> CRONE_ROBE = ITEMS.register("crone_robe",
+            () -> new CroneRobeItem());
+
+    public static final RegistryObject<CroneRobeItem> CRONE_ROBE_ALT = ITEMS.register("crone_robe_alt",
+            () -> new CroneRobeItem());
+
     public static final RegistryObject<Item> FUNGUS_PACK = ITEMS.register("fungus_pack",
             () -> new FungusPackItem());
 
@@ -160,8 +163,6 @@ public class ModItems {
 
     public static final RegistryObject<Item> WOLF_TOTEM = ITEMS.register("wolf_totem",
             () -> new BlockItemBase(ModBlocks.WOLF_TOTEM.get()));
-
-
 
 
 
