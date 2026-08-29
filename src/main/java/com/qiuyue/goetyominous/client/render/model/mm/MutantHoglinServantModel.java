@@ -3,8 +3,9 @@ package com.qiuyue.goetyominous.client.render.model.mm;
 import com.alexander.mutantmore.animation.keyframe_animations.definition.MutantHoglinKeyframeAnimations;
 import com.alexander.mutantmore.animation.sine_wave_animations.SineWaveAnimationUtils;
 import com.qiuyue.goetyominous.client.render.model.animation.mm.MutantHoglinSineWaveAnimations;
-import com.alexander.mutantmore.util.MiscUtils;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantHoglinServant;
+import java.util.List;
+import java.util.stream.Collectors;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -14,7 +15,6 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -35,6 +35,12 @@ public class MutantHoglinServantModel<T extends MutantHoglinServant> extends Hie
     public final ModelPart leftFrontLegLower;
     public final ModelPart rightFrontLeg;
     public final ModelPart rightFrontLegLower;
+    private float chargeAnimationAmount;
+    private float walkAnimationAmount;
+    private float idleAnimationAmount = 1.0F;
+    private float keyframeAnimationAmount;
+    private float lastAgeInTicks = -1.0F;
+    private float[][] heldPose;
 
     public MutantHoglinServantModel(ModelPart root) {
         this.root = root;
@@ -77,13 +83,64 @@ public class MutantHoglinServantModel<T extends MutantHoglinServant> extends Hie
 
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.root().getAllParts().forEach(ModelPart::resetPose);
-        Vec3 velocity = entity.getDeltaMovement();
-        float speed = Mth.sqrt((float)(velocity.x * velocity.x + velocity.z * velocity.z));
-        float f = Math.min((float)entity.getDeltaMovement().lengthSqr() * 50.0F, 8.0F);
-        boolean shouldPlayChargingAnimation = entity.charging && entity.notCurrentlyPlayingKeyframeAnimation();
-        boolean shouldPlayWalkAnimation = MiscUtils.isMovingOnLand(entity) && !shouldPlayChargingAnimation && entity.notCurrentlyPlayingKeyframeAnimation();
+        // Frame-rate-independent tick delta so the crossfade takes the same wall-clock time on any FPS.
+        float deltaTicks;
+        if (this.lastAgeInTicks < 0.0F) {
+            deltaTicks = 1.0F;
+        } else {
+            deltaTicks = Mth.clamp(ageInTicks - this.lastAgeInTicks, 0.0F, 2.0F);
+        }
+        this.lastAgeInTicks = ageInTicks;
+        // limbSwingAmount (vanilla walk-animation speed) is a smooth proxy for the rendered movement
+        // speed on the client. getDeltaMovement() jitters for server-driven mobs and made the
+        // velocity-scaled sine phase twitch, so movement state is derived from limbSwingAmount and the
+        // sine cadences are fixed to values that never alias at any frame rate.
+        boolean movingOnLand = entity.onGround() && !entity.isInWaterOrBubble() && limbSwingAmount > 0.005F;
+        // limbSwingAmount is a squared-velocity proxy (~v^2): normal walk at 0.28 b/t is ~0.078, so the
+        // gallop threshold sits above that. Galloping kicks in only for genuinely fast movement (>~0.35)
+        // or the actual charge attack (entity.charging).
+        boolean highSpeed = limbSwingAmount > 0.12F;
+        boolean shouldPlayChargingAnimation = (entity.charging || highSpeed) && entity.notCurrentlyPlayingKeyframeAnimation();
+        boolean shouldPlayWalkAnimation = movingOnLand && !shouldPlayChargingAnimation && entity.notCurrentlyPlayingKeyframeAnimation();
         boolean shouldPlayIdleAnimation = !shouldPlayWalkAnimation && !shouldPlayChargingAnimation && entity.notCurrentlyPlayingKeyframeAnimation();
+        boolean keyframeActive = entity.deathTime > 0
+                || entity.stompAnimationTick > 0
+                || entity.prepareChargeAnimationTick > 0
+                || entity.kickAnimationTick > 0
+                || entity.attackAnimationTick > 0
+                || entity.introAnimationTick > 0
+                || entity.noveltyAnimationTick > 0;
+        float blendSpeed = 0.12F;
+        this.chargeAnimationAmount = SineWaveAnimationUtils.tickAmountMultiplierChange(this.chargeAnimationAmount, shouldPlayChargingAnimation, deltaTicks * blendSpeed);
+        this.walkAnimationAmount = SineWaveAnimationUtils.tickAmountMultiplierChange(this.walkAnimationAmount, shouldPlayWalkAnimation, deltaTicks * blendSpeed);
+        this.idleAnimationAmount = SineWaveAnimationUtils.tickAmountMultiplierChange(this.idleAnimationAmount, shouldPlayIdleAnimation, deltaTicks * blendSpeed);
+        this.keyframeAnimationAmount = SineWaveAnimationUtils.tickAmountMultiplierChange(this.keyframeAnimationAmount, keyframeActive, deltaTicks * 0.2F);
         this.animateHeadLookTarget(netHeadYaw, headPitch);
+        // The three sine animations always run and crossfade against each other, at fixed cadences.
+        float sineTick = SineWaveAnimationUtils.getTick(entity.tickCount, true);
+        MutantHoglinSineWaveAnimations.mutantHoglinChargingAnimation(this, sineTick, 2.6F, this.chargeAnimationAmount);
+        MutantHoglinSineWaveAnimations.mutantHoglinWalkAnimation(this, sineTick, 1.6F, this.walkAnimationAmount);
+        MutantHoglinSineWaveAnimations.mutantHoglinIdleAnimation(this, sineTick, 1.0F, this.idleAnimationAmount);
+        // Keyframe animations are blended on top of the sine pose so their onset/exit no longer snaps.
+        List<ModelPart> parts = this.root().getAllParts().collect(Collectors.toList());
+        float k = this.keyframeAnimationAmount;
+        boolean needBlend = k > 0.0F || keyframeActive;
+        float[][] pre = null;
+        if (needBlend) {
+            if (this.heldPose == null || this.heldPose.length != parts.size()) {
+                this.heldPose = new float[parts.size()][6];
+            }
+            pre = new float[parts.size()][6];
+            for (int i = 0; i < parts.size(); i++) {
+                ModelPart p = parts.get(i);
+                pre[i][0] = p.xRot;
+                pre[i][1] = p.yRot;
+                pre[i][2] = p.zRot;
+                pre[i][3] = p.x;
+                pre[i][4] = p.y;
+                pre[i][5] = p.z;
+            }
+        }
         if (entity.deathTime > 0) {
             this.animate(entity.deathAnimationState, MutantHoglinKeyframeAnimations.MUTANT_HOGLIN_DEATH, ageInTicks);
             this.animate(entity.danceAnimationState, MutantHoglinKeyframeAnimations.MUTANT_HOGLIN_DANCE, ageInTicks);
@@ -99,12 +156,30 @@ public class MutantHoglinServantModel<T extends MutantHoglinServant> extends Hie
             this.animate(entity.introAnimationState, MutantHoglinKeyframeAnimations.MUTANT_HOGLIN_INTRO, ageInTicks);
         } else if (entity.noveltyAnimationTick > 0) {
             this.animate(entity.noveltyAnimationState, MutantHoglinKeyframeAnimations.MUTANT_HOGLIN_NOVELTY, ageInTicks);
-        } else {
-            MutantHoglinSineWaveAnimations.mutantHoglinChargingAnimation(this, SineWaveAnimationUtils.getTick(entity.tickCount, true), speed * 8.0F, shouldPlayChargingAnimation ? 1.0F : 0.0F);
-            MutantHoglinSineWaveAnimations.mutantHoglinWalkAnimation(this, SineWaveAnimationUtils.getTick(entity.tickCount, true), f, shouldPlayWalkAnimation ? 1.0F : 0.0F);
-            MutantHoglinSineWaveAnimations.mutantHoglinIdleAnimation(this, SineWaveAnimationUtils.getTick(entity.tickCount, true), 1.0F, shouldPlayIdleAnimation ? 1.0F : 0.0F);
         }
-
+        if (keyframeActive) {
+            // Hold the fully-applied keyframe pose so we can fade out of it after the animation ends.
+            for (int i = 0; i < parts.size(); i++) {
+                ModelPart p = parts.get(i);
+                this.heldPose[i][0] = p.xRot;
+                this.heldPose[i][1] = p.yRot;
+                this.heldPose[i][2] = p.zRot;
+                this.heldPose[i][3] = p.x;
+                this.heldPose[i][4] = p.y;
+                this.heldPose[i][5] = p.z;
+            }
+        }
+        if (needBlend) {
+            for (int i = 0; i < parts.size(); i++) {
+                ModelPart p = parts.get(i);
+                p.xRot = pre[i][0] + k * (this.heldPose[i][0] - pre[i][0]);
+                p.yRot = pre[i][1] + k * (this.heldPose[i][1] - pre[i][1]);
+                p.zRot = pre[i][2] + k * (this.heldPose[i][2] - pre[i][2]);
+                p.x = pre[i][3] + k * (this.heldPose[i][3] - pre[i][3]);
+                p.y = pre[i][4] + k * (this.heldPose[i][4] - pre[i][4]);
+                p.z = pre[i][5] + k * (this.heldPose[i][5] - pre[i][5]);
+            }
+        }
     }
 
     private void animateHeadLookTarget(float yRot, float xRot) {

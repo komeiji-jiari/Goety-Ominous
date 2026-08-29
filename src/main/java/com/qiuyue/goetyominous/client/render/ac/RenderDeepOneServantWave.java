@@ -3,8 +3,8 @@ package com.qiuyue.goetyominous.client.render.ac;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import com.qiuyue.goetyominous.client.render.model.ac.ModelDeepOneKnightServantWave;
-import com.qiuyue.goetyominous.common.entities.projectile.ac.DeepOneKnightServantWave;
+import com.qiuyue.goetyominous.client.render.model.ac.ModelDeepOneServantWave;
+import com.qiuyue.goetyominous.common.entities.projectile.DeepOneServantWave;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -17,7 +17,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class RenderDeepOneKnightServantWave extends EntityRenderer<DeepOneKnightServantWave> {
+public class RenderDeepOneServantWave extends EntityRenderer<DeepOneServantWave> {
 
     private static final ResourceLocation TEXTURE_0 = new ResourceLocation("alexscaves", "textures/entity/deep_one/wave_0.png");
     private static final ResourceLocation TEXTURE_1 = new ResourceLocation("alexscaves", "textures/entity/deep_one/wave_1.png");
@@ -27,14 +27,14 @@ public class RenderDeepOneKnightServantWave extends EntityRenderer<DeepOneKnight
     private static final ResourceLocation OVERLAY_TEXTURE_1 = new ResourceLocation("alexscaves", "textures/entity/deep_one/wave_overlay_1.png");
     private static final ResourceLocation OVERLAY_TEXTURE_2 = new ResourceLocation("alexscaves", "textures/entity/deep_one/wave_overlay_2.png");
     private static final ResourceLocation OVERLAY_TEXTURE_3 = new ResourceLocation("alexscaves", "textures/entity/deep_one/wave_overlay_3.png");
-    private static final ModelDeepOneKnightServantWave MODEL = new ModelDeepOneKnightServantWave();
+    private static final ModelDeepOneServantWave MODEL = new ModelDeepOneServantWave();
 
-    public RenderDeepOneKnightServantWave(EntityRendererProvider.Context renderManagerIn) {
+    public RenderDeepOneServantWave(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn);
     }
 
     @Override
-    public void render(DeepOneKnightServantWave entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn,
+    public void render(DeepOneServantWave entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn,
                        MultiBufferSource bufferIn, int packedLightIn) {
         if (!entityIn.isInvisible()) {
             matrixStackIn.pushPose();
@@ -59,7 +59,7 @@ public class RenderDeepOneKnightServantWave extends EntityRenderer<DeepOneKnight
     }
 
     @Override
-    public ResourceLocation getTextureLocation(DeepOneKnightServantWave entity) {
+    public ResourceLocation getTextureLocation(DeepOneServantWave entity) {
         return this.getWaveTexture(entity.activeWaveTicks);
     }
 

@@ -1,4 +1,4 @@
-package com.qiuyue.goetyominous.common.entities.projectiles.of;
+package com.qiuyue.goetyominous.common.entities.projectile;
 
 import com.Polarice3.Goety.utils.MobUtil;
 import com.google.common.collect.Maps;
@@ -31,16 +31,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-/**
- * 伏特仆从电球的爆炸：逐字节复刻 OF 原版 ElectricExplosion.explode()，
- * 唯一差别 = 对每个目标多一步 Goety 友军判定，主人 / 其他仆从直接跳过。
- * 这就是"伏特鳐没有友军伤害"的修复点——OF 原版爆炸的 AoE 伤害循环没有友军过滤，
- * 会连主人的仆从一起炸。
- *
- * 说明：父类 ElectricExplosion 的全部字段都是 private，子类读不到，
- * 所以这里把用到的字段重新声明一份（构造时复制父类同一套值），
- * 再照字节码把 explode() 完整抄一遍。
- */
 public class VoltServantElectricExplosion extends ElectricExplosion {
     private final Level level;
     private final double x;
@@ -53,7 +43,6 @@ public class VoltServantElectricExplosion extends ElectricExplosion {
     private final ExplosionDamageCalculator damageCalculator;
 
     public VoltServantElectricExplosion(Level level, Entity source, double x, double y, double z, float radius) {
-        // 和父类便捷构造器一样的传参（damageSource/damageCalculator 传 null，父类自己算）
         super(level, source, null, null, x, y, z, radius, Explosion.BlockInteraction.KEEP);
         this.level = level;
         this.source = source;
@@ -68,11 +57,8 @@ public class VoltServantElectricExplosion extends ElectricExplosion {
 
     @Override
     public void explode() {
-        // ① 广播爆炸事件（sculk 传感器之类的监听器能收到）
-        this.level.gameEvent(this.source, GameEvent.EXPLODE, new Vec3(this.x, this.y, this.z));
+        this.level.gameEvent(this.source, GameEvent.HIT_GROUND, new Vec3(this.x, this.y, this.z));
 
-        // ② 方块破坏采样（16x16x16 立方体表面发 15 条射线）。
-        //    blockInteraction 是 KEEP，所以采样结果不会真的破坏任何方块，只是走个流程。
         Set<BlockPos> set = new HashSet<>();
         int k;
         for (k = 0; k < 16; ++k) {
@@ -118,7 +104,6 @@ public class VoltServantElectricExplosion extends ElectricExplosion {
         }
         this.toBlow.addAll(set);
 
-        // ③ 实体伤害（真正的伤害来源）
         float f1 = this.radius * 2.0F;
         int i = Mth.floor(this.x - (double) f1 - 1.0D);
         int j = Mth.floor(this.x + (double) f1 + 1.0D);
@@ -130,7 +115,6 @@ public class VoltServantElectricExplosion extends ElectricExplosion {
         ForgeEventFactory.onExplosionDetonate(this.level, this, list, (double) f1);
         Vec3 vec3 = new Vec3(this.x, this.y, this.z);
 
-        // ★ 友军过滤用的施法者：电球的 Owner 就是发射它的伏特兽仆从
         Entity owner = null;
         if (this.source instanceof Projectile projectile) {
             owner = projectile.getOwner();
@@ -142,7 +126,6 @@ public class VoltServantElectricExplosion extends ElectricExplosion {
             if (d13 > 1.0D) {
                 continue;
             }
-            // ★ 唯一与敌对版的差别：主人 / 其他仆从不炸
             if (owner != null && entity instanceof LivingEntity
                     && MobUtil.areAllies(owner, (LivingEntity) entity)) {
                 continue;
@@ -182,7 +165,6 @@ public class VoltServantElectricExplosion extends ElectricExplosion {
         }
     }
 
-    // 让父类的 finalizeExplosion（音效 + 屏幕震动）能看到我们自己的 hitPlayers / toBlow
     @Override
     public Map<Player, Vec3> getHitPlayers() {
         return this.hitPlayers;

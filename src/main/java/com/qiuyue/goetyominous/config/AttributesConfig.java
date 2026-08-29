@@ -111,6 +111,12 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> DeepOneKnightServantOrtholanceDashDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> DeepOneKnightServantOrtholanceDashSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> DeepOneKnightServantOrtholanceChance;
+    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneMageServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneMageServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneMageServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneMageServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneMageServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneMageServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantFollowRange;
@@ -983,8 +989,8 @@ public class AttributesConfig {
                 .defineInRange("deepOneKnightServantOrtholanceDashDamage", 5.0, 0.0, Double.MAX_VALUE);
         DeepOneKnightServantOrtholanceDashSpeed = BUILDER.comment("How fast (blocks/tick) Deep One Knight Servants dash toward the target, Default: 0.8")
                 .defineInRange("deepOneKnightServantOrtholanceDashSpeed", 0.8, 0.0, Double.MAX_VALUE);
-        DeepOneKnightServantOrtholanceChance = BUILDER.comment("Chance (0.0-1.0) for Deep One Knight Servants to spawn as the Ortholance variant (holding an Ortholance), Default: 0.5 (50%)")
-                .defineInRange("deepOneKnightServantOrtholanceChance", 0.5, 0.0, 1.0);
+        DeepOneKnightServantOrtholanceChance = BUILDER.comment("Chance (0.0-1.0) for Deep One Knight Servants to spawn as the Ortholance variant (holding an Ortholance), Default: 0.7 (70%)")
+                .defineInRange("deepOneKnightServantOrtholanceChance", 0.7, 0.0, 1.0);
         DeepOneKnightServantOrtholanceWaveCooldown = BUILDER.comment("Shared cooldown in ticks for the Ortholance wave+dash combo, Default: 60 (3 seconds; 0 = fire every tick)")
                 .defineInRange("deepOneKnightServantOrtholanceWaveCooldown", 60, 0, Integer.MAX_VALUE);
         DeepOneKnightServantOrtholanceWaveRange = BUILDER.comment("Max distance (blocks) from the target at which Ortholance knights fire waves; beyond this they close in and fight with melee, Default: 8.0 (waves travel ~0.9 blocks/tick for 3-6 ticks, so ~5-7 blocks of reach)")
@@ -993,6 +999,18 @@ public class AttributesConfig {
                 .defineInRange("deepOneKnightServantOrtholanceWaveCount", 4, 1, 12);
         DeepOneKnightServantOrtholanceWaveScale = BUILDER.comment("Wave scale of Ortholance waves, Default: 1.0 (matches Ortholance normal waves; scale+4 damage = 5.0)")
                 .defineInRange("deepOneKnightServantOrtholanceWaveScale", 1.0, 0.5, 10.0);
+        DeepOneMageServantHealth = BUILDER.comment("How much Max Health Deep One Mage Servants have, Default: 80.0 (matches Alex's Caves Deep One Mage)")
+                .defineInRange("deepOneMageServantHealth", 80.0, 1.0, Double.MAX_VALUE);
+        DeepOneMageServantDamage = BUILDER.comment("How much damage Deep One Mage Servants deal, Default: 4.0 (matches Alex's Caves Deep One Mage)")
+                .defineInRange("deepOneMageServantDamage", 4.0, 1.0, Double.MAX_VALUE);
+        DeepOneMageServantMovementSpeed = BUILDER.comment("How fast Deep One Mage Servants move, Default: 0.25 (matches Alex's Caves Deep One Mage)")
+                .defineInRange("deepOneMageServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
+        DeepOneMageServantFollowRange = BUILDER.comment("How much following/detection range Deep One Mage Servants have, Default: 32.0")
+                .defineInRange("deepOneMageServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
+        DeepOneMageServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Deep One Mage Servants have, Default: 0.0 (Alex's Caves Deep One Mage has none)")
+                .defineInRange("deepOneMageServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
+        DeepOneMageServantArmor = BUILDER.comment("How much natural Armor Deep One Mage Servants have, Default: 0.0 (Alex's Caves Deep One Mage has none)")
+                .defineInRange("deepOneMageServantArmor", 0.0, 0.0, Double.MAX_VALUE);
         FroststalkerServantHealth = BUILDER.comment("How much Max Health Froststalker Servants have, Default: 24.0 (matches Alex's Mobs Froststalker)")
                 .defineInRange("froststalkerServantHealth", 24.0, 1.0, Double.MAX_VALUE);
         FroststalkerServantDamage = BUILDER.comment("How much damage Froststalker Servants deal, Default: 4.5 (matches Alex's Mobs Froststalker)")

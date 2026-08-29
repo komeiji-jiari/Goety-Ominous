@@ -9,12 +9,6 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.EnumSet;
 
-/**
- * 共享攻击基类，逐字节复刻 OF 原版 AttackGoal：
- * 构造器设置 MOVE+LOOK 旗标；start 设 aggressive 并重置攻击状态；
- * stop 在目标是创造/观察者玩家时清目标、复位 aggressive、停导航、重置攻击状态；
- * canContinueToUse 带归属地检查，并对创造/观察者玩家在导航到位后停止追击。
- */
 public abstract class RamblerServantAttackGoal extends Goal {
     protected int timer;
     protected final Mob monster;

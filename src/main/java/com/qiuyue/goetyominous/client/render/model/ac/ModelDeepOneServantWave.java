@@ -4,17 +4,17 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import com.qiuyue.goetyominous.common.entities.projectile.ac.DeepOneKnightServantWave;
+import com.qiuyue.goetyominous.common.entities.projectile.DeepOneServantWave;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ModelDeepOneKnightServantWave extends AdvancedEntityModel<DeepOneKnightServantWave> {
+public class ModelDeepOneServantWave extends AdvancedEntityModel<DeepOneServantWave> {
 
     private final AdvancedModelBox main;
     private final AdvancedModelBox top;
 
-    public ModelDeepOneKnightServantWave() {
+    public ModelDeepOneServantWave() {
         this.texWidth = 128;
         this.texHeight = 128;
         this.main = new AdvancedModelBox(this);
@@ -34,7 +34,7 @@ public class ModelDeepOneKnightServantWave extends AdvancedEntityModel<DeepOneKn
     }
 
     @Override
-    public void setupAnim(DeepOneKnightServantWave entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(DeepOneServantWave entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
         float f = (float) ((Math.sin(ageInTicks * 0.1F) + 1.0F) * 0.2F);
         float waveScale = entity.getWaveScale();

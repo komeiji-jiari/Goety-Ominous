@@ -1,4 +1,4 @@
-package com.qiuyue.goetyominous.common.entities.projectile.ac;
+package com.qiuyue.goetyominous.common.entities.projectile;
 
 import com.Polarice3.Goety.common.entities.projectiles.AbstractWave;
 import com.Polarice3.Goety.utils.MobUtil;
@@ -12,14 +12,14 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
-public class DeepOneKnightServantWave extends AbstractWave {
+public class DeepOneServantWave extends AbstractWave {
 
-    public DeepOneKnightServantWave(EntityType<?> entityType, Level level) {
+    public DeepOneServantWave(EntityType<?> entityType, Level level) {
         super(entityType, level);
     }
 
-    public DeepOneKnightServantWave(Level level, LivingEntity shooter) {
-        this(AcEntityRegistry.DEEP_ONE_KNIGHT_SERVANT_WAVE.get(), level);
+    public DeepOneServantWave(Level level, LivingEntity shooter) {
+        this(AcEntityRegistry.DEEP_ONE_SERVANT_WAVE.get(), level);
         this.setOwner(shooter);
     }
 
