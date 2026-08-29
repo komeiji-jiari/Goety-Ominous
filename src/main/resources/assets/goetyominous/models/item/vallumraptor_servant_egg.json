@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "alexscaves:item/vallumraptor_egg"
+    "layer0": "goetyominous:item/vallumraptor_servant_egg"
   }
 }

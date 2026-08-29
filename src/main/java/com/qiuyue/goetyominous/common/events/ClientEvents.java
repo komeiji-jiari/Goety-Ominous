@@ -28,8 +28,6 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void registerParticles(RegisterParticleProvidersEvent event) {
-        
-        
         if (!AlexCavesCompat.isAlexCavesLoaded()) {
             return;
         }

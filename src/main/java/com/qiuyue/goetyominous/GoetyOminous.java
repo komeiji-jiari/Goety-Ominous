@@ -300,13 +300,22 @@ public class GoetyOminous {
 
     private void loadComplete(final FMLLoadCompleteEvent event) {
         event.enqueueWork(() -> {
-                        IllagerType.create("GoetyOminous", new GoetyOminousType());
+            // 奥术方匣(Esoteric Tesseract)容量:由本模组配置接管并覆盖 Goety 的 tesseractCapacity。
+            // 参考 HullbreakerServant 的仆从数量上限(HullbreakerServantLimit=16)配置驱动写法。
+            int tesseractCapacity = MobsConfig.TesseractCapacity.get();
+            if (com.Polarice3.Goety.config.ItemConfig.TesseractCapacity.get() != tesseractCapacity) {
+                com.Polarice3.Goety.config.ItemConfig.TesseractCapacity.set(tesseractCapacity);
+                LOGGER.info("Overriding Goety Esoteric Tesseract capacity to {} (goetyominous config)", tesseractCapacity);
+            }
+            IllagerType.create("GoetyOminous", new GoetyOminousType());
         });
     }
 
     public void onClientSetup(final FMLClientSetupEvent event) {
         if (AlexCavesCompat.isAlexCavesLoaded()) {
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.TremorsaurusHudEvents.class);
+            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.TremorzillaHudEvents.class);
+            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.TremorzillaRenderEvents.class);
         }
         event.enqueueWork(() -> {
             ItemProperties.register(ModItems.WITCH_BOW.get(), new ResourceLocation("pull"),

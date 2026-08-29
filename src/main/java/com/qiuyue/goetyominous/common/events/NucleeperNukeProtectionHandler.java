@@ -59,7 +59,7 @@ public class NucleeperNukeProtectionHandler {
         return spawnedParticleField;
     }
 
-    private static void suppressVanillaCloud(NuclearExplosionEntity explosion) {
+    public static void suppressVanillaCloud(NuclearExplosionEntity explosion) {
         Field field = getSpawnedParticleField();
         if (field == null) {
             return;
@@ -80,9 +80,13 @@ public class NucleeperNukeProtectionHandler {
         if (!(event.getEntity() instanceof NuclearExplosionEntity explosion)) {
             return;
         }
-        if (!explosion.isNoGriefing()) {
-            return;
-        }
+        // 不能用 explosion.isNoGriefing() 过滤:客户端实体由 Forge PlayMessages.SpawnEntity 自定义生成,
+        // EntityJoinLevelEvent 触发时同步实体数据(NO_GRIEFING)尚未应用,isNoGriefing() 恒为 false,
+        // 会导致仆从核爆被误判为普通核爆而跳过抑制;随后客户端 NuclearExplosionEntity.tick() 会在本地
+        // 生成 AC 原版 MUSHROOM_CLOUD 蘑菇云,该粒子每帧把 ClientProxy.renderNukeSkyDarkFor 置 70,
+        // 触发屏幕震动与天空变暗(自定义 NucleeperMushroomCloudParticle 清零字段会输给它的写入顺序)。
+        // isOurServantExplosion() 用"位置≈已注册 zone"唯一识别仆从核爆,真正的 AC 核弹不会命中任何 zone,
+        // 因此仅凭它即可安全判定,无需再依赖 isNoGriefing()。
         if (!isOurServantExplosion(explosion)) {
             return;
         }

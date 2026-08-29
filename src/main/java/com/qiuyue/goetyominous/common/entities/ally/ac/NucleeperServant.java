@@ -48,7 +48,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -329,13 +328,12 @@ public class NucleeperServant extends Summoned implements ActivatesSirens, Power
         NuclearExplosionEntity explosion = ACEntityRegistry.NUCLEAR_EXPLOSION.get().create(level());
         explosion.copyPosition(this);
         explosion.setSize(isCharged() ? 1.75F : 1F);
-        boolean noGriefing = !AttributesConfig.NucleeperServantExplosionGriefing.get()
-                || !level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
-        if (noGriefing) {
-            explosion.setNoGriefing(true);
-        }
+        explosion.setNoGriefing(true);
+        // 服务端实体在加入世界前直接把 spawnedParticle 置 true,保证服务端 tick 不发送 AC 原版
+        // MUSHROOM_CLOUD 粒子(客户端实例由 NucleeperNukeProtectionHandler.onExplosionJoin 抑制)。
+        NucleeperNukeProtectionHandler.suppressVanillaCloud(explosion);
         level().addFreshEntity(explosion);
-        if (noGriefing && level() instanceof ServerLevel serverLevel) {
+        if (level() instanceof ServerLevel serverLevel) {
             spawnSurfaceCloud(serverLevel);
         }
         NucleeperNukeKillHandler.register(this);

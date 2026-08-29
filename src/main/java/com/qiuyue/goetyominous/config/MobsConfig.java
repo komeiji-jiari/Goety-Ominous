@@ -21,6 +21,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> HullbreakerServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Boolean> HullbreakerServantReturnEmbryo;
+    public static final ForgeConfigSpec.ConfigValue<Integer> TesseractCapacity;
     public static final ForgeConfigSpec.ConfigValue<Integer> IllagerElephantServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> DropBearServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> GusterServantLimit;
@@ -35,10 +36,14 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> RamblerServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> GrottoceratopsServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> TremorsaurusServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> TremorzillaServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> TremorzillaServantReturnEgg;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> TremorzillaServantBreakBlocks;
     public static final ForgeConfigSpec.ConfigValue<Integer> VallumraptorServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> VallumraptorElderChance;
     public static final ForgeConfigSpec.ConfigValue<Integer> NucleeperServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> BrainiacServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> GammaroachServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> DeepOneServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> DeepOneKnightServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> DeepOneMageServantLimit;
@@ -59,7 +64,6 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoUnholyBloodHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoUnholyBloodDamageBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoLeechingFocusHeal;
-    public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoLeechingFocusHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Boolean> WarpedMoscoUnholyBloodTexture;
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> CultistPatrol;
@@ -136,11 +140,16 @@ public class MobsConfig {
                 .defineInRange("warpedMoscoServantLimit", 2, 1, 100);
 
         HullbreakerServantLimit = BUILDER
-                .defineInRange("hullbreakerServantLimit", 16, 1, 100);
+                .comment("Maximum number of Hullbreaker Servants that can be summoned (Default: 1)")
+                .defineInRange("hullbreakerServantLimit", 1, 1, 100);
 
         HullbreakerServantReturnEmbryo = BUILDER
                 .comment("Whether Hullbreaker Servants drop an immortal embryo when they die while owned (Default: true)")
                 .define("hullbreakerServantReturnEmbryo", true);
+
+        TesseractCapacity = BUILDER
+                .comment("How many servants an Esoteric Tesseract (奥术方匣) can contain. Overrides Goety's tesseractCapacity (Default: 16)")
+                .defineInRange("tesseractCapacity", 16, 1, 100);
 
         IllagerElephantServantLimit = BUILDER
                 .comment("Maximum number of Illager Elephant Servants that can be summoned (Default: 2)")
@@ -198,6 +207,18 @@ public class MobsConfig {
                 .comment("Maximum number of Tremorsaurus Servants that can be summoned (Default: 4)")
                 .defineInRange("tremorsaurusServantLimit", 4, 1, 100);
 
+        TremorzillaServantLimit = BUILDER
+                .comment("Maximum number of Tremorzilla Servants that can be summoned (Default: 1)")
+                .defineInRange("tremorzillaServantLimit", 1, 1, 100);
+
+        TremorzillaServantReturnEgg = BUILDER
+                .comment("Whether Tremorzilla Servants drop a Tremorzilla Servant Egg when they die while owned (Default: true)")
+                .define("tremorzillaServantReturnEgg", true);
+
+        TremorzillaServantBreakBlocks = BUILDER
+                .comment("Whether Tremorzilla Servants can break blocks (melee attacks, beam and walking through foliage) (Default: false)")
+                .define("tremorzillaServantBreakBlocks", false);
+
         VallumraptorServantLimit = BUILDER
                 .comment("Maximum number of Vallumraptor Servants that can be summoned (Default: 32)")
                 .defineInRange("vallumraptorServantLimit", 32, 1, 100);
@@ -213,6 +234,10 @@ public class MobsConfig {
         BrainiacServantLimit = BUILDER
                 .comment("Maximum number of Brainiac Servants that can be summoned (Default: 16)")
                 .defineInRange("brainiacServantLimit", 16, 1, 100);
+
+        GammaroachServantLimit = BUILDER
+                .comment("Maximum number of Gammaroach Servants that can be summoned (Default: 64)")
+                .defineInRange("gammaroachServantLimit", 64, 1, 100);
 
         DeepOneServantLimit = BUILDER
                 .comment("Maximum number of Deep One Servants that can be summoned (Default: 32, same summon type as goety_cataclysm DeepingServant)")
@@ -266,10 +291,8 @@ public class MobsConfig {
                 .defineInRange("warpedMoscoUnholyBloodHealthBonus", 50, 0, Integer.MAX_VALUE);
         WarpedMoscoUnholyBloodDamageBouns = BUILDER.comment("Extra attack damage bonus when Warped Mosco has Unholy Blood, Default: 3")
                 .defineInRange("warpedMoscoUnholyBloodDamageBonus", 3, 0, Integer.MAX_VALUE);
-        WarpedMoscoLeechingFocusHeal = BUILDER.comment("Percent of max health healed per blood-drain pulse during SUCK attack when Warped Mosco has Leeching Focus. 5 pulses per animation, Default: 3 (total 15%)")
+        WarpedMoscoLeechingFocusHeal = BUILDER.comment("Percent of max health healed per blood-drain pulse during SUCK attack when Warped Mosco has Unholy Blood (formerly Leeching Focus). 5 pulses per animation, Default: 3 (total 15%)")
                 .defineInRange("warpedMoscoLeechingFocusHeal", 3, 0, Integer.MAX_VALUE);
-        WarpedMoscoLeechingFocusHealthBouns = BUILDER.comment("Extra health bonus when Warped Mosco has Leeching Focus, Default: 20")
-                .defineInRange("warpedMoscoLeechingFocusHealthBonus", 20, 0, Integer.MAX_VALUE);
         WarpedMoscoUnholyBloodTexture = BUILDER.comment("Use the alternate texture when Warped Mosco has Unholy Blood (Default: true)")
                 .define("warpedMoscoUnholyBloodTexture", true);
         BUILDER.pop();

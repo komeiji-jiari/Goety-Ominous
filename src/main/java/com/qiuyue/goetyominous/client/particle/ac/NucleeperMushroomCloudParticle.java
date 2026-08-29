@@ -1,5 +1,7 @@
 package com.qiuyue.goetyominous.client.particle.ac;
 
+import com.github.alexmodguy.alexscaves.AlexsCaves;
+import com.github.alexmodguy.alexscaves.client.ClientProxy;
 import com.github.alexmodguy.alexscaves.client.particle.MushroomCloudParticle;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -14,11 +16,23 @@ public class NucleeperMushroomCloudParticle extends MushroomCloudParticle {
     }
 
     @Override
+    public void tick() {
+        super.tick();
+        // 父类 MushroomCloudParticle.tick() 每帧会把 renderNukeSkyDarkFor 写到 AC 客户端代理,
+        // 触发核爆屏幕震动(renderNukeSkyDarkFor>0 → ClientEvents.computeCameraAngles 加 1.5F 基础震动)
+        // 与天空变暗。仆从只想要地表蘑菇云且不摇晃,故清零该字段;
+        // renderNukeFlashFor(白闪)与 muteNonNukeSoundsFor(其它声音静音)保留父类行为。
+        if (AlexsCaves.PROXY instanceof ClientProxy proxy) {
+            proxy.renderNukeSkyDarkFor = 0;
+        }
+    }
+
+    @Override
     public int getLightColor(float partialTick) {
         return 0xF000F0;
     }
 
-    
+
     public static class Provider implements ParticleProvider<SimpleParticleType> {
 
         @Override

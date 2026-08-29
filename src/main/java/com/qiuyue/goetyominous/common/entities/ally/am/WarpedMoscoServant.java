@@ -92,11 +92,9 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
     private int timeFlying;
     private int idleFlightTimeLimit = 0;
     private int loopSoundTick = 0;
-    private boolean leechingFocusEnhancement;
     private int unholyBloodInvulnTime;
     private static final UUID UNHOLY_BLOOD_HEALTH_UUID = UUID.fromString("d4040404-0000-4000-8000-000000000001");
     private static final UUID UNHOLY_BLOOD_ATTACK_UUID = UUID.fromString("d4040404-0000-4000-8000-000000000002");
-    private static final UUID LEECHING_FOCUS_HEALTH_UUID = UUID.fromString("d4040404-0000-4000-8000-000000000003");
 
     public WarpedMoscoServant(EntityType entityType, Level world) {
         super(entityType, world);
@@ -131,14 +129,6 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
         this.entityData.set(UNHOLY_BLOOD, value);
     }
 
-    public boolean hasLeechingFocus() {
-        return this.leechingFocusEnhancement;
-    }
-
-    public void setLeechingFocus(boolean value) {
-        this.leechingFocusEnhancement = value;
-    }
-
     private void addModIfMissing(AttributeInstance instance, UUID uuid, String name, double value) {
         if (instance != null && instance.getModifier(uuid) == null) {
             instance.addPermanentModifier(new AttributeModifier(uuid, name, value, AttributeModifier.Operation.ADDITION));
@@ -152,23 +142,18 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
             this.addModIfMissing(health, UNHOLY_BLOOD_HEALTH_UUID, "Unholy Blood Health", com.qiuyue.goetyominous.config.MobsConfig.WarpedMoscoUnholyBloodHealthBouns.get());
             this.addModIfMissing(attack, UNHOLY_BLOOD_ATTACK_UUID, "Unholy Blood Attack", com.qiuyue.goetyominous.config.MobsConfig.WarpedMoscoUnholyBloodDamageBouns.get());
         }
-        if (this.hasLeechingFocus()) {
-            this.addModIfMissing(health, LEECHING_FOCUS_HEALTH_UUID, "Leeching Focus Health", com.qiuyue.goetyominous.config.MobsConfig.WarpedMoscoLeechingFocusHealthBouns.get());
-        }
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putBoolean("UnholyBloodEnhancement", this.hasUnholyBlood());
-        compound.putBoolean("LeechingFocusEnhancement", this.leechingFocusEnhancement);
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.setUnholyBlood(compound.getBoolean("UnholyBloodEnhancement"));
-        this.leechingFocusEnhancement = compound.getBoolean("LeechingFocusEnhancement");
         this.applyEnhancementModifiers();
     }
 
@@ -284,18 +269,6 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
                                 0, d1, d2, d3, 0.25F);
                     }
                 }
-                return InteractionResult.SUCCESS;
-            }
-            return InteractionResult.CONSUME;
-        }
-        if (stack.is(ModItems.LEECHING_FOCUS.get()) && this.getMasterOwner() == player) {
-            if (!this.hasLeechingFocus()) {
-                if (!player.getAbilities().instabuild) {
-                    stack.shrink(1);
-                }
-                this.setLeechingFocus(true);
-                this.applyEnhancementModifiers();
-                this.playSound(AMSoundRegistry.WARPED_MOSCO_IDLE.get(), 1.0F, 1.0F);
                 return InteractionResult.SUCCESS;
             }
             return InteractionResult.CONSUME;
@@ -627,7 +600,7 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
             if (this.getAnimation() == ANIMATION_SUCK && this.getAnimationTick() == 3 && this.distanceTo(target) < 4.7F) {
                 target.startRiding(this, true);
             }
-            if (this.hasLeechingFocus() && this.getAnimation() == ANIMATION_SUCK
+            if (this.hasUnholyBlood() && this.getAnimation() == ANIMATION_SUCK
                     && this.getAnimationTick() > 0 && (this.getAnimationTick() - 10) % 10 == 0) {
                 this.heal(this.getMaxHealth() * com.qiuyue.goetyominous.config.MobsConfig.WarpedMoscoLeechingFocusHeal.get() / 100.0F);
             }
