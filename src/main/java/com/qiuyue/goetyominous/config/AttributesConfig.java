@@ -64,6 +64,15 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> TremorsaurusServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> TremorsaurusServantArmor;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> TremorzillaServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> TremorzillaServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> TremorzillaServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> TremorzillaServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> TremorzillaServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> TremorzillaServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> TremorzillaServantTailHpPercentDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> TremorzillaServantDamageCap;
+
     public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantMovementSpeed;
@@ -81,7 +90,6 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> NucleeperServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> NucleeperServantTauntRange;
 
-    public static final ForgeConfigSpec.ConfigValue<Boolean> NucleeperServantExplosionGriefing;
     public static final ForgeConfigSpec.ConfigValue<Boolean> MineGuardianServantExplosionGriefing;
     public static final ForgeConfigSpec.ConfigValue<Boolean> HullbreakerServantBlockBreakGriefing;
     public static final ForgeConfigSpec.ConfigValue<Double> HullbreakerServantGlowTargetRange;
@@ -92,6 +100,12 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> BrainiacServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> BrainiacServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> BrainiacServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> DeepOneServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> DeepOneServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> DeepOneServantMovementSpeed;
@@ -907,6 +921,22 @@ public class AttributesConfig {
                 .defineInRange("tremorsaurusServantKnockbackResistance", 0.9, 0.0, Double.MAX_VALUE);
         TremorsaurusServantArmor = BUILDER.comment("How much natural Armor Tremorsaurus Servants have, Default: 8.0 (matches Alex's Caves Tremorsaurus)")
                 .defineInRange("tremorsaurusServantArmor", 8.0, 0.0, Double.MAX_VALUE);
+        TremorzillaServantHealth = BUILDER.comment("How much Max Health Tremorzilla Servants have, Default: 500.0 (matches Alex's Caves Tremorzilla)")
+                .defineInRange("tremorzillaServantHealth", 500.0, 1.0, Double.MAX_VALUE);
+        TremorzillaServantDamage = BUILDER.comment("How much damage Tremorzilla Servants deal, Default: 30.0 (matches Alex's Caves Tremorzilla)")
+                .defineInRange("tremorzillaServantDamage", 30.0, 1.0, Double.MAX_VALUE);
+        TremorzillaServantMovementSpeed = BUILDER.comment("How fast Tremorzilla Servants move, Default: 0.3")
+                .defineInRange("tremorzillaServantMovementSpeed", 0.3, 0.0, Double.MAX_VALUE);
+        TremorzillaServantFollowRange = BUILDER.comment("How much following/detection range Tremorzilla Servants have, Default: 128.0")
+                .defineInRange("tremorzillaServantFollowRange", 128.0, 0.0, Double.MAX_VALUE);
+        TremorzillaServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Tremorzilla Servants have, Default: 1.0 (matches Alex's Caves Tremorzilla)")
+                .defineInRange("tremorzillaServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
+        TremorzillaServantArmor = BUILDER.comment("How much natural Armor Tremorzilla Servants have, Default: 10.0 (matches Alex's Caves Tremorzilla)")
+                .defineInRange("tremorzillaServantArmor", 10.0, 0.0, Double.MAX_VALUE);
+        TremorzillaServantTailHpPercentDamage = BUILDER.comment("How much HP percent damage Tremorzilla Servants' tail whip deals on top of the 30 base damage, Default: 0.05 (5% of target Max Health, like Goety's RedstoneMonstrosity)")
+                .defineInRange("tremorzillaServantTailHpPercentDamage", 0.05, 0.0, 1.0);
+        TremorzillaServantDamageCap = BUILDER.comment("Maximum damage a single hit can deal to Tremorzilla Servants, Default: 30.0 (like Goety's Vizier's VizierDamageCap; bypassed by damage that ignores invulnerability)")
+                .defineInRange("tremorzillaServantDamageCap", 30.0, 1.0, Double.MAX_VALUE);
         VallumraptorServantHealth = BUILDER.comment("How much Max Health Vallumraptor Servants have, Default: 28.0 (matches Alex's Caves Vallumraptor)")
                 .defineInRange("vallumraptorServantHealth", 28.0, 1.0, Double.MAX_VALUE);
         VallumraptorServantDamage = BUILDER.comment("How much damage Vallumraptor Servants deal, Default: 3.0 (matches Alex's Caves Vallumraptor)")
@@ -937,8 +967,6 @@ public class AttributesConfig {
                 .defineInRange("nucleeperServantArmor", 4.0, 0.0, Double.MAX_VALUE);
         NucleeperServantTauntRange = BUILDER.comment("How far (in blocks) Nucleeper Servants taunt mobs that are attacking their owner, pulling the mob's aggro onto the servant. Default: 12.0 (set to 0.0 to disable taunting)")
                 .defineInRange("nucleeperServantTauntRange", 12.0, 0.0, Double.MAX_VALUE);
-        NucleeperServantExplosionGriefing = BUILDER.comment("Whether Nucleeper Servant nuclear explosions destroy blocks, Default: false (set to true to allow block destruction, which also respects the mobGriefing game rule)")
-                .define("nucleeperServantExplosionGriefing", false);
         MineGuardianServantExplosionGriefing = BUILDER.comment("Whether Mine Guardian Servant explosions destroy blocks, Default: false (set to true to allow block destruction, which also respects the mobGriefing game rule)")
                 .define("mineGuardianServantExplosionGriefing", false);
         HullbreakerServantBlockBreakGriefing = BUILDER.comment("Whether Hullbreaker Servants break blocks when bashing, Default: false (set to true to allow block destruction, which also respects the mobGriefing game rule)")
@@ -959,6 +987,18 @@ public class AttributesConfig {
                 .defineInRange("brainiacServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
         BrainiacServantArmor = BUILDER.comment("How much natural Armor Brainiac Servants have, Default: 8.0 (matches Alex's Caves Brainiac)")
                 .defineInRange("brainiacServantArmor", 8.0, 0.0, Double.MAX_VALUE);
+        GammaroachServantHealth = BUILDER.comment("How much Max Health Gammaroach Servants have, Default: 14.0 (matches Alex's Caves Gammaroach)")
+                .defineInRange("gammaroachServantHealth", 14.0, 1.0, Double.MAX_VALUE);
+        GammaroachServantDamage = BUILDER.comment("How much damage Gammaroach Servants deal, Default: 2.0 (matches Alex's Caves Gammaroach)")
+                .defineInRange("gammaroachServantDamage", 2.0, 1.0, Double.MAX_VALUE);
+        GammaroachServantMovementSpeed = BUILDER.comment("How fast Gammaroach Servants move, Default: 0.4 (matches Alex's Caves Gammaroach)")
+                .defineInRange("gammaroachServantMovementSpeed", 0.4, 0.0, Double.MAX_VALUE);
+        GammaroachServantFollowRange = BUILDER.comment("How much following/detection range Gammaroach Servants have, Default: 32.0")
+                .defineInRange("gammaroachServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
+        GammaroachServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Gammaroach Servants have, Default: 0.0 (Alex's Caves Gammaroach has none)")
+                .defineInRange("gammaroachServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
+        GammaroachServantArmor = BUILDER.comment("How much natural Armor Gammaroach Servants have, Default: 0.0 (matches Alex's Caves Gammaroach)")
+                .defineInRange("gammaroachServantArmor", 0.0, 0.0, Double.MAX_VALUE);
         DeepOneServantHealth = BUILDER.comment("How much Max Health Deep One Servants have, Default: 30.0 (matches Alex's Caves Deep One)")
                 .defineInRange("deepOneServantHealth", 30.0, 1.0, Double.MAX_VALUE);
         DeepOneServantDamage = BUILDER.comment("How much damage Deep One Servants deal, Default: 3.0 (matches Alex's Caves Deep One)")

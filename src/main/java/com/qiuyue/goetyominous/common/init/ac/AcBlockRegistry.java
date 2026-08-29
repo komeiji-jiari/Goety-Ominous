@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.common.init.ac;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.blocks.ac.GrottoceratopsServantEggBlock;
 import com.qiuyue.goetyominous.common.blocks.ac.TremorsaurusServantEggBlock;
+import com.qiuyue.goetyominous.common.blocks.ac.TremorzillaServantEggBlock;
 import com.qiuyue.goetyominous.common.blocks.ac.VallumraptorServantEggBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -42,6 +43,15 @@ public class AcBlockRegistry {
                             BlockBehaviour.Properties.of()
                                     .mapColor(MapColor.TERRACOTTA_WHITE)
                                     .strength(0.5F)
+                                    .sound(SoundType.METAL)
+                                    .randomTicks()));
+
+    public static final RegistryObject<Block> TREMORZILLA_SERVANT_EGG =
+            AC_BLOCKS.register("tremorzilla_servant_egg",
+                    () -> new TremorzillaServantEggBlock(
+                            BlockBehaviour.Properties.of()
+                                    .mapColor(MapColor.COLOR_LIGHT_GREEN)
+                                    .strength(2.0F, 5000.0F)
                                     .sound(SoundType.METAL)
                                     .randomTicks()));
 

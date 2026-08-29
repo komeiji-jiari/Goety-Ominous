@@ -5,11 +5,13 @@ import com.qiuyue.goetyominous.common.entities.ally.ac.BrainiacServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneKnightServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneMageServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.GammaroachServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.GrottoceratopsServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.MineGuardianServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.NucleeperServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TremorsaurusServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.TremorzillaServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.VallumraptorServant;
 import com.qiuyue.goetyominous.common.entities.projectile.DeepOneMageServantWaterBolt;
 import com.qiuyue.goetyominous.common.entities.projectile.DeepOneMageServantWave;
@@ -47,6 +49,14 @@ public class AcEntityRegistry {
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":vallumraptor_servant"));
 
+    public static final RegistryObject<EntityType<TremorzillaServant>> TREMORZILLA_SERVANT =
+            AC_ENTITIES.register("tremorzilla_servant",
+                    () -> EntityType.Builder.<TremorzillaServant>of((type, worldIn) -> new TremorzillaServant(type, worldIn), MobCategory.MISC)
+                            .sized(4.5F, 11.0F)
+                            .setTrackingRange(11)
+                            .fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":tremorzilla_servant"));
+
     public static final RegistryObject<EntityType<NucleeperServant>> NUCLEEPER_SERVANT =
             AC_ENTITIES.register("nucleeper_servant",
                     () -> EntityType.Builder.<NucleeperServant>of((type, worldIn) -> new NucleeperServant(type, worldIn), MobCategory.MISC)
@@ -60,6 +70,13 @@ public class AcEntityRegistry {
                             .sized(1.1F, 2.5F)
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":brainiac_servant"));
+
+    public static final RegistryObject<EntityType<GammaroachServant>> GAMMAROACH_SERVANT =
+            AC_ENTITIES.register("gammaroach_servant",
+                    () -> EntityType.Builder.<GammaroachServant>of((type, worldIn) -> new GammaroachServant(type, worldIn), MobCategory.MISC)
+                            .sized(1.25F, 0.9F)
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":gammaroach_servant"));
 
     public static final RegistryObject<EntityType<MineGuardianServant>> MINE_GUARDIAN_SERVANT =
             AC_ENTITIES.register("mine_guardian_servant",

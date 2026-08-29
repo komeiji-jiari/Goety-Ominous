@@ -8,8 +8,11 @@ import com.Polarice3.Goety.init.ModMobType;
 import com.github.alexmodguy.alexscaves.AlexsCaves;
 import com.github.alexmodguy.alexscaves.client.particle.ACParticleRegistry;
 import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
+import com.github.alexmodguy.alexscaves.server.block.DinosaurEggBlock;
 import com.github.alexmodguy.alexscaves.server.entity.util.KeybindUsingMount;
+import com.github.alexmodguy.alexscaves.server.entity.util.LaysEggs;
 import com.github.alexmodguy.alexscaves.server.entity.util.ShakesScreen;
+import com.github.alexmodguy.alexscaves.server.item.ACItemRegistry;
 import com.github.alexmodguy.alexscaves.server.message.MountedEntityKeyMessage;
 import com.github.alexmodguy.alexscaves.server.misc.ACMath;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
@@ -18,6 +21,8 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.animation.LegSolver;
+import com.qiuyue.goetyominous.common.entities.ai.ac.ServantBreedGoal;
+import com.qiuyue.goetyominous.common.entities.ai.ac.ServantLayEggGoal;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
 import com.qiuyue.goetyominous.config.AttributesConfig;
@@ -25,6 +30,8 @@ import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -80,11 +87,15 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.UUID;
 
-public class TremorsaurusServant extends AbstractDinosaurServant implements KeybindUsingMount, IAnimatedEntity, ShakesScreen, PlayerRideable {
+public class TremorsaurusServant extends AnimalSummon implements LaysEggs, KeybindUsingMount, IAnimatedEntity, ShakesScreen, PlayerRideable {
 
     private static final EntityDataAccessor<Boolean> RUNNING = SynchedEntityData.defineId(TremorsaurusServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> HELD_MOB_ID = SynchedEntityData.defineId(TremorsaurusServant.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> METER_AMOUNT = SynchedEntityData.defineId(TremorsaurusServant.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Integer> ALT_SKIN =
+            SynchedEntityData.defineId(TremorsaurusServant.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> DATA_HAS_EGG =
+            SynchedEntityData.defineId(TremorsaurusServant.class, EntityDataSerializers.BOOLEAN);
     public final LegSolver legSolver = new LegSolver(new LegSolver.Leg(-0.45F, 0.75F, 1.0F, false), new LegSolver.Leg(-0.45F, -0.75F, 1.0F, false));
     public static final Animation ANIMATION_SNIFF = Animation.create(30);
     public static final Animation ANIMATION_SPEAK = Animation.create(15);
@@ -104,6 +115,10 @@ public class TremorsaurusServant extends AbstractDinosaurServant implements Keyb
     private double lastStompZ = 0;
     private int roarScatterTime = 0;
     private Entity riderHitEntity = null;
+    private float prevBuryEggsProgress;
+    private float buryEggsProgress;
+    public boolean buryingEggs;
+    private boolean followingStanceEnforced = false;
 
     public TremorsaurusServant(EntityType<? extends Owned> type, Level level) {
         super(type, level);
@@ -165,6 +180,8 @@ public class TremorsaurusServant extends AbstractDinosaurServant implements Keyb
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
+        this.entityData.define(ALT_SKIN, 0);
+        this.entityData.define(DATA_HAS_EGG, false);
         this.entityData.define(RUNNING, false);
         this.entityData.define(HELD_MOB_ID, -1);
         this.entityData.define(METER_AMOUNT, 1.0F);
@@ -173,6 +190,8 @@ public class TremorsaurusServant extends AbstractDinosaurServant implements Keyb
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        this.goalSelector.addGoal(2, new ServantBreedGoal<>(this, 1.0D));
+        this.goalSelector.addGoal(3, new ServantLayEggGoal<>(this, (DinosaurEggBlock) this.createEggBlockState().getBlock(), 100, 1.0D));
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new TremorsaurusServantMeleeAttackGoal());
         this.goalSelector.addGoal(5, new Summoned.WanderGoal<>(this, 0.8D));
@@ -197,6 +216,14 @@ public class TremorsaurusServant extends AbstractDinosaurServant implements Keyb
     @Override
     public void tick() {
         super.tick();
+        this.enforceFollowingStanceOnce();
+        this.prevBuryEggsProgress = this.buryEggsProgress;
+        if (this.buryingEggs && this.buryEggsProgress < 5.0F) {
+            this.buryEggsProgress++;
+        }
+        if (!this.buryingEggs && this.buryEggsProgress > 0.0F) {
+            this.buryEggsProgress--;
+        }
         this.prevScreenShakeAmount = screenShakeAmount;
         this.yBodyRot = Mth.approachDegrees(this.yBodyRotO, this.yBodyRot, (float) this.getHeadRotSpeed());
         this.legSolver.update(this, this.yBodyRot, this.getScale());
@@ -453,6 +480,136 @@ public class TremorsaurusServant extends AbstractDinosaurServant implements Keyb
     @Override
     public BlockState createEggBlockState() {
         return AcBlockRegistry.TREMORSAURUS_SERVANT_EGG.get().defaultBlockState();
+    }
+
+    @Override
+    public boolean hasEgg() {
+        return this.entityData.get(DATA_HAS_EGG);
+    }
+
+    @Override
+    public void setHasEgg(boolean hasEgg) {
+        this.entityData.set(DATA_HAS_EGG, hasEgg);
+    }
+
+    @Override
+    public void onLayEggTick(BlockPos belowEgg, int time) {
+        this.walkAnimation.update(0.5F, 0.4F);
+        this.level().broadcastEntityEvent(this, (byte) 77);
+    }
+
+    @Override
+    public void spawnChildFromBreeding(ServerLevel level, AnimalSummon partner) {
+        this.setHasEgg(true);
+        this.finalizeSpawnChildFromBreeding(level, partner, partner);
+    }
+
+    public int getAltSkin() {
+        return this.entityData.get(ALT_SKIN);
+    }
+
+    public void setAltSkin(int altSkin) {
+        this.entityData.set(ALT_SKIN, altSkin);
+    }
+
+    public int getAltSkinForItem(ItemStack stack) {
+        if (stack.is(ACItemRegistry.AMBER_CURIOSITY.get())) {
+            return 1;
+        }
+        if (stack.is(ACItemRegistry.TECTONIC_SHARD.get())) {
+            return 2;
+        }
+        return 0;
+    }
+
+    @Nullable
+    public InteractionResult tryChangeAltSkin(Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        int newSkin = this.getAltSkinForItem(itemstack);
+        if (newSkin > 0 && this.getTrueOwner() != null && player == this.getTrueOwner()) {
+            if (!player.getAbilities().instabuild) {
+                itemstack.shrink(1);
+            }
+            this.playSound(newSkin == 2
+                    ? ACSoundRegistry.TECTONIC_SHARD_TRANSFORM.get()
+                    : ACSoundRegistry.AMBER_MONOLITH_SUMMON.get());
+            if (newSkin == this.getAltSkin()) {
+                this.setAltSkin(0);
+            } else {
+                this.setAltSkin(newSkin);
+            }
+            this.level().broadcastEntityEvent(this, (byte) (newSkin == 2 ? 83 : 82));
+            return InteractionResult.SUCCESS;
+        }
+        return null;
+    }
+
+    private void enforceFollowingStanceOnce() {
+        if (this.level().isClientSide || this.followingStanceEnforced) {
+            return;
+        }
+        this.followingStanceEnforced = true;
+        if (this.getTrueOwner() != null) {
+            this.setFollowing();
+        }
+    }
+
+    public float getBuryEggsProgress(float partialTicks) {
+        return (this.prevBuryEggsProgress + (this.buryEggsProgress - this.prevBuryEggsProgress) * partialTicks) * 0.2F;
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putInt("AltSkin", this.getAltSkin());
+        tag.putBoolean("HasEgg", this.hasEgg());
+        tag.putBoolean("FollowingStanceEnforced", this.followingStanceEnforced);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        this.setAltSkin(tag.getInt("AltSkin"));
+        this.setHasEgg(tag.getBoolean("HasEgg"));
+        this.followingStanceEnforced = tag.getBoolean("FollowingStanceEnforced");
+    }
+
+    @Override
+    public void handleEntityEvent(byte b) {
+        if (b == 77) {
+            this.buryingEggs = true;
+            float radius = this.getBbWidth() * 0.55F;
+            float particleCount = (5 + random.nextInt(5)) * radius;
+            for (int i1 = 0; i1 < particleCount; i1++) {
+                double motionX = (getRandom().nextFloat() - 0.5F) * 0.7D;
+                double motionY = getRandom().nextFloat() * 0.7D + 0.8F;
+                double motionZ = (getRandom().nextFloat() - 0.5F) * 0.7D;
+                float angle = (float) (0.01745329251F * (this.yBodyRot + (i1 / particleCount) * 360F));
+                double extraX = radius * Mth.sin((float) (Math.PI + angle));
+                double extraY = 1.2F;
+                double extraZ = radius * Mth.cos(angle);
+                BlockPos ground = BlockPos.containing(ACMath.getGroundBelowPosition(level(), new Vec3(Mth.floor(this.getX() + extraX), Mth.floor(this.getY() + extraY), Mth.floor(this.getZ() + extraZ))));
+                BlockState groundState = this.level().getBlockState(ground.below());
+                if (groundState.isSolid() && level().isClientSide) {
+                    level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, groundState), true, this.getX() + extraX, ground.getY(), this.getZ() + extraZ, motionX, motionY, motionZ);
+                }
+            }
+        } else if (b == 78) {
+            this.buryingEggs = false;
+        } else if (b == 82 || b == 83) {
+            ParticleOptions particle = b == 82
+                    ? ACParticleRegistry.DINOSAUR_TRANSFORMATION_AMBER.get()
+                    : ACParticleRegistry.DINOSAUR_TRANSFORMATION_TECTONIC.get();
+            for (int i = 0; i < 15; ++i) {
+                if (this.level().random.nextInt(8) < 3) {
+                    this.level().addParticle(particle,
+                            this.getRandomX(1.0F), this.getY() + this.getBbHeight() + 0.3F, this.getRandomZ(1.0F),
+                            this.random.nextGaussian() * 0.05, this.random.nextFloat() * 0.2, this.random.nextGaussian() * 0.05);
+                }
+            }
+        } else {
+            super.handleEntityEvent(b);
+        }
     }
 
     @Override
