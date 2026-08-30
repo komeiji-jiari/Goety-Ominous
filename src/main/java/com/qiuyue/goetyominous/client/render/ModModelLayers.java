@@ -10,6 +10,8 @@ import com.qiuyue.goetyominous.client.render.model.*;
 import com.qiuyue.goetyominous.client.render.model.curios.CroneRobeModel;
 import com.qiuyue.goetyominous.client.render.model.equipment.BoneCudgelModel;
 import com.qiuyue.goetyominous.client.render.model.mm.MutantHoglinServantModel;
+import com.qiuyue.goetyominous.client.render.model.mm.MutantShulkerServantModel;
+import com.qiuyue.goetyominous.client.render.model.mm.MutantShulkerServantTrapModel;
 import com.qiuyue.goetyominous.client.render.model.of.RamblerServantModel;
 import com.qiuyue.goetyominous.client.render.model.projectile.AcidFungus;
 import com.qiuyue.goetyominous.client.render.model.projectile.PitchforkModel;
@@ -111,7 +113,10 @@ public class ModModelLayers {
 
         event.registerLayerDefinition(CroneRobeModel.LAYER_LOCATION, CroneRobeModel::createBodyLayer);
         CroneRobeRenderer.register();
-        RaycatAmuletRenderer.register();
+        // raycat_amulet 注册在 Alex's Caves 联动里,未装 AC 时 .get() 会抛 "Registry Object not present"
+        if (AlexCavesCompat.isAlexCavesLoaded()) {
+            RaycatAmuletRenderer.register();
+        }
 
         event.registerLayerDefinition(ModEntityLayers.FUNGUS_PACK_LAYER, FungusPackModel::createBodyLayer);
 
@@ -234,6 +239,12 @@ public class ModModelLayers {
 
             event.registerLayerDefinition(ModEntityLayers.MUTANT_HOGLIN_SERVANT_LAYER,
                     MutantHoglinServantModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.MUTANT_SHULKER_SERVANT_LAYER,
+                    MutantShulkerServantModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.MUTANT_SHULKER_SERVANT_TRAP_LAYER,
+                    MutantShulkerServantTrapModel::createBodyLayer);
         }
 
     }
@@ -504,6 +515,14 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.MUTANT_HOGLIN_SERVANT.get(),
                     MutantHoglinServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.MUTANT_SHULKER_SERVANT.get(),
+                    MutantShulkerServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.MUTANT_SHULKER_SERVANT_TRAP.get(),
+                    MutantShulkerServantTrapRenderer::new);
         }
 
         event.registerEntityRenderer(ModEntityTypes.ARCH_GEOMANCER.get(), ArchGeomancerRenderer::new);

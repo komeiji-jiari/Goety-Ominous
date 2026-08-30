@@ -30,6 +30,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> GreatThrasherServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> MutantWitherSkeletonServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> MutantHoglinServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MutantShulkerServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> OvergrownColossusServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> HeresiarchServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> WargLimit;
@@ -194,6 +195,10 @@ public class MobsConfig {
         MutantHoglinServantLimit = BUILDER
                 .comment("Maximum number of Mutant Hoglin Servants that can be summoned (Default: 2)")
                 .defineInRange("mutantHoglinServantLimit", 2, 1, 100);
+
+        MutantShulkerServantLimit = BUILDER
+                .comment("Maximum number of Mutant Shulker Servants that can be summoned (Default: 2)")
+                .defineInRange("mutantShulkerServantLimit", 2, 1, 100);
 
         OvergrownColossusServantLimit = BUILDER
                 .comment("Maximum number of Overgrown Colossus Servants that can be summoned (Default: 2)")

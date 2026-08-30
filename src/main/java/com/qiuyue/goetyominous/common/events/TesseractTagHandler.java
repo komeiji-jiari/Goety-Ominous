@@ -77,9 +77,13 @@ public class TesseractTagHandler {
             addToTag(TESSERACT_LARGE, AcEntityRegistry.TREMORZILLA_SERVANT);
         }
 
+        // 注意:Goety EsotericTesseract 的保存/读取标志是错位的——tesseract_large 表示"占满整个方匣"(HUGE→+16),
+        // tesseract_medium 才是"占 4 格"(LARGE→+4),tesseract_small 占 2 格(BIG→+2)。
+        // 故三个大型 mm 仆从放 tesseract_medium(占 4 格),而非 tesseract_large。
         if (MutantMoreCompat.isMutantMoreLoaded()) {
-            addToTag(TESSERACT_LARGE, MmEntityRegistry.MUTANT_HOGLIN_SERVANT);
-            addToTag(TESSERACT_LARGE, MmEntityRegistry.MUTANT_WITHER_SKELETON_SERVANT);
+            addToTag(TESSERACT_MEDIUM, MmEntityRegistry.MUTANT_HOGLIN_SERVANT);
+            addToTag(TESSERACT_MEDIUM, MmEntityRegistry.MUTANT_WITHER_SKELETON_SERVANT);
+            addToTag(TESSERACT_MEDIUM, MmEntityRegistry.MUTANT_SHULKER_SERVANT);
         }
     }
 

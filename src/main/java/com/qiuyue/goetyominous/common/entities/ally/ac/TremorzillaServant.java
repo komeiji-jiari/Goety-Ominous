@@ -151,7 +151,11 @@ public class TremorzillaServant extends AnimalSummon
     public static final Animation ANIMATION_CHEW = Animation.create(35);
 
     private static final int MAX_CHARGE = 1000;
+    /** 吼叫只能吓退最大生命值 ≤ 该值的敌人;更高血量的强敌完全不受吼叫影响(不逃跑也不中虚弱) */
+    private static final float SCARE_MAX_HEALTH = 100.0F;
     private static final EntityDimensions SWIMMING_SIZE = new EntityDimensions(4.0F, 5.0F, true);
+    /** 与 Goety 暗兽(Summoned.FollowOwnerGoal)一致的跟随启动距离:主人超出该距离才启动跟随 */
+    private static final float FOLLOW_START_DISTANCE = 10.0F;
 
     private final TremorzillaServantPartEntity[] allParts;
     public final TremorzillaServantPartEntity tailPart1;
@@ -250,7 +254,7 @@ public class TremorzillaServant extends AnimalSummon
 
     @Override
     public void followGoal() {
-        this.goalSelector.addGoal(5, new TremorzillaServantFollowGoal(this, 1.0D, 10.0F, 2.0F));
+        this.goalSelector.addGoal(5, new TremorzillaServantFollowGoal(this, 1.0D, FOLLOW_START_DISTANCE, 2.0F));
     }
 
     @Override
@@ -278,6 +282,24 @@ public class TremorzillaServant extends AnimalSummon
     @Override
     public boolean stopTickingPathing() {
         return this.isVehicle() || this.isStaying();
+    }
+
+    /**
+     * 尾巴 part 的友伤免疫依赖客户端 isAlliedTo(攻击者) 求值,而客户端 Owned.getTrueOwner()
+     * 靠 OWNER_CLIENT_ID(默认 -1)解析主人;蛋块孵化路径只调 setOwnerId(UUID)、从不
+     * setOwnerClientId,导致客户端解析不出主人、isAlliedTo 对主人返回 false,主人攻击尾巴
+     * 会被 MultipartEntityMessage 转发伤到本体。这里用已同步的 OWNER_UNIQUE_ID 按 UUID 兜底。
+     */
+    @Override
+    public boolean isAlliedTo(Entity entity) {
+        if (super.isAlliedTo(entity)) {
+            return true;
+        }
+        if (this.level().isClientSide && entity != null
+                && this.getOwnerId() != null && this.getOwnerId().equals(entity.getUUID())) {
+            return true;
+        }
+        return false;
     }
 
     protected void switchNavigator(boolean onLand) {
@@ -499,13 +521,13 @@ public class TremorzillaServant extends AnimalSummon
                 }
             }
             if ((this.getAnimation() == ANIMATION_RIGHT_TAIL || this.getAnimation() == ANIMATION_LEFT_TAIL) && this.getAnimationTick() >= 10 && this.getAnimationTick() < 25) {
-                // 甩尾:30 基础伤害 + 目标最大生命值 5% 百分比伤害(参考 Goety 红石怪兽 RedstoneMonstrosity 的 HP percent damage 机制)
+                // 甩尾:25 基础伤害 + 目标最大生命值 5% 百分比伤害(参考 Goety 红石怪兽 RedstoneMonstrosity 的 HP percent damage 机制)
                 float tailHpPercent = AttributesConfig.TremorzillaServantTailHpPercentDamage.get().floatValue();
-                this.hurtEntitiesAround(this.tailPart1.centeredPosition(), 4.0F, 30.0F, tailHpPercent, 2.0F, false, true, true);
-                this.hurtEntitiesAround(this.tailPart2.centeredPosition(), 4.0F, 30.0F, tailHpPercent, 2.0F, false, true, true);
-                this.hurtEntitiesAround(this.tailPart3.centeredPosition(), 4.0F, 30.0F, tailHpPercent, 2.0F, false, true, true);
-                this.hurtEntitiesAround(this.tailPart4.centeredPosition(), 3.0F, 30.0F, tailHpPercent, 2.0F, false, true, true);
-                this.hurtEntitiesAround(this.tailPart5.centeredPosition(), 3.0F, 30.0F, tailHpPercent, 2.0F, false, true, true);
+                this.hurtEntitiesAround(this.tailPart1.centeredPosition(), 4.0F, 25.0F, tailHpPercent, 2.0F, false, true, true);
+                this.hurtEntitiesAround(this.tailPart2.centeredPosition(), 4.0F, 25.0F, tailHpPercent, 2.0F, false, true, true);
+                this.hurtEntitiesAround(this.tailPart3.centeredPosition(), 4.0F, 25.0F, tailHpPercent, 2.0F, false, true, true);
+                this.hurtEntitiesAround(this.tailPart4.centeredPosition(), 3.0F, 25.0F, tailHpPercent, 2.0F, false, true, true);
+                this.hurtEntitiesAround(this.tailPart5.centeredPosition(), 3.0F, 25.0F, tailHpPercent, 2.0F, false, true, true);
                 if (!this.level().isClientSide) {
                     this.breakBlocksAround(this.tailPart1.centeredPosition(), 2.0F, false, false, 0.6F);
                     this.breakBlocksAround(this.tailPart2.centeredPosition(), 2.0F, false, false, 0.6F);
@@ -772,6 +794,15 @@ public class TremorzillaServant extends AnimalSummon
     public void remove(Entity.RemovalReason removalReason) {
         AlexsCaves.PROXY.clearSoundCacheFor(this);
         super.remove(removalReason);
+    }
+
+    @Override
+    public void tryKill(Player player) {
+        if (this.killChance <= 0) {
+            this.warnKill(player);
+        } else {
+            super.tryKill(player);
+        }
     }
 
     @Override
@@ -1103,7 +1134,8 @@ public class TremorzillaServant extends AnimalSummon
         }
         List<LivingEntity> list = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(64.0, 20.0, 64.0));
         for (LivingEntity e : list) {
-            if (e.getType().is(ACTagRegistry.RESISTS_TREMORSAURUS_ROAR) || this.isAlliedTo(e)) continue;
+            if (e.getType().is(ACTagRegistry.RESISTS_TREMORSAURUS_ROAR) || this.isAlliedTo(e)
+                    || e.getMaxHealth() > SCARE_MAX_HEALTH) continue;
             if (e instanceof PathfinderMob mob && !(mob instanceof TamableAnimal && ((TamableAnimal) mob).isInSittingPose())) {
                 mob.setTarget(null);
                 mob.setLastHurtByMob(null);
@@ -2025,8 +2057,14 @@ public class TremorzillaServant extends AnimalSummon
 
         @Override
         public boolean canUse() {
-            if (TremorzillaServant.this.getTrueOwner() != null
+            LivingEntity owner = TremorzillaServant.this.getTrueOwner();
+            if (owner != null
                     && (TremorzillaServant.this.isStaying() || TremorzillaServant.this.isCommanded())) {
+                return false;
+            }
+            // 与 Goety 暗兽一致:主人还在跟随启动距离内时原地待命不游荡,只有主人走远后才跟随/游荡,
+            // 避免待命时原地频繁踱步、看起来像一直贴着玩家走。
+            if (owner != null && TremorzillaServant.this.distanceToSqr(owner) < Mth.square(FOLLOW_START_DISTANCE)) {
                 return false;
             }
             if (TremorzillaServant.this.getRandom().nextInt(40) != 0 && !TremorzillaServant.this.isTremorzillaSwimming()) {

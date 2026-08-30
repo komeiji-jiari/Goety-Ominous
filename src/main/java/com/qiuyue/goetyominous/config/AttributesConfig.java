@@ -309,6 +309,13 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> MutantHoglinServantAttackDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> MutantHoglinServantAttackKnockback;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantShulkerServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantShulkerServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantShulkerServantArmorToughness;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantShulkerServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantShulkerServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantShulkerServantMovementSpeed;
+
     public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantDamage;
@@ -834,6 +841,21 @@ public class AttributesConfig {
                 .defineInRange("mutantHoglinServantAttackDamage", 8.0, 1.0, Double.MAX_VALUE);
         MutantHoglinServantAttackKnockback = BUILDER.comment("How much Attack Knockback Mutant Hoglin Servants have, Default: 1.75")
                 .defineInRange("mutantHoglinServantAttackKnockback", 1.75, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Mutant Shulker Servant");
+        MutantShulkerServantHealth = BUILDER.comment("How much Max Health Mutant Shulker Servants have, Default: 300.0")
+                .defineInRange("mutantShulkerServantHealth", 300.0, 1.0, Double.MAX_VALUE);
+        MutantShulkerServantArmor = BUILDER.comment("How much natural Armor Mutant Shulker Servants have, Default: 10.0")
+                .defineInRange("mutantShulkerServantArmor", 10.0, 0.0, Double.MAX_VALUE);
+        MutantShulkerServantArmorToughness = BUILDER.comment("How much natural Armor Toughness Mutant Shulker Servants have, Default: 0.0")
+                .defineInRange("mutantShulkerServantArmorToughness", 0.0, 0.0, Double.MAX_VALUE);
+        MutantShulkerServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Mutant Shulker Servants have, Default: 1.0")
+                .defineInRange("mutantShulkerServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
+        MutantShulkerServantFollowRange = BUILDER.comment("How much following/detection range Mutant Shulker Servants have, Default: 64.0")
+                .defineInRange("mutantShulkerServantFollowRange", 64.0, 1.0, Double.MAX_VALUE);
+        MutantShulkerServantMovementSpeed = BUILDER.comment("How fast Mutant Shulker Servants move, Default: 0.275")
+                .defineInRange("mutantShulkerServantMovementSpeed", 0.275, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.push("AM Servants (Optional)");
