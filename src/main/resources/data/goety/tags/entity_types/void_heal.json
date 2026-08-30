@@ -2,6 +2,7 @@
   "replace": false,
   "__comment": "servants that heals and lose limited lifespan through Void set.",
   "values": [
-    "goetyominous:flare_servant"
+    "goetyominous:flare_servant",
+    "goetyominous:mutant_shulker_servant"
   ]
 }

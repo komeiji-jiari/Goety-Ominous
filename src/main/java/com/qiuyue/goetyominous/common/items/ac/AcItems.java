@@ -42,7 +42,7 @@ public class AcItems {
 
     public static final RegistryObject<ServantSpawnEggItem> TREMORZILLA_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("tremorzilla_servant_spawn_egg",
-                                        () -> new ServantSpawnEggItem(AcEntityRegistry.TREMORZILLA_SERVANT, 0x2E6B74, 0x9BE1E6, egg()));
+                                        () -> new ServantSpawnEggItem(AcEntityRegistry.TREMORZILLA_SERVANT, 0x574D2F, 0x8CFF08, egg()));
 
     public static final RegistryObject<BlockItem> TREMORZILLA_SERVANT_EGG =
             AC_ITEMS.register("tremorzilla_servant_egg",
@@ -81,7 +81,7 @@ public class AcItems {
     public static final RegistryObject<ServantSpawnEggItem> DEEP_ONE_MAGE_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("deep_one_mage_servant_spawn_egg",
 
-                    () -> new ServantSpawnEggItem(AcEntityRegistry.DEEP_ONE_MAGE_SERVANT, 0x10304A, 0xE85AF0, egg()));
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.DEEP_ONE_MAGE_SERVANT, 0x96DEF6, 0xD1FF00, egg()));
 
     public static final RegistryObject<Item> RAYCAT_AMULET =
             AC_ITEMS.register("raycat_amulet", () -> new RaycatAmuletItem());

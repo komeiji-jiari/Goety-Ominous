@@ -37,7 +37,9 @@ public class MutantHoglinServantModel<T extends MutantHoglinServant> extends Hie
     public final ModelPart rightFrontLegLower;
     private float chargeAnimationAmount;
     private float walkAnimationAmount;
+    private float trotAnimationAmount;
     private float idleAnimationAmount = 1.0F;
+    private boolean trotting;
     private float keyframeAnimationAmount;
     private float lastAgeInTicks = -1.0F;
     private float[][] heldPose;
@@ -96,13 +98,22 @@ public class MutantHoglinServantModel<T extends MutantHoglinServant> extends Hie
         // velocity-scaled sine phase twitch, so movement state is derived from limbSwingAmount and the
         // sine cadences are fixed to values that never alias at any frame rate.
         boolean movingOnLand = entity.onGround() && !entity.isInWaterOrBubble() && limbSwingAmount > 0.005F;
-        // limbSwingAmount is a squared-velocity proxy (~v^2): normal walk at 0.28 b/t is ~0.078, so the
-        // gallop threshold sits above that. Galloping kicks in only for genuinely fast movement (>~0.35)
-        // or the actual charge attack (entity.charging).
-        boolean highSpeed = limbSwingAmount > 0.12F;
-        boolean shouldPlayChargingAnimation = (entity.charging || highSpeed) && entity.notCurrentlyPlayingKeyframeAnimation();
-        boolean shouldPlayWalkAnimation = movingOnLand && !shouldPlayChargingAnimation && entity.notCurrentlyPlayingKeyframeAnimation();
-        boolean shouldPlayIdleAnimation = !shouldPlayWalkAnimation && !shouldPlayChargingAnimation && entity.notCurrentlyPlayingKeyframeAnimation();
+        // Following the owner uses ApproachTargetGoal at 1.3x base speed (~0.364 b/t), which puts
+        // limbSwingAmount (~0.132) above the gallop threshold. That is NOT the charge attack, so plain
+        // high-speed locomotion plays a smooth trot instead; the violent charge pose is reserved for the
+        // actual charge attack (entity.charging). Hysteresis on the thresholds keeps pathing speed dips
+        // from flickering between trot and walk.
+        if (this.trotting) {
+            if (limbSwingAmount < 0.06F) {
+                this.trotting = false;
+            }
+        } else if (limbSwingAmount > 0.12F) {
+            this.trotting = true;
+        }
+        boolean shouldPlayChargingAnimation = entity.charging && entity.notCurrentlyPlayingKeyframeAnimation();
+        boolean shouldPlayTrotAnimation = this.trotting && movingOnLand && !shouldPlayChargingAnimation && entity.notCurrentlyPlayingKeyframeAnimation();
+        boolean shouldPlayWalkAnimation = movingOnLand && !shouldPlayTrotAnimation && !shouldPlayChargingAnimation && entity.notCurrentlyPlayingKeyframeAnimation();
+        boolean shouldPlayIdleAnimation = !shouldPlayWalkAnimation && !shouldPlayTrotAnimation && !shouldPlayChargingAnimation && entity.notCurrentlyPlayingKeyframeAnimation();
         boolean keyframeActive = entity.deathTime > 0
                 || entity.stompAnimationTick > 0
                 || entity.prepareChargeAnimationTick > 0
@@ -113,13 +124,15 @@ public class MutantHoglinServantModel<T extends MutantHoglinServant> extends Hie
         float blendSpeed = 0.12F;
         this.chargeAnimationAmount = SineWaveAnimationUtils.tickAmountMultiplierChange(this.chargeAnimationAmount, shouldPlayChargingAnimation, deltaTicks * blendSpeed);
         this.walkAnimationAmount = SineWaveAnimationUtils.tickAmountMultiplierChange(this.walkAnimationAmount, shouldPlayWalkAnimation, deltaTicks * blendSpeed);
+        this.trotAnimationAmount = SineWaveAnimationUtils.tickAmountMultiplierChange(this.trotAnimationAmount, shouldPlayTrotAnimation, deltaTicks * blendSpeed);
         this.idleAnimationAmount = SineWaveAnimationUtils.tickAmountMultiplierChange(this.idleAnimationAmount, shouldPlayIdleAnimation, deltaTicks * blendSpeed);
         this.keyframeAnimationAmount = SineWaveAnimationUtils.tickAmountMultiplierChange(this.keyframeAnimationAmount, keyframeActive, deltaTicks * 0.2F);
         this.animateHeadLookTarget(netHeadYaw, headPitch);
         // The three sine animations always run and crossfade against each other, at fixed cadences.
         float sineTick = SineWaveAnimationUtils.getTick(entity.tickCount, true);
-        MutantHoglinSineWaveAnimations.mutantHoglinChargingAnimation(this, sineTick, 2.6F, this.chargeAnimationAmount);
-        MutantHoglinSineWaveAnimations.mutantHoglinWalkAnimation(this, sineTick, 1.6F, this.walkAnimationAmount);
+        MutantHoglinSineWaveAnimations.mutantHoglinChargingAnimation(this, sineTick, 3.2F, this.chargeAnimationAmount);
+        MutantHoglinSineWaveAnimations.mutantHoglinWalkAnimation(this, sineTick, 1.2F, this.walkAnimationAmount);
+        MutantHoglinSineWaveAnimations.mutantHoglinTrotAnimation(this, sineTick, 2.0F, this.trotAnimationAmount);
         MutantHoglinSineWaveAnimations.mutantHoglinIdleAnimation(this, sineTick, 1.0F, this.idleAnimationAmount);
         // Keyframe animations are blended on top of the sine pose so their onset/exit no longer snaps.
         List<ModelPart> parts = this.root().getAllParts().collect(Collectors.toList());

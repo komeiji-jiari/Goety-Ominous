@@ -117,6 +117,12 @@ public class ModEntityLayers {
     public static final ModelLayerLocation MUTANT_HOGLIN_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "mutant_hoglin_servant"), "main");
 
+    public static final ModelLayerLocation MUTANT_SHULKER_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "mutant_shulker_servant"), "main");
+
+    public static final ModelLayerLocation MUTANT_SHULKER_SERVANT_TRAP_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "mutant_shulker_servant_trap"), "main");
+
     public static final ModelLayerLocation STORM_NECROMANCER_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "storm_necromancer"), "main");
 

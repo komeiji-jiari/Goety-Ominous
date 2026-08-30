@@ -3,6 +3,8 @@ package com.qiuyue.goetyominous.common.init.mm;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.AreaDamage;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantHoglinServant;
+import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantShulkerServant;
+import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantShulkerServantTrap;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantWitherSkeletonServant;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.WitherSlash;
 import net.minecraft.world.entity.EntityType;
@@ -53,8 +55,19 @@ public class MmEntityRegistry {
                             .clientTrackingRange(10)
                             .build(GoetyOminous.MOD_ID + ":mutant_hoglin_servant"));
 
+    public static final RegistryObject<EntityType<MutantShulkerServant>> MUTANT_SHULKER_SERVANT =
+            MM_ENTITIES.register("mutant_shulker_servant",
+                    () -> EntityType.Builder.of(MutantShulkerServant::new, MobCategory.MISC)
+                            .sized(2.75F, 2.75F).fireImmune()
+                            .clientTrackingRange(10)
+                            .build(GoetyOminous.MOD_ID + ":mutant_shulker_servant"));
 
-
+    public static final RegistryObject<EntityType<MutantShulkerServantTrap>> MUTANT_SHULKER_SERVANT_TRAP =
+            MM_ENTITIES.register("mutant_shulker_servant_trap",
+                    () -> EntityType.Builder.of(MutantShulkerServantTrap::new, MobCategory.MISC)
+                            .sized(0.95F, 0.5F).fireImmune()
+                            .clientTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":mutant_shulker_servant_trap"));
 
     /**
      * 注册 MutantMore 实体到模组事件总线
