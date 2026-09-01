@@ -60,6 +60,10 @@ public class AcItems {
             AC_ITEMS.register("gammaroach_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AcEntityRegistry.GAMMAROACH_SERVANT, 0xB8C64F, 0x77D60E, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> CORRODENT_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("corrodent_servant_spawn_egg",
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.CORRODENT_SERVANT, 0x7A8450, 0x39402A, egg()));
+
     public static final RegistryObject<ServantSpawnEggItem> MINE_GUARDIAN_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("mine_guardian_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AcEntityRegistry.MINE_GUARDIAN_SERVANT, 0x243B52, 0x8AC3D6, egg()));

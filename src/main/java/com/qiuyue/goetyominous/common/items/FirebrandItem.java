@@ -34,7 +34,12 @@ public class FirebrandItem extends RampagingAxeItem {
         boolean result = super.hurtEnemy(stack, target, attacker);
         if (!target.level().isClientSide) {
             if (target.isOnFire()) {
+                // The main attack just landed this tick, so the target still has hurt
+                // invulnerability (20 ticks) which would swallow the bonus fire damage.
+                int invuln = target.invulnerableTime;
+                target.invulnerableTime = 0;
                 target.hurt(target.damageSources().onFire(), WeaponConfig.FirebrandFireBonus.get().floatValue());
+                target.invulnerableTime = invuln;
             }
             target.setSecondsOnFire(10);
         }
