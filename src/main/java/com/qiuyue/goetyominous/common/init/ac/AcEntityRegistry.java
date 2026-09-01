@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.init.ac;
 
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.ac.BrainiacServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.CorrodentServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneKnightServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneMageServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneServant;
@@ -77,6 +78,13 @@ public class AcEntityRegistry {
                             .sized(1.25F, 0.9F)
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":gammaroach_servant"));
+
+    public static final RegistryObject<EntityType<CorrodentServant>> CORRODENT_SERVANT =
+            AC_ENTITIES.register("corrodent_servant",
+                    () -> EntityType.Builder.<CorrodentServant>of((type, worldIn) -> new CorrodentServant(type, worldIn), MobCategory.MISC)
+                            .sized(0.9F, 0.9F)
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":corrodent_servant"));
 
     public static final RegistryObject<EntityType<MineGuardianServant>> MINE_GUARDIAN_SERVANT =
             AC_ENTITIES.register("mine_guardian_servant",

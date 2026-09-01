@@ -670,6 +670,9 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.GAMMAROACH_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderGammaroachServant::new);
             event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.CORRODENT_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderCorrodentServant::new);
+            event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.MINE_GUARDIAN_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderMineGuardianServant::new);
             event.registerEntityRenderer(

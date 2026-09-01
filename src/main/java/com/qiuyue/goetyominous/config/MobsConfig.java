@@ -45,6 +45,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> NucleeperServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> BrainiacServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> GammaroachServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> CorrodentServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> DeepOneServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> DeepOneKnightServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> DeepOneMageServantLimit;
@@ -243,6 +244,10 @@ public class MobsConfig {
         GammaroachServantLimit = BUILDER
                 .comment("Maximum number of Gammaroach Servants that can be summoned (Default: 64)")
                 .defineInRange("gammaroachServantLimit", 64, 1, 100);
+
+        CorrodentServantLimit = BUILDER
+                .comment("Maximum number of Corrodent Servants that can be summoned (Default: 16)")
+                .defineInRange("corrodentServantLimit", 16, 1, 100);
 
         DeepOneServantLimit = BUILDER
                 .comment("Maximum number of Deep One Servants that can be summoned (Default: 32, same summon type as goety_cataclysm DeepingServant)")

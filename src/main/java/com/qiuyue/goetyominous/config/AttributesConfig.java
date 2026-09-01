@@ -106,6 +106,12 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> CorrodentServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> CorrodentServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> CorrodentServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> CorrodentServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> CorrodentServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> CorrodentServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> DeepOneServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> DeepOneServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> DeepOneServantMovementSpeed;
@@ -1021,6 +1027,18 @@ public class AttributesConfig {
                 .defineInRange("gammaroachServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
         GammaroachServantArmor = BUILDER.comment("How much natural Armor Gammaroach Servants have, Default: 0.0 (matches Alex's Caves Gammaroach)")
                 .defineInRange("gammaroachServantArmor", 0.0, 0.0, Double.MAX_VALUE);
+        CorrodentServantHealth = BUILDER.comment("How much Max Health Corrodent Servants have, Default: 16.0 (matches Alex's Caves Corrodent)")
+                .defineInRange("corrodentServantHealth", 16.0, 1.0, Double.MAX_VALUE);
+        CorrodentServantDamage = BUILDER.comment("How much damage Corrodent Servants deal, Default: 3.0 (matches Alex's Caves Corrodent)")
+                .defineInRange("corrodentServantDamage", 3.0, 1.0, Double.MAX_VALUE);
+        CorrodentServantMovementSpeed = BUILDER.comment("How fast Corrodent Servants move, Default: 0.25 (matches Alex's Caves Corrodent)")
+                .defineInRange("corrodentServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
+        CorrodentServantFollowRange = BUILDER.comment("How much following/detection range Corrodent Servants have, Default: 32.0")
+                .defineInRange("corrodentServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
+        CorrodentServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Corrodent Servants have, Default: 0.0 (Alex's Caves Corrodent has none)")
+                .defineInRange("corrodentServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
+        CorrodentServantArmor = BUILDER.comment("How much natural Armor Corrodent Servants have, Default: 2.0 (matches Alex's Caves Corrodent)")
+                .defineInRange("corrodentServantArmor", 2.0, 0.0, Double.MAX_VALUE);
         DeepOneServantHealth = BUILDER.comment("How much Max Health Deep One Servants have, Default: 30.0 (matches Alex's Caves Deep One)")
                 .defineInRange("deepOneServantHealth", 30.0, 1.0, Double.MAX_VALUE);
         DeepOneServantDamage = BUILDER.comment("How much damage Deep One Servants deal, Default: 3.0 (matches Alex's Caves Deep One)")
