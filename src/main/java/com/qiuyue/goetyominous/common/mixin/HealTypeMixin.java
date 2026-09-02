@@ -19,7 +19,7 @@ public class HealTypeMixin {
         boolean fel = servant.getMobType() == ModMobType.FEL
                 || servant.getType().is(ModTags.EntityTypes.FEL_HEAL);
         if (fel && CroneCuriosUtil.hasCroneRobe(owner)) {
-            cir.setReturnValue(new ServantUtil.HealConfig(true, 1, 2, 1.0F));
+            cir.setReturnValue(new ServantUtil.HealConfig(true, 1, 1, 1.0F));
         }
     }
 }
