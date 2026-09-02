@@ -63,6 +63,11 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerScatterCooldown;
     public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerScatterCastDuration;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerBulletSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerBulletCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerBulletCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Double> ShulkerBulletDamage;
+
     public static final ForgeConfigSpec.ConfigValue<Integer> SporeCloudSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> SporeCloudCooldown;
 
@@ -390,6 +395,17 @@ public class SpellConfig {
                 .defineInRange("shulkerScatterCooldown", 200, 0, 2000);
         ShulkerScatterCastDuration = BUILDER.comment("Cast duration of Shulker Scatter spell in ticks (Default: 100)")
                 .defineInRange("shulkerScatterCastDuration", 100, 0, 500);
+        BUILDER.pop();
+
+        BUILDER.push("Shulker Bullet");
+        ShulkerBulletSoulCost = BUILDER.comment("Soul cost of Shulker Bullet spell (Default: 24)")
+                .defineInRange("shulkerBulletSoulCost", 24, 1, 100);
+        ShulkerBulletCooldown = BUILDER.comment("Cooldown of Shulker Bullet spell in ticks (Default: 100)")
+                .defineInRange("shulkerBulletCooldown", 100, 0, 2000);
+        ShulkerBulletCastDuration = BUILDER.comment("Cast duration of Shulker Bullet spell in ticks (Default: 60)")
+                .defineInRange("shulkerBulletCastDuration", 60, 0, 500);
+        ShulkerBulletDamage = BUILDER.comment("Base damage of Shulker Bullet (Default: 8.0)")
+                .defineInRange("shulkerBulletDamage", 8.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.push("Spore Cloud");

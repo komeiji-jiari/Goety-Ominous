@@ -4,10 +4,7 @@ import com.Polarice3.Goety.common.items.ServantSpawnEggItem;
 import com.Polarice3.Goety.common.items.magic.MagicFocus;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
-import com.qiuyue.goetyominous.common.magic.spells.mm.HogChargeSpell;
-import com.qiuyue.goetyominous.common.magic.spells.mm.ShulkerScatterSpell;
-import com.qiuyue.goetyominous.common.magic.spells.mm.WitherBreathSpell;
-import com.qiuyue.goetyominous.common.magic.spells.mm.WitherSlashSpell;
+import com.qiuyue.goetyominous.common.magic.spells.mm.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.DeferredRegister;
@@ -53,6 +50,10 @@ public class MmItems {
     public static final RegistryObject<MagicFocus> SHULKER_SCATTER_FOCUS = MM_ITEMS.register(
             "shulker_scatter_focus",
             () -> new MagicFocus(new ShulkerScatterSpell()));
+
+    public static final RegistryObject<MagicFocus> SHULKER_BULLET_FOCUS = MM_ITEMS.register(
+            "shulker_bullet_focus",
+            () -> new MagicFocus(new ShulkerBulletSpell()));
 
     public static final RegistryObject<WitherScytheItem> WITHER_SCYTHE = MM_ITEMS.register(
             "wither_scythe", WitherScytheItem::new);

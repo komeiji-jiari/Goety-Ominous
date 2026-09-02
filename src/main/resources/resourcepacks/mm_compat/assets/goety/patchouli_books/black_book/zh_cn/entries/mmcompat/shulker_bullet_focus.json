@@ -1,0 +1,20 @@
+{
+  "name": "潜影导弹聚晶",
+  "icon": "goetyominous:shulker_bullet_focus",
+  "category": "goety:mmcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "这个法术可以让你快速发射五枚突变潜影贝导弹。这些导弹会优先锁定你视线上的生物，而且具有追踪的能力。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:shulker_bullet_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "虚空魔杖能够增加这些突变潜影贝导弹的爆炸威力。"
+    }
+  ]
+}
