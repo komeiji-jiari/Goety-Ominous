@@ -158,7 +158,7 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
         List<WrappedGoal> inherited = new ArrayList<>(this.targetSelector.getAvailableGoals());
         for (WrappedGoal wrapped : inherited) {
             Goal goal = wrapped.getGoal();
-            if (goal instanceof SummonTargetGoal || goal instanceof Owned.OwnerHurtTargetGoal) {
+            if (goal instanceof SummonTargetGoal || goal instanceof Owned.OwnerHurtTargetGoal || goal instanceof Owned.OwnerHurtByTargetGoal) {
                 this.targetSelector.removeGoal(goal);
             }
         }
