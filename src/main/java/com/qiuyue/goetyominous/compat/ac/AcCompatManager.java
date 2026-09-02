@@ -1,12 +1,14 @@
 package com.qiuyue.goetyominous.compat.ac;
 
 import com.qiuyue.goetyominous.common.entities.ally.ac.BrainiacServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.CaniacServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.CorrodentServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneKnightServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneMageServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.GammaroachServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.GrottoceratopsServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.GummyBearServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.MineGuardianServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.NucleeperServant;
@@ -38,8 +40,10 @@ public class AcCompatManager {
         event.put(AcEntityRegistry.VALLUMRAPTOR_SERVANT.get(), VallumraptorServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.NUCLEEPER_SERVANT.get(), NucleeperServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.BRAINIAC_SERVANT.get(), BrainiacServant.setCustomAttributes().build());
+        event.put(AcEntityRegistry.CANIAC_SERVANT.get(), CaniacServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.GAMMAROACH_SERVANT.get(), GammaroachServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.CORRODENT_SERVANT.get(), CorrodentServant.setCustomAttributes().build());
+        event.put(AcEntityRegistry.GUMMY_BEAR_SERVANT.get(), GummyBearServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.MINE_GUARDIAN_SERVANT.get(), MineGuardianServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.HULLBREAKER_SERVANT.get(), HullbreakerServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.DEEP_ONE_SERVANT.get(), DeepOneServant.setCustomAttributes().build());

@@ -101,6 +101,18 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> BrainiacServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> BrainiacServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> BrainiacServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> CaniacServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> CaniacServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> CaniacServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> CaniacServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> CaniacServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> CaniacServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> GummyBearServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> GummyBearServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> GummyBearServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> GummyBearServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> GummyBearServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> GummyBearServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantMovementSpeed;
@@ -956,8 +968,8 @@ public class AttributesConfig {
                 .defineInRange("tremorzillaServantDamage", 30.0, 1.0, Double.MAX_VALUE);
         TremorzillaServantMovementSpeed = BUILDER.comment("How fast Tremorzilla Servants move, Default: 0.3")
                 .defineInRange("tremorzillaServantMovementSpeed", 0.3, 0.0, Double.MAX_VALUE);
-        TremorzillaServantFollowRange = BUILDER.comment("How much following/detection range Tremorzilla Servants have, Default: 128.0")
-                .defineInRange("tremorzillaServantFollowRange", 128.0, 0.0, Double.MAX_VALUE);
+        TremorzillaServantFollowRange = BUILDER.comment("How much following/detection range Tremorzilla Servants have, Default: 32.0 (32 block radius)")
+                .defineInRange("tremorzillaServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
         TremorzillaServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Tremorzilla Servants have, Default: 1.0 (matches Alex's Caves Tremorzilla)")
                 .defineInRange("tremorzillaServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
         TremorzillaServantArmor = BUILDER.comment("How much natural Armor Tremorzilla Servants have, Default: 10.0 (matches Alex's Caves Tremorzilla)")
@@ -1018,6 +1030,30 @@ public class AttributesConfig {
                 .defineInRange("brainiacServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
         BrainiacServantArmor = BUILDER.comment("How much natural Armor Brainiac Servants have, Default: 8.0 (matches Alex's Caves Brainiac)")
                 .defineInRange("brainiacServantArmor", 8.0, 0.0, Double.MAX_VALUE);
+        CaniacServantHealth = BUILDER.comment("How much Max Health Caniac Servants have, Default: 38.0 (matches Alex's Caves Caniac)")
+                .defineInRange("caniacServantHealth", 38.0, 1.0, Double.MAX_VALUE);
+        CaniacServantDamage = BUILDER.comment("How much damage Caniac Servants deal, Default: 2.0 (matches Alex's Caves Caniac)")
+                .defineInRange("caniacServantDamage", 2.0, 1.0, Double.MAX_VALUE);
+        CaniacServantMovementSpeed = BUILDER.comment("How fast Caniac Servants move, Default: 0.25 (matches Alex's Caves Caniac; chased running speed boosts to 0.4)")
+                .defineInRange("caniacServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
+        CaniacServantFollowRange = BUILDER.comment("How much following/detection range Caniac Servants have, Default: 32.0")
+                .defineInRange("caniacServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
+        CaniacServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Caniac Servants have, Default: 0.0 (Alex's Caves Caniac has none)")
+                .defineInRange("caniacServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
+        CaniacServantArmor = BUILDER.comment("How much natural Armor Caniac Servants have, Default: 0.0 (matches Alex's Caves Caniac)")
+                .defineInRange("caniacServantArmor", 0.0, 0.0, Double.MAX_VALUE);
+        GummyBearServantHealth = BUILDER.comment("How much Max Health Gummy Bear Servants have, Default: 36.0 (matches Alex's Caves Gummy Bear)")
+                .defineInRange("gummyBearServantHealth", 36.0, 1.0, Double.MAX_VALUE);
+        GummyBearServantDamage = BUILDER.comment("How much damage Gummy Bear Servants deal, Default: 4.0 (matches Alex's Caves Gummy Bear)")
+                .defineInRange("gummyBearServantDamage", 4.0, 1.0, Double.MAX_VALUE);
+        GummyBearServantMovementSpeed = BUILDER.comment("How fast Gummy Bear Servants move, Default: 0.25 (matches Alex's Caves Gummy Bear)")
+                .defineInRange("gummyBearServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
+        GummyBearServantFollowRange = BUILDER.comment("How much following/detection range Gummy Bear Servants have, Default: 32.0")
+                .defineInRange("gummyBearServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
+        GummyBearServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Gummy Bear Servants have, Default: 0.0 (Alex's Caves Gummy Bear has none)")
+                .defineInRange("gummyBearServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
+        GummyBearServantArmor = BUILDER.comment("How much natural Armor Gummy Bear Servants have, Default: 0.0 (matches Alex's Caves Gummy Bear)")
+                .defineInRange("gummyBearServantArmor", 0.0, 0.0, Double.MAX_VALUE);
         GammaroachServantHealth = BUILDER.comment("How much Max Health Gammaroach Servants have, Default: 14.0 (matches Alex's Caves Gammaroach)")
                 .defineInRange("gammaroachServantHealth", 14.0, 1.0, Double.MAX_VALUE);
         GammaroachServantDamage = BUILDER.comment("How much damage Gammaroach Servants deal, Default: 2.0 (matches Alex's Caves Gammaroach)")

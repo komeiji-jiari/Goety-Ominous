@@ -2,12 +2,14 @@ package com.qiuyue.goetyominous.common.init.ac;
 
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.ac.BrainiacServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.CaniacServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.CorrodentServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneKnightServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneMageServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.GammaroachServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.GrottoceratopsServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.GummyBearServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.MineGuardianServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.NucleeperServant;
@@ -72,6 +74,13 @@ public class AcEntityRegistry {
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":brainiac_servant"));
 
+    public static final RegistryObject<EntityType<CaniacServant>> CANIAC_SERVANT =
+            AC_ENTITIES.register("caniac_servant",
+                    () -> EntityType.Builder.<CaniacServant>of((type, worldIn) -> new CaniacServant(type, worldIn), MobCategory.MISC)
+                            .sized(0.9F, 2.3F)
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":caniac_servant"));
+
     public static final RegistryObject<EntityType<GammaroachServant>> GAMMAROACH_SERVANT =
             AC_ENTITIES.register("gammaroach_servant",
                     () -> EntityType.Builder.<GammaroachServant>of((type, worldIn) -> new GammaroachServant(type, worldIn), MobCategory.MISC)
@@ -85,6 +94,13 @@ public class AcEntityRegistry {
                             .sized(0.9F, 0.9F)
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":corrodent_servant"));
+
+    public static final RegistryObject<EntityType<GummyBearServant>> GUMMY_BEAR_SERVANT =
+            AC_ENTITIES.register("gummy_bear_servant",
+                    () -> EntityType.Builder.<GummyBearServant>of((type, worldIn) -> new GummyBearServant(type, worldIn), MobCategory.MISC)
+                            .sized(1.45F, 1.2F)
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":gummy_bear_servant"));
 
     public static final RegistryObject<EntityType<MineGuardianServant>> MINE_GUARDIAN_SERVANT =
             AC_ENTITIES.register("mine_guardian_servant",
