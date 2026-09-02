@@ -1,0 +1,27 @@
+{
+  "name": "巫婆长袍",
+  "icon": "goetyominous:crone_robe",
+  "advancement": "goetyominous:goetyominous/witch_lesson",
+  "secret": true,
+  "category": "goety:crafts/garment",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "想知道巫婆的裙子里有什么吗？哈哈哈哈哈你得先想办法搞一件自己的长袍才行！奶奶这件是奶奶的学徒给奶奶缝的！不仅很扎手而且还自带内部酿造台功能！"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:crone_robe"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "这样的长袍能够进一步强化你的邪能法术！穿着这件和奶奶的假牙一样美丽的裙子还能你的泥泞小子们也感受一下被灵魂治愈的感觉！"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goety:crone_hat",
+      "title": "巫婆帽",
+      "text": "如果你真的很想成为某个家族的一员的话，记得要戴上一顶巫婆的帽子！它能够防止你的邪能仆从像恼鬼一样随风而散！什么？你问奶奶上哪可以找到一顶帽子？找另一个老巫婆去借啊！"
+    }
+  ]
+}

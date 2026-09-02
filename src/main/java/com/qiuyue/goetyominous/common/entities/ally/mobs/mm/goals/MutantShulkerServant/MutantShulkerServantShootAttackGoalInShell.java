@@ -7,7 +7,6 @@ import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantShulkerServant
 import java.util.EnumSet;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;

@@ -8,8 +8,8 @@ import com.alexander.mutantmore.util.MiscUtils;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantShulkerServant;
 import java.util.EnumSet;
 import javax.annotation.Nullable;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.Entity;
+
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 
@@ -56,6 +56,9 @@ public class MutantShulkerServantBiteAttackGoal extends Goal {
             }
             this.target.hurt(MMDamageTypes.mutantShulkerBiteAttack(this.mob.damageSources(), this.mob), MutantShulkerCommonConfig.bite_damage.get().floatValue());
             MiscUtils.disableShield(this.target, MutantShulkerCommonConfig.bite_disable_shield_length.get());
+            if (this.mob.hasVoidEye()) {
+                this.target.addEffect(new MobEffectInstance(com.Polarice3.Goety.common.effects.GoetyEffects.VOID_TOUCHED.get(), 200, 0));
+            }
             double d0 = this.target.getX() - this.mob.getX();
             double d1 = this.target.getZ() - this.mob.getZ();
             double d2 = Math.max(d0 * d0 + d1 * d1, 0.001);

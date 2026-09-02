@@ -1,0 +1,22 @@
+{
+  "name": "Poison Ball Focus",
+  "icon": "goetyominous:poison_ball_focus",
+  "advancement": "goetyominous:goetyominous/witch_lesson",
+  "secret": true,
+  "category": "goety:focuses/fel",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Granny used to play dodgeball with me using this nasty spell! It's sticky and poisonous when it hits you—ever since then, I've never liked slimes! If you want to learn it... here's the recipe, it's simple to make!"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goetyominous:poison_ball_focus",
+      "text": "Granny says she had to pull teeth from over a dozen spiders just to make one of these—that sounds painful..."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "If you cast it with a Fel Staff, you can fire 3 poison balls at once! Pretty neat, hehe... works even better with enchantments! Wearing the uniform not only makes the venom more potent, but also leaves your enemies all sticky and slowed down!"
+    }
+  ]
+}

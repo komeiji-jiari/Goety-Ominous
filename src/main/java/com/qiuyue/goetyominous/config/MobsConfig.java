@@ -21,7 +21,6 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> HullbreakerServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Boolean> HullbreakerServantReturnEmbryo;
-    public static final ForgeConfigSpec.ConfigValue<Integer> TesseractCapacity;
     public static final ForgeConfigSpec.ConfigValue<Integer> IllagerElephantServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> DropBearServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> GusterServantLimit;
@@ -63,6 +62,10 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> MHBlazingHelmDamageBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> MHUnholyBloodHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> MHUnholyBloodDamageBouns;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantShulkerVoidEchoHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantShulkerVoidEyeHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantShulkerVoidShardHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantShulkerBulletLevitationMaxHealth;
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoUnholyBloodHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoUnholyBloodDamageBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoLeechingFocusHeal;
@@ -148,10 +151,6 @@ public class MobsConfig {
         HullbreakerServantReturnEmbryo = BUILDER
                 .comment("Whether Hullbreaker Servants drop an immortal embryo when they die while owned (Default: true)")
                 .define("hullbreakerServantReturnEmbryo", true);
-
-        TesseractCapacity = BUILDER
-                .comment("How many servants an Esoteric Tesseract (奥术方匣) can contain. Overrides Goety's tesseractCapacity (Default: 16)")
-                .defineInRange("tesseractCapacity", 16, 1, 100);
 
         IllagerElephantServantLimit = BUILDER
                 .comment("Maximum number of Illager Elephant Servants that can be summoned (Default: 2)")
@@ -294,6 +293,18 @@ public class MobsConfig {
                 .defineInRange("mhUnholyBloodHealthBonus", 50, 0, Integer.MAX_VALUE);
         MHUnholyBloodDamageBouns = BUILDER.comment("Extra attack damage bonus when Mutant Hoglin has Unholy Blood, Default: 3")
                 .defineInRange("mhUnholyBloodDamageBonus", 3, 0, Integer.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Mutant Shulker Enhancements");
+        MutantShulkerVoidEchoHealth = BUILDER.comment("Bonus max health of Void Echo Mutant Shulker (Default: 25)")
+                .defineInRange("mutantShulkerVoidEchoHealth", 25.0, 1.0, 1000.0);
+        MutantShulkerVoidEyeHealth = BUILDER.comment("Bonus max health of Void Eye Mutant Shulker (Default: 10)")
+                .defineInRange("mutantShulkerVoidEyeHealth", 10.0, 1.0, 1000.0);
+        MutantShulkerVoidShardHealth = BUILDER.comment("Bonus max health of Void Shard Mutant Shulker (Default: 15)")
+                .defineInRange("mutantShulkerVoidShardHealth", 15.0, 1.0, 1000.0);
+        MutantShulkerBulletLevitationMaxHealth = BUILDER
+                .comment("Maximum max-health for entities that Mutant Shulker Servant bullets can apply Levitation to (Default: 200)")
+                .defineInRange("mutantShulkerBulletLevitationMaxHealth", 200.0, 1.0, 1000.0);
         BUILDER.pop();
 
         BUILDER.push("Warped Mosco Enhancements");

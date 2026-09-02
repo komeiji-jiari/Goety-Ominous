@@ -8,8 +8,6 @@ import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
 import java.util.EnumSet;
 import javax.annotation.Nullable;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.scores.Scoreboard;

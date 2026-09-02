@@ -9,7 +9,7 @@ public class CuriosFinderMixin {
     @Inject(method = "isWitchFriendly", at = @At("RETURN"), cancellable = true, remap = false)
     private static void goetyominous$croneWitchFriendly(net.minecraft.world.entity.LivingEntity livingEntity,
                                                         org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable<Boolean> cir) {
-        if (!cir.getReturnValue() && com.qiuyue.goetyominous.utils.CroneCuriosUtil.hasCroneSet(livingEntity)) {
+        if (!cir.getReturnValue() && com.qiuyue.goetyominous.utils.CroneCuriosUtil.isCroneWitchFriendly(livingEntity)) {
             cir.setReturnValue(true);
         }
     }

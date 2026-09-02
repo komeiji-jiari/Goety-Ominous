@@ -58,6 +58,7 @@ public class ModCreativeTab {
 
                         if (MutantMoreCompat.isMutantMoreLoaded()) {
                             collectFrom(MmItems.MM_ITEMS, spawnEggs, foci, weapons, otherItems);
+                            moveAfter(otherItems, MmItems.SHULKER_EMBRYO.get(), ModItems.COLD_HEART.get());
                         }
 
                         if (LegendaryMonstersCompat.isLegendaryMonstersLoaded()) {

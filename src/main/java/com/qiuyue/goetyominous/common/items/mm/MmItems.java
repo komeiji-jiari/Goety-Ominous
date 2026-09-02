@@ -5,9 +5,11 @@ import com.Polarice3.Goety.common.items.magic.MagicFocus;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
 import com.qiuyue.goetyominous.common.magic.spells.mm.HogChargeSpell;
+import com.qiuyue.goetyominous.common.magic.spells.mm.ShulkerScatterSpell;
 import com.qiuyue.goetyominous.common.magic.spells.mm.WitherBreathSpell;
 import com.qiuyue.goetyominous.common.magic.spells.mm.WitherSlashSpell;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -36,10 +38,6 @@ public class MmItems {
             "mutant_shulker_servant_spawn_egg",
             () -> new ServantSpawnEggItem(MmEntityRegistry.MUTANT_SHULKER_SERVANT, 0x8E5BD6, 0x5E3A9E, egg()));
 
-    public static final RegistryObject<ServantSpawnEggItem> MUTANT_SHULKER_SERVANT_TRAP_SPAWN_EGG = MM_ITEMS.register(
-            "mutant_shulker_servant_trap_spawn_egg",
-            () -> new ServantSpawnEggItem(MmEntityRegistry.MUTANT_SHULKER_SERVANT_TRAP, 0xD98CE0, 0x7A2E8E, egg()));
-
     public static final RegistryObject<MagicFocus> WITHER_BREATH_FOCUS = MM_ITEMS.register(
             "wither_breath_focus",
             () -> new MagicFocus(new WitherBreathSpell()));
@@ -52,9 +50,16 @@ public class MmItems {
             "hog_charge_focus",
             () -> new MagicFocus(new HogChargeSpell()));
 
+    public static final RegistryObject<MagicFocus> SHULKER_SCATTER_FOCUS = MM_ITEMS.register(
+            "shulker_scatter_focus",
+            () -> new MagicFocus(new ShulkerScatterSpell()));
+
     public static final RegistryObject<WitherScytheItem> WITHER_SCYTHE = MM_ITEMS.register(
             "wither_scythe", WitherScytheItem::new);
 
+    public static final RegistryObject<Item> SHULKER_EMBRYO = MM_ITEMS.register(
+            "shulker_embryo",
+            () -> new Item(new Item.Properties().rarity(Rarity.RARE).stacksTo(64)));
 
 
 
