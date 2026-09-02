@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.items;
 
 import com.Polarice3.Goety.common.items.ServantSpawnEggItem;
 import com.Polarice3.Goety.common.items.block.BlockItemBase;
+import com.Polarice3.Goety.common.items.magic.DarkStaff;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.render.item.BoneCudgelRenderer;
 import com.qiuyue.goetyominous.common.init.ModBlocks;
@@ -20,6 +21,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+
+import static com.qiuyue.goetyominous.config.WeaponConfig.FelStaffDamage;
 
 /**
  * 模组物品注册类
@@ -42,6 +45,9 @@ public class ModItems {
     public static void init() {
         ModItems.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
+
+    public static final RegistryObject<DarkStaff> FEL_STAFF = ITEMS.register("fel_staff",
+            () -> new DarkStaff(FelStaffDamage.get(), GoetyOminous.FEL));
 
     public static final RegistryObject<Item> COLD_HEART = ITEMS.register("cold_heart",
             () -> new ColdHeartItem());
@@ -160,6 +166,9 @@ public class ModItems {
 
     public static final RegistryObject<Item> BRAINEATER_FOCUS = ITEMS.register("braineater_focus",
             () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.BrainEaterSpell()));
+
+    public static final RegistryObject<Item> POISONBALL_FOCUS = ITEMS.register("poison_ball_focus",
+            () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.PoisonBallSpell()));
 
     public static final RegistryObject<Item> WOLF_TOTEM = ITEMS.register("wolf_totem",
             () -> new BlockItemBase(ModBlocks.WOLF_TOTEM.get()));

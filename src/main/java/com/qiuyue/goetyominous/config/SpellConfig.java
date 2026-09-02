@@ -13,6 +13,10 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> BrainEaterDrainPerSecond;
     public static final ForgeConfigSpec.ConfigValue<Integer> BrainEaterSoulsPerDrain;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> PoisonBallCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> PoisonBallCoolDown;
+    public static final ForgeConfigSpec.ConfigValue<Double> PoisonBallDamage;
+
     public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachCastDuration;
     public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachSummonDown;
@@ -54,6 +58,10 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> WitherSlashSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> WitherSlashCooldown;
     public static final ForgeConfigSpec.ConfigValue<Double> WitherSlashDamage;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerScatterSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerScatterCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerScatterCastDuration;
 
     public static final ForgeConfigSpec.ConfigValue<Integer> SporeCloudSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> SporeCloudCooldown;
@@ -273,6 +281,15 @@ public class SpellConfig {
                 .defineInRange("brainEaterSoulsPerDrain", 100, 1, 100000);
         BUILDER.pop();
 
+        BUILDER.push("Poison Ball");
+        PoisonBallCost = BUILDER.comment("Soul cost of Poison Ball spell (Default: 8)")
+                .defineInRange("poisonBallCost", 8, 1, 100);
+        PoisonBallCoolDown = BUILDER.comment("Cooldown of Poison Ball (Default: 20)")
+                .defineInRange("poisonBallCoolDown", 20, 0, 5000);
+        PoisonBallDamage = BUILDER.comment("Base damage of Poison Ball (Default: 5.0)")
+                .defineInRange("poisonBallDamage", 5.0, 1.0, 1000.0);
+        BUILDER.pop();
+
         BUILDER.push("Urbhadhach");
         UrbhadhachSoulCost = BUILDER.comment("Soul cost of Urbhadhach Servant spell (Default: 48)")
                 .defineInRange("urbhadhachSoulCost", 48, 1, 100);
@@ -364,6 +381,15 @@ public class SpellConfig {
                 .defineInRange("witherSlashCooldown", 60, 0, 2000);
         WitherSlashDamage = BUILDER.comment("Base damage of Wither Slash (Default: 6.0)")
                 .defineInRange("witherSlashDamage", 6.0, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Shulker Scatter");
+        ShulkerScatterSoulCost = BUILDER.comment("Soul cost of Shulker Scatter spell (Default: 32)")
+                .defineInRange("shulkerScatterSoulCost", 32, 1, 100);
+        ShulkerScatterCooldown = BUILDER.comment("Cooldown of Shulker Scatter spell in ticks (Default: 200)")
+                .defineInRange("shulkerScatterCooldown", 200, 0, 2000);
+        ShulkerScatterCastDuration = BUILDER.comment("Cast duration of Shulker Scatter spell in ticks (Default: 100)")
+                .defineInRange("shulkerScatterCastDuration", 100, 0, 500);
         BUILDER.pop();
 
         BUILDER.push("Spore Cloud");

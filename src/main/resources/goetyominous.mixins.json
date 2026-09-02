@@ -28,7 +28,9 @@
     "MixinBlackBeastHowlingSoul",
     "CuriosFinderMixin",
     "BrewCauldronBlockEntityMixin",
-    "SingleStackItemMixin"
+    "SingleStackItemMixin",
+    "WitchRobeInventoryMixin",
+    "HealTypeMixin"
   ],
   "client": [],
   "server": [],

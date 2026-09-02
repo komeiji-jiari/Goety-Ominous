@@ -1,0 +1,20 @@
+{
+  "name": "Shulker Scatter Focus",
+  "icon": "goetyominous:shulker_scatter_focus",
+  "category": "goety:mmcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Placing traps one by one is far too tedious. You have devised a focus that allows you to scatter a large number of traps like a Mutant Shulker. These traps damage enemies who step on them, and if left unactivated for a period of time, they automatically transform into homing bullets to attack enemies."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:shulker_scatter_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "Casting this spell with a Void Staff increases the number of traps scattered and causes them to inflict Void-Touched when attacking creatures. This spell accepts the Potency enchantment, with each level increasing the damage dealt by both the traps and the missiles they transform into. Velocity enchantment accelerates the speed at which traps transform into bullets."
+    }
+  ]
+}

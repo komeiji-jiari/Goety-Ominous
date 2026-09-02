@@ -30,7 +30,7 @@ public class MutantShulkerServantRenderer extends MobRenderer<MutantShulkerServa
     public ResourceLocation getTextureLocation(MutantShulkerServant entity) {
         DyeColor color = entity.getColor();
         return color == null
-                ? new ResourceLocation(GoetyOminous.MOD_ID, "textures/entity/mutant_shulker_servant.png")
-                : new ResourceLocation("mutantmore", "textures/entities/mutant_shulker_" + color.getName() + ".png");
+                ? new ResourceLocation(GoetyOminous.MOD_ID, "textures/entity/mutant_shulker_servant/mutant_shulker.png")
+                : new ResourceLocation(GoetyOminous.MOD_ID, "textures/entity/mutant_shulker_servant/mutant_shulker_" + color.getName() + ".png");
     }
 }

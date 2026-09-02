@@ -10,6 +10,7 @@ import com.qiuyue.goetyominous.client.render.model.*;
 import com.qiuyue.goetyominous.client.render.model.curios.CroneRobeModel;
 import com.qiuyue.goetyominous.client.render.model.equipment.BoneCudgelModel;
 import com.qiuyue.goetyominous.client.render.model.mm.MutantHoglinServantModel;
+import com.qiuyue.goetyominous.client.render.model.mm.MutantShulkerServantBulletModel;
 import com.qiuyue.goetyominous.client.render.model.mm.MutantShulkerServantModel;
 import com.qiuyue.goetyominous.client.render.model.mm.MutantShulkerServantTrapModel;
 import com.qiuyue.goetyominous.client.render.model.of.RamblerServantModel;
@@ -113,7 +114,7 @@ public class ModModelLayers {
 
         event.registerLayerDefinition(CroneRobeModel.LAYER_LOCATION, CroneRobeModel::createBodyLayer);
         CroneRobeRenderer.register();
-        // raycat_amulet 注册在 Alex's Caves 联动里,未装 AC 时 .get() 会抛 "Registry Object not present"
+
         if (AlexCavesCompat.isAlexCavesLoaded()) {
             RaycatAmuletRenderer.register();
         }
@@ -245,6 +246,10 @@ public class ModModelLayers {
 
             event.registerLayerDefinition(ModEntityLayers.MUTANT_SHULKER_SERVANT_TRAP_LAYER,
                     MutantShulkerServantTrapModel::createBodyLayer);
+
+            event.registerLayerDefinition(MutantShulkerServantBulletModel.LAYER_LOCATION,
+                    MutantShulkerServantBulletModel::createBodyLayer);
+
         }
 
     }
@@ -523,6 +528,10 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.MUTANT_SHULKER_SERVANT_TRAP.get(),
                     MutantShulkerServantTrapRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.MUTANT_SHULKER_SERVANT_BULLET.get(),
+                    com.qiuyue.goetyominous.client.render.projectile.MutantShulkerServantBulletRenderer::new);
         }
 
         event.registerEntityRenderer(ModEntityTypes.ARCH_GEOMANCER.get(), ArchGeomancerRenderer::new);
@@ -532,6 +541,10 @@ public class ModModelLayers {
 
         event.registerEntityRenderer(ModEntityTypes.TREMOR_BLOCK.get(),
                 com.qiuyue.goetyominous.client.render.projectile.TremorBlockRenderer::new);
+
+        event.registerEntityRenderer(
+                com.qiuyue.goetyominous.common.init.ModEntityTypes.POISON_BALL.get(),
+                com.qiuyue.goetyominous.client.render.projectile.RenderPoisonBall::new);
 
         if (OpposingForceCompat.isOpposingForceLoaded()) {
             event.registerEntityRenderer(
@@ -687,15 +700,12 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.DEEP_ONE_MAGE_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderDeepOneMageServant::new);
-            // 奥托兰长矛水浪弹射物:专用渲染器,贴图用 AC 原版 Ortholance 的水浪(与玩家发射外观一致)
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.DEEP_ONE_SERVANT_WAVE.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderDeepOneServantWave::new);
-            // 法师水浪:忠实移植 AC 原版 WaveEntity,渲染器与骑士水浪共用同套模型贴图
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.DEEP_ONE_MAGE_SERVANT_WAVE.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderDeepOneMageServantWave::new);
-            // 法师水弹:忠实移植 AC 原版 WaterBoltEntity,模型/贴图/尾迹渲染与 AC 原版一致
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.DEEP_ONE_MAGE_SERVANT_WATER_BOLT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderDeepOneMageServantWaterBolt::new);

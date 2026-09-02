@@ -122,8 +122,6 @@ public class MutantShulkerServantFollowOwnerGoal extends Goal {
             } else {
                 BlockPos blockpos = pos.subtract(this.mob.blockPosition());
                 if (this.mob.level().noCollision(this.mob, this.mob.getBoundingBox().move(blockpos))) {
-                    // 距离玩家过远时的独立瞬移:直接传送到玩家附近,不依赖寻路;
-                    // 不走 Goety 原版 FollowOwnerGoal 的 canTeleport(MobsConfig.ServantTeleport) 配置门控
                     this.mob.moveTo(x + 0.5D, y, z + 0.5D, this.mob.getYRot(), this.mob.getXRot());
                     this.navigation.stop();
                     return true;

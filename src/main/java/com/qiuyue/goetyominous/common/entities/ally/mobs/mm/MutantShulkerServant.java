@@ -1,6 +1,5 @@
 package com.qiuyue.goetyominous.common.entities.ally.mobs.mm;
 
-import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.alexander.mutantmore.ai.goals.AllDirectionsTargetGoal;
@@ -12,25 +11,20 @@ import com.alexander.mutantmore.config.mutant_shulker.MutantShulkerClientConfig;
 import com.alexander.mutantmore.config.mutant_shulker.MutantShulkerCommonConfig;
 import com.alexander.mutantmore.entities.MutantShulkerBullet;
 import com.alexander.mutantmore.events.ShakeCameraEvent;
-import com.alexander.mutantmore.init.EntityTypeInit;
 import com.alexander.mutantmore.init.ItemInit;
 import com.alexander.mutantmore.init.MMDamageTypes;
 import com.alexander.mutantmore.init.ParticleTypeInit;
 import com.alexander.mutantmore.init.SoundEventInit;
 import com.alexander.mutantmore.init.TagInit;
 import com.alexander.mutantmore.util.MiscUtils;
+import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantShulkerServant.*;
+import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantShulkerServant.MutantShulkerServantAnvilCrushAttackGoal;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantShulkerServant.MutantShulkerServantBiteAttackGoal;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantShulkerServant.MutantShulkerServantFollowOwnerGoal;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantShulkerServant.MutantShulkerServantScatterTrapsAttackGoal;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantShulkerServant.MutantShulkerServantScatterTrapsAttackInShellGoal;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantShulkerServant.MutantShulkerServantShootAttackGoal;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantShulkerServant.MutantShulkerServantShootAttackGoalInShell;
 import com.google.common.collect.Lists;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.UUID;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -44,7 +38,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
@@ -60,9 +53,10 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
@@ -118,6 +112,8 @@ public class MutantShulkerServant extends AbstractMutantServant {
     public final AnimationState anvilCrushAnimation = new AnimationState();
     public final AnimationState summonTrapsAnimation = new AnimationState();
     public final AnimationState summonTrapsInShellAnimation = new AnimationState();
+    public final AnimationState spinningAnimation = new AnimationState();
+    public final AnimationState enterSpinAnimation = new AnimationState();
     public float currentSpeed;
     public float currentSpeedChangeSpeed = 0.01f;
     public int specialAnimationTick;
@@ -147,11 +143,31 @@ public class MutantShulkerServant extends AbstractMutantServant {
     public float healthHealedInShell = 0.0f;
     public int anvilCrushSoundCooldown = 0;
     public int nextEnterShellTime;
+    public int prepareFlyAnimationTick;
+    public int prepareFlyAnimationLength = 21;
+    public int prepareFlyActionPoint = 8;
+    public boolean flying = false;
     public DamageSource killedBy = this.damageSources().cramming();
     public List<LivingEntity> alreadyCrushed = Lists.newArrayList();
     public static EntityDimensions inBoxDimensions = EntityDimensions.scalable(1.9F, 1.9F);
     public int stunnedTicks;
     public int stunLength = 120;
+    private static final EntityDataAccessor<Boolean> DATA_VOID_ECHO =
+            SynchedEntityData.defineId(MutantShulkerServant.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_VOID_EYE =
+            SynchedEntityData.defineId(MutantShulkerServant.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_VOID_SHARD =
+            SynchedEntityData.defineId(MutantShulkerServant.class, EntityDataSerializers.BOOLEAN);
+    private static final UUID VOID_ECHO_HEALTH_UUID = UUID.fromString("d4444444-0000-4000-8000-000000000001");
+    private static final UUID VOID_EYE_HEALTH_UUID = UUID.fromString("e5555555-0000-4000-8000-000000000001");
+    private static final UUID VOID_SHARD_HEALTH_UUID = UUID.fromString("f6666666-0000-4000-8000-000000000001");
+    private int voidEchoInvulnTime = 0;
+
+    private void addModIfMissing(AttributeInstance instance, UUID uuid, String name, double value) {
+        if (instance != null && instance.getModifier(uuid) == null) {
+            instance.addPermanentModifier(new AttributeModifier(uuid, name, value, AttributeModifier.Operation.ADDITION));
+        }
+    }
 
     public MutantShulkerServant(EntityType<? extends Owned> p_i50189_1_, Level p_i50189_2_) {
         super(p_i50189_1_, p_i50189_2_);
@@ -167,6 +183,9 @@ public class MutantShulkerServant extends AbstractMutantServant {
         }
         if (MutantShulkerCommonConfig.leaves_shell.get()) {
             this.goalSelector.addGoal(1, new LeaveShellGoal());
+        }
+        if (MutantShulkerCommonConfig.uses_fly.get()) {
+            this.goalSelector.addGoal(2, new MutantShulkerServantFlyGoal(this));
         }
         if (MutantShulkerCommonConfig.uses_anvil_crush.get()) {
             this.goalSelector.addGoal(2, new MutantShulkerServantAnvilCrushAttackGoal(this));
@@ -211,12 +230,9 @@ public class MutantShulkerServant extends AbstractMutantServant {
             }
         });
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this, new Class[0]).setUnseenMemoryTicks(6000));
-        // 玩家索敌:与 Hoglin/WitherSkeleton 仆从一致,受 attacks_players 配置 + 全局开关控制
         if (MutantShulkerCommonConfig.attacks_players.get() && !MutantMoreGroupedOptionsCommonConfig.mutants_attack_players_off.get()) {
             this.targetSelector.addGoal(1, (new AllDirectionsTargetGoal(this, Player.class, true)).setUnseenMemoryTicks(6000));
         }
-        // 非玩家索敌:原版 tag(mutant_shulker_targets)是空的,原版 boss 只靠上面的玩家目标;
-        // 这里改用 Goety 的 isOwnedTargetable(基类 SummonTargetGoal 用的同一判定),恢复 follow_non_player_distance 的长距离索敌。
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<LivingEntity>(this, LivingEntity.class, 20, false, false, entity -> MobUtil.isOwnedTargetable(this, entity)) {
             protected AABB getTargetSearchArea(double p_26069_) {
                 return this.mob.getBoundingBox().inflate(MutantShulkerCommonConfig.follow_non_player_distance.get(), MutantShulkerCommonConfig.follow_non_player_distance.get(), MutantShulkerCommonConfig.follow_non_player_distance.get());
@@ -337,12 +353,6 @@ public class MutantShulkerServant extends AbstractMutantServant {
         this.killedBy = source;
     }
 
-    // 原版 MutantShulker 覆写 tickDeath 让实体存活 ~123 tick 播完整条死亡动画(DEATH 长度 5.9583s),
-    // 仆从之前没覆写,落到原版 20 tick 就移除,死亡动画刚起步就消失。
-    // 完整保留原版演出:死亡连射(20~90 tick 每 2 tick 两发随机弹)+ 结尾大爆炸(113 tick)。
-    // 仆从是友军:爆炸用 deathExplosionBlockInteraction()=KEEP 不破坏方块,主人/友军由
-    // MutantShulkerServantEvents 拦截,非友军按原版数值吃伤害。
-    // 掉落:正常死亡(123 tick)掉 2 个 Mutant Shulker Shell;不跑战利品表(不掉装备/经验)。
     @Override
     protected void tickDeath() {
         ++this.deathTime;
@@ -373,7 +383,6 @@ public class MutantShulkerServant extends AbstractMutantServant {
             }
             if (this.deathTime == 123) {
                 if (!this.level().isClientSide) {
-                    // 死亡掉落:2 个 Mutant Shulker Shell(与原版掉落物一致,固定数量)。
                     this.spawnAtLocation(new ItemStack(ItemInit.MUTANT_SHULKER_SHELL.get(), 2));
                     this.remove(Entity.RemovalReason.KILLED);
                 }
@@ -387,7 +396,6 @@ public class MutantShulkerServant extends AbstractMutantServant {
         }
     }
 
-    // 仆从死亡爆炸绝不破坏方块,不受 mm 全局 death_griefing 配置影响。
     public Explosion.BlockInteraction deathExplosionBlockInteraction() {
         return Explosion.BlockInteraction.KEEP;
     }
@@ -407,7 +415,20 @@ public class MutantShulkerServant extends AbstractMutantServant {
 
     @Override
     public boolean hurt(DamageSource p_21016_, float p_21017_) {
-        if (p_21016_.getDirectEntity() instanceof MutantShulkerBullet) {
+        if (this.hasVoidEcho()) {
+            if (this.voidEchoInvulnTime > 0) {
+                --this.voidEchoInvulnTime;
+                return false;
+            }
+            this.voidEchoInvulnTime = 5;
+            if (this.level().dimension() == Level.END) {
+                p_21017_ *= 0.5F;
+            } else {
+                p_21017_ *= 0.85F;
+            }
+        }
+        if (p_21016_.getDirectEntity() instanceof MutantShulkerBullet
+                || p_21016_.getDirectEntity() instanceof MutantShulkerServantBullet) {
             this.stunnedTicks = 60;
         }
         if (p_21016_.getDirectEntity() instanceof ShulkerBullet) {
@@ -417,10 +438,15 @@ public class MutantShulkerServant extends AbstractMutantServant {
             this.playSound(SoundEvents.SHULKER_HURT_CLOSED, 1.0F, 0.5F);
             return false;
         }
-        // 受击闪避瞬移(teleports_when_hit):待命(isStaying)时禁用,防止脱离守卫位;跟随/游荡/警戒时允许。
         if (!this.level().isClientSide && MutantShulkerCommonConfig.teleports_when_hit.get() && !this.isStaying() && this.random.nextInt(MutantShulkerCommonConfig.teleport_when_hit_chance.get()) == 0 && !p_21016_.is(DamageTypes.GENERIC_KILL) && !p_21016_.is(DamageTypes.FELL_OUT_OF_WORLD) && !this.isDeadOrDying()) {
             this.teleport();
             return false;
+        }
+        if (this.flying && MutantShulkerCommonConfig.getting_hit_cancels_flying.get() && this.tickCount >= this.nextEnterShellTime) {
+            this.flying = false;
+            this.setInBox(true);
+            this.level().broadcastEntityEvent(this, (byte) 6);
+            return super.hurt(p_21016_, p_21017_);
         }
         return super.hurt(p_21016_, p_21017_);
     }
@@ -435,12 +461,18 @@ public class MutantShulkerServant extends AbstractMutantServant {
         this.entityData.define(IN_BOX, false);
         this.entityData.define(ANVIL_ATTACKING, false);
         this.entityData.define(COLOR_ID, (byte) 16);
+        this.entityData.define(DATA_VOID_ECHO, false);
+        this.entityData.define(DATA_VOID_EYE, false);
+        this.entityData.define(DATA_VOID_SHARD, false);
     }
 
     public void addAdditionalSaveData(CompoundTag p_29495_) {
         super.addAdditionalSaveData(p_29495_);
         p_29495_.putBoolean("InBox", this.isInBox());
         p_29495_.putByte("Color", this.entityData.get(COLOR_ID));
+        p_29495_.putBoolean("VoidEcho", this.hasVoidEcho());
+        p_29495_.putBoolean("VoidEye", this.hasVoidEye());
+        p_29495_.putBoolean("VoidShard", this.hasVoidShard());
     }
 
     @Override
@@ -449,6 +481,46 @@ public class MutantShulkerServant extends AbstractMutantServant {
         this.setInBox(p_29478_.getBoolean("InBox"));
         if (p_29478_.contains("Color", 99)) {
             this.entityData.set(COLOR_ID, p_29478_.getByte("Color"));
+        }
+        this.setVoidEcho(p_29478_.getBoolean("VoidEcho"));
+        this.setVoidEye(p_29478_.getBoolean("VoidEye"));
+        this.setVoidShard(p_29478_.getBoolean("VoidShard"));
+    }
+
+    public boolean hasVoidEcho() {
+        return this.getEntityData().get(DATA_VOID_ECHO);
+    }
+
+    public void setVoidEcho(boolean value) {
+        this.getEntityData().set(DATA_VOID_ECHO, value);
+    }
+
+    public boolean hasVoidEye() {
+        return this.getEntityData().get(DATA_VOID_EYE);
+    }
+
+    public void setVoidEye(boolean value) {
+        this.getEntityData().set(DATA_VOID_EYE, value);
+    }
+
+    public boolean hasVoidShard() {
+        return this.getEntityData().get(DATA_VOID_SHARD);
+    }
+
+    public void setVoidShard(boolean value) {
+        this.getEntityData().set(DATA_VOID_SHARD, value);
+    }
+
+    private void applyEnhancementModifiers() {
+        AttributeInstance health = this.getAttribute(Attributes.MAX_HEALTH);
+        if (this.hasVoidEcho()) {
+            this.addModIfMissing(health, VOID_ECHO_HEALTH_UUID, "Void Echo Health", MobsConfig.MutantShulkerVoidEchoHealth.get());
+        }
+        if (this.hasVoidEye()) {
+            this.addModIfMissing(health, VOID_EYE_HEALTH_UUID, "Void Eye Health", MobsConfig.MutantShulkerVoidEyeHealth.get());
+        }
+        if (this.hasVoidShard()) {
+            this.addModIfMissing(health, VOID_SHARD_HEALTH_UUID, "Void Shard Health", MobsConfig.MutantShulkerVoidShardHealth.get());
         }
     }
 
@@ -488,6 +560,51 @@ public class MutantShulkerServant extends AbstractMutantServant {
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
+        if (this.getMasterOwner() == player) {
+            if (itemstack.is(com.Polarice3.Goety.common.items.ModItems.VOID_ECHO.get()) && !this.hasVoidEcho()) {
+                if (!player.getAbilities().instabuild) {
+                    itemstack.shrink(1);
+                }
+                this.setVoidEcho(true);
+                this.applyEnhancementModifiers();
+                this.heal(50.0F);
+                return InteractionResult.sidedSuccess(this.level().isClientSide);
+            }
+            if (itemstack.is(com.Polarice3.Goety.common.items.ModItems.VOIDED_EYE.get()) && !this.hasVoidEye()) {
+                if (!player.getAbilities().instabuild) {
+                    itemstack.shrink(1);
+                }
+                this.setVoidEye(true);
+                this.applyEnhancementModifiers();
+                this.heal(50.0F);
+                return InteractionResult.sidedSuccess(this.level().isClientSide);
+            }
+            if (itemstack.is(com.Polarice3.Goety.common.items.ModItems.VOID_SHARD.get()) && !this.hasVoidShard()) {
+                if (!player.getAbilities().instabuild) {
+                    itemstack.shrink(1);
+                }
+                this.setVoidShard(true);
+                this.applyEnhancementModifiers();
+                this.heal(50.0F);
+                return InteractionResult.sidedSuccess(this.level().isClientSide);
+            }
+        }
+        if (this.getOwner() == player && itemstack.getItem() == Items.ENDER_PEARL && this.getHealth() < this.getMaxHealth()) {
+            if (!player.getAbilities().instabuild) {
+                itemstack.shrink(1);
+            }
+            this.playSound(SoundEventInit.MUTANT_SHULKER_IDLE.get(), 1.0F, 1.0F);
+            this.heal(2.0F);
+            if (this.level() instanceof ServerLevel serverLevel) {
+                for (int i = 0; i < 7; ++i) {
+                    double d0 = this.random.nextGaussian() * 0.02D;
+                    double d1 = this.random.nextGaussian() * 0.02D;
+                    double d2 = this.random.nextGaussian() * 0.02D;
+                    serverLevel.sendParticles(ParticleTypes.HEART, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), 0, d0, d1, d2, 0.5F);
+                }
+            }
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
+        }
         if (this.getOwner() == player && itemstack.getItem() instanceof DyeItem && ((DyeItem) itemstack.getItem()).getDyeColor() != this.getColor()) {
             this.setColor(((DyeItem) itemstack.getItem()).getDyeColor());
             if (!player.getAbilities().instabuild) {
@@ -533,9 +650,7 @@ public class MutantShulkerServant extends AbstractMutantServant {
                 this.sinkInWater();
             }
         }
-        // 原版 MutantShulker 战斗中靠 basic_teleport_chance(每 tick 1/125)向目标瞬移走位。
-        // 跟随/游荡/警戒时保留这个 boss 走位;待命(isStaying)禁用,防止脱离守卫位。
-        if (!this.level().isClientSide && this.getTarget() != null && this.distanceTo(this.getTarget()) > 5.0F && this.random.nextInt(MutantShulkerCommonConfig.basic_teleport_chance.get()) == 0 && !this.isDeadOrDying() && !this.isAnvilAttacking() && !this.isStaying()) {
+        if (!this.level().isClientSide && this.getTarget() != null && this.distanceTo(this.getTarget()) > 5.0F && this.random.nextInt(MutantShulkerCommonConfig.basic_teleport_chance.get()) == 0 && !this.isDeadOrDying() && !this.isAnvilAttacking() && !this.isStaying() && !(this.flying && !MutantShulkerCommonConfig.teleports_while_flying.get())) {
             if (this.isInBox() && MutantShulkerCommonConfig.teleports_while_in_shell.get()) {
                 this.teleport(this.getTarget().getX() - 15.0 + this.random.nextInt(30), this.getY(), this.getTarget().getZ() - 15.0 + this.random.nextInt(30));
             } else if (MutantShulkerCommonConfig.teleports_to_follow_target.get()) {
@@ -568,7 +683,7 @@ public class MutantShulkerServant extends AbstractMutantServant {
         }
         if (!this.level().isClientSide && this.isInBox() && this.tickCount % MutantShulkerCommonConfig.shell_heal_interval.get() == 0 && this.getHealth() < this.getMaxHealth()) {
             ((ServerLevel)this.level()).sendParticles((ParticleOptions)((SimpleParticleType)ParticleTypeInit.MUTANT_SHULKER_HEAL.get()), this.getRandomX(1.25), this.getRandomY(), this.getRandomZ(1.25), 1, 0.1, 0.1, 0.1, 0.0);
-            this.heal(MutantShulkerCommonConfig.shell_heal_amount.get().floatValue());
+            this.heal(MutantShulkerCommonConfig.shell_heal_amount.get().floatValue() * (this.hasVoidEcho() ? 2.0F : 1.0F));
             this.healthHealedInShell += MutantShulkerCommonConfig.shell_heal_amount.get().floatValue();
         }
         Vec3 velocity = this.getDeltaMovement();
@@ -595,25 +710,29 @@ public class MutantShulkerServant extends AbstractMutantServant {
 
     public void shootMutantShulkerProjectile(float angle, BlockPos shootToPos, boolean aimForTarget) {
         if (aimForTarget && this.getTarget() != null) {
-            MutantShulkerBullet projectile = new MutantShulkerServantBullet(EntityTypeInit.MUTANT_SHULKER_BULLET.get(), this.level());
+            MutantShulkerServantBullet projectile = new MutantShulkerServantBullet(MmEntityRegistry.MUTANT_SHULKER_SERVANT_BULLET.get(), this.level());
             projectile.damage = MutantShulkerCommonConfig.mutant_shulker_bullet_damage.get().floatValue();
-            projectile.griefing = false;
             projectile.explosionSize = MutantShulkerCommonConfig.mutant_shulker_bullet_explosion_size.get().floatValue();
+            if (this.hasVoidShard()) {
+                projectile.explosionSize += 2.0F;
+            }
             projectile.levitationLength = MutantShulkerCommonConfig.mutant_shulker_bullet_levitation_length.get();
             projectile.levitationLevel = MutantShulkerCommonConfig.mutant_shulker_bullet_levitation_level.get();
             projectile.ignoresInvulTime = MutantShulkerCommonConfig.ignores_invulnerability_time.get();
             projectile.setRemainingHits(MutantShulkerCommonConfig.mutant_shulker_bullet_hits.get());
             projectile.moveDelay = 60;
             projectile.setPos(this.getX(), this.getEyeY(), this.getZ());
-            projectile.setTargetByID(this.getTarget().getId());
+            projectile.setTarget(this.getTarget());
             projectile.setOwner(this);
             this.shootMutantShulkerProjectile(this.getTarget().blockPosition(), projectile, angle);
             this.level().addFreshEntity(projectile);
         } else {
-            MutantShulkerBullet projectile = new MutantShulkerServantBullet(EntityTypeInit.MUTANT_SHULKER_BULLET.get(), this.level());
+            MutantShulkerServantBullet projectile = new MutantShulkerServantBullet(MmEntityRegistry.MUTANT_SHULKER_SERVANT_BULLET.get(), this.level());
             projectile.damage = MutantShulkerCommonConfig.mutant_shulker_bullet_damage.get().floatValue();
-            projectile.griefing = false;
             projectile.explosionSize = MutantShulkerCommonConfig.mutant_shulker_bullet_explosion_size.get().floatValue();
+            if (this.hasVoidShard()) {
+                projectile.explosionSize += 2.0F;
+            }
             projectile.levitationLength = MutantShulkerCommonConfig.mutant_shulker_bullet_levitation_length.get();
             projectile.levitationLevel = MutantShulkerCommonConfig.mutant_shulker_bullet_levitation_level.get();
             projectile.ignoresInvulTime = MutantShulkerCommonConfig.ignores_invulnerability_time.get();
@@ -674,6 +793,12 @@ public class MutantShulkerServant extends AbstractMutantServant {
             this.summonTrapsAnimationTickInShell = this.summonTrapsAnimationLengthInShell;
         } else if (p_28844_ == 37) {
             this.anvilCrushAnimationTick = this.anvilCrushAnimationLength;
+        } else if (p_28844_ == 5) {
+            this.flying = true;
+        } else if (p_28844_ == 6) {
+            this.flying = false;
+        } else if (p_28844_ == 7) {
+            this.prepareFlyAnimationTick = this.prepareFlyAnimationLength;
         } else {
             super.handleEntityEvent(p_28844_);
         }
@@ -694,6 +819,8 @@ public class MutantShulkerServant extends AbstractMutantServant {
         somethingAnimating = this.deathAnimation.isStarted();
         this.idleRareAnimation.animateWhen(this.introAnimationTick > 0 && !somethingAnimating, this.tickCount);
         somethingAnimating = somethingAnimating || this.idleRareAnimation.isStarted();
+        this.spinningAnimation.animateWhen(this.flying && !somethingAnimating, this.tickCount);
+        somethingAnimating = somethingAnimating || this.spinningAnimation.isStarted();
         this.anvilCrushAnimation.animateWhen(this.isInBox() && this.anvilCrushAnimationTick > 0 && !somethingAnimating, this.tickCount);
         somethingAnimating = somethingAnimating || this.anvilCrushAnimation.isStarted();
         this.summonTrapsInShellAnimation.animateWhen(this.isInBox() && this.summonTrapsAnimationTickInShell > 0 && !somethingAnimating, this.tickCount);
@@ -704,6 +831,8 @@ public class MutantShulkerServant extends AbstractMutantServant {
         somethingAnimating = somethingAnimating || this.idleRareInShellAnimation.isStarted();
         this.idleInShellAnimation.animateWhen(this.isInBox() && !somethingAnimating, this.tickCount);
         somethingAnimating = somethingAnimating || this.idleInShellAnimation.isStarted();
+        this.enterSpinAnimation.animateWhen(!this.isInBox() && this.prepareFlyAnimationTick > 0 && !somethingAnimating, this.tickCount);
+        somethingAnimating = somethingAnimating || this.enterSpinAnimation.isStarted();
         this.summonTrapsAnimation.animateWhen(!this.isInBox() && this.summonTrapsAnimationTick > 0 && !somethingAnimating, this.tickCount);
         somethingAnimating = somethingAnimating || this.summonTrapsAnimation.isStarted();
         this.biteAnimation.animateWhen(!this.isInBox() && this.biteAnimationTick > 0 && !somethingAnimating, this.tickCount);
@@ -743,6 +872,9 @@ public class MutantShulkerServant extends AbstractMutantServant {
         if (this.anvilCrushAnimationTick > 0) {
             --this.anvilCrushAnimationTick;
         }
+        if (this.prepareFlyAnimationTick > 0) {
+            --this.prepareFlyAnimationTick;
+        }
         if (this.stunnedTicks > 0) {
             this.stunEffect();
             --this.stunnedTicks;
@@ -766,7 +898,6 @@ public class MutantShulkerServant extends AbstractMutantServant {
 
     @Override
     public SpawnGroupData finalizeSpawn(net.minecraft.world.level.ServerLevelAccessor pLevel, net.minecraft.world.DifficultyInstance pDifficulty, net.minecraft.world.entity.MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
-        // 与 MutantWitherSkeletonServant 保持一致:上限仅对 MOB_SUMMONED 召唤(法术路径)生效,不限制刷怪蛋。
         if (pReason == net.minecraft.world.entity.MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player) {
             if (countServants(player) >= MobsConfig.MutantShulkerServantLimit.get()) {
                 return null;

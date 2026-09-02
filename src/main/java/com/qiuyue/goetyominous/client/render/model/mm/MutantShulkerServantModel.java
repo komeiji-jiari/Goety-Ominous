@@ -59,6 +59,8 @@ public class MutantShulkerServantModel<T extends MutantShulkerServant> extends M
         this.mathAnimateState(pEntity, pEntity.idleInShellAnimation, MutantShulkerMathAnimations3.IDLE_IN_SHELL, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
         this.mathAnimateState(pEntity, pEntity.summonTrapsAnimation, MutantShulkerMathAnimations3.SUMMON_TRAPS, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
         this.mathAnimateState(pEntity, pEntity.biteAnimation, MutantShulkerMathAnimations2.BITE, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
+        this.mathAnimateState(pEntity, pEntity.spinningAnimation, MutantShulkerMathAnimations1.SPINNING, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
+        this.mathAnimateState(pEntity, pEntity.enterSpinAnimation, MutantShulkerMathAnimations2.ENTER_SPIN, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
         this.mathAnimateState(pEntity, pEntity.shootAnimation, MutantShulkerMathAnimations2.SHOOT, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
         boolean priorityActive = pEntity.isInBox()
                 || pEntity.deathAnimation.isStarted()

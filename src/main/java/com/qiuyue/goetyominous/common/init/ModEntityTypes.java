@@ -8,12 +8,7 @@ import com.qiuyue.goetyominous.common.entities.ally.spider.CrimsonSpiderServant;
 import com.qiuyue.goetyominous.common.entities.hostile.*;
 import com.qiuyue.goetyominous.common.entities.hostile.cultists.*;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.ArchGeomancerEntity;
-import com.qiuyue.goetyominous.common.entities.projectile.AcidFungus;
-import com.qiuyue.goetyominous.common.entities.projectile.BurningPotionEntity;
-import com.qiuyue.goetyominous.common.entities.projectile.ImpactBlockEntity;
-import com.qiuyue.goetyominous.common.entities.projectile.TremorBlockEntity;
-import com.qiuyue.goetyominous.common.entities.projectile.PitchforkEntity;
-import com.qiuyue.goetyominous.common.entities.projectile.WitchBombEntity;
+import com.qiuyue.goetyominous.common.entities.projectile.*;
 import com.qiuyue.goetyominous.common.entities.util.BurningGroundEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -370,6 +365,14 @@ public class ModEntityTypes {
                     .clientTrackingRange(10)
                     .updateInterval(1)
                     .build(MOD_ID + ":tremor_block"));
+
+    public static final RegistryObject<EntityType<EntityPoisonBall>> POISON_BALL = ENTITY_TYPES
+            .register("poison_ball",
+                    () -> EntityType.Builder.<EntityPoisonBall>of(
+                                    (type, worldIn) -> new EntityPoisonBall(type, worldIn), MobCategory.MISC)
+                            .sized(0.25F, 0.25F)
+                            .setTrackingRange(8)
+                            .build(MOD_ID + ":poison_ball"));
 
     public static final RegistryObject<EntityType<Warg>> WARG = ENTITY_TYPES.register(
             "warg",

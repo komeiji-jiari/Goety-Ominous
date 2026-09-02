@@ -3,10 +3,8 @@ package com.qiuyue.goetyominous.common.entities.ally.mobs.mm;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.alexander.mutantmore.config.mutant_shulker.MutantShulkerRewardsCommonConfig;
-import com.alexander.mutantmore.entities.MutantShulkerBullet;
 import com.alexander.mutantmore.events.ShakeCameraEvent;
 import com.alexander.mutantmore.init.EffectInit;
-import com.alexander.mutantmore.init.EntityTypeInit;
 import com.alexander.mutantmore.init.ItemInit;
 import com.alexander.mutantmore.init.MMDamageTypes;
 import com.alexander.mutantmore.init.SoundEventInit;
@@ -14,6 +12,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
+
+import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -53,9 +53,12 @@ public class MutantShulkerServantTrap extends Summoned {
     public int lifeTime;
     public int snapCooldownTick;
     public int snapCooldownLength = 40;
-    // 潜影贝召唤的陷阱硬寿命上限:即使 trap_turns_to_bullet 配置被关闭(或 multiuse 开启),
-    // 陷阱也会在 lifeTime 达到该值后强制播消散动画并移除,不会永久驻留。
-    private static final int MAX_LIFETIME_TICKS = 600; // 30 秒
+    private static final int MAX_LIFETIME_TICKS = 600;
+    public int bonusDamage = 0;
+    public boolean voidTouchedHit = false;
+    public int bulletTurnTimeReduction = 0;
+    public float bulletTrackSpeed = 1.25F;
+
 
     private final Predicate<Entity> SNAPPABLE = target -> this.isHostileTarget(target)
             && target instanceof LivingEntity && target.isAlive()
@@ -130,12 +133,10 @@ public class MutantShulkerServantTrap extends Summoned {
     public void baseTick() {
         super.baseTick();
         this.tickDownAnimTimers();
-        // 下落震屏:原每 tick 发一个网络包,节流到每 5 tick 一次,强度极低视觉无差
         if (!this.level().isClientSide && !this.onGround() && this.isSpawnedByMutantShulker()
                 && this.tickCount % 5 == 0) {
             ShakeCameraEvent.shake(this.level(), 3, 0.005f, this.blockPosition(), 3);
         }
-        // 就绪时每 2 tick 扫描一次触发(0.1s 延迟无感知),减少大量空闲陷阱的实体扫描开销
         if (!this.level().isClientSide && this.tickCount >= 20 && this.activateAnimationTick <= 0
                 && this.snapCooldownTick <= 0 && this.tickCount % 2 == 0
                 && !this.level().getEntities(this, this.getBoundingBox(), this.SNAPPABLE).isEmpty()) {
@@ -144,16 +145,18 @@ public class MutantShulkerServantTrap extends Summoned {
             this.activateAnimationTick = this.activateAnimationLength;
             this.level().broadcastEntityEvent(this, (byte) 4);
         }
-        // 伤害/减速只在 activateActionPoint 那一 tick 生效,故只在那一 tick 扫描实体,避免每 tick 空扫 AABB 并分配 List
         if (this.activateAnimationTick == this.activateActionPoint) {
             ShakeCameraEvent.shake(this.level(), 6, 0.075f, this.blockPosition(), 5);
-            float damage = this.isSpawnedByMutantShulker()
+            float damage = (this.isSpawnedByMutantShulker()
                     ? MutantShulkerRewardsCommonConfig.trap_mutant_shulker_damage.get().floatValue()
-                    : MutantShulkerRewardsCommonConfig.trap_player_damage.get().floatValue();
+                    : MutantShulkerRewardsCommonConfig.trap_player_damage.get().floatValue()) + this.bonusDamage;
             List<Entity> hurtables = this.level().getEntities(this, this.getBoundingBox(), this.HURTABLE);
             for (Entity entity : hurtables) {
                 entity.hurt(MMDamageTypes.mutantShulkerTrapAttack(this.damageSources(), this), damage);
                 if (!(entity instanceof LivingEntity)) continue;
+                if (this.voidTouchedHit) {
+                    ((LivingEntity) entity).addEffect(new MobEffectInstance(com.Polarice3.Goety.common.effects.GoetyEffects.VOID_TOUCHED.get(), 100, 0));
+                }
                 ((LivingEntity) entity).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,
                         MutantShulkerRewardsCommonConfig.trap_slowness_length.get(),
                         MutantShulkerRewardsCommonConfig.trap_slowness_level.get()));
@@ -167,12 +170,9 @@ public class MutantShulkerServantTrap extends Summoned {
         if (this.snapCooldownTick > 0) {
             --this.snapCooldownTick;
         }
-        // 触发消散:vanishAnimationTick <= 0 防止消散动画期间重复触发。
-        // 两个来源:1) 配置到期转弹射物(lifeTime == trap_turn_to_bullet_time);
-        // 2) 硬寿命兜底(lifeTime 达到 MAX_LIFETIME_TICKS),此时即使 trap_turns_to_bullet 关闭也会强制消散。
         if (!this.level().isClientSide && this.vanishAnimationTick <= 0
                 && ((MutantShulkerRewardsCommonConfig.trap_turns_to_bullet.get()
-                        && this.lifeTime == MutantShulkerRewardsCommonConfig.trap_turn_to_bullet_time.get())
+                && this.lifeTime == Math.max(1, MutantShulkerRewardsCommonConfig.trap_turn_to_bullet_time.get() - this.bulletTurnTimeReduction))
                     || this.lifeTime >= MAX_LIFETIME_TICKS)) {
             this.playSound(SoundEventInit.MUTANT_SHULKER_TRAP_VANISH.get());
             this.vanishAnimationTick = this.vanishAnimationLength;
@@ -180,20 +180,28 @@ public class MutantShulkerServantTrap extends Summoned {
         }
         if (!this.level().isClientSide && this.vanishAnimationTick == 1) {
             this.discard();
-            // 只在配置允许转弹射物时产出子弹:硬寿命兜底触发的消散不转弹,只移除陷阱
-            if (MutantShulkerRewardsCommonConfig.trap_turns_to_bullet.get() && this.getTarget() != null) {
-
-                MutantShulkerBullet bullet = new MutantShulkerServantBullet(EntityTypeInit.MUTANT_SHULKER_BULLET.get(), this.level());
-                bullet.damage = MutantShulkerRewardsCommonConfig.trap_shulker_bullet_damage.get().floatValue();
-                // 仆从子弹不破坏方块,与直接发射的导弹一致;不设则继承 MutantShulkerBullet 默认 griefing=true,爆炸会 DESTROY 方块
-                bullet.griefing = false;
-                bullet.levitationLength = MutantShulkerRewardsCommonConfig.trap_shulker_bullet_levitation_length.get();
-                bullet.levitationLevel = MutantShulkerRewardsCommonConfig.trap_shulker_bullet_levitation_level.get();
-                bullet.moveTo(this.getX(), this.getY() + 0.25, this.getZ());
-                LivingEntity owner = this.getTrueOwner();
-                bullet.setOwner(owner != null ? owner : this);
-                bullet.setTargetByID(this.getTarget().getId());
-                this.level().addFreshEntity(bullet);
+            if (MutantShulkerRewardsCommonConfig.trap_turns_to_bullet.get()) {
+                LivingEntity bulletTarget = this.getTarget();
+                if (bulletTarget == null || bulletTarget.isRemoved() || bulletTarget.isDeadOrDying()) {
+                    bulletTarget = this.level().getEntitiesOfClass(LivingEntity.class,
+                                    this.getBoundingBox().inflate(64.0D),
+                                    entity -> entity.isAlive() && this.isHostileTarget(entity))
+                            .stream()
+                            .min(java.util.Comparator.comparingDouble(entity -> this.distanceToSqr(entity)))
+                            .orElse(null);
+                }
+                if (bulletTarget != null) {
+                    MutantShulkerServantBullet bullet = new MutantShulkerServantBullet(MmEntityRegistry.MUTANT_SHULKER_SERVANT_BULLET.get(), this.level());
+                    bullet.damage = MutantShulkerRewardsCommonConfig.trap_shulker_bullet_damage.get().floatValue() + this.bonusDamage;
+                    bullet.trackSpeed = this.bulletTrackSpeed;
+                    bullet.levitationLength = MutantShulkerRewardsCommonConfig.trap_shulker_bullet_levitation_length.get();
+                    bullet.levitationLevel = MutantShulkerRewardsCommonConfig.trap_shulker_bullet_levitation_level.get();
+                    bullet.moveTo(this.getX(), this.getY() + 0.25, this.getZ());
+                    LivingEntity owner = this.getTrueOwner();
+                    bullet.setOwner(owner != null ? owner : this);
+                    bullet.setTarget(bulletTarget);
+                    this.level().addFreshEntity(bullet);
+                }
             }
         }
         if (!this.level().isClientSide && this.activateAnimationTick == 1
@@ -258,7 +266,6 @@ public class MutantShulkerServantTrap extends Summoned {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("SpawnedByMutantShulker", this.isSpawnedByMutantShulker());
         tag.putByte("Color", this.entityData.get(COLOR_ID));
-        // 保存寿命,防止区块卸载/重载后 lifeTime 清零,让硬寿命上限跨区块真正生效
         tag.putInt("LifeTime", this.lifeTime);
     }
 

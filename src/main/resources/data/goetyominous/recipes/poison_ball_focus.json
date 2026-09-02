@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "gbg",
+    "bhb",
+    "gbg"
+  ],
+  "key":
+  {
+    "b":
+    {
+      "item": "minecraft:slime_ball"
+    },
+    "h":
+    {
+      "item": "goety:empty_focus"
+    },
+    "g":
+    {
+      "item": "goety:venomous_fang"
+    }
+  },
+  "result":
+  {
+    "item": "goetyominous:poison_ball_focus",
+    "count": 1
+  }
+}

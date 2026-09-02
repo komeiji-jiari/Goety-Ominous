@@ -5,8 +5,7 @@ import com.alexander.mutantmore.init.SoundEventInit;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantShulkerServant;
 import java.util.EnumSet;
 import javax.annotation.Nullable;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
@@ -56,6 +55,9 @@ public class MutantShulkerServantAnvilCrushAttackGoal extends Goal {
             this.mob.level().playSound((Player)null, this.mob.xo, this.mob.yo, this.mob.zo, SoundEventInit.MUTANT_SHULKER_TELEPORT.get(), this.mob.getSoundSource(), 1.0F, 1.0F);
             this.mob.playSound(SoundEventInit.MUTANT_SHULKER_TELEPORT.get(), 1.0F, 1.0F);
             this.mob.setAnvilAttacking(true);
+            if (this.mob.hasVoidEye()) {
+                this.target.addEffect(new MobEffectInstance(com.Polarice3.Goety.common.effects.GoetyEffects.VOID_TOUCHED.get(), 200, 0));
+            }
         }
     }
 

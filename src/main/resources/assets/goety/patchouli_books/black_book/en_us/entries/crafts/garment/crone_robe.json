@@ -1,0 +1,27 @@
+{
+  "name": "Crone Robe",
+  "icon": "goetyominous:crone_robe",
+  "advancement": "goetyominous:goetyominous/witch_lesson",
+  "secret": true,
+  "category": "goety:crafts/garment",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Want to know what's under a crone's skirt? HAHAHA! you'll need to get your own robe first! Granny's robe was sewn by Granny's apprentice! Not only is it itchy, but it also comes with a built-in brewing stand!"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:crone_robe"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "This robe further enhances your Fel spells! Wearing this dress—as beautiful as Granny's dentures—also lets your muddy little boys feel the touch of soul healing!"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goety:crone_hat",
+      "title": "Crone Hat",
+      "text": "If you really want to be part of the family, don't forget to wear a Crone Hat! It keeps your Fel servants from fading away like Vexes! What's that? You're asking where Granny got her hat? Borrow one from another Granny HAHAHA!"
+    }
+  ]
+}
