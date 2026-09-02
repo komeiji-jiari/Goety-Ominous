@@ -80,7 +80,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
@@ -244,7 +243,8 @@ public class TremorzillaServant extends AnimalSummon
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(0, new FloatGoal(this));
+        // 原版 AC TremorzillaEntity 无 FloatGoal:入水移动靠 AllFluids 导航+寻路目标驱动,
+        // 不加水面跳跃目标,避免在普通水域周期性上跳、在水面上下漂浮而无法正常游泳。
         this.goalSelector.addGoal(1, new TremorzillaServantAttackGoal());
         this.goalSelector.addGoal(5, new TemptGoal(this, 1.1, Ingredient.of(ACBlockRegistry.WASTE_DRUM.get(), ACBlockRegistry.NUCLEAR_BOMB.get()), false));
         this.goalSelector.addGoal(6, new TremorzillaServantWanderGoal());
