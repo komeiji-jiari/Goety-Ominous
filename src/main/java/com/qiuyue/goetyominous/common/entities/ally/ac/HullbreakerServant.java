@@ -541,12 +541,11 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
             }
             double dist = HullbreakerServant.this.distanceTo(target);
             float f = HullbreakerServant.this.getBbWidth() + target.getBbWidth();
-            if (dist < (double) f + 7.0F && HullbreakerServant.this.getAnimation() == IAnimatedEntity.NO_ANIMATION) {
+            HullbreakerServant.this.lookAt(EntityAnchorArgument.Anchor.EYES, target.getEyePosition());
+            if (dist < (double) f + 7.0F && HullbreakerServant.this.getAnimation() == IAnimatedEntity.NO_ANIMATION && this.isTargetInFront(target)) {
                 this.tryAnimation(HullbreakerServant.this.getRandom().nextBoolean() && HullbreakerServant.this.hasLineOfSight(target) ? HullbreakerServant.ANIMATION_BITE : HullbreakerServant.ANIMATION_BASH);
             }
             if (dist > (double) (f + 2.0F)) {
-                HullbreakerServant.this.lookAt(EntityAnchorArgument.Anchor.EYES, target.getEyePosition());
-                
                 double chaseSpeed = target.hasEffect(MobEffects.GLOWING)
                         ? AttributesConfig.HullbreakerServantGlowChaseSpeed.get()
                         : 1.6D;
@@ -561,8 +560,16 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
             SubmarineEntity.alertSubmarineMountOf(target);
         }
 
+        private boolean isTargetInFront(LivingEntity target) {
+            Vec3 look = HullbreakerServant.this.getLookAngle();
+            Vec3 toTarget = target.getEyePosition()
+                    .subtract(HullbreakerServant.this.getEyePosition())
+                    .normalize();
+            return look.dot(toTarget) > 0.5F;
+        }
+
         private void checkAndDealDamage(LivingEntity target, float multiplier) {
-            if (HullbreakerServant.this.hasLineOfSight(target) && (double) HullbreakerServant.this.distanceTo(target) < (double) (HullbreakerServant.this.getBbWidth() + target.getBbWidth()) + 5.0F) {
+            if (this.isTargetInFront(target) && HullbreakerServant.this.hasLineOfSight(target) && (double) HullbreakerServant.this.distanceTo(target) < (double) (HullbreakerServant.this.getBbWidth() + target.getBbWidth()) + 5.0F) {
                 float f = (float) HullbreakerServant.this.getAttributeValue(Attributes.ATTACK_DAMAGE) * multiplier;
                 target.hurt(target.damageSources().mobAttack(HullbreakerServant.this), f);
                 target.knockback(0.8 + 0.5F * multiplier, HullbreakerServant.this.getX() - target.getX(), HullbreakerServant.this.getZ() - target.getZ());
