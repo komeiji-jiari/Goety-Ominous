@@ -94,6 +94,7 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> HullbreakerServantBlockBreakGriefing;
     public static final ForgeConfigSpec.ConfigValue<Double> HullbreakerServantGlowTargetRange;
     public static final ForgeConfigSpec.ConfigValue<Double> HullbreakerServantGlowChaseSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> HullbreakerServantProximityTargetRange;
     public static final ForgeConfigSpec.ConfigValue<Double> BrainiacServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> BrainiacServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> BrainiacServantMovementSpeed;
@@ -1003,6 +1004,8 @@ public class AttributesConfig {
                 .defineInRange("hullbreakerServantGlowTargetRange", 48.0, 8.0, Double.MAX_VALUE);
         HullbreakerServantGlowChaseSpeed = BUILDER.comment("Swim speed Hullbreaker Servants use when chasing a glowing target, Default: 2.4 (normal approach speed is 1.6)")
                 .defineInRange("hullbreakerServantGlowChaseSpeed", 2.4, 0.1, Double.MAX_VALUE);
+        HullbreakerServantProximityTargetRange = BUILDER.comment("How close (in blocks) a non-glowing enemy must be for Hullbreaker Servants to sense and attack it, Default: 6.0")
+                .defineInRange("hullbreakerServantProximityTargetRange", 6.0, 2.0, 64.0);
         BrainiacServantHealth = BUILDER.comment("How much Max Health Brainiac Servants have, Default: 40.0 (matches Alex's Caves Brainiac)")
                 .defineInRange("brainiacServantHealth", 40.0, 1.0, Double.MAX_VALUE);
         BrainiacServantDamage = BUILDER.comment("How much damage Brainiac Servants deal, Default: 5.0 (matches Alex's Caves Brainiac)")

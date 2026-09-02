@@ -164,6 +164,7 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
         }
         
         this.targetSelector.addGoal(2, new GlowingTargetGoal(this));
+        this.targetSelector.addGoal(3, new ProximityTargetGoal(this));
         this.goalSelector.addGoal(1, new MeleeGoal());
         this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(6, new AnimalRandomlySwimGoal(this, 10, 35, 15, 1.0D));
@@ -488,10 +489,28 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
                             && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target));
         }
 
-        
+
         @Override
         protected double getFollowDistance() {
             return AttributesConfig.HullbreakerServantGlowTargetRange.get();
+        }
+    }
+
+    private class ProximityTargetGoal extends NearestAttackableTargetGoal<LivingEntity> {
+
+        private ProximityTargetGoal(Mob mob) {
+            super(mob, LivingEntity.class, 5, false, false, target ->
+                    MobUtil.isOwnedTargetable(HullbreakerServant.this, target));
+        }
+
+        @Override
+        protected double getFollowDistance() {
+            return AttributesConfig.HullbreakerServantProximityTargetRange.get();
+        }
+
+        @Override
+        protected AABB getTargetSearchArea(double distance) {
+            return this.mob.getBoundingBox().inflate(distance, distance, distance);
         }
     }
 
