@@ -45,6 +45,8 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> BrainiacServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> CaniacServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> GummyBearServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> CaramelCubeServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> GumbeeperServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> GammaroachServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> CorrodentServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> DeepOneServantLimit;
@@ -249,6 +251,14 @@ public class MobsConfig {
         GummyBearServantLimit = BUILDER
                 .comment("Maximum number of Gummy Bear Servants that can be summoned (Default: 16)")
                 .defineInRange("gummyBearServantLimit", 16, 1, 100);
+
+        CaramelCubeServantLimit = BUILDER
+                .comment("Maximum number of Caramel Cube Servants that can be summoned (Default: 16)")
+                .defineInRange("caramelCubeServantLimit", 16, 1, 100);
+
+        GumbeeperServantLimit = BUILDER
+                .comment("Maximum number of Gumbeeper Servants that can be summoned (Default: 16)")
+                .defineInRange("gumbeeperServantLimit", 16, 1, 100);
 
         GammaroachServantLimit = BUILDER
                 .comment("Maximum number of Gammaroach Servants that can be summoned (Default: 64)")

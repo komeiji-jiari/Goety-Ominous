@@ -72,6 +72,15 @@ public class AcItems {
             AC_ITEMS.register("gummy_bear_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AcEntityRegistry.GUMMY_BEAR_SERVANT, 0xFF463F, 0xFDA09E, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> CARAMEL_CUBE_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("caramel_cube_servant_spawn_egg",
+                    // 焦糖色主体 + 奶油色糖纸(AC CaramelCube 无原版蛋,取自贴图主色)。
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.CARAMEL_CUBE_SERVANT, 0xDDAA4E, 0xF6E3C3, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> GUMBEEPER_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("gumbeeper_servant_spawn_egg",
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.GUMBEEPER_SERVANT, 0xFF2B44, 0xE7BAFF, egg()));
+
     public static final RegistryObject<ServantSpawnEggItem> MINE_GUARDIAN_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("mine_guardian_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AcEntityRegistry.MINE_GUARDIAN_SERVANT, 0x243B52, 0x8AC3D6, egg()));

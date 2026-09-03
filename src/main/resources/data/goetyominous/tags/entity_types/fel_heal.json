@@ -6,7 +6,20 @@
     "goety:warlock_servant",
     "goety:slime_servant",
     "goety:muck_wraith_servant",
-    "goetyominous:caniac_servant",
-    "goetyominous:gummy_bear_servant"
-  ]
+    {
+      "id": "goetyominous:caniac_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:gummy_bear_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:caramel_cube_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:gumbeeper_servant",
+      "required": false
+    }
 }

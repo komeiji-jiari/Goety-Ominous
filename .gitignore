@@ -61,3 +61,10 @@ javap_init.gradle
 
 # Forge 模板残留（根目录 META-INF，非源码）
 /META-INF/
+
+# CFR / MC 反编译脚手架（本地参考用，不入库）
+_ac_classes.txt
+/_cfr_tmp*/
+/_mcdec/
+build_gradle.log
+cfr_init.gradle

@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
-    "goetyominous:warped_mosco_servant"
+    {
+      "id": "goetyominous:warped_mosco_servant",
+      "required": false
+    }
   ]
 }

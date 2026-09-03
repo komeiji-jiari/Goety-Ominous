@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.ally.ac;
 
 import com.Polarice3.Goety.common.entities.ally.AnimalSummon;
+import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.github.alexmodguy.alexscaves.client.particle.ACParticleRegistry;
 import com.github.alexmodguy.alexscaves.server.entity.ai.GroundPathNavigatorNoSpin;
@@ -43,7 +44,6 @@ import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
@@ -138,7 +138,9 @@ public class GummyBearServant extends AnimalSummon implements IAnimatedEntity {
         this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(2, new SitGoal());
         this.goalSelector.addGoal(3, new GummyBearMeleeGoal());
-        this.goalSelector.addGoal(4, new RandomStrollGoal(this, 1.0D, 45));
+        // 用 Goety 的 WanderGoal(checkNoActionTime=false)游荡:AnimalSummon/Summoned 覆写 checkDespawn 后 noActionTime 永不复位,
+        // 原版 RandomStrollGoal 空闲约 5 秒即 noActionTime>=100 被永久禁用而站桩不动;WanderGoal 落点限定在主人附近。
+        this.goalSelector.addGoal(4, new Summoned.WanderGoal<>(this, 1.0D, 45, 0.001F));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         // 主动猎鱼:对同色 SweetishFish(原版 GummyBearEntity 行为),幼体不猎鱼。优先级 3,低于继承的

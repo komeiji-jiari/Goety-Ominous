@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
-    "goetyominous:lm_music_disc"
+    {
+      "id": "goetyominous:lm_music_disc",
+      "required": false
+    }
   ]
 }
