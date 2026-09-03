@@ -692,6 +692,13 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.GUMMY_BEAR_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderGummyBearServant::new);
             event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.CARAMEL_CUBE_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderCaramelCubeServant::new);
+            // 焦糖液沿用 AC 原版渲染(纯贴图扁片,不依赖 AC 实体模型),外观一致。
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.MELTED_CARAMEL_SERVANT.get(),
+                    com.github.alexmodguy.alexscaves.client.render.entity.MeltedCaramelRenderer::new);
+            event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.MINE_GUARDIAN_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderMineGuardianServant::new);
             event.registerEntityRenderer(
@@ -718,6 +725,12 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.TREMORZILLA_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderTremorzillaServant::new);
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.GUMBEEPER_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderGumbeeperServant::new);
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.GUMBALL_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderGumballServantEntity::new);
         }
     }
 

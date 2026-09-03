@@ -65,7 +65,8 @@ public class CreepieServant extends Summoned implements PowerableMob {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new CreeperSwellGoal(this));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, false));
-        this.goalSelector.addGoal(3, new RandomStrollGoal(this, 1.0D));
+        // 用 Goety 的 WanderGoal(checkNoActionTime=false):非敌对 Summoned 的 noActionTime 永不复位,原版 RandomStrollGoal 空闲约5秒即被永久禁用而站桩。
+        this.goalSelector.addGoal(3, new Summoned.WanderGoal<>(this, 1.0D));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(5, new AvoidEntityGoal<>(this, Cat.class, 6.0F, 1.0D, 1.2D));

@@ -113,6 +113,18 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> GummyBearServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> GummyBearServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> GummyBearServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> CaramelCubeServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> CaramelCubeServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> CaramelCubeServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> CaramelCubeServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> CaramelCubeServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> CaramelCubeServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> GumbeeperServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> GumbeeperServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> GumbeeperServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> GumbeeperServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> GumbeeperServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> GumbeeperServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantMovementSpeed;
@@ -1054,6 +1066,30 @@ public class AttributesConfig {
                 .defineInRange("gummyBearServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
         GummyBearServantArmor = BUILDER.comment("How much natural Armor Gummy Bear Servants have, Default: 0.0 (matches Alex's Caves Gummy Bear)")
                 .defineInRange("gummyBearServantArmor", 0.0, 0.0, Double.MAX_VALUE);
+        CaramelCubeServantHealth = BUILDER.comment("Base Max Health of Caramel Cube Servants (size 0), Default: 4.0 (matches Alex's Caves Caramel Cube); larger sizes add +6 per size")
+                .defineInRange("caramelCubeServantHealth", 4.0, 1.0, Double.MAX_VALUE);
+        CaramelCubeServantDamage = BUILDER.comment("Base attack damage of Caramel Cube Servants (size 0), Default: 2.0 (matches Alex's Caves Caramel Cube); larger sizes add +2 per size")
+                .defineInRange("caramelCubeServantDamage", 2.0, 1.0, Double.MAX_VALUE);
+        CaramelCubeServantMovementSpeed = BUILDER.comment("Base movement speed of Caramel Cube Servants (size 0), Default: 0.25 (matches Alex's Caves Caramel Cube); larger sizes add +0.1 per size")
+                .defineInRange("caramelCubeServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
+        CaramelCubeServantFollowRange = BUILDER.comment("How much following/detection range Caramel Cube Servants have, Default: 32.0")
+                .defineInRange("caramelCubeServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
+        CaramelCubeServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Caramel Cube Servants have, Default: 0.0 (Alex's Caves Caramel Cube has none)")
+                .defineInRange("caramelCubeServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
+        CaramelCubeServantArmor = BUILDER.comment("How much natural Armor Caramel Cube Servants have, Default: 0.0 (matches Alex's Caves Caramel Cube)")
+                .defineInRange("caramelCubeServantArmor", 0.0, 0.0, Double.MAX_VALUE);
+        GumbeeperServantHealth = BUILDER.comment("How much Max Health Gumbeeper Servants have, Default: 14.0 (matches Alex's Caves Gumbeeper)")
+                .defineInRange("gumbeeperServantHealth", 14.0, 1.0, Double.MAX_VALUE);
+        GumbeeperServantDamage = BUILDER.comment("How much damage Gumbeeper Servants' gumballs deal, Default: 4.0 (matches Alex's Caves Gumbeeper)")
+                .defineInRange("gumbeeperServantDamage", 4.0, 1.0, Double.MAX_VALUE);
+        GumbeeperServantMovementSpeed = BUILDER.comment("How fast Gumbeeper Servants move, Default: 0.2 (matches Alex's Caves Gumbeeper)")
+                .defineInRange("gumbeeperServantMovementSpeed", 0.2, 0.0, Double.MAX_VALUE);
+        GumbeeperServantFollowRange = BUILDER.comment("How much following/detection range Gumbeeper Servants have, Default: 32.0")
+                .defineInRange("gumbeeperServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
+        GumbeeperServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Gumbeeper Servants have, Default: 0.0 (Alex's Caves Gumbeeper has none)")
+                .defineInRange("gumbeeperServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
+        GumbeeperServantArmor = BUILDER.comment("How much natural Armor Gumbeeper Servants have, Default: 4.0 (matches Alex's Caves Gumbeeper)")
+                .defineInRange("gumbeeperServantArmor", 4.0, 0.0, Double.MAX_VALUE);
         GammaroachServantHealth = BUILDER.comment("How much Max Health Gammaroach Servants have, Default: 14.0 (matches Alex's Caves Gammaroach)")
                 .defineInRange("gammaroachServantHealth", 14.0, 1.0, Double.MAX_VALUE);
         GammaroachServantDamage = BUILDER.comment("How much damage Gammaroach Servants deal, Default: 2.0 (matches Alex's Caves Gammaroach)")

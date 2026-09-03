@@ -36,7 +36,6 @@ import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -93,7 +92,9 @@ public class CaniacServant extends Summoned implements IAnimatedEntity {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new CaniacMeleeGoal());
-        this.goalSelector.addGoal(3, new RandomStrollGoal(this, 1.0D, 45));
+        // 用 Goety 的 WanderGoal(checkNoActionTime=false)游荡:Summoned 覆写 checkDespawn 后 noActionTime 永不复位,
+        // 原版 RandomStrollGoal 空闲约 5 秒即 noActionTime>=100 被永久禁用而站桩不动;WanderGoal 落点限定在主人附近。
+        this.goalSelector.addGoal(3, new Summoned.WanderGoal<>(this, 1.0D, 45, 0.001F));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 15.0F));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
     }

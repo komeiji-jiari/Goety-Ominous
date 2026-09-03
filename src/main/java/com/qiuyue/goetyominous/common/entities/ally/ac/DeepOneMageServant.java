@@ -185,7 +185,7 @@ public class DeepOneMageServant extends Summoned implements IDeepOneBarterer, IA
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 16.0F));
         this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(6, new AnimalRandomlySwimGoal(this, 12, 18, 18, 1.0D));
-        this.goalSelector.addGoal(6, new RandomStrollGoal(this, 2.0D, 45) {
+        this.goalSelector.addGoal(6, new RandomStrollGoal(this, 2.0D, 45, false) {
             @Override
             public boolean canUse() {
                 return !DeepOneMageServant.this.isInWaterOrBubble() && !DeepOneMageServant.this.isStaying() && super.canUse() && DeepOneMageServant.this.getAnimation() != DeepOneMageServant.ANIMATION_TRADE;

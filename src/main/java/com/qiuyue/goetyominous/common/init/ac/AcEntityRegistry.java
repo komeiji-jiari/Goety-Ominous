@@ -3,14 +3,17 @@ package com.qiuyue.goetyominous.common.init.ac;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.ac.BrainiacServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.CaniacServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.CaramelCubeServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.CorrodentServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneKnightServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneMageServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.GammaroachServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.GrottoceratopsServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.GumbeeperServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.GummyBearServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.MeltedCaramelServantEntity;
 import com.qiuyue.goetyominous.common.entities.ally.ac.MineGuardianServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.NucleeperServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TremorsaurusServant;
@@ -18,6 +21,7 @@ import com.qiuyue.goetyominous.common.entities.ally.ac.TremorzillaServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.VallumraptorServant;
 import com.qiuyue.goetyominous.common.entities.projectile.DeepOneMageServantWaterBolt;
 import com.qiuyue.goetyominous.common.entities.projectile.DeepOneMageServantWave;
+import com.qiuyue.goetyominous.common.entities.projectile.GumballServantEntity;
 import com.qiuyue.goetyominous.common.entities.projectile.DeepOneServantWave;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -102,6 +106,14 @@ public class AcEntityRegistry {
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":gummy_bear_servant"));
 
+    public static final RegistryObject<EntityType<CaramelCubeServant>> CARAMEL_CUBE_SERVANT =
+            AC_ENTITIES.register("caramel_cube_servant",
+                    () -> EntityType.Builder.<CaramelCubeServant>of((type, worldIn) -> new CaramelCubeServant(type, worldIn), MobCategory.MISC)
+                            // 基础尺寸 = size 0 的小型;更大体型由 getDimensions() 动态返回(0.8/1.5/3.5)。
+                            .sized(0.8F, 0.8F)
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":caramel_cube_servant"));
+
     public static final RegistryObject<EntityType<MineGuardianServant>> MINE_GUARDIAN_SERVANT =
             AC_ENTITIES.register("mine_guardian_servant",
                     () -> EntityType.Builder.<MineGuardianServant>of((type, worldIn) -> new MineGuardianServant(type, worldIn), MobCategory.MISC)
@@ -110,6 +122,14 @@ public class AcEntityRegistry {
                             .setShouldReceiveVelocityUpdates(true)
                             .setUpdateInterval(1)
                             .build(GoetyOminous.MOD_ID + ":mine_guardian_servant"));
+
+    public static final RegistryObject<EntityType<MeltedCaramelServantEntity>> MELTED_CARAMEL_SERVANT =
+            AC_ENTITIES.register("melted_caramel_servant",
+                    () -> EntityType.Builder.<MeltedCaramelServantEntity>of((type, worldIn) -> new MeltedCaramelServantEntity(type, worldIn), MobCategory.MISC)
+                            // 与 AC 原版 melted_caramel 尺寸一致(0.99 x 0.1 贴地扁片),外观相同。
+                            .sized(0.99F, 0.1F)
+                            .setCustomClientFactory((spawnEntity, world) -> new MeltedCaramelServantEntity(spawnEntity, world))
+                            .build(GoetyOminous.MOD_ID + ":melted_caramel_servant"));
 
     public static final RegistryObject<EntityType<HullbreakerServant>> HULLBREAKER_SERVANT =
             AC_ENTITIES.register("hullbreaker_servant",
@@ -165,6 +185,24 @@ public class AcEntityRegistry {
                             .setShouldReceiveVelocityUpdates(true)
                             .setUpdateInterval(1)
                             .build(GoetyOminous.MOD_ID + ":deep_one_mage_servant_water_bolt"));
+
+    public static final RegistryObject<EntityType<GumbeeperServant>> GUMBEEPER_SERVANT =
+            AC_ENTITIES.register("gumbeeper_servant",
+                    () -> EntityType.Builder.<GumbeeperServant>of((type, worldIn) -> new GumbeeperServant(type, worldIn), MobCategory.MISC)
+                            // 与 AC 原版 Gumbeeper 尺寸一致(0.8 x 1.6)。
+                            .sized(0.8F, 1.6F)
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":gumbeeper_servant"));
+
+    public static final RegistryObject<EntityType<GumballServantEntity>> GUMBALL_SERVANT =
+            AC_ENTITIES.register("gumball_servant",
+                    () -> EntityType.Builder.<GumballServantEntity>of((type, worldIn) -> new GumballServantEntity(type, worldIn), MobCategory.MISC)
+                            // 与 AC 原版 Gumball 尺寸一致(0.25 x 0.25)。
+                            .sized(0.25F, 0.25F)
+                            .setTrackingRange(8)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .setUpdateInterval(1)
+                            .build(GoetyOminous.MOD_ID + ":gumball_servant"));
 
     public static void register(IEventBus modEventBus) {
         AC_ENTITIES.register(modEventBus);

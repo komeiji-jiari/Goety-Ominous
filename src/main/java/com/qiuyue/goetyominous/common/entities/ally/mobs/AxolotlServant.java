@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.entities.ally.mobs;
 
 import com.Polarice3.Goety.client.particles.ModParticleTypes;
 import com.Polarice3.Goety.common.entities.ally.AnimalSummon;
+import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.config.MobsConfig;
 import com.Polarice3.Goety.utils.ServerParticleUtil;
@@ -31,7 +32,6 @@ import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.navigation.AmphibiousPathNavigation;
@@ -80,7 +80,8 @@ public class AxolotlServant extends AnimalSummon implements LerpingModel{
         super.registerGoals();
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 0.6D, true));
         this.goalSelector.addGoal(2, new BreedGoal(this, 0.2D));
-        this.goalSelector.addGoal(3, new RandomStrollGoal(this, 0.5D));
+        // 用 Goety 的 WanderGoal(checkNoActionTime=false):非敌对 Summoned 的 noActionTime 永不复位,原版 RandomStrollGoal 空闲约5秒即被永久禁用而站桩。
+        this.goalSelector.addGoal(3, new Summoned.WanderGoal<>(this, 0.5D));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
     }
