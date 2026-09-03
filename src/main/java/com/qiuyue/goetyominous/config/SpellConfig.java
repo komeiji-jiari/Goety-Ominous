@@ -402,8 +402,8 @@ public class SpellConfig {
                 .defineInRange("shulkerBulletSoulCost", 24, 1, 100);
         ShulkerBulletCooldown = BUILDER.comment("Cooldown of Shulker Bullet spell in ticks (Default: 100)")
                 .defineInRange("shulkerBulletCooldown", 100, 0, 2000);
-        ShulkerBulletCastDuration = BUILDER.comment("Cast duration of Shulker Bullet spell in ticks (Default: 60)")
-                .defineInRange("shulkerBulletCastDuration", 60, 0, 500);
+        ShulkerBulletCastDuration = BUILDER.comment("Cast duration of Shulker Bullet spell in ticks (Default: 40)")
+                .defineInRange("shulkerBulletCastDuration", 40, 0, 500);
         ShulkerBulletDamage = BUILDER.comment("Base damage of Shulker Bullet (Default: 8.0)")
                 .defineInRange("shulkerBulletDamage", 8.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();

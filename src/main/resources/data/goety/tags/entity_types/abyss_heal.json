@@ -2,8 +2,17 @@
   "replace": false,
   "__comment": "servants that heals and lose limited lifespan through Abyss set.",
   "values": [
-    "goetyominous:zombie_crocodile_servant",
-    "goetyominous:hullbreaker_servant",
-    "goetyominous:skelewag_servant"
+    {
+      "id": "goetyominous:zombie_crocodile_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:skelewag_servant",
+      "required": false
+    },
+    {
+      "id":"goetyominous:hullbreaker_servant",
+      "required": false
+    }
   ]
 }

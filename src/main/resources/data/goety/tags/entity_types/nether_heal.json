@@ -2,12 +2,27 @@
   "replace": false,
   "__comment": "servants that heals and lose limited lifespan through Nether set.",
   "values": [
-    "goetyominous:mutant_wither_skeleton_servant",
-    "goetyominous:crimson_mosquito_servant",
-    "goetyominous:warped_mosco_servant",
-    "goetyominous:dropbear_servant",
+    {
+      "id": "goetyominous:mutant_wither_skeleton_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:crimson_mosquito_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:warped_mosco_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:dropbear_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:wither_skelewag_servant",
+      "required": false
+    },
     "goetyominous:returned",
-    "goetyominous:agony",
-    "goetyominous:wither_skelewag_servant"
+    "goetyominous:agony"
   ]
 }

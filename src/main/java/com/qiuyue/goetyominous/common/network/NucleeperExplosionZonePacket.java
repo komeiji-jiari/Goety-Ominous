@@ -12,7 +12,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-
 public class NucleeperExplosionZonePacket {
 
     private final ResourceKey<Level> dimension;

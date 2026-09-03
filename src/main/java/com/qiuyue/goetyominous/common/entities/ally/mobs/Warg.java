@@ -153,6 +153,9 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
         if (!this.level().isClientSide) {
             this.registerPersistentAssignment();
             this.tickSwordAttack();
+            for (Entity passenger : this.getPassengers()) {
+                passenger.fallDistance = 0.0F;
+            }
         } else {
             this.updateAnimationStates();
         }
