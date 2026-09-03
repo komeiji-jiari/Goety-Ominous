@@ -4,6 +4,7 @@ import com.Polarice3.Goety.api.magic.SpellType;
 import com.Polarice3.Goety.common.enchantments.ModEnchantments;
 import com.Polarice3.Goety.common.magic.EverChargeSpell;
 import com.Polarice3.Goety.common.magic.SpellStat;
+import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.alexander.mutantmore.config.mutant_shulker.MutantShulkerCommonConfig;
@@ -18,13 +19,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class ShulkerBulletSpell extends EverChargeSpell {
@@ -59,7 +55,7 @@ public class ShulkerBulletSpell extends EverChargeSpell {
     @Nullable
     @Override
     public SoundEvent CastingSound() {
-        return SoundEventInit.MUTANT_SHULKER_SHOOT.get();
+        return (SoundEvent) ModSounds.VOID_PREPARE_SPELL.get();
     }
 
     @Override
@@ -89,19 +85,21 @@ public class ShulkerBulletSpell extends EverChargeSpell {
         if (caster instanceof Player) {
             Vec3 eyePos = caster.getEyePosition(1.0F);
             Vec3 lookVec = caster.getViewVector(1.0F);
-            Vec3 end = eyePos.add(lookVec.scale(64.0D));
-            BlockHitResult blockHit = worldIn.clip(new ClipContext(eyePos, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, caster));
-            double maxRange = eyePos.distanceToSqr(blockHit.getLocation());
-            HitResult hit = ProjectileUtil.getEntityHitResult(worldIn, caster, eyePos, end,
-                    caster.getBoundingBox().expandTowards(lookVec.scale(64.0D)).inflate(1.0D),
+            double bestDot = 0.98D;
+            for (LivingEntity entity : worldIn.getEntitiesOfClass(LivingEntity.class,
+                    caster.getBoundingBox().inflate(64.0D),
                     e -> e != caster && e.isAlive() && !MobUtil.areAllies(caster, e)
-                            && !(e instanceof Player p && (p.isCreative() || p.isSpectator())),
-                    (float) Math.sqrt(maxRange));
-            if (hit instanceof EntityHitResult entityHit && entityHit.getEntity() instanceof LivingEntity living) {
-                target = living;
+                            && !(e instanceof Player p && (p.isCreative() || p.isSpectator())))) {
+                Vec3 toEntity = entity.getEyePosition(1.0F).subtract(eyePos);
+                double distSq = toEntity.lengthSqr();
+                if (distSq < 1.0D) continue;
+                double dot = toEntity.normalize().dot(lookVec);
+                if (dot > bestDot && caster.hasLineOfSight(entity)) {
+                    bestDot = dot;
+                    target = entity;
+                }
             }
         }
-
         if (target == null) {
             double bestDist = Double.MAX_VALUE;
             for (LivingEntity entity : worldIn.getEntitiesOfClass(LivingEntity.class,

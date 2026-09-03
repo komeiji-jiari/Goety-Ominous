@@ -2,6 +2,9 @@
   "replace": false,
   "values": [
     "goetyominous:urbhadhach_servant",
-    "goetyominous:stray_skelewag_servant"
+    {
+      "id": "goetyominous:stray_skelewag_servant",
+      "required": false
+    }
   ]
 }

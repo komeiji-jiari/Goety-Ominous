@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
-    "goetyominous:mutant_shulker_servant"
+    {
+      "id": "goetyominous:mutant_shulker_servant",
+      "required": false
+    }
   ]
 }
