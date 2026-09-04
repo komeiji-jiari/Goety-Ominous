@@ -125,6 +125,12 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> GumbeeperServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> GumbeeperServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> GumbeeperServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> VesperServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> VesperServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> VesperServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> VesperServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> VesperServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> VesperServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantMovementSpeed;
@@ -1090,6 +1096,18 @@ public class AttributesConfig {
                 .defineInRange("gumbeeperServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
         GumbeeperServantArmor = BUILDER.comment("How much natural Armor Gumbeeper Servants have, Default: 4.0 (matches Alex's Caves Gumbeeper)")
                 .defineInRange("gumbeeperServantArmor", 4.0, 0.0, Double.MAX_VALUE);
+        VesperServantHealth = BUILDER.comment("How much Max Health Vesper Servants have, Default: 16.0 (matches Alex's Caves Vesper)")
+                .defineInRange("vesperServantHealth", 16.0, 1.0, Double.MAX_VALUE);
+        VesperServantDamage = BUILDER.comment("How much damage Vesper Servants deal, Default: 3.0 (matches Alex's Caves Vesper)")
+                .defineInRange("vesperServantDamage", 3.0, 1.0, Double.MAX_VALUE);
+        VesperServantMovementSpeed = BUILDER.comment("How fast Vesper Servants fly, Default: 0.25 (matches Alex's Caves Vesper; flight is driven by the custom flight move controller)")
+                .defineInRange("vesperServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
+        VesperServantFollowRange = BUILDER.comment("How much following/detection range Vesper Servants have, Default: 32.0 (Alex's Caves Vesper natural mob uses 52; a summon uses a tighter 32 so it does not dart after far-away mobs)")
+                .defineInRange("vesperServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
+        VesperServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Vesper Servants have, Default: 0.0 (Alex's Caves Vesper has none)")
+                .defineInRange("vesperServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
+        VesperServantArmor = BUILDER.comment("How much natural Armor Vesper Servants have, Default: 0.0 (matches Alex's Caves Vesper)")
+                .defineInRange("vesperServantArmor", 0.0, 0.0, Double.MAX_VALUE);
         GammaroachServantHealth = BUILDER.comment("How much Max Health Gammaroach Servants have, Default: 14.0 (matches Alex's Caves Gammaroach)")
                 .defineInRange("gammaroachServantHealth", 14.0, 1.0, Double.MAX_VALUE);
         GammaroachServantDamage = BUILDER.comment("How much damage Gammaroach Servants deal, Default: 2.0 (matches Alex's Caves Gammaroach)")

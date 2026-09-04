@@ -19,6 +19,7 @@ import com.qiuyue.goetyominous.common.entities.ally.ac.NucleeperServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TremorsaurusServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TremorzillaServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.VallumraptorServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.VesperServant;
 import com.qiuyue.goetyominous.common.entities.projectile.DeepOneMageServantWaterBolt;
 import com.qiuyue.goetyominous.common.entities.projectile.DeepOneMageServantWave;
 import com.qiuyue.goetyominous.common.entities.projectile.GumballServantEntity;
@@ -193,6 +194,16 @@ public class AcEntityRegistry {
                             .sized(0.8F, 1.6F)
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":gumbeeper_servant"));
+
+    public static final RegistryObject<EntityType<VesperServant>> VESPER_SERVANT =
+            AC_ENTITIES.register("vesper_servant",
+                    () -> EntityType.Builder.<VesperServant>of((type, worldIn) -> new VesperServant(type, worldIn), MobCategory.MISC)
+                            // 与 AC 原版 Vesper 尺寸一致(1.2 x 1.65)。
+                            .sized(1.2F, 1.65F)
+                            .setTrackingRange(12)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .setUpdateInterval(1)
+                            .build(GoetyOminous.MOD_ID + ":vesper_servant"));
 
     public static final RegistryObject<EntityType<GumballServantEntity>> GUMBALL_SERVANT =
             AC_ENTITIES.register("gumball_servant",
