@@ -731,6 +731,9 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.GUMBALL_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderGumballServantEntity::new);
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.VESPER_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderVesperServant::new);
         }
     }
 

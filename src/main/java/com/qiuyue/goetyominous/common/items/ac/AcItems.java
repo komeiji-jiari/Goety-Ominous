@@ -81,6 +81,11 @@ public class AcItems {
             AC_ITEMS.register("gumbeeper_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AcEntityRegistry.GUMBEEPER_SERVANT, 0xFF2B44, 0xE7BAFF, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> VESPER_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("vesper_servant_spawn_egg",
+                    // 蛋色取自 AC 原版 vesper 刷怪蛋:0x884E2A(毛皮棕褐)/0xA54A6B(膜翼绛紫)。
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.VESPER_SERVANT, 0x884E2A, 0xA54A6B, egg()));
+
     public static final RegistryObject<ServantSpawnEggItem> MINE_GUARDIAN_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("mine_guardian_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AcEntityRegistry.MINE_GUARDIAN_SERVANT, 0x243B52, 0x8AC3D6, egg()));

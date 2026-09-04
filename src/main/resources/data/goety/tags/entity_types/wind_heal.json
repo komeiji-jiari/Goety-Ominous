@@ -5,6 +5,10 @@
     {
       "id": "goetyominous:guster_servant",
       "required": false
+    },
+    {
+      "id": "goetyominous:vesper_servant",
+      "required": false
     }
   ]
 }
