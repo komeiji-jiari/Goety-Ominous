@@ -16,6 +16,8 @@ import com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.MeltedCaramelServantEntity;
 import com.qiuyue.goetyominous.common.entities.ally.ac.MineGuardianServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.NucleeperServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.TeletorServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.TeletorWeaponServantEntity;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TremorsaurusServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TremorzillaServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.VallumraptorServant;
@@ -204,6 +206,27 @@ public class AcEntityRegistry {
                             .setShouldReceiveVelocityUpdates(true)
                             .setUpdateInterval(1)
                             .build(GoetyOminous.MOD_ID + ":vesper_servant"));
+
+    public static final RegistryObject<EntityType<TeletorServant>> TELETOR_SERVANT =
+            AC_ENTITIES.register("teletor_servant",
+                    () -> EntityType.Builder.<TeletorServant>of((type, worldIn) -> new TeletorServant(type, worldIn), MobCategory.MISC)
+                            // 与 AC 原版 Teletor 大致尺寸一致(悬浮机器人,身高近 2 格)。
+                            .sized(0.99F, 1.99F)
+                            .setTrackingRange(12)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .setUpdateInterval(1)
+                            .build(GoetyOminous.MOD_ID + ":teletor_servant"));
+
+    public static final RegistryObject<EntityType<TeletorWeaponServantEntity>> TELETOR_WEAPON_SERVANT =
+            AC_ENTITIES.register("teletor_weapon_servant",
+                    () -> EntityType.Builder.<TeletorWeaponServantEntity>of((type, worldIn) -> new TeletorWeaponServantEntity(type, worldIn), MobCategory.MISC)
+                            // 兵刃本体小(0.5 x 0.5),渲染主要画其中的剑模型。
+                            .sized(0.5F, 0.5F)
+                            .setTrackingRange(12)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .setUpdateInterval(1)
+                            .setCustomClientFactory((spawnEntity, world) -> new TeletorWeaponServantEntity(spawnEntity, world))
+                            .build(GoetyOminous.MOD_ID + ":teletor_weapon_servant"));
 
     public static final RegistryObject<EntityType<GumballServantEntity>> GUMBALL_SERVANT =
             AC_ENTITIES.register("gumball_servant",

@@ -14,6 +14,7 @@ import com.qiuyue.goetyominous.common.entities.ally.ac.GummyBearServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.MineGuardianServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.NucleeperServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.TeletorServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TremorsaurusServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TremorzillaServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.VallumraptorServant;
@@ -50,6 +51,7 @@ public class AcCompatManager {
         event.put(AcEntityRegistry.CARAMEL_CUBE_SERVANT.get(), CaramelCubeServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.GUMBEEPER_SERVANT.get(), GumbeeperServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.VESPER_SERVANT.get(), VesperServant.setCustomAttributes().build());
+        event.put(AcEntityRegistry.TELETOR_SERVANT.get(), TeletorServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.MINE_GUARDIAN_SERVANT.get(), MineGuardianServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.HULLBREAKER_SERVANT.get(), HullbreakerServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.DEEP_ONE_SERVANT.get(), DeepOneServant.setCustomAttributes().build());

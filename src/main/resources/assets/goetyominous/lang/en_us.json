@@ -196,6 +196,8 @@
   "entity.goetyominous.caramel_cube_servant": "Caramel Cube Servant",
   "entity.goetyominous.gumbeeper_servant": "Gumbeeper Servant",
   "entity.goetyominous.vesper_servant": "Vesper Servant",
+  "entity.goetyominous.teletor_servant": "Teletor Servant",
+  "entity.goetyominous.teletor_weapon_servant": "Teletor Weapon",
   "entity.goetyominous.gammaroach_servant": "Gammaroach Servant",
   "entity.goetyominous.corrodent_servant": "Corrodent Servant",
   "entity.goetyominous.mine_guardian_servant": "Mine Guardian Servant",
@@ -293,6 +295,7 @@
   "item.goetyominous.caramel_cube_servant_spawn_egg": "Caramel Cube Servant Spawn Egg",
   "item.goetyominous.gumbeeper_servant_spawn_egg": "Gumbeeper Servant Spawn Egg",
   "item.goetyominous.vesper_servant_spawn_egg": "Vesper Servant Spawn Egg",
+  "item.goetyominous.teletor_servant_spawn_egg": "Teletor Servant Spawn Egg",
   "item.goetyominous.gammaroach_servant_spawn_egg": "Gammaroach Servant Spawn Egg",
   "item.goetyominous.corrodent_servant_spawn_egg": "Corrodent Servant Spawn Egg",
   "item.goetyominous.mine_guardian_servant_spawn_egg": "Mine Guardian Servant Spawn Egg",
@@ -439,5 +442,6 @@
   "info.goety.focus.spellType": "Spell Type: %s",
   "item.goety.focus.info": "When Cast in Wand or Staff:",
   "jade.goetyominous.melee_progress": "Brute Upgrade Progress %s/%s",
-  "jade.goetyominous.ranged_progress": "Hunter Upgrade Progress %s/%s"
+  "jade.goetyominous.ranged_progress": "Hunter Upgrade Progress %s/%s",
+  "message.goetyominous.teletor_switched_tool": "Teletor wielding: %s"
 }

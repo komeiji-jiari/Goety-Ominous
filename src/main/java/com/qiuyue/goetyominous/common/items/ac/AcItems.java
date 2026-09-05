@@ -86,6 +86,11 @@ public class AcItems {
                     // 蛋色取自 AC 原版 vesper 刷怪蛋:0x884E2A(毛皮棕褐)/0xA54A6B(膜翼绛紫)。
                     () -> new ServantSpawnEggItem(AcEntityRegistry.VESPER_SERVANT, 0x884E2A, 0xA54A6B, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> TELETOR_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("teletor_servant_spawn_egg",
+                    // 蛋色取自 AC 原版 teletor 刷怪蛋:0x433B4A(深灰蓝机身)/0x60EF(亮蓝发光纹)。
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.TELETOR_SERVANT, 0x433B4A, 0x60EF, egg()));
+
     public static final RegistryObject<ServantSpawnEggItem> MINE_GUARDIAN_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("mine_guardian_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AcEntityRegistry.MINE_GUARDIAN_SERVANT, 0x243B52, 0x8AC3D6, egg()));

@@ -734,6 +734,12 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.VESPER_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderVesperServant::new);
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.TELETOR_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderTeletorServant::new);
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.TELETOR_WEAPON_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderTeletorWeaponServant::new);
         }
     }
 
