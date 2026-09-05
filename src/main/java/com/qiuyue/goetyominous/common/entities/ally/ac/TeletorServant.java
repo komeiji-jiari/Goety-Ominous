@@ -120,6 +120,22 @@ public class TeletorServant extends Summoned {
         this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
     }
 
+    /**
+     * 待命 = 原地悬浮"守卫":身体不移动,但索敌保持启用(挨打反击/主人受击/主人开打/就近敌对),
+     * 让悬浮兵刃(TeletorWeaponServantEntity)自主飞出攻击,本体重置原地。
+     * 身体不动的三重保障:① MeleeGoal 在 canUse 时遇待命直接 false;② 基类跟随目标在非跟随态不运行;
+     * ③ MoveController 待命时把 MOVE_TO 转 WAIT。解除待命即恢复跟随/缠斗,不留脏状态。
+     */
+
+    @Override
+    public void setStaying(boolean staying) {
+        super.setStaying(staying);
+        if (!this.level().isClientSide) {
+            this.getNavigation().stop();
+            this.setDeltaMovement(Vec3.ZERO);
+        }
+    }
+
     @Override
     protected PathNavigation createNavigation(Level level) {
         FlyingPathNavigation flyingPathNavigation = new FlyingPathNavigation(this, level) {
@@ -174,6 +190,11 @@ public class TeletorServant extends Summoned {
     @Override
     public void tick() {
         super.tick();
+        Vec3 currentMotion = this.getDeltaMovement();
+        if (!Double.isFinite(currentMotion.x) || !Double.isFinite(currentMotion.y) || !Double.isFinite(currentMotion.z)) {
+            // 兜底:任何 NaN 速度入体立即清零,避免"切状态后卡死不动"再犯
+            this.setDeltaMovement(Vec3.ZERO);
+        }
         this.prevControlProgress = this.controlProgress;
         Entity weapon = this.getWeapon();
         if (weapon instanceof TeletorWeaponServantEntity teletorWeapon) {
@@ -522,8 +543,16 @@ public class TeletorServant extends Summoned {
 
         @Override
         public boolean canUse() {
+            if (TeletorServant.this.isStaying()) {
+                return false;
+            }
             LivingEntity target = TeletorServant.this.getTarget();
             return target != null && target.isAlive() && TeletorServant.this.getWeapon() != null;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return !TeletorServant.this.isStaying() && super.canContinueToUse();
         }
 
         @Override
@@ -576,10 +605,22 @@ public class TeletorServant extends Summoned {
         @Override
         public void tick() {
             if (this.operation == MoveControl.Operation.MOVE_TO) {
+                // 待命期间身体绝不位移:即便残留了旧的 MOVE_TO 指令也直接转为 WAIT,让本体稳定悬停。
+                if (TeletorServant.this.isStaying()) {
+                    this.operation = MoveControl.Operation.WAIT;
+                    this.parentEntity.setDeltaMovement(Vec3.ZERO);
+                    return;
+                }
                 Vec3 vector3d = new Vec3(this.wantedX - this.parentEntity.getX(),
                         this.wantedY - this.parentEntity.getY(),
                         this.wantedZ - this.parentEntity.getZ());
                 double d0 = vector3d.length();
+                if (d0 < 1.0E-4D) {
+                    // 目标点就在脚下(或根本没设距离):原代码 d0==0 时 0/0 得 NaN → 永久卡死,先落位停住。
+                    this.operation = MoveControl.Operation.WAIT;
+                    this.parentEntity.setDeltaMovement(Vec3.ZERO);
+                    return;
+                }
                 double width = this.parentEntity.getBoundingBox().getSize();
                 LivingEntity attackTarget = this.parentEntity.getTarget();
                 Vec3 vector3d1 = vector3d.scale(this.speedModifier * 0.025D / d0);

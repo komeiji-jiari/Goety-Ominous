@@ -308,6 +308,7 @@ public class GoetyOminous {
         if (AlexCavesCompat.isAlexCavesLoaded()) {
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.TremorsaurusHudEvents.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.TremorzillaHudEvents.class);
+            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ForsakenRiderHudEvents.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.TremorzillaRenderEvents.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.CorrodentDigCrackRenderEvents.class);
         }

@@ -17,12 +17,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.joml.Matrix4fc;
 import org.joml.Vector4f;
 
-/**
- * 弃者仆从模型:逐字移植 AC ForsakenModel(Citadel 几何),保证与原版外观一致。
- * 姿态全部由实体的渐进值/动画驱动:runProgress/leapProgress 控制狂奔与跃扑、
- * raisedLeft/RightArmAmount 控制上臂抬举姿态、animation 关键帧(蓄力跳/咬/挥爪/砸地/
- * 单发与范围音波/左右手抓取/登场)与实体结算帧一一对应,lastly 用 faceTarget 转向。
- */
 @OnlyIn(Dist.CLIENT)
 public class ModelForsakenServant extends AdvancedEntityModel<ForsakenServant> {
     private final AdvancedModelBox root;
@@ -385,6 +379,8 @@ public class ModelForsakenServant extends AdvancedEntityModel<ForsakenServant> {
         float partialTicks = ageInTicks - (float) entity.tickCount;
         float earTwitch = ACMath.smin((float) Math.sin(ageInTicks * 0.1F) + 0.5F, 0.0F, 0.3F);
         float jumpProgress = entity.getLeapProgress(partialTicks);
+        float carryDamp = entity.hasRiderController() ? 0.25F : 1.0F;
+        float carryJumpProgress = jumpProgress * carryDamp;
         float groundProgress = 1.0F - jumpProgress;
         float leftArmHoldAmount = 1.0F - entity.getRaisedLeftArmAmount(partialTicks);
         float rightArmHoldAmount = 1.0F - entity.getRaisedRightArmAmount(partialTicks);
@@ -422,20 +418,20 @@ public class ModelForsakenServant extends AdvancedEntityModel<ForsakenServant> {
         this.progressRotationPrev(this.rupperThumb2, rFingerPronateAmount, (float) Math.toRadians(-60.0), (float) Math.toRadians(-30.0), 0.0F, 1.0F);
         this.progressRotationPrev(this.lthigh, limbSwingAmount, 0.0F, (float) Math.toRadians(30.0), 0.0F, 1.0F);
         this.progressRotationPrev(this.rthigh, limbSwingAmount, 0.0F, (float) Math.toRadians(-30.0), 0.0F, 1.0F);
-        this.progressPositionPrev(this.root, jumpProgress, 0.0F, -10.0F, 0.0F, 1.0F);
-        this.progressRotationPrev(this.root, jumpProgress, (float) Math.toRadians(10.0), 0.0F, 0.0F, 1.0F);
-        this.progressRotationPrev(this.larm, jumpProgress, (float) Math.toRadians(20.0), (float) Math.toRadians(-30.0), 0.0F, 1.0F);
-        this.progressRotationPrev(this.lforeArm, jumpProgress, (float) Math.toRadians(-70.0), 0.0F, 0.0F, 1.0F);
-        this.progressRotationPrev(this.lhand, jumpProgress, (float) Math.toRadians(20.0), 0.0F, 0.0F, 1.0F);
-        this.progressRotationPrev(this.rarm, jumpProgress, (float) Math.toRadians(20.0), (float) Math.toRadians(30.0), 0.0F, 1.0F);
-        this.progressRotationPrev(this.rforeArm, jumpProgress, (float) Math.toRadians(-70.0), 0.0F, 0.0F, 1.0F);
-        this.progressRotationPrev(this.rhand, jumpProgress, (float) Math.toRadians(20.0), 0.0F, 0.0F, 1.0F);
-        this.progressRotationPrev(this.lthigh, jumpProgress, (float) Math.toRadians(20.0), (float) Math.toRadians(30.0), (float) Math.toRadians(10.0), 1.0F);
-        this.progressRotationPrev(this.lcalf, jumpProgress, (float) Math.toRadians(-20.0), 0.0F, 0.0F, 1.0F);
-        this.progressRotationPrev(this.lfoot, jumpProgress, (float) Math.toRadians(20.0), 0.0F, 0.0F, 1.0F);
-        this.progressRotationPrev(this.rthigh, jumpProgress, (float) Math.toRadians(20.0), (float) Math.toRadians(-30.0), (float) Math.toRadians(-10.0), 1.0F);
-        this.progressRotationPrev(this.rcalf, jumpProgress, (float) Math.toRadians(-20.0), 0.0F, 0.0F, 1.0F);
-        this.progressRotationPrev(this.rfoot, jumpProgress, (float) Math.toRadians(20.0), 0.0F, 0.0F, 1.0F);
+        this.progressPositionPrev(this.root, carryJumpProgress, 0.0F, -10.0F, 0.0F, 1.0F);
+        this.progressRotationPrev(this.root, carryJumpProgress, (float) Math.toRadians(10.0), 0.0F, 0.0F, 1.0F);
+        this.progressRotationPrev(this.larm, carryJumpProgress, (float) Math.toRadians(20.0), (float) Math.toRadians(-30.0), 0.0F, 1.0F);
+        this.progressRotationPrev(this.lforeArm, carryJumpProgress, (float) Math.toRadians(-70.0), 0.0F, 0.0F, 1.0F);
+        this.progressRotationPrev(this.lhand, carryJumpProgress, (float) Math.toRadians(20.0), 0.0F, 0.0F, 1.0F);
+        this.progressRotationPrev(this.rarm, carryJumpProgress, (float) Math.toRadians(20.0), (float) Math.toRadians(30.0), 0.0F, 1.0F);
+        this.progressRotationPrev(this.rforeArm, carryJumpProgress, (float) Math.toRadians(-70.0), 0.0F, 0.0F, 1.0F);
+        this.progressRotationPrev(this.rhand, carryJumpProgress, (float) Math.toRadians(20.0), 0.0F, 0.0F, 1.0F);
+        this.progressRotationPrev(this.lthigh, carryJumpProgress, (float) Math.toRadians(20.0), (float) Math.toRadians(30.0), (float) Math.toRadians(10.0), 1.0F);
+        this.progressRotationPrev(this.lcalf, carryJumpProgress, (float) Math.toRadians(-20.0), 0.0F, 0.0F, 1.0F);
+        this.progressRotationPrev(this.lfoot, carryJumpProgress, (float) Math.toRadians(20.0), 0.0F, 0.0F, 1.0F);
+        this.progressRotationPrev(this.rthigh, carryJumpProgress, (float) Math.toRadians(20.0), (float) Math.toRadians(-30.0), (float) Math.toRadians(-10.0), 1.0F);
+        this.progressRotationPrev(this.rcalf, carryJumpProgress, (float) Math.toRadians(-20.0), 0.0F, 0.0F, 1.0F);
+        this.progressRotationPrev(this.rfoot, carryJumpProgress, (float) Math.toRadians(20.0), 0.0F, 0.0F, 1.0F);
         this.walk(this.neck, 0.1F, 0.03F, true, 0.0F, 0.0F, ageInTicks, 1.0F);
         this.walk(this.skull, 0.1F, 0.03F, true, 1.0F, 0.0F, ageInTicks, 1.0F);
         this.walk(this.jaw, 0.1F, 0.1F, true, 2.0F, -0.1F, ageInTicks, 1.0F);
@@ -574,7 +570,7 @@ public class ModelForsakenServant extends AdvancedEntityModel<ForsakenServant> {
         this.walk(this.rtoe, runSpeed, runDegree * 1.4F, false, 4.0F, -0.4F, limbSwing, runAmount);
         this.walk(this.rtoe2, runSpeed, runDegree * 1.4F, false, 4.0F, -0.4F, limbSwing, runAmount);
         this.walk(this.rtoe3, runSpeed, runDegree * 1.4F, false, 4.0F, -0.4F, limbSwing, runAmount);
-        this.root.rotateAngleX += jumpProgress * (entity.getLeapPitch(partialTicks) * 0.6F) / 57.295776F;
+        this.root.rotateAngleX += carryJumpProgress * (entity.getLeapPitch(partialTicks) * 0.6F) / 57.295776F;
         this.faceTarget(netHeadYaw, headPitch, 1.0F, new AdvancedModelBox[]{this.neck, this.skull});
     }
 
