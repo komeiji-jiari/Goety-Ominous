@@ -8,6 +8,7 @@ import com.qiuyue.goetyominous.common.entities.ally.ac.CorrodentServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneKnightServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneMageServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.ForsakenServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.GammaroachServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.GrottoceratopsServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.GumbeeperServant;
@@ -237,6 +238,16 @@ public class AcEntityRegistry {
                             .setShouldReceiveVelocityUpdates(true)
                             .setUpdateInterval(1)
                             .build(GoetyOminous.MOD_ID + ":gumball_servant"));
+
+    public static final RegistryObject<EntityType<ForsakenServant>> FORSAKEN_SERVANT =
+            AC_ENTITIES.register("forsaken_servant",
+                    () -> EntityType.Builder.<ForsakenServant>of((type, worldIn) -> new ForsakenServant(type, worldIn), MobCategory.MISC)
+                            // 与 AC 原版 Forsaken 尺寸一致(3.0 x 3.5)。
+                            .sized(3.0F, 3.5F)
+                            .setTrackingRange(12)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .setUpdateInterval(1)
+                            .build(GoetyOminous.MOD_ID + ":forsaken_servant"));
 
     public static void register(IEventBus modEventBus) {
         AC_ENTITIES.register(modEventBus);
