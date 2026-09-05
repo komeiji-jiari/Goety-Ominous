@@ -351,8 +351,10 @@ public class TeletorServant extends Summoned {
                         if (held.isEmpty()) {
                             player.setItemInHand(hand, ItemStack.EMPTY);
                         }
-                        if (!old.isEmpty() && !player.getInventory().add(old)) {
-                            this.spawnAtLocation(old);
+                        if (TeletorWeaponServantEntity.isPlayerProvided(old)) {
+                            if (!player.getInventory().add(old)) {
+                                this.spawnAtLocation(old);
+                            }
                         }
                     }
                     this.feedbackForWeaponChange(weapon, player, hand);
