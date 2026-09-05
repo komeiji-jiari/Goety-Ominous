@@ -196,6 +196,8 @@
   "entity.goetyominous.caramel_cube_servant": "焦糖怪仆从",
   "entity.goetyominous.gumbeeper_servant": "糖球苦力怕仆从",
   "entity.goetyominous.vesper_servant": "夜行蝠仆从",
+  "entity.goetyominous.teletor_servant": "磁流灵仆从",
+  "entity.goetyominous.teletor_weapon_servant": "磁流灵兵刃",
   "entity.goetyominous.gammaroach_servant": "伽马蟑螂仆从",
   "entity.goetyominous.corrodent_servant": "蚀牙兽仆从",
   "entity.goetyominous.mine_guardian_servant": "水雷守卫者仆从",
@@ -293,6 +295,7 @@
   "item.goetyominous.caramel_cube_servant_spawn_egg": "焦糖怪仆从刷怪蛋",
   "item.goetyominous.gumbeeper_servant_spawn_egg": "糖球苦力怕仆从刷怪蛋",
   "item.goetyominous.vesper_servant_spawn_egg": "夜行蝠仆从刷怪蛋",
+  "item.goetyominous.teletor_servant_spawn_egg": "磁流灵仆从刷怪蛋",
   "item.goetyominous.gammaroach_servant_spawn_egg": "伽马蟑螂仆从刷怪蛋",
   "item.goetyominous.corrodent_servant_spawn_egg": "蚀牙兽仆从刷怪蛋",
   "item.goetyominous.mine_guardian_servant_spawn_egg": "水雷守卫者仆从刷怪蛋",
@@ -439,5 +442,6 @@
   "info.goety.focus.spellType": "法术类型: %s",
   "item.goety.focus.info": "当用法杖施放时：",
   "jade.goetyominous.melee_progress": "蛮兵升级进度 %s/%s",
-  "jade.goetyominous.ranged_progress": "猎手升级进度 %s/%s"
+  "jade.goetyominous.ranged_progress": "猎手升级进度 %s/%s",
+  "message.goetyominous.teletor_switched_tool": "磁流灵已握持:%s"
 }

@@ -131,6 +131,12 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> VesperServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> VesperServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> VesperServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> TeletorServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> TeletorServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> TeletorServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> TeletorServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> TeletorServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> TeletorServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantMovementSpeed;
@@ -1108,6 +1114,18 @@ public class AttributesConfig {
                 .defineInRange("vesperServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
         VesperServantArmor = BUILDER.comment("How much natural Armor Vesper Servants have, Default: 0.0 (matches Alex's Caves Vesper)")
                 .defineInRange("vesperServantArmor", 0.0, 0.0, Double.MAX_VALUE);
+        TeletorServantHealth = BUILDER.comment("How much Max Health Teletor Servants have, Default: 18.0 (matches Alex's Caves Teletor)")
+                .defineInRange("teletorServantHealth", 18.0, 1.0, Double.MAX_VALUE);
+        TeletorServantDamage = BUILDER.comment("How much damage Teletor Servants deal, Default: 2.0 (matches Alex's Caves Teletor)")
+                .defineInRange("teletorServantDamage", 2.0, 1.0, Double.MAX_VALUE);
+        TeletorServantMovementSpeed = BUILDER.comment("How fast Teletor Servants move, Default: 0.2 (matches Alex's Caves Teletor; flight is driven by the custom hover move controller)")
+                .defineInRange("teletorServantMovementSpeed", 0.2, 0.0, Double.MAX_VALUE);
+        TeletorServantFollowRange = BUILDER.comment("How much following/detection range Teletor Servants have, Default: 32.0 (matches Alex's Caves Teletor)")
+                .defineInRange("teletorServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
+        TeletorServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Teletor Servants have, Default: 0.0 (Alex's Caves Teletor has none)")
+                .defineInRange("teletorServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
+        TeletorServantArmor = BUILDER.comment("How much natural Armor Teletor Servants have, Default: 0.0 (matches Alex's Caves Teletor)")
+                .defineInRange("teletorServantArmor", 0.0, 0.0, Double.MAX_VALUE);
         GammaroachServantHealth = BUILDER.comment("How much Max Health Gammaroach Servants have, Default: 14.0 (matches Alex's Caves Gammaroach)")
                 .defineInRange("gammaroachServantHealth", 14.0, 1.0, Double.MAX_VALUE);
         GammaroachServantDamage = BUILDER.comment("How much damage Gammaroach Servants deal, Default: 2.0 (matches Alex's Caves Gammaroach)")
