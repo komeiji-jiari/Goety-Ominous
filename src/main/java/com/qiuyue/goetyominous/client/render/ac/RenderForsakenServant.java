@@ -15,11 +15,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * 弃者仆从渲染:逐字移植 AC ForsakenRenderer,沿用原版弃者贴图(alexscaves:textures/entity/forsaken*.png)。
- * 与原版一致——阴影 1.15F,两层发光:黑暗恢复层(darkness,随 getDarknessAmount 淡入)
- * 与双目光芒层(eyes)。弃者仆从不复现 AC 的口部声呐粒子,故不再维护 mouthParticlePositions 统计。
- */
 @OnlyIn(Dist.CLIENT)
 public class RenderForsakenServant extends MobRenderer<ForsakenServant, ModelForsakenServant> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexscaves:textures/entity/forsaken.png");

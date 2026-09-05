@@ -19,12 +19,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * 弃者仆从"被抓取小怪"渲染层:逐字移植 AC ForsakenHeldMobLayer。
- * 在左右抓取动画(ANIMATION_*_PICKUP)期间,把手掌模型空间换算到实体坐标系,把被抓目标绘制在掌中,
- * 并用 heldMob 自身 yBodyRot 与弃者 yBodyRot 的差补偿自身旋转,让猎物保持水平姿态。借用 AlexsCaves.PROXY
- * 的渲染互斥钩子(临时放行该实体渲染,绘制完再锁回),避免第一人称/本体会被重复剔除。
- */
 @OnlyIn(Dist.CLIENT)
 public class ForsakenServantHeldMobLayer extends RenderLayer<ForsakenServant, ModelForsakenServant> {
 

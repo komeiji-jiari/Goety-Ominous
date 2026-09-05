@@ -9,6 +9,10 @@
     {
       "id": "goetyominous:dicer_servant",
       "required": false
+    },
+    {
+      "id": "goetyominous:teletor_servant",
+      "required": false
     }
   ]
 }

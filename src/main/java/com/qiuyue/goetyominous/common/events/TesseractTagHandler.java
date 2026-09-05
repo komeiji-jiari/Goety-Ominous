@@ -70,6 +70,7 @@ public class TesseractTagHandler {
         if (AlexCavesCompat.isAlexCavesLoaded()) {
             addToTag(TESSERACT_MEDIUM, AcEntityRegistry.TREMORSAURUS_SERVANT);
             addToTag(TESSERACT_MEDIUM, AcEntityRegistry.GROTTOCERATOPS_SERVANT);
+            addToTag(TESSERACT_MEDIUM, AcEntityRegistry.FORSAKEN_SERVANT);
         }
 
         if (MutantMoreCompat.isMutantMoreLoaded()) {

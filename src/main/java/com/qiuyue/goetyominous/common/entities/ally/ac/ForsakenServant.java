@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.ac;
 
+import com.Polarice3.Goety.api.items.magic.IWand;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.github.alexmodguy.alexscaves.server.entity.ai.GroundPathNavigatorNoSpin;
 import com.github.alexmodguy.alexscaves.server.entity.util.ShakesScreen;
@@ -13,6 +14,9 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.animation.LegSolverQuadruped;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
+import com.qiuyue.goetyominous.common.network.ForsakenRiderJumpPacket;
+import com.qiuyue.goetyominous.common.network.ModNetwork;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -23,6 +27,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -44,6 +50,9 @@ import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.PlayerRideable;
+import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.server.level.ServerLevel;
@@ -61,22 +70,14 @@ import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 
-/**
- * AC 弃者(Forsaken)仆从化:由 Alex's Caves 的 ForsakenEntity 魔改而来。
- * 保留原版绝大部分机制 —— 蓄力跳/扑击、撕咬、左右挥爪、地面重砸、单发音波(对准目标)+范围音爆、
- * 抓取/拖拽小体型目标、冲刺(加速与增高上台阶步距)、低血量黑暗回血、卡墙破块等;
- * 仅将原版"敌怪框架"替换为 Goety 仆从框架(extends Summoned),并把 AC 粒子换成通用/原版等价物
- * (音波改用原版 SONIC_BOOM,滴涎与声呐环不再复现),保证与盟友互不伤害。
- *
- * <p>动画全部走 citadel:字段由本实体维护,服务端触发后经 AnimationHandler/同步消息广播给客户端。</p>
- */
-public class ForsakenServant extends Summoned implements IAnimatedEntity, ShakesScreen {
+public class ForsakenServant extends Summoned implements IAnimatedEntity, ShakesScreen, PlayerRideable {
     private static final EntityDataAccessor<Boolean> RUNNING = SynchedEntityData.defineId(ForsakenServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> LEAPING = SynchedEntityData.defineId(ForsakenServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> SONIC_CHARGE = SynchedEntityData.defineId(ForsakenServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> SONAR_ID = SynchedEntityData.defineId(ForsakenServant.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> HELD_MOB_ID = SynchedEntityData.defineId(ForsakenServant.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DARKNESS_TIME = SynchedEntityData.defineId(ForsakenServant.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> RIDER_CHARGE_HOLD = SynchedEntityData.defineId(ForsakenServant.class, EntityDataSerializers.BOOLEAN);
     public static final Animation ANIMATION_SUMMON = Animation.create(50);
     public static final Animation ANIMATION_PREPARE_JUMP = Animation.create(15);
     public static final Animation ANIMATION_BITE = Animation.create(15);
@@ -108,10 +109,28 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
     private float prevDarknessProgress;
     private boolean hasRunningAttributes = false;
     private int destroyBlocksTick = 10;
-    /**
-     * 冲刺时把配速提升约 1.8 倍(原版写死 0.25→0.45)。这里缓存配置的基础移速,让冲刺倍率尊重配置。
-     */
+
     private float cachedWalkSpeed = -1.0F;
+
+    private static final int RIDER_JUMP_MAX_CHARGE = 15;
+
+    private static final float RIDER_JUMP_MIN_RANGE = 5.0F;
+    private static final float RIDER_JUMP_MAX_RANGE = 24.0F;
+    private static final float RIDER_JUMP_FORWARD_IMPULSE = 0.155F;
+    private static final float RIDER_JUMP_UP_BASE = 0.2F;
+    private static final float RIDER_JUMP_UP_VX_SCALE = 0.3F;
+    private static final float RIDER_JUMP_IDLE_FORWARD_FACTOR = 0.3F;
+
+    private static final float POSE_SHIFT_BLOCKS = 10.0F / 16.0F;
+    private static final float RIDER_CARRY_DAMP = 0.25F;
+
+    private boolean riderCharging;
+
+    private float riderJumpPendingPower = -1.0F;
+
+    private boolean riderPrevJumpHeld;
+    private boolean riderChargingClient;
+    private int riderChargeTicksClient;
 
     public ForsakenServant(EntityType<? extends ForsakenServant> type, Level level) {
         super(type, level);
@@ -133,6 +152,7 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
         this.entityData.define(LEAPING, false);
         this.entityData.define(SONIC_CHARGE, false);
         this.entityData.define(DARKNESS_TIME, 0);
+        this.entityData.define(RIDER_CHARGE_HOLD, false);
         this.entityData.define(SONAR_ID, -1);
         this.entityData.define(HELD_MOB_ID, -1);
     }
@@ -143,18 +163,270 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new ForsakenServantAttackGoal());
         this.goalSelector.addGoal(2, new ForsakenServantRandomlyJumpGoal());
-        this.goalSelector.addGoal(5, new Summoned.WanderGoal<>(this, 0.6D));
+
+        this.goalSelector.addGoal(5, new Summoned.WanderGoal<>(this, 1.0D));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
     }
 
-    /**
-     * 沿用 AC 的防甩尾转向导航(大块头贴脸追击时更稳),仍是 GroundPathNavigation 子类,
-     * 满足 Goety FollowOwnerGoal 对地面导航的要求。
-     */
     @Override
     protected PathNavigation createNavigation(Level level) {
         return new GroundPathNavigatorNoSpin(this, level);
+    }
+
+    public boolean hasRiderController() {
+        return this.getControllingPassenger() instanceof Player;
+    }
+
+    private boolean isRiderBusy() {
+        if (!(this.getControllingPassenger() instanceof Player player)) {
+            return false;
+        }
+        if (this.riderCharging || this.riderChargingClient || this.isLeaping()) {
+            return true;
+        }
+        return player.zza != 0.0F || player.xxa != 0.0F;
+    }
+
+    @Nullable
+    @Override
+    public LivingEntity getControllingPassenger() {
+        Entity entity = this.getFirstPassenger();
+        if (entity instanceof Player player) {
+            return player;
+        }
+        return null;
+    }
+
+    @Override
+    public boolean isControlledByLocalInstance() {
+        return this.isEffectiveAi();
+    }
+
+    @Override
+    protected boolean canAddPassenger(Entity passenger) {
+        return passenger instanceof Player;
+    }
+
+    @Override
+    public Vec3 getDismountLocationForPassenger(LivingEntity passenger) {
+        return new Vec3(this.getX(), this.getBoundingBox().minY, this.getZ());
+    }
+
+    @Override
+    protected void updateControlFlags() {
+        super.updateControlFlags();
+        boolean busy = this.isRiderBusy();
+        boolean notInBoat = !(this.getVehicle() instanceof Boat);
+        this.goalSelector.setControlFlag(Goal.Flag.MOVE, !busy);
+        this.goalSelector.setControlFlag(Goal.Flag.JUMP, !busy && notInBoat);
+        this.goalSelector.setControlFlag(Goal.Flag.LOOK, !busy);
+    }
+
+    @Override
+    protected Vec3 getRiddenInput(Player player, Vec3 vec3) {
+
+        if (this.riderCharging) {
+            return Vec3.ZERO;
+        }
+        float f = player.zza < 0.0F ? 0.5F : 1.0F;
+        return new Vec3(player.xxa * 0.4F, 0.0D, player.zza * 0.9F * f);
+    }
+
+    @Override
+    protected void tickRidden(Player player, Vec3 vec3) {
+        super.tickRidden(player, vec3);
+
+        if (player.zza != 0.0F || player.xxa != 0.0F || this.riderCharging) {
+            this.setRot(player.getYRot(), player.getXRot() * 0.5F);
+            this.yBodyRot = this.yHeadRot = this.yRotO = this.getYRot();
+            this.getNavigation().stop();
+            this.setTarget(null);
+        }
+        if (this.level().isClientSide) {
+
+            this.tickRiderChargeSensing(player);
+        } else if (this.riderJumpPendingPower >= 0.0F) {
+
+            float power = this.riderJumpPendingPower;
+            this.riderJumpPendingPower = -1.0F;
+            if (this.onGround() && !this.isLeaping() && !this.isInWater()) {
+                this.performRiderLeap(player, power);
+            } else if (this.getAnimation() == ANIMATION_PREPARE_JUMP) {
+                this.syncAnimation(NO_ANIMATION);
+            }
+        }
+    }
+
+    private void tickRiderChargeSensing(Player player) {
+        if (!(player instanceof LocalPlayer local)) {
+            return;
+        }
+        boolean held = local.input.jumping;
+        boolean grounded = this.onGround() && !this.isLeaping() && !this.isInWater();
+        if (held) {
+            if (!this.riderPrevJumpHeld) {
+
+                if (grounded && this.getAnimation() == NO_ANIMATION) {
+                    this.riderChargingClient = true;
+                    this.riderChargeTicksClient = 0;
+                    this.sendRiderChargePacket(true, 0.0F);
+                } else {
+                    this.riderChargingClient = false;
+                    this.riderChargeTicksClient = 0;
+                }
+            } else if (this.riderChargingClient && this.riderChargeTicksClient < RIDER_JUMP_MAX_CHARGE) {
+                this.riderChargeTicksClient++;
+            }
+        } else if (this.riderChargingClient) {
+            float power = Mth.clamp((float) this.riderChargeTicksClient / (float) RIDER_JUMP_MAX_CHARGE, 0.0F, 1.0F);
+            this.riderChargingClient = false;
+            this.riderChargeTicksClient = 0;
+            this.sendRiderChargePacket(false, power);
+        }
+        this.riderPrevJumpHeld = held;
+    }
+
+    private void sendRiderChargePacket(boolean startCharge, float power) {
+        ModNetwork.CHANNEL.sendToServer(new ForsakenRiderJumpPacket(this.getId(), startCharge, power));
+    }
+
+    public void serverStartRiderCharge() {
+        if (!this.hasRiderController() || this.level().isClientSide || !this.onGround() || this.isLeaping() || this.isInWater()) {
+            return;
+        }
+        this.riderCharging = true;
+        this.riderJumpPendingPower = -1.0F;
+        this.setRiderChargeHold(true);
+        this.getNavigation().stop();
+        this.setTarget(null);
+        this.syncAnimation(ANIMATION_PREPARE_JUMP);
+    }
+
+    public void serverReleaseRiderCharge(float power) {
+        boolean wasCharging = this.riderCharging;
+        this.riderCharging = false;
+        this.setRiderChargeHold(false);
+        if (this.getAnimation() == ANIMATION_PREPARE_JUMP) {
+            this.syncAnimation(NO_ANIMATION);
+        }
+        if (wasCharging && this.onGround() && !this.isLeaping() && !this.isInWater()) {
+            this.riderJumpPendingPower = Mth.clamp(power, 0.0F, 1.0F);
+        } else {
+            this.riderJumpPendingPower = -1.0F;
+        }
+    }
+
+    private void performRiderLeap(Player player, float power) {
+        power = Mth.clamp(power, 0.0F, 1.0F);
+        float range = RIDER_JUMP_MIN_RANGE + (RIDER_JUMP_MAX_RANGE - RIDER_JUMP_MIN_RANGE) * power;
+        boolean forward = player.zza > 0.0F;
+        float forwardFactor = forward ? 1.0F : RIDER_JUMP_IDLE_FORWARD_FACTOR;
+        float forwardSpeed = RIDER_JUMP_FORWARD_IMPULSE * range * forwardFactor;
+        float verticalSpeed = RIDER_JUMP_UP_BASE + RIDER_JUMP_UP_VX_SCALE * (RIDER_JUMP_FORWARD_IMPULSE * range);
+        float yaw = this.getYRot() * ((float) Math.PI / 180F);
+        Vec3 delta = this.getDeltaMovement();
+        this.setDeltaMovement(
+                delta.x - (double) (Mth.sin(yaw) * forwardSpeed),
+                Math.max(verticalSpeed, delta.y),
+                delta.z + (double) (Mth.cos(yaw) * forwardSpeed));
+        this.setLeaping(true);
+        this.setAnimation(NO_ANIMATION);
+        this.hasImpulse = true;
+        this.playSound(ACSoundRegistry.FORSAKEN_LEAP.get(), this.getSoundVolume(), this.getVoicePitch());
+    }
+
+    public float getRiderChargeMeter() {
+        return this.riderChargingClient ? Mth.clamp((float) this.riderChargeTicksClient / (float) RIDER_JUMP_MAX_CHARGE, 0.0F, 1.0F) : 0.0F;
+    }
+
+    private float riderSeatPoseDelta() {
+        float crouchAmount = 0.0F;
+        if (this.getAnimation() == ANIMATION_PREPARE_JUMP && this.onGround() && !this.isLeaping()) {
+            int tick = this.getAnimationTick();
+            if (tick <= 5) {
+                crouchAmount = tick / 5.0F;
+            } else if (tick <= 10) {
+                crouchAmount = 1.0F;
+            } else {
+                crouchAmount = Math.max(0.0F, (15 - tick) / 5.0F);
+            }
+        }
+        float carryAmount = this.getLeapProgress(1.0F) * RIDER_CARRY_DAMP;
+        return POSE_SHIFT_BLOCKS * (carryAmount - crouchAmount);
+    }
+
+    @Override
+    protected float getRiddenSpeed(Player player) {
+
+        return (float) this.getAttributeValue(Attributes.MOVEMENT_SPEED) * 1.15F;
+    }
+
+    protected void doPlayerRide(Player player) {
+        if (!this.level().isClientSide) {
+            player.setYRot(this.getYRot());
+            player.setXRot(this.getXRot());
+            player.startRiding(this);
+        }
+    }
+
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        if (!this.level().isClientSide) {
+            ItemStack itemstack = player.getItemInHand(hand);
+            if (this.getTrueOwner() != null && player == this.getTrueOwner()) {
+                if (!player.isCrouching() && !this.isBaby()) {
+                    Entity entity = this.getFirstPassenger();
+                    if (entity != null && entity != player) {
+                        entity.stopRiding();
+                        return InteractionResult.SUCCESS;
+                    }
+                    if (!(itemstack.getItem() instanceof IWand)) {
+                        this.doPlayerRide(player);
+                        return InteractionResult.SUCCESS;
+                    }
+                }
+            }
+        }
+        return super.mobInteract(player, hand);
+    }
+
+    @Override
+    public void tryKill(Player player) {
+        if (this.killChance <= 0) {
+            this.warnKill(player);
+        } else {
+            super.tryKill(player);
+        }
+    }
+
+    @Override
+    public void positionRider(Entity passenger, Entity.MoveFunction moveFunction) {
+        if (this.hasPassenger(passenger) && passenger instanceof LivingEntity living) {
+            if (!this.touchingUnloadedChunk()) {
+                passenger.setYBodyRot(this.yBodyRot);
+                passenger.fallDistance = 0.0F;
+                this.clampRotation(living, 105.0F);
+                Vec3 seatOffset = new Vec3(0.0F, 0.1F, 0.6F).yRot((float) Math.toRadians(-this.yBodyRot));
+                float leapFade = 1.0F - this.getLeapProgress(1.0F);
+                float heightBackLeft = this.legSolver.legs[0].getHeight(1.0F);
+                float heightBackRight = this.legSolver.legs[1].getHeight(1.0F);
+                float maxLegSolverHeight = (1.0F - ACMath.smin(1.0F - heightBackLeft, 1.0F - heightBackRight, 0.1F)) * 0.8F * leapFade;
+                moveFunction.accept(passenger, this.getX() + seatOffset.x, this.getY() + seatOffset.y + this.getPassengersRidingOffset() - maxLegSolverHeight + this.riderSeatPoseDelta(), this.getZ() + seatOffset.z);
+                return;
+            }
+        }
+        super.positionRider(passenger, moveFunction);
+    }
+
+    private void clampRotation(LivingEntity livingEntity, float clampRange) {
+        livingEntity.setYBodyRot(this.getYRot());
+        float f = Mth.wrapDegrees(livingEntity.getYRot() - this.getYRot());
+        float f1 = Mth.clamp(f, -clampRange, clampRange);
+        livingEntity.yRotO += f1 - f;
+        livingEntity.yBodyRotO += f1 - f;
+        livingEntity.setYRot(livingEntity.getYRot() + f1 - f);
+        livingEntity.setYHeadRot(livingEntity.getYRot());
     }
 
     @Override
@@ -197,10 +469,29 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
         } else {
             timeLeaping = 0;
             this.leapPitch = Mth.approachDegrees(leapPitch, 0, 5);
-            if (this.getAnimation() == ANIMATION_PREPARE_JUMP && this.onGround() && !level().isClientSide && this.getAnimationTick() >= 8 && this.getAnimationTick() <= 10) {
+
+            if (this.getAnimation() == ANIMATION_PREPARE_JUMP && this.onGround() && !this.hasRiderController() && !this.isStaying() && !level().isClientSide && this.getAnimationTick() >= 8 && this.getAnimationTick() <= 10) {
                 this.setLeaping(true);
                 this.playSound(ACSoundRegistry.FORSAKEN_LEAP.get(), this.getSoundVolume(), this.getVoicePitch());
             }
+        }
+
+        if (!level().isClientSide && this.riderCharging) {
+            if (!this.hasRiderController() || !this.isAlive()) {
+                this.riderCharging = false;
+                this.riderJumpPendingPower = -1.0F;
+                this.setRiderChargeHold(false);
+                if (this.getAnimation() == ANIMATION_PREPARE_JUMP) {
+                    this.syncAnimation(NO_ANIMATION);
+                }
+            } else if (this.getAnimation() != ANIMATION_PREPARE_JUMP && !this.isLeaping()) {
+                this.syncAnimation(ANIMATION_PREPARE_JUMP);
+            }
+        }
+        if (level().isClientSide && !this.hasRiderController() && (this.riderChargingClient || this.riderPrevJumpHeld || this.riderChargeTicksClient > 0)) {
+            this.riderChargingClient = false;
+            this.riderPrevJumpHeld = false;
+            this.riderChargeTicksClient = 0;
         }
         if (isRunning() && !hasRunningAttributes) {
             hasRunningAttributes = true;
@@ -244,7 +535,7 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
             if (this.getAnimation() == ANIMATION_SONIC_ATTACK) {
                 if (this.getAnimationTick() > 10 && this.getAnimationTick() < 30) {
                     if (this.getAnimationTick() % 4 == 0) {
-                        this.spawnSonicBoomFX(false);
+                        this.spawnForsakenSonar(false);
                     }
                     this.screenShakeAmount = 1F;
                 }
@@ -252,7 +543,7 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
             if (this.getAnimation() == ANIMATION_SONIC_BLAST) {
                 if (this.getAnimationTick() > 10 && this.getAnimationTick() < 30) {
                     if (this.getAnimationTick() % 4 == 0) {
-                        this.spawnSonicBoomFX(true);
+                        this.spawnForsakenSonar(true);
                     }
                     this.screenShakeAmount = 1F;
                 }
@@ -282,6 +573,11 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
                 }
             }
         } else {
+
+            if (this.isRiderBusy()) {
+                this.setTarget(null);
+                this.setRunning(false);
+            }
             LivingEntity target = this.getTarget();
             if (target != null && target.isAlive() && target.distanceTo(this) < 10 && this.hasLineOfSight(target) && (this.getAnimation() == ANIMATION_RIGHT_PICKUP || this.getAnimation() == ANIMATION_LEFT_PICKUP)) {
                 if (getHeldMobId() == -1) {
@@ -314,32 +610,38 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
                 grabbedEntity.setDeltaMovement(minus);
             }
         }
-        AnimationHandler.INSTANCE.updateAnimations(this);
+
+        if (!this.level().isClientSide && this.currentAnimation == ANIMATION_SUMMON && this.animationTick <= 3) {
+            AnimationHandler.INSTANCE.sendAnimationMessage(this, ANIMATION_SUMMON);
+        }
+        if (this.getRiderChargeHold() && this.currentAnimation == ANIMATION_PREPARE_JUMP && !this.isLeaping()) {
+            AnimationHandler.INSTANCE.updateAnimations(this);
+            if (this.currentAnimation == ANIMATION_PREPARE_JUMP && this.getAnimationTick() >= 8) {
+                this.setAnimationTick(8);
+            }
+        } else {
+            AnimationHandler.INSTANCE.updateAnimations(this);
+        }
     }
 
-    /**
-     * 单发音波的替代视觉:沿头部朝向/目标方向喷一束原版声波粒子(AC 的声呐环强耦合其原版渲染器与实体类型,无法复用)。
-     */
-    private void spawnSonicBoomFX(boolean aoe) {
+    private void spawnForsakenSonar(boolean aoe) {
         Vec3 from = this.getEyePosition();
-        if (aoe) {
-            for (int i = 0; i < 3; i++) {
-                float angle = this.random.nextFloat() * (float) Math.PI * 2;
-                Vec3 dir = new Vec3(Mth.sin(angle), -0.1F, Mth.cos(angle));
-                level().addParticle(ParticleTypes.SONIC_BOOM, from.x, from.y, from.z, dir.x, dir.y, dir.z);
+        if (!aoe) {
+            Vec3 dir;
+            Entity sonarTarget = this.getSonarTarget();
+            if (sonarTarget != null && sonarTarget.isAlive()) {
+                dir = sonarTarget.getEyePosition().subtract(from).normalize();
+            } else {
+                dir = new Vec3(0, 0, 1).yRot((float) -Math.toRadians(this.getYHeadRot())).xRot((float) -Math.toRadians(this.getXRot())).normalize();
             }
-            return;
-        }
-        Vec3 to;
-        Entity sonarTarget = this.getSonarTarget();
-        if (sonarTarget != null) {
-            to = sonarTarget.getEyePosition();
+
+            float pitch = (float) Math.toDegrees(Math.atan2(dir.y, dir.horizontalDistance()));
+            float yaw = (float) -Math.toDegrees(Math.atan2(dir.x, dir.z));
+            level().addAlwaysVisibleParticle(ACParticleRegistry.FORSAKEN_SONAR.get(), true, from.x, from.y, from.z, this.getId(), pitch, yaw);
         } else {
-            Vec3 forward = new Vec3(0, 0, 1).yRot((float) -Math.toRadians(this.getYHeadRot())).xRot((float) -Math.toRadians(this.getXRot()));
-            to = from.add(forward.scale(6.0D));
+
+            level().addAlwaysVisibleParticle(ACParticleRegistry.FORSAKEN_SONAR_LARGE.get(), true, from.x, from.y, from.z, this.getId(), 90.0F, 0.0F);
         }
-        Vec3 dir = to.subtract(from).normalize();
-        level().addParticle(ParticleTypes.SONIC_BOOM, from.x, from.y, from.z, dir.x, dir.y, dir.z);
     }
 
     private int getLightLevel() {
@@ -409,6 +711,14 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
         this.entityData.set(LEAPING, bool);
     }
 
+    public boolean getRiderChargeHold() {
+        return this.entityData.get(RIDER_CHARGE_HOLD);
+    }
+
+    public void setRiderChargeHold(boolean bool) {
+        this.entityData.set(RIDER_CHARGE_HOLD, bool);
+    }
+
     public float getLeapProgress(float partialTick) {
         return (prevLeapProgress + (leapProgress - prevLeapProgress) * partialTick) * 0.2F;
     }
@@ -460,7 +770,7 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
 
     @Override
     public float maxUpStep() {
-        return hasRunningAttributes ? 1.1F : 0.6F;
+        return hasRunningAttributes || hasRiderController() ? 1.1F : 0.6F;
     }
 
     @Override
@@ -635,11 +945,6 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
         return 0.98F;
     }
 
-    /**
-     * 主战目标 AI:追击、近身攻击、蓄力远跳接近、单发音波/范围音爆。
-     * 除常规追击外,伤害手段全部以动画帧为时点结算,因此仅服务端 tick 期间(goalSelector)运行;
-     * 动画本身经 syncAnimation 广播到客户端。AOE/蓄力都通过 isAlliedTo 过滤盟友。
-     */
     private class ForsakenServantAttackGoal extends Goal {
         private BlockPos jumpTarget = null;
         private boolean jumpEnqueued = false;
@@ -679,7 +984,9 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
                 boolean inPursuit;
                 double distance = ForsakenServant.this.distanceTo(target);
                 double attackDistance = ForsakenServant.this.getBbWidth() + target.getBbWidth();
-                boolean bl = inPursuit = !this.isMovementFrozen();
+
+                boolean standingBy = ForsakenServant.this.isStaying();
+                boolean bl = inPursuit = !this.isMovementFrozen() && !standingBy;
                 if (this.attemptSonicDamageIn > 0) {
                     --this.attemptSonicDamageIn;
                     if (this.attemptSonicDamageIn == 0 && ForsakenServant.this.hasLineOfSight(target)) {
@@ -723,7 +1030,14 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
                         }
                     }
                 } else if (this.jumpEnqueued) {
-                    if (this.jumpTarget == null) {
+                    if (ForsakenServant.this.hasRiderController()) {
+                        this.jumpEnqueued = false;
+                        this.jumpTarget = null;
+                    } else if (standingBy) {
+
+                        this.jumpEnqueued = false;
+                        this.jumpTarget = null;
+                    } else if (this.jumpTarget == null) {
                         this.jumpTarget = this.findJumpTarget(target, distance > 20.0);
                     } else {
                         inPursuit = false;
@@ -742,30 +1056,32 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
                         }
                     }
                 }
-                if (inPursuit) {
+                if (standingBy) {
+
+                    ForsakenServant.this.lookAt(EntityAnchorArgument.Anchor.EYES, target.getEyePosition());
+                    ForsakenServant.this.getNavigation().stop();
+                } else if (inPursuit) {
                     ForsakenServant.this.lookAt(EntityAnchorArgument.Anchor.EYES, target.getEyePosition());
                     ForsakenServant.this.getNavigation().moveTo(target, 1.0);
-                    if (distance < attackDistance + 1.0 && ForsakenServant.this.getAnimation() == NO_ANIMATION) {
-                        float attackType = ForsakenServant.this.getRandom().nextFloat();
-                        if (attackType < 0.25F && target.getBbWidth() < 2.0F) {
-                            this.tryAnimation(ForsakenServant.this.getRandom().nextBoolean() ? ANIMATION_LEFT_PICKUP : ANIMATION_RIGHT_PICKUP);
-                        } else if (attackType < 0.5F) {
-                            this.tryAnimation(ForsakenServant.this.getRandom().nextBoolean() ? ANIMATION_LEFT_SLASH : ANIMATION_RIGHT_SLASH);
-                        } else if (attackType < 0.75F) {
-                            this.tryAnimation(ANIMATION_GROUND_SMASH);
-                        } else {
-                            this.tryAnimation(ANIMATION_BITE);
-                            ForsakenServant.this.playSound(ACSoundRegistry.FORSAKEN_BITE.get());
-                        }
+                }
+                if ((standingBy || inPursuit) && distance < attackDistance + 1.0 && ForsakenServant.this.getAnimation() == NO_ANIMATION) {
+                    float attackType = ForsakenServant.this.getRandom().nextFloat();
+                    if (attackType < 0.25F && target.getBbWidth() < 2.0F) {
+                        this.tryAnimation(ForsakenServant.this.getRandom().nextBoolean() ? ANIMATION_LEFT_PICKUP : ANIMATION_RIGHT_PICKUP);
+                    } else if (attackType < 0.5F) {
+                        this.tryAnimation(ForsakenServant.this.getRandom().nextBoolean() ? ANIMATION_LEFT_SLASH : ANIMATION_RIGHT_SLASH);
+                    } else if (attackType < 0.75F) {
+                        this.tryAnimation(ANIMATION_GROUND_SMASH);
+                    } else {
+                        this.tryAnimation(ANIMATION_BITE);
+                        ForsakenServant.this.playSound(ACSoundRegistry.FORSAKEN_BITE.get());
                     }
-                } else {
-                    ForsakenServant.this.getNavigation().stop();
                 }
                 if ((distance > 20.0 && ForsakenServant.this.getRandom().nextFloat() < 0.01 || ForsakenServant.this.hasSonicCharge()) && !this.sonicEnqueued) {
                     this.sonicEnqueued = true;
                     ForsakenServant.this.setSonicCharge(false);
                 }
-                if (distance > 30.0 && ForsakenServant.this.getRandom().nextFloat() < 0.05 && !this.jumpEnqueued) {
+                if (distance > 30.0 && !standingBy && !ForsakenServant.this.hasRiderController() && ForsakenServant.this.getRandom().nextFloat() < 0.05 && !this.jumpEnqueued) {
                     this.startCleanJump();
                 }
                 if (distance < 64.0 && distance > attackDistance && inPursuit) {
@@ -814,9 +1130,9 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
                     }
                     this.knockBackAngle(target, knockbackStrength, 0.0F);
                 }
-                if (this.navigationCheckCooldown-- < 0 && ForsakenServant.this.onGround()) {
+                if (this.navigationCheckCooldown-- < 0 && !standingBy && ForsakenServant.this.onGround()) {
                     this.navigationCheckCooldown = 20 + ForsakenServant.this.getRandom().nextInt(40);
-                    if (!this.canReach(target)) {
+                    if (!this.canReach(target) && !ForsakenServant.this.hasRiderController()) {
                         this.startCleanJump();
                     }
                 }
@@ -850,7 +1166,8 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
         private boolean checkAndDealDamage(LivingEntity target, double multiplier, float extraRange) {
             if (ForsakenServant.this.hasLineOfSight(target) && ForsakenServant.this.distanceTo(target) < ForsakenServant.this.getBbWidth() + target.getBbWidth() + extraRange) {
                 boolean b = target.hurt(target.damageSources().mobAttack(ForsakenServant.this), (float) (multiplier * ForsakenServant.this.getAttribute(Attributes.ATTACK_DAMAGE).getValue()));
-                if (ForsakenServant.this.getRandom().nextInt(2) == 0) {
+
+                if (!ForsakenServant.this.isStaying() && !ForsakenServant.this.hasRiderController() && ForsakenServant.this.getRandom().nextInt(2) == 0) {
                     this.startCleanJump();
                 }
                 if (!this.sonicEnqueued && ForsakenServant.this.getRandom().nextInt(5) == 0) {
@@ -897,10 +1214,6 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
         }
     }
 
-    /**
-     * 空闲随机起跳:无目标且概率触发,蓄力 8~10 帧后蹬地扑向附近空地,给大块头一点生机。
-     * 仆从化后加了待命/听令门控,不会在 stay 或前往指令点时乱跳。
-     */
     private class ForsakenServantRandomlyJumpGoal extends Goal {
         private BlockPos jumpTarget = null;
         private boolean hasPerformedJump = false;
@@ -912,7 +1225,7 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
         @Override
         public boolean canUse() {
             LivingEntity target = ForsakenServant.this.getTarget();
-            if (ForsakenServant.this.onGround() && (target == null || !target.isAlive()) && !ForsakenServant.this.isStaying() && !ForsakenServant.this.isCommanded() && ForsakenServant.this.getRandom().nextInt(140) == 0 && ForsakenServant.this.getAnimation() == NO_ANIMATION) {
+            if (ForsakenServant.this.onGround() && !ForsakenServant.this.hasRiderController() && (target == null || !target.isAlive()) && !ForsakenServant.this.isStaying() && !ForsakenServant.this.isCommanded() && ForsakenServant.this.getRandom().nextInt(140) == 0 && ForsakenServant.this.getAnimation() == NO_ANIMATION) {
                 BlockPos findTarget = this.findJumpTarget();
                 if (findTarget != null) {
                     this.jumpTarget = findTarget;

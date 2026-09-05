@@ -9,6 +9,10 @@
     {
       "id": "goetyominous:vesper_servant",
       "required": false
+    },
+    {
+      "id": "goetyominous:forsaken_servant",
+      "required": false
     }
   ]
 }
