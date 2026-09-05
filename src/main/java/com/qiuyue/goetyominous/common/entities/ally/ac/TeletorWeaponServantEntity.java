@@ -235,8 +235,8 @@ public class TeletorWeaponServantEntity extends Entity {
         this.setItemStack(ItemStack.EMPTY);
     }
 
-    /** 是否为玩家赠予的工具(非"自动生成"自带武器)。 */
-    private static boolean isPlayerProvided(ItemStack stack) {
+    /** 是否为玩家赠予的工具(非"自动生成"自带武器);TeletorServant 换装返还判断也用它。 */
+    public static boolean isPlayerProvided(ItemStack stack) {
         return !stack.isEmpty() && (!stack.hasTag() || !stack.getTag().getBoolean(GENERATED_TOOL_TAG));
     }
 
