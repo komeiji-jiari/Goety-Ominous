@@ -70,6 +70,45 @@ public class MmEntityRegistry {
                             .clientTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":mutant_shulker_servant_trap"));
 
+    public static final RegistryObject<EntityType<MutantBlazeServantFireball>> MUTANT_BLAZE_SERVANT_FIREBALL =
+            MM_ENTITIES.register("mutant_blaze_servant_fireball",
+                    () -> EntityType.Builder.<MutantBlazeServantFireball>of(MutantBlazeServantFireball::new, MobCategory.MISC)
+                            .sized(1.0F, 1.0F)
+                            .build(GoetyOminous.MOD_ID + ":mutant_blaze_servant_fireball"));
+
+    public static final RegistryObject<EntityType<MutantBlazeServantRodProjectile>> MUTANT_BLAZE_SERVANT_ROD_PROJECTILE =
+            MM_ENTITIES.register("mutant_blaze_servant_rod_projectile",
+                    () -> EntityType.Builder.<MutantBlazeServantRodProjectile>of(MutantBlazeServantRodProjectile::new, MobCategory.MISC)
+                            .sized(0.5F, 0.5F).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":mutant_blaze_servant_rod_projectile"));
+
+    public static final RegistryObject<EntityType<RodlingServant>> RODLING_SERVANT =
+            MM_ENTITIES.register("rodling_servant",
+                    () -> EntityType.Builder.of(RodlingServant::new, MobCategory.MISC)
+                            .sized(0.25F, 0.65F).fireImmune()
+                            .clientTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":rodling_servant"));
+
+    public static final RegistryObject<EntityType<RodlingServantFireball>> RODLING_SERVANT_FIREBALL =
+            MM_ENTITIES.register("rodling_servant_fireball",
+                    () -> EntityType.Builder.<RodlingServantFireball>of(RodlingServantFireball::new, MobCategory.MISC)
+                            .sized(0.3125F, 0.3125F)
+                            .build(GoetyOminous.MOD_ID + ":rodling_servant_fireball"));
+
+    public static final RegistryObject<EntityType<MutantBlazeServant>> MUTANT_BLAZE_SERVANT =
+            MM_ENTITIES.register("mutant_blaze_servant",
+                    () -> EntityType.Builder.of(MutantBlazeServant::new, MobCategory.MISC)
+                            .sized(1.9F, 4.5F).fireImmune()
+                            .clientTrackingRange(10)
+                            .build(GoetyOminous.MOD_ID + ":mutant_blaze_servant"));
+
+    public static final RegistryObject<EntityType<GiantHellBlast>> GIANT_HELL_BLAST =
+            MM_ENTITIES.register("giant_hell_blast",
+                    () -> EntityType.Builder.<GiantHellBlast>of(GiantHellBlast::new, MobCategory.MISC)
+                            .sized(1.0F, 1.0F)
+                            .clientTrackingRange(10)
+                            .build(GoetyOminous.MOD_ID + ":giant_hell_blast"));
+
     /**
      * 注册 MutantMore 实体到模组事件总线
      * @param modEventBus 模组事件总线

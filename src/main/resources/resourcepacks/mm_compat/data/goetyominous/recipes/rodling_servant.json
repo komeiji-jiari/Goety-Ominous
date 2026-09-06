@@ -1,0 +1,20 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:summon_tamed",
+  "activation_item": {
+    "item": "minecraft:lava_bucket"
+  },
+  "craftType": "expert_nether",
+  "entity_to_summon": "goetyominous:rodling_servant",
+  "soulCost": 1,
+  "duration": 5,
+  "research": "bygone",
+  "ingredients": [
+    {
+      "item": "minecraft:gunpowder"
+    }
+  ],
+  "result": {
+    "item": "goety:jei_dummy/none"
+  }
+}

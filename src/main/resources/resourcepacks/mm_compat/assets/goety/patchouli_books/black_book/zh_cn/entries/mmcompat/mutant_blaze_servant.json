@@ -1,0 +1,39 @@
+{
+  "name": "突变烈焰人仆从",
+  "icon": "mutantmore:mutant_blaze_core",
+  "category": "goety:mmcompat",
+  "advancement": "goety:goety/read_bygone_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "这种巨大的火焰集合体需要比起控制那些烈焰人宗师还要多得多灵魂能量才能将其约束。虽然你的突变烈焰人不会再让你陷入滚烫的焦灼状态，不过最好还是不要让它们待在木质结构附近。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_blaze_to_mutant_blaze"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "得益于突变烈焰人那温度极高的核心，它们周围会形成一种高温领域。处于此领域中的所有熔炉，烟熏炉或高炉都将获得无限的热能，而点燃的营火将无法被完全扑灭。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:mutant_blaze_servant",
+      "text": "下界先哲们最害怕的一集"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "就像其他突变仆从一样，你尝试为你的突变烈焰人注入更强大的奥术力量。壁垒聚晶赋予突变烈焰人更坚固的盾牌，燃烧之盔使其免疫雨水并强化其所召唤出的烈焰灵。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goety:unholy_blood",
+      "text": "你发现苍白使者的血液能够显著增强你的突变烈焰人。不仅会让外观上发生变化，更使其发射出比起那些苍白使者所使用的还要巨大的狱火爆破。或许那些使者召唤出的邪恶烈焰人受到了他们本身力量的影响..."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "突变烈焰人接受烈焰棒，烈焰粉，煤炭或者木炭为其提供治疗。当然，作为下界生物，下界长袍也能缓慢恢复它们的血量。"
+    }
+  ]
+}

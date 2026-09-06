@@ -24,6 +24,8 @@ import net.minecraftforge.event.level.ExplosionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.List;
+
 @Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID)
 public class MutantShulkerServantEvents {
 
@@ -72,9 +74,17 @@ public class MutantShulkerServantEvents {
 
     @SubscribeEvent
     public static void onExplosionDetonate(ExplosionEvent.Detonate event) {
-        if (event.getExplosion() instanceof com.alexander.mutantmore.explosions.CustomExplosion) {
-            event.getAffectedEntities().removeIf(e -> e instanceof ItemEntity || e instanceof ExperienceOrb);
+        if (!MutantMoreCompat.isMutantMoreLoaded()) {
+            return;
         }
+        if (!(event.getExplosion() instanceof com.alexander.mutantmore.explosions.CustomExplosion)) {
+            return;
+        }
+        List<Entity> affected = event.getAffectedEntities();
+        if (affected == null || affected.isEmpty()) {
+            return;
+        }
+        affected.removeIf(e -> e instanceof ItemEntity || e instanceof ExperienceOrb);
     }
 
     private static LivingEntity getMasterOwner(DamageSource source) {

@@ -33,10 +33,10 @@ public class ModCreativeTab {
                     .icon(() -> ModItems.DARK_ANKH.get().getDefaultInstance())
                     .title(Component.translatable("itemGroup." + GoetyOminous.MOD_ID))
                     .displayItems((parameters, output) -> {
-                        List<Item> spawnEggs = new ArrayList<>();
                         List<Item> foci = new ArrayList<>();
                         List<Item> weapons = new ArrayList<>();
                         List<Item> otherItems = new ArrayList<>();
+                        List<Item> spawnEggs = new ArrayList<>();
 
                         collectFrom(ModItems.ITEMS, spawnEggs, foci, weapons, otherItems);
 

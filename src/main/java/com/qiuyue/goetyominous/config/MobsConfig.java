@@ -30,6 +30,8 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> MutantWitherSkeletonServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> MutantHoglinServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> MutantShulkerServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MutantBlazeServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> RodlingServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> OvergrownColossusServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> HeresiarchServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> WargLimit;
@@ -73,6 +75,9 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> MutantShulkerVoidEyeHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> MutantShulkerVoidShardHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> MutantShulkerBulletLevitationMaxHealth;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MBBulwarkFocusHealthBouns;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MBBlazingHelmHealthBouns;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MBUnholyBloodHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoUnholyBloodHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoUnholyBloodDamageBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoLeechingFocusHeal;
@@ -207,6 +212,14 @@ public class MobsConfig {
                 .comment("Maximum number of Mutant Shulker Servants that can be summoned (Default: 2)")
                 .defineInRange("mutantShulkerServantLimit", 2, 1, 100);
 
+        MutantBlazeServantLimit = BUILDER
+                .comment("Maximum number of Mutant Blaze Servants that can be summoned (Default: 2)")
+                .defineInRange("mutantBlazeServantLimit", 2, 1, 100);
+
+        RodlingServantLimit = BUILDER
+                .comment("Maximum number of Rodling Servants that can be summoned (Default: 16)")
+                .defineInRange("rodlingServantLimit", 16, 1, 100);
+
         OvergrownColossusServantLimit = BUILDER
                 .comment("Maximum number of Overgrown Colossus Servants that can be summoned (Default: 2)")
                 .defineInRange("overgrownColossusServantLimit", 2, 1, 100);
@@ -340,6 +353,15 @@ public class MobsConfig {
         MutantShulkerBulletLevitationMaxHealth = BUILDER
                 .comment("Maximum max-health for entities that Mutant Shulker Servant bullets can apply Levitation to (Default: 200)")
                 .defineInRange("mutantShulkerBulletLevitationMaxHealth", 200.0, 1.0, 1000.0);
+        BUILDER.pop();
+
+        BUILDER.push("Mutant Blaze Enhancements");
+        MBBulwarkFocusHealthBouns = BUILDER.comment("Extra health bonus when Mutant Blaze has Bulwark Focus, Default: 15")
+                .defineInRange("mbBulwarkFocusHealthBouns", 15, 0, Integer.MAX_VALUE);
+        MBBlazingHelmHealthBouns = BUILDER.comment("Extra health bonus when Mutant Blaze has Blazing Helm, Default: 15")
+                .defineInRange("mbBlazingHelmHealthBouns", 15, 0, Integer.MAX_VALUE);
+        MBUnholyBloodHealthBouns = BUILDER.comment("Extra health bonus when Mutant Blaze has Unholy Blood, Default: 20")
+                .defineInRange("mbUnholyBloodHealthBouns", 20, 0, Integer.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.push("Warped Mosco Enhancements");

@@ -35,6 +35,14 @@ public class MmItems {
             "mutant_shulker_servant_spawn_egg",
             () -> new ServantSpawnEggItem(MmEntityRegistry.MUTANT_SHULKER_SERVANT, 0x8E5BD6, 0x5E3A9E, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> MUTANT_BLAZE_SERVANT_SPAWN_EGG = MM_ITEMS.register(
+            "mutant_blaze_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(MmEntityRegistry.MUTANT_BLAZE_SERVANT, 0xF5A623, 0xC2571B, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> RODLING_SERVANT_SPAWN_EGG = MM_ITEMS.register(
+            "rodling_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(MmEntityRegistry.RODLING_SERVANT, 0xFFB347, 0x8B5A2B, egg()));
+
     public static final RegistryObject<MagicFocus> WITHER_BREATH_FOCUS = MM_ITEMS.register(
             "wither_breath_focus",
             () -> new MagicFocus(new WitherBreathSpell()));

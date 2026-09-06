@@ -364,6 +364,20 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> MutantShulkerServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> MutantShulkerServantMovementSpeed;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantBlazeServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantBlazeServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantBlazeServantArmorToughness;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantBlazeServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantBlazeServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantBlazeServantMovementSpeed;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> RodlingServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> RodlingServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> RodlingServantArmorToughness;
+    public static final ForgeConfigSpec.ConfigValue<Double> RodlingServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> RodlingServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> RodlingServantMovementSpeed;
+
     public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantDamage;
@@ -904,6 +918,36 @@ public class AttributesConfig {
                 .defineInRange("mutantShulkerServantFollowRange", 64.0, 1.0, Double.MAX_VALUE);
         MutantShulkerServantMovementSpeed = BUILDER.comment("How fast Mutant Shulker Servants move, Default: 0.275")
                 .defineInRange("mutantShulkerServantMovementSpeed", 0.275, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Mutant Blaze Servant");
+        MutantBlazeServantHealth = BUILDER.comment("How much Max Health Mutant Blaze Servants have, Default: 250.0")
+                .defineInRange("mutantBlazeServantHealth", 250.0, 1.0, Double.MAX_VALUE);
+        MutantBlazeServantArmor = BUILDER.comment("How much natural Armor Mutant Blaze Servants have, Default: 5.0")
+                .defineInRange("mutantBlazeServantArmor", 5.0, 0.0, Double.MAX_VALUE);
+        MutantBlazeServantArmorToughness = BUILDER.comment("How much natural Armor Toughness Mutant Blaze Servants have, Default: 0.0")
+                .defineInRange("mutantBlazeServantArmorToughness", 0.0, 0.0, Double.MAX_VALUE);
+        MutantBlazeServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Mutant Blaze Servants have, Default: 1.0")
+                .defineInRange("mutantBlazeServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
+        MutantBlazeServantFollowRange = BUILDER.comment("How much following/detection range Mutant Blaze Servants have, Default: 64.0")
+                .defineInRange("mutantBlazeServantFollowRange", 64.0, 1.0, Double.MAX_VALUE);
+        MutantBlazeServantMovementSpeed = BUILDER.comment("How fast Mutant Blaze Servants move, Default: 0.25")
+                .defineInRange("mutantBlazeServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Rodling Servant");
+        RodlingServantHealth = BUILDER.comment("How much Max Health Rodling Servants have, Default: 10.0")
+                .defineInRange("rodlingServantHealth", 10.0, 1.0, Double.MAX_VALUE);
+        RodlingServantArmor = BUILDER.comment("How much natural Armor Rodling Servants have, Default: 0.0")
+                .defineInRange("rodlingServantArmor", 0.0, 0.0, Double.MAX_VALUE);
+        RodlingServantArmorToughness = BUILDER.comment("How much natural Armor Toughness Rodling Servants have, Default: 0.0")
+                .defineInRange("rodlingServantArmorToughness", 0.0, 0.0, Double.MAX_VALUE);
+        RodlingServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Rodling Servants have, Default: 0.0")
+                .defineInRange("rodlingServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
+        RodlingServantFollowRange = BUILDER.comment("How much following/detection range Rodling Servants have, Default: 20.0")
+                .defineInRange("rodlingServantFollowRange", 20.0, 1.0, Double.MAX_VALUE);
+        RodlingServantMovementSpeed = BUILDER.comment("How fast Rodling Servants move, Default: 0.125")
+                .defineInRange("rodlingServantMovementSpeed", 0.125, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.push("AM Servants (Optional)");

@@ -1,0 +1,41 @@
+{
+  "name": "烈焰灵仆从",
+  "icon": "mutantmore:rodling_helmet",
+  "category": "goety:mmcompat",
+  "advancement": "goety:goety/read_bygone_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "这些更小的烈焰灵与它们那些装备盾牌的亲戚们具有一些相似之处。研究了要塞居民的记录之后，你可以自己动手创建一个永远不会背叛你的烈焰灵仆从。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:rodling_servant",
+      "text": "非常可爱不是吗"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "minecraft:coal",
+      "text": "你可以手持煤炭或木炭右键你的烈焰灵仆从来交给它们。当你的烈焰灵受伤时，它们会使用这些燃料来恢复自身的血量。如果你装备了下界长袍，那么也可以提供被动的自然治疗。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:rodling_servant"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "mutantmore:rodling_helmet",
+      "text": "和驯服的烈焰灵一样，你可以右键为你的烈焰灵仆从装备头盔。这种头盔提供防护的同时也能让你的烈焰灵免遭雨水伤害。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "mutantmore:rodling_shields",
+      "text": "装备盾牌可以让你的烈焰灵仆从获得2面会随时间恢复的护盾。当持有物品的烈焰灵死亡时，剩余的物品会掉落出来用于回收。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "当你披上黑暗使者的长袍，你麾下的烈焰灵仆从将发射出不洁之火束，快速烧尽你面前的一切邪祟。"
+    }
+  ]
+}

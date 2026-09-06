@@ -49,11 +49,11 @@ public class ZPiglinBruteServantRenderer extends HumanoidMobRenderer<Mob, ZPigli
                 .put(ModEntityTypes.ELITE_ZPIGLIN_BRUTE_SERVANT.get(),
                         new ResourceLocation(GoetyOminous.MOD_ID, "textures/entity/piglin/zpiglin_brute_servant_elite.png"))
                 .put(ModEntityTypes.ZPIGLIN_HUNTER_SERVANT.get(),
-                        new ResourceLocation("goety", "textures/entity/servants/zombie/zpiglin_brute_servant.png"))
+                        new ResourceLocation(GoetyOminous.MOD_ID, "textures/entity/piglin/zpiglin_hunter_servant.png"))
                 .put(ModEntityTypes.STRONG_ZPIGLIN_HUNTER_SERVANT.get(),
-                        new ResourceLocation(GoetyOminous.MOD_ID, "textures/entity/piglin/zpiglin_brute_servant_strong.png"))
+                        new ResourceLocation(GoetyOminous.MOD_ID, "textures/entity/piglin/zpiglin_hunter_servant_strong.png"))
                 .put(ModEntityTypes.ELITE_ZPIGLIN_HUNTER_SERVANT.get(),
-                        new ResourceLocation(GoetyOminous.MOD_ID, "textures/entity/piglin/zpiglin_brute_servant_elite.png"))
+                        new ResourceLocation(GoetyOminous.MOD_ID, "textures/entity/piglin/zpiglin_hunter_servant_elite.png"))
                 .build();
     }
 }
