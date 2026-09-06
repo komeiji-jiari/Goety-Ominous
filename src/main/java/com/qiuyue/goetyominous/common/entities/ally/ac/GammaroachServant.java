@@ -1,5 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.ally.ac;
 
+import com.Polarice3.Goety.api.entities.ally.IServant;
+import com.Polarice3.Goety.api.items.magic.IWand;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.init.ModMobType;
 import com.github.alexmodguy.alexscaves.client.particle.ACParticleRegistry;
@@ -32,8 +34,10 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -43,7 +47,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 
-public class GammaroachServant extends Summoned implements IAnimatedEntity {
+public class GammaroachServant extends Summoned implements IAnimatedEntity, PlayerRideable {
 
     private Animation currentAnimation;
     private int animationTick;
@@ -59,6 +63,7 @@ public class GammaroachServant extends Summoned implements IAnimatedEntity {
 
     protected void registerGoals() {
         super.registerGoals();
+        this.goalSelector.addGoal(0, new DriveRiddenGoal());
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new MeleeGoal());
         this.goalSelector.addGoal(3, new Summoned.WanderGoal<>(this, 1.0D, 45, 0.001F));
@@ -120,6 +125,104 @@ public class GammaroachServant extends Summoned implements IAnimatedEntity {
 
     protected PathNavigation createNavigation(Level level) {
         return new GroundPathNavigatorNoSpin(this, level);
+    }
+
+    @Override
+    public boolean isControlledByLocalInstance() {
+        return this.isEffectiveAi();
+    }
+
+    @Nullable
+    @Override
+    public LivingEntity getControllingPassenger() {
+        Entity entity = this.getFirstPassenger();
+        if (entity instanceof Player) {
+            return (Player) entity;
+        }
+        if (entity instanceof IServant servant && (this.getTrueOwner() == null || this.getTrueOwner() == servant.getTrueOwner())) {
+            return (LivingEntity) entity;
+        }
+        return null;
+    }
+
+    @Override
+    protected boolean canAddPassenger(Entity passenger) {
+        if (this.isBaby() || !this.getPassengers().isEmpty()) {
+            return false;
+        }
+        if (passenger instanceof Player) {
+            return true;
+        }
+        return passenger instanceof IServant
+                && (this.getTrueOwner() == null || this.getTrueOwner() == ((IServant) passenger).getTrueOwner());
+    }
+
+    @Override
+    public double getPassengersRidingOffset() {
+        return 0.5D;
+    }
+
+    @Override
+    protected void updateControlFlags() {
+        super.updateControlFlags();
+        boolean steering = this.getControllingPassenger() instanceof Player player && (player.zza != 0.0F || player.xxa != 0.0F);
+        boolean busy = this.getControllingPassenger() instanceof IServant || steering;
+        boolean notInBoat = !(this.getVehicle() instanceof Boat);
+        this.goalSelector.setControlFlag(Goal.Flag.MOVE, !busy);
+        this.goalSelector.setControlFlag(Goal.Flag.JUMP, !busy && notInBoat);
+        this.goalSelector.setControlFlag(Goal.Flag.LOOK, !busy);
+        this.goalSelector.setControlFlag(Goal.Flag.TARGET, !busy);
+    }
+
+    protected void doPlayerRide(Player player) {
+        if (!this.level().isClientSide) {
+            player.setYRot(this.getYRot());
+            player.setXRot(this.getXRot());
+            player.startRiding(this);
+        }
+    }
+
+    @Override
+    public void positionRider(Entity passenger, Entity.MoveFunction moveFunction) {
+        if (this.isPassengerOfSameVehicle(passenger) && passenger instanceof LivingEntity living) {
+            if (!this.touchingUnloadedChunk()) {
+                living.setYBodyRot(this.yBodyRot);
+                living.setYHeadRot(this.getYRot());
+                living.fallDistance = 0.0F;
+                Vec3 seatOffset = new Vec3(0.0D, 0.0D, 0.2D).yRot((float) Math.toRadians(-this.yBodyRot));
+                moveFunction.accept(passenger, this.getX() + seatOffset.x, this.getY() + seatOffset.y + this.getPassengersRidingOffset(), this.getZ() + seatOffset.z);
+                return;
+            }
+        }
+        super.positionRider(passenger, moveFunction);
+    }
+
+    @Override
+    public Vec3 getDismountLocationForPassenger(LivingEntity passenger) {
+        return new Vec3(this.getX(), this.getBoundingBox().minY, this.getZ());
+    }
+
+    @Override
+    protected Vec3 getRiddenInput(Player player, Vec3 vec3) {
+        float f = player.zza < 0.0F ? 0.5F : 1.0F;
+        return new Vec3(player.xxa * 0.35F, 0.0D, player.zza * 0.8F * f);
+    }
+
+    @Override
+    protected void tickRidden(Player player, Vec3 vec3) {
+        super.tickRidden(player, vec3);
+        if (player.zza != 0.0F || player.xxa != 0.0F) {
+            this.setRot(player.getYRot(), player.getXRot() * 0.25F);
+            this.yBodyRot = this.yHeadRot = this.getYRot();
+            this.yRotO = this.yHeadRot;
+            this.getNavigation().stop();
+            this.setTarget(null);
+        }
+    }
+
+    @Override
+    protected float getRiddenSpeed(Player rider) {
+        return (float) this.getAttributeValue(Attributes.MOVEMENT_SPEED);
     }
 
     public boolean canBeAffected(MobEffectInstance effectInstance) {
@@ -210,10 +313,13 @@ public class GammaroachServant extends Summoned implements IAnimatedEntity {
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        InteractionResult prev = super.mobInteract(player, hand);
-        if (prev != InteractionResult.SUCCESS) {
+        if (!this.level().isClientSide) {
             ItemStack itemStack = player.getItemInHand(hand);
-            if (itemStack.is(ACItemRegistry.SPELUNKIE.get()) && (!level().isClientSide && this.getTarget() == player || !isFed())) {
+            InteractionResult prev = super.mobInteract(player, hand);
+            if (prev == InteractionResult.SUCCESS) {
+                return prev;
+            }
+            if (itemStack.is(ACItemRegistry.SPELUNKIE.get()) && (this.getTarget() == player || !isFed())) {
                 if (!player.getAbilities().instabuild) {
                     itemStack.shrink(1);
                 }
@@ -221,15 +327,28 @@ public class GammaroachServant extends Summoned implements IAnimatedEntity {
                 this.setLastHurtByMob(null);
                 this.setTarget(null);
                 this.level().broadcastEntityEvent(this, (byte) 49);
-                if (!this.level().isClientSide && this.level() instanceof ServerLevel serverLevel) {
+                if (this.level() instanceof ServerLevel serverLevel) {
                     serverLevel.sendParticles(ParticleTypes.HEART,
                             this.getX(), this.getY() + this.getBbHeight() / 2, this.getZ(),
                             5, 0.5, 0.5, 0.5, 0.0);
                 }
                 return InteractionResult.SUCCESS;
             }
+            if (this.getTrueOwner() != null && player == this.getTrueOwner() && !this.isBaby() && !player.isCrouching()
+                    && !itemStack.is(ACItemRegistry.SPELUNKIE.get()) && !(itemStack.getItem() instanceof IWand)) {
+                Entity passenger = this.getFirstPassenger();
+                if (passenger != null && passenger != player) {
+                    passenger.stopRiding();
+                    return InteractionResult.SUCCESS;
+                }
+                if (this.getPassengers().isEmpty()) {
+                    this.doPlayerRide(player);
+                    return InteractionResult.SUCCESS;
+                }
+            }
+            return prev;
         }
-        return prev;
+        return super.mobInteract(player, hand);
     }
 
     public void handleEntityEvent(byte b) {
@@ -259,6 +378,94 @@ public class GammaroachServant extends Summoned implements IAnimatedEntity {
     protected void playStepSound(BlockPos pos, BlockState state) {
         if (!this.isBaby()) {
             this.playSound(ACSoundRegistry.GAMMAROACH_STEP.get(), 1.0F, 1.0F);
+        }
+    }
+
+    private class DriveRiddenGoal extends Goal {
+
+        private DriveRiddenGoal() {
+        }
+
+        @Override
+        public boolean canUse() {
+            return !GammaroachServant.this.level().isClientSide && GammaroachServant.this.getControllingPassenger() instanceof Summoned;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return this.canUse();
+        }
+
+        @Override
+        public void start() {
+            GammaroachServant.this.getNavigation().stop();
+            GammaroachServant.this.setTarget(null);
+        }
+
+        @Override
+        public void stop() {
+            GammaroachServant.this.getNavigation().stop();
+        }
+
+        @Override
+        public void tick() {
+            GammaroachServant roach = GammaroachServant.this;
+            if (!(roach.getControllingPassenger() instanceof Summoned driver)) {
+                return;
+            }
+            if (driver.isStaying()) {
+                roach.getNavigation().stop();
+                return;
+            }
+            LivingEntity target = driver.getTarget();
+            if (target != null && target.isAlive()) {
+                double range = (double) (2.0F + target.getBbWidth());
+                if (roach.distanceToSqr(target) > range * range) {
+                    if (roach.getNavigation().isDone()) {
+                        roach.getNavigation().moveTo(target, 1.0D);
+                    }
+                } else {
+                    roach.getNavigation().stop();
+                    roach.lookAt(target, 30.0F, 30.0F);
+                }
+                return;
+            }
+            if (driver.isCommanded() && driver.getCommandPos() != null) {
+                BlockPos commandPos = driver.getCommandPos();
+                if (roach.distanceToSqr(commandPos.getX() + 0.5D, commandPos.getY(), commandPos.getZ() + 0.5D) > 4.0D) {
+                    if (roach.getNavigation().isDone()) {
+                        roach.getNavigation().moveTo(commandPos.getX() + 0.5D, commandPos.getY(), commandPos.getZ() + 0.5D, 1.0D);
+                    }
+                } else {
+                    roach.getNavigation().stop();
+                }
+                return;
+            }
+            if (driver.isWandering()) {
+                if (roach.getNavigation().isDone() && roach.getRandom().nextInt(60) == 0) {
+                    Vec3 pos = LandRandomPos.getPos(roach, 6, 4);
+                    if (pos != null) {
+                        roach.getNavigation().moveTo(pos.x, pos.y, pos.z, 0.7D);
+                    }
+                }
+                return;
+            }
+            if (driver.isGuardingArea()) {
+                roach.getNavigation().stop();
+                return;
+            }
+            LivingEntity owner = driver.getTrueOwner();
+            if (owner != null && owner.isAlive()) {
+                if (roach.distanceToSqr(owner) > 25.0D) {
+                    if (roach.getNavigation().isDone()) {
+                        roach.getNavigation().moveTo(owner, 1.0D);
+                    }
+                } else {
+                    roach.getNavigation().stop();
+                }
+                return;
+            }
+            roach.getNavigation().stop();
         }
     }
 

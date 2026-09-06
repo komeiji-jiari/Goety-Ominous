@@ -12,11 +12,6 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
-/**
- * 遗弃者仆从口水粒子:自 AC ForsakenSpitParticle 移植。
- * 出生阶段(寿命前 25%)钉在嘴边(嘴部锚点由 RenderForsakenServant 每帧缓存),之后受重力滴落。
- * xSpeed 槽位携带仆从实体 id,供嘴部锚点查询。
- */
 public class ForsakenServantSpitParticle extends TextureSheetParticle {
     private final SpriteSet sprites;
     private int onGroundTime;

@@ -245,7 +245,7 @@ public class AcEntityRegistry {
     public static final RegistryObject<EntityType<CandicornServant>> CANDICORN_SERVANT =
             AC_ENTITIES.register("candicorn_servant",
                     () -> EntityType.Builder.<CandicornServant>of((type, worldIn) -> new CandicornServant(type, worldIn), MobCategory.MISC)
-                            // 与 AC 原版 Candicorn 尺寸一致(1.7 x 2.25)。
+
                             .sized(1.7F, 2.25F)
                             .setTrackingRange(12)
                             .setShouldReceiveVelocityUpdates(true)

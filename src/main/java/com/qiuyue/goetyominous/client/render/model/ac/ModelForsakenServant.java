@@ -628,11 +628,6 @@ public class ModelForsakenServant extends AdvancedEntityModel<ForsakenServant> {
         return vec3;
     }
 
-    /**
-     * 嘴部世界偏移(供口水粒子锚定):自 AC ForsakenModel.getMouthPosition 原样移植。
-     * 沿用 root→neck→skull 链与爪锚相同的坐标系约定,输出按实体脚部为原点的偏移,
-     * 由 RenderForsakenServant 在渲染时按实体 id 缓存。
-     */
     public Vec3 getMouthPosition(Vec3 offsetIn) {
         PoseStack translationStack = new PoseStack();
         translationStack.pushPose();
