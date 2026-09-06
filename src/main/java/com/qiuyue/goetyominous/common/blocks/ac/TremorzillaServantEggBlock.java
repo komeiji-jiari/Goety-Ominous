@@ -22,10 +22,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 
 import java.util.UUID;
 
-/**
- * 特雷莫兹拉仆从蛋块。孵出 TremorzillaServant(绑定蛋放置者 UUID)。
- * 蛋块属性沿用 AC 原版 TremorzillaEggBlock(抗爆 5000),孵化沿用项目仆从蛋惯例(默认 NEEDS_PLAYER 孵化)。
- */
 public class TremorzillaServantEggBlock extends DinosaurEggBlock implements EntityBlock {
 
     public TremorzillaServantEggBlock(Properties properties) {

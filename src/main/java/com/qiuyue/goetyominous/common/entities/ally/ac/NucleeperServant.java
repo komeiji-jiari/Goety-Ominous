@@ -96,7 +96,6 @@ public class NucleeperServant extends Summoned implements ActivatesSirens, Power
             }
         });
         this.goalSelector.addGoal(2, new MeleeGoal());
-        // 用 Goety 的 WanderGoal(checkNoActionTime=false):非敌对 Summoned 的 noActionTime 永不复位,原版 RandomStrollGoal 空闲约5秒即被永久禁用而站桩。
         this.goalSelector.addGoal(3, new Summoned.WanderGoal<>(this, 1.0D, 45, 0.001F));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 15.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
@@ -330,8 +329,6 @@ public class NucleeperServant extends Summoned implements ActivatesSirens, Power
         explosion.copyPosition(this);
         explosion.setSize(isCharged() ? 1.75F : 1F);
         explosion.setNoGriefing(true);
-        // 服务端实体在加入世界前直接把 spawnedParticle 置 true,保证服务端 tick 不发送 AC 原版
-        // MUSHROOM_CLOUD 粒子(客户端实例由 NucleeperNukeProtectionHandler.onExplosionJoin 抑制)。
         NucleeperNukeProtectionHandler.suppressVanillaCloud(explosion);
         level().addFreshEntity(explosion);
         if (level() instanceof ServerLevel serverLevel) {

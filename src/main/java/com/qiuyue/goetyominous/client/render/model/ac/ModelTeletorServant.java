@@ -14,16 +14,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.joml.Vector4f;
 
-/**
- * 传送使徒仆从模型:逐字移植 AC TeletorModel(Citadel 几何),保证与原版外观一致。
- * 动画驱动:
- * <ul>
- *   <li>legsCrossed 时切换为交叉悬浮腿(隐藏两条竖直细腿);</li>
- *   <li>controlProgress 控制双臂抬举/挥舞以引导武器、躯干与头微俯;</li>
- *   <li>悬浮时整体缓慢 bob/摆动;命中目标时双臂/躯干朝向武器所在方向回正;</li>
- *   <li>translateToHead() 供渲染器把世界/模型偏移换算成头部空间位置(用于绘制牵引闪电与轨迹)。</li>
- * </ul>
- */
 @OnlyIn(Dist.CLIENT)
 public class ModelTeletorServant extends AdvancedEntityModel<TeletorServant> {
     private final AdvancedModelBox body;

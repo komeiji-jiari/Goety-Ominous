@@ -9,16 +9,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-/**
- * IllageAndSpillage 联动物品注册类
- * 负责注册所有 I&S 仆从相关的物品（如刷怪蛋）
- * 注意：这个类只在 IllageAndSpillage 模组加载时才会被调用
- */
 public class IasItems {
 
-    /**
-     * I&S 物品延迟注册表
-     */
     public static final DeferredRegister<Item> IAS_ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, GoetyOminous.MOD_ID);
 
@@ -38,18 +30,10 @@ public class IasItems {
             "magispeller_servant_spawn_egg",
             () -> new ServantSpawnEggItem(IasEntityRegistry.MAGISPELLER_SERVANT, 0x2E0854, 0xE6E6FA, egg()));
 
-    /**
-     * 物品属性配置方法
-     * @return 基础物品属性配置
-     */
     public static Item.Properties egg() {
         return new Item.Properties();
     }
 
-    /**
-     * 注册 I&S 物品到模组事件总线
-     * @param modEventBus 模组事件总线
-     */
     public static void register(IEventBus modEventBus) {
         IAS_ITEMS.register(modEventBus);
     }

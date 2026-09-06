@@ -84,7 +84,6 @@ public class MineGuardianServant extends Summoned {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(1, new MeleeGoal());
-        // 随机环顾仅限水中且非待命:岸上任意状态都保持静止不旋转
         this.goalSelector.addGoal(2, new RandomLookAroundGoal(this) {
             @Override
             public boolean canUse() {
@@ -204,7 +203,6 @@ public class MineGuardianServant extends Summoned {
             if (this.isInWaterOrBubble()) {
                 this.setAirSupply(300);
             }
-            // 岸上完全不动:移除扑腾跳跃与随机旋转,像地雷一样静置
             Entity target = this.getTarget();
             if (target == null || !target.isAlive()) {
                 timeSinceHadTarget++;
@@ -444,7 +442,6 @@ public class MineGuardianServant extends Summoned {
                         MineGuardianServant.this.setExploding(true);
                     }
                 } else if (dist <= 1.5F) {
-                    // 岸上:不移动也不转向,敌人贴脸才引爆
                     MineGuardianServant.this.setExploding(true);
                 }
                 if (timer > 300) {

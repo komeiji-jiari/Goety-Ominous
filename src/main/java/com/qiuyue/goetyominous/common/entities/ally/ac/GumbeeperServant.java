@@ -47,21 +47,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 
-/**
- * 糖球苦力怕(Gumbeeper)仆从:以 AC 原版 GumbeeperEntity 行为为蓝本移植成 Goety 仆从。
- *
- * <p>忠实还原:</p>
- * <ul>
- *   <li>头内糖球层随弹药(6 发)逐层减少,攻击前旋钮蓄力(dialRot→450),随后发射弹跳糖球;</li>
- *   <li><b>自爆阵亡</b>:弹药耗尽且贴到目标身旁时启动自爆,1 秒后喷出 15 颗(蓄电 30 颗)弹跳糖球并自行销毁;</li>
- *   <li>被雷击后变为"蓄电"形态(heal、3 连发、更高伤害、更多弹跳、能量外圈),原样保留。</li>
- * </ul>
- *
- * <p>仆从化调整:丢开野生敌对目标/猫恐惧/被 Licowitch 附身等逻辑;改用基类 Summoned 的
- * 主人跟随(默认 FollowOwnerGoal,有目标时自动暂停)与 SummonTargetGoal 索敌;蛋召唤时按数量上限拦截。
- * 保留原版"打火石/火焰弹右键点燃自爆"(仅限主人触发,见 {@link #mobInteract})。
- * 弹丸 owner 直接指向主人,保证自爆阵亡后弹跳糖球仍不误伤主人的其他仆从(见 {@link GumballServantEntity})。</p>
- */
 public class GumbeeperServant extends Summoned implements PowerableMob {
 
     private static final int DEFAULT_GUMBALLS = 6;
@@ -101,9 +86,6 @@ public class GumbeeperServant extends Summoned implements PowerableMob {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(2, new AttackGoal());
-        // 无目标时以 1.0 速度游荡(45 tick 间隔),落点限定在主人附近(跟随时不走远)。
-        // 必须用 Goety 的 WanderGoal(checkNoActionTime=false):Summoned 覆写 checkDespawn 后非敌对仆从的
-        // noActionTime 永不复位,原版 RandomStrollGoal 空闲约 5 秒后 noActionTime>=100 即被永久禁用 → 站桩不动。
         this.goalSelector.addGoal(3, new Summoned.WanderGoal<>(this, 1.0D, 45, 0.001F));
         this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
     }
@@ -169,10 +151,6 @@ public class GumbeeperServant extends Summoned implements PowerableMob {
         }
     }
 
-    /**
-     * 自爆阵亡:喷出弹跳糖球后以 DISCARDED 方式销毁(不走死亡事件,主人不会收到"仆从战死"反馈)。
-     * 弹丸 owner 取主人,使阵亡瞬间喷出的糖球仍按主人身份判定友军。
-     */
     private void explodeIntoGumballs() {
         LivingEntity source = this.getTrueOwner() != null ? this.getTrueOwner() : this;
         int count = this.isCharged() ? 30 : 15;
@@ -211,7 +189,6 @@ public class GumbeeperServant extends Summoned implements PowerableMob {
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         if (itemstack.is(ItemTags.CREEPER_IGNITERS)) {
-            // 与 AC 原版一致:打火石/火焰弹右键点燃自爆。仆从化:仅限主人触发,其余情况放行给基类指令。
             if (this.getOwnerId() == null || !player.getUUID().equals(this.getOwnerId())) {
                 return InteractionResult.PASS;
             }
@@ -392,10 +369,6 @@ public class GumbeeperServant extends Summoned implements PowerableMob {
         return count;
     }
 
-    /**
-     * 复刻 AC GumbeeperEntity.AttackGoal:有弹药时在 16 格内定身走位蓄力发射;
-     * 无弹药且贴脸(目标体型 +1.5 格)则引爆自毁,否则持续逼近。
-     */
     public class AttackGoal extends Goal {
 
         private int seeTime;

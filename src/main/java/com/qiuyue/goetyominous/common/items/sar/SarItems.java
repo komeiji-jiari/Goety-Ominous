@@ -12,16 +12,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-/**
- * SAR 联动物品注册类
- * 负责注册所有 SAR 仆从相关的物品（如刷怪蛋）
- * 注意：这个类只在 SAR 模组加载时才会被调用
- */
 public class SarItems {
 
-    /**
-     * SAR 物品延迟注册表
-     */
     public static final DeferredRegister<Item> SAR_ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, GoetyOminous.MOD_ID);
 
@@ -59,18 +51,10 @@ public class SarItems {
 
 
 
-    /**
-     * 物品属性配置方法
-     * @return 基础物品属性配置
-     */
     public static Item.Properties egg() {
         return new Item.Properties();
     }
 
-    /**
-     * 注册 SAR 物品到模组事件总线
-     * @param modEventBus 模组事件总线
-     */
     public static void register(net.minecraftforge.eventbus.api.IEventBus modEventBus) {
         SAR_ITEMS.register(modEventBus);
     }

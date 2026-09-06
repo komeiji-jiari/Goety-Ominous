@@ -133,18 +133,12 @@ public class GummyBearServant extends AnimalSummon implements IAnimatedEntity {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        // AnimalSummon 繁殖:同主人、双方发情(BreedGoal 内部再经 canMate 过滤)。优先级 1,高于
-        // 坐下/近战/闲逛,发情期优先朝伴侣走位(Summoned 的 FollowOwnerGoal 在 5,让位给繁殖)。
         this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(2, new SitGoal());
         this.goalSelector.addGoal(3, new GummyBearMeleeGoal());
-        // 用 Goety 的 WanderGoal(checkNoActionTime=false)游荡:AnimalSummon/Summoned 覆写 checkDespawn 后 noActionTime 永不复位,
-        // 原版 RandomStrollGoal 空闲约 5 秒即 noActionTime>=100 被永久禁用而站桩不动;WanderGoal 落点限定在主人附近。
         this.goalSelector.addGoal(4, new Summoned.WanderGoal<>(this, 1.0D, 45, 0.001F));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
-        // 主动猎鱼:对同色 SweetishFish(原版 GummyBearEntity 行为),幼体不猎鱼。优先级 3,低于继承的
-        // OwnerHurtByTarget/ServantHurtBy/SummonTarget(1) 与 OwnerHurtTarget(2),即只在闲时选鱼。
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, SweetishFishEntity.class, 100, true, false,
                 livingEntity -> livingEntity instanceof SweetishFishEntity sweetishFish && sweetishFish.getGummyColor() == this.getGummyColor() && !GummyBearServant.this.isBaby()));
     }
@@ -164,11 +158,6 @@ public class GummyBearServant extends AnimalSummon implements IAnimatedEntity {
         return super.finalizeSpawn(levelAccessor, difficulty, spawnType, spawnGroupData, tag);
     }
 
-    /**
-     * 该玩家名下当前在场的软糖熊仆从总数(含幼体)。
-     * 注:finalizeSpawn 调用时本实体尚未入世界,故此处"总数"等价于"已有数",
-     * spawn egg 校验与繁殖校验(canMate/getBreedOffspring)可共用同一套口径:总数到上限即不再放行。
-     */
     private int countServants(Player player) {
         int count = 0;
         if (player.level() instanceof ServerLevel serverLevel) {
@@ -256,8 +245,6 @@ public class GummyBearServant extends AnimalSummon implements IAnimatedEntity {
         return potion == null ? new ItemStack(ACItemRegistry.JELLY_BEAN.get()) : ACEffectRegistry.createJellybean(potion);
     }
 
-    // ---- 繁殖(恢复原版 GummyBearEntity 机制,受 AnimalSummon 控制)----
-    // 食物 = 与自身同色的甜味鱼(喂食由 AnimalSummon.mobInteract 处理:成体发情、幼体催长)。
     @Override
     public boolean isFood(ItemStack stack) {
         Item fishItem = ACItemRegistry.SWEETISH_FISH_RED.get();
@@ -281,8 +268,6 @@ public class GummyBearServant extends AnimalSummon implements IAnimatedEntity {
         return stack.is(fishItem);
     }
 
-    // 同主人约束:BreedGoal 只保证同类+双方发情,这里额外要求两位仆从属于同一主人;
-    // 且主人名下数量已达上限时不配对(#1:繁殖同样遵守 MobsConfig.GummyBearServantLimit)。
     @Override
     public boolean canMate(AnimalSummon other) {
         LivingEntity owner = this.getTrueOwner();
@@ -293,8 +278,6 @@ public class GummyBearServant extends AnimalSummon implements IAnimatedEntity {
                 && countServants(player) >= MobsConfig.GummyBearServantLimit.get());
     }
 
-    // 后代颜色继承召唤方;AnimalSummon.spawnChildFromBreeding 内部会 copyTrueOwner,故幼体自动归属主人。
-    // 二次防线:若两对同时各自配对、先后产仔,这里按实时数量兜底,已达上限则放弃本次产仔(双方发情自然耗散)。
     @Override
     @Nullable
     public AnimalSummon getBreedOffspring(ServerLevel level, AnimalSummon otherParent) {
@@ -310,7 +293,6 @@ public class GummyBearServant extends AnimalSummon implements IAnimatedEntity {
         return offspring;
     }
 
-    // 幼体碰撞盒随体型同步缩小(#4),与模型 young 缩放一致;照 TusklinServant 的做法。
     @Override
     public EntityDimensions getDimensions(Pose pose) {
         return this.getType().getDimensions().scale(this.isBaby() ? 0.5F : 1.0F);
@@ -589,8 +571,6 @@ public class GummyBearServant extends AnimalSummon implements IAnimatedEntity {
         InteractionResult prev = super.mobInteract(player, hand);
         if (prev != InteractionResult.SUCCESS) {
             ItemStack itemStack = player.getItemInHand(hand);
-            // 药水消化同样限主人喂(#2,与喂鱼发情口径一致):无主(野生)熊任何玩家可喂;
-            // 用 getOwnerId 判断"是否有主",避免主人在异维度时把仆从误当野生放给外人喂。
             if (this.isDigestiblePotion(itemStack) && !this.isDigesting()
                     && (this.getOwnerId() == null || player == this.getTrueOwner())) {
                 if (!this.level().isClientSide) {

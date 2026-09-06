@@ -10,16 +10,8 @@ import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-/**
- * UA 联动物品注册类
- * 负责注册所有 UA 仆从相关的物品（如刷怪蛋）
- * 注意：这个类只在 UA 模组加载时才会被调用
- */
 public class UaItems {
 
-    /**
-     * UA 物品延迟注册表
-     */
     public static final DeferredRegister<Item> UA_ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, GoetyOminous.MOD_ID);
 
@@ -44,18 +36,10 @@ public class UaItems {
             () -> new MagicFocus(new FlareSpell()));
 
 
-    /**
-     * 物品属性配置方法
-     * @return 基础物品属性配置
-     */
     public static Item.Properties egg() {
         return new Item.Properties();
     }
 
-    /**
-     * 注册 UA 物品到模组事件总线
-     * @param modEventBus 模组事件总线
-     */
     public static void register(net.minecraftforge.eventbus.api.IEventBus modEventBus) {
         UA_ITEMS.register(modEventBus);
     }

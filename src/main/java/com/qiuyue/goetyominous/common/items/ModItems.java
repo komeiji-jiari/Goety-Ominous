@@ -24,24 +24,10 @@ import net.minecraftforge.registries.RegistryObject;
 
 import static com.qiuyue.goetyominous.config.WeaponConfig.FelStaffDamage;
 
-/**
- * 模组物品注册类
- * 负责注册本模组的所有物品到 Forge 注册表
- * 包括刷怪蛋等特殊物品
- */
 public class ModItems {
-    /**
-     * 物品延迟注册表
-     * 使用 ForgeRegistries.ITEMS 指定注册表类型为物品注册表
-     */
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS,
             GoetyOminous.MOD_ID);
 
-    /**
-     * 初始化方法
-     * 将物品注册表注册到模组事件总线
-     * 必须在模组构造函数中调用此方法以完成注册
-     */
     public static void init() {
         ModItems.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
@@ -328,13 +314,6 @@ public class ModItems {
             "warg_spawn_egg",
             () -> new ServantSpawnEggItem(ModEntityTypes.WARG, 0x17141B, 0x6B6572, egg()));
 
-    /**
-     * 物品属性配置方法
-     * 返回基础的 Item.Properties 对象
-     * 可在此处添加堆叠数量、耐久度等属性
-     *
-     * @return 基础物品属性配置
-     */
     public static Item.Properties egg() {
         return new Item.Properties();
     }

@@ -13,10 +13,6 @@ import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-/**
- * 特雷莫兹拉仆从骑乘计量条 HUD。忠实移植 AC ClientEvents 的 Tremorzilla 分支:
- * vOffset=193,高度 29,k22+=5;充能满且尖刺收起时闪烁(隔帧切换到 vOffset=251,满刻度)。
- */
 public class TremorzillaHudEvents {
 
     private static final ResourceLocation DINOSAUR_HUD_OVERLAYS =

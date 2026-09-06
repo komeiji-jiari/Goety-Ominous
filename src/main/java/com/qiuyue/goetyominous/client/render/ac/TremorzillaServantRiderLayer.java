@@ -17,12 +17,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * 特雷莫兹拉仆从骑乘者渲染层。忠实移植 AC 原版 TremorzillaRiderLayer,
- * 将骑乘者渲染在颈部(translateToNeck)并根据燃烧/游泳进度调整位置与姿态。
- * 通过 TremorzillaRenderEvents 的 block/release 渲染锁,阻止骑乘者自身的
- * Level 渲染通道重复渲染(否则会在颈部与座位各渲染一次)。
- */
 @OnlyIn(Dist.CLIENT)
 public class TremorzillaServantRiderLayer extends RenderLayer<TremorzillaServant, ModelTremorzillaServant> {
 

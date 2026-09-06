@@ -12,16 +12,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-/**
- * IllageAndSpillage 联动实体注册类
- * 负责注册所有 I&S 仆从实体类型
- * 注意：这个类只在 IllageAndSpillage 模组加载时才会被调用
- */
 public class IasEntityRegistry {
 
-    /**
-     * IllageAndSpillage 实体延迟注册表
-     */
     private static final DeferredRegister<EntityType<?>> IAS_ENTITIES =
             DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, GoetyOminous.MOD_ID);
 
@@ -92,10 +84,6 @@ public class IasEntityRegistry {
                     .sized(0.6F, 2.3F)
                     .build(GoetyOminous.MOD_ID + ":magispeller_servant"));
 
-    /**
-     * 注册 I&S 实体到模组事件总线
-     * @param modEventBus 模组事件总线
-     */
     public static void register(IEventBus modEventBus) {
         IAS_ENTITIES.register(modEventBus);
     }
