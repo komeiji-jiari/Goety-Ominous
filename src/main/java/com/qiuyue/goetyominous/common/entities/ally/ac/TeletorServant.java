@@ -120,12 +120,6 @@ public class TeletorServant extends Summoned {
         this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
     }
 
-    /**
-     * 待命 = 原地悬浮"守卫":身体不移动,但索敌保持启用(挨打反击/主人受击/主人开打/就近敌对),
-     * 让悬浮兵刃(TeletorWeaponServantEntity)自主飞出攻击,本体重置原地。
-     * 身体不动的三重保障:① MeleeGoal 在 canUse 时遇待命直接 false;② 基类跟随目标在非跟随态不运行;
-     * ③ MoveController 待命时把 MOVE_TO 转 WAIT。解除待命即恢复跟随/缠斗,不留脏状态。
-     */
 
     @Override
     public void setStaying(boolean staying) {
@@ -192,7 +186,6 @@ public class TeletorServant extends Summoned {
         super.tick();
         Vec3 currentMotion = this.getDeltaMovement();
         if (!Double.isFinite(currentMotion.x) || !Double.isFinite(currentMotion.y) || !Double.isFinite(currentMotion.z)) {
-            // 兜底:任何 NaN 速度入体立即清零,避免"切状态后卡死不动"再犯
             this.setDeltaMovement(Vec3.ZERO);
         }
         this.prevControlProgress = this.controlProgress;
@@ -605,7 +598,6 @@ public class TeletorServant extends Summoned {
         @Override
         public void tick() {
             if (this.operation == MoveControl.Operation.MOVE_TO) {
-                // 待命期间身体绝不位移:即便残留了旧的 MOVE_TO 指令也直接转为 WAIT,让本体稳定悬停。
                 if (TeletorServant.this.isStaying()) {
                     this.operation = MoveControl.Operation.WAIT;
                     this.parentEntity.setDeltaMovement(Vec3.ZERO);
@@ -616,7 +608,6 @@ public class TeletorServant extends Summoned {
                         this.wantedZ - this.parentEntity.getZ());
                 double d0 = vector3d.length();
                 if (d0 < 1.0E-4D) {
-                    // 目标点就在脚下(或根本没设距离):原代码 d0==0 时 0/0 得 NaN → 永久卡死,先落位停住。
                     this.operation = MoveControl.Operation.WAIT;
                     this.parentEntity.setDeltaMovement(Vec3.ZERO);
                     return;

@@ -41,7 +41,6 @@ public class RaycatAmuletRenderer implements ICurioRenderer {
 
         model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         ICurioRenderer.followBodyRotations(entity, model);
-        // AMULET 层基于完整人形网格创建,只保留 body(胸口护符盒),隐藏四肢/头
         model.setAllVisible(false);
         model.body.visible = true;
 

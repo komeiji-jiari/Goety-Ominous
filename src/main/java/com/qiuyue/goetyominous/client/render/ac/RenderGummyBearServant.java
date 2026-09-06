@@ -39,8 +39,6 @@ public class RenderGummyBearServant extends MobRenderer<GummyBearServant, ModelG
         float b = mob.getStomachBlue();
         float alpha = mob.getStomachAlpha(partialTicks);
         ((ModelGummyBearServant) this.model).setColor(r, g, b, alpha);
-        // 繁殖出的幼体由模型 young 缩放(整体 0.5 倍 + 头部 1.5 倍);LayerOutside 经
-        // copyPropertiesTo 自动同步 young,故只需在此设主模型。
         this.model.young = mob.isBaby();
     }
 

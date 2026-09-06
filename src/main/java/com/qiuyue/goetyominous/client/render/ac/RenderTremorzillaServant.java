@@ -31,10 +31,6 @@ import org.joml.Matrix4f;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 
-/**
- * 特雷莫兹拉仆从渲染器。忠实移植 AC 原版 TremorzillaRenderer 的三层光束/嘴部定位/尖刺辉光逻辑。
- * 丢弃 AC 的 CustomBookEntityRenderer(图书)与 sepia(褐变滤镜)机制。
- */
 @OnlyIn(Dist.CLIENT)
 public class RenderTremorzillaServant extends MobRenderer<TremorzillaServant, ModelTremorzillaServant> {
 

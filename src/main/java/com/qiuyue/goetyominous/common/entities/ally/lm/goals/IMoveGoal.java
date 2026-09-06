@@ -7,10 +7,6 @@ import net.minecraft.world.entity.ai.goal.Goal;
 
 import java.util.EnumSet;
 
-/**
- * 精确复刻 LM IMoveGoal。
- * 参数: (entity, followingTargetEvenIfNotSeen, moveSpeed)
- */
 public class IMoveGoal extends Goal {
     private final IAnimatedMonsterServant monster;
     private final boolean followingTargetEvenIfNotSeen;

@@ -32,17 +32,6 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * 磁流灵兵刃(Teletor Servant 的悬浮武器):以 AC 原版 MagneticWeaponEntity 为蓝本移植,
- * 但只保留"由 TeletorServant 操控"的分支——删掉玩家手持伽楞手甲遥控的整套逻辑
- * (挖掘方块、进玩家背包、玩家相关成就/附魔槽等)。
- *
- * <p>工作方式与 AC 原版一致:它是一枚普通的 {@link Entity}(无重力),由主人
- * {@link TeletorServant} 每 tick 通过 {@link #setControllerUUID} 认领。双方各持一套同步数据:
- * 武器把主人的 {@code CONTROLLER_ID}、攻击对象 {@code TARGET_ID} 写进自己的 entityData,
- * 主人端读 {@code WEAPON_ID} 回指武器。客户端经 {@code CONTROLLER_ID}/{@code TARGET_ID}
- * 两个 int 在本地取实体做渲染插值,服务器按 UUID 从 {@link ServerLevel} 查实体。</p>
- */
 public class TeletorWeaponServantEntity extends Entity {
 
     private static final EntityDataAccessor<ItemStack> ITEMSTACK = SynchedEntityData.defineId(TeletorWeaponServantEntity.class, EntityDataSerializers.ITEM_STACK);
@@ -58,14 +47,12 @@ public class TeletorWeaponServantEntity extends Entity {
     private boolean comingBack = false;
     public boolean returnFlag = false;
 
-    /** 自动生成的自带武器会打上此隐藏标记;玩家赠予的工具没有该标记,视为玩家财产,移除时掉回而非销毁。 */
     private static final String GENERATED_TOOL_TAG = "goetyominous_teletor_generated";
 
     public TeletorWeaponServantEntity(EntityType<?> entityType, Level level) {
         super(entityType, level);
     }
 
-    // 客户端生成(Forge PlayMessages 自定义工厂走这条构造)。
     public TeletorWeaponServantEntity(PlayMessages.SpawnEntity spawnEntity, Level level) {
         this(AcEntityRegistry.TELETOR_WEAPON_SERVANT.get(), level);
         this.setBoundingBox(this.makeBoundingBox());
@@ -94,7 +81,6 @@ public class TeletorWeaponServantEntity extends Entity {
         Entity target = this.getTarget();
         if (!this.level().isClientSide) {
             this.noPhysics = this.comingBack || controller instanceof TeletorServant && (target == null || !target.isAlive());
-            // 落单/空手自毁:先把玩家赠予的工具掉回而不是销毁(主人仆从的维护逻辑会另行补造,见 TeletorServant#tickWeaponMaintenance)。
             if ((controller == null && this.tickCount > 20) || this.getItemStack().isEmpty()) {
                 this.dropWeaponStackIfPlayerProvided(null);
                 this.remove(Entity.RemovalReason.DISCARDED);
@@ -158,7 +144,7 @@ public class TeletorWeaponServantEntity extends Entity {
             holder.doEnchantDamageEffects(holder, target);
             this.damageItem(1);
             if (this.isRemoved()) {
-                return; // 工具在本次挥击中耗尽,兵刃已自毁
+                return;
             }
             if (f1 > 0.0F && target instanceof LivingEntity) {
                 ((LivingEntity) target).knockback((double) (f1 * 0.5F), (double) Mth.sin(this.getYRot() * ((float) Math.PI / 180.0F)), (double) (-Mth.cos(this.getYRot() * ((float) Math.PI / 180.0F))));
@@ -179,8 +165,6 @@ public class TeletorWeaponServantEntity extends Entity {
         if (!stack.isDamageableItem() || stack.isEmpty() || stack.getDamageValue() >= stack.getMaxDamage()) {
             return;
         }
-        // 复刻原版 hurtAndBreak 的耐久消耗 + Unbreaking 减免;但耗尽时不销毁物品,
-        // 而是把破损工具交还(玩家赠予的才掉)、兵刃自毁,由主人补造默认武器(见 TeletorServant#onWeaponDestroyed)。
         int applied = damageAmount;
         int unbreaking = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING, stack);
         if (unbreaking > 0) {
@@ -195,7 +179,7 @@ public class TeletorWeaponServantEntity extends Entity {
             return;
         }
         stack.setDamageValue(stack.getDamageValue() + applied);
-        this.setItemStack(stack.copy()); // copy 触发脏检测,把新耐久同步出去
+        this.setItemStack(stack.copy());
         if (stack.getDamageValue() >= stack.getMaxDamage()) {
             stack.setDamageValue(stack.getMaxDamage());
             this.setItemStack(stack.copy());
@@ -208,7 +192,6 @@ public class TeletorWeaponServantEntity extends Entity {
         }
     }
 
-    /** 主人仆从死亡/被移除时调用:玩家赠予的工具就地掉回后移除兵刃,不再凭空销毁。 */
     public void handleOwnerDeath() {
         if (this.level().isClientSide || this.isRemoved()) {
             return;
@@ -218,10 +201,6 @@ public class TeletorWeaponServantEntity extends Entity {
         this.remove(Entity.RemovalReason.KILLED);
     }
 
-    /**
-     * 玩家赠予的工具在兵刃被移除时应掉回给主人附近,而不是销毁(自动生成的自带工具不返还)。
-     * 掉落后清空自身物品,避免后续移除路径重复掉落。
-     */
     public void dropWeaponStackIfPlayerProvided(@Nullable Entity dropAnchor) {
         if (this.level().isClientSide || this.isRemoved()) {
             return;
@@ -235,12 +214,10 @@ public class TeletorWeaponServantEntity extends Entity {
         this.setItemStack(ItemStack.EMPTY);
     }
 
-    /** 是否为玩家赠予的工具(非"自动生成"自带武器);TeletorServant 换装返还判断也用它。 */
     public static boolean isPlayerProvided(ItemStack stack) {
         return !stack.isEmpty() && (!stack.hasTag() || !stack.getTag().getBoolean(GENERATED_TOOL_TAG));
     }
 
-    /** 给自动生成的自带武器打上隐藏标记。 */
     public static ItemStack markAsGenerated(ItemStack stack) {
         if (!stack.isEmpty()) {
             stack.getOrCreateTag().putBoolean(GENERATED_TOOL_TAG, true);
@@ -248,7 +225,6 @@ public class TeletorWeaponServantEntity extends Entity {
         return stack;
     }
 
-    /** 玩家赠予的工具去掉"自动生成"标记,视为玩家财产。 */
     public static ItemStack markAsPlayerProvided(ItemStack stack) {
         if (!stack.isEmpty() && stack.hasTag()) {
             stack.getTag().remove(GENERATED_TOOL_TAG);

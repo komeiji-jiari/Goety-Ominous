@@ -79,10 +79,10 @@ public class ModCreativeTab {
                             moveAfter(otherItems, AcItems.RAYCAT_AMULET.get(), ModItems.SCREAMING_SKULL_JAR.get());
                         }
 
-                        spawnEggs.forEach(output::accept);
-                        foci.forEach(output::accept);
-                        weapons.forEach(output::accept);
                         otherItems.forEach(output::accept);
+                        weapons.forEach(output::accept);
+                        foci.forEach(output::accept);
+                        spawnEggs.forEach(output::accept);
                     }).build());
 
 

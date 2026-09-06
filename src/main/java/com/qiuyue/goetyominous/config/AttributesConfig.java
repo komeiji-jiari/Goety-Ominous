@@ -1233,8 +1233,6 @@ public class AttributesConfig {
                 .defineInRange("deepOneKnightServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
         DeepOneKnightServantArmor = BUILDER.comment("How much natural Armor Deep One Knight Servants have, Default: 0.0 (Alex's Caves Deep One Knight has none)")
                 .defineInRange("deepOneKnightServantArmor", 0.0, 0.0, Double.MAX_VALUE);
-        // 奥托兰长矛(Ortholance)专属:先近距离扇形水浪(带击退、固定伤害5),再冲刺追击,整套共享一个冷却
-        // (fan 图案 ±(60-15*wave)°;冲刺速度0.8格/tick、距离=速度×tick数)
         DeepOneKnightServantOrtholanceDashDamage = BUILDER.comment("How much damage Deep One Knight Servants deal on Ortholance dash path hits, Default: 5.0")
                 .defineInRange("deepOneKnightServantOrtholanceDashDamage", 5.0, 0.0, Double.MAX_VALUE);
         DeepOneKnightServantOrtholanceDashSpeed = BUILDER.comment("How fast (blocks/tick) Deep One Knight Servants dash toward the target, Default: 0.8")

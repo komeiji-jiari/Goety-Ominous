@@ -30,16 +30,6 @@ import net.minecraftforge.network.NetworkHooks;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 糖球弹丸:忠实移植 Alex's Caves 原版 GumballEntity 的完整弹跳逻辑(碰地反弹、
- * 随机 12 色糖球、可分裂/追踪/爆炸选项),仅在两处加入友伤过滤:
- * <ol>
- *   <li>发射时把 owner 直接设为主人(getTrueOwner),使糖球在仆从自爆阵亡后仍能以主人为源判定友军;</li>
- *   <li>命中判定用 Goety 的 MobUtil.areAllies 兜底,主人的其他仆从/盟友不再被弹跳糖球误伤。
- *       (与 DeepOneMageServantWaterBolt 保持一致)</li>
- * </ol>
- * 另加 15 秒寿命上限,避免停驻的糖球永久残留场景(原版仅靠卸载区块清理)。
- */
 public class GumballServantEntity extends ThrowableProjectile {
 
     private static final EntityDataAccessor<Integer> MAXIMUM_BOUNCES = SynchedEntityData.defineId(GumballServantEntity.class, EntityDataSerializers.INT);
@@ -271,10 +261,6 @@ public class GumballServantEntity extends ThrowableProjectile {
         return 0.08F;
     }
 
-    /**
-     * 弹丸命中后是否应视为"主人/盟友一侧":自身、owner、双向 isAlliedTo,
-     * 外加 Goety 的 MobUtil.areAllies 兜底(主人的其他仆从、SEHelper 盟友)。
-     */
     private boolean isFriendlyToOwner(Entity entity) {
         Entity owner = this.getOwner();
         if (owner == null) {

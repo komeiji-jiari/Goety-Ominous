@@ -113,7 +113,6 @@ public class AcEntityRegistry {
     public static final RegistryObject<EntityType<CaramelCubeServant>> CARAMEL_CUBE_SERVANT =
             AC_ENTITIES.register("caramel_cube_servant",
                     () -> EntityType.Builder.<CaramelCubeServant>of((type, worldIn) -> new CaramelCubeServant(type, worldIn), MobCategory.MISC)
-                            // 基础尺寸 = size 0 的小型;更大体型由 getDimensions() 动态返回(0.8/1.5/3.5)。
                             .sized(0.8F, 0.8F)
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":caramel_cube_servant"));
@@ -130,7 +129,6 @@ public class AcEntityRegistry {
     public static final RegistryObject<EntityType<MeltedCaramelServantEntity>> MELTED_CARAMEL_SERVANT =
             AC_ENTITIES.register("melted_caramel_servant",
                     () -> EntityType.Builder.<MeltedCaramelServantEntity>of((type, worldIn) -> new MeltedCaramelServantEntity(type, worldIn), MobCategory.MISC)
-                            // 与 AC 原版 melted_caramel 尺寸一致(0.99 x 0.1 贴地扁片),外观相同。
                             .sized(0.99F, 0.1F)
                             .setCustomClientFactory((spawnEntity, world) -> new MeltedCaramelServantEntity(spawnEntity, world))
                             .build(GoetyOminous.MOD_ID + ":melted_caramel_servant"));
@@ -193,7 +191,6 @@ public class AcEntityRegistry {
     public static final RegistryObject<EntityType<GumbeeperServant>> GUMBEEPER_SERVANT =
             AC_ENTITIES.register("gumbeeper_servant",
                     () -> EntityType.Builder.<GumbeeperServant>of((type, worldIn) -> new GumbeeperServant(type, worldIn), MobCategory.MISC)
-                            // 与 AC 原版 Gumbeeper 尺寸一致(0.8 x 1.6)。
                             .sized(0.8F, 1.6F)
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":gumbeeper_servant"));
@@ -201,7 +198,6 @@ public class AcEntityRegistry {
     public static final RegistryObject<EntityType<VesperServant>> VESPER_SERVANT =
             AC_ENTITIES.register("vesper_servant",
                     () -> EntityType.Builder.<VesperServant>of((type, worldIn) -> new VesperServant(type, worldIn), MobCategory.MISC)
-                            // 与 AC 原版 Vesper 尺寸一致(1.2 x 1.65)。
                             .sized(1.2F, 1.65F)
                             .setTrackingRange(12)
                             .setShouldReceiveVelocityUpdates(true)
@@ -211,7 +207,6 @@ public class AcEntityRegistry {
     public static final RegistryObject<EntityType<TeletorServant>> TELETOR_SERVANT =
             AC_ENTITIES.register("teletor_servant",
                     () -> EntityType.Builder.<TeletorServant>of((type, worldIn) -> new TeletorServant(type, worldIn), MobCategory.MISC)
-                            // 与 AC 原版 Teletor 大致尺寸一致(悬浮机器人,身高近 2 格)。
                             .sized(0.99F, 1.99F)
                             .setTrackingRange(12)
                             .setShouldReceiveVelocityUpdates(true)
@@ -221,7 +216,6 @@ public class AcEntityRegistry {
     public static final RegistryObject<EntityType<TeletorWeaponServantEntity>> TELETOR_WEAPON_SERVANT =
             AC_ENTITIES.register("teletor_weapon_servant",
                     () -> EntityType.Builder.<TeletorWeaponServantEntity>of((type, worldIn) -> new TeletorWeaponServantEntity(type, worldIn), MobCategory.MISC)
-                            // 兵刃本体小(0.5 x 0.5),渲染主要画其中的剑模型。
                             .sized(0.5F, 0.5F)
                             .setTrackingRange(12)
                             .setShouldReceiveVelocityUpdates(true)
@@ -232,7 +226,6 @@ public class AcEntityRegistry {
     public static final RegistryObject<EntityType<GumballServantEntity>> GUMBALL_SERVANT =
             AC_ENTITIES.register("gumball_servant",
                     () -> EntityType.Builder.<GumballServantEntity>of((type, worldIn) -> new GumballServantEntity(type, worldIn), MobCategory.MISC)
-                            // 与 AC 原版 Gumball 尺寸一致(0.25 x 0.25)。
                             .sized(0.25F, 0.25F)
                             .setTrackingRange(8)
                             .setShouldReceiveVelocityUpdates(true)
@@ -242,7 +235,6 @@ public class AcEntityRegistry {
     public static final RegistryObject<EntityType<ForsakenServant>> FORSAKEN_SERVANT =
             AC_ENTITIES.register("forsaken_servant",
                     () -> EntityType.Builder.<ForsakenServant>of((type, worldIn) -> new ForsakenServant(type, worldIn), MobCategory.MISC)
-                            // 与 AC 原版 Forsaken 尺寸一致(3.0 x 3.5)。
                             .sized(3.0F, 3.5F)
                             .setTrackingRange(12)
                             .setShouldReceiveVelocityUpdates(true)
