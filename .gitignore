@@ -68,3 +68,10 @@ _ac_classes.txt
 /_mcdec/
 build_gradle.log
 cfr_init.gradle
+
+# 猩红蚊原版反编译参考（CFR 产物，不入库）
+/_orig_am/
+_strip_comments.tmp.js
+
+# PCL 游戏调试环境（本地启动器 + .minecraft，不入库）
+/beta/
