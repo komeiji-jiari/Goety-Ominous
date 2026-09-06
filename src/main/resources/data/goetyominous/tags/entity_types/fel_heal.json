@@ -21,6 +21,10 @@
     {
       "id": "goetyominous:gumbeeper_servant",
       "required": false
+    },
+    {
+      "id": "goetyominous:candicorn_servant",
+      "required": false
     }
   ]
 }

@@ -628,6 +628,24 @@ public class ModelForsakenServant extends AdvancedEntityModel<ForsakenServant> {
         return vec3;
     }
 
+    /**
+     * 嘴部世界偏移(供口水粒子锚定):自 AC ForsakenModel.getMouthPosition 原样移植。
+     * 沿用 root→neck→skull 链与爪锚相同的坐标系约定,输出按实体脚部为原点的偏移,
+     * 由 RenderForsakenServant 在渲染时按实体 id 缓存。
+     */
+    public Vec3 getMouthPosition(Vec3 offsetIn) {
+        PoseStack translationStack = new PoseStack();
+        translationStack.pushPose();
+        this.root.translateAndRotate(translationStack);
+        this.neck.translateAndRotate(translationStack);
+        this.skull.translateAndRotate(translationStack);
+        Vector4f mouthOffsetVec = new Vector4f((float) offsetIn.x, (float) offsetIn.y, (float) offsetIn.z, 1.0F);
+        mouthOffsetVec.mul(translationStack.last().pose());
+        Vec3 vec3 = new Vec3((double) (-mouthOffsetVec.x()), (double) (-mouthOffsetVec.y()), (double) mouthOffsetVec.z());
+        translationStack.popPose();
+        return vec3.add(0.0D, 1.0D, -1.0D);
+    }
+
     @Override
     public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(this.root);
