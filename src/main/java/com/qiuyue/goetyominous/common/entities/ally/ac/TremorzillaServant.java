@@ -150,10 +150,8 @@ public class TremorzillaServant extends AnimalSummon
     public static final Animation ANIMATION_CHEW = Animation.create(35);
 
     private static final int MAX_CHARGE = 1000;
-    /** 吼叫只能吓退最大生命值 ≤ 该值的敌人;更高血量的强敌完全不受吼叫影响(不逃跑也不中虚弱) */
     private static final float SCARE_MAX_HEALTH = 100.0F;
     private static final EntityDimensions SWIMMING_SIZE = new EntityDimensions(4.0F, 5.0F, true);
-    /** 与 Goety 暗兽(Summoned.FollowOwnerGoal)一致的跟随启动距离:主人超出该距离才启动跟随 */
     private static final float FOLLOW_START_DISTANCE = 10.0F;
 
     private final TremorzillaServantPartEntity[] allParts;
@@ -243,8 +241,6 @@ public class TremorzillaServant extends AnimalSummon
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        // 原版 AC TremorzillaEntity 无 FloatGoal:入水移动靠 AllFluids 导航+寻路目标驱动,
-        // 不加水面跳跃目标,避免在普通水域周期性上跳、在水面上下漂浮而无法正常游泳。
         this.goalSelector.addGoal(1, new TremorzillaServantAttackGoal());
         this.goalSelector.addGoal(5, new TemptGoal(this, 1.1, Ingredient.of(ACBlockRegistry.WASTE_DRUM.get(), ACBlockRegistry.NUCLEAR_BOMB.get()), false));
         this.goalSelector.addGoal(6, new TremorzillaServantWanderGoal());
@@ -275,21 +271,11 @@ public class TremorzillaServant extends AnimalSummon
         return new AdvancedPathNavigateNoTeleport(this, level);
     }
 
-    /**
-     * 与原版 AC DinosaurEntity 一致:被骑乘/待命时让 Citadel 高级导航器停止寻路,
-     * 避免骑乘时残留路径持续驱动 MoveControl 与玩家操控冲突(第三人称视角抖动/卡死)。
-     */
     @Override
     public boolean stopTickingPathing() {
         return this.isVehicle() || this.isStaying();
     }
 
-    /**
-     * 尾巴 part 的友伤免疫依赖客户端 isAlliedTo(攻击者) 求值,而客户端 Owned.getTrueOwner()
-     * 靠 OWNER_CLIENT_ID(默认 -1)解析主人;蛋块孵化路径只调 setOwnerId(UUID)、从不
-     * setOwnerClientId,导致客户端解析不出主人、isAlliedTo 对主人返回 false,主人攻击尾巴
-     * 会被 MultipartEntityMessage 转发伤到本体。这里用已同步的 OWNER_UNIQUE_ID 按 UUID 兜底。
-     */
     @Override
     public boolean isAlliedTo(Entity entity) {
         if (super.isAlliedTo(entity)) {
@@ -496,8 +482,6 @@ public class TremorzillaServant extends AnimalSummon
             if (this.isFiring()) {
                 this.tickBreath();
             } else if (this.steamFromMouthFor > 0 && this.level().isClientSide) {
-                // AC 的 TREMORZILLA_STEAM 在 getInMouthPos 里强校验 entity instanceof TremorzillaEntity,
-                // 对 TremorzillaServant 恒返回 Vec3.ZERO(粒子全喷到世界原点),故改用自带坐标的白色浓烟。
                 Vec3 steamPos = this.getBeamShootFrom(1.0F).add(new Vec3(this.random.nextBoolean() ? -0.9F : 0.9F, 0.8F, 1.8F)
                         .scale(this.getScale())
                         .xRot((float) Math.toRadians(-this.getXRot()))
@@ -521,7 +505,6 @@ public class TremorzillaServant extends AnimalSummon
                 }
             }
             if ((this.getAnimation() == ANIMATION_RIGHT_TAIL || this.getAnimation() == ANIMATION_LEFT_TAIL) && this.getAnimationTick() >= 10 && this.getAnimationTick() < 25) {
-                // 甩尾:25 基础伤害 + 目标最大生命值 5% 百分比伤害(参考 Goety 红石怪兽 RedstoneMonstrosity 的 HP percent damage 机制)
                 float tailHpPercent = AttributesConfig.TremorzillaServantTailHpPercentDamage.get().floatValue();
                 this.hurtEntitiesAround(this.tailPart1.centeredPosition(), 4.0F, 25.0F, tailHpPercent, 2.0F, false, true, true);
                 this.hurtEntitiesAround(this.tailPart2.centeredPosition(), 4.0F, 25.0F, tailHpPercent, 2.0F, false, true, true);
@@ -922,7 +905,6 @@ public class TremorzillaServant extends AnimalSummon
                 this.level().addAlwaysVisibleParticle(this.getAltSkin() == 2 ? ACParticleRegistry.TREMORZILLA_TECTONIC_EXPLOSION.get() : (this.getAltSkin() == 1 ? ACParticleRegistry.TREMORZILLA_RETRO_EXPLOSION.get() : ACParticleRegistry.TREMORZILLA_EXPLOSION.get()), true, particleVec.x, particleVec.y, particleVec.z, 0.0, 0.0, 0.0);
                 this.level().addAlwaysVisibleParticle(this.getAltSkin() == 2 ? ACParticleRegistry.TREMORZILLA_TECTONIC_LIGHTNING.get() : (this.getAltSkin() == 1 ? ACParticleRegistry.TREMORZILLA_RETRO_LIGHTNING.get() : ACParticleRegistry.TREMORZILLA_LIGHTNING.get()), true, this.getX(), this.getEyeY(), this.getZ(), (double) this.getId(), 0.0, 0.0);
                 if (this.getRandom().nextFloat() < 0.3F) {
-                    // AC 的 TREMORZILLA_PROTON 同样强依赖 instanceof TremorzillaEntity(会喷到世界原点),改用沿光束方向飞行的电火花。
                     Vec3 protonMouth = this.getBeamShootFrom(1.0F);
                     Vec3 protonDir = endBeamPos.subtract(protonMouth).normalize().scale(0.4D);
                     this.level().addAlwaysVisibleParticle(ParticleTypes.ELECTRIC_SPARK, true,
@@ -1004,10 +986,6 @@ public class TremorzillaServant extends AnimalSummon
         return this.hurtEntitiesAround(center, radius, damageAmount, 0.0F, knockbackAmount, radioactive, hurtsOtherKaiju, stretchY);
     }
 
-    /**
-     * 对范围内实体造成伤害。damageAmount 为基础伤害;hpPercentDamage &gt; 0 时额外附加目标最大生命值百分比伤害,
-     * 机制参考 Goety 红石怪兽(RedstoneMonstrosity)的 RedstoneMonstrosityHPPercentDamage 配置:总伤害 = 基础 + 目标最大生命值 * 百分比。
-     */
     public boolean hurtEntitiesAround(Vec3 center, float radius, float damageAmount, float hpPercentDamage, float knockbackAmount, boolean radioactive, boolean hurtsOtherKaiju, boolean stretchY) {
         AABB aabb = new AABB(center.subtract(radius, radius, radius), center.add(radius, radius, radius));
         if (stretchY) {
@@ -1110,11 +1088,6 @@ public class TremorzillaServant extends AnimalSummon
         }
     }
 
-    /**
-     * 头部最大偏转角度。AC 原版为 60(比原版 MC Mob 默认 50 还高),配合 setupAnim 里
-     * netHeadYaw 按 50/50 分配到长脖子与脑袋,视觉摆动幅度过大(原版继承问题),故降至 40。
-     * 仅约束 AI 看向/巡逻时的头部摆动;骑乘(tickRidden 直设 yHeadRot)与光束瞄准不受影响。
-     */
     @Override
     public int getMaxHeadYRot() {
         return 40;
@@ -1421,8 +1394,6 @@ public class TremorzillaServant extends AnimalSummon
             ItemStack itemstack = player.getItemInHand(hand);
             if (this.getTrueOwner() != null && player == this.getTrueOwner()) {
                 if (this.isFood(itemstack)) {
-                    // 繁殖系统已删除:不再走 AnimalSummon.mobInteract(那会 setInLove 触发交配),
-                    // 喂食核弹直接为光束充能(保留 AC 吃放射性物质回能的设定);旧存档幼体仍可加速成长。
                     if (this.isBaby()) {
                         return super.mobInteract(player, hand);
                     }
@@ -1431,7 +1402,6 @@ public class TremorzillaServant extends AnimalSummon
                     return InteractionResult.SUCCESS;
                 }
                 if (itemstack.is(ACBlockRegistry.WASTE_DRUM.get().asItem())) {
-                    // 拿着废料桶时绝不进入下面的骑乘分支;动画期间喂不了就直接 PASS,避免误骑乘
                     if (this.getAnimation() == NO_ANIMATION) {
                         this.usePlayerItem(player, hand, itemstack);
                         this.syncAnimation(ANIMATION_CHEW);
@@ -1776,11 +1746,6 @@ public class TremorzillaServant extends AnimalSummon
         return (this.prevSitProgress + (this.sitProgress - this.prevSitProgress) * partialTicks) / this.maxSitTicks();
     }
 
-    /**
-     * 仆从数量上限(参考 WarpedMoscoServant 写法):MOB_SUMMONED 召唤且 owner 已赋值时,
-     * 超限直接拒绝生成。注:Goety 的 ServantSpawnEggItem 在 EntityType.spawn 返回后才 setTrueOwner,
-     * 此路径 finalizeSpawn 时 owner 恒为 null,仍由 enforceServantLimitOnce(首个 tick)与蛋块前置检查兜底。
-     */
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
@@ -1794,12 +1759,6 @@ public class TremorzillaServant extends AnimalSummon
         return super.finalizeSpawn(level, difficulty, spawnType, groupData, tag);
     }
 
-    /**
-     * 仆从数量上限兜底检查。原本放在 finalizeSpawn 里是无效的:
-     * 1. Goety 的 ServantSpawnEggItem 在 EntityType.spawn 返回后才 setTrueOwner,spawn 时 owner 恒为 null;
-     * 2. finalizeSpawn 返回 null 并不会取消 EntityType.spawn(返回的 SpawnGroupData 未被判空)。
-     * 故改为实体加入世界后的首个服务端 tick 检查:owner 已赋值,超限则直接移除。
-     */
     private void enforceServantLimitOnce() {
         if (this.level().isClientSide || this.servantLimitEnforced) {
             return;
@@ -2062,8 +2021,6 @@ public class TremorzillaServant extends AnimalSummon
                     && (TremorzillaServant.this.isStaying() || TremorzillaServant.this.isCommanded())) {
                 return false;
             }
-            // 与 Goety 暗兽一致:主人还在跟随启动距离内时原地待命不游荡,只有主人走远后才跟随/游荡,
-            // 避免待命时原地频繁踱步、看起来像一直贴着玩家走。
             if (owner != null && TremorzillaServant.this.distanceToSqr(owner) < Mth.square(FOLLOW_START_DISTANCE)) {
                 return false;
             }

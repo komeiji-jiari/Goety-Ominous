@@ -77,6 +77,7 @@ public class TesseractTagHandler {
             addToTag(TESSERACT_LARGE, MmEntityRegistry.MUTANT_HOGLIN_SERVANT);
             addToTag(TESSERACT_LARGE, MmEntityRegistry.MUTANT_WITHER_SKELETON_SERVANT);
             addToTag(TESSERACT_LARGE, MmEntityRegistry.MUTANT_SHULKER_SERVANT);
+            addToTag(TESSERACT_LARGE, MmEntityRegistry.MUTANT_BLAZE_SERVANT);
         }
 
         if (AlexCavesCompat.isAlexCavesLoaded()) {

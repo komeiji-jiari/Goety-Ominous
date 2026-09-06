@@ -22,6 +22,7 @@ import com.qiuyue.goetyominous.compat.mod.*;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.entity.WolfRenderer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -532,6 +533,30 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.MUTANT_SHULKER_SERVANT_BULLET.get(),
                     com.qiuyue.goetyominous.client.render.projectile.MutantShulkerServantBulletRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.MUTANT_BLAZE_SERVANT_FIREBALL.get(),
+                    context -> new ThrownItemRenderer<>(context, 3.0F, true));
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.MUTANT_BLAZE_SERVANT_ROD_PROJECTILE.get(),
+                    com.qiuyue.goetyominous.client.render.projectile.MutantBlazeServantRodProjectileRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.RODLING_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.RodlingServantRenderer::new);
+            event.registerEntityRenderer(
+
+                    com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.RODLING_SERVANT_FIREBALL.get(),
+                    context -> new net.minecraft.client.renderer.entity.ThrownItemRenderer<>(context, 0.5F, true));
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.MUTANT_BLAZE_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.MutantBlazeServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.GIANT_HELL_BLAST.get(),
+                    com.qiuyue.goetyominous.client.render.projectile.GiantHellBlastRenderer::new);
         }
 
         event.registerEntityRenderer(ModEntityTypes.ARCH_GEOMANCER.get(), ArchGeomancerRenderer::new);

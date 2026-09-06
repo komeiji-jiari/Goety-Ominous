@@ -221,6 +221,7 @@ dependencies {
     compileOnly fg.deobf("curse.maven:goety-twilight-1385800:8655932")
     compileOnly fg.deobf("curse.maven:twilight-forest-227639:5468648")
     compileOnly fg.deobf("curse.maven:opposing-force-1051360:7888374")
+    compileOnly fg.deobf("curse.maven:create-328085:7178761")
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
