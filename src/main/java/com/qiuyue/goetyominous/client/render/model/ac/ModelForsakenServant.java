@@ -14,7 +14,6 @@ import com.qiuyue.goetyominous.common.entities.ally.ac.ForsakenServant;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.Matrix4fc;
 import org.joml.Vector4f;
 
 @OnlyIn(Dist.CLIENT)
@@ -607,19 +606,6 @@ public class ModelForsakenServant extends AdvancedEntityModel<ForsakenServant> {
         this.root.setScale(rootScale, rootScale, rootScale);
         this.root.scaleChildren = true;
         return legMoveAmount;
-    }
-
-    public Vec3 getMouthPosition(Vec3 offsetIn) {
-        PoseStack translationStack = new PoseStack();
-        translationStack.pushPose();
-        this.root.translateAndRotate(translationStack);
-        this.neck.translateAndRotate(translationStack);
-        this.skull.translateAndRotate(translationStack);
-        Vector4f armOffsetVec = new Vector4f((float) offsetIn.x, (float) offsetIn.y, (float) offsetIn.z, 1.0F);
-        armOffsetVec.mul(translationStack.last().pose());
-        Vec3 vec3 = new Vec3((double) (-armOffsetVec.x()), (double) (-armOffsetVec.y()), (double) armOffsetVec.z());
-        translationStack.popPose();
-        return vec3.add(0.0, 1.0, -1.0);
     }
 
     public Vec3 getHandPosition(boolean right, Vec3 offsetIn) {

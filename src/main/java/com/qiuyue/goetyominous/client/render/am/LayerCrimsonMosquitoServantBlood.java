@@ -25,7 +25,7 @@ public class LayerCrimsonMosquitoServantBlood extends RenderLayer<CrimsonMosquit
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, CrimsonMosquitoServant entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (entity.getBloodLevel() > 0) {
             ResourceLocation loc = entity.isSick() ? TEXTURE_SICK : TEXTURE;
-            VertexConsumer ivertexbuilder = buffer.getBuffer(RenderType.entityCutout(loc));
+            VertexConsumer ivertexbuilder = buffer.getBuffer(RenderType.eyes(loc));
             this.getParentModel().renderToBuffer(poseStack, ivertexbuilder, packedLight, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
         }
     }
