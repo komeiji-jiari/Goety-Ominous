@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.ac;
 
+import com.Polarice3.Goety.api.entities.ally.IServant;
 import com.Polarice3.Goety.api.items.magic.IWand;
 import com.Polarice3.Goety.common.entities.ally.AnimalSummon;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
@@ -68,15 +69,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 
-/**
- * 糖果独角兽仆从:将 Alex's Caves Candicorn 改造成可骑乘的 Goety 仆从。
- *
- * 与 AC 原版对照删掉的系统:驯养/鞍/坐姿指令/巫婆附身(天然敌对性由 Goety Summoned 取代)。
- * 繁殖:改用 AnimalSummon 父类复刻 AC 原版——主人喂食拐杖糖触发发情(幼体催熟),双方发情后由
- * BreedGoal 交配产仔,幼体颜色随机继承父母其中一方;同主人且未达上限才会配对。
- * 保留的玩法:5 色变体、跑动充能表 METER_AMOUNT、玩家骑乘冲刺(AC 能力键,type 2)、AI 自动冲刺、
- * 戳刺近战、待机动画(buck/甩尾/啃咬)、跳跃(MC 空格键,PlayerRideableJumping)、友军保护 AOE。
- */
 public class CandicornServant extends AnimalSummon implements IAnimatedEntity, PlayerRideableJumping, KeybindUsingMount {
 
     public static final Animation ANIMATION_BUCK = Animation.create(25);
@@ -89,8 +81,6 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
     private static final EntityDataAccessor<Boolean> CHARGING = SynchedEntityData.defineId(CandicornServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Float> CHARGE_YAW = SynchedEntityData.defineId(CandicornServant.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> METER_AMOUNT = SynchedEntityData.defineId(CandicornServant.class, EntityDataSerializers.FLOAT);
-    // 飞行俯仰角(度):本仆从服务端权威(见 isControlledByLocalInstance),客户端拿不到真实的
-    // deltaMovement.y,若不在服务端算好同步给渲染端,骑乘/观战视角跳跃时模型就不会前后倾斜(见 tick)。
     private static final EntityDataAccessor<Float> LEAP_PITCH = SynchedEntityData.defineId(CandicornServant.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(CandicornServant.class, EntityDataSerializers.INT);
     private float prevLeapProgress;
@@ -150,8 +140,6 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        // AnimalSummon 繁殖:同主人、双方发情(BreedGoal 内部再经 canMate 过滤)。优先级 1 高于近战,
-        // 发情期优先朝伴侣走位而非追击目标(Summoned 的 FollowOwnerGoal 在 5,让位给繁殖)。
         this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(2, new CandicornServantMeleeGoal());
         this.goalSelector.addGoal(5, new Summoned.WanderGoal<>(this, 1.0D));
@@ -195,8 +183,14 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
 
     @Override
     protected boolean canAddPassenger(Entity passenger) {
-        // 幼体不可骑乘:与"幼体尺寸减半"配套,避免骑乘碰撞/坐姿偏移错乱。
-        return passenger instanceof Player && !this.isBaby();
+        if (this.isBaby()) {
+            return false;
+        }
+        if (passenger instanceof Player) {
+            return true;
+        }
+        return passenger instanceof IServant
+                && (this.getTrueOwner() == null || this.getTrueOwner() == ((IServant) passenger).getTrueOwner());
     }
 
     @Override
@@ -293,9 +287,6 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
         this.entityData.set(METER_AMOUNT, meterAmount);
     }
 
-    /**
-     * 骑乘待命(=Goety 仆从"待命")时折腿坐姿。被骑/被驮时不坐。
-     */
     public boolean isSittingDown() {
         return this.isStaying() && !this.isVehicle() && !this.isPassenger();
     }
@@ -326,8 +317,6 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
         prevManeAngle = maneAngle;
         prevLeapPitch = leapPitch;
         if (!this.level().isClientSide) {
-            // 只有服务端持有真实的纵向速度(客户端为服务端驱动,deltaMovement 无意义);
-            // 在此换算成俯仰角(度)并同步,渲染端据此做身体前后倾斜,还原 AC 原版骑乘跳跃的体态。
             leapPitch = Mth.clamp((float) this.getDeltaMovement().y, -0.5F, 1.5F) * -(float) (180F / (float) Math.PI);
             this.entityData.set(LEAP_PITCH, leapPitch);
         } else {
@@ -519,8 +508,6 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
 
     @Override
     public void onPlayerJump(int i) {
-        // 原版/AC 只在客户端 LocalPlayer.aiStep 调这里。本仆从服务端权威(见 isControlledByLocalInstance),
-        // 客户端躯干 delta 每 tick 在 travelRidden 末支被清零,此冲量不产生位移;起跳实际走 handleStartJump。
         this.performServantLeap(i);
     }
 
@@ -531,8 +518,6 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
 
     @Override
     public void handleStartJump(int i) {
-        // 服务端入口:松空格时原版发 START_RIDING_JUMP(带充能值 i),此处 canJump() && i>0 才回调。
-        // 服务端权威移动体只有在此施加冲量,起跳才真正生效(参照 ForsakenServant 服务端跳)。
         this.performServantLeap(i);
     }
 
@@ -660,10 +645,6 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
         return itemStack.is(ACBlockRegistry.CANDY_CANE.get().asItem()) || itemStack.is(ACItemRegistry.CARAMEL_APPLE.get());
     }
 
-    /**
-     * 仅拐杖糖为繁殖/催熟食物;焦糖苹果保留为纯回血食物(isFood 为真但不触发发情)。
-     * 需要区分二者:AnimalSummon.mobInteract 把 isFood 一律当繁殖处理,分发前要用 isBreedingItem 判定拦截。
-     */
     public boolean isBreedingItem(ItemStack itemStack) {
         return itemStack.is(ACBlockRegistry.CANDY_CANE.get().asItem());
     }
@@ -681,14 +662,10 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
         if (!this.level().isClientSide) {
             ItemStack itemstack = player.getItemInHand(hand);
             if (this.getTrueOwner() != null && player == this.getTrueOwner()) {
-                // 繁殖复刻 AC 原版:喂拐杖糖触发发情(幼体则催熟),幼体颜色随机继承父母一方。
-                // AnimalSummon.mobInteract 把 isFood 一律当繁殖处理,这里须先用 isBreedingItem 判定,
-                // 把只回血的焦糖苹果拦下,避免健康成年时被 super 误判成发情。
                 boolean breedingFood = this.isBreedingItem(itemstack);
                 if (this.isFood(itemstack)) {
                     boolean isBaby = this.isBaby();
                     boolean hurt = this.getHealth() < this.getMaxHealth();
-                    // getAge()==0 排除刚繁育完的 6000 tick 冷却期(AnimalSummon 同款门控)。
                     boolean canLove = breedingFood && !isBaby && this.getAge() == 0 && this.canFallInLove();
                     boolean grow = breedingFood && isBaby;
                     if (canLove || grow || hurt) {
@@ -697,12 +674,10 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
                             this.setInLove(player);
                         } else if (grow) {
                             this.usePlayerItem(player, hand, itemstack);
-                            // -getAge() 为距成年剩余 tick 数,换算成喂食加速秒数。
                             this.ageUp(AnimalSummon.getSpeedUpSecondsWhenFeeding(-this.getAge()), true);
                         }
                         if (hurt) {
                             this.heal(5.0F);
-                            // 纯回血(焦糖苹果、或冷却期/发情中喂拐杖糖)未走 usePlayerItem,需手动消耗。
                             if (!canLove && !grow && !player.getAbilities().instabuild) {
                                 itemstack.shrink(1);
                             }
@@ -712,7 +687,6 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
                         this.swing(hand);
                         return InteractionResult.SUCCESS;
                     }
-                    // 喂了食物但无可触发效果(健康成年 / 正在发情或繁育冷却):不消耗物品,也不骑乘。
                     return InteractionResult.PASS;
                 }
                 if (!player.isCrouching() && !this.isBaby()) {
@@ -780,10 +754,6 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
         return count;
     }
 
-    // ---- AnimalSummon 繁殖/幼体扩展 ----
-
-    // 仅同一位主人的仆从可配对,且配种需保证加上新生幼体后仍不超上限。
-    // countServants 不计自身,当前总数 = countServants(player) + 1,故允许配种须 总数 < 上限。
     @Override
     public boolean canMate(AnimalSummon partner) {
         if (!super.canMate(partner)) {
@@ -798,8 +768,6 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
         return true;
     }
 
-    // 复刻 AC 原版:幼体颜色随机继承父母其中一方。cap 已在 canMate 拦下,这里不必重复判空,
-    // 否则双亲发情却无法产仔时不会 resetLove,会陷入持续发情的僵局。
     @Override
     @Nullable
     public AnimalSummon getBreedOffspring(ServerLevel level, AnimalSummon partner) {
@@ -810,8 +778,6 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
         return offspring;
     }
 
-    // 幼体碰撞箱缩小一半,与模型 young 缩放、渲染 shadow 一并配合(AnimalSummon 在 DATA_BABY_ID
-    // 变更时会 refreshDimensions,故此方法会被正确调用)。
     @Override
     public EntityDimensions getDimensions(Pose pose) {
         return this.getType().getDimensions().scale(this.isBaby() ? 0.5F : 1.0F);
@@ -894,10 +860,6 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
         }
     }
 
-    /**
-     * 仆从版近战:贴脸戳刺(ANIMATION_STAB 伤害窗 8~12 tick)、8~15 格有视线触发自动冲刺。
-     * 有骑手控制器时完全不介入;待命(isStaying)时不追击不冲刺,只原地戳近身目标。
-     */
     private class CandicornServantMeleeGoal extends Goal {
 
         private int chargeCooldown = 0;

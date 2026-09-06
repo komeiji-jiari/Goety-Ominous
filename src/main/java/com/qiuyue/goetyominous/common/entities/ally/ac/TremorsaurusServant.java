@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.ac;
 
+import com.Polarice3.Goety.api.entities.ally.IServant;
 import com.Polarice3.Goety.api.items.magic.IWand;
 import com.Polarice3.Goety.common.entities.ally.AnimalSummon;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
@@ -282,7 +283,7 @@ public class TremorsaurusServant extends AnimalSummon implements LaysEggs, Keybi
                 if (random.nextInt(180) == 0) {
                     this.syncAnimation(ANIMATION_SNIFF);
                 }
-                if (random.nextInt(600) == 0 && !this.isVehicle()) {
+                if (random.nextInt(600) == 0 && !(this.getControllingPassenger() instanceof Player)) {
                     this.tryRoar();
                 }
             }
@@ -624,10 +625,10 @@ public class TremorsaurusServant extends AnimalSummon implements LaysEggs, Keybi
     public void calculateEntityAnimation(boolean flying) {
         float f1 = (float) Mth.length(this.getX() - this.lastStompX, 0, this.getZ() - this.lastStompZ);
         float walkSpeed = 4.0F;
-        if (isVehicle()) {
-            walkSpeed = 1.5F;
-        } else if (isRunning()) {
+        if (isRunning()) {
             walkSpeed = 2.0F;
+        } else if (isVehicle()) {
+            walkSpeed = 1.5F;
         }
         float f2 = Math.min(f1 * walkSpeed, 1.0F);
         walkAnimation.update(f2, 0.4F);
@@ -711,7 +712,14 @@ public class TremorsaurusServant extends AnimalSummon implements LaysEggs, Keybi
 
     @Override
     protected boolean canAddPassenger(Entity passenger) {
-        return passenger instanceof Player;
+        if (this.isBaby()) {
+            return false;
+        }
+        if (passenger instanceof Player) {
+            return true;
+        }
+        return passenger instanceof IServant
+                && (this.getTrueOwner() == null || this.getTrueOwner() == ((IServant) passenger).getTrueOwner());
     }
 
     protected void clampRotation(LivingEntity livingEntity, float clampRange) {
@@ -735,7 +743,8 @@ public class TremorsaurusServant extends AnimalSummon implements LaysEggs, Keybi
                 float heightBackLeft = legSolver.legs[0].getHeight(1.0F);
                 float heightBackRight = legSolver.legs[1].getHeight(1.0F);
                 float maxLegSolverHeight = (1F - ACMath.smin(1F - heightBackLeft, 1F - heightBackRight, 0.1F)) * 0.8F;
-                moveFunction.accept(passenger, this.getX() + seatOffset.x, this.getY() + seatOffset.y + this.getPassengersRidingOffset() - maxLegSolverHeight, this.getZ() + seatOffset.z);
+                float sitDrop = this.getSitProgress(1.0F) * 1.2F;
+                moveFunction.accept(passenger, this.getX() + seatOffset.x, this.getY() + seatOffset.y + this.getPassengersRidingOffset() - maxLegSolverHeight - sitDrop, this.getZ() + seatOffset.z);
                 return;
             }
         }
@@ -925,7 +934,7 @@ public class TremorsaurusServant extends AnimalSummon implements LaysEggs, Keybi
 
         @Override
         public void start() {
-            TremorsaurusServant.this.setRunning(!TremorsaurusServant.this.isVehicle());
+            TremorsaurusServant.this.setRunning(!(TremorsaurusServant.this.getControllingPassenger() instanceof Player));
         }
 
         @Override
@@ -940,7 +949,7 @@ public class TremorsaurusServant extends AnimalSummon implements LaysEggs, Keybi
                 
                 boolean grab = isFlyingTarget(target) || (TremorsaurusServant.this.getRandom().nextBoolean() && Math.max(target.getBbHeight(), target.getBbWidth()) < 2.0F);
                 TremorsaurusServant.this.lookAt(EntityAnchorArgument.Anchor.EYES, target.getEyePosition());
-                if (!TremorsaurusServant.this.isVehicle()) {
+                if (!(TremorsaurusServant.this.getControllingPassenger() instanceof Player)) {
                     TremorsaurusServant.this.tryRoar();
                 }
                 double dist = TremorsaurusServant.this.distanceTo(target);

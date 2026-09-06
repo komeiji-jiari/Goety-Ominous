@@ -27,10 +27,6 @@ public class RenderForsakenServant extends MobRenderer<ForsakenServant, ModelFor
     private static final ResourceLocation TEXTURE_EYES = new ResourceLocation("alexscaves:textures/entity/forsaken_eyes.png");
     private static final ResourceLocation TEXTURE_DARKNESS = new ResourceLocation("alexscaves:textures/entity/forsaken_darkness.png");
 
-    /**
-     * 口水粒子嘴部锚点缓存:自 AC ForsakenRenderer.mouthParticlePositions 移植。
-     * 渲染每帧在渲染具体仆从时写入嘴部偏移,粒子据此把口水钉在嘴边。
-     */
     private static final Map<Integer, Vec3> mouthParticlePositions = new HashMap<>();
 
     public RenderForsakenServant(EntityRendererProvider.Context renderManagerIn) {
@@ -50,9 +46,6 @@ public class RenderForsakenServant extends MobRenderer<ForsakenServant, ModelFor
         mouthParticlePositions.put(entity.getId(), this.model.getMouthPosition(Vec3.ZERO));
     }
 
-    /**
-     * 每帧关卡渲染开始时清空上一帧缓存,避免仆从移出屏幕/消失后口水钉在陈旧位置。
-     */
     public static void renderEntireBatch(LevelRenderer levelRenderer, PoseStack poseStack, int renderTick, Camera camera, float partialTick) {
         mouthParticlePositions.clear();
     }

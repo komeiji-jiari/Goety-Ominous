@@ -21,11 +21,6 @@ import org.joml.Vector3f;
 
 import java.util.function.Consumer;
 
-/**
- * 糖果独角兽仆从冲刺声呐粒子:自 Alex's Caves CandicornChargeParticle 原样复制,仅把硬编码的
- * instanceof CandicornEntity 改成 CandicornServant(仆从不是 AC 实体,AC 原粒子会直接失效),
- * 几何/颜色/朝向全部一致。工厂把实体 id 塞 xSpeed、chargeYaw 塞 zSpeed 传入。
- */
 @OnlyIn(Dist.CLIENT)
 public class CandicornServantChargeParticle extends TextureSheetParticle {
     private final int candicornId;

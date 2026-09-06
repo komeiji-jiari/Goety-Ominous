@@ -94,7 +94,7 @@ public class AcItems {
 
     public static final RegistryObject<ServantSpawnEggItem> CANDICORN_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("candicorn_servant_spawn_egg",
-                    // 蛋色取自糖果独角兽体色:奶油黄主色(0 号变体)+ 草莓粉斑点(1 号变体)。
+
                     () -> new ServantSpawnEggItem(AcEntityRegistry.CANDICORN_SERVANT, 0xFFEF57, 0xFFADD2, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> MINE_GUARDIAN_SERVANT_SPAWN_EGG =
@@ -107,7 +107,7 @@ public class AcItems {
 
     public static final RegistryObject<ServantSpawnEggItem> DEEP_ONE_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("deep_one_servant_spawn_egg",
-                    
+
                     () -> new ServantSpawnEggItem(AcEntityRegistry.DEEP_ONE_SERVANT, 0x081828, 0x085840, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> DEEP_ONE_KNIGHT_SERVANT_SPAWN_EGG =

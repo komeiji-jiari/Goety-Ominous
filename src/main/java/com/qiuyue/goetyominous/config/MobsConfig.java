@@ -79,6 +79,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> MBBulwarkFocusHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> MBBlazingHelmHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> MBUnholyBloodHealthBouns;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> MBUnholyBloodLowHealthTexture;
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoUnholyBloodHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoUnholyBloodDamageBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoLeechingFocusHeal;
@@ -367,6 +368,8 @@ public class MobsConfig {
                 .defineInRange("mbBlazingHelmHealthBouns", 15, 0, Integer.MAX_VALUE);
         MBUnholyBloodHealthBouns = BUILDER.comment("Extra health bonus when Mutant Blaze has Unholy Blood, Default: 20")
                 .defineInRange("mbUnholyBloodHealthBouns", 20, 0, Integer.MAX_VALUE);
+        MBUnholyBloodLowHealthTexture = BUILDER.comment("Switch the Unholy Blood Mutant Blaze Servant to the enraged texture while at or below half health, and back when healed above it (Default: true)")
+                .define("mbUnholyBloodLowHealthTexture", true);
         BUILDER.pop();
 
         BUILDER.push("Warped Mosco Enhancements");

@@ -171,7 +171,12 @@ public class RodlingServant extends Summoned {
 
     @Override
     protected PathNavigation createNavigation(Level p_218342_) {
-        FlyingPathNavigation flyingpathnavigation = new FlyingPathNavigation(this, p_218342_);
+        FlyingPathNavigation flyingpathnavigation = new FlyingPathNavigation(this, p_218342_) {
+            @Override
+            public boolean isStableDestination(BlockPos pos) {
+                return !this.level.getBlockState(pos.below()).isAir();
+            }
+        };
         flyingpathnavigation.setCanOpenDoors(false);
         flyingpathnavigation.setCanFloat(true);
         flyingpathnavigation.setCanPassDoors(true);

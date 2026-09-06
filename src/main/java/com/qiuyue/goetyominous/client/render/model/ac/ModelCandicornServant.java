@@ -15,12 +15,6 @@ import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * 糖果独角兽仆从模型:从 Alex's Caves CandicornModel 原样移植(几何逐块一致,纹理共用 alexscaves candicorn_{0..4})。
- * 与 AC 的差异:本仆从不带"鞍"物品,玩家骑乘时也不渲染鞍具(裸背骑乘,见 setupAnim 对
- * saddle/saddle_head/缰绳的隐藏),其余状态显示裸背;幼体由 renderer 置 young=true 后在此整身缩半渲染
- * (对应 AnimalSummon 繁殖产下的幼崽)。
- */
 @OnlyIn(Dist.CLIENT)
 public class ModelCandicornServant extends AdvancedEntityModel<CandicornServant> {
 
@@ -327,7 +321,6 @@ public class ModelCandicornServant extends AdvancedEntityModel<CandicornServant>
 
     public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         if (this.young) {
-            // 幼体整身缩小一半并下沉贴合地面(与 getDimensions 缩放、渲染 shadow 减小配套)。
             matrixStackIn.pushPose();
             matrixStackIn.scale(0.5F, 0.5F, 0.5F);
             matrixStackIn.translate(0.0D, 1.5D, 0.0D);
@@ -361,9 +354,6 @@ public class ModelCandicornServant extends AdvancedEntityModel<CandicornServant>
         float yaw = entity.yBodyRotO + (entity.yBodyRot - entity.yBodyRotO) * partialTicks;
         float tailYaw = Mth.wrapDegrees(entity.getTailYaw(partialTicks) - yaw) / 57.295776F;
         float leapPitch = entity.getLeapPitch(partialTicks) / 57.295776F * leapProgress;
-        // 玩家骑乘时不渲染鞍具(裸背骑乘,复刻 AC 原版糖果独角兽无需鞍具即可骑乘):
-        // 鞍座(saddle)、头络(saddle_head)与其下的缰绳(left_Rein/right_Rein)整体隐藏。
-        // 本仆从不带鞍物品,不再需要用 isVehicle 来临时"装配"鞍具外观。
         this.saddle.showModel = false;
         this.saddle_head.showModel = false;
         if (entity.isVehicle() && Minecraft.getInstance().player != null && Minecraft.getInstance().player.isPassengerOfSameVehicle(entity) && Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
