@@ -719,7 +719,6 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.CARAMEL_CUBE_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderCaramelCubeServant::new);
-            // 焦糖液沿用 AC 原版渲染(纯贴图扁片,不依赖 AC 实体模型),外观一致。
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.MELTED_CARAMEL_SERVANT.get(),
                     com.github.alexmodguy.alexscaves.client.render.entity.MeltedCaramelRenderer::new);

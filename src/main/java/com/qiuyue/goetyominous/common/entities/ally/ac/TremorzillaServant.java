@@ -307,10 +307,6 @@ public class TremorzillaServant extends AnimalSummon
         return super.getMaxFallDistance() + 10;
     }
 
-    /**
-     * 单次受击限伤(参考 Goety Vizier 的 actuallyHurt + VizierDamageCap):
-     * 每一下伤害最高 30 点,避免被超高单次伤害秒杀;BYPASSES_INVULNERABILITY 的伤害(虚空、/kill 等)不限制。
-     */
     @Override
     protected void actuallyHurt(DamageSource source, float amount) {
         float initialAmount = amount;

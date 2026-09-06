@@ -9,16 +9,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-/**
- * MutantMore 联动实体注册类
- * 负责注册所有 MutantMore 仆从实体类型
- * 注意：这个类只在 MutantMore 模组加载时才会被调用
- */
 public class MmEntityRegistry {
 
-    /**
-     * MutantMore 实体延迟注册表
-     */
     private static final DeferredRegister<EntityType<?>> MM_ENTITIES =
             DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, GoetyOminous.MOD_ID);
 
@@ -109,10 +101,6 @@ public class MmEntityRegistry {
                             .clientTrackingRange(10)
                             .build(GoetyOminous.MOD_ID + ":giant_hell_blast"));
 
-    /**
-     * 注册 MutantMore 实体到模组事件总线
-     * @param modEventBus 模组事件总线
-     */
     public static void register(IEventBus modEventBus) {
         MM_ENTITIES.register(modEventBus);
     }

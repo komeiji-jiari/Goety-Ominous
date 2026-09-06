@@ -276,7 +276,6 @@ public class Disciple extends AbstractGOCultist implements ICultist {
 
         if (this.isCasting() && !this.isCurrentAnimation(SUMMON)) {
             this.attackAnimationState.startIfStopped(this.tickCount);
-            // 对于持续施法（Meteor Shower），每 30 tick 重新触发攻击动画使之循环
             if (this.getCurrentSpell() == DiscipleSpell.METEOR.id) {
                 if (this.tickCount - this.attackAnimRestartTick >= 30) {
                     this.attackAnimationState.start(this.tickCount);

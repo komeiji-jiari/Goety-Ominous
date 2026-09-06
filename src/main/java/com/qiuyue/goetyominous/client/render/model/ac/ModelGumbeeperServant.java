@@ -9,15 +9,6 @@ import com.qiuyue.goetyominous.common.entities.ally.ac.GumbeeperServant;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * 糖球苦力怕仆从模型:逐字移植 AC GumbeeperModel(Codec 方式搭建几何),保证与原版外观一致。
- * <ul>
- *   <li>头部玻璃罩内 6 层糖球随 {@code getGumballsLeft()} 逐层隐去;</li>
- *   <li>coin_Wheel 旋钮随 dialRot(蓄力)旋转并前伸,攻击时后坐(shootProgress)压低姿态;</li>
- *   <li>自爆时 body 随 explodeProgress 压扁;行走时四腿摆动 + 身体上下起伏。</li>
- * </ul>
- * 构造参数 f 与 AC 原版一致:主模型用 0.0F,蓄电能量外圈(swirl)复制体用 1.0F(几何外扩、无糖球层)。
- */
 @OnlyIn(Dist.CLIENT)
 public class ModelGumbeeperServant extends AdvancedEntityModel<GumbeeperServant> {
 

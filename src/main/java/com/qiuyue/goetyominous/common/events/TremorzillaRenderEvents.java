@@ -19,30 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 特雷莫兹拉仆从客户端渲染事件。
- * 1) 补回 AC 的 blockRenderingEntity/releaseRenderingEntity 渲染锁:
- *    骑乘者由 TremorzillaServantRiderLayer 手动渲染在颈部时,先 release(放行手动渲染),
- *    渲染完再 block 其 UUID。骑乘者自身的 Level 渲染通道触发 RenderLivingEvent.Pre 时
- *    命中被锁集合即被取消,从而避免"颈部一次 + 座位一次"的双重渲染。
- * 2) 补回 AC 的第三视角相机拉远:骑乘巨兽时默认相机距离过近会钻进模型身体,
- *    导致视角/界面错乱;拉远 getMaxZoom(10.0) 使相机脱离身体。
- * 3) 补回 AC 的震颤屏幕震动 (ShakesScreen):每帧扫描半径 64 格内的 ShakesScreen 实体,
- *    按距离计算 tremorAmount 并抖动相机,表现巨兽脚步引发的镜头晃动。
- */
 @OnlyIn(Dist.CLIENT)
 public class TremorzillaRenderEvents {
 
     public static final List<UUID> BLOCKED_ENTITY_RENDERS = new ArrayList<>();
-    /**
-     * 当前正被骑乘者渲染层手动渲染的乘客 UUID(仅在本帧该次 renderPassenger 期间非空)。
-     * 用于区分"骑乘者渲染层手动渲染"与"世界渲染通道的渲染",使取消逻辑与渲染顺序无关。
-     */
     private static UUID currentRenderingPassenger = null;
-    /**
-     * 震颤屏幕震动状态(对应 AC ClientProxy.randomTremorOffsets/lastTremorTick):
-     * 每玩家 tick 重新生成一次随机偏移,其余帧沿用,保证震动平滑无抖动。
-     */
     private static final float[] randomTremorOffsets = new float[3];
     private static int lastTremorTick = -1;
 
@@ -73,11 +54,6 @@ public class TremorzillaRenderEvents {
     public static void preRenderLiving(RenderLivingEvent.Pre event) {
         LivingEntity entity = event.getEntity();
         if (entity.getVehicle() instanceof TremorzillaServant) {
-            // 骑乘撼地斯拉仆从的乘客:只放行骑乘者渲染层手动渲染在颈部的那一次。
-            // 世界渲染通道按实体 ID 插入顺序遍历(本地玩家 ID 最小),乘客必然先于巨兽渲染,
-            // 因此 AC 的 block/release 锁在"乘客先渲染"时必然失效,造成颈部+座位双重渲染。
-            // 这里改用"当前手动渲染的乘客 UUID"来区分手动渲染与通道渲染,与遍历顺序无关:
-            // 通道渲染一律取消,只有渲染层 renderPassenger 期间的那一次放行。
             if (!isCurrentRenderingPassenger(entity.getUUID())) {
                 if (!isFirstPersonPlayer(entity)) {
                     MinecraftForge.EVENT_BUS.post(new RenderLivingEvent.Post(
@@ -103,9 +79,6 @@ public class TremorzillaRenderEvents {
     @SubscribeEvent
     public static void computeCameraAngles(ViewportEvent.ComputeCameraAngles event) {
         Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
-        // 3) 震颤屏幕震动:逐帧移植 AC ClientEvents.computeCameraAngles 的 ShakesScreen 逻辑。
-        //    AC 原版用 CLIENT_CONFIG.screenShaking(默认 true)做总开关,本移植无此配置,
-        //    故按默认行为无条件启用。nuke/possession 两种 tremor 来源未移植,恒从 0 开始。
         if (cameraEntity != null && cameraEntity.level() != null) {
             float partialTick = Minecraft.getInstance().getPartialTick();
             float tremorAmount = 0.0F;

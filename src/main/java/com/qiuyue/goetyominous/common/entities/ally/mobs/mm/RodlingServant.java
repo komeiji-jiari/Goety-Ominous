@@ -31,10 +31,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
@@ -81,6 +78,8 @@ public class RodlingServant extends Summoned {
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        this.goalSelector.addGoal(5, new MoveTowardsRestrictionGoal(this, 1.0D));
+        this.goalSelector.addGoal(7, new com.Polarice3.Goety.common.entities.ally.Summoned.WanderGoal(this, 1.0D, 0.0F));
         this.goalSelector.addGoal(0, new RemainStationaryGoal());
         this.goalSelector.addGoal(1, new ShootAttackGoal());
         this.goalSelector.addGoal(2, new com.alexander.mutantmore.ai.goals.ApproachTargetGoal(this,

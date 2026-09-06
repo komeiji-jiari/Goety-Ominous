@@ -6,17 +6,13 @@ import net.minecraft.world.entity.ai.goal.Goal;
 
 import java.util.EnumSet;
 
-/**
- * 精确复刻 LM IAttackGoal。
- * 参数顺序: (entity, getattackstate, attackstate, attackendstate, attackMaxtick, attackseetick, attackrange)
- */
 public class IAttackGoal extends Goal {
     protected final IAnimatedMonsterServant entity;
-    private final int getattackstate;   // canUse 要求当前攻击状态等于此值
-    private final int attackstate;      // start() 设置此攻击状态
-    private final int attackendstate;   // stop() 恢复到此状态
+    private final int getattackstate;
+    private final int attackstate;
+    private final int attackendstate;
     private final int attackMaxtick;    // canContinueToUse: attackTicks < attackMaxtick
-    private final int attackseetick;    // tick(): 在此 tick 之前盯着目标
+    private final int attackseetick;
     private final float attackrange;
 
     public IAttackGoal(IAnimatedMonsterServant entity, int getattackstate, int attackstate,

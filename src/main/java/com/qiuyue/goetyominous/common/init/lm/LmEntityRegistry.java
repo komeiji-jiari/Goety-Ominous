@@ -10,11 +10,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-/**
- * LegendaryMonsters 联动实体注册类
- * 负责注册 LM 联动所需的实体类型
- * 注意：这个类只在 LegendaryMonsters 模组加载时才会被调用
- */
 public class LmEntityRegistry {
 
     private static final DeferredRegister<EntityType<?>> LM_ENTITIES =

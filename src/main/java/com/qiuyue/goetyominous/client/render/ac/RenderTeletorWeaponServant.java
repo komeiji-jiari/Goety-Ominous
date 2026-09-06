@@ -22,12 +22,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * 传送使徒持有的武器实体渲染:逐字移植 AC MagneticWeaponRenderer 的“悬浮武器”分支。
- * 与原版仅保留:渲染目标 ItemStack(物品/方块图标,取自 TextureAtlas.LOCATION_BLOCKS)、
- * 悬浮时的上下 bob、按 strikeProgress 倾斜前刺的出手姿态。
- * 已删除原版 Player 第一人称掌心灵能闪电逻辑(该闪电改由 RenderTeletorServant 的头部牵引光弧负责)。
- */
 @OnlyIn(Dist.CLIENT)
 public class RenderTeletorWeaponServant extends EntityRenderer<TeletorWeaponServantEntity> {
 

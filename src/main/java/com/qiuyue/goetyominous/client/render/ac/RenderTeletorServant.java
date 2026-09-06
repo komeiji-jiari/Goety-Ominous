@@ -31,15 +31,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-/**
- * 传送使徒仆从渲染:逐字移植 AC TeletorRenderer,复用 AC 原版 teletor 贴图与光源层。
- * 额外绘制:
- * <ul>
- *   <li>双手悬浮引导武器时,沿头部两侧(helmetPosition 0/1)到武器之间画出蓝/红双色连锁闪电;</li>
- *   <li>hasTrail 时沿头部正后方拖出半透明色带(由实体 trailPositions 驱动,仅当被击中有轨迹时)。</li>
- * </ul>
- * 闪电与色带的坐标全部换算到「实体旋转 180° 后的头部模型空间」,与原版表现一致。
- */
 @OnlyIn(Dist.CLIENT)
 public class RenderTeletorServant extends MobRenderer<TeletorServant, ModelTeletorServant> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexscaves:textures/entity/teletor.png");

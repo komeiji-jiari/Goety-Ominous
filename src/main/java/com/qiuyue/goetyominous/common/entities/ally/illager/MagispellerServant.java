@@ -182,7 +182,6 @@ public class MagispellerServant extends AbstractIllagerServant implements ICanBe
                 .add(Attributes.ARMOR_TOUGHNESS, AttributesConfig.MagispellerServantArmorToughness.get());
     }
 
-    // setConfigurableAttributes方法是ICustomAttributes接口提供的方法，所有仆从都有此接口，可以直接使用此方法来设置配置属性，会在仆从实体构造的时候调用
     public void setConfigurableAttributes() {
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH),
                 AttributesConfig.MagispellerServantHealth.get());

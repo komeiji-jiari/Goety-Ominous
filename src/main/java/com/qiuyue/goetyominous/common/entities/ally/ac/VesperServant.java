@@ -180,7 +180,7 @@ public class VesperServant extends Summoned implements IAnimatedEntity {
         if (this.isCommanded()) {
             this.setHanging(false);
             this.setFlying(true);
-            this.groundedFor = 0; // 收到指令即起身飞行,不被地面休息计时拖累
+            this.groundedFor = 0;
             this.getNavigation().stop();
             LivingEntity commandEntity = this.getCommandPosEntity();
             if (commandEntity != null && commandEntity.isAlive()) {
@@ -212,7 +212,6 @@ public class VesperServant extends Summoned implements IAnimatedEntity {
                         if (this.isGuardingArea()) {
                             this.setBoundPos(commandPos);
                         }
-                        // 到达指令点:不再原地悬停,就地收翼——头顶能挂就挂上去,否则落地休息。
                         this.settleInPlace();
                         this.setCommandPos(null);
                     } else {
@@ -239,9 +238,6 @@ public class VesperServant extends Summoned implements IAnimatedEntity {
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        // FLYING/HANGING 是纯 entityData 运行时标志,groundedFor/… 是普通字段,
-        // 都不随 IServant.saveServantData 入档。不加这段的话区块重载/重进世界时
-        // 只能靠构造器把姿态重置为 FLYING=true,原本挂着/落地休息的姿态全部丢失。
         compound.putBoolean("VesperFlying", this.isFlying());
         compound.putBoolean("VesperHanging", this.isHanging());
         compound.putInt("VesperGroundedFor", this.groundedFor);
@@ -252,7 +248,6 @@ public class VesperServant extends Summoned implements IAnimatedEntity {
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        // 只在这些键存在时恢复,避免旧档/生成蛋(无此键)被意外强制落地。
         if (compound.contains("VesperFlying")) {
             this.setFlying(compound.getBoolean("VesperFlying"));
         }
@@ -269,8 +264,6 @@ public class VesperServant extends Summoned implements IAnimatedEntity {
             this.wasOnGroundLast = compound.getBoolean("VesperWasOnGround");
         }
         if (this.level() != null && !this.level().isClientSide) {
-            // 与飞行姿态同步 noGravity,避免读档后的头几帧直接自由落体。
-            // (挂壁姿态 HANGING 仍保持 noGravity=false,由 tick 里的悬空推力维持。)
             this.setNoGravity(this.isFlying());
         }
     }
@@ -359,9 +352,6 @@ public class VesperServant extends Summoned implements IAnimatedEntity {
                 lastTargetId = target.getId();
                 this.playSound(ACSoundRegistry.VESPER_SCREAM.get(), 3.0F, 1.0F);
             }
-            // 落地休息:从飞行/悬挂转为真正着地的当帧授予一次休息计时(groundedFor>0 期间
-            // FlyAndHangGoal 不再起飞,贴身目标可留在地面缠斗)。只在"新落地"那一帧触发一次,
-            // 不会在休息期间反复续期。
             if (groundedFor == 0 && this.onGround() && !this.isFlying() && !this.isHanging()
                     && !this.isPassenger() && !this.wasOnGroundLast) {
                 this.groundedFor = 80 + this.random.nextInt(40);
@@ -490,10 +480,6 @@ public class VesperServant extends Summoned implements IAnimatedEntity {
         return BlockPos.containing(this.getX(), this.getBoundingBox().maxY + 0.1F, this.getZ());
     }
 
-    /**
-     * 指令点/守卫点到达后的收翼动作:头顶紧邻处有可挂的天花板就直接挂上去;
-     * 否则落地休息一段时间(groundedFor 计时),而不是原地悬停扑腾。
-     */
     private void settleInPlace() {
         this.getMoveControl().setWantedPosition(this.getX(), this.getY(), this.getZ(), 0.0D);
         this.getNavigation().stop();
@@ -784,8 +770,6 @@ public class VesperServant extends Summoned implements IAnimatedEntity {
                     return true;
                 }
                 if (e.groundedFor <= 0 && hasHangableCeilingNear()) {
-                    // 休息计时已结束,且附近确实存在可挂的天花板(只是当前脚下那根列搜不到):
-                    // 先起飞到空中,让 tick 里的 hangCheck 边飞边找顶,而不是趴地上永久卡死。
                     Vec3 target = findFlightPos();
                     if (target != null) {
                         this.x = target.x;
@@ -794,9 +778,6 @@ public class VesperServant extends Summoned implements IAnimatedEntity {
                         return true;
                     }
                 }
-                // 找不到可悬挂的天花板(开阔地/无顶,或仍在休息期内):落地休息,而不是原地
-                // 漫无目的地绕圈。待命/守卫/飞行过久(shouldHang)都适用;休息期由 groundedFor
-                // 维持计时,计时结束上面的分支才会再次起飞。
                 this.restOnGround = true;
                 this.restingOnGround = true;
                 return true;
@@ -968,8 +949,6 @@ public class VesperServant extends Summoned implements IAnimatedEntity {
         private Vec3 findHangFromPos() {
             BlockPos anchor = anchor();
             int range = Math.max(4, range());
-            // 先确定性尝试实体/锚点所在列正上方的天花板:落地休息或读档后仍停在原位时,
-            // 随机采样可能漏掉头顶那根梁,导致明明有顶却判成“无顶可挂”而趴死在地。
             BlockPos blockpos = tryHangColumn(anchor);
             if (blockpos == null) {
                 for (int i = 0; i < 15; i++) {
@@ -983,11 +962,10 @@ public class VesperServant extends Summoned implements IAnimatedEntity {
             return blockpos == null ? null : Vec3.atCenterOf(blockpos);
         }
 
-        /** 从给定列向上找第一个可供倒挂的天花板方块;底座本身是实心时自动从头顶一格起找。 */
         private BlockPos tryHangColumn(BlockPos start) {
             BlockPos current = start;
             if (!VesperServant.this.level().isEmptyBlock(current)) {
-                current = current.above(); // 站在实心方块上(如落地休息)先从紧邻上方那格找
+                current = current.above();
             }
             while (VesperServant.this.level().isEmptyBlock(current)
                     && current.getY() < VesperServant.this.level().getMaxBuildHeight()) {
@@ -1002,7 +980,6 @@ public class VesperServant extends Summoned implements IAnimatedEntity {
             return null;
         }
 
-        /** 探测附近(较 hang 搜索更广的半径内)是否确实存在可挂的天花板。 */
         private boolean hasHangableCeilingNear() {
             BlockPos anchor = anchor();
             int probeRange = 12;
@@ -1055,7 +1032,6 @@ public class VesperServant extends Summoned implements IAnimatedEntity {
         public void tick() {
             VesperServant e = VesperServant.this;
             LivingEntity target = e.getTarget();
-            // 地面休息中遇到够不着的目标时打断休息起身追击,避免长时间留在原地等敌人靠近。
             if (e.groundedFor > 0 && target != null && target.isAlive()
                     && e.distanceTo(target) > e.getBbWidth() + target.getBbWidth() + 2.0D) {
                 e.groundedFor = 0;

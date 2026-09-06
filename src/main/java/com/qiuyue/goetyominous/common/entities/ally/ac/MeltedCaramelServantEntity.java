@@ -18,15 +18,6 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * 焦糖液(融化焦糖):继承 AC 的 MeltedCaramelEntity,外观与黏着行为与原版完全一致,
- * 只把"谁能豁免黏着"从 AC 的 instanceof CaramelCubeEntity 换成"本仆从所属主人阵营免疫"。
- *
- * AC 原版逻辑:MeltedCaramelEntity#slowEntities 每 tick 给包围盒内所有 LivingEntity 施加黏着,
- * 唯一豁免是 CaramelCubeEntity(它免疫自己;焦糖本身无队伍,isAlliedTo 恒假)。
- * 仆从化后若照搬该逻辑,浇出这块焦糖的仆从、其主人本人、主人名下其它仆从都会被自己的焦糖减速。
- * 因此这里记录浇出焦糖的仆从之主(UUID,同步数据里客户端也可读),isAlliedTo 按主人类别判定,做到"只黏敌人"。
- */
 public class MeltedCaramelServantEntity extends MeltedCaramelEntity {
 
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID =
@@ -36,7 +27,6 @@ public class MeltedCaramelServantEntity extends MeltedCaramelEntity {
         super(entityType, level);
     }
 
-    // 客户端生成(Forge PlayMessages 自定义工厂走这条构造)。
     public MeltedCaramelServantEntity(PlayMessages.SpawnEntity spawnEntity, Level level) {
         this((EntityType<MeltedCaramelServantEntity>) AcEntityRegistry.MELTED_CARAMEL_SERVANT.get(), level);
     }
@@ -60,18 +50,15 @@ public class MeltedCaramelServantEntity extends MeltedCaramelEntity {
     public boolean isAlliedTo(Entity entity) {
         UUID master = this.getOwnerMaster();
         if (master != null && entity instanceof LivingEntity living) {
-            // 主人本人不黏。
             if (living.getUUID().equals(master)) {
                 return true;
             }
-            // 主人名下其它召唤物/仆从(同一条 IOwned 归属链)不黏。
             if (living instanceof IOwned owned) {
                 LivingEntity otherMaster = owned.getTrueOwner();
                 if (otherMaster != null && master.equals(otherMaster.getUUID())) {
                     return true;
                 }
             }
-            // 主人驯养的动物不黏。
             if (living instanceof OwnableEntity tameable) {
                 UUID petOwner = tameable.getOwnerUUID();
                 if (petOwner != null && master.equals(petOwner)) {

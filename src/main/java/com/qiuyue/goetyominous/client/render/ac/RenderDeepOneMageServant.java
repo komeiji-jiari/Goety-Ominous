@@ -29,8 +29,6 @@ public class RenderDeepOneMageServant extends MobRenderer<DeepOneMageServant, Mo
         super(context, new ModelDeepOneMageServant(), 0.45F);
         this.addLayer(new LayerGlow(this));
         this.addLayer(new ItemInHandLayer<>(this, context.getItemInHandRenderer()));
-        // 与原版一致:AC 通过全局 ClientLayerRegistry 给所有活体渲染器附加气泡层,
-        // 但该钩子对第三方注册的渲染器并不总是生效,这里显式加上以保证气泡渲染。
         this.addLayer(new ACPotionEffectLayer(this));
     }
 

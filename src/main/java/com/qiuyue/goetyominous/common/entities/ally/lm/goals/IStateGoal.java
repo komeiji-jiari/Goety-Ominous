@@ -6,10 +6,6 @@ import net.minecraft.world.entity.ai.goal.Goal;
 
 import java.util.EnumSet;
 
-/**
- * 精确复刻 LM IStateGoal。
- * 参数: (entity, getattackstate, attackstate, attackendstate, attackfinaltick, attackseetick)
- */
 public class IStateGoal extends Goal {
     protected final IAnimatedMonsterServant entity;
     private final int getattackstate;

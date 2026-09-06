@@ -74,7 +74,6 @@ public class AcItems {
 
     public static final RegistryObject<ServantSpawnEggItem> CARAMEL_CUBE_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("caramel_cube_servant_spawn_egg",
-                    // 焦糖色主体 + 奶油色糖纸(AC CaramelCube 无原版蛋,取自贴图主色)。
                     () -> new ServantSpawnEggItem(AcEntityRegistry.CARAMEL_CUBE_SERVANT, 0xDDAA4E, 0xF6E3C3, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> GUMBEEPER_SERVANT_SPAWN_EGG =
@@ -83,17 +82,14 @@ public class AcItems {
 
     public static final RegistryObject<ServantSpawnEggItem> VESPER_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("vesper_servant_spawn_egg",
-                    // 蛋色取自 AC 原版 vesper 刷怪蛋:0x884E2A(毛皮棕褐)/0xA54A6B(膜翼绛紫)。
                     () -> new ServantSpawnEggItem(AcEntityRegistry.VESPER_SERVANT, 0x884E2A, 0xA54A6B, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> TELETOR_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("teletor_servant_spawn_egg",
-                    // 蛋色取自 AC 原版 teletor 刷怪蛋:0x433B4A(深灰蓝机身)/0x60EF(亮蓝发光纹)。
                     () -> new ServantSpawnEggItem(AcEntityRegistry.TELETOR_SERVANT, 0x433B4A, 0x60EF, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> FORSAKEN_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("forsaken_servant_spawn_egg",
-                    // 蛋色取自 AC 原版 forsaken 刷怪蛋(0 / 0x110909,近黑底 + 暗红褐斑)。
                     () -> new ServantSpawnEggItem(AcEntityRegistry.FORSAKEN_SERVANT, 0x000000, 0x110909, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> MINE_GUARDIAN_SERVANT_SPAWN_EGG =

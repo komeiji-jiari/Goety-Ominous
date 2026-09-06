@@ -40,12 +40,6 @@ import net.minecraftforge.network.PlayMessages;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * 法师水弹:忠实移植 Alex's Caves 原版 WaterBoltEntity 的完整行为(制导、粒子、
- * 尾迹 ring buffer、lerp 插值、水面飞溅、dieIn 计时、hit 后范围伤害 + BUBBLED 效果),
- * 仅在伤害过滤中加入 Goety 的 MobUtil.areAllies,使召唤师的其他仆从不再被误伤。
- * damageMobs/onRicochetHit 内的友伤过滤与 DeepOneMageServantWave.attackEntities 保持一致。
- */
 public class DeepOneMageServantWaterBolt extends Projectile {
 
     private static final EntityDataAccessor<Boolean> BUBBLING = SynchedEntityData.defineId(DeepOneMageServantWaterBolt.class, EntityDataSerializers.BOOLEAN);
@@ -232,12 +226,7 @@ public class DeepOneMageServantWaterBolt extends Projectile {
             candidate = entity;
             if (entity.hurt(source, 3.0F)) {
                 if (this.isBubbling()) {
-                    // 仅在服务端真正挂上 BUBBLED 时才发客户端视觉消息,避免目标免疫时客户端仍显示泡泡却无清除源。
                     if (entity.addEffect(new MobEffectInstance(ACEffectRegistry.BUBBLED.get(), 200))) {
-                        // 客户端泡膜视觉:原版 1.20.1 的效果列表不同步给普通追踪玩家(仅乘客/玩家自身会收
-                        // ClientboundUpdateMobEffectPacket),故与 AC 原版一致,通过 UpdateEffectVisualityEntityMessage
-                        // 让所有玩家在客户端本地 addEffect BUBBLED,驱动 ACPotionEffectLayer 画泡膜。
-                        // 到期清除由 BubbledVisualCleanupHandler 在服务端效果 Expired/Remove 时发 remove 消息完成。
                         AlexsCaves.sendMSGToAll(new UpdateEffectVisualityEntityMessage(entity.getId(), entity.getId(), 1, 200, false));
                     }
                 }

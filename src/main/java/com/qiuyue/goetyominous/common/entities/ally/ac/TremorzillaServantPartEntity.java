@@ -20,11 +20,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
 
-/**
- * 特雷莫兹拉仆从的多段尾巴 part 实体。
- * 移植自 AC 原版 TremorzillaPartEntity,父实体改为 TremorzillaServant。
- * 攻击消息复用 AC 的 MultipartEntityMessage —— 其 handler 对任意 isMultipartEntity() 实体通用。
- */
 public class TremorzillaServantPartEntity extends PartEntity<TremorzillaServant> {
     private final Entity connectedTo;
     private EntityDimensions size;
