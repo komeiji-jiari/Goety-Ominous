@@ -96,6 +96,11 @@ public class AcItems {
                     // 蛋色取自 AC 原版 forsaken 刷怪蛋(0 / 0x110909,近黑底 + 暗红褐斑)。
                     () -> new ServantSpawnEggItem(AcEntityRegistry.FORSAKEN_SERVANT, 0x000000, 0x110909, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> CANDICORN_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("candicorn_servant_spawn_egg",
+                    // 蛋色取自糖果独角兽体色:奶油黄主色(0 号变体)+ 草莓粉斑点(1 号变体)。
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.CANDICORN_SERVANT, 0xFFEF57, 0xFFADD2, egg()));
+
     public static final RegistryObject<ServantSpawnEggItem> MINE_GUARDIAN_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("mine_guardian_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AcEntityRegistry.MINE_GUARDIAN_SERVANT, 0x243B52, 0x8AC3D6, egg()));

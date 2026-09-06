@@ -14,6 +14,7 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.animation.LegSolverQuadruped;
+import com.qiuyue.goetyominous.common.init.ac.AcParticles;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.common.network.ForsakenRiderJumpPacket;
@@ -23,6 +24,7 @@ import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.nbt.CompoundTag;
@@ -94,11 +96,9 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
     public static final Animation ANIMATION_LEFT_PICKUP = Animation.create(48);
     public static final Animation ANIMATION_RIGHT_PICKUP = Animation.create(48);
     private static final int LIGHT_THRESHOLD = 4;
-    // 黑暗 aura 脱战/离开暗处后的缓冲维持时长(5 秒),期间仍可回血;缓冲内重新战斗会续满
     private static final int DARKNESS_LINGER_TICKS = 100;
 
     private static final int COMBAT_GRACE_TICKS = 40;
-    // Wind 套装(风之袍+风之冠)强化:主人穿戴期间,每 7 秒给自身刷新一次速度 I
     private static final int WIND_SPEED_DURATION = 10 * 20;
     private static final int WIND_SPEED_PULSE_TICKS = 7 * 20;
 
@@ -127,6 +127,9 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
     private float cachedWalkSpeed = -1.0F;
 
     private static final int RIDER_JUMP_MAX_CHARGE = 15;
+
+    private static final int RIDER_JUMP_MIN_CHARGE_TICKS = 5;
+    private static final int RIDER_JUMP_POWER_TICKS = RIDER_JUMP_MAX_CHARGE - RIDER_JUMP_MIN_CHARGE_TICKS;
 
     private static final float RIDER_JUMP_MIN_RANGE = 5.0F;
     private static final float RIDER_JUMP_MAX_RANGE = 24.0F;
@@ -280,23 +283,24 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
         boolean grounded = this.onGround() && !this.isLeaping() && !this.isInWater();
         if (held) {
             if (!this.riderPrevJumpHeld) {
-
-                if (grounded && this.getAnimation() == NO_ANIMATION) {
-                    this.riderChargingClient = true;
-                    this.riderChargeTicksClient = 0;
-                    this.sendRiderChargePacket(true, 0.0F);
-                } else {
-                    this.riderChargingClient = false;
-                    this.riderChargeTicksClient = 0;
-                }
-            } else if (this.riderChargingClient && this.riderChargeTicksClient < RIDER_JUMP_MAX_CHARGE) {
+                this.riderChargingClient = false;
+                this.riderChargeTicksClient = 0;
+            } else if (this.riderChargeTicksClient < RIDER_JUMP_MAX_CHARGE) {
                 this.riderChargeTicksClient++;
             }
+            if (!this.riderChargingClient
+                    && this.riderChargeTicksClient >= RIDER_JUMP_MIN_CHARGE_TICKS
+                    && grounded && this.getAnimation() == NO_ANIMATION) {
+                this.riderChargingClient = true;
+                this.sendRiderChargePacket(true, 0.0F);
+            }
         } else if (this.riderChargingClient) {
-            float power = Mth.clamp((float) this.riderChargeTicksClient / (float) RIDER_JUMP_MAX_CHARGE, 0.0F, 1.0F);
+            float power = Mth.clamp((float) (this.riderChargeTicksClient - RIDER_JUMP_MIN_CHARGE_TICKS) / (float) RIDER_JUMP_POWER_TICKS, 0.0F, 1.0F);
             this.riderChargingClient = false;
             this.riderChargeTicksClient = 0;
             this.sendRiderChargePacket(false, power);
+        } else if (this.riderChargeTicksClient > 0) {
+            this.riderChargeTicksClient = 0;
         }
         this.riderPrevJumpHeld = held;
     }
@@ -321,13 +325,14 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
         boolean wasCharging = this.riderCharging;
         this.riderCharging = false;
         this.setRiderChargeHold(false);
-        if (this.getAnimation() == ANIMATION_PREPARE_JUMP) {
-            this.syncAnimation(NO_ANIMATION);
-        }
-        if (wasCharging && this.onGround() && !this.isLeaping() && !this.isInWater()) {
+        boolean canLeap = wasCharging && this.onGround() && !this.isLeaping() && !this.isInWater();
+        if (canLeap) {
             this.riderJumpPendingPower = Mth.clamp(power, 0.0F, 1.0F);
         } else {
             this.riderJumpPendingPower = -1.0F;
+            if (this.getAnimation() == ANIMATION_PREPARE_JUMP) {
+                this.syncAnimation(NO_ANIMATION);
+            }
         }
     }
 
@@ -345,18 +350,17 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
                 Math.max(verticalSpeed, delta.y),
                 delta.z + (double) (Mth.cos(yaw) * forwardSpeed));
         this.setLeaping(true);
-        this.setAnimation(NO_ANIMATION);
         this.hasImpulse = true;
         this.playSound(ACSoundRegistry.FORSAKEN_LEAP.get(), this.getSoundVolume(), this.getVoicePitch());
     }
 
     public float getRiderChargeMeter() {
-        return this.riderChargingClient ? Mth.clamp((float) this.riderChargeTicksClient / (float) RIDER_JUMP_MAX_CHARGE, 0.0F, 1.0F) : 0.0F;
+        return this.riderChargingClient ? Mth.clamp((float) (this.riderChargeTicksClient - RIDER_JUMP_MIN_CHARGE_TICKS) / (float) RIDER_JUMP_POWER_TICKS, 0.0F, 1.0F) : 0.0F;
     }
 
     private float riderSeatPoseDelta() {
         float crouchAmount = 0.0F;
-        if (this.getAnimation() == ANIMATION_PREPARE_JUMP && this.onGround() && !this.isLeaping()) {
+        if (this.getAnimation() == ANIMATION_PREPARE_JUMP) {
             int tick = this.getAnimationTick();
             if (tick <= 5) {
                 crouchAmount = tick / 5.0F;
@@ -571,6 +575,9 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
         }
         this.legSolver.update(this, this.yBodyRot, this.getScale());
         if (level().isClientSide) {
+            if (random.nextInt(6) == 0) {
+                level().addParticle((SimpleParticleType) AcParticles.FORSAKEN_SERVANT_SPIT.get(), this.getX(), this.getY() + 0.5F, this.getZ(), this.getId(), 0, 0);
+            }
             if (darknessProgress > 0) {
                 for (int i = 0; i < 1; i++) {
                     if (random.nextBoolean()) {
@@ -641,18 +648,13 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
                 renewDarkness = this.getLightLevel() <= LIGHT_THRESHOLD;
             }
             if (renewDarkness || (this.isInCombat() && this.getDarknessTime() > 0)) {
-                // 处于黑暗环境或战斗中:持续续满黑暗 aura
                 this.setDarknessTime(DARKNESS_LINGER_TICKS);
             } else if (this.getDarknessTime() > 0) {
-                // 脱战/离开黑暗:aura 保留 5 秒缓冲逐帧淡出,期间仍可回血;
-                // 缓冲(5秒)内重新战斗/回到黑暗会再次续满,不会断档
                 this.setDarknessTime(this.getDarknessTime() - 1);
             }
-            // 黑暗状态下被动自回:每 20tick 回 1 血(每秒 1 次),满血即停(战斗/缓冲期维持的黑暗同样生效)
             if (this.getDarknessTime() > 0 && this.tickCount % 20 == 0 && this.getHealth() < this.getMaxHealth()) {
                 this.heal(1.0F);
             }
-            // Wind 套装强化:主人穿戴期间每 7 秒给自身刷新一次速度 I
             this.tickWindSetSpeedPulse();
         }
         Entity grabbedEntity = this.getHeldMob();
@@ -997,7 +999,6 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
         return target.getType().is(ACTagRegistry.WEAK_TO_FORSAKEN_SONIC_ATTACK) ? 45.0F : 4.0F;
     }
 
-    // 主人同时穿戴 Wild Robe + Wild Crown 时,攻击命中会给目标附加 7 秒(140 tick)衰弱(Wane)
     private boolean masterWearsWildSet() {
         return this.getTrueOwner() != null && CuriosFinder.hasWildSet(this.getTrueOwner());
     }
@@ -1008,7 +1009,6 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
         }
     }
 
-    // 主人同时穿戴 Wind Robe + Wind Crown 时,遗弃者仆从获得强化:每 7 秒给自身刷新一次速度 I(持续 10 秒)
     private boolean masterWearsWindSet() {
         return this.getTrueOwner() != null && CuriosFinder.hasWindSet(this.getTrueOwner());
     }

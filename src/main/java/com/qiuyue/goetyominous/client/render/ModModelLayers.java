@@ -768,6 +768,9 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.FORSAKEN_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderForsakenServant::new);
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.CANDICORN_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderCandicornServant::new);
         }
     }
 

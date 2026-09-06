@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.init.ac;
 
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.ac.BrainiacServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.CandicornServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.CaniacServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.CaramelCubeServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.CorrodentServant;
@@ -248,6 +249,16 @@ public class AcEntityRegistry {
                             .setShouldReceiveVelocityUpdates(true)
                             .setUpdateInterval(1)
                             .build(GoetyOminous.MOD_ID + ":forsaken_servant"));
+
+    public static final RegistryObject<EntityType<CandicornServant>> CANDICORN_SERVANT =
+            AC_ENTITIES.register("candicorn_servant",
+                    () -> EntityType.Builder.<CandicornServant>of((type, worldIn) -> new CandicornServant(type, worldIn), MobCategory.MISC)
+                            // 与 AC 原版 Candicorn 尺寸一致(1.7 x 2.25)。
+                            .sized(1.7F, 2.25F)
+                            .setTrackingRange(12)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .setUpdateInterval(1)
+                            .build(GoetyOminous.MOD_ID + ":candicorn_servant"));
 
     public static void register(IEventBus modEventBus) {
         AC_ENTITIES.register(modEventBus);

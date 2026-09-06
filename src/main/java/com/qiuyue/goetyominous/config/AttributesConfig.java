@@ -142,6 +142,11 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> ForsakenServantMovementSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> ForsakenServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> ForsakenServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> CandicornServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> CandicornServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> CandicornServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> CandicornServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> CandicornServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantMovementSpeed;
@@ -1185,6 +1190,16 @@ public class AttributesConfig {
                 .defineInRange("forsakenServantFollowRange", 64.0, 0.0, Double.MAX_VALUE);
         ForsakenServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Forsaken Servants have, Default: 0.6 (matches Alex's Caves Forsaken)")
                 .defineInRange("forsakenServantKnockbackResistance", 0.6, 0.0, Double.MAX_VALUE);
+        CandicornServantHealth = BUILDER.comment("How much Max Health Candicorn Servants have, Default: 30.0 (matches Alex's Caves Candicorn)")
+                .defineInRange("candicornServantHealth", 30.0, 1.0, Double.MAX_VALUE);
+        CandicornServantDamage = BUILDER.comment("How much damage Candicorn Servants deal, Default: 6.0 (matches Alex's Caves Candicorn)")
+                .defineInRange("candicornServantDamage", 6.0, 1.0, Double.MAX_VALUE);
+        CandicornServantMovementSpeed = BUILDER.comment("How fast Candicorn Servants move when walking, Default: 0.25 (matches Alex's Caves Candicorn; running/charging momentarily doubles this)")
+                .defineInRange("candicornServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
+        CandicornServantFollowRange = BUILDER.comment("How much following/detection range Candicorn Servants have, Default: 64.0 (matches Alex's Caves Candicorn)")
+                .defineInRange("candicornServantFollowRange", 64.0, 0.0, Double.MAX_VALUE);
+        CandicornServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Candicorn Servants have, Default: 0.0 (Alex's Caves Candicorn has none)")
+                .defineInRange("candicornServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
         GammaroachServantHealth = BUILDER.comment("How much Max Health Gammaroach Servants have, Default: 14.0 (matches Alex's Caves Gammaroach)")
                 .defineInRange("gammaroachServantHealth", 14.0, 1.0, Double.MAX_VALUE);
         GammaroachServantDamage = BUILDER.comment("How much damage Gammaroach Servants deal, Default: 2.0 (matches Alex's Caves Gammaroach)")

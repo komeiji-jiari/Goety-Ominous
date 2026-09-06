@@ -1,6 +1,8 @@
 package com.qiuyue.goetyominous.common.events;
 
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.client.particle.ac.CandicornServantChargeParticle;
+import com.qiuyue.goetyominous.client.particle.ac.ForsakenServantSpitParticle;
 import com.qiuyue.goetyominous.client.particle.ac.NucleeperMushroomCloudParticle;
 import com.qiuyue.goetyominous.client.render.EmptyRenderer;
 import com.qiuyue.goetyominous.common.init.ac.AcParticles;
@@ -33,5 +35,9 @@ public class ClientEvents {
         }
         event.registerSpecial((ParticleType<SimpleParticleType>) AcParticles.NUCLEEPER_MUSHROOM_CLOUD.get(),
                 new NucleeperMushroomCloudParticle.Provider());
+        event.registerSpriteSet((ParticleType<SimpleParticleType>) AcParticles.CANDICORN_CHARGE.get(),
+                CandicornServantChargeParticle.Factory::new);
+        event.registerSpriteSet((ParticleType<SimpleParticleType>) AcParticles.FORSAKEN_SERVANT_SPIT.get(),
+                ForsakenServantSpitParticle.Factory::new);
     }
 }
