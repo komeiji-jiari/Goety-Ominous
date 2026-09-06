@@ -12,10 +12,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * 焦糖方糖仆从模型:逐字移植 AC CaramelCubeModel(保证与原版外观一模一样)。
- * 模型读取仆从的 getJumpProgress/getSquishProgress/getJiggleTime 做起跳拉伸/落地压扁,眼球追踪镜头。
- */
 @OnlyIn(Dist.CLIENT)
 public class ModelCaramelCubeServant extends AdvancedEntityModel<CaramelCubeServant> {
 

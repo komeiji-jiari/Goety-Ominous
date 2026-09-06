@@ -11,16 +11,6 @@ import com.qiuyue.goetyominous.common.entities.ally.ac.VesperServant;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * 荒墟暗蝠仆从模型:逐字移植 AC VesperModel(Citadel 几何),保证与原版外观一致。
- * 动画姿势由实体的渐进值驱动:
- * <ul>
- *   <li>sleepProgress 时整体 180° 翻转倒挂、收翼(sleepProgress 与 capturedProgress 取大者折叠翅膀)、腿并拢;</li>
- *   <li>flyProgress 时俯身前扑、扇翼、微调 pitch/roll(来自实体 y 速度与偏航变化);</li>
- *   <li>groundProgress 时落地四足蹦跳;capturedProgress 时蜷成一团被衔起;</li>
- *   <li>咬合动画 animate():jaw/head 开合 15 tick(与实体 ANIMATION_BITE 同步)。</li>
- * </ul>
- */
 @OnlyIn(Dist.CLIENT)
 public class ModelVesperServant extends AdvancedEntityModel<VesperServant> {
     private final AdvancedModelBox root;

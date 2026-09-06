@@ -14,11 +14,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * 焦糖方糖仆从渲染:移植 AC CaramelCubeRenderer(保证与原版外观一模一样),去掉
- * Licowitch 附身/书页 sepia 相关。体型 0/1/2 渲染缩放 1/2/4;外层半透明糖衣(Outside)
- * 用同一模型实例以 entityTranslucent 二次绘制。
- */
 @OnlyIn(Dist.CLIENT)
 public class RenderCaramelCubeServant extends MobRenderer<CaramelCubeServant, ModelCaramelCubeServant> {
 

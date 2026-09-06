@@ -16,10 +16,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
-/**
- * 糖球弹丸渲染:逐字移植 AC GumballRenderer —— 始终面向摄像机的公告板四边形,
- * 按随机色号取 11 色 gumball_*.png;EXPLOSIVE 形态随引爆进度放大并在顶点闪烁 explode 贴图。
- */
 @OnlyIn(Dist.CLIENT)
 public class RenderGumballServantEntity extends EntityRenderer<GumballServantEntity> {
 

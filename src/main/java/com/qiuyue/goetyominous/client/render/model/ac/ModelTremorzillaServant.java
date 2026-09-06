@@ -19,10 +19,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.joml.Matrix4fc;
 import org.joml.Vector4f;
 
-/**
- * 特雷莫兹拉仆从模型。忠实移植 AC 原版 TremorzillaModel 的全部骨骼/动画/游泳/光束/尖刺收起逻辑,
- * HideableModelBoxWithChildren 以普通 AdvancedModelBox 替代(Citadel 父级 showModel=false 会自动隐藏子级)。
- */
 @OnlyIn(Dist.CLIENT)
 public class ModelTremorzillaServant extends AdvancedEntityModel<TremorzillaServant> {
     private final AdvancedModelBox root;

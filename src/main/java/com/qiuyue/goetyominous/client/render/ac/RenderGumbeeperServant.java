@@ -18,16 +18,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * 糖球苦力怕仆从渲染:移植 AC GumbeeperRenderer,保证与原版外观一致。
- * 三层绘制:
- * <ol>
- *   <li>主模型 gumbeeper.png(无剔除 cutout,保证半透明糖球层正确叠色);</li>
- *   <li>LayerGlow:外层玻璃 gumbeeper_glass.png(translucent) + 自爆进度 flicker 的 explode 贴图;</li>
- *   <li>ChargedSwirl:被雷击"蓄电"时叠加 gumbeeper_charged.png 能量外圈(模型外扩复制体)。</li>
- * </ol>
- * 去掉了 AC 的 Licowitch 附身/书页 sepia。
- */
 @OnlyIn(Dist.CLIENT)
 public class RenderGumbeeperServant extends MobRenderer<GumbeeperServant, ModelGumbeeperServant> {
 

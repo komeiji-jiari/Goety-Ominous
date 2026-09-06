@@ -32,19 +32,6 @@ import net.minecraftforge.network.PlayMessages;
 
 import java.util.UUID;
 
-/**
- * 法师水浪:以 Alex's Caves 原版 WaveEntity 为蓝本重写。
- *
- * 修正旧移植版的两个 bug:
- *  1. waiting(蓄力)阶段原版是 setInvisible(true) 隐身蓄力,旧版误写成 setNoGravity(true),
- *     导致蓄力期水浪会可见地飘在原地,且后续永远不恢复重力;
- *  2. 重力判定原版是 isInWaterOrBubble(),旧版误写成 isInWater()。
- *
- * 友伤过滤改用 PhantomArrow.canHitEntity 的策略(当前目标优先放行、主人坐骑豁免、
- * Goety 盟友豁免、同主链 IOwned 豁免),并保留 AC 原版"不伤深潜者同类(DeepOneBaseEntity)"规则。
- * 未移植 PhantomArrow 中的 Enemy 敌我判定:法师本身是 Monster(Enemy),
- * 若保留会导致水浪打不中任何怪物。
- */
 public class DeepOneMageServantWave extends Entity {
 
     private static final EntityDataAccessor<Boolean> SLAMMING = SynchedEntityData.defineId(DeepOneMageServantWave.class, EntityDataSerializers.BOOLEAN);
@@ -250,15 +237,6 @@ public class DeepOneMageServantWave extends Entity {
         }
     }
 
-    /**
-     * 友军伤害避免(移植自 PhantomArrow.canHitEntity):
-     *  - 当前目标优先放行:只要命中的实体是法师的 getTarget(),立即允许命中;
-     *  - 主人坐骑豁免:不命中法师胯下的坐骑(除非它就是目标);
-     *  - 主人自身豁免;
-     *  - MobUtil.areAllies 盟友豁免(召唤师、同队伍、其他仆从等);
-     *  - 同主链 IOwned 豁免:与法师同属一个召唤主的实体不命中;
-     *  - 保留 AC 原版"不伤深潜者同类(DeepOneBaseEntity)"规则。
-     */
     protected boolean canHitEntity(Entity entity) {
         if (entity instanceof DeepOneBaseEntity) {
             return false;

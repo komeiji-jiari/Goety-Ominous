@@ -80,7 +80,6 @@ public class AxolotlServant extends AnimalSummon implements LerpingModel{
         super.registerGoals();
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 0.6D, true));
         this.goalSelector.addGoal(2, new BreedGoal(this, 0.2D));
-        // 用 Goety 的 WanderGoal(checkNoActionTime=false):非敌对 Summoned 的 noActionTime 永不复位,原版 RandomStrollGoal 空闲约5秒即被永久禁用而站桩。
         this.goalSelector.addGoal(3, new Summoned.WanderGoal<>(this, 0.5D));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));

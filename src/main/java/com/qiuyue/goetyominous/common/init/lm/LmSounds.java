@@ -8,11 +8,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-/**
- * LegendaryMonsters 联动音效注册类
- * 负责注册 LM 模组加载时所需的音效事件
- * 注意：这个类只在 LegendaryMonsters 模组加载时才会被调用
- */
 public class LmSounds {
 
     public static final DeferredRegister<SoundEvent> LM_SOUNDS =
@@ -22,10 +17,6 @@ public class LmSounds {
             "lm_music_disc",
             () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(GoetyOminous.MOD_ID, "lm_music_disc")));
 
-    /**
-     * 注册 LM 音效到模组事件总线
-     * @param modEventBus 模组事件总线
-     */
     public static void register(IEventBus modEventBus) {
         LM_SOUNDS.register(modEventBus);
     }
