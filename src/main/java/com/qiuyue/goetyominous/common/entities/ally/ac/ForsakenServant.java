@@ -1,7 +1,9 @@
 package com.qiuyue.goetyominous.common.entities.ally.ac;
 
 import com.Polarice3.Goety.api.items.magic.IWand;
+import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
+import com.Polarice3.Goety.utils.CuriosFinder;
 import com.github.alexmodguy.alexscaves.server.entity.ai.GroundPathNavigatorNoSpin;
 import com.github.alexmodguy.alexscaves.server.entity.util.ShakesScreen;
 import com.github.alexmodguy.alexscaves.server.misc.ACMath;
@@ -32,10 +34,11 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -52,12 +55,14 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.PlayerRideable;
 import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.Node;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
@@ -89,6 +94,16 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
     public static final Animation ANIMATION_LEFT_PICKUP = Animation.create(48);
     public static final Animation ANIMATION_RIGHT_PICKUP = Animation.create(48);
     private static final int LIGHT_THRESHOLD = 4;
+    // 黑暗 aura 脱战/离开暗处后的缓冲维持时长(5 秒),期间仍可回血;缓冲内重新战斗会续满
+    private static final int DARKNESS_LINGER_TICKS = 100;
+
+    private static final int COMBAT_GRACE_TICKS = 40;
+    // Wind 套装(风之袍+风之冠)强化:主人穿戴期间,每 7 秒给自身刷新一次速度 I
+    private static final int WIND_SPEED_DURATION = 10 * 20;
+    private static final int WIND_SPEED_PULSE_TICKS = 7 * 20;
+
+    private int combatGraceTicks;
+    private int windSpeedPulseTicks;
     private Animation currentAnimation = IAnimatedEntity.NO_ANIMATION;
     private int animationTick;
     public LegSolverQuadruped legSolver = new LegSolverQuadruped(-0.4F, 1.4F, 1F, 0.75F, 1F);
@@ -100,7 +115,6 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
     private float prevLeapPitch;
     private float prevScreenShakeAmount;
     private float screenShakeAmount;
-    private int timeLeaping = 0;
     private float raiseLeftArmProgress;
     private float prevRaiseLeftArmProgress;
     private float raiseRightArmProgress;
@@ -375,6 +389,17 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
         if (!this.level().isClientSide) {
             ItemStack itemstack = player.getItemInHand(hand);
             if (this.getTrueOwner() != null && player == this.getTrueOwner()) {
+
+                if (this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
+                    this.heal(5.0F);
+                    if (!player.getAbilities().instabuild) {
+                        itemstack.shrink(1);
+                    }
+                    this.gameEvent(GameEvent.EAT, this);
+                    this.spawnFeedParticles();
+                    this.swing(hand);
+                    return InteractionResult.SUCCESS;
+                }
                 if (!player.isCrouching() && !this.isBaby()) {
                     Entity entity = this.getFirstPassenger();
                     if (entity != null && entity != player) {
@@ -389,6 +414,31 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
             }
         }
         return super.mobInteract(player, hand);
+    }
+
+    public boolean isFood(ItemStack stack) {
+        if (!stack.getItem().isEdible()) {
+            return false;
+        }
+        FoodProperties foodProperties = stack.getFoodProperties(this);
+        return foodProperties != null && foodProperties.isMeat();
+    }
+
+    private void spawnFeedParticles() {
+        if (this.level() instanceof ServerLevel serverLevel) {
+
+            double yTop = this.getY() + this.getBbHeight();
+            for (int i = 0; i < 7; ++i) {
+                double d0 = this.getRandom().nextGaussian() * 0.02D;
+                double d1 = this.getRandom().nextGaussian() * 0.02D + 0.02D;
+                double d2 = this.getRandom().nextGaussian() * 0.02D;
+                serverLevel.sendParticles(ParticleTypes.HEART,
+                        this.getX() + this.getRandom().nextGaussian() * 0.35D,
+                        yTop + this.getRandom().nextGaussian() * 0.15D + 0.05D,
+                        this.getZ() + this.getRandom().nextGaussian() * 0.35D,
+                        1, d0, d1, d2, 0.0D);
+            }
+        }
     }
 
     @Override
@@ -462,12 +512,10 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
             if (this.onGround() && leapProgress >= 5.0F) {
                 this.setLeaping(false);
             }
-            timeLeaping++;
             Vec3 vec3 = this.getDeltaMovement();
             float f2 = (float) (-(Mth.atan2(vec3.y, vec3.horizontalDistance()) * (double) (180F / (float) Math.PI)));
             this.leapPitch = Mth.approachDegrees(leapPitch, f2, 5);
         } else {
-            timeLeaping = 0;
             this.leapPitch = Mth.approachDegrees(leapPitch, 0, 5);
 
             if (this.getAnimation() == ANIMATION_PREPARE_JUMP && this.onGround() && !this.hasRiderController() && !this.isStaying() && !level().isClientSide && this.getAnimationTick() >= 8 && this.getAnimationTick() <= 10) {
@@ -587,19 +635,25 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
             } else if (getHeldMobId() != -1) {
                 this.setHeldMobId(-1);
             }
+            this.tickCombatGrace();
+            boolean renewDarkness = false;
             if (this.getHealth() < this.getMaxHealth() * 0.5F) {
-                int lightLevel = getLightLevel();
-                if (lightLevel <= LIGHT_THRESHOLD) {
-                    this.setDarknessTime(30);
-                } else if (getDarknessTime() > 0) {
-                    this.setDarknessTime(this.getDarknessTime() - 1);
-                }
-                if (getDarknessTime() > 0 && this.tickCount % 30 == 0) {
-                    this.heal(1);
-                }
-            } else {
-                this.setDarknessTime(0);
+                renewDarkness = this.getLightLevel() <= LIGHT_THRESHOLD;
             }
+            if (renewDarkness || (this.isInCombat() && this.getDarknessTime() > 0)) {
+                // 处于黑暗环境或战斗中:持续续满黑暗 aura
+                this.setDarknessTime(DARKNESS_LINGER_TICKS);
+            } else if (this.getDarknessTime() > 0) {
+                // 脱战/离开黑暗:aura 保留 5 秒缓冲逐帧淡出,期间仍可回血;
+                // 缓冲(5秒)内重新战斗/回到黑暗会再次续满,不会断档
+                this.setDarknessTime(this.getDarknessTime() - 1);
+            }
+            // 黑暗状态下被动自回:每 20tick 回 1 血(每秒 1 次),满血即停(战斗/缓冲期维持的黑暗同样生效)
+            if (this.getDarknessTime() > 0 && this.tickCount % 20 == 0 && this.getHealth() < this.getMaxHealth()) {
+                this.heal(1.0F);
+            }
+            // Wind 套装强化:主人穿戴期间每 7 秒给自身刷新一次速度 I
+            this.tickWindSetSpeedPulse();
         }
         Entity grabbedEntity = this.getHeldMob();
         if (grabbedEntity != null && grabbedEntity.isAlive() && grabbedEntity.distanceTo(this) < 10) {
@@ -625,22 +679,23 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
     }
 
     private void spawnForsakenSonar(boolean aoe) {
-        Vec3 from = this.getEyePosition();
+
+        double x = this.getX();
+        double y = this.getY() + 0.5D;
+        double z = this.getZ();
         if (!aoe) {
-            Vec3 dir;
             Entity sonarTarget = this.getSonarTarget();
             if (sonarTarget != null && sonarTarget.isAlive()) {
-                dir = sonarTarget.getEyePosition().subtract(from).normalize();
+                Vec3 dir = sonarTarget.getEyePosition().subtract(x, y, z).normalize();
+                float pitch = (float) Math.toDegrees(Math.atan2(dir.y, dir.horizontalDistance()));
+                float yaw = (float) -Math.toDegrees(Math.atan2(dir.x, dir.z));
+                level().addAlwaysVisibleParticle(ACParticleRegistry.FORSAKEN_SONAR.get(), true, x, y, z, this.getId(), pitch, yaw);
             } else {
-                dir = new Vec3(0, 0, 1).yRot((float) -Math.toRadians(this.getYHeadRot())).xRot((float) -Math.toRadians(this.getXRot())).normalize();
+
+                level().addAlwaysVisibleParticle(ACParticleRegistry.FORSAKEN_SONAR.get(), true, x, y, z, this.getId(), this.getXRot(), this.getYHeadRot());
             }
-
-            float pitch = (float) Math.toDegrees(Math.atan2(dir.y, dir.horizontalDistance()));
-            float yaw = (float) -Math.toDegrees(Math.atan2(dir.x, dir.z));
-            level().addAlwaysVisibleParticle(ACParticleRegistry.FORSAKEN_SONAR.get(), true, from.x, from.y, from.z, this.getId(), pitch, yaw);
         } else {
-
-            level().addAlwaysVisibleParticle(ACParticleRegistry.FORSAKEN_SONAR_LARGE.get(), true, from.x, from.y, from.z, this.getId(), 90.0F, 0.0F);
+            level().addAlwaysVisibleParticle(ACParticleRegistry.FORSAKEN_SONAR_LARGE.get(), true, x, y, z, this.getId(), 90.0F, 0.0F);
         }
     }
 
@@ -660,6 +715,22 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
 
     public void setDarknessTime(int time) {
         this.entityData.set(DARKNESS_TIME, time);
+    }
+
+    private boolean isInCombat() {
+        return this.combatGraceTicks > 0;
+    }
+
+    private void tickCombatGrace() {
+        if (this.level().isClientSide) {
+            return;
+        }
+        LivingEntity target = this.getTarget();
+        if (target != null && target.isAlive() && !this.isAlliedTo(target)) {
+            this.combatGraceTicks = COMBAT_GRACE_TICKS;
+        } else if (this.combatGraceTicks > 0) {
+            --this.combatGraceTicks;
+        }
     }
 
     private Vec3 getHandPos(int animationTick) {
@@ -910,12 +981,47 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
             if (damageSource.getEntity() instanceof AbstractGolem) {
                 f *= 0.5F;
             }
+
+            if (!this.level().isClientSide
+                    && damageSource.getEntity() instanceof LivingEntity attacker
+                    && attacker != this
+                    && attacker.isAlive()
+                    && !this.isAlliedTo(attacker)) {
+                this.combatGraceTicks = COMBAT_GRACE_TICKS;
+            }
             return super.hurt(damageSource, f);
         }
     }
 
     public float getSonicDamageAgainst(LivingEntity target) {
         return target.getType().is(ACTagRegistry.WEAK_TO_FORSAKEN_SONIC_ATTACK) ? 45.0F : 4.0F;
+    }
+
+    // 主人同时穿戴 Wild Robe + Wild Crown 时,攻击命中会给目标附加 7 秒(140 tick)衰弱(Wane)
+    private boolean masterWearsWildSet() {
+        return this.getTrueOwner() != null && CuriosFinder.hasWildSet(this.getTrueOwner());
+    }
+
+    private void applyMasterWildSetWane(LivingEntity target) {
+        if (this.masterWearsWildSet() && target.isAlive()) {
+            target.addEffect(new MobEffectInstance(GoetyEffects.WANE.get(), 7 * 20, 0));
+        }
+    }
+
+    // 主人同时穿戴 Wind Robe + Wind Crown 时,遗弃者仆从获得强化:每 7 秒给自身刷新一次速度 I(持续 10 秒)
+    private boolean masterWearsWindSet() {
+        return this.getTrueOwner() != null && CuriosFinder.hasWindSet(this.getTrueOwner());
+    }
+
+    private void tickWindSetSpeedPulse() {
+        if (this.masterWearsWindSet()) {
+            if (this.windSpeedPulseTicks <= 0) {
+                this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, WIND_SPEED_DURATION, 0));
+                this.windSpeedPulseTicks = WIND_SPEED_PULSE_TICKS;
+            } else {
+                --this.windSpeedPulseTicks;
+            }
+        }
     }
 
     protected SoundEvent getAmbientSound() {
@@ -986,11 +1092,12 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
                 double attackDistance = ForsakenServant.this.getBbWidth() + target.getBbWidth();
 
                 boolean standingBy = ForsakenServant.this.isStaying();
-                boolean bl = inPursuit = !this.isMovementFrozen() && !standingBy;
+                inPursuit = !this.isMovementFrozen() && !standingBy;
                 if (this.attemptSonicDamageIn > 0) {
                     --this.attemptSonicDamageIn;
                     if (this.attemptSonicDamageIn == 0 && ForsakenServant.this.hasLineOfSight(target)) {
                         target.hurt(target.damageSources().sonicBoom(ForsakenServant.this), ForsakenServant.this.getSonicDamageAgainst(target));
+                        ForsakenServant.this.applyMasterWildSetWane(target);
                         this.knockBackAngle(target, 1.0, 0.0F);
                     }
                 }
@@ -1023,6 +1130,7 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
                                     continue;
                                 }
                                 living.hurt(living.damageSources().sonicBoom(ForsakenServant.this), (float) Math.ceil(ForsakenServant.this.getSonicDamageAgainst(target) * 0.65F));
+                                ForsakenServant.this.applyMasterWildSetWane(living);
                             }
                         }
                         if (ForsakenServant.this.getAnimationTick() > 40) {
@@ -1166,7 +1274,9 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
         private boolean checkAndDealDamage(LivingEntity target, double multiplier, float extraRange) {
             if (ForsakenServant.this.hasLineOfSight(target) && ForsakenServant.this.distanceTo(target) < ForsakenServant.this.getBbWidth() + target.getBbWidth() + extraRange) {
                 boolean b = target.hurt(target.damageSources().mobAttack(ForsakenServant.this), (float) (multiplier * ForsakenServant.this.getAttribute(Attributes.ATTACK_DAMAGE).getValue()));
-
+                if (b) {
+                    ForsakenServant.this.applyMasterWildSetWane(target);
+                }
                 if (!ForsakenServant.this.isStaying() && !ForsakenServant.this.hasRiderController() && ForsakenServant.this.getRandom().nextInt(2) == 0) {
                     this.startCleanJump();
                 }

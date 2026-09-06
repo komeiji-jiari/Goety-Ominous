@@ -40,6 +40,7 @@ public class AmEntityRegistry {
             AM_ENTITIES.register("crimson_mosquito_servant",
                     () -> EntityType.Builder.<CrimsonMosquitoServant>of((type, worldIn) -> new CrimsonMosquitoServant(type, worldIn), MobCategory.MISC)
                             .sized(1.25F, 1.15F)
+                            .fireImmune()
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":crimson_mosquito_servant"));
 

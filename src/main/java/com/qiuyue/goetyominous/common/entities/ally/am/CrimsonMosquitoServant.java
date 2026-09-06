@@ -545,19 +545,7 @@ public class CrimsonMosquitoServant extends Summoned {
                             servant.setTrueOwner(this.getTrueOwner());
                         }
                         mosco.finalizeSpawn((ServerLevelAccessor) level(), level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null, null);
-                        if (this.level() instanceof ServerLevel serverLevel) {
-                            for (int i = 0; i < 27; ++i) {
-                                serverLevel.sendParticles(ParticleTypes.EXPLOSION,
-                                        this.getRandomX(1.6D),
-                                        this.getY() + this.random.nextFloat() * 3.4F,
-                                        this.getRandomZ(1.6D),
-                                        1,
-                                        this.random.nextGaussian() * 0.02D,
-                                        this.random.nextGaussian() * 0.02D,
-                                        this.random.nextGaussian() * 0.02D,
-                                        0D);
-                            }
-                        }
+                        this.level().broadcastEntityEvent(this, (byte) 79);
                         level().addFreshEntity(mosco);
                     }
                     this.remove(RemovalReason.DISCARDED);

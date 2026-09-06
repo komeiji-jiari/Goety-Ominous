@@ -43,7 +43,7 @@ public class RenderCrimsonMosquitoServant extends MobRenderer<CrimsonMosquitoSer
     @Override
     protected void setupRotations(CrimsonMosquitoServant entity, PoseStack matrixStack, float ageInTicks, float rotationYaw, float partialTicks) {
         if (this.isShaking(entity)) {
-            partialTicks += (float) (Math.cos((double) entity.tickCount * 7.0D) * Math.PI * 0.9D);
+            rotationYaw += (float) (Math.cos((double) entity.tickCount * 7.0D) * Math.PI * 0.9D);
             float f1 = 0.05F * entity.getMosquitoScale();
             matrixStack.translate((entity.getRandom().nextFloat() - 0.5F) * f1, (entity.getRandom().nextFloat() - 0.5F) * f1, (entity.getRandom().nextFloat() - 0.5F) * f1);
         }
