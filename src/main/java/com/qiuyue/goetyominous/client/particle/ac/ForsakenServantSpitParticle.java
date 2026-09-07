@@ -1,7 +1,9 @@
 package com.qiuyue.goetyominous.client.particle.ac;
 
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.qiuyue.goetyominous.client.render.ac.RenderForsakenServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.ForsakenServant;
+import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
@@ -30,7 +32,12 @@ public class ForsakenServantSpitParticle extends TextureSheetParticle {
         this.quadSize *= 0.8F + random.nextFloat() * 0.5F;
         this.lifetime = 100 + random.nextInt(40);
         this.lifetime = Math.max(this.lifetime, 1);
-        this.setSpriteFromAge(sprites);
+        try {
+            this.setSpriteFromAge(sprites);
+        } catch (RuntimeException e) {
+            // spriteSet 未绑定(如部署 jar 缺 particles JSON/贴图)→ 标记移除,由 tick/render 兜底清理
+            this.remove();
+        }
         this.hasPhysics = true;
         this.forsakenId = forsakenId;
         this.inMouthOffset = new Vec3(random.nextBoolean() ? 0.3F : -0.3F, -0.0F, random.nextFloat() * 0.7F - 0.2F);
@@ -60,7 +67,12 @@ public class ForsakenServantSpitParticle extends TextureSheetParticle {
             }
         }
         int sprite = this.onGround ? 1 : 0;
-        this.setSprite(sprites.get(sprite, 1));
+        try {
+            this.setSprite(sprites.get(sprite, 1));
+        } catch (RuntimeException e) {
+            this.remove();
+            return;
+        }
         if (onGroundTime > 5) {
             this.remove();
         }
@@ -83,6 +95,15 @@ public class ForsakenServantSpitParticle extends TextureSheetParticle {
     @Override
     public ParticleRenderType getRenderType() {
         return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+    }
+
+    @Override
+    public void render(VertexConsumer buffer, Camera camera, float partialTicks) {
+        if (this.sprite == null) {
+            this.remove();
+            return;
+        }
+        super.render(buffer, camera, partialTicks);
     }
 
     public static class Factory implements ParticleProvider<SimpleParticleType> {

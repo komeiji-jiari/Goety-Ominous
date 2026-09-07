@@ -111,6 +111,10 @@ public class CandicornServantChargeParticle extends TextureSheetParticle {
     }
 
     public void render(VertexConsumer vertexConsumer, Camera camera, float partialTick) {
+        if (this.sprite == null) {
+            this.remove();
+            return;
+        }
         this.renderSignal(vertexConsumer, camera, partialTick, quaternionf -> quaternionf.rotateY(-((float) Math.toRadians(this.yRot))).rotateX(-((float) Math.toRadians(this.xRot))));
         this.renderSignal(vertexConsumer, camera, partialTick, quaternionf -> quaternionf.rotateY((float) (-Math.PI) - (float) Math.toRadians(this.yRot)).rotateX((float) Math.toRadians(this.xRot)));
     }
@@ -152,7 +156,12 @@ public class CandicornServantChargeParticle extends TextureSheetParticle {
 
         public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             CandicornServantChargeParticle particle = new CandicornServantChargeParticle(worldIn, x, y, z, (int) xSpeed, (float) ySpeed, (float) zSpeed);
-            particle.pickSprite(this.spriteSet);
+            try {
+                particle.pickSprite(this.spriteSet);
+            } catch (RuntimeException e) {
+                // spriteSet 未绑定(如部署 jar 缺 particles JSON/贴图)→ 丢弃该粒子,避免渲染期空 sprite 崩溃
+                particle.remove();
+            }
             return particle;
         }
     }
