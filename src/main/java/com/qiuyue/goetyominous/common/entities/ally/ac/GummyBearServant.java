@@ -15,6 +15,7 @@ import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
+import com.qiuyue.goetyominous.utils.ModMobType;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -36,6 +37,7 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -65,6 +67,11 @@ import java.time.temporal.ChronoField;
 import java.util.EnumSet;
 
 public class GummyBearServant extends AnimalSummon implements IAnimatedEntity {
+
+    @Override
+    public MobType getMobType() {
+        return ModMobType.FEL;
+    }
 
     private static final EntityDataAccessor<Integer> GUMMY_COLOR = SynchedEntityData.defineId(GummyBearServant.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(GummyBearServant.class, EntityDataSerializers.BOOLEAN);

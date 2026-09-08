@@ -600,10 +600,6 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
             if (this.getAnimation() == ANIMATION_SUCK && this.getAnimationTick() == 3 && this.distanceTo(target) < 4.7F) {
                 target.startRiding(this, true);
             }
-            if (this.hasUnholyBlood() && this.getAnimation() == ANIMATION_SUCK
-                    && this.getAnimationTick() > 0 && (this.getAnimationTick() - 10) % 10 == 0) {
-                this.heal(this.getMaxHealth() * com.qiuyue.goetyominous.config.MobsConfig.WarpedMoscoLeechingFocusHeal.get() / 100.0F);
-            }
             if (this.getAnimation() == ANIMATION_SLAM) {
                 if (this.getAnimationTick() == 19) {
                     for (Entity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(5.0D))) {

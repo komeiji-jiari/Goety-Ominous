@@ -184,6 +184,12 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> DeepOneMageServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> DeepOneMageServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> DeepOneMageServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> LicowitchServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> LicowitchServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> LicowitchServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> LicowitchServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> LicowitchServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> LicowitchServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantFollowRange;
@@ -1274,6 +1280,18 @@ public class AttributesConfig {
                 .defineInRange("deepOneMageServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
         DeepOneMageServantArmor = BUILDER.comment("How much natural Armor Deep One Mage Servants have, Default: 0.0 (Alex's Caves Deep One Mage has none)")
                 .defineInRange("deepOneMageServantArmor", 0.0, 0.0, Double.MAX_VALUE);
+        LicowitchServantHealth = BUILDER.comment("How much Max Health Licowitch Servants have, Default: 40.0 (matches Alex's Caves Licowitch)")
+                .defineInRange("licowitchServantHealth", 40.0, 1.0, Double.MAX_VALUE);
+        LicowitchServantDamage = BUILDER.comment("How much damage Licowitch Servants deal, Default: 3.0 (matches Alex's Caves Licowitch)")
+                .defineInRange("licowitchServantDamage", 3.0, 1.0, Double.MAX_VALUE);
+        LicowitchServantMovementSpeed = BUILDER.comment("How fast Licowitch Servants move, Default: 0.25 (matches Alex's Caves Licowitch)")
+                .defineInRange("licowitchServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
+        LicowitchServantFollowRange = BUILDER.comment("How much following/detection range Licowitch Servants have, Default: 48.0")
+                .defineInRange("licowitchServantFollowRange", 48.0, 0.0, Double.MAX_VALUE);
+        LicowitchServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Licowitch Servants have, Default: 0.0 (Alex's Caves Licowitch has none)")
+                .defineInRange("licowitchServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
+        LicowitchServantArmor = BUILDER.comment("How much natural Armor Licowitch Servants have, Default: 0.0 (Alex's Caves Licowitch has none)")
+                .defineInRange("licowitchServantArmor", 0.0, 0.0, Double.MAX_VALUE);
         FroststalkerServantHealth = BUILDER.comment("How much Max Health Froststalker Servants have, Default: 24.0 (matches Alex's Mobs Froststalker)")
                 .defineInRange("froststalkerServantHealth", 24.0, 1.0, Double.MAX_VALUE);
         FroststalkerServantDamage = BUILDER.comment("How much damage Froststalker Servants deal, Default: 4.5 (matches Alex's Mobs Froststalker)")

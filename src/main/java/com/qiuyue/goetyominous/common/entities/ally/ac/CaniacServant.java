@@ -9,6 +9,7 @@ import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
+import com.qiuyue.goetyominous.utils.ModMobType;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -29,6 +30,7 @@ import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -49,6 +51,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.EnumSet;
 
 public class CaniacServant extends Summoned implements IAnimatedEntity {
+
+    @Override
+    public MobType getMobType() {
+        return ModMobType.FEL;
+    }
 
     private static final EntityDataAccessor<Float> SPIN_SPEED = SynchedEntityData.defineId(CaniacServant.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> RUNNING = SynchedEntityData.defineId(CaniacServant.class, EntityDataSerializers.BOOLEAN);

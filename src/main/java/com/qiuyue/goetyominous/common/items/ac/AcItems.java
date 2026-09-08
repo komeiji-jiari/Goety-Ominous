@@ -120,6 +120,10 @@ public class AcItems {
 
                     () -> new ServantSpawnEggItem(AcEntityRegistry.DEEP_ONE_MAGE_SERVANT, 0x96DEF6, 0xD1FF00, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> LICOWITCH_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("licowitch_servant_spawn_egg",
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.LICOWITCH_SERVANT, 0x681182, 0xFF6CD7, egg()));
+
     public static final RegistryObject<Item> RAYCAT_AMULET =
             AC_ITEMS.register("raycat_amulet", () -> new RaycatAmuletItem());
 

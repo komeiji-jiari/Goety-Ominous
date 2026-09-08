@@ -25,6 +25,10 @@
     {
       "id": "goetyominous:candicorn_servant",
       "required": false
+    },
+    {
+      "id": "goetyominous:licowitch_servant",
+      "required": false
     }
   ]
 }

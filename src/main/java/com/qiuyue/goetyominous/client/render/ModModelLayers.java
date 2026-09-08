@@ -738,6 +738,9 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.DEEP_ONE_MAGE_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderDeepOneMageServant::new);
             event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.LICOWITCH_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderLicowitchServant::new);
+            event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.DEEP_ONE_SERVANT_WAVE.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderDeepOneServantWave::new);
             event.registerEntityRenderer(
@@ -746,6 +749,12 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.DEEP_ONE_MAGE_SERVANT_WATER_BOLT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderDeepOneMageServantWaterBolt::new);
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.LICOWITCH_SERVANT_HEX.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderLicowitchServantHex::new);
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.LICOWITCH_SERVANT_PEPPERMINT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderLicowitchServantPeppermint::new);
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.TREMORZILLA_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderTremorzillaServant::new);
