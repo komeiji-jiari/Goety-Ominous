@@ -1,0 +1,20 @@
+{
+  "name": "臭屁聚晶",
+  "icon": "goetyominous:fart_focus",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "通过法术，你能够用你的魔杖产生一种难闻的气体云。这种气体云会让闻到的人感觉反胃，还会让周围的中立生物对他们重拳出击(因为他们太臭了！)。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goetyominous:fart_focus",
+      "text": "幸运的是，这种气体云对你和你的盟友而言是完全无害的。"
+    },
+    {
+      "type": "text",
+      "text": "考虑到这种气体云本身是易燃的，如果用下界魔杖施法的话，或许会产生意想不到的效果？"
+    }
+  ]
+}

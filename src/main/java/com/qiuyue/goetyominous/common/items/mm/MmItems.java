@@ -55,6 +55,10 @@ public class MmItems {
             "shulker_bullet_focus",
             () -> new MagicFocus(new ShulkerBulletSpell()));
 
+    public static final RegistryObject<MagicFocus> ROD_STRIKE_FOCUS = MM_ITEMS.register(
+            "rod_strike_focus",
+            () -> new MagicFocus(new RodStrikeSpell()));
+
     public static final RegistryObject<WitherScytheItem> WITHER_SCYTHE = MM_ITEMS.register(
             "wither_scythe", WitherScytheItem::new);
 

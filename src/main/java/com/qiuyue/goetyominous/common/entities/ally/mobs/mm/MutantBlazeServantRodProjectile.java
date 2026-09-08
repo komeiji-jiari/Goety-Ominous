@@ -51,6 +51,7 @@ public class MutantBlazeServantRodProjectile extends SpellThrowableProjectile {
     public boolean griefing = true;
     public boolean griefingDropsBlocks = false;
     public boolean fireGriefing = false;
+    public int spellLifespanMultiplier = 0;
 
     public MutantBlazeServantRodProjectile(EntityType<? extends MutantBlazeServantRodProjectile> type, Level level) {
         super(type, level);
@@ -82,7 +83,7 @@ public class MutantBlazeServantRodProjectile extends SpellThrowableProjectile {
         }
         if (!this.level().isClientSide) {
             ++this.despawnTimer;
-            if (this.despawnTimer >= (this.isCollectable() ? 6000 : this.despawnTime)) {
+            if (this.tickCount >= 100 || this.despawnTimer >= (this.isCollectable() ? 6000 : this.despawnTime)) {
                 this.discard();
             }
         }
@@ -195,8 +196,14 @@ public class MutantBlazeServantRodProjectile extends SpellThrowableProjectile {
         }
         rodling.moveTo(this.getX(), this.getY(), this.getZ());
         if (player == null && owner != null) {
-            rodling.setSummonedByMutantBlaze(true);
-            rodling.setLimitedLife(com.Polarice3.Goety.utils.MobUtil.getSummonLifespan(this.level()));
+            if (owner instanceof MutantBlazeServant) {
+                rodling.setSummonedByMutantBlaze(true);
+            }
+            int life = com.Polarice3.Goety.utils.MobUtil.getSummonLifespan(this.level());
+            if (this.spellLifespanMultiplier > 1) {
+                life *= this.spellLifespanMultiplier;
+            }
+            rodling.setLimitedLife(life);
         }
         this.level().addFreshEntity(rodling);
         this.summonedRodling = true;

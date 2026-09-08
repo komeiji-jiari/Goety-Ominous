@@ -37,7 +37,6 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -97,13 +96,9 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
     public static final Animation ANIMATION_RIGHT_PICKUP = Animation.create(48);
     private static final int LIGHT_THRESHOLD = 4;
     private static final int DARKNESS_LINGER_TICKS = 100;
-
     private static final int COMBAT_GRACE_TICKS = 40;
-    private static final int WIND_SPEED_DURATION = 10 * 20;
-    private static final int WIND_SPEED_PULSE_TICKS = 7 * 20;
 
     private int combatGraceTicks;
-    private int windSpeedPulseTicks;
     private Animation currentAnimation = IAnimatedEntity.NO_ANIMATION;
     private int animationTick;
     public LegSolverQuadruped legSolver = new LegSolverQuadruped(-0.4F, 1.4F, 1F, 0.75F, 1F);
@@ -655,7 +650,6 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
             if (this.getDarknessTime() > 0 && this.tickCount % 20 == 0 && this.getHealth() < this.getMaxHealth()) {
                 this.heal(1.0F);
             }
-            this.tickWindSetSpeedPulse();
         }
         Entity grabbedEntity = this.getHeldMob();
         if (grabbedEntity != null && grabbedEntity.isAlive() && grabbedEntity.distanceTo(this) < 10) {
@@ -1005,22 +999,7 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
 
     private void applyMasterWildSetWane(LivingEntity target) {
         if (this.masterWearsWildSet() && target.isAlive()) {
-            target.addEffect(new MobEffectInstance(GoetyEffects.WANE.get(), 7 * 20, 0));
-        }
-    }
-
-    private boolean masterWearsWindSet() {
-        return this.getTrueOwner() != null && CuriosFinder.hasWindSet(this.getTrueOwner());
-    }
-
-    private void tickWindSetSpeedPulse() {
-        if (this.masterWearsWindSet()) {
-            if (this.windSpeedPulseTicks <= 0) {
-                this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, WIND_SPEED_DURATION, 0));
-                this.windSpeedPulseTicks = WIND_SPEED_PULSE_TICKS;
-            } else {
-                --this.windSpeedPulseTicks;
-            }
+            target.addEffect(new MobEffectInstance(GoetyEffects.BUSTED.get(), 7 * 20, 0));
         }
     }
 

@@ -14,6 +14,7 @@ public class EliteZPiglinHunterServant extends StrongZPiglinHunterServant {
 
     public EliteZPiglinHunterServant(EntityType<? extends StrongZPiglinHunterServant> type, Level level) {
         super(type, level);
+        this.refreshDimensions();
     }
 
     @Override

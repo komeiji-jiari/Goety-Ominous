@@ -61,6 +61,7 @@ public class RodlingServant extends Summoned {
     public int shootAnimationActionPoint = 7;
     public int noveltyAnimationTick;
     public int noveltyAnimationLength = 30;
+    private static final EntityDataAccessor<Float> FIRE_BALL_DAMAGE;
     public boolean summonedByMutantBlaze() { return this.entityData.get(SUMMONED_BY_MUTANT_BLAZE); }
     public void setSummonedByMutantBlaze(boolean value) { this.entityData.set(SUMMONED_BY_MUTANT_BLAZE, value); }
 
@@ -129,6 +130,15 @@ public class RodlingServant extends Summoned {
             }
         }
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+    }
+
+    public float getFireBallDamage() {
+        float stored = this.entityData.get(FIRE_BALL_DAMAGE);
+        return stored > 0.0F ? stored : RodlingCommonConfig.tamed_fireball_damage.get().floatValue();
+    }
+
+    public void setFireBallDamage(float value) {
+        this.entityData.set(FIRE_BALL_DAMAGE, value);
     }
 
     private int countServants(Player player) {
@@ -275,6 +285,7 @@ public class RodlingServant extends Summoned {
         this.setFlag(32, true);
         this.setFlag(128, true);
         this.entityData.define(SUMMONED_BY_MUTANT_BLAZE, false);
+        this.entityData.define(FIRE_BALL_DAMAGE, 0.0F);
     }
 
     @Override
@@ -288,6 +299,7 @@ public class RodlingServant extends Summoned {
         tag.putInt("Coals", this.getCoals());
         tag.putFloat("AmountToHeal", this.getAmountToHeal());
         tag.putBoolean("SummonedByMutantBlaze", this.summonedByMutantBlaze());
+        tag.putFloat("FireBallDamage", this.entityData.get(FIRE_BALL_DAMAGE));
     }
 
     @Override
@@ -301,6 +313,9 @@ public class RodlingServant extends Summoned {
         if (tag.contains("HasHelmet")) this.setHasHelmet(tag.getBoolean("HasHelmet"));
         if (tag.contains("Coals")) this.setCoals(tag.getInt("Coals"));
         if (tag.contains("AmountToHeal")) this.setAmountToHeal(tag.getFloat("AmountToHeal"));
+        if (tag.contains("FireBallDamage")) {
+            this.entityData.set(FIRE_BALL_DAMAGE, tag.getFloat("FireBallDamage"));
+        }
     }
 
     public boolean getFlag(int flag) {
@@ -551,11 +566,12 @@ public class RodlingServant extends Summoned {
                                 new com.Polarice3.Goety.common.entities.projectiles.HellBolt(
                                         RodlingServant.this, d1, d2, d3, RodlingServant.this.level());
                         bolt.setPos(bolt.getX(), RodlingServant.this.getY(0.5), bolt.getZ());
+                        bolt.setDamage(RodlingServant.this.getFireBallDamage());
                         RodlingServant.this.level().addFreshEntity(bolt);
                     } else {
                         RodlingServantFireball fireball = new RodlingServantFireball(RodlingServant.this.level(),
                                 RodlingServant.this, d1, d2, d3);
-                        fireball.damage = RodlingCommonConfig.tamed_fireball_damage.get().floatValue();
+                        fireball.damage = RodlingServant.this.getFireBallDamage();
                         fireball.fireLength = RodlingCommonConfig.tamed_fireball_fire_length.get();
                         fireball.griefing = RodlingServant.this.griefing();
                         fireball.ignoresInvulTime = RodlingCommonConfig.tamed_ignores_invulnerability_time.get();
@@ -585,5 +601,6 @@ public class RodlingServant extends Summoned {
         AMOUNT_TO_HEAL = SynchedEntityData.defineId(RodlingServant.class, EntityDataSerializers.FLOAT);
         FLAGS = SynchedEntityData.defineId(RodlingServant.class, EntityDataSerializers.BYTE);
         SUMMONED_BY_MUTANT_BLAZE = SynchedEntityData.defineId(RodlingServant.class, EntityDataSerializers.BOOLEAN);
+        FIRE_BALL_DAMAGE = SynchedEntityData.defineId(RodlingServant.class, EntityDataSerializers.FLOAT);
     }
 }

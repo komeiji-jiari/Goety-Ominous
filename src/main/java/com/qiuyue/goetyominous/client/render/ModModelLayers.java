@@ -686,6 +686,10 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.SERVANT_CENTIPEDE_TAIL.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderServantCentipedeTail::new);
 
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.FART_SERVANT.get(),
+                    com.github.alexthe666.alexsmobs.client.render.RenderFart::new);
+
         }
 
         if (AlexCavesCompat.isAlexCavesLoaded()) {
