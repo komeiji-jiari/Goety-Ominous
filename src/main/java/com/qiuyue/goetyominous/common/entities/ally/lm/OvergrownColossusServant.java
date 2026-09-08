@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.entities.ally.lm;
 
 import com.google.common.collect.ImmutableList;
 import com.Polarice3.Goety.common.effects.GoetyEffects;
+import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.projectiles.FlyingItem;
 import net.minecraft.core.particles.ParticleTypes;
 import com.Polarice3.Goety.config.ItemConfig;
@@ -45,7 +46,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -309,8 +309,7 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        // this.goalSelector.addGoal(5, new RandomStrollGoal(this, 3.0D, 80));
-        this.goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(6, new Summoned.WanderGoal<>(this, 1.0D));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));

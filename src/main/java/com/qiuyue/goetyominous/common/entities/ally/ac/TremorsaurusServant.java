@@ -6,6 +6,8 @@ import com.Polarice3.Goety.common.entities.ally.AnimalSummon;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.init.ModMobType;
+import com.Polarice3.Goety.utils.MathHelper;
+import com.Polarice3.Goety.utils.MobUtil;
 import com.github.alexmodguy.alexscaves.AlexsCaves;
 import com.github.alexmodguy.alexscaves.client.particle.ACParticleRegistry;
 import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
@@ -263,6 +265,7 @@ public class TremorsaurusServant extends AnimalSummon implements LaysEggs, Keybi
         }
         if (this.getAnimation() == ANIMATION_ROAR && this.getAnimationTick() == 5 && !this.level().isClientSide) {
             this.playRoarSound();
+            this.rallyAllies();
         }
         if (this.getAnimation() == ANIMATION_ROAR && this.getAnimationTick() >= 5 && this.getAnimationTick() <= 40 && !this.isBaby()) {
             screenShakeAmount = 1F;
@@ -359,6 +362,29 @@ public class TremorsaurusServant extends AnimalSummon implements LaysEggs, Keybi
         } else {
             this.playSound(ACSoundRegistry.TREMORSAURUS_ROAR.get(), 4.0F, 1.0F);
         }
+    }
+
+    private void rallyAllies() {
+        if (this.isBaby() || this.getTrueOwner() == null) {
+            return;
+        }
+        net.minecraft.world.effect.MobEffect rallied = net.minecraftforge.registries.ForgeRegistries.MOB_EFFECTS
+                .getValue(new net.minecraft.resources.ResourceLocation("goety", "rallied"));
+        if (rallied == null) {
+            return;
+        }
+        for (LivingEntity ally : this.level().getEntitiesOfClass(LivingEntity.class,
+                this.getBoundingBox().inflate(30.0D, 10.0D, 30.0D),
+                entity -> entity != null && entity.isAlive() && entity != this && this.isAlly(entity))) {
+            if (ally instanceof Player player && (player.isCreative() || player.isSpectator())) {
+                continue;
+            }
+            ally.addEffect(new MobEffectInstance(rallied, MathHelper.secondsToTicks(15), 1, false, false));
+        }
+    }
+
+    private boolean isAlly(LivingEntity entity) {
+        return this.isAlliedTo(entity) || entity.isAlliedTo(this) || MobUtil.areAllies(this, entity);
     }
 
     private void scareMobs() {
