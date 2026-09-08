@@ -15,6 +15,7 @@ import com.qiuyue.goetyominous.common.entities.ally.ac.GrottoceratopsServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.GumbeeperServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.GummyBearServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.LicowitchServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.MeltedCaramelServantEntity;
 import com.qiuyue.goetyominous.common.entities.ally.ac.MineGuardianServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.NucleeperServant;
@@ -26,6 +27,8 @@ import com.qiuyue.goetyominous.common.entities.ally.ac.VallumraptorServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.VesperServant;
 import com.qiuyue.goetyominous.common.entities.projectile.DeepOneMageServantWaterBolt;
 import com.qiuyue.goetyominous.common.entities.projectile.DeepOneMageServantWave;
+import com.qiuyue.goetyominous.common.entities.projectile.LicowitchServantHex;
+import com.qiuyue.goetyominous.common.entities.projectile.LicowitchServantPeppermint;
 import com.qiuyue.goetyominous.common.entities.projectile.GumballServantEntity;
 import com.qiuyue.goetyominous.common.entities.projectile.DeepOneServantWave;
 import net.minecraft.world.entity.EntityType;
@@ -162,6 +165,13 @@ public class AcEntityRegistry {
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":deep_one_mage_servant"));
 
+    public static final RegistryObject<EntityType<LicowitchServant>> LICOWITCH_SERVANT =
+            AC_ENTITIES.register("licowitch_servant",
+                    () -> EntityType.Builder.<LicowitchServant>of((type, worldIn) -> new LicowitchServant(type, worldIn), MobCategory.MISC)
+                            .sized(0.8F, 1.9F)
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":licowitch_servant"));
+
     public static final RegistryObject<EntityType<DeepOneServantWave>> DEEP_ONE_SERVANT_WAVE =
             AC_ENTITIES.register("deep_one_servant_wave",
                     () -> EntityType.Builder.<DeepOneServantWave>of((type, worldIn) -> new DeepOneServantWave(type, worldIn), MobCategory.MISC)
@@ -179,6 +189,24 @@ public class AcEntityRegistry {
                             .setShouldReceiveVelocityUpdates(true)
                             .setUpdateInterval(1)
                             .build(GoetyOminous.MOD_ID + ":deep_one_mage_servant_wave"));
+
+    public static final RegistryObject<EntityType<LicowitchServantHex>> LICOWITCH_SERVANT_HEX =
+            AC_ENTITIES.register("licowitch_servant_hex",
+                    () -> EntityType.Builder.<LicowitchServantHex>of((type, worldIn) -> new LicowitchServantHex(type, worldIn), MobCategory.MISC)
+                            .sized(4.0F, 0.25F)
+                            .setTrackingRange(8)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .setUpdateInterval(1)
+                            .build(GoetyOminous.MOD_ID + ":licowitch_servant_hex"));
+
+    public static final RegistryObject<EntityType<LicowitchServantPeppermint>> LICOWITCH_SERVANT_PEPPERMINT =
+            AC_ENTITIES.register("licowitch_servant_peppermint",
+                    () -> EntityType.Builder.<LicowitchServantPeppermint>of((type, worldIn) -> new LicowitchServantPeppermint(type, worldIn), MobCategory.MISC)
+                            .sized(0.5F, 0.5F)
+                            .setTrackingRange(8)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .setUpdateInterval(1)
+                            .build(GoetyOminous.MOD_ID + ":licowitch_servant_peppermint"));
 
     public static final RegistryObject<EntityType<DeepOneMageServantWaterBolt>> DEEP_ONE_MAGE_SERVANT_WATER_BOLT =
             AC_ENTITIES.register("deep_one_mage_servant_water_bolt",

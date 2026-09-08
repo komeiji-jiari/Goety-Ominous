@@ -19,6 +19,7 @@ import com.qiuyue.goetyominous.client.sound.CandicornServantChargeSoundHandler;
 import com.qiuyue.goetyominous.common.init.ac.AcParticles;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
+import com.qiuyue.goetyominous.utils.ModMobType;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -41,6 +42,7 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.PlayerRideableJumping;
 import net.minecraft.world.entity.SpawnGroupData;
@@ -70,6 +72,11 @@ import javax.annotation.Nullable;
 import java.util.EnumSet;
 
 public class CandicornServant extends AnimalSummon implements IAnimatedEntity, PlayerRideableJumping, KeybindUsingMount {
+
+    @Override
+    public MobType getMobType() {
+        return ModMobType.FEL;
+    }
 
     public static final Animation ANIMATION_BUCK = Animation.create(25);
     public static final Animation ANIMATION_TAIL_FLICK_1 = Animation.create(12);

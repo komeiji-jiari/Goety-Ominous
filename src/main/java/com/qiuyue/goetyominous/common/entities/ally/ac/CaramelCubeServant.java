@@ -8,6 +8,7 @@ import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
+import com.qiuyue.goetyominous.utils.ModMobType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -26,6 +27,7 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -42,6 +44,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.EnumSet;
 
 public class CaramelCubeServant extends Summoned {
+
+    @Override
+    public MobType getMobType() {
+        return ModMobType.FEL;
+    }
 
     private static final EntityDataAccessor<Integer> SIZE = SynchedEntityData.defineId(CaramelCubeServant.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> WANTS_TO_JUMP = SynchedEntityData.defineId(CaramelCubeServant.class, EntityDataSerializers.BOOLEAN);
@@ -260,7 +267,7 @@ public class CaramelCubeServant extends Summoned {
                 return null;
             }
         }
-        this.setSlimeSize(this.random.nextInt(3), true);
+        this.setSlimeSize(2, true);
         return super.finalizeSpawn(levelAccessor, difficulty, spawnType, spawnGroupData, tag);
     }
 

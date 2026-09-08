@@ -5,6 +5,7 @@ import com.qiuyue.goetyominous.common.entities.projectile.GumballServantEntity;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
+import com.qiuyue.goetyominous.utils.ModMobType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -26,6 +27,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.PowerableMob;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -48,6 +50,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.EnumSet;
 
 public class GumbeeperServant extends Summoned implements PowerableMob {
+
+    @Override
+    public MobType getMobType() {
+        return ModMobType.FEL;
+    }
 
     private static final int DEFAULT_GUMBALLS = 6;
     private static final float MAX_DIAL_ROT = 450.0F;

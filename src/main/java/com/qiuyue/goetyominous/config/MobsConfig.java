@@ -58,6 +58,8 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> DeepOneServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> DeepOneKnightServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> DeepOneMageServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> LicowitchSummonsLife;
+    public static final ForgeConfigSpec.ConfigValue<Integer> LicowitchSummonLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> MineGuardianServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> DicerServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> MWSSoulShieldHealthBouns;
@@ -82,7 +84,6 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> MBUnholyBloodLowHealthTexture;
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoUnholyBloodHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoUnholyBloodDamageBouns;
-    public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoLeechingFocusHeal;
     public static final ForgeConfigSpec.ConfigValue<Boolean> WarpedMoscoUnholyBloodTexture;
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> CultistPatrol;
@@ -314,6 +315,14 @@ public class MobsConfig {
                 .comment("Maximum number of Deep One Mage Servants that can be summoned (Default: 16, same summon type as goety_cataclysm DeepingServant)")
                 .defineInRange("deepOneMageServantLimit", 16, 1, 100);
 
+        LicowitchSummonsLife = BUILDER
+                .comment("Whether candy servants a Licowitch Servant summons have a limited lifespan (45~120s); when false they persist until killed, like Goety Necromancer summons with NecromancerSummonsLife off (Default: true)")
+                .define("licowitchSummonsLife", true);
+
+        LicowitchSummonLimit = BUILDER
+                .comment("Maximum number of candy servants one Licowitch Servant can keep summoned at once (Necromancer-style per-summoner army cap, counted near the Licowitch; Default: 6)")
+                .defineInRange("licowitchSummonLimit", 6, 1, 100);
+
         MineGuardianServantLimit = BUILDER
                 .defineInRange("mineGuardianServantLimit", 16, 1, 100);
 
@@ -377,8 +386,6 @@ public class MobsConfig {
                 .defineInRange("warpedMoscoUnholyBloodHealthBonus", 50, 0, Integer.MAX_VALUE);
         WarpedMoscoUnholyBloodDamageBouns = BUILDER.comment("Extra attack damage bonus when Warped Mosco has Unholy Blood, Default: 3")
                 .defineInRange("warpedMoscoUnholyBloodDamageBonus", 3, 0, Integer.MAX_VALUE);
-        WarpedMoscoLeechingFocusHeal = BUILDER.comment("Percent of max health healed per blood-drain pulse during SUCK attack when Warped Mosco has Unholy Blood (formerly Leeching Focus). 5 pulses per animation, Default: 3 (total 15%)")
-                .defineInRange("warpedMoscoLeechingFocusHeal", 3, 0, Integer.MAX_VALUE);
         WarpedMoscoUnholyBloodTexture = BUILDER.comment("Use the alternate texture when Warped Mosco has Unholy Blood (Default: true)")
                 .define("warpedMoscoUnholyBloodTexture", true);
         BUILDER.pop();
