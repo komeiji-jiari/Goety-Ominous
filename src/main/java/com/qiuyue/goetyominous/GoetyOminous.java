@@ -211,7 +211,7 @@ public class GoetyOminous {
         event.put(ModEntityTypes.BELDAM.get(), Beldam.setCustomAttributes().build());
         event.put(ModEntityTypes.FANATIC.get(), Fanatic.setCustomAttributes().build());
         event.put(ModEntityTypes.ZEALOT.get(), Zealot.setCustomAttributes().build());
-        // event.put(ModEntityTypes.MARTYR.get(), Martyr.setCustomAttributes().build());
+
         event.put(ModEntityTypes.THUG.get(), Thug.setCustomAttributes().build());
         event.put(ModEntityTypes.CHANNELLER.get(), Channeller.setCustomAttributes().build());
         event.put(ModEntityTypes.SCORCH.get(), Scorch.setCustomAttributes().build());

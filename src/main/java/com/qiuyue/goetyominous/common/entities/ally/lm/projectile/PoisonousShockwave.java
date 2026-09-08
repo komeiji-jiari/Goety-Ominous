@@ -28,7 +28,6 @@ import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
-
 public class
 PoisonousShockwave extends Entity implements ISpellEntity {
     private int warmupDelayTicks;
@@ -50,7 +49,6 @@ PoisonousShockwave extends Entity implements ISpellEntity {
         super(p_i50170_1_, p_i50170_2_);
     }
     private BlockState blockState;
-
 
     public PoisonousShockwave(Level worldIn, double x, double y, double z, float p_i47276_8_, int p_i47276_9_, LivingEntity casterIn, int lifeTicks, float bbwidth, float damage) {
         this(com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.POISONOUS_SHOCKWAVE.get(), worldIn);
@@ -123,9 +121,6 @@ PoisonousShockwave extends Entity implements ISpellEntity {
         return this.caster;
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     protected void readAdditionalSaveData(CompoundTag compound) {
         this.warmupDelayTicks = compound.getInt("Warmup");
     }
@@ -134,9 +129,6 @@ PoisonousShockwave extends Entity implements ISpellEntity {
         compound.putInt("Warmup", this.warmupDelayTicks);
     }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
     public int getColor(){
         return 8889187;
     }
@@ -209,8 +201,7 @@ PoisonousShockwave extends Entity implements ISpellEntity {
                     this.activateProgress++;
                 }
 
-
-                if (this.lifeTicks == 6) {//old 14
+                if (this.lifeTicks == 6) {
                     this.setActivate(true);
 
                 }
@@ -226,7 +217,6 @@ PoisonousShockwave extends Entity implements ISpellEntity {
                     this.damage(livingentity);
                 }
             }
-
 
             if (!this.sentSpikeEvent) {
                 this.level().broadcastEntityEvent(this, (byte)4);
@@ -278,9 +268,6 @@ PoisonousShockwave extends Entity implements ISpellEntity {
         }
     }
 
-    /**
-     * Handler for
-     */
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
         super.handleEntityEvent(id);
@@ -306,8 +293,6 @@ PoisonousShockwave extends Entity implements ISpellEntity {
         return 1.0F;
     }
 
-
-
     @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
@@ -328,7 +313,6 @@ PoisonousShockwave extends Entity implements ISpellEntity {
     public void setSleep(boolean sleep) {
         this.setAttackState(sleep ? 1 : 0);
     }
-
 
     @Override
     public void onAddedToWorld() {

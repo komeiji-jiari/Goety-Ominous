@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-
 public class NucleeperNukeProtectionHandler {
 
     private record NukeProtection(ResourceKey<Level> dimension, Vec3 origin, double hRadius, double vRadius, long until, Set<UUID> ownerIds) {
@@ -41,10 +40,8 @@ public class NucleeperNukeProtectionHandler {
 
     private static final List<NukeProtection> PROTECTED_NUKES = new ArrayList<>();
 
-    
     private static final List<NukeProtection> CLIENT_NUCKS = new ArrayList<>();
 
-    
     private static Field spawnedParticleField;
 
     private static Field getSpawnedParticleField() {
@@ -71,7 +68,6 @@ public class NucleeperNukeProtectionHandler {
         }
     }
 
-    
     @SubscribeEvent
     public static void onExplosionJoin(EntityJoinLevelEvent event) {
         if (!AlexCavesCompat.isAlexCavesLoaded()) {
@@ -86,7 +82,6 @@ public class NucleeperNukeProtectionHandler {
         suppressVanillaCloud(explosion);
     }
 
-    
     private static boolean isOurServantExplosion(NuclearExplosionEntity explosion) {
         Vec3 pos = explosion.position();
         Level level = explosion.level();
@@ -119,19 +114,17 @@ public class NucleeperNukeProtectionHandler {
     public static void protectOwnerAndServants(ServerLevel level, NucleeperServant nucleeper) {
         long until = level.getServer().getTickCount() + protectionTicks(nucleeper);
         Set<UUID> ownerIds = collectOwnerIds(nucleeper);
-        
-        
+
         if (ownerIds.isEmpty()) {
             GoetyOminous.LOGGER.warn("[Nucleeper] 核爆仆从无主,无法提供保护");
         }
         double[] radii = zoneRadii(nucleeper);
-        // Match NuclearExplosionEntity damage AABB: inflate(chunks*22.5, chunks*9, chunks*22.5).
+
         PROTECTED_NUKES.add(new NukeProtection(nucleeper.level().dimension(), nucleeper.position(), radii[0], radii[1], until, ownerIds));
         GoetyOminous.LOGGER.warn("[Nucleeper] 注册保护 zone: 位置={} 半径=({},{}) ownerIds={} until={}",
                 nucleeper.blockPosition(), radii[0], radii[1], ownerIds, until);
     }
 
-    
     private static Set<UUID> collectOwnerIds(NucleeperServant nucleeper) {
         Set<UUID> ownerIds = new HashSet<>();
         addOwner(ownerIds, nucleeper.getOwnerId());
@@ -146,7 +139,6 @@ public class NucleeperNukeProtectionHandler {
         return ownerIds;
     }
 
-    
     public static void syncZoneToClients(ServerLevel level, NucleeperServant nucleeper) {
         double[] radii = zoneRadii(nucleeper);
         long until = level.getGameTime() + protectionTicks(nucleeper);
@@ -157,7 +149,6 @@ public class NucleeperNukeProtectionHandler {
                         radii[0], radii[1], until, collectOwnerIds(nucleeper)));
     }
 
-    
     public static void registerClientZone(ResourceKey<Level> dimension, double x, double y, double z,
                                           double hRadius, double vRadius, long untilGameTime, Set<UUID> ownerIds) {
         synchronized (CLIENT_NUCKS) {
@@ -166,7 +157,6 @@ public class NucleeperNukeProtectionHandler {
         }
     }
 
-    
     private static double[] zoneRadii(NucleeperServant nucleeper) {
         float size = nucleeper.isCharged() ? 1.75F : 1.0F;
         int chunks = (int) Math.ceil(size);
@@ -188,7 +178,7 @@ public class NucleeperNukeProtectionHandler {
 
     @SubscribeEvent
     public static void onLivingAttack(LivingAttackEvent event) {
-        
+
         if (!AlexCavesCompat.isAlexCavesLoaded()) {
             return;
         }
@@ -205,32 +195,27 @@ public class NucleeperNukeProtectionHandler {
         GoetyOminous.LOGGER.debug("[Nucleeper] 已取消 {} 受到的核爆伤害", event.getEntity().getName().getString());
     }
 
-    
-    
-
-    
     @SubscribeEvent
     public static void onLivingTick(LivingEvent.LivingTickEvent event) {
-        
+
         if (!AlexCavesCompat.isAlexCavesLoaded()) {
             return;
         }
         LivingEntity entity = event.getEntity();
         Vec3 v = entity.getDeltaMovement();
         double horizSpeedSqr = v.x * v.x + v.z * v.z;
-        if (horizSpeedSqr < 0.25 && v.y < 0.5) { 
+        if (horizSpeedSqr < 0.25 && v.y < 0.5) {
             return;
         }
         NukeProtection zone = entity.level().isClientSide
                 ? clientZoneCovering(entity)
-                : coveringZone(entity); 
+                : coveringZone(entity);
         if (zone == null) {
             return;
         }
         neutralizeBlastVelocity(entity, v, zone);
     }
 
-    
     private static NukeProtection clientZoneCovering(LivingEntity entity) {
         Level level = entity.level();
         long now = level.getGameTime();
@@ -251,12 +236,11 @@ public class NucleeperNukeProtectionHandler {
         return null;
     }
 
-    
     private static void neutralizeBlastVelocity(LivingEntity entity, Vec3 v, NukeProtection zone) {
         Vec3 rel = entity.position().subtract(zone.origin());
         double hLen = Math.sqrt(rel.x * rel.x + rel.z * rel.z);
         if (hLen < 1.0e-3) {
-            
+
             entity.setDeltaMovement(0.0, Math.min(v.y, 0.0), 0.0);
             return;
         }
@@ -265,7 +249,7 @@ public class NucleeperNukeProtectionHandler {
         double outward = v.x * hx + v.z * hz;
         double newY = v.y;
         if (newY > 0.5) {
-            newY = 0.0; 
+            newY = 0.0;
         }
         if (outward > 0.0) {
             entity.setDeltaMovement(v.x - hx * outward, newY, v.z - hz * outward);
@@ -281,7 +265,7 @@ public class NucleeperNukeProtectionHandler {
     @SubscribeEvent
     public static void onServerStopping(ServerStoppingEvent event) {
         PROTECTED_NUKES.clear();
-        
+
         synchronized (CLIENT_NUCKS) {
             CLIENT_NUCKS.clear();
         }
@@ -332,7 +316,6 @@ public class NucleeperNukeProtectionHandler {
         return false;
     }
 
-    
     private static boolean isGoodwillAlly(LivingEntity entity, NukeProtection protection) {
         MinecraftServer server = entity.level().getServer();
         if (server == null) {

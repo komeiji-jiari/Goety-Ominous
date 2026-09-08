@@ -124,11 +124,9 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
         double attackRadius = 4.0;
         double attackHeight = 3.0;
 
-
         AABB attackBox = new AABB(this.getX() - attackRadius, this.getY(), this.getZ() - attackRadius,
                 this.getX() + attackRadius, this.getY() + attackHeight, this.getZ() + attackRadius);
         List<Entity> entities = this.getTarget().level().getEntities(this, attackBox);
-
 
         for (Entity entity : entities) {
             if (entity instanceof LivingEntity livingEntity
@@ -326,7 +324,6 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
             }
         });
 
-        //chargePrepare
         this.goalSelector.addGoal(1, new IAttackGoal(this, 0, 13, 0, 37, 37, 5.0F) {
             public boolean canUse() {
                 return super.canUse() && OvergrownColossusServant.this.getRandom().nextFloat() * 35.0F < 16.0F && OvergrownColossusServant.this.smashCooldown <= 0
@@ -376,7 +373,7 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
                         && CuriosFinder.hasWildRobe(OvergrownColossusServant.this.getTrueOwner()));
                 entity2.setLifeTicks(60);
                 entity2.setPos(getX(),getY(),getZ());
-                // level().addFreshEntity(entity2);
+
                 super.stop();
             }
 
@@ -403,7 +400,6 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
         super.aiStep();
         if (this.getAttackState() == 6) {
             if (this.attackTicks ==17) {
-
 
                 spawnCircleParticle(3.5f, 1.5f,16,true,1f,0.9f,1,0.9f,1);
                 spawnCircleParticle(3.5f, -1.5f,16,true,1f,0.9f,1,0.9f,1);
@@ -588,33 +584,9 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
         this.entityData.set(SPAWNED_ENTITIES, compound.getBoolean("SpawnedEntities"));
         this.entityData.set(SPAWNED_ENTITIES2, compound.getBoolean("SpawnedEntities2"));
         if (this.getHealth() == this.getMaxHealth()) {
-            // updateAttributes();
+
         }
     }
-/*
-    public void updateAttributes() {
-        double healthMultiplier = ModConfig.MOB_CONFIG.OvergrownColosussHealthMultiplier.get();
-        double damageMultiplier = ModConfig.MOB_CONFIG.OvergrownColosussDamageMutliplier.get();
-
-        AttributeInstance healthAttribute = this.getAttribute(Attributes.MAX_HEALTH);
-        AttributeInstance attackDamageAttribute = this.getAttribute(Attributes.ATTACK_DAMAGE);
-
-        double baseHealth = 190D;
-        double baseAttackDamage = 14D;
-
-        double newHealth = baseHealth * healthMultiplier;
-        double newAttackDamage = baseAttackDamage * damageMultiplier;
-
-        if (healthAttribute != null && healthAttribute.getBaseValue() != newHealth) {
-            healthAttribute.setBaseValue(newHealth);
-            this.setHealth((float) newHealth);
-        }
-
-        if (attackDamageAttribute != null && attackDamageAttribute.getBaseValue() != newAttackDamage) {
-            attackDamageAttribute.setBaseValue(newAttackDamage);
-        }
-    }*/
-
 
     public AnimationState chargeAnimationState = new AnimationState();
     public AnimationState chargeendAnimationState = new AnimationState();
@@ -802,9 +774,6 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
             }}
     }
 
-
-
-
     @Override
     public boolean isPushable() {
         return false;
@@ -885,13 +854,11 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
 
             if (this.getAttackState() == 5) {
 
-
                 if (this.attackTicks == 14) {
                     this.playSound(SoundEvents.DRAGON_FIREBALL_EXPLODE,2,1);
                     Vec3 entityPoesition = this.position();
                     CameraShakeEntity.cameraShake(this.level(), entityPoesition, 20.0F, 0.05F, 0, 20);
                     if (this.getTarget() != null) {
-
 
                         int standingOnY = Mth.floor(this.getY());
                         for (int k = 0; k < 6; ++k) {
@@ -941,7 +908,6 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
                     CameraShakeEntity.cameraShake(this.level(), entityPoesition, 20.0F, 0.05F, 0, 20);
                     if (this.getTarget() != null) {
 
-
                         int standingOnY = Mth.floor(this.getY());
                         for (int k = 0; k < 6; ++k) {
                             float f2 = (float) k * (float) Math.PI * 2.0F / 6.0F + ((float) Math.PI * 2F / 5F);
@@ -989,7 +955,6 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
                     CameraShakeEntity.cameraShake(this.level(), entityPoesition, 20.0F, 0.05F, 0, 20);
                     if (this.getTarget() != null) {
 
-
                         int standingOnY = Mth.floor(this.getY());
                         for (int k = 0; k < 6; ++k) {
                             float f2 = (float) k * (float) Math.PI * 2.0F / 6.0F + ((float) Math.PI * 2F / 5F);
@@ -1035,7 +1000,6 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
 
             }
 
-
             if (this.getAttackState() == 6) {
                 if (this.attackTicks == 12) {
 
@@ -1044,7 +1008,7 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
                 if (this.attackTicks == 17) {
                     if (this.getTarget() != null) {
                         if (Math.random() > 0.5F) {
-                            //  this.spawnPoisonCloud(this.getTarget().level(), this.getTarget().getX(), this.getTarget().getY(), this.getTarget().getZ(), 1F, 40);
+
                         }
                     }
                     Vec3 entityPosition = this.position();
@@ -1070,14 +1034,12 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
                 entityAttackingAngle += 360;
             }
 
-
             float entityRelativeAngle = entityHitAngle - entityAttackingAngle;
             float entityHitDistance = (float) Math.sqrt((entityHit.getZ() - this.getZ()) * (entityHit.getZ() - this.getZ()) + (entityHit.getX() - this.getX()) * (entityHit.getX() - this.getX()));
             if (entityHitDistance <= range && (entityRelativeAngle <= arc / 2 && entityRelativeAngle >= -arc / 2) || (entityRelativeAngle >= 360 - arc / 2 || entityRelativeAngle <= -360 + arc / 2)) {
                 if (!isAlliedTo(entityHit) && !MobUtil.areAllies(this, entityHit) && !(entityHit instanceof OvergrownColossusServant) && entityHit != this) {
                     if (!stun) {
                         if (!entityHit.isBlocking() && Math.random() > 0.5) {
-
 
                         }
                     }
@@ -1092,7 +1054,7 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
                                 double dx = entityHit.getX() - this.getX();
                                 double dz = entityHit.getZ() - this.getZ();
                                 double distance = Math.sqrt(dx * dx + dz * dz);
-                                double knockbackStrength = knockback + 0.5 * (knockbackRadius - distance); // Siła odrzucenia maleje z odległością
+                                double knockbackStrength = knockback + 0.5 * (knockbackRadius - distance);
                                 entityHit.push(dx / distance * knockbackStrength, 0.4, dz / distance * knockbackStrength);
                             }
 

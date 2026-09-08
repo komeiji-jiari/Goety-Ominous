@@ -101,7 +101,6 @@ public class InquillagerServant extends SpellcasterIllagerServant {
         return super.mobInteract(pPlayer, pHand);
     }
 
-
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(1, new CastingSpellGoal());
@@ -362,7 +361,7 @@ public class InquillagerServant extends SpellcasterIllagerServant {
                 if (this.bombTimer >= 60) {
                     Vec3 vector3d = livingEntity.getDeltaMovement();
                     double d0 = livingEntity.getX() + vector3d.x - this.inquillagerservant.getX();
-                    double d1 = livingEntity.getEyeY() - (double) 1.1F - this.inquillagerservant.getY();// Y
+                    double d1 = livingEntity.getEyeY() - (double) 1.1F - this.inquillagerservant.getY();
                     double d2 = livingEntity.getZ() + vector3d.z - this.inquillagerservant.getZ();
                     float f = Mth.sqrt((float) (d0 * d0 + d2 * d2));
                     Potion potion;

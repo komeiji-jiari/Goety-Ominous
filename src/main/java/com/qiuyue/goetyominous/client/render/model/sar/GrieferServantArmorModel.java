@@ -22,10 +22,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * ModelGrieferArmor - MCVinnyQ & Farcr
- * Created using Tabula 7.1.0
- */
 @OnlyIn(Dist.CLIENT)
 public class GrieferServantArmorModel<T extends LivingEntity> extends HumanoidModel<T> {
     private static final Map<Integer, GrieferServantArmorModel<? extends LivingEntity>> CACHE = new HashMap<>();
@@ -224,14 +220,6 @@ public class GrieferServantArmorModel<T extends LivingEntity> extends HumanoidMo
         }
     }
 
-    /**
-     * Fetches or creates a new model based on the provided entity.
-     *
-     * @param slot   The slot the armor model is in
-     * @param entity The entity to get the context for
-     * @param <A>    The type of model to fetch
-     * @return A new model or a previously cached one
-     */
     @SuppressWarnings("unchecked")
     public static HumanoidModel<?> getModel(EquipmentSlot slot, LivingEntity entity) {
         boolean illager = entity instanceof AbstractIllager ||

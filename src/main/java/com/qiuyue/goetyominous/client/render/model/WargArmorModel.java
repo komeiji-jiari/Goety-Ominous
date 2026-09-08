@@ -40,7 +40,6 @@ public class WargArmorModel extends HierarchicalModel<Warg> {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        // Rebase the exported armor hierarchy onto the Warg pivots so animated neck and torso rotations remain aligned.
         PartDefinition bone = partdefinition.addOrReplaceChild("bone", CubeListBuilder.create(), PartPose.offset(-1.5F, 10.5F, 2.0F));
 
         PartDefinition mane = bone.addOrReplaceChild("mane", CubeListBuilder.create().texOffs(0, 15).addBox(-6.0F, -7.0F, -7.0F, 14.0F, 14.0F, 13.0F, new CubeDeformation(0.25F))

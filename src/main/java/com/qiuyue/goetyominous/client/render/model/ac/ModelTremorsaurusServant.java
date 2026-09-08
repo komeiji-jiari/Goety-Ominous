@@ -359,7 +359,6 @@ public class ModelTremorsaurusServant extends AdvancedEntityModel<TremorsaurusSe
         this.progressRotationPrev(this.lleg2, sitAmount, toRad(-50.0F), 0.0F, 0.0F, 1.0F);
         this.progressRotationPrev(this.lfoot, sitAmount, toRad(70.0F), 0.0F, 0.0F, 1.0F);
 
-        
         if (buryEggsProgress > 0.0F) {
             limbSwing = ageInTicks;
             limbSwingAmount = buryEggsProgress * 0.5F;

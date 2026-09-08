@@ -246,7 +246,6 @@ public class ModelDeepOneServant extends AdvancedEntityModel<DeepOneServant> imp
         poseStack.translate(0.0F, 0.65F, 0.1F);
     }
 
-    
     private float walkValue(float limbSwing, float limbSwingAmount, float speed, float offset, float degree, boolean inverse) {
         return (float) (Math.cos(limbSwing * speed + offset) * degree * limbSwingAmount * (inverse ? -1 : 1));
     }

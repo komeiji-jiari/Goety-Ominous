@@ -11,7 +11,7 @@ public class IAttackGoal extends Goal {
     private final int getattackstate;
     private final int attackstate;
     private final int attackendstate;
-    private final int attackMaxtick;    // canContinueToUse: attackTicks < attackMaxtick
+    private final int attackMaxtick;
     private final int attackseetick;
     private final float attackrange;
 

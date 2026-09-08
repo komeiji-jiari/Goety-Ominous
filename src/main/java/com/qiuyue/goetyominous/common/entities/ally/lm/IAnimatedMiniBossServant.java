@@ -71,7 +71,6 @@ public class IAnimatedMiniBossServant extends IAnimatedMobServant {
         super.addAdditionalSaveData(pCompound);
     }
 
-    /// DATA VALUE
     public BlockPos getSpawnBlockPos() {
         return entityData.get(SPAWN_POS);
     }
@@ -80,13 +79,10 @@ public class IAnimatedMiniBossServant extends IAnimatedMobServant {
         entityData.set(SPAWN_POS, blockPos);
     }
 
-    /// COOLDOWNS AND TICKING
-
     public final int INACTIVE_TICKS = 260;
     public final int RETURN_TO_SPAWN_TICKS = 100;
     public int inActiveTicks = INACTIVE_TICKS;
     public int return_to_spawn_ticks = RETURN_TO_SPAWN_TICKS;
-
 
     public final int REDUCED_DAMAGE_TICKS = 100;
     public int reducedDamageTicks = REDUCED_DAMAGE_TICKS;
@@ -170,7 +166,7 @@ public class IAnimatedMiniBossServant extends IAnimatedMobServant {
         if (pSource.is(DamageTypes.FALL)) return false;
         if ((pSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY) || !pSource.is(DamageTypes.MAGIC)) && reducedDamageTicks > 0) {
             pAmount *= damageReduction();
-            //  System.out.println("WORKS");
+
         }
         if (pSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             return super.hurt(pSource, pAmount);

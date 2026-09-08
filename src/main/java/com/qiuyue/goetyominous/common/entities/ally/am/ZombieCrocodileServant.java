@@ -402,9 +402,6 @@ public class ZombieCrocodileServant extends Summoned implements IAnimatedEntity,
         return false;
     }
 
-    // Wide hitbox (2.15) + Path.getEntityPosAt offset makes MoveControl's jump-proximity check
-    // unreliable for 1-block steps, and AquaticMoveController has no jump at all. Stepping up
-    // natively (needs maxUpStep strictly > 1.0) fixes climbing over 1-block ledges on land and at water banks.
     @Override
     public float maxUpStep() {
         return 1.25F;

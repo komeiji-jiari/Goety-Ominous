@@ -395,7 +395,6 @@ public class VallumraptorServant extends AnimalSummon implements LaysEggs, IAnim
         return (prevHideProgress + (hideProgress - prevHideProgress) * partialTick) * 0.05F;
     }
 
-    
     public int getHideFor() {
         return this.entityData.get(HIDING_FOR);
     }

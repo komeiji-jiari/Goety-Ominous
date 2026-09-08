@@ -15,10 +15,6 @@ import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * ModelThrasher - SmellyModder
- * Created using Tabula 7.0.0
- */
 public class ThrasherServantModel<E extends ThrasherServant> extends EndimatorEntityModel<E> {
     public ModelPart neck;
     public ModelPart body;
