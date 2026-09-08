@@ -1,0 +1,20 @@
+{
+  "name": "烈焰突袭聚晶",
+  "icon": "goetyominous:rod_strike_focus",
+  "category": "goety:mmcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "这个法术允许你召唤出不会反叛你的烈焰灵仆从。这些比起他们的表亲们看起来迷你许多的小型烈焰人同样擅长发射火球，烧死生物。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:rod_strike_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "下界魔杖允许你一次召唤更多烈焰灵。"
+    }
+  ]
+}

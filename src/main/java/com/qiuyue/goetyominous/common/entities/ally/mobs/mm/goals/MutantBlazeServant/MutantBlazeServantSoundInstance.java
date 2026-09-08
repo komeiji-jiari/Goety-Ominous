@@ -29,8 +29,8 @@ public class MutantBlazeServantSoundInstance extends AbstractTickableSoundInstan
         this.x = blaze.getX();
         this.y = blaze.getY();
         this.z = blaze.getZ();
-        this.relative = true;
-        this.attenuation = Attenuation.NONE;
+        this.relative = false;
+        this.attenuation = Attenuation.LINEAR;
         this.volume = speedAffectsSound ? 0.0F : alterableVolume;
         this.pitch = alterablePitch;
     }

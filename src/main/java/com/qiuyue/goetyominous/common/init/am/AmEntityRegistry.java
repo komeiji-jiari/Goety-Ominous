@@ -215,6 +215,15 @@ public class AmEntityRegistry {
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":servant_centipede_tail"));
 
+    public static final RegistryObject<EntityType<FartServantEntity>> FART_SERVANT =
+            AM_ENTITIES.register("ally_fart",
+                    () -> EntityType.Builder.<FartServantEntity>of(FartServantEntity::new, MobCategory.MISC)
+                            .sized(0.7F, 0.3F)
+                            .fireImmune()
+                            .setCustomClientFactory((spawnEntity, level) ->
+                                    new FartServantEntity(spawnEntity, level))
+                            .build(GoetyOminous.MOD_ID + ":ally_fart"));
+
     public static Predicate<LivingEntity> buildPredicateFromTag(TagKey<EntityType<?>> tagKey) {
         if (tagKey == null) {
             return (mob) -> false;

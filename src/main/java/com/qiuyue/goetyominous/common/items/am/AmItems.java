@@ -131,6 +131,10 @@ public class AmItems {
             "centipede_focus",
             () -> new MagicFocus(new CentipedeSpell()));
 
+    public static final RegistryObject<MagicFocus> FART_FOCUS = AM_ITEMS.register(
+            "fart_focus",
+            () -> new MagicFocus(new FartSpell()));
+
 
     public static Item.Properties egg() {
         return new Item.Properties();

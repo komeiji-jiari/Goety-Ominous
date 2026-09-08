@@ -379,7 +379,7 @@ public class TremorsaurusServant extends AnimalSummon implements LaysEggs, Keybi
             if (ally instanceof Player player && (player.isCreative() || player.isSpectator())) {
                 continue;
             }
-            ally.addEffect(new MobEffectInstance(rallied, MathHelper.secondsToTicks(15), 1, false, false));
+            ally.addEffect(new MobEffectInstance(rallied, MathHelper.secondsToTicks(15), 0, false, false));
         }
     }
 

@@ -120,6 +120,7 @@ public class MutantBlazeServant extends AbstractMutantServant implements IHeatSo
     public int stunnedTicks;
     public int stunnedLength;
     public int stunnedAnimationActionPoint;
+    private boolean enragedParticlesDone = false;
     public static final int MAX_RODLING_SERVANTS = 7;
     public DamageSource killedBy;
     private static final int HEAT_BLOCK_SCAN_INTERVAL = 10;
@@ -875,7 +876,33 @@ public class MutantBlazeServant extends AbstractMutantServant implements IHeatSo
         p_213688_1_.push(d0 / d2 * 4.0, 0.2, d1 / d2 * 4.0);
     }
 
+    private void spawnUnholyEnrageParticles() {
+        if (!(this.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+        for (int k = 0; k < 160; ++k) {
+            float f2 = this.random.nextFloat() * 5.0F;
+            float f1 = this.random.nextFloat() * ((float) Math.PI * 2F);
+            double d1 = Mth.cos(f1) * f2;
+            double d2 = 0.01D + this.random.nextFloat() * 0.9D;
+            double d3 = Mth.sin(f1) * f2;
+            serverLevel.sendParticles(
+                    this.random.nextInt(3) == 0 ? ParticleTypes.SOUL : ParticleTypes.SOUL_FIRE_FLAME,
+                    this.getX() + d1 * 0.15D, this.getY(0.4D), this.getZ() + d3 * 0.15D,
+                    0, d1, d2, d3, 0.35F);
+        }
+    }
+
     public void baseTick() {
+        boolean enraged = this.hasUnholyBlood()
+                && this.getHealth() > 0.0F
+                && this.getHealth() <= this.getMaxHealth() * 0.5F;
+        if (enraged && !this.enragedParticlesDone) {
+            this.enragedParticlesDone = true;
+            this.spawnUnholyEnrageParticles();
+        } else if (!enraged) {
+            this.enragedParticlesDone = false;
+        }
         if (this.unholyBloodInvulnTime > 0) {
             --this.unholyBloodInvulnTime;
         }

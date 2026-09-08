@@ -1,0 +1,20 @@
+{
+  "name": "Rod Strike Focus",
+  "icon": "goetyominous:rod_strike_focus",
+  "category": "goety:mmcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "This spell allows you to summon Rodling servants that will never turn against you. These miniature Blazes, far smaller than their kin, are equally adept at launching fireballs to burn creatures to death."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:rod_strike_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "Using a Nether Staff allows you to summon more Rodlings at once."
+    }
+  ]
+}

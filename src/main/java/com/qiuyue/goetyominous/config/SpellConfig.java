@@ -68,6 +68,11 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerBulletCastDuration;
     public static final ForgeConfigSpec.ConfigValue<Double> ShulkerBulletDamage;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> RodStrikeSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> RodStrikeCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> RodStrikeCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> RodStrikeSummonDown;
+
     public static final ForgeConfigSpec.ConfigValue<Integer> SporeCloudSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> SporeCloudCooldown;
 
@@ -143,6 +148,10 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> VoidShotDamage;
     public static final ForgeConfigSpec.ConfigValue<Integer> VoidShotCastUp;
     public static final ForgeConfigSpec.ConfigValue<Integer> VoidShotDuration;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> FartSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FartCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FartCoolDown;
 
     static {
         BUILDER.push("Spells");
@@ -253,6 +262,15 @@ public class SpellConfig {
                 .defineInRange("dropBearSummonDown", 100, 0, 5000);
         DropBearCoolDown = BUILDER.comment("Cooldown of DropBear Servant spell in ticks (Default: 160)")
                 .defineInRange("dropBearCoolDown", 160, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("Fart");
+        FartSoulCost = BUILDER.comment("Soul cost of Fart spell (Default: 10)")
+                .defineInRange("fartSoulCost", 10, 1, 100);
+        FartCastDuration = BUILDER.comment("Cast duration of Fart spell in ticks (Default: 60)")
+                .defineInRange("fartCastDuration", 60, 0, 500);
+        FartCoolDown = BUILDER.comment("Cooldown of Fart spell in ticks (Default: 100)")
+                .defineInRange("fartCoolDown", 100, 0, 5000);
         BUILDER.pop();
 
         BUILDER.push("Farseer");
@@ -406,6 +424,17 @@ public class SpellConfig {
                 .defineInRange("shulkerBulletCastDuration", 40, 0, 500);
         ShulkerBulletDamage = BUILDER.comment("Base damage of Shulker Bullet (Default: 8.0)")
                 .defineInRange("shulkerBulletDamage", 8.0, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Rod Strike");
+        RodStrikeSoulCost = BUILDER.comment("Soul cost of Rod Strike spell (Default: 6)")
+                .defineInRange("rodStrikeSoulCost", 6, 1, 100);
+        RodStrikeCooldown = BUILDER.comment("Cooldown of Rod Strike spell in ticks (Default: 100)")
+                .defineInRange("rodStrikeCooldown", 100, 0, 2000);
+        RodStrikeCastDuration = BUILDER.comment("Cast duration of Rod Strike spell in ticks (Default: 60)")
+                .defineInRange("rodStrikeCastDuration", 60, 0, 500);
+        RodStrikeSummonDown = BUILDER.comment("Summon down duration of Rod Strike spell in ticks (Default: 80)")
+                .defineInRange("rodStrikeSummonDown", 80, 0, 5000);
         BUILDER.pop();
 
         BUILDER.push("Spore Cloud");
