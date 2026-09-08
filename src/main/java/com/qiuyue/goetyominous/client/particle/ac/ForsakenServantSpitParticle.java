@@ -35,7 +35,7 @@ public class ForsakenServantSpitParticle extends TextureSheetParticle {
         try {
             this.setSpriteFromAge(sprites);
         } catch (RuntimeException e) {
-            // spriteSet 未绑定(如部署 jar 缺 particles JSON/贴图)→ 标记移除,由 tick/render 兜底清理
+
             this.remove();
         }
         this.hasPhysics = true;

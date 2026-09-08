@@ -6,11 +6,6 @@ import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.sounds.SoundSource;
 
-/**
- * 糖果独角兽仆从冲刺持续循环音:自 Alex's Caves CandicornSound 原样复制,仅把 CandicornEntity
- * 改成 CandicornServant。冲刺(isCharging)期间跟随实体并随移动速度淡入淡出(静止 moveFade 上升音量归零),
- * 停止冲刺即 self-stop。
- */
 public class CandicornServantChargeSound extends AbstractTickableSoundInstance {
 
     private final CandicornServant servant;

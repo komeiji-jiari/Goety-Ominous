@@ -25,7 +25,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-
 public class NucleeperNukeKillHandler {
 
     private record NukeCredit(ResourceKey<Level> dimension, UUID ownerId, Vec3 origin, double radiusSq, long until) {}
@@ -45,7 +44,7 @@ public class NucleeperNukeKillHandler {
         }
         float size = nucleeper.isCharged() ? 1.75F : 1.0F;
         int chunks = (int) Math.ceil(size);
-        // Match NuclearExplosionEntity maxDist = chunks*22.5 + 1.
+
         double radius = chunks * 22.5 + 1.0;
         MinecraftServer server = nucleeper.level().getServer();
         long until = (server != null ? server.getTickCount() : 0) + 60 + (long) (2 * chunks + 1) * (2 * chunks + 1) * (2 * chunks + 1) / 3;
@@ -54,7 +53,7 @@ public class NucleeperNukeKillHandler {
 
     @SubscribeEvent
     public static void onLivingDeath(LivingDeathEvent event) {
-        
+
         if (!AlexCavesCompat.isAlexCavesLoaded()) {
             return;
         }

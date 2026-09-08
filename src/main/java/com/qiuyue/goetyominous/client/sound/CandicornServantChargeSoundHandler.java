@@ -7,10 +7,6 @@ import net.minecraft.client.Minecraft;
 
 import java.util.Iterator;
 
-/**
- * 糖果独角兽仆从冲刺循环音管理:按实体 id 缓存 CandicornServantChargeSound,
- * 只在未播放时排队;实体移除时 clear 停止并清理已停止项。接线方式同 NucleeperServantSoundHandler。
- */
 public class CandicornServantChargeSoundHandler {
 
     private static final Int2ObjectMap<CandicornServantChargeSound> SOUND_INSTANCE_MAP = new Int2ObjectOpenHashMap<>();

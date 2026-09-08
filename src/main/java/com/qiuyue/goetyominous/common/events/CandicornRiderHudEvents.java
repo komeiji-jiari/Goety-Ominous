@@ -13,12 +13,6 @@ import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-/**
- * 糖果独角兽仆从骑乘冲刺充能表 HUD。忠实移植 AC ClientEvents 里 Candicorn 分支:
- * 骑乘时取消经验条;在 CROSSHAIR 时机画 AC 恐龙竖表(dinosaur_hud_overlays.png,
- * v=280 高25,底部下移 4),数值取 METER_AMOUNT(跑动充能,满 1.0 可按 AC 能力键冲刺)。
- * 与 Forsaken 蓄力跳条互不干扰(玩家同一时刻只能骑一种车)。
- */
 public class CandicornRiderHudEvents {
 
     private static final ResourceLocation DINOSAUR_HUD_OVERLAYS =

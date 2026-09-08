@@ -159,7 +159,7 @@ public class CandicornServantChargeParticle extends TextureSheetParticle {
             try {
                 particle.pickSprite(this.spriteSet);
             } catch (RuntimeException e) {
-                // spriteSet 未绑定(如部署 jar 缺 particles JSON/贴图)→ 丢弃该粒子,避免渲染期空 sprite 崩溃
+
                 particle.remove();
             }
             return particle;

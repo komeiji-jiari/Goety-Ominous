@@ -22,7 +22,6 @@ public class ModEntityTypes {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister
             .create(ForgeRegistries.ENTITY_TYPES, MOD_ID);
 
-
     public static final RegistryObject<EntityType<ConquillagerServant>> CONQUILLAGER_SERVANT = ENTITY_TYPES
             .register(
                     "conquillager_servant",
@@ -238,13 +237,6 @@ public class ModEntityTypes {
                     .sized(1.7F, 1.7F)
                     .clientTrackingRange(10)
                     .build(MOD_ID + ":urbhadhach_servant"));
-
-    // No longer used:Martyr
-    // public static final RegistryObject<EntityType<Martyr>> MARTYR = ENTITY_TYPES.register("martyr",
-    //         () -> EntityType.Builder.of(Martyr::new, MobCategory.MONSTER)
-    //                 .sized(0.6F, 1.95F)
-    //                 .clientTrackingRange(8)
-    //                 .build(MOD_ID + ":martyr"));
 
     public static final RegistryObject<EntityType<Thug>> THUG = ENTITY_TYPES.register("thug",
             () -> EntityType.Builder.of(Thug::new, MobCategory.MONSTER)
