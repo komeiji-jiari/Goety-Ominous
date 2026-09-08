@@ -117,6 +117,7 @@ public class TeletorServant extends Summoned {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(3, new MeleeGoal());
+        this.goalSelector.addGoal(7, new Summoned.WanderGoal<>(this, 1.0D, 45, 0.001F));
         this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
     }
 
