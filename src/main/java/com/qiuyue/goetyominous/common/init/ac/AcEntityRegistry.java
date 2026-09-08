@@ -31,6 +31,7 @@ import com.qiuyue.goetyominous.common.entities.projectile.LicowitchServantHex;
 import com.qiuyue.goetyominous.common.entities.projectile.LicowitchServantPeppermint;
 import com.qiuyue.goetyominous.common.entities.projectile.GumballServantEntity;
 import com.qiuyue.goetyominous.common.entities.projectile.DeepOneServantWave;
+import com.qiuyue.goetyominous.common.entities.util.PureDarkVoid;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -279,6 +280,13 @@ public class AcEntityRegistry {
                             .setShouldReceiveVelocityUpdates(true)
                             .setUpdateInterval(1)
                             .build(GoetyOminous.MOD_ID + ":candicorn_servant"));
+
+    public static final RegistryObject<EntityType<PureDarkVoid>> PURE_DARK_VOID =
+            AC_ENTITIES.register("dark_void",
+                    () -> EntityType.Builder.<PureDarkVoid>of((type, worldIn) -> new PureDarkVoid(type, worldIn), MobCategory.MISC)
+                            .sized(0.2F, 0.2F)
+                            .setTrackingRange(12)
+                            .build(GoetyOminous.MOD_ID + ":dark_void"));
 
     public static void register(IEventBus modEventBus) {
         AC_ENTITIES.register(modEventBus);

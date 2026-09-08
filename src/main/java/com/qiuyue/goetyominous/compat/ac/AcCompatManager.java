@@ -22,11 +22,13 @@ import com.qiuyue.goetyominous.common.entities.ally.ac.TremorsaurusServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TremorzillaServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.VallumraptorServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.VesperServant;
+import com.Polarice3.Goety.api.ritual.RitualType;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockEntityRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcParticles;
 import com.qiuyue.goetyominous.common.items.ac.AcItems;
+import com.qiuyue.goetyominous.common.ritual.PureDarkRitualType;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 
@@ -38,6 +40,7 @@ public class AcCompatManager {
                 AcEntityRegistry.register(modEventBus);
                 AcItems.register(modEventBus);
                 AcParticles.register(modEventBus);
+                RitualType.addRitualType("dim", new PureDarkRitualType("dim"));
     }
 
     public static void setCustomAttributes(EntityAttributeCreationEvent event) {
