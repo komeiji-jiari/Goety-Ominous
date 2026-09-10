@@ -11,6 +11,11 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> DredenHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> DredenDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> DredenFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> DredenMovementSpeed;
+
     public static final ForgeConfigSpec.ConfigValue<Double> WargHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> WargArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> WargDamage;
@@ -492,6 +497,17 @@ public class AttributesConfig {
                 .defineInRange("wargArmor", 0.0, 0.0, Double.MAX_VALUE);
         WargDamage = BUILDER.comment("How much damage Wargs deal, Default: 8.0")
                 .defineInRange("wargDamage", 8.0, 1.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Dreden");
+        DredenHealth = BUILDER.comment("How much Max Health Dredens have, Default: 30.0")
+                .defineInRange("dredenHealth", 30.0, 1.0, Double.MAX_VALUE);
+        DredenDamage = BUILDER.comment("How much damage Dreden deals, Default: 4.0")
+                .defineInRange("dredenDamage", 4.0, 1.0, Double.MAX_VALUE);
+        DredenFollowRange = BUILDER.comment("Dreden follow range, Default: 35.0")
+                .defineInRange("dredenFollowRange", 35.0, 1.0, Double.MAX_VALUE);
+        DredenMovementSpeed = BUILDER.comment("Dreden movement speed, Default: 0.25")
+                .defineInRange("dredenMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.push("Necromancer");

@@ -77,6 +77,9 @@ public class ModModelLayers {
         event.registerLayerDefinition(ModEntityLayers.ACID_FUNGUS_LAYER,
                 AcidFungus::createBodyLayer);
 
+        event.registerLayerDefinition(ModEntityLayers.DREDEN_LAYER,
+                DredenModel::createBodyLayer);
+
         event.registerLayerDefinition(ModEntityLayers.URBHADHACH_LAYER,
                 UrbhadhachModel::createBodyLayer);
 
@@ -403,6 +406,12 @@ public class ModModelLayers {
         event.registerEntityRenderer(ModEntityTypes.ACID_FUNGUS.get(), AcidFungusRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.PITCHFORK.get(), PitchforkRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.DREDEN.get(), DredenRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.DREDEN_SERVANT.get(), DredenServantRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.FROST_BALL.get(), FrostBallRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.URBHADHACH.get(), UrbhadhachRenderer::new);
 

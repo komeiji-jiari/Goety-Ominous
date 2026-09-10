@@ -16,6 +16,7 @@ import com.qiuyue.goetyominous.common.research.ResearchList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
@@ -34,6 +35,18 @@ public class ModItems {
 
     public static final RegistryObject<DarkStaff> FEL_STAFF = ITEMS.register("fel_staff",
             () -> new DarkStaff(FelStaffDamage.get(), GoetyOminous.FEL));
+
+    public static final RegistryObject<Item> FEL_CORE = ITEMS.register("fel_core",
+            () -> new Item(new Item.Properties().rarity(Rarity.COMMON).stacksTo(64)));
+
+    public static final RegistryObject<Item> HARMONIOUS_DIAMOND = ITEMS.register("harmonious_diamond",
+            () -> new Item(new Item.Properties().rarity(Rarity.COMMON).stacksTo(64)));
+
+    public static final RegistryObject<Item> BAT_WING = ITEMS.register("bat_wing",
+            () -> new BatWingItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> WORMY_APPLE = ITEMS.register("wormy_apple",
+            () -> new WormyAppleItem(new Item.Properties()));
 
     public static final RegistryObject<Item> COLD_HEART = ITEMS.register("cold_heart",
             () -> new ColdHeartItem());
@@ -134,6 +147,9 @@ public class ModItems {
 
     public static final RegistryObject<Item> HAUNT_FOCUS = ITEMS.register("haunt_focus",
             () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.HauntSpell()));
+
+    public static final RegistryObject<Item> DREDEN_FOCUS = ITEMS.register("rigid_focus",
+            () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.DredenSpell()));
 
     public static final RegistryObject<Item> BROOD_FOCUS = ITEMS.register("brood_focus",
             () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.BroodSpell()));
@@ -265,6 +281,14 @@ public class ModItems {
             "piglin_merchant_spawn_egg",
             () -> new net.minecraftforge.common.ForgeSpawnEggItem(ModEntityTypes.PIGLIN_MERCHANT,
                     0x9C7A3C, 0x6B4E2E, egg()));
+
+    public static final RegistryObject<ForgeSpawnEggItem> DREDEN_SPAWN_EGG = ITEMS.register(
+            "dreden_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.DREDEN, 0x0A0A12, 0x00BFFF, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> DREDEN_SERVANT_SPAWN_EGG = ITEMS.register(
+            "dreden_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.DREDEN_SERVANT, 0x0F0F12, 0x3A86FF, egg()));
 
     public static final RegistryObject<ForgeSpawnEggItem> FANATIC_SPAWN_EGG = ITEMS.register(
             "fanatic_spawn_egg",

@@ -1,0 +1,39 @@
+{
+  "name": "Fel Materials",
+  "icon": "goetyominous:fel_core",
+  "category": "goety:intro",
+  "advancement": "goetyominous:goetyominous/witch_lesson",
+  "secret": true,
+  "sortnum": 11,
+  "priority": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Witches have all sorts of interesting trinkets! If you want to be a proper witch—oh, shut up and listen to Granny! You won't get your hands on witches' gadgets with your little rituals and cheap knives!"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goetyominous:harmonious_diamond_craft",
+      "text": "Witches love giving each other these purple diamonds! You can make one with Nightshade Blossom and some rotten stuff! If some kitty finds the traditional way too tedious, try tossing a diamond onto a Cursed Infuser!"
+    },
+    {
+      "type": "goety:cauldron",
+      "recipe": "goetyominous:cauldron/fel_core"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goety:wicked_boline",
+      "text": "Our Wicked Boline is a trusty little thing! Not only does it cut grass and leaves, but it can also harvest the good stuff witches love from creatures! What's that—you're asking about brews? Granny's lessons don't cover that! Go find another granny willing to teach you, HAHA!"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goetyominous:bat_wing",
+      "text": "Granny would never chop off the wings of Granny's own pet bats! Granny has Granny's little apprentice wield the Wicked Boline to snip off a couple for Granny!"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goetyominous:wormy_apple",
+      "text": "Rotten apples? Throw them away? HAHAHAHAHAHA! Only amateur witches would think that! After all, you'll need to chop quite a few oak leaves with your Wicked Boline to get just one!"
+    }
+  ]
+}

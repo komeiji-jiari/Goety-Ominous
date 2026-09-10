@@ -1,0 +1,19 @@
+{
+  "name": "Rigid Focus",
+  "icon": "goetyominous:rigid_focus",
+  "category": "goety:focuses/necromancy",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "By infusing the Osseous Focus with both frost power and ectoplasm, you can use this spell to conjure a Dreden that heeds your commands. These spectral variants excel at firing frost balls from afar, breathing frost upon creatures that draw near, and engaging in melee combat."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:rigid_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "A Necro Staff allows you to summon more Dredens."
+    }
+  ]
+}

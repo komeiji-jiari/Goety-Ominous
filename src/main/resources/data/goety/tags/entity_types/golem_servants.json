@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "goetyominous:overgrown_colossus_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:nucleeper_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:mine_guardian_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:teletor_servant",
+      "required": false
+    }
+  ]
+}

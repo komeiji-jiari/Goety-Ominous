@@ -1,4 +1,43 @@
 {
+  "dreden_idle": {
+    "subtitle": "subtitles.goetyominous.dreden.idle",
+    "sounds": [
+      "goetyominous:dreden/idle1",
+      "goetyominous:dreden/idle2",
+      "goetyominous:dreden/idle3"
+    ]
+  },
+  "dreden_hurt": {
+    "subtitle": "subtitles.goetyominous.dreden.hurt",
+    "sounds": [
+      "goetyominous:dreden/hurt1",
+      "goetyominous:dreden/hurt2",
+      "goetyominous:dreden/hurt3"
+    ]
+  },
+  "dreden_death": {
+    "subtitle": "subtitles.goetyominous.dreden.death",
+    "sounds": [
+      "goetyominous:dreden/death1",
+      "goetyominous:dreden/death2"
+    ]
+  },
+  "dreden_fly": {
+    "subtitle": "subtitles.goetyominous.dreden.fly",
+    "sounds": [
+      "goetyominous:dreden/fly1",
+      "goetyominous:dreden/fly2",
+      "goetyominous:dreden/fly3"
+    ]
+  },
+  "dreden_shoot": {
+    "subtitle": "subtitles.goetyominous.dreden.shoot",
+    "sounds": [
+      "goetyominous:dreden/shoot1",
+      "goetyominous:dreden/shoot2",
+      "goetyominous:dreden/shoot3"
+    ]
+  },
   "disciple_idle_1": {
     "subtitle": "subtitles.goetyominous.disciple.idle",
     "sounds": [

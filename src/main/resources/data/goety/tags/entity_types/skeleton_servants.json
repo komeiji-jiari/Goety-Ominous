@@ -1,0 +1,23 @@
+{
+  "replace": false,
+  "values": [
+    "goetyominous:sunken_necromancer_servant",
+    "goetyominous:storm_necromancer_servant",
+    {
+      "id": "goetyominous:skeleton_villager_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:skelewag_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:stray_skelewag_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:wither_skelewag_servant",
+      "required": false
+    }
+  ]
+}

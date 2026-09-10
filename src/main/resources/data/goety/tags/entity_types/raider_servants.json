@@ -13,6 +13,10 @@
       "id": "goetyominous:magispeller_servant",
       "required": false
     },
+    {
+      "id": "goetyominous:illager_elephant_servant",
+      "required": false
+    },
     "goetyominous:inquillager_servant",
     "goetyominous:conquillager_servant"
   ]

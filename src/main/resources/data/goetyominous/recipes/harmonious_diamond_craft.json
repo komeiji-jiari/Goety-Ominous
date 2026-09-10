@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "dtd",
+    "svs",
+    "dsd"
+  ],
+  "key":
+  {
+    "t":
+    {
+      "tag": "forge:gems/diamond"
+    },
+    "v":
+    {
+      "tag": "goety:totems"
+    },
+    "s":
+    {
+      "item": "goety:nightshade_blossom"
+    },
+    "d":
+    {
+      "tag": "goety:cursed_ingot_craft"
+    }
+  },
+  "result":
+  {
+    "item": "goetyominous:harmonious_diamond"
+  }
+}

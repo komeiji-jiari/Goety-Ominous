@@ -1,0 +1,39 @@
+{
+  "name": "邪能物品",
+  "icon": "goetyominous:fel_core",
+  "category": "goety:intro",
+  "advancement": "goetyominous:goetyominous/witch_lesson",
+  "secret": true,
+  "sortnum": 11,
+  "priority": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "女巫们有不少有趣的小玩意！如果你想当一个专业的女巫的话，哦闭嘴听奶奶讲！用你的小仪式和小破刀是搞不来女巫们的那些小玩意的！"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goetyominous:harmonious_diamond_craft",
+      "text": "女巫们很喜欢互相赠送这种紫色的钻石！用颠茄花和一些腐烂的东西就能做上一个！如果有哪个小猫咪觉得传统工艺麻烦的话，就试试把一个钻石丢到诅咒注入器上！"
+    },
+    {
+      "type": "goety:cauldron",
+      "recipe": "goetyominous:cauldron/fel_core"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goety:wicked_boline",
+      "text": "我们的伯莱恩匕首可是个好伙计！不光能用来砍草砍叶子，还能从生物身上收集女巫们喜欢的好东西！什么你问药酿？奶奶的课程可不教这个！去找其他愿意教你的奶奶去哈哈哈！"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goetyominous:bat_wing",
+      "text": "奶奶可舍不得把奶奶的蝙蝠宠物的翅膀砍下来！让奶奶的小学徒拿着伯莱恩匕首去替奶奶砍两片下来！"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goetyominous:wormy_apple",
+      "text": "烂苹果？扔掉？哈哈哈只有业余的女巫才会这么想！毕竟你得拿着你的伯莱恩匕首砍不少橡树树叶才能拿到那么一个！"
+    }
+  ]
+}

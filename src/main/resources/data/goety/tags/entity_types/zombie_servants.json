@@ -1,0 +1,18 @@
+{
+  "replace": false,
+  "values": [
+    "goetyominous:strong_zpiglin_brute_servant",
+    "goetyominous:elite_zpiglin_brute_servant",
+    "goetyominous:zpiglin_hunter_servant",
+    "goetyominous:strong_zpiglin_hunter_servant",
+    "goetyominous:elite_zpiglin_hunter_servant",
+    {
+      "id": "goetyominous:zombie_crocodile_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:brainiac_servant",
+      "required": false
+    }
+  ]
+}

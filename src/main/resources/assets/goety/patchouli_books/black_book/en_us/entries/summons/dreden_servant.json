@@ -1,0 +1,27 @@
+{
+  "name": "Dreden Servant",
+  "icon": "minecraft:blue_ice",
+  "category": "goety:summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Dreden Servants act similarly to the Dredens you encountered during your travels, only more loyal and obedient to you. These dark undead of the frozen wastes share several traits with Wraiths, including their summoning cap."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:dreden_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "You can summon these creatures through a Rigid Focus, or through a ritual that summons one without a limited lifespan."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:dreden_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "If the owner wears Frost Robe, Dreden attacks inflict a higher level of Slowness, and the frost balls they throw gain a piercing effect."
+    }
+  ]
+}
