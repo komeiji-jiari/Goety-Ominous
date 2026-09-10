@@ -30,7 +30,10 @@
     "BrewCauldronBlockEntityMixin",
     "SingleStackItemMixin",
     "WitchRobeInventoryMixin",
-    "HealTypeMixin"
+    "HealTypeMixin",
+    "GolemTypeMixin",
+    "LeapleafMoldMixin",
+    "LeapleafWaterConversionMixin"
   ],
   "client": [],
   "server": [],
