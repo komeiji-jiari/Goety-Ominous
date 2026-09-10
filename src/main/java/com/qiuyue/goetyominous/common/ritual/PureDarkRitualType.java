@@ -67,13 +67,6 @@ public class PureDarkRitualType implements IRitualType {
         RitualChecker checker = new RitualChecker(level, pos,
                 state -> false, RitualRequirements.RANGE, 0);
 
-        if (!checker.hasBlocks(state -> state.is(ACBlockRegistry.BEHOLDER.get()), 1)) {
-            if (player != null) {
-                player.displayClientMessage(Component.translatable(
-                        "info.goety.ritual.structure.noBlocks", ACBlockRegistry.BEHOLDER.get().getName()), true);
-            }
-            return false;
-        }
         if (!checker.hasBlocks(state -> state.is(ACBlockRegistry.FORSAKEN_IDOL.get()), 1)) {
             if (player != null) {
                 player.displayClientMessage(Component.translatable(

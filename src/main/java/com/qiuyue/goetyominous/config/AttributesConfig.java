@@ -393,6 +393,7 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> RodlingServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> RodlingServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> RodlingServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> LeapkelpMoistness;
 
     public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantArmor;
@@ -816,6 +817,11 @@ public class AttributesConfig {
                 .defineInRange("heresiarchServantArmor", 4.0, 0.0, Double.MAX_VALUE);
         HeresiarchServantDamage = BUILDER.comment("How much damage Heresiarch Servants deals, Default: 8.0")
                 .defineInRange("heresiarchServantDamage", 2.0, 1.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Leapkelp Servant");
+        LeapkelpMoistness = BUILDER.comment("Whether Leapkelp Servants have a moistness meter; when false they never dry out (Default: true)")
+                .define("leapkelpMoistness", true);
         BUILDER.pop();
 
         BUILDER.push("SAR Servants (Optional)");

@@ -51,6 +51,13 @@ public class ModEntityTypes {
                     .clientTrackingRange(8)
                     .build(MOD_ID + ":dreden_servant"));
 
+    public static final RegistryObject<EntityType<Leapkelp>> LEAPKELP = ENTITY_TYPES.register(
+            "leapkelp",
+            () -> EntityType.Builder.of(Leapkelp::new, MobCategory.MISC)
+                    .sized(1.9F, 1.9F)
+                    .clientTrackingRange(10)
+                    .build(MOD_ID + ":leapkelp"));
+
     public static final RegistryObject<EntityType<FrostBallEntity>> FROST_BALL = ENTITY_TYPES.register(
             "frost_ball",
             () -> EntityType.Builder.<FrostBallEntity>of((type, level) -> new FrostBallEntity(type, level), MobCategory.MISC)

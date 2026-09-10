@@ -445,6 +445,8 @@ public class ModModelLayers {
 
         event.registerEntityRenderer(ModEntityTypes.AXOLOTL_SERVANT.get(), AxolotlServantRenderer::new);
 
+        event.registerEntityRenderer(ModEntityTypes.LEAPKELP.get(), LeapkelpRenderer::new);
+
         event.registerEntityRenderer(ModEntityTypes.HERESIARCH_SERVANT.get(), HeresiarchServantRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.DISCIPLE.get(), DiscipleRenderer::new);

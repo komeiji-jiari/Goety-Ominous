@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "goetyominous:leapkelp",
     {
       "id": "goetyominous:overgrown_colossus_servant",
       "required": false

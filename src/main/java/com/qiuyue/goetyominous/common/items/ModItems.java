@@ -290,6 +290,10 @@ public class ModItems {
             "dreden_servant_spawn_egg",
             () -> new ServantSpawnEggItem(ModEntityTypes.DREDEN_SERVANT, 0x0F0F12, 0x3A86FF, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> LEAPKELP_SPAWN_EGG = ITEMS.register(
+            "leapkelp_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.LEAPKELP, 0x2E5B34, 0x6FBF73, egg()));
+
     public static final RegistryObject<ForgeSpawnEggItem> FANATIC_SPAWN_EGG = ITEMS.register(
             "fanatic_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntityTypes.FANATIC, 0x8B0000, 0x2D0000, egg()));
