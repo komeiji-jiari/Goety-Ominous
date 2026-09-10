@@ -1,0 +1,27 @@
+{
+  "name": "惧灵仆从",
+  "icon": "minecraft:blue_ice",
+  "category": "goety:summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "惧灵仆从的行为与你旅途中遇到的惧灵相似，只是对你更加忠诚和顺从。这些苦寒之地的黑暗亡灵和幽灵共享一些特征，包括召唤上限。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:dreden_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "你可以通过告死聚晶来召唤这些生物，或者通过一个仪式来召唤一只没有寿命限制的惧灵仆从。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:dreden_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "如果主人穿戴了冰霜长袍，那么惧灵造成的攻击会施加更高级别的迟缓，他们扔出的冰球也会获得穿透效果。"
+    }
+  ]
+}

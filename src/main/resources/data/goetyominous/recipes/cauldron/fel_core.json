@@ -1,0 +1,34 @@
+{
+  "type": "goety:cauldron",
+  "soulCost": 10,
+  "color": 15132410,
+  "take_with": {
+    "item": "goety:empty_focus"
+  },
+  "ingredients": [
+    {
+      "item": "goetyominous:bat_wing"
+    },
+    {
+      "item": "goetyominous:wormy_apple"
+    },
+    {
+      "item": "goety:venomous_fang"
+    },
+    {
+      "item": "minecraft:slime_ball"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:fel_core"
+  },
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:mod_loaded",
+        "modid": "goety_revelation"
+      }
+    }
+  ]
+}

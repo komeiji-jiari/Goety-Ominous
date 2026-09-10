@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous;
 
 import com.Polarice3.Goety.api.entities.ally.illager.IllagerType;
 import com.Polarice3.Goety.common.entities.neutral.ZPiglinServant;
+import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractDredenEntity;
 import com.qiuyue.goetyominous.common.entities.ally.spider.CrimsonSpiderServant;
 import com.qiuyue.goetyominous.common.entities.hostile.Scorch;
 import com.qiuyue.goetyominous.common.entities.hostile.cultists.Disciple;
@@ -211,12 +212,13 @@ public class GoetyOminous {
         event.put(ModEntityTypes.BELDAM.get(), Beldam.setCustomAttributes().build());
         event.put(ModEntityTypes.FANATIC.get(), Fanatic.setCustomAttributes().build());
         event.put(ModEntityTypes.ZEALOT.get(), Zealot.setCustomAttributes().build());
-
         event.put(ModEntityTypes.THUG.get(), Thug.setCustomAttributes().build());
         event.put(ModEntityTypes.CHANNELLER.get(), Channeller.setCustomAttributes().build());
         event.put(ModEntityTypes.SCORCH.get(), Scorch.setCustomAttributes().build());
         event.put(ModEntityTypes.RETURNED.get(), Returned.setCustomAttributes().build());
         event.put(ModEntityTypes.AGONY.get(), Agony.setCustomAttributes().build());
+        event.put(ModEntityTypes.DREDEN.get(), AbstractDredenEntity.createAttributes().build());
+        event.put(ModEntityTypes.DREDEN_SERVANT.get(), AbstractDredenEntity.createAttributes().build());
         event.put(ModEntityTypes.ARCH_GEOMANCER.get(), ArchGeomancerEntity.setCustomAttributes().build());
         event.put(ModEntityTypes.DISCIPLE_SERVANT.get(), DiscipleServant.setCustomAttributes().build());
         event.put(ModEntityTypes.STORM_NECROMANCER_SERVANT.get(), AbstractStormNecromancer.setCustomAttributes().build());

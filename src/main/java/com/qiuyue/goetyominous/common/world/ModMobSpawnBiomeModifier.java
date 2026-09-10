@@ -42,6 +42,15 @@ public class ModMobSpawnBiomeModifier implements BiomeModifier {
         if (key != null && (key.equals(new ResourceLocation("minecraft", "mushroom_fields"))
                 || key.equals(new ResourceLocation("minecraft", "deep_dark")))) return;
 
+        int dWeight = MobsConfig.DredenSpawnWeight.get();
+        if (dWeight > 0 && biome.get().getBaseTemperature() < 0.15F) {
+            builder.getMobSpawnSettings().getSpawner(MobCategory.MONSTER).add(
+                    new MobSpawnSettings.SpawnerData(ModEntityTypes.DREDEN.get(),
+                            dWeight,
+                            MobsConfig.DredenSpawnMinCount.get(),
+                            MobsConfig.DredenSpawnMaxCount.get()));
+        }
+
         var spawnerList = builder.getMobSpawnSettings().getSpawner(MobCategory.MONSTER);
         boolean alreadyExists = spawnerList.stream()
                 .anyMatch(s -> s.type == ModEntityTypes.BELDAM.get()

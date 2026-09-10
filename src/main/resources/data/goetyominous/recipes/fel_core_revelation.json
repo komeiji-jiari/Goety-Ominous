@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "goetyominous:wormy_apple"
+    },
+    {
+      "item": "goety:venomous_fang"
+    },
+    {
+      "item": "goety:empty_focus"
+    },
+    {
+      "item": "minecraft:slime_ball"
+    },
+    {
+      "item": "goetyominous:bat_wing"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:fel_core"
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "goety_revelation"
+    }
+  ]
+}

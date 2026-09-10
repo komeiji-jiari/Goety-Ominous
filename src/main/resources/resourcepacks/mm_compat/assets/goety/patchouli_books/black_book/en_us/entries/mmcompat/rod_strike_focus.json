@@ -2,6 +2,8 @@
   "name": "Rod Strike Focus",
   "icon": "goetyominous:rod_strike_focus",
   "category": "goety:mmcompat",
+  "advancement": "goety:goety/read_bygone_scroll",
+  "secret": true,
   "pages": [
     {
       "type": "text",

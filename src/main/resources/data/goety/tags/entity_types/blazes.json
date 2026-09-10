@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "goetyominous:rodling_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:mutant_blaze_servant",
+      "required": false
+    }
+  ]
+}

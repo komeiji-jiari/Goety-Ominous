@@ -86,6 +86,9 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoUnholyBloodDamageBouns;
     public static final ForgeConfigSpec.ConfigValue<Boolean> WarpedMoscoUnholyBloodTexture;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> DredenSpawnWeight;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DredenSpawnMinCount;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DredenSpawnMaxCount;
     public static final ForgeConfigSpec.ConfigValue<Boolean> CultistPatrol;
     public static final ForgeConfigSpec.ConfigValue<Integer> CultistPatrolInterval;
     public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachSpawnWeight;
@@ -473,6 +476,15 @@ public class MobsConfig {
         UrbhadhachSpawnMaxCount = BUILDER
                 .comment("Maximum group size for Urbhadhach natural spawn (Default: 1)")
                 .defineInRange("urbhadhachSpawnMaxCount", 1, 1, 10);
+
+        DredenSpawnWeight = BUILDER.comment("Spawn weight of Dreden in snowy biomes (Default: 20)")
+                .defineInRange("dredenSpawnWeight", 20, 0, Integer.MAX_VALUE);
+
+        DredenSpawnMinCount = BUILDER.comment("Dreden spawn pack min (Default: 1)")
+                .defineInRange("dredenSpawnMinCount", 1, 1, 10);
+
+        DredenSpawnMaxCount = BUILDER.comment("Dreden spawn pack max (Default: 2)")
+                .defineInRange("dredenSpawnMaxCount", 2, 1, 10);
 
         PiglinServantBabyGrowthTime = BUILDER.comment("How many ticks it takes for a baby Piglin Servant to grow up, Default: 12000 (10 minutes)")
                 .defineInRange("piglinServantBabyGrowthTime", 12000, 1, Integer.MAX_VALUE);

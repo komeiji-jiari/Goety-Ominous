@@ -1,0 +1,19 @@
+{
+  "name": "告死聚晶",
+  "icon": "goetyominous:rigid_focus",
+  "category": "goety:focuses/necromancy",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "将霜寒之力和灵质注入骨质聚晶后，你得以用这个法术召唤出一只听从你命令的惧灵。这些幽灵的变种擅长从远处发射冰弹，朝着靠近的生物喷吐冰霜，也可以进行近身攻击。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:rigid_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "死灵魔杖允许你召唤更多惧灵。"
+    }
+  ]
+}

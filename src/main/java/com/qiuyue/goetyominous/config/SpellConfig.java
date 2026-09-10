@@ -22,6 +22,11 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachSummonDown;
     public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachCoolDown;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> DredenSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DredenCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DredenSummonDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DredenCoolDown;
+
     public static final ForgeConfigSpec.ConfigValue<Integer> ScorchSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> ScorchCastDuration;
     public static final ForgeConfigSpec.ConfigValue<Integer> ScorchSummonDown;
@@ -322,6 +327,17 @@ public class SpellConfig {
                 .defineInRange("urbhadhachSummonDown", 200, 0, 5000);
         UrbhadhachCoolDown = BUILDER.comment("Cooldown of Urbhadhach Servant spell in ticks (Default: 300)")
                 .defineInRange("urbhadhachCoolDown", 300, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("Dreden");
+        DredenSoulCost = BUILDER.comment("Soul cost of Dreden Servant spell (Default: 24)")
+                .defineInRange("dredenSoulCost", 24, 1, 100);
+        DredenCastDuration = BUILDER.comment("Cast duration of Dreden Servant spell in ticks (Default: 60)")
+                .defineInRange("dredenCastDuration", 60, 0, 500);
+        DredenSummonDown = BUILDER.comment("Summon down duration of Dreden Servant spell in ticks (Default: 120)")
+                .defineInRange("dredenSummonDown", 120, 0, 5000);
+        DredenCoolDown = BUILDER.comment("Cooldown of Dreden Servant spell in ticks (Default: 100)")
+                .defineInRange("dredenCoolDown", 100, 0, 5000);
         BUILDER.pop();
 
         BUILDER.push("Scorch");

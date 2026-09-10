@@ -22,6 +22,12 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> WOLF_ARMOR_BREAK = create("wolf_armor_break");
     public static final RegistryObject<SoundEvent> WOLF_ARMOR_REPAIR = create("wolf_armor_repair");
 
+    public static final RegistryObject<SoundEvent> DREDEN_IDLE = create("dreden_idle");
+    public static final RegistryObject<SoundEvent> DREDEN_HURT = create("dreden_hurt");
+    public static final RegistryObject<SoundEvent> DREDEN_DEATH = create("dreden_death");
+    public static final RegistryObject<SoundEvent> DREDEN_FLY = create("dreden_fly");
+    public static final RegistryObject<SoundEvent> DREDEN_SHOOT = create("dreden_shoot");
+
     public static final RegistryObject<SoundEvent> DISCIPLE_IDLE_1 = create("disciple_idle_1");
     public static final RegistryObject<SoundEvent> DISCIPLE_IDLE_2 = create("disciple_idle_2");
     public static final RegistryObject<SoundEvent> DISCIPLE_IDLE_3 = create("disciple_idle_3");
