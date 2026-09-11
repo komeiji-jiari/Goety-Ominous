@@ -78,6 +78,14 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> TremorzillaServantDamageCap;
     public static final ForgeConfigSpec.ConfigValue<Double> TremorzillaServantBeamDamage;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> AtlatitanServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> AtlatitanServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> AtlatitanServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> AtlatitanServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> AtlatitanServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> AtlatitanServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> AtlatitanServantDamageCap;
+
     public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantMovementSpeed;
@@ -1084,6 +1092,20 @@ public class AttributesConfig {
                 .defineInRange("tremorzillaServantDamageCap", 30.0, 1.0, Double.MAX_VALUE);
         TremorzillaServantBeamDamage = BUILDER.comment("How much damage each hit of a Tremorzilla Servant's nuclear beam deals, Default: 20.0 (matches Alex's Caves Tremorzilla)")
                 .defineInRange("tremorzillaServantBeamDamage", 20.0, 1.0, Double.MAX_VALUE);
+        AtlatitanServantHealth = BUILDER.comment("How much Max Health Atlatitan Servants have, Default: 400.0 (matches Alex's Caves Atlatitan)")
+                .defineInRange("atlatitanServantHealth", 400.0, 1.0, Double.MAX_VALUE);
+        AtlatitanServantDamage = BUILDER.comment("How much damage Atlatitan Servants' kick and tail whip deal, Default: 8.0 (matches Alex's Caves Atlatitan)")
+                .defineInRange("atlatitanServantDamage", 8.0, 1.0, Double.MAX_VALUE);
+        AtlatitanServantMovementSpeed = BUILDER.comment("How fast Atlatitan Servants move, Default: 0.325 (matches Alex's Caves Atlatitan)")
+                .defineInRange("atlatitanServantMovementSpeed", 0.325, 0.0, Double.MAX_VALUE);
+        AtlatitanServantFollowRange = BUILDER.comment("How much following/detection range Atlatitan Servants have, Default: 32.0 (32 block radius)")
+                .defineInRange("atlatitanServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
+        AtlatitanServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Atlatitan Servants have, Default: 1.0 (matches Alex's Caves Atlatitan)")
+                .defineInRange("atlatitanServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
+        AtlatitanServantArmor = BUILDER.comment("How much natural Armor Atlatitan Servants have, Default: 10.0 (servant-side addition; Alex's Caves Atlatitan has none)")
+                .defineInRange("atlatitanServantArmor", 10.0, 0.0, Double.MAX_VALUE);
+        AtlatitanServantDamageCap = BUILDER.comment("Maximum damage a single hit can deal to Atlatitan Servants, Default: 30.0 (like Goety's Vizier's VizierDamageCap; bypassed by damage that ignores invulnerability)")
+                .defineInRange("atlatitanServantDamageCap", 30.0, 1.0, Double.MAX_VALUE);
         VallumraptorServantHealth = BUILDER.comment("How much Max Health Vallumraptor Servants have, Default: 28.0 (matches Alex's Caves Vallumraptor)")
                 .defineInRange("vallumraptorServantHealth", 28.0, 1.0, Double.MAX_VALUE);
         VallumraptorServantDamage = BUILDER.comment("How much damage Vallumraptor Servants deal, Default: 3.0 (matches Alex's Caves Vallumraptor)")

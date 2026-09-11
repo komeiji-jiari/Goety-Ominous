@@ -41,6 +41,9 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> TremorzillaServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Boolean> TremorzillaServantReturnEgg;
     public static final ForgeConfigSpec.ConfigValue<Boolean> TremorzillaServantBreakBlocks;
+    public static final ForgeConfigSpec.ConfigValue<Integer> AtlatitanServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> AtlatitanServantReturnEgg;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> AtlatitanServantBreakBlocks;
     public static final ForgeConfigSpec.ConfigValue<Integer> VallumraptorServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> VallumraptorElderChance;
     public static final ForgeConfigSpec.ConfigValue<Integer> NucleeperServantLimit;
@@ -249,6 +252,18 @@ public class MobsConfig {
         TremorzillaServantBreakBlocks = BUILDER
                 .comment("Whether Tremorzilla Servants can break blocks (melee attacks, beam and walking through foliage) (Default: false)")
                 .define("tremorzillaServantBreakBlocks", false);
+
+        AtlatitanServantLimit = BUILDER
+                .comment("Maximum number of Atlatitan Servants that can be summoned (Default: 1)")
+                .defineInRange("atlatitanServantLimit", 1, 1, 100);
+
+        AtlatitanServantReturnEgg = BUILDER
+                .comment("Whether Atlatitan Servants drop an Atlatitan Servant Egg when they die while owned (Default: true)")
+                .define("atlatitanServantReturnEgg", true);
+
+        AtlatitanServantBreakBlocks = BUILDER
+                .comment("Whether Atlatitan Servants can crush blocks with their stomp (Default: true; also requires the mobGriefing game rule)")
+                .define("atlatitanServantBreakBlocks", true);
 
         VallumraptorServantLimit = BUILDER
                 .comment("Maximum number of Vallumraptor Servants that can be summoned (Default: 32)")

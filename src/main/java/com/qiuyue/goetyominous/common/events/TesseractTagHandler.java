@@ -83,6 +83,7 @@ public class TesseractTagHandler {
         if (AlexCavesCompat.isAlexCavesLoaded()) {
             addToTag(TESSERACT_LARGE, AcEntityRegistry.HULLBREAKER_SERVANT);
             addToTag(TESSERACT_LARGE, AcEntityRegistry.TREMORZILLA_SERVANT);
+            addToTag(TESSERACT_LARGE, AcEntityRegistry.ATLATITAN_SERVANT);
         }
     }
 
