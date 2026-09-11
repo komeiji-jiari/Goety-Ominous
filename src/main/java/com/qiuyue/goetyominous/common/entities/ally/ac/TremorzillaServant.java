@@ -495,18 +495,18 @@ public class TremorzillaServant extends AnimalSummon
             }
             if ((this.getAnimation() == ANIMATION_RIGHT_SCRATCH || this.getAnimation() == ANIMATION_LEFT_SCRATCH) && this.getAnimationTick() == 18) {
                 Vec3 center = new Vec3(0.0, 5.0F * this.getScale(), 6.0F * this.getScale()).yRot(-this.yBodyRot * ((float) Math.PI / 180)).add(this.position());
-                this.hurtEntitiesAround(center, 6.0F, 25.0F, 2.0F, false, true, true);
+                this.hurtEntitiesAround(center, 6.0F, this.getMeleeDamage(), 2.0F, false, true, true);
                 if (!this.level().isClientSide) {
                     this.breakBlocksAround(center, 3.0F, false, false, 0.6F);
                 }
             }
             if ((this.getAnimation() == ANIMATION_RIGHT_TAIL || this.getAnimation() == ANIMATION_LEFT_TAIL) && this.getAnimationTick() >= 10 && this.getAnimationTick() < 25) {
-                float tailHpPercent = AttributesConfig.TremorzillaServantTailHpPercentDamage.get().floatValue();
-                this.hurtEntitiesAround(this.tailPart1.centeredPosition(), 4.0F, 25.0F, tailHpPercent, 2.0F, false, true, true);
-                this.hurtEntitiesAround(this.tailPart2.centeredPosition(), 4.0F, 25.0F, tailHpPercent, 2.0F, false, true, true);
-                this.hurtEntitiesAround(this.tailPart3.centeredPosition(), 4.0F, 25.0F, tailHpPercent, 2.0F, false, true, true);
-                this.hurtEntitiesAround(this.tailPart4.centeredPosition(), 3.0F, 25.0F, tailHpPercent, 2.0F, false, true, true);
-                this.hurtEntitiesAround(this.tailPart5.centeredPosition(), 3.0F, 25.0F, tailHpPercent, 2.0F, false, true, true);
+                float tailDamage = this.getMeleeDamage();
+                this.hurtEntitiesAround(this.tailPart1.centeredPosition(), 4.0F, tailDamage, 2.0F, false, true, true);
+                this.hurtEntitiesAround(this.tailPart2.centeredPosition(), 4.0F, tailDamage, 2.0F, false, true, true);
+                this.hurtEntitiesAround(this.tailPart3.centeredPosition(), 4.0F, tailDamage, 2.0F, false, true, true);
+                this.hurtEntitiesAround(this.tailPart4.centeredPosition(), 3.0F, tailDamage, 2.0F, false, true, true);
+                this.hurtEntitiesAround(this.tailPart5.centeredPosition(), 3.0F, tailDamage, 2.0F, false, true, true);
                 if (!this.level().isClientSide) {
                     this.breakBlocksAround(this.tailPart1.centeredPosition(), 2.0F, false, false, 0.6F);
                     this.breakBlocksAround(this.tailPart2.centeredPosition(), 2.0F, false, false, 0.6F);
@@ -516,12 +516,12 @@ public class TremorzillaServant extends AnimalSummon
                 }
             }
             if ((this.getAnimation() == ANIMATION_LEFT_STOMP || this.getAnimation() == ANIMATION_RIGHT_STOMP) && this.getAnimationTick() == 18) {
-                this.stompEffect(this.getAnimation() == ANIMATION_LEFT_STOMP, 2.0F, 5.0F, 1.2F, 25.0F);
+                this.stompEffect(this.getAnimation() == ANIMATION_LEFT_STOMP, 2.0F, 5.0F, 1.2F, this.getMeleeDamage());
                 this.screenShakeAmount = 4.0F;
             }
             if (this.getAnimation() == ANIMATION_BITE && this.getAnimationTick() == 10) {
                 Vec3 center = new Vec3(0.0, 7.0F * this.getScale(), 5.0F * this.getScale()).yRot(-this.yBodyRot * ((float) Math.PI / 180)).add(this.position());
-                this.hurtEntitiesAround(center, 7.5F, 30.0F, 2.0F, false, true, true);
+                this.hurtEntitiesAround(center, 7.5F, this.getMeleeDamage(), 2.0F, false, true, true);
                 if (!this.level().isClientSide) {
                     this.breakBlocksAround(center, 4.0F, false, false, 0.6F);
                 }
@@ -671,6 +671,14 @@ public class TremorzillaServant extends AnimalSummon
         if (this.tickCount % i == 0) {
             this.heal(health);
         }
+    }
+
+    private float getMeleeDamage() {
+        return (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+    }
+
+    private float getBeamDamage() {
+        return AttributesConfig.TremorzillaServantBeamDamage.get().floatValue();
     }
 
     private void tickBeamTargeting() {
@@ -931,10 +939,10 @@ public class TremorzillaServant extends AnimalSummon
                         brokenClosestBlocks = this.breakBlocksAround(startClip, AlexsCaves.COMMON_CONFIG.devastatingTremorzillaBeam.get() ? destructionScale : destructionScale * 0.75F, false, true, 0.08F);
                         furthestBlockDist = (float) startClip.distanceTo(start);
                     }
-                    this.hurtEntitiesAround(startClip, destructionScale + 1.0F, 20.0F, 1.0F, true, true, false);
+                    this.hurtEntitiesAround(startClip, destructionScale + 1.0F, this.getBeamDamage(), 1.0F, true, true, false);
                     walkThroughBeam += destructionScale;
                 }
-                this.hurtEntitiesAround(endBeamPos, 6.0F, 20.0F, 1.0F, true, true, false);
+                this.hurtEntitiesAround(endBeamPos, 6.0F, this.getBeamDamage(), 1.0F, true, true, false);
                 if (AlexsCaves.COMMON_CONFIG.devastatingTremorzillaBeam.get() && this.beamTime % 6 == 0) {
                     this.breakBlocksAround(endBeamPos, 4.0F, false, true, 0.08F);
                 }
@@ -979,10 +987,6 @@ public class TremorzillaServant extends AnimalSummon
     }
 
     public boolean hurtEntitiesAround(Vec3 center, float radius, float damageAmount, float knockbackAmount, boolean radioactive, boolean hurtsOtherKaiju, boolean stretchY) {
-        return this.hurtEntitiesAround(center, radius, damageAmount, 0.0F, knockbackAmount, radioactive, hurtsOtherKaiju, stretchY);
-    }
-
-    public boolean hurtEntitiesAround(Vec3 center, float radius, float damageAmount, float hpPercentDamage, float knockbackAmount, boolean radioactive, boolean hurtsOtherKaiju, boolean stretchY) {
         AABB aabb = new AABB(center.subtract(radius, radius, radius), center.add(radius, radius, radius));
         if (stretchY) {
             aabb.setMinY(this.getY() - 1.0);
@@ -995,8 +999,7 @@ public class TremorzillaServant extends AnimalSummon
             double d = center.x;
             double d2 = stretchY ? living.getY() : center.y;
             if (!(living.distanceToSqr(d, d2, center.z) <= (double) (radius * radius)) || radioactive && !this.canEntityBeHurtByBeam(living, center) || !hurtsOtherKaiju && living instanceof KaijuMob) continue;
-            float damage = hpPercentDamage > 0.0F ? damageAmount + living.getMaxHealth() * hpPercentDamage : damageAmount;
-            if (!living.hurt(damageSource, damage)) continue;
+            if (!living.hurt(damageSource, damageAmount)) continue;
             flag = true;
             this.knockbackTarget(living, knockbackAmount, this.getX() - living.getX(), this.getZ() - living.getZ(), !(living instanceof KaijuMob));
             if (!radioactive) continue;
