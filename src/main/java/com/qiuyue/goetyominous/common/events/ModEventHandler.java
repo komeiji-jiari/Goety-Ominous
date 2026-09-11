@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.events;
 
 import com.Polarice3.Goety.common.blocks.ModBlocks;
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.common.blocks.HimPlushieRitual;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.HeresiarchServant;
 import com.qiuyue.goetyominous.common.entities.ally.sar.ExecutionerServant;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
@@ -15,6 +16,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.Villager;
@@ -45,6 +47,18 @@ public class ModEventHandler {
         }
 
         Entity entity = event.getEntity();
+
+        if (entity instanceof ItemEntity itemEntity
+                && itemEntity.getItem().is(com.qiuyue.goetyominous.common.init.ModBlocks.PLUSHIE_HIM.get().asItem())) {
+            itemEntity.setInvulnerable(true);
+            itemEntity.setUnlimitedLifetime();
+            return;
+        }
+
+        if (entity instanceof LightningBolt bolt) {
+            HimPlushieRitual.onLightningStrike((ServerLevel) event.getLevel(), bolt.blockPosition());
+            return;
+        }
 
         if (!(entity instanceof LivingEntity livingEntity)) {
             return;

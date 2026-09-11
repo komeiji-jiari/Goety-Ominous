@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.common.init;
 import com.Polarice3.Goety.common.items.magic.MagicFocus;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.items.ModItems;
+import com.qiuyue.goetyominous.common.items.PlushieBlockItem;
 import com.qiuyue.goetyominous.common.items.ac.AcItems;
 import com.qiuyue.goetyominous.common.items.am.AmItems;
 import com.qiuyue.goetyominous.common.items.lm.LmItems;
@@ -85,6 +86,13 @@ public class ModCreativeTab {
                         spawnEggs.forEach(output::accept);
                     }).build());
 
+    public static final RegistryObject<CreativeModeTab> PLUSHIE_TAB = CREATIVE_MODE_TABS
+            .register("plushies", () -> CreativeModeTab.builder()
+                    .icon(() -> ModBlocks.PLUSHIE_SPDISH.get().asItem().getDefaultInstance())
+                    .title(Component.translatable("itemGroup.goetyominous.plushies"))
+                    .displayItems((parameters, output) -> {
+                        ModBlocks.PLUSHIES.forEach(block -> output.accept(block.get()));
+                    }).build());
 
     private static void collectFrom(DeferredRegister<Item> registry,
                                      List<Item> spawnEggs, List<Item> foci,
@@ -98,7 +106,7 @@ public class ModCreativeTab {
                     foci.add(item);
                 } else if (isWeapon(item)) {
                     weapons.add(item);
-                } else {
+                } else if (!(item instanceof PlushieBlockItem)) {
                     other.add(item);
                 }
             }

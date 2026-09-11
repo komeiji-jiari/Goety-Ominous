@@ -32,6 +32,8 @@ import com.qiuyue.goetyominous.config.WeaponConfig;
 import com.qiuyue.goetyominous.utils.BuiltinPacksRegistry;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
@@ -178,6 +180,12 @@ public class GoetyOminous {
                                     com.qiuyue.goetyominous.common.items.ModItems.ACID_FUNGUS.get())
                     ));
         });
+        SpawnPlacements.register(ModEntityTypes.DREDEN.get(), SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                (type, level, spawnType, pos, random) ->
+                        level.getDifficulty() != Difficulty.PEACEFUL
+                                && Monster.isDarkEnoughToSpawn(level, pos, random)
+                                && Mob.checkMobSpawnRules(type, level, spawnType, pos, random));
         SpawnPlacements.register(ModEntityTypes.BELDAM.get(), SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
         SpawnPlacements.register(ModEntityTypes.FANATIC.get(), SpawnPlacements.Type.ON_GROUND,

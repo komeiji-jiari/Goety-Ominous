@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:gift",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        { "type": "minecraft:empty", "weight": 1 },
+
+        { "type": "minecraft:item", "name": "goetyominous:plushie_alasj_xiaoniao",   "weight": 2 },
+        { "type": "minecraft:item", "name": "goetyominous:plushie_ant_tenna_1225",   "weight": 2 },
+        { "type": "minecraft:item", "name": "goetyominous:plushie_clpom",            "weight": 2 },
+        { "type": "minecraft:item", "name": "goetyominous:plushie_cryobsidion",      "weight": 2 },
+        { "type": "minecraft:item", "name": "goetyominous:plushie_crystalskeleton9", "weight": 2 },
+        { "type": "minecraft:item", "name": "goetyominous:plushie_jibinipong",       "weight": 2 },
+        { "type": "minecraft:item", "name": "goetyominous:plushie_lcw2x",            "weight": 2 },
+        { "type": "minecraft:item", "name": "goetyominous:plushie_lecutefox",        "weight": 2 },
+        { "type": "minecraft:item", "name": "goetyominous:plushie_manba",            "weight": 2 },
+        { "type": "minecraft:item", "name": "goetyominous:plushie_melechlyon",       "weight": 2 },
+        { "type": "minecraft:item", "name": "goetyominous:plushie_mikumiku39super",  "weight": 2 },
+        { "type": "minecraft:item", "name": "goetyominous:plushie_nandouaiiya",      "weight": 2 },
+        { "type": "minecraft:item", "name": "goetyominous:plushie_oldazhai",         "weight": 2 },
+        { "type": "minecraft:item", "name": "goetyominous:plushie_saltedfish_tina",  "weight": 2 },
+        { "type": "minecraft:item", "name": "goetyominous:plushie_saoxingke",        "weight": 2 },
+        { "type": "minecraft:item", "name": "goetyominous:plushie_spdish",           "weight": 2 },
+        { "type": "minecraft:item", "name": "goetyominous:plushie_tenkenamainu",     "weight": 2 },
+        { "type": "minecraft:item", "name": "goetyominous:plushie_uinve",            "weight": 2 },
+        { "type": "minecraft:item", "name": "goetyominous:plushie_xian_ren2",        "weight": 2 },
+        { "type": "minecraft:item", "name": "goetyominous:plushie_xin_tiris",        "weight": 2 },
+        { "type": "minecraft:item", "name": "goetyominous:plushie_xinjimu",          "weight": 2 }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}
