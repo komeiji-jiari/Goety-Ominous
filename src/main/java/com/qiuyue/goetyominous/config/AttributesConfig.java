@@ -75,8 +75,8 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> TremorzillaServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> TremorzillaServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> TremorzillaServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> TremorzillaServantTailHpPercentDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> TremorzillaServantDamageCap;
+    public static final ForgeConfigSpec.ConfigValue<Double> TremorzillaServantBeamDamage;
 
     public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantDamage;
@@ -1070,8 +1070,8 @@ public class AttributesConfig {
                 .defineInRange("tremorsaurusServantArmor", 8.0, 0.0, Double.MAX_VALUE);
         TremorzillaServantHealth = BUILDER.comment("How much Max Health Tremorzilla Servants have, Default: 500.0 (matches Alex's Caves Tremorzilla)")
                 .defineInRange("tremorzillaServantHealth", 500.0, 1.0, Double.MAX_VALUE);
-        TremorzillaServantDamage = BUILDER.comment("How much damage Tremorzilla Servants deal, Default: 30.0 (matches Alex's Caves Tremorzilla)")
-                .defineInRange("tremorzillaServantDamage", 30.0, 1.0, Double.MAX_VALUE);
+        TremorzillaServantDamage = BUILDER.comment("How much damage Tremorzilla Servants' scratch, bite, stomp and tail whip deal, Default: 20.0")
+                .defineInRange("tremorzillaServantDamage", 20.0, 1.0, Double.MAX_VALUE);
         TremorzillaServantMovementSpeed = BUILDER.comment("How fast Tremorzilla Servants move, Default: 0.3")
                 .defineInRange("tremorzillaServantMovementSpeed", 0.3, 0.0, Double.MAX_VALUE);
         TremorzillaServantFollowRange = BUILDER.comment("How much following/detection range Tremorzilla Servants have, Default: 32.0 (32 block radius)")
@@ -1080,10 +1080,10 @@ public class AttributesConfig {
                 .defineInRange("tremorzillaServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
         TremorzillaServantArmor = BUILDER.comment("How much natural Armor Tremorzilla Servants have, Default: 10.0 (matches Alex's Caves Tremorzilla)")
                 .defineInRange("tremorzillaServantArmor", 10.0, 0.0, Double.MAX_VALUE);
-        TremorzillaServantTailHpPercentDamage = BUILDER.comment("How much HP percent damage Tremorzilla Servants' tail whip deals on top of the 30 base damage, Default: 0.05 (5% of target Max Health, like Goety's RedstoneMonstrosity)")
-                .defineInRange("tremorzillaServantTailHpPercentDamage", 0.05, 0.0, 1.0);
         TremorzillaServantDamageCap = BUILDER.comment("Maximum damage a single hit can deal to Tremorzilla Servants, Default: 30.0 (like Goety's Vizier's VizierDamageCap; bypassed by damage that ignores invulnerability)")
                 .defineInRange("tremorzillaServantDamageCap", 30.0, 1.0, Double.MAX_VALUE);
+        TremorzillaServantBeamDamage = BUILDER.comment("How much damage each hit of a Tremorzilla Servant's nuclear beam deals, Default: 20.0 (matches Alex's Caves Tremorzilla)")
+                .defineInRange("tremorzillaServantBeamDamage", 20.0, 1.0, Double.MAX_VALUE);
         VallumraptorServantHealth = BUILDER.comment("How much Max Health Vallumraptor Servants have, Default: 28.0 (matches Alex's Caves Vallumraptor)")
                 .defineInRange("vallumraptorServantHealth", 28.0, 1.0, Double.MAX_VALUE);
         VallumraptorServantDamage = BUILDER.comment("How much damage Vallumraptor Servants deal, Default: 3.0 (matches Alex's Caves Vallumraptor)")
