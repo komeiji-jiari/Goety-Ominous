@@ -54,6 +54,17 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
     public static final int ATTACK_BITE = 1;
     public static final int ATTACK_SPIN = 2;
     public static final int ATTACK_SLASH = 3;
+    private static final int LANDING_TICKS = 9;
+    private static final double RIDE_LAG_MAX = 0.5D;
+    private static final double RIDE_LAG_RISE = 0.25D;
+    public static final float[] RUN_BOB_TIME = {0.0F, 0.04F, 0.14F, 0.27F, 0.34F, 0.44F, 0.57F, 0.6F};
+    public static final float[] RUN_BOB_Y = {-1.2F, -2.5F, -0.8F, 0.0F, -2.5F, -0.8F, 0.0F, -1.2F};
+    public static final float[] STOP_BOB_TIME = {0.0F, 0.1F, 0.35F};
+    public static final float[] STOP_BOB_Y = {-0.431F, -1.6F, 0.0F};
+    private static final int GALLOP_PERIOD_TICKS = 12;
+    private static final int GALLOP_EXIT_TICKS = 4;
+    private static final int WALK_PHASE_TICKS = 15;
+    private static final int RUN_STOP_TICKS = 7;
     private static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(Warg.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(Warg.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> ATTACK_TYPE = SynchedEntityData.defineId(Warg.class, EntityDataSerializers.INT);
@@ -61,17 +72,34 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState walkAnimationState = new AnimationState();
+    public final AnimationState runAnimationState = new AnimationState();
+    public final AnimationState runStopAnimationState = new AnimationState();
     public final AnimationState groundedAnimationState = new AnimationState();
     public final AnimationState jumpAnimationState = new AnimationState();
     public final AnimationState biteAnimationState = new AnimationState();
     public final AnimationState spinAnimationState = new AnimationState();
     public final AnimationState slashAnimationState = new AnimationState();
+    public final AnimationState landingAnimationState = new AnimationState();
     @Nullable
     private LivingEntity queuedTarget;
     private float lockedAttackYaw;
     private int swordAttackCooldown;
     private float playerJumpPendingScale;
-    private float riderJumpOffset;
+    private int airTicks;
+    private int landingTicks;
+    private boolean airborneLast;
+    private double rideHeight;
+    private boolean rideHeightSet;
+    private double rideLag;
+    private double rideLagOld;
+    private double gaitX;
+    private double gaitZ;
+    private boolean gaitSampled;
+    private float gaitSpeed;
+    private boolean runningGait;
+    private boolean gallopHold;
+    private int gallopStartTick;
+    private int stopTicks;
     private boolean registryChecked;
 
     public Warg(EntityType<? extends Owned> type, Level level) {
@@ -129,7 +157,7 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
 
     @Override
     public float getStepHeight() {
-        return 2.0F;
+        return 1.05F;
     }
 
     @Override
@@ -149,7 +177,7 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
     @Override
     public void tick() {
         super.tick();
-        this.riderJumpOffset = Mth.approach(this.riderJumpOffset, this.onGround() ? 0.0F : 0.25F, 0.05F);
+        this.updateRideHeight();
         if (!this.level().isClientSide) {
             this.registerPersistentAssignment();
             this.tickSwordAttack();
@@ -171,20 +199,131 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
         }
     }
 
+    private void updateRideHeight() {
+        double y = this.getY();
+        this.rideLagOld = this.rideLag;
+        if (!this.rideHeightSet || this.getPassengers().isEmpty()) {
+            this.rideHeight = y;
+            this.rideHeightSet = true;
+        } else {
+            double delta = y - this.rideHeight;
+            if (delta > 0.0D && this.onGround()) {
+                this.rideHeight += Math.max(Math.min(delta, RIDE_LAG_RISE), delta - RIDE_LAG_MAX);
+            } else {
+                this.rideHeight = y;
+            }
+        }
+        this.rideLag = y - this.rideHeight;
+    }
+
+    public double getRideLag(float partialTicks) {
+        return Mth.lerp(partialTicks, this.rideLagOld, this.rideLag);
+    }
+
+    public float getGallopBob(float partialTicks) {
+        if (this.runAnimationState.isStarted()) {
+            float time = ((float)(this.tickCount - this.gallopStartTick) + partialTicks) / 20.0F;
+            float phase = time - (float)Math.floor(time / 0.6F) * 0.6F;
+            return sampleBob(RUN_BOB_TIME, RUN_BOB_Y, phase, true);
+        }
+        if (this.runStopAnimationState.isStarted()) {
+            float time = ((float)(RUN_STOP_TICKS - this.stopTicks) + partialTicks) / 20.0F;
+            return sampleBob(STOP_BOB_TIME, STOP_BOB_Y, time, false);
+        }
+        return 0.0F;
+    }
+
+    private static float sampleBob(float[] times, float[] values, float time, boolean looping) {
+        for (int i = 1; i < times.length; ++i) {
+            if (time <= times[i]) {
+                float f = (time - times[i - 1]) / (times[i] - times[i - 1]);
+                return Mth.lerp(f, values[i - 1], values[i]) / 16.0F;
+            }
+        }
+        return looping ? values[values.length - 1] / 16.0F : 0.0F;
+    }
+
+    private void updateGait() {
+        if (!this.gaitSampled) {
+            this.gaitSampled = true;
+            this.gaitX = this.getX();
+            this.gaitZ = this.getZ();
+            return;
+        }
+        double dx = this.getX() - this.gaitX;
+        double dz = this.getZ() - this.gaitZ;
+        this.gaitX = this.getX();
+        this.gaitZ = this.getZ();
+        this.gaitSpeed = Mth.lerp(0.4F, this.gaitSpeed, (float)Math.sqrt(dx * dx + dz * dz));
+        float threshold = 1.35F * (float)this.getAttributeValue(Attributes.MOVEMENT_SPEED);
+        if (this.getFirstPassenger() instanceof Player) {
+            this.runningGait = true;
+        } else if (this.runningGait) {
+            this.runningGait = this.gaitSpeed > threshold * 0.8F;
+        } else {
+            this.runningGait = this.gaitSpeed > threshold;
+        }
+    }
+
     private void updateAnimationStates() {
         boolean attacking = this.getAttackTicks() > 0;
-        setAnimation(this.biteAnimationState, attacking && this.getAttackType() == ATTACK_BITE);
-        setAnimation(this.spinAnimationState, attacking && this.getAttackType() == ATTACK_SPIN);
-        setAnimation(this.slashAnimationState, attacking && this.getAttackType() == ATTACK_SLASH);
-        setAnimation(this.jumpAnimationState, !attacking && !this.onGround());
-        setAnimation(this.groundedAnimationState, !attacking && this.onGround() && this.isSitting());
-        setAnimation(this.walkAnimationState, !attacking && this.onGround() && !this.isSitting() && this.walkAnimation.speed() > 0.05F);
-        setAnimation(this.idleAnimationState, !attacking && this.onGround() && !this.isSitting() && this.walkAnimation.speed() <= 0.05F);
+        boolean airborne = !this.onGround();
+        if (airborne) {
+            ++this.airTicks;
+            this.landingTicks = 0;
+        } else {
+            if (this.airborneLast && this.airTicks >= 3) {
+                this.landingTicks = LANDING_TICKS;
+            }
+            this.airTicks = 0;
+        }
+        this.airborneLast = airborne;
+        boolean landing = this.landingTicks > 0;
+        if (landing) {
+            --this.landingTicks;
+        }
+        boolean casual = !airborne || this.airTicks < 2;
+        this.updateGait();
+        boolean moving = this.walkAnimation.speed() > 0.05F;
+        boolean running = moving && this.runningGait;
+        boolean gaitCapable = !attacking && !landing && casual && !this.isSitting();
+        if (gaitCapable && running) {
+            this.gallopHold = true;
+            this.stopTicks = 0;
+        } else if (this.gallopHold) {
+            if (!gaitCapable || !moving) {
+                this.gallopHold = false;
+            } else if ((this.tickCount - this.gallopStartTick) % GALLOP_PERIOD_TICKS == GALLOP_EXIT_TICKS) {
+                this.gallopHold = false;
+                this.stopTicks = RUN_STOP_TICKS;
+            }
+        }
+        if (!gaitCapable) {
+            this.stopTicks = 0;
+        }
+        if (this.gallopHold && !this.runAnimationState.isStarted()) {
+            this.gallopStartTick = this.tickCount;
+        }
+        boolean stopping = this.stopTicks > 0;
+        setAnimation(this.landingAnimationState, !attacking && landing);
+        setAnimation(this.jumpAnimationState, !attacking && !landing && airborne && this.airTicks >= 2);
+        setAnimation(this.groundedAnimationState, !attacking && !landing && casual && this.isSitting());
+        setAnimation(this.runAnimationState, this.gallopHold);
+        setAnimation(this.runStopAnimationState, stopping);
+        setAnimation(this.walkAnimationState, gaitCapable && moving && !this.gallopHold && !stopping, WALK_PHASE_TICKS);
+        setAnimation(this.idleAnimationState, gaitCapable && !moving && !stopping);
+        if (this.stopTicks > 0) {
+            --this.stopTicks;
+        }
     }
 
     private void setAnimation(AnimationState state, boolean running) {
+        setAnimation(state, running, 0);
+    }
+
+    private void setAnimation(AnimationState state, boolean running, int phaseTicks) {
         if (running) {
-            state.startIfStopped(this.tickCount);
+            state.startIfStopped(this.tickCount - phaseTicks);
         } else {
             state.stop();
         }
@@ -366,7 +505,7 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
             Vec3 saddleOffset = facing.scale(-0.68D);
             double bounce = 0.04D * Mth.cos(this.walkAnimation.position() * 0.7F) * this.walkAnimation.speed();
             moveFunction.accept(passenger, this.getX() + saddleOffset.x,
-                    this.getY() + 0.75D + bounce + this.riderJumpOffset, this.getZ() + saddleOffset.z);
+                    this.rideHeight + 0.45D + bounce, this.getZ() + saddleOffset.z);
         }
     }
 

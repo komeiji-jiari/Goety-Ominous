@@ -72,8 +72,11 @@ public class WargArmorModel extends HierarchicalModel<Warg> {
         this.head.xRot += headPitch * ((float)Math.PI / 180F);
         this.animate(entity.idleAnimationState, WargAnimations.idle, ageInTicks);
         this.animate(entity.walkAnimationState, WargAnimations.walking, ageInTicks);
+        this.animate(entity.runAnimationState, WargAnimations.running, ageInTicks);
+        this.animate(entity.runStopAnimationState, WargAnimations.run_stop, ageInTicks);
         this.animate(entity.groundedAnimationState, WargAnimations.grounded, ageInTicks);
         this.animate(entity.jumpAnimationState, WargAnimations.jumping, ageInTicks);
+        this.animate(entity.landingAnimationState, WargAnimations.landing, ageInTicks);
         this.animate(entity.biteAnimationState, WargAnimations.biting, ageInTicks);
         this.animate(entity.spinAnimationState, WargAnimations.sword_spin_attack, ageInTicks, 1.5F);
         this.animate(entity.slashAnimationState, WargAnimations.sword_attack, ageInTicks, 1.5F);
