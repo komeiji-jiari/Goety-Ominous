@@ -477,8 +477,8 @@ public class MobsConfig {
                 .comment("Maximum group size for Urbhadhach natural spawn (Default: 1)")
                 .defineInRange("urbhadhachSpawnMaxCount", 1, 1, 10);
 
-        DredenSpawnWeight = BUILDER.comment("Spawn weight of Dreden in snowy biomes (Default: 20)")
-                .defineInRange("dredenSpawnWeight", 20, 0, Integer.MAX_VALUE);
+        DredenSpawnWeight = BUILDER.comment("Spawn weight of Dreden in snowy biomes (Default: 16)")
+                .defineInRange("dredenSpawnWeight", 16, 0, Integer.MAX_VALUE);
 
         DredenSpawnMinCount = BUILDER.comment("Dreden spawn pack min (Default: 1)")
                 .defineInRange("dredenSpawnMinCount", 1, 1, 10);

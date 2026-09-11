@@ -2,6 +2,8 @@
   "name": "Mutant Wither Skeleton Servant",
   "icon": "mutantmore:mutant_wither_skeleton_skull",
   "category": "goety:mmcompat",
+  "advancement": "goety:goety/read_bygone_scroll",
+  "secret": true,
   "pages": [
     {
       "type": "patchouli:text",

@@ -332,12 +332,12 @@ public class SpellConfig {
         BUILDER.push("Dreden");
         DredenSoulCost = BUILDER.comment("Soul cost of Dreden Servant spell (Default: 24)")
                 .defineInRange("dredenSoulCost", 24, 1, 100);
-        DredenCastDuration = BUILDER.comment("Cast duration of Dreden Servant spell in ticks (Default: 60)")
-                .defineInRange("dredenCastDuration", 60, 0, 500);
-        DredenSummonDown = BUILDER.comment("Summon down duration of Dreden Servant spell in ticks (Default: 120)")
-                .defineInRange("dredenSummonDown", 120, 0, 5000);
-        DredenCoolDown = BUILDER.comment("Cooldown of Dreden Servant spell in ticks (Default: 100)")
-                .defineInRange("dredenCoolDown", 100, 0, 5000);
+        DredenCastDuration = BUILDER.comment("Cast duration of Dreden Servant spell in ticks (Default: 80)")
+                .defineInRange("dredenCastDuration", 80, 0, 500);
+        DredenSummonDown = BUILDER.comment("Summon down duration of Dreden Servant spell in ticks (Default: 300)")
+                .defineInRange("dredenSummonDown", 300, 0, 5000);
+        DredenCoolDown = BUILDER.comment("Cooldown of Dreden Servant spell in ticks (Default: 120)")
+                .defineInRange("dredenCoolDown", 120, 0, 5000);
         BUILDER.pop();
 
         BUILDER.push("Scorch");

@@ -2,6 +2,8 @@
   "name": "Wither Breath Focus",
   "icon": "goetyominous:wither_breath_focus",
   "category": "goety:mmcompat",
+  "advancement": "goety:goety/read_bygone_scroll",
+  "secret": true,
   "pages": [
     {
       "type": "text",

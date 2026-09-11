@@ -301,10 +301,10 @@ public class ModModelLayers {
                 });
 
         event.registerEntityRenderer(ModEntityTypes.STRONG_ZPIGLIN_BRUTE_SERVANT.get(),
-                (context) -> new ZPiglinBruteServantRenderer(context));
+                (context) -> new ZPiglinBruteRenderer(context));
 
         event.registerEntityRenderer(ModEntityTypes.ELITE_ZPIGLIN_BRUTE_SERVANT.get(),
-                (context) -> new ZPiglinBruteServantRenderer(context) {
+                (context) -> new ZPiglinBruteRenderer(context) {
                     @Override
                     protected void scale(Mob entity, PoseStack poseStack, float partialTicks) {
                         poseStack.scale(1.25F, 1.25F, 1.25F);

@@ -1,10 +1,13 @@
 package com.qiuyue.goetyominous.common.events;
 
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.client.render.block.PlushieBlockEntityRenderer;
 import com.qiuyue.goetyominous.client.particle.ac.CandicornServantChargeParticle;
 import com.qiuyue.goetyominous.client.particle.ac.ForsakenServantSpitParticle;
 import com.qiuyue.goetyominous.client.particle.ac.NucleeperMushroomCloudParticle;
 import com.qiuyue.goetyominous.client.render.EmptyRenderer;
+import com.qiuyue.goetyominous.client.render.curios.PlushieCurioRenderer;
+import com.qiuyue.goetyominous.common.init.ModBlockEntities;
 import com.qiuyue.goetyominous.common.init.ac.AcParticles;
 import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
 import com.qiuyue.goetyominous.compat.mod.AlexCavesCompat;
@@ -22,6 +25,9 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+
+        event.registerBlockEntityRenderer(ModBlockEntities.PLUSHIE.get(), PlushieBlockEntityRenderer::new);
+        PlushieCurioRenderer.register();
 
         if (MutantMoreCompat.isMutantMoreLoaded()) {
             event.registerEntityRenderer(MmEntityRegistry.AREA_DAMAGE.get(), EmptyRenderer::new);
