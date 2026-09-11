@@ -116,6 +116,7 @@ public class TremorsaurusServant extends AnimalSummon implements LaysEggs, Keybi
     private int roarCooldown = 0;
     private double lastStompX = 0;
     private double lastStompZ = 0;
+    private int stompSoundCooldown = 0;
     private int roarScatterTime = 0;
     private Entity riderHitEntity = null;
     private float prevBuryEggsProgress;
@@ -242,14 +243,15 @@ public class TremorsaurusServant extends AnimalSummon implements LaysEggs, Keybi
         if (screenShakeAmount > 0) {
             screenShakeAmount = Math.max(0, screenShakeAmount - 0.34F);
         }
+        if (stompSoundCooldown > 0) {
+            stompSoundCooldown--;
+        }
         if (this.onGround() && !this.isInFluidType() && this.walkAnimation.speed() > 0.1F && !this.isBaby()) {
             float f = (float) Math.cos(this.walkAnimation.position() * 0.8F - 1.5F);
-            if (Math.abs(f) < 0.2) {
-                if (screenShakeAmount <= 0.3) {
-                    this.playSound(ACSoundRegistry.TREMORSAURUS_STOMP.get(), 2, 1.0F);
-                    this.shakeWater();
-                }
-                screenShakeAmount = 1F;
+            if (Math.abs(f) < 0.2 && stompSoundCooldown <= 0) {
+                this.playSound(ACSoundRegistry.TREMORSAURUS_STOMP.get(), 2, 1.0F);
+                this.shakeWater();
+                stompSoundCooldown = 3;
             }
         }
         if (this.tickCount % 100 == 0 && this.getHealth() < this.getMaxHealth()) {

@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.ac;
 
+import com.Polarice3.Goety.api.entities.ally.IServant;
 import com.Polarice3.Goety.api.items.magic.IWand;
 import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
@@ -217,7 +218,14 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
 
     @Override
     protected boolean canAddPassenger(Entity passenger) {
-        return passenger instanceof Player;
+        if (this.isBaby()) {
+            return false;
+        }
+        if (passenger instanceof Player) {
+            return true;
+        }
+        return passenger instanceof IServant
+                && (this.getTrueOwner() == null || this.getTrueOwner() == ((IServant) passenger).getTrueOwner());
     }
 
     @Override

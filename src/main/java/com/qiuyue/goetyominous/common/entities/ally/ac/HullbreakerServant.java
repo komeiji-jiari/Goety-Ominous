@@ -204,6 +204,11 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
     }
 
     @Override
+    public boolean isAbleToRide(LivingEntity livingEntity) {
+        return false;
+    }
+
+    @Override
     public void tryKill(Player player) {
         if (this.killChance <= 0) {
             this.warnKill(player);

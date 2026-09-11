@@ -1438,6 +1438,11 @@ public class TremorzillaServant extends AnimalSummon
         return passenger instanceof Player;
     }
 
+    @Override
+    public boolean isAbleToRide(LivingEntity livingEntity) {
+        return false;
+    }
+
     public boolean canOwnerMount(Player player) {
         return !this.isBaby();
     }
