@@ -16,6 +16,14 @@ public class AcItems {
     public static final DeferredRegister<Item> AC_ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, GoetyOminous.MOD_ID);
 
+    public static final RegistryObject<ServantSpawnEggItem> ATLATITAN_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("atlatitan_servant_spawn_egg",
+                                        () -> new ServantSpawnEggItem(AcEntityRegistry.ATLATITAN_SERVANT, 0x6B7B3F, 0x30231A, egg()));
+
+    public static final RegistryObject<BlockItem> ATLATITAN_SERVANT_EGG =
+            AC_ITEMS.register("atlatitan_servant_egg",
+                    () -> new BlockItem(AcBlockRegistry.ATLATITAN_SERVANT_EGG.get(), egg()));
+
     public static final RegistryObject<ServantSpawnEggItem> GROTTOCERATOPS_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("grottoceratops_servant_spawn_egg",
                                         () -> new ServantSpawnEggItem(AcEntityRegistry.GROTTOCERATOPS_SERVANT, 0xAC3B03, 0x3B1C14, egg()));

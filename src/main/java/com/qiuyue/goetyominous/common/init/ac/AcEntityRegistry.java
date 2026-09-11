@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.common.init.ac;
 
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.common.entities.ally.ac.AtlatitanServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.BrainiacServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.CandicornServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.CaniacServant;
@@ -43,6 +44,13 @@ public class AcEntityRegistry {
 
     private static final DeferredRegister<EntityType<?>> AC_ENTITIES =
             DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, GoetyOminous.MOD_ID);
+
+    public static final RegistryObject<EntityType<AtlatitanServant>> ATLATITAN_SERVANT =
+            AC_ENTITIES.register("atlatitan_servant",
+                    () -> EntityType.Builder.<AtlatitanServant>of((type, worldIn) -> new AtlatitanServant(type, worldIn), MobCategory.MISC)
+                            .sized(5.0F, 8.0F)
+                            .setTrackingRange(11)
+                            .build(GoetyOminous.MOD_ID + ":atlatitan_servant"));
 
     public static final RegistryObject<EntityType<GrottoceratopsServant>> GROTTOCERATOPS_SERVANT =
             AC_ENTITIES.register("grottoceratops_servant",
