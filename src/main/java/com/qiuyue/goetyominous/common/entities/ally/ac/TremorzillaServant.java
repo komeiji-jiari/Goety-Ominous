@@ -38,6 +38,7 @@ import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.IAdvancedPathingMob;
 import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.ITallWalker;
+import com.qiuyue.goetyominous.common.entities.ai.ac.ServantTemptGoal;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockRegistry;
 import com.qiuyue.goetyominous.common.items.ac.AcItems;
 import com.qiuyue.goetyominous.config.AttributesConfig;
@@ -82,7 +83,6 @@ import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.ai.village.poi.PoiManager;
@@ -242,7 +242,7 @@ public class TremorzillaServant extends AnimalSummon
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(1, new TremorzillaServantAttackGoal());
-        this.goalSelector.addGoal(5, new TemptGoal(this, 1.1, Ingredient.of(ACBlockRegistry.WASTE_DRUM.get(), ACBlockRegistry.NUCLEAR_BOMB.get()), false));
+        this.goalSelector.addGoal(5, new ServantTemptGoal(this, 1.1, Ingredient.of(ACBlockRegistry.WASTE_DRUM.get(), ACBlockRegistry.NUCLEAR_BOMB.get()), false));
         this.goalSelector.addGoal(6, new TremorzillaServantWanderGoal());
         this.goalSelector.addGoal(7, new LookAtLargeMobsGoal(this, 3.0F, 30.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
