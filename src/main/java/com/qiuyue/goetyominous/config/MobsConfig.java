@@ -37,12 +37,12 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> WargLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> RamblerServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> GrottoceratopsServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> RelicheirusServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> TremorsaurusServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> TremorzillaServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Boolean> TremorzillaServantReturnEgg;
     public static final ForgeConfigSpec.ConfigValue<Boolean> TremorzillaServantBreakBlocks;
     public static final ForgeConfigSpec.ConfigValue<Integer> AtlatitanServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> AtlatitanServantReturnEgg;
     public static final ForgeConfigSpec.ConfigValue<Boolean> AtlatitanServantBreakBlocks;
     public static final ForgeConfigSpec.ConfigValue<Integer> VallumraptorServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> VallumraptorElderChance;
@@ -237,6 +237,10 @@ public class MobsConfig {
                 .comment("Maximum number of Grottoceratops Servants that can be summoned (Default: 16)")
                 .defineInRange("grottoceratopsServantLimit", 16, 1, 100);
 
+        RelicheirusServantLimit = BUILDER
+                .comment("Maximum number of Relicheirus Servants that can be summoned (Default: 4)")
+                .defineInRange("relicheirusServantLimit", 4, 1, 100);
+
         TremorsaurusServantLimit = BUILDER
                 .comment("Maximum number of Tremorsaurus Servants that can be summoned (Default: 4)")
                 .defineInRange("tremorsaurusServantLimit", 4, 1, 100);
@@ -256,10 +260,6 @@ public class MobsConfig {
         AtlatitanServantLimit = BUILDER
                 .comment("Maximum number of Atlatitan Servants that can be summoned (Default: 1)")
                 .defineInRange("atlatitanServantLimit", 1, 1, 100);
-
-        AtlatitanServantReturnEgg = BUILDER
-                .comment("Whether Atlatitan Servants drop an Atlatitan Servant Egg when they die while owned (Default: true)")
-                .define("atlatitanServantReturnEgg", true);
 
         AtlatitanServantBreakBlocks = BUILDER
                 .comment("Whether Atlatitan Servants can crush blocks with their stomp (Default: true; also requires the mobGriefing game rule)")

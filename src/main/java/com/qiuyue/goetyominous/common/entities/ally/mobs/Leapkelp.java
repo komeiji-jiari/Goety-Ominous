@@ -42,6 +42,12 @@ public class Leapkelp extends Leapleaf {
     private static final int DRY_OUT_TICKS = 3 * 60 * 20;
     private static final int MAX_REST_TICKS = 20;
     private static final float SWIM_SPEED_MULTIPLIER = 1.6F;
+    private static final int SWIM_MAX_TURN_Y = 20;
+    private static final int SWIM_MAX_TURN_X = 20;
+    private static final float SWIM_FULL_SPEED_TURN = 10.0F;
+    private static final float SWIM_STOP_TURN = 60.0F;
+    private static final float SWIM_MIN_DISTANCE_SQR = 2.5E-7F;
+    private static final int SWIM_UP_RETARGET_COOLDOWN = 10;
     private static final int MOISTNESS_DRAIN_DAY = 10;
     private static final int MOISTNESS_DRAIN_NIGHT = 5;
     private static final EntityDataAccessor<Integer> MOISTNESS = SynchedEntityData.defineId(Leapkelp.class, EntityDataSerializers.INT);
@@ -238,20 +244,32 @@ public class Leapkelp extends Leapleaf {
                 }
                 if (this.operation != MoveControl.Operation.MOVE_TO || this.leapkelp.getNavigation().isDone()) {
                     this.leapkelp.setSpeed(0.0F);
+                    this.leapkelp.setZza(0.0F);
+                    this.leapkelp.setYya(0.0F);
                     return;
                 }
                 double dx = this.wantedX - this.leapkelp.getX();
                 double dy = this.wantedY - this.leapkelp.getY();
                 double dz = this.wantedZ - this.leapkelp.getZ();
-                double distance = Mth.sqrt((float) (dx * dx + dy * dy + dz * dz));
-                dy /= distance;
+                if (dx * dx + dy * dy + dz * dz < SWIM_MIN_DISTANCE_SQR) {
+                    this.leapkelp.setZza(0.0F);
+                    this.leapkelp.setYya(0.0F);
+                    return;
+                }
                 float yRot = (float) (Mth.atan2(dz, dx) * (180F / (float) Math.PI)) - 90.0F;
-                this.leapkelp.setYRot(this.rotlerp(this.leapkelp.getYRot(), yRot, 90.0F));
+                this.leapkelp.setYRot(this.rotlerp(this.leapkelp.getYRot(), yRot, SWIM_MAX_TURN_Y));
                 this.leapkelp.yBodyRot = this.leapkelp.getYRot();
+                this.leapkelp.yHeadRot = this.leapkelp.getYRot();
+                double horizontal = Math.sqrt(dx * dx + dz * dz);
+                float pitch = Mth.clamp(Mth.wrapDegrees(-(float) (Mth.atan2(dy, horizontal) * (180F / (float) Math.PI))), -SWIM_MAX_TURN_X, SWIM_MAX_TURN_X);
+                this.leapkelp.setXRot(this.rotlerp(this.leapkelp.getXRot(), pitch, 5.0F));
                 float speed = (float) (this.speedModifier * SWIM_SPEED_MULTIPLIER * this.leapkelp.getAttributeValue(Attributes.MOVEMENT_SPEED));
-                float smoothed = Mth.lerp(0.125F, this.leapkelp.getSpeed(), speed);
+                float turnFactor = Mth.clamp(1.0F - (Math.abs(Mth.wrapDegrees(this.leapkelp.getYRot() - yRot)) - SWIM_FULL_SPEED_TURN) / (SWIM_STOP_TURN - SWIM_FULL_SPEED_TURN), 0.0F, 1.0F);
+                float smoothed = Mth.lerp(0.125F, this.leapkelp.getSpeed(), speed * turnFactor);
                 this.leapkelp.setSpeed(smoothed);
-                this.leapkelp.setDeltaMovement(this.leapkelp.getDeltaMovement().add((double) smoothed * dx * 0.005D, (double) smoothed * dy * 0.1D, (double) smoothed * dz * 0.005D));
+                float pitchRad = this.leapkelp.getXRot() * ((float) Math.PI / 180.0F);
+                this.leapkelp.setZza(Mth.cos(pitchRad) * smoothed);
+                this.leapkelp.setYya(-Mth.sin(pitchRad) * smoothed);
             } else {
                 if (!this.leapkelp.onGround()) {
                     this.leapkelp.setDeltaMovement(this.leapkelp.getDeltaMovement().add(0.0D, -0.008D, 0.0D));
@@ -376,6 +394,7 @@ public class Leapkelp extends Leapleaf {
         private final double speedModifier;
         private final int seaLevel;
         private boolean stuck;
+        private int retargetTick;
         public LeapkelpSwimUpGoal(Leapkelp leapkelp, double speedModifier, int seaLevel) {
             this.leapkelp = leapkelp;
             this.speedModifier = speedModifier;
@@ -398,12 +417,14 @@ public class Leapkelp extends Leapleaf {
         }
         @Override
         public void tick() {
-            if (this.leapkelp.getY() < (double) (this.seaLevel - 1) && (this.leapkelp.getNavigation().isDone() || this.leapkelp.closeToNextPos())) {
+            this.retargetTick = Math.max(this.retargetTick - 1, 0);
+            if (this.retargetTick <= 0 && this.leapkelp.getY() < (double) (this.seaLevel - 1) && this.leapkelp.getNavigation().isDone()) {
                 Vec3 pos = DefaultRandomPos.getPosTowards((PathfinderMob) this.leapkelp, 4, 8, new Vec3(this.leapkelp.getX(), this.seaLevel - 1, this.leapkelp.getZ()), 1.5707963705062866D);
                 if (pos == null) {
                     this.stuck = true;
                     return;
                 }
+                this.retargetTick = SWIM_UP_RETARGET_COOLDOWN;
                 this.leapkelp.getNavigation().moveTo(pos.x, pos.y, pos.z, this.speedModifier);
             }
         }
@@ -411,6 +432,7 @@ public class Leapkelp extends Leapleaf {
         public void start() {
             this.leapkelp.setSearchingForLand(true);
             this.stuck = false;
+            this.retargetTick = 0;
         }
         @Override
         public void stop() {

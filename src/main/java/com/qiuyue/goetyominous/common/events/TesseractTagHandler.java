@@ -71,6 +71,7 @@ public class TesseractTagHandler {
             addToTag(TESSERACT_MEDIUM, AcEntityRegistry.TREMORSAURUS_SERVANT);
             addToTag(TESSERACT_MEDIUM, AcEntityRegistry.GROTTOCERATOPS_SERVANT);
             addToTag(TESSERACT_MEDIUM, AcEntityRegistry.FORSAKEN_SERVANT);
+            addToTag(TESSERACT_MEDIUM, AcEntityRegistry.RELICHEIRUS_SERVANT);
         }
 
         if (MutantMoreCompat.isMutantMoreLoaded()) {

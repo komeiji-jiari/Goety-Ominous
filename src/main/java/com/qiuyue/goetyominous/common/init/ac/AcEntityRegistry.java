@@ -20,6 +20,7 @@ import com.qiuyue.goetyominous.common.entities.ally.ac.LicowitchServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.MeltedCaramelServantEntity;
 import com.qiuyue.goetyominous.common.entities.ally.ac.MineGuardianServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.NucleeperServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.RelicheirusServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TeletorServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TeletorWeaponServantEntity;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TremorsaurusServant;
@@ -58,6 +59,13 @@ public class AcEntityRegistry {
                             .sized(2.3F, 2.5F)
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":grottoceratops_servant"));
+
+    public static final RegistryObject<EntityType<RelicheirusServant>> RELICHEIRUS_SERVANT =
+            AC_ENTITIES.register("relicheirus_servant",
+                    () -> EntityType.Builder.<RelicheirusServant>of((type, worldIn) -> new RelicheirusServant(type, worldIn), MobCategory.MISC)
+                            .sized(2.65F, 5.9F)
+                            .setTrackingRange(9)
+                            .build(GoetyOminous.MOD_ID + ":relicheirus_servant"));
 
     public static final RegistryObject<EntityType<TremorsaurusServant>> TREMORSAURUS_SERVANT =
             AC_ENTITIES.register("tremorsaurus_servant",

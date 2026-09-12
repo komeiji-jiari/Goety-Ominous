@@ -777,6 +777,9 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.ATLATITAN_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderAtlatitanServant::new);
             event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.RELICHEIRUS_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderRelicheirusServant::new);
+            event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.GUMBEEPER_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderGumbeeperServant::new);
             event.registerEntityRenderer(

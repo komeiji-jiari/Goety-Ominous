@@ -62,6 +62,12 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> GrottoceratopsServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> GrottoceratopsServantArmor;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> RelicheirusServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> RelicheirusServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> RelicheirusServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> RelicheirusServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> RelicheirusServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> RelicheirusServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> TremorsaurusServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> TremorsaurusServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> TremorsaurusServantMovementSpeed;
@@ -1064,6 +1070,18 @@ public class AttributesConfig {
                 .defineInRange("grottoceratopsServantKnockbackResistance", 0.9, 0.0, Double.MAX_VALUE);
         GrottoceratopsServantArmor = BUILDER.comment("How much natural Armor Grottoceratops Servants have, Default: 8.0 (matches Alex's Caves Grottoceratops)")
                 .defineInRange("grottoceratopsServantArmor", 8.0, 0.0, Double.MAX_VALUE);
+        RelicheirusServantHealth = BUILDER.comment("How much Max Health Relicheirus Servants have, Default: 120.0 (matches Alex's Caves Relicheirus)")
+                .defineInRange("relicheirusServantHealth", 120.0, 1.0, Double.MAX_VALUE);
+        RelicheirusServantDamage = BUILDER.comment("How much damage Relicheirus Servants deal, Default: 12.0 (matches Alex's Caves Relicheirus)")
+                .defineInRange("relicheirusServantDamage", 12.0, 1.0, Double.MAX_VALUE);
+        RelicheirusServantMovementSpeed = BUILDER.comment("How fast Relicheirus Servants move, Default: 0.2 (matches Alex's Caves Relicheirus)")
+                .defineInRange("relicheirusServantMovementSpeed", 0.2, 0.0, Double.MAX_VALUE);
+        RelicheirusServantFollowRange = BUILDER.comment("How much following/detection range Relicheirus Servants have, Default: 32.0")
+                .defineInRange("relicheirusServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
+        RelicheirusServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Relicheirus Servants have, Default: 0.9")
+                .defineInRange("relicheirusServantKnockbackResistance", 0.9, 0.0, Double.MAX_VALUE);
+        RelicheirusServantArmor = BUILDER.comment("How much natural Armor Relicheirus Servants have, Default: 0.0 (matches Alex's Caves Relicheirus)")
+                .defineInRange("relicheirusServantArmor", 0.0, 0.0, Double.MAX_VALUE);
         TremorsaurusServantHealth = BUILDER.comment("How much Max Health Tremorsaurus Servants have, Default: 150.0 (matches Alex's Caves Tremorsaurus)")
                 .defineInRange("tremorsaurusServantHealth", 150.0, 1.0, Double.MAX_VALUE);
         TremorsaurusServantDamage = BUILDER.comment("How much damage Tremorsaurus Servants deal, Default: 14.0 (matches Alex's Caves Tremorsaurus)")
