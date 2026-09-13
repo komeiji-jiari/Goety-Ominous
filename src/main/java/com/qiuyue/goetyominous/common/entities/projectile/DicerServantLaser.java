@@ -66,9 +66,13 @@ public class DicerServantLaser extends DicerLaser {
 
     @Override
     public void tick() {
-        super.tick();
+        // ★ 必须在 super.tick() 之前同步位置。
+        // 父类 tick() 里会做射线检测（raytraceEntities），用的就是此刻的 this.getX/Y/Z。
+        // OF 原版的 updateWithDicer() 也是在射线检测之前调用的（字节码里在天真的 tick 前半段）。
+        // 放在 super.tick() 之后 = 判定永远用上一帧的位置，施法者一走动激光就打偏、看着像"跟不上"。
         if (this.caster != null && this.caster.isAlive() && !this.isRemoved()) {
             this.setPos(this.caster.getX(), this.caster.getY() + 2.45, this.caster.getZ());
         }
+        super.tick();
     }
 }

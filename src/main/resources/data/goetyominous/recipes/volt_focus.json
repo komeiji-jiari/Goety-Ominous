@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "lpl",
+    "pcp",
+    "lpl"
+  ],
+  "key":
+  {
+    "l":
+    {
+      "item": "minecraft:lightning_rod"
+    },
+    "p":
+    {
+      "item": "minecraft:prismarine_shard"
+    },
+    "c":
+    {
+      "item": "goety:animation_core"
+    }
+  },
+  "result":
+  {
+    "item": "goetyominous:volt_focus",
+    "count": 1
+  }
+}

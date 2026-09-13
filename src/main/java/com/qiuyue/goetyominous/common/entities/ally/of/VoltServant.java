@@ -31,6 +31,7 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
+import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.AmphibiousPathNavigation;
 import net.minecraft.world.entity.monster.Enemy;
@@ -85,7 +86,8 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 40.0D)
+                // 对齐 OF 原版 Volt：16 点血（8 颗心）。之前误写成 40（20 颗心）。
+                .add(Attributes.MAX_HEALTH, 16.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.3D)
                 .add(Attributes.ATTACK_DAMAGE, 5.0D)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.5D);
@@ -94,15 +96,24 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, false, false,
+        // mustSee 必须是 true！
+        // Goety 的 FollowOwnerGoal.canUse() 里有一条硬性条件：getTarget() != null 就直接 return false。
+        // 而 TargetGoal.canContinueToUse() 里是 return !mustSee || hasLineOfSight(target)，
+        // mustSee=false 时恒为 true —— 仆从会隔着墙/山/地洞锁定一个根本看不见的敌人并且永不放手，
+        // 跟随 goal 从此再也启动不了（优先级调到多少都没用，因为它压根没跑过）。
+        // Goety 自己的 SummonTargetGoal 用的就是 (mob, LivingEntity.class, 5, true, false, predicate)。
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false,
                 (target) -> target instanceof Enemy && !MobUtil.areAllies(this, target)));
         this.goalSelector.addGoal(1, new VoltServantLeapGoal(this));
         this.goalSelector.addGoal(2, new VoltServantShootGoal(this));
         this.goalSelector.addGoal(2, new VoltServantShootInWaterGoal(this));
-        this.goalSelector.addGoal(3, new RandomSwimmingGoal(this, 1.0D, 10));
-        this.goalSelector.addGoal(3, new VoltRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        // 游荡/环视排在 7 之后：Goety 的 FollowOwnerGoal 优先级是 5，
+        // 而 Goal.canBeReplacedBy 允许「优先级数字更小」的 goal 抢占正在跑的 goal，
+        // 所以只要数字小于 5，伏特瑶就会追到一半跑去闲逛、回不到主人身边。
+        this.goalSelector.addGoal(7, new RandomSwimmingGoal(this, 1.0D, 10));
+        this.goalSelector.addGoal(7, new VoltRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
     }
 
     @Override
@@ -122,6 +133,33 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
             this.lookControl = new SmoothSwimmingLookControl(this, 10);
             this.isLandNavigator = false;
         }
+        // 换完导航器必须把跟随 goal 重挂一遍，否则它手里还是上面那个被丢掉的旧导航器。
+        this.refreshFollowGoal();
+    }
+
+    /**
+     * 重挂 Goety 的 FollowOwnerGoal。
+     *
+     * 为什么必须这么做：Summoned$FollowOwnerGoal 在**构造的那一刻**就把 mob.getNavigation()
+     * 存进了自己的 final 字段（字节码里构造函数就是 invokevirtual Mob.getNavigation() → putfield）。
+     * 它假定「一个生物的导航器一辈子不变」，普通仆从确实如此 —— 但伏特瑶是水陆双栖的，
+     * switchNavigator() 会把整个导航器对象换掉，这个假定就不成立了。
+     *
+     * 后果：FollowOwnerGoal 每 10 tick 把算好的路径塞给**已经被丢弃的旧导航器**，
+     * 而 Mob.serverAiStep() 每 tick 驱动的是 this.navigation（新导航器），
+     * 新导航器手里永远没有路径 → 实体一步都迈不出去。
+     * 偏偏 FollowOwnerGoal.tick() 第一句就是 setLookAt(owner)，LOOK 标志位照常工作，
+     * 所以它会一直扭头盯着主人，看起来「想跟但跟不上」，实际上 MOVE 压根没生效。
+     *
+     * 这里把旧的摘掉重新注册，让它重新缓存当前真正在用的导航器。
+     */
+    private void refreshFollowGoal() {
+        this.goalSelector.getAvailableGoals().stream()
+                .map(WrappedGoal::getGoal)
+                .filter(goal -> goal instanceof Summoned.FollowOwnerGoal)
+                .toList()
+                .forEach(this.goalSelector::removeGoal);
+        this.followGoal();
     }
 
     @Override
@@ -136,6 +174,21 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
         } else {
             super.travel(vec3);
         }
+    }
+
+    /**
+     * 水下呼吸。OF 原版 Volt 覆写了 canBreatheUnderwater() 返回 true，
+     * 移植时漏了，导致伏特瑶一进水就按普通陆生生物扣氧气、被淹死。
+     */
+    @Override
+    public boolean canBreatheUnderwater() {
+        return true;
+    }
+
+    /** 不被水流推着走，自己在水里游（OF 原版 isPushedByFluid() 返回 false）。 */
+    @Override
+    public boolean isPushedByFluid() {
+        return false;
     }
 
     @Override
@@ -397,6 +450,15 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
     @Override
     public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
         return false;
+    }
+
+    /**
+     * 落地不对方块做任何处理（OF 原版 Volt 的 checkFallDamage 就是空实现）。
+     * 少了它，伏特瑶跳来跳去会把主人的农田踩成泥土、把雪踩实。
+     */
+    @Override
+    protected void checkFallDamage(double y, boolean onGround, @NotNull BlockState state, @NotNull BlockPos pos) {
+        // 故意留空，对齐原版
     }
 
     @Override

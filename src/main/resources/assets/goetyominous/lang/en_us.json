@@ -198,6 +198,7 @@
   "entity.goetyominous.dicer_servant": "Dicer Servant",
   "entity.goetyominous.volt_servant": "Volt Servant",
   "entity.goetyominous.trembler_servant": "Trembler Servant",
+  "entity.goetyominous.umber_spider_servant": "Umber Spider Servant",
   "entity.goetyominous.murmur_servant": "Murmur Servant",
   "entity.goetyominous.murmur_servant_head": "Murmur Servant",
   "entity.goetyominous.crimson_mosquito_servant": "Crimson Mosquito Servant",
@@ -307,6 +308,7 @@
   "item.goetyominous.dicer_servant_spawn_egg": "Dicer Servant Spawn Egg",
   "item.goetyominous.volt_servant_spawn_egg": "Volt Servant Spawn Egg",
   "item.goetyominous.trembler_servant_spawn_egg": "Trembler Servant Spawn Egg",
+  "item.goetyominous.umber_spider_servant_spawn_egg": "Umber Spider Servant Spawn Egg",
   "item.goetyominous.murmur_servant_spawn_egg": "Murmur Servant Spawn Egg",
   "item.goetyominous.crimson_mosquito_servant_spawn_egg": "Crimson Mosquito Servant Spawn Egg",
   "item.goetyominous.warped_mosco_servant_spawn_egg": "Warped Mosco Servant Spawn Egg",
@@ -423,6 +425,7 @@
   "item.goetyominous.rigid_focus": "Rigid Focus",
   "item.goetyominous.scorch_focus": "Scorch Focus",
   "item.goetyominous.poison_ball_focus": "Poison Ball Focus",
+  "item.goetyominous.volt_focus": "Volt Focus",
   "item.goetyominous.braineater_focus": "Brain Eater Focus",
   "item.goetyominous.lm_music_disc": "Music Disc",
   "item.goetyominous.lm_music_disc.desc": "Mudeth - Howl",
@@ -469,6 +472,7 @@
   "item.goetyominous.haunt_focus.info": "Summons Haunts. Cast crouching will summon the caster's servants towards them.",
   "item.goetyominous.scorch_focus.info": "Summons Ally Scorches. Cast crouching will kill all the caster's Scorches.",
   "item.goetyominous.poison_ball_focus.info": "Fires a Poison Ball in front of the caster.",
+  "item.goetyominous.volt_focus.info": "Summons Volt Servants. Casting with a Storm Staff summons 3 to 5 of them at once. Cast crouching will summon the caster's servants towards them.",
   "item.goetyominous.braineater_focus.info": "Consumes the caster's experience to restore soul energy.",
 
   "message.goetyominous.urbhadhach.spawn": "A child crying somewhere...",
@@ -502,5 +506,6 @@
   "item.goety.focus.info": "When Cast in Wand or Staff:",
   "jade.goetyominous.melee_progress": "Brute Upgrade Progress %s/%s",
   "jade.goetyominous.ranged_progress": "Hunter Upgrade Progress %s/%s",
+  "config.jade.plugin_goetyominous.piglin_evolution": "Piglin Evolution Progress",
   "message.goetyominous.teletor_switched_tool": "Teletor wielding: %s"
 }

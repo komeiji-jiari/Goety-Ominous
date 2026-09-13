@@ -1,0 +1,19 @@
+{
+  "name": "伏特瑶聚晶",
+  "icon": "goetyominous:volt_focus",
+  "category": "goety:focuses/storm",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "伏特瑶是栖息在水中的带电掠食者。它们会跃出水面扑击猎物，也会把体内的电荷凝成电球射向敌人。摸清它的放电规律之后，你想到了如何把这份凶暴驯化成随时听候差遣的仆从。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goetyominous:volt_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "使用$(l:crafts/staff/storm_staff)风暴魔杖$()施法能一次召唤 3~5 只伏特瑶仆从，用其他魔杖则只能召唤 1 只。这个法术相当消耗灵魂能量，而且同一时间你身边最多只能维持 8 只伏特瑶仆从。"
+    }
+  ]
+}

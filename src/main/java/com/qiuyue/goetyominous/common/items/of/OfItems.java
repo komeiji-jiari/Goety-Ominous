@@ -30,6 +30,24 @@ public class OfItems {
             "trembler_servant_spawn_egg",
             () -> new ServantSpawnEggItem(OfEntityRegistry.TREMBLER_SERVANT, 0x9C8F82, 0x5A4636, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> UMBER_SPIDER_SERVANT_SPAWN_EGG = OF_ITEMS.register(
+            "umber_spider_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(OfEntityRegistry.UMBER_SPIDER_SERVANT, 0x241631, 0xB03BE0, egg()));
+
+
+    /**
+     * 伏特瑶风暴召唤聚晶。
+     * <p>
+     * 必须注册在这里（OF 联动物品类）而不是 ModItems。它的法术 {@code VoltSummonSpell} 会构造
+     * {@code VoltServant}，而 VoltServant 实现了 OF 的 AttackState / EliteVariant 接口。
+     * 只要该类被加载，JVM 在链接时就会去解析这两个接口，未安装 OF 的整合包里直接
+     * NoClassDefFoundError 崩溃（本 mod 0.3.0 之前的启动崩溃就是这个原因）。
+     * 放在 OfItems 里，它就只会在 {@code OpposingForceCompat.isOpposingForceLoaded()} 为真时加载。
+     */
+    public static final RegistryObject<Item> VOLT_FOCUS = OF_ITEMS.register(
+            "volt_focus",
+            () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(
+                    new com.qiuyue.goetyominous.common.magic.spells.VoltSummonSpell()));
 
     public static Item.Properties egg() {
         return new Item.Properties();
