@@ -209,4 +209,7 @@ public class ModEntityLayers {
 
     public static final ModelLayerLocation TREMBLER_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "trembler_servant"), "main");
+
+    public static final ModelLayerLocation UMBER_SPIDER_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "umber_spider_servant"), "main");
 }

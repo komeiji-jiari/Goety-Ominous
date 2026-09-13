@@ -180,7 +180,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    implementation fg.deobf("curse.maven:goety-586095:8736784")
+    implementation fg.deobf("curse.maven:goety-586095:8647359")
     compileOnly fg.deobf("curse.maven:illage-and-spillage-respillaged-1079714:6156035")
     implementation fg.deobf("top.theillusivec4.curios:curios-forge:5.14.1+1.20.1")
 
@@ -195,7 +195,7 @@ dependencies {
     compileOnly fg.deobf("curse.maven:mutant-more-831753:7404733")
     compileOnly fg.deobf("curse.maven:legendary-monsters-944035:8657289")
     compileOnly fg.deobf("curse.maven:ending-library-1471165:8292038")
-    compileOnly fg.deobf("curse.maven:jade-324717:8479276")
+    implementation fg.deobf("curse.maven:jade-324717:8479276")
     compileOnly fg.deobf("curse.maven:goety-equipped-1504908:8394665")
     //compileOnly fg.deobf("curse.maven:revelation-fix-???:???")
     compileOnly fg.deobf("curse.maven:illager-invasion-891324:6192869")

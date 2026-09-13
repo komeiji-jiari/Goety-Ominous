@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.compat.of;
 import com.qiuyue.goetyominous.common.entities.ally.of.DicerServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.RamblerServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.TremblerServant;
+import com.qiuyue.goetyominous.common.entities.ally.of.UmberSpiderServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.VoltServant;
 import com.qiuyue.goetyominous.common.init.of.OfEntityRegistry;
 import com.qiuyue.goetyominous.common.items.of.OfItems;
@@ -21,5 +22,6 @@ public class OfCompatManager {
         event.put(OfEntityRegistry.DICER_SERVANT.get(), DicerServant.setCustomAttributes().build());
         event.put(OfEntityRegistry.VOLT_SERVANT.get(), VoltServant.setCustomAttributes().build());
         event.put(OfEntityRegistry.TREMBLER_SERVANT.get(), TremblerServant.setCustomAttributes().build());
+        event.put(OfEntityRegistry.UMBER_SPIDER_SERVANT.get(), UmberSpiderServant.setCustomAttributes().build());
     }
 }

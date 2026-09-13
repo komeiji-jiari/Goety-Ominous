@@ -4,6 +4,7 @@ import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.of.DicerServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.RamblerServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.TremblerServant;
+import com.qiuyue.goetyominous.common.entities.ally.of.UmberSpiderServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.VoltServant;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -43,6 +44,13 @@ public class OfEntityRegistry {
                             .sized(1.1F, 1.0F)
                             .setTrackingRange(10)
                             .build(GoetyOminous.MOD_ID + ":trembler_servant"));
+
+    public static final RegistryObject<EntityType<UmberSpiderServant>> UMBER_SPIDER_SERVANT =
+            OF_ENTITIES.register("umber_spider_servant",
+                    () -> EntityType.Builder.<UmberSpiderServant>of(UmberSpiderServant::new, MobCategory.MISC)
+                            .sized(1.4F, 0.9F)
+                            .setTrackingRange(10)
+                            .build(GoetyOminous.MOD_ID + ":umber_spider_servant"));
 
     public static void register(IEventBus modEventBus) {
         OF_ENTITIES.register(modEventBus);

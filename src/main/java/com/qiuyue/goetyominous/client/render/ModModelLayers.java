@@ -227,6 +227,9 @@ public class ModModelLayers {
 
             event.registerLayerDefinition(ModEntityLayers.TREMBLER_SERVANT_LAYER,
                     com.qiuyue.goetyominous.client.render.model.of.TremblerServantModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.UMBER_SPIDER_SERVANT_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.of.UmberSpiderServantModel::createBodyLayer);
         }
 
         if (com.qiuyue.goetyominous.compat.mod.MutantMoreCompat.isMutantMoreLoaded()) {
@@ -598,6 +601,10 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.TREMBLER_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.of.TremblerServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.UMBER_SPIDER_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.of.UmberSpiderServantRenderer::new);
         }
 
         if (AlexMobsCompat.isAlexMobsLoaded()) {
