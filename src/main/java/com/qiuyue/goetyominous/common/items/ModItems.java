@@ -42,6 +42,9 @@ public class ModItems {
     public static final RegistryObject<Item> HARMONIOUS_DIAMOND = ITEMS.register("harmonious_diamond",
             () -> new Item(new Item.Properties().rarity(Rarity.COMMON).stacksTo(64)));
 
+    public static final RegistryObject<Item> OMINOUS_ICON = ITEMS.register("ominous_icon",
+            () -> new OminousIconItem(new Item.Properties().stacksTo(1)));
+
     public static final RegistryObject<Item> BAT_WING = ITEMS.register("bat_wing",
             () -> new BatWingItem(new Item.Properties()));
 

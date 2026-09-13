@@ -455,6 +455,15 @@ public class RelicheirusServant extends AnimalSummon implements LaysEggs, IAnima
     }
 
     @Override
+    public void tryKill(Player player) {
+        if (this.killChance <= 0) {
+            this.warnKill(player);
+        } else {
+            super.tryKill(player);
+        }
+    }
+
+    @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (!this.level().isClientSide) {
             InteractionResult altSkinResult = this.tryChangeAltSkin(player, hand);

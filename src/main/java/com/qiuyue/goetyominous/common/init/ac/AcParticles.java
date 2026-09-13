@@ -23,6 +23,12 @@ public class AcParticles {
     public static final RegistryObject<ParticleType<?>> FORSAKEN_SERVANT_SPIT =
             AC_PARTICLES.register("forsaken_servant_spit", () -> new SimpleParticleType(false));
 
+    public static final RegistryObject<SimpleParticleType> LUXTRUCTOSAURUS_SERVANT_SPIT =
+            AC_PARTICLES.register("luxtructosaurus_servant_spit", () -> new SimpleParticleType(false));
+
+    public static final RegistryObject<SimpleParticleType> LUXTRUCTOSAURUS_SERVANT_ASH =
+            AC_PARTICLES.register("luxtructosaurus_servant_ash", () -> new SimpleParticleType(true));
+
     public static final RegistryObject<SimpleParticleType> RITUAL_VOID_EYE =
             AC_PARTICLES.register("ritual_void_eye", () -> new SimpleParticleType(false));
 

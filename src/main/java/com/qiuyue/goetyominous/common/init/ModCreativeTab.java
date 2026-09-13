@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.common.init;
 import com.Polarice3.Goety.common.items.magic.MagicFocus;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.items.ModItems;
+import com.qiuyue.goetyominous.common.items.OminousIconItem;
 import com.qiuyue.goetyominous.common.items.PlushieBlockItem;
 import com.qiuyue.goetyominous.common.items.ac.AcItems;
 import com.qiuyue.goetyominous.common.items.am.AmItems;
@@ -106,7 +107,7 @@ public class ModCreativeTab {
                     foci.add(item);
                 } else if (isWeapon(item)) {
                     weapons.add(item);
-                } else if (!(item instanceof PlushieBlockItem)) {
+                } else if (!(item instanceof PlushieBlockItem) && !(item instanceof OminousIconItem)) {
                     other.add(item);
                 }
             }

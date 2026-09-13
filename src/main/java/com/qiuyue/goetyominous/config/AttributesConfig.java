@@ -38,8 +38,6 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> CrimsonMosquitoServantMovementSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> CrimsonMosquitoServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> CrimsonMosquitoServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonMosquitoFleeHealthThreshold;
-    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonMosquitoFleeHealthThresholdUnholy;
 
     public static final ForgeConfigSpec.ConfigValue<Double> WarpedMoscoServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> WarpedMoscoServantDamage;
@@ -91,6 +89,15 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> AtlatitanServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> AtlatitanServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> AtlatitanServantDamageCap;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> LuxtructosaurusServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> LuxtructosaurusServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> LuxtructosaurusServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> LuxtructosaurusServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> LuxtructosaurusServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> LuxtructosaurusServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> LuxtructosaurusServantDamageCap;
+    public static final ForgeConfigSpec.ConfigValue<Double> LuxtructosaurusServantTargetRange;
 
     public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantDamage;
@@ -1030,10 +1037,6 @@ public class AttributesConfig {
                 .defineInRange("crimsonMosquitoServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
         CrimsonMosquitoServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Crimson Mosquito Servants have, Default: 0.0")
                 .defineInRange("crimsonMosquitoServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
-        CrimsonMosquitoFleeHealthThreshold = BUILDER.comment("Max Health threshold for Crimson Mosquito Servants to flee, Default: 100.0")
-                .defineInRange("crimsonMosquitoFleeHealthThreshold", 100.0, 1.0, Double.MAX_VALUE);
-        CrimsonMosquitoFleeHealthThresholdUnholy = BUILDER.comment("Max Health threshold for Crimson Mosquito Servants to flee when the owner wears Unholy equipment, Default: 200.0")
-                .defineInRange("crimsonMosquitoFleeHealthThresholdUnholy", 200.0, 1.0, Double.MAX_VALUE);
         WarpedMoscoServantHealth = BUILDER.comment("How much Max Health Warped Mosco Servants have, Default: 100.0")
                 .defineInRange("warpedMoscoServantHealth", 100.0, 1.0, Double.MAX_VALUE);
         WarpedMoscoServantDamage = BUILDER.comment("How much damage Warped Mosco Servants deal, Default: 10.0")
@@ -1106,8 +1109,8 @@ public class AttributesConfig {
                 .defineInRange("tremorzillaServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
         TremorzillaServantArmor = BUILDER.comment("How much natural Armor Tremorzilla Servants have, Default: 10.0 (matches Alex's Caves Tremorzilla)")
                 .defineInRange("tremorzillaServantArmor", 10.0, 0.0, Double.MAX_VALUE);
-        TremorzillaServantDamageCap = BUILDER.comment("Maximum damage a single hit can deal to Tremorzilla Servants, Default: 30.0 (like Goety's Vizier's VizierDamageCap; bypassed by damage that ignores invulnerability)")
-                .defineInRange("tremorzillaServantDamageCap", 30.0, 1.0, Double.MAX_VALUE);
+        TremorzillaServantDamageCap = BUILDER.comment("Maximum damage a single hit can deal to Tremorzilla Servants, Default: 25.0 (like Goety's Vizier's VizierDamageCap; bypassed by damage that ignores invulnerability)")
+                .defineInRange("tremorzillaServantDamageCap", 25.0, 1.0, Double.MAX_VALUE);
         TremorzillaServantBeamDamage = BUILDER.comment("How much damage each hit of a Tremorzilla Servant's nuclear beam deals, Default: 20.0 (matches Alex's Caves Tremorzilla)")
                 .defineInRange("tremorzillaServantBeamDamage", 20.0, 1.0, Double.MAX_VALUE);
         AtlatitanServantHealth = BUILDER.comment("How much Max Health Atlatitan Servants have, Default: 400.0 (matches Alex's Caves Atlatitan)")
@@ -1124,6 +1127,22 @@ public class AttributesConfig {
                 .defineInRange("atlatitanServantArmor", 10.0, 0.0, Double.MAX_VALUE);
         AtlatitanServantDamageCap = BUILDER.comment("Maximum damage a single hit can deal to Atlatitan Servants, Default: 30.0 (like Goety's Vizier's VizierDamageCap; bypassed by damage that ignores invulnerability)")
                 .defineInRange("atlatitanServantDamageCap", 30.0, 1.0, Double.MAX_VALUE);
+        LuxtructosaurusServantHealth = BUILDER.comment("How much Max Health Luxtructosaurus Servants have, Default: 600.0 (matches Alex's Caves Luxtructosaurus)")
+                .defineInRange("luxtructosaurusServantHealth", 600.0, 1.0, Double.MAX_VALUE);
+        LuxtructosaurusServantDamage = BUILDER.comment("How much damage Luxtructosaurus Servants' stomp, kick, tail whip and flames deal, Default: 12.0 (matches Alex's Caves Luxtructosaurus)")
+                .defineInRange("luxtructosaurusServantDamage", 12.0, 1.0, Double.MAX_VALUE);
+        LuxtructosaurusServantMovementSpeed = BUILDER.comment("How fast Luxtructosaurus Servants move, Default: 0.325 (matches Alex's Caves Luxtructosaurus)")
+                .defineInRange("luxtructosaurusServantMovementSpeed", 0.325, 0.0, Double.MAX_VALUE);
+        LuxtructosaurusServantFollowRange = BUILDER.comment("How much following/detection range Luxtructosaurus Servants have, Default: 256.0 (matches Alex's Caves Luxtructosaurus)")
+                .defineInRange("luxtructosaurusServantFollowRange", 256.0, 0.0, Double.MAX_VALUE);
+        LuxtructosaurusServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Luxtructosaurus Servants have, Default: 1.0 (matches Alex's Caves Luxtructosaurus)")
+                .defineInRange("luxtructosaurusServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
+        LuxtructosaurusServantArmor = BUILDER.comment("How much natural Armor Luxtructosaurus Servants have, Default: 20.0 (matches Alex's Caves Luxtructosaurus)")
+                .defineInRange("luxtructosaurusServantArmor", 20.0, 0.0, Double.MAX_VALUE);
+        LuxtructosaurusServantDamageCap = BUILDER.comment("Maximum damage a single hit can deal to Luxtructosaurus Servants, Default: 25.0 (like Goety's Vizier's VizierDamageCap; bypassed by damage that ignores invulnerability)")
+                .defineInRange("luxtructosaurusServantDamageCap", 25.0, 1.0, Double.MAX_VALUE);
+        LuxtructosaurusServantTargetRange = BUILDER.comment("How far (in blocks) Luxtructosaurus Servants look for their own targets, Default: 32.0 (their follow range of 256 is only used for following)")
+                .defineInRange("luxtructosaurusServantTargetRange", 32.0, 0.0, Double.MAX_VALUE);
         VallumraptorServantHealth = BUILDER.comment("How much Max Health Vallumraptor Servants have, Default: 28.0 (matches Alex's Caves Vallumraptor)")
                 .defineInRange("vallumraptorServantHealth", 28.0, 1.0, Double.MAX_VALUE);
         VallumraptorServantDamage = BUILDER.comment("How much damage Vallumraptor Servants deal, Default: 3.0 (matches Alex's Caves Vallumraptor)")
