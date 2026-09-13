@@ -17,7 +17,6 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> FrostStalkerLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> MurmurServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> FarseerServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> CrimsonMosquitoServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> HullbreakerServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Boolean> HullbreakerServantReturnEmbryo;
@@ -44,6 +43,16 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> TremorzillaServantBreakBlocks;
     public static final ForgeConfigSpec.ConfigValue<Integer> AtlatitanServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Boolean> AtlatitanServantBreakBlocks;
+    public static final ForgeConfigSpec.ConfigValue<Integer> LuxtructosaurusServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantFire;
+
+    public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantWaterToStone;
+
+    public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantTephra;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantSpirits;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantPrimalMagma;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantExtinctionCataclyst;
+    public static final ForgeConfigSpec.ConfigValue<Integer> LuxtructosaurusServantRoarInterval;
     public static final ForgeConfigSpec.ConfigValue<Integer> VallumraptorServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> VallumraptorElderChance;
     public static final ForgeConfigSpec.ConfigValue<Integer> NucleeperServantLimit;
@@ -157,10 +166,6 @@ public class MobsConfig {
                 .comment("Maximum number of Farseer Servants that can be summoned (Default: 2)")
                 .defineInRange("farseerServantLimit", 2, 1, 100);
 
-        CrimsonMosquitoServantLimit = BUILDER
-                .comment("Maximum number of Crimson Mosquito Servants that can be summoned (Default: 8)")
-                .defineInRange("crimsonMosquitoServantLimit", 8, 1, 100);
-
         WarpedMoscoServantLimit = BUILDER
                 .comment("Maximum number of Warped Mosco Servants that can be summoned (Default: 2)")
                 .defineInRange("warpedMoscoServantLimit", 2, 1, 100);
@@ -264,6 +269,38 @@ public class MobsConfig {
         AtlatitanServantBreakBlocks = BUILDER
                 .comment("Whether Atlatitan Servants can crush blocks with their stomp (Default: true; also requires the mobGriefing game rule)")
                 .define("atlatitanServantBreakBlocks", true);
+
+        LuxtructosaurusServantLimit = BUILDER
+                .comment("Maximum number of Luxtructosaurus Servants that can be summoned (Default: 1)")
+                .defineInRange("luxtructosaurusServantLimit", 1, 1, 100);
+
+        LuxtructosaurusServantFire = BUILDER
+                .comment("Whether Luxtructosaurus Servants set fire to the ground with their flame breath (Default: true; also requires the mobGriefing game rule)")
+                .define("luxtructosaurusServantFire", true);
+
+        LuxtructosaurusServantWaterToStone = BUILDER
+                .comment("Whether Luxtructosaurus Servants turn the water they wade through into stone (Default: true; also requires the mobGriefing game rule)")
+                .define("luxtructosaurusServantWaterToStone", true);
+
+        LuxtructosaurusServantTephra = BUILDER
+                .comment("Whether Luxtructosaurus Servants call down a tephra bombardment while roaring. The meteors never break blocks (Default: true)")
+                .define("luxtructosaurusServantTephra", true);
+
+        LuxtructosaurusServantSpirits = BUILDER
+                .comment("Whether the tephra bombs of Luxtructosaurus Servants call up a pterosaur spirit that snatches the enemies they strike (Default: true)")
+                .define("luxtructosaurusServantSpirits", true);
+
+        LuxtructosaurusServantPrimalMagma = BUILDER
+                .comment("Whether a Luxtructosaurus Servant keeps the primal magma around it molten the way the primordial boss does, and walks over it instead of sinking in (Default: true)")
+                .define("luxtructosaurusServantPrimalMagma", true);
+
+        LuxtructosaurusServantExtinctionCataclyst = BUILDER
+                .comment("Whether owned Luxtructosaurus Servants return an Extinction Cataclyst when they die (Default: true)")
+                .define("luxtructosaurusServantExtinctionCataclyst", true);
+
+        LuxtructosaurusServantRoarInterval = BUILDER
+                .comment("How many seconds an enraged Luxtructosaurus Servant may go at most without roaring and calling down another tephra bombardment. The timer only runs while enraged, and never while a player is riding it. Set to 0 to disable (Default: 30)")
+                .defineInRange("luxtructosaurusServantRoarInterval", 30, 0, 3600);
 
         VallumraptorServantLimit = BUILDER
                 .comment("Maximum number of Vallumraptor Servants that can be summoned (Default: 32)")

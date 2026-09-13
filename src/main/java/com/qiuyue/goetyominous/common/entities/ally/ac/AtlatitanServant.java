@@ -312,8 +312,6 @@ public class AtlatitanServant extends AnimalSummon
                     ? Mth.approachDegrees(this.yBodyRotO, this.lastYawBeforeWhip, 15.0F)
                     : Mth.approachDegrees(this.yBodyRotO, this.lastYawBeforeWhip + negative * target, 90.0F);
         }
-        this.tickMultipart();
-        this.tickWalking();
         if (this.level().isClientSide) {
             if (this.lSteps > 0) {
                 double d5 = this.getX() + (this.lx - this.getX()) / (double) this.lSteps;
@@ -327,6 +325,8 @@ public class AtlatitanServant extends AnimalSummon
                 this.reapplyPosition();
             }
         }
+        this.tickMultipart();
+        this.tickWalking();
         if (this.getAnimation() == ANIMATION_STOMP && this.getAnimationTick() > 25 && this.getAnimationTick() < 35
                 && this.screenShakeAmount <= 2.0F) {
             this.screenShakeAmount = 2.0F;

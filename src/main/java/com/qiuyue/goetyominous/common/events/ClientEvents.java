@@ -4,14 +4,18 @@ import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.render.block.PlushieBlockEntityRenderer;
 import com.qiuyue.goetyominous.client.particle.ac.CandicornServantChargeParticle;
 import com.qiuyue.goetyominous.client.particle.ac.ForsakenServantSpitParticle;
+import com.qiuyue.goetyominous.client.particle.ac.LuxtructosaurusServantAshParticle;
+import com.qiuyue.goetyominous.client.particle.ac.LuxtructosaurusServantSpitParticle;
 import com.qiuyue.goetyominous.client.particle.ac.NucleeperMushroomCloudParticle;
 import com.qiuyue.goetyominous.client.render.EmptyRenderer;
 import com.qiuyue.goetyominous.client.render.curios.PlushieCurioRenderer;
 import com.qiuyue.goetyominous.common.init.ModBlockEntities;
+import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcParticles;
 import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
 import com.qiuyue.goetyominous.compat.mod.AlexCavesCompat;
 import com.qiuyue.goetyominous.compat.mod.MutantMoreCompat;
+import net.minecraft.client.renderer.entity.ItemEntityRenderer;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.api.distmarker.Dist;
@@ -32,6 +36,10 @@ public class ClientEvents {
         if (MutantMoreCompat.isMutantMoreLoaded()) {
             event.registerEntityRenderer(MmEntityRegistry.AREA_DAMAGE.get(), EmptyRenderer::new);
         }
+
+        if (AlexCavesCompat.isAlexCavesLoaded()) {
+            event.registerEntityRenderer(AcEntityRegistry.EXTINCTION_CATACLYST.get(), ItemEntityRenderer::new);
+        }
     }
 
     @SubscribeEvent
@@ -45,5 +53,9 @@ public class ClientEvents {
                 CandicornServantChargeParticle.Factory::new);
         event.registerSpriteSet((ParticleType<SimpleParticleType>) AcParticles.FORSAKEN_SERVANT_SPIT.get(),
                 ForsakenServantSpitParticle.Factory::new);
+        event.registerSpriteSet(AcParticles.LUXTRUCTOSAURUS_SERVANT_SPIT.get(),
+                LuxtructosaurusServantSpitParticle.Factory::new);
+        event.registerSpriteSet(AcParticles.LUXTRUCTOSAURUS_SERVANT_ASH.get(),
+                LuxtructosaurusServantAshParticle.Factory::new);
     }
 }

@@ -85,6 +85,7 @@ public class TesseractTagHandler {
             addToTag(TESSERACT_LARGE, AcEntityRegistry.HULLBREAKER_SERVANT);
             addToTag(TESSERACT_LARGE, AcEntityRegistry.TREMORZILLA_SERVANT);
             addToTag(TESSERACT_LARGE, AcEntityRegistry.ATLATITAN_SERVANT);
+            addToTag(TESSERACT_LARGE, AcEntityRegistry.LUXTRUCTOSAURUS_SERVANT);
         }
     }
 

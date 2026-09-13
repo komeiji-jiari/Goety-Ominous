@@ -30,6 +30,7 @@ import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.compat.curios.CuriosIntegration;
 import com.qiuyue.goetyominous.config.WeaponConfig;
 import com.qiuyue.goetyominous.utils.BuiltinPacksRegistry;
+import com.qiuyue.goetyominous.client.OminousIconRotation;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Difficulty;
@@ -141,6 +142,8 @@ public class GoetyOminous {
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.MineGuardianExplosionProtectionHandler.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.NucleeperSummonHandler.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.BubbledVisualCleanupHandler.class);
+            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.LuxtructosaurusTephraHandler.class);
+            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ExtinctionCataclystHandler.class);
         }
 
         getOrCreateDirectory(FMLPaths.CONFIGDIR.get().resolve("goetyominous"), "goetyominous");
@@ -320,10 +323,12 @@ public class GoetyOminous {
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.TremorsaurusHudEvents.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.TremorzillaHudEvents.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.AtlatitanHudEvents.class);
+            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.LuxtructosaurusHudEvents.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ForsakenRiderHudEvents.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.CandicornRiderHudEvents.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.TremorzillaRenderEvents.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.AtlatitanRenderEvents.class);
+            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.LuxtructosaurusRenderEvents.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.CorrodentDigCrackRenderEvents.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ForsakenSpitParticleRenderEvents.class);
         }
@@ -366,6 +371,8 @@ public class GoetyOminous {
             ItemProperties.register(ModItems.PIGLIN_PRIDE.get(), new ResourceLocation("firework"),
                     (stack, level, entity, seed) ->
                             CogCrossbowItem.isCharged(stack) && CogCrossbowItem.containsChargedProjectile(stack, Items.FIREWORK_ROCKET) ? 1.0F : 0.0F);
+
+            OminousIconRotation.register();
         });
         net.minecraft.client.gui.screens.MenuScreens.register(
                 com.qiuyue.goetyominous.common.init.ModContainerTypes.FUNGUS_PACK.get(),

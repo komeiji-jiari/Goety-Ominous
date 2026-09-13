@@ -780,6 +780,9 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.RELICHEIRUS_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderRelicheirusServant::new);
             event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.LUXTRUCTOSAURUS_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderLuxtructosaurusServant::new);
+            event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.GUMBEEPER_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderGumbeeperServant::new);
             event.registerEntityRenderer(
@@ -803,6 +806,9 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.PURE_DARK_VOID.get(),
                     com.qiuyue.goetyominous.client.render.ac.PureDarkVoidRenderer::new);
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.DINOSAUR_SPIRIT_SERVANT.get(),
+                    com.github.alexmodguy.alexscaves.client.render.entity.DinosaurSpiritRenderer::new);
         }
     }
 

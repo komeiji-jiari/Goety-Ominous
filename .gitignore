@@ -67,6 +67,7 @@ javap_init.gradle
 _ac_classes.txt
 /_cfr_tmp*/
 /_mcdec/
+/.disasm/
 build_gradle.log
 cfr_init.gradle
 

@@ -18,6 +18,7 @@ import com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.LicowitchServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.MineGuardianServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.NucleeperServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.LuxtructosaurusServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.RelicheirusServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TeletorServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TremorsaurusServant;
@@ -70,5 +71,6 @@ public class AcCompatManager {
         event.put(AcEntityRegistry.DEEP_ONE_MAGE_SERVANT.get(), DeepOneMageServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.LICOWITCH_SERVANT.get(), LicowitchServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.RELICHEIRUS_SERVANT.get(), RelicheirusServant.setCustomAttributes().build());
+        event.put(AcEntityRegistry.LUXTRUCTOSAURUS_SERVANT.get(), LuxtructosaurusServant.setCustomAttributes().build());
     }
 }
