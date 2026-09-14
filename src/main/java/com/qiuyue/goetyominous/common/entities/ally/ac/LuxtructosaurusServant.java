@@ -8,6 +8,7 @@ import com.Polarice3.Goety.config.ItemConfig;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.ai.SummonTargetGoal;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
+import com.Polarice3.Goety.common.entities.util.CameraShake;
 import com.Polarice3.Goety.init.ModMobType;
 import com.github.alexmodguy.alexscaves.AlexsCaves;
 import com.github.alexmodguy.alexscaves.client.particle.ACParticleRegistry;
@@ -18,6 +19,7 @@ import com.github.alexmodguy.alexscaves.server.entity.living.TremorzillaEntity;
 import com.github.alexmodguy.alexscaves.server.entity.util.KaijuMob;
 import com.github.alexmodguy.alexscaves.server.entity.util.KeybindUsingMount;
 import com.github.alexmodguy.alexscaves.server.entity.util.LuxtructosaurusLegSolver;
+import com.github.alexmodguy.alexscaves.server.entity.util.TephraExplosion;
 import com.github.alexmodguy.alexscaves.server.entity.util.ShakesScreen;
 import com.github.alexmodguy.alexscaves.server.message.MountedEntityKeyMessage;
 import com.github.alexmodguy.alexscaves.server.item.ACItemRegistry;
@@ -82,6 +84,7 @@ import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -147,10 +150,12 @@ public class LuxtructosaurusServant extends Summoned
     private float enragedProgress;
     public Vec3 jumpTarget;
     private static final int ENRAGE_OUT_OF_COMBAT_TICKS = 100;
-    private static final int ENRAGE_COOLDOWN_TICKS = 600;
+    private static final int ENRAGE_COOLDOWN_TICKS = 400;
+    private static final float JUMP_TURN_SPEED = 20.0F;
     private int outOfCombatTicks;
     private int enrageCooldown;
     private int roarFallbackTicks;
+    private boolean pendingRoar;
     private int postStopTicks;
     private boolean prevOnGround;
     private int reducedDamageTicks;
@@ -176,7 +181,6 @@ public class LuxtructosaurusServant extends Summoned
     private int yawPointer = -1;
     private float lastYawBeforeWhip;
     public boolean turningFast;
-    private boolean wasPreviouslyChild;
     private int stepSoundCooldown;
     private boolean followingStanceEnforced;
 
@@ -382,10 +386,6 @@ public class LuxtructosaurusServant extends Summoned
     protected void tickRidden(Player player, Vec3 vec3) {
         super.tickRidden(player, vec3);
         this.setTarget(null);
-        if (this.getAnimation() == ANIMATION_ROAR) {
-            this.entityData.set(WALKING, false);
-            return;
-        }
         if (player.zza != 0.0F || player.xxa != 0.0F) {
             this.setRot(player.getYRot(), player.getXRot() * 0.25F);
             this.setYHeadRot(player.getYHeadRot());
@@ -428,7 +428,7 @@ public class LuxtructosaurusServant extends Summoned
 
     @Override
     protected boolean canAddPassenger(Entity passenger) {
-        return !this.isBaby() && passenger instanceof Player;
+        return passenger instanceof Player;
     }
 
     @Override
@@ -493,12 +493,15 @@ public class LuxtructosaurusServant extends Summoned
                 this.enrageCooldown = ENRAGE_COOLDOWN_TICKS;
             }
         } else if (inCombat && this.enrageCooldown <= 0 && !this.isRiddenByPlayer()) {
-            this.startEnrage();
+            this.outOfCombatTicks = 0;
+            this.setEnraged(true);
+            this.pendingRoar = true;
         }
     }
 
     public void startEnrage() {
         this.outOfCombatTicks = 0;
+        this.pendingRoar = false;
         this.setEnraged(true);
         this.setAnimation(ANIMATION_ROAR);
     }
@@ -516,6 +519,18 @@ public class LuxtructosaurusServant extends Summoned
         if (this.level().isClientSide || !this.isAlive()) {
             return;
         }
+        if (this.pendingRoar) {
+            if (!this.isEnraged() || this.isRiddenByPlayer()) {
+                this.pendingRoar = false;
+            } else if (this.getAnimation() == NO_ANIMATION && this.isRoarStanceReady()) {
+                this.pendingRoar = false;
+                this.roarFallbackTicks = 0;
+                this.setAnimation(ANIMATION_ROAR);
+                return;
+            } else {
+                return;
+            }
+        }
         int interval = MobsConfig.LuxtructosaurusServantRoarInterval.get();
         if (interval <= 0 || !this.isEnraged() || this.isRiddenByPlayer()) {
             this.roarFallbackTicks = 0;
@@ -528,17 +543,25 @@ public class LuxtructosaurusServant extends Summoned
         if (this.getAnimation() == ANIMATION_EPIC_DEATH) {
             return;
         }
-        if (++this.roarFallbackTicks >= interval * 20 && this.getAnimation() == NO_ANIMATION) {
+        if (this.roarFallbackTicks < interval * 20) {
+            ++this.roarFallbackTicks;
+        }
+        if (this.roarFallbackTicks >= interval * 20 && this.getAnimation() == NO_ANIMATION
+                && this.isRoarStanceReady()) {
             this.roarFallbackTicks = 0;
             this.setAnimation(ANIMATION_ROAR);
         }
+    }
+
+    private boolean isRoarStanceReady() {
+        return !this.areLegsMoving() && this.getWalkAnimSpeed(1.0F) < 0.05F;
     }
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         if (!this.level().isClientSide && this.getTrueOwner() != null && player == this.getTrueOwner()
-                && !this.isBaby() && !player.isCrouching()
+                && !player.isCrouching()
                 && !(itemstack.getItem() instanceof IWand)
                 && !itemstack.is(ACItemRegistry.TECTONIC_SHARD.get())) {
             Entity firstPassenger = this.getFirstPassenger();
@@ -601,7 +624,16 @@ public class LuxtructosaurusServant extends Summoned
             this.screenShakeAmount = Math.max(0.0F, this.screenShakeAmount - 0.3F);
         }
         if (this.getAnimation() != ANIMATION_LEFT_WHIP && this.getAnimation() != ANIMATION_RIGHT_WHIP) {
-            this.yBodyRot = Mth.approachDegrees(this.yBodyRotO, this.getYRot(), this.turningFast ? 10.0F : 2.0F);
+            boolean jumping = this.getAnimation() == ANIMATION_JUMP;
+            if (jumping && !this.level().isClientSide && this.jumpTarget != null) {
+                Vec3 toward = this.jumpTarget.subtract(this.position());
+                if (toward.horizontalDistanceSqr() > 1.0E-4) {
+                    float jumpYaw = -((float) Mth.atan2(toward.x, toward.z)) * 57.295776F;
+                    this.setYRot(Mth.approachDegrees(this.getYRot(), jumpYaw, JUMP_TURN_SPEED));
+                }
+            }
+            this.yBodyRot = Mth.approachDegrees(this.yBodyRotO, this.getYRot(),
+                    jumping ? JUMP_TURN_SPEED : this.turningFast ? 10.0F : 2.0F);
             this.lastYawBeforeWhip = this.getYRot();
         } else {
             float negative = this.getAnimation() == ANIMATION_RIGHT_WHIP ? -1.0F : 1.0F;
@@ -613,6 +645,10 @@ public class LuxtructosaurusServant extends Summoned
             this.yBodyRot = (float) this.getAnimationTick() > 30.0F
                     ? Mth.approachDegrees(this.yBodyRotO, this.lastYawBeforeWhip, 15.0F)
                     : Mth.approachDegrees(this.yBodyRotO, this.lastYawBeforeWhip + negative * target, 90.0F);
+        }
+        if (!this.level().isClientSide && !this.isRiddenByPlayer() && !this.turningFast
+                && this.getAnimation() != ANIMATION_JUMP && this.areLegsMoving()) {
+            this.setYHeadRot(Mth.approachDegrees(this.getYHeadRot(), this.getYRot(), 10.0F));
         }
         if (this.level().isClientSide) {
             if (this.lSteps > 0) {
@@ -635,13 +671,6 @@ public class LuxtructosaurusServant extends Summoned
                 || this.getAnimation() == ANIMATION_ROAR && this.getAnimationTick() > 5 && this.getAnimationTick() < 45)
                 && this.screenShakeAmount <= 2.0F) {
             this.screenShakeAmount = 2.0F;
-        }
-        if (this.wasPreviouslyChild != this.isBaby()) {
-            this.wasPreviouslyChild = this.isBaby();
-            this.refreshDimensions();
-            for (LuxtructosaurusServantPartEntity part : this.allParts) {
-                part.refreshDimensions();
-            }
         }
         this.tickLuxtructosaurus();
         this.prevOnGround = this.onGround();
@@ -718,6 +747,7 @@ public class LuxtructosaurusServant extends Summoned
                 if (this.onGround() && !this.prevOnGround) {
                     this.hurtEntitiesAround(this.position(), 10.0F,
                             (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.5F, 2.0F, false, false);
+                    this.explodeOnLanding();
                 }
                 this.setDeltaMovement(this.getDeltaMovement().subtract(0.0, 0.2, 0.0));
             }
@@ -830,9 +860,7 @@ public class LuxtructosaurusServant extends Summoned
     private void onStep() {
         if (this.screenShakeAmount <= 1.0F) {
             this.playSound(ACSoundRegistry.LUXTRUCTOSAURUS_STEP.get(), 4.0F, 1.0F);
-        }
-        if (this.screenShakeAmount <= 3.0F) {
-            this.screenShakeAmount = 3.0F;
+            CameraShake.cameraShake(this.level(), this.position(), 20.0F, 0.03F, 0, 20);
         }
     }
 
@@ -858,7 +886,7 @@ public class LuxtructosaurusServant extends Summoned
             }
         }
         if (f <= 0.05F && this.walkAnimSpeed > 0.0F && this.onGround()
-                && speed > 0.003F && this.stepSoundCooldown <= 0) {
+                && (speed > 0.003F || this.getControllingPassenger() != null) && this.stepSoundCooldown <= 0) {
             this.onStep();
             this.stepSoundCooldown = 5;
         }
@@ -1117,6 +1145,17 @@ public class LuxtructosaurusServant extends Summoned
         return 3;
     }
 
+    private void explodeOnLanding() {
+        if (!MobsConfig.LuxtructosaurusServantJumpExplosion.get()) {
+            return;
+        }
+        float radius = this.isEnraged() ? 3.0F : 2.0F;
+        TephraExplosion explosion = new TephraExplosion(this.level(), this,
+                this.getX(), this.getY() + 0.5, this.getZ(), radius, Explosion.BlockInteraction.KEEP);
+        explosion.explode();
+        explosion.finalizeExplosion(true);
+    }
+
     public boolean hurtEntitiesAround(Vec3 center, float radius, float damageAmount, float knockbackAmount,
                                       boolean setsOnFire, boolean disablesShields) {
         AABB aabb = new AABB(center.subtract(radius, radius, radius), center.add(radius, radius, radius));
@@ -1212,7 +1251,7 @@ public class LuxtructosaurusServant extends Summoned
 
     @Override
     public boolean isImmobile() {
-        return super.isImmobile();
+        return this.getAnimation() == ANIMATION_ROAR && !this.isRiddenByPlayer() || super.isImmobile();
     }
 
     @Override
@@ -1390,8 +1429,9 @@ public class LuxtructosaurusServant extends Summoned
                     ItemStack itemStack = new ItemStack(AcItems.EXTINCTION_CATACLYST.get());
                     ReviveServantItem.setOwnerName(this.getTrueOwner(), itemStack);
                     ReviveServantItem.setSummon(this, itemStack);
+                    Vec3 headPos = this.headPart.centeredPosition();
                     FlyingItem flyingItem = new FlyingItem(ModEntityType.FLYING_ITEM.get(), this.level(),
-                            this.getX(), this.getY(), this.getZ());
+                            headPos.x, headPos.y, headPos.z);
                     flyingItem.setOwner(this.getTrueOwner());
                     flyingItem.setItem(itemStack);
                     flyingItem.setParticle(ParticleTypes.ASH);
@@ -1424,6 +1464,7 @@ public class LuxtructosaurusServant extends Summoned
         tag.putInt("OutOfCombatTicks", this.outOfCombatTicks);
         tag.putInt("EnrageCooldown", this.enrageCooldown);
         tag.putInt("RoarFallbackTicks", this.roarFallbackTicks);
+        tag.putBoolean("PendingRoar", this.pendingRoar);
         tag.putBoolean("FollowingStanceEnforced", this.followingStanceEnforced);
     }
 
@@ -1434,6 +1475,7 @@ public class LuxtructosaurusServant extends Summoned
         this.outOfCombatTicks = tag.getInt("OutOfCombatTicks");
         this.enrageCooldown = tag.getInt("EnrageCooldown");
         this.roarFallbackTicks = tag.getInt("RoarFallbackTicks");
+        this.pendingRoar = tag.getBoolean("PendingRoar");
         this.followingStanceEnforced = tag.getBoolean("FollowingStanceEnforced");
     }
 

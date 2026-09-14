@@ -6,6 +6,7 @@ import com.Polarice3.Goety.common.entities.ModEntityType;
 import com.Polarice3.Goety.common.entities.ally.AnimalSummon;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.common.entities.projectiles.FlyingItem;
+import com.Polarice3.Goety.common.entities.util.CameraShake;
 import com.Polarice3.Goety.init.ModMobType;
 import com.github.alexmodguy.alexscaves.AlexsCaves;
 import com.github.alexmodguy.alexscaves.client.particle.ACParticleRegistry;
@@ -175,6 +176,7 @@ public class TremorzillaServant extends AnimalSummon
     private double lastStompZ = 0.0;
     private float prevScreenShakeAmount;
     private float screenShakeAmount;
+    private int stompSoundCooldown;
     private float beamProgress;
     private float prevBeamProgress;
     private int lSteps;
@@ -424,14 +426,17 @@ public class TremorzillaServant extends AnimalSummon
         if (this.screenShakeAmount > 0.0F) {
             this.screenShakeAmount = Math.max(0.0F, this.screenShakeAmount - 0.15F);
         }
+        if (this.stompSoundCooldown > 0) {
+            --this.stompSoundCooldown;
+        }
         if (this.onGround() && !this.isInFluidType() && this.walkAnimation.speed() > 0.1F && !this.isBaby() && !this.isNoAi() && this.isAlive()) {
             float f = (float) Math.cos(this.walkAnimation.position() * 0.25F - 1.5F);
             float f1 = (float) Math.cos(this.walkAnimation.position() * 0.25F - 1.0F);
             float f2 = (float) Math.sin(this.walkAnimation.position() * 0.25F - 1.0F);
-            if (Math.abs(f) < 0.2F) {
-                if (this.screenShakeAmount <= 0.3) {
-                    this.playSound(ACSoundRegistry.TREMORZILLA_STOMP.get(), 6.0F, 0.7F);
-                }
+            if (Math.abs(f) < 0.2F && this.screenShakeAmount <= 0.3F && this.stompSoundCooldown <= 0) {
+                this.playSound(ACSoundRegistry.TREMORZILLA_STOMP.get(), 6.0F, 0.7F);
+                CameraShake.cameraShake(this.level(), this.position(), 20.0F, 0.03F, 0, 20);
+                this.stompSoundCooldown = 4;
             }
             if (this.walkAnimation.speed() > 0.5F && Math.abs(f1) < 0.1F) {
                 this.stompEffect(f2 > 0.0F, 1.0F, 1.3F, 0.4F + this.walkAnimation.speed(), 2.0F);

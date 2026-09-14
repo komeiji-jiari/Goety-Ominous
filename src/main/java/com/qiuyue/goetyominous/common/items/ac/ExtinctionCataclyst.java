@@ -9,7 +9,6 @@ import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.qiuyue.goetyominous.common.entities.ally.ac.AtlatitanServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.LuxtructosaurusServant;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
-import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -59,7 +58,10 @@ public class ExtinctionCataclyst extends ReviveServantItem {
         }
         servant.setHealth(servant.getMaxHealth());
         servant.setPos(atlatitan.getX(), atlatitan.getY(), atlatitan.getZ());
-        servant.lookAt(EntityAnchorArgument.Anchor.EYES, player.position());
+        servant.setYRot(atlatitan.getYRot());
+        servant.setXRot(atlatitan.getXRot());
+        servant.setYHeadRot(atlatitan.yBodyRot);
+        servant.yBodyRot = atlatitan.yBodyRot;
         if (!level.addFreshEntity(servant)) {
             return InteractionResult.FAIL;
         }

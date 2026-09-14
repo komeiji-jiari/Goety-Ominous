@@ -6,6 +6,7 @@ import com.qiuyue.goetyominous.common.entities.ally.ac.LuxtructosaurusServant;
 import com.qiuyue.goetyominous.common.entities.util.DinosaurSpiritServant;
 import com.qiuyue.goetyominous.common.entities.util.ServantMagmaLink;
 import com.qiuyue.goetyominous.config.MobsConfig;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -40,11 +41,18 @@ public class LuxtructosaurusTephraHandler {
         }
         Entity direct = event.getSource().getDirectEntity();
         LuxtructosaurusServant servant = servantOwner(direct);
+        boolean tephra = servant != null;
+        if (servant == null && direct instanceof LuxtructosaurusServant blasting
+                && event.getSource().is(DamageTypeTags.IS_EXPLOSION)) {
+            servant = blasting;
+        }
         if (servant == null) {
             return;
         }
         if (victim != servant && !servant.isAlliedTo(victim) && !victim.isAlliedTo(servant)) {
-            summonGrabSpirit(servant, victim);
+            if (tephra) {
+                summonGrabSpirit(servant, victim);
+            }
             return;
         }
         PENDING_VELOCITY_RESTORE.put(victim.getUUID(), victim.getDeltaMovement());
