@@ -37,6 +37,7 @@ import com.qiuyue.goetyominous.common.entities.ai.ac.ServantLayEggGoal;
 import com.qiuyue.goetyominous.common.entities.ai.ac.ServantTemptGoal;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
+import com.qiuyue.goetyominous.common.items.ac.AcItems;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
@@ -1105,7 +1106,8 @@ public class AtlatitanServant extends AnimalSummon
                     firstPassenger.stopRiding();
                     return InteractionResult.SUCCESS;
                 }
-                if (!(itemstack.getItem() instanceof IWand)) {
+                if (!(itemstack.getItem() instanceof IWand)
+                        && !itemstack.is(AcItems.EXTINCTION_CATACLYST.get())) {
                     this.doPlayerRide(player);
                     return InteractionResult.SUCCESS;
                 }

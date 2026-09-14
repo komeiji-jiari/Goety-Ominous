@@ -49,6 +49,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantWaterToStone;
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantTephra;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantJumpExplosion;
     public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantSpirits;
     public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantPrimalMagma;
     public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantExtinctionCataclyst;
@@ -285,6 +286,10 @@ public class MobsConfig {
         LuxtructosaurusServantTephra = BUILDER
                 .comment("Whether Luxtructosaurus Servants call down a tephra bombardment while roaring. The meteors never break blocks (Default: true)")
                 .define("luxtructosaurusServantTephra", true);
+
+        LuxtructosaurusServantJumpExplosion = BUILDER
+                .comment("Whether Luxtructosaurus Servants blast the ground alight where they land after a leap, like one of their falling tephra bombs. The blast damages and knocks back everything nearby and lights fires, but never breaks blocks (Default: true)")
+                .define("luxtructosaurusServantJumpExplosion", true);
 
         LuxtructosaurusServantSpirits = BUILDER
                 .comment("Whether the tephra bombs of Luxtructosaurus Servants call up a pterosaur spirit that snatches the enemies they strike (Default: true)")

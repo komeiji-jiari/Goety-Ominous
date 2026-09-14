@@ -514,23 +514,9 @@ public class ModelLuxtructosaurusServant extends AdvancedEntityModel<Luxtructosa
     }
 
     public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        if (this.young) {
-            float f = 2.0F;
-            this.head.setScale(f, f, f);
-            this.head.setShouldScaleChildren(true);
-            this.head.setRotationPoint(0.8F, 3.0F, -75.0F);
-            matrixStackIn.pushPose();
-            matrixStackIn.scale(0.15F, 0.15F, 0.15F);
-            matrixStackIn.translate(0.0, 8.55F, 0.0);
-            this.parts().forEach(part -> part.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha));
-            matrixStackIn.popPose();
-            this.head.setRotationPoint(0.8F, 8.0F, -75.0F);
-            this.head.setScale(1.0F, 1.0F, 1.0F);
-        } else {
-            matrixStackIn.pushPose();
-            this.parts().forEach(part -> part.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha));
-            matrixStackIn.popPose();
-        }
+        matrixStackIn.pushPose();
+        this.parts().forEach(part -> part.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha));
+        matrixStackIn.popPose();
     }
 
     public Vec3 getRiderPosition(Vec3 offsetIn) {

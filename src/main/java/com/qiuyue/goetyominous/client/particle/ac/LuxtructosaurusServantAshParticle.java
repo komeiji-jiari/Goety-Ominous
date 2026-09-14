@@ -1,11 +1,13 @@
 package com.qiuyue.goetyominous.client.particle.ac;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.qiuyue.goetyominous.client.render.ac.RenderLuxtructosaurusServant;
 import com.qiuyue.goetyominous.client.render.model.ac.ModelLuxtructosaurusServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.LuxtructosaurusServant;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.TabulaModelRenderUtils;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -146,6 +148,15 @@ public class LuxtructosaurusServantAshParticle extends TextureSheetParticle {
     @Override
     public ParticleRenderType getRenderType() {
         return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+    }
+
+    @Override
+    public void render(VertexConsumer buffer, Camera camera, float partialTicks) {
+        if (this.sprite == null) {
+            this.remove();
+            return;
+        }
+        super.render(buffer, camera, partialTicks);
     }
 
     public static class Factory implements ParticleProvider<SimpleParticleType> {
