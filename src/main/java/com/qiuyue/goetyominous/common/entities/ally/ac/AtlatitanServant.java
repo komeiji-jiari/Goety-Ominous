@@ -5,6 +5,7 @@ import com.Polarice3.Goety.api.items.magic.IWand;
 import com.Polarice3.Goety.common.entities.ally.AnimalSummon;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
+import com.Polarice3.Goety.common.entities.util.CameraShake;
 import com.Polarice3.Goety.init.ModMobType;
 import com.github.alexmodguy.alexscaves.AlexsCaves;
 import com.github.alexmodguy.alexscaves.client.particle.ACParticleRegistry;
@@ -278,6 +279,15 @@ public class AtlatitanServant extends AnimalSummon
                 && this.getOwnerId() != null && this.getOwnerId().equals(entity.getUUID());
     }
 
+    @Override
+    public void tryKill(Player player) {
+        if (this.killChance <= 0) {
+            this.warnKill(player);
+        } else {
+            super.tryKill(player);
+        }
+    }
+
     public boolean isFakeEntity() {
         return this.firstTick;
     }
@@ -405,7 +415,7 @@ public class AtlatitanServant extends AnimalSummon
     private void onStep() {
         if (!this.isBaby() && this.screenShakeAmount <= 1.0F) {
             this.playSound(ACSoundRegistry.ATLATITAN_STEP.get(), 2.0F, 1.0F);
-            this.screenShakeAmount = 1.0F;
+            CameraShake.cameraShake(this.level(), this.position(), 20.0F, 0.03F, 0, 20);
         }
     }
 

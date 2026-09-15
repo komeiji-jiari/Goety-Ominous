@@ -64,10 +64,6 @@ public class AcItems {
             AC_ITEMS.register("tremorzilla_servant_spawn_egg",
                                         () -> new ServantSpawnEggItem(AcEntityRegistry.TREMORZILLA_SERVANT, 0x574D2F, 0x8CFF08, egg()));
 
-    public static final RegistryObject<BlockItem> TREMORZILLA_SERVANT_EGG =
-            AC_ITEMS.register("tremorzilla_servant_egg",
-                    () -> new BlockItem(AcBlockRegistry.TREMORZILLA_SERVANT_EGG.get(), egg()));
-
     public static final RegistryObject<ServantSpawnEggItem> NUCLEEPER_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("nucleeper_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AcEntityRegistry.NUCLEEPER_SERVANT, 0x95A1A5, 0xFF00, egg()));

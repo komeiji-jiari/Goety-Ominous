@@ -1,6 +1,5 @@
 package com.qiuyue.goetyominous.common.blocks.ac;
 
-import com.github.alexmodguy.alexscaves.server.block.DinosaurEggBlock;
 import com.github.alexmodguy.alexscaves.server.entity.ACEntityRegistry;
 import com.qiuyue.goetyominous.common.blocks.entities.ac.RelicheirusServantEggBlockEntity;
 import com.qiuyue.goetyominous.common.entities.ally.ac.RelicheirusServant;
@@ -15,7 +14,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -23,7 +21,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import java.util.UUID;
 
 
-public class RelicheirusServantEggBlock extends DinosaurEggBlock implements EntityBlock {
+public class RelicheirusServantEggBlock extends ServantEggBlock {
 
     public RelicheirusServantEggBlock(Properties properties) {
         super(properties, ACEntityRegistry.RELICHEIRUS, 14, 16);
@@ -32,13 +30,6 @@ public class RelicheirusServantEggBlock extends DinosaurEggBlock implements Enti
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return AcBlockEntityRegistry.RELICHEIRUS_SERVANT_EGG.get().create(pos, state);
-    }
-
-    @Override
-    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
-        if (!(entity instanceof RelicheirusServant)) {
-            super.stepOn(level, pos, state, entity);
-        }
     }
 
     @Override

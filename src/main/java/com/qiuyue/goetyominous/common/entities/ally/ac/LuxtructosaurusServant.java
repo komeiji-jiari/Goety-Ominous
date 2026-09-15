@@ -494,7 +494,6 @@ public class LuxtructosaurusServant extends Summoned
             }
         } else if (inCombat && this.enrageCooldown <= 0 && !this.isRiddenByPlayer()) {
             this.outOfCombatTicks = 0;
-            this.setEnraged(true);
             this.pendingRoar = true;
         }
     }
@@ -520,11 +519,12 @@ public class LuxtructosaurusServant extends Summoned
             return;
         }
         if (this.pendingRoar) {
-            if (!this.isEnraged() || this.isRiddenByPlayer()) {
+            if (!this.isInCombat() || this.isRiddenByPlayer()) {
                 this.pendingRoar = false;
             } else if (this.getAnimation() == NO_ANIMATION && this.isRoarStanceReady()) {
                 this.pendingRoar = false;
                 this.roarFallbackTicks = 0;
+                this.setEnraged(true);
                 this.setAnimation(ANIMATION_ROAR);
                 return;
             } else {

@@ -39,7 +39,6 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> RelicheirusServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> TremorsaurusServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> TremorzillaServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> TremorzillaServantReturnEgg;
     public static final ForgeConfigSpec.ConfigValue<Boolean> TremorzillaServantBreakBlocks;
     public static final ForgeConfigSpec.ConfigValue<Integer> AtlatitanServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Boolean> AtlatitanServantBreakBlocks;
@@ -50,7 +49,6 @@ public class MobsConfig {
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantTephra;
     public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantJumpExplosion;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantSpirits;
     public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantPrimalMagma;
     public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantExtinctionCataclyst;
     public static final ForgeConfigSpec.ConfigValue<Integer> LuxtructosaurusServantRoarInterval;
@@ -255,10 +253,6 @@ public class MobsConfig {
                 .comment("Maximum number of Tremorzilla Servants that can be summoned (Default: 1)")
                 .defineInRange("tremorzillaServantLimit", 1, 1, 100);
 
-        TremorzillaServantReturnEgg = BUILDER
-                .comment("Whether Tremorzilla Servants drop a Tremorzilla Servant Egg when they die while owned (Default: true)")
-                .define("tremorzillaServantReturnEgg", true);
-
         TremorzillaServantBreakBlocks = BUILDER
                 .comment("Whether Tremorzilla Servants can break blocks (melee attacks, beam and walking through foliage) (Default: false)")
                 .define("tremorzillaServantBreakBlocks", false);
@@ -290,10 +284,6 @@ public class MobsConfig {
         LuxtructosaurusServantJumpExplosion = BUILDER
                 .comment("Whether Luxtructosaurus Servants blast the ground alight where they land after a leap, like one of their falling tephra bombs. The blast damages and knocks back everything nearby and lights fires, but never breaks blocks (Default: true)")
                 .define("luxtructosaurusServantJumpExplosion", true);
-
-        LuxtructosaurusServantSpirits = BUILDER
-                .comment("Whether the tephra bombs of Luxtructosaurus Servants call up a pterosaur spirit that snatches the enemies they strike (Default: true)")
-                .define("luxtructosaurusServantSpirits", true);
 
         LuxtructosaurusServantPrimalMagma = BUILDER
                 .comment("Whether a Luxtructosaurus Servant keeps the primal magma around it molten the way the primordial boss does, and walks over it instead of sinking in (Default: true)")

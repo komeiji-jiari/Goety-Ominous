@@ -34,7 +34,6 @@ import com.qiuyue.goetyominous.common.entities.projectile.LicowitchServantHex;
 import com.qiuyue.goetyominous.common.entities.projectile.LicowitchServantPeppermint;
 import com.qiuyue.goetyominous.common.entities.projectile.GumballServantEntity;
 import com.qiuyue.goetyominous.common.entities.projectile.DeepOneServantWave;
-import com.qiuyue.goetyominous.common.entities.util.DinosaurSpiritServant;
 import com.qiuyue.goetyominous.common.entities.util.ExtinctionCataclystEntity;
 import com.qiuyue.goetyominous.common.entities.util.PureDarkVoid;
 import net.minecraft.world.entity.EntityType;
@@ -314,16 +313,6 @@ public class AcEntityRegistry {
                             .sized(0.2F, 0.2F)
                             .setTrackingRange(12)
                             .build(GoetyOminous.MOD_ID + ":dark_void"));
-
-    public static final RegistryObject<EntityType<DinosaurSpiritServant>> DINOSAUR_SPIRIT_SERVANT =
-            AC_ENTITIES.register("dinosaur_spirit_servant",
-                    () -> EntityType.Builder.<DinosaurSpiritServant>of((type, worldIn) -> new DinosaurSpiritServant(type, worldIn), MobCategory.MISC)
-                            .sized(1.0F, 1.0F)
-                            .setTrackingRange(12)
-                            .setShouldReceiveVelocityUpdates(true)
-                            .fireImmune()
-                            .setCustomClientFactory((spawnEntity, world) -> new DinosaurSpiritServant(spawnEntity, world))
-                            .build(GoetyOminous.MOD_ID + ":dinosaur_spirit_servant"));
 
     public static final RegistryObject<EntityType<ExtinctionCataclystEntity>> EXTINCTION_CATACLYST =
             AC_ENTITIES.register("extinction_cataclyst",

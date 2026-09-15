@@ -2,10 +2,8 @@ package com.qiuyue.goetyominous.common.entities.ally.ac;
 
 import com.Polarice3.Goety.api.entities.ally.IServant;
 import com.Polarice3.Goety.api.items.magic.IWand;
-import com.Polarice3.Goety.common.entities.ModEntityType;
 import com.Polarice3.Goety.common.entities.ally.AnimalSummon;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
-import com.Polarice3.Goety.common.entities.projectiles.FlyingItem;
 import com.Polarice3.Goety.common.entities.util.CameraShake;
 import com.Polarice3.Goety.init.ModMobType;
 import com.github.alexmodguy.alexscaves.AlexsCaves;
@@ -13,7 +11,6 @@ import com.github.alexmodguy.alexscaves.client.particle.ACParticleRegistry;
 import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
 import com.github.alexmodguy.alexscaves.server.block.blockentity.NuclearSirenBlockEntity;
 import com.github.alexmodguy.alexscaves.server.block.poi.ACPOIRegistry;
-import com.github.alexmodguy.alexscaves.server.entity.util.LaysEggs;
 import com.github.alexmodguy.alexscaves.server.entity.ACEntityDataRegistry;
 import com.github.alexmodguy.alexscaves.server.entity.ACEntityRegistry;
 import com.github.alexmodguy.alexscaves.server.entity.ai.AdvancedPathNavigateNoTeleport;
@@ -40,8 +37,6 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.IAdvancedPathingMob;
 import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.ITallWalker;
 import com.qiuyue.goetyominous.common.entities.ai.ac.ServantTemptGoal;
-import com.qiuyue.goetyominous.common.init.ac.AcBlockRegistry;
-import com.qiuyue.goetyominous.common.items.ac.AcItems;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
@@ -115,10 +110,11 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class TremorzillaServant extends AnimalSummon
-        implements LaysEggs, KeybindUsingMount, IAnimatedEntity, ShakesScreen, KaijuMob, ActivatesSirens, ITallWalker, IAdvancedPathingMob {
+        implements KeybindUsingMount, IAnimatedEntity, ShakesScreen, KaijuMob, ActivatesSirens, ITallWalker, IAdvancedPathingMob {
 
     private static final EntityDataAccessor<Optional<Vec3>> BEAM_END_POSITION =
             SynchedEntityData.defineId(TremorzillaServant.class, ACEntityDataRegistry.OPTIONAL_VEC_3.get());
@@ -134,8 +130,6 @@ public class TremorzillaServant extends AnimalSummon
             SynchedEntityData.defineId(TremorzillaServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> ALT_SKIN =
             SynchedEntityData.defineId(TremorzillaServant.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> DATA_HAS_EGG =
-            SynchedEntityData.defineId(TremorzillaServant.class, EntityDataSerializers.BOOLEAN);
 
     public static final Animation ANIMATION_SPEAK = Animation.create(20);
     public static final Animation ANIMATION_ROAR_1 = Animation.create(60);
@@ -170,6 +164,7 @@ public class TremorzillaServant extends AnimalSummon
 
     private Animation currentAnimation;
     private int animationTick;
+    private int blastFlingGuard;
     private float lastYawBeforeWhip;
     protected boolean isLandNavigator;
     private double lastStompX = 0.0;
@@ -204,9 +199,6 @@ public class TremorzillaServant extends AnimalSummon
     private boolean servantLimitEnforced = false;
     private float prevSitProgress;
     private float sitProgress;
-    private float prevBuryEggsProgress;
-    private float buryEggsProgress;
-    public boolean buryingEggs;
     private boolean followingStanceEnforced = false;
 
     public TremorzillaServant(EntityType<? extends Owned> type, Level level) {
@@ -259,7 +251,6 @@ public class TremorzillaServant extends AnimalSummon
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(ALT_SKIN, 0);
-        this.entityData.define(DATA_HAS_EGG, false);
         this.entityData.define(BEAM_END_POSITION, Optional.empty());
         this.entityData.define(SWIMMING, false);
         this.entityData.define(CHARGE, 1000);
@@ -339,15 +330,12 @@ public class TremorzillaServant extends AnimalSummon
 
     @Override
     public void tick() {
+        if (this.blastFlingGuard > 0) {
+            --this.blastFlingGuard;
+            this.setDeltaMovement(Vec3.ZERO);
+        }
         super.tick();
         this.enforceFollowingStanceOnce();
-        this.prevBuryEggsProgress = this.buryEggsProgress;
-        if (this.buryingEggs && this.buryEggsProgress < 5.0F) {
-            this.buryEggsProgress++;
-        }
-        if (!this.buryingEggs && this.buryEggsProgress > 0.0F) {
-            this.buryEggsProgress--;
-        }
         this.enforceServantLimitOnce();
         AnimationHandler.INSTANCE.updateAnimations(this);
         this.legSolver.update(this, this.yBodyRot, this.getScale());
@@ -668,6 +656,15 @@ public class TremorzillaServant extends AnimalSummon
         this.lastStompZ = this.zo;
     }
 
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        if (!this.level().isClientSide && (source.is(ACDamageTypes.NUKE) || source.is(ACDamageTypes.INTENTIONAL_GAME_DESIGN))) {
+            this.blastFlingGuard = 2;
+            return false;
+        }
+        return super.hurt(source, amount);
+    }
+
     private double getMaxFluidHeight() {
         return this.getFluidTypeHeight(this.getMaxHeightFluidType());
     }
@@ -797,21 +794,6 @@ public class TremorzillaServant extends AnimalSummon
         }
     }
 
-    @Override
-    protected void tickDeath() {
-        ++this.deathTime;
-        if (this.deathTime >= 20 && !this.level().isClientSide() && !this.isRemoved()) {
-            if (this.getTrueOwner() != null && MobsConfig.TremorzillaServantReturnEgg.get()) {
-                FlyingItem flyingItem = new FlyingItem(ModEntityType.FLYING_ITEM.get(), this.level(), this.getX(), this.getY(), this.getZ());
-                flyingItem.setOwner(this.getTrueOwner());
-                flyingItem.setItem(new ItemStack(AcItems.TREMORZILLA_SERVANT_EGG.get()));
-                this.level().addFreshEntity(flyingItem);
-            }
-            this.level().broadcastEntityEvent(this, (byte) 60);
-            this.remove(Entity.RemovalReason.KILLED);
-        }
-    }
-
     private void tickMultipart() {
         if (this.yawPointer == -1) {
             for (int i = 0; i < this.yawBuffer.length; ++i) {
@@ -888,7 +870,6 @@ public class TremorzillaServant extends AnimalSummon
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.setAltSkin(compound.getInt("AltSkin"));
-        this.setHasEgg(compound.getBoolean("HasEgg"));
         this.followingStanceEnforced = compound.getBoolean("FollowingStanceEnforced");
         this.setCharge(compound.getInt("Charge"));
         this.setSpikesDownAmount(compound.getFloat("SpikesDownAmount"));
@@ -899,7 +880,6 @@ public class TremorzillaServant extends AnimalSummon
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("AltSkin", this.getAltSkin());
-        compound.putBoolean("HasEgg", this.hasEgg());
         compound.putBoolean("FollowingStanceEnforced", this.followingStanceEnforced);
         compound.putInt("Charge", this.getCharge());
         compound.putFloat("SpikesDownAmount", this.getSpikesDownAmount());
@@ -1203,33 +1183,6 @@ public class TremorzillaServant extends AnimalSummon
         return d0 + d1 * partialTick;
     }
 
-    @Override
-    public BlockState createEggBlockState() {
-        return AcBlockRegistry.TREMORZILLA_SERVANT_EGG.get().defaultBlockState();
-    }
-
-    @Override
-    public boolean hasEgg() {
-        return this.entityData.get(DATA_HAS_EGG);
-    }
-
-    @Override
-    public void setHasEgg(boolean hasEgg) {
-        this.entityData.set(DATA_HAS_EGG, hasEgg);
-    }
-
-    @Override
-    public void onLayEggTick(BlockPos belowEgg, int time) {
-        this.walkAnimation.update(0.5F, 0.4F);
-        this.level().broadcastEntityEvent(this, (byte) 77);
-    }
-
-    @Override
-    public void spawnChildFromBreeding(ServerLevel level, AnimalSummon partner) {
-        this.setHasEgg(true);
-        this.finalizeSpawnChildFromBreeding(level, partner, partner);
-    }
-
     public int getAltSkin() {
         return this.entityData.get(ALT_SKIN);
     }
@@ -1280,33 +1233,9 @@ public class TremorzillaServant extends AnimalSummon
         }
     }
 
-    public float getBuryEggsProgress(float partialTicks) {
-        return (this.prevBuryEggsProgress + (this.buryEggsProgress - this.prevBuryEggsProgress) * partialTicks) * 0.2F;
-    }
-
     @Override
     public void handleEntityEvent(byte b) {
-        if (b == 77) {
-            this.buryingEggs = true;
-            float radius = this.getBbWidth() * 0.55F;
-            float particleCount = (5 + random.nextInt(5)) * radius;
-            for (int i1 = 0; i1 < particleCount; i1++) {
-                double motionX = (getRandom().nextFloat() - 0.5F) * 0.7D;
-                double motionY = getRandom().nextFloat() * 0.7D + 0.8F;
-                double motionZ = (getRandom().nextFloat() - 0.5F) * 0.7D;
-                float angle = (float) (0.01745329251F * (this.yBodyRot + (i1 / particleCount) * 360F));
-                double extraX = radius * Mth.sin((float) (Math.PI + angle));
-                double extraY = 1.2F;
-                double extraZ = radius * Mth.cos(angle);
-                BlockPos ground = BlockPos.containing(ACMath.getGroundBelowPosition(level(), new Vec3(Mth.floor(this.getX() + extraX), Mth.floor(this.getY() + extraY), Mth.floor(this.getZ() + extraZ))));
-                BlockState groundState = this.level().getBlockState(ground.below());
-                if (groundState.isSolid() && level().isClientSide) {
-                    level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, groundState), true, this.getX() + extraX, ground.getY(), this.getZ() + extraZ, motionX, motionY, motionZ);
-                }
-            }
-        } else if (b == 78) {
-            this.buryingEggs = false;
-        } else if (b == 82 || b == 83) {
+        if (b == 82 || b == 83) {
             ParticleOptions particle = b == 82
                     ? ACParticleRegistry.DINOSAUR_TRANSFORMATION_AMBER.get()
                     : ACParticleRegistry.DINOSAUR_TRANSFORMATION_TECTONIC.get();
@@ -1809,6 +1738,16 @@ public class TremorzillaServant extends AnimalSummon
             }
         }
         return count;
+    }
+
+    @Override
+    public int getSummonLimit(LivingEntity player) {
+        return MobsConfig.TremorzillaServantLimit.get();
+    }
+
+    @Override
+    public Predicate<Entity> summonPredicate() {
+        return entity -> entity instanceof TremorzillaServant;
     }
 
     public class TremorzillaServantFollowGoal extends Goal {
