@@ -1,15 +1,11 @@
 package com.qiuyue.goetyominous.common.events;
 
-import com.github.alexmodguy.alexscaves.server.entity.item.DinosaurSpiritEntity;
 import com.github.alexmodguy.alexscaves.server.entity.item.TephraEntity;
 import com.qiuyue.goetyominous.common.entities.ally.ac.LuxtructosaurusServant;
-import com.qiuyue.goetyominous.common.entities.util.DinosaurSpiritServant;
 import com.qiuyue.goetyominous.common.entities.util.ServantMagmaLink;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.EntityMobGriefingEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -41,7 +37,6 @@ public class LuxtructosaurusTephraHandler {
         }
         Entity direct = event.getSource().getDirectEntity();
         LuxtructosaurusServant servant = servantOwner(direct);
-        boolean tephra = servant != null;
         if (servant == null && direct instanceof LuxtructosaurusServant blasting
                 && event.getSource().is(DamageTypeTags.IS_EXPLOSION)) {
             servant = blasting;
@@ -49,24 +44,10 @@ public class LuxtructosaurusTephraHandler {
         if (servant == null) {
             return;
         }
-        if (victim != servant && !servant.isAlliedTo(victim) && !victim.isAlliedTo(servant)) {
-            if (tephra) {
-                summonGrabSpirit(servant, victim);
-            }
-            return;
+        if (victim == servant || servant.isAlliedTo(victim) || victim.isAlliedTo(servant)) {
+            PENDING_VELOCITY_RESTORE.put(victim.getUUID(), victim.getDeltaMovement());
+            event.setCanceled(true);
         }
-        PENDING_VELOCITY_RESTORE.put(victim.getUUID(), victim.getDeltaMovement());
-        event.setCanceled(true);
-    }
-
-    private static void summonGrabSpirit(LuxtructosaurusServant servant, LivingEntity victim) {
-        if (!MobsConfig.LuxtructosaurusServantSpirits.get()
-                || !(servant.getTrueOwner() instanceof Player master)) {
-            return;
-        }
-        DinosaurSpiritServant.summon(victim.level(),
-                new Vec3(victim.getX(), victim.getY() + (double) victim.getBbHeight(), victim.getZ()),
-                DinosaurSpiritEntity.DinosaurType.SUBTERRANODON, master, victim);
     }
 
     @SubscribeEvent

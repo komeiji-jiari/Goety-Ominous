@@ -1,6 +1,5 @@
 package com.qiuyue.goetyominous.common.blocks.ac;
 
-import com.github.alexmodguy.alexscaves.server.block.DinosaurEggBlock;
 import com.github.alexmodguy.alexscaves.server.entity.ACEntityRegistry;
 import com.qiuyue.goetyominous.common.blocks.entities.ac.AtlatitanServantEggBlockEntity;
 import com.qiuyue.goetyominous.common.entities.ally.ac.AtlatitanServant;
@@ -15,14 +14,13 @@ import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 
 import java.util.UUID;
 
-public class AtlatitanServantEggBlock extends DinosaurEggBlock implements EntityBlock {
+public class AtlatitanServantEggBlock extends ServantEggBlock {
 
     public AtlatitanServantEggBlock(Properties properties) {
         super(properties, ACEntityRegistry.ATLATITAN, 2, 4);
@@ -31,13 +29,6 @@ public class AtlatitanServantEggBlock extends DinosaurEggBlock implements Entity
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return AcBlockEntityRegistry.ATLATITAN_SERVANT_EGG.get().create(pos, state);
-    }
-
-    @Override
-    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
-        if (!(entity instanceof AtlatitanServant)) {
-            super.stepOn(level, pos, state, entity);
-        }
     }
 
     @Override
