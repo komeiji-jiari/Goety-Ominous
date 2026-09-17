@@ -1,0 +1,7 @@
+{
+  "name": "磁场洞穴",
+  "description": "黑暗的磁力吸引着你。",
+  "icon": "alexscaves:telecore",
+  "sortnum": 4,
+  "parent": "goety:accompat"
+}

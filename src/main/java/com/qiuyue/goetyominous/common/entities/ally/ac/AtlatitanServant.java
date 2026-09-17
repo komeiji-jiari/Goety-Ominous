@@ -1117,7 +1117,7 @@ public class AtlatitanServant extends AnimalSummon
                     return InteractionResult.SUCCESS;
                 }
                 if (!(itemstack.getItem() instanceof IWand)
-                        && !itemstack.is(AcItems.EXTINCTION_CATACLYST.get())) {
+                        && !itemstack.is(AcItems.EXTINCTION_CATALYST.get())) {
                     this.doPlayerRide(player);
                     return InteractionResult.SUCCESS;
                 }

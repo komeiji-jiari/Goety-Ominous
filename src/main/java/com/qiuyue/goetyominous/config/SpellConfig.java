@@ -10,6 +10,13 @@ public class SpellConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> AcidPoolSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> AcidPoolCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> AcidPoolCoolDown;
+    public static final ForgeConfigSpec.ConfigValue<Double> AcidPoolBaseDamage;
+    public static final ForgeConfigSpec.ConfigValue<Integer> AcidPoolBaseDuration;
+    public static final ForgeConfigSpec.ConfigValue<Double> AcidPoolRadius;
+
     public static final ForgeConfigSpec.ConfigValue<Integer> BrainEaterDrainPerSecond;
     public static final ForgeConfigSpec.ConfigValue<Integer> BrainEaterSoulsPerDrain;
 
@@ -52,6 +59,12 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> HauntCoolDown;
     public static final ForgeConfigSpec.ConfigValue<Integer> HauntSummonDown;
     public static final ForgeConfigSpec.ConfigValue<Integer> HauntLimit;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> ExtinctionBreathDamage;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ExtinctionBreathSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ExtinctionBreathChargeUp;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ExtinctionBreathDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ExtinctionBreathCoolDown;
 
     public static final ForgeConfigSpec.ConfigValue<Integer> HogChargeSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> HogChargeCooldown;
@@ -160,6 +173,19 @@ public class SpellConfig {
 
     static {
         BUILDER.push("Spells");
+
+        BUILDER.push("ExtinctionBreath");
+        ExtinctionBreathDamage = BUILDER.comment("Damage dealt per tick by Extinction Breath, Default: 4.0")
+                .defineInRange("extinctionBreathDamage", 4.0, 0.0, Double.MAX_VALUE);
+        ExtinctionBreathSoulCost = BUILDER.comment("Soul cost of Extinction Breath, Default: 12")
+                .defineInRange("extinctionBreathSoulCost", 12, 1, 100);
+        ExtinctionBreathChargeUp = BUILDER.comment("Charge up time of Extinction Breath in ticks, Default: 0")
+                .defineInRange("extinctionBreathChargeUp", 0, 0, 500);
+        ExtinctionBreathDuration = BUILDER.comment("Breath duration of Extinction Breath in ticks, Default: 200")
+                .defineInRange("extinctionBreathDuration", 200, 0, 1000);
+        ExtinctionBreathCoolDown = BUILDER.comment("Cooldown of Extinction Breath in ticks, Default: 500")
+                .defineInRange("extinctionBreathCoolDown", 500, 0, 5000);
+        BUILDER.pop();
 
         BUILDER.push("Sand Spell");
         SandSoulCost = BUILDER.comment("Sand Spell Cost, Default: 6")
@@ -300,6 +326,21 @@ public class SpellConfig {
                 .defineInRange("voidShotCastUp", 40, 0, 500);
         VoidShotDuration = BUILDER.comment("Maximum channel duration of Void Shot in ticks (Default: 200)")
                 .defineInRange("voidShotDuration", 200, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("Acid Pool");
+        AcidPoolSoulCost = BUILDER.comment("Soul cost of Acid Pool spell (Default: 24)")
+                .defineInRange("acidPoolSoulCost", 24, 1, 100);
+        AcidPoolCastDuration = BUILDER.comment("Cast duration of Acid Pool spell in ticks (Default: 60)")
+                .defineInRange("acidPoolCastDuration", 60, 0, 500);
+        AcidPoolCoolDown = BUILDER.comment("Cooldown of Acid Pool spell in ticks (Default: 200)")
+                .defineInRange("acidPoolCoolDown", 200, 0, 5000);
+        AcidPoolBaseDamage = BUILDER.comment("Base damage of Acid Pool per hit (Default: 5.0)")
+                .defineInRange("acidPoolBaseDamage", 5.0D, 0.0D, 1000.0D);
+        AcidPoolBaseDuration = BUILDER.comment("Base lifespan of Acid Pool in ticks (Default: 80)")
+                .defineInRange("acidPoolBaseDuration", 80, 1, 20000);
+        AcidPoolRadius = BUILDER.comment("Radius of Acid Pool (Default: 1.0)")
+        .defineInRange("acidPoolRadius", 1.0D, 0.5D, 16.0D);
         BUILDER.pop();
 
         BUILDER.push("Brain Eater");

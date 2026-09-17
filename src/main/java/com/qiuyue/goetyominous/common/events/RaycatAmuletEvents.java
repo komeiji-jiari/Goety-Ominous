@@ -94,7 +94,6 @@ public class RaycatAmuletEvents {
         }
         event.setResult(Event.Result.DENY);
         entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 20 * 30, 1));
-        entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 20 * 30, 0));
     }
 
     @SubscribeEvent
@@ -123,7 +122,6 @@ public class RaycatAmuletEvents {
         if (rad != null) {
             entity.removeEffect(ACEffectRegistry.IRRADIATED.get());
             entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 20 * 30, 1));
-            entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 20 * 30, 0));
         }
     }
 

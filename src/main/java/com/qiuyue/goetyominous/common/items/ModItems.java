@@ -51,6 +51,9 @@ public class ModItems {
     public static final RegistryObject<Item> WORMY_APPLE = ITEMS.register("wormy_apple",
             () -> new WormyAppleItem(new Item.Properties()));
 
+    public static final RegistryObject<Item> WOLF_TONGUE = ITEMS.register("wolf_tongue",
+            () -> new Item(new Item.Properties().rarity(Rarity.COMMON).stacksTo(64)));
+
     public static final RegistryObject<Item> COLD_HEART = ITEMS.register("cold_heart",
             () -> new ColdHeartItem());
 
@@ -175,10 +178,21 @@ public class ModItems {
     public static final RegistryObject<Item> POISONBALL_FOCUS = ITEMS.register("poison_ball_focus",
             () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.PoisonBallSpell()));
 
+    public static final RegistryObject<Item> ACID_POOL_FOCUS = ITEMS.register("acid_pool_focus",
+            () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.AcidPoolSpell()));
+
     public static final RegistryObject<Item> WOLF_TOTEM = ITEMS.register("wolf_totem",
             () -> new BlockItemBase(ModBlocks.WOLF_TOTEM.get()));
 
 
+
+    public static final RegistryObject<ServantSpawnEggItem> MIRED_SERVANT_SPAWN_EGG = ITEMS.register(
+            "mired_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.MIRED_SERVANT, 0x2D2013, 0xEEC5AD, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> BOGGED_SERVANT_SPAWN_EGG = ITEMS.register(
+            "bogged_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.BOGGED_SERVANT, 0x8FB85A, 0x1D3B06, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> AXOLOTL_SERVANT_SPAWN_EGG = ITEMS.register(
             "axolotl_servant_spawn_egg",

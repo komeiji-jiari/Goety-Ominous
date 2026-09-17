@@ -36,6 +36,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -59,6 +60,7 @@ import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -203,6 +205,9 @@ public class GrottoceratopsServant extends AnimalSummon implements LaysEggs, IAn
         }
         this.legSolver.update(this, this.yBodyRot + getTailSwingRot(), this.getScale());
         if (!this.level().isClientSide) {
+            if (this.tickCount % 100 == 0 && this.getHealth() < this.getMaxHealth()) {
+                this.heal(2.0F);
+            }
             LivingEntity target = this.getTarget();
             if (target != null && target.isAlive() && this.getControllingPassenger() instanceof Player
                     && this.getAnimation() == NO_ANIMATION && !this.isStaying() && !this.isImmobile()
@@ -346,6 +351,28 @@ public class GrottoceratopsServant extends AnimalSummon implements LaysEggs, IAn
             if (this.getTrueOwner() != null && player == this.getTrueOwner()) {
                 if (this.isFood(itemstack)) {
                     return super.mobInteract(player, hand);
+                }
+                if (itemstack.is(ACBlockRegistry.CURLY_FERN.get().asItem())) {
+                    if (this.getHealth() >= this.getMaxHealth()) {
+                        return InteractionResult.PASS;
+                    }
+                    this.heal(4.0F);
+                    this.playSound(SoundEvents.ITEM_PICKUP, 1.0F, 1.0F);
+                    this.gameEvent(GameEvent.EAT, this);
+                    if (this.level() instanceof ServerLevel serverLevel) {
+                        for (int i = 0; i < 8; ++i) {
+                            double d0 = this.random.nextGaussian() * 0.02;
+                            double d1 = this.random.nextGaussian() * 0.02 + 0.1;
+                            double d2 = this.random.nextGaussian() * 0.02;
+                            serverLevel.sendParticles(ParticleTypes.HEART,
+                                    this.getRandomX(1.0F),
+                                    this.getY() + this.getBbHeight() * this.getScale() + 0.3F + this.random.nextDouble() * 0.5F,
+                                    this.getRandomZ(1.0F), 0, d0, d1, d2, 0.5);
+                        }
+                    }
+                    this.usePlayerItem(player, hand, itemstack);
+                    player.swing(hand);
+                    return InteractionResult.SUCCESS;
                 }
                 if (!player.isCrouching() && !this.isBaby()) {
                     Entity entity = this.getFirstPassenger();

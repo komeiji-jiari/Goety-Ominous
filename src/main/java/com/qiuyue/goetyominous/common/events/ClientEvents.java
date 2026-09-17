@@ -38,7 +38,7 @@ public class ClientEvents {
         }
 
         if (AlexCavesCompat.isAlexCavesLoaded()) {
-            event.registerEntityRenderer(AcEntityRegistry.EXTINCTION_CATACLYST.get(), ItemEntityRenderer::new);
+            event.registerEntityRenderer(AcEntityRegistry.EXTINCTION_CATALYST.get(), ItemEntityRenderer::new);
         }
     }
 

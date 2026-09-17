@@ -77,8 +77,10 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.animal.Turtle;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -281,7 +283,9 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
         }
 
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<LivingEntity>(this, LivingEntity.class, 20, false, false, (entity) -> {
-            return entity.getType().is(EntityTypes.MUTANT_WITHER_SKELETON_TARGETS);
+            return entity.getType().is(EntityTypes.MUTANT_WITHER_SKELETON_TARGETS)
+                    && !(entity instanceof AbstractPiglin)
+                    && !(entity instanceof IronGolem);
         }) {
             protected AABB getTargetSearchArea(double p_26069_) {
                 return this.mob.getBoundingBox().inflate((Double)MutantWitherSkeletonCommonConfig.follow_non_player_distance.get(), (Double)MutantWitherSkeletonCommonConfig.follow_non_player_distance.get(), (Double)MutantWitherSkeletonCommonConfig.follow_non_player_distance.get());

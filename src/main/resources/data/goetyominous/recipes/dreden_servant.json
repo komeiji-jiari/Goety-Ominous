@@ -8,6 +8,7 @@
   "entity_to_summon": "goetyominous:dreden_servant",
   "soulCost": 1,
   "duration": 10,
+  "research":  "haunting",
   "ingredients": [
     {
       "item": "goety:ectoplasm"

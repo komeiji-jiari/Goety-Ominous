@@ -1,0 +1,7 @@
+{
+  "name": "Candy Cavity",
+  "description": "Oh, sweet darkness!",
+  "icon": "alexscaves:candy_cane",
+  "sortnum": 2,
+  "parent": "goety:accompat"
+}

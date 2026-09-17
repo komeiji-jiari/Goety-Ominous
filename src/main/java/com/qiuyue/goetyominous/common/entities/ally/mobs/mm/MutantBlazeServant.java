@@ -284,7 +284,7 @@ public class MutantBlazeServant extends AbstractMutantServant implements IHeatSo
     }
 
     public boolean shouldBeStationary() {
-        return this.deathTime > 0 || this.introAnimationTick > 0 || this.stunnedTicks > 0;
+        return this.isStaying() || this.deathTime > 0 || this.introAnimationTick > 0 || this.stunnedTicks > 0;
     }
 
     @Override

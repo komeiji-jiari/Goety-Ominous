@@ -2,6 +2,8 @@
   "name": "Dreden Servant",
   "icon": "minecraft:blue_ice",
   "category": "goety:summons",
+  "advancement": "goety:goety/read_haunting_scroll",
+  "secret": true,
   "pages": [
     {
       "type": "patchouli:text",

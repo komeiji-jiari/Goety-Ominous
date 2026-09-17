@@ -29,26 +29,42 @@ public class ModBlocks {
 
     public static final RegistryObject<PlushieBlock> PLUSHIE_ALASJ_XIAONIAO = plushie("plushie_alasj_xiaoniao", "alasj_xiaoniao");
     public static final RegistryObject<PlushieBlock> PLUSHIE_ANT_TENNA_1225 = plushie("plushie_ant_tenna_1225", "ant_tenna_1225");
+    public static final RegistryObject<PlushieBlock> PLUSHIE_AWA_114514 = plushie("plushie_awa_114514", "awa_114514");
     public static final RegistryObject<PlushieBlock> PLUSHIE_CLPOM = plushie("plushie_clpom", "clpom");
     public static final RegistryObject<PlushieBlock> PLUSHIE_CRYOBSIDION = plushie("plushie_cryobsidion", "cryobsidion");
     public static final RegistryObject<PlushieBlock> PLUSHIE_CRYSTALSKELETON9 = plushie("plushie_crystalskeleton9", "crystalskeleton9");
+    public static final RegistryObject<PlushieBlock> PLUSHIE_DH1003 = plushie("plushie_dh1003", "dh1003");
+    public static final RegistryObject<PlushieBlock> PLUSHIE_DREAM = plushie("plushie_dream", "dream");
+    public static final RegistryObject<PlushieBlock> PLUSHIE_GUZHENGXING = plushie("plushie_guzhengxing", "guzhengxing");
     public static final RegistryObject<PlushieBlock> PLUSHIE_HIM = plushie("plushie_him", "him");
+    public static final RegistryObject<PlushieBlock> PLUSHIE_HSZSDRX = plushie("plushie_hszsdrx", "hszsdrx");
     public static final RegistryObject<PlushieBlock> PLUSHIE_JIBINIPONG = plushie("plushie_jibinipong", "jibinipong");
     public static final RegistryObject<PlushieBlock> PLUSHIE_LCW2X = plushie("plushie_lcw2x", "lcw2x");
     public static final RegistryObject<PlushieBlock> PLUSHIE_LECUTEFOX = plushie("plushie_lecutefox", "lecutefox");
+    public static final RegistryObject<PlushieBlock> PLUSHIE_LGDLY = plushie("plushie_lgdly", "lgdly");
+    public static final RegistryObject<PlushieBlock> PLUSHIE_MAGICCAKE = plushie("plushie_magiccake", "magiccake");
     public static final RegistryObject<PlushieBlock> PLUSHIE_MANBA = plushie("plushie_manba", "manba");
     public static final RegistryObject<PlushieBlock> PLUSHIE_MELECHLYON = plushie("plushie_melechlyon", "melechlyon");
     public static final RegistryObject<PlushieBlock> PLUSHIE_MIKUMIKU39SUPER = plushie("plushie_mikumiku39super", "mikumiku39super");
     public static final RegistryObject<PlushieBlock> PLUSHIE_NANDOUAIIYA = plushie("plushie_nandouaiiya", "nandouaiiya");
+    public static final RegistryObject<PlushieBlock> PLUSHIE_NOTCH = plushie("plushie_notch", "notch");
     public static final RegistryObject<PlushieBlock> PLUSHIE_OLDAZHAI = plushie("plushie_oldazhai", "oldazhai");
+    public static final RegistryObject<PlushieBlock> PLUSHIE_PIXCIEL15Y = plushie("plushie_pixciel15y", "pixciel15y");
     public static final RegistryObject<PlushieBlock> PLUSHIE_SALTEDFISH_TINA = plushie("plushie_saltedfish_tina", "saltedfish_tina");
+    public static final RegistryObject<PlushieBlock> PLUSHIE_SANWENYUREN = plushie("plushie_sanwenyuren", "sanwenyuren");
     public static final RegistryObject<PlushieBlock> PLUSHIE_SAOXINGKE = plushie("plushie_saoxingke", "saoxingke");
+    public static final RegistryObject<PlushieBlock> PLUSHIE_SGDAYE = plushie("plushie_sgdaye", "sgdaye");
     public static final RegistryObject<PlushieBlock> PLUSHIE_SPDISH = plushie("plushie_spdish", "spdish");
+    public static final RegistryObject<PlushieBlock> PLUSHIE_SYHXGOLDEN = plushie("plushie_syhxgolden", "syhxgolden");
+    public static final RegistryObject<PlushieBlock> PLUSHIE_TAOSU233 = plushie("plushie_taosu233", "taosu233");
+    public static final RegistryObject<PlushieBlock> PLUSHIE_TECHNOBLADE = plushie("plushie_technoblade", "technoblade");
     public static final RegistryObject<PlushieBlock> PLUSHIE_TENKENAMAINU = plushie("plushie_tenkenamainu", "tenkenamainu");
     public static final RegistryObject<PlushieBlock> PLUSHIE_UINVE = plushie("plushie_uinve", "uinve");
+    public static final RegistryObject<PlushieBlock> PLUSHIE_WU1WU2 = plushie("plushie_wu1wu2", "wu1wu2");
     public static final RegistryObject<PlushieBlock> PLUSHIE_XIAN_REN2 = plushie("plushie_xian_ren2", "xian_ren2");
     public static final RegistryObject<PlushieBlock> PLUSHIE_XIN_TIRIS = plushie("plushie_xin_tiris", "xin_tiris");
     public static final RegistryObject<PlushieBlock> PLUSHIE_XINJIMU = plushie("plushie_xinjimu", "xinjimu");
+    public static final RegistryObject<PlushieBlock> PLUSHIE_XUEYUEFENG = plushie("plushie_xueyuefeng", "xueyuefeng");
 
     private static RegistryObject<PlushieBlock> plushie(String name, String texture) {
         RegistryObject<PlushieBlock> block = BLOCKS.register(name, () -> new PlushieBlock(texture));

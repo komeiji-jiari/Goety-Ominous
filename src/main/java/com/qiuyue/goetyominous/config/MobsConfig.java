@@ -44,13 +44,11 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> AtlatitanServantBreakBlocks;
     public static final ForgeConfigSpec.ConfigValue<Integer> LuxtructosaurusServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantFire;
-
     public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantWaterToStone;
-
     public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantTephra;
     public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantJumpExplosion;
     public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantPrimalMagma;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantExtinctionCataclyst;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantExtinctionCatalyst;
     public static final ForgeConfigSpec.ConfigValue<Integer> LuxtructosaurusServantRoarInterval;
     public static final ForgeConfigSpec.ConfigValue<Integer> VallumraptorServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> VallumraptorElderChance;
@@ -289,9 +287,9 @@ public class MobsConfig {
                 .comment("Whether a Luxtructosaurus Servant keeps the primal magma around it molten the way the primordial boss does, and walks over it instead of sinking in (Default: true)")
                 .define("luxtructosaurusServantPrimalMagma", true);
 
-        LuxtructosaurusServantExtinctionCataclyst = BUILDER
-                .comment("Whether owned Luxtructosaurus Servants return an Extinction Cataclyst when they die (Default: true)")
-                .define("luxtructosaurusServantExtinctionCataclyst", true);
+        LuxtructosaurusServantExtinctionCatalyst = BUILDER
+                .comment("Whether owned Luxtructosaurus Servants return an Extinction Catalyst when they die (Default: true)")
+                .define("luxtructosaurusServantExtinctionCatalyst", true);
 
         LuxtructosaurusServantRoarInterval = BUILDER
                 .comment("How many seconds an enraged Luxtructosaurus Servant may go at most without roaring and calling down another tephra bombardment. The timer only runs while enraged, and never while a player is riding it. Set to 0 to disable (Default: 30)")

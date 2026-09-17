@@ -48,6 +48,12 @@ public class ModEntityLayers {
     public static final ModelLayerLocation DISPENSER_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "dispenser_servant"), "main");
 
+    public static final ModelLayerLocation BOGGED_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation("goetyominous", "bogged_servant"), "main");
+
+    public static final ModelLayerLocation BOGGED_SERVANT_OUTER_LAYER = new ModelLayerLocation(
+            new ResourceLocation("goetyominous", "bogged_servant_outer"), "main");
+
     public static final ModelLayerLocation SUNKEN_NECROMANCER_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "sunken_necromancer"), "main");
 

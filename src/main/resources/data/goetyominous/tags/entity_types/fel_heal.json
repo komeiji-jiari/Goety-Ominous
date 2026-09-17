@@ -6,6 +6,8 @@
     "goety:warlock_servant",
     "goety:slime_servant",
     "goety:muck_wraith_servant",
+    "goetyominous:mired_servant",
+    "goetyominous:bogged_servant",
     {
       "id": "goetyominous:caniac_servant",
       "required": false

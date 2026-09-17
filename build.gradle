@@ -180,13 +180,13 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    implementation fg.deobf("curse.maven:goety-586095:8736784")
+    implementation fg.deobf("curse.maven:goety-586095:8891954")
     compileOnly fg.deobf("curse.maven:illage-and-spillage-respillaged-1079714:6156035")
     implementation fg.deobf("top.theillusivec4.curios:curios-forge:5.14.1+1.20.1")
 
     // 仅编译时使用，运行时可选
     compileOnly fg.deobf("curse.maven:goety-spillage-1108014:8157704")
-    compileOnly fg.deobf("curse.maven:goetyawaken-1412569:8724855")
+    compileOnly fg.deobf("curse.maven:goetyawaken-1412569:8880533")
     compileOnly fg.deobf("curse.maven:goety-revelation-1236817:8311906")
 
     compileOnly fg.deobf("curse.maven:savage-and-ravage-381736:7115735")

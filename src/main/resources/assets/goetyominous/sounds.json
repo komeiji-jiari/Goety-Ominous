@@ -1,4 +1,36 @@
 {
+  "bogged_servant_ambient": {
+    "subtitle": "subtitles.goetyominous.bogged_servant.ambient",
+    "sounds": [
+      "goetyominous:bogged_servant/ambient1",
+      "goetyominous:bogged_servant/ambient2",
+      "goetyominous:bogged_servant/ambient3",
+      "goetyominous:bogged_servant/ambient4"
+    ]
+  },
+  "bogged_servant_hurt": {
+    "subtitle": "subtitles.goetyominous.bogged_servant.hurt",
+    "sounds": [
+      "goetyominous:bogged_servant/hurt1",
+      "goetyominous:bogged_servant/hurt2",
+      "goetyominous:bogged_servant/hurt3",
+      "goetyominous:bogged_servant/hurt4"
+    ]
+  },
+  "bogged_servant_death": {
+    "subtitle": "subtitles.goetyominous.bogged_servant.death",
+    "sounds": [
+      "goetyominous:bogged_servant/death"
+    ]
+  },
+  "bogged_servant_step": {
+    "sounds": [
+      "goetyominous:bogged_servant/step1",
+      "goetyominous:bogged_servant/step2",
+      "goetyominous:bogged_servant/step3",
+      "goetyominous:bogged_servant/step4"
+    ]
+  },
   "dreden_idle": {
     "subtitle": "subtitles.goetyominous.dreden.idle",
     "sounds": [

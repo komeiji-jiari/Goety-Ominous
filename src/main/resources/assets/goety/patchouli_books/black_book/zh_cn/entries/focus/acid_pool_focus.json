@@ -1,0 +1,21 @@
+{
+  "name": "酸液池聚晶",
+  "icon": "goetyominous:acid_pool_focus",
+  "category": "goety:focuses/fel",
+  "advancement": "goetyominous:goetyominous/witch_lesson",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "有时候我真的很想把酸液泼到奶奶的那只讨厌的黑猫身上！如果你有时候也有这种想法的话...我这里有一种法术，可以召唤酸液池来狠狠教训那些敢欺负你的坏家伙！"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:acid_pool_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "啊对了，别忘了用你的邪能魔杖施法，它能让你的酸液池带上毒液效果！如果那还不够的话，就试试穿上一件巫婆长袍吧！穿着制服还能翻倍毒液效果的等级！"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "name": "Atlatitan",
+  "icon": "alexscaves:atlatitan_egg",
+  "category": "goety:primordialcaves",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "After defeating the Extinction of the Primordial Caves, you noticed some new dinosaurs. Although these Atlatitans cannot be fully tamed through normal means, you can still bend them to your will through magic."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:atlatitan_servant",
+      "scale": 0.6,
+      "text": "Titanosaur"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Wearing Wild Robes restores your dinosaurs' health. Feeding them Pewen Branches or Serene Salads heals your Atlatitan. Tree Stars can be used to breed your Atlatitan; a breeding pair will lay an egg, and the hatchling will still recognize you as its master."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "You can ride your Atlatitan. Pressing the special ability key makes your Atlatitan unleash a stomp, destroying large swathes of terrain around it. Note that this stomp does not harm any creatures."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_atlatitan_to_atlatitan_servant"
+    }
+  ]
+}

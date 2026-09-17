@@ -1,0 +1,28 @@
+{
+  "name": "骷髅们的变种",
+  "icon": "minecraft:moss_block",
+  "category": "goety:summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "旅途中你发现了更多的骷髅们。通过正确的方法，你可以召唤这些新的骷髅为你所用。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:bogged_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "沼骸是被埋葬在沼泽里的覆盖着苔藓的死者。比起常规的骷髅这些沼骸更加脆弱且拉弓的速度更慢，但它们会朝着受害者射出带有缓慢和剧毒效果的箭矢。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "在沼泽里召唤骷髅将会召唤出沼骸仆从，或者使用一根女巫们的魔杖也能召唤它们。穿戴巫婆们的制服，能让你的沼骸仆从的攻击给予目标毒液而不是中毒。用剪刀右键它们可以剪除它们身上的蘑菇，使用骨粉或等待一段时间它们身上的蘑菇便会再生。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "沼骸仆从",
+      "text": "需求：$(li)墓碑位于沼泽生物群系 $(br)$(l)或是$()$() $(li)20块泥巴 $(li)1个粘液块"
+    }
+  ]
+}

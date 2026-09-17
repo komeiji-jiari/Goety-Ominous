@@ -11,6 +11,17 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> MiredHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> MiredDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> MiredArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> MiredFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> MiredMovementSpeed;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> BoggedServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> BoggedServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> BoggedServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> BoggedServantRangeDamage;
+
     public static final ForgeConfigSpec.ConfigValue<Double> DredenHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> DredenDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> DredenFollowRange;
@@ -511,6 +522,30 @@ public class AttributesConfig {
 
     static {
         BUILDER.push("Servants Attributes");
+
+        BUILDER.push("Mired");
+        MiredHealth = BUILDER.comment("How much Max Health Mired Servants have, Default: 24.0")
+                .defineInRange("miredHealth", 24.0, 1.0, Double.MAX_VALUE);
+        MiredDamage = BUILDER.comment("How much damage Mired Servants deal, Default: 3.0")
+                .defineInRange("miredDamage", 3.0, 1.0, Double.MAX_VALUE);
+        MiredArmor = BUILDER.comment("How much natural Armor Mired Servants have, Default: 6.0")
+                .defineInRange("miredArmor", 6.0, 0.0, Double.MAX_VALUE);
+        MiredFollowRange = BUILDER.comment("Mired Servants follow range, Default: 35.0")
+                .defineInRange("miredFollowRange", 35.0, 1.0, Double.MAX_VALUE);
+        MiredMovementSpeed = BUILDER.comment("Mired Servants movement speed, Default: 0.20")
+                .defineInRange("miredMovementSpeed", 0.20, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("BoggedServant");
+        BoggedServantHealth = BUILDER.comment("How much Max Health Bogged Servants have, Default: 16.0")
+                .defineInRange("boggedServantHealth", 16.0, 1.0, Double.MAX_VALUE);
+        BoggedServantArmor = BUILDER.comment("How much natural Armor Bogged Servants have, Default: 0.0")
+                .defineInRange("boggedServantArmor", 0.0, 0.0, Double.MAX_VALUE);
+        BoggedServantDamage = BUILDER.comment("How much melee damage Bogged Servants deal, Default: 3.0")
+                .defineInRange("boggedServantDamage", 3.0, 0.0, Double.MAX_VALUE);
+        BoggedServantRangeDamage = BUILDER.comment("How much damage Bogged Servant arrows deal, Default: 2.0")
+                .defineInRange("boggedServantRangeDamage", 2.0, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
 
         BUILDER.push("Warg");
         WargHealth = BUILDER.comment("How much Max Health Wargs have, Default: 50.0")

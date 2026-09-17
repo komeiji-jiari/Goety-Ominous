@@ -1,0 +1,28 @@
+{
+  "name": "撼地龙",
+  "icon": "alexscaves:tremorsaurus_egg",
+  "category": "goety:primordialcaves",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你已经学会了如何用黑暗艺术让原始洞穴的主人为你俯首。这些撼地龙的咆哮会令你的敌人恐慌，并给予你的盟友斗志。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:tremorsaurus_servant",
+      "text": "侏罗纪公园"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "穿着荒野长袍可以恢复你的恐龙的生命值。喂食它们任意肉类可治愈你的撼地龙。恐龙肉骨可以用于繁殖你的撼地龙，参与繁殖的撼地龙会产下一枚蛋，孵化出的小撼地龙依旧视你为主人。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "你可以骑乘你的撼地龙。按下特殊能力按键即可让你的撼地龙发动咆哮，震慑生物并鼓舞友军。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_tremorsaurus_to_tremorsaurus_servant"
+    }
+  ]
+}
