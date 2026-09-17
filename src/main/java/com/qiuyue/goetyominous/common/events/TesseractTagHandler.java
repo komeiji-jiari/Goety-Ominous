@@ -49,7 +49,8 @@ public class TesseractTagHandler {
             addToTag(TESSERACT_SMALL, AmEntityRegistry.BUNFUNGUS_SERVANT);
         }
         if (AlexCavesCompat.isAlexCavesLoaded()) {
-            addToTag(TESSERACT_SMALL, AcEntityRegistry.GAMMAROACH_SERVANT);
+            addToTag(TESSERACT_SMALL, AcEntityRegistry.CORRODENT_SERVANT);
+            addToTag(TESSERACT_SMALL, AcEntityRegistry.CANDICORN_SERVANT);
         }
 
         addToTag(TESSERACT_MEDIUM, ModEntityTypes.HERESIARCH_SERVANT);
@@ -72,6 +73,7 @@ public class TesseractTagHandler {
             addToTag(TESSERACT_MEDIUM, AcEntityRegistry.GROTTOCERATOPS_SERVANT);
             addToTag(TESSERACT_MEDIUM, AcEntityRegistry.FORSAKEN_SERVANT);
             addToTag(TESSERACT_MEDIUM, AcEntityRegistry.RELICHEIRUS_SERVANT);
+            addToTag(TESSERACT_MEDIUM, AcEntityRegistry.NUCLEEPER_SERVANT);
         }
 
         if (MutantMoreCompat.isMutantMoreLoaded()) {

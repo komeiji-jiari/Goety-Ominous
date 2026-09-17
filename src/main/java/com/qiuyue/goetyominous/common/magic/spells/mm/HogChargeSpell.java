@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.magic.spells.mm;
 
+import com.Polarice3.Goety.api.entities.IOwned;
 import com.Polarice3.Goety.api.magic.SpellType;
 import com.Polarice3.Goety.common.enchantments.ModEnchantments;
 import com.Polarice3.Goety.common.magic.EverChargeSpell;
@@ -121,6 +122,7 @@ public class HogChargeSpell extends EverChargeSpell {
                     .expandTowards(lookVec.scale(3.0));
             for (LivingEntity target : worldIn.getEntitiesOfClass(LivingEntity.class, damageBox)) {
                 if (target == caster) continue;
+                if (target instanceof IOwned owned && owned.getTrueOwner() == caster) continue;
                 if (target instanceof Player player && (player.isCreative() || player.isSpectator())) continue;
                 if (!caster.canAttack(target)) continue;
 

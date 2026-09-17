@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.client.render;
 
+import com.qiuyue.goetyominous.client.render.layer.DredenBandsLayer;
 import com.qiuyue.goetyominous.client.render.model.DredenModel;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractDredenEntity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -12,6 +13,7 @@ public class DredenServantRenderer<T extends AbstractDredenEntity> extends MobRe
 
     public DredenServantRenderer(EntityRendererProvider.Context context) {
         super(context, new DredenModel<>(context.bakeLayer(DredenModel.LAYER_LOCATION)), 0.5F);
+        this.addLayer(new DredenBandsLayer<>(this, context.getModelSet()));
     }
 
     @Override

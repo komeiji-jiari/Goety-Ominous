@@ -1,0 +1,28 @@
+{
+  "name": "Zombie Servant Variants",
+  "icon": "minecraft:mud",
+  "category": "goety:summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Lately you've noticed more types of zombies, and some of these unique variants have piqued your curiosity."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:mired_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "These zombies that crawl out of swamps are covered in thick mud, which provides them with extra armor and a small amount of magic protection, but also makes them slower. Their attacks slow their victims and inflict them with potent poison."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Summoning Zombies in a swamp biome will summon Mired Servants, or you can summon them using a witch's wand. Wearing a crone's uniform makes your Mired Servants' attacks inflict Acid Venom instead of Poison on their targets."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Mired Servant",
+      "text": "Requirements: $(li)Gravestone is located in a Swamp biome $(br)$(l)OR$()$() $(li)15 Mud Blocks $(li)1 Cauldron"
+    }
+  ]
+}

@@ -9,7 +9,6 @@ import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.ai.SummonTargetGoal;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.common.entities.util.CameraShake;
-import com.Polarice3.Goety.init.ModMobType;
 import com.github.alexmodguy.alexscaves.AlexsCaves;
 import com.github.alexmodguy.alexscaves.client.particle.ACParticleRegistry;
 import com.github.alexmodguy.alexscaves.server.entity.ai.AdvancedPathNavigateNoTeleport;
@@ -44,6 +43,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
@@ -82,7 +82,9 @@ import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.GameRules;
@@ -95,6 +97,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -266,7 +269,7 @@ public class LuxtructosaurusServant extends Summoned
 
     @Override
     public MobType getMobType() {
-        return ModMobType.NATURAL;
+        return MobType.UNDEAD;
     }
 
     @Override
@@ -557,9 +560,41 @@ public class LuxtructosaurusServant extends Summoned
         return !this.areLegsMoving() && this.getWalkAnimSpeed(1.0F) < 0.05F;
     }
 
+    private static final ResourceLocation PRIMAL_MAGMA_ID =
+            new ResourceLocation("alexscaves", "primal_magma");
+
+    private static boolean isMagmaHealBlock(ItemStack stack) {
+        if (stack.is(Items.MAGMA_BLOCK)) {
+            return true;
+        }
+        return stack.getItem() instanceof BlockItem blockItem
+                && PRIMAL_MAGMA_ID.equals(ForgeRegistries.BLOCKS.getKey(blockItem.getBlock()));
+    }
+
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
+
+        if (player.isShiftKeyDown() && player == this.getTrueOwner()
+                && this.getHealth() < this.getMaxHealth() && isMagmaHealBlock(itemstack)) {
+            if (!player.getAbilities().instabuild) {
+                itemstack.shrink(1);
+            }
+            this.heal(4.0F);
+            if (this.level() instanceof ServerLevel serverLevel) {
+                this.playSound(ACSoundRegistry.LUXTRUCTOSAURUS_ROAR.get(), 1.0F, 1.0F);
+                for (int i = 0; i < 7; ++i) {
+                    double d0 = this.random.nextGaussian() * 0.02D;
+                    double d1 = this.random.nextGaussian() * 0.02D;
+                    double d2 = this.random.nextGaussian() * 0.02D;
+                    serverLevel.sendParticles(ParticleTypes.HEART,
+                            this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D),
+                            0, d0, d1, d2, 0.5F);
+                }
+            }
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
+        }
+
         if (!this.level().isClientSide && this.getTrueOwner() != null && player == this.getTrueOwner()
                 && !player.isCrouching()
                 && !(itemstack.getItem() instanceof IWand)
@@ -1425,8 +1460,8 @@ public class LuxtructosaurusServant extends Summoned
                 }
             }
             if (this.getAnimationTick() > 110 && !this.level().isClientSide && !this.isRemoved()) {
-                if (this.getTrueOwner() != null && MobsConfig.LuxtructosaurusServantExtinctionCataclyst.get()) {
-                    ItemStack itemStack = new ItemStack(AcItems.EXTINCTION_CATACLYST.get());
+                if (this.getTrueOwner() != null && MobsConfig.LuxtructosaurusServantExtinctionCatalyst.get()) {
+                    ItemStack itemStack = new ItemStack(AcItems.EXTINCTION_CATALYST.get());
                     ReviveServantItem.setOwnerName(this.getTrueOwner(), itemStack);
                     ReviveServantItem.setSummon(this, itemStack);
                     Vec3 headPos = this.headPart.centeredPosition();

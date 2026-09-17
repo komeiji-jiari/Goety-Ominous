@@ -18,7 +18,7 @@ public class PlushieLootInjection {
             new ResourceLocation(GoetyOminous.MOD_ID, "gameplay/plushie_reward");
 
     private static final String TREASURE_POUCH = "goety:gameplay/treasure_pouch";
-    private static final float POUCH_CHANCE = 0.2F;
+    private static final float POUCH_CHANCE = 0.15F;
 
     private static final List<String> CHEST_TABLES = List.of(
             "goety:chests/blacksmith_treasure",

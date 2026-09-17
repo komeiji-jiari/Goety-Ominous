@@ -368,12 +368,34 @@ public class ModEntityTypes {
                             .setTrackingRange(8)
                             .build(MOD_ID + ":poison_ball"));
 
+    public static final RegistryObject<EntityType<FelBolt>> FEL_BOLT = ENTITY_TYPES
+            .register("fel_bolt",
+                    () -> EntityType.Builder.<FelBolt>of(
+                                    (type, worldIn) -> new FelBolt(type, worldIn), MobCategory.MISC)
+                            .sized(0.3125F, 0.3125F)
+                            .setTrackingRange(4)
+                            .build(MOD_ID + ":fel_bolt"));
+
     public static final RegistryObject<EntityType<Warg>> WARG = ENTITY_TYPES.register(
             "warg",
             () -> EntityType.Builder.of(Warg::new, MobCategory.MISC)
                     .sized(1.25F, 1.65F)
                     .clientTrackingRange(10)
                     .build(MOD_ID + ":warg"));
+
+    public static final RegistryObject<EntityType<MiredServant>> MIRED_SERVANT = ENTITY_TYPES.register(
+            "mired_servant",
+            () -> EntityType.Builder.of(MiredServant::new, MobCategory.MISC)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":mired_servant"));
+
+    public static final RegistryObject<EntityType<BoggedServant>> BOGGED_SERVANT = ENTITY_TYPES.register(
+            "bogged_servant",
+            () -> EntityType.Builder.of(BoggedServant::new, MobCategory.MISC)
+                    .sized(0.6F, 1.99F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":bogged_servant"));
 
     public static void register(IEventBus modEventBus) {
         ENTITY_TYPES.register(modEventBus);

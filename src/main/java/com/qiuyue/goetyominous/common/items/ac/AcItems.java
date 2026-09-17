@@ -1,9 +1,11 @@
 package com.qiuyue.goetyominous.common.items.ac;
 
 import com.Polarice3.Goety.common.items.ServantSpawnEggItem;
+import com.Polarice3.Goety.common.items.magic.MagicFocus;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
+import com.qiuyue.goetyominous.common.magic.spells.ac.ExtinctionBreathSpell;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -140,11 +142,16 @@ public class AcItems {
             AC_ITEMS.register("licowitch_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AcEntityRegistry.LICOWITCH_SERVANT, 0x681182, 0xFF6CD7, egg()));
 
+    public static final RegistryObject<Item> EXTINCTION_BREATH_FOCUS = AC_ITEMS.register("extinction_breath_focus",
+            () -> new MagicFocus(new ExtinctionBreathSpell()));
+
+
+
     public static final RegistryObject<Item> RAYCAT_AMULET =
             AC_ITEMS.register("raycat_amulet", () -> new RaycatAmuletItem());
 
-    public static final RegistryObject<ExtinctionCataclyst> EXTINCTION_CATACLYST =
-            AC_ITEMS.register("extinction_cataclyst", ExtinctionCataclyst::new);
+    public static final RegistryObject<ExtinctionCatalyst> EXTINCTION_CATALYST =
+            AC_ITEMS.register("extinction_catalyst", ExtinctionCatalyst::new);
 
     public static Item.Properties egg() {
         return new Item.Properties();

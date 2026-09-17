@@ -478,8 +478,34 @@ public class RelicheirusServant extends AnimalSummon implements LaysEggs, IAnima
             }
             if (itemstack.is(ACItemRegistry.PRIMORDIAL_SOUP.get())) {
                 if (!this.level().isClientSide) {
-                    this.heal(20.0F);
                     this.setPushingTreesFor(PUSHING_TREES_TICKS);
+                    this.playSound(SoundEvents.ITEM_PICKUP, 1.0F, 1.0F);
+                    this.gameEvent(GameEvent.EAT, this);
+                    if (this.level() instanceof ServerLevel serverLevel) {
+                        for (int i = 0; i < 8; ++i) {
+                            double d0 = this.random.nextGaussian() * 0.02;
+                            double d1 = this.random.nextGaussian() * 0.02 + 0.1;
+                            double d2 = this.random.nextGaussian() * 0.02;
+                            serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER,
+                                    this.getRandomX(1.0F),
+                                    this.getY() + this.getBbHeight() * this.getScale() + 0.3F + this.random.nextDouble() * 0.5F,
+                                    this.getRandomZ(1.0F), 0, d0, d1, d2, 0.5);
+                        }
+                    }
+                    if (!itemstack.getCraftingRemainingItem().isEmpty()) {
+                        this.spawnAtLocation(itemstack.getCraftingRemainingItem().copy());
+                    }
+                    this.usePlayerItem(player, hand, itemstack);
+                    player.swing(hand);
+                }
+                return InteractionResult.sidedSuccess(this.level().isClientSide);
+            }
+            if (itemstack.is(ACItemRegistry.TRILOCARIS_TAIL.get())) {
+                if (this.getHealth() >= this.getMaxHealth()) {
+                    return InteractionResult.PASS;
+                }
+                if (!this.level().isClientSide) {
+                    this.heal(4.0F);
                     this.playSound(SoundEvents.ITEM_PICKUP, 1.0F, 1.0F);
                     this.gameEvent(GameEvent.EAT, this);
                     if (this.level() instanceof ServerLevel serverLevel) {
@@ -492,9 +518,6 @@ public class RelicheirusServant extends AnimalSummon implements LaysEggs, IAnima
                                     this.getY() + this.getBbHeight() * this.getScale() + 0.3F + this.random.nextDouble() * 0.5F,
                                     this.getRandomZ(1.0F), 0, d0, d1, d2, 0.5);
                         }
-                    }
-                    if (!itemstack.getCraftingRemainingItem().isEmpty()) {
-                        this.spawnAtLocation(itemstack.getCraftingRemainingItem().copy());
                     }
                     this.usePlayerItem(player, hand, itemstack);
                     player.swing(hand);

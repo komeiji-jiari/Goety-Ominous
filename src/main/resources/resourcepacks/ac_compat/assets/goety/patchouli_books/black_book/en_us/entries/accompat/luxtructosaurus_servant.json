@@ -1,0 +1,34 @@
+{
+  "name": "Luxtructosaurus",
+  "icon": "alexscaves:tectonic_shard",
+  "category": "goety:primordialcaves",
+  "advancement": "goety:goety/read_bygone_scroll",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Primordial paintings reveal a terrifying creature that once destroyed the entire cave ecosystem... Nevertheless, with the dark arts at your command, you can raise once more that horror buried in lava and ash within the volcano. Of course, it will not bring about the catastrophe that once befell the Primordial Caves."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:extinction_catalyst"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goetyominous:extinction_catalyst",
+      "text": "To awaken the creature within the volcano, you must craft a special catalyst. Once you have the catalyst, throw it into the volcano in the Primordial Caves, and the Extinction will emerge from the volcano."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:luxtructosaurus_servant",
+      "scale": 0.6
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Just like the Atlatitan Servants, you can ride your Luxtructosaurus. Pressing the special ability key puts your Luxtructosaurus into an empowered state. If your Luxtructosaurus is destroyed, it will return the Extinction Catalyst. Hold the catalyst and sneak-right-click your Atlatitan servant, or throw the catalyst into the volcano again to revive the Luxtructosaurus."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "As an undead creature, Necro Capes can restore your Luxtructosaurus's health, and Nether Robes also provide additional healing. To heal it manually, sneak-right-click the Luxtructosaurus servant while holding a Magma Block or Primal Magma Block."
+    }
+  ]
+}

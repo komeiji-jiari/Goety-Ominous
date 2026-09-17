@@ -840,7 +840,7 @@ public class TremorsaurusServant extends AnimalSummon implements LaysEggs, Keybi
                 if (itemstack.getItem().isEdible() && itemstack.getFoodProperties(this).isMeat() && this.getHealth() < this.getMaxHealth()) {
                     FoodProperties foodProperties = itemstack.getFoodProperties(this);
                     if (foodProperties != null) {
-                        this.heal(15.0F);
+                        this.heal(5.0F);
                         if (!player.getAbilities().instabuild) {
                             itemstack.shrink(1);
                         }

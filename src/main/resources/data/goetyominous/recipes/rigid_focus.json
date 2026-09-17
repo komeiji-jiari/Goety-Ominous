@@ -7,6 +7,7 @@
   "craftType": "necroturgy",
   "soulCost": 1,
   "duration": 10,
+  "research":  "haunting",
   "ingredients": [
     {
       "tag": "minecraft:soul_fire_base_blocks"
@@ -22,6 +23,9 @@
     },
     {
       "item": "goety:ectoplasm"
+    },
+    {
+      "item": "minecraft:ghast_tear"
     },
     {
       "item": "goety:frost_breath_focus"

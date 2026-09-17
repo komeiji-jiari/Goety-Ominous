@@ -4,6 +4,7 @@ import com.Polarice3.Goety.common.blocks.entities.OssuaryBlockEntity;
 import com.Polarice3.Goety.common.blocks.entities.TrainingBlockEntity;
 import com.Polarice3.Goety.common.entities.ModEntityType;
 import com.Polarice3.Goety.utils.BlockFinder;
+import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.compat.mod.SavageRavageCompat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -11,6 +12,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.RegistryObject;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -34,6 +36,22 @@ public class MixinOssuaryBlockEntity {
         if (villagerType == null) return;
 
         self.setEntityType(villagerType);
+        self.markUpdated();
+    }
+
+    @Inject(method = "setVariant", at = @At("RETURN"), remap = false)
+    private void goetyominous$boggedVariant(ItemStack stack, Level level, BlockPos pos, CallbackInfo ci) {
+        if (!(level instanceof ServerLevel serverLevel)) return;
+
+        TrainingBlockEntity self = (TrainingBlockEntity) (Object) this;
+        if (self.getTrainMob() != ModEntityType.SKELETON_SERVANT.get()) return;
+
+        boolean swamp = serverLevel.getBiome(pos.below()).is(Tags.Biomes.IS_SWAMP);
+        boolean bog = self.getBlocks(s -> s.is(Blocks.MUD), 20)
+                && self.getBlocks(s -> s.is(Blocks.SLIME_BLOCK), 1);
+        if (!swamp && !bog) return;
+
+        self.setEntityType(ModEntityTypes.BOGGED_SERVANT.get());
         self.markUpdated();
     }
 

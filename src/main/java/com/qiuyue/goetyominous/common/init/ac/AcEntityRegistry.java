@@ -34,7 +34,7 @@ import com.qiuyue.goetyominous.common.entities.projectile.LicowitchServantHex;
 import com.qiuyue.goetyominous.common.entities.projectile.LicowitchServantPeppermint;
 import com.qiuyue.goetyominous.common.entities.projectile.GumballServantEntity;
 import com.qiuyue.goetyominous.common.entities.projectile.DeepOneServantWave;
-import com.qiuyue.goetyominous.common.entities.util.ExtinctionCataclystEntity;
+import com.qiuyue.goetyominous.common.entities.util.ExtinctionCatalystEntity;
 import com.qiuyue.goetyominous.common.entities.util.PureDarkVoid;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -314,14 +314,14 @@ public class AcEntityRegistry {
                             .setTrackingRange(12)
                             .build(GoetyOminous.MOD_ID + ":dark_void"));
 
-    public static final RegistryObject<EntityType<ExtinctionCataclystEntity>> EXTINCTION_CATACLYST =
-            AC_ENTITIES.register("extinction_cataclyst",
-                    () -> EntityType.Builder.<ExtinctionCataclystEntity>of(ExtinctionCataclystEntity::new, MobCategory.MISC)
+    public static final RegistryObject<EntityType<ExtinctionCatalystEntity>> EXTINCTION_CATALYST =
+            AC_ENTITIES.register("extinction_catalyst",
+                    () -> EntityType.Builder.<ExtinctionCatalystEntity>of(ExtinctionCatalystEntity::new, MobCategory.MISC)
                             .sized(0.25F, 0.25F)
                             .setTrackingRange(6)
                             .setUpdateInterval(20)
                             .fireImmune()
-                            .build(GoetyOminous.MOD_ID + ":extinction_cataclyst"));
+                            .build(GoetyOminous.MOD_ID + ":extinction_catalyst"));
 
     public static void register(IEventBus modEventBus) {
         AC_ENTITIES.register(modEventBus);

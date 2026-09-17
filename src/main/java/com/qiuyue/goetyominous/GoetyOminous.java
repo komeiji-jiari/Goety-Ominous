@@ -143,7 +143,7 @@ public class GoetyOminous {
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.NucleeperSummonHandler.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.BubbledVisualCleanupHandler.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.LuxtructosaurusTephraHandler.class);
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ExtinctionCataclystHandler.class);
+            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ExtinctionCatalystHandler.class);
         }
 
         getOrCreateDirectory(FMLPaths.CONFIGDIR.get().resolve("goetyominous"), "goetyominous");
@@ -167,6 +167,7 @@ public class GoetyOminous {
         WeaponConfig.loadConfig(WeaponConfig.SPEC,
                 FMLPaths.CONFIGDIR.get().resolve("goetyominous/goetyominous-weapons.toml").toString());
 
+        com.qiuyue.goetyominous.common.init.ModAttributes.init();
         FEL = com.Polarice3.Goety.api.magic.SpellType.create("FEL", "fel");
     }
 
@@ -213,6 +214,8 @@ public class GoetyOminous {
         }
         event.put(ModEntityTypes.URBHADHACH.get(), UrbhadhachEntity.setCustomAttributes().build());
         event.put(ModEntityTypes.URBHADHACH_SERVANT.get(), UrbhadhachServant.setCustomAttributes().build());
+        event.put(ModEntityTypes.MIRED_SERVANT.get(), MiredServant.setCustomAttributes().build());
+        event.put(ModEntityTypes.BOGGED_SERVANT.get(), BoggedServant.setCustomAttributes().build());
         event.put(ModEntityTypes.SUNKEN_NECROMANCER_SERVANT.get(), SunkenNecromancerServant.setCustomAttributes().build());
         event.put(ModEntityTypes.SUNKEN_NECROMANCER.get(), SunkenNecromancer.setCustomAttributes().build());
         event.put(ModEntityTypes.AXOLOTL_SERVANT.get(), AxolotlServant.setCustomAttributes().build());

@@ -127,6 +127,13 @@ public class ModModelLayers {
 
         event.registerLayerDefinition(ModEntityLayers.PITCHFORK_LAYER, PitchforkModel::createBodyLayer);
 
+        event.registerLayerDefinition(ModEntityLayers.BOGGED_SERVANT_LAYER,
+                BoggedServantModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.BOGGED_SERVANT_OUTER_LAYER,
+                () -> LayerDefinition.create(
+                        HumanoidModel.createMesh(new CubeDeformation(0.25F), 0.0F), 64, 32));
+
         event.registerLayerDefinition(ModEntityLayers.SUNKEN_NECROMANCER_LAYER,
                 SunkenNecromancerModel::createBodyLayer);
 
@@ -397,6 +404,10 @@ public class ModModelLayers {
                     MagispellerServantRenderer::new);
         }
 
+        event.registerEntityRenderer(ModEntityTypes.MIRED_SERVANT.get(), MiredServantRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.BOGGED_SERVANT.get(), BoggedServantRenderer::new);
+
         event.registerEntityRenderer(ModEntityTypes.BURNING_POTION.get(), BurningPotionRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.BURNING_GROUND.get(), BurningGroundRenderer::new);
@@ -406,6 +417,8 @@ public class ModModelLayers {
         event.registerEntityRenderer(ModEntityTypes.ACID_FUNGUS.get(), AcidFungusRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.PITCHFORK.get(), PitchforkRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.FEL_BOLT.get(), FelBoltRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.DREDEN.get(), DredenRenderer::new);
 

@@ -45,7 +45,7 @@ public class PlushieBlockEntityRenderer implements BlockEntityRenderer<PlushieBl
         poseStack.translate(0.5D, 0.0D, 0.5D);
         poseStack.scale(-1.0F, -1.0F, 1.0F);
         float f = blockEntity.getAnimation(partialTicks);
-        VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(getTexture(blockEntity.getBlockState())));
+        VertexConsumer consumer = buffer.getBuffer(RenderType.entityTranslucent(getTexture(blockEntity.getBlockState())));
         plushieModel.setupAnim(f, rotateY, 0.0F);
         plushieModel.renderToBuffer(poseStack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         poseStack.popPose();
@@ -59,7 +59,7 @@ public class PlushieBlockEntityRenderer implements BlockEntityRenderer<PlushieBl
         poseStack.scale(-1.0F, -1.0F, 1.0F);
         poseStack.scale(0.5F, 0.5F, 0.5F);
         VertexConsumer consumer = ItemRenderer.getFoilBufferDirect(buffer,
-                RenderType.entityCutoutNoCull(getTexture(blockState)), true, stack.hasFoil());
+                RenderType.entityTranslucent(getTexture(blockState)), true, stack.hasFoil());
         plushieModel.setupAnim(0.0F, rotateY, 0.0F);
         plushieModel.renderToBuffer(poseStack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         poseStack.popPose();
