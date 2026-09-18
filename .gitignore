@@ -77,3 +77,4 @@ _strip_comments.tmp.js
 
 # PCL 游戏调试环境（本地启动器 + .minecraft，不入库）
 /beta/
+/.crash918/
