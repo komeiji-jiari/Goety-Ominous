@@ -112,8 +112,6 @@ public class ExtinctionMeteorSpell extends EverChargeSpell {
             potency += 2;
         }
 
-        boolean safe = this.isShifting(caster);
-
         for (int j = 0; j < potency + 1; ++j) {
             Vec3 spot = this.pickSpawn(worldIn, cursor);
             Vec3 puff = spot.offsetRandom(worldIn.getRandom(), 1.5F);
@@ -122,7 +120,7 @@ public class ExtinctionMeteorSpell extends EverChargeSpell {
             worldIn.sendParticles(new FoggyCloudParticleOption(new ColorUtil(CLOUD_INNER), 3.0F, 1),
                     spot.x(), spot.y(), spot.z(), 1, 0.0D, 0.0D, 0.0D, 0.0D);
 
-            this.spawnMeteor(worldIn, caster, spot, location, burning, radius, safe);
+            this.spawnMeteor(worldIn, caster, spot, location, burning, radius);
         }
     }
 
@@ -147,7 +145,7 @@ public class ExtinctionMeteorSpell extends EverChargeSpell {
     }
 
     private void spawnMeteor(ServerLevel level, LivingEntity caster, Vec3 spot, Vec3 aim,
-                             int burning, float radius, boolean safe) {
+                             int burning, float radius) {
         ServantTephraEntity tephra = new ServantTephraEntity(AcEntityRegistry.SERVANT_TEPHRA.get(), level);
         tephra.setOwner(caster);
         tephra.setPos(spot);
@@ -155,8 +153,7 @@ public class ExtinctionMeteorSpell extends EverChargeSpell {
         tephra.setScale(tephra.getMaxScale());
         tephra.setFireSeconds(5 * Math.max(1, burning));
         tephra.setFireRadius(0.0F);
-        tephra.setStunSeconds(2);
-        tephra.setDangerous(!safe);
+        tephra.setStunSeconds(0);
 
         Vec3 dir = aim.subtract(spot);
         tephra.shoot(dir.x, dir.y, dir.z, METEOR_VELOCITY, 0.0F);

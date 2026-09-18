@@ -9,11 +9,9 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.entity.EntityMobGriefingEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
-import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.HashMap;
@@ -23,13 +21,6 @@ import java.util.UUID;
 public class LuxtructosaurusTephraHandler {
 
     private static final Map<UUID, Vec3> PENDING_VELOCITY_RESTORE = new HashMap<>();
-
-    @SubscribeEvent
-    public static void onMobGriefing(EntityMobGriefingEvent event) {
-        if (isAllyTephra(event.getEntity())) {
-            event.setResult(Event.Result.DENY);
-        }
-    }
 
     @SubscribeEvent
     public static void onLivingAttack(LivingAttackEvent event) {
@@ -79,10 +70,6 @@ public class LuxtructosaurusTephraHandler {
             return owner;
         }
         return null;
-    }
-
-    private static boolean isAllyTephra(Entity entity) {
-        return tephraOwner(entity) != null;
     }
 
     private static boolean isAllyOf(LivingEntity owner, LivingEntity master, LivingEntity victim) {

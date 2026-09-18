@@ -158,7 +158,6 @@ public class LuxtructosaurusServant extends Summoned
     private int outOfCombatTicks;
     private int enrageCooldown;
     private int roarFallbackTicks;
-    private boolean pendingRoar;
     private int postStopTicks;
     private boolean prevOnGround;
     private int reducedDamageTicks;
@@ -496,14 +495,12 @@ public class LuxtructosaurusServant extends Summoned
                 this.enrageCooldown = ENRAGE_COOLDOWN_TICKS;
             }
         } else if (inCombat && this.enrageCooldown <= 0 && !this.isRiddenByPlayer()) {
-            this.outOfCombatTicks = 0;
-            this.pendingRoar = true;
+            this.startEnrage();
         }
     }
 
     public void startEnrage() {
         this.outOfCombatTicks = 0;
-        this.pendingRoar = false;
         this.setEnraged(true);
         this.setAnimation(ANIMATION_ROAR);
     }
@@ -521,19 +518,6 @@ public class LuxtructosaurusServant extends Summoned
         if (this.level().isClientSide || !this.isAlive()) {
             return;
         }
-        if (this.pendingRoar) {
-            if (!this.isInCombat() || this.isRiddenByPlayer()) {
-                this.pendingRoar = false;
-            } else if (this.getAnimation() == NO_ANIMATION && this.isRoarStanceReady()) {
-                this.pendingRoar = false;
-                this.roarFallbackTicks = 0;
-                this.setEnraged(true);
-                this.setAnimation(ANIMATION_ROAR);
-                return;
-            } else {
-                return;
-            }
-        }
         int interval = MobsConfig.LuxtructosaurusServantRoarInterval.get();
         if (interval <= 0 || !this.isEnraged() || this.isRiddenByPlayer()) {
             this.roarFallbackTicks = 0;
@@ -549,15 +533,10 @@ public class LuxtructosaurusServant extends Summoned
         if (this.roarFallbackTicks < interval * 20) {
             ++this.roarFallbackTicks;
         }
-        if (this.roarFallbackTicks >= interval * 20 && this.getAnimation() == NO_ANIMATION
-                && this.isRoarStanceReady()) {
+        if (this.roarFallbackTicks >= interval * 20 && this.getAnimation() == NO_ANIMATION) {
             this.roarFallbackTicks = 0;
             this.setAnimation(ANIMATION_ROAR);
         }
-    }
-
-    private boolean isRoarStanceReady() {
-        return !this.areLegsMoving() && this.getWalkAnimSpeed(1.0F) < 0.05F;
     }
 
     private static final ResourceLocation PRIMAL_MAGMA_ID =
@@ -875,8 +854,9 @@ public class LuxtructosaurusServant extends Summoned
         ServantTephraEntity tephra = new ServantTephraEntity(this.level(), this);
         tephra.setPos(spawnAt.getCenter());
         tephra.setMaxScale(1.0F + 2.0F * this.level().random.nextFloat());
-        tephra.setFireSeconds(0);
+        tephra.setFireSeconds(5);
         tephra.setFireRadius(0.0F);
+        tephra.setGroundFire(true);
         Vec3 targetVec = new Vec3(this.level().random.nextFloat() - 0.5F, -1.0, this.level().random.nextFloat() - 0.5F)
                 .normalize().scale(this.level().random.nextInt(20) + 20);
         tephra.shoot(targetVec.x, targetVec.y, targetVec.z, 5.0F + this.level().random.nextFloat() * 2.0F,
@@ -1501,7 +1481,6 @@ public class LuxtructosaurusServant extends Summoned
         tag.putInt("OutOfCombatTicks", this.outOfCombatTicks);
         tag.putInt("EnrageCooldown", this.enrageCooldown);
         tag.putInt("RoarFallbackTicks", this.roarFallbackTicks);
-        tag.putBoolean("PendingRoar", this.pendingRoar);
         tag.putBoolean("FollowingStanceEnforced", this.followingStanceEnforced);
     }
 
@@ -1512,7 +1491,6 @@ public class LuxtructosaurusServant extends Summoned
         this.outOfCombatTicks = tag.getInt("OutOfCombatTicks");
         this.enrageCooldown = tag.getInt("EnrageCooldown");
         this.roarFallbackTicks = tag.getInt("RoarFallbackTicks");
-        this.pendingRoar = tag.getBoolean("PendingRoar");
         this.followingStanceEnforced = tag.getBoolean("FollowingStanceEnforced");
     }
 

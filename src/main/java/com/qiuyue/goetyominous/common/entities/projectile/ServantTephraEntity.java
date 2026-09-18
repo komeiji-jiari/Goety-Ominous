@@ -70,6 +70,16 @@ public class ServantTephraEntity extends TephraEntity {
         return this.dangerous;
     }
 
+    private boolean groundFire;
+
+    public void setGroundFire(boolean groundFire) {
+        this.groundFire = groundFire;
+    }
+
+    public boolean isGroundFire() {
+        return this.groundFire;
+    }
+
     @Override
     protected boolean canHitEntity(Entity target) {
         if (!super.canHitEntity(target)) {
@@ -104,7 +114,9 @@ public class ServantTephraEntity extends TephraEntity {
                 this.getX(), this.getY(), this.getZ(),
                 1.0F + this.getMaxScale(), Explosion.BlockInteraction.KEEP);
         explosion.explode();
-        explosion.clearToBlow();
+        if (!this.groundFire) {
+            explosion.clearToBlow();
+        }
         explosion.finalizeExplosion(true);
         this.affectAround();
         this.igniteAround();
