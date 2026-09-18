@@ -12,7 +12,6 @@ import com.Polarice3.Goety.common.entities.util.CameraShake;
 import com.github.alexmodguy.alexscaves.AlexsCaves;
 import com.github.alexmodguy.alexscaves.client.particle.ACParticleRegistry;
 import com.github.alexmodguy.alexscaves.server.entity.ai.AdvancedPathNavigateNoTeleport;
-import com.github.alexmodguy.alexscaves.server.entity.item.TephraEntity;
 import com.github.alexmodguy.alexscaves.server.entity.living.DinosaurEntity;
 import com.github.alexmodguy.alexscaves.server.entity.living.TremorzillaEntity;
 import com.github.alexmodguy.alexscaves.server.entity.util.KaijuMob;
@@ -31,6 +30,7 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.IAdvancedPathingMob;
 import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.ITallWalker;
 import com.qiuyue.goetyominous.common.entities.ai.ac.ServantTemptGoal;
+import com.qiuyue.goetyominous.common.entities.projectile.ServantTephraEntity;
 import com.qiuyue.goetyominous.common.entities.util.ServantMagmaLink;
 import com.qiuyue.goetyominous.common.init.ac.AcParticles;
 import com.qiuyue.goetyominous.common.items.ac.AcItems;
@@ -872,9 +872,11 @@ public class LuxtructosaurusServant extends Summoned
             spawnAt = spawnAt.above();
         }
         spawnAt = spawnAt.below();
-        TephraEntity tephra = new TephraEntity(this.level(), this);
+        ServantTephraEntity tephra = new ServantTephraEntity(this.level(), this);
         tephra.setPos(spawnAt.getCenter());
         tephra.setMaxScale(1.0F + 2.0F * this.level().random.nextFloat());
+        tephra.setFireSeconds(0);
+        tephra.setFireRadius(0.0F);
         Vec3 targetVec = new Vec3(this.level().random.nextFloat() - 0.5F, -1.0, this.level().random.nextFloat() - 0.5F)
                 .normalize().scale(this.level().random.nextInt(20) + 20);
         tephra.shoot(targetVec.x, targetVec.y, targetVec.z, 5.0F + this.level().random.nextFloat() * 2.0F,

@@ -113,6 +113,12 @@ public class ModModelLayers {
         event.registerLayerDefinition(ModEntityLayers.WARG_SADDLE,
                 WargSaddleModel::createBodyLayer);
 
+        event.registerLayerDefinition(ModEntityLayers.CERBERUS,
+                CerberusModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.CERBERUS_ARMOR,
+                CerberusArmorModel::createBodyLayer);
+
         event.registerLayerDefinition(ModEntityLayers.CURSED_BLACK_BEAST_ARMOR_LAYER,
                 CursedBlackBeastArmorModel::createBodyLayer);
 
@@ -449,6 +455,8 @@ public class ModModelLayers {
         event.registerEntityRenderer(ModEntityTypes.CRIMSON_SPIDER_SERVANT.get(), CrimsonSpiderServantRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.WARG.get(), WargRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.CERBERUS.get(), CerberusRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.ZFUNGUS_THROWER.get(), ZFungusThrowerRenderer::new);
 
@@ -819,6 +827,9 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.PURE_DARK_VOID.get(),
                     com.qiuyue.goetyominous.client.render.ac.PureDarkVoidRenderer::new);
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.SERVANT_TEPHRA.get(),
+                    com.qiuyue.goetyominous.client.render.ac.ServantTephraRenderer::new);
         }
     }
 

@@ -2,18 +2,17 @@ package com.qiuyue.goetyominous.common.blocks.entities;
 
 import com.Polarice3.Goety.api.entities.IOwned;
 import com.Polarice3.Goety.api.entities.ally.IServant;
-import com.Polarice3.Goety.common.entities.ally.BlackBeast;
-import com.Polarice3.Goety.common.entities.ally.BlackWolf;
-import com.Polarice3.Goety.common.entities.ally.Stormhound;
-import com.Polarice3.Goety.common.entities.ally.WinterWolf;
+import com.Polarice3.Goety.common.entities.ally.*;
 import com.Polarice3.Goety.common.entities.ally.undead.skeleton.SkeletonWolf;
 import com.Polarice3.Goety.common.items.ModItems;
 import com.Polarice3.Goety.common.items.WaystoneItem;
 import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.utils.MathHelper;
 import com.Polarice3.Goety.utils.ModDamageSource;
+import com.qiuyue.goetyominous.common.entities.ally.mobs.Cerberus;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.Warg;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
+import com.qiuyue.goetyominous.common.world.CerberusTotemData;
 import com.qiuyue.goetyominous.common.world.WargTotemData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -28,22 +27,20 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 
-import org.slf4j.Logger;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class WolfTotemHooks {
     public static final int REVIVE_COST = 100;
+    public static final int CERBERUS_FUSION_COUNT = 3;
     public static final String REVIVE_POS_TAG = "GoetyOminousTotemRevivePos";
     public static final String REVIVE_DIM_TAG = "GoetyOminousTotemReviveDim";
     public static final TagKey<EntityType<?>> WOLF_TOTEM_SERVANTS =
@@ -185,6 +182,83 @@ public class WolfTotemHooks {
         warg.playSound(SoundEvents.WOLF_HOWL, 0.20F, 0.65F);
         player.swing(hand);
         player.displayClientMessage(Component.translatable("info.goety.warg.created", sourceName), true);
+        return true;
+    }
+
+    public static boolean tryFuseCerberus(Player player, Hellhound hellhound, InteractionHand hand) {
+        if (!(hellhound.level() instanceof ServerLevel serverLevel)) {
+            return false;
+        }
+        if (hellhound.getTrueOwner() != player) {
+            return false;
+        }
+        WolfTotemBlockEntity totem = getTotem((LivingEntity) hellhound);
+        if (totem == null || totem.hasCreatedCerberus() || !totem.hasSpace()) {
+            return false;
+        }
+        UUID ownerId = player.getUUID();
+        List<Hellhound> bound = new ArrayList<>();
+        for (LivingEntity servant : totem.getServants()) {
+            if (servant instanceof Hellhound boundHellhound && servant.isAlive() && !servant.isRemoved()) {
+                bound.add(boundHellhound);
+            }
+        }
+        if (bound.size() < CERBERUS_FUSION_COUNT
+                || !CerberusTotemData.get(serverLevel).canCreate(ownerId, serverLevel.dimension(), totem.getBlockPos())) {
+            return false;
+        }
+        Cerberus cerberus = ModEntityTypes.CERBERUS.get().create(serverLevel);
+        if (cerberus == null) {
+            return false;
+        }
+        Component sourceName = hellhound.getDisplayName().copy();
+
+        int consumed = 0;
+        for (Hellhound extra : bound) {
+            if (consumed >= CERBERUS_FUSION_COUNT - 1) {
+                break;
+            }
+            if (extra == hellhound) {
+                continue;
+            }
+            totem.removeServant(extra);
+            totem.markUpdated();
+            serverLevel.sendParticles(ParticleTypes.LARGE_SMOKE,
+                    extra.getX(), extra.getY() + (double) extra.getBbHeight() * 0.5D, extra.getZ(),
+                    12, (double) extra.getBbWidth() * 0.5D, (double) extra.getBbHeight() * 0.5D,
+                    (double) extra.getBbWidth() * 0.5D, 0.02D);
+            extra.discard();
+            ++consumed;
+        }
+
+        totem.removeServant(hellhound);
+        totem.markUpdated();
+        ItemStack hellhoundArmor = hellhound.getItemBySlot(EquipmentSlot.CHEST);
+        if (!hellhoundArmor.isEmpty()) {
+            hellhound.spawnAtLocation(hellhoundArmor.copy());
+        }
+        cerberus.moveTo(hellhound.getX(), hellhound.getY(), hellhound.getZ(), hellhound.getYRot(), hellhound.getXRot());
+        cerberus.setTrueOwner(player);
+        cerberus.setUpgraded(hellhound.isUpgraded());
+        cerberus.setHostile(hellhound.isHostile());
+        if (hellhound.hasCustomName()) {
+            cerberus.setCustomName(hellhound.getCustomName());
+            cerberus.setCustomNameVisible(hellhound.isCustomNameVisible());
+        }
+        cerberus.setRevivePos(totem.getBlockPos());
+        cerberus.setReviveDim(serverLevel.dimension());
+        cerberus.getPersistentData().putLong(REVIVE_POS_TAG, totem.getBlockPos().asLong());
+        cerberus.getPersistentData().putString(REVIVE_DIM_TAG, serverLevel.dimension().location().toString());
+        cerberus.setWandering(false);
+        cerberus.setStaying(false);
+        serverLevel.addFreshEntity(cerberus);
+        totem.addServant(cerberus);
+        totem.setCreatedCerberus(cerberus.getUUID());
+        CerberusTotemData.get(serverLevel).register(cerberus.getUUID(), ownerId, serverLevel.dimension(), totem.getBlockPos());
+        hellhound.discard();
+        cerberus.playSound(SoundEvents.WOLF_HOWL, 0.20F, 0.5F);
+        player.swing(hand);
+        player.displayClientMessage(Component.translatable("info.goety.cerberus.created", sourceName), true);
         return true;
     }
 

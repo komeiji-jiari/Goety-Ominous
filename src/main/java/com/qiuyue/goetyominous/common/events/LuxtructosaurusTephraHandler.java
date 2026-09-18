@@ -1,7 +1,9 @@
 package com.qiuyue.goetyominous.common.events;
 
+import com.Polarice3.Goety.api.entities.IOwned;
 import com.github.alexmodguy.alexscaves.server.entity.item.TephraEntity;
 import com.qiuyue.goetyominous.common.entities.ally.ac.LuxtructosaurusServant;
+import com.qiuyue.goetyominous.common.entities.projectile.ServantTephraEntity;
 import com.qiuyue.goetyominous.common.entities.util.ServantMagmaLink;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.entity.Entity;
@@ -24,7 +26,7 @@ public class LuxtructosaurusTephraHandler {
 
     @SubscribeEvent
     public static void onMobGriefing(EntityMobGriefingEvent event) {
-        if (isServantTephra(event.getEntity())) {
+        if (isAllyTephra(event.getEntity())) {
             event.setResult(Event.Result.DENY);
         }
     }
@@ -36,15 +38,19 @@ public class LuxtructosaurusTephraHandler {
             return;
         }
         Entity direct = event.getSource().getDirectEntity();
-        LuxtructosaurusServant servant = servantOwner(direct);
-        if (servant == null && direct instanceof LuxtructosaurusServant blasting
+        LivingEntity owner = tephraOwner(direct);
+        if (owner == null && direct instanceof LuxtructosaurusServant blasting
                 && event.getSource().is(DamageTypeTags.IS_EXPLOSION)) {
-            servant = blasting;
+            owner = blasting;
         }
-        if (servant == null) {
+        if (owner == null) {
             return;
         }
-        if (victim == servant || servant.isAlliedTo(victim) || victim.isAlliedTo(servant)) {
+        if (direct instanceof ServantTephraEntity tephra && tephra.isDangerous() && victim != owner) {
+            return;
+        }
+        LivingEntity master = owner instanceof IOwned owned ? owned.getTrueOwner() : null;
+        if (victim == owner || victim == master || isAllyOf(owner, master, victim)) {
             PENDING_VELOCITY_RESTORE.put(victim.getUUID(), victim.getDeltaMovement());
             event.setCanceled(true);
         }
@@ -68,14 +74,22 @@ public class LuxtructosaurusTephraHandler {
         ServantMagmaLink.clear();
     }
 
-    private static LuxtructosaurusServant servantOwner(Entity entity) {
-        if (entity instanceof TephraEntity tephra && tephra.getOwner() instanceof LuxtructosaurusServant servant) {
-            return servant;
+    private static LivingEntity tephraOwner(Entity entity) {
+        if (entity instanceof TephraEntity tephra && tephra.getOwner() instanceof LivingEntity owner) {
+            return owner;
         }
         return null;
     }
 
-    private static boolean isServantTephra(Entity entity) {
-        return servantOwner(entity) != null;
+    private static boolean isAllyTephra(Entity entity) {
+        return tephraOwner(entity) != null;
+    }
+
+    private static boolean isAllyOf(LivingEntity owner, LivingEntity master, LivingEntity victim) {
+        if (owner.isAlliedTo(victim) || victim.isAlliedTo(owner)) {
+            return true;
+        }
+        LivingEntity ref = master != null ? master : owner;
+        return victim instanceof IOwned owned && owned.getTrueOwner() == ref;
     }
 }

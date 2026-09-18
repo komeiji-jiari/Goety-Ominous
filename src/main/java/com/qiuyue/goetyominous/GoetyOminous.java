@@ -221,6 +221,7 @@ public class GoetyOminous {
         event.put(ModEntityTypes.AXOLOTL_SERVANT.get(), AxolotlServant.setCustomAttributes().build());
         event.put(ModEntityTypes.LEAPKELP.get(), Leapkelp.setCustomAttributes().build());
         event.put(ModEntityTypes.WARG.get(), Warg.setCustomAttributes().build());
+        event.put(ModEntityTypes.CERBERUS.get(), Cerberus.setCustomAttributes().build());
         event.put(ModEntityTypes.HERESIARCH_SERVANT.get(), HeresiarchServant.setCustomAttributes().build());
         event.put(ModEntityTypes.DISCIPLE.get(), Disciple.setCustomAttributes().build());
         event.put(ModEntityTypes.CRIMSON_SPIDER_SERVANT.get(), CrimsonSpiderServant.setCustomAttributes().build());

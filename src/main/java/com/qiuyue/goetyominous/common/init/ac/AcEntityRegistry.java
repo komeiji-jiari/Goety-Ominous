@@ -28,12 +28,7 @@ import com.qiuyue.goetyominous.common.entities.ally.ac.TremorsaurusServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TremorzillaServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.VallumraptorServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.VesperServant;
-import com.qiuyue.goetyominous.common.entities.projectile.DeepOneMageServantWaterBolt;
-import com.qiuyue.goetyominous.common.entities.projectile.DeepOneMageServantWave;
-import com.qiuyue.goetyominous.common.entities.projectile.LicowitchServantHex;
-import com.qiuyue.goetyominous.common.entities.projectile.LicowitchServantPeppermint;
-import com.qiuyue.goetyominous.common.entities.projectile.GumballServantEntity;
-import com.qiuyue.goetyominous.common.entities.projectile.DeepOneServantWave;
+import com.qiuyue.goetyominous.common.entities.projectile.*;
 import com.qiuyue.goetyominous.common.entities.util.ExtinctionCatalystEntity;
 import com.qiuyue.goetyominous.common.entities.util.PureDarkVoid;
 import net.minecraft.world.entity.EntityType;
@@ -322,6 +317,16 @@ public class AcEntityRegistry {
                             .setUpdateInterval(20)
                             .fireImmune()
                             .build(GoetyOminous.MOD_ID + ":extinction_catalyst"));
+
+    public static final RegistryObject<EntityType<ServantTephraEntity>> SERVANT_TEPHRA =
+            AC_ENTITIES.register("servant_tephra",
+                    () -> EntityType.Builder.<ServantTephraEntity>of((type, worldIn) -> new ServantTephraEntity(type, worldIn), MobCategory.MISC)
+                            .sized(0.6F, 0.6F)
+                            .setTrackingRange(8)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .setUpdateInterval(1)
+                            .fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":servant_tephra"));
 
     public static void register(IEventBus modEventBus) {
         AC_ENTITIES.register(modEventBus);

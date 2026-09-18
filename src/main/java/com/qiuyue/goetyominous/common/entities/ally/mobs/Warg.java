@@ -5,6 +5,7 @@ import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.blocks.entities.WolfTotemBlockEntity;
 import com.qiuyue.goetyominous.common.blocks.entities.WolfTotemHooks;
+import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.common.items.CursedMetalWolfArmorItem;
 import com.qiuyue.goetyominous.common.items.CursedWargArmorItem;
 import com.qiuyue.goetyominous.common.world.WargTotemData;
@@ -21,14 +22,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AnimationState;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.entity.PlayerRideableJumping;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -157,7 +151,7 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
 
     @Override
     public float getStepHeight() {
-        return 1.05F;
+        return 2.0F;
     }
 
     @Override
@@ -564,7 +558,9 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
                             : com.qiuyue.goetyominous.config.WeaponConfig.WargArmorIngotRepair.get().floatValue();
                     int repair = (int) (wargArmor.getMaxDamage() * repairMult);
                     wargArmor.setDamageValue(Math.max(0, wargArmor.getDamageValue() - repair));
-                    this.playSound(SoundEvents.ANVIL_USE, 1.0F, 1.0F);
+                    if (!this.level().isClientSide) {
+                        this.playSound(ModSounds.WOLF_ARMOR_REPAIR.get(), 1.0F, 1.0F);
+                    }
                     return InteractionResult.sidedSuccess(this.level().isClientSide);
                 }
                 if (this.isFood(held) && this.getHealth() < this.getMaxHealth()) {
@@ -593,6 +589,9 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
                     this.setItemSlot(EquipmentSlot.CHEST, held.copyWithCount(1));
                     this.setDropChance(EquipmentSlot.CHEST, 2.0F);
                     consumeOne(player, held);
+                    if (!this.level().isClientSide) {
+                        this.playSound(ModSounds.WOLF_ARMOR_EQUIP.get(), 1.0F, 1.0F);
+                    }
                     return InteractionResult.sidedSuccess(this.level().isClientSide);
                 }
                 if (held.is(Items.SHEARS) && this.hasWargArmor()
@@ -601,6 +600,9 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
                     held.hurtAndBreak(1, player, (e) -> {});
                     this.spawnAtLocation(this.getItemBySlot(EquipmentSlot.CHEST).copy());
                     this.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
+                    if (!this.level().isClientSide) {
+                        this.playSound(ModSounds.WOLF_ARMOR_UNEQUIP.get(), 1.0F, 1.0F);
+                    }
                     return InteractionResult.sidedSuccess(this.level().isClientSide);
                 }
                 if (held.is(Items.STICK) && this.hasSword()) {
@@ -616,7 +618,9 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
                 if (held.is(Items.SADDLE) && !this.isSaddled()) {
 
                     this.setSaddled(true);
-                    this.playSound(SoundEvents.HORSE_SADDLE, 0.5F, 0.85F);
+                    if (!this.level().isClientSide) {
+                        this.playSound(SoundEvents.HORSE_SADDLE, 0.5F, 0.85F);
+                    }
                     consumeOne(player, held);
                     return InteractionResult.sidedSuccess(this.level().isClientSide);
                 }
@@ -704,6 +708,11 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
         return Variant.byId(this.entityData.get(VARIANT));
     }
 
+    @Override
+    public MobType getMobType() {
+        return this.getVariant() == Variant.SKELETAL ? MobType.UNDEAD : super.getMobType();
+    }
+
     public void setVariant(Variant variant) {
         this.entityData.set(VARIANT, variant.ordinal());
     }
@@ -786,7 +795,9 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
         BLACK,
         COLD,
         MODERATE,
-        WARM;
+        WARM,
+        SKELETAL,
+        GRAY;
 
         public static Variant byId(int id) {
             return values()[Mth.clamp(id, 0, values().length - 1)];

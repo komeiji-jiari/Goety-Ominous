@@ -34,6 +34,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> OvergrownColossusServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> HeresiarchServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> WargLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> CerberusLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> RamblerServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> GrottoceratopsServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> RelicheirusServantLimit;
@@ -158,6 +159,10 @@ public class MobsConfig {
         WargLimit = BUILDER
                 .comment("Maximum number of Wargs that can be summoned (Default: 3)")
                 .defineInRange("wargLimit", 3, 1, 100);
+
+        CerberusLimit = BUILDER
+                .comment("The maximum number of living Cerberuses owned by one player (Default: 1)")
+                .defineInRange("cerberusLimit", 1, 0, 100);
 
         FarseerServantLimit = BUILDER
                 .comment("Maximum number of Farseer Servants that can be summoned (Default: 2)")

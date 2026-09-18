@@ -31,6 +31,10 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> WargArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> WargDamage;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> CerberusHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> CerberusArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> CerberusDamage;
+
     public static final ForgeConfigSpec.ConfigValue<Double> MurmurServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> MurmurServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> MurmurServantMovementSpeed;
@@ -555,6 +559,13 @@ public class AttributesConfig {
         WargDamage = BUILDER.comment("How much damage Wargs deal, Default: 8.0")
                 .defineInRange("wargDamage", 8.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
+
+        CerberusHealth = BUILDER.comment("How much Max Health Cerberuses have, Default: 100.0")
+                .defineInRange("cerberusHealth", 100.0, 1.0, Double.MAX_VALUE);
+        CerberusArmor = BUILDER.comment("How much natural Armor Cerberuses have, Default: 0.0")
+                .defineInRange("cerberusArmor", 0.0, 0.0, Double.MAX_VALUE);
+        CerberusDamage = BUILDER.comment("How much damage Cerberus melee attacks deal, Default: 8.0")
+                .defineInRange("cerberusDamage", 8.0, 1.0, Double.MAX_VALUE);
 
         BUILDER.push("Dreden");
         DredenHealth = BUILDER.comment("How much Max Health Dredens have, Default: 30.0")

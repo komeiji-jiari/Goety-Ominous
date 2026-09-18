@@ -1,0 +1,29 @@
+{
+  "name": "刻耳柏洛斯",
+  "icon": "minecraft:lava_bucket",
+  "category": "goety:summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "anchor": "cerberus",
+      "text": "狱犬无法被培育为座狼，因为它们体内的火焰回应着一种更为古老的饥渴。如果你将将三只狱犬聚在一起，那份饥渴便会自行完成晋升，将野兽们融合为一头三首的刻耳柏洛斯。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:cerberus",
+      "scale": 0.4
+    },
+    {
+      "type": "patchouli:text",
+      "text": "在你的$(l:goety:crafts/artifice/wolf_totem)狼性图腾$()周围八格范围内聚集三只已驯服的狱犬，注意这些狱犬必须已经绑定到图腾，然后向其中一只献上暗影精粹。那只狱犬将升级为地狱三头犬，另外两只会被吸入其中，只留下一缕烟雾。暗影精粹也随它们一同消耗。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "刻耳柏洛斯远比任何座狼都要沉重，免疫火焰伤害，且被视为下界生物：穿戴$(l:goety:crafts/garment/nether_robe)下界长袍$()的主人可以像治疗其他下界仆从一样治疗它。每个图腾只能培育一只，而一位召唤者通常也只能持有一只。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "它的三张嘴永远充满火焰，因此永远不会衔剑。除了燃烧的撕咬之外，它还能像$(l:goety:focuses/nether/fire_breath_focus)炎呼$()聚晶一样喷吐火焰，每个头颅沿着各自的方向喷射数秒，然后这头野兽必须再次蓄力。它可以佩戴与座狼相同的护甲。"
+    }
+  ]
+}
