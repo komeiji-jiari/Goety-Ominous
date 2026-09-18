@@ -2,6 +2,8 @@
   "name": "灭绝流星聚晶",
   "icon": "goetyominous:extinction_meteor_focus",
   "category": "goety:primordialcaves",
+  "advancement": "goety:goety/read_bygone_scroll",
+  "secret": true,
   "pages": [
     {
       "type": "patchouli:text",

@@ -19,6 +19,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -48,6 +49,9 @@ public class Cerberus extends Warg implements IBreathing {
     private static final double HEAD_YAW_SPREAD = Math.toRadians(35.0D);
     private static final double MUZZLE_HEIGHT = 2.2D;
     private static final double MUZZLE_FORWARD = 2.2D;
+    private static final double RIDER_FORWARD_OFFSET = -1.36D;
+    private static final double RIDER_HEIGHT = 1.8D;
+    private static final double RIDER_BOUNCE = 0.08D;
 
     private final FireBreathSpell breathSpell = new FireBreathSpell();
 
@@ -105,6 +109,15 @@ public class Cerberus extends Warg implements IBreathing {
     }
 
     @Override
+    public void tryKill(Player player) {
+        if (this.killChance <= 0) {
+            this.warnKill(player);
+        } else {
+            super.tryKill(player);
+        }
+    }
+
+    @Override
     public void curseTarget(Entity entity) {
         if (!entity.fireImmune()) {
             entity.setSecondsOnFire(6);
@@ -126,15 +139,50 @@ public class Cerberus extends Warg implements IBreathing {
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (player.getItemInHand(hand).is(Items.SADDLE)) {
+        ItemStack held = player.getItemInHand(hand);
+        if (held.is(Items.SADDLE)) {
             return InteractionResult.PASS;
+        }
+        if (held.isEmpty() && this.isOwnedByPlayer(player) && this.getPassengers().isEmpty()) {
+            if (!this.level().isClientSide) {
+                player.setYRot(this.getYRot());
+                player.setXRot(this.getXRot());
+                player.startRiding(this);
+            }
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
         return super.mobInteract(player, hand);
     }
 
     @Override
     protected boolean canAddPassenger(Entity passenger) {
+        return this.getPassengers().isEmpty() && passenger instanceof Player;
+    }
+
+    @Override
+    public LivingEntity getControllingPassenger() {
+        Entity passenger = this.getFirstPassenger();
+        return passenger instanceof Player player && this.isOwnedByPlayer(player) ? player : null;
+    }
+
+    @Override
+    public boolean canJump() {
         return false;
+    }
+
+    @Override
+    public void onPlayerJump(int strength) {
+    }
+
+    @Override
+    public void positionRider(Entity passenger, Entity.MoveFunction moveFunction) {
+        if (this.hasPassenger(passenger)) {
+            Vec3 facing = Vec3.directionFromRotation(0.0F, this.getYRot());
+            Vec3 seatOffset = facing.scale(RIDER_FORWARD_OFFSET);
+            double bounce = RIDER_BOUNCE * Mth.cos(this.walkAnimation.position() * 0.7F) * this.walkAnimation.speed();
+            moveFunction.accept(passenger, this.getX() + seatOffset.x,
+                    this.rideHeight + RIDER_HEIGHT + bounce, this.getZ() + seatOffset.z);
+        }
     }
 
     @Override

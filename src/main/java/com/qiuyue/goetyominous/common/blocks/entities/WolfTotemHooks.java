@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.blocks.entities;
 
 import com.Polarice3.Goety.api.entities.IOwned;
 import com.Polarice3.Goety.api.entities.ally.IServant;
+import com.Polarice3.Goety.client.particles.ModParticleTypes;
 import com.Polarice3.Goety.common.entities.ally.*;
 import com.Polarice3.Goety.common.entities.ally.undead.skeleton.SkeletonWolf;
 import com.Polarice3.Goety.common.items.ModItems;
@@ -9,6 +10,7 @@ import com.Polarice3.Goety.common.items.WaystoneItem;
 import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.utils.MathHelper;
 import com.Polarice3.Goety.utils.ModDamageSource;
+import com.Polarice3.Goety.utils.ServerParticleUtil;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.Cerberus;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.Warg;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
@@ -179,6 +181,14 @@ public class WolfTotemHooks {
         totem.setCreatedWarg(warg.getUUID());
         WargTotemData.get(serverLevel).register(warg.getUUID(), ownerId, serverLevel.dimension(), totem.getBlockPos());
         wolf.discard();
+        for (int i = 0; i < 7; ++i) {
+            double d0 = warg.getRandom().nextGaussian() * 0.02D;
+            double d1 = warg.getRandom().nextGaussian() * 0.02D;
+            double d2 = warg.getRandom().nextGaussian() * 0.02D;
+            serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER,
+                    warg.getRandomX(1.0D), warg.getRandomY() + 0.5D, warg.getRandomZ(1.0D),
+                    1, d0, d1, d2, 0.5F);
+        }
         warg.playSound(SoundEvents.WOLF_HOWL, 0.20F, 0.65F);
         player.swing(hand);
         player.displayClientMessage(Component.translatable("info.goety.warg.created", sourceName), true);
@@ -256,6 +266,10 @@ public class WolfTotemHooks {
         totem.setCreatedCerberus(cerberus.getUUID());
         CerberusTotemData.get(serverLevel).register(cerberus.getUUID(), ownerId, serverLevel.dimension(), totem.getBlockPos());
         hellhound.discard();
+        for (int i = 0; i < 8; ++i) {
+            ServerParticleUtil.addParticlesAroundSelf(serverLevel, ModParticleTypes.BIG_FIRE.get(), cerberus);
+            ServerParticleUtil.addParticlesAroundSelf(serverLevel, ParticleTypes.SMOKE, cerberus);
+        }
         cerberus.playSound(SoundEvents.WOLF_HOWL, 0.20F, 0.5F);
         player.swing(hand);
         player.displayClientMessage(Component.translatable("info.goety.cerberus.created", sourceName), true);

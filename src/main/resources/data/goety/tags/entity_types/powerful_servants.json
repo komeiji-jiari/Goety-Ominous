@@ -3,6 +3,7 @@
   "values": [
     "goetyominous:heresiarch_servant",
     "goetyominous:storm_necromancer_servant",
+    "goetyominous:cerberus_servant",
     {
       "id": "goetyominous:atlatitan_servant",
       "required": false

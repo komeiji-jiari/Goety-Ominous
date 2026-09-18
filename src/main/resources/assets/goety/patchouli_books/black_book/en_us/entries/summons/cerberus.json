@@ -15,7 +15,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Gather three owned Hellhounds within eight blocks of your $(l:goety:crafts/artifice/wolf_totem)Canine Totem$(). Note that these Hellhounds must already be bound to the Totem, then offer a Shadow Essence to one of them. That hound becomes the Cerberus; the other two are drawn into it and leave nothing but smoke. The Shadow Essence is consumed with them."
+      "text": "Gather three owned Hellhounds within eight blocks of your Howling Totem. Note that these Hellhounds must already be bound to the Totem, then offer a Shadow Essence to one of them. That hound becomes the Cerberus; the other two are drawn into it and leave nothing but smoke. The Shadow Essence is consumed with them."
     },
     {
       "type": "patchouli:text",
@@ -24,6 +24,10 @@
     {
       "type": "patchouli:text",
       "text": "Its three mouths are always full of fire, so it will never carry a sword. Beyond its burning bite it breathes flame as the $(l:goety:focuses/nether/fire_breath_focus)Fire Breath$() focus does, each head spitting along its own line for several seconds before the beast must gather its breath again. It can wear the same harness as a Warg."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Right-click to ride your Cerberus. They do not require a Saddle to be ridden; however, due to their massive size, they are unable to jump while carrying a passenger."
     }
   ]
 }

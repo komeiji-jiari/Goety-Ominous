@@ -3,6 +3,7 @@
   "icon": "alexscaves:tectonic_shard",
   "category": "goety:primordialcaves",
   "advancement": "goety:goety/read_bygone_scroll",
+  "secret": true,
   "pages": [
     {
       "type": "patchouli:text",
