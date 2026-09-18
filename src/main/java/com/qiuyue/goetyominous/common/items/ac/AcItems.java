@@ -6,6 +6,7 @@ import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
 import com.qiuyue.goetyominous.common.magic.spells.ac.ExtinctionBreathSpell;
+import com.qiuyue.goetyominous.common.magic.spells.ac.ExtinctionMeteorSpell;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -145,7 +146,8 @@ public class AcItems {
     public static final RegistryObject<Item> EXTINCTION_BREATH_FOCUS = AC_ITEMS.register("extinction_breath_focus",
             () -> new MagicFocus(new ExtinctionBreathSpell()));
 
-
+    public static final RegistryObject<Item> EXTINCTION_METEOR_FOCUS = AC_ITEMS.register("extinction_meteor_focus",
+            () -> new MagicFocus(new ExtinctionMeteorSpell()));
 
     public static final RegistryObject<Item> RAYCAT_AMULET =
             AC_ITEMS.register("raycat_amulet", () -> new RaycatAmuletItem());

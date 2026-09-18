@@ -66,6 +66,12 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> ExtinctionBreathDuration;
     public static final ForgeConfigSpec.ConfigValue<Integer> ExtinctionBreathCoolDown;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> ExtinctionMeteorCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ExtinctionMeteorChargeUp;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ExtinctionMeteorInterval;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ExtinctionMeteorShots;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ExtinctionMeteorCoolDown;
+
     public static final ForgeConfigSpec.ConfigValue<Integer> HogChargeSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> HogChargeCooldown;
     public static final ForgeConfigSpec.ConfigValue<Double> HogChargeDamage;
@@ -185,6 +191,19 @@ public class SpellConfig {
                 .defineInRange("extinctionBreathDuration", 200, 0, 1000);
         ExtinctionBreathCoolDown = BUILDER.comment("Cooldown of Extinction Breath in ticks, Default: 500")
                 .defineInRange("extinctionBreathCoolDown", 500, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("ExtinctionMeteor");
+        ExtinctionMeteorCost = BUILDER.comment("Soul cost of Extinction Meteor, Default: 100")
+                .defineInRange("extinctionMeteorCost", 100, 1, 500);
+        ExtinctionMeteorChargeUp = BUILDER.comment("Ticks to charge up before the shower starts, Default: 100")
+                .defineInRange("extinctionMeteorChargeUp", 100, 0, 72000);
+        ExtinctionMeteorInterval = BUILDER.comment("Ticks between each meteor volley, Default: 8")
+                .defineInRange("extinctionMeteorInterval", 8, 1, 200);
+        ExtinctionMeteorShots = BUILDER.comment("Base number of volleys per cast, set 0 to allow the spell to be cast indefinitely, Default: 10")
+                .defineInRange("extinctionMeteorShots", 10, 0, 72000);
+        ExtinctionMeteorCoolDown = BUILDER.comment("Cooldown of Extinction Meteor in ticks, Default: 600")
+                .defineInRange("extinctionMeteorCoolDown", 600, 0, 5000);
         BUILDER.pop();
 
         BUILDER.push("Sand Spell");

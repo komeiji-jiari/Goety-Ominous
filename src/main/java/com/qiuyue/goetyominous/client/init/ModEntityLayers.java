@@ -198,6 +198,12 @@ public class ModEntityLayers {
     public static final ModelLayerLocation WARG_SADDLE = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "warg_saddle"), "main");
 
+    public static final ModelLayerLocation CERBERUS = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "cerberus"), "main");
+
+    public static final ModelLayerLocation CERBERUS_ARMOR = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "cerberus_armor"), "main");
+
     public static final ModelLayerLocation DREDEN_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "dreden"), "main");
 

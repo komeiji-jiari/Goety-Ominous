@@ -5,6 +5,7 @@ import com.Polarice3.Goety.common.items.block.BlockItemBase;
 import com.Polarice3.Goety.common.items.magic.DarkStaff;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.render.item.BoneCudgelRenderer;
+import com.qiuyue.goetyominous.common.entities.ally.mobs.Warg;
 import com.qiuyue.goetyominous.common.init.ModBlocks;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.common.items.curios.*;
@@ -355,9 +356,33 @@ public class ModItems {
             "urbhadhach_servant_spawn_egg",
             () -> new ServantSpawnEggItem(ModEntityTypes.URBHADHACH_SERVANT, 0x484848, 0x88CCFF, egg()));
 
-    public static final RegistryObject<ServantSpawnEggItem> WARG_SPAWN_EGG = ITEMS.register(
+    public static final RegistryObject<WargSpawnEggItem> WARG_SPAWN_EGG = ITEMS.register(
             "warg_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.WARG, 0x17141B, 0x6B6572, egg()));
+            () -> new WargSpawnEggItem(ModEntityTypes.WARG, 0x17141B, 0x6B6572, egg(), Warg.Variant.BLACK, false));
+
+    public static final RegistryObject<WargSpawnEggItem> WINTER_WARG_SPAWN_EGG = ITEMS.register(
+            "winter_warg_spawn_egg",
+            () -> new WargSpawnEggItem(ModEntityTypes.WARG, 0xDCE7ED, 0xFFFFFF, egg(), Warg.Variant.COLD, false));
+
+    public static final RegistryObject<WargSpawnEggItem> STORM_WARG_SPAWN_EGG = ITEMS.register(
+            "storm_warg_spawn_egg",
+            () -> new WargSpawnEggItem(ModEntityTypes.WARG, 0x6E422F, 0xB36A43, egg(), Warg.Variant.MODERATE, false));
+
+    public static final RegistryObject<WargSpawnEggItem> SKELETAL_WARG_SPAWN_EGG = ITEMS.register(
+            "skeletal_warg_spawn_egg",
+            () -> new WargSpawnEggItem(ModEntityTypes.WARG, 0xE8E8E8, 0xFFFFFF, egg(), Warg.Variant.SKELETAL, false));
+
+    public static final RegistryObject<WargSpawnEggItem> GRAY_WARG_SPAWN_EGG = ITEMS.register(
+            "gray_warg_spawn_egg",
+            () -> new WargSpawnEggItem(ModEntityTypes.WARG, 0x7E8084, 0xC8C8C8, egg(), Warg.Variant.GRAY, false));
+
+    public static final RegistryObject<WargSpawnEggItem> HOSTILE_WARG_SPAWN_EGG = ITEMS.register(
+            "hostile_warg_spawn_egg",
+            () -> new WargSpawnEggItem(ModEntityTypes.WARG, 0x132025, 0x495065, egg(), Warg.Variant.BLACK, true));
+
+    public static final RegistryObject<ServantSpawnEggItem> CERBERUS_SPAWN_EGG = ITEMS.register(
+            "cerberus_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.CERBERUS, 0x2B1210, 0xC1440E, egg()));
 
     public static Item.Properties egg() {
         return new Item.Properties();

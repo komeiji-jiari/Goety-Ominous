@@ -383,6 +383,14 @@ public class ModEntityTypes {
                     .clientTrackingRange(10)
                     .build(MOD_ID + ":warg"));
 
+    public static final RegistryObject<EntityType<Cerberus>> CERBERUS = ENTITY_TYPES.register(
+            "cerberus",
+            () -> EntityType.Builder.of(Cerberus::new, MobCategory.MISC)
+                    .sized(2.0F, 2.6F)
+                    .fireImmune()
+                    .clientTrackingRange(10)
+                    .build(MOD_ID + ":cerberus"));
+
     public static final RegistryObject<EntityType<MiredServant>> MIRED_SERVANT = ENTITY_TYPES.register(
             "mired_servant",
             () -> EntityType.Builder.of(MiredServant::new, MobCategory.MISC)

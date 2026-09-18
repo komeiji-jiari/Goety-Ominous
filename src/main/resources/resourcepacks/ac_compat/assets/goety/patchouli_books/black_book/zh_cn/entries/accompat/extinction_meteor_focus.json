@@ -1,0 +1,19 @@
+{
+  "name": "灭绝流星聚晶",
+  "icon": "goetyominous:extinction_meteor_focus",
+  "category": "goety:primordialcaves",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "呼唤天灾的愤怒！这个法术允许你向敌人降下灭绝流星，摧毁你面前的一切生物！"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:extinction_meteor_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "使用下界魔杖施法，能够增加你召唤的灭绝流星的数量。"
+    }
+  ]
+}
