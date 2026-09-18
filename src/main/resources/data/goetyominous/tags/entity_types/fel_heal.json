@@ -9,6 +9,10 @@
     "goetyominous:mired_servant",
     "goetyominous:bogged_servant",
     {
+      "id": "goetyominous:zombie_crocodile_servant",
+      "required": false
+    },
+    {
       "id": "goetyominous:caniac_servant",
       "required": false
     },

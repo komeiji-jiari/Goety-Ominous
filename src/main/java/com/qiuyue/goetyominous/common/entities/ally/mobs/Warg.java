@@ -16,6 +16,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
@@ -34,6 +35,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
@@ -82,7 +84,7 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
     private int airTicks;
     private int landingTicks;
     private boolean airborneLast;
-    private double rideHeight;
+    protected double rideHeight;
     private boolean rideHeightSet;
     private double rideLag;
     private double rideLagOld;
@@ -136,6 +138,50 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
         this.entityData.define(VARIANT, Variant.BLACK.ordinal());
         this.entityData.define(ATTACK_TYPE, ATTACK_NONE);
         this.entityData.define(ATTACK_TICKS, 0);
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        if (this.getVariant() == Variant.SKELETAL) {
+            if (this.isAggressive()) {
+                return com.Polarice3.Goety.init.ModSounds.SKELETON_WOLF_GROWL.get();
+            } else if (this.random.nextInt(3) != 0) {
+                return com.Polarice3.Goety.init.ModSounds.SKELETON_WOLF_AMBIENT.get();
+            } else {
+                return this.getTrueOwner() != null && this.getHealth() < this.getMaxHealth() / 2.0F
+                        ? com.Polarice3.Goety.init.ModSounds.SKELETON_WOLF_WHINE.get()
+                        : com.Polarice3.Goety.init.ModSounds.SKELETON_WOLF_PANT.get();
+            }
+        }
+        return super.getAmbientSound();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return this.getVariant() == Variant.SKELETAL
+                ? com.Polarice3.Goety.init.ModSounds.SKELETON_WOLF_HURT.get()
+                : super.getHurtSound(source);
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return this.getVariant() == Variant.SKELETAL
+                ? com.Polarice3.Goety.init.ModSounds.SKELETON_WOLF_DEATH.get()
+                : super.getDeathSound();
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pos, BlockState state) {
+        if (this.getVariant() == Variant.SKELETAL) {
+            this.playSound(com.Polarice3.Goety.init.ModSounds.SKELETON_WOLF_STEP.get(), 0.15F, 1.0F);
+        } else {
+            super.playStepSound(pos, state);
+        }
+    }
+
+    @Override
+    protected float getSoundVolume() {
+        return this.getVariant() == Variant.SKELETAL ? 0.4F : super.getSoundVolume();
     }
 
     @Override
@@ -730,7 +776,7 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
         this.entityData.set(ATTACK_TICKS, ticks);
     }
 
-    private boolean isOwnedByPlayer(Player player) {
+    protected boolean isOwnedByPlayer(Player player) {
         UUID owner = this.getOwnerId();
         return owner != null && owner.equals(player.getUUID());
     }

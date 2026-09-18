@@ -30,6 +30,7 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ForgeMod;
 
 public abstract class AbstractDredenEntity extends AbstractWraith implements IBreathing, RangedAttackMob {
 
@@ -42,6 +43,7 @@ public abstract class AbstractDredenEntity extends AbstractWraith implements IBr
                 .add(Attributes.MAX_HEALTH, AttributesConfig.DredenHealth.get())
                 .add(Attributes.FOLLOW_RANGE, AttributesConfig.DredenFollowRange.get())
                 .add(Attributes.MOVEMENT_SPEED, AttributesConfig.DredenMovementSpeed.get())
+                .add(ForgeMod.STEP_HEIGHT_ADDITION.get(), 1.0D)
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.DredenDamage.get());
     }
 
