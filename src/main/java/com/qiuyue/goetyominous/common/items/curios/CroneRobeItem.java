@@ -53,9 +53,10 @@ public class CroneRobeItem extends SingleStackItem {
     @Override
     public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
-        tooltip.add(Component.translatable("info.goetyominous.crone_robe").withStyle(ChatFormatting.DARK_PURPLE));
         tooltip.add(Component.translatable("info.goetyominous.crone_robe_brew",
-                Component.keybind("key.goety.witch.robe")).withStyle(ChatFormatting.BLUE));
+                Component.keybind("key.goety.witch.robe")).withStyle(ChatFormatting.DARK_PURPLE));
+        tooltip.add(Component.translatable("info.goetyominous.crone_robe").withStyle(ChatFormatting.DARK_PURPLE));
+        tooltip.add(Component.translatable("info.goetyominous.crone_robe_magic").withStyle(ChatFormatting.BLUE));
         tooltip.add(Component.translatable("info.goetyominous.crone_robe_discount").withStyle(ChatFormatting.BLUE));
     }
 }

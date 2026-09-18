@@ -1,8 +1,12 @@
 package com.qiuyue.goetyominous.common.entities.ally.mobs;
 
+import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.common.entities.ally.BlackWolf;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
+import com.Polarice3.Goety.utils.CuriosFinder;
+import com.Polarice3.Goety.utils.MathHelper;
 import com.Polarice3.Goety.utils.MobUtil;
+import com.Polarice3.Goety.utils.ModDamageSource;
 import com.qiuyue.goetyominous.common.blocks.entities.WolfTotemBlockEntity;
 import com.qiuyue.goetyominous.common.blocks.entities.WolfTotemHooks;
 import com.qiuyue.goetyominous.common.init.ModSounds;
@@ -18,11 +22,16 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -227,6 +236,43 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
         } else {
             this.updateAnimationStates();
         }
+    }
+
+    @Override
+    public void curseTarget(Entity entity) {
+        if (this.getVariant() == Variant.COLD && entity instanceof LivingEntity livingEntity) {
+            int amplifier = 0;
+            MobEffect effect = MobEffects.MOVEMENT_SLOWDOWN;
+            if (CuriosFinder.hasFrostRobes(this.getMasterOwner())) {
+                if (!entity.getType().is(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES)) {
+                    effect = GoetyEffects.FREEZING.get();
+                } else {
+                    amplifier = 1;
+                }
+            }
+            livingEntity.addEffect(new MobEffectInstance(effect, MathHelper.secondsToTicks(5), amplifier));
+        } else if (this.getVariant() == Variant.MODERATE && entity instanceof LivingEntity livingEntity) {
+            int amplifier = CuriosFinder.hasStormRobes(this.getMasterOwner()) ? 1 : 0;
+            livingEntity.addEffect(new MobEffectInstance(GoetyEffects.SPASMS.get(), MathHelper.secondsToTicks(5), amplifier));
+        } else if (this.getVariant() != Variant.WARM) {
+            super.curseTarget(entity);
+        }
+    }
+
+    @Override
+    protected float getDamageAfterMagicAbsorb(DamageSource source, float amount) {
+        amount = super.getDamageAfterMagicAbsorb(source, amount);
+        if (this.getVariant() == Variant.MODERATE
+                && (ModDamageSource.shockAttacks(source) || source.is(DamageTypeTags.IS_LIGHTNING))) {
+            amount *= 0.5F;
+        }
+        return amount;
+    }
+
+    @Override
+    public boolean canBeAffected(MobEffectInstance effect) {
+        return super.canBeAffected(effect)
+                && (this.getVariant() != Variant.MODERATE || effect.getEffect() != GoetyEffects.SPASMS.get());
     }
 
     private void registerPersistentAssignment() {
