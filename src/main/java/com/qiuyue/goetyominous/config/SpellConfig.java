@@ -200,8 +200,8 @@ public class SpellConfig {
                 .defineInRange("extinctionMeteorChargeUp", 100, 0, 72000);
         ExtinctionMeteorInterval = BUILDER.comment("Ticks between each meteor volley, Default: 8")
                 .defineInRange("extinctionMeteorInterval", 8, 1, 200);
-        ExtinctionMeteorShots = BUILDER.comment("Base number of volleys per cast, set 0 to allow the spell to be cast indefinitely, Default: 10")
-                .defineInRange("extinctionMeteorShots", 10, 0, 72000);
+        ExtinctionMeteorShots = BUILDER.comment("Base number of volleys per cast, set 0 to allow the spell to be cast indefinitely, Default: 5")
+                .defineInRange("extinctionMeteorShots", 5, 0, 72000);
         ExtinctionMeteorCoolDown = BUILDER.comment("Cooldown of Extinction Meteor in ticks, Default: 600")
                 .defineInRange("extinctionMeteorCoolDown", 600, 0, 5000);
         BUILDER.pop();
