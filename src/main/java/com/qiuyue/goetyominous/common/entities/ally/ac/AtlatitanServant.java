@@ -156,6 +156,7 @@ public class AtlatitanServant extends AnimalSummon
     private float legBackAmount = 0.0F;
     private float prevRaiseArmsAmount = 0.0F;
     private float raiseArmsAmount = 0.0F;
+    private float seatBodyOffset = 0.8F;
     protected float neckXRot;
     protected float neckYRot;
     protected float tailXRot;
@@ -300,6 +301,7 @@ public class AtlatitanServant extends AnimalSummon
         this.prevRaiseArmsAmount = this.raiseArmsAmount;
         this.prevScreenShakeAmount = this.screenShakeAmount;
         this.legSolver.update(this, this.yBodyRot, this.getScale());
+        this.seatBodyOffset += (this.getLegSolverBodyOffset() - this.seatBodyOffset) * 0.15F;
         if (this.shouldRaiseArms() && this.raiseArmsAmount < 5.0F) {
             this.raiseArmsAmount += 1.0F;
         }
@@ -324,6 +326,10 @@ public class AtlatitanServant extends AnimalSummon
                     : Mth.approachDegrees(this.yBodyRotO, this.lastYawBeforeWhip + negative * target, 90.0F);
         }
         if (this.level().isClientSide) {
+            if (this.isControlledByLocalInstance()) {
+                this.lSteps = 0;
+                this.syncPacketPositionCodec(this.getX(), this.getY(), this.getZ());
+            }
             if (this.lSteps > 0) {
                 double d5 = this.getX() + (this.lx - this.getX()) / (double) this.lSteps;
                 double d6 = this.getY() + (this.ly - this.getY()) / (double) this.lSteps;
@@ -415,7 +421,9 @@ public class AtlatitanServant extends AnimalSummon
     private void onStep() {
         if (!this.isBaby() && this.screenShakeAmount <= 1.0F) {
             this.playSound(ACSoundRegistry.ATLATITAN_STEP.get(), 2.0F, 1.0F);
-            CameraShake.cameraShake(this.level(), this.position(), 20.0F, 0.03F, 0, 20);
+            if (!this.isVehicle()) {
+                CameraShake.cameraShake(this.level(), this.position(), 20.0F, 0.03F, 0, 20);
+            }
         }
     }
 
@@ -797,6 +805,11 @@ public class AtlatitanServant extends AnimalSummon
     }
 
     @Override
+    public boolean canFeelShake(Entity player) {
+        return !this.hasPassenger(player) && player.onGround();
+    }
+
+    @Override
     public float getScreenShakeAmount(float partialTicks) {
         if (!this.isAlive() || this.isBaby()) {
             return 0.0F;
@@ -1038,7 +1051,7 @@ public class AtlatitanServant extends AnimalSummon
             passenger.fallDistance = 0.0F;
             this.clampRotation(living, 105.0F);
             moveFunction.accept(passenger, this.getX() + seatOffset.x,
-                    this.getY() + seatOffset.y + this.getPassengersRidingOffset() - this.getLegSolverBodyOffset(),
+                    this.getY() + seatOffset.y + this.getPassengersRidingOffset() - this.seatBodyOffset,
                     this.getZ() + seatOffset.z);
         } else {
             super.positionRider(passenger, moveFunction);

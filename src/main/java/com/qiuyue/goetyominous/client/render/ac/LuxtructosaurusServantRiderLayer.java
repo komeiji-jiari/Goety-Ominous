@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.client.render.ac;
 
+import com.github.alexmodguy.alexscaves.server.misc.ACMath;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.qiuyue.goetyominous.client.render.model.ac.ModelLuxtructosaurusServant;
@@ -29,7 +30,11 @@ public class LuxtructosaurusServantRiderLayer extends RenderLayer<Luxtructosauru
     public void render(PoseStack poseStack, MultiBufferSource bufferIn, int packedLightIn, LuxtructosaurusServant entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         float bodyYaw = entity.yBodyRotO + (entity.yBodyRot - entity.yBodyRotO) * partialTicks;
         if (entity.isVehicle()) {
-            Vec3 offset = new Vec3(0.0D, -5.75D, -0.5D);
+            float animationIntensity = 0.0F;
+            if (entity.getAnimation() == LuxtructosaurusServant.ANIMATION_STOMP) {
+                animationIntensity = ACMath.cullAnimationTick(entity.getAnimationTick(), 1.0F, LuxtructosaurusServant.ANIMATION_STOMP, partialTicks, 0, 30);
+            }
+            Vec3 offset = new Vec3(0.0D, -5.75D, -0.5F - 0.7F * animationIntensity);
             Vec3 ridePos = this.getParentModel().getRiderPosition(offset);
             for (Entity passenger : entity.getPassengers()) {
                 if (passenger == Minecraft.getInstance().player && Minecraft.getInstance().options.getCameraType().isFirstPerson()) {

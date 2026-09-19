@@ -423,15 +423,20 @@ public class TremorzillaServant extends AnimalSummon
             float f2 = (float) Math.sin(this.walkAnimation.position() * 0.25F - 1.0F);
             if (Math.abs(f) < 0.2F && this.screenShakeAmount <= 0.3F && this.stompSoundCooldown <= 0) {
                 this.playSound(ACSoundRegistry.TREMORZILLA_STOMP.get(), 6.0F, 0.7F);
-                CameraShake.cameraShake(this.level(), this.position(), 20.0F, 0.03F, 0, 20);
+                if (!this.isVehicle()) {
+                    CameraShake.cameraShake(this.level(), this.position(), 20.0F, 0.03F, 0, 20);
+                }
                 this.stompSoundCooldown = 4;
             }
             if (this.walkAnimation.speed() > 0.5F && Math.abs(f1) < 0.1F) {
                 this.stompEffect(f2 > 0.0F, 1.0F, 1.3F, 0.4F + this.walkAnimation.speed(), 2.0F);
             }
         }
-        this.tickMultipart();
         if (this.level().isClientSide) {
+            if (this.isControlledByLocalInstance()) {
+                this.lSteps = 0;
+                this.syncPacketPositionCodec(this.getX(), this.getY(), this.getZ());
+            }
             if (this.lSteps > 0) {
                 double d5 = this.getX() + (this.lx - this.getX()) / (double) this.lSteps;
                 double d6 = this.getY() + (this.ly - this.getY()) / (double) this.lSteps;
@@ -467,6 +472,7 @@ public class TremorzillaServant extends AnimalSummon
             }
             this.setTremorzillaSwimming(waterHeight > 2.0);
         }
+        this.tickMultipart();
         if (this.isAlive()) {
             if (this.isFiring()) {
                 this.tickBreath();
@@ -1113,6 +1119,11 @@ public class TremorzillaServant extends AnimalSummon
             if (this.getTrueOwner() == null) continue;
             e.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 200, 0, true, true));
         }
+    }
+
+    @Override
+    public boolean canFeelShake(Entity player) {
+        return !this.hasPassenger(player) && player.onGround();
     }
 
     @Override

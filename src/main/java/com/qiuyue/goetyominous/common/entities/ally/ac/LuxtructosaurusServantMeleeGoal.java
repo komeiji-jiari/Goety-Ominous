@@ -63,9 +63,13 @@ public class LuxtructosaurusServantMeleeGoal extends Goal {
                     || this.luxtructosaurus.getAnimation() == LuxtructosaurusServant.ANIMATION_RIGHT_WHIP) {
                 this.luxtructosaurus.turningFast = true;
                 Vec3 vec3 = target.position().subtract(this.luxtructosaurus.position());
-                this.luxtructosaurus.yBodyRotO = this.luxtructosaurus.yBodyRot = Mth.approachDegrees(
-                        this.luxtructosaurus.yBodyRot,
-                        -((float) Mth.atan2(vec3.x, vec3.z)) * 57.295776F, 15.0F);
+                float targetYaw = -((float) Mth.atan2(vec3.x, vec3.z)) * 57.295776F;
+                if (ridden) {
+                    this.luxtructosaurus.yBodyRot = Mth.approachDegrees(this.luxtructosaurus.yBodyRot, targetYaw, 15.0F);
+                } else {
+                    this.luxtructosaurus.yBodyRotO = this.luxtructosaurus.yBodyRot = Mth.approachDegrees(
+                            this.luxtructosaurus.yBodyRot, targetYaw, 15.0F);
+                }
                 this.luxtructosaurus.getLookControl().setLookAt(target.getX(), target.getEyeY(), target.getZ());
             } else {
                 this.luxtructosaurus.turningFast = false;
