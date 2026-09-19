@@ -1,8 +1,13 @@
 package com.qiuyue.goetyominous.common.entities.ally.mobs;
 
+import com.Polarice3.Goety.client.particles.ModParticleTypes;
 import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.common.entities.ally.BlackWolf;
+import com.Polarice3.Goety.common.entities.ally.undead.skeleton.AbstractSkeletonServant;
+import com.Polarice3.Goety.common.entities.ally.undead.skeleton.SkeletonWolf;
+import com.Polarice3.Goety.common.entities.neutral.DrownedNecromancer;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
+import com.Polarice3.Goety.init.ModTags;
 import com.Polarice3.Goety.utils.CuriosFinder;
 import com.Polarice3.Goety.utils.MathHelper;
 import com.Polarice3.Goety.utils.MobUtil;
@@ -38,6 +43,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
@@ -70,6 +76,14 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
     private static final int GALLOP_EXIT_TICKS = 4;
     private static final int WALK_PHASE_TICKS = 15;
     private static final int RUN_STOP_TICKS = 7;
+    private static final float HOWL_SECONDS = 3.25F;
+    private static final float HOWL_BUFF_DELAY_SECONDS = 0.25F;
+    private static final float HOWL_BUFF_SECONDS = 5.0F;
+    private static final int HOWL_COOLDOWN = 100;
+    private static final double HOWL_RADIUS = 16.0D;
+    private static final EntityDataAccessor<Boolean> HOWLING =
+            SynchedEntityData.defineId(Warg.class, EntityDataSerializers.BOOLEAN);
+    private int howlingCool;
     private static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(Warg.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(Warg.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> ATTACK_TYPE = SynchedEntityData.defineId(Warg.class, EntityDataSerializers.INT);
@@ -122,6 +136,7 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
             }
         });
         this.goalSelector.addGoal(3, new WargSwordAttackGoal());
+        this.goalSelector.addGoal(1, new SkeletalHowlGoal());
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
@@ -147,6 +162,7 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
         this.entityData.define(VARIANT, Variant.BLACK.ordinal());
         this.entityData.define(ATTACK_TYPE, ATTACK_NONE);
         this.entityData.define(ATTACK_TICKS, 0);
+        this.entityData.define(HOWLING, false);
     }
 
     @Override
@@ -214,6 +230,8 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("Saddled", this.isSaddled());
         tag.putInt("WargVariant", this.getVariant().ordinal());
+        tag.putBoolean("Howling", this.isHowling());
+        tag.putInt("HowlingCool", this.howlingCool);
     }
 
     @Override
@@ -221,12 +239,25 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
         super.readAdditionalSaveData(tag);
         this.setSaddled(tag.getBoolean("Saddled"));
         this.setVariant(Variant.byId(tag.getInt("WargVariant")));
+        this.setIsHowling(tag.getBoolean("Howling"));
+        this.howlingCool = tag.getInt("HowlingCool");
+    }
+
+    public boolean isHowling() {
+        return this.entityData.get(HOWLING);
+    }
+
+    public void setIsHowling(boolean howling) {
+        this.entityData.set(HOWLING, howling);
     }
 
     @Override
     public void tick() {
         super.tick();
         this.updateRideHeight();
+        if (this.howlingCool > 0) {
+            --this.howlingCool;
+        }
         if (!this.level().isClientSide) {
             this.registerPersistentAssignment();
             this.tickSwordAttack();
@@ -619,6 +650,20 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
     public void handleStopJump() {
     }
 
+    private void spawnHealParticles() {
+        if (!(this.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+        for (int i = 0; i < 7; ++i) {
+            double d0 = this.random.nextGaussian() * 0.02D;
+            double d1 = this.random.nextGaussian() * 0.02D;
+            double d2 = this.random.nextGaussian() * 0.02D;
+            serverLevel.sendParticles(ModParticleTypes.HEAL_EFFECT.get(),
+                    this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D),
+                    0, d0, d1, d2, 0.5D);
+        }
+    }
+
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack held = player.getItemInHand(hand);
@@ -656,15 +701,13 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
                     return InteractionResult.sidedSuccess(this.level().isClientSide);
                 }
                 if (this.isFood(held) && this.getHealth() < this.getMaxHealth()) {
-
                     if (!this.level().isClientSide) {
                         FoodProperties food = held.getFoodProperties(this);
-                        if (food != null) {
-                            this.heal(food.getNutrition());
-                            this.playSound(SoundEvents.GENERIC_EAT, 1.0F, 1.0F);
-                        }
+                        this.heal(food != null ? (float) food.getNutrition() : 1.0F);
+                        this.playSound(SoundEvents.GENERIC_EAT, 1.0F, 1.0F);
                     }
                     consumeOne(player, held);
+                    this.spawnHealParticles();
                     return InteractionResult.sidedSuccess(this.level().isClientSide);
                 }
                 if (held.is(Items.SHEARS) && this.isSaddled()) {
@@ -805,6 +848,14 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
         return this.getVariant() == Variant.SKELETAL ? MobType.UNDEAD : super.getMobType();
     }
 
+    @Override
+    public boolean isFood(ItemStack stack) {
+        if (this.getVariant() == Variant.SKELETAL) {
+            return stack.is(Items.BONE);
+        }
+        return super.isFood(stack);
+    }
+
     public void setVariant(Variant variant) {
         this.entityData.set(VARIANT, variant.ordinal());
     }
@@ -825,6 +876,88 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
     protected boolean isOwnedByPlayer(Player player) {
         UUID owner = this.getOwnerId();
         return owner != null && owner.equals(player.getUUID());
+    }
+
+    private class SkeletalHowlGoal extends Goal {
+        private int howlTime;
+
+        private SkeletalHowlGoal() {
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.JUMP, Flag.LOOK));
+        }
+
+        @Override
+        public boolean canUse() {
+            return Warg.this.getVariant() == Variant.SKELETAL
+                    && Warg.this.getTarget() != null
+                    && Warg.this.getTarget().isAlive()
+                    && Warg.this.howlingCool <= 0
+                    && Warg.this.getRandom().nextBoolean();
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return this.howlTime > 0;
+        }
+
+        @Override
+        public void start() {
+            Warg.this.setIsHowling(true);
+            this.howlTime = MathHelper.secondsToTicks(HOWL_SECONDS);
+            Warg.this.playSound(com.Polarice3.Goety.init.ModSounds.SKELETON_WOLF_HOWL.get(), 1.0F, 1.0F);
+            this.freezeIfNotRidden();
+        }
+
+        @Override
+        public void stop() {
+            Warg.this.setIsHowling(false);
+            Warg.this.howlingCool = HOWL_COOLDOWN;
+        }
+
+        @Override
+        public void tick() {
+            --this.howlTime;
+            this.freezeIfNotRidden();
+            if (this.howlTime == MathHelper.secondsToTicks(HOWL_SECONDS - HOWL_BUFF_DELAY_SECONDS)) {
+                this.buffAllies();
+            }
+        }
+
+        private void freezeIfNotRidden() {
+            if (Warg.this.getControllingPassenger() instanceof Player) {
+                return;
+            }
+            Warg.this.getNavigation().stop();
+            Warg.this.getMoveControl().strafe(0.0F, 0.0F);
+        }
+
+        private void buffAllies() {
+            for (LivingEntity livingEntity : Warg.this.level().getEntitiesOfClass(
+                    LivingEntity.class, Warg.this.getBoundingBox().inflate(HOWL_RADIUS))) {
+                if (livingEntity == Warg.this) {
+                    continue;
+                }
+                boolean flag = false;
+                if (Warg.this.isHostile() && livingEntity instanceof AbstractSkeleton) {
+                    flag = true;
+                }
+                if ((livingEntity instanceof AbstractSkeletonServant
+                        || livingEntity instanceof SkeletonWolf
+                        || livingEntity.getType().is(ModTags.EntityTypes.SKELETON_WOLF_BUFF))
+                        && !(livingEntity instanceof DrownedNecromancer)
+                        && MobUtil.areAllies(Warg.this, livingEntity)) {
+                    flag = true;
+                }
+                if (flag) {
+                    livingEntity.addEffect(new MobEffectInstance(
+                            MobEffects.DAMAGE_BOOST, MathHelper.secondsToTicks(HOWL_BUFF_SECONDS)));
+                }
+            }
+        }
+
+        @Override
+        public boolean requiresUpdateEveryTick() {
+            return true;
+        }
     }
 
     private class WargSwordAttackGoal extends Goal {

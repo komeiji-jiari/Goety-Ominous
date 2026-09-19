@@ -30,6 +30,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -49,10 +50,15 @@ public class WolfTotemHooks {
             TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("goety", "wolf_totem_servants"));
 
     public static InteractionResult tryLinkToTotem(ItemStack stack, Player player, LivingEntity entity, InteractionHand hand) {
-        if (!(entity instanceof IOwned owned)) {
+        boolean ownedByPlayer;
+        if (entity instanceof IOwned owned) {
+            ownedByPlayer = owned.getTrueOwner() == player;
+        } else if (entity instanceof Wolf wolf) {
+            ownedByPlayer = wolf.isTame() && wolf.isOwnedBy(player);
+        } else {
             return InteractionResult.PASS;
         }
-        if (owned.getTrueOwner() != player) {
+        if (!ownedByPlayer) {
             return InteractionResult.PASS;
         }
         if (!canUseTotem(entity)) {
@@ -79,8 +85,8 @@ public class WolfTotemHooks {
             com.Polarice3.Goety.config.MainConfig.OminousIdolLimit.get();
             return InteractionResult.PASS;
         }
-        boolean isWarg = entity instanceof com.qiuyue.goetyominous.common.entities.ally.mobs.Warg;
-        boolean wargAlreadyBound = isWarg && getStoredRevivePos(owned) != null;
+        boolean isWarg = entity instanceof Warg;
+        boolean wargAlreadyBound = isWarg && entity instanceof IOwned boundWarg && getStoredRevivePos(boundWarg) != null;
         if (!entity.level().isClientSide) {
             if (isWarg && !wargAlreadyBound && (totem.hasCreatedWarg()
                     || !WargTotemData.get((ServerLevel) entity.level()).canCreate(player.getUUID(), entity.level().dimension(), totem.getBlockPos()))) {
@@ -89,9 +95,11 @@ public class WolfTotemHooks {
             if (isWarg && wargAlreadyBound && totem.hasCreatedWarg() && !totem.getCreatedWarg().equals(entity.getUUID())) {
                 return InteractionResult.FAIL;
             }
-            if (entity instanceof BlackWolf wolf && !(wolf instanceof com.qiuyue.goetyominous.common.entities.ally.mobs.Warg)
-                    && tryTransformWarg(player, wolf, totem, hand)) {
+            if (isWargPromotionCandidate(entity) && tryTransformWarg(player, entity, totem, hand)) {
                 return InteractionResult.SUCCESS;
+            }
+            if (!(entity instanceof IOwned owned)) {
+                return InteractionResult.PASS;
             }
             WolfTotemBlockEntity oldTotem = getTotem(owned);
             if (oldTotem != null && oldTotem != totem) {
@@ -133,39 +141,61 @@ public class WolfTotemHooks {
         return InteractionResult.SUCCESS;
     }
 
-    private static boolean tryTransformWarg(Player player, BlackWolf wolf, WolfTotemBlockEntity totem, InteractionHand hand) {
+    private static boolean isWargPromotionCandidate(LivingEntity entity) {
+        return entity instanceof SkeletonWolf
+                || entity instanceof Wolf wolf && wolf.isTame()
+                || entity instanceof BlackWolf blackWolf && !(blackWolf instanceof Hellhound) && !(blackWolf instanceof Warg);
+    }
+
+    private static boolean isPlayerOwnedWolf(LivingEntity living, Player player) {
+        if (living instanceof Warg) {
+            return false;
+        }
+        if (living instanceof Wolf wolf) {
+            return wolf.isTame() && wolf.isOwnedBy(player);
+        }
+        if (living instanceof BlackWolf || living instanceof SkeletonWolf) {
+            return living instanceof IOwned owned && owned.getTrueOwner() == player;
+        }
+        return false;
+    }
+
+    private static boolean tryTransformWarg(Player player, LivingEntity wolf, WolfTotemBlockEntity totem, InteractionHand hand) {
         if (!(wolf.level() instanceof ServerLevel serverLevel) || totem.hasCreatedWarg()) {
             return false;
         }
         UUID ownerId = player.getUUID();
         long nearbyWolves = serverLevel.getEntitiesOfClass(LivingEntity.class,
                         new AABB(totem.getBlockPos()).inflate(8.0D),
-                        living -> (living instanceof BlackWolf || living instanceof SkeletonWolf)
-                                && !(living instanceof com.qiuyue.goetyominous.common.entities.ally.mobs.Warg)
-                                && living instanceof IOwned nearbyOwned && nearbyOwned.getTrueOwner() == player)
+                        living -> isPlayerOwnedWolf(living, player))
                 .size();
         if (nearbyWolves < 4 || !WargTotemData.get(serverLevel).canCreate(ownerId, serverLevel.dimension(), totem.getBlockPos())) {
             return false;
         }
-        com.qiuyue.goetyominous.common.entities.ally.mobs.Warg warg = ModEntityTypes.WARG.get().create(serverLevel);
+        Warg warg = ModEntityTypes.WARG.get().create(serverLevel);
         if (warg == null) {
             return false;
         }
         Component sourceName = wolf.getDisplayName().copy();
 
-        WolfTotemBlockEntity oldTotem = getTotem((LivingEntity) wolf);
+        WolfTotemBlockEntity oldTotem = getTotem(wolf);
         if (oldTotem != null) {
             oldTotem.removeServant(wolf);
             oldTotem.markUpdated();
         }
-        if (!wolf.getItemBySlot(net.minecraft.world.entity.EquipmentSlot.CHEST).isEmpty()) {
-            wolf.spawnAtLocation(wolf.getItemBySlot(net.minecraft.world.entity.EquipmentSlot.CHEST).copy());
+        if (!wolf.getItemBySlot(EquipmentSlot.CHEST).isEmpty()) {
+            wolf.spawnAtLocation(wolf.getItemBySlot(EquipmentSlot.CHEST).copy());
         }
         warg.moveTo(wolf.getX(), wolf.getY(), wolf.getZ(), wolf.getYRot(), wolf.getXRot());
         warg.setTrueOwner(player);
-        warg.setVariant(wolf instanceof WinterWolf ? com.qiuyue.goetyominous.common.entities.ally.mobs.Warg.Variant.COLD
-                : wolf instanceof Stormhound ? com.qiuyue.goetyominous.common.entities.ally.mobs.Warg.Variant.MODERATE : com.qiuyue.goetyominous.common.entities.ally.mobs.Warg.Variant.BLACK);
-        warg.setUpgraded(wolf.isUpgraded());
+        warg.setVariant(wolf instanceof SkeletonWolf ? Warg.Variant.SKELETAL
+                : wolf instanceof WinterWolf ? Warg.Variant.COLD
+                : wolf instanceof Stormhound ? Warg.Variant.MODERATE
+                : wolf instanceof Wolf ? Warg.Variant.GRAY
+                : Warg.Variant.BLACK);
+        if (wolf instanceof IServant servant) {
+            warg.setUpgraded(servant.isUpgraded());
+        }
         if (wolf.hasCustomName()) {
             warg.setCustomName(wolf.getCustomName());
             warg.setCustomNameVisible(wolf.isCustomNameVisible());
@@ -317,7 +347,8 @@ public class WolfTotemHooks {
                 || entity instanceof BlackWolf
                 || entity instanceof Warg
                 || entity instanceof SkeletonWolf
-                || entity instanceof BlackBeast;
+                || entity instanceof BlackBeast
+                || entity instanceof Wolf;
     }
 
     public static WolfTotemBlockEntity getTotem(LivingEntity entity) {

@@ -72,6 +72,11 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> ExtinctionMeteorShots;
     public static final ForgeConfigSpec.ConfigValue<Integer> ExtinctionMeteorCoolDown;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> PrimalPackCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> PrimalPackDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> PrimalPackSummonDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> PrimalPackCoolDown;
+
     public static final ForgeConfigSpec.ConfigValue<Integer> HogChargeSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> HogChargeCooldown;
     public static final ForgeConfigSpec.ConfigValue<Double> HogChargeDamage;
@@ -204,6 +209,17 @@ public class SpellConfig {
                 .defineInRange("extinctionMeteorShots", 5, 0, 72000);
         ExtinctionMeteorCoolDown = BUILDER.comment("Cooldown of Extinction Meteor in ticks, Default: 600")
                 .defineInRange("extinctionMeteorCoolDown", 600, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("Primal Pack");
+        PrimalPackCost = BUILDER.comment("Soul cost of Primal Pack spell (Default: 16)")
+                .defineInRange("primalPackCost", 16, 0, Integer.MAX_VALUE);
+        PrimalPackDuration = BUILDER.comment("Cast duration of Primal Pack spell in ticks (Default: 120)")
+                .defineInRange("primalPackDuration", 120, 0, 72000);
+        PrimalPackSummonDown = BUILDER.comment("Summon down duration of Primal Pack spell in ticks (Default: 100)")
+                .defineInRange("primalPackSummonDown", 100, 0, 72000);
+        PrimalPackCoolDown = BUILDER.comment("Cooldown of Primal Pack spell in ticks (Default: 120)")
+                .defineInRange("primalPackCoolDown", 120, 0, 72000);
         BUILDER.pop();
 
         BUILDER.push("Sand Spell");
