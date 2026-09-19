@@ -173,6 +173,7 @@ public class LuxtructosaurusServant extends Summoned
     private float legBackAmount;
     private float prevRaiseArmsAmount;
     private float raiseArmsAmount;
+    private float seatBodyOffset = 0.8F;
     protected float neckXRot;
     protected float neckYRot;
     protected float tailXRot;
@@ -437,26 +438,23 @@ public class LuxtructosaurusServant extends Summoned
     public void positionRider(Entity passenger, Entity.MoveFunction moveFunction) {
         if (this.isPassengerOfSameVehicle(passenger) && passenger instanceof LivingEntity living
                 && !this.touchingUnloadedChunk()) {
-            Vec3 seatOffset = new Vec3(0.0F, 0.5F, 0.5F).yRot((float) Math.toRadians(-this.yBodyRot));
-            passenger.setYBodyRot(this.yBodyRot);
+            float seatY = 0.5F;
+            float seatZ = 0.5F;
+            if (this.getAnimation() == ANIMATION_STOMP) {
+                float animationIntensity = ACMath.cullAnimationTick(this.getAnimationTick(), 1.0F, ANIMATION_STOMP, 1.0F, 0, 30);
+                seatY += animationIntensity * 1.5F;
+                seatZ += animationIntensity * -4.5F;
+            }
+            Vec3 seatOffset = new Vec3(0.0F, seatY, seatZ).yRot((float) Math.toRadians(-this.yBodyRot));
+            living.setYBodyRot(this.getYRot());
+            living.setYHeadRot(living.getYRot());
             passenger.fallDistance = 0.0F;
-            this.clampRotation(living, 105.0F);
             moveFunction.accept(passenger, this.getX() + seatOffset.x,
-                    this.getY() + seatOffset.y + this.getPassengersRidingOffset() - this.getLegSolverBodyOffset(),
+                    this.getY() + seatOffset.y + this.getPassengersRidingOffset() - this.seatBodyOffset,
                     this.getZ() + seatOffset.z);
         } else {
             super.positionRider(passenger, moveFunction);
         }
-    }
-
-    protected void clampRotation(LivingEntity livingEntity, float clampRange) {
-        livingEntity.setYBodyRot(this.getYRot());
-        float f = Mth.wrapDegrees(livingEntity.getYRot() - this.getYRot());
-        float f1 = Mth.clamp(f, -clampRange, clampRange);
-        livingEntity.yRotO += f1 - f;
-        livingEntity.yBodyRotO += f1 - f;
-        livingEntity.setYRot(livingEntity.getYRot() + f1 - f);
-        livingEntity.setYHeadRot(livingEntity.getYRot());
     }
 
     @Override
@@ -591,7 +589,8 @@ public class LuxtructosaurusServant extends Summoned
 
     @Override
     public boolean canFeelShake(Entity player) {
-        return player.onGround() || this.getAnimation() == ANIMATION_ROAR && this.isAlive();
+        return !this.hasPassenger(player)
+                && (player.onGround() || this.getAnimation() == ANIMATION_ROAR && this.isAlive());
     }
 
     @Override
@@ -628,6 +627,7 @@ public class LuxtructosaurusServant extends Summoned
         this.prevRaiseArmsAmount = this.raiseArmsAmount;
         this.prevScreenShakeAmount = this.screenShakeAmount;
         this.legSolver.update(this, this.yBodyRot, this.getScale());
+        this.seatBodyOffset += (this.getLegSolverBodyOffset() - this.seatBodyOffset) * 0.15F;
         if (this.shouldRaiseArms() && this.raiseArmsAmount < 5.0F) {
             this.raiseArmsAmount += 1.0F;
         }
@@ -665,6 +665,10 @@ public class LuxtructosaurusServant extends Summoned
             this.setYHeadRot(Mth.approachDegrees(this.getYHeadRot(), this.getYRot(), 10.0F));
         }
         if (this.level().isClientSide) {
+            if (this.isControlledByLocalInstance()) {
+                this.lSteps = 0;
+                this.syncPacketPositionCodec(this.getX(), this.getY(), this.getZ());
+            }
             if (this.lSteps > 0) {
                 double d5 = this.getX() + (this.lx - this.getX()) / (double) this.lSteps;
                 double d6 = this.getY() + (this.ly - this.getY()) / (double) this.lSteps;
@@ -877,7 +881,9 @@ public class LuxtructosaurusServant extends Summoned
     private void onStep() {
         if (this.screenShakeAmount <= 1.0F) {
             this.playSound(ACSoundRegistry.LUXTRUCTOSAURUS_STEP.get(), 4.0F, 1.0F);
-            CameraShake.cameraShake(this.level(), this.position(), 20.0F, 0.03F, 0, 20);
+            if (!this.isVehicle()) {
+                CameraShake.cameraShake(this.level(), this.position(), 20.0F, 0.03F, 0, 20);
+            }
         }
     }
 

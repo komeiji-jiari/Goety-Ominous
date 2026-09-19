@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.events;
 
+import com.github.alexmodguy.alexscaves.AlexsCaves;
 import com.github.alexmodguy.alexscaves.server.entity.util.ShakesScreen;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TremorzillaServant;
 import net.minecraft.client.Minecraft;
@@ -79,7 +80,8 @@ public class TremorzillaRenderEvents {
     @SubscribeEvent
     public static void computeCameraAngles(ViewportEvent.ComputeCameraAngles event) {
         Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
-        if (cameraEntity != null && cameraEntity.level() != null) {
+        if (cameraEntity != null && cameraEntity.level() != null
+                && !Boolean.TRUE.equals(AlexsCaves.CLIENT_CONFIG.screenShaking.get())) {
             float partialTick = Minecraft.getInstance().getPartialTick();
             float tremorAmount = 0.0F;
             double shakeDistanceScale = 64.0;
