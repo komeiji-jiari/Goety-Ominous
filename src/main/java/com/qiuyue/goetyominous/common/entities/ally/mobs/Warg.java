@@ -66,6 +66,8 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
     public static final int ATTACK_SPIN = 2;
     public static final int ATTACK_SLASH = 3;
     private static final int LANDING_TICKS = 9;
+    private static final int SIT_DOWN_TICKS = 12;
+    private static final int STAND_UP_TICKS = 10;
     private static final double RIDE_LAG_MAX = 0.5D;
     private static final double RIDE_LAG_RISE = 0.25D;
     public static final float[] RUN_BOB_TIME = {0.0F, 0.04F, 0.14F, 0.27F, 0.34F, 0.44F, 0.57F, 0.6F};
@@ -74,8 +76,11 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
     public static final float[] STOP_BOB_Y = {-0.431F, -1.6F, 0.0F};
     private static final int GALLOP_PERIOD_TICKS = 12;
     private static final int GALLOP_EXIT_TICKS = 4;
+    private static final int AERIAL_MIN_AIR_TICKS = 6;
     private static final int WALK_PHASE_TICKS = 15;
     private static final int RUN_STOP_TICKS = 7;
+    private static final int POSE_BLEND_TICKS = 4;
+    private static final int JUMP_LATCH_TICKS = 3;
     private static final float HOWL_SECONDS = 3.25F;
     private static final float HOWL_BUFF_DELAY_SECONDS = 0.25F;
     private static final float HOWL_BUFF_SECONDS = 5.0F;
@@ -94,11 +99,14 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
     public final AnimationState runAnimationState = new AnimationState();
     public final AnimationState runStopAnimationState = new AnimationState();
     public final AnimationState groundedAnimationState = new AnimationState();
+    public final AnimationState sitDownAnimationState = new AnimationState();
+    public final AnimationState standUpAnimationState = new AnimationState();
     public final AnimationState jumpAnimationState = new AnimationState();
     public final AnimationState biteAnimationState = new AnimationState();
     public final AnimationState spinAnimationState = new AnimationState();
     public final AnimationState slashAnimationState = new AnimationState();
     public final AnimationState landingAnimationState = new AnimationState();
+    public final AnimationState howlAnimationState = new AnimationState();
     @Nullable
     private LivingEntity queuedTarget;
     private float lockedAttackYaw;
@@ -107,6 +115,11 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
     private int airTicks;
     private int landingTicks;
     private boolean airborneLast;
+    private boolean jumpLaunched;
+    private float jumpWeight;
+    private float jumpWeightOld;
+    private float landingWeight;
+    private float landingWeightOld;
     protected double rideHeight;
     private boolean rideHeightSet;
     private double rideLag;
@@ -119,6 +132,10 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
     private boolean gallopHold;
     private int gallopStartTick;
     private int stopTicks;
+    private boolean sittingLast;
+    private boolean poseableLast;
+    private boolean sitDown;
+    private int sitTransitionTicks;
     private boolean registryChecked;
 
     public Warg(EntityType<? extends Owned> type, Level level) {
@@ -338,16 +355,40 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
     }
 
     public float getGallopBob(float partialTicks) {
+        float weight = this.getGaitWeight(this.tickCount + partialTicks);
+        if (weight <= 0.0F) {
+            return 0.0F;
+        }
         if (this.runAnimationState.isStarted()) {
             float time = ((float)(this.tickCount - this.gallopStartTick) + partialTicks) / 20.0F;
             float phase = time - (float)Math.floor(time / 0.6F) * 0.6F;
-            return sampleBob(RUN_BOB_TIME, RUN_BOB_Y, phase, true);
+            return weight * sampleBob(RUN_BOB_TIME, RUN_BOB_Y, phase, true);
         }
         if (this.runStopAnimationState.isStarted()) {
             float time = ((float)(RUN_STOP_TICKS - this.stopTicks) + partialTicks) / 20.0F;
-            return sampleBob(STOP_BOB_TIME, STOP_BOB_Y, time, false);
+            return weight * sampleBob(STOP_BOB_TIME, STOP_BOB_Y, time, false);
         }
         return 0.0F;
+    }
+
+    public float getJumpWeight(float ageInTicks) {
+        return Mth.lerp(this.partialTick(ageInTicks), this.jumpWeightOld, this.jumpWeight);
+    }
+
+    public float getLandingWeight(float ageInTicks) {
+        return Mth.lerp(this.partialTick(ageInTicks), this.landingWeightOld, this.landingWeight);
+    }
+
+    public float getGaitWeight(float ageInTicks) {
+        return Math.max(0.0F, 1.0F - this.getJumpWeight(ageInTicks) - this.getLandingWeight(ageInTicks));
+    }
+
+    private float partialTick(float ageInTicks) {
+        return ageInTicks - Mth.floor(ageInTicks);
+    }
+
+    private static float approach(float value, float target, float step) {
+        return value < target ? Math.min(value + step, target) : Math.max(value - step, target);
     }
 
     private static float sampleBob(float[] times, float[] values, float time, boolean looping) {
@@ -385,25 +426,59 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
     private void updateAnimationStates() {
         boolean attacking = this.getAttackTicks() > 0 || this.suppressesLocomotionAnimation();
         boolean airborne = !this.onGround();
+        boolean landingStarted = false;
         if (airborne) {
             ++this.airTicks;
             this.landingTicks = 0;
+            if (this.airTicks <= JUMP_LATCH_TICKS && this.getY() > this.yo) {
+                this.jumpLaunched = true;
+            }
         } else {
-            if (this.airborneLast && this.airTicks >= 3) {
+            if (this.airborneLast && this.airTicks >= AERIAL_MIN_AIR_TICKS) {
                 this.landingTicks = LANDING_TICKS;
+                landingStarted = true;
             }
             this.airTicks = 0;
+            this.jumpLaunched = false;
         }
         this.airborneLast = airborne;
         boolean landing = this.landingTicks > 0;
         if (landing) {
             --this.landingTicks;
         }
-        boolean casual = !airborne || this.airTicks < 2;
+        boolean jumping = airborne && (this.jumpLaunched || this.airTicks >= AERIAL_MIN_AIR_TICKS);
+        this.jumpWeightOld = this.jumpWeight;
+        this.landingWeightOld = this.landingWeight;
+        if (landingStarted) {
+            this.landingWeight = 1.0F - this.jumpWeight;
+            this.landingWeightOld = this.landingWeight;
+        }
+        float blendStep = 1.0F / POSE_BLEND_TICKS;
+        this.jumpWeight = approach(this.jumpWeight, jumping ? 1.0F : 0.0F, blendStep);
+        this.landingWeight = approach(this.landingWeight, landing ? 1.0F : 0.0F, blendStep);
+        float gaitWeight = Math.max(0.0F, 1.0F - this.jumpWeight - this.landingWeight);
+        float gaitWeightOld = Math.max(0.0F, 1.0F - this.jumpWeightOld - this.landingWeightOld);
+        boolean casual = !airborne || Math.max(gaitWeight, gaitWeightOld) > 0.0F;
+        boolean poseable = !attacking && !landing && casual;
+        boolean sitting = this.isSitting();
+        if (sitting != this.sittingLast) {
+            this.sittingLast = sitting;
+            this.sitDown = sitting;
+            this.sitTransitionTicks = poseable ? (sitting ? SIT_DOWN_TICKS : STAND_UP_TICKS) : 0;
+        } else if (!poseable) {
+            this.sitTransitionTicks = 0;
+        } else if (this.sitTransitionTicks > 0) {
+            --this.sitTransitionTicks;
+        } else if (sitting && !this.poseableLast) {
+            this.sitDown = true;
+            this.sitTransitionTicks = SIT_DOWN_TICKS;
+        }
+        this.poseableLast = poseable;
+        boolean transitioning = poseable && this.sitTransitionTicks > 0;
         this.updateGait();
         boolean moving = this.walkAnimation.speed() > 0.05F;
         boolean running = moving && this.runningGait;
-        boolean gaitCapable = !attacking && !landing && casual && !this.isSitting();
+        boolean gaitCapable = poseable && !sitting && !transitioning;
         if (gaitCapable && running) {
             this.gallopHold = true;
             this.stopTicks = 0;
@@ -422,9 +497,12 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
             this.gallopStartTick = this.tickCount;
         }
         boolean stopping = this.stopTicks > 0;
-        setAnimation(this.landingAnimationState, !attacking && landing);
-        setAnimation(this.jumpAnimationState, !attacking && !landing && airborne && this.airTicks >= 2);
-        setAnimation(this.groundedAnimationState, !attacking && !landing && casual && this.isSitting());
+        setAnimation(this.landingAnimationState, !attacking && (landing || Math.max(this.landingWeight, this.landingWeightOld) > 0.0F));
+        setAnimation(this.jumpAnimationState, !attacking && (jumping || Math.max(this.jumpWeight, this.jumpWeightOld) > 0.0F));
+        setAnimation(this.sitDownAnimationState, transitioning && this.sitDown);
+        setAnimation(this.standUpAnimationState, transitioning && !this.sitDown);
+        setAnimation(this.groundedAnimationState, poseable && sitting && !transitioning);
+        setAnimation(this.howlAnimationState, this.isHowling());
         setAnimation(this.runAnimationState, this.gallopHold);
         setAnimation(this.runStopAnimationState, stopping);
         setAnimation(this.walkAnimationState, gaitCapable && moving && !this.gallopHold && !stopping, WALK_PHASE_TICKS);

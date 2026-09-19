@@ -50,7 +50,7 @@ public class Cerberus extends Warg implements IBreathing {
     private static final double MUZZLE_HEIGHT = 2.2D;
     private static final double MUZZLE_FORWARD = 2.2D;
     private static final double RIDER_FORWARD_OFFSET = -1.36D;
-    private static final double RIDER_HEIGHT = 0.9D;
+    private static final double RIDER_HEIGHT = 1.575D;
     private static final double RIDER_BOUNCE = 0.08D;
 
     private final FireBreathSpell breathSpell = new FireBreathSpell();
@@ -163,11 +163,7 @@ public class Cerberus extends Warg implements IBreathing {
 
     @Override
     public boolean canJump() {
-        return false;
-    }
-
-    @Override
-    public void onPlayerJump(int strength) {
+        return this.onGround() && !this.isBreathing();
     }
 
     @Override
@@ -311,13 +307,17 @@ public class Cerberus extends Warg implements IBreathing {
                 --this.cooldownTicks;
                 return false;
             }
+            if (!Cerberus.this.onGround()) {
+                return false;
+            }
             return super.canUse();
         }
 
         @Override
         public boolean canContinueToUse() {
             LivingEntity target = Cerberus.this.getTarget();
-            return target != null && target.isAlive() && this.attackTarget == target && super.canContinueToUse();
+            return Cerberus.this.onGround() && target != null && target.isAlive()
+                    && this.attackTarget == target && super.canContinueToUse();
         }
 
         @Override
