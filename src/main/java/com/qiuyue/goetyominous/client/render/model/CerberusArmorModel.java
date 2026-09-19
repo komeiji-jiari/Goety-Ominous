@@ -88,8 +88,11 @@ public class CerberusArmorModel extends HierarchicalModel<Cerberus> {
         this.head1.xRot += headPitch * ((float)Math.PI / 180F);
         this.animate(entity.idleAnimationState, CerberusAnimations.idle, ageInTicks);
         this.animate(entity.walkAnimationState, CerberusAnimations.walking, ageInTicks);
+        this.animate(entity.runAnimationState, CerberusAnimations.running, ageInTicks);
+        this.animate(entity.runStopAnimationState, CerberusAnimations.run_stop, ageInTicks);
         this.animate(entity.groundedAnimationState, CerberusAnimations.grounded, ageInTicks);
         this.animate(entity.jumpAnimationState, CerberusAnimations.jumping, ageInTicks);
+        this.animate(entity.landingAnimationState, CerberusAnimations.landing, ageInTicks);
         this.animate(entity.biteAnimationState, CerberusAnimations.biting, ageInTicks);
         this.animate(entity.fireBreathAnimationState, CerberusAnimations.fire_breath, ageInTicks);
     }
