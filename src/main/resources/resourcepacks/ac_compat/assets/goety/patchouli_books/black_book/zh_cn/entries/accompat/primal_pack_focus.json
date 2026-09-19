@@ -1,0 +1,19 @@
+{
+  "name": "原始龙群聚晶",
+  "icon": "goetyominous:primal_pack_focus",
+  "category": "goety:primordialcaves",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "这个法术允许你呼唤和指挥原始洞穴的龙群。你能够通过法术指挥的龙群中绝大部分是阔鼻迅猛龙，很少的情况下会召唤出洞穴角龙。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:primal_pack_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "荒野魔杖能够增加召唤的迅猛龙的数量。然而，这并不会影响洞穴角龙的出现概率和数量。如果你穿着荒野长袍，那么你能够召唤出头领阔鼻迅猛龙，它们有着更强的战斗力。"
+    }
+  ]
+}

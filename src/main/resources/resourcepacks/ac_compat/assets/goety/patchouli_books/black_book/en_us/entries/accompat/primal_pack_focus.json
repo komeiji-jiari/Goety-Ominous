@@ -1,0 +1,19 @@
+{
+  "name": "Primal Pack Focus",
+  "icon": "goetyominous:primal_pack_focus",
+  "category": "goety:primordialcaves",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "This spell allows you to call upon and command a pack of dinosaurs from the Primordial Caves. The vast majority of the pack you can command through this spell consists of Vallumraptors, with Grottoceratops summoned only on rare occasions."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:primal_pack_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "A Wild Staff increases the number of Vallumraptors summoned. However, this does not affect the chance or number of Grottoceratops that appear. If you are wearing Wild Robes, you can summon Alpha Vallumraptors, which possess greater combat prowess."
+    }
+  ]
+}
