@@ -383,7 +383,7 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
     }
 
     private void updateAnimationStates() {
-        boolean attacking = this.getAttackTicks() > 0;
+        boolean attacking = this.getAttackTicks() > 0 || this.suppressesLocomotionAnimation();
         boolean airborne = !this.onGround();
         if (airborne) {
             ++this.airTicks;
@@ -432,6 +432,14 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
         if (this.stopTicks > 0) {
             --this.stopTicks;
         }
+        this.updateExtraAnimationStates();
+    }
+
+    protected boolean suppressesLocomotionAnimation() {
+        return false;
+    }
+
+    protected void updateExtraAnimationStates() {
     }
 
     private void setAnimation(AnimationState state, boolean running) {

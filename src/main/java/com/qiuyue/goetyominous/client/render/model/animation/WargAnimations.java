@@ -239,7 +239,7 @@ public class WargAnimations {
             ))
             .build();
 
-    private static Keyframe[] runBobFrames() {
+    static Keyframe[] runBobFrames() {
         Keyframe[] frames = new Keyframe[Warg.RUN_BOB_TIME.length];
         for (int i = 0; i < frames.length; ++i) {
             frames[i] = new Keyframe(Warg.RUN_BOB_TIME[i], KeyframeAnimations.posVec(0.0F, Warg.RUN_BOB_Y[i], 0.0F), AnimationChannel.Interpolations.LINEAR);

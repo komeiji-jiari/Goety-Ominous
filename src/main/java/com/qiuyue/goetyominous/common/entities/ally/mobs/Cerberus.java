@@ -50,15 +50,11 @@ public class Cerberus extends Warg implements IBreathing {
     private static final double MUZZLE_HEIGHT = 2.2D;
     private static final double MUZZLE_FORWARD = 2.2D;
     private static final double RIDER_FORWARD_OFFSET = -1.36D;
-    private static final double RIDER_HEIGHT = 1.8D;
+    private static final double RIDER_HEIGHT = 0.9D;
     private static final double RIDER_BOUNCE = 0.08D;
 
     private final FireBreathSpell breathSpell = new FireBreathSpell();
 
-    public final AnimationState idleAnimationState = new AnimationState();
-    public final AnimationState walkAnimationState = new AnimationState();
-    public final AnimationState groundedAnimationState = new AnimationState();
-    public final AnimationState jumpAnimationState = new AnimationState();
     public final AnimationState biteAnimationState = new AnimationState();
     public final AnimationState fireBreathAnimationState = new AnimationState();
 
@@ -217,11 +213,8 @@ public class Cerberus extends Warg implements IBreathing {
     @Override
     public void tick() {
         super.tick();
-        if (this.level().isClientSide) {
-            this.updateCerberusAnimationStates();
-            if (this.isBreathing()) {
-                this.spawnBreathParticles();
-            }
+        if (this.level().isClientSide && this.isBreathing()) {
+            this.spawnBreathParticles();
         }
     }
 
@@ -279,16 +272,22 @@ public class Cerberus extends Warg implements IBreathing {
         }
     }
 
-    private void updateCerberusAnimationStates() {
+    @Override
+    protected boolean suppressesLocomotionAnimation() {
+        return this.isBreathing();
+    }
+
+    @Override
+    protected void updateExtraAnimationStates() {
         boolean breathing = this.isBreathing();
         boolean biting = !breathing && this.getAttackTicks() > 0 && this.getAttackType() == ATTACK_BITE;
-        boolean grounded = !breathing && !biting && this.onGround();
         setAnimation(this.fireBreathAnimationState, breathing);
         setAnimation(this.biteAnimationState, biting);
-        setAnimation(this.jumpAnimationState, !breathing && !biting && !this.onGround());
-        setAnimation(this.groundedAnimationState, grounded && this.isSitting());
-        setAnimation(this.walkAnimationState, grounded && !this.isSitting() && this.walkAnimation.speed() > 0.05F);
-        setAnimation(this.idleAnimationState, grounded && !this.isSitting() && this.walkAnimation.speed() <= 0.05F);
+    }
+
+    @Override
+    public float getGallopBob(float partialTicks) {
+        return 2.0F * super.getGallopBob(partialTicks);
     }
 
     private void setAnimation(AnimationState state, boolean running) {
