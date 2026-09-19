@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.client.render.model;
 
 import com.qiuyue.goetyominous.client.render.model.animation.CerberusAnimations;
+import com.qiuyue.goetyominous.client.render.model.animation.PoseBlend;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.Cerberus;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -179,13 +180,16 @@ public class CerberusModel extends HierarchicalModel<Cerberus> {
         // Only the center head tracks the look target directly; the two side heads keep their idle/attack keyframes.
         this.head1.yRot += netHeadYaw * ((float)Math.PI / 180F);
         this.head1.xRot += headPitch * ((float)Math.PI / 180F);
-        this.animate(entity.idleAnimationState, CerberusAnimations.idle, ageInTicks);
-        this.animate(entity.walkAnimationState, CerberusAnimations.walking, ageInTicks);
-        this.animate(entity.runAnimationState, CerberusAnimations.running, ageInTicks);
-        this.animate(entity.runStopAnimationState, CerberusAnimations.run_stop, ageInTicks);
-        this.animate(entity.groundedAnimationState, CerberusAnimations.grounded, ageInTicks);
-        this.animate(entity.jumpAnimationState, CerberusAnimations.jumping, ageInTicks);
-        this.animate(entity.landingAnimationState, CerberusAnimations.landing, ageInTicks);
+        float gait = entity.getGaitWeight(ageInTicks);
+        PoseBlend.animate(this, entity.idleAnimationState, CerberusAnimations.idle, ageInTicks, gait);
+        PoseBlend.animate(this, entity.walkAnimationState, CerberusAnimations.walking, ageInTicks, gait);
+        PoseBlend.animate(this, entity.runAnimationState, CerberusAnimations.running, ageInTicks, gait);
+        PoseBlend.animate(this, entity.runStopAnimationState, CerberusAnimations.run_stop, ageInTicks, gait);
+        PoseBlend.animate(this, entity.groundedAnimationState, CerberusAnimations.grounded, ageInTicks, gait);
+        PoseBlend.animate(this, entity.sitDownAnimationState, CerberusAnimations.sit_down, ageInTicks, gait);
+        PoseBlend.animate(this, entity.standUpAnimationState, CerberusAnimations.stand_up, ageInTicks, gait);
+        PoseBlend.animate(this, entity.jumpAnimationState, CerberusAnimations.jumping, ageInTicks, entity.getJumpWeight(ageInTicks));
+        PoseBlend.animate(this, entity.landingAnimationState, CerberusAnimations.landing, ageInTicks, entity.getLandingWeight(ageInTicks));
         this.animate(entity.biteAnimationState, CerberusAnimations.biting, ageInTicks);
         this.animate(entity.fireBreathAnimationState, CerberusAnimations.fire_breath, ageInTicks);
         this.tail.xRot += entity.getTailAngle() - 0.6981F;
