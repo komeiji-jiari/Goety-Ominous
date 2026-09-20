@@ -17,6 +17,10 @@ public class ModNetwork {
     private static int id = 0;
 
     public static void init() {
+        CHANNEL.registerMessage(id++, ForsakenRiderJumpPacket.class,
+                ForsakenRiderJumpPacket::encode,
+                ForsakenRiderJumpPacket::decode,
+                ForsakenRiderJumpPacket::handle);
         CHANNEL.registerMessage(id++, RiderChargePacket.class,
                 RiderChargePacket::encode,
                 RiderChargePacket::decode,

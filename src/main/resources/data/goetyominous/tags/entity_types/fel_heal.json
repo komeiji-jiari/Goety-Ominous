@@ -1,0 +1,40 @@
+{
+  "replace": false,
+  "__comment": "servants that heals and lose limited lifespan through Crone set.",
+  "values": [
+    "goety:witch_servant",
+    "goety:warlock_servant",
+    "goety:slime_servant",
+    "goety:muck_wraith_servant",
+    "goetyominous:mired_servant",
+    "goetyominous:bogged_servant",
+    {
+      "id": "goetyominous:zombie_crocodile_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:caniac_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:gummy_bear_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:caramel_cube_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:gumbeeper_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:candicorn_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:licowitch_servant",
+      "required": false
+    }
+  ]
+}

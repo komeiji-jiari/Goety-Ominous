@@ -1,0 +1,22 @@
+{
+  "name": "毒液弹聚晶",
+  "icon": "goetyominous:poison_ball_focus",
+  "advancement": "goetyominous:goetyominous/witch_lesson",
+  "secret": true,
+  "category": "goety:focuses/fel",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "以前奶奶经常拿这个讨厌的法术和我玩躲避球游戏！砸在身上黏黏的还带毒，总之从此以后我再也不会喜欢史莱姆了！如果你想学的话...配方在这，做起来很简单的！"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goetyominous:poison_ball_focus",
+      "text": "奶奶说她拔了十几只蜘蛛的牙才够做一个这样的法术，那听起来就很疼的样子..."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "如果你用邪能魔杖施法的话，一次可以发射3个毒液弹！是不是很厉害嘿嘿...附了魔会更好用！穿着制服不仅还能让剧毒的威力更胜一筹，还能让你的敌人黏黏的走不动路！"
+    }
+  ]
+}

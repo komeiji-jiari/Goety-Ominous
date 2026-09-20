@@ -118,7 +118,7 @@ public class MutantWitherSkeletonLungeGoal extends Goal {
         AABB aabb;
         if (this.mob.getAnimation("lunging").isPlaying() && (double)this.mob.getAnimation("lunging").progress() > 0.1) {
             if (this.mob.getDeltaMovement().y > 0.0 && this.lungeMotion.y > Math.max(Math.abs(this.lungeMotion.x), Math.abs(this.lungeMotion.z))) {
-                if (false) { // disabled - no block griefing
+                if (false) {
                     boolean flag = false;
                     var12 = boundingBoxes.iterator();
 
@@ -284,7 +284,6 @@ public class MutantWitherSkeletonLungeGoal extends Goal {
                     ++breakableBlocks;
                 } while(!(Boolean)MutantWitherSkeletonCommonConfig.lunge_griefing.get());
 
-                // this.mob.level().destroyBlock(blockpos, ...); // disabled - no block griefing
             }
         }
     }

@@ -11,7 +11,6 @@ import com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-
 @OnlyIn(Dist.CLIENT)
 public class ModelHullbreakerServant extends AdvancedEntityModel<HullbreakerServant> {
 

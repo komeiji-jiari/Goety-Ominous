@@ -1,0 +1,7 @@
+{
+  "name": "糖果龋洞",
+  "description": "哦，甜蜜的黑暗！",
+  "icon": "alexscaves:candy_cane",
+  "sortnum": 2,
+  "parent": "goety:accompat"
+}

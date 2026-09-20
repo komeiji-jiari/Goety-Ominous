@@ -54,7 +54,7 @@ public class MutantHoglinChargeAttackGoal extends Goal {
     public void start() {
         MutantHoglinServant var10000 = this.mob;
         Objects.requireNonNull(this.mob);
-        var10000.prepareChargeAnimationTick = 26;
+        var10000.prepareChargeAnimationTick = 24;
         this.mob.level().broadcastEntityEvent(this.mob, (byte)10);
         this.mob.wantsToCharge = false;
         if (this.mob.riderChargeRequested) {
@@ -73,7 +73,7 @@ public class MutantHoglinChargeAttackGoal extends Goal {
         }
 
         if (this.mob.prepareChargeAnimationTick == 1) {
-            this.mob.charging = true;
+            this.mob.setCharging(true);
             this.mob.level().broadcastEntityEvent(this.mob, (byte)12);
         }
 
@@ -89,13 +89,13 @@ public class MutantHoglinChargeAttackGoal extends Goal {
         if (this.chargingFor >= 30 || this.willFallToDoom(this.mob)) {
             this.mob.setDeltaMovement(this.mob.getDeltaMovement().scale(0.2));
             this.chargingFor = 0;
-            this.mob.charging = false;
+            this.mob.setCharging(false);
             this.mob.level().broadcastEntityEvent(this.mob, (byte)13);
             if (this.bonusCharges >= 1.0F) {
                 --this.bonusCharges;
                 MutantHoglinServant var10000 = this.mob;
                 Objects.requireNonNull(this.mob);
-                var10000.prepareChargeAnimationTick = 26;
+                var10000.prepareChargeAnimationTick = 24;
                 this.mob.level().broadcastEntityEvent(this.mob, (byte)10);
             }
         }
@@ -126,7 +126,7 @@ public class MutantHoglinChargeAttackGoal extends Goal {
         int randomAddedCooldown = (Integer)MutantHoglinCommonConfig.max_charge_cooldown.get() - (Integer)MutantHoglinCommonConfig.min_charge_cooldown.get() <= 0 ? 0 : this.mob.getRandom().nextInt((Integer)MutantHoglinCommonConfig.max_charge_cooldown.get() - (Integer)MutantHoglinCommonConfig.min_charge_cooldown.get());
         int cooldown = (Integer)MutantHoglinCommonConfig.min_charge_cooldown.get() + randomAddedCooldown;
         this.nextUseTime = this.mob.tickCount + cooldown;
-        this.mob.charging = false;
+        this.mob.setCharging(false);
         this.mob.level().broadcastEntityEvent(this.mob, (byte)13);
     }
 

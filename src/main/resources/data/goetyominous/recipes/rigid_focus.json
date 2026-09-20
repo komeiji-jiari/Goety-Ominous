@@ -1,0 +1,37 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:osseous_focus"
+  },
+  "craftType": "necroturgy",
+  "soulCost": 1,
+  "duration": 10,
+  "research":  "haunting",
+  "ingredients": [
+    {
+      "tag": "minecraft:soul_fire_base_blocks"
+    },
+    {
+      "item": "minecraft:blue_ice"
+    },
+    {
+      "item": "goety:dark_fabric"
+    },
+    {
+      "item": "goety:dark_fabric"
+    },
+    {
+      "item": "goety:ectoplasm"
+    },
+    {
+      "item": "minecraft:ghast_tear"
+    },
+    {
+      "item": "goety:frost_breath_focus"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:rigid_focus"
+  }
+}

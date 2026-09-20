@@ -1,13 +1,11 @@
 package com.qiuyue.goetyominous.common.entities.ally.ac;
 
 import com.Polarice3.Goety.common.entities.ally.Summoned;
-import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
 import com.github.alexmodguy.alexscaves.server.entity.ACEntityRegistry;
 import com.github.alexmodguy.alexscaves.server.entity.ai.GroundPathNavigatorNoSpin;
 import com.github.alexmodguy.alexscaves.server.entity.item.ThrownWasteDrumEntity;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
-import com.github.alexmodguy.alexscaves.server.potion.ACEffectRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
@@ -65,8 +63,6 @@ public class BrainiacServant extends Summoned implements IAnimatedEntity {
     private float shootTongueAmount = 0;
     private float prevLastTongueDistance = 0;
     private float lastTongueDistance = 0;
-    
-    private boolean wasIrradiated = false;
 
     public BrainiacServant(EntityType<? extends Summoned> entityType, Level level) {
         super(entityType, level);
@@ -86,7 +82,7 @@ public class BrainiacServant extends Summoned implements IAnimatedEntity {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new MeleeGoal());
         this.goalSelector.addGoal(2, new PickupBarrelGoal());
-        this.goalSelector.addGoal(3, new RandomStrollGoal(this, 1.0D, 45));
+        this.goalSelector.addGoal(3, new Summoned.WanderGoal<>(this, 1.0D, 45, 0.001F));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 15.0F));
         this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
     }
@@ -180,14 +176,6 @@ public class BrainiacServant extends Summoned implements IAnimatedEntity {
                     wasteDrumEntity.setDeltaMovement(toss.normalize().scale(attackTarget.distanceTo(this) * 0.2F));
                 }
             }
-        }
-        
-        if (!level().isClientSide) {
-            boolean irradiated = this.hasEffect(ACEffectRegistry.IRRADIATED.get());
-            if (this.wasIrradiated && !irradiated) {
-                this.addEffect(new MobEffectInstance(GoetyEffects.IRON_HIDE.get(), 600, 2));
-            }
-            this.wasIrradiated = irradiated;
         }
         Entity tongueTarget = this.getTongueTarget();
         if (level().isClientSide) {

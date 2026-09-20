@@ -12,9 +12,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-/**
- * Opposing Force 联动实体注册类，在这里添加 Opposing Force 仆从的实体类型注册
- */
 public class OfEntityRegistry {
 
     private static final DeferredRegister<EntityType<?>> OF_ENTITIES =
@@ -36,14 +33,14 @@ public class OfEntityRegistry {
     public static final RegistryObject<EntityType<VoltServant>> VOLT_SERVANT =
             OF_ENTITIES.register("volt_servant",
                     () -> EntityType.Builder.<VoltServant>of(VoltServant::new, MobCategory.MISC)
-                            .sized(1.0F, 1.3F)          // 尺寸我估的，进游戏对不上再调
+                            .sized(1.0F, 1.3F)
                             .setTrackingRange(10)
                             .build(GoetyOminous.MOD_ID + ":volt_servant"));
 
     public static final RegistryObject<EntityType<TremblerServant>> TREMBLER_SERVANT =
             OF_ENTITIES.register("trembler_servant",
                     () -> EntityType.Builder.<TremblerServant>of(TremblerServant::new, MobCategory.MISC)
-                            .sized(1.1F, 1.0F)          // 尺寸我估的，进游戏对不上再调
+                            .sized(1.1F, 1.0F)
                             .setTrackingRange(10)
                             .build(GoetyOminous.MOD_ID + ":trembler_servant"));
 

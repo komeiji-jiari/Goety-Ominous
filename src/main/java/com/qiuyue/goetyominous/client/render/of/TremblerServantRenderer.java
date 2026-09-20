@@ -12,10 +12,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * Trembler 仆从渲染器：纹理沿用 OF 原版的两张（trembler 普通 / turbo_trembler 涡轮精英变体）。
- * 模型从 OF 的 Trembler 层烘焙，几何和动画都由原版 TremblerModel 提供。
- */
 @OnlyIn(Dist.CLIENT)
 public class TremblerServantRenderer extends MobRenderer<TremblerServant, TremblerServantModel> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("opposing_force", "textures/entity/trembler/trembler.png");

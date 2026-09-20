@@ -1,0 +1,20 @@
+{
+  "name": "灭绝呼吸聚晶",
+  "icon": "goetyominous:extinction_breath_focus",
+  "category": "goety:primordialcaves",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "通过这个法术，你能够像被禁锢在火山中的亡灵恐龙那样喷出高温火焰，让你的敌人感受天灾的温度，哪怕是那些抵抗火焰的生物都会被你的呼吸灼伤。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goetyominous:extinction_breath_focus",
+      "text": "需要来点薄荷糖吗？伙计"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "下界魔杖能够翻倍呼吸法术的伤害。如果你穿着下界长袍，那么呼吸法术可以对火焰免疫的生物必定造成全额伤害。"
+    }
+  ]
+}

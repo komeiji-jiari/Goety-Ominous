@@ -2,8 +2,10 @@ package com.qiuyue.goetyominous.common.items;
 
 import com.Polarice3.Goety.common.items.ServantSpawnEggItem;
 import com.Polarice3.Goety.common.items.block.BlockItemBase;
+import com.Polarice3.Goety.common.items.magic.DarkStaff;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.render.item.BoneCudgelRenderer;
+import com.qiuyue.goetyominous.common.entities.ally.mobs.Warg;
 import com.qiuyue.goetyominous.common.init.ModBlocks;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.common.items.curios.*;
@@ -15,33 +17,43 @@ import com.qiuyue.goetyominous.common.research.ResearchList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-/**
- * 模组物品注册类
- * 负责注册本模组的所有物品到 Forge 注册表
- * 包括刷怪蛋等特殊物品
- */
+import static com.qiuyue.goetyominous.config.WeaponConfig.FelStaffDamage;
+
 public class ModItems {
-    /**
-     * 物品延迟注册表
-     * 使用 ForgeRegistries.ITEMS 指定注册表类型为物品注册表
-     */
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS,
             GoetyOminous.MOD_ID);
 
-    /**
-     * 初始化方法
-     * 将物品注册表注册到模组事件总线
-     * 必须在模组构造函数中调用此方法以完成注册
-     */
     public static void init() {
         ModItems.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
+
+    public static final RegistryObject<DarkStaff> FEL_STAFF = ITEMS.register("fel_staff",
+            () -> new DarkStaff(FelStaffDamage.get(), GoetyOminous.FEL));
+
+    public static final RegistryObject<Item> FEL_CORE = ITEMS.register("fel_core",
+            () -> new Item(new Item.Properties().rarity(Rarity.COMMON).stacksTo(64)));
+
+    public static final RegistryObject<Item> HARMONIOUS_DIAMOND = ITEMS.register("harmonious_diamond",
+            () -> new Item(new Item.Properties().rarity(Rarity.COMMON).stacksTo(64)));
+
+    public static final RegistryObject<Item> OMINOUS_ICON = ITEMS.register("ominous_icon",
+            () -> new OminousIconItem(new Item.Properties().stacksTo(1)));
+
+    public static final RegistryObject<Item> BAT_WING = ITEMS.register("bat_wing",
+            () -> new BatWingItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> WORMY_APPLE = ITEMS.register("wormy_apple",
+            () -> new WormyAppleItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> WOLF_TONGUE = ITEMS.register("wolf_tongue",
+            () -> new Item(new Item.Properties().rarity(Rarity.COMMON).stacksTo(64)));
 
     public static final RegistryObject<Item> COLD_HEART = ITEMS.register("cold_heart",
             () -> new ColdHeartItem());
@@ -143,6 +155,9 @@ public class ModItems {
     public static final RegistryObject<Item> HAUNT_FOCUS = ITEMS.register("haunt_focus",
             () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.HauntSpell()));
 
+    public static final RegistryObject<Item> DREDEN_FOCUS = ITEMS.register("rigid_focus",
+            () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.DredenSpell()));
+
     public static final RegistryObject<Item> BROOD_FOCUS = ITEMS.register("brood_focus",
             () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.BroodSpell()));
 
@@ -161,10 +176,24 @@ public class ModItems {
     public static final RegistryObject<Item> BRAINEATER_FOCUS = ITEMS.register("braineater_focus",
             () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.BrainEaterSpell()));
 
+    public static final RegistryObject<Item> POISONBALL_FOCUS = ITEMS.register("poison_ball_focus",
+            () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.PoisonBallSpell()));
+
+    public static final RegistryObject<Item> ACID_POOL_FOCUS = ITEMS.register("acid_pool_focus",
+            () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.AcidPoolSpell()));
+
     public static final RegistryObject<Item> WOLF_TOTEM = ITEMS.register("wolf_totem",
             () -> new BlockItemBase(ModBlocks.WOLF_TOTEM.get()));
 
 
+
+    public static final RegistryObject<ServantSpawnEggItem> MIRED_SERVANT_SPAWN_EGG = ITEMS.register(
+            "mired_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.MIRED_SERVANT, 0x2D2013, 0xEEC5AD, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> BOGGED_SERVANT_SPAWN_EGG = ITEMS.register(
+            "bogged_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.BOGGED_SERVANT, 0x8FB85A, 0x1D3B06, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> AXOLOTL_SERVANT_SPAWN_EGG = ITEMS.register(
             "axolotl_servant_spawn_egg",
@@ -271,6 +300,18 @@ public class ModItems {
             () -> new net.minecraftforge.common.ForgeSpawnEggItem(ModEntityTypes.PIGLIN_MERCHANT,
                     0x9C7A3C, 0x6B4E2E, egg()));
 
+    public static final RegistryObject<ForgeSpawnEggItem> DREDEN_SPAWN_EGG = ITEMS.register(
+            "dreden_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.DREDEN, 0x0A0A12, 0x00BFFF, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> DREDEN_SERVANT_SPAWN_EGG = ITEMS.register(
+            "dreden_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.DREDEN_SERVANT, 0x0F0F12, 0x3A86FF, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> LEAPKELP_SPAWN_EGG = ITEMS.register(
+            "leapkelp_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.LEAPKELP, 0x2E5B34, 0x6FBF73, egg()));
+
     public static final RegistryObject<ForgeSpawnEggItem> FANATIC_SPAWN_EGG = ITEMS.register(
             "fanatic_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntityTypes.FANATIC, 0x8B0000, 0x2D0000, egg()));
@@ -315,17 +356,34 @@ public class ModItems {
             "urbhadhach_servant_spawn_egg",
             () -> new ServantSpawnEggItem(ModEntityTypes.URBHADHACH_SERVANT, 0x484848, 0x88CCFF, egg()));
 
-    public static final RegistryObject<ServantSpawnEggItem> WARG_SPAWN_EGG = ITEMS.register(
+    public static final RegistryObject<WargSpawnEggItem> WARG_SPAWN_EGG = ITEMS.register(
             "warg_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.WARG, 0x17141B, 0x6B6572, egg()));
+            () -> new WargSpawnEggItem(ModEntityTypes.WARG, 0x17141B, 0x6B6572, egg(), Warg.Variant.BLACK, false));
 
-    /**
-     * 物品属性配置方法
-     * 返回基础的 Item.Properties 对象
-     * 可在此处添加堆叠数量、耐久度等属性
-     *
-     * @return 基础物品属性配置
-     */
+    public static final RegistryObject<WargSpawnEggItem> WINTER_WARG_SPAWN_EGG = ITEMS.register(
+            "winter_warg_spawn_egg",
+            () -> new WargSpawnEggItem(ModEntityTypes.WARG, 0xDCE7ED, 0xFFFFFF, egg(), Warg.Variant.COLD, false));
+
+    public static final RegistryObject<WargSpawnEggItem> STORM_WARG_SPAWN_EGG = ITEMS.register(
+            "storm_warg_spawn_egg",
+            () -> new WargSpawnEggItem(ModEntityTypes.WARG, 0x6E422F, 0xB36A43, egg(), Warg.Variant.MODERATE, false));
+
+    public static final RegistryObject<WargSpawnEggItem> SKELETAL_WARG_SPAWN_EGG = ITEMS.register(
+            "skeletal_warg_spawn_egg",
+            () -> new WargSpawnEggItem(ModEntityTypes.WARG, 0xE8E8E8, 0xFFFFFF, egg(), Warg.Variant.SKELETAL, false));
+
+    public static final RegistryObject<WargSpawnEggItem> GRAY_WARG_SPAWN_EGG = ITEMS.register(
+            "gray_warg_spawn_egg",
+            () -> new WargSpawnEggItem(ModEntityTypes.WARG, 0x7E8084, 0xC8C8C8, egg(), Warg.Variant.GRAY, false));
+
+    public static final RegistryObject<WargSpawnEggItem> HOSTILE_WARG_SPAWN_EGG = ITEMS.register(
+            "hostile_warg_spawn_egg",
+            () -> new WargSpawnEggItem(ModEntityTypes.WARG, 0x132025, 0x495065, egg(), Warg.Variant.BLACK, true));
+
+    public static final RegistryObject<ServantSpawnEggItem> CERBERUS_SPAWN_EGG = ITEMS.register(
+            "cerberus_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.CERBERUS, 0x2B1210, 0xC1440E, egg()));
+
     public static Item.Properties egg() {
         return new Item.Properties();
     }

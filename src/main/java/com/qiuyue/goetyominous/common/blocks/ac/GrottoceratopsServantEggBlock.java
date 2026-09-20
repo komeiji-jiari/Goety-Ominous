@@ -1,6 +1,5 @@
 package com.qiuyue.goetyominous.common.blocks.ac;
 
-import com.github.alexmodguy.alexscaves.server.block.DinosaurEggBlock;
 import com.github.alexmodguy.alexscaves.server.entity.ACEntityRegistry;
 import com.qiuyue.goetyominous.common.blocks.entities.ac.GrottoceratopsServantEggBlockEntity;
 import com.qiuyue.goetyominous.common.entities.ally.ac.GrottoceratopsServant;
@@ -15,7 +14,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -23,7 +21,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import java.util.UUID;
 
 
-public class GrottoceratopsServantEggBlock extends DinosaurEggBlock implements EntityBlock {
+public class GrottoceratopsServantEggBlock extends ServantEggBlock {
 
     public GrottoceratopsServantEggBlock(Properties properties) {
                 super(properties, ACEntityRegistry.GROTTOCERATOPS, 8, 10);
@@ -32,15 +30,6 @@ public class GrottoceratopsServantEggBlock extends DinosaurEggBlock implements E
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return AcBlockEntityRegistry.GROTTOCERATOPS_SERVANT_EGG.get().create(pos, state);
-    }
-
-    @Override
-    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
-        
-        
-        if (!(entity instanceof GrottoceratopsServant)) {
-            super.stepOn(level, pos, state, entity);
-        }
     }
 
     @Override

@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
-    "goetyominous:thrasher_servant"
+    {
+      "id": "goetyominous:thrasher_servant",
+      "required": false
+    }
   ]
 }

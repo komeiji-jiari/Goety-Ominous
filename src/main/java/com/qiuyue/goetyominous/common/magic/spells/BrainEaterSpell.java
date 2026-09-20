@@ -10,12 +10,14 @@ import com.Polarice3.Goety.utils.TotemFinder;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.config.SpellConfig;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public class BrainEaterSpell extends ChargingSpell {
 
@@ -55,6 +57,25 @@ public class BrainEaterSpell extends ChargingSpell {
         if (!this.hasExperience(player)) return false;
         if (this.soulsFull(player)) return false;
         return true;
+    }
+
+    @Override
+    public int soulCost(LivingEntity caster, ItemStack staff) {
+        int cost = super.soulCost(caster, staff);
+        return com.qiuyue.goetyominous.utils.CroneCuriosUtil.hasCroneRobe(caster) ? cost / 2 : cost;
+    }
+
+    @Override
+    public boolean ReduceCastTime(LivingEntity caster) {
+        return super.ReduceCastTime(caster) || com.qiuyue.goetyominous.utils.CroneCuriosUtil.hasCroneHat(caster);
+    }
+
+    @Override
+    public void useParticle(Level worldIn, LivingEntity caster, ItemStack stack) {
+        if (worldIn instanceof ServerLevel serverLevel && caster.tickCount % 5 == 0) {
+            com.Polarice3.Goety.utils.ServerParticleUtil.addParticlesAroundMiddleSelf(
+                    serverLevel, ParticleTypes.WITCH, caster);
+        }
     }
 
     @Override

@@ -1,0 +1,30 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:scatter_focus"
+  },
+  "craftType": "end",
+  "soulCost": 1,
+  "duration": 10,
+  "ingredients": [
+    {
+      "item": "mutantmore:mutant_shulker_trap"
+    },
+    {
+      "item": "minecraft:popped_chorus_fruit"
+    },
+    {
+      "item": "minecraft:popped_chorus_fruit"
+    },
+    {
+      "item": "minecraft:end_crystal"
+    },
+    {
+      "item": "minecraft:shulker_shell"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:shulker_scatter_focus"
+  }
+}

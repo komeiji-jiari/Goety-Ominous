@@ -36,8 +36,6 @@ public class RenderBrainiacServant extends MobRenderer<BrainiacServant, ModelBra
         return TEXTURE;
     }
 
-    
-
     public static class LayerGlow extends RenderLayer<BrainiacServant, ModelBrainiacServant> {
 
         public LayerGlow(RenderLayerParent<BrainiacServant, ModelBrainiacServant> renderLayerParent) {

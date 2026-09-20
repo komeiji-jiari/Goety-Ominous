@@ -2,7 +2,7 @@
   "type": "goety:ritual",
   "ritual_type": "goety:craft",
   "activation_item": {
-    "item": "goety:hunger_core"
+    "item": "goetyominous:fel_core"
   },
   "craftType": "fel",
   "soulCost": 1,

@@ -1,0 +1,26 @@
+{
+  "name": "Leapkelp",
+  "icon": "minecraft:kelp",
+  "category": "goety:summons",
+  "advancement": "goety:goety/read_floral_scroll",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Leapkelp are the underwater variant of Leapleaf. They can be created by submerging a Leapleaf underwater, or summoned underwater using a Leaping Focus."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:leapkelp",
+      "scale": 0.75
+    },
+    {
+      "type": "multiblock",
+      "multiblock_id": "goety:leapleaf",
+      "text": "Build underwater, then right click the center Overgrown Roots with an Animation Core."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The creature can be healed by right-clicking on them with Bone Meals, or the summoner wearing Abyss Robe can also provide healing."
+    }
+  ]
+}

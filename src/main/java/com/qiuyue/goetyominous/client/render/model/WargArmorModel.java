@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.client.render.model;
 
+import com.qiuyue.goetyominous.client.render.model.animation.PoseBlend;
 import com.qiuyue.goetyominous.client.render.model.animation.WargAnimations;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.Warg;
 import net.minecraft.client.model.HierarchicalModel;
@@ -40,7 +41,6 @@ public class WargArmorModel extends HierarchicalModel<Warg> {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        // Rebase the exported armor hierarchy onto the Warg pivots so animated neck and torso rotations remain aligned.
         PartDefinition bone = partdefinition.addOrReplaceChild("bone", CubeListBuilder.create(), PartPose.offset(-1.5F, 10.5F, 2.0F));
 
         PartDefinition mane = bone.addOrReplaceChild("mane", CubeListBuilder.create().texOffs(0, 15).addBox(-6.0F, -7.0F, -7.0F, 14.0F, 14.0F, 13.0F, new CubeDeformation(0.25F))
@@ -71,10 +71,17 @@ public class WargArmorModel extends HierarchicalModel<Warg> {
         this.root().getAllParts().forEach(ModelPart::resetPose);
         this.head.yRot += netHeadYaw * ((float)Math.PI / 180F);
         this.head.xRot += headPitch * ((float)Math.PI / 180F);
-        this.animate(entity.idleAnimationState, WargAnimations.idle, ageInTicks);
-        this.animate(entity.walkAnimationState, WargAnimations.walking, ageInTicks);
-        this.animate(entity.groundedAnimationState, WargAnimations.grounded, ageInTicks);
-        this.animate(entity.jumpAnimationState, WargAnimations.jumping, ageInTicks);
+        float gait = entity.getGaitWeight(ageInTicks);
+        PoseBlend.animate(this, entity.idleAnimationState, WargAnimations.idle, ageInTicks, gait);
+        PoseBlend.animate(this, entity.walkAnimationState, WargAnimations.walking, ageInTicks, gait);
+        PoseBlend.animate(this, entity.runAnimationState, WargAnimations.running, ageInTicks, gait);
+        PoseBlend.animate(this, entity.runStopAnimationState, WargAnimations.run_stop, ageInTicks, gait);
+        PoseBlend.animate(this, entity.groundedAnimationState, WargAnimations.grounded, ageInTicks, gait);
+        PoseBlend.animate(this, entity.sitDownAnimationState, WargAnimations.sit_down, ageInTicks, gait);
+        PoseBlend.animate(this, entity.standUpAnimationState, WargAnimations.stand_up, ageInTicks, gait);
+        PoseBlend.animate(this, entity.jumpAnimationState, WargAnimations.jumping, ageInTicks, entity.getJumpWeight(ageInTicks));
+        PoseBlend.animate(this, entity.landingAnimationState, WargAnimations.landing, ageInTicks, entity.getLandingWeight(ageInTicks));
+        this.animate(entity.howlAnimationState, WargAnimations.howl, ageInTicks);
         this.animate(entity.biteAnimationState, WargAnimations.biting, ageInTicks);
         this.animate(entity.spinAnimationState, WargAnimations.sword_spin_attack, ageInTicks, 1.5F);
         this.animate(entity.slashAnimationState, WargAnimations.sword_attack, ageInTicks, 1.5F);

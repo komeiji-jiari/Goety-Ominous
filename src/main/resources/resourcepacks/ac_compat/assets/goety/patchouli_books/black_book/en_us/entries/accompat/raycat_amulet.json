@@ -1,0 +1,16 @@
+{
+  "name": "Raycat Amulet",
+  "icon": "goetyominous:raycat_amulet",
+  "category": "goety:toxiccaves",
+  "pages": [
+    {
+      "type": "text",
+      "text": "The Raycat Amulet not only effectively intimidates Creepers and Phantoms, including Nucleepers, but also absorbs the Irradiated effect from the wearer and the wearer's servants, converting it into Regeneration."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:raycat_amulet",
+      "text": ""
+    }
+  ]
+}

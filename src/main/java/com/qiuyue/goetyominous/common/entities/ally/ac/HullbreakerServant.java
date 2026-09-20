@@ -158,12 +158,13 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
         List<WrappedGoal> inherited = new ArrayList<>(this.targetSelector.getAvailableGoals());
         for (WrappedGoal wrapped : inherited) {
             Goal goal = wrapped.getGoal();
-            if (goal instanceof SummonTargetGoal || goal instanceof Owned.OwnerHurtTargetGoal) {
+            if (goal instanceof SummonTargetGoal || goal instanceof Owned.OwnerHurtTargetGoal || goal instanceof Owned.OwnerHurtByTargetGoal) {
                 this.targetSelector.removeGoal(goal);
             }
         }
         
         this.targetSelector.addGoal(2, new GlowingTargetGoal(this));
+        this.targetSelector.addGoal(3, new ProximityTargetGoal(this));
         this.goalSelector.addGoal(1, new MeleeGoal());
         this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(6, new AnimalRandomlySwimGoal(this, 10, 35, 15, 1.0D));
@@ -200,6 +201,11 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
     @Override
     public MobType getMobType() {
         return MobType.WATER;
+    }
+
+    @Override
+    public boolean isAbleToRide(LivingEntity livingEntity) {
+        return false;
     }
 
     @Override
@@ -488,10 +494,28 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
                             && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target));
         }
 
-        
+
         @Override
         protected double getFollowDistance() {
             return AttributesConfig.HullbreakerServantGlowTargetRange.get();
+        }
+    }
+
+    private class ProximityTargetGoal extends NearestAttackableTargetGoal<LivingEntity> {
+
+        private ProximityTargetGoal(Mob mob) {
+            super(mob, LivingEntity.class, 5, false, false, target ->
+                    MobUtil.isOwnedTargetable(HullbreakerServant.this, target));
+        }
+
+        @Override
+        protected double getFollowDistance() {
+            return AttributesConfig.HullbreakerServantProximityTargetRange.get();
+        }
+
+        @Override
+        protected AABB getTargetSearchArea(double distance) {
+            return this.mob.getBoundingBox().inflate(distance, distance, distance);
         }
     }
 
@@ -522,12 +546,11 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
             }
             double dist = HullbreakerServant.this.distanceTo(target);
             float f = HullbreakerServant.this.getBbWidth() + target.getBbWidth();
-            if (dist < (double) f + 7.0F && HullbreakerServant.this.getAnimation() == IAnimatedEntity.NO_ANIMATION) {
+            HullbreakerServant.this.lookAt(EntityAnchorArgument.Anchor.EYES, target.getEyePosition());
+            if (dist < (double) f + 7.0F && HullbreakerServant.this.getAnimation() == IAnimatedEntity.NO_ANIMATION && this.isTargetInFront(target)) {
                 this.tryAnimation(HullbreakerServant.this.getRandom().nextBoolean() && HullbreakerServant.this.hasLineOfSight(target) ? HullbreakerServant.ANIMATION_BITE : HullbreakerServant.ANIMATION_BASH);
             }
             if (dist > (double) (f + 2.0F)) {
-                HullbreakerServant.this.lookAt(EntityAnchorArgument.Anchor.EYES, target.getEyePosition());
-                
                 double chaseSpeed = target.hasEffect(MobEffects.GLOWING)
                         ? AttributesConfig.HullbreakerServantGlowChaseSpeed.get()
                         : 1.6D;
@@ -542,8 +565,16 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
             SubmarineEntity.alertSubmarineMountOf(target);
         }
 
+        private boolean isTargetInFront(LivingEntity target) {
+            Vec3 look = HullbreakerServant.this.getLookAngle();
+            Vec3 toTarget = target.getEyePosition()
+                    .subtract(HullbreakerServant.this.getEyePosition())
+                    .normalize();
+            return look.dot(toTarget) > 0.5F;
+        }
+
         private void checkAndDealDamage(LivingEntity target, float multiplier) {
-            if (HullbreakerServant.this.hasLineOfSight(target) && (double) HullbreakerServant.this.distanceTo(target) < (double) (HullbreakerServant.this.getBbWidth() + target.getBbWidth()) + 5.0F) {
+            if (this.isTargetInFront(target) && HullbreakerServant.this.hasLineOfSight(target) && (double) HullbreakerServant.this.distanceTo(target) < (double) (HullbreakerServant.this.getBbWidth() + target.getBbWidth()) + 5.0F) {
                 float f = (float) HullbreakerServant.this.getAttributeValue(Attributes.ATTACK_DAMAGE) * multiplier;
                 target.hurt(target.damageSources().mobAttack(HullbreakerServant.this), f);
                 target.knockback(0.8 + 0.5F * multiplier, HullbreakerServant.this.getX() - target.getX(), HullbreakerServant.this.getZ() - target.getZ());

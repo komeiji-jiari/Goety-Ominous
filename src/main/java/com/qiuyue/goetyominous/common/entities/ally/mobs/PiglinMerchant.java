@@ -59,7 +59,6 @@ public class PiglinMerchant extends PathfinderMob implements Merchant {
     private final java.util.Map<MerchantOffer, Integer> baseCosts = new java.util.HashMap<>();
     private final java.util.Map<MerchantOffer, Integer> offerTimers = new java.util.HashMap<>();
 
-
     public PiglinMerchant(EntityType<? extends PathfinderMob> type, Level level) {
         super(type, level);
         this.xpReward = 0;
@@ -374,7 +373,7 @@ public class PiglinMerchant extends PathfinderMob implements Merchant {
         if (this.entityData.get(DATA_PLAYING_SEE)) {
             this.seeAnimationState.startIfStopped(this.tickCount);
             this.seeTimer++;
-            if (this.seeTimer > 25) {            // REJECT 1.25s = 25 ticks
+            if (this.seeTimer > 25) {
                 this.seeAnimationState.stop();
                 this.seeTimer = 0;
                 this.entityData.set(DATA_PLAYING_SEE, false);
@@ -384,7 +383,7 @@ public class PiglinMerchant extends PathfinderMob implements Merchant {
         if (this.entityData.get(DATA_PLAYING_SEE2)) {
             this.see2AnimationState.startIfStopped(this.tickCount);
             this.see2Timer++;
-            if (this.see2Timer > 40) {           // TRADE_SUCCESS 2.0s = 40 ticks
+            if (this.see2Timer > 40) {
                 this.see2AnimationState.stop();
                 this.see2Timer = 0;
                 this.entityData.set(DATA_PLAYING_SEE2, false);
@@ -394,7 +393,7 @@ public class PiglinMerchant extends PathfinderMob implements Merchant {
         if (this.entityData.get(DATA_PLAYING_TRADE)) {
             this.tradeAnimationState.startIfStopped(this.tickCount);
             this.tradeTimer++;
-            if (this.tradeTimer > 65) {          // TRADE 3.25s = 65 ticks
+            if (this.tradeTimer > 65) {
                 this.tradeAnimationState.stop();
                 this.tradeTimer = 0;
                 this.entityData.set(DATA_PLAYING_TRADE, false);
@@ -404,7 +403,7 @@ public class PiglinMerchant extends PathfinderMob implements Merchant {
         if (this.entityData.get(DATA_PLAYING_RARE_SUCCESS)) {
             this.rareSuccessAnimationState.startIfStopped(this.tickCount);
             this.rareSuccessTimer++;
-            if (this.rareSuccessTimer > 88) {    // TRADE_SUCCESS_RARE 4.375s ≈ 88 ticks
+            if (this.rareSuccessTimer > 88) {
                 this.rareSuccessAnimationState.stop();
                 this.rareSuccessTimer = 0;
                 this.entityData.set(DATA_PLAYING_RARE_SUCCESS, false);

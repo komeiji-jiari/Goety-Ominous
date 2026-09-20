@@ -62,7 +62,7 @@ public class UrbhadhachServant extends Summoned implements PlayerRideable {
         super.registerGoals();
         this.goalSelector.addGoal(1, new JumpAtTargetGoal(this, 0.4F));
         this.goalSelector.addGoal(2, new AttackGoal());
-        this.goalSelector.addGoal(3, new RandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(3, new Summoned.WanderGoal<>(this, 1.0D));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, AgeableMob.class, 10, true, false, LivingEntity::isBaby));

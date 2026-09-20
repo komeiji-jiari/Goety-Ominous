@@ -3,7 +3,6 @@ package com.qiuyue.goetyominous.common.entities.ally.mobs.mm;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.alexander.mutantmore.config.MutantMoreGroupedOptionsCommonConfig;
-import com.alexander.mutantmore.config.mutant_wither_skeleton.MutantWitherSkeletonCommonConfig;
 import com.alexander.mutantmore.init.TagInit.Blocks;
 import com.alexander.mutantmore.interfaces.IMutatable;
 import java.util.Iterator;
@@ -181,7 +180,7 @@ public abstract class AbstractMutantServant extends Summoned implements IMutatab
     }
 
     public void checkDespawn() {
-        if (!(Boolean)MutantWitherSkeletonCommonConfig.despawns.get() && !(Boolean)MutantMoreGroupedOptionsCommonConfig.mutant_despawning_on.get()) {
+        if (!(Boolean)this.despawnsConfig().get() && !(Boolean)MutantMoreGroupedOptionsCommonConfig.mutant_despawning_on.get()) {
             if (this.level().getDifficulty() == Difficulty.PEACEFUL && this.shouldDespawnInPeaceful()) {
                 this.discard();
             } else {

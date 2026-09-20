@@ -1,0 +1,28 @@
+{
+  "name": "Relicheirus",
+  "icon": "alexscaves:relicheirus_egg",
+  "category": "goety:primordialcaves",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "These large bird-like dinosaurs possess strength that should not be underestimated either. Using their favorite food, Trilocaris, you can lure a Relicheirus under your control."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:relicheirus_servant",
+      "text": "Briar and Bramble, Logger Vick is here to chop trees again!"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Wearing Wild Robe restores your dinosaurs' health. Feeding them Raw Trilocaris Tails heals your Relicheirus. Tree Stars can be used to breed your Relicheirus; a breeding pair will lay an egg, and the hatchling will still recognize you as its master."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Feeding your Relicheirus Servant Primordial Soup puts it into a logging state. They will knock down surrounding trees, though they obviously cannot collect the dropped items."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_relicheirus_to_relicheirus_servant"
+    }
+  ]
+}

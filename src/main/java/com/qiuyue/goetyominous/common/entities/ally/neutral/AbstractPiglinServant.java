@@ -71,6 +71,9 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
     public boolean isImmune() { return this.isImmuneToZombification(); }
     public int getRangedDamageDealt() { return this.rangedDamageDealt; }
     public int getMeleeDamageDealt() { return this.meleeDamageDealt; }
+    private static final net.minecraft.network.syncher.EntityDataAccessor<Boolean> DATA_UPGRADE_LOCKED =
+            net.minecraft.network.syncher.SynchedEntityData.defineId(AbstractPiglinServant.class,
+                    net.minecraft.network.syncher.EntityDataSerializers.BOOLEAN);
 
     public AbstractPiglinServant(EntityType<? extends Owned> p_34652_, Level p_34653_) {
         super(p_34652_, p_34653_);
@@ -117,6 +120,7 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(DATA_IMMUNE_TO_ZOMBIFICATION, false);
+        this.entityData.define(DATA_UPGRADE_LOCKED, false);
     }
 
     public void addAdditionalSaveData(CompoundTag p_34661_) {
@@ -127,6 +131,7 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
         this.writeInventoryToTag(p_34661_);
         p_34661_.putInt("MeleeDamageDealt", this.meleeDamageDealt);
         p_34661_.putInt("RangedDamageDealt", this.rangedDamageDealt);
+        p_34661_.putBoolean("UpgradesLocked", this.upgradesLocked());
         super.addAdditionalSaveData(p_34661_);
 
         if (this.isImmuneToZombification()) {
@@ -153,6 +158,7 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
         super.readAdditionalSaveData(p_34659_);
         this.setImmuneToZombification(p_34659_.getBoolean("IsImmuneToZombification"));
         this.timeInOverworld = p_34659_.getInt("TimeInOverworld");
+        this.setUpgradesLocked(p_34659_.getBoolean("UpgradesLocked"));
     }
 
     protected void customServerAiStep() {
@@ -181,6 +187,14 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
             this.finishConversion((ServerLevel)this.level());
         }
 
+    }
+
+    public boolean upgradesLocked() {
+        return this.entityData.get(DATA_UPGRADE_LOCKED);
+    }
+
+    public void setUpgradesLocked(boolean value) {
+        this.entityData.set(DATA_UPGRADE_LOCKED, value);
     }
 
     public boolean validLootToStore(ItemStack itemStack) {
@@ -476,7 +490,7 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
     public boolean doHurtTarget(Entity target) {
         float prevHealth = target instanceof LivingEntity ? ((LivingEntity) target).getHealth() : 0;
         boolean result = super.doHurtTarget(target);
-        if (result && target instanceof LivingEntity living) {
+        if (result && target instanceof LivingEntity living && !this.upgradesLocked()) {
             int dealt = (int) Math.ceil(prevHealth - living.getHealth());
             if (dealt > 0) {
                 this.meleeDamageDealt += dealt;
@@ -490,7 +504,9 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
     }
 
     public void onRangedDamageDealt(int damage) {
-        this.rangedDamageDealt += damage;
+        if (!this.upgradesLocked()) {
+            this.rangedDamageDealt += damage;
+        }
     }
 
     protected void onRangedDamageDealt() {
@@ -704,6 +720,24 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
         Item item = itemstack.getItem();
         ItemStack itemstack2 = this.getMainHandItem();
         if (this.getTrueOwner() != null && pPlayer.getUUID().equals(this.getTrueOwner().getUUID())) {
+            net.minecraft.world.item.Item snapWarts =
+                    net.minecraftforge.registries.ForgeRegistries.ITEMS.getValue(
+                            new net.minecraft.resources.ResourceLocation("goety", "snap_warts"));
+            if (snapWarts != null && itemstack.is(snapWarts)
+                    && (this instanceof PiglinServant
+                    || this instanceof PiglinBruteServant
+                    || this instanceof PiglinHunterServant)
+                    && !this.upgradesLocked()) {
+                if (!pPlayer.getAbilities().instabuild) {
+                    itemstack.shrink(1);
+                }
+                this.setUpgradesLocked(true);
+                this.rangedDamageDealt = 0;
+                this.meleeDamageDealt = 0;
+                this.playSound(SoundEvents.PIGLIN_JEALOUS, 1.0F, 1.0F);
+                return InteractionResult.SUCCESS;
+            }
+
             if (this.validFood(itemstack) && this.canHaveMoreFood()
                     && this.getInventory().canAddItem(itemstack)) {
                 this.getInventory().addItem(itemstack.copyWithCount(1));

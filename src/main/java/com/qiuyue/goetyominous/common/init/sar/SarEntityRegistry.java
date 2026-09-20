@@ -9,16 +9,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-/**
- * SAR 联动实体注册类
- * 负责注册所有 SAR 仆从实体类型
- * 注意：这个类只在 SAR 模组加载时才会被调用
- */
 public class SarEntityRegistry {
 
-    /**
-     * SAR 实体延迟注册表
-     */
     private static final DeferredRegister<EntityType<?>> SAR_ENTITIES =
             DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, GoetyOminous.MOD_ID);
 
@@ -81,10 +73,6 @@ public class SarEntityRegistry {
                             .build(GoetyOminous.MOD_ID + ":trickster_servant"));
 
 
-    /**
-     * 注册 SAR 实体到模组事件总线
-     * @param modEventBus 模组事件总线
-     */
     public static void register(IEventBus modEventBus) {
         SAR_ENTITIES.register(modEventBus);
     }

@@ -66,6 +66,12 @@
       "item": "minecraft:chest",
       "title": "Chest Interaction",
       "text": "Right-click a Piglin while holding a Waystone. If the coordinates stored in the Waystone point to an unregistered chest, that Piglin will register it as a valid container. They will take food from it and deposit loot they gather into it."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goety:snap_warts",
+      "title": "Stop Training",
+      "text": "Sometimes, for various reasons, you may not want your Piglins to upgrade. By feeding them Snap Warts, you can permanently halt a Piglin servant's upgrade progress and remove all accumulated points. Note that this action is irreversible."
     }
   ]
 }

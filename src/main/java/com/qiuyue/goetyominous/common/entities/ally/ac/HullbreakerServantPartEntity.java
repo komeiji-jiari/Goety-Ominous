@@ -72,6 +72,10 @@ public class HullbreakerServantPartEntity extends PartEntity<HullbreakerServant>
         if (source.is(DamageTypeTags.IS_PROJECTILE)) {
             amount *= 0.35F;
         }
+        if (parent != null && source.getEntity() != null && !source.getEntity().is(parent)
+                && parent.isAlliedTo(source.getEntity())) {
+            return false;
+        }
         return !this.isInvulnerableTo(source) && !this.level().isClientSide && parent != null && parent.hurt(source, amount);
     }
 

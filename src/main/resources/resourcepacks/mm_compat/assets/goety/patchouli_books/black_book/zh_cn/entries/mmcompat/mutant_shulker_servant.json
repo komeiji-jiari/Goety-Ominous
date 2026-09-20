@@ -1,0 +1,33 @@
+{
+  "name": "突变潜影贝仆从",
+  "icon": "mutantmore:mutant_shulker_shell",
+  "category": "goety:mmcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "尽管守卫着末地城的潜影贝是如何被制造出来的仍是个谜团，不过比起尝试突变那些末地城的守护者，你开始思考或许有一种更安全的办法来获得一个对你忠诚的突变潜影贝。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goety:wicked_boline",
+      "text": "用一把伯莱恩匕首杀死突变潜影贝，你可以获得某种潜影贝的胚胎。得到了胚胎以后，用突变潜影贝的壳以及一些虚空物品，复合物Z，以及你的智慧，你想到了创造属于你的突变潜影贝仆从的方法。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:mutant_shulker_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:mutant_shulker_servant",
+      "text": "就像生物课实验！"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "突变潜影贝接受充满虚空能量的物品强化其能力。虚空碎片能够增加突变潜影贝发射的导弹的威力，虚空之眼为其咬合附上虚空侵蚀，而守望者的回响让它更难在战斗中倒下。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "然而不幸的是，突变潜影贝并不属于虚空仆从，它们无法通过虚空长袍治疗，但你可以通过喂食末影珍珠的办法治疗你的突变潜影贝。此外，用不同颜色的染料，可以自定义你的突变潜影贝的颜色外观。"
+    }
+  ]
+}

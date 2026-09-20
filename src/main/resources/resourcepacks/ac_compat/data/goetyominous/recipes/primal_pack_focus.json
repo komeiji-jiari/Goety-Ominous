@@ -1,0 +1,39 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "alexscaves:serene_salad"
+  },
+  "craftType": "overgrown",
+  "soulCost": 1,
+  "duration": 10,
+  "ingredients": [
+    {
+      "item": "alexscaves:dinosaur_nugget"
+    },
+    {
+      "item": "alexscaves:dinosaur_nugget"
+    },
+    {
+      "item": "alexscaves:tree_star"
+    },
+    {
+      "item": "alexscaves:heavy_bone"
+    },
+    {
+      "item": "alexscaves:heavy_bone"
+    },
+    {
+      "item": "alexscaves:curly_fern"
+    },
+    {
+      "item": "alexscaves:curly_fern"
+    },
+    {
+      "item": "goety:magic_emerald"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:primal_pack_focus"
+  }
+}

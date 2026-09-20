@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    " b ",
+    "ghg",
+    " b "
+  ],
+  "key":
+  {
+    "b":
+    {
+      "item": "alexsmobs:stink_bottle"
+    },
+    "h":
+    {
+      "item": "goety:empty_focus"
+    },
+    "g":
+    {
+      "item": "goety:henbane_flower"
+    }
+  },
+  "result":
+  {
+    "item": "goetyominous:fart_focus",
+    "count": 1
+  }
+}

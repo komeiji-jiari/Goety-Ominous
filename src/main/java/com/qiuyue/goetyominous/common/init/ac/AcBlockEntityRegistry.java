@@ -1,7 +1,9 @@
 package com.qiuyue.goetyominous.common.init.ac;
 
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.common.blocks.entities.ac.AtlatitanServantEggBlockEntity;
 import com.qiuyue.goetyominous.common.blocks.entities.ac.GrottoceratopsServantEggBlockEntity;
+import com.qiuyue.goetyominous.common.blocks.entities.ac.RelicheirusServantEggBlockEntity;
 import com.qiuyue.goetyominous.common.blocks.entities.ac.TremorsaurusServantEggBlockEntity;
 import com.qiuyue.goetyominous.common.blocks.entities.ac.VallumraptorServantEggBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -15,6 +17,12 @@ public class AcBlockEntityRegistry {
     private static final DeferredRegister<BlockEntityType<?>> AC_BLOCK_ENTITIES =
             DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, GoetyOminous.MOD_ID);
 
+    public static final RegistryObject<BlockEntityType<AtlatitanServantEggBlockEntity>> ATLATITAN_SERVANT_EGG =
+            AC_BLOCK_ENTITIES.register("atlatitan_servant_egg",
+                    () -> BlockEntityType.Builder.of(
+                            AtlatitanServantEggBlockEntity::new,
+                            AcBlockRegistry.ATLATITAN_SERVANT_EGG.get()).build(null));
+
     public static final RegistryObject<BlockEntityType<GrottoceratopsServantEggBlockEntity>> GROTTOCERATOPS_SERVANT_EGG =
             AC_BLOCK_ENTITIES.register("grottoceratops_servant_egg",
                     () -> BlockEntityType.Builder.of(
@@ -26,6 +34,12 @@ public class AcBlockEntityRegistry {
                     () -> BlockEntityType.Builder.of(
                             TremorsaurusServantEggBlockEntity::new,
                             AcBlockRegistry.TREMORSAURUS_SERVANT_EGG.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<RelicheirusServantEggBlockEntity>> RELICHEIRUS_SERVANT_EGG =
+            AC_BLOCK_ENTITIES.register("relicheirus_servant_egg",
+                    () -> BlockEntityType.Builder.of(
+                            RelicheirusServantEggBlockEntity::new,
+                            AcBlockRegistry.RELICHEIRUS_SERVANT_EGG.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<VallumraptorServantEggBlockEntity>> VALLUMRAPTOR_SERVANT_EGG =
             AC_BLOCK_ENTITIES.register("vallumraptor_servant_egg",

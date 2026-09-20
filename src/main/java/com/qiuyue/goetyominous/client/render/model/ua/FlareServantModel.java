@@ -17,10 +17,6 @@ import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * ModelFlare - SmellyModer
- * Created using Tabula 7.0.0
- */
 @OnlyIn(Dist.CLIENT)
 public class FlareServantModel<F extends FlareServant> extends EntityModel<F> {
     public static final ModelLayerLocation LOCATION = new ModelLayerLocation(new ResourceLocation(UpgradeAquatic.MOD_ID, "flare"), "main");

@@ -1,0 +1,33 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:witch_robe"
+  },
+  "craftType": "fel",
+  "soulCost": 1,
+  "duration": 10,
+  "ingredients": [
+    {
+      "item": "goety:occult_fabric"
+    },
+    {
+      "item": "goety:occult_fabric"
+    },
+    {
+      "item": "goetyominous:fel_core"
+    },
+    {
+      "item": "goety:spiteful_belt"
+    },
+    {
+      "item": "goety:soul_emerald"
+    },
+    {
+      "item": "goetyominous:harmonious_diamond"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:crone_robe"
+  }
+}

@@ -12,10 +12,6 @@ import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * CreepieModel - TallestEgg
- * Created using Tabula 7.1.0
- */
 @OnlyIn(Dist.CLIENT)
 public class CreepieServantModel extends ListModel<CreepieServant> {
     public ModelPart head;

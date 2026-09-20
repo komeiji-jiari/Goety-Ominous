@@ -247,7 +247,6 @@ public class DiscipleServant extends CultistServant {
         boolean isOwner = this.getTrueOwner() != null && pPlayer == this.getTrueOwner();
         boolean isAllyOrNone = (this.getTrueOwner() != null && MobUtil.areAllies(this, pPlayer))
                 || (this.getTrueOwner() == null && CuriosFinder.isWitchFriendly(pPlayer));
-        // 主手空 + 主手交互 + 绿宝石 + 是主人/盟友/无主友好
         if (this.getMainHandItem().isEmpty() && pHand == InteractionHand.MAIN_HAND
                 && itemstack.is(com.Polarice3.Goety.init.ModTags.Items.WITCH_CURRENCY)
                 && (isOwner || isAllyOrNone)) {
@@ -301,7 +300,6 @@ public class DiscipleServant extends CultistServant {
 
         if (this.isCasting() && !this.isCurrentAnimation(SUMMON)) {
             this.attackAnimationState.startIfStopped(this.tickCount);
-            // 对于持续施法（Meteor Shower），每 30 tick 重新触发攻击动画使之循环
             if (this.getCurrentSpell() == DiscipleSpell.METEOR.id) {
                 if (this.tickCount - this.attackAnimRestartTick >= 30) {
                     this.attackAnimationState.start(this.tickCount);

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "goetyominous:plushie_dismantlable"
+    }
+  ],
+  "result": {
+    "item": "minecraft:white_wool",
+    "count": 3
+  }
+}

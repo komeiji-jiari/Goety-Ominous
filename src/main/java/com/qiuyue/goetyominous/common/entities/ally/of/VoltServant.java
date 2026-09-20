@@ -45,27 +45,14 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * 伏特鳐仆从：对照 OF 原版 Volt 逐项补齐的版本。
- * 这次大修补齐了原版的三套系统：
- *  1) 水陆双栖：每帧检测 isInWater()，自动在"陆地导航(走)"和"水中导航(游)"之间切换，
- *     游泳时切换成扁平的鱼形碰撞箱；水中有专属的射击剧本和闲逛剧本。
- *  2) 跳扑姿势状态机：起跳(LONG_JUMPING) → 下落(FALL_FLYING) → 着陆(LANDING) 三段姿势，
- *     让 JUMP_START / JUMP_FALL / JUMP_END 三个动画都能完整播放。
- *  3) 特性补齐：VOLT 五个音效、免疫电系伤害、摔落免伤、带电自愈+雷劈带电、
- *     随机抽搐动画、精英属性加成。
- */
 public class VoltServant extends Summoned implements AttackState, EliteVariant {
-    // ===== 同步数据：服务端 <-> 客户端 传的状态 =====
     private static final EntityDataAccessor<Integer> ATTACK_STATE;
-    private static final EntityDataAccessor<Boolean> CHARGED;   // 带电状态（发光/自愈/电球强化用）
-    private static final EntityDataAccessor<Boolean> ELITE;     // 是否类星体精英
-    private static final EntityDataAccessor<Boolean> SWIMMING;  // 游泳中（客户端据此换鱼形碰撞箱）
+    private static final EntityDataAccessor<Boolean> CHARGED;
+    private static final EntityDataAccessor<Boolean> ELITE;
+    private static final EntityDataAccessor<Boolean> SWIMMING;
 
-    // 游泳时的扁扁碰撞箱（原版原值）
     private static final EntityDimensions FISH_IN_WATER_DIMENSIONS = EntityDimensions.scalable(1.1F, 0.5F);
 
-    // ===== 动画状态：OF 原版 Volt 全套（含抽搐两个）=====
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState shootAnimationState = new AnimationState();
     public final AnimationState shootWaterAnimationState = new AnimationState();
@@ -77,26 +64,22 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
     public final AnimationState swimIdleAnimationState = new AnimationState();
     public final AnimationState leapAnimationState = new AnimationState();
 
-    // ===== 冷却/计时字段（字段名照抄 OF 原版 Volt）=====
-    public int leapCooldown;        // 跳跃冷却
-    public boolean isLandNavigator; // 当前是不是陆地导航
-    private boolean wasOnGround;    // 上一 tick 是否在地面（判断落地瞬间播啪叽音效）
-    private Pose lastPose;          // 上一 tick 的姿态（客户端检测姿态变化启动动画）
-    private int jumpTicks;          // 起跳动画计时
-    private int fallingTicks;       // 下落动画计时
-    private int landingTicks;       // 着陆动画计时
-    private int shootingTicks;      // 射击动画计时
-    private final byte TWITCH1 = 68; // 抽搐动画 1 的事件号
-    private final byte TWITCH2 = 69; // 抽搐动画 2 的事件号
+    public int leapCooldown;
+    public boolean isLandNavigator;
+    private boolean wasOnGround;
+    private Pose lastPose;
+    private int jumpTicks;
+    private int fallingTicks;
+    private int landingTicks;
+    private int shootingTicks;
+    private final byte TWITCH1 = 68;
+    private final byte TWITCH2 = 69;
 
     public VoltServant(EntityType<? extends Owned> entityType, Level level) {
         super(entityType, level);
-        // 初始跳跃冷却（原版 40~59 tick）
         this.leapCooldown = 40 + this.getRandom().nextInt(20);
-        // 不排斥水（原版：水中路径价值 0 惩罚）
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
-        // 默认先切到陆地导航
         this.switchNavigator(true);
     }
 
@@ -111,11 +94,8 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        // 主动索敌：Goety 默认的 SummonTargetGoal 是"仇恨驱动"，不会见敌就打。
-        // 补上 NearestAttackableTargetGoal 才能像原版 Volt 一样主动追敌对生物（Enemy）。
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, false, false,
                 (target) -> target instanceof Enemy && !MobUtil.areAllies(this, target)));
-        // 对齐原版优先级：1=跳扑（优先），2=陆地射击，2=水中射击（互斥），3=水中闲逛+陆地闲逛，5/6=观察
         this.goalSelector.addGoal(1, new VoltServantLeapGoal(this));
         this.goalSelector.addGoal(2, new VoltServantShootGoal(this));
         this.goalSelector.addGoal(2, new VoltServantShootInWaterGoal(this));
@@ -127,11 +107,9 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
 
     @Override
     protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
-        // 默认陆地导航（构造器里 switchNavigator(true) 会再覆盖，这里只是兜底）
         return new SmoothGroundPathNavigation(this, level);
     }
 
-    // ===== 水陆导航切换（照抄原版 switchNavigator）=====
     protected void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);
@@ -146,7 +124,6 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
         }
     }
 
-    // ===== 游泳时的水面移动（照抄原版 travel）=====
     @Override
     public void travel(Vec3 vec3) {
         if (this.isNoAi() && this.isInWater()) {
@@ -161,7 +138,6 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
         }
     }
 
-    // 游泳时把水面当"好走的路"（原版 10.0 分）
     @Override
     public float getWalkTargetValue(BlockPos pos, LevelReader levelReader) {
         if (levelReader.getFluidState(pos).is(FluidTags.WATER)) {
@@ -170,7 +146,6 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
         return 0.0F;
     }
 
-    // 游泳时切换成扁平的鱼形碰撞箱
     @Override
     public EntityDimensions getDimensions(Pose pose) {
         return this.isVoltSwimming()
@@ -178,7 +153,6 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
                 : super.getDimensions(pose);
     }
 
-    // ===== AttackState 接口：攻击状态 =====
     @Override
     public int getAttackState() {
         return this.entityData.get(ATTACK_STATE);
@@ -189,7 +163,6 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
         this.entityData.set(ATTACK_STATE, attackState);
     }
 
-    // ===== EliteVariant 接口：类星体精英 =====
     @Override
     public boolean isElite() {
         return this.entityData.get(ELITE);
@@ -200,7 +173,6 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
         this.entityData.set(ELITE, elite);
     }
 
-    // ===== 带电状态 =====
     public boolean isCharged() {
         return this.entityData.get(CHARGED);
     }
@@ -209,7 +181,6 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
         this.entityData.set(CHARGED, charged);
     }
 
-    // ===== 游泳状态（同步到客户端换碰撞箱）=====
     public boolean isVoltSwimming() {
         return this.entityData.get(SWIMMING);
     }
@@ -252,10 +223,8 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
         if (this.level().isClientSide) {
             this.setupAnimationStates();
         }
-        // 姿态变化检测：setPose 之后启动/停止对应动画 + 设置计数器（原版用 onSyncedDataUpdated 监听 POSE，这里改为每 tick 对比）
         this.updatePoseAnimations();
 
-        // 落地瞬间播"啪叽"音效（wasOnGround false -> true）
         if (this.onGround() && !this.wasOnGround) {
             this.playSound(OPSoundEvents.VOLT_SQUISH.get(), 0.2F,
                     (1.0F + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F) / 0.8F);
@@ -263,7 +232,6 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
         this.setVoltSwimming(this.isInWater());
         this.wasOnGround = this.onGround();
 
-        // ===== 水陆导航自动切换：进水下游，上岸走 =====
         boolean onLand = !this.isInWater();
         if (onLand && !this.isLandNavigator) {
             this.switchNavigator(true);
@@ -272,7 +240,6 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
             this.switchNavigator(false);
         }
 
-        // ===== 动画计时器递减 =====
         if (this.shootingTicks > 0) {
             --this.shootingTicks;
         }
@@ -286,7 +253,6 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
             --this.landingTicks;
         }
 
-        // ===== 姿势状态机（照抄原版，驱动跳扑/射击动画）=====
         if (this.shootingTicks == 0 && this.getPose() == OPPoses.SHOOTING.get()) {
             this.setPose(Pose.STANDING);
         }
@@ -305,12 +271,10 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
             this.setPose(Pose.STANDING);
         }
 
-        // ===== 带电自愈：每 100 tick 回 2 血 =====
         if (this.isCharged() && this.tickCount % 100 == 0 && this.getHealth() < this.getMaxHealth()) {
             this.heal(2.0F);
         }
 
-        // ===== 站立时随机抽搐动画（原版 1/504、1/505）=====
         if (this.getPose() == Pose.STANDING) {
             if (this.getRandom().nextInt(504) == 0 && !this.twitch2AnimationState.isStarted()) {
                 this.level().broadcastEntityEvent(this, this.TWITCH1);
@@ -321,7 +285,6 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
         }
     }
 
-    // ===== 客户端动画状态整理（照抄原版 setupAnimationStates）=====
     private void setupAnimationStates() {
         if (this.shootingTicks == 0 && (this.shootAnimationState.isStarted() || this.shootWaterAnimationState.isStarted())) {
             this.shootAnimationState.stop();
@@ -340,7 +303,6 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
         this.swimIdleAnimationState.animateWhen(this.isInWater() && this.getPose() == Pose.STANDING, this.tickCount);
     }
 
-    // 游泳状态变化时刷新碰撞箱
     @Override
     public void refreshDimensions() {
         double d0 = this.getX();
@@ -350,7 +312,6 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
         this.setPos(d0, d1, d2);
     }
 
-    // ===== 同步数据变化：游泳切换碰撞箱 =====
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         if (SWIMMING.equals(key)) {
@@ -359,7 +320,6 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
         super.onSyncedDataUpdated(key);
     }
 
-    // ===== 姿态变化：启动/停止对应动画（原版监听 POSE 同步数据，编译环境没有 Entity.POSE 字段，改为每 tick 对比姿态，效果一致）=====
     private void updatePoseAnimations() {
         Pose pose = this.getPose();
         if (pose != this.lastPose) {
@@ -392,7 +352,6 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
         }
     }
 
-    // ===== 抽搐动画事件（68/69）=====
     @Override
     public void handleEntityEvent(byte id) {
         if (id == this.TWITCH1) {
@@ -404,7 +363,6 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
         }
     }
 
-    // ===== 音效（原版 5 个）=====
     @Override
     protected SoundEvent getAmbientSound() {
         return OPSoundEvents.VOLT_IDLE.get();
@@ -425,8 +383,6 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
         this.playSound(OPSoundEvents.VOLT_SQUISH.get(), 0.1F, 1.0F);
     }
 
-    // ===== 防御特性 =====
-    // 免疫电系伤害（ELECTRIC / ELECTRIFIED），不会被电球和电击打伤
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
         if (super.isInvulnerableTo(source)) {
@@ -438,13 +394,11 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
         return source.is(OPDamageTypes.ELECTRIFIED);
     }
 
-    // 摔不伤
     @Override
     public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
         return false;
     }
 
-    // 不被推动
     @Override
     public boolean isPushable() {
         return false;
@@ -455,20 +409,17 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
         return true;
     }
 
-    // ===== 被雷劈：带电 + 回满血 =====
     @Override
     public void thunderHit(ServerLevel level, LightningBolt lightning) {
         this.setCharged(true);
         this.heal(this.getMaxHealth());
     }
 
-    // ===== 经验（原版 400，作为兼容保留）=====
     @Override
     public int getExperienceReward() {
         return 400;
     }
 
-    // ===== 精英属性加成：血 ×1.5 并回满（供外部调用，召唤不做随机精英）=====
     public void setEliteStats(Mob mob) {
         if (mob.getAttribute(Attributes.MAX_HEALTH) != null) {
             mob.getAttribute(Attributes.MAX_HEALTH).setBaseValue(mob.getAttributeBaseValue(Attributes.MAX_HEALTH) * 1.5D);
@@ -476,7 +427,6 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
         mob.setHealth(mob.getMaxHealth());
     }
 
-    // ===== 陆地闲逛剧本（原版内部类：只在陆地导航且不在水里时闲逛）=====
     private static class VoltRandomStrollGoal extends RandomStrollGoal {
         private final VoltServant entity;
 

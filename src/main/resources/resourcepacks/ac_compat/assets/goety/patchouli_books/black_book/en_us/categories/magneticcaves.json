@@ -1,0 +1,7 @@
+{
+  "name": "Magnetic Caves",
+  "description": "Dark magnetism draws you in.",
+  "icon": "alexscaves:telecore",
+  "sortnum": 4,
+  "parent": "goety:accompat"
+}

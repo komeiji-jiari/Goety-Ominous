@@ -1,0 +1,39 @@
+{
+  "name": "Mutant Blaze Servant",
+  "icon": "mutantmore:mutant_blaze_core",
+  "category": "goety:mmcompat",
+  "advancement": "goety:goety/read_bygone_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "This massive amalgamation of flame requires far more Soul Energy to command than even the Blaze Masters. Though your Mutant Blaze will no longer leave you in a searing state of burn, it's still best to keep them away from any wooden structures."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_blaze_to_mutant_blaze"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Thanks to the Mutant Blaze's searingly hot core, they emanate a field of intense heat. All Furnaces, Smokers, or Blast Furnaces within this field will gain an infinite heat source, while lit Campfires will become impossible to fully extinguish."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:mutant_blaze_servant",
+      "text": "A nightmare for the Nephilim"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Like other Mutant servants, you have attempted to infuse your Mutant Blaze with greater arcane power. A Bulwark Focus grants the Mutant Blaze a sturdier shield, while a Burning Helm grants it immunity to rain and strengthens the Rodlings it summons."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goety:unholy_blood",
+      "text": "You have discovered that the blood of the pale emissaries can significantly empower your Mutant Blaze. Not only does it alter its appearance, but it also enables it to unleash infernal blasts far larger than those used by the emissaries themselves. Perhaps the evil Blazes summoned by those emissaries are influenced by their own power..."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Mutant Blazes can be healed with Blaze Rods, Blaze Powder, Coal, or Charcoal. Naturally, as Nether creatures, Nether Robes also slowly restore their health."
+    }
+  ]
+}

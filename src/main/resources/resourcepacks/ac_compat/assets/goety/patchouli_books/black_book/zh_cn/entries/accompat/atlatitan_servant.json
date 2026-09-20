@@ -1,0 +1,29 @@
+{
+  "name": "擎天龙",
+  "icon": "alexscaves:atlatitan_egg",
+  "category": "goety:primordialcaves",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "击败原始洞穴的天灾后，你注意到了一些新的恐龙。尽管这些擎天龙无法通过正常方法完全驯服，但你仍然可以通过魔法来让它们服从。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:atlatitan_servant",
+      "scale": 0.6,
+      "text": "泰坦巨龙"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "穿着荒野长袍可以恢复你的恐龙的生命值。喂食它们南洋杉树枝或宁静沙拉可治愈你的擎天龙。星树果可以用于繁殖你的擎天龙，参与繁殖的擎天龙会产下一枚蛋，孵化出的小擎天龙依旧视你为主人。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "你可以骑乘你的擎天龙。按下特殊能力按键即可让你的擎天龙发动践踏，破坏周围的大片地形，需要注意的是这种践踏不会伤害任何生物。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_atlatitan_to_atlatitan_servant"
+    }
+  ]
+}

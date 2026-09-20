@@ -48,7 +48,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -97,7 +96,7 @@ public class NucleeperServant extends Summoned implements ActivatesSirens, Power
             }
         });
         this.goalSelector.addGoal(2, new MeleeGoal());
-        this.goalSelector.addGoal(3, new RandomStrollGoal(this, 1.0D, 45));
+        this.goalSelector.addGoal(3, new Summoned.WanderGoal<>(this, 1.0D, 45, 0.001F));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 15.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
     }
@@ -329,13 +328,10 @@ public class NucleeperServant extends Summoned implements ActivatesSirens, Power
         NuclearExplosionEntity explosion = ACEntityRegistry.NUCLEAR_EXPLOSION.get().create(level());
         explosion.copyPosition(this);
         explosion.setSize(isCharged() ? 1.75F : 1F);
-        boolean noGriefing = !AttributesConfig.NucleeperServantExplosionGriefing.get()
-                || !level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
-        if (noGriefing) {
-            explosion.setNoGriefing(true);
-        }
+        explosion.setNoGriefing(true);
+        NucleeperNukeProtectionHandler.suppressVanillaCloud(explosion);
         level().addFreshEntity(explosion);
-        if (noGriefing && level() instanceof ServerLevel serverLevel) {
+        if (level() instanceof ServerLevel serverLevel) {
             spawnSurfaceCloud(serverLevel);
         }
         NucleeperNukeKillHandler.register(this);

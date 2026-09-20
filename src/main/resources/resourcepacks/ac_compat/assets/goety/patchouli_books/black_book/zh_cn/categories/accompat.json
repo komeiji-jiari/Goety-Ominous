@@ -1,0 +1,7 @@
+{
+  "name": "Alex洞穴联动",
+  "description": "于奇特的洞穴中攫取黑暗之力。",
+  "icon": "alexscaves:cave_book",
+  "sortnum": 6,
+  "parent": "goety:goetyominous"
+}

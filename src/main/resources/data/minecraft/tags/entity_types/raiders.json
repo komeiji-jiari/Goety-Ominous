@@ -1,10 +1,35 @@
 {
   "replace": false,
   "values": [
+    {
+      "id": "illageandspillage:chagrin_sentry",
+      "required": false
+    },
+    {
+      "id": "illageandspillage:factory",
+      "required": false
+    },
+    {
+      "id": "illageandspillage:poker",
+      "required": false
+    },
+    {
+      "id": "illageandspillage:sniper",
+      "required": false
+    },
+    {
+      "id": "illageandspillage:beeper",
+      "required": false
+    },
+    {
+      "id": "illageandspillage:hinder",
+      "required": false
+    },
     "goetyominous:beldam",
     "goetyominous:fanatic",
     "goetyominous:zealot",
     "goetyominous:thug",
-    "goetyominous:channeller"
+    "goetyominous:channeller",
+    "goetyominous:arch_geomancer"
   ]
 }
