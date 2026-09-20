@@ -39,22 +39,25 @@ public class ModMobSpawnBiomeModifier implements BiomeModifier {
         if (!biome.is(net.minecraft.tags.BiomeTags.IS_OVERWORLD)) return;
         if (key != null && (key.equals(new ResourceLocation("minecraft", "mushroom_fields"))
                 || key.equals(new ResourceLocation("minecraft", "deep_dark")))) return;
-        if (biome.value().getBaseTemperature() >= 0.15F) return;
 
         MobSpawnSettingsBuilder spawnSettings = builder.getMobSpawnSettings();
         var spawnerList = spawnSettings.getSpawner(MobCategory.MONSTER);
 
-        addSpawn(spawnerList, spawnSettings, ModEntityTypes.DREDEN.get(),
-                MobsConfig.DredenSpawnWeight.get(),
-                MobsConfig.DredenSpawnMinCount.get(),
-                MobsConfig.DredenSpawnMaxCount.get(),
-                1.0D, 1.0D);
+        boolean cold = biome.value().getBaseTemperature() < 0.15F;
 
-        addSpawn(spawnerList, spawnSettings, ModEntityTypes.URBHADHACH.get(),
-                MobsConfig.UrbhadhachSpawnWeight.get(),
-                MobsConfig.UrbhadhachSpawnMinCount.get(),
-                MobsConfig.UrbhadhachSpawnMaxCount.get(),
-                1.0D, 1.0D);
+        if (cold) {
+            addSpawn(spawnerList, spawnSettings, ModEntityTypes.DREDEN.get(),
+                    MobsConfig.DredenSpawnWeight.get(),
+                    MobsConfig.DredenSpawnMinCount.get(),
+                    MobsConfig.DredenSpawnMaxCount.get(),
+                    1.0D, 1.0D);
+
+            addSpawn(spawnerList, spawnSettings, ModEntityTypes.URBHADHACH.get(),
+                    MobsConfig.UrbhadhachSpawnWeight.get(),
+                    MobsConfig.UrbhadhachSpawnMinCount.get(),
+                    MobsConfig.UrbhadhachSpawnMaxCount.get(),
+                    1.0D, 1.0D);
+        }
 
         addSpawn(spawnerList, spawnSettings, ModEntityTypes.BELDAM.get(),
                 MobsConfig.BeldamSpawnWeight.get(),
@@ -76,7 +79,7 @@ public class ModMobSpawnBiomeModifier implements BiomeModifier {
     }
 
     private void addSpawn(List<MobSpawnSettings.SpawnerData> list,
-                          MobSpawnSettings.Builder spawnSettings,
+                          MobSpawnSettingsBuilder spawnSettings,
                           EntityType<?> type,
                           int weight, int min, int max,
                           double charge, double energyBudget) {
