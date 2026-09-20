@@ -1,0 +1,29 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "goetyominous:atlatitan_servant_egg",
+      "required": false
+    },
+    {
+      "id": "goetyominous:grottoceratops_servant_egg",
+      "required": false
+    },
+    {
+      "id": "goetyominous:tremorsaurus_servant_egg",
+      "required": false
+    },
+    {
+      "id": "goetyominous:relicheirus_servant_egg",
+      "required": false
+    },
+    {
+      "id": "goetyominous:vallumraptor_servant_egg",
+      "required": false
+    },
+    {
+      "id": "goetyominous:emu_servant_egg",
+      "required": false
+    }
+  ]
+}

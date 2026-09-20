@@ -60,8 +60,4 @@ public class CroneRobeModel extends HumanoidModel<LivingEntity> {
         leftArm.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
         rightArm.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 9157bec2755cfd628c41d810d99171fe22b2be1a
