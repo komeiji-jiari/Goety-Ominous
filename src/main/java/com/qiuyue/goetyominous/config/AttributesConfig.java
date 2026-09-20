@@ -247,6 +247,10 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> GusterServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> GusterServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> GusterServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> EmuServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> EmuServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> EmuServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> EmuServantFollowRange;
 
     public static final ForgeConfigSpec.ConfigValue<Double> RockyRollerServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> RockyRollerServantDamage;
@@ -1447,6 +1451,14 @@ public class AttributesConfig {
                 .defineInRange("gusterServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
         GusterServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Guster Servants have, Default: 0.0 (matches Alex's Mobs guster)")
                 .defineInRange("gusterServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
+        EmuServantHealth = BUILDER.comment("How much Max Health Emu Servants have, Default: 20.0 (matches Alex's Mobs emu)")
+                .defineInRange("emuServantHealth", 20.0, 1.0, Double.MAX_VALUE);
+        EmuServantDamage = BUILDER.comment("How much damage Emu Servants deal, Default: 3.0 (matches Alex's Mobs emu)")
+                .defineInRange("emuServantDamage", 3.0, 1.0, Double.MAX_VALUE);
+        EmuServantMovementSpeed = BUILDER.comment("How fast Emu Servants move, Default: 0.35 (matches Alex's Mobs emu)")
+                .defineInRange("emuServantMovementSpeed", 0.35, 0.0, Double.MAX_VALUE);
+        EmuServantFollowRange = BUILDER.comment("How much following/detection range Emu Servants have, Default: 32.0")
+                .defineInRange("emuServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
         RockyRollerServantHealth = BUILDER.comment("How much Max Health Rocky Roller Servants have, Default: 10.0 (matches Alex's Mobs rocky roller)")
                 .defineInRange("rockyRollerServantHealth", 10.0, 1.0, Double.MAX_VALUE);
         RockyRollerServantDamage = BUILDER.comment("How much damage Rocky Roller Servants deal, Default: 2.0 (matches Alex's Mobs rocky roller)")
