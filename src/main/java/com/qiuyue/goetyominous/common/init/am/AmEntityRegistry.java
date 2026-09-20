@@ -171,6 +171,21 @@ public class AmEntityRegistry {
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":stray_skelewag_servant"));
 
+    public static final RegistryObject<EntityType<EmuServant>> EMU_SERVANT =
+            AM_ENTITIES.register("emu_servant",
+                    () -> EntityType.Builder.<EmuServant>of((type, worldIn) -> new EmuServant(type, worldIn), MobCategory.MISC)
+                            .sized(1.1F, 1.8F)
+                            .setTrackingRange(10)
+                            .build(GoetyOminous.MOD_ID + ":emu_servant"));
+
+    public static final RegistryObject<EntityType<EntityEmuServantEgg>> EMU_SERVANT_EGG =
+            AM_ENTITIES.register("emu_servant_egg",
+                    () -> EntityType.Builder.<EntityEmuServantEgg>of((type, worldIn) -> new EntityEmuServantEgg(type, worldIn), MobCategory.MISC)
+                            .sized(0.5F, 0.5F)
+                            .fireImmune()
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":emu_servant_egg"));
+
     public static final RegistryObject<EntityType<IceShard>> ICE_SHARD =
             AM_ENTITIES.register("ice_shard",
                     () -> EntityType.Builder.<IceShard>of((type, worldIn) -> new IceShard(type, worldIn), MobCategory.MISC)
