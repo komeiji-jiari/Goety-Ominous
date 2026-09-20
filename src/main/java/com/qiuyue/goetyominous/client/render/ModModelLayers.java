@@ -707,6 +707,14 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.client.render.am.RenderGusterServant::new);
 
             event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.EMU_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.am.RenderEmuServant::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.EMU_SERVANT_EGG.get(),
+                    context -> new ThrownItemRenderer<>(context, 1.0F, true));
+
+            event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.SERVANT_CENTIPEDE_HEAD.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderServantCentipedeHead::new);
 

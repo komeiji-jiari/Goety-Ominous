@@ -3,13 +3,13 @@ package com.qiuyue.goetyominous.common.entities.ally.am;
 import com.Polarice3.Goety.common.entities.ModEntityType;
 import com.Polarice3.Goety.common.entities.ally.HoglinServant;
 import com.Polarice3.Goety.common.entities.ally.AnimalSummon;
+import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.init.ModMobType;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.EntityTusklin;
 import com.github.alexthe666.alexsmobs.entity.ai.AdvancedPathNavigateNoTeleport;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIMeleeNearby;
-import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIWanderRanged;
 import com.github.alexthe666.alexsmobs.entity.ai.TameableAIRide;
 import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
@@ -36,6 +36,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
 import com.qiuyue.goetyominous.config.AttributesConfig;
+import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -103,6 +104,11 @@ public class TusklinServant extends AnimalSummon implements IAnimatedEntity {
     }
 
     @Override
+    public int getSummonLimit(LivingEntity owner) {
+        return MobsConfig.TusklinServantLimit.get();
+    }
+
+    @Override
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(1, new FloatGoal(this));
@@ -119,7 +125,7 @@ public class TusklinServant extends AnimalSummon implements IAnimatedEntity {
                 return false;
             }
         });
-        this.goalSelector.addGoal(5, new AnimalAIWanderRanged(this, 120, 0.6F, 14, 7));
+        this.goalSelector.addGoal(5, new Summoned.WanderGoal<>(this, 0.6D, 120, 0.001F));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 15.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
