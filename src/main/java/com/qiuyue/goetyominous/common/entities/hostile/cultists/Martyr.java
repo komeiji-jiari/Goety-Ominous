@@ -176,7 +176,6 @@ public class Martyr extends AbstractGOCultist implements ICultist {
             this.playSound(SoundEvents.GENERIC_EXPLODE, 1.5F, 0.5F);
             this.playSound(com.Polarice3.Goety.init.ModSounds.BOSS_SUMMON.get(), 4.0F, 1.0F);
 
-            // 替换为 TurnedMartyr（后续实现）
             this.discard();
         }
     }

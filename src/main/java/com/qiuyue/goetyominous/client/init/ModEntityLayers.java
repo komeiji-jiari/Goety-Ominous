@@ -48,6 +48,12 @@ public class ModEntityLayers {
     public static final ModelLayerLocation DISPENSER_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "dispenser_servant"), "main");
 
+    public static final ModelLayerLocation BOGGED_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation("goetyominous", "bogged_servant"), "main");
+
+    public static final ModelLayerLocation BOGGED_SERVANT_OUTER_LAYER = new ModelLayerLocation(
+            new ResourceLocation("goetyominous", "bogged_servant_outer"), "main");
+
     public static final ModelLayerLocation SUNKEN_NECROMANCER_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "sunken_necromancer"), "main");
 
@@ -117,6 +123,12 @@ public class ModEntityLayers {
     public static final ModelLayerLocation MUTANT_HOGLIN_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "mutant_hoglin_servant"), "main");
 
+    public static final ModelLayerLocation MUTANT_SHULKER_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "mutant_shulker_servant"), "main");
+
+    public static final ModelLayerLocation MUTANT_SHULKER_SERVANT_TRAP_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "mutant_shulker_servant_trap"), "main");
+
     public static final ModelLayerLocation STORM_NECROMANCER_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "storm_necromancer"), "main");
 
@@ -185,6 +197,15 @@ public class ModEntityLayers {
 
     public static final ModelLayerLocation WARG_SADDLE = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "warg_saddle"), "main");
+
+    public static final ModelLayerLocation CERBERUS = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "cerberus"), "main");
+
+    public static final ModelLayerLocation CERBERUS_ARMOR = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "cerberus_armor"), "main");
+
+    public static final ModelLayerLocation DREDEN_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "dreden"), "main");
 
     public static final ModelLayerLocation CURSED_BLACK_BEAST_ARMOR_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "cursed_black_beast_armor"), "main");

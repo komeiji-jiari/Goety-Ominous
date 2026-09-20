@@ -180,13 +180,13 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    implementation fg.deobf("curse.maven:goety-586095:8736784")
+    implementation fg.deobf("curse.maven:goety-586095:8891954")
     compileOnly fg.deobf("curse.maven:illage-and-spillage-respillaged-1079714:6156035")
     implementation fg.deobf("top.theillusivec4.curios:curios-forge:5.14.1+1.20.1")
 
     // 仅编译时使用，运行时可选
     compileOnly fg.deobf("curse.maven:goety-spillage-1108014:8157704")
-    compileOnly fg.deobf("curse.maven:goetyawaken-1412569:8724855")
+    compileOnly fg.deobf("curse.maven:goetyawaken-1412569:8880533")
     compileOnly fg.deobf("curse.maven:goety-revelation-1236817:8311906")
 
     compileOnly fg.deobf("curse.maven:savage-and-ravage-381736:7115735")
@@ -221,6 +221,7 @@ dependencies {
     compileOnly fg.deobf("curse.maven:goety-twilight-1385800:8655932")
     compileOnly fg.deobf("curse.maven:twilight-forest-227639:5468648")
     compileOnly fg.deobf("curse.maven:opposing-force-1051360:7888374")
+    compileOnly fg.deobf("curse.maven:create-328085:7178761")
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
@@ -250,6 +251,17 @@ mixin {
 
 // Example for how to get properties into the manifest for reading at runtime.
 tasks.named('jar', Jar).configure {
+    // MixinGradle 把 refmap 复制进资源是「时序相关」的（processResources 可能早于 refmap 生成），
+    // 有时会加、有时不加，所以这里自己也塞一份兜底。
+    // 两边都命中时只保留先到的那条 —— 不能用 INCLUDE，reobfJar 会因重复条目直接报错。
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    // 缺了 refmap，生产环境（SRG 名）下所有 @Inject 的 method 目标都定位失败，
+    // 又因为 mixins.json 里 defaultRequire=0，会全部静默失效。
+    from("${project.buildDir}/tmp/compileJava/compileJava-refmap.json") {
+        rename { "${mod_id}.mixins.refmap.json" }
+    }
+
     manifest {
         attributes([
                 'Specification-Title'     : mod_id,

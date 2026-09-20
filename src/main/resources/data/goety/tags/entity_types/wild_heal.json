@@ -2,7 +2,13 @@
   "replace": false,
   "__comment": "servants that heals and lose limited lifespan through Wild set.",
   "values": [
-    "goetyominous:tusklin_servant",
-    "goetyominous:froststalker_servant"
+    {
+      "id": "goetyominous:tusklin_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:froststalker_servant",
+      "required": false
+    }
   ]
 }

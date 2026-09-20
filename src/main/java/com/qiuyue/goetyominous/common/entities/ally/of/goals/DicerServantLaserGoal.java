@@ -1,18 +1,11 @@
 package com.qiuyue.goetyominous.common.entities.ally.of.goals;
 
 import com.qiuyue.goetyominous.common.entities.ally.of.DicerServant;
-import com.qiuyue.goetyominous.common.entities.projectiles.of.DicerServantLaser;
+import com.qiuyue.goetyominous.common.entities.projectile.DicerServantLaser;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 
-/**
- * Dicer 仆从的激光 AI：瞄准 10 帧后从胸口射出 OF 敌对版的激光（DicerServantLaser）。
- * 激光直接继承 OF 原版 DicerLaser，外观/音效/粒子与敌对版一致，
- * 但重写了命中判定用 Goety 的 MobUtil.areAllies 过滤友军，不会误伤自己人。
- * 发射参数照搬 OF 原版 DicerLaserGoal：位置=胸口(y+2.45)、yaw/pitch 换算弧度、
- * 持续 89 帧、伤害取仆从的攻击力属性。
- */
 public class DicerServantLaserGoal extends RamblerServantAttackGoal {
     private final DicerServant dicer;
     private DicerServantLaser beam;
@@ -72,9 +65,6 @@ public class DicerServantLaserGoal extends RamblerServantAttackGoal {
 
                 if (this.timer == 10) {
                     this.dicer.setPose(OPPoses.LASERING.get());
-                    // 照搬 OF 原版 DicerLaserGoal 的发射参数，效果/数值与敌对版完全一致：
-                    // 起点在胸口(y+2.45)，yaw=(yBodyRot+90)*PI/180 弧度，pitch=-xRot*PI/180 弧度，
-                    // 持续 89 帧，伤害=精英5点/普通4点，精英变体点燃目标
                     this.beam = new DicerServantLaser(
                             this.dicer.level(), this.dicer,
                             this.dicer.getX(), this.dicer.getY() + 2.45, this.dicer.getZ(),

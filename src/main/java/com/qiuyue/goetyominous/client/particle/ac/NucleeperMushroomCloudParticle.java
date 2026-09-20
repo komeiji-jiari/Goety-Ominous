@@ -1,5 +1,7 @@
 package com.qiuyue.goetyominous.client.particle.ac;
 
+import com.github.alexmodguy.alexscaves.AlexsCaves;
+import com.github.alexmodguy.alexscaves.client.ClientProxy;
 import com.github.alexmodguy.alexscaves.client.particle.MushroomCloudParticle;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -14,11 +16,19 @@ public class NucleeperMushroomCloudParticle extends MushroomCloudParticle {
     }
 
     @Override
+    public void tick() {
+        super.tick();
+        if (AlexsCaves.PROXY instanceof ClientProxy proxy) {
+            proxy.renderNukeSkyDarkFor = 0;
+        }
+    }
+
+    @Override
     public int getLightColor(float partialTick) {
         return 0xF000F0;
     }
 
-    
+
     public static class Provider implements ParticleProvider<SimpleParticleType> {
 
         @Override

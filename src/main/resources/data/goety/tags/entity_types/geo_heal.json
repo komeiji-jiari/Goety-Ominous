@@ -1,7 +1,17 @@
 {
   "replace": false,
   "values": [
-    "goetyominous:rocky_roller_servant",
-    "goetyominous:servant_centipede_head"
+    {
+      "id": "goetyominous:rocky_roller_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:servant_centipede_head",
+      "required": false
+    },
+    {
+      "id": "goetyominous:corrodent_servant",
+      "required": false
+    }
   ]
 }

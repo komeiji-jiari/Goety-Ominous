@@ -26,4 +26,9 @@ public class CroneCuriosUtil {
     public static boolean hasCroneSet(LivingEntity entity) {
         return hasCroneRobe(entity) && hasCroneHat(entity);
     }
+
+    public static boolean isCroneWitchFriendly(LivingEntity entity) {
+        return hasCroneRobe(entity)
+                && (hasCroneHat(entity) || com.Polarice3.Goety.utils.CuriosFinder.hasWitchHat(entity));
+    }
 }

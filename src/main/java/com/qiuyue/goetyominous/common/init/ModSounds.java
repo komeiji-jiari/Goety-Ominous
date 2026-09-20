@@ -15,12 +15,23 @@ public class ModSounds {
         SOUNDS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
+    public static final RegistryObject<SoundEvent> BOGGED_SERVANT_AMBIENT = create("bogged_servant_ambient");
+    public static final RegistryObject<SoundEvent> BOGGED_SERVANT_HURT = create("bogged_servant_hurt");
+    public static final RegistryObject<SoundEvent> BOGGED_SERVANT_DEATH = create("bogged_servant_death");
+    public static final RegistryObject<SoundEvent> BOGGED_SERVANT_STEP = create("bogged_servant_step");
+
     public static final RegistryObject<SoundEvent> WOLF_ARMOR_EQUIP = create("wolf_armor_equip");
     public static final RegistryObject<SoundEvent> WOLF_ARMOR_UNEQUIP = create("wolf_armor_unequip");
     public static final RegistryObject<SoundEvent> WOLF_ARMOR_DAMAGE = create("wolf_armor_damage");
     public static final RegistryObject<SoundEvent> WOLF_ARMOR_CRACK = create("wolf_armor_crack");
     public static final RegistryObject<SoundEvent> WOLF_ARMOR_BREAK = create("wolf_armor_break");
     public static final RegistryObject<SoundEvent> WOLF_ARMOR_REPAIR = create("wolf_armor_repair");
+
+    public static final RegistryObject<SoundEvent> DREDEN_IDLE = create("dreden_idle");
+    public static final RegistryObject<SoundEvent> DREDEN_HURT = create("dreden_hurt");
+    public static final RegistryObject<SoundEvent> DREDEN_DEATH = create("dreden_death");
+    public static final RegistryObject<SoundEvent> DREDEN_FLY = create("dreden_fly");
+    public static final RegistryObject<SoundEvent> DREDEN_SHOOT = create("dreden_shoot");
 
     public static final RegistryObject<SoundEvent> DISCIPLE_IDLE_1 = create("disciple_idle_1");
     public static final RegistryObject<SoundEvent> DISCIPLE_IDLE_2 = create("disciple_idle_2");

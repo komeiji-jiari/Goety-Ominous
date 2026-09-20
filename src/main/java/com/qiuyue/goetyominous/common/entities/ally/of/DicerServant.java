@@ -44,11 +44,6 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
-/**
- * Opposing Force 的 Dicer（圆锯机器人）移植成 Goety 仆从。
- * 战斗系统照搬原版：攻击状态 1=斩击 2=尾旋 3=十字斩冲刺，外加激光。
- * 与原版 Dicer 不同的是取消了怪物自带的敌对 AI，改用仆从的 Summoned 目标 AI。
- */
 public class DicerServant extends Summoned implements AttackState, EliteVariant {
     private static final EntityDataAccessor<Integer> ATTACK_STATE;
     private static final EntityDataAccessor<Boolean> RUNNING;
@@ -71,8 +66,6 @@ public class DicerServant extends Summoned implements AttackState, EliteVariant 
 
     public DicerServant(EntityType<? extends Owned> entityType, Level level) {
         super(entityType, level);
-        // 激光冷却初始值和 OF 原版一致：100~199 随机。索敌后先打近战，
-        // 冷却归零才会偶尔放激光，不会一开局就放激光。
         this.laserCooldown = 100 + this.getRandom().nextInt(100);
     }
 
@@ -86,8 +79,6 @@ public class DicerServant extends Summoned implements AttackState, EliteVariant 
 
     protected void registerGoals() {
         super.registerGoals();
-        // 主动索敌：Goety 默认的 SummonTargetGoal 是"仇恨驱动"，不会见敌就打。
-        // 补上 NearestAttackableTargetGoal 才能像原版 Dicer 一样主动追敌对生物（Enemy）。
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, false, false,
                 (target) -> target instanceof Enemy && !MobUtil.areAllies(this, target)));
         this.goalSelector.addGoal(1, new DicerServantLaserGoal(this));
@@ -134,10 +125,6 @@ public class DicerServant extends Summoned implements AttackState, EliteVariant 
         return MobsConfig.DicerServantLimit.get();
     }
 
-    /**
-     * 右键交互：玩家手持铁锭右键圆锯仆从，消耗一块铁锭并回复生命。
-     * 只有它的主人能修；满血时不能修。
-     */
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);

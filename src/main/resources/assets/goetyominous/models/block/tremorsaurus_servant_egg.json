@@ -1,11 +1,11 @@
 {
-  "parent": "alexscaves:block/tremorsaurus_egg_template",
+  "parent": "goetyominous:block/tremorsaurus_servant_egg_template",
   "textures": {
-    "north": "alexscaves:block/egg/tremorsaurus_egg_north",
-    "east": "alexscaves:block/egg/tremorsaurus_egg_east",
-    "south": "alexscaves:block/egg/tremorsaurus_egg_south",
-    "west": "alexscaves:block/egg/tremorsaurus_egg_west",
-    "top": "alexscaves:block/egg/tremorsaurus_egg_top",
-    "bottom": "alexscaves:block/egg/tremorsaurus_egg_bottom"
+    "north": "goetyominous:block/egg/tremorsaurus_servant_egg_north",
+    "east": "goetyominous:block/egg/tremorsaurus_servant_egg_east",
+    "south": "goetyominous:block/egg/tremorsaurus_servant_egg_south",
+    "west": "goetyominous:block/egg/tremorsaurus_servant_egg_west",
+    "top": "goetyominous:block/egg/tremorsaurus_servant_egg_top",
+    "bottom": "goetyominous:block/egg/tremorsaurus_servant_egg_bottom"
   }
 }

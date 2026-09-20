@@ -2,6 +2,8 @@
   "name": "凋零斩切聚晶",
   "icon": "goetyominous:wither_slash_focus",
   "category": "goety:mmcompat",
+  "advancement": "goety:goety/read_bygone_scroll",
+  "secret": true,
   "pages": [
     {
       "type": "text",

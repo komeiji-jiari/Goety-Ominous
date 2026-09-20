@@ -19,7 +19,6 @@ public class BuiltinPacksRegistry {
         if (modFileInfo == null) return;
         var modFile = modFileInfo.getFile();
 
-        // --- 客户端资源包（SPEAR BACKPORT 联动内容）---
         if (event.getPackType() == PackType.CLIENT_RESOURCES && SpearBackportCompat.isSpearBackportLoaded()) {
             Path packPath = modFile.findResource("resourcepacks/spear_compat");
             if (packPath != null) {
@@ -40,7 +39,6 @@ public class BuiltinPacksRegistry {
             }
         }
 
-        // --- 客户端资源包（SAR 联动内容）---
         if (event.getPackType() == PackType.CLIENT_RESOURCES && SavageRavageCompat.isSavageRavageLoaded()) {
             Path packPath = modFile.findResource("resourcepacks/sar_compat");
             if (packPath != null) {
@@ -61,7 +59,6 @@ public class BuiltinPacksRegistry {
             }
         }
 
-        // --- 客户端资源包（UA 联动内容）---
         if (event.getPackType() == PackType.CLIENT_RESOURCES && UpgradeAquaticCompat.isUpgradeAquaticLoaded()) {
             Path packPath = modFile.findResource("resourcepacks/ua_compat");
             if (packPath != null) {
@@ -82,7 +79,6 @@ public class BuiltinPacksRegistry {
             }
         }
 
-        // --- 客户端资源包（AC 联动内容）---
         if (event.getPackType() == PackType.CLIENT_RESOURCES && AlexCavesCompat.isAlexCavesLoaded()) {
             Path packPath = modFile.findResource("resourcepacks/ac_compat");
             if (packPath != null) {
@@ -103,7 +99,6 @@ public class BuiltinPacksRegistry {
             }
         }
 
-        // --- 服务端数据包（AC 联动内容）---
         if (event.getPackType() == PackType.SERVER_DATA && AlexCavesCompat.isAlexCavesLoaded()) {
             Path packPath = modFile.findResource("resourcepacks/ac_compat");
             if (packPath != null) {
@@ -124,7 +119,6 @@ public class BuiltinPacksRegistry {
             }
         }
 
-        // --- 客户端资源包（MM 联动内容）---
         if (event.getPackType() == PackType.CLIENT_RESOURCES && MutantMoreCompat.isMutantMoreLoaded()) {
             Path packPath = modFile.findResource("resourcepacks/mm_compat");
             if (packPath != null) {
@@ -145,7 +139,6 @@ public class BuiltinPacksRegistry {
             }
         }
 
-        // --- 服务端数据包（MM 联动内容）---
         if (event.getPackType() == PackType.SERVER_DATA && MutantMoreCompat.isMutantMoreLoaded()) {
             Path packPath = modFile.findResource("resourcepacks/mm_compat");
             if (packPath != null) {
@@ -166,7 +159,6 @@ public class BuiltinPacksRegistry {
             }
         }
 
-        // --- 客户端资源包（IAS 联动内容）---
         if (event.getPackType() == PackType.CLIENT_RESOURCES && IllageAndSpillageCompat.isIllageAndSpillageLoaded()) {
             Path packPath = modFile.findResource("resourcepacks/ias_compat");
             if (packPath != null) {
@@ -187,7 +179,6 @@ public class BuiltinPacksRegistry {
             }
         }
 
-        // --- 客户端资源包（AM 联动内容）---
         if (event.getPackType() == PackType.CLIENT_RESOURCES && AlexMobsCompat.isAlexMobsLoaded()) {
             Path packPath = modFile.findResource("resourcepacks/am_compat");
             if (packPath != null) {
@@ -208,7 +199,6 @@ public class BuiltinPacksRegistry {
             }
         }
 
-        // --- 客户端资源包（OF 联动内容）---
         if (event.getPackType() == PackType.CLIENT_RESOURCES && OpposingForceCompat.isOpposingForceLoaded()) {
             Path packPath = modFile.findResource("resourcepacks/of_compat");
             if (packPath != null) {
@@ -229,7 +219,6 @@ public class BuiltinPacksRegistry {
             }
         }
 
-        // --- 服务端数据包（OF 联动内容）---
         if (event.getPackType() == PackType.SERVER_DATA && OpposingForceCompat.isOpposingForceLoaded()) {
             Path packPath = modFile.findResource("resourcepacks/of_compat");
             if (packPath != null) {
@@ -250,7 +239,6 @@ public class BuiltinPacksRegistry {
             }
         }
 
-        // --- 服务端数据包（UA 联动内容）---
         if (event.getPackType() == PackType.SERVER_DATA && UpgradeAquaticCompat.isUpgradeAquaticLoaded()) {
             Path packPath = modFile.findResource("resourcepacks/ua_compat");
             if (packPath != null) {
@@ -271,7 +259,6 @@ public class BuiltinPacksRegistry {
             }
         }
 
-        // --- 客户端资源包（旧版本纹理内容）---
         if (event.getPackType() == PackType.CLIENT_RESOURCES) {
             Path packPath = modFile.findResource("resourcepacks/old_textures");
             if (packPath != null) {
@@ -291,7 +278,6 @@ public class BuiltinPacksRegistry {
                 });
             }
         }
-        // --- 服务端数据包（SAR 联动内容）---
         if (event.getPackType() == PackType.SERVER_DATA && SavageRavageCompat.isSavageRavageLoaded()) {
             Path packPath = modFile.findResource("resourcepacks/sar_compat");
             if (packPath != null) {
@@ -312,7 +298,6 @@ public class BuiltinPacksRegistry {
             }
         }
 
-        // --- 服务端数据包（AM 联动内容）---
         if (event.getPackType() == PackType.SERVER_DATA && AlexMobsCompat.isAlexMobsLoaded()) {
             Path packPath = modFile.findResource("resourcepacks/am_compat");
             if (packPath != null) {

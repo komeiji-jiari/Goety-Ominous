@@ -9,10 +9,12 @@ import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.config.MobsConfig;
 import com.Polarice3.Goety.init.ModMobType;
+import com.github.alexmodguy.alexscaves.client.particle.ACParticleRegistry;
 import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
 import com.github.alexmodguy.alexscaves.server.block.DinosaurEggBlock;
 import com.github.alexmodguy.alexscaves.server.entity.living.VallumraptorEntity;
 import com.github.alexmodguy.alexscaves.server.entity.util.LaysEggs;
+import com.github.alexmodguy.alexscaves.server.item.ACItemRegistry;
 import com.github.alexmodguy.alexscaves.server.misc.ACMath;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
@@ -26,6 +28,7 @@ import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -33,6 +36,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -56,14 +60,14 @@ import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-public class GrottoceratopsServant extends AbstractDinosaurServant implements IAnimatedEntity, PlayerRideable, IAutoRideable, LaysEggs {
+public class GrottoceratopsServant extends AnimalSummon implements LaysEggs, IAnimatedEntity, PlayerRideable, IAutoRideable {
 
     private static final EntityDataAccessor<Float> TAIL_SWING_ROT = SynchedEntityData.defineId(GrottoceratopsServant.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> AUTO_MODE = SynchedEntityData.defineId(GrottoceratopsServant.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> DATA_HAS_EGG = SynchedEntityData.defineId(GrottoceratopsServant.class, EntityDataSerializers.BOOLEAN);
     public LegSolverQuadruped legSolver = new LegSolverQuadruped(0.0F, 1.1F, 1.15F, 1.15F, 1);
     public static final Animation ANIMATION_SPEAK_1 = Animation.create(15);
     public static final Animation ANIMATION_SPEAK_2 = Animation.create(20);
@@ -73,9 +77,14 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
     private Animation currentAnimation;
     private int animationTick;
     private float prevTailSwingRot;
+    private static final EntityDataAccessor<Integer> ALT_SKIN =
+            SynchedEntityData.defineId(GrottoceratopsServant.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> DATA_HAS_EGG =
+            SynchedEntityData.defineId(GrottoceratopsServant.class, EntityDataSerializers.BOOLEAN);
     private float prevBuryEggsProgress;
     private float buryEggsProgress;
     public boolean buryingEggs;
+    private boolean followingStanceEnforced = false;
 
     public GrottoceratopsServant(EntityType<? extends Owned> type, Level level) {
         super(type, level);
@@ -110,18 +119,19 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
+        this.entityData.define(ALT_SKIN, 0);
+        this.entityData.define(DATA_HAS_EGG, false);
         this.entityData.define(TAIL_SWING_ROT, 0F);
         this.entityData.define(AUTO_MODE, false);
-        this.entityData.define(DATA_HAS_EGG, false);
     }
 
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        this.goalSelector.addGoal(2, new ServantBreedGoal<>(this, 1.0D));
+        this.goalSelector.addGoal(3, new ServantLayEggGoal<>(this, (DinosaurEggBlock) this.createEggBlockState().getBlock(), 100, 1.0D));
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new GrottoceratopsServantMeleeAttackGoal(1.35D, true));
-        this.goalSelector.addGoal(2, new ServantBreedGoal<>(this, 1.0D));
-        this.goalSelector.addGoal(3, new ServantLayEggGoal<>(this, (DinosaurEggBlock) AcBlockRegistry.GROTTOCERATOPS_SERVANT_EGG.get(), 100, 1.0D));
         this.goalSelector.addGoal(5, new Summoned.WanderGoal<>(this, 0.8D));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
@@ -168,7 +178,14 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
     @Override
     public void tick() {
         super.tick();
+        this.enforceFollowingStanceOnce();
         this.prevBuryEggsProgress = this.buryEggsProgress;
+        if (this.buryingEggs && this.buryEggsProgress < 5.0F) {
+            this.buryEggsProgress++;
+        }
+        if (!this.buryingEggs && this.buryEggsProgress > 0.0F) {
+            this.buryEggsProgress--;
+        }
         float tailSwing = getTailSwingRot();
         this.prevTailSwingRot = tailSwing;
         if (this.getAnimation() == ANIMATION_MELEE_TAIL_1 || this.getAnimation() == ANIMATION_MELEE_TAIL_2) {
@@ -188,18 +205,15 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
         }
         this.legSolver.update(this, this.yBodyRot + getTailSwingRot(), this.getScale());
         if (!this.level().isClientSide) {
+            if (this.tickCount % 100 == 0 && this.getHealth() < this.getMaxHealth()) {
+                this.heal(2.0F);
+            }
             LivingEntity target = this.getTarget();
             if (target != null && target.isAlive() && this.getControllingPassenger() instanceof Player
                     && this.getAnimation() == NO_ANIMATION && !this.isStaying() && !this.isImmobile()
                     && this.hasLineOfSight(target) && this.distanceTo(target) < 4.5D) {
                 this.doHurtTarget(target);
             }
-        }
-        if (this.buryingEggs && this.buryEggsProgress < 5.0F) {
-            ++this.buryEggsProgress;
-        }
-        if (!this.buryingEggs && this.buryEggsProgress > 0.0F) {
-            --this.buryEggsProgress;
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
@@ -214,10 +228,6 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
 
     public void setTailSwingRot(float rot) {
         entityData.set(TAIL_SWING_ROT, rot);
-    }
-
-    public float getBuryEggsProgress(float partialTicks) {
-        return (this.prevBuryEggsProgress + (this.buryEggsProgress - this.prevBuryEggsProgress) * partialTicks) * 0.2F;
     }
 
     @Override
@@ -342,6 +352,28 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
                 if (this.isFood(itemstack)) {
                     return super.mobInteract(player, hand);
                 }
+                if (itemstack.is(ACBlockRegistry.CURLY_FERN.get().asItem())) {
+                    if (this.getHealth() >= this.getMaxHealth()) {
+                        return InteractionResult.PASS;
+                    }
+                    this.heal(4.0F);
+                    this.playSound(SoundEvents.ITEM_PICKUP, 1.0F, 1.0F);
+                    this.gameEvent(GameEvent.EAT, this);
+                    if (this.level() instanceof ServerLevel serverLevel) {
+                        for (int i = 0; i < 8; ++i) {
+                            double d0 = this.random.nextGaussian() * 0.02;
+                            double d1 = this.random.nextGaussian() * 0.02 + 0.1;
+                            double d2 = this.random.nextGaussian() * 0.02;
+                            serverLevel.sendParticles(ParticleTypes.HEART,
+                                    this.getRandomX(1.0F),
+                                    this.getY() + this.getBbHeight() * this.getScale() + 0.3F + this.random.nextDouble() * 0.5F,
+                                    this.getRandomZ(1.0F), 0, d0, d1, d2, 0.5);
+                        }
+                    }
+                    this.usePlayerItem(player, hand, itemstack);
+                    player.swing(hand);
+                    return InteractionResult.SUCCESS;
+                }
                 if (!player.isCrouching() && !this.isBaby()) {
                     Entity entity = this.getFirstPassenger();
                     if (entity != null && entity != player) {
@@ -374,9 +406,12 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
     }
 
     @Override
-    public void spawnChildFromBreeding(ServerLevel level, AnimalSummon partner) {
-                this.setHasEgg(true);
-        this.finalizeSpawnChildFromBreeding(level, partner, partner);
+    public BlockState createEggBlockState() {
+        return AcBlockRegistry.GROTTOCERATOPS_SERVANT_EGG.get().defaultBlockState();
+    }
+
+    public BlockState createEggBeddingBlockState() {
+        return ACBlockRegistry.FERN_THATCH.get().defaultBlockState();
     }
 
     @Override
@@ -390,18 +425,85 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
     }
 
     @Override
-    public BlockState createEggBlockState() {
-        return AcBlockRegistry.GROTTOCERATOPS_SERVANT_EGG.get().defaultBlockState();
-    }
-
-    public BlockState createEggBeddingBlockState() {
-        return ACBlockRegistry.FERN_THATCH.get().defaultBlockState();
-    }
-
-    @Override
     public void onLayEggTick(BlockPos belowEgg, int time) {
         this.walkAnimation.update(0.5F, 0.4F);
         this.level().broadcastEntityEvent(this, (byte) 77);
+    }
+
+    @Override
+    public void spawnChildFromBreeding(ServerLevel level, AnimalSummon partner) {
+        this.setHasEgg(true);
+        this.finalizeSpawnChildFromBreeding(level, partner, partner);
+    }
+
+    public int getAltSkin() {
+        return this.entityData.get(ALT_SKIN);
+    }
+
+    public void setAltSkin(int altSkin) {
+        this.entityData.set(ALT_SKIN, altSkin);
+    }
+
+    public int getAltSkinForItem(ItemStack stack) {
+        if (stack.is(ACItemRegistry.AMBER_CURIOSITY.get())) {
+            return 1;
+        }
+        if (stack.is(ACItemRegistry.TECTONIC_SHARD.get())) {
+            return 2;
+        }
+        return 0;
+    }
+
+    @Nullable
+    public InteractionResult tryChangeAltSkin(Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        int newSkin = this.getAltSkinForItem(itemstack);
+        if (newSkin > 0 && this.getTrueOwner() != null && player == this.getTrueOwner()) {
+            if (!player.getAbilities().instabuild) {
+                itemstack.shrink(1);
+            }
+            this.playSound(newSkin == 2
+                    ? ACSoundRegistry.TECTONIC_SHARD_TRANSFORM.get()
+                    : ACSoundRegistry.AMBER_MONOLITH_SUMMON.get());
+            if (newSkin == this.getAltSkin()) {
+                this.setAltSkin(0);
+            } else {
+                this.setAltSkin(newSkin);
+            }
+            this.level().broadcastEntityEvent(this, (byte) (newSkin == 2 ? 83 : 82));
+            return InteractionResult.SUCCESS;
+        }
+        return null;
+    }
+
+    private void enforceFollowingStanceOnce() {
+        if (this.level().isClientSide || this.followingStanceEnforced) {
+            return;
+        }
+        this.followingStanceEnforced = true;
+        if (this.getTrueOwner() != null) {
+            this.setFollowing();
+        }
+    }
+
+    public float getBuryEggsProgress(float partialTicks) {
+        return (this.prevBuryEggsProgress + (this.buryEggsProgress - this.prevBuryEggsProgress) * partialTicks) * 0.2F;
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putInt("AltSkin", this.getAltSkin());
+        tag.putBoolean("HasEgg", this.hasEgg());
+        tag.putBoolean("FollowingStanceEnforced", this.followingStanceEnforced);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        this.setAltSkin(tag.getInt("AltSkin"));
+        this.setHasEgg(tag.getBoolean("HasEgg"));
+        this.followingStanceEnforced = tag.getBoolean("FollowingStanceEnforced");
     }
 
     @Override
@@ -426,21 +528,20 @@ public class GrottoceratopsServant extends AbstractDinosaurServant implements IA
             }
         } else if (b == 78) {
             this.buryingEggs = false;
+        } else if (b == 82 || b == 83) {
+            ParticleOptions particle = b == 82
+                    ? ACParticleRegistry.DINOSAUR_TRANSFORMATION_AMBER.get()
+                    : ACParticleRegistry.DINOSAUR_TRANSFORMATION_TECTONIC.get();
+            for (int i = 0; i < 15; ++i) {
+                if (this.level().random.nextInt(8) < 3) {
+                    this.level().addParticle(particle,
+                            this.getRandomX(1.0F), this.getY() + this.getBbHeight() + 0.3F, this.getRandomZ(1.0F),
+                            this.random.nextGaussian() * 0.05, this.random.nextFloat() * 0.2, this.random.nextGaussian() * 0.05);
+                }
+            }
         } else {
             super.handleEntityEvent(b);
         }
-    }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putBoolean("HasEgg", this.hasEgg());
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        this.setHasEgg(tag.getBoolean("HasEgg"));
     }
 
     @Override

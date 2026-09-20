@@ -1,0 +1,7 @@
+{
+  "name": "Toxic Caves",
+  "description": "The dark Chernobyl.",
+  "icon": "alexscaves:fissile_core",
+  "sortnum": 6,
+  "parent": "goety:accompat"
+}

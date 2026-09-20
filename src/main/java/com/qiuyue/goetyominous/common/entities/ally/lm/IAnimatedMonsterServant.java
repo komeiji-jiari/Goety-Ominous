@@ -35,7 +35,6 @@ import net.minecraft.world.phys.Vec3;
 import java.util.Iterator;
 import java.util.List;
 
-
 public class IAnimatedMonsterServant extends Summoned {
     public static void applyEffectTo(LivingEntity livingEntity, MobEffect mobEffect, int timeInSeconds, int amplifier) {
         int i = timeInSeconds * 20;
@@ -192,14 +191,9 @@ public class IAnimatedMonsterServant extends Summoned {
     }
 
     public boolean isTargetCheesing(float minHeight, float maxHeight) {
-        /**
-         * Difference between target y and boss y
-         * maxHeight = the output of the difference for the value above the boss
-         * minHeight = the output of the difference for the value below the boss
-         * */
+
         return targetIsNotNull() && (target().getY() - getY() >= maxHeight || target().getY() - getY() <= minHeight);
 
-        // return targetIsNotNull() && (target().getY() - target().getY() >= maxHeight);
     }
 
     public void launch(LivingEntity entity, boolean huge) {
@@ -315,7 +309,7 @@ public class IAnimatedMonsterServant extends Summoned {
                 BlockState block = level().getBlockState(hit.below());
 
                 if (block.getRenderShape() != RenderShape.INVISIBLE && blockParticles) {
-                    // ParticleUtils.controlledSmashParticles(level(), hit, (int) (size * 2), size);
+
                     this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, block), getX() + vec * vecX + extraX + f * math, this.getY() + extraY, getZ() + vec * vecZ + extraZ + f1 * math, DeltaMovementX, DeltaMovementY, DeltaMovementZ);
                 }
 
@@ -350,7 +344,7 @@ public class IAnimatedMonsterServant extends Summoned {
                 BlockState block = level().getBlockState(hit.below());
 
                 if (block.getRenderShape() != RenderShape.INVISIBLE && blockParticles) {
-                    //  ParticleUtils.controlledSmashParticles(level(), hit, (int) (size * 2), size);
+
                     this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, block), getX() + vec * vecX + extraX + f * math, this.getY() + extraY, getZ() + vec * vecZ + extraZ + f1 * math, DeltaMovementX, DeltaMovementY, DeltaMovementZ);
                 }
 
@@ -385,7 +379,7 @@ public class IAnimatedMonsterServant extends Summoned {
                 BlockState block = level().getBlockState(hit.below());
 
                 if (block.getRenderShape() != RenderShape.INVISIBLE && blockParticles) {
-                    // ParticleUtils.controlledSmashParticles(level(), hit, (int) (size * 2), size);
+
                     this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, block), getX() + vec * vecX + extraX + f * math, this.getY() + extraY, getZ() + vec * vecZ + extraZ + f1 * math, DeltaMovementX, DeltaMovementY, DeltaMovementZ);
                 }
 
@@ -421,7 +415,6 @@ public class IAnimatedMonsterServant extends Summoned {
         this.level().broadcastEntityEvent(this, (byte) -input);
     }
 
-
     public void tick() {
         super.tick();
         if (this.getAttackState() > 0) {
@@ -436,7 +429,6 @@ public class IAnimatedMonsterServant extends Summoned {
         }
 
     }
-
 
     public int getAttackTicks() {
         return this.attackTicks;
@@ -529,6 +521,5 @@ public class IAnimatedMonsterServant extends Summoned {
             return e != this && (double) this.distanceTo(e) <= r + (double) (e.getBbWidth() / 2.0F) && e.getY() <= this.getY() + dY;
         });
     }
-
 
 }

@@ -1,19 +1,37 @@
 package com.qiuyue.goetyominous.compat.ac;
 
+import com.qiuyue.goetyominous.common.entities.ally.ac.AtlatitanServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.BrainiacServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.CandicornServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.CaniacServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.CaramelCubeServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.CorrodentServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneKnightServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneMageServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.ForsakenServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.GammaroachServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.GrottoceratopsServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.GumbeeperServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.GummyBearServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.LicowitchServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.MineGuardianServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.NucleeperServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.LuxtructosaurusServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.RelicheirusServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.TeletorServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TremorsaurusServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.TremorzillaServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.VallumraptorServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.VesperServant;
+import com.Polarice3.Goety.api.ritual.RitualType;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockEntityRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcParticles;
 import com.qiuyue.goetyominous.common.items.ac.AcItems;
+import com.qiuyue.goetyominous.common.ritual.PureDarkRitualType;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 
@@ -25,17 +43,34 @@ public class AcCompatManager {
                 AcEntityRegistry.register(modEventBus);
                 AcItems.register(modEventBus);
                 AcParticles.register(modEventBus);
+                RitualType.addRitualType("dim", new PureDarkRitualType("dim"));
     }
 
     public static void setCustomAttributes(EntityAttributeCreationEvent event) {
+        event.put(AcEntityRegistry.ATLATITAN_SERVANT.get(), AtlatitanServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.GROTTOCERATOPS_SERVANT.get(), GrottoceratopsServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.TREMORSAURUS_SERVANT.get(), TremorsaurusServant.setCustomAttributes().build());
+        event.put(AcEntityRegistry.TREMORZILLA_SERVANT.get(), TremorzillaServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.VALLUMRAPTOR_SERVANT.get(), VallumraptorServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.NUCLEEPER_SERVANT.get(), NucleeperServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.BRAINIAC_SERVANT.get(), BrainiacServant.setCustomAttributes().build());
+        event.put(AcEntityRegistry.CANIAC_SERVANT.get(), CaniacServant.setCustomAttributes().build());
+        event.put(AcEntityRegistry.GAMMAROACH_SERVANT.get(), GammaroachServant.setCustomAttributes().build());
+        event.put(AcEntityRegistry.CORRODENT_SERVANT.get(), CorrodentServant.setCustomAttributes().build());
+        event.put(AcEntityRegistry.GUMMY_BEAR_SERVANT.get(), GummyBearServant.setCustomAttributes().build());
+        event.put(AcEntityRegistry.CARAMEL_CUBE_SERVANT.get(), CaramelCubeServant.setCustomAttributes().build());
+        event.put(AcEntityRegistry.GUMBEEPER_SERVANT.get(), GumbeeperServant.setCustomAttributes().build());
+        event.put(AcEntityRegistry.VESPER_SERVANT.get(), VesperServant.setCustomAttributes().build());
+        event.put(AcEntityRegistry.TELETOR_SERVANT.get(), TeletorServant.setCustomAttributes().build());
+        event.put(AcEntityRegistry.FORSAKEN_SERVANT.get(), ForsakenServant.setCustomAttributes().build());
+        event.put(AcEntityRegistry.CANDICORN_SERVANT.get(), CandicornServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.MINE_GUARDIAN_SERVANT.get(), MineGuardianServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.HULLBREAKER_SERVANT.get(), HullbreakerServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.DEEP_ONE_SERVANT.get(), DeepOneServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.DEEP_ONE_KNIGHT_SERVANT.get(), DeepOneKnightServant.setCustomAttributes().build());
+        event.put(AcEntityRegistry.DEEP_ONE_MAGE_SERVANT.get(), DeepOneMageServant.setCustomAttributes().build());
+        event.put(AcEntityRegistry.LICOWITCH_SERVANT.get(), LicowitchServant.setCustomAttributes().build());
+        event.put(AcEntityRegistry.RELICHEIRUS_SERVANT.get(), RelicheirusServant.setCustomAttributes().build());
+        event.put(AcEntityRegistry.LUXTRUCTOSAURUS_SERVANT.get(), LuxtructosaurusServant.setCustomAttributes().build());
     }
 }

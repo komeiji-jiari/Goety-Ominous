@@ -1,10 +1,13 @@
 package com.qiuyue.goetyominous.common.entities.ally.ac;
 
+import com.Polarice3.Goety.api.entities.ally.IServant;
 import com.Polarice3.Goety.api.items.magic.IWand;
 import com.Polarice3.Goety.common.entities.ally.AnimalSummon;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.init.ModMobType;
+import com.Polarice3.Goety.utils.MathHelper;
+import com.Polarice3.Goety.utils.MobUtil;
 import com.github.alexmodguy.alexscaves.AlexsCaves;
 import com.github.alexmodguy.alexscaves.client.particle.ACParticleRegistry;
 import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
@@ -12,6 +15,7 @@ import com.github.alexmodguy.alexscaves.server.block.DinosaurEggBlock;
 import com.github.alexmodguy.alexscaves.server.entity.util.KeybindUsingMount;
 import com.github.alexmodguy.alexscaves.server.entity.util.LaysEggs;
 import com.github.alexmodguy.alexscaves.server.entity.util.ShakesScreen;
+import com.github.alexmodguy.alexscaves.server.item.ACItemRegistry;
 import com.github.alexmodguy.alexscaves.server.message.MountedEntityKeyMessage;
 import com.github.alexmodguy.alexscaves.server.misc.ACMath;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
@@ -30,6 +34,7 @@ import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -85,12 +90,15 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.UUID;
 
-public class TremorsaurusServant extends AbstractDinosaurServant implements KeybindUsingMount, IAnimatedEntity, ShakesScreen, LaysEggs, PlayerRideable {
+public class TremorsaurusServant extends AnimalSummon implements LaysEggs, KeybindUsingMount, IAnimatedEntity, ShakesScreen, PlayerRideable {
 
     private static final EntityDataAccessor<Boolean> RUNNING = SynchedEntityData.defineId(TremorsaurusServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> HELD_MOB_ID = SynchedEntityData.defineId(TremorsaurusServant.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> METER_AMOUNT = SynchedEntityData.defineId(TremorsaurusServant.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Boolean> DATA_HAS_EGG = SynchedEntityData.defineId(TremorsaurusServant.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> ALT_SKIN =
+            SynchedEntityData.defineId(TremorsaurusServant.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> DATA_HAS_EGG =
+            SynchedEntityData.defineId(TremorsaurusServant.class, EntityDataSerializers.BOOLEAN);
     public final LegSolver legSolver = new LegSolver(new LegSolver.Leg(-0.45F, 0.75F, 1.0F, false), new LegSolver.Leg(-0.45F, -0.75F, 1.0F, false));
     public static final Animation ANIMATION_SNIFF = Animation.create(30);
     public static final Animation ANIMATION_SPEAK = Animation.create(15);
@@ -103,16 +111,18 @@ public class TremorsaurusServant extends AbstractDinosaurServant implements Keyb
     private float screenShakeAmount;
     private float prevSitProgress;
     private float sitProgress;
-    private float prevBuryEggsProgress;
-    private float buryEggsProgress;
-    public boolean buryingEggs;
     private int lastScareTimestamp = 0;
     private boolean hasRunningAttributes = false;
     private int roarCooldown = 0;
     private double lastStompX = 0;
     private double lastStompZ = 0;
+    private int stompSoundCooldown = 0;
     private int roarScatterTime = 0;
     private Entity riderHitEntity = null;
+    private float prevBuryEggsProgress;
+    private float buryEggsProgress;
+    public boolean buryingEggs;
+    private boolean followingStanceEnforced = false;
 
     public TremorsaurusServant(EntityType<? extends Owned> type, Level level) {
         super(type, level);
@@ -174,19 +184,20 @@ public class TremorsaurusServant extends AbstractDinosaurServant implements Keyb
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
+        this.entityData.define(ALT_SKIN, 0);
+        this.entityData.define(DATA_HAS_EGG, false);
         this.entityData.define(RUNNING, false);
         this.entityData.define(HELD_MOB_ID, -1);
         this.entityData.define(METER_AMOUNT, 1.0F);
-        this.entityData.define(DATA_HAS_EGG, false);
     }
 
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        this.goalSelector.addGoal(2, new ServantBreedGoal<>(this, 1.0D));
+        this.goalSelector.addGoal(3, new ServantLayEggGoal<>(this, (DinosaurEggBlock) this.createEggBlockState().getBlock(), 100, 1.0D));
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new TremorsaurusServantMeleeAttackGoal());
-        this.goalSelector.addGoal(2, new ServantBreedGoal<>(this, 1.0D));
-        this.goalSelector.addGoal(3, new ServantLayEggGoal<>(this, (DinosaurEggBlock) AcBlockRegistry.TREMORSAURUS_SERVANT_EGG.get(), 100, 1.0D));
         this.goalSelector.addGoal(5, new Summoned.WanderGoal<>(this, 0.8D));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
@@ -209,7 +220,14 @@ public class TremorsaurusServant extends AbstractDinosaurServant implements Keyb
     @Override
     public void tick() {
         super.tick();
+        this.enforceFollowingStanceOnce();
         this.prevBuryEggsProgress = this.buryEggsProgress;
+        if (this.buryingEggs && this.buryEggsProgress < 5.0F) {
+            this.buryEggsProgress++;
+        }
+        if (!this.buryingEggs && this.buryEggsProgress > 0.0F) {
+            this.buryEggsProgress--;
+        }
         this.prevScreenShakeAmount = screenShakeAmount;
         this.yBodyRot = Mth.approachDegrees(this.yBodyRotO, this.yBodyRot, (float) this.getHeadRotSpeed());
         this.legSolver.update(this, this.yBodyRot, this.getScale());
@@ -222,23 +240,18 @@ public class TremorsaurusServant extends AbstractDinosaurServant implements Keyb
             --this.sitProgress;
         }
         
-        if (this.buryingEggs && this.buryEggsProgress < 5.0F) {
-            ++this.buryEggsProgress;
-        }
-        if (!this.buryingEggs && this.buryEggsProgress > 0.0F) {
-            --this.buryEggsProgress;
-        }
         if (screenShakeAmount > 0) {
             screenShakeAmount = Math.max(0, screenShakeAmount - 0.34F);
         }
+        if (stompSoundCooldown > 0) {
+            stompSoundCooldown--;
+        }
         if (this.onGround() && !this.isInFluidType() && this.walkAnimation.speed() > 0.1F && !this.isBaby()) {
             float f = (float) Math.cos(this.walkAnimation.position() * 0.8F - 1.5F);
-            if (Math.abs(f) < 0.2) {
-                if (screenShakeAmount <= 0.3) {
-                    this.playSound(ACSoundRegistry.TREMORSAURUS_STOMP.get(), 2, 1.0F);
-                    this.shakeWater();
-                }
-                screenShakeAmount = 1F;
+            if (Math.abs(f) < 0.2 && stompSoundCooldown <= 0) {
+                this.playSound(ACSoundRegistry.TREMORSAURUS_STOMP.get(), 2, 1.0F);
+                this.shakeWater();
+                stompSoundCooldown = 3;
             }
         }
         if (this.tickCount % 100 == 0 && this.getHealth() < this.getMaxHealth()) {
@@ -254,6 +267,7 @@ public class TremorsaurusServant extends AbstractDinosaurServant implements Keyb
         }
         if (this.getAnimation() == ANIMATION_ROAR && this.getAnimationTick() == 5 && !this.level().isClientSide) {
             this.playRoarSound();
+            this.rallyAllies();
         }
         if (this.getAnimation() == ANIMATION_ROAR && this.getAnimationTick() >= 5 && this.getAnimationTick() <= 40 && !this.isBaby()) {
             screenShakeAmount = 1F;
@@ -274,7 +288,7 @@ public class TremorsaurusServant extends AbstractDinosaurServant implements Keyb
                 if (random.nextInt(180) == 0) {
                     this.syncAnimation(ANIMATION_SNIFF);
                 }
-                if (random.nextInt(600) == 0 && !this.isVehicle()) {
+                if (random.nextInt(600) == 0 && !(this.getControllingPassenger() instanceof Player)) {
                     this.tryRoar();
                 }
             }
@@ -350,6 +364,29 @@ public class TremorsaurusServant extends AbstractDinosaurServant implements Keyb
         } else {
             this.playSound(ACSoundRegistry.TREMORSAURUS_ROAR.get(), 4.0F, 1.0F);
         }
+    }
+
+    private void rallyAllies() {
+        if (this.isBaby() || this.getTrueOwner() == null) {
+            return;
+        }
+        net.minecraft.world.effect.MobEffect rallied = net.minecraftforge.registries.ForgeRegistries.MOB_EFFECTS
+                .getValue(new net.minecraft.resources.ResourceLocation("goety", "rallied"));
+        if (rallied == null) {
+            return;
+        }
+        for (LivingEntity ally : this.level().getEntitiesOfClass(LivingEntity.class,
+                this.getBoundingBox().inflate(30.0D, 10.0D, 30.0D),
+                entity -> entity != null && entity.isAlive() && entity != this && this.isAlly(entity))) {
+            if (ally instanceof Player player && (player.isCreative() || player.isSpectator())) {
+                continue;
+            }
+            ally.addEffect(new MobEffectInstance(rallied, MathHelper.secondsToTicks(15), 0, false, false));
+        }
+    }
+
+    private boolean isAlly(LivingEntity entity) {
+        return this.isAlliedTo(entity) || entity.isAlliedTo(this) || MobUtil.areAllies(this, entity);
     }
 
     private void scareMobs() {
@@ -470,9 +507,8 @@ public class TremorsaurusServant extends AbstractDinosaurServant implements Keyb
     }
 
     @Override
-    public void spawnChildFromBreeding(ServerLevel level, AnimalSummon partner) {
-        this.setHasEgg(true);
-        this.finalizeSpawnChildFromBreeding(level, partner, partner);
+    public BlockState createEggBlockState() {
+        return AcBlockRegistry.TREMORSAURUS_SERVANT_EGG.get().defaultBlockState();
     }
 
     @Override
@@ -486,20 +522,90 @@ public class TremorsaurusServant extends AbstractDinosaurServant implements Keyb
     }
 
     @Override
-    public BlockState createEggBlockState() {
-        return AcBlockRegistry.TREMORSAURUS_SERVANT_EGG.get().defaultBlockState();
-    }
-
-    @Override
     public void onLayEggTick(BlockPos belowEgg, int time) {
         this.walkAnimation.update(0.5F, 0.4F);
         this.level().broadcastEntityEvent(this, (byte) 77);
     }
 
     @Override
+    public void spawnChildFromBreeding(ServerLevel level, AnimalSummon partner) {
+        this.setHasEgg(true);
+        this.finalizeSpawnChildFromBreeding(level, partner, partner);
+    }
+
+    public int getAltSkin() {
+        return this.entityData.get(ALT_SKIN);
+    }
+
+    public void setAltSkin(int altSkin) {
+        this.entityData.set(ALT_SKIN, altSkin);
+    }
+
+    public int getAltSkinForItem(ItemStack stack) {
+        if (stack.is(ACItemRegistry.AMBER_CURIOSITY.get())) {
+            return 1;
+        }
+        if (stack.is(ACItemRegistry.TECTONIC_SHARD.get())) {
+            return 2;
+        }
+        return 0;
+    }
+
+    @Nullable
+    public InteractionResult tryChangeAltSkin(Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        int newSkin = this.getAltSkinForItem(itemstack);
+        if (newSkin > 0 && this.getTrueOwner() != null && player == this.getTrueOwner()) {
+            if (!player.getAbilities().instabuild) {
+                itemstack.shrink(1);
+            }
+            this.playSound(newSkin == 2
+                    ? ACSoundRegistry.TECTONIC_SHARD_TRANSFORM.get()
+                    : ACSoundRegistry.AMBER_MONOLITH_SUMMON.get());
+            if (newSkin == this.getAltSkin()) {
+                this.setAltSkin(0);
+            } else {
+                this.setAltSkin(newSkin);
+            }
+            this.level().broadcastEntityEvent(this, (byte) (newSkin == 2 ? 83 : 82));
+            return InteractionResult.SUCCESS;
+        }
+        return null;
+    }
+
+    private void enforceFollowingStanceOnce() {
+        if (this.level().isClientSide || this.followingStanceEnforced) {
+            return;
+        }
+        this.followingStanceEnforced = true;
+        if (this.getTrueOwner() != null) {
+            this.setFollowing();
+        }
+    }
+
+    public float getBuryEggsProgress(float partialTicks) {
+        return (this.prevBuryEggsProgress + (this.buryEggsProgress - this.prevBuryEggsProgress) * partialTicks) * 0.2F;
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putInt("AltSkin", this.getAltSkin());
+        tag.putBoolean("HasEgg", this.hasEgg());
+        tag.putBoolean("FollowingStanceEnforced", this.followingStanceEnforced);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        this.setAltSkin(tag.getInt("AltSkin"));
+        this.setHasEgg(tag.getBoolean("HasEgg"));
+        this.followingStanceEnforced = tag.getBoolean("FollowingStanceEnforced");
+    }
+
+    @Override
     public void handleEntityEvent(byte b) {
         if (b == 77) {
-            
             this.buryingEggs = true;
             float radius = this.getBbWidth() * 0.55F;
             float particleCount = (5 + random.nextInt(5)) * radius;
@@ -518,23 +624,21 @@ public class TremorsaurusServant extends AbstractDinosaurServant implements Keyb
                 }
             }
         } else if (b == 78) {
-            
             this.buryingEggs = false;
+        } else if (b == 82 || b == 83) {
+            ParticleOptions particle = b == 82
+                    ? ACParticleRegistry.DINOSAUR_TRANSFORMATION_AMBER.get()
+                    : ACParticleRegistry.DINOSAUR_TRANSFORMATION_TECTONIC.get();
+            for (int i = 0; i < 15; ++i) {
+                if (this.level().random.nextInt(8) < 3) {
+                    this.level().addParticle(particle,
+                            this.getRandomX(1.0F), this.getY() + this.getBbHeight() + 0.3F, this.getRandomZ(1.0F),
+                            this.random.nextGaussian() * 0.05, this.random.nextFloat() * 0.2, this.random.nextGaussian() * 0.05);
+                }
+            }
         } else {
             super.handleEntityEvent(b);
         }
-    }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putBoolean("HasEgg", this.hasEgg());
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        this.setHasEgg(tag.getBoolean("HasEgg"));
     }
 
     @Override
@@ -549,10 +653,10 @@ public class TremorsaurusServant extends AbstractDinosaurServant implements Keyb
     public void calculateEntityAnimation(boolean flying) {
         float f1 = (float) Mth.length(this.getX() - this.lastStompX, 0, this.getZ() - this.lastStompZ);
         float walkSpeed = 4.0F;
-        if (isVehicle()) {
-            walkSpeed = 1.5F;
-        } else if (isRunning()) {
+        if (isRunning()) {
             walkSpeed = 2.0F;
+        } else if (isVehicle()) {
+            walkSpeed = 1.5F;
         }
         float f2 = Math.min(f1 * walkSpeed, 1.0F);
         walkAnimation.update(f2, 0.4F);
@@ -636,7 +740,14 @@ public class TremorsaurusServant extends AbstractDinosaurServant implements Keyb
 
     @Override
     protected boolean canAddPassenger(Entity passenger) {
-        return passenger instanceof Player;
+        if (this.isBaby()) {
+            return false;
+        }
+        if (passenger instanceof Player) {
+            return true;
+        }
+        return passenger instanceof IServant
+                && (this.getTrueOwner() == null || this.getTrueOwner() == ((IServant) passenger).getTrueOwner());
     }
 
     protected void clampRotation(LivingEntity livingEntity, float clampRange) {
@@ -660,7 +771,8 @@ public class TremorsaurusServant extends AbstractDinosaurServant implements Keyb
                 float heightBackLeft = legSolver.legs[0].getHeight(1.0F);
                 float heightBackRight = legSolver.legs[1].getHeight(1.0F);
                 float maxLegSolverHeight = (1F - ACMath.smin(1F - heightBackLeft, 1F - heightBackRight, 0.1F)) * 0.8F;
-                moveFunction.accept(passenger, this.getX() + seatOffset.x, this.getY() + seatOffset.y + this.getPassengersRidingOffset() - maxLegSolverHeight, this.getZ() + seatOffset.z);
+                float sitDrop = this.getSitProgress(1.0F) * 1.2F;
+                moveFunction.accept(passenger, this.getX() + seatOffset.x, this.getY() + seatOffset.y + this.getPassengersRidingOffset() - maxLegSolverHeight - sitDrop, this.getZ() + seatOffset.z);
                 return;
             }
         }
@@ -728,7 +840,7 @@ public class TremorsaurusServant extends AbstractDinosaurServant implements Keyb
                 if (itemstack.getItem().isEdible() && itemstack.getFoodProperties(this).isMeat() && this.getHealth() < this.getMaxHealth()) {
                     FoodProperties foodProperties = itemstack.getFoodProperties(this);
                     if (foodProperties != null) {
-                        this.heal(15.0F);
+                        this.heal(5.0F);
                         if (!player.getAbilities().instabuild) {
                             itemstack.shrink(1);
                         }
@@ -837,11 +949,6 @@ public class TremorsaurusServant extends AbstractDinosaurServant implements Keyb
         return (this.prevSitProgress + (this.sitProgress - this.prevSitProgress) * partialTicks) / 10.0F;
     }
 
-    
-    public float getBuryEggsProgress(float partialTicks) {
-        return (this.prevBuryEggsProgress + (this.buryEggsProgress - this.prevBuryEggsProgress) * partialTicks) * 0.2F;
-    }
-
     private class TremorsaurusServantMeleeAttackGoal extends Goal {
         private TremorsaurusServantMeleeAttackGoal() {
             this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
@@ -855,7 +962,7 @@ public class TremorsaurusServant extends AbstractDinosaurServant implements Keyb
 
         @Override
         public void start() {
-            TremorsaurusServant.this.setRunning(!TremorsaurusServant.this.isVehicle());
+            TremorsaurusServant.this.setRunning(!(TremorsaurusServant.this.getControllingPassenger() instanceof Player));
         }
 
         @Override
@@ -870,7 +977,7 @@ public class TremorsaurusServant extends AbstractDinosaurServant implements Keyb
                 
                 boolean grab = isFlyingTarget(target) || (TremorsaurusServant.this.getRandom().nextBoolean() && Math.max(target.getBbHeight(), target.getBbWidth()) < 2.0F);
                 TremorsaurusServant.this.lookAt(EntityAnchorArgument.Anchor.EYES, target.getEyePosition());
-                if (!TremorsaurusServant.this.isVehicle()) {
+                if (!(TremorsaurusServant.this.getControllingPassenger() instanceof Player)) {
                     TremorsaurusServant.this.tryRoar();
                 }
                 double dist = TremorsaurusServant.this.distanceTo(target);

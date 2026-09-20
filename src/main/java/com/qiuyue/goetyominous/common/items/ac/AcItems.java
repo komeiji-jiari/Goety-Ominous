@@ -1,9 +1,13 @@
 package com.qiuyue.goetyominous.common.items.ac;
 
 import com.Polarice3.Goety.common.items.ServantSpawnEggItem;
+import com.Polarice3.Goety.common.items.magic.MagicFocus;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
+import com.qiuyue.goetyominous.common.magic.spells.ac.ExtinctionBreathSpell;
+import com.qiuyue.goetyominous.common.magic.spells.ac.ExtinctionMeteorSpell;
+import com.qiuyue.goetyominous.common.magic.spells.ac.PrimalPackSpell;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -15,6 +19,18 @@ public class AcItems {
 
     public static final DeferredRegister<Item> AC_ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, GoetyOminous.MOD_ID);
+
+    public static final RegistryObject<ServantSpawnEggItem> ATLATITAN_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("atlatitan_servant_spawn_egg",
+                                        () -> new ServantSpawnEggItem(AcEntityRegistry.ATLATITAN_SERVANT, 0x6B7B3F, 0x30231A, egg()));
+
+    public static final RegistryObject<BlockItem> ATLATITAN_SERVANT_EGG =
+            AC_ITEMS.register("atlatitan_servant_egg",
+                    () -> new BlockItem(AcBlockRegistry.ATLATITAN_SERVANT_EGG.get(), egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> LUXTRUCTOSAURUS_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("luxtructosaurus_servant_spawn_egg",
+                                        () -> new ServantSpawnEggItem(AcEntityRegistry.LUXTRUCTOSAURUS_SERVANT, 0xC24A17, 0xE8C468, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> GROTTOCERATOPS_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("grottoceratops_servant_spawn_egg",
@@ -32,6 +48,14 @@ public class AcItems {
             AC_ITEMS.register("tremorsaurus_servant_egg",
                     () -> new BlockItem(AcBlockRegistry.TREMORSAURUS_SERVANT_EGG.get(), egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> RELICHEIRUS_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("relicheirus_servant_spawn_egg",
+                                        () -> new ServantSpawnEggItem(AcEntityRegistry.RELICHEIRUS_SERVANT, 0x6AE4F9, 0x5B2152, egg()));
+
+    public static final RegistryObject<BlockItem> RELICHEIRUS_SERVANT_EGG =
+            AC_ITEMS.register("relicheirus_servant_egg",
+                    () -> new BlockItem(AcBlockRegistry.RELICHEIRUS_SERVANT_EGG.get(), egg()));
+
     public static final RegistryObject<ServantSpawnEggItem> VALLUMRAPTOR_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("vallumraptor_servant_spawn_egg",
                                         () -> new ServantSpawnEggItem(AcEntityRegistry.VALLUMRAPTOR_SERVANT, 0x22389A, 0xEEE5AB, egg()));
@@ -40,6 +64,10 @@ public class AcItems {
             AC_ITEMS.register("vallumraptor_servant_egg",
                     () -> new BlockItem(AcBlockRegistry.VALLUMRAPTOR_SERVANT_EGG.get(), egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> TREMORZILLA_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("tremorzilla_servant_spawn_egg",
+                                        () -> new ServantSpawnEggItem(AcEntityRegistry.TREMORZILLA_SERVANT, 0x574D2F, 0x8CFF08, egg()));
+
     public static final RegistryObject<ServantSpawnEggItem> NUCLEEPER_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("nucleeper_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AcEntityRegistry.NUCLEEPER_SERVANT, 0x95A1A5, 0xFF00, egg()));
@@ -47,6 +75,47 @@ public class AcItems {
     public static final RegistryObject<ServantSpawnEggItem> BRAINIAC_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("brainiac_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AcEntityRegistry.BRAINIAC_SERVANT, 0x3A4A2E, 0xE35FA0, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> CANIAC_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("caniac_servant_spawn_egg",
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.CANIAC_SERVANT, 0xF9F0FF, 0xFF3F56, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> GAMMAROACH_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("gammaroach_servant_spawn_egg",
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.GAMMAROACH_SERVANT, 0xB8C64F, 0x77D60E, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> CORRODENT_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("corrodent_servant_spawn_egg",
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.CORRODENT_SERVANT, 0x7A8450, 0x39402A, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> GUMMY_BEAR_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("gummy_bear_servant_spawn_egg",
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.GUMMY_BEAR_SERVANT, 0xFF463F, 0xFDA09E, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> CARAMEL_CUBE_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("caramel_cube_servant_spawn_egg",
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.CARAMEL_CUBE_SERVANT, 0xDDAA4E, 0xF6E3C3, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> GUMBEEPER_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("gumbeeper_servant_spawn_egg",
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.GUMBEEPER_SERVANT, 0xFF2B44, 0xE7BAFF, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> VESPER_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("vesper_servant_spawn_egg",
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.VESPER_SERVANT, 0x884E2A, 0xA54A6B, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> TELETOR_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("teletor_servant_spawn_egg",
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.TELETOR_SERVANT, 0x433B4A, 0x60EF, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> FORSAKEN_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("forsaken_servant_spawn_egg",
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.FORSAKEN_SERVANT, 0x000000, 0x110909, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> CANDICORN_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("candicorn_servant_spawn_egg",
+
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.CANDICORN_SERVANT, 0xFFEF57, 0xFFADD2, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> MINE_GUARDIAN_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("mine_guardian_servant_spawn_egg",
@@ -58,16 +127,37 @@ public class AcItems {
 
     public static final RegistryObject<ServantSpawnEggItem> DEEP_ONE_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("deep_one_servant_spawn_egg",
-                    
+
                     () -> new ServantSpawnEggItem(AcEntityRegistry.DEEP_ONE_SERVANT, 0x081828, 0x085840, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> DEEP_ONE_KNIGHT_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("deep_one_knight_servant_spawn_egg",
-                    
+
                     () -> new ServantSpawnEggItem(AcEntityRegistry.DEEP_ONE_KNIGHT_SERVANT, 0x402838, 0xd0c8c0, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> DEEP_ONE_MAGE_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("deep_one_mage_servant_spawn_egg",
+
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.DEEP_ONE_MAGE_SERVANT, 0x96DEF6, 0xD1FF00, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> LICOWITCH_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("licowitch_servant_spawn_egg",
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.LICOWITCH_SERVANT, 0x681182, 0xFF6CD7, egg()));
+
+    public static final RegistryObject<Item> EXTINCTION_BREATH_FOCUS = AC_ITEMS.register("extinction_breath_focus",
+            () -> new MagicFocus(new ExtinctionBreathSpell()));
+
+    public static final RegistryObject<Item> EXTINCTION_METEOR_FOCUS = AC_ITEMS.register("extinction_meteor_focus",
+            () -> new MagicFocus(new ExtinctionMeteorSpell()));
+
+    public static final RegistryObject<Item> PRIMAL_PACK_FOCUS = AC_ITEMS.register("primal_pack_focus",
+            () -> new MagicFocus(new PrimalPackSpell()));
 
     public static final RegistryObject<Item> RAYCAT_AMULET =
             AC_ITEMS.register("raycat_amulet", () -> new RaycatAmuletItem());
+
+    public static final RegistryObject<ExtinctionCatalyst> EXTINCTION_CATALYST =
+            AC_ITEMS.register("extinction_catalyst", ExtinctionCatalyst::new);
 
     public static Item.Properties egg() {
         return new Item.Properties();

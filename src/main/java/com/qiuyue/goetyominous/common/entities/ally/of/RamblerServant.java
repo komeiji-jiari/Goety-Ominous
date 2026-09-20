@@ -93,8 +93,6 @@ public class RamblerServant extends Summoned implements AttackState {
 
     protected void registerGoals() {
         super.registerGoals();
-        // 主动索敌：Goety 默认的 SummonTargetGoal 是"仇恨驱动"，不会见敌就打。
-        // 补上 NearestAttackableTargetGoal 才能像原版 Rambler 一样主动追敌对生物（Enemy）。
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, false, false,
                 (target) -> target instanceof Enemy && !MobUtil.areAllies(this, target)));
         this.goalSelector.addGoal(1, new RamblerServantFlailGoal(this));

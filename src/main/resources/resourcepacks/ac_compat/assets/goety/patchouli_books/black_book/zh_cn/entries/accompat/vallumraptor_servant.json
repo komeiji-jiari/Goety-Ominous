@@ -1,0 +1,28 @@
+{
+  "name": "阔鼻迅猛龙",
+  "icon": "alexscaves:vallumraptor_egg",
+  "category": "goety:primordialcaves",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "这些体型较小的恐龙狡猾而敏捷，成群作战时不容小觑。通过它们最喜欢的恐龙肉就可以轻易控制和召唤。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:vallumraptor_servant",
+      "text": "布鲁"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "穿着荒野长袍可以恢复你的恐龙的生命值。喂食它们任意肉类可治愈你的迅猛龙。恐龙肉块可以用于繁殖你的迅猛龙，参与繁殖的迅猛龙会产下一枚蛋，孵化出的迅猛龙依旧视你为主人。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:vallumraptor_servant"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_vallumraptor_to_vallumraptor_servant"
+    }
+  ]
+}

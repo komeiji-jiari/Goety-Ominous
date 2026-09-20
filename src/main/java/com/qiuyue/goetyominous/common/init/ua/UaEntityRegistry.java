@@ -11,16 +11,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-/**
- * UA (Upgrade Aquatic) 联动实体注册类
- * 负责注册所有 UA 仆从实体类型
- * 注意：这个类只在 UA 模组加载时才会被调用
- */
 public class UaEntityRegistry {
 
-    /**
-     * UA 实体延迟注册表
-     */
     private static final DeferredRegister<EntityType<?>> UA_ENTITIES =
             DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, GoetyOminous.MOD_ID);
 
@@ -45,10 +37,6 @@ public class UaEntityRegistry {
                             .clientTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":flare_servant"));
 
-    /**
-     * 注册 UA 实体到模组事件总线
-     * @param modEventBus 模组事件总线
-     */
     public static void register(IEventBus modEventBus) {
         UA_ENTITIES.register(modEventBus);
     }

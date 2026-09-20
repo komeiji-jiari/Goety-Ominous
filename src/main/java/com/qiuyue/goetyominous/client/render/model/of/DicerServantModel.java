@@ -12,10 +12,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * Dicer 仆从模型：直接复用原版 DicerModel 的几何（createBodyLayer 是纯几何，与实体类型无关）。
- * 部件查找链与 setupAnim 逻辑照搬原版 DicerModel，动画直接用 OF 的 DicerAnimations。
- */
 @OnlyIn(Dist.CLIENT)
 public class DicerServantModel extends OPModel<DicerServant> {
     private final ModelPart root;

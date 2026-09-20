@@ -1,0 +1,20 @@
+{
+  "name": "潜影陷阱聚晶",
+  "icon": "goetyominous:shulker_scatter_focus",
+  "category": "goety:mmcompat",
+  "pages": [
+    {
+      "type": "text",
+      "text": "一个个手动放陷阱太麻烦了。你设计出一个能让你像突变潜影贝那样布置大量陷阱的聚晶，这些陷阱会对踩中的敌人造成伤害，在一定时间内未被激活还会自动转化成跟踪导弹攻击敌人。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:shulker_scatter_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "虚空魔杖施法会增加抛射的陷阱数量，并使得陷阱攻击生物时额外造成虚空侵蚀效果。这个法术接受强效附魔，每一级都可以提升陷阱和陷阱转化的导弹的伤害。高速附魔将使得陷阱转化成导弹的速度大大加快。"
+    }
+  ]
+}

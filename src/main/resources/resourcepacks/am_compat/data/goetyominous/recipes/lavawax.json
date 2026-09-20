@@ -1,0 +1,32 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:enchant",
+  "activation_item": {
+    "item": "minecraft:book"
+  },
+  "craftType": "magic",
+  "soulCost": 10,
+  "duration": 10,
+  "enchantment": "alexsmobs:lavawax",
+  "xpLevelCost": 5,
+  "ingredients": [
+    {
+      "item": "alexsmobs:straddlite"
+    },
+    {
+      "item": "alexsmobs:straddlite"
+    },
+    {
+      "item": "minecraft:magma_cream"
+    }
+  ],
+  "result": {
+    "item": "minecraft:enchanted_book"
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "alexsmobs"
+    }
+  ]
+}

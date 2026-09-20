@@ -63,3 +63,24 @@ with credit to it's authors.
 Forge Mod Loader downloads components from the Minecraft Coder Pack
 (http://mcp.ocean-labs.de/index.php/Main_Page) with kind permission from the MCP team.
 
+=========================================================================
+
+goetyominous: PureDark ritual "void being" visual effects
+
+The PureDark ritual effect (black void cloud with orbiting eyes and dangling
+tendrils) is a self-contained port of the Underzealot sacrifice effect from
+Alex's Caves by AlexModGuy. This mod redistributes Alex's Caves particle
+textures under goetyominous' own namespace:
+
+  * ritual_void_eye_0.png / ritual_void_eye_1.png / ritual_void_eye_2.png
+    (originals: void_eye_0/1/2.png)
+  * ritual_void_tendril.png
+    (original: void_being_cloud_tendril.png)
+
+The rendering approach, particle behaviour and noise-driven texture updates
+are also derived from Alex's Caves' VoidBeingCloudParticle / VoidBeingEyeParticle /
+VoidBeingTendrilParticle classes, reimplemented here without any dependency on
+Alex's Caves being loaded at runtime.
+
+Credits and thanks to AlexModGuy for Alex's Caves.
+

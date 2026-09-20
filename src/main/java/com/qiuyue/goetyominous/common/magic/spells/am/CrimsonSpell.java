@@ -11,7 +11,6 @@ import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.ally.am.CrimsonMosquitoServant;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -66,10 +65,6 @@ public class CrimsonSpell extends SummonSpell {
         return (livingEntity) -> {
             return livingEntity instanceof CrimsonMosquitoServant;
         };
-    }
-
-    public int summonLimit() {
-        return (Integer) MobsConfig.CrimsonMosquitoServantLimit.get();
     }
 
     public void SpellResult(ServerLevel worldIn, LivingEntity caster, ItemStack staff, SpellStat spellStat) {

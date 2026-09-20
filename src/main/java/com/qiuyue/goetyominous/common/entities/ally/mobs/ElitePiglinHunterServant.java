@@ -17,6 +17,7 @@ public class ElitePiglinHunterServant extends StrongPiglinHunterServant {
 
     public ElitePiglinHunterServant(EntityType<? extends StrongPiglinHunterServant> type, Level level) {
         super(type, level);
+        this.refreshDimensions();
     }
 
     public static AttributeSupplier.Builder createAttributes() {

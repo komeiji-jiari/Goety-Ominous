@@ -1,0 +1,21 @@
+{
+  "name": "Acid Pool Focus",
+  "icon": "goetyominous:acid_pool_focus",
+  "category": "goety:focuses/fel",
+  "advancement": "goetyominous:goetyominous/witch_lesson",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Sometimes I really want to splash acid on Granny's annoying stupid black cat! If you ever feel the same way... I have a spell here that summons an acid pool to teach those bullies a lesson!"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:acid_pool_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Hmm, and don't forget to cast it with your Fel Staff, it gives your acid pool a Acid Venom effect! And if that's not enough, try putting on a Crone Robe! Wearing the uniform also increases Acid Venom effect's level by one!"
+    }
+  ]
+}

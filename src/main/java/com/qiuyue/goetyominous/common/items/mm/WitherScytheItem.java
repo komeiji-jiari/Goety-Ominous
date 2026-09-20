@@ -70,10 +70,10 @@ public class WitherScytheItem extends DarkScytheItem implements ISoulRepair, IPe
                     0.8F + level.random.nextFloat() * 0.4F / 0.8F);
 
             if (!level.isClientSide) {
-                Vec3 look = player.getLookAngle();
-                WitherSlash slash = new WitherSlash(level, player, player.getYRot());
-                slash.setPos(player.getX() + look.x * 2.0, player.getY(1.0) + look.y * 2.0, player.getZ() + look.z * 2.0);
-                slash.setDeltaMovement(look.x * 1.5, look.y * 1.5, look.z * 1.5);
+                Vec3 look = player.getViewVector(1.0F);
+                WitherSlash slash = new WitherSlash(level, player, player.yHeadRot);
+                slash.shoot(look.x, look.y, look.z, 1.5F, 0.0F);
+                slash.setPos(player.getX(), player.getY(0.6D), player.getZ());
                 slash.damage = 9.5F;
                 slash.leechAmount = 2.375F;
                 slash.witherLength = 400;

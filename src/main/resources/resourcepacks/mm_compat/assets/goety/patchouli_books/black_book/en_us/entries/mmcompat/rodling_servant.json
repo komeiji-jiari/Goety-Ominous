@@ -1,0 +1,41 @@
+{
+  "name": "Rodling Servant",
+  "icon": "mutantmore:rodling_helmet",
+  "category": "goety:mmcompat",
+  "advancement": "goety:goety/read_bygone_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "These smaller Rodlings share several similarities with their shield-wielding relatives. After studying the records left behind by the fortress inhabitants, you can create a Rodling Servant that will never betray you."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:rodling_servant",
+      "text": "Quite adorable, isn't it"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "minecraft:coal",
+      "text": "You can right-click your Rodling Servant while holding Coal or Charcoal to give it to them. When your Rodling is injured, it will consume this fuel to restore its health. Wearing Nether Robes also provides passive natural healing."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:rodling_servant"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "mutantmore:rodling_helmet",
+      "text": "Much like tamed Rodlings, you can right-click to equip your Rodling Servant with a helmet. This helmet provides protection while also shielding your Rodling from rain damage."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "mutantmore:rodling_shields",
+      "text": "Equipping shields grants your Rodling Servant 2 shields that regenerate over time. When a Rodling carrying items dies, any remaining items will be dropped for retrieval."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "When you don the robes of the dark emissary, your Rodling Servants will unleash Hell Bolts, swiftly burning away all unholy things before you."
+    }
+  ]
+}

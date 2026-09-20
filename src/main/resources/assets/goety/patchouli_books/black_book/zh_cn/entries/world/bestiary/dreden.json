@@ -1,0 +1,16 @@
+{
+  "name": "惧灵",
+  "icon": "minecraft:blue_ice",
+  "category": "goety:world/bestiary",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "惧灵是游荡在主世界寒冷地区的亡灵生物。远距离时，它们会发射魔法冰球攻击。近距离时，它们要么以惊人的力量发动攻击，要么向敌人喷吐一股冰霜洪流。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:dreden",
+      "text": "如你所料，他们免疫冰霜伤害，并且坠落时会缓缓飘落。"
+    }
+  ]
+}

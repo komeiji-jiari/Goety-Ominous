@@ -10,13 +10,29 @@ public class SpellConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> AcidPoolSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> AcidPoolCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> AcidPoolCoolDown;
+    public static final ForgeConfigSpec.ConfigValue<Double> AcidPoolBaseDamage;
+    public static final ForgeConfigSpec.ConfigValue<Integer> AcidPoolBaseDuration;
+    public static final ForgeConfigSpec.ConfigValue<Double> AcidPoolRadius;
+
     public static final ForgeConfigSpec.ConfigValue<Integer> BrainEaterDrainPerSecond;
     public static final ForgeConfigSpec.ConfigValue<Integer> BrainEaterSoulsPerDrain;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> PoisonBallCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> PoisonBallCoolDown;
+    public static final ForgeConfigSpec.ConfigValue<Double> PoisonBallDamage;
 
     public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachCastDuration;
     public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachSummonDown;
     public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachCoolDown;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> DredenSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DredenCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DredenSummonDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DredenCoolDown;
 
     public static final ForgeConfigSpec.ConfigValue<Integer> ScorchSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> ScorchCastDuration;
@@ -44,6 +60,23 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> HauntSummonDown;
     public static final ForgeConfigSpec.ConfigValue<Integer> HauntLimit;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> ExtinctionBreathDamage;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ExtinctionBreathSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ExtinctionBreathChargeUp;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ExtinctionBreathDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ExtinctionBreathCoolDown;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> ExtinctionMeteorCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ExtinctionMeteorChargeUp;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ExtinctionMeteorInterval;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ExtinctionMeteorShots;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ExtinctionMeteorCoolDown;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> PrimalPackCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> PrimalPackDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> PrimalPackSummonDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> PrimalPackCoolDown;
+
     public static final ForgeConfigSpec.ConfigValue<Integer> HogChargeSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> HogChargeCooldown;
     public static final ForgeConfigSpec.ConfigValue<Double> HogChargeDamage;
@@ -54,6 +87,20 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> WitherSlashSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> WitherSlashCooldown;
     public static final ForgeConfigSpec.ConfigValue<Double> WitherSlashDamage;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerScatterSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerScatterCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerScatterCastDuration;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerBulletSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerBulletCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerBulletCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Double> ShulkerBulletDamage;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> RodStrikeSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> RodStrikeCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> RodStrikeCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> RodStrikeSummonDown;
 
     public static final ForgeConfigSpec.ConfigValue<Integer> SporeCloudSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> SporeCloudCooldown;
@@ -131,8 +178,49 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> VoidShotCastUp;
     public static final ForgeConfigSpec.ConfigValue<Integer> VoidShotDuration;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> FartSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FartCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FartCoolDown;
+
     static {
         BUILDER.push("Spells");
+
+        BUILDER.push("ExtinctionBreath");
+        ExtinctionBreathDamage = BUILDER.comment("Damage dealt per tick by Extinction Breath, Default: 4.0")
+                .defineInRange("extinctionBreathDamage", 4.0, 0.0, Double.MAX_VALUE);
+        ExtinctionBreathSoulCost = BUILDER.comment("Soul cost of Extinction Breath, Default: 12")
+                .defineInRange("extinctionBreathSoulCost", 12, 1, 100);
+        ExtinctionBreathChargeUp = BUILDER.comment("Charge up time of Extinction Breath in ticks, Default: 0")
+                .defineInRange("extinctionBreathChargeUp", 0, 0, 500);
+        ExtinctionBreathDuration = BUILDER.comment("Breath duration of Extinction Breath in ticks, Default: 200")
+                .defineInRange("extinctionBreathDuration", 200, 0, 1000);
+        ExtinctionBreathCoolDown = BUILDER.comment("Cooldown of Extinction Breath in ticks, Default: 500")
+                .defineInRange("extinctionBreathCoolDown", 500, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("ExtinctionMeteor");
+        ExtinctionMeteorCost = BUILDER.comment("Soul cost of Extinction Meteor, Default: 100")
+                .defineInRange("extinctionMeteorCost", 100, 1, 500);
+        ExtinctionMeteorChargeUp = BUILDER.comment("Ticks to charge up before the shower starts, Default: 100")
+                .defineInRange("extinctionMeteorChargeUp", 100, 0, 72000);
+        ExtinctionMeteorInterval = BUILDER.comment("Ticks between each meteor volley, Default: 8")
+                .defineInRange("extinctionMeteorInterval", 8, 1, 200);
+        ExtinctionMeteorShots = BUILDER.comment("Base number of volleys per cast, set 0 to allow the spell to be cast indefinitely, Default: 5")
+                .defineInRange("extinctionMeteorShots", 5, 0, 72000);
+        ExtinctionMeteorCoolDown = BUILDER.comment("Cooldown of Extinction Meteor in ticks, Default: 600")
+                .defineInRange("extinctionMeteorCoolDown", 600, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("Primal Pack");
+        PrimalPackCost = BUILDER.comment("Soul cost of Primal Pack spell (Default: 16)")
+                .defineInRange("primalPackCost", 16, 0, Integer.MAX_VALUE);
+        PrimalPackDuration = BUILDER.comment("Cast duration of Primal Pack spell in ticks (Default: 120)")
+                .defineInRange("primalPackDuration", 120, 0, 72000);
+        PrimalPackSummonDown = BUILDER.comment("Summon down duration of Primal Pack spell in ticks (Default: 100)")
+                .defineInRange("primalPackSummonDown", 100, 0, 72000);
+        PrimalPackCoolDown = BUILDER.comment("Cooldown of Primal Pack spell in ticks (Default: 120)")
+                .defineInRange("primalPackCoolDown", 120, 0, 72000);
+        BUILDER.pop();
 
         BUILDER.push("Sand Spell");
         SandSoulCost = BUILDER.comment("Sand Spell Cost, Default: 6")
@@ -242,6 +330,15 @@ public class SpellConfig {
                 .defineInRange("dropBearCoolDown", 160, 0, 5000);
         BUILDER.pop();
 
+        BUILDER.push("Fart");
+        FartSoulCost = BUILDER.comment("Soul cost of Fart spell (Default: 10)")
+                .defineInRange("fartSoulCost", 10, 1, 100);
+        FartCastDuration = BUILDER.comment("Cast duration of Fart spell in ticks (Default: 60)")
+                .defineInRange("fartCastDuration", 60, 0, 500);
+        FartCoolDown = BUILDER.comment("Cooldown of Fart spell in ticks (Default: 100)")
+                .defineInRange("fartCoolDown", 100, 0, 5000);
+        BUILDER.pop();
+
         BUILDER.push("Farseer");
         FarseerSoulCost = BUILDER.comment("Soul cost of Farseer Servant spell (Default: 128)")
                 .defineInRange("farseerSoulCost", 128, 1, 128);
@@ -266,11 +363,35 @@ public class SpellConfig {
                 .defineInRange("voidShotDuration", 200, 0, 5000);
         BUILDER.pop();
 
+        BUILDER.push("Acid Pool");
+        AcidPoolSoulCost = BUILDER.comment("Soul cost of Acid Pool spell (Default: 24)")
+                .defineInRange("acidPoolSoulCost", 24, 1, 100);
+        AcidPoolCastDuration = BUILDER.comment("Cast duration of Acid Pool spell in ticks (Default: 60)")
+                .defineInRange("acidPoolCastDuration", 60, 0, 500);
+        AcidPoolCoolDown = BUILDER.comment("Cooldown of Acid Pool spell in ticks (Default: 200)")
+                .defineInRange("acidPoolCoolDown", 200, 0, 5000);
+        AcidPoolBaseDamage = BUILDER.comment("Base damage of Acid Pool per hit (Default: 5.0)")
+                .defineInRange("acidPoolBaseDamage", 5.0D, 0.0D, 1000.0D);
+        AcidPoolBaseDuration = BUILDER.comment("Base lifespan of Acid Pool in ticks (Default: 80)")
+                .defineInRange("acidPoolBaseDuration", 80, 1, 20000);
+        AcidPoolRadius = BUILDER.comment("Radius of Acid Pool (Default: 1.0)")
+        .defineInRange("acidPoolRadius", 1.0D, 0.5D, 16.0D);
+        BUILDER.pop();
+
         BUILDER.push("Brain Eater");
         BrainEaterDrainPerSecond = BUILDER.comment("Experience drained per second while channeling (Default: 10)")
                 .defineInRange("brainEaterDrainPerSecond", 10, 1, 1000);
         BrainEaterSoulsPerDrain = BUILDER.comment("Souls gained per drain (Default: 100)")
                 .defineInRange("brainEaterSoulsPerDrain", 100, 1, 100000);
+        BUILDER.pop();
+
+        BUILDER.push("Poison Ball");
+        PoisonBallCost = BUILDER.comment("Soul cost of Poison Ball spell (Default: 8)")
+                .defineInRange("poisonBallCost", 8, 1, 100);
+        PoisonBallCoolDown = BUILDER.comment("Cooldown of Poison Ball (Default: 20)")
+                .defineInRange("poisonBallCoolDown", 20, 0, 5000);
+        PoisonBallDamage = BUILDER.comment("Base damage of Poison Ball (Default: 5.0)")
+                .defineInRange("poisonBallDamage", 5.0, 1.0, 1000.0);
         BUILDER.pop();
 
         BUILDER.push("Urbhadhach");
@@ -282,6 +403,17 @@ public class SpellConfig {
                 .defineInRange("urbhadhachSummonDown", 200, 0, 5000);
         UrbhadhachCoolDown = BUILDER.comment("Cooldown of Urbhadhach Servant spell in ticks (Default: 300)")
                 .defineInRange("urbhadhachCoolDown", 300, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("Dreden");
+        DredenSoulCost = BUILDER.comment("Soul cost of Dreden Servant spell (Default: 24)")
+                .defineInRange("dredenSoulCost", 24, 1, 100);
+        DredenCastDuration = BUILDER.comment("Cast duration of Dreden Servant spell in ticks (Default: 80)")
+                .defineInRange("dredenCastDuration", 80, 0, 500);
+        DredenSummonDown = BUILDER.comment("Summon down duration of Dreden Servant spell in ticks (Default: 300)")
+                .defineInRange("dredenSummonDown", 300, 0, 5000);
+        DredenCoolDown = BUILDER.comment("Cooldown of Dreden Servant spell in ticks (Default: 120)")
+                .defineInRange("dredenCoolDown", 120, 0, 5000);
         BUILDER.pop();
 
         BUILDER.push("Scorch");
@@ -364,6 +496,37 @@ public class SpellConfig {
                 .defineInRange("witherSlashCooldown", 60, 0, 2000);
         WitherSlashDamage = BUILDER.comment("Base damage of Wither Slash (Default: 6.0)")
                 .defineInRange("witherSlashDamage", 6.0, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Shulker Scatter");
+        ShulkerScatterSoulCost = BUILDER.comment("Soul cost of Shulker Scatter spell (Default: 32)")
+                .defineInRange("shulkerScatterSoulCost", 32, 1, 100);
+        ShulkerScatterCooldown = BUILDER.comment("Cooldown of Shulker Scatter spell in ticks (Default: 200)")
+                .defineInRange("shulkerScatterCooldown", 200, 0, 2000);
+        ShulkerScatterCastDuration = BUILDER.comment("Cast duration of Shulker Scatter spell in ticks (Default: 100)")
+                .defineInRange("shulkerScatterCastDuration", 100, 0, 500);
+        BUILDER.pop();
+
+        BUILDER.push("Shulker Bullet");
+        ShulkerBulletSoulCost = BUILDER.comment("Soul cost of Shulker Bullet spell (Default: 24)")
+                .defineInRange("shulkerBulletSoulCost", 24, 1, 100);
+        ShulkerBulletCooldown = BUILDER.comment("Cooldown of Shulker Bullet spell in ticks (Default: 100)")
+                .defineInRange("shulkerBulletCooldown", 100, 0, 2000);
+        ShulkerBulletCastDuration = BUILDER.comment("Cast duration of Shulker Bullet spell in ticks (Default: 40)")
+                .defineInRange("shulkerBulletCastDuration", 40, 0, 500);
+        ShulkerBulletDamage = BUILDER.comment("Base damage of Shulker Bullet (Default: 8.0)")
+                .defineInRange("shulkerBulletDamage", 8.0, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Rod Strike");
+        RodStrikeSoulCost = BUILDER.comment("Soul cost of Rod Strike spell (Default: 6)")
+                .defineInRange("rodStrikeSoulCost", 6, 1, 100);
+        RodStrikeCooldown = BUILDER.comment("Cooldown of Rod Strike spell in ticks (Default: 100)")
+                .defineInRange("rodStrikeCooldown", 100, 0, 2000);
+        RodStrikeCastDuration = BUILDER.comment("Cast duration of Rod Strike spell in ticks (Default: 60)")
+                .defineInRange("rodStrikeCastDuration", 60, 0, 500);
+        RodStrikeSummonDown = BUILDER.comment("Summon down duration of Rod Strike spell in ticks (Default: 80)")
+                .defineInRange("rodStrikeSummonDown", 80, 0, 5000);
         BUILDER.pop();
 
         BUILDER.push("Spore Cloud");

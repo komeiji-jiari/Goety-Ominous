@@ -470,12 +470,12 @@ public class BunfungusServant extends Summoned implements IAnimatedEntity {
             if (this.jumpCooldown > 0) {
                 this.jumpCooldown--;
             }
-            // AM thresholds (2.0/5.0) are compared against squared distance minus bbWidth, not linear distance
+
             double dist = this.chungus.distanceToSqr(this.chungus.getTarget()) - this.chungus.getTarget().getBbWidth();
             if (dist < 2.0D) {
                 if (this.hasJumped) {
                     if (!this.chungus.onGround()) {
-                        // AM mid-air contact damage is hardcoded 10.0F (BunfungusAIMelee); exposed as a config value here, default 10.0
+
                         this.chungus.getTarget().hurt(this.chungus.damageSources().mobAttack(this.chungus), AttributesConfig.BunfungusServantContactDamage.get().floatValue());
                     }
                     this.hasJumped = false;

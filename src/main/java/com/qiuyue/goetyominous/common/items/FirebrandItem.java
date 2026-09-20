@@ -34,7 +34,10 @@ public class FirebrandItem extends RampagingAxeItem {
         boolean result = super.hurtEnemy(stack, target, attacker);
         if (!target.level().isClientSide) {
             if (target.isOnFire()) {
+                int invuln = target.invulnerableTime;
+                target.invulnerableTime = 0;
                 target.hurt(target.damageSources().onFire(), WeaponConfig.FirebrandFireBonus.get().floatValue());
+                target.invulnerableTime = invuln;
             }
             target.setSecondsOnFire(10);
         }

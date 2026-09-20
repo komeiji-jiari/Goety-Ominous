@@ -1,7 +1,10 @@
 package com.qiuyue.goetyominous.common.events;
 
 import com.Polarice3.Goety.common.blocks.ModBlocks;
+import com.Polarice3.Goety.common.effects.GoetyEffects;
+import com.Polarice3.Goety.common.entities.hostile.HostileBlackWolf;
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.common.blocks.HimPlushieRitual;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.HeresiarchServant;
 import com.qiuyue.goetyominous.common.entities.ally.sar.ExecutionerServant;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
@@ -13,8 +16,10 @@ import com.qiuyue.goetyominous.compat.mod.IllageAndSpillageCompat;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.Villager;
@@ -45,6 +50,18 @@ public class ModEventHandler {
         }
 
         Entity entity = event.getEntity();
+
+        if (entity instanceof ItemEntity itemEntity
+                && itemEntity.getItem().is(com.qiuyue.goetyominous.common.init.ModBlocks.PLUSHIE_HIM.get().asItem())) {
+            itemEntity.setInvulnerable(true);
+            itemEntity.setUnlimitedLifetime();
+            return;
+        }
+
+        if (entity instanceof LightningBolt bolt) {
+            HimPlushieRitual.onLightningStrike((ServerLevel) event.getLevel(), bolt.blockPosition());
+            return;
+        }
 
         if (!(entity instanceof LivingEntity livingEntity)) {
             return;
@@ -139,6 +156,21 @@ public class ModEventHandler {
         LivingEntity killedEntity = event.getEntity();
         Entity sourceEntity = event.getSource().getEntity();
 
+        if (killedEntity instanceof HostileBlackWolf wolf) {
+            Entity killer = event.getSource().getDirectEntity();
+            if (killer instanceof Player player) {
+                boolean boline = player.getMainHandItem().is(
+                        com.Polarice3.Goety.common.items.ModItems.WICKED_BOLINE.get())
+                        || player.getOffhandItem().is(
+                        com.Polarice3.Goety.common.items.ModItems.WICKED_BOLINE.get());
+                if (boline && wolf.getRandom().nextFloat() < 0.5F) {
+                    event.getDrops().add(new ItemEntity(wolf.level(),
+                            wolf.getX(), wolf.getY(), wolf.getZ(),
+                            new ItemStack(ModItems.WOLF_TONGUE.get(), 1)));
+                }
+            }
+        }
+
         com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractPiglinServant piglin = null;
         if (sourceEntity instanceof com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractPiglinServant direct) {
             piglin = direct;
@@ -199,6 +231,20 @@ public class ModEventHandler {
 
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
+
+        if (event.getSource().getDirectEntity() instanceof com.Polarice3.Goety.common.entities.projectiles.AcidPool pool
+                && pool.getPersistentData().getBoolean(com.qiuyue.goetyominous.common.magic.spells.AcidPoolSpell.FEL_MARKER)) {
+            LivingEntity owner = pool.getOwner();
+            if (owner != null) {
+                int amplifier = 0;
+                if (com.qiuyue.goetyominous.utils.CroneCuriosUtil.hasCroneRobe(owner)) {
+                    amplifier += 1;
+                }
+                event.getEntity().addEffect(new MobEffectInstance(GoetyEffects.ACID_VENOM.get(), 200, amplifier), owner);
+            }
+            return;
+        }
+
         if (event.getEntity().level().isClientSide) {
             return;
         }

@@ -1,0 +1,21 @@
+{
+  "name": "Fel Staff",
+  "icon": "goetyominous:fel_staff",
+  "advancement": "goetyominous:goetyominous/witch_lesson",
+  "secret": true,
+  "category": "goety:crafts/staff",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Our staff is a fine thing! Stick it in the ground to scare folks, or swing it around to whack 'em! HAHAHA! you didn't actually believe that, did you? Only fool witches would treat their precious wands that way! As you might expect, this staff is perfect for channeling the energies of the swamp!"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:fel_staff"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "HAHAHAHAHA! what are you waiting for? Pick up your staff and give this beautiful, vibrant swamp even more power!"
+    }
+  ]
+}

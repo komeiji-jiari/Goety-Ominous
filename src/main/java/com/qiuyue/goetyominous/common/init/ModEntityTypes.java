@@ -8,12 +8,7 @@ import com.qiuyue.goetyominous.common.entities.ally.spider.CrimsonSpiderServant;
 import com.qiuyue.goetyominous.common.entities.hostile.*;
 import com.qiuyue.goetyominous.common.entities.hostile.cultists.*;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.ArchGeomancerEntity;
-import com.qiuyue.goetyominous.common.entities.projectile.AcidFungus;
-import com.qiuyue.goetyominous.common.entities.projectile.BurningPotionEntity;
-import com.qiuyue.goetyominous.common.entities.projectile.ImpactBlockEntity;
-import com.qiuyue.goetyominous.common.entities.projectile.TremorBlockEntity;
-import com.qiuyue.goetyominous.common.entities.projectile.PitchforkEntity;
-import com.qiuyue.goetyominous.common.entities.projectile.WitchBombEntity;
+import com.qiuyue.goetyominous.common.entities.projectile.*;
 import com.qiuyue.goetyominous.common.entities.util.BurningGroundEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -23,45 +18,18 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import static com.qiuyue.goetyominous.GoetyOminous.MOD_ID;
 
-/**
- * 模组实体类型注册类
- * 负责注册本模组的所有实体类型到 Forge 注册表
- * 同时定义模型层位置，用于客户端渲染器绑定模型
- */
 public class ModEntityTypes {
-    /**
-     * 实体类型延迟注册表
-     * 使用 DeferredRegister 可以安全地在模组事件总线上注册实体
-     * 注册表类型为 ForgeRegistries.ENTITY_TYPES(实体类型注册表)
-     */
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister
             .create(ForgeRegistries.ENTITY_TYPES, MOD_ID);
 
-    /**
-     * 模型层位置已移至客户端类 ModEntityLayers 中
-     */
-
-    /**
-     * 征服者仆从实体类型注册对象
-     * 注册名为"conquillager_servant"的实体
-     * 使用 EntityType.Builder 配置实体属性:
-     * - 实体工厂方法：ConquillagerServant::new
-     * - 生物分类：MobCategory.MISC(杂项生物)
-     * - 实体大小：宽 0.6F, 高 1.95F
-     * - 客户端追踪范围：8 个区块
-     */
     public static final RegistryObject<EntityType<ConquillagerServant>> CONQUILLAGER_SERVANT = ENTITY_TYPES
             .register(
                     "conquillager_servant",
                     () -> EntityType.Builder.of(ConquillagerServant::new, MobCategory.MISC)
-                            .sized(0.6F, 1.95F) // 设置实体碰撞箱大小
-                            .clientTrackingRange(8) // 设置客户端同步距离
+                            .sized(0.6F, 1.95F)
+                            .clientTrackingRange(8)
                             .build(MOD_ID + ":conquillager_servant"));
 
-    /**
-     * 巡查官仆从实体类型注册对象
-     * 配置与征服者仆从类似，但使用 InquillagerServant 类
-     */
     public static final RegistryObject<EntityType<InquillagerServant>> INQUILLAGER_SERVANT = ENTITY_TYPES.register(
             "inquillager_servant",
             () -> EntityType.Builder.of(InquillagerServant::new, MobCategory.MISC)
@@ -69,9 +37,37 @@ public class ModEntityTypes {
                     .clientTrackingRange(8)
                     .build(MOD_ID + ":inquillager_servant"));
 
+    public static final RegistryObject<EntityType<DredenEntity>> DREDEN = ENTITY_TYPES.register(
+            "dreden",
+            () -> EntityType.Builder.of(DredenEntity::new, MobCategory.MONSTER)
+                    .sized(0.6F, 1.99F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":dreden"));
+
+    public static final RegistryObject<EntityType<DredenServant>> DREDEN_SERVANT = ENTITY_TYPES.register(
+            "dreden_servant",
+            () -> EntityType.Builder.of(DredenServant::new, MobCategory.MISC)
+                    .sized(0.6F, 1.99F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":dreden_servant"));
+
+    public static final RegistryObject<EntityType<Leapkelp>> LEAPKELP = ENTITY_TYPES.register(
+            "leapkelp",
+            () -> EntityType.Builder.of(Leapkelp::new, MobCategory.MISC)
+                    .sized(1.9F, 1.9F)
+                    .clientTrackingRange(10)
+                    .build(MOD_ID + ":leapkelp"));
+
+    public static final RegistryObject<EntityType<FrostBallEntity>> FROST_BALL = ENTITY_TYPES.register(
+            "frost_ball",
+            () -> EntityType.Builder.<FrostBallEntity>of((type, level) -> new FrostBallEntity(type, level), MobCategory.MISC)
+                    .sized(0.35F, 0.35F)
+                    .clientTrackingRange(4)
+                    .build(MOD_ID + ":frost_ball"));
+
     public static final RegistryObject<EntityType<SunkenNecromancerServant>> SUNKEN_NECROMANCER_SERVANT = ENTITY_TYPES.register(
             "sunken_necromancer_servant",
-            () -> EntityType.Builder.of(SunkenNecromancerServant::new, MobCategory.MONSTER)
+            () -> EntityType.Builder.of(SunkenNecromancerServant::new, MobCategory.MISC)
                     .sized(0.75F, 2.4875F)
                     .clientTrackingRange(8)
                     .build(MOD_ID + ":sunken_necromancer_servant"));
@@ -113,7 +109,7 @@ public class ModEntityTypes {
 
     public static final RegistryObject<EntityType<StrongZPiglinBruteServant>> STRONG_ZPIGLIN_BRUTE_SERVANT = ENTITY_TYPES.register(
             "strong_zpiglin_brute_servant",
-            () -> EntityType.Builder.of(StrongZPiglinBruteServant::new, MobCategory.MONSTER)
+            () -> EntityType.Builder.of(StrongZPiglinBruteServant::new, MobCategory.MISC)
                     .fireImmune()
                     .sized(0.6F, 1.95F)
                     .clientTrackingRange(8)
@@ -121,7 +117,7 @@ public class ModEntityTypes {
 
     public static final RegistryObject<EntityType<EliteZPiglinBruteServant>> ELITE_ZPIGLIN_BRUTE_SERVANT = ENTITY_TYPES.register(
             "elite_zpiglin_brute_servant",
-            () -> EntityType.Builder.of(EliteZPiglinBruteServant::new, MobCategory.MONSTER)
+            () -> EntityType.Builder.of(EliteZPiglinBruteServant::new, MobCategory.MISC)
                     .fireImmune()
                     .sized(0.6F, 1.95F)
                     .clientTrackingRange(8)
@@ -150,7 +146,7 @@ public class ModEntityTypes {
 
     public static final RegistryObject<EntityType<ZPiglinHunterServant>> ZPIGLIN_HUNTER_SERVANT = ENTITY_TYPES.register(
             "zpiglin_hunter_servant",
-            () -> EntityType.Builder.of(ZPiglinHunterServant::new, MobCategory.MONSTER)
+            () -> EntityType.Builder.of(ZPiglinHunterServant::new, MobCategory.MISC)
                     .fireImmune()
                     .sized(0.6F, 1.95F)
                     .clientTrackingRange(8)
@@ -158,7 +154,7 @@ public class ModEntityTypes {
 
     public static final RegistryObject<EntityType<StrongZPiglinHunterServant>> STRONG_ZPIGLIN_HUNTER_SERVANT = ENTITY_TYPES.register(
             "strong_zpiglin_hunter_servant",
-            () -> EntityType.Builder.of(StrongZPiglinHunterServant::new, MobCategory.MONSTER)
+            () -> EntityType.Builder.of(StrongZPiglinHunterServant::new, MobCategory.MISC)
                     .fireImmune()
                     .sized(0.6F, 1.95F)
                     .clientTrackingRange(8)
@@ -166,7 +162,7 @@ public class ModEntityTypes {
 
     public static final RegistryObject<EntityType<EliteZPiglinHunterServant>> ELITE_ZPIGLIN_HUNTER_SERVANT = ENTITY_TYPES.register(
             "elite_zpiglin_hunter_servant",
-            () -> EntityType.Builder.of(EliteZPiglinHunterServant::new, MobCategory.MONSTER)
+            () -> EntityType.Builder.of(EliteZPiglinHunterServant::new, MobCategory.MISC)
                     .fireImmune()
                     .sized(0.6F, 1.95F)
                     .clientTrackingRange(8)
@@ -187,14 +183,14 @@ public class ModEntityTypes {
 
     public static final RegistryObject<EntityType<HeresiarchServant>> HERESIARCH_SERVANT = ENTITY_TYPES.register(
             "heresiarch_servant",
-            () -> EntityType.Builder.of(HeresiarchServant::new, MobCategory.MONSTER)
+            () -> EntityType.Builder.of(HeresiarchServant::new, MobCategory.MISC)
                     .sized(0.75F, 2.4375F)
                     .clientTrackingRange(8)
                     .build(MOD_ID + ":heresiarch_servant"));
 
     public static final RegistryObject<EntityType<StormNecromancerServant>> STORM_NECROMANCER_SERVANT = ENTITY_TYPES.register(
             "storm_necromancer_servant",
-            () -> EntityType.Builder.of(StormNecromancerServant::new, MobCategory.MONSTER)
+            () -> EntityType.Builder.of(StormNecromancerServant::new, MobCategory.MISC)
                     .sized(0.75F, 2.4875F)
                     .clientTrackingRange(8)
                     .build(MOD_ID + ":storm_necromancer_servant"));
@@ -270,13 +266,6 @@ public class ModEntityTypes {
                     .clientTrackingRange(10)
                     .build(MOD_ID + ":urbhadhach_servant"));
 
-    // No longer used:Martyr
-    // public static final RegistryObject<EntityType<Martyr>> MARTYR = ENTITY_TYPES.register("martyr",
-    //         () -> EntityType.Builder.of(Martyr::new, MobCategory.MONSTER)
-    //                 .sized(0.6F, 1.95F)
-    //                 .clientTrackingRange(8)
-    //                 .build(MOD_ID + ":martyr"));
-
     public static final RegistryObject<EntityType<Thug>> THUG = ENTITY_TYPES.register("thug",
             () -> EntityType.Builder.of(Thug::new, MobCategory.MONSTER)
                     .sized(1.4F, 2.7F)
@@ -291,7 +280,7 @@ public class ModEntityTypes {
 
     public static final RegistryObject<EntityType<Scorch>> SCORCH = ENTITY_TYPES.register(
             "scorch",
-            () -> EntityType.Builder.of(Scorch::new, MobCategory.MONSTER)
+            () -> EntityType.Builder.of(Scorch::new, MobCategory.MISC)
                     .sized(0.4F, 0.8F)
                     .fireImmune()
                     .clientTrackingRange(8)
@@ -306,7 +295,7 @@ public class ModEntityTypes {
 
     public static final RegistryObject<EntityType<Returned>> RETURNED = ENTITY_TYPES.register(
             "returned",
-            () -> EntityType.Builder.of(Returned::new, MobCategory.MONSTER)
+            () -> EntityType.Builder.of(Returned::new, MobCategory.MISC)
                     .sized(0.6F, 1.95F)
                     .fireImmune()
                     .clientTrackingRange(8)
@@ -371,19 +360,51 @@ public class ModEntityTypes {
                     .updateInterval(1)
                     .build(MOD_ID + ":tremor_block"));
 
+    public static final RegistryObject<EntityType<EntityPoisonBall>> POISON_BALL = ENTITY_TYPES
+            .register("poison_ball",
+                    () -> EntityType.Builder.<EntityPoisonBall>of(
+                                    (type, worldIn) -> new EntityPoisonBall(type, worldIn), MobCategory.MISC)
+                            .sized(0.25F, 0.25F)
+                            .setTrackingRange(8)
+                            .build(MOD_ID + ":poison_ball"));
+
+    public static final RegistryObject<EntityType<FelBolt>> FEL_BOLT = ENTITY_TYPES
+            .register("fel_bolt",
+                    () -> EntityType.Builder.<FelBolt>of(
+                                    (type, worldIn) -> new FelBolt(type, worldIn), MobCategory.MISC)
+                            .sized(0.3125F, 0.3125F)
+                            .setTrackingRange(4)
+                            .build(MOD_ID + ":fel_bolt"));
+
     public static final RegistryObject<EntityType<Warg>> WARG = ENTITY_TYPES.register(
             "warg",
-            () -> EntityType.Builder.of(Warg::new, MobCategory.MONSTER)
+            () -> EntityType.Builder.of(Warg::new, MobCategory.MISC)
                     .sized(1.25F, 1.65F)
                     .clientTrackingRange(10)
                     .build(MOD_ID + ":warg"));
 
-    /**
-     * 注册实体类型到模组事件总线
-     * 必须在模组构造函数中调用此方法以完成注册
-     *
-     * @param modEventBus 模组事件总线对象
-     */
+    public static final RegistryObject<EntityType<Cerberus>> CERBERUS = ENTITY_TYPES.register(
+            "cerberus",
+            () -> EntityType.Builder.of(Cerberus::new, MobCategory.MISC)
+                    .sized(2.0F, 2.6F)
+                    .fireImmune()
+                    .clientTrackingRange(10)
+                    .build(MOD_ID + ":cerberus"));
+
+    public static final RegistryObject<EntityType<MiredServant>> MIRED_SERVANT = ENTITY_TYPES.register(
+            "mired_servant",
+            () -> EntityType.Builder.of(MiredServant::new, MobCategory.MISC)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":mired_servant"));
+
+    public static final RegistryObject<EntityType<BoggedServant>> BOGGED_SERVANT = ENTITY_TYPES.register(
+            "bogged_servant",
+            () -> EntityType.Builder.of(BoggedServant::new, MobCategory.MISC)
+                    .sized(0.6F, 1.99F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":bogged_servant"));
+
     public static void register(IEventBus modEventBus) {
         ENTITY_TYPES.register(modEventBus);
     }

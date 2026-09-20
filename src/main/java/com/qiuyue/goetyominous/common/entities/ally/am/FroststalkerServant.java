@@ -116,7 +116,7 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
         }
         SpawnGroupData data = super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
         if (reason == MobSpawnType.SPAWN_EGG || reason == MobSpawnType.MOB_SUMMONED) {
-            this.setAge(-200); // -200 ticks = 10s baby growth to adult
+            this.setAge(-2400);
         }
         return data;
     }

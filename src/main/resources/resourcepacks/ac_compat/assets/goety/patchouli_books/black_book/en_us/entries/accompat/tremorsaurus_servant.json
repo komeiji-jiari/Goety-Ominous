@@ -1,0 +1,28 @@
+{
+  "name": "Tremorsaurus",
+  "icon": "alexscaves:tremorsaurus_egg",
+  "category": "goety:primordialcaves",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You have learned how to bend the masters of the Primordial Caves to your will through the dark arts. The roar of these Tremorsauruses strikes fear into your enemies and inspires courage in your allies."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:tremorsaurus_servant",
+      "text": "Jurassic Park"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Wearing Wild Robe restores your dinosaurs' health. Feeding them any kind of meat heals your Tremorsaurus. Dinosaur Chops can be used to breed your Tremorsaurus; a breeding pair will lay an egg, and the hatchling will still recognize you as its master."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "You can ride your Tremorsaurus. Pressing the special ability key makes your Tremorsaurus unleash a roar, intimidating creatures and inspiring allied forces."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_tremorsaurus_to_tremorsaurus_servant"
+    }
+  ]
+}

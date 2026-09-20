@@ -1,0 +1,33 @@
+{
+  "name": "Mutant Shulker Servant",
+  "icon": "mutantmore:mutant_shulker_shell",
+  "category": "goety:mmcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Although the creation of the Shulkers that guard the End Cities remains a mystery, rather than attempting to mutate those End guardians, you begin to consider whether there might be a safer way to obtain a loyal Mutant Shulker."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goety:wicked_boline",
+      "text": "By killing a Mutant Shulker with a Wicked Boline, you can obtain a Shulker Embryo. Once you have the embryo, combined with Mutant Shulker Shells, some void-related items, Compound Z, and your ingenuity, you conceive a method to create your very own Mutant Shulker servant."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:mutant_shulker_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:mutant_shulker_servant",
+      "text": "Just like a biology lab experiment!"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Mutant Shulkers accept void-empowered items to enhance their abilities. Void Shards increase the power of their homing missiles, Voided Eyes infuse their bite with Void-Touched, and The Keeper's Echoes make them harder to bring down in battle."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Unfortunately, Mutant Shulkers do not count as void servants and cannot be healed by Void Robes. However, you can heal your Mutant Shulker by feeding it Ender Pearls. Additionally, you can customize your Mutant Shulker's color by using different dyes."
+    }
+  ]
+}

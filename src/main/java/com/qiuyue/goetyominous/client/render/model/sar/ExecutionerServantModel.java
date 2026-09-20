@@ -15,9 +15,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import com.Polarice3.Goety.common.entities.ally.illager.AbstractIllagerServant;
 import com.qiuyue.goetyominous.common.entities.ally.sar.ExecutionerServant;
 
-/**
- * ModelExecutioner - MCVinnyQ Created using Tabula 8.0.0
- */
 @OnlyIn(Dist.CLIENT)
 public class ExecutionerServantModel extends HumanoidModel<ExecutionerServant> {
     public ModelPart closedArms;
