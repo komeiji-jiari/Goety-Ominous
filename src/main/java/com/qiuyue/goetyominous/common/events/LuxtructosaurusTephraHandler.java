@@ -5,12 +5,14 @@ import com.github.alexmodguy.alexscaves.server.entity.item.TephraEntity;
 import com.qiuyue.goetyominous.common.entities.ally.ac.LuxtructosaurusServant;
 import com.qiuyue.goetyominous.common.entities.projectile.ServantTephraEntity;
 import com.qiuyue.goetyominous.common.entities.util.ServantMagmaLink;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -56,6 +58,13 @@ public class LuxtructosaurusTephraHandler {
         Vec3 restore = PENDING_VELOCITY_RESTORE.remove(entity.getUUID());
         if (restore != null) {
             entity.setDeltaMovement(restore);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onChunkLoad(ChunkEvent.Load event) {
+        if (event.getLevel() instanceof ServerLevel serverLevel) {
+            ServantMagmaLink.restoreChunk(serverLevel, event.getChunk().getPos());
         }
     }
 

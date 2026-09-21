@@ -2,12 +2,10 @@ package com.qiuyue.goetyominous.common.entities.util;
 
 import com.Polarice3.Goety.common.items.revive.ReviveServantItem;
 import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
-import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.github.alexmodguy.alexscaves.server.misc.ACTagRegistry;
 import com.qiuyue.goetyominous.common.entities.ally.ac.LuxtructosaurusServant;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -26,7 +24,7 @@ public class ExtinctionCatalystEntity extends ItemEntity {
     private static final double SUMMON_DISTANCE = 0.66D;
     private static final int CORE_SEARCH_INTERVAL = 20;
     private static final int VOLCANO_SCAN_RANGE = 64;
-    private static final int VOLCANO_SPAWN_OFFSET = 3;
+    private static final int VOLCANO_SPAWN_OFFSET = 2;
 
     private int coreSearchCooldown;
     private BlockPos corePos;
@@ -124,15 +122,12 @@ public class ExtinctionCatalystEntity extends ItemEntity {
         servant.setHealth(servant.getMaxHealth());
         servant.moveTo(spawnPos.getX() + 0.5D, spawnPos.getY(), spawnPos.getZ() + 0.5D,
                 this.random.nextFloat() * 360.0F, 0.0F);
+        servant.setInvisible(true);
+        servant.setEnraged(true);
+        servant.setAnimation(LuxtructosaurusServant.ANIMATION_SUMMON);
         if (!serverLevel.addFreshEntity(servant)) {
             return;
         }
-        servant.playSound(ACSoundRegistry.LUXTRUCTOSAURUS_SUMMON.get(), 6.0F, 1.0F);
-        Vec3 center = Vec3.atCenterOf(this.corePos);
-        serverLevel.sendParticles(ParticleTypes.LARGE_SMOKE, center.x, center.y + 0.5D, center.z,
-                24, 2.0D, 0.5D, 2.0D, 0.02D);
-        serverLevel.sendParticles(ParticleTypes.ASH, center.x, center.y + 0.5D, center.z,
-                48, 2.5D, 1.0D, 2.5D, 0.1D);
         stack.shrink(1);
     }
 
@@ -143,7 +138,8 @@ public class ExtinctionCatalystEntity extends ItemEntity {
         for (int x = -VOLCANO_SCAN_RANGE; x <= VOLCANO_SCAN_RANGE; ++x) {
             for (int z = -VOLCANO_SCAN_RANGE; z <= VOLCANO_SCAN_RANGE; ++z) {
                 mutable.set(this.corePos.getX() + x, this.corePos.getY(), this.corePos.getZ() + z);
-                if (!this.level().hasChunkAt(mutable)) {
+                if (!this.level().hasChunkAt(mutable)
+                        || !this.level().getBlockState(mutable).is(ACTagRegistry.VOLCANO_BLOCKS)) {
                     continue;
                 }
                 while (mutable.getY() < maxY && this.level().getBlockState(mutable).is(ACTagRegistry.VOLCANO_BLOCKS)) {

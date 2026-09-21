@@ -3,10 +3,12 @@ package com.qiuyue.goetyominous.common.entities.util;
 import com.github.alexmodguy.alexscaves.server.block.PrimalMagmaBlock;
 import com.qiuyue.goetyominous.common.entities.ally.ac.LuxtructosaurusServant;
 import com.qiuyue.goetyominous.config.MobsConfig;
+import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -32,6 +34,7 @@ public final class ServantMagmaLink {
 
     public static void tick(ServerLevel level, LuxtructosaurusServant servant) {
         if (!MobsConfig.LuxtructosaurusServantPrimalMagma.get()) {
+            release(level, servant);
             return;
         }
         ANCHORS.put(servant, Anchor.of(level, servant));
@@ -45,9 +48,32 @@ public final class ServantMagmaLink {
     }
 
     public static void release(ServerLevel level, LuxtructosaurusServant servant) {
-        if (ANCHORS.remove(servant) != null && !PrimalMagmaBlock.isBossActive(level)) {
-            AABB box = servant.getBoundingBox();
-            cool(level, box.inflate(HALO_RADIUS, HALO_HEIGHT, HALO_RADIUS));
+        if (ANCHORS.remove(servant) == null) {
+            return;
+        }
+        AABB box = servant.getBoundingBox();
+        cool(level, box.inflate(HALO_RADIUS, HALO_HEIGHT, HALO_RADIUS));
+    }
+
+    public static void restoreChunk(ServerLevel level, ChunkPos chunkPos) {
+        ServantMagmaData data = ServantMagmaData.get(level);
+        LongSet pending = data.pendingFor(chunkPos);
+        if (pending == null) {
+            return;
+        }
+        List<BlockPos> stale = new ArrayList<>();
+        for (long packed : pending) {
+            BlockPos pos = BlockPos.of(packed);
+            if (level.hasChunkAt(pos)) {
+                stale.add(pos);
+            }
+        }
+        for (BlockPos pos : stale) {
+            data.forget(pos.asLong());
+            dropMark(level, pos);
+        }
+        if (pending.isEmpty()) {
+            data.clearPending(chunkPos);
         }
     }
 
@@ -60,6 +86,7 @@ public final class ServantMagmaLink {
         if (anchors.isEmpty()) {
             return;
         }
+        ServantMagmaData data = ServantMagmaData.get(level);
         BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
         for (Anchor anchor : anchors) {
             int centerX = Mth.floor(anchor.x());
@@ -70,34 +97,97 @@ public final class ServantMagmaLink {
                     for (int dz = -SWEEP_RADIUS; dz <= SWEEP_RADIUS; ++dz) {
                         cursor.set(centerX + dx, centerY + dy, centerZ + dz);
                         BlockState state = magmaAt(level, cursor);
-                        if (state == null || state.getValue(PrimalMagmaBlock.PERMANENT)) {
+                        if (state == null) {
                             continue;
                         }
-                        boolean molten = wantedMolten(level, cursor, anchors);
-                        if (molten != state.getValue(PrimalMagmaBlock.ACTIVE)) {
-                            level.setBlockAndUpdate(cursor.immutable(), state.setValue(PrimalMagmaBlock.ACTIVE, molten));
+                        BlockPos pos = cursor.immutable();
+                        boolean permanent = state.getValue(PrimalMagmaBlock.PERMANENT);
+                        if (permanent && !data.isMarked(pos)) {
+                            continue;
+                        }
+                        if (wantedMolten(level, pos, anchors)) {
+                            data.mark(pos);
+                            if (!permanent || !state.getValue(PrimalMagmaBlock.ACTIVE)) {
+                                level.setBlockAndUpdate(pos, state.setValue(PrimalMagmaBlock.PERMANENT, true)
+                                        .setValue(PrimalMagmaBlock.ACTIVE, true));
+                            }
+                        } else {
+                            data.forget(pos.asLong());
+                            if (permanent || state.getValue(PrimalMagmaBlock.ACTIVE)) {
+                                dropMark(level, pos);
+                            }
                         }
                     }
                 }
             }
         }
+        coolAbandoned(level, data, anchors);
+    }
+
+    private static void coolAbandoned(ServerLevel level, ServantMagmaData data, List<Anchor> anchors) {
+        List<BlockPos> abandoned = null;
+        for (long packed : data.marked()) {
+            BlockPos pos = BlockPos.of(packed);
+            if (!level.hasChunkAt(pos) || wantedMolten(level, pos, anchors)) {
+                continue;
+            }
+            if (abandoned == null) {
+                abandoned = new ArrayList<>();
+            }
+            abandoned.add(pos);
+        }
+        if (abandoned == null) {
+            return;
+        }
+        for (BlockPos pos : abandoned) {
+            data.forget(pos.asLong());
+            dropMark(level, pos);
+        }
     }
 
     private static void cool(ServerLevel level, AABB box) {
+        ServantMagmaData data = ServantMagmaData.get(level);
         BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
         for (int y = Mth.floor(box.minY); y <= Mth.floor(box.maxY); ++y) {
             for (int x = Mth.floor(box.minX); x <= Mth.floor(box.maxX); ++x) {
                 for (int z = Mth.floor(box.minZ); z <= Mth.floor(box.maxZ); ++z) {
                     cursor.set(x, y, z);
                     BlockState state = magmaAt(level, cursor);
-                    if (state == null || !state.getValue(PrimalMagmaBlock.ACTIVE)
-                            || state.getValue(PrimalMagmaBlock.PERMANENT)) {
+                    if (state == null) {
                         continue;
                     }
-                    level.setBlockAndUpdate(cursor.immutable(), state.setValue(PrimalMagmaBlock.ACTIVE, false));
+                    boolean permanent = state.getValue(PrimalMagmaBlock.PERMANENT);
+                    if (permanent && !data.isMarked(cursor)) {
+                        continue;
+                    }
+                    if (!permanent && !state.getValue(PrimalMagmaBlock.ACTIVE)) {
+                        continue;
+                    }
+                    data.forget(cursor.asLong());
+                    dropMark(level, cursor);
                 }
             }
         }
+    }
+
+    private static void dropMark(ServerLevel level, BlockPos pos) {
+        BlockState state = magmaAt(level, pos);
+        if (state == null) {
+            return;
+        }
+        boolean permanent = state.getValue(PrimalMagmaBlock.PERMANENT);
+        boolean active = state.getValue(PrimalMagmaBlock.ACTIVE);
+        if (!permanent && !active) {
+            return;
+        }
+        if (PrimalMagmaBlock.isBossActive(level)) {
+            if (permanent) {
+                level.setBlockAndUpdate(pos, state.setValue(PrimalMagmaBlock.PERMANENT, false));
+            }
+            return;
+        }
+        level.setBlockAndUpdate(pos, state.setValue(PrimalMagmaBlock.PERMANENT, false)
+                .setValue(PrimalMagmaBlock.ACTIVE, false));
     }
 
     private static BlockState magmaAt(ServerLevel level, BlockPos pos) {
