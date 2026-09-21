@@ -42,13 +42,9 @@ public class RelicheirusServantPushTreesGoal extends MoveToBlockGoal {
         return this.relicheirus.getPushingTreesFor() > 0;
     }
 
-    private boolean mayPushTrees() {
-        return this.isAvailable() && (this.isFedPrimordialSoup() || this.relicheirus.getTarget() == null);
-    }
-
     @Override
     public boolean canUse() {
-        return !this.relicheirus.isBaby() && this.mayPushTrees() && super.canUse();
+        return !this.relicheirus.isBaby() && this.isAvailable() && this.isFedPrimordialSoup() && super.canUse();
     }
 
     @Override
@@ -58,9 +54,7 @@ public class RelicheirusServantPushTreesGoal extends MoveToBlockGoal {
 
     @Override
     protected int nextStartTick(net.minecraft.world.entity.PathfinderMob mob) {
-        return this.isFedPrimordialSoup()
-                ? reducedTickDelay(10 + this.relicheirus.getRandom().nextInt(20))
-                : super.nextStartTick(mob);
+        return reducedTickDelay(10 + this.relicheirus.getRandom().nextInt(20));
     }
 
     @Override

@@ -176,7 +176,7 @@ public class RelicheirusServant extends AnimalSummon implements LaysEggs, IAnima
         this.goalSelector.addGoal(2, new ServantBreedGoal<>(this, 1.0D));
         this.goalSelector.addGoal(3, new ServantLayEggGoal<>(this, (DinosaurEggBlock) this.createEggBlockState().getBlock(), 100, 1.0D));
         this.goalSelector.addGoal(4, new ServantTemptGoal(this, 1.1D, Ingredient.of(ACBlockRegistry.TREE_STAR.get()), false));
-        this.goalSelector.addGoal(5, new RelicheirusServantPushTreesGoal(this, 25));
+        this.goalSelector.addGoal(4, new RelicheirusServantPushTreesGoal(this, 25));
         this.goalSelector.addGoal(6, new RelicheirusServantNibblePewensGoal(this, 20));
         this.goalSelector.addGoal(7, new Summoned.WanderGoal<>(this, 0.8D));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));

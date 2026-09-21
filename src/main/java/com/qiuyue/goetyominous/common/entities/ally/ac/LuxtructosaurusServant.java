@@ -118,6 +118,7 @@ public class LuxtructosaurusServant extends Summoned
     public static final Animation ANIMATION_SPEAK = Animation.create(15);
     public static final Animation ANIMATION_ROAR = Animation.create(60);
     public static final Animation ANIMATION_EPIC_DEATH = Animation.create(120);
+    public static final Animation ANIMATION_SUMMON = Animation.create(120);
     public static final Animation ANIMATION_STOMP = Animation.create(50);
     public static final Animation ANIMATION_SPEW_FLAMES = Animation.create(80);
     public static final Animation ANIMATION_JUMP = Animation.create(45);
@@ -521,7 +522,7 @@ public class LuxtructosaurusServant extends Summoned
             this.roarFallbackTicks = 0;
             return;
         }
-        if (this.getAnimation() == ANIMATION_ROAR) {
+        if (this.getAnimation() == ANIMATION_ROAR || this.getAnimation() == ANIMATION_SUMMON) {
             this.roarFallbackTicks = 0;
             return;
         }
@@ -744,6 +745,10 @@ public class LuxtructosaurusServant extends Summoned
                 this.screenShakeAmount = 3.0F;
             }
             return;
+        }
+        if (this.getAnimation() == ANIMATION_SUMMON && this.getAnimationTick() > 5 && this.isInvisible()) {
+            this.setInvisible(false);
+            this.playSound(ACSoundRegistry.LUXTRUCTOSAURUS_SUMMON.get(), 3.0F, 1.0F);
         }
         if (this.isInWater() || this.horizontalCollision) {
             this.solidifyWater();
@@ -1081,6 +1086,9 @@ public class LuxtructosaurusServant extends Summoned
         if (this.getAnimation() == ANIMATION_EPIC_DEATH && this.getAnimationTick() < 110) {
             return -140.0F;
         }
+        if (this.getAnimation() == ANIMATION_SUMMON && this.getAnimationTick() < 70) {
+            return -60.0F;
+        }
         if (this.getAnimation() == ANIMATION_STOMP && this.getAnimationTick() <= 30) {
             return 30.0F;
         }
@@ -1097,6 +1105,9 @@ public class LuxtructosaurusServant extends Summoned
         if (this.getAnimation() == ANIMATION_EPIC_DEATH && this.getAnimationTick() < 110) {
             return (float) (Math.sin(this.getAnimationTick() * 0.1F) * 20.0);
         }
+        if (this.getAnimation() == ANIMATION_SUMMON && this.getAnimationTick() < 50) {
+            return 110.0F;
+        }
         if (this.getAnimation() == ANIMATION_SPEW_FLAMES && this.getAnimationTick() < 70) {
             return (float) (Math.sin(this.getAnimationTick() * 0.15F) * 40.0);
         }
@@ -1107,6 +1118,9 @@ public class LuxtructosaurusServant extends Summoned
     private float getNeckRotateSpeed() {
         if (this.getAnimation() == ANIMATION_ROAR && this.getAnimationTick() < 50) {
             return 30.0F;
+        }
+        if (this.getAnimation() == ANIMATION_SUMMON) {
+            return 2.0F;
         }
         if (this.getAnimation() == ANIMATION_SPEW_FLAMES && this.getAnimationTick() < 70) {
             return 40.0F;
@@ -1123,6 +1137,9 @@ public class LuxtructosaurusServant extends Summoned
         }
         if (this.getAnimation() == ANIMATION_EPIC_DEATH && this.getAnimationTick() < 110) {
             return -20.0F;
+        }
+        if (this.getAnimation() == ANIMATION_SUMMON) {
+            return -100.0F;
         }
         if (this.getAnimation() == ANIMATION_LEFT_WHIP || this.getAnimation() == ANIMATION_RIGHT_WHIP) {
             return this.getAnimationTick() > 20 ? -20.0F : 20.0F;
@@ -1274,7 +1291,8 @@ public class LuxtructosaurusServant extends Summoned
 
     @Override
     public boolean isImmobile() {
-        return this.getAnimation() == ANIMATION_ROAR && !this.isRiddenByPlayer() || super.isImmobile();
+        return (this.getAnimation() == ANIMATION_ROAR || this.getAnimation() == ANIMATION_SUMMON)
+                && !this.isRiddenByPlayer() || super.isImmobile();
     }
 
     @Override
@@ -1366,9 +1384,9 @@ public class LuxtructosaurusServant extends Summoned
 
     @Override
     public Animation[] getAnimations() {
-        return new Animation[]{ANIMATION_SPEAK, ANIMATION_ROAR, ANIMATION_EPIC_DEATH, ANIMATION_STOMP,
-                ANIMATION_SPEW_FLAMES, ANIMATION_JUMP, ANIMATION_LEFT_KICK, ANIMATION_RIGHT_KICK,
-                ANIMATION_LEFT_WHIP, ANIMATION_RIGHT_WHIP};
+        return new Animation[]{ANIMATION_SPEAK, ANIMATION_ROAR, ANIMATION_EPIC_DEATH, ANIMATION_SUMMON,
+                ANIMATION_STOMP, ANIMATION_SPEW_FLAMES, ANIMATION_JUMP, ANIMATION_LEFT_KICK,
+                ANIMATION_RIGHT_KICK, ANIMATION_LEFT_WHIP, ANIMATION_RIGHT_WHIP};
     }
 
     @Override

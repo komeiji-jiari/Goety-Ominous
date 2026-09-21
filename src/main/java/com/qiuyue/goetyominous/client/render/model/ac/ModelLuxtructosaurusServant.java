@@ -247,6 +247,15 @@ public class ModelLuxtructosaurusServant extends AdvancedEntityModel<Luxtructosa
         this.animator.endKeyframe();
         this.animator.setStaticKeyframe(100);
         this.animator.resetKeyframe(10);
+        this.animator.setAnimation(LuxtructosaurusServant.ANIMATION_SUMMON);
+        this.animator.startKeyframe(0);
+        this.animator.move(this.body, 0.0F, 200.0F, 0.0F);
+        this.animator.move(this.neck2, 0.0F, -5.0F, -5.0F);
+        this.animator.rotate(this.neck, (float) Math.toRadians(-50.0), 0.0F, 0.0F);
+        this.animator.rotate(this.neck2, (float) Math.toRadians(120.0), 0.0F, 0.0F);
+        this.animator.rotate(this.head, (float) Math.toRadians(50.0), 0.0F, 0.0F);
+        this.animator.endKeyframe();
+        this.animator.resetKeyframe(120);
         this.animator.setAnimation(LuxtructosaurusServant.ANIMATION_STOMP);
         this.animator.startKeyframe(20);
         this.animator.move(this.body, 0.0F, -25.0F, -23.0F);
