@@ -197,8 +197,11 @@ public class GrottoceratopsServant extends AnimalSummon implements LaysEggs, IAn
                 this.setTailSwingRot(Mth.approachDegrees(tailSwing, end, 25));
             }
             this.walkAnimation.setSpeed(1);
-        } else if (Math.abs(tailSwing) > 0.0F) {
-            this.setTailSwingRot(Mth.approachDegrees(tailSwing, 0, 20));
+        } else {
+            if (Math.abs(tailSwing) > 0.0F) {
+                this.setTailSwingRot(Mth.approachDegrees(tailSwing, 0, 20));
+            }
+            this.yBodyRot = Mth.approachDegrees(this.yBodyRotO, this.yBodyRot, (float) this.getHeadRotSpeed());
         }
         if (!this.level().isClientSide && ((this.getAnimation() == ANIMATION_SPEAK_1 && this.getAnimationTick() == 5) || (this.getAnimation() == ANIMATION_SPEAK_2 && this.getAnimationTick() == 2))) {
             actuallyPlayAmbientSound();
@@ -393,6 +396,13 @@ public class GrottoceratopsServant extends AnimalSummon implements LaysEggs, IAn
     @Override
     public boolean isFood(ItemStack stack) {
         return stack.is(ACBlockRegistry.TREE_STAR.get().asItem());
+    }
+
+    @Override
+    public void calculateEntityAnimation(boolean flying) {
+        float f1 = (float) Mth.length(this.getX() - this.xo, flying ? this.getY() - this.yo : 0.0D, this.getZ() - this.zo);
+        float f2 = Math.min(f1 * 8.0F, 1.0F);
+        this.walkAnimation.update(f2, 0.4F);
     }
 
     @Nullable
