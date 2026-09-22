@@ -18,6 +18,7 @@ import com.qiuyue.goetyominous.client.render.model.projectile.AcidFungus;
 import com.qiuyue.goetyominous.client.render.model.projectile.PitchforkModel;
 import com.qiuyue.goetyominous.client.render.projectile.*;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
+import com.qiuyue.goetyominous.common.init.ModSpellControllers;
 import com.qiuyue.goetyominous.compat.mod.*;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -852,6 +853,7 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.GROTTOCERATOPS_SPIRIT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderGrottoceratopsSpirit::new);
         }
+        event.registerEntityRenderer(ModSpellControllers.WITHER_BREATH_CONTROLLER.get(), EmptyRenderer::new);
     }
 
     @SubscribeEvent

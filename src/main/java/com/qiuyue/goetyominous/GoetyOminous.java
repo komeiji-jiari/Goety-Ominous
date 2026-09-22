@@ -83,6 +83,7 @@ public class GoetyOminous {
         modEventBus.addListener(this::onClientSetup);
         ModNetwork.init();
         ModEntityTypes.register(modEventBus);
+        ModSpellControllers.ENTITY_TYPES.register(modEventBus);
         ModContainerTypes.register(modEventBus);
         var biomeModifiers = DeferredRegister.create(
                 ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, GoetyOminous.MOD_ID);
