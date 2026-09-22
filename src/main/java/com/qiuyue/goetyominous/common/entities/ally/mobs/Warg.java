@@ -17,6 +17,7 @@ import com.qiuyue.goetyominous.common.blocks.entities.WolfTotemHooks;
 import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.common.items.CursedMetalWolfArmorItem;
 import com.qiuyue.goetyominous.common.items.CursedWargArmorItem;
+import com.qiuyue.goetyominous.common.items.curios.CroneRobeItem;
 import com.qiuyue.goetyominous.common.world.WargTotemData;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.minecraft.core.BlockPos;
@@ -302,9 +303,18 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
         } else if (this.getVariant() == Variant.MODERATE && entity instanceof LivingEntity livingEntity) {
             int amplifier = CuriosFinder.hasStormRobes(this.getMasterOwner()) ? 1 : 0;
             livingEntity.addEffect(new MobEffectInstance(GoetyEffects.SPASMS.get(), MathHelper.secondsToTicks(5), amplifier));
+        } else if (this.getVariant() == Variant.SWAMP && entity instanceof LivingEntity livingEntity) {
+            MobEffect poison = this.ownerHasCroneRobe() ? GoetyEffects.ACID_VENOM.get() : MobEffects.POISON;
+            livingEntity.addEffect(new MobEffectInstance(poison, MathHelper.secondsToTicks(4), 0), this);
         } else if (this.getVariant() != Variant.WARM) {
             super.curseTarget(entity);
         }
+    }
+
+    private boolean ownerHasCroneRobe() {
+        LivingEntity owner = this.getMasterOwner();
+        return owner != null
+                && CuriosFinder.hasCurio(owner, stack -> stack.getItem() instanceof CroneRobeItem);
     }
 
     @Override
@@ -314,11 +324,18 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
                 && (ModDamageSource.shockAttacks(source) || source.is(DamageTypeTags.IS_LIGHTNING))) {
             amount *= 0.5F;
         }
+        if (this.getVariant() == Variant.SWAMP && source.is(DamageTypeTags.WITCH_RESISTANT_TO)) {
+            amount *= 0.75F;
+        }
         return amount;
     }
 
-    @Override
     public boolean canBeAffected(MobEffectInstance effect) {
+        if (this.getVariant() == Variant.SWAMP
+                && (effect.getEffect() == MobEffects.POISON
+                || effect.getEffect() == GoetyEffects.ACID_VENOM.get())) {
+            return false;
+        }
         return super.canBeAffected(effect)
                 && (this.getVariant() != Variant.MODERATE || effect.getEffect() != GoetyEffects.SPASMS.get());
     }
@@ -1108,7 +1125,8 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
         MODERATE,
         WARM,
         SKELETAL,
-        GRAY;
+        GRAY,
+        SWAMP;
 
         public static Variant byId(int id) {
             return values()[Mth.clamp(id, 0, values().length - 1)];

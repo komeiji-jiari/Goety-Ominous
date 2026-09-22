@@ -1,0 +1,24 @@
+{
+  "name": "Dicer",
+  "icon": "opposing_force:laser_core",
+  "category": "goety:ofcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Using the knowledge of deceased artisans, you command the souls of the dead to create an ancient automaton capable of firing lasers. On rare occasions, elite individuals stronger than other Dicer Servants may appear."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:dicer_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:dicer_servant",
+      "text": "Cuts through iron like mud"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Repair your Dicer by holding an Iron Ingot or by wearing Storm Robe."
+    }
+  ]
+}

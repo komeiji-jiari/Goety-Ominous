@@ -1,0 +1,24 @@
+{
+  "name": "切削者",
+  "icon": "opposing_force:laser_core",
+  "category": "goety:ofcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "通过已故工匠的知识，你指示死者的灵魂为你创建出一种能够发射激光的古代机兵。很少见的情况下，可能会出现比其他切削者仆从更强大的精英个体。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:dicer_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:dicer_servant",
+      "text": "削铁如泥"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "手持铁锭或穿着风暴长袍即可修复你的切削者。"
+    }
+  ]
+}

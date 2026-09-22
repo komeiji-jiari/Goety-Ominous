@@ -45,7 +45,9 @@
     "MixinGravestoneBlockEntity",
     "SkeletonServantBowIntervalMixin",
     "SkeletonSpellBoggedMixin",
-    "AbstractSkeletonServantBoggedMixin"
+    "AbstractSkeletonServantBoggedMixin",
+    "HuntingSpellSwampWolfMixin",
+    "BlackWolfSwampWolfMixin"
   ],
   "client": [],
   "server": [],

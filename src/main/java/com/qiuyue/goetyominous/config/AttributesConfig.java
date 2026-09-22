@@ -527,6 +527,18 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> DicerServantMovementSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> DicerServantAttackDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> DicerServantAttackKnockback;
+    public static final ForgeConfigSpec.ConfigValue<Double> DicerServantFollowRange;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> VoltServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> VoltServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> VoltServantFollowRange;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> TremblerServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> TremblerServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> TremblerServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> TremblerServantAttackDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> TremblerServantAttackKnockback;
+    public static final ForgeConfigSpec.ConfigValue<Double> TremblerServantKnockbackResistance;
 
     static {
         BUILDER.push("Servants Attributes");
@@ -1551,25 +1563,51 @@ public class AttributesConfig {
         BUILDER.pop();
 
         BUILDER.push("Rambler Servant");
-        RamblerServantHealth = BUILDER.comment("How much Max Health Rambler Servants have, Default: 60.0 (matches Opposing Force Rambler)")
+        RamblerServantHealth = BUILDER.comment("How much Max Health Rambler Servants have, Default: 60.0")
                 .defineInRange("ramblerServantHealth", 60.0, 1.0, Double.MAX_VALUE);
-        RamblerServantMovementSpeed = BUILDER.comment("How much Movement Speed Rambler Servants have, Default: 0.15 (matches Opposing Force Rambler)")
+        RamblerServantMovementSpeed = BUILDER.comment("How much Movement Speed Rambler Servants have, Default: 0.15")
                 .defineInRange("ramblerServantMovementSpeed", 0.15, 0.0, Double.MAX_VALUE);
-        RamblerServantAttackDamage = BUILDER.comment("How much Attack Damage Rambler Servants have, Default: 5.0 (matches Opposing Force Rambler)")
+        RamblerServantAttackDamage = BUILDER.comment("How much Attack Damage Rambler Servants have, Default: 5.0")
                 .defineInRange("ramblerServantAttackDamage", 5.0, 0.0, Double.MAX_VALUE);
-        RamblerServantAttackKnockback = BUILDER.comment("How much Attack Knockback Rambler Servants have, Default: 0.3 (matches Opposing Force Rambler)")
+        RamblerServantAttackKnockback = BUILDER.comment("How much Attack Knockback Rambler Servants have, Default: 0.3")
                 .defineInRange("ramblerServantAttackKnockback", 0.3, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
 
+        BUILDER.push("Volt Servant");
+        VoltServantHealth = BUILDER.comment("How much Max Health Volt Servants have, Default: 16.0 (matches Opposing Force Volt)")
+                .defineInRange("voltServantHealth", 16.0, 1.0, Double.MAX_VALUE);
+        VoltServantMovementSpeed = BUILDER.comment("How much Movement Speed Volt Servants have, Default: 0.21 (matches Opposing Force Volt)")
+                .defineInRange("voltServantMovementSpeed", 0.21, 0.0, Double.MAX_VALUE);
+        VoltServantFollowRange = BUILDER.comment("How much Follow Range Volt Servants have, Default: 32.0 (matches Opposing Force Volt)")
+                .defineInRange("voltServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
         BUILDER.push("Dicer Servant");
-        DicerServantHealth = BUILDER.comment("How much Max Health Dicer Servants have, Default: 36.0 (matches Opposing Force Dicer)")
+        DicerServantHealth = BUILDER.comment("How much Max Health Dicer Servants have, Default: 36.0")
                 .defineInRange("dicerServantHealth", 36.0, 1.0, Double.MAX_VALUE);
-        DicerServantMovementSpeed = BUILDER.comment("How much Movement Speed Dicer Servants have, Default: 0.2 (matches Opposing Force Dicer)")
+        DicerServantMovementSpeed = BUILDER.comment("How much Movement Speed Dicer Servants have, Default: 0.2")
                 .defineInRange("dicerServantMovementSpeed", 0.2, 0.0, Double.MAX_VALUE);
-        DicerServantAttackDamage = BUILDER.comment("How much Attack Damage Dicer Servants have, Default: 8.0 (matches Opposing Force Dicer)")
+        DicerServantAttackDamage = BUILDER.comment("How much Attack Damage Dicer Servants have, Default: 8.0")
                 .defineInRange("dicerServantAttackDamage", 8.0, 0.0, Double.MAX_VALUE);
         DicerServantAttackKnockback = BUILDER.comment("How much Attack Knockback Dicer Servants have, Default: 0.3")
                 .defineInRange("dicerServantAttackKnockback", 0.3, 0.0, Double.MAX_VALUE);
+        DicerServantFollowRange = BUILDER.comment("How much Follow Range Dicer Servants have, Default: 24.0")
+                .defineInRange("dicerServantFollowRange", 24.0, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Trembler Servant");
+        TremblerServantHealth = BUILDER.comment("How much Max Health Trembler Servants have, Default: 16.0")
+                .defineInRange("tremblerServantHealth", 16.0, 1.0, Double.MAX_VALUE);
+        TremblerServantArmor = BUILDER.comment("How much Armor Trembler Servants have, Default: 20.0")
+                .defineInRange("tremblerServantArmor", 20.0, 0.0, Double.MAX_VALUE);
+        TremblerServantMovementSpeed = BUILDER.comment("How much Movement Speed Trembler Servants have, Default: 0.15")
+                .defineInRange("tremblerServantMovementSpeed", 0.15, 0.0, Double.MAX_VALUE);
+        TremblerServantAttackDamage = BUILDER.comment("How much Attack Damage Trembler Servants have, Default: 5.0")
+                .defineInRange("tremblerServantAttackDamage", 5.0, 0.0, Double.MAX_VALUE);
+        TremblerServantAttackKnockback = BUILDER.comment("How much Attack Knockback Trembler Servants have, Default: 1.0")
+                .defineInRange("tremblerServantAttackKnockback", 1.0, 0.0, Double.MAX_VALUE);
+        TremblerServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Trembler Servants have, Default: 0.5")
+                .defineInRange("tremblerServantKnockbackResistance", 0.5, 0.0, 1.0);
         BUILDER.pop();
 
         BUILDER.pop();

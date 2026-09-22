@@ -1,26 +1,36 @@
 package com.qiuyue.goetyominous.common.entities.ally.of;
 
+import com.Polarice3.Goety.client.particles.ModParticleTypes;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
+import com.Polarice3.Goety.init.ModMobType;
 import com.Polarice3.Goety.utils.MobUtil;
+import com.Polarice3.Goety.utils.ModDamageSource;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.TremblerServantRollGoal;
+import com.qiuyue.goetyominous.config.AttributesConfig;
+import com.qiuyue.goetyominous.config.MobsConfig;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
 import com.unusualmodding.opposing_force.entity.utils.EliteVariant;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import com.unusualmodding.opposing_force.registry.tags.OPDamageTypeTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AnimationState;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
@@ -33,12 +43,18 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import java.time.LocalDate;
+import java.time.Month;
 
 public class TremblerServant extends Summoned implements EliteVariant {
     private static final EntityDataAccessor<Boolean> ROLLING;
@@ -58,12 +74,12 @@ public class TremblerServant extends Summoned implements EliteVariant {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 16.0D)
-                .add(Attributes.ARMOR, 20.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.15D)
-                .add(Attributes.ATTACK_DAMAGE, 5.0D)
-                .add(Attributes.ATTACK_KNOCKBACK, 1.0D)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.5D);
+                .add(Attributes.MAX_HEALTH, AttributesConfig.TremblerServantHealth.get())
+                .add(Attributes.ARMOR, AttributesConfig.TremblerServantArmor.get())
+                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.TremblerServantMovementSpeed.get())
+                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.TremblerServantAttackDamage.get())
+                .add(Attributes.ATTACK_KNOCKBACK, AttributesConfig.TremblerServantAttackKnockback.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.TremblerServantKnockbackResistance.get());
     }
 
     @Override
@@ -72,7 +88,7 @@ public class TremblerServant extends Summoned implements EliteVariant {
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, false, false,
                 (target) -> target instanceof Enemy && !MobUtil.areAllies(this, target)));
         this.goalSelector.addGoal(1, new TremblerServantRollGoal(this));
-        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0));
+        this.goalSelector.addGoal(5, new Summoned.WanderGoal<>(this, 1.0D, 110, 0.001F));
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
     }
@@ -99,6 +115,74 @@ public class TremblerServant extends Summoned implements EliteVariant {
         this.entityData.define(ROLL_COOLDOWN, 60);
         this.entityData.define(STUNNED_TICKS, 0);
         this.entityData.define(TURBO, false);
+    }
+
+    @Override
+    public MobType getMobType() {
+        return ModMobType.NATURAL;
+    }
+
+    @Override
+    public int getSummonLimit(LivingEntity owner) {
+        return MobsConfig.TremblerServantLimit.get();
+    }
+
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (this.getTrueOwner() == player
+                && stack.is(Items.SLIME_BALL)
+                && this.getHealth() < this.getMaxHealth()) {
+            if (!this.level().isClientSide) {
+                if (!player.getAbilities().instabuild) {
+                    stack.shrink(1);
+                }
+                this.heal(2.0F);
+                this.playSound(SoundEvents.SLIME_SQUISH_SMALL, 1.0F, 1.0F);
+                this.gameEvent(GameEvent.EAT, this);
+                if (this.level() instanceof ServerLevel serverLevel) {
+                    for (int i = 0; i < 7; ++i) {
+                        double d0 = this.random.nextGaussian() * 0.02D;
+                        double d1 = this.random.nextGaussian() * 0.02D + 0.1D;
+                        double d2 = this.random.nextGaussian() * 0.02D;
+                        serverLevel.sendParticles(ModParticleTypes.HEAL_EFFECT.get(),
+                                this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D),
+                                0, d0, d1, d2, 0.5D);
+                    }
+                }
+            }
+            player.swing(hand);
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
+        }
+        return super.mobInteract(player, hand);
+    }
+
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
+                                        MobSpawnType spawnType, @Nullable SpawnGroupData spawnData,
+                                        @Nullable CompoundTag compoundTag) {
+        spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData, compoundTag);
+
+        RandomSource random = level.getRandom();
+        if (random.nextInt(this.getEliteSpawnChance()) == 0) {
+            this.setElite(true);
+            this.setEliteStats(this);
+        }
+
+        return spawnData;
+    }
+
+    @Override
+    public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
+        super.addAdditionalSaveData(compoundTag);
+        compoundTag.putBoolean("Turbo", this.isElite());
+    }
+
+    @Override
+    public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
+        super.readAdditionalSaveData(compoundTag);
+        this.setElite(compoundTag.getBoolean("Turbo"));
     }
 
     public boolean isRolling() {
@@ -217,7 +301,11 @@ public class TremblerServant extends Summoned implements EliteVariant {
         if (this.isInvulnerableTo(damageSource)) {
             return false;
         }
-        if (!damageSource.is(OPDamageTypeTags.DAMAGES_ROLLING_TREMBLER) && this.isRolling()) {
+        if (this.isRolling()
+                && !damageSource.is(OPDamageTypeTags.DAMAGES_ROLLING_TREMBLER)
+                && !damageSource.is(ModDamageSource.DISMISSED)
+                && !damageSource.is(DamageTypes.STARVE)
+                && !damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             this.playSound(OPSoundEvents.TREMBLER_BLOCK.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
             return false;
         }
@@ -229,9 +317,17 @@ public class TremblerServant extends Summoned implements EliteVariant {
         return !this.isRolling();
     }
 
+    @Override
+    public int getAmbientSoundInterval() {
+        return 200;
+    }
+
     @Nullable
     protected SoundEvent getAmbientSound() {
-        return OPSoundEvents.TREMBLER_IDLE.get();
+        boolean valiant = this.random.nextInt(1000) == 0 && this.getName().getString().equalsIgnoreCase("valiant");
+        LocalDate today = LocalDate.now();
+        boolean aprilFools = today.getMonth() == Month.APRIL && today.getDayOfMonth() == 1;
+        return valiant || aprilFools ? OPSoundEvents.TREMBLER_IDLE_FUNNY.get() : OPSoundEvents.TREMBLER_IDLE.get();
     }
 
     protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource damageSource) {

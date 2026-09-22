@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.of;
 
+import com.Polarice3.Goety.client.particles.ModParticleTypes;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.utils.MobUtil;
@@ -17,6 +18,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -26,6 +28,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
@@ -40,6 +43,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -74,25 +78,28 @@ public class DicerServant extends Summoned implements AttackState, EliteVariant 
                 .add(Attributes.MAX_HEALTH, AttributesConfig.DicerServantHealth.get())
                 .add(Attributes.MOVEMENT_SPEED, AttributesConfig.DicerServantMovementSpeed.get())
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.DicerServantAttackDamage.get())
-                .add(Attributes.ATTACK_KNOCKBACK, AttributesConfig.DicerServantAttackKnockback.get());
+                .add(Attributes.ATTACK_KNOCKBACK, AttributesConfig.DicerServantAttackKnockback.get())
+                .add(Attributes.FOLLOW_RANGE, AttributesConfig.DicerServantFollowRange.get());
     }
 
     protected void registerGoals() {
         super.registerGoals();
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, false, false,
                 (target) -> target instanceof Enemy && !MobUtil.areAllies(this, target)));
+        this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new DicerServantLaserGoal(this));
         this.goalSelector.addGoal(2, new DicerServantAttackGoal(this));
-        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0));
-        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0F));
-        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(5, new Summoned.WanderGoal<>(this, 1.0D, 110, 0.001F));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
     }
 
     protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
         return new SmoothGroundPathNavigation(this, level);
     }
 
-    public float getStepHeight() {
+    @Override
+    public float maxUpStep() {
         return this.getAttackState() == 3 ? 1.1F : 0.6F;
     }
 
@@ -134,7 +141,17 @@ public class DicerServant extends Summoned implements AttackState, EliteVariant 
                 stack.shrink(1);
                 this.heal(8.0F);
                 this.playSound(SoundEvents.IRON_GOLEM_REPAIR, 1.0F, 1.0F);
-                this.level().broadcastEntityEvent(this, (byte) 20);
+                this.gameEvent(GameEvent.EAT, this);
+                if (this.level() instanceof ServerLevel serverLevel) {
+                    for (int i = 0; i < 7; ++i) {
+                        double d0 = this.random.nextGaussian() * 0.02D;
+                        double d1 = this.random.nextGaussian() * 0.02D + 0.1D;
+                        double d2 = this.random.nextGaussian() * 0.02D;
+                        serverLevel.sendParticles(ModParticleTypes.HEAL_EFFECT.get(),
+                                this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D),
+                                0, d0, d1, d2, 0.5D);
+                    }
+                }
             }
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
@@ -314,7 +331,7 @@ public class DicerServant extends Summoned implements AttackState, EliteVariant 
     }
 
     protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState state) {
-        this.playSound(SoundEvents.METAL_STEP, 0.1F, 1.3F);
+        this.playSound(SoundEvents.ZOMBIE_STEP, 0.1F, 1.3F);
     }
 
     @Nullable

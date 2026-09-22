@@ -74,6 +74,9 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> LicowitchSummonLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> MineGuardianServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> DicerServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> TremblerServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> VoltServantLimit;
+
     public static final ForgeConfigSpec.ConfigValue<Integer> MWSSoulShieldHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> MWSSoulShieldDamageBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> MWSHowlingSoulHealthBouns;
@@ -209,6 +212,14 @@ public class MobsConfig {
         DicerServantLimit = BUILDER
                 .comment("Maximum number of Dicer Servants that can be summoned (Default: 8)")
                 .defineInRange("dicerServantLimit", 8, 1, 100);
+
+        TremblerServantLimit = BUILDER
+                .comment("Maximum number of Trembler Servants that can be summoned (Default: 16)")
+                .defineInRange("tremblerServantLimit", 16, 1, 100);
+
+        VoltServantLimit = BUILDER
+                .comment("Maximum number of Volt Servants that can be summoned (Default: 12)")
+                .defineInRange("voltServantLimit", 12, 1, 100);
 
         UrbhadhachServantLimit = BUILDER
                 .comment("Maximum number of Urbhadhach Servants that can be summoned (Default: 8)")

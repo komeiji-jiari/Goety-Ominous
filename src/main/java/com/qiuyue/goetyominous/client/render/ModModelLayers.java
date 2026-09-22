@@ -238,6 +238,10 @@ public class ModModelLayers {
             event.registerLayerDefinition(ModEntityLayers.VOLT_SERVANT_LAYER,
                     com.qiuyue.goetyominous.client.render.model.of.VoltServantModel::createBodyLayer);
 
+            event.registerLayerDefinition(ModEntityLayers.VOLT_SERVANT_CHARGED_LAYER,
+                    () -> com.qiuyue.goetyominous.client.render.model.of.VoltServantModel.createBodyLayer(
+                            new net.minecraft.client.model.geom.builders.CubeDeformation(1.0F)));
+
             event.registerLayerDefinition(ModEntityLayers.TREMBLER_SERVANT_LAYER,
                     com.qiuyue.goetyominous.client.render.model.of.TremblerServantModel::createBodyLayer);
         }
@@ -413,6 +417,8 @@ public class ModModelLayers {
         event.registerEntityRenderer(ModEntityTypes.MIRED_SERVANT.get(), MiredServantRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.BOGGED_SERVANT.get(), BoggedServantRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.SWAMP_WOLF.get(), SwampWolfRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.BURNING_POTION.get(), BurningPotionRenderer::new);
 
@@ -838,6 +844,13 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.SERVANT_TEPHRA.get(),
                     com.qiuyue.goetyominous.client.render.ac.ServantTephraRenderer::new);
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.TREMORSAURUS_SPIRIT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderTremorsaurusSpirit::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.GROTTOCERATOPS_SPIRIT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderGrottoceratopsSpirit::new);
         }
     }
 

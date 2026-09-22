@@ -77,6 +77,20 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> PrimalPackSummonDown;
     public static final ForgeConfigSpec.ConfigValue<Integer> PrimalPackCoolDown;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> TremorSpiritCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> TremorSpiritTime;
+    public static final ForgeConfigSpec.ConfigValue<Integer> TremorSpiritCoolDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> TremorSpiritBuffSeconds;
+    public static final ForgeConfigSpec.ConfigValue<Integer> TremorSpiritSpiritCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Double> TremorSpiritDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> TremorSpiritDamagePerPotency;
+    public static final ForgeConfigSpec.ConfigValue<Double> TremorSpiritStaffBonus;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> GrottoSpiritCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> GrottoSpiritCastTime;
+    public static final ForgeConfigSpec.ConfigValue<Integer> GrottoSpiritCoolDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> GrottoSpiritTime;
+
     public static final ForgeConfigSpec.ConfigValue<Integer> HogChargeSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> HogChargeCooldown;
     public static final ForgeConfigSpec.ConfigValue<Double> HogChargeDamage;
@@ -220,6 +234,36 @@ public class SpellConfig {
                 .defineInRange("primalPackSummonDown", 100, 0, 72000);
         PrimalPackCoolDown = BUILDER.comment("Cooldown of Primal Pack spell in ticks (Default: 120)")
                 .defineInRange("primalPackCoolDown", 120, 0, 72000);
+        BUILDER.pop();
+
+        BUILDER.push("Tremor Spirit");
+        TremorSpiritCost = BUILDER.comment("Soul cost of Tremor Spirit spell (Default: 24)")
+                .defineInRange("tremorSpiritCost", 24, 0, Integer.MAX_VALUE);
+        TremorSpiritTime = BUILDER.comment("Cast duration of Tremor Spirit spell in ticks, Default: 60")
+                .defineInRange("tremorSpiritTime", 60, 0, 72000);
+        TremorSpiritCoolDown = BUILDER.comment("Cooldown of Tremor Spirit spell in ticks, Default: 600")
+                .defineInRange("tremorSpiritCoolDown", 600, 0, 72000);
+        TremorSpiritBuffSeconds = BUILDER.comment("Base Tremor Spirit buff duration in seconds, multiplied by spell duration, Default: 30")
+                .defineInRange("tremorSpiritBuffSeconds", 30, 1, 72000);
+        TremorSpiritSpiritCooldown = BUILDER.comment("Ticks a player must wait between two spirit attacks, Default: 30")
+                .defineInRange("tremorSpiritSpiritCooldown", 30, 0, 7200);
+        TremorSpiritDamage = BUILDER.comment("Base damage of the Tremorsaurus spirit, Default: 3.0")
+                .defineInRange("tremorSpiritDamage", 3.0D, 0.0D, Double.MAX_VALUE);
+        TremorSpiritDamagePerPotency = BUILDER.comment("Extra damage per potency level, Default: 2.0")
+                .defineInRange("tremorSpiritDamagePerPotency", 2.0D, 0.0D, Double.MAX_VALUE);
+        TremorSpiritStaffBonus = BUILDER.comment("Extra damage when the buff was cast with a matching staff, Default: 2.0")
+                .defineInRange("tremorSpiritStaffBonus", 2.0D, 0.0D, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Grotto Spirit");
+        GrottoSpiritCost = BUILDER.comment("Soul cost of Grotto Spirit spell, Default: 100")
+                .defineInRange("grottoSpiritCost", 100, 0, Integer.MAX_VALUE);
+        GrottoSpiritCastTime = BUILDER.comment("Cast duration of Grotto Spirit spell in ticks, Default: 100")
+                .defineInRange("grottoSpiritCastTime", 100, 0, 72000);
+        GrottoSpiritCoolDown = BUILDER.comment("Cooldown of Grotto Spirit spell in ticks, Default: 6000")
+                .defineInRange("grottoSpiritCoolDown", 6000, 0, 72000);
+        GrottoSpiritTime = BUILDER.comment("Lifetime of the Grotto Spirits in ticks, Default: 1500 (75s)")
+                .defineInRange("grottoSpiritTime", 1500, 1, 72000);
         BUILDER.pop();
 
         BUILDER.push("Sand Spell");

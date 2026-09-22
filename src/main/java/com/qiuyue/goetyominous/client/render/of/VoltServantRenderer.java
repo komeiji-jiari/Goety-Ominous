@@ -1,6 +1,8 @@
 package com.qiuyue.goetyominous.client.render.of;
 
 import com.qiuyue.goetyominous.client.init.ModEntityLayers;
+import com.qiuyue.goetyominous.client.render.layer.of.VoltServantChargedLayer;
+import com.qiuyue.goetyominous.client.render.layer.of.VoltServantGlowLayer;
 import com.qiuyue.goetyominous.client.render.model.of.VoltServantModel;
 import com.qiuyue.goetyominous.common.entities.ally.of.VoltServant;
 import net.minecraft.client.renderer.RenderType;
@@ -19,6 +21,8 @@ public class VoltServantRenderer extends MobRenderer<VoltServant, VoltServantMod
 
     public VoltServantRenderer(EntityRendererProvider.Context context) {
         super(context, new VoltServantModel(context.bakeLayer(ModEntityLayers.VOLT_SERVANT_LAYER)), 0.5F);
+        this.addLayer(new VoltServantGlowLayer(this));
+        this.addLayer(new VoltServantChargedLayer(this, context.getModelSet()));
     }
 
     @Override

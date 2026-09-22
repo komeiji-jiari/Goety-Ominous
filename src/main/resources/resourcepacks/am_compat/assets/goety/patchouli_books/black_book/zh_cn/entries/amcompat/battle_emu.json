@@ -1,0 +1,24 @@
+{
+  "name": "战斗鸸鹋",
+  "icon": "alexsmobs:emu_feather",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "传说中这些不会飞的鸟类曾经踏平过一个国家，因为它们可以躲避箭的袭击，并有着巨大种族数量和惊人的速度。通过一些黑魔法，你设法训练出了你的战斗鸸鹋。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:emu_servant",
+      "text": "鸸鹋战争"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "这些战斗鸸鹋极为擅长躲避弹射物，在对抗远程生物时具有天然优势。你可以用小麦来治愈或者繁殖你的战斗鸸鹋，它们会像哪些野外的亲戚们一样产下可食用的鸸鹋蛋。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:battle_emu"
+    }
+  ]
+}
