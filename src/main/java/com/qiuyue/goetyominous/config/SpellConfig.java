@@ -527,8 +527,8 @@ public class SpellConfig {
         BUILDER.pop();
 
         BUILDER.push("Wither Breath");
-        WitherBreathSoulCost = BUILDER.comment("Soul cost of Wither Breath spell (Default: 24)")
-                .defineInRange("witherBreathSoulCost", 24, 1, 100);
+        WitherBreathSoulCost = BUILDER.comment("Soul cost per second during Wither Breath channel, Default: 24")
+                .defineInRange("witherBreathSoulCost", 24, 1, 1000);
         WitherBreathCooldown = BUILDER.comment("Cooldown of Wither Breath spell in ticks (Default: 400)")
                 .defineInRange("witherBreathCooldown", 400, 0, 2000);
         BUILDER.pop();
