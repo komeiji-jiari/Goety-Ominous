@@ -1,0 +1,28 @@
+{
+  "name": "Black Wolf Variants",
+  "icon": "minecraft:bone",
+  "category": "goety:summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "It seems the wolf pack has expanded its ranks. As an outstanding pack leader, you naturally won't overlook the pack's potential."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:swamp_wolf",
+      "scale": 0.5
+    },
+    {
+      "type": "patchouli:text",
+      "text": "You have heard legends of certain poisoning hounds lurking in swamps that drag adventurers into their dark lairs. The methods for taming and controlling them are essentially no different from other Black Wolves. They are summoned by casting $(l:focuses/wild/hunting_focus)Hunting spell$() with a Witch's staff, or through another ritual."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:swamp_wolf"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "These Plague wolves' bites carry poison. If the summoner is equipped with a crone's uniform, the Plague Wolf's attacks will inflict Acid Venom instead of Poison."
+    }
+  ]
+}

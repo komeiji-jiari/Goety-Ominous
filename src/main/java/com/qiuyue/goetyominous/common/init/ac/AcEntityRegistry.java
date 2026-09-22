@@ -1,33 +1,7 @@
 package com.qiuyue.goetyominous.common.init.ac;
 
 import com.qiuyue.goetyominous.GoetyOminous;
-import com.qiuyue.goetyominous.common.entities.ally.ac.AtlatitanServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.BrainiacServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.CandicornServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.CaniacServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.CaramelCubeServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.CorrodentServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneKnightServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneMageServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.ForsakenServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.GammaroachServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.GrottoceratopsServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.GumbeeperServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.GummyBearServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.LicowitchServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.LuxtructosaurusServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.MeltedCaramelServantEntity;
-import com.qiuyue.goetyominous.common.entities.ally.ac.MineGuardianServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.NucleeperServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.RelicheirusServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.TeletorServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.TeletorWeaponServantEntity;
-import com.qiuyue.goetyominous.common.entities.ally.ac.TremorsaurusServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.TremorzillaServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.VallumraptorServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.VesperServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.*;
 import com.qiuyue.goetyominous.common.entities.projectile.*;
 import com.qiuyue.goetyominous.common.entities.util.ExtinctionCatalystEntity;
 import com.qiuyue.goetyominous.common.entities.util.PureDarkVoid;
@@ -327,6 +301,26 @@ public class AcEntityRegistry {
                             .setUpdateInterval(1)
                             .fireImmune()
                             .build(GoetyOminous.MOD_ID + ":servant_tephra"));
+
+    public static final RegistryObject<EntityType<TremorsaurusSpiritEntity>> TREMORSAURUS_SPIRIT =
+            AC_ENTITIES.register("tremorsaurus_spirit",
+                    () -> EntityType.Builder.<TremorsaurusSpiritEntity>of((type, worldIn) -> new TremorsaurusSpiritEntity(type, worldIn), MobCategory.MISC)
+                            .sized(1.0F, 1.0F)
+                            .setCustomClientFactory((spawnEntity, world) -> new TremorsaurusSpiritEntity(spawnEntity, world))
+                            .setUpdateInterval(1)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":tremorsaurus_spirit"));
+
+    public static final RegistryObject<EntityType<GrottoceratopsSpiritEntity>> GROTTOCERATOPS_SPIRIT =
+            AC_ENTITIES.register("grottoceratops_spirit",
+                    () -> EntityType.Builder.<GrottoceratopsSpiritEntity>of((type, worldIn) -> new GrottoceratopsSpiritEntity(type, worldIn), MobCategory.MISC)
+                            .sized(1.0F, 1.0F)
+                            .setCustomClientFactory((spawnEntity, world) -> new GrottoceratopsSpiritEntity(spawnEntity, world))
+                            .setUpdateInterval(1)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":grottoceratops_spirit"));
 
     public static void register(IEventBus modEventBus) {
         AC_ENTITIES.register(modEventBus);

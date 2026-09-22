@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "nfn",
+    "beb",
+    "nbn"
+  ],
+  "key":
+  {
+    "b":
+    {
+      "item": "alexscaves:flood_basalt"
+    },
+    "f":
+    {
+      "item": "alexscaves:tectonic_shard"
+    },
+    "e":
+    {
+      "item": "goety:fire_breath_focus"
+    },
+    "n":
+    {
+      "item": "alexscaves:primal_magma"
+    }
+  },
+  "result": {
+    "item": "goetyominous:extinction_breath_focus"
+  }
+}

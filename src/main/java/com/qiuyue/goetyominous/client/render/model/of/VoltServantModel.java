@@ -2,13 +2,16 @@ package com.qiuyue.goetyominous.client.render.model.of;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.of.VoltServant;
 import com.unusualmodding.opposing_force.client.animations.VoltAnimations;
 import com.unusualmodding.opposing_force.client.models.entity.VoltModel;
 import com.unusualmodding.opposing_force.client.models.entity.base.OPModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Pose;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -47,16 +50,20 @@ public class VoltServantModel extends OPModel<VoltServant> {
     }
 
     public static LayerDefinition createBodyLayer() {
-        return VoltModel.createBodyLayer(CubeDeformation.NONE);
+        return createBodyLayer(CubeDeformation.NONE);
+    }
+
+    public static LayerDefinition createBodyLayer(CubeDeformation deformation) {
+        return VoltModel.createBodyLayer(deformation);
     }
 
     public void setupAnim(VoltServant entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.root().getAllParts().forEach(ModelPart::resetPose);
         if (entity.getPose() == Pose.STANDING) {
             if (entity.isInWater()) {
-                this.animateWalk(VoltAnimations.SWIM, limbSwing, limbSwingAmount, 1.0F, 1.0F);
+                this.animateWalk(VoltAnimations.SWIM, limbSwing, limbSwingAmount, 2.5F, 5.0F);   // ★ 对齐 OF
             } else {
-                this.animateWalk(VoltAnimations.WALK, limbSwing, limbSwingAmount, 2.0F, 2.0F);
+                this.animateWalk(VoltAnimations.WALK, limbSwing, limbSwingAmount, 3.0F, 6.0F);   // ★ 对齐 OF
             }
         }
         this.animateIdle(entity.idleAnimationState, VoltAnimations.IDLE, ageInTicks, 1.0F, limbSwingAmount * 4.0F);
@@ -66,9 +73,11 @@ public class VoltServantModel extends OPModel<VoltServant> {
         this.animate(entity.jumpAnimationState, VoltAnimations.JUMP_START, ageInTicks);
         this.animate(entity.fallingAnimationState, VoltAnimations.JUMP_FALL, ageInTicks);
         this.animate(entity.landingAnimationState, VoltAnimations.JUMP_END, ageInTicks);
-        this.animate(entity.leapAnimationState, VoltAnimations.JUMP_START, ageInTicks);
         this.animate(entity.twitch1AnimationState, VoltAnimations.TWITCH1, ageInTicks);
         this.animate(entity.twitch2AnimationState, VoltAnimations.TWITCH2, ageInTicks);
+        if (entity.isInWaterOrBubble()) {
+            this.root.xRot = headPitch * ((float) Math.PI / 180F) / 2.0F;
+        }
     }
 
     public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {

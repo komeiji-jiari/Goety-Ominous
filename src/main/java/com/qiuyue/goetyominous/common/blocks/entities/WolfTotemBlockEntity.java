@@ -12,6 +12,7 @@ import com.Polarice3.Goety.config.MainConfig;
 import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.EntityFinder;
 import com.qiuyue.goetyominous.common.init.ModBlockEntities;
+import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import net.minecraft.world.level.block.RespawnAnchorBlock;
 import net.minecraft.world.phys.Vec3;
 import com.qiuyue.goetyominous.utils.GoetyOminousWolfArmorUtil;
@@ -40,6 +41,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.common.Tags;
 
 import java.util.*;
 
@@ -125,6 +127,8 @@ public class WolfTotemBlockEntity extends TrainingBlockEntity {
             entityType = ModEntityType.SKELETON_WOLF.get();
         } else if (serverLevel.getBiome(spawnPos).value().coldEnoughToSnow(spawnPos)) {
             entityType = ModEntityType.WINTER_WOLF.get();
+        } else if (serverLevel.getBiome(spawnPos).is(Tags.Biomes.IS_SWAMP)) {
+            entityType = ModEntityTypes.SWAMP_WOLF.get();
         } else if (serverLevel.isThundering() && serverLevel.canSeeSky(spawnPos)) {
             entityType = ModEntityType.STORMHOUND.get();
         }

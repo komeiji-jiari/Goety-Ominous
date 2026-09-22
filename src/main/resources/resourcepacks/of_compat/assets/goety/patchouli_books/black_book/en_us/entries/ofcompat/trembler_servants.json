@@ -1,0 +1,24 @@
+{
+  "name": "Tremblers",
+  "icon": "opposing_force:trembler_shell",
+  "category": "goety:ofcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Trembler is a servant far faster than it looks. Its shell provides ample protection, and it can roll forward to slam into creatures along its path. On rare occasions, elite individuals stronger than other Trembler Servants may appear."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:trembler_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:trembler_servant",
+      "text": "I can move like lightning in an instant!"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Feed your Trembler servant Slime Balls to heal it. Wearing Wild Robe provides passive healing for your Trembler."
+    }
+  ]
+}

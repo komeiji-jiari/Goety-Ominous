@@ -221,4 +221,7 @@ public class ModEntityLayers {
 
     public static final ModelLayerLocation TREMBLER_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "trembler_servant"), "main");
+
+    public static final ModelLayerLocation VOLT_SERVANT_CHARGED_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "volt_servant_charged"), "main");
 }

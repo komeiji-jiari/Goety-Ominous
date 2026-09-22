@@ -405,6 +405,13 @@ public class ModEntityTypes {
                     .clientTrackingRange(8)
                     .build(MOD_ID + ":bogged_servant"));
 
+    public static final RegistryObject<EntityType<SwampWolf>> SWAMP_WOLF = ENTITY_TYPES.register(
+            "swamp_wolf",
+            () -> EntityType.Builder.of(SwampWolf::new, MobCategory.MISC)
+                    .sized(0.6F, 0.85F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":swamp_wolf"));
+
     public static void register(IEventBus modEventBus) {
         ENTITY_TYPES.register(modEventBus);
     }

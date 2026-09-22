@@ -5,9 +5,7 @@ import com.Polarice3.Goety.common.items.magic.MagicFocus;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
-import com.qiuyue.goetyominous.common.magic.spells.ac.ExtinctionBreathSpell;
-import com.qiuyue.goetyominous.common.magic.spells.ac.ExtinctionMeteorSpell;
-import com.qiuyue.goetyominous.common.magic.spells.ac.PrimalPackSpell;
+import com.qiuyue.goetyominous.common.magic.spells.ac.*;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -152,6 +150,12 @@ public class AcItems {
 
     public static final RegistryObject<Item> PRIMAL_PACK_FOCUS = AC_ITEMS.register("primal_pack_focus",
             () -> new MagicFocus(new PrimalPackSpell()));
+
+    public static final RegistryObject<Item> TREMOR_SPIRIT_FOCUS = AC_ITEMS.register("tremor_spirit_focus",
+            () -> new MagicFocus(new TremorSpiritSpell()));
+
+    public static final RegistryObject<Item> GROTTO_SPIRIT_FOCUS = AC_ITEMS.register("grotto_spirit_focus",
+            () -> new MagicFocus(new GrottoceratopsSpiritSpell()));
 
     public static final RegistryObject<Item> RAYCAT_AMULET =
             AC_ITEMS.register("raycat_amulet", () -> new RaycatAmuletItem());

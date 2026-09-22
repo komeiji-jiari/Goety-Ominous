@@ -1,11 +1,15 @@
 package com.qiuyue.goetyominous.common.entities.ally.of;
 
+import com.Polarice3.Goety.common.entities.ai.servant.ServantFollowOwnerGoal;
+import com.Polarice3.Goety.common.entities.ai.servant.ServantFollowOwnerWaterGoal;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.VoltServantLeapGoal;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.VoltServantShootGoal;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.VoltServantShootInWaterGoal;
+import com.qiuyue.goetyominous.config.AttributesConfig;
+import com.qiuyue.goetyominous.config.MobsConfig;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
 import com.unusualmodding.opposing_force.entity.utils.AttackState;
 import com.unusualmodding.opposing_force.entity.utils.EliteVariant;
@@ -19,6 +23,9 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -27,12 +34,11 @@ import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
-import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.AmphibiousPathNavigation;
+import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
@@ -40,12 +46,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.AnimationState;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
-public class VoltServant extends Summoned implements AttackState, EliteVariant {
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+
+public class VoltServant extends Summoned implements AttackState, EliteVariant, PowerableMob {
     private static final EntityDataAccessor<Integer> ATTACK_STATE;
     private static final EntityDataAccessor<Boolean> CHARGED;
     private static final EntityDataAccessor<Boolean> ELITE;
@@ -85,10 +95,9 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 40.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.3D)
-                .add(Attributes.ATTACK_DAMAGE, 5.0D)
-                .add(Attributes.ATTACK_KNOCKBACK, 0.5D);
+                .add(Attributes.MAX_HEALTH, AttributesConfig.VoltServantHealth.get())
+                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.VoltServantMovementSpeed.get())
+                .add(Attributes.FOLLOW_RANGE, AttributesConfig.VoltServantFollowRange.get());
     }
 
     @Override
@@ -99,8 +108,18 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
         this.goalSelector.addGoal(1, new VoltServantLeapGoal(this));
         this.goalSelector.addGoal(2, new VoltServantShootGoal(this));
         this.goalSelector.addGoal(2, new VoltServantShootInWaterGoal(this));
-        this.goalSelector.addGoal(3, new RandomSwimmingGoal(this, 1.0D, 10));
-        this.goalSelector.addGoal(3, new VoltRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(5, new Summoned.WanderGoal<>(this, 1.0D, 110, 0.001F));
+        this.goalSelector.addGoal(5, new RandomSwimmingGoal(this, 1.0D, 10) {
+            @Override
+            public boolean canUse() {
+                return super.canUse() && !VoltServant.this.isStaying() && !VoltServant.this.isCommanded();
+            }
+
+            @Override
+            public boolean canContinueToUse() {
+                return super.canContinueToUse() && !VoltServant.this.isStaying() && !VoltServant.this.isCommanded();
+            }
+        });
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
     }
@@ -121,6 +140,35 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
             this.navigation = new AmphibiousPathNavigation(this, this.level());
             this.lookControl = new SmoothSwimmingLookControl(this, 10);
             this.isLandNavigator = false;
+        }
+        this.rebuildFollowGoal();
+    }
+
+    @Override
+    public void followGoal() {
+    }
+
+    @Override
+    public boolean isPushedByFluid() {
+        return false;
+    }
+
+    @Override
+    public boolean canBreatheUnderwater() {
+        return true;
+    }
+
+    private void rebuildFollowGoal() {
+        for (WrappedGoal wrapped : new ArrayList<>(this.goalSelector.getAvailableGoals())) {
+            Goal goal = wrapped.getGoal();
+            if (goal instanceof ServantFollowOwnerGoal<?> || goal instanceof ServantFollowOwnerWaterGoal<?>) {
+                this.goalSelector.removeGoal(goal);
+            }
+        }
+        if (this.navigation instanceof GroundPathNavigation || this.navigation instanceof FlyingPathNavigation) {
+            this.goalSelector.addGoal(4, new Summoned.FollowOwnerGoal<>(this, this.getFollowSpeed(), 10.0F, 2.0F));
+        } else {
+            this.goalSelector.addGoal(4, new Summoned.FollowOwnerWaterGoal(this, this.getFollowSpeed(), 10.0F, 2.0F));
         }
     }
 
@@ -144,6 +192,16 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
             return 10.0F;
         }
         return 0.0F;
+    }
+
+    @Override
+    public MobType getMobType() {
+        return MobType.WATER;
+    }
+
+    @Override
+    public boolean isPowered() {
+        return this.isCharged();
     }
 
     @Override
@@ -385,13 +443,10 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        if (super.isInvulnerableTo(source)) {
-            return true;
-        }
-        if (source.is(OPDamageTypes.ELECTRIC)) {
-            return true;
-        }
-        return source.is(OPDamageTypes.ELECTRIFIED);
+        return super.isInvulnerableTo(source)
+                || source.is(DamageTypeTags.IS_FALL)
+                || source.is(OPDamageTypes.ELECTRIC)
+                || source.is(OPDamageTypes.ELECTRIFIED);
     }
 
     @Override
@@ -410,14 +465,33 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant {
     }
 
     @Override
-    public void thunderHit(ServerLevel level, LightningBolt lightning) {
-        this.setCharged(true);
-        this.heal(this.getMaxHealth());
+    public int getSummonLimit(LivingEntity owner) {
+        return MobsConfig.VoltServantLimit.get();
+    }
+
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
+                                        MobSpawnType spawnType, @Nullable SpawnGroupData spawnData,
+                                        @Nullable CompoundTag compoundTag) {
+        spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData, compoundTag);
+        RandomSource random = level.getRandom();
+        if (random.nextInt(this.getEliteSpawnChance()) == 0) {
+            this.setElite(true);
+            this.setEliteStats(this);
+        }
+        return spawnData;
     }
 
     @Override
-    public int getExperienceReward() {
+    public int getAmbientSoundInterval() {
         return 400;
+    }
+
+    @Override
+    public void thunderHit(ServerLevel level, LightningBolt lightning) {
+        this.setCharged(true);
+        this.heal(this.getMaxHealth());
     }
 
     public void setEliteStats(Mob mob) {

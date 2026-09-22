@@ -32,8 +32,11 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -139,6 +142,37 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
             }
         }
         return count;
+    }
+
+    public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
+        ItemStack itemstack = pPlayer.getItemInHand(pHand);
+        if (this.getTrueOwner() != null && pPlayer == this.getTrueOwner()) {
+            if (itemstack.is(ItemTags.FISHES) && this.getHealth() < this.getMaxHealth()) {
+                if (!pPlayer.getAbilities().instabuild) {
+                    itemstack.shrink(1);
+                }
+
+                this.playSound(SoundEvents.GENERIC_EAT, 1.0F, 1.0F);
+                this.heal(5.0F);
+                Level var5 = this.level();
+                if (var5 instanceof ServerLevel) {
+                    ServerLevel serverLevel = (ServerLevel)var5;
+
+                    for (int i = 0; i < 7; ++i) {
+                        double d0 = this.random.nextGaussian() * 0.02;
+                        double d1 = this.random.nextGaussian() * 0.02;
+                        double d2 = this.random.nextGaussian() * 0.02;
+                        serverLevel.sendParticles((SimpleParticleType) ModParticleTypes.HEAL_EFFECT.get(),
+                                this.getRandomX(1.0), this.getRandomY() + 0.5, this.getRandomZ(1.0),
+                                0, d0, d1, d2, 0.5);
+                    }
+                }
+
+                return InteractionResult.SUCCESS;
+            }
+        }
+
+        return InteractionResult.PASS;
     }
 
     @Override

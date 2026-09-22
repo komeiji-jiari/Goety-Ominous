@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.am;
 
+import com.Polarice3.Goety.client.particles.ModParticleTypes;
 import com.Polarice3.Goety.common.entities.ally.AnimalSummon;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
@@ -19,6 +20,7 @@ import com.qiuyue.goetyominous.config.MobsConfig;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -28,6 +30,8 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -47,9 +51,12 @@ import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Pillager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 
 public class EmuServant extends AnimalSummon implements IAnimatedEntity {
@@ -59,6 +66,7 @@ public class EmuServant extends AnimalSummon implements IAnimatedEntity {
     public static final Animation ANIMATION_PECK_GROUND = EntityEmu.ANIMATION_PECK_GROUND;
     public static final Animation ANIMATION_SCRATCH = EntityEmu.ANIMATION_SCRATCH;
     public static final Animation ANIMATION_PUZZLED = EntityEmu.ANIMATION_PUZZLED;
+    private static final float SEED_HEAL = 2.0F;
 
     private static final EntityDataAccessor<Integer> VARIANT =
             SynchedEntityData.defineId(EmuServant.class, EntityDataSerializers.INT);
@@ -130,9 +138,41 @@ public class EmuServant extends AnimalSummon implements IAnimatedEntity {
         }
     }
 
+    public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
+        ItemStack itemstack = pPlayer.getItemInHand(pHand);
+        if (this.getTrueOwner() != null && pPlayer == this.getTrueOwner()) {
+            if (this.isFood(itemstack)) {
+                return super.mobInteract(pPlayer, pHand);
+            }
+            if (itemstack.is(Items.WHEAT_SEEDS) && this.getHealth() < this.getMaxHealth()) {
+                if (!this.level().isClientSide) {
+                    this.heal(SEED_HEAL);
+                    if (!pPlayer.getAbilities().instabuild) {
+                        itemstack.shrink(1);
+                    }
+                    this.gameEvent(GameEvent.EAT, this);
+                    this.eat(this.level(), itemstack);
+                    if (this.level() instanceof ServerLevel serverLevel) {
+                        for (int i = 0; i < 7; ++i) {
+                            double d0 = this.random.nextGaussian() * 0.02;
+                            double d1 = this.random.nextGaussian() * 0.02 + 0.1;
+                            double d2 = this.random.nextGaussian() * 0.02;
+                            serverLevel.sendParticles(ModParticleTypes.HEAL_EFFECT.get(),
+                                    this.getRandomX(1.0), this.getRandomY() + 0.5, this.getRandomZ(1.0),
+                                    0, d0, d1, d2, 0.5);
+                        }
+                    }
+                }
+                pPlayer.swing(pHand);
+                return InteractionResult.SUCCESS;
+            }
+        }
+        return super.mobInteract(pPlayer, pHand);
+    }
+
     @Override
     public boolean isFood(ItemStack stack) {
-        return stack.is(AMTagRegistry.EMU_BREEDABLES);
+        return stack.is(Items.WHEAT);
     }
 
     @Override

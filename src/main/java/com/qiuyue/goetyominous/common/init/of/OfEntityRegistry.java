@@ -40,7 +40,7 @@ public class OfEntityRegistry {
     public static final RegistryObject<EntityType<TremblerServant>> TREMBLER_SERVANT =
             OF_ENTITIES.register("trembler_servant",
                     () -> EntityType.Builder.<TremblerServant>of(TremblerServant::new, MobCategory.MISC)
-                            .sized(1.1F, 1.0F)
+                            .sized(0.8F, 0.9F)
                             .setTrackingRange(10)
                             .build(GoetyOminous.MOD_ID + ":trembler_servant"));
 

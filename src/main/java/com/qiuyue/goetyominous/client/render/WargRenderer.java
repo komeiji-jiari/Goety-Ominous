@@ -20,6 +20,7 @@ import net.minecraft.resources.ResourceLocation;
 public class WargRenderer extends MobRenderer<Warg, WargModel> {
     private static final ResourceLocation BLACK = tex("black_warg.png");
     private static final ResourceLocation COLD = tex("winter_warg.png");
+    private static final ResourceLocation SWAMP = tex("swamp_warg.png");
     private static final ResourceLocation MODERATE = tex("storm_warg.png");
     private static final ResourceLocation WARM = tex("warg_warm.png");
     private static final ResourceLocation SKELETAL = tex("skeletal_warg.png");
@@ -29,6 +30,7 @@ public class WargRenderer extends MobRenderer<Warg, WargModel> {
 
     private static final ResourceLocation BLACK_EYES = tex("black_warg_eyes.png");
     private static final ResourceLocation COLD_EYES = tex("winter_warg_eyes.png");
+    private static final ResourceLocation SWAMP_EYES = tex("swamp_warg_eyes.png");
     private static final ResourceLocation MODERATE_EYES = tex("storm_warg_eyes.png");
     private static final ResourceLocation WARM_EYES = tex("warg_warm_eyes.png");
     private static final ResourceLocation SKELETAL_EYES = tex("skeletal_warg_eyes.png");
@@ -57,6 +59,7 @@ public class WargRenderer extends MobRenderer<Warg, WargModel> {
             case COLD -> COLD;
             case MODERATE -> MODERATE;
             case WARM -> WARM;
+            case SWAMP -> SWAMP;
             case SKELETAL -> SKELETAL;
             case GRAY -> GRAY;
             default -> BLACK;
@@ -71,6 +74,7 @@ public class WargRenderer extends MobRenderer<Warg, WargModel> {
             case COLD -> COLD_EYES;
             case MODERATE -> MODERATE_EYES;
             case WARM -> WARM_EYES;
+            case SWAMP -> SWAMP_EYES;
             case SKELETAL -> SKELETAL_EYES;
             case GRAY -> GRAY_EYES;
             default -> BLACK_EYES;

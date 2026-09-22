@@ -12,6 +12,7 @@ import com.Polarice3.Goety.utils.MathHelper;
 import com.Polarice3.Goety.utils.ModDamageSource;
 import com.Polarice3.Goety.utils.ServerParticleUtil;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.Cerberus;
+import com.qiuyue.goetyominous.common.entities.ally.mobs.SwampWolf;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.Warg;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.common.world.CerberusTotemData;
@@ -191,6 +192,7 @@ public class WolfTotemHooks {
         warg.setVariant(wolf instanceof SkeletonWolf ? Warg.Variant.SKELETAL
                 : wolf instanceof WinterWolf ? Warg.Variant.COLD
                 : wolf instanceof Stormhound ? Warg.Variant.MODERATE
+                : wolf instanceof SwampWolf ? Warg.Variant.SWAMP
                 : wolf instanceof Wolf ? Warg.Variant.GRAY
                 : Warg.Variant.BLACK);
         if (wolf instanceof IServant servant) {

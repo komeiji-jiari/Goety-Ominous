@@ -12,6 +12,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TremorsaurusServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.TremorsaurusSpiritEntity;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -422,6 +423,24 @@ public class ModelTremorsaurusServant extends AdvancedEntityModel<TremorsaurusSe
         this.body.translateAndRotate(pose);
         this.neck.translateAndRotate(pose);
         this.head.translateAndRotate(pose);
+    }
+
+    public void animateSpirit(TremorsaurusSpiritEntity entity, float partialTicks) {
+        this.resetToDefaultPose();
+        float abilityProgress = entity.getAbilityProgress(partialTicks);
+        float middleProgress = (float) Math.sin(abilityProgress * Math.PI);
+        this.progressRotationPrev(this.neck, middleProgress, toRad(-20.0F), 0.0F, 0.0F, 1.0F);
+        this.progressRotationPrev(this.head, middleProgress, toRad(-70.0F), 0.0F, 0.0F, 1.0F);
+        this.progressRotationPrev(this.jaw, middleProgress, toRad(70.0F), 0.0F, 0.0F, 1.0F);
+        this.progressPositionPrev(this.neck, abilityProgress, 0.0F, -4.0F, -9.0F, 1.0F);
+    }
+
+    public void renderSpiritToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLightIn,
+                                     int packedOverlayIn, float red, float green, float blue, float alpha) {
+        poseStack.pushPose();
+        poseStack.translate(0.0F, 1.3F, 1.0F);
+        this.neck.render(poseStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        poseStack.popPose();
     }
 
     private float walkValue(float limbSwing, float limbSwingAmount, float speed, float offset, float degree, boolean inverse) {

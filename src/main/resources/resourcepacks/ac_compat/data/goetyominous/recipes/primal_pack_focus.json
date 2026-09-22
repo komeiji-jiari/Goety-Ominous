@@ -2,7 +2,7 @@
   "type": "goety:ritual",
   "ritual_type": "goety:craft",
   "activation_item": {
-    "item": "alexscaves:serene_salad"
+    "item": "goety:empty_focus"
   },
   "craftType": "overgrown",
   "soulCost": 1,
@@ -27,7 +27,7 @@
       "item": "alexscaves:curly_fern"
     },
     {
-      "item": "alexscaves:curly_fern"
+      "item": "alexscaves:serene_salad"
     },
     {
       "item": "goety:magic_emerald"

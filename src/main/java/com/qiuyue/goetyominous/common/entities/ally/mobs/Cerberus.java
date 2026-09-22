@@ -8,6 +8,7 @@ import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.common.magic.spells.nether.FireBreathSpell;
 import com.Polarice3.Goety.config.SpellConfig;
 import com.Polarice3.Goety.init.ModMobType;
+import com.Polarice3.Goety.utils.CuriosFinder;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.ModDamageSource;
 import com.Polarice3.Goety.utils.WandUtil;
@@ -263,7 +264,15 @@ public class Cerberus extends Warg implements IBreathing {
     public void doBreathing(Entity target) {
         SpellStat stats = this.breathStats();
         float damage = SpellConfig.FireBreathDamage.get().floatValue() * WandUtil.damageMultiply() + stats.getPotency();
-        if (target.hurt(ModDamageSource.fireBreath(this, this), damage)) {
+        DamageSource source = ModDamageSource.fireBreath(this, this);
+        LivingEntity owner = this.getMasterOwner();
+        if (owner != null && CuriosFinder.hasNetherRobe(owner)) {
+            source = ModDamageSource.magicFireBreath(this, this);
+            if (target.fireImmune()) {
+                damage *= 0.5F;
+            }
+        }
+        if (target.hurt(source, damage)) {
             target.setSecondsOnFire(5 * stats.getBurning());
         }
     }

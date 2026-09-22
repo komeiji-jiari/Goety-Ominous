@@ -1,0 +1,22 @@
+{
+  "name": "角龙灵魂聚晶",
+  "icon": "goetyominous:grotto_spirit_focus",
+  "category": "goety:primordialcaves",
+  "advancement": "goety:goety/read_bygone_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "这个法术允许你召唤出洞穴角龙的灵魂来保护你。当你受到伤害时，一个洞穴角龙的灵魂将会破碎并完全吸收本次伤害。和壁垒聚晶一样，这个法术召唤出的角龙灵魂只能持续一段时间。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:grotto_spirit_focus",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "下界魔杖允许你每次额外多召唤一个角龙灵魂。对着你的友军使用这个法术，可以为他们提供角龙灵魂的保护。"
+    }
+  ]
+}

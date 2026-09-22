@@ -356,9 +356,17 @@ public class ModItems {
             "urbhadhach_servant_spawn_egg",
             () -> new ServantSpawnEggItem(ModEntityTypes.URBHADHACH_SERVANT, 0x484848, 0x88CCFF, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> SWAMP_WOLF_SPAWN_EGG = ITEMS.register(
+            "swamp_wolf_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.SWAMP_WOLF, 0x3A4A2A, 0x7A8C4F, egg()));
+
     public static final RegistryObject<WargSpawnEggItem> WARG_SPAWN_EGG = ITEMS.register(
             "warg_spawn_egg",
             () -> new WargSpawnEggItem(ModEntityTypes.WARG, 0x17141B, 0x6B6572, egg(), Warg.Variant.BLACK, false));
+
+    public static final RegistryObject<WargSpawnEggItem> SWAMP_WARG_SPAWN_EGG = ITEMS.register(
+            "swamp_warg_spawn_egg",
+            () -> new WargSpawnEggItem(ModEntityTypes.WARG, 0x3A4A2A, 0x7A8C4F, egg(), Warg.Variant.SWAMP, false));
 
     public static final RegistryObject<WargSpawnEggItem> WINTER_WARG_SPAWN_EGG = ITEMS.register(
             "winter_warg_spawn_egg",

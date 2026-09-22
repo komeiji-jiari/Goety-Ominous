@@ -68,7 +68,12 @@ public class DicerServantLaser extends DicerLaser {
     public void tick() {
         super.tick();
         if (this.caster != null && this.caster.isAlive() && !this.isRemoved()) {
-            this.setPos(this.caster.getX(), this.caster.getY() + 2.45, this.caster.getZ());
+            this.setYaw((float) ((this.caster.yHeadRot + 90.0F) * Math.PI / 180.0D));
+            this.setPitch((float) (-this.caster.getXRot() * Math.PI / 180.0D));
+            Vec3 offset = this.caster.getLookAngle().normalize().scale(0.75D);
+            this.setPos(this.caster.getX() + offset.x(),
+                    this.caster.getY() + 2.45D + offset.y(),
+                    this.caster.getZ() + offset.z());
         }
     }
 }
