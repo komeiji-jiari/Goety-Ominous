@@ -865,7 +865,7 @@ public class AtlatitanServant extends AnimalSummon
     @Override
     public boolean hurt(DamageSource source, float amount) {
         if (source.is(DamageTypeTags.IS_PROJECTILE)) {
-            amount *= this.getProjectileDamageReduction();
+            amount *= PartProjectileHits.projectileMultiplier(this, source, this.getProjectileDamageReduction(), 0.33F);
         }
         return super.hurt(source, amount);
     }

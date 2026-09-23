@@ -74,6 +74,11 @@ public class LuxtructosaurusServantPartEntity extends PartEntity<Luxtructosaurus
     }
 
     @Override
+    public boolean canBeHitByProjectile() {
+        return false;
+    }
+
+    @Override
     public boolean isInvulnerableTo(DamageSource damageSource) {
         LuxtructosaurusServant parent = this.getParent();
         return super.isInvulnerableTo(damageSource)

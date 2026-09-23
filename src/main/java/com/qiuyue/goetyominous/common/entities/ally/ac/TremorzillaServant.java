@@ -668,6 +668,9 @@ public class TremorzillaServant extends AnimalSummon
             this.blastFlingGuard = 2;
             return false;
         }
+        if (source.is(DamageTypeTags.IS_PROJECTILE)) {
+            amount *= 0.35F;
+        }
         return super.hurt(source, amount);
     }
 

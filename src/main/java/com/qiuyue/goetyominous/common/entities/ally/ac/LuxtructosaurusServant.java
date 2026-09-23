@@ -1392,7 +1392,7 @@ public class LuxtructosaurusServant extends Summoned
     @Override
     public boolean hurt(DamageSource damageSource, float damageAmount) {
         if (damageSource.is(DamageTypeTags.IS_PROJECTILE)) {
-            damageAmount *= this.getProjectileDamageReduction();
+            damageAmount *= PartProjectileHits.projectileMultiplier(this, damageSource, this.getProjectileDamageReduction(), 0.33F);
         }
         if (this.reducedDamageTicks > 0) {
             damageAmount *= 0.35F;

@@ -461,7 +461,8 @@ public class DeepOneKnightServant extends Summoned implements IDeepOneBarterer, 
         DamageSource source = this.damageSources().mobAttack(this);
         float dashDamage = AttributesConfig.DeepOneKnightServantOrtholanceDashDamage.get().floatValue();
         for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, aabb)) {
-            if (!entity.equals(this) && !MobUtil.areAllies(entity, this) && this.hasLineOfSight(entity)) {
+            if (!entity.equals(this) && !this.isAlliedTo(entity) && !entity.isAlliedTo(this)
+                    && !MobUtil.areAllies(entity, this) && this.hasLineOfSight(entity)) {
                 entity.hurt(source, dashDamage);
                 entity.stopRiding();
             }

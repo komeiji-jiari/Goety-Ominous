@@ -369,7 +369,8 @@ public class DeepOneMageServant extends Summoned implements IDeepOneBarterer, IA
             if (this.getAnimationTick() % 6 == 0) {
                 AABB bashBox = this.getBoundingBox().inflate(2.0D, 0, 2.0D);
                 for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, bashBox)) {
-                    if (entity != this && !MobUtil.areAllies(entity, this) && !(entity instanceof DeepOneMageServant)) {
+                    if (entity != this && !this.isAlliedTo(entity) && !entity.isAlliedTo(this)
+                            && !MobUtil.areAllies(entity, this) && !(entity instanceof DeepOneMageServant)) {
                         checkAndDealMeleeDamage(entity, 0.4F, 1.0F);
                     }
                 }
