@@ -190,6 +190,19 @@ public class ModEventHandler {
             return;
         }
 
+        com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant hullbreaker = null;
+        if (sourceEntity instanceof com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant direct) {
+            hullbreaker = direct;
+        } else if (killedEntity.getLastHurtByMob() instanceof com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant lastHurt) {
+            hullbreaker = lastHurt;
+        }
+        if (hullbreaker != null && hullbreaker.getTrueOwner() != null
+                && com.qiuyue.goetyominous.config.MobsConfig.HullbreakerServantPickUpDrops.get()) {
+            hullbreaker.addDrops(event.getDrops());
+            event.getDrops().clear();
+            return;
+        }
+
         if (!(sourceEntity instanceof ExecutionerServant executionerServant)) {
             return;
         }

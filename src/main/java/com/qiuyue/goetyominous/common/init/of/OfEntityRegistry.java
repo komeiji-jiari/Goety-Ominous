@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.common.init.of;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.of.DicerServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.RamblerServant;
+import com.qiuyue.goetyominous.common.entities.ally.of.TerrorServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.TremblerServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.VoltServant;
 import com.qiuyue.goetyominous.common.entities.projectile.DicerServantLaser;
@@ -62,6 +63,13 @@ public class OfEntityRegistry {
                             .sized(0.8F, 0.9F)
                             .setTrackingRange(10)
                             .build(GoetyOminous.MOD_ID + ":trembler_servant"));
+
+    public static final RegistryObject<EntityType<TerrorServant>> TERROR_SERVANT =
+            OF_ENTITIES.register("terror_servant",
+                    () -> EntityType.Builder.<TerrorServant>of(TerrorServant::new, MobCategory.MISC)
+                            .sized(1.3F, 1.1F)
+                            .setTrackingRange(10)
+                            .build(GoetyOminous.MOD_ID + ":terror_servant"));
 
     public static void register(IEventBus modEventBus) {
         OF_ENTITIES.register(modEventBus);

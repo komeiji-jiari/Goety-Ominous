@@ -1,7 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.ac;
 
 import com.Polarice3.Goety.common.entities.ally.Summoned;
-import com.github.alexmodguy.alexscaves.server.entity.ai.AnimalRandomlySwimGoal;
 import com.github.alexmodguy.alexscaves.server.entity.ai.SemiAquaticPathNavigator;
 import com.github.alexmodguy.alexscaves.server.entity.ai.VerticalSwimmingMoveControl;
 import com.github.alexmodguy.alexscaves.server.block.AbyssalAltarBlock;
@@ -12,7 +11,10 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.qiuyue.goetyominous.common.entities.ai.ac.DeepOneBarterGoal;
+import com.qiuyue.goetyominous.common.entities.ai.ac.DeepOneStrollGoal;
+import com.qiuyue.goetyominous.common.entities.ai.ac.DeepOneWanderGoal;
 import com.qiuyue.goetyominous.common.entities.ai.ac.IDeepOneBarterer;
+import com.qiuyue.goetyominous.common.entities.ai.ac.IDeepOneWanderer;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
@@ -72,7 +74,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 
-public class DeepOneServant extends Summoned implements IDeepOneBarterer, IAnimatedEntity {
+public class DeepOneServant extends Summoned implements IDeepOneBarterer, IDeepOneWanderer, IAnimatedEntity {
 
     public static final Animation ANIMATION_THROW = Animation.create(20);
     public static final Animation ANIMATION_BITE = Animation.create(8);
@@ -168,7 +170,8 @@ public class DeepOneServant extends Summoned implements IDeepOneBarterer, IAnima
         this.goalSelector.addGoal(1, new DeepOneBarterGoal(this));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 16.0F));
         this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(6, new AnimalRandomlySwimGoal(this, 12, 18, 18, 1.0D));
+        this.goalSelector.addGoal(6, new DeepOneWanderGoal(this, 12, 1.0D));
+        this.goalSelector.addGoal(6, new DeepOneStrollGoal(this, 1.0D, 60));
     }
 
     @Override
@@ -200,7 +203,6 @@ public class DeepOneServant extends Summoned implements IDeepOneBarterer, IAnima
                     itemstack.shrink(1);
                 }
                 this.gameEvent(GameEvent.EAT, this);
-                this.eat(this.level(), itemstack);
                 if (this.level() instanceof ServerLevel serverLevel) {
                     for (int i = 0; i < 7; ++i) {
                         double d0 = this.getRandom().nextGaussian() * 0.02D;

@@ -224,4 +224,7 @@ public class ModEntityLayers {
 
     public static final ModelLayerLocation VOLT_SERVANT_CHARGED_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "volt_servant_charged"), "main");
+
+    public static final ModelLayerLocation TERROR_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "terror_servant"), "main");
 }

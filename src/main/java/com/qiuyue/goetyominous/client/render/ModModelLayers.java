@@ -245,6 +245,9 @@ public class ModModelLayers {
 
             event.registerLayerDefinition(ModEntityLayers.TREMBLER_SERVANT_LAYER,
                     com.qiuyue.goetyominous.client.render.model.of.TremblerServantModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.TERROR_SERVANT_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.of.TerrorServantModel::createBodyLayer);
         }
 
         if (com.qiuyue.goetyominous.compat.mod.MutantMoreCompat.isMutantMoreLoaded()) {
@@ -634,6 +637,10 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.TREMBLER_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.of.TremblerServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.TERROR_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.of.TerrorServantRenderer::new);
         }
 
         if (AlexMobsCompat.isAlexMobsLoaded()) {

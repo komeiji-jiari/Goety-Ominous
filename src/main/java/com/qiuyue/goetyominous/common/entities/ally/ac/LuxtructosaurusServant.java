@@ -566,7 +566,7 @@ public class LuxtructosaurusServant extends Summoned
                     double d1 = this.random.nextGaussian() * 0.02D;
                     double d2 = this.random.nextGaussian() * 0.02D;
                     serverLevel.sendParticles(ParticleTypes.HEART,
-                            this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D),
+                            this.getRandomX(1.0D), this.getY() + this.getBbHeight() + 0.3D, this.getRandomZ(1.0D),
                             0, d0, d1, d2, 0.5F);
                 }
             }

@@ -20,6 +20,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> HullbreakerServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Boolean> HullbreakerServantReturnEmbryo;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> HullbreakerServantPickUpDrops;
     public static final ForgeConfigSpec.ConfigValue<Integer> IllagerElephantServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> DropBearServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> GusterServantLimit;
@@ -75,6 +76,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> MineGuardianServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> DicerServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> TremblerServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> TerrorServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> VoltServantLimit;
 
     public static final ForgeConfigSpec.ConfigValue<Integer> MWSSoulShieldHealthBouns;
@@ -185,6 +187,10 @@ public class MobsConfig {
                 .comment("Whether Hullbreaker Servants drop an immortal embryo when they die while owned (Default: true)")
                 .define("hullbreakerServantReturnEmbryo", true);
 
+        HullbreakerServantPickUpDrops = BUILDER
+                .comment("Whether Hullbreaker Servants collect the drops of the mobs they kill (Default: true)")
+                .define("hullbreakerServantPickUpDrops", true);
+
         IllagerElephantServantLimit = BUILDER
                 .comment("Maximum number of Illager Elephant Servants that can be summoned (Default: 2)")
                 .defineInRange("illagerElephantServantLimit", 2, 1, 100);
@@ -216,6 +222,10 @@ public class MobsConfig {
         TremblerServantLimit = BUILDER
                 .comment("Maximum number of Trembler Servants that can be summoned (Default: 16)")
                 .defineInRange("tremblerServantLimit", 16, 1, 100);
+
+        TerrorServantLimit = BUILDER
+                .comment("Maximum number of Terror Servants that can be summoned (Default: 8)")
+                .defineInRange("terrorServantLimit", 8, 1, 100);
 
         VoltServantLimit = BUILDER
                 .comment("Maximum number of Volt Servants that can be summoned (Default: 12)")

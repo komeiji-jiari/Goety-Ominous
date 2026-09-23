@@ -151,7 +151,6 @@ public class EmuServant extends AnimalSummon implements IAnimatedEntity {
                         itemstack.shrink(1);
                     }
                     this.gameEvent(GameEvent.EAT, this);
-                    this.eat(this.level(), itemstack);
                     if (this.level() instanceof ServerLevel serverLevel) {
                         for (int i = 0; i < 7; ++i) {
                             double d0 = this.random.nextGaussian() * 0.02;
