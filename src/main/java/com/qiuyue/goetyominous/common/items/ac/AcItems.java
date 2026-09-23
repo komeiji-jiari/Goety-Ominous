@@ -157,6 +157,15 @@ public class AcItems {
     public static final RegistryObject<Item> GROTTO_SPIRIT_FOCUS = AC_ITEMS.register("grotto_spirit_focus",
             () -> new MagicFocus(new GrottoceratopsSpiritSpell()));
 
+    public static final RegistryObject<Item> DEEP_ONE_FOCUS = AC_ITEMS.register("deep_one_focus",
+            () -> new MagicFocus(new DeepOneSpell()));
+
+    public static final RegistryObject<Item> DEEP_KNIGHT_FOCUS = AC_ITEMS.register("deep_knight_focus",
+            () -> new MagicFocus(new DeepKnightSpell()));
+
+    public static final RegistryObject<Item> DEEP_MAGE_FOCUS = AC_ITEMS.register("deep_mage_focus",
+            () -> new MagicFocus(new DeepMageSpell()));
+
     public static final RegistryObject<Item> RAYCAT_AMULET =
             AC_ITEMS.register("raycat_amulet", () -> new RaycatAmuletItem());
 

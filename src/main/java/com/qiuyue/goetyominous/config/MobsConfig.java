@@ -282,8 +282,8 @@ public class MobsConfig {
                 .define("tremorzillaServantBreakBlocks", false);
 
         AtlatitanServantLimit = BUILDER
-                .comment("Maximum number of Atlatitan Servants that can be summoned (Default: 1)")
-                .defineInRange("atlatitanServantLimit", 1, 1, 100);
+                .comment("Maximum number of Atlatitan Servants that can be summoned (Default: 3)")
+                .defineInRange("atlatitanServantLimit", 3, 1, 100);
 
         AtlatitanServantBreakBlocks = BUILDER
                 .comment("Whether Atlatitan Servants can crush blocks with their stomp (Default: true; also requires the mobGriefing game rule)")

@@ -6,6 +6,7 @@ import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
+import com.qiuyue.goetyominous.common.init.of.OfEntityRegistry;
 import com.qiuyue.goetyominous.common.init.ua.UaEntityRegistry;
 import com.qiuyue.goetyominous.compat.ias.IasEntityRegistry;
 import com.qiuyue.goetyominous.compat.mod.*;
@@ -51,6 +52,13 @@ public class TesseractTagHandler {
         if (AlexCavesCompat.isAlexCavesLoaded()) {
             addToTag(TESSERACT_SMALL, AcEntityRegistry.CORRODENT_SERVANT);
             addToTag(TESSERACT_SMALL, AcEntityRegistry.CANDICORN_SERVANT);
+            addToTag(TESSERACT_SMALL, AcEntityRegistry.DEEP_ONE_SERVANT);
+            addToTag(TESSERACT_SMALL, AcEntityRegistry.DEEP_ONE_KNIGHT_SERVANT);
+            addToTag(TESSERACT_SMALL, AcEntityRegistry.DEEP_ONE_MAGE_SERVANT);
+        }
+        if (OpposingForceCompat.isOpposingForceLoaded()) {
+            addToTag(TESSERACT_SMALL, OfEntityRegistry.DICER_SERVANT);
+            addToTag(TESSERACT_SMALL, OfEntityRegistry.RAMBLER_SERVANT);
         }
 
         addToTag(TESSERACT_MEDIUM, ModEntityTypes.HERESIARCH_SERVANT);

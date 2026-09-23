@@ -17,9 +17,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
- /*
- ee...记得多看看awa
-  */
+
 public abstract class ContinuousControllerSpell<T extends ContinuousControllerSpell.BaseController>
         extends EverChargeSpell {
 

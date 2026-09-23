@@ -6,6 +6,46 @@ plugins {
     id 'org.spongepowered.mixin' version '0.7.+'
 }
 
+// ===== Mojang 版本清单探测：不通就自动降级离线 =====
+// 背景：ForgeGradle 的 MCPRepo 在解析 net.minecraft:client:1.20.1 的元数据时要刷新
+// https://piston-meta.mojang.com 的版本清单，该请求抛出的 IOException 会中断整条仓库链
+// 的查找（Gradle 把它当成仓库故障），最终报成 "Could not find net.minecraft:client:1.20.1"。
+// 探测失败时改走离线：ForgeGradle 内部有 isOffline 判断，会直接使用本机缓存，不再发起该请求。
+def probeMojangManifest = { int timeoutMs ->
+    HttpURLConnection conn = null
+    try {
+        conn = (HttpURLConnection) new URL('https://piston-meta.mojang.com/mc/game/version_manifest.json').openConnection()
+        conn.setRequestMethod('HEAD')
+        conn.setConnectTimeout(timeoutMs)
+        conn.setReadTimeout(timeoutMs)
+        conn.connect()
+        return conn.getResponseCode() > 0
+    } catch (Exception e) {
+        println "[网络探测] Mojang 版本清单不可达（${e.getClass().simpleName}: ${e.message}）"
+        return false
+    } finally {
+        if (conn != null) { try { conn.disconnect() } catch (Exception ignored) { } }
+    }
+}
+
+// 降级前的缓存门禁：只有 ForgeGradle 已经把 Minecraft 下全了才敢切离线，
+// 否则离线只会把错误变成 "No cached version ... available for offline mode"，反而更难排查。
+def fgCacheDir = new File(gradle.gradleUserHomeDir, 'caches/forge_gradle/minecraft_repo/versions')
+def fgCacheReady = { String mcVersion ->
+    def v = new File(fgCacheDir, mcVersion)
+    new File(v, 'client.jar').exists() && new File(v, 'version.json').exists()
+}
+
+if (!gradle.startParameter.offline && !probeMojangManifest(1500)) {
+    if (fgCacheReady(minecraft_version)) {
+        gradle.startParameter.offline = true
+        println "[网络探测] 已自动启用 --offline，改用本机缓存构建"
+    } else {
+        println "[网络探测] Mojang 不可达，且本机 ForgeGradle 缓存不完整，无法降级离线；请联网后重试"
+    }
+}
+// ================================================================
+
 version = mod_version
 group = mod_group_id
 
@@ -180,12 +220,13 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    implementation fg.deobf("curse.maven:goety-586095:8891954")
+    implementation fg.deobf("curse.maven:goety-586095:8951387")
     compileOnly fg.deobf("curse.maven:illage-and-spillage-respillaged-1079714:6156035")
     implementation fg.deobf("top.theillusivec4.curios:curios-forge:5.14.1+1.20.1")
 
     // 仅编译时使用，运行时可选
     compileOnly fg.deobf("curse.maven:goety-spillage-1108014:8157704")
+    compileOnly fg.deobf("curse.maven:goety-cataclysm-1224214:8645833")
     compileOnly fg.deobf("curse.maven:goetyawaken-1412569:8880533")
     compileOnly fg.deobf("curse.maven:goety-revelation-1236817:8311906")
 

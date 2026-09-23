@@ -1,0 +1,19 @@
+{
+  "name": "渊海悚伏聚晶",
+  "icon": "goetyominous:deep_one_focus",
+  "category": "goety:abyssalchasm",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你想到一种办法设计出一个法术，用以召唤忠诚的深潜者仆从。如果想要召唤更高级的深潜者，仍需改进你的法术。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:deep_one_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "使用$(l:crafts/staff/abyss_staff)深渊魔杖$()承载此聚晶施法时，一次可以召唤更多深潜者。"
+    }
+  ]
+}

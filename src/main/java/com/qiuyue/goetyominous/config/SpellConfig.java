@@ -91,6 +91,21 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> GrottoSpiritCoolDown;
     public static final ForgeConfigSpec.ConfigValue<Integer> GrottoSpiritTime;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> DeepOneSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DeepOneCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DeepOneSummonDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DeepOneCoolDown;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> DeepKnightSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DeepKnightCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DeepKnightSummonDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DeepKnightCoolDown;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> DeepMageSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DeepMageCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DeepMageSummonDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DeepMageCoolDown;
+
     public static final ForgeConfigSpec.ConfigValue<Integer> HogChargeSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> HogChargeCooldown;
     public static final ForgeConfigSpec.ConfigValue<Double> HogChargeDamage;
@@ -264,6 +279,39 @@ public class SpellConfig {
                 .defineInRange("grottoSpiritCoolDown", 6000, 0, 72000);
         GrottoSpiritTime = BUILDER.comment("Lifetime of the Grotto Spirits in ticks, Default: 1500 (75s)")
                 .defineInRange("grottoSpiritTime", 1500, 1, 72000);
+        BUILDER.pop();
+
+        BUILDER.push("DeepOne");
+        DeepOneSoulCost = BUILDER.comment("Soul cost of DeepOne Servant spell (Default: 24)")
+                .defineInRange("deepOneSoulCost", 24, 1, 128);
+        DeepOneCastDuration = BUILDER.comment("Cast duration of DeepOne Servant spell in ticks (Default: 60)")
+                .defineInRange("deepOneCastDuration", 60, 0, 500);
+        DeepOneSummonDown = BUILDER.comment("Summon down duration of DeepOne Servant spell in ticks (Default: 300)")
+                .defineInRange("deepOneSummonDown", 300, 0, 5000);
+        DeepOneCoolDown = BUILDER.comment("Cooldown of DeepOne Servant spell in ticks (Default: 100)")
+                .defineInRange("deepOneCoolDown", 100, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("DeepKnight");
+        DeepKnightSoulCost = BUILDER.comment("Soul cost of DeepKnight Servant spell (Default: 32)")
+                .defineInRange("deepKnightSoulCost", 32, 1, 128);
+        DeepKnightCastDuration = BUILDER.comment("Cast duration of DeepKnight Servant spell in ticks (Default: 100)")
+                .defineInRange("deepKnightCastDuration", 100, 0, 500);
+        DeepKnightSummonDown = BUILDER.comment("Summon down duration of DeepKnight Servant spell in ticks (Default: 300)")
+                .defineInRange("deepKnightSummonDown", 300, 0, 5000);
+        DeepKnightCoolDown = BUILDER.comment("Cooldown of DeepKnight Servant spell in ticks (Default: 400)")
+                .defineInRange("deepKnightCoolDown", 400, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("DeepMage");
+        DeepMageSoulCost = BUILDER.comment("Soul cost of DeepMage Servant spell (Default: 32)")
+                .defineInRange("deepMageSoulCost", 32, 1, 128);
+        DeepMageCastDuration = BUILDER.comment("Cast duration of DeepMage Servant spell in ticks (Default: 100)")
+                .defineInRange("deepMageCastDuration", 100, 0, 500);
+        DeepMageSummonDown = BUILDER.comment("Summon down duration of DeepMage Servant spell in ticks (Default: 300)")
+                .defineInRange("deepMageSummonDown", 300, 0, 5000);
+        DeepMageCoolDown = BUILDER.comment("Cooldown of DeepMage Servant spell in ticks (Default: 600)")
+                .defineInRange("deepMageCoolDown", 600, 0, 5000);
         BUILDER.pop();
 
         BUILDER.push("Sand Spell");

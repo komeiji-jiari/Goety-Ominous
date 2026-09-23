@@ -74,7 +74,7 @@ public class AbstractSunkenNecromancer extends AbstractNecromancer {
 
     @Override
     public void projectileGoal(int priority) {
-        this.goalSelector.addGoal(priority, new PersistentRangedGoal(this, 1.0D, 20, 10.0F));
+        this.goalSelector.addGoal(priority, new PersistentRangedGoal(this, 1.0D, SHOOT_INTERVAL, 10.0F));
     }
 
     @Override
