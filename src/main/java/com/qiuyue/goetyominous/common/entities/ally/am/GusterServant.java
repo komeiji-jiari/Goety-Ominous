@@ -9,7 +9,6 @@ import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
-import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIWanderRanged;
 import com.github.alexthe666.alexsmobs.entity.ai.GroundPathNavigatorWide;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
@@ -127,7 +126,7 @@ public class GusterServant extends Summoned {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new MeleeGoal());
-        this.goalSelector.addGoal(2, new AnimalAIWanderRanged(this, 60, 1.0D, 10, 7));
+        this.goalSelector.addGoal(2, new Summoned.WanderGoal<>(this, 1.0D, 60, 0.001F));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
     }
