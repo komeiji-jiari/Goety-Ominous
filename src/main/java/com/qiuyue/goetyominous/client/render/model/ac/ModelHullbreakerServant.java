@@ -224,6 +224,16 @@ public class ModelHullbreakerServant extends AdvancedEntityModel<HullbreakerServ
         this.animator.rotate(this.body, 0.0F, 0.0F, (float) Math.toRadians(10.0F));
         this.animator.endKeyframe();
         this.animator.resetKeyframe(5);
+        this.animator.setAnimation(HullbreakerServant.ANIMATION_VOMIT);
+        this.animator.startKeyframe(5);
+        this.animator.rotate(this.head, (float) Math.toRadians(-15.0F), 0.0F, 0.0F);
+        this.animator.rotate(this.jaw, (float) Math.toRadians(80.0F), 0.0F, 0.0F);
+        this.animator.endKeyframe();
+        this.animator.startKeyframe(15);
+        this.animator.rotate(this.head, (float) Math.toRadians(-15.0F), 0.0F, 0.0F);
+        this.animator.rotate(this.jaw, (float) Math.toRadians(75.0F), 0.0F, 0.0F);
+        this.animator.endKeyframe();
+        this.animator.resetKeyframe(5);
     }
 
     @Override

@@ -285,7 +285,6 @@ public class DeepOneMageServant extends Summoned implements IDeepOneBarterer, IA
                     itemstack.shrink(1);
                 }
                 this.gameEvent(GameEvent.EAT, this);
-                this.eat(this.level(), itemstack);
                 if (this.level() instanceof ServerLevel serverLevel) {
                     for (int i = 0; i < 7; ++i) {
                         double d0 = this.getRandom().nextGaussian() * 0.02D;

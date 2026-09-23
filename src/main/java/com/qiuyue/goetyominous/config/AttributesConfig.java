@@ -544,6 +544,10 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> TremblerServantAttackKnockback;
     public static final ForgeConfigSpec.ConfigValue<Double> TremblerServantKnockbackResistance;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> TerrorServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> TerrorServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> TerrorServantAttackDamage;
+
     static {
         BUILDER.push("Servants Attributes");
 
@@ -1245,8 +1249,8 @@ public class AttributesConfig {
                 .define("hullbreakerServantBlockBreakGriefing", false);
         HullbreakerServantGlowTargetRange = BUILDER.comment("How far (in blocks) Hullbreaker Servants search for glowing targets, Default: 48.0 (normal follow range is 16)")
                 .defineInRange("hullbreakerServantGlowTargetRange", 48.0, 8.0, Double.MAX_VALUE);
-        HullbreakerServantGlowChaseSpeed = BUILDER.comment("Swim speed Hullbreaker Servants use when chasing a glowing target, Default: 2.4 (normal approach speed is 1.6)")
-                .defineInRange("hullbreakerServantGlowChaseSpeed", 2.4, 0.1, Double.MAX_VALUE);
+        HullbreakerServantGlowChaseSpeed = BUILDER.comment("Swim speed Hullbreaker Servants use when chasing a glowing target, Default: 2.0 (normal approach speed is 1.6)")
+                .defineInRange("hullbreakerServantGlowChaseSpeed", 2.0, 0.1, Double.MAX_VALUE);
         HullbreakerServantProximityTargetRange = BUILDER.comment("How close (in blocks) a non-glowing enemy must be for Hullbreaker Servants to sense and attack it, Default: 6.0")
                 .defineInRange("hullbreakerServantProximityTargetRange", 6.0, 2.0, 64.0);
         BrainiacServantHealth = BUILDER.comment("How much Max Health Brainiac Servants have, Default: 40.0 (matches Alex's Caves Brainiac)")
@@ -1618,6 +1622,15 @@ public class AttributesConfig {
                 .defineInRange("tremblerServantAttackKnockback", 1.0, 0.0, Double.MAX_VALUE);
         TremblerServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Trembler Servants have, Default: 0.5")
                 .defineInRange("tremblerServantKnockbackResistance", 0.5, 0.0, 1.0);
+        BUILDER.pop();
+
+        BUILDER.push("Terror Servant");
+        TerrorServantHealth = BUILDER.comment("How much Max Health Terror Servants have, Default: 36.0")
+                .defineInRange("terrorServantHealth", 36.0, 1.0, Double.MAX_VALUE);
+        TerrorServantMovementSpeed = BUILDER.comment("How much Movement Speed Terror Servants have, Default: 0.25")
+                .defineInRange("terrorServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
+        TerrorServantAttackDamage = BUILDER.comment("How much Attack Damage Terror Servants have, Default: 4.0")
+                .defineInRange("terrorServantAttackDamage", 4.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.pop();

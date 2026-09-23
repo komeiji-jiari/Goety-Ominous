@@ -30,6 +30,10 @@ public class OfItems {
             "trembler_servant_spawn_egg",
             () -> new ServantSpawnEggItem(OfEntityRegistry.TREMBLER_SERVANT, 0x9C8F82, 0x5A4636, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> TERROR_SERVANT_SPAWN_EGG = OF_ITEMS.register(
+            "terror_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(OfEntityRegistry.TERROR_SERVANT, 0x5B6770, 0xC9A227, egg()));
+
 
     public static Item.Properties egg() {
         return new Item.Properties();
