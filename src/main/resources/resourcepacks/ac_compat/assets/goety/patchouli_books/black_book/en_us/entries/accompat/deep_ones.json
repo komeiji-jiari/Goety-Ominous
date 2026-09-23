@@ -1,0 +1,51 @@
+{
+  "name": "Deep Ones",
+  "icon": "alexscaves:pearl",
+  "category": "goety:abyssalchasm",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "A mysterious species dwells within the Abyssal Chasm. These beings tend to conceal their presence and remain wary of outsiders. Fortunately, the dark arts are highly effective at earning their trust and loyalty."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:deep_one_servant"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:deep_one_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The most common individuals among the Deep One kin. They are skilled swimmers, yet are also capable of moving about on land."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:deep_one_knight_servant"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:deep_one_knight_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "These Deep Ones belong to the powerful warrior caste of their kin, capable of knocking back enemies with Ortholances and Tridents. You can manually equip them with either of these weapons."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:deep_one_mage_servant"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:deep_one_mage_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "These jellyfish-like Deep Ones command abyssal spells and hold the highest status among their kin. They can fly through the air using bubbles, fire water bolts, or raise waves to attack creatures."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Every type of Deep One can be healed with any kind of fish, or, when the summoner wears Abyss Robe, slowly heal themselves using the summoner's Soul Energy."
+    }
+  ]
+}

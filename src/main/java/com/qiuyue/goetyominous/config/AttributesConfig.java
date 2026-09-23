@@ -231,6 +231,10 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> LicowitchServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> LicowitchServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> LicowitchServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> HullbreakerServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> HullbreakerServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> HullbreakerServantMovementSpeed;
+
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantFollowRange;
@@ -1435,6 +1439,12 @@ public class AttributesConfig {
                 .defineInRange("licowitchServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
         LicowitchServantArmor = BUILDER.comment("How much natural Armor Licowitch Servants have, Default: 0.0 (Alex's Caves Licowitch has none)")
                 .defineInRange("licowitchServantArmor", 0.0, 0.0, Double.MAX_VALUE);
+        HullbreakerServantHealth = BUILDER.comment("How much Max Health Hullbreaker Servants have, Default: 400.0 (matches Alex's Caves Hullbreaker)")
+                .defineInRange("hullbreakerServantHealth", 400.0, 1.0, Double.MAX_VALUE);
+        HullbreakerServantDamage = BUILDER.comment("How much damage Hullbreaker Servants deal, Default: 16.0 (matches Alex's Caves Hullbreaker)")
+                .defineInRange("hullbreakerServantDamage", 16.0, 1.0, Double.MAX_VALUE);
+        HullbreakerServantMovementSpeed = BUILDER.comment("How fast Hullbreaker Servants move, Default: 0.3 (matches Alex's Caves Hullbreaker)")
+                .defineInRange("hullbreakerServantMovementSpeed", 0.3, 0.0, Double.MAX_VALUE);
         FroststalkerServantHealth = BUILDER.comment("How much Max Health Froststalker Servants have, Default: 24.0 (matches Alex's Mobs Froststalker)")
                 .defineInRange("froststalkerServantHealth", 24.0, 1.0, Double.MAX_VALUE);
         FroststalkerServantDamage = BUILDER.comment("How much damage Froststalker Servants deal, Default: 4.5 (matches Alex's Mobs Froststalker)")

@@ -1,0 +1,19 @@
+{
+  "name": "渊海戍卫聚晶",
+  "icon": "goetyominous:deep_knight_focus",
+  "category": "goety:abyssalchasm",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你对原先的法术进行了升级，现在你能够召唤出强大的深潜者骑士作为你的贴身护卫。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:deep_knight_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "使用$(l:crafts/staff/abyss_staff)深渊魔杖$()承载此聚晶施法时，一次可以召唤更多深潜者骑士。"
+    }
+  ]
+}

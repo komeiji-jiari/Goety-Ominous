@@ -1,0 +1,24 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goetyominous:deep_one_focus"
+  },
+  "craftType": "deep",
+  "soulCost": 1,
+  "duration": 10,
+  "ingredients": [
+    {
+      "item": "alexscaves:pearl"
+    },
+    {
+      "item": "alexscaves:ortholance"
+    },
+    {
+      "item": "minecraft:nautilus_shell"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:deep_knight_focus"
+  }
+}

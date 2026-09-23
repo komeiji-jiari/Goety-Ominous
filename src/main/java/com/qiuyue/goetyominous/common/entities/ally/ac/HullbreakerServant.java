@@ -6,6 +6,7 @@ import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.ai.SummonTargetGoal;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.common.entities.projectiles.FlyingItem;
+import com.Polarice3.Goety.config.ItemConfig;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.github.alexmodguy.alexscaves.AlexsCaves;
 import com.github.alexmodguy.alexscaves.server.entity.ai.AnimalRandomlySwimGoal;
@@ -22,6 +23,7 @@ import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -108,7 +110,10 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED, 0.3D).add(Attributes.MAX_HEALTH, 400.0D).add(Attributes.ATTACK_DAMAGE, 16.0D);
+        return Monster.createMonsterAttributes()
+                .add(Attributes.MAX_HEALTH, AttributesConfig.HullbreakerServantHealth.get())
+                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.HullbreakerServantDamage.get())
+                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.HullbreakerServantMovementSpeed.get());
     }
 
     @Override
@@ -262,6 +267,8 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
                 FlyingItem flyingItem = new FlyingItem(ModEntityType.FLYING_ITEM.get(), this.level(), this.getX(), this.getY(), this.getZ());
                 flyingItem.setOwner(this.getTrueOwner());
                 flyingItem.setItem(new ItemStack(ACItemRegistry.IMMORTAL_EMBRYO.get()));
+                flyingItem.setParticle(ParticleTypes.FALLING_WATER);
+                flyingItem.setSecondsCool(ItemConfig.ReviveSecondsCool.get());
                 this.level().addFreshEntity(flyingItem);
             }
             this.level().broadcastEntityEvent(this, (byte) 60);
