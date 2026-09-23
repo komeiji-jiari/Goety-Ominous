@@ -78,6 +78,8 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> TremblerServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> TerrorServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> VoltServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FireSlimeServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> GuzzlerServantLimit;
 
     public static final ForgeConfigSpec.ConfigValue<Integer> MWSSoulShieldHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> MWSSoulShieldDamageBouns;
@@ -230,6 +232,14 @@ public class MobsConfig {
         VoltServantLimit = BUILDER
                 .comment("Maximum number of Volt Servants that can be summoned (Default: 12)")
                 .defineInRange("voltServantLimit", 12, 1, 100);
+
+        FireSlimeServantLimit = BUILDER
+                .comment("Maximum number of Fire Slime Servants that can be summoned (Default: 16)")
+                .defineInRange("fireSlimeServantLimit", 16, 1, 100);
+
+        GuzzlerServantLimit = BUILDER
+                .comment("Maximum number of Guzzler Servants that can be summoned (Default: 4)")
+                .defineInRange("guzzlerServantLimit", 4, 1, 100);
 
         UrbhadhachServantLimit = BUILDER
                 .comment("Maximum number of Urbhadhach Servants that can be summoned (Default: 8)")

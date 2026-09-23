@@ -248,6 +248,12 @@ public class ModModelLayers {
 
             event.registerLayerDefinition(ModEntityLayers.TERROR_SERVANT_LAYER,
                     com.qiuyue.goetyominous.client.render.model.of.TerrorServantModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.FIRE_SLIME_SERVANT_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.of.FireSlimeServantModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.GUZZLER_SERVANT_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.of.GuzzlerServantModel::createBodyLayer);
         }
 
         if (com.qiuyue.goetyominous.compat.mod.MutantMoreCompat.isMutantMoreLoaded()) {
@@ -641,6 +647,14 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.TERROR_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.of.TerrorServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.FIRE_SLIME_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.of.FireSlimeServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.GUZZLER_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.of.GuzzlerServantRenderer::new);
         }
 
         if (AlexMobsCompat.isAlexMobsLoaded()) {
