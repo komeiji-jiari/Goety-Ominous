@@ -80,6 +80,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> VoltServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> FireSlimeServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> GuzzlerServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SkyvernServantLimit;
 
     public static final ForgeConfigSpec.ConfigValue<Integer> MWSSoulShieldHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> MWSSoulShieldDamageBouns;
@@ -241,6 +242,10 @@ public class MobsConfig {
         GuzzlerServantLimit = BUILDER
                 .comment("Maximum number of Guzzler Servants that can be summoned (Default: 4)")
                 .defineInRange("guzzlerServantLimit", 4, 1, 100);
+
+        SkyvernServantLimit = BUILDER
+                .comment("Maximum number of Skyvern Servants that can be summoned (Default: 8). Each one spawns 20-23 segment entities.")
+                .defineInRange("skyvernServantLimit", 8, 1, 100);
 
         UrbhadhachServantLimit = BUILDER
                 .comment("Maximum number of Urbhadhach Servants that can be summoned (Default: 8)")
