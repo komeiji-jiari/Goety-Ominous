@@ -544,6 +544,16 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> TremblerServantAttackKnockback;
     public static final ForgeConfigSpec.ConfigValue<Double> TremblerServantKnockbackResistance;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> FireSlimeServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> FireSlimeServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> FireSlimeServantAttackDamage;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> GuzzlerServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> GuzzlerServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> GuzzlerServantAttackDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> GuzzlerServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> GuzzlerServantFollowRange;
+
     public static final ForgeConfigSpec.ConfigValue<Double> TerrorServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> TerrorServantMovementSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> TerrorServantAttackDamage;
@@ -1622,6 +1632,28 @@ public class AttributesConfig {
                 .defineInRange("tremblerServantAttackKnockback", 1.0, 0.0, Double.MAX_VALUE);
         TremblerServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Trembler Servants have, Default: 0.5")
                 .defineInRange("tremblerServantKnockbackResistance", 0.5, 0.0, 1.0);
+        BUILDER.pop();
+
+        BUILDER.push("Fire Slime Servant");
+        FireSlimeServantHealth = BUILDER.comment("How much Max Health Fire Slime Servants have, Default: 8.0")
+                .defineInRange("fireSlimeServantHealth", 8.0, 1.0, Double.MAX_VALUE);
+        FireSlimeServantMovementSpeed = BUILDER.comment("How much Movement Speed Fire Slime Servants have, Default: 0.6")
+                .defineInRange("fireSlimeServantMovementSpeed", 0.6, 0.0, Double.MAX_VALUE);
+        FireSlimeServantAttackDamage = BUILDER.comment("How much Attack Damage Fire Slime Servants have, Default: 3.0")
+                .defineInRange("fireSlimeServantAttackDamage", 3.0, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Guzzler Servant");
+        GuzzlerServantHealth = BUILDER.comment("How much Max Health Guzzler Servants have, Default: 100.0")
+                .defineInRange("guzzlerServantHealth", 100.0, 1.0, Double.MAX_VALUE);
+        GuzzlerServantMovementSpeed = BUILDER.comment("How much Movement Speed Guzzler Servants have, Default: 0.13")
+                .defineInRange("guzzlerServantMovementSpeed", 0.13, 0.0, Double.MAX_VALUE);
+        GuzzlerServantAttackDamage = BUILDER.comment("How much Attack Damage Guzzler Servants have, Default: 5.0")
+                .defineInRange("guzzlerServantAttackDamage", 5.0, 0.0, Double.MAX_VALUE);
+        GuzzlerServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Guzzler Servants have, Default: 0.5")
+                .defineInRange("guzzlerServantKnockbackResistance", 0.5, 0.0, 1.0);
+        GuzzlerServantFollowRange = BUILDER.comment("How much Follow Range Guzzler Servants have, Default: 32.0")
+                .defineInRange("guzzlerServantFollowRange", 32.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.push("Terror Servant");

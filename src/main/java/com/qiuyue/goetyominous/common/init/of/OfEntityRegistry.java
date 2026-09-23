@@ -2,6 +2,8 @@ package com.qiuyue.goetyominous.common.init.of;
 
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.of.DicerServant;
+import com.qiuyue.goetyominous.common.entities.ally.of.FireSlimeServant;
+import com.qiuyue.goetyominous.common.entities.ally.of.GuzzlerServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.RamblerServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.TerrorServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.TremblerServant;
@@ -70,6 +72,21 @@ public class OfEntityRegistry {
                             .sized(1.3F, 1.1F)
                             .setTrackingRange(10)
                             .build(GoetyOminous.MOD_ID + ":terror_servant"));
+
+    public static final RegistryObject<EntityType<FireSlimeServant>> FIRE_SLIME_SERVANT =
+            OF_ENTITIES.register("fire_slime_servant",
+                    () -> EntityType.Builder.<FireSlimeServant>of(FireSlimeServant::new, MobCategory.MISC)
+                            .sized(0.6875F, 0.6875F)
+                            .fireImmune()
+                            .setTrackingRange(10)
+                            .build(GoetyOminous.MOD_ID + ":fire_slime_servant"));
+
+    public static final RegistryObject<EntityType<GuzzlerServant>> GUZZLER_SERVANT =
+            OF_ENTITIES.register("guzzler_servant",
+                    () -> EntityType.Builder.<GuzzlerServant>of(GuzzlerServant::new, MobCategory.MISC)
+                            .sized(1.98F, 2.5F)
+                            .setTrackingRange(10)
+                            .build(GoetyOminous.MOD_ID + ":guzzler_servant"));
 
     public static void register(IEventBus modEventBus) {
         OF_ENTITIES.register(modEventBus);

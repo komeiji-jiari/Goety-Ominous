@@ -35,6 +35,14 @@ public class OfItems {
             () -> new ServantSpawnEggItem(OfEntityRegistry.TERROR_SERVANT, 0x5B6770, 0xC9A227, egg()));
 
 
+    public static final RegistryObject<ServantSpawnEggItem> FIRE_SLIME_SERVANT_SPAWN_EGG = OF_ITEMS.register(
+            "fire_slime_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(OfEntityRegistry.FIRE_SLIME_SERVANT, 0xFB921B, 0xDB3709, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> GUZZLER_SERVANT_SPAWN_EGG = OF_ITEMS.register(
+            "guzzler_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(OfEntityRegistry.GUZZLER_SERVANT, 0x160E2C, 0x8956C2, egg()));
+
     public static Item.Properties egg() {
         return new Item.Properties();
     }

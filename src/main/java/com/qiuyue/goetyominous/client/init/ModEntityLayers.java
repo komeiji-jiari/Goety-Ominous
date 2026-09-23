@@ -227,4 +227,10 @@ public class ModEntityLayers {
 
     public static final ModelLayerLocation TERROR_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "terror_servant"), "main");
+
+    public static final ModelLayerLocation FIRE_SLIME_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "fire_slime_servant"), "main");
+
+    public static final ModelLayerLocation GUZZLER_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "guzzler_servant"), "main");
 }
