@@ -174,11 +174,11 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant, 
 
     @Override
     public void travel(Vec3 vec3) {
-        if (this.isNoAi() && this.isInWater()) {
+        if (this.isEffectiveAi() && this.isInWater()) {
             this.moveRelative(this.getSpeed(), vec3);
             this.move(MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
-            if (this.onGround()) {
+            if (this.horizontalCollision) {
                 this.setDeltaMovement(this.getDeltaMovement().add(0.0D, 0.4D * this.getSpeed(), 0.0D));
             }
         } else {

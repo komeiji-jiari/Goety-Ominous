@@ -492,7 +492,7 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
     @Override
     public boolean hurt(DamageSource source, float amount) {
         if (source.is(DamageTypeTags.IS_PROJECTILE)) {
-            amount *= 0.65F;
+            amount *= PartProjectileHits.projectileMultiplier(this, source, 0.65F, 0.35F);
         }
         return super.hurt(source, amount);
     }

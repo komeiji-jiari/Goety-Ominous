@@ -31,6 +31,11 @@ public class CorrodentServantTailEntity extends ACMultipartEntity<CorrodentServa
     }
 
     @Override
+    public boolean canBeHitByProjectile() {
+        return false;
+    }
+
+    @Override
     public boolean isInvulnerableTo(DamageSource source) {
         CorrodentServant parent = this.getParent();
         if (parent != null && MobsConfig.OwnerAttackCancel.get()

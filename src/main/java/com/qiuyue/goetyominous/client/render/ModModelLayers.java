@@ -620,8 +620,16 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.client.render.of.DicerServantRenderer::new);
 
             event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.DICER_SERVANT_LASER.get(),
+                    com.qiuyue.goetyominous.client.render.of.DicerServantLaserRenderer::new);
+
+            event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.VOLT_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.of.VoltServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.VOLT_SERVANT_ELECTRIC_CHARGE.get(),
+                    com.qiuyue.goetyominous.client.render.of.VoltServantElectricChargeRenderer::new);
 
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.TREMBLER_SERVANT.get(),
