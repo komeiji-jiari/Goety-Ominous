@@ -233,4 +233,13 @@ public class ModEntityLayers {
 
     public static final ModelLayerLocation GUZZLER_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "guzzler_servant"), "main");
+
+    public static final ModelLayerLocation SKYVERN_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "skyvern_servant"), "main");
+
+    public static final ModelLayerLocation SKYVERN_SERVANT_BODY_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "skyvern_servant_body"), "main");
+
+    public static final ModelLayerLocation SKYVERN_SERVANT_TAIL_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "skyvern_servant_tail"), "main");
 }

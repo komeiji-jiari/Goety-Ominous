@@ -254,6 +254,15 @@ public class ModModelLayers {
 
             event.registerLayerDefinition(ModEntityLayers.GUZZLER_SERVANT_LAYER,
                     com.qiuyue.goetyominous.client.render.model.of.GuzzlerServantModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.SKYVERN_SERVANT_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.of.SkyvernServantHeadModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.SKYVERN_SERVANT_BODY_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.of.SkyvernServantBodyModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.SKYVERN_SERVANT_TAIL_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.of.SkyvernServantTailModel::createBodyLayer);
         }
 
         if (com.qiuyue.goetyominous.compat.mod.MutantMoreCompat.isMutantMoreLoaded()) {
@@ -655,6 +664,14 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.GUZZLER_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.of.GuzzlerServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.SKYVERN_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.of.SkyvernServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.SKYVERN_SEGMENT_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.of.SkyvernSegmentServantRenderer::new);
         }
 
         if (AlexMobsCompat.isAlexMobsLoaded()) {

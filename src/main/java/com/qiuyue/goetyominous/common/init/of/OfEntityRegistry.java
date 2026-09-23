@@ -5,6 +5,8 @@ import com.qiuyue.goetyominous.common.entities.ally.of.DicerServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.FireSlimeServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.GuzzlerServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.RamblerServant;
+import com.qiuyue.goetyominous.common.entities.ally.of.SkyvernSegmentServant;
+import com.qiuyue.goetyominous.common.entities.ally.of.SkyvernServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.TerrorServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.TremblerServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.VoltServant;
@@ -87,6 +89,21 @@ public class OfEntityRegistry {
                             .sized(1.98F, 2.5F)
                             .setTrackingRange(10)
                             .build(GoetyOminous.MOD_ID + ":guzzler_servant"));
+
+    public static final RegistryObject<EntityType<SkyvernServant>> SKYVERN_SERVANT =
+            OF_ENTITIES.register("skyvern_servant",
+                    () -> EntityType.Builder.<SkyvernServant>of(SkyvernServant::new, MobCategory.MISC)
+                            .sized(1.2F, 1.2F)
+                            .setTrackingRange(10)
+                            .build(GoetyOminous.MOD_ID + ":skyvern_servant"));
+
+    public static final RegistryObject<EntityType<SkyvernSegmentServant>> SKYVERN_SEGMENT_SERVANT =
+            OF_ENTITIES.register("skyvern_segment_servant",
+                    () -> EntityType.Builder.<SkyvernSegmentServant>of(SkyvernSegmentServant::new, MobCategory.MISC)
+                            .sized(1.2F, 1.2F)
+                            .setTrackingRange(10)
+                            .setUpdateInterval(1)
+                            .build(GoetyOminous.MOD_ID + ":skyvern_segment_servant"));
 
     public static void register(IEventBus modEventBus) {
         OF_ENTITIES.register(modEventBus);

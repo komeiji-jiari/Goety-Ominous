@@ -554,6 +554,14 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> GuzzlerServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> GuzzlerServantFollowRange;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> SkyvernServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> SkyvernServantHealthPerSegment;
+    public static final ForgeConfigSpec.ConfigValue<Double> SkyvernServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> SkyvernServantFlyingSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> SkyvernServantAttackDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> SkyvernServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> SkyvernServantFollowRange;
+
     public static final ForgeConfigSpec.ConfigValue<Double> TerrorServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> TerrorServantMovementSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> TerrorServantAttackDamage;
@@ -1654,6 +1662,23 @@ public class AttributesConfig {
                 .defineInRange("guzzlerServantKnockbackResistance", 0.5, 0.0, 1.0);
         GuzzlerServantFollowRange = BUILDER.comment("How much Follow Range Guzzler Servants have, Default: 32.0")
                 .defineInRange("guzzlerServantFollowRange", 32.0, 1.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Skyvern Servant");
+        SkyvernServantHealth = BUILDER.comment("Base Max Health of Skyvern Servants before the segment bonus, Default: 10.0")
+                .defineInRange("skyvernServantHealth", 10.0, 1.0, Double.MAX_VALUE);
+        SkyvernServantHealthPerSegment = BUILDER.comment("Extra Max Health per body segment. Total = base + this x segment count, Default: 6.0")
+                .defineInRange("skyvernServantHealthPerSegment", 6.0, 0.0, Double.MAX_VALUE);
+        SkyvernServantMovementSpeed = BUILDER.comment("How much Movement Speed Skyvern Servants have, Default: 0.9")
+                .defineInRange("skyvernServantMovementSpeed", 0.9, 0.0, Double.MAX_VALUE);
+        SkyvernServantFlyingSpeed = BUILDER.comment("How much Flying Speed Skyvern Servants have, Default: 0.9")
+                .defineInRange("skyvernServantFlyingSpeed", 0.9, 0.0, Double.MAX_VALUE);
+        SkyvernServantAttackDamage = BUILDER.comment("How much Attack Damage Skyvern Servants have, Default: 9.0")
+                .defineInRange("skyvernServantAttackDamage", 9.0, 0.0, Double.MAX_VALUE);
+        SkyvernServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Skyvern Servants have, Default: 1.0")
+                .defineInRange("skyvernServantKnockbackResistance", 1.0, 0.0, 1.0);
+        SkyvernServantFollowRange = BUILDER.comment("How much Follow Range Skyvern Servants have, Default: 80.0")
+                .defineInRange("skyvernServantFollowRange", 80.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.push("Terror Servant");

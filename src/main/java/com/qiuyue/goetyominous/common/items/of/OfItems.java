@@ -43,6 +43,10 @@ public class OfItems {
             "guzzler_servant_spawn_egg",
             () -> new ServantSpawnEggItem(OfEntityRegistry.GUZZLER_SERVANT, 0x160E2C, 0x8956C2, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> SKYVERN_SERVANT_SPAWN_EGG = OF_ITEMS.register(
+            "skyvern_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(OfEntityRegistry.SKYVERN_SERVANT, 0x2E3A4D, 0x8FD6E8, egg()));
+
     public static Item.Properties egg() {
         return new Item.Properties();
     }
