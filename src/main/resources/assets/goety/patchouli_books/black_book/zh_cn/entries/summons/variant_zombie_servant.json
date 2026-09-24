@@ -1,0 +1,28 @@
+{
+  "name": "僵尸们的变种",
+  "icon": "minecraft:zombie_head",
+  "category": "goety:summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "近来你注意到了更多类型的僵尸们，其中一些独特的僵尸变种引起了你的好奇心。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:mired_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "这种从沼泽中爬起的僵尸身上覆盖着厚厚的泥巴，这为它们提供了额外的护甲以及很少的魔法保护，但也让它们行动更加迟缓。它们的攻击会让受害者减速而且遭受剧毒的折磨。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "在沼泽地形里召唤僵尸将会召唤出泥尸仆从，或者使用一根女巫们的魔杖也能召唤它们。穿戴巫婆们的制服，能让你的泥尸仆从的攻击给予目标毒液而不是中毒。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "泥尸仆从",
+      "text": "需求：$(li)墓碑位于沼泽生物群系 $(br)$(l)或是$()$() $(li)15块泥巴 $(li)1个炼药锅"
+    }
+  ]
+}

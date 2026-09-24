@@ -1,0 +1,36 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goetyominous:poison_ball_focus"
+  },
+  "craftType": "fel",
+  "soulCost": 1,
+  "duration": 10,
+  "ingredients": [
+    {
+      "item": "goety:occult_fabric"
+    },
+    {
+      "item": "goety:ectoplasm"
+    },
+    {
+      "item": "goety:ectoplasm"
+    },
+    {
+      "item": "goety:occult_fabric"
+    },
+    {
+      "item": "goetyominous:harmonious_diamond"
+    },
+    {
+      "item": "goetyominous:wolf_tongue"
+    },
+    {
+      "item": "goety:nightshade_blossom"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:acid_pool_focus"
+  }
+}

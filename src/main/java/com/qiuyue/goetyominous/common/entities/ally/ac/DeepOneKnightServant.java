@@ -4,7 +4,6 @@ import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.github.alexmodguy.alexscaves.server.block.AbyssalAltarBlock;
 import com.github.alexmodguy.alexscaves.server.block.blockentity.AbyssalAltarBlockEntity;
-import com.github.alexmodguy.alexscaves.server.entity.ai.AnimalRandomlySwimGoal;
 import com.github.alexmodguy.alexscaves.server.entity.ai.SemiAquaticPathNavigator;
 import com.github.alexmodguy.alexscaves.server.entity.ai.VerticalSwimmingMoveControl;
 import com.github.alexmodguy.alexscaves.server.entity.living.DeepOneKnightEntity;
@@ -15,12 +14,16 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.qiuyue.goetyominous.common.entities.ai.ac.DeepOneBarterGoal;
+import com.qiuyue.goetyominous.common.entities.ai.ac.DeepOneStrollGoal;
+import com.qiuyue.goetyominous.common.entities.ai.ac.DeepOneWanderGoal;
 import com.qiuyue.goetyominous.common.entities.ai.ac.IDeepOneBarterer;
+import com.qiuyue.goetyominous.common.entities.ai.ac.IDeepOneWanderer;
 import com.qiuyue.goetyominous.common.entities.projectile.DeepOneServantWave;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -29,9 +32,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
@@ -57,11 +62,13 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrownTrident;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.level.storage.loot.LootParams;
@@ -76,7 +83,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 
-public class DeepOneKnightServant extends Summoned implements IDeepOneBarterer, IAnimatedEntity {
+public class DeepOneKnightServant extends Summoned implements IDeepOneBarterer, IDeepOneWanderer, IAnimatedEntity {
 
     public static final Animation ANIMATION_THROW = DeepOneKnightEntity.ANIMATION_THROW;
     public static final Animation ANIMATION_BITE = DeepOneKnightEntity.ANIMATION_BITE;
@@ -106,6 +113,7 @@ public class DeepOneKnightServant extends Summoned implements IDeepOneBarterer, 
     private boolean dashPending = false;
     private int dashTicks = 0;
     private Vec3 dashDirection = Vec3.ZERO;
+    private boolean weaponIsInitialSpawn = false;
 
     public DeepOneKnightServant(EntityType<? extends Summoned> entityType, Level level) {
         super(entityType, level);
@@ -145,6 +153,7 @@ public class DeepOneKnightServant extends Summoned implements IDeepOneBarterer, 
         }
         SpawnGroupData data = super.finalizeSpawn(levelAccessor, difficulty, spawnType, spawnGroupData, tag);
         this.setItemSlot(EquipmentSlot.MAINHAND, this.random.nextFloat() < AttributesConfig.DeepOneKnightServantOrtholanceChance.get().floatValue() ? new ItemStack(ACItemRegistry.ORTHOLANCE.get()) : new ItemStack(Items.TRIDENT));
+        this.weaponIsInitialSpawn = !this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty();
         return data;
     }
 
@@ -179,7 +188,8 @@ public class DeepOneKnightServant extends Summoned implements IDeepOneBarterer, 
         this.goalSelector.addGoal(1, new DeepOneBarterGoal(this));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 16.0F));
         this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(6, new AnimalRandomlySwimGoal(this, 12, 18, 18, 1.0D));
+        this.goalSelector.addGoal(6, new DeepOneWanderGoal(this, 12, 1.0D));
+        this.goalSelector.addGoal(6, new DeepOneStrollGoal(this, 1.0D, 60));
     }
 
     @Override
@@ -197,6 +207,64 @@ public class DeepOneKnightServant extends Summoned implements IDeepOneBarterer, 
             this.navigation = this.createNavigation(this.level());
             this.isLandNavigator = false;
         }
+    }
+
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        if (this.getTrueOwner() != null && player == this.getTrueOwner()) {
+            if (this.equipWeapon(player, hand)) {
+                return InteractionResult.SUCCESS;
+            }
+            if (itemstack.is(ItemTags.FISHES) && this.getHealth() < this.getMaxHealth()) {
+                FoodProperties foodProperties = itemstack.getFoodProperties(this);
+                if (foodProperties != null) {
+                    this.heal((float) foodProperties.getNutrition());
+                    if (!player.getAbilities().instabuild) {
+                        itemstack.shrink(1);
+                    }
+                    this.gameEvent(GameEvent.EAT, this);
+                    if (this.level() instanceof ServerLevel serverLevel) {
+                        for (int i = 0; i < 7; ++i) {
+                            double d0 = this.getRandom().nextGaussian() * 0.02D;
+                            double d1 = this.getRandom().nextGaussian() * 0.02D;
+                            double d2 = this.getRandom().nextGaussian() * 0.02D;
+                            serverLevel.sendParticles(ParticleTypes.HEART,
+                                    this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D),
+                                    0, d0, d1, d2, 0.5D);
+                        }
+                    }
+                    player.swing(hand);
+                    return InteractionResult.SUCCESS;
+                }
+            }
+        }
+        return super.mobInteract(player, hand);
+    }
+
+    private boolean equipWeapon(Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        boolean acceptable = itemstack.is(Items.TRIDENT)
+                || itemstack.is(ACItemRegistry.ORTHOLANCE.get());
+        if (!acceptable) {
+            return false;
+        }
+
+        ItemStack current = this.getItemInHand(InteractionHand.MAIN_HAND);
+
+        if (!player.getAbilities().instabuild) {
+            itemstack.shrink(1);
+        }
+
+        if (!current.isEmpty() && !this.weaponIsInitialSpawn) {
+            this.spawnAtLocation(current.copy());
+        }
+
+        this.setItemSlot(EquipmentSlot.MAINHAND, itemstack.copyWithCount(1));
+        this.setItemSlot(EquipmentSlot.OFFHAND, ItemStack.EMPTY);
+        this.weaponIsInitialSpawn = false;
+        player.swing(hand);
+        return true;
     }
 
     @Override
@@ -461,7 +529,8 @@ public class DeepOneKnightServant extends Summoned implements IDeepOneBarterer, 
         DamageSource source = this.damageSources().mobAttack(this);
         float dashDamage = AttributesConfig.DeepOneKnightServantOrtholanceDashDamage.get().floatValue();
         for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, aabb)) {
-            if (!entity.equals(this) && !MobUtil.areAllies(entity, this) && this.hasLineOfSight(entity)) {
+            if (!entity.equals(this) && !this.isAlliedTo(entity) && !entity.isAlliedTo(this)
+                    && !MobUtil.areAllies(entity, this) && this.hasLineOfSight(entity)) {
                 entity.hurt(source, dashDamage);
                 entity.stopRiding();
             }
@@ -542,6 +611,7 @@ public class DeepOneKnightServant extends Summoned implements IDeepOneBarterer, 
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putBoolean("FocusSummoned", this.isFocusSummoned());
+        compound.putBoolean("WeaponIsInitialSpawn", this.weaponIsInitialSpawn);
         BlockPos altarPos = this.getLastAltarPos();
         if (altarPos != null) {
             compound.putInt("AltarX", altarPos.getX());
@@ -557,6 +627,7 @@ public class DeepOneKnightServant extends Summoned implements IDeepOneBarterer, 
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.setFocusSummoned(compound.getBoolean("FocusSummoned"));
+        this.weaponIsInitialSpawn = compound.getBoolean("WeaponIsInitialSpawn");
         if (compound.contains("AltarX") && compound.contains("AltarY") && compound.contains("AltarZ")) {
             this.setLastAltarPos(new BlockPos(compound.getInt("AltarX"), compound.getInt("AltarY"), compound.getInt("AltarZ")));
         }

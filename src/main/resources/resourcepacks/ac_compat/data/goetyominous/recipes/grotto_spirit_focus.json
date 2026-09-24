@@ -1,0 +1,31 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:bulwark_focus"
+  },
+  "craftType": "expert_nether",
+  "soulCost": 1,
+  "duration": 10,
+  "research": "bygone",
+  "ingredients": [
+    {
+      "item": "alexscaves:tectonic_shard"
+    },
+    {
+      "item": "alexscaves:tectonic_shard"
+    },
+    {
+      "item": "alexscaves:heavy_bone"
+    },
+    {
+      "item": "goety:ectoplasm"
+    },
+    {
+      "item": "minecraft:netherite_scrap"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:grotto_spirit_focus"
+  }
+}

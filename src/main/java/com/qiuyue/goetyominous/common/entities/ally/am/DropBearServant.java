@@ -264,7 +264,6 @@ public class DropBearServant extends Summoned implements IAnimatedEntity {
                 }
 
                 this.gameEvent(GameEvent.EAT, this);
-                this.eat(this.level(), itemstack);
                 Level var6 = this.level();
                 if (var6 instanceof ServerLevel) {
                     ServerLevel serverLevel = (ServerLevel)var6;

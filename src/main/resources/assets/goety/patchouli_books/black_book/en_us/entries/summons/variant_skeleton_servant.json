@@ -1,0 +1,28 @@
+{
+  "name": "Skeleton Servant Variants",
+  "icon": "minecraft:skeleton_skull",
+  "category": "goety:summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "During your travels, you have discovered more types of Skeletons. With the right methods, you can summon these new Skeletons to serve you."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:bogged_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Bogged are moss-covered dead buried within swamps. Compared to ordinary Skeletons, these Bogged are more fragile and draw their bows more slowly, but they fire arrows that inflict Slowness and Poison on their victims."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Summoning a Skeleton in a swamp will summon a Bogged servant, or you can summon them using a witch's wand. Wearing a witch's uniform causes your Bogged servants' attacks to inflict Venom instead of Poison on their targets. Right-clicking them with Shears removes the mushrooms growing on their bodies; using Bone Meal or waiting for a period of time will cause the mushrooms to regrow."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Bogged Servant",
+      "text": "Requirements: $(li)Gravestone is located in a Swamp biome $(br)$(l)OR$()$() $(li)20 Mud Block $(li)1 Slime Block"
+    }
+  ]
+}

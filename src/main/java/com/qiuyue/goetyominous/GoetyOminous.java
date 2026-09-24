@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous;
 
 import com.Polarice3.Goety.api.entities.ally.illager.IllagerType;
+import com.Polarice3.Goety.common.entities.ally.BlackWolf;
 import com.Polarice3.Goety.common.entities.neutral.ZPiglinServant;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractDredenEntity;
 import com.qiuyue.goetyominous.common.entities.ally.spider.CrimsonSpiderServant;
@@ -30,6 +31,7 @@ import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.compat.curios.CuriosIntegration;
 import com.qiuyue.goetyominous.config.WeaponConfig;
 import com.qiuyue.goetyominous.utils.BuiltinPacksRegistry;
+import com.qiuyue.goetyominous.client.OminousIconRotation;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Difficulty;
@@ -81,6 +83,7 @@ public class GoetyOminous {
         modEventBus.addListener(this::onClientSetup);
         ModNetwork.init();
         ModEntityTypes.register(modEventBus);
+        ModSpellControllers.ENTITY_TYPES.register(modEventBus);
         ModContainerTypes.register(modEventBus);
         var biomeModifiers = DeferredRegister.create(
                 ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, GoetyOminous.MOD_ID);
@@ -141,6 +144,10 @@ public class GoetyOminous {
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.MineGuardianExplosionProtectionHandler.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.NucleeperSummonHandler.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.BubbledVisualCleanupHandler.class);
+            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.LuxtructosaurusTephraHandler.class);
+            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ExtinctionCatalystHandler.class);
+            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.TremorsaurusSpiritHandler.class);
+            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.GrottoceratopsSpiritHandler.class);
         }
 
         getOrCreateDirectory(FMLPaths.CONFIGDIR.get().resolve("goetyominous"), "goetyominous");
@@ -164,6 +171,7 @@ public class GoetyOminous {
         WeaponConfig.loadConfig(WeaponConfig.SPEC,
                 FMLPaths.CONFIGDIR.get().resolve("goetyominous/goetyominous-weapons.toml").toString());
 
+        com.qiuyue.goetyominous.common.init.ModAttributes.init();
         FEL = com.Polarice3.Goety.api.magic.SpellType.create("FEL", "fel");
     }
 
@@ -210,11 +218,15 @@ public class GoetyOminous {
         }
         event.put(ModEntityTypes.URBHADHACH.get(), UrbhadhachEntity.setCustomAttributes().build());
         event.put(ModEntityTypes.URBHADHACH_SERVANT.get(), UrbhadhachServant.setCustomAttributes().build());
+        event.put(ModEntityTypes.MIRED_SERVANT.get(), MiredServant.setCustomAttributes().build());
+        event.put(ModEntityTypes.BOGGED_SERVANT.get(), BoggedServant.setCustomAttributes().build());
+        event.put(ModEntityTypes.SWAMP_WOLF.get(), BlackWolf.setCustomAttributes().build());
         event.put(ModEntityTypes.SUNKEN_NECROMANCER_SERVANT.get(), SunkenNecromancerServant.setCustomAttributes().build());
         event.put(ModEntityTypes.SUNKEN_NECROMANCER.get(), SunkenNecromancer.setCustomAttributes().build());
         event.put(ModEntityTypes.AXOLOTL_SERVANT.get(), AxolotlServant.setCustomAttributes().build());
         event.put(ModEntityTypes.LEAPKELP.get(), Leapkelp.setCustomAttributes().build());
         event.put(ModEntityTypes.WARG.get(), Warg.setCustomAttributes().build());
+        event.put(ModEntityTypes.CERBERUS.get(), Cerberus.setCustomAttributes().build());
         event.put(ModEntityTypes.HERESIARCH_SERVANT.get(), HeresiarchServant.setCustomAttributes().build());
         event.put(ModEntityTypes.DISCIPLE.get(), Disciple.setCustomAttributes().build());
         event.put(ModEntityTypes.CRIMSON_SPIDER_SERVANT.get(), CrimsonSpiderServant.setCustomAttributes().build());
@@ -320,10 +332,12 @@ public class GoetyOminous {
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.TremorsaurusHudEvents.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.TremorzillaHudEvents.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.AtlatitanHudEvents.class);
+            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.LuxtructosaurusHudEvents.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ForsakenRiderHudEvents.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.CandicornRiderHudEvents.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.TremorzillaRenderEvents.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.AtlatitanRenderEvents.class);
+            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.LuxtructosaurusRenderEvents.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.CorrodentDigCrackRenderEvents.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ForsakenSpitParticleRenderEvents.class);
         }
@@ -366,6 +380,8 @@ public class GoetyOminous {
             ItemProperties.register(ModItems.PIGLIN_PRIDE.get(), new ResourceLocation("firework"),
                     (stack, level, entity, seed) ->
                             CogCrossbowItem.isCharged(stack) && CogCrossbowItem.containsChargedProjectile(stack, Items.FIREWORK_ROCKET) ? 1.0F : 0.0F);
+
+            OminousIconRotation.register();
         });
         net.minecraft.client.gui.screens.MenuScreens.register(
                 com.qiuyue.goetyominous.common.init.ModContainerTypes.FUNGUS_PACK.get(),

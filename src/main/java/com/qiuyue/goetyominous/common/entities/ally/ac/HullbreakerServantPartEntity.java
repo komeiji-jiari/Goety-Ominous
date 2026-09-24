@@ -67,6 +67,11 @@ public class HullbreakerServantPartEntity extends PartEntity<HullbreakerServant>
     }
 
     @Override
+    public boolean canBeHitByProjectile() {
+        return false;
+    }
+
+    @Override
     public boolean hurt(DamageSource source, float amount) {
         HullbreakerServant parent = this.getParent();
         if (source.is(DamageTypeTags.IS_PROJECTILE)) {

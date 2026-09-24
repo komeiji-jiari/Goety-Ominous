@@ -22,8 +22,6 @@ public class PureDarkVoid extends Entity {
 
     private int nextIdleTime = 60;
 
-    // 仪式祭坛(仅服务端用于中断自清理)。IRitualType 无 interrupt 钩子,
-    // 若玩家中途打断,靠轮询祭坛是否仍在施法来及时销毁特效实体,避免留下"幽灵云"。
     private BlockPos anchorPos;
     private int anchorCheckTick;
     private int anchorMisses;
@@ -46,7 +44,6 @@ public class PureDarkVoid extends Entity {
         return this.entityData.get(SPAWN_TIME);
     }
 
-    /** 绑定主持仪式的祭坛,中断时据此销毁实体。仅服务端使用,无需同步/存档。 */
     public void setAltarAnchor(BlockPos altarPos) {
         this.anchorPos = altarPos;
     }
@@ -79,7 +76,6 @@ public class PureDarkVoid extends Entity {
         }
     }
 
-    /** 每 5 tick 查一次祭坛是否仍在施法;连续 ~1s 未施法则自毁(被打断)。 */
     private void checkAnchorAlive() {
         if (this.anchorPos == null) {
             return;

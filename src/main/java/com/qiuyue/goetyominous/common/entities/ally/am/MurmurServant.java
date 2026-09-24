@@ -4,7 +4,6 @@ import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.github.alexthe666.alexsmobs.entity.ISemiAquatic;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAILeaveWater;
-import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIWanderRanged;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import java.util.Optional;
 import java.util.UUID;
@@ -59,7 +58,7 @@ public class MurmurServant extends Summoned implements ISemiAquatic {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new AnimalAILeaveWater(this));
-        this.goalSelector.addGoal(2, new AnimalAIWanderRanged(this, 55, 1.0, 14, 7));
+        this.goalSelector.addGoal(2, new Summoned.WanderGoal<>(this, 1.0D, 55, 0.001F));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this, new Class[0]));
     }
 

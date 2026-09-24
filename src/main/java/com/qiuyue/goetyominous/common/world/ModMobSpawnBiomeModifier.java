@@ -8,10 +8,10 @@ import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.raid.Raider;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraftforge.common.world.BiomeModifier;
+import net.minecraftforge.common.world.MobSpawnSettingsBuilder;
 import net.minecraftforge.common.world.ModifiableBiomeInfo;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -28,63 +28,65 @@ public class ModMobSpawnBiomeModifier implements BiomeModifier {
             );
 
     @Override
-    public void modify(Holder<Biome> biome,
-                       Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
+    public void modify(Holder<Biome> biome, Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
         if (phase == Phase.ADD) {
             addBiomeSpawns(biome, builder);
         }
     }
 
-    private void addBiomeSpawns(Holder<Biome> biome,
-                                ModifiableBiomeInfo.BiomeInfo.Builder builder) {
+    private void addBiomeSpawns(Holder<Biome> biome, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
         ResourceLocation key = biome.unwrapKey().map(k -> k.location()).orElse(null);
         if (!biome.is(net.minecraft.tags.BiomeTags.IS_OVERWORLD)) return;
         if (key != null && (key.equals(new ResourceLocation("minecraft", "mushroom_fields"))
                 || key.equals(new ResourceLocation("minecraft", "deep_dark")))) return;
 
-        int dWeight = MobsConfig.DredenSpawnWeight.get();
-        if (dWeight > 0 && biome.get().getBaseTemperature() < 0.15F) {
-            builder.getMobSpawnSettings().getSpawner(MobCategory.MONSTER).add(
-                    new MobSpawnSettings.SpawnerData(ModEntityTypes.DREDEN.get(),
-                            dWeight,
-                            MobsConfig.DredenSpawnMinCount.get(),
-                            MobsConfig.DredenSpawnMaxCount.get()));
-        }
+        MobSpawnSettingsBuilder spawnSettings = builder.getMobSpawnSettings();
+        var spawnerList = spawnSettings.getSpawner(MobCategory.MONSTER);
 
-        var spawnerList = builder.getMobSpawnSettings().getSpawner(MobCategory.MONSTER);
-        boolean alreadyExists = spawnerList.stream()
-                .anyMatch(s -> s.type == ModEntityTypes.BELDAM.get()
-                        || s.type == ModEntityTypes.FANATIC.get()
-                        || s.type == ModEntityTypes.ZEALOT.get());
-        if (alreadyExists) return;
+        boolean cold = biome.value().getBaseTemperature() < 0.15F;
 
-        int uWeight = MobsConfig.UrbhadhachSpawnWeight.get();
-        if (uWeight > 0 && biome.get().getBaseTemperature() < 0.15F) {
-            spawnerList.add(new MobSpawnSettings.SpawnerData(ModEntityTypes.URBHADHACH.get(),
-                    uWeight,
+        if (cold) {
+            addSpawn(spawnerList, spawnSettings, ModEntityTypes.DREDEN.get(),
+                    MobsConfig.DredenSpawnWeight.get(),
+                    MobsConfig.DredenSpawnMinCount.get(),
+                    MobsConfig.DredenSpawnMaxCount.get(),
+                    1.0D, 1.0D);
+
+            addSpawn(spawnerList, spawnSettings, ModEntityTypes.URBHADHACH.get(),
+                    MobsConfig.UrbhadhachSpawnWeight.get(),
                     MobsConfig.UrbhadhachSpawnMinCount.get(),
-                    MobsConfig.UrbhadhachSpawnMaxCount.get()));
+                    MobsConfig.UrbhadhachSpawnMaxCount.get(),
+                    1.0D, 1.0D);
         }
 
-        addSpawn(spawnerList, ModEntityTypes.BELDAM.get(),
+        addSpawn(spawnerList, spawnSettings, ModEntityTypes.BELDAM.get(),
                 MobsConfig.BeldamSpawnWeight.get(),
                 MobsConfig.BeldamSpawnMinCount.get(),
-                MobsConfig.BeldamSpawnMaxCount.get());
-        addSpawn(spawnerList, ModEntityTypes.FANATIC.get(),
+                MobsConfig.BeldamSpawnMaxCount.get(),
+                1.0D, 1.0D);
+
+        addSpawn(spawnerList, spawnSettings, ModEntityTypes.FANATIC.get(),
                 MobsConfig.FanaticSpawnWeight.get(),
                 MobsConfig.FanaticSpawnMinCount.get(),
-                MobsConfig.FanaticSpawnMaxCount.get());
-        addSpawn(spawnerList, ModEntityTypes.ZEALOT.get(),
+                MobsConfig.FanaticSpawnMaxCount.get(),
+                1.0D, 1.0D);
+
+        addSpawn(spawnerList, spawnSettings, ModEntityTypes.ZEALOT.get(),
                 MobsConfig.ZealotSpawnWeight.get(),
                 MobsConfig.ZealotSpawnMinCount.get(),
-                MobsConfig.ZealotSpawnMaxCount.get());
+                MobsConfig.ZealotSpawnMaxCount.get(),
+                1.0D, 1.0D);
     }
 
     private void addSpawn(List<MobSpawnSettings.SpawnerData> list,
-                          EntityType<? extends Raider> type, int weight, int min, int max) {
-        if (weight > 0) {
-            list.add(new MobSpawnSettings.SpawnerData(type, weight, min, max));
-        }
+                          MobSpawnSettingsBuilder spawnSettings,
+                          EntityType<?> type,
+                          int weight, int min, int max,
+                          double charge, double energyBudget) {
+        if (weight <= 0) return;
+        if (list.stream().anyMatch(s -> s.type == type)) return;
+        list.add(new MobSpawnSettings.SpawnerData(type, weight, min, max));
+        spawnSettings.addMobCharge(type, charge, energyBudget);
     }
 
     @Override

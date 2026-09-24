@@ -1,0 +1,26 @@
+{
+  "name": "潮涌之叶",
+  "icon": "minecraft:kelp",
+  "category": "goety:summons",
+  "advancement": "goety:goety/read_floral_scroll",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "潮涌之叶是腾跃之叶的水下变种。它们可以由腾跃之叶沉入水下后转化，或使用腾叶聚晶在水下召唤。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:leapkelp",
+      "scale": 0.75
+    },
+    {
+      "type": "multiblock",
+      "multiblock_id": "goety:leapleaf",
+      "text": "在水下搭建，使用活力核心右键中心的增生之根即可。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "手持骨粉右键潮涌之叶即可治愈它，或者召唤者装备了深渊长袍也可以提供治疗。"
+    }
+  ]
+}

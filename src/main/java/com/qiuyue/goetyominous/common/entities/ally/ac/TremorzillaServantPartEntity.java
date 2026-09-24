@@ -80,6 +80,11 @@ public class TremorzillaServantPartEntity extends PartEntity<TremorzillaServant>
     }
 
     @Override
+    public boolean canBeHitByProjectile() {
+        return false;
+    }
+
+    @Override
     public boolean hurt(DamageSource source, float amount) {
         TremorzillaServant parent = this.getParent();
         if (source.is(DamageTypeTags.IS_PROJECTILE)) {

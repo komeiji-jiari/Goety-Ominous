@@ -45,6 +45,8 @@ import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
@@ -58,6 +60,7 @@ import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 
 public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity, ISemiAquatic {
@@ -114,11 +117,7 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
             this.setHasLifespan(false);
             this.setLifespan(0);
         }
-        SpawnGroupData data = super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
-        if (reason == MobSpawnType.SPAWN_EGG || reason == MobSpawnType.MOB_SUMMONED) {
-            this.setAge(-2400);
-        }
-        return data;
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
@@ -166,11 +165,6 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
         return super.canMate(p_27569_);
     }
 
-    @Override
-    public void setBaby(boolean baby) {
-        this.setAge(baby ? -6000 : 0);
-    }
-
     protected SoundEvent getAmbientSound() {
         return AMSoundRegistry.FROSTSTALKER_IDLE.get();
     }
@@ -202,6 +196,28 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
             standFor(shakeTime + 10);
         }
         return prev;
+    }
+
+    @Override
+    protected PathNavigation createNavigation(Level level) {
+        return new GroundPathNavigation(this, level) {
+            @Override
+            protected void followThePath() {
+                Path path = this.getPath();
+                int index = path == null ? -1 : path.getNextNodeIndex();
+                super.followThePath();
+                if (path == null || path != this.getPath() || path.isDone()
+                        || path.getNextNodeIndex() != index) {
+                    return;
+                }
+                Vec3 target = path.getNextEntityPos(this.mob);
+                if (Math.abs(this.mob.getX() - target.x) < (double) this.maxDistanceToWaypoint
+                        && Math.abs(this.mob.getZ() - target.z) < (double) this.maxDistanceToWaypoint
+                        && Math.abs(this.mob.getY() - target.y) < 1.0D) {
+                    path.advance();
+                }
+            }
+        };
     }
 
     @Override

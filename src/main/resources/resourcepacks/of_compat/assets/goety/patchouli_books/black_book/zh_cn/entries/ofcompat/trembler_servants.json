@@ -1,0 +1,24 @@
+{
+  "name": "震颤蜗牛",
+  "icon": "opposing_force:trembler_shell",
+  "category": "goety:ofcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "震颤蜗牛是一种比看起来速度快得多的仆从，它们的壳可以提供充足的保护，还能翻滚起来撞击沿途的生物。很少见的情况下，可能会出现比其他震颤蜗牛仆从更强大的精英个体。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:trembler_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:trembler_servant",
+      "text": "我可以顷刻间风驰电掣！"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "喂食震颤蜗牛仆从粘液球来治愈它们。穿戴荒野长袍为你的震颤蜗牛提供被动治疗。"
+    }
+  ]
+}

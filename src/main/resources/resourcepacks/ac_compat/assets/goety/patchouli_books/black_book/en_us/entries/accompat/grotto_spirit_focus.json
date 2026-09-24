@@ -1,0 +1,22 @@
+{
+  "name": "Grotto Spirit Focus",
+  "icon": "goetyominous:grotto_spirit_focus",
+  "category": "goety:primordialcaves",
+  "advancement": "goety:goety/read_bygone_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "This spell allows you to summon the spirits of Grottoceratops to protect you. When you take damage, one Grottoceratops spirit shatters and fully absorbs the damage. Like the Bulwark Focus, the Grottoceratops spirits summoned by this spell only last for a limited time."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:grotto_spirit_focus",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "A Nether Staff allows you to summon an additional Grottoceratops spirit each time. Casting this spell on your allies grants them the protection of Grottoceratops spirits as well."
+    }
+  ]
+}

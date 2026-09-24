@@ -17,7 +17,6 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.HashSet;
 import java.util.Set;
 
-
 @Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID)
 public class CuriosTagHandler {
 

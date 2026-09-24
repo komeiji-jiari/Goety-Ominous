@@ -22,6 +22,10 @@
       "id": "goetyominous:wither_skelewag_servant",
       "required": false
     },
+    {
+      "id": "goetyominous:luxtructosaurus_servant",
+      "required": false
+    },
     "goetyominous:returned",
     "goetyominous:agony"
   ]

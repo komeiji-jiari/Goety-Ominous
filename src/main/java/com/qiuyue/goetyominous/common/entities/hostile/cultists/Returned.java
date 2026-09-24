@@ -119,6 +119,9 @@ public class Returned extends AbstractReturned {
                 && !(this.getTrueOwner() instanceof Player)) {
             return true;
         }
+        if (entity instanceof com.Polarice3.Goety.common.entities.neutral.AbstractObsidianMonolith) {
+            return true;
+        }
         return super.isAlliedTo(entity);
     }
 

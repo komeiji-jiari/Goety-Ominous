@@ -1,0 +1,7 @@
+{
+  "name": "渊海陷窟",
+  "description": "深海中潜伏着的黑暗。",
+  "icon": "alexscaves:diving_helmet",
+  "sortnum": 1,
+  "parent": "goety:accompat"
+}

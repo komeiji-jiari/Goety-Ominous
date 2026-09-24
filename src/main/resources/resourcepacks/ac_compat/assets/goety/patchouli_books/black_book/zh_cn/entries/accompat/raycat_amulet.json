@@ -1,0 +1,16 @@
+{
+  "name": "射线猫护符",
+  "icon": "goetyominous:raycat_amulet",
+  "category": "goety:toxiccaves",
+  "pages": [
+    {
+      "type": "text",
+      "text": "射线猫护符不仅能有效恐吓包括核能苦力怕在内的苦力怕和幻翼，还可以吸收装备者和装备者的仆从身上的辐照效果，并将其转化为生命恢复。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:raycat_amulet",
+      "text": ""
+    }
+  ]
+}

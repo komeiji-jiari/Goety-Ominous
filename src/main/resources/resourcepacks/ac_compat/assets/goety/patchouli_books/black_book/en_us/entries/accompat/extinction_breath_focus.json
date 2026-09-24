@@ -1,0 +1,20 @@
+{
+  "name": "Extinction Breath Focus",
+  "icon": "goetyominous:extinction_breath_focus",
+  "category": "goety:primordialcaves",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "With this spell, you can exhale scorching flames like the undead dinosaur imprisoned within the volcano, letting your enemies feel the heat of extinction. Even creatures resistant to fire will be scorched by your breath."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goetyominous:extinction_breath_focus",
+      "text": "Care for a mint, buddy?"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "A Nether Staff doubles the damage of breath spells. If you are wearing Nether Robe, your breath spells will always deal full damage to fire-immune creatures."
+    }
+  ]
+}

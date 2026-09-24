@@ -25,20 +25,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.WeakHashMap;
 
-/**
- * 仿 Alex's Caves Underzealot 献祭仪式的虚空特效渲染。
- *
- * 结构对齐 AC VoidBeingCloudParticle/Eye/Tendril:
- *  - 黑色噪点云牌(quad half≈2,与 AC size=1 同尺寸同 64px 纹理);
- *  - 3~5 只 void_eye 环绕云边缘成环,生命周期后 1/3 向中心收拢并下坠到
- *    祭坛焦点(模拟 AC 眼 age>200 后聚向牺牲物 + 抖动 + 末段下沉);
- *  - 6 条触须从云下缘垂挂到祭坛焦点下(对应 AC tendril 俯冲向下方牺牲物),
- *    临近结束被抽回云中(虚空"吞没"),整体 alpha 进出与 AC getAlphaFromAge 一致。
- *
- * 实体渲染器是单例、跨世界/跨资源重载存活。TextureManager 重载(F3+T/进存档)会
- * close() 已注册的 DynamicTexture(释放 NativeImage + GL id,getPixels() 归 null),
- * 此后不再自动重建;本渲染器需自愈重建并重新注册,否则云贴图永久失效。同族见粒子坑。
- */
 public class PureDarkVoidRenderer extends EntityRenderer<PureDarkVoid> {
 
     private static final ResourceLocation[] EYE_TEXTURES = {
@@ -53,17 +39,12 @@ public class PureDarkVoidRenderer extends EntityRenderer<PureDarkVoid> {
 
     private static final int TEXTURE_SIZE = 64;
     private static final int LIFETIME = PureDarkVoid.LIFETIME;
-    // AC VoidBeingCloud size 参数 1 -> quad half = size(2),64px 纹理,与此一致
     private static final float CLOUD_HALF = 2.0F;
     private static final float EYE_HALF = 0.42F;
 
-    // 云下缘到"祭坛焦点"的相对高度(虚空实体在 altar+3,焦点≈祭坛顶/产物落点)
     private static final float FOCUS_Y = -2.6F;
-    // AC 眼中 age>200(300 寿命)开始聚拢 -> 用寿命后 100 tick
     private static final int CONVERGE_FROM = LIFETIME - 100;
-    // 最后 60 tick 触须被抽回云中(吞没感)
     private static final int RETRACT_FROM = LIFETIME - 60;
-    // AC 眼在 lifetime-20 起每 tick 下沉 0.25;这里焦点只到祭坛顶,下沉封顶以免穿地
     private static final int SINK_FROM = LIFETIME - 18;
     private static final float SINK_RATE = 0.25F;
     private static final float SINK_MAX = 0.9F;
@@ -75,8 +56,6 @@ public class PureDarkVoidRenderer extends EntityRenderer<PureDarkVoid> {
 
     public PureDarkVoidRenderer(EntityRendererProvider.Context context) {
         super(context);
-        // entityTranslucentEmissive = COLOR_WRITE(只写颜色、不写深度)+ LEQUAL 深度测试:
-        // 云不再写入深度墙,不会把绕飞时落在云平面后的眼睛深度剔除;世界地形仍能正常遮挡。
         this.cloudRenderType = RenderType.entityTranslucentEmissive(CLOUD_LOCATION);
         this.ensureCloudTexture();
     }
@@ -114,7 +93,6 @@ public class PureDarkVoidRenderer extends EntityRenderer<PureDarkVoid> {
         Matrix4f matrix4f = pose.pose();
         Matrix3f matrix3f = pose.normal();
 
-        // 云 -> 垂挂触须 -> 眼(最后画在云上更醒目),与 AC 观感一致
         this.renderCloud(bufferSource, matrix4f, matrix3f, t, alpha, cameraQuat);
         this.renderTendrils(bufferSource, matrix4f, matrix3f, spec, t, age, alpha, cameraQuat);
         this.renderEyes(bufferSource, matrix4f, matrix3f, spec, t, age, alpha, cameraQuat);
@@ -181,7 +159,6 @@ public class PureDarkVoidRenderer extends EntityRenderer<PureDarkVoid> {
             if (appear <= 0.0F) {
                 continue;
             }
-            // 环绕云的假轨道 + 后 1/3 收拢到中心并下坠(AC: converge to (0,-5) + 抖动)
             float ang = eye.baseAngle + t * eye.drift;
             float radius = Mth.lerp(conv, eye.radius, 0.0F);
             float bob = 0.1F * (float) Math.sin(t * 0.09 + eye.phase);
@@ -213,7 +190,6 @@ public class PureDarkVoidRenderer extends EntityRenderer<PureDarkVoid> {
             }
             float ease = (float) Math.sin(unfurl * (float) Math.PI * 0.5F);
             Vec3 root = new Vec3(ten.rootX, ten.rootY, ten.rootZ);
-            // 尖端默认垂到祭坛焦点;临近结束被抽回云中(吞没)
             Vec3 tip = new Vec3(
                     Mth.lerp(retract, ten.tipX, ten.rootX),
                     Mth.lerp(retract, ten.tipY, ten.rootY - 0.3F),
@@ -247,7 +223,6 @@ public class PureDarkVoidRenderer extends EntityRenderer<PureDarkVoid> {
         }
     }
 
-    /** 画一块以 (ox,oy,oz) 为中心、面向相机的广告牌。偏移在旋转前加入 -> 世界坐标放置。 */
     private void emitBillboard(VertexConsumer buffer, Matrix4f matrix4f, Matrix3f matrix3f,
                                float ox, float oy, float oz, float half, Quaternionf cameraQuat,
                                float r, float g, float b, float alpha) {
@@ -308,11 +283,9 @@ public class PureDarkVoidRenderer extends EntityRenderer<PureDarkVoid> {
         for (int i = 0; i < eyeCount; i++) {
             Eye eye = new Eye();
             eye.baseAngle = (float) (i * 2.0 * Math.PI / eyeCount) + (random.nextFloat() - 0.5F) * 0.7F;
-            // AC: 环半径 = (0.5+rnd*0.7)*size(2)*1.1 ≈ 1.1~2.6,再乘其 quad f4 0.5 → 云缘内侧小环
             eye.radius = 0.55F + random.nextFloat() * 0.75F;
             eye.height = (random.nextFloat() - 0.5F) * 1.2F;
             eye.phase = random.nextFloat() * (float) Math.PI * 2.0F;
-            // 与 AC VoidBeingEyeParticle 一致:出生随机固定 0/1 两张之一(nextInt(2)),2 号不出现在仪式里
             eye.textureIndex = random.nextInt(2);
             eye.drift = 0.008F + random.nextFloat() * 0.012F;
             spec.eyes[i] = eye;
@@ -327,7 +300,6 @@ public class PureDarkVoidRenderer extends EntityRenderer<PureDarkVoid> {
             ten.rootX = (float) (Math.cos(angle) * radius);
             ten.rootZ = (float) (Math.sin(angle) * radius);
             ten.rootY = -0.4F - random.nextFloat() * 0.8F;
-            // 尖端垂到祭坛焦点附近(AC tendril 俯冲到下方牺牲物)
             ten.tipX = (random.nextFloat() - 0.5F) * 0.9F;
             ten.tipZ = (random.nextFloat() - 0.5F) * 0.9F;
             ten.tipY = FOCUS_Y - 0.2F - random.nextFloat() * 0.5F;

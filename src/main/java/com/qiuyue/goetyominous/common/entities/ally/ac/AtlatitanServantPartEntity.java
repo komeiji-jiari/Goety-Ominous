@@ -74,6 +74,11 @@ public class AtlatitanServantPartEntity extends PartEntity<AtlatitanServant> {
     }
 
     @Override
+    public boolean canBeHitByProjectile() {
+        return false;
+    }
+
+    @Override
     public boolean isInvulnerableTo(DamageSource damageSource) {
         AtlatitanServant parent = this.getParent();
         return super.isInvulnerableTo(damageSource)

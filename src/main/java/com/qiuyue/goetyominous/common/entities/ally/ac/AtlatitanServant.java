@@ -2,11 +2,10 @@ package com.qiuyue.goetyominous.common.entities.ally.ac;
 
 import com.Polarice3.Goety.api.entities.ally.IServant;
 import com.Polarice3.Goety.api.items.magic.IWand;
-import com.Polarice3.Goety.common.entities.ModEntityType;
 import com.Polarice3.Goety.common.entities.ally.AnimalSummon;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
-import com.Polarice3.Goety.common.entities.projectiles.FlyingItem;
+import com.Polarice3.Goety.common.entities.util.CameraShake;
 import com.Polarice3.Goety.init.ModMobType;
 import com.github.alexmodguy.alexscaves.AlexsCaves;
 import com.github.alexmodguy.alexscaves.client.particle.ACParticleRegistry;
@@ -36,6 +35,7 @@ import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.IAdvanced
 import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.ITallWalker;
 import com.qiuyue.goetyominous.common.entities.ai.ac.ServantBreedGoal;
 import com.qiuyue.goetyominous.common.entities.ai.ac.ServantLayEggGoal;
+import com.qiuyue.goetyominous.common.entities.ai.ac.ServantTemptGoal;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
 import com.qiuyue.goetyominous.common.items.ac.AcItems;
@@ -76,7 +76,6 @@ import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -157,6 +156,7 @@ public class AtlatitanServant extends AnimalSummon
     private float legBackAmount = 0.0F;
     private float prevRaiseArmsAmount = 0.0F;
     private float raiseArmsAmount = 0.0F;
+    private float seatBodyOffset = 0.8F;
     protected float neckXRot;
     protected float neckYRot;
     protected float tailXRot;
@@ -243,7 +243,7 @@ public class AtlatitanServant extends AnimalSummon
         this.goalSelector.addGoal(1, new AtlatitanServantMeleeGoal(this));
         this.goalSelector.addGoal(2, new ServantBreedGoal<>(this, 1.0D));
         this.goalSelector.addGoal(3, new ServantLayEggGoal<>(this, (DinosaurEggBlock) this.createEggBlockState().getBlock(), 100, 1.0D));
-        this.goalSelector.addGoal(4, new TemptGoal(this, 1.1D, Ingredient.of(ACBlockRegistry.TREE_STAR.get()), false));
+        this.goalSelector.addGoal(4, new ServantTemptGoal(this, 1.1D, Ingredient.of(ACBlockRegistry.TREE_STAR.get()), false));
         this.goalSelector.addGoal(6, new AtlatitanServantNibbleTreesGoal(this, 30));
         this.goalSelector.addGoal(7, new Summoned.WanderGoal<>(this, 1.0D));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 32.0F));
@@ -280,6 +280,15 @@ public class AtlatitanServant extends AnimalSummon
                 && this.getOwnerId() != null && this.getOwnerId().equals(entity.getUUID());
     }
 
+    @Override
+    public void tryKill(Player player) {
+        if (this.killChance <= 0) {
+            this.warnKill(player);
+        } else {
+            super.tryKill(player);
+        }
+    }
+
     public boolean isFakeEntity() {
         return this.firstTick;
     }
@@ -292,6 +301,7 @@ public class AtlatitanServant extends AnimalSummon
         this.prevRaiseArmsAmount = this.raiseArmsAmount;
         this.prevScreenShakeAmount = this.screenShakeAmount;
         this.legSolver.update(this, this.yBodyRot, this.getScale());
+        this.seatBodyOffset += (this.getLegSolverBodyOffset() - this.seatBodyOffset) * 0.15F;
         if (this.shouldRaiseArms() && this.raiseArmsAmount < 5.0F) {
             this.raiseArmsAmount += 1.0F;
         }
@@ -315,9 +325,11 @@ public class AtlatitanServant extends AnimalSummon
                     ? Mth.approachDegrees(this.yBodyRotO, this.lastYawBeforeWhip, 15.0F)
                     : Mth.approachDegrees(this.yBodyRotO, this.lastYawBeforeWhip + negative * target, 90.0F);
         }
-        this.tickMultipart();
-        this.tickWalking();
         if (this.level().isClientSide) {
+            if (this.isControlledByLocalInstance()) {
+                this.lSteps = 0;
+                this.syncPacketPositionCodec(this.getX(), this.getY(), this.getZ());
+            }
             if (this.lSteps > 0) {
                 double d5 = this.getX() + (this.lx - this.getX()) / (double) this.lSteps;
                 double d6 = this.getY() + (this.ly - this.getY()) / (double) this.lSteps;
@@ -330,6 +342,8 @@ public class AtlatitanServant extends AnimalSummon
                 this.reapplyPosition();
             }
         }
+        this.tickMultipart();
+        this.tickWalking();
         if (this.getAnimation() == ANIMATION_STOMP && this.getAnimationTick() > 25 && this.getAnimationTick() < 35
                 && this.screenShakeAmount <= 2.0F) {
             this.screenShakeAmount = 2.0F;
@@ -407,7 +421,9 @@ public class AtlatitanServant extends AnimalSummon
     private void onStep() {
         if (!this.isBaby() && this.screenShakeAmount <= 1.0F) {
             this.playSound(ACSoundRegistry.ATLATITAN_STEP.get(), 2.0F, 1.0F);
-            this.screenShakeAmount = 1.0F;
+            if (!this.isVehicle()) {
+                CameraShake.cameraShake(this.level(), this.position(), 20.0F, 0.03F, 0, 20);
+            }
         }
     }
 
@@ -789,6 +805,11 @@ public class AtlatitanServant extends AnimalSummon
     }
 
     @Override
+    public boolean canFeelShake(Entity player) {
+        return !this.hasPassenger(player) && player.onGround();
+    }
+
+    @Override
     public float getScreenShakeAmount(float partialTicks) {
         if (!this.isAlive() || this.isBaby()) {
             return 0.0F;
@@ -844,7 +865,7 @@ public class AtlatitanServant extends AnimalSummon
     @Override
     public boolean hurt(DamageSource source, float amount) {
         if (source.is(DamageTypeTags.IS_PROJECTILE)) {
-            amount *= this.getProjectileDamageReduction();
+            amount *= PartProjectileHits.projectileMultiplier(this, source, this.getProjectileDamageReduction(), 0.33F);
         }
         return super.hurt(source, amount);
     }
@@ -1030,7 +1051,7 @@ public class AtlatitanServant extends AnimalSummon
             passenger.fallDistance = 0.0F;
             this.clampRotation(living, 105.0F);
             moveFunction.accept(passenger, this.getX() + seatOffset.x,
-                    this.getY() + seatOffset.y + this.getPassengersRidingOffset() - this.getLegSolverBodyOffset(),
+                    this.getY() + seatOffset.y + this.getPassengersRidingOffset() - this.seatBodyOffset,
                     this.getZ() + seatOffset.z);
         } else {
             super.positionRider(passenger, moveFunction);
@@ -1108,7 +1129,8 @@ public class AtlatitanServant extends AnimalSummon
                     firstPassenger.stopRiding();
                     return InteractionResult.SUCCESS;
                 }
-                if (!(itemstack.getItem() instanceof IWand)) {
+                if (!(itemstack.getItem() instanceof IWand)
+                        && !itemstack.is(AcItems.EXTINCTION_CATALYST.get())) {
                     this.doPlayerRide(player);
                     return InteractionResult.SUCCESS;
                 }
@@ -1234,12 +1256,6 @@ public class AtlatitanServant extends AnimalSummon
     protected void tickDeath() {
         ++this.deathTime;
         if (this.deathTime >= 20 && !this.level().isClientSide() && !this.isRemoved()) {
-            if (this.getTrueOwner() != null && MobsConfig.AtlatitanServantReturnEgg.get()) {
-                FlyingItem flyingItem = new FlyingItem(ModEntityType.FLYING_ITEM.get(), this.level(), this.getX(), this.getY(), this.getZ());
-                flyingItem.setOwner(this.getTrueOwner());
-                flyingItem.setItem(new ItemStack(AcItems.ATLATITAN_SERVANT_EGG.get()));
-                this.level().addFreshEntity(flyingItem);
-            }
             this.level().broadcastEntityEvent(this, (byte) 60);
             this.remove(Entity.RemovalReason.KILLED);
         }

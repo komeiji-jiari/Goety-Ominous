@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.common.init;
 import com.Polarice3.Goety.common.items.magic.MagicFocus;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.items.ModItems;
+import com.qiuyue.goetyominous.common.items.OminousIconItem;
 import com.qiuyue.goetyominous.common.items.PlushieBlockItem;
 import com.qiuyue.goetyominous.common.items.ac.AcItems;
 import com.qiuyue.goetyominous.common.items.am.AmItems;
@@ -37,52 +38,54 @@ public class ModCreativeTab {
                         List<Item> foci = new ArrayList<>();
                         List<Item> weapons = new ArrayList<>();
                         List<Item> otherItems = new ArrayList<>();
+                        List<Item> blocks = new ArrayList<>();
                         List<Item> spawnEggs = new ArrayList<>();
 
-                        collectFrom(ModItems.ITEMS, spawnEggs, foci, weapons, otherItems);
+                        collectFrom(ModItems.ITEMS, spawnEggs, foci, weapons, otherItems, blocks);
 
                         if (SpearBackportCompat.isSpearBackportLoaded()) {
-                            collectFrom(SpearItems.SPEAR_ITEMS, spawnEggs, foci, weapons, otherItems);
+                            collectFrom(SpearItems.SPEAR_ITEMS, spawnEggs, foci, weapons, otherItems, blocks);
                         }
 
                         if (IllageAndSpillageCompat.isIllageAndSpillageLoaded()) {
-                            collectFrom(IasItems.IAS_ITEMS, spawnEggs, foci, weapons, otherItems);
+                            collectFrom(IasItems.IAS_ITEMS, spawnEggs, foci, weapons, otherItems, blocks);
                         }
 
                         if (SavageRavageCompat.isSavageRavageLoaded()) {
-                            collectFrom(SarItems.SAR_ITEMS, spawnEggs, foci, weapons, otherItems);
+                            collectFrom(SarItems.SAR_ITEMS, spawnEggs, foci, weapons, otherItems, blocks);
                         }
 
                         if (UpgradeAquaticCompat.isUpgradeAquaticLoaded()) {
-                            collectFrom(UaItems.UA_ITEMS, spawnEggs, foci, weapons, otherItems);
+                            collectFrom(UaItems.UA_ITEMS, spawnEggs, foci, weapons, otherItems, blocks);
                         }
 
                         if (MutantMoreCompat.isMutantMoreLoaded()) {
-                            collectFrom(MmItems.MM_ITEMS, spawnEggs, foci, weapons, otherItems);
+                            collectFrom(MmItems.MM_ITEMS, spawnEggs, foci, weapons, otherItems, blocks);
                             moveAfter(otherItems, MmItems.SHULKER_EMBRYO.get(), ModItems.COLD_HEART.get());
                         }
 
                         if (LegendaryMonstersCompat.isLegendaryMonstersLoaded()) {
-                            collectFrom(LmItems.LM_ITEMS, spawnEggs, foci, weapons, otherItems);
+                            collectFrom(LmItems.LM_ITEMS, spawnEggs, foci, weapons, otherItems, blocks);
                         }
 
                         if (OpposingForceCompat.isOpposingForceLoaded()) {
-                            collectFrom(OfItems.OF_ITEMS, spawnEggs, foci, weapons, otherItems);
+                            collectFrom(OfItems.OF_ITEMS, spawnEggs, foci, weapons, otherItems, blocks);
                         }
 
                         if (AlexMobsCompat.isAlexMobsLoaded()) {
-                            collectFrom(AmItems.AM_ITEMS, spawnEggs, foci, weapons, otherItems);
+                            collectFrom(AmItems.AM_ITEMS, spawnEggs, foci, weapons, otherItems, blocks);
                             moveAfter(otherItems, AmItems.WARPED_STEROIDS.get(), ModItems.NETHER_WART_POTION.get());
                         }
 
                         if (AlexCavesCompat.isAlexCavesLoaded()) {
-                            collectFrom(AcItems.AC_ITEMS, spawnEggs, foci, weapons, otherItems);
+                            collectFrom(AcItems.AC_ITEMS, spawnEggs, foci, weapons, otherItems, blocks);
                             moveAfter(otherItems, AcItems.RAYCAT_AMULET.get(), ModItems.SCREAMING_SKULL_JAR.get());
                         }
 
                         otherItems.forEach(output::accept);
                         weapons.forEach(output::accept);
                         foci.forEach(output::accept);
+                        blocks.forEach(output::accept);
                         spawnEggs.forEach(output::accept);
                     }).build());
 
@@ -96,7 +99,7 @@ public class ModCreativeTab {
 
     private static void collectFrom(DeferredRegister<Item> registry,
                                      List<Item> spawnEggs, List<Item> foci,
-                                     List<Item> weapons, List<Item> other) {
+                                     List<Item> weapons, List<Item> other, List<Item> blocks) {
         registry.getEntries().forEach(entry -> {
             if (entry.isPresent()) {
                 Item item = entry.get();
@@ -106,8 +109,12 @@ public class ModCreativeTab {
                     foci.add(item);
                 } else if (isWeapon(item)) {
                     weapons.add(item);
-                } else if (!(item instanceof PlushieBlockItem)) {
-                    other.add(item);
+                } else if (!(item instanceof PlushieBlockItem) && !(item instanceof OminousIconItem)) {
+                    if (item instanceof BlockItem) {
+                        blocks.add(item);
+                    } else {
+                        other.add(item);
+                    }
                 }
             }
         });
