@@ -297,15 +297,6 @@ PoisonousShockwave extends Entity implements ISpellEntity {
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
-    public AnimationState emergeAnimationState = new AnimationState();
-
-    public AnimationState getAnimationState(String input) {
-        if (input == "emerge") {
-            return this.emergeAnimationState;
-        } else {
-            return new AnimationState();
-        }
-    }
     static {
         ATTACK_STATE = SynchedEntityData.defineId(PoisonousShockwave.class, EntityDataSerializers.INT);
     }
@@ -335,29 +326,6 @@ PoisonousShockwave extends Entity implements ISpellEntity {
         if (RADIUS.equals(p_21104_)) {
             this.refreshDimensions();
         }
-        if (ATTACK_STATE.equals(p_21104_)) {
-            if (this.level().isClientSide)
-                switch (this.getAttackState()) {
-                    case 0 -> this.stopAllAnimationStates();
-                    case 1 -> {
-                        this.stopAllAnimationStates();
-                        this.emergeAnimationState.startIfStopped(this.tickCount);
-                    }
-                }
-        }
-
         super.onSyncedDataUpdated(p_21104_);
-    }
-    public void stopAllAnimationStates() {
-        this.emergeAnimationState.stop();
-
-    }
-    public float getAnimationProgress(float pPartialTicks) {
-        if (!this.clientSideAttackStarted) {
-            return 0.0F;
-        } else {
-            int $$1 = this.lifeTicks - 2;
-            return $$1 <= 0 ? 1.0F : 1.0F - ((float)$$1 - pPartialTicks) / 20.0F;
-        }
     }
 }

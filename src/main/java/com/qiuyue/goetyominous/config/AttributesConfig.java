@@ -447,6 +447,22 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantAttackKnockback;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> HoveringHurricaneServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> HoveringHurricaneServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> HoveringHurricaneServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> HoveringHurricaneServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> HoveringHurricaneServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> HoveringHurricaneServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> HoveringHurricaneServantAttackKnockback;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> CloudGolemServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> CloudGolemServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> CloudGolemServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> CloudGolemServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> CloudGolemServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> CloudGolemServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> CloudGolemServantAttackKnockback;
+
     public static final ForgeConfigSpec.ConfigValue<Double> StormNecromancerHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> StormNecromancerArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> StormNecromancerDamage;
@@ -1592,6 +1608,40 @@ public class AttributesConfig {
                 .defineInRange("overgrownColossusServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
         OvergrownColossusServantAttackKnockback = BUILDER.comment("How much Attack Knockback Overgrown Colossus Servants have, Default: 1.5")
                 .defineInRange("overgrownColossusServantAttackKnockback", 1.5, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Hovering Hurricane Servant (Optional - LM)");
+        HoveringHurricaneServantHealth = BUILDER.comment("How much Max Health Hovering Hurricane Servants have, Default: 30.0")
+                .defineInRange("hoveringHurricaneServantHealth", 30.0, 1.0, Double.MAX_VALUE);
+        HoveringHurricaneServantArmor = BUILDER.comment("How much natural Armor Hovering Hurricane Servants have, Default: 5.0")
+                .defineInRange("hoveringHurricaneServantArmor", 5.0, 0.0, Double.MAX_VALUE);
+        HoveringHurricaneServantDamage = BUILDER.comment("How much damage Hovering Hurricane Servants deal, Default: 6.0")
+                .defineInRange("hoveringHurricaneServantDamage", 6.0, 1.0, Double.MAX_VALUE);
+        HoveringHurricaneServantMovementSpeed = BUILDER.comment("How fast Hovering Hurricane Servants move, Default: 0.1")
+                .defineInRange("hoveringHurricaneServantMovementSpeed", 0.1, 0.0, Double.MAX_VALUE);
+        HoveringHurricaneServantFollowRange = BUILDER.comment("How much following/detection range Hovering Hurricane Servants have, Default: 20.0")
+                .defineInRange("hoveringHurricaneServantFollowRange", 20.0, 1.0, Double.MAX_VALUE);
+        HoveringHurricaneServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Hovering Hurricane Servants have, Default: 1.0")
+                .defineInRange("hoveringHurricaneServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
+        HoveringHurricaneServantAttackKnockback = BUILDER.comment("How much Attack Knockback Hovering Hurricane Servants have, Default: 0.5")
+                .defineInRange("hoveringHurricaneServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Cloud Golem Servant (Optional - LM)");
+        CloudGolemServantHealth = BUILDER.comment("How much Max Health Cloud Golem Servants have, Default: 350.0")
+                .defineInRange("cloudGolemServantHealth", 350.0, 1.0, Double.MAX_VALUE);
+        CloudGolemServantArmor = BUILDER.comment("How much natural Armor Cloud Golem Servants have, Default: 10.0")
+                .defineInRange("cloudGolemServantArmor", 10.0, 0.0, Double.MAX_VALUE);
+        CloudGolemServantDamage = BUILDER.comment("How much damage Cloud Golem Servants deal, Default: 0.0")
+                .defineInRange("cloudGolemServantDamage", 0.0, 0.0, Double.MAX_VALUE);
+        CloudGolemServantMovementSpeed = BUILDER.comment("How fast Cloud Golem Servants move, Default: 0.1")
+                .defineInRange("cloudGolemServantMovementSpeed", 0.1, 0.0, Double.MAX_VALUE);
+        CloudGolemServantFollowRange = BUILDER.comment("How much following/detection range Cloud Golem Servants have, Default: 90.0")
+                .defineInRange("cloudGolemServantFollowRange", 90.0, 1.0, Double.MAX_VALUE);
+        CloudGolemServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Cloud Golem Servants have, Default: 1.0")
+                .defineInRange("cloudGolemServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
+        CloudGolemServantAttackKnockback = BUILDER.comment("How much Attack Knockback Cloud Golem Servants have, Default: 1.0")
+                .defineInRange("cloudGolemServantAttackKnockback", 1.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.push("Rambler Servant");

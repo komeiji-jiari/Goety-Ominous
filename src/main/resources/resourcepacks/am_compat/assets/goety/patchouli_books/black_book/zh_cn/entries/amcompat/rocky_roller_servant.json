@@ -10,6 +10,7 @@
     {
       "type": "patchouli:entity",
       "entity": "goetyominous:rocky_roller_servant",
+      "scale": 0.7,
       "text": "巨石怪点了个赞"
     },
     {

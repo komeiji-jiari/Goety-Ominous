@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "alexscaves:item/relicheirus_egg"
+    "layer0": "goetyominous:item/relicheirus_servant_egg"
   }
 }

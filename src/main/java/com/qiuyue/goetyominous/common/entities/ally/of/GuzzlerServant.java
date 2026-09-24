@@ -18,9 +18,12 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
@@ -36,8 +39,11 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
@@ -93,6 +99,36 @@ public class GuzzlerServant extends Summoned implements AttackState {
     @Override
     public boolean isPushable() {
         return false;
+    }
+
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        if (this.getTrueOwner() != null && player == this.getTrueOwner()
+                && itemstack.is(Items.LAVA_BUCKET) && this.getHealth() < this.getMaxHealth()) {
+            if (!this.level().isClientSide) {
+                this.heal(10.0F);
+                this.playSound(SoundEvents.BUCKET_EMPTY_LAVA, 1.0F, 1.0F);
+                this.gameEvent(GameEvent.EAT, this);
+                if (this.level() instanceof ServerLevel serverLevel) {
+                    for (int i = 0; i < 8; ++i) {
+                        double d0 = this.random.nextGaussian() * 0.02D;
+                        double d1 = this.random.nextGaussian() * 0.02D + 0.1D;
+                        double d2 = this.random.nextGaussian() * 0.02D;
+                        serverLevel.sendParticles(ParticleTypes.HEART,
+                                this.getRandomX(1.0F),
+                                this.getY() + this.getBbHeight() + 0.3F + this.random.nextDouble() * 0.5F,
+                                this.getRandomZ(1.0F), 0, d0, d1, d2, 0.5D);
+                    }
+                }
+                if (!player.getAbilities().instabuild) {
+                    player.setItemInHand(hand, Items.BUCKET.getDefaultInstance());
+                }
+            }
+            player.swing(hand);
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
+        }
+        return super.mobInteract(player, hand);
     }
 
     @Override

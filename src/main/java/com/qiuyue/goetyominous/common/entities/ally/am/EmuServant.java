@@ -1,6 +1,5 @@
 package com.qiuyue.goetyominous.common.entities.ally.am;
 
-import com.Polarice3.Goety.client.particles.ModParticleTypes;
 import com.Polarice3.Goety.common.entities.ally.AnimalSummon;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
@@ -20,6 +19,7 @@ import com.qiuyue.goetyominous.config.MobsConfig;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -156,7 +156,7 @@ public class EmuServant extends AnimalSummon implements IAnimatedEntity {
                             double d0 = this.random.nextGaussian() * 0.02;
                             double d1 = this.random.nextGaussian() * 0.02 + 0.1;
                             double d2 = this.random.nextGaussian() * 0.02;
-                            serverLevel.sendParticles(ModParticleTypes.HEAL_EFFECT.get(),
+                            serverLevel.sendParticles(ParticleTypes.HEART,
                                     this.getRandomX(1.0), this.getRandomY() + 0.5, this.getRandomZ(1.0),
                                     0, d0, d1, d2, 0.5);
                         }
