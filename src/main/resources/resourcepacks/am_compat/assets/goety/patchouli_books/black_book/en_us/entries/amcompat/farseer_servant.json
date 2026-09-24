@@ -15,6 +15,7 @@
     {
       "type": "patchouli:entity",
       "entity": "goetyominous:farseer_servant",
+      "scale": 0.7,
       "text": "FarLand Security"
     },
     {

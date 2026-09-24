@@ -28,6 +28,14 @@ public class LmItems {
             "overgrown_colossus_servant_spawn_egg",
             () -> new ServantSpawnEggItem(LmEntityRegistry.OVERGROWN_COLOSSUS_SERVANT, 0x6B8E23, 0x00AA00, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> HOVERING_HURRICANE_SPAWN_EGG = LM_ITEMS.register(
+            "hovering_hurricane_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(LmEntityRegistry.HOVERING_HURRICANE_SERVANT, 0xA3E5FF, 0x4E739C, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> CLOUD_GOLEM_SPAWN_EGG = LM_ITEMS.register(
+            "cloud_golem_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(LmEntityRegistry.CLOUD_GOLEM_SERVANT, 0xD8DCE6, 0x5B6B8C, egg()));
+
     public static void register(IEventBus modEventBus) {
         LM_ITEMS.register(modEventBus);
     }

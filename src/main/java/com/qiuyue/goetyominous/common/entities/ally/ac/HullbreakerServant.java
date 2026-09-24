@@ -263,7 +263,7 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
                             double d0 = this.getRandom().nextGaussian() * 0.02D;
                             double d1 = this.getRandom().nextGaussian() * 0.02D;
                             double d2 = this.getRandom().nextGaussian() * 0.02D;
-                            serverLevel.sendParticles(ModParticleTypes.HEAL_EFFECT.get(),
+                            serverLevel.sendParticles(ParticleTypes.HEART,
                                     this.getRandomX(1.0D), this.getY() + this.getBbHeight() + 0.3D, this.getRandomZ(1.0D),
                                     0, d0, d1, d2, 0.5D);
                         }
