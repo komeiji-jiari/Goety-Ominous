@@ -1,0 +1,19 @@
+{
+  "name": "伏特聚晶",
+  "icon": "goetyominous:volt_focus",
+  "category": "goety:ofcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "研究了伏特鳐的习性之后，你灵光一现创造出一个咒语，来约束和管理你的伏特鳐仆从。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:volt_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "使用深渊魔杖或者风暴魔杖承载此聚晶施法时，你可以召唤精英版本的伏特鳐，它们的战斗力比普通伏特鳐更强大。"
+    }
+  ]
+}

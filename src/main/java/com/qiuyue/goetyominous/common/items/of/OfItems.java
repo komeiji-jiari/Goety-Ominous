@@ -1,8 +1,11 @@
 package com.qiuyue.goetyominous.common.items.of;
 
 import com.Polarice3.Goety.common.items.ServantSpawnEggItem;
+import com.Polarice3.Goety.common.items.magic.MagicFocus;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.of.OfEntityRegistry;
+import com.qiuyue.goetyominous.common.magic.spells.ac.ExtinctionBreathSpell;
+import com.qiuyue.goetyominous.common.magic.spells.of.VoltSpell;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -46,6 +49,10 @@ public class OfItems {
     public static final RegistryObject<ServantSpawnEggItem> SKYVERN_SERVANT_SPAWN_EGG = OF_ITEMS.register(
             "skyvern_servant_spawn_egg",
             () -> new ServantSpawnEggItem(OfEntityRegistry.SKYVERN_SERVANT, 0x2E3A4D, 0x8FD6E8, egg()));
+
+    public static final RegistryObject<Item> VOLT_FOCUS = OF_ITEMS.register("volt_focus",
+            () -> new MagicFocus(new VoltSpell()));
+
 
     public static Item.Properties egg() {
         return new Item.Properties();
