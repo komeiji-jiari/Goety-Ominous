@@ -10,6 +10,11 @@ public class SpellConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> VoltSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> VoltCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> VoltSummonDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> VoltCoolDown;
+
     public static final ForgeConfigSpec.ConfigValue<Integer> AcidPoolSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> AcidPoolCastDuration;
     public static final ForgeConfigSpec.ConfigValue<Integer> AcidPoolCoolDown;
@@ -213,6 +218,17 @@ public class SpellConfig {
 
     static {
         BUILDER.push("Spells");
+
+        BUILDER.push("Volt");
+        VoltSoulCost = BUILDER.comment("Soul cost of Volt Servant spell (Default: 32)")
+                .defineInRange("voltSoulCost", 32, 1, 128);
+        VoltCastDuration = BUILDER.comment("Cast duration of Volt Servant spell in ticks (Default: 100)")
+                .defineInRange("voltCastDuration", 100, 0, 500);
+        VoltSummonDown = BUILDER.comment("Summon down duration of Volt Servant spell in ticks (Default: 200)")
+                .defineInRange("voltSummonDown", 200, 0, 5000);
+        VoltCoolDown = BUILDER.comment("Cooldown of Volt Servant spell in ticks (Default: 300)")
+                .defineInRange("voltCoolDown", 300, 0, 5000);
+        BUILDER.pop();
 
         BUILDER.push("ExtinctionBreath");
         ExtinctionBreathDamage = BUILDER.comment("Damage dealt per tick by Extinction Breath, Default: 4.0")
