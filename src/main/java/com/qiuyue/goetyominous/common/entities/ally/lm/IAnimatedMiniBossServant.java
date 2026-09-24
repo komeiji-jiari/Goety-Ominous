@@ -4,34 +4,13 @@ import net.miauczel.legendary_monsters.config.ModConfig;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 
 public class IAnimatedMiniBossServant extends IAnimatedMobServant {
     public IAnimatedMiniBossServant(EntityType entity, Level world) {
         super(entity, world);
-        lastTargetX = getX();
-        lastTargetY = getY();
-        lastTargetZ = getZ();
         setPersistenceRequired();
-    }
-
-    public Vec3 lastTargetPos() {
-        return new Vec3(lastTargetX, lastTargetY, lastTargetZ);
-    }
-
-    public double lastTargetX, lastTargetZ, lastTargetY;
-
-    public void saveTargetPos(double x, double y, double z) {
-        if (targetIsNotNull()) {
-            lastTargetX = x;
-
-            lastTargetY = y;
-
-            lastTargetZ = z;
-        }
     }
 
     public final int REDUCED_DAMAGE_TICKS = 100;
@@ -50,9 +29,7 @@ public class IAnimatedMiniBossServant extends IAnimatedMobServant {
     public float damageReduction() {
         return 1;
     }
-    public boolean canApplyMobEffect(MobEffectInstance instance){
-        return false;
-    }
+
     @Override
     public void onAddedToWorld() {
         super.onAddedToWorld();
