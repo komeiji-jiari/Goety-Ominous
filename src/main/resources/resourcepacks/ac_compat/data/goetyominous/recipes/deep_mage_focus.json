@@ -1,0 +1,24 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goetyominous:deep_one_focus"
+  },
+  "craftType": "deep",
+  "soulCost": 1,
+  "duration": 10,
+  "ingredients": [
+    {
+      "item": "alexscaves:sea_staff"
+    },
+    {
+      "item": "alexscaves:floater"
+    },
+    {
+      "item": "alexscaves:pearl"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:deep_mage_focus"
+  }
+}

@@ -1,11 +1,14 @@
 package com.qiuyue.goetyominous.common.entities.ally.of.goals;
 
+import com.Polarice3.Goety.api.entities.IOwned;
+import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.entities.ally.of.DicerServant;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
@@ -98,7 +101,7 @@ public class DicerServantAttackGoal extends RamblerServantAttackGoal {
                 }
 
                 if (this.timer == 28) {
-                    this.dicer.setDeltaMovement(this.dicer.getLookAngle().scale(3.25).multiply(1.0, 0.0, 1.0));
+                    this.dicer.addDeltaMovement(this.dicer.getLookAngle().scale(3.25D).multiply(1.0D, 0.0D, 1.0D));   // ★ 对齐 OF
                 }
 
                 if (this.timer > 28 && this.timer < 32) {
@@ -126,28 +129,47 @@ public class DicerServantAttackGoal extends RamblerServantAttackGoal {
     }
 
     private void hurtNearbyEntities() {
-        List<LivingEntity> list = this.dicer.level().getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), this.dicer, this.dicer.getBoundingBox().inflate(2.0));
+        List<LivingEntity> list = this.dicer.level().getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(),
+                this.dicer, this.dicer.getBoundingBox().inflate(2.0));
         if (list.isEmpty()) {
             return;
         }
 
         LivingEntity entity = list.get(0);
-        if (entity instanceof DicerServant) {
+        if (this.isFriendly(entity)) {
             return;
         }
 
-        if (entity.hurt(entity.damageSources().mobAttack(this.dicer), (float)this.dicer.getAttributeValue(Attributes.ATTACK_DAMAGE))) {
-            this.dicer.playSound((SoundEvent)OPSoundEvents.DICER_ATTACK.get(), 1.0F, 1.0F / (this.dicer.getRandom().nextFloat() * 0.4F + 0.8F));
+        if (entity.hurt(this.dicer.getServantAttack(), (float) this.dicer.getAttributeValue(Attributes.ATTACK_DAMAGE))) {
+            this.dicer.playSound(OPSoundEvents.DICER_ATTACK.get(), 1.0F, 1.0F / (this.dicer.getRandom().nextFloat() * 0.4F + 0.8F));
             if (this.dicer.isElite()) {
                 entity.setSecondsOnFire(5);
             }
 
-            entity.knockback(0.3, this.dicer.position().x - entity.getX(), this.dicer.position().z - entity.getZ());
-            if (entity.isDamageSourceBlocked(entity.damageSources().mobAttack(this.dicer)) && entity instanceof Player) {
-                ((Player)entity).disableShield(true);
+            entity.knockback(0.3D, this.dicer.position().x - entity.getX(), this.dicer.position().z - entity.getZ());
+            if (entity.isDamageSourceBlocked(this.dicer.getServantAttack()) && entity instanceof Player player) {
+                player.disableShield(true);
             }
 
             this.dicer.swing(InteractionHand.MAIN_HAND);
         }
+    }
+
+    private boolean isFriendly(LivingEntity victim) {
+        if (victim instanceof DicerServant) {
+            return true;
+        }
+        LivingEntity owner = this.dicer.getTrueOwner();
+        if (owner == null) {
+            return false;
+        }
+        if (victim == owner) {
+            return true;
+        }
+        if (victim instanceof IOwned owned
+                && (owned.getTrueOwner() == owner || MobUtil.ownerStack(owned, this.dicer))) {
+            return true;
+        }
+        return victim instanceof OwnableEntity ownable && ownable.getOwner() == owner;
     }
 }

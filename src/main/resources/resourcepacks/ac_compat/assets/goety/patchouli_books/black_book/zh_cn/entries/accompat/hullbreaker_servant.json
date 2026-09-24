@@ -1,0 +1,31 @@
+{
+  "name": "碎船兽",
+  "icon": "alexscaves:immortal_embryo",
+  "category": "goety:abyssalchasm",
+  "advancement": "goety:goety/read_terminus_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "利用衰老面霜和一些魔法，你可以人工培育永恒胚胎，使其成长为渊海陷窟的顶级掠食者。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:hullbreaker_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:hullbreaker_servant",
+      "scale": 0.6
+    },
+    {
+      "type": "patchouli:text",
+      "text": "就像另一种多维掠食者一样，你可以手持鱼类右键碎船兽来治疗它，当主人穿戴深渊长袍时，碎船兽也会随时间自动恢复生命值。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "alexscaves:immortal_embryo",
+      "text": "当碎船兽被消灭时，它们会返还永恒胚胎。如果你安装了诡厄灾变模组，那你也可以用另一种仪式来召唤碎船兽仆从。"
+    }
+  ]
+}

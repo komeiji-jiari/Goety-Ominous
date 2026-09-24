@@ -1,0 +1,19 @@
+{
+  "name": "Abyssal Mage Focus",
+  "icon": "goetyominous:deep_mage_focus",
+  "category": "goety:abyssalchasm",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "This spell calls the most mysterious mages of the Deep One kin under your will. These mages excel at summoning surging waves to sweep away the enemies before you."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:deep_mage_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "When cast using an $(l:crafts/staff/abyss_staff)Abyss Staff$() to channel this spell, you can summon more Deep Mages at once."
+    }
+  ]
+}

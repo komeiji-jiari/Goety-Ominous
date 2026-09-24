@@ -1,0 +1,19 @@
+{
+  "name": "Abyssal Knight Focus",
+  "icon": "goetyominous:deep_knight_focus",
+  "category": "goety:abyssalchasm",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You have upgraded your original spell, and can now summon powerful Deep Knight Servants to serve as your personal guards."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:deep_knight_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "When cast using an $(l:crafts/staff/abyss_staff)Abyss Staff$() to channel this spell, you can summon more Deep Knights at once."
+    }
+  ]
+}

@@ -49,18 +49,20 @@ public class DicerServantLaserGoal extends RamblerServantAttackGoal {
                 if (this.timer < 5) {
                     this.dicer.lookAt(target, 30.0F, 30.0F);
                     this.dicer.getLookControl().setLookAt(target, 30.0F, 30.0F);
-                    this.dicer.setYRot(this.dicer.yBodyRot);
-                    this.dicer.setYHeadRot(this.dicer.yBodyRot);
+                    this.dicer.setYRot(this.dicer.yHeadRot);
+                    this.dicer.setYBodyRot(this.dicer.yHeadRot);
+                    this.dicer.yRotO = this.dicer.getYRot();
                     this.dicer.yBodyRotO = this.dicer.getYRot();
-                    this.dicer.yHeadRotO = this.dicer.getYRot();
                 }
 
-                if (this.timer >= 5) {
-                    this.dicer.getLookControl().setLookAt(target.getX(), target.getY() + (double)(target.getEyeHeight() / 2.0F), target.getZ(), 1.5F, 90.0F);
-                    this.dicer.setYRot(this.dicer.yBodyRot);
-                    this.dicer.setYHeadRot(this.dicer.yBodyRot);
+                if (this.timer > 5) {
+                    this.dicer.getLookControl().setLookAt(target.getX(),
+                            target.getY() + (double) (target.getBbHeight() / 2.0F),
+                            target.getZ(), 1.5F, 90.0F);
+                    this.dicer.setYRot(this.dicer.yHeadRot);
+                    this.dicer.setYBodyRot(this.dicer.yHeadRot);
+                    this.dicer.yRotO = this.dicer.getYRot();
                     this.dicer.yBodyRotO = this.dicer.getYRot();
-                    this.dicer.yHeadRotO = this.dicer.getYRot();
                 }
 
                 if (this.timer == 10) {
@@ -68,7 +70,7 @@ public class DicerServantLaserGoal extends RamblerServantAttackGoal {
                     this.beam = new DicerServantLaser(
                             this.dicer.level(), this.dicer,
                             this.dicer.getX(), this.dicer.getY() + 2.45, this.dicer.getZ(),
-                            (this.dicer.yBodyRot + 90.0F) * (float) (Math.PI / 180.0D),
+                            (this.dicer.yHeadRot + 90.0F) * (float) (Math.PI / 180.0D),
                             -this.dicer.getXRot() * (float) (Math.PI / 180.0D),
                             89,
                             this.dicer.isElite() ? 5 : 4);

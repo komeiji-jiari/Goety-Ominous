@@ -1,0 +1,7 @@
+{
+  "name": "原始洞穴",
+  "description": "原始的黑暗在呼唤。",
+  "icon": "alexscaves:heavy_bone",
+  "sortnum": 3,
+  "parent": "goety:accompat"
+}

@@ -190,7 +190,8 @@ public class GammaroachServant extends Summoned implements IAnimatedEntity, Play
                 living.setYHeadRot(this.getYRot());
                 living.fallDistance = 0.0F;
                 Vec3 seatOffset = new Vec3(0.0D, 0.0D, 0.2D).yRot((float) Math.toRadians(-this.yBodyRot));
-                moveFunction.accept(passenger, this.getX() + seatOffset.x, this.getY() + seatOffset.y + this.getPassengersRidingOffset(), this.getZ() + seatOffset.z);
+                double riderOffset = passenger instanceof Player ? passenger.getMyRidingOffset() : 0.0D;
+                moveFunction.accept(passenger, this.getX() + seatOffset.x, this.getY() + seatOffset.y + this.getPassengersRidingOffset() + riderOffset, this.getZ() + seatOffset.z);
                 return;
             }
         }

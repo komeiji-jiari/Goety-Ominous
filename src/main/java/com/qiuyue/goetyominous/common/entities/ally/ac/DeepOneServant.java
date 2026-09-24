@@ -1,7 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.ac;
 
 import com.Polarice3.Goety.common.entities.ally.Summoned;
-import com.github.alexmodguy.alexscaves.server.entity.ai.AnimalRandomlySwimGoal;
 import com.github.alexmodguy.alexscaves.server.entity.ai.SemiAquaticPathNavigator;
 import com.github.alexmodguy.alexscaves.server.entity.ai.VerticalSwimmingMoveControl;
 import com.github.alexmodguy.alexscaves.server.block.AbyssalAltarBlock;
@@ -12,10 +11,14 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.qiuyue.goetyominous.common.entities.ai.ac.DeepOneBarterGoal;
+import com.qiuyue.goetyominous.common.entities.ai.ac.DeepOneStrollGoal;
+import com.qiuyue.goetyominous.common.entities.ai.ac.DeepOneWanderGoal;
 import com.qiuyue.goetyominous.common.entities.ai.ac.IDeepOneBarterer;
+import com.qiuyue.goetyominous.common.entities.ai.ac.IDeepOneWanderer;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -24,9 +27,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
@@ -50,10 +55,12 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.level.storage.loot.LootParams;
@@ -67,7 +74,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 
-public class DeepOneServant extends Summoned implements IDeepOneBarterer, IAnimatedEntity {
+public class DeepOneServant extends Summoned implements IDeepOneBarterer, IDeepOneWanderer, IAnimatedEntity {
 
     public static final Animation ANIMATION_THROW = Animation.create(20);
     public static final Animation ANIMATION_BITE = Animation.create(8);
@@ -163,7 +170,8 @@ public class DeepOneServant extends Summoned implements IDeepOneBarterer, IAnima
         this.goalSelector.addGoal(1, new DeepOneBarterGoal(this));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 16.0F));
         this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(6, new AnimalRandomlySwimGoal(this, 12, 18, 18, 1.0D));
+        this.goalSelector.addGoal(6, new DeepOneWanderGoal(this, 12, 1.0D));
+        this.goalSelector.addGoal(6, new DeepOneStrollGoal(this, 1.0D, 60));
     }
 
     @Override
@@ -181,6 +189,35 @@ public class DeepOneServant extends Summoned implements IDeepOneBarterer, IAnima
             this.navigation = this.createNavigation(this.level());
             this.isLandNavigator = false;
         }
+    }
+
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        if (this.getTrueOwner() != null && player == this.getTrueOwner()
+                && itemstack.is(ItemTags.FISHES) && this.getHealth() < this.getMaxHealth()) {
+            FoodProperties foodProperties = itemstack.getFoodProperties(this);
+            if (foodProperties != null) {
+                this.heal((float) foodProperties.getNutrition());
+                if (!player.getAbilities().instabuild) {
+                    itemstack.shrink(1);
+                }
+                this.gameEvent(GameEvent.EAT, this);
+                if (this.level() instanceof ServerLevel serverLevel) {
+                    for (int i = 0; i < 7; ++i) {
+                        double d0 = this.getRandom().nextGaussian() * 0.02D;
+                        double d1 = this.getRandom().nextGaussian() * 0.02D;
+                        double d2 = this.getRandom().nextGaussian() * 0.02D;
+                        serverLevel.sendParticles(ParticleTypes.HEART,
+                                this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D),
+                                0, d0, d1, d2, 0.5D);
+                    }
+                }
+                player.swing(hand);
+                return InteractionResult.SUCCESS;
+            }
+        }
+        return super.mobInteract(player, hand);
     }
 
     @Override

@@ -1,0 +1,33 @@
+{
+  "name": "Cerberus",
+  "icon": "minecraft:lava_bucket",
+  "category": "goety:summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "anchor": "cerberus",
+      "text": "Hellhounds cannot be raised into Wargs, for the fire in them answers to an older hunger. If you bring three Hellhounds together, that hunger will do the raising itself, folding the beasts into one three-headed Cerberus."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:cerberus",
+      "scale": 0.4
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Gather three owned Hellhounds within eight blocks of your Howling Totem. Note that these Hellhounds must already be bound to the Totem, then offer a Shadow Essence to one of them. That hound becomes the Cerberus; the other two are drawn into it and leave nothing but smoke. The Shadow Essence is consumed with them."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "A Cerberus is far heavier than any Warg, unharmed by fire, and counts among the creatures of the Nether: a master wearing $(l:goety:crafts/garment/nether_robe)Nether Robes$() will mend it as it would any other Nether servant. Each Totem may raise only one, and a summoner may normally keep only one."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Its three mouths are always full of fire, so it will never carry a sword. Beyond its burning bite it breathes flame as the $(l:goety:focuses/nether/fire_breath_focus)Fire Breath$() focus does, each head spitting along its own line for several seconds before the beast must gather its breath again. It can wear the same harness as a Warg."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Right-click to ride your Cerberus. They do not require a Saddle to be ridden. If their owner is equipped with Nether Robe, their breath can damage fire-resistant creatures, though to a lesser extent."
+    }
+  ]
+}

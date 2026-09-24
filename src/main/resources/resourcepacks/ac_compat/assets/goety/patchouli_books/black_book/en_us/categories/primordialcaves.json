@@ -1,0 +1,7 @@
+{
+  "name": "Primordial Caves",
+  "description": "The primordial darkness calls.",
+  "icon": "alexscaves:heavy_bone",
+  "sortnum": 3,
+  "parent": "goety:accompat"
+}

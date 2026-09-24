@@ -1,0 +1,24 @@
+{
+  "name": "Battle Emu",
+  "icon": "alexsmobs:emu_feather",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Legend has it that these flightless birds once overran an entire nation, for they could evade arrows and possessed vast numbers and astonishing speed. Through dark magic, you have managed to train your own Battle Emus."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:emu_servant",
+      "text": "The Great Emu War"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "These Battle Emus are exceptionally skilled at evading projectiles, giving them a natural advantage against ranged creatures. Wheat Seeds can be used to heal your Battle Emu. You can breed your Battle Emus with Wheat, and they will lay edible Emu Eggs just like their wild relatives."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:battle_emu"
+    }
+  ]
+}

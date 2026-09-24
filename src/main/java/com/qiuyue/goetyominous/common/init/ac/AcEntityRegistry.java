@@ -1,37 +1,9 @@
 package com.qiuyue.goetyominous.common.init.ac;
 
 import com.qiuyue.goetyominous.GoetyOminous;
-import com.qiuyue.goetyominous.common.entities.ally.ac.AtlatitanServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.BrainiacServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.CandicornServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.CaniacServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.CaramelCubeServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.CorrodentServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneKnightServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneMageServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.ForsakenServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.GammaroachServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.GrottoceratopsServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.GumbeeperServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.GummyBearServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.LicowitchServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.MeltedCaramelServantEntity;
-import com.qiuyue.goetyominous.common.entities.ally.ac.MineGuardianServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.NucleeperServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.TeletorServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.TeletorWeaponServantEntity;
-import com.qiuyue.goetyominous.common.entities.ally.ac.TremorsaurusServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.TremorzillaServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.VallumraptorServant;
-import com.qiuyue.goetyominous.common.entities.ally.ac.VesperServant;
-import com.qiuyue.goetyominous.common.entities.projectile.DeepOneMageServantWaterBolt;
-import com.qiuyue.goetyominous.common.entities.projectile.DeepOneMageServantWave;
-import com.qiuyue.goetyominous.common.entities.projectile.LicowitchServantHex;
-import com.qiuyue.goetyominous.common.entities.projectile.LicowitchServantPeppermint;
-import com.qiuyue.goetyominous.common.entities.projectile.GumballServantEntity;
-import com.qiuyue.goetyominous.common.entities.projectile.DeepOneServantWave;
+import com.qiuyue.goetyominous.common.entities.ally.ac.*;
+import com.qiuyue.goetyominous.common.entities.projectile.*;
+import com.qiuyue.goetyominous.common.entities.util.ExtinctionCatalystEntity;
 import com.qiuyue.goetyominous.common.entities.util.PureDarkVoid;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -52,12 +24,27 @@ public class AcEntityRegistry {
                             .setTrackingRange(11)
                             .build(GoetyOminous.MOD_ID + ":atlatitan_servant"));
 
+    public static final RegistryObject<EntityType<LuxtructosaurusServant>> LUXTRUCTOSAURUS_SERVANT =
+            AC_ENTITIES.register("luxtructosaurus_servant",
+                    () -> EntityType.Builder.<LuxtructosaurusServant>of((type, worldIn) -> new LuxtructosaurusServant(type, worldIn), MobCategory.MISC)
+                            .sized(6.0F, 8.5F)
+                            .setTrackingRange(12)
+                            .fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":luxtructosaurus_servant"));
+
     public static final RegistryObject<EntityType<GrottoceratopsServant>> GROTTOCERATOPS_SERVANT =
             AC_ENTITIES.register("grottoceratops_servant",
                     () -> EntityType.Builder.<GrottoceratopsServant>of((type, worldIn) -> new GrottoceratopsServant(type, worldIn), MobCategory.MISC)
                             .sized(2.3F, 2.5F)
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":grottoceratops_servant"));
+
+    public static final RegistryObject<EntityType<RelicheirusServant>> RELICHEIRUS_SERVANT =
+            AC_ENTITIES.register("relicheirus_servant",
+                    () -> EntityType.Builder.<RelicheirusServant>of((type, worldIn) -> new RelicheirusServant(type, worldIn), MobCategory.MISC)
+                            .sized(2.65F, 5.9F)
+                            .setTrackingRange(9)
+                            .build(GoetyOminous.MOD_ID + ":relicheirus_servant"));
 
     public static final RegistryObject<EntityType<TremorsaurusServant>> TREMORSAURUS_SERVANT =
             AC_ENTITIES.register("tremorsaurus_servant",
@@ -295,6 +282,45 @@ public class AcEntityRegistry {
                             .sized(0.2F, 0.2F)
                             .setTrackingRange(12)
                             .build(GoetyOminous.MOD_ID + ":dark_void"));
+
+    public static final RegistryObject<EntityType<ExtinctionCatalystEntity>> EXTINCTION_CATALYST =
+            AC_ENTITIES.register("extinction_catalyst",
+                    () -> EntityType.Builder.<ExtinctionCatalystEntity>of(ExtinctionCatalystEntity::new, MobCategory.MISC)
+                            .sized(0.25F, 0.25F)
+                            .setTrackingRange(6)
+                            .setUpdateInterval(20)
+                            .fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":extinction_catalyst"));
+
+    public static final RegistryObject<EntityType<ServantTephraEntity>> SERVANT_TEPHRA =
+            AC_ENTITIES.register("servant_tephra",
+                    () -> EntityType.Builder.<ServantTephraEntity>of((type, worldIn) -> new ServantTephraEntity(type, worldIn), MobCategory.MISC)
+                            .sized(0.6F, 0.6F)
+                            .setTrackingRange(8)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .setUpdateInterval(1)
+                            .fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":servant_tephra"));
+
+    public static final RegistryObject<EntityType<TremorsaurusSpiritEntity>> TREMORSAURUS_SPIRIT =
+            AC_ENTITIES.register("tremorsaurus_spirit",
+                    () -> EntityType.Builder.<TremorsaurusSpiritEntity>of((type, worldIn) -> new TremorsaurusSpiritEntity(type, worldIn), MobCategory.MISC)
+                            .sized(1.0F, 1.0F)
+                            .setCustomClientFactory((spawnEntity, world) -> new TremorsaurusSpiritEntity(spawnEntity, world))
+                            .setUpdateInterval(1)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":tremorsaurus_spirit"));
+
+    public static final RegistryObject<EntityType<GrottoceratopsSpiritEntity>> GROTTOCERATOPS_SPIRIT =
+            AC_ENTITIES.register("grottoceratops_spirit",
+                    () -> EntityType.Builder.<GrottoceratopsSpiritEntity>of((type, worldIn) -> new GrottoceratopsSpiritEntity(type, worldIn), MobCategory.MISC)
+                            .sized(1.0F, 1.0F)
+                            .setCustomClientFactory((spawnEntity, world) -> new GrottoceratopsSpiritEntity(spawnEntity, world))
+                            .setUpdateInterval(1)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":grottoceratops_spirit"));
 
     public static void register(IEventBus modEventBus) {
         AC_ENTITIES.register(modEventBus);

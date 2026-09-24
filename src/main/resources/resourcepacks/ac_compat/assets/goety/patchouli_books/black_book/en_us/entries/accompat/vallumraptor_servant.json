@@ -1,0 +1,28 @@
+{
+  "name": "Vallumraptors",
+  "icon": "alexscaves:vallumraptor_egg",
+  "category": "goety:primordialcaves",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "These smaller dinosaurs are cunning and agile, and are not to be underestimated when fighting in packs. They can be easily controlled and summoned using their favorite dinosaur nuggets."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:vallumraptor_servant",
+      "text": "Blue"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Wearing Wild Robe restores your dinosaurs' health. Feeding them any kind of meat heals your Vallumraptors. Dinosaur nuggets can be used to breed your Vallumraptors; a breeding pair will lay an egg, and the hatchling will still recognize you as its master."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:vallumraptor_servant"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_vallumraptor_to_vallumraptor_servant"
+    }
+  ]
+}

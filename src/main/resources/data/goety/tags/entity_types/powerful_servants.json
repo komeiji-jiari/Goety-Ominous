@@ -1,0 +1,64 @@
+{
+  "replace": false,
+  "values": [
+    "goetyominous:heresiarch_servant",
+    "goetyominous:storm_necromancer_servant",
+    "goetyominous:cerberus_servant",
+    {
+      "id": "goetyominous:atlatitan_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:luxtructosaurus_servant",
+      "required": false
+    },
+    {
+      "id":"goetyominous:tremorsaurus_servant",
+      "required": false
+    },
+    {
+      "id":"goetyominous:tremorzilla_servant",
+      "required": false
+    },
+    {
+      "id":"goetyominous:hullbreaker_servant",
+      "required": false
+    },
+    {
+      "id":"goetyominous:forsaken_servant",
+      "required": false
+    },
+    {
+      "id":"goetyominous:warped_mosco_servant",
+      "required": false
+    },
+    {
+      "id":"goetyominous:illager_elephant_servant",
+      "required": false
+    },
+    {
+      "id":"goetyominous:overgrown_colossus_servant",
+      "required": false
+    },
+    {
+      "id":"goetyominous:great_thrasher_servant",
+      "required": false
+    },
+    {
+      "id":"goetyominous:mutant_wither_skeleton_servant",
+      "required": false
+    },
+    {
+      "id":"goetyominous:mutant_blaze_servant",
+      "required": false
+    },
+    {
+      "id":"goetyominous:mutant_hoglin_servant",
+      "required": false
+    },
+    {
+      "id":"goetyominous:mutant_shulker_servant",
+      "required": false
+    }
+  ]
+}

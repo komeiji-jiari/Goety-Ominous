@@ -18,6 +18,7 @@ import com.qiuyue.goetyominous.client.render.model.projectile.AcidFungus;
 import com.qiuyue.goetyominous.client.render.model.projectile.PitchforkModel;
 import com.qiuyue.goetyominous.client.render.projectile.*;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
+import com.qiuyue.goetyominous.common.init.ModSpellControllers;
 import com.qiuyue.goetyominous.compat.mod.*;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -113,6 +114,12 @@ public class ModModelLayers {
         event.registerLayerDefinition(ModEntityLayers.WARG_SADDLE,
                 WargSaddleModel::createBodyLayer);
 
+        event.registerLayerDefinition(ModEntityLayers.CERBERUS,
+                CerberusModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.CERBERUS_ARMOR,
+                CerberusArmorModel::createBodyLayer);
+
         event.registerLayerDefinition(ModEntityLayers.CURSED_BLACK_BEAST_ARMOR_LAYER,
                 CursedBlackBeastArmorModel::createBodyLayer);
 
@@ -126,6 +133,13 @@ public class ModModelLayers {
         event.registerLayerDefinition(ModEntityLayers.FUNGUS_PACK_LAYER, FungusPackModel::createBodyLayer);
 
         event.registerLayerDefinition(ModEntityLayers.PITCHFORK_LAYER, PitchforkModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.BOGGED_SERVANT_LAYER,
+                BoggedServantModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.BOGGED_SERVANT_OUTER_LAYER,
+                () -> LayerDefinition.create(
+                        HumanoidModel.createMesh(new CubeDeformation(0.25F), 0.0F), 64, 32));
 
         event.registerLayerDefinition(ModEntityLayers.SUNKEN_NECROMANCER_LAYER,
                 SunkenNecromancerModel::createBodyLayer);
@@ -225,11 +239,33 @@ public class ModModelLayers {
             event.registerLayerDefinition(ModEntityLayers.VOLT_SERVANT_LAYER,
                     com.qiuyue.goetyominous.client.render.model.of.VoltServantModel::createBodyLayer);
 
+            event.registerLayerDefinition(ModEntityLayers.VOLT_SERVANT_CHARGED_LAYER,
+                    () -> com.qiuyue.goetyominous.client.render.model.of.VoltServantModel.createBodyLayer(
+                            new net.minecraft.client.model.geom.builders.CubeDeformation(1.0F)));
+
             event.registerLayerDefinition(ModEntityLayers.TREMBLER_SERVANT_LAYER,
                     com.qiuyue.goetyominous.client.render.model.of.TremblerServantModel::createBodyLayer);
 
             event.registerLayerDefinition(ModEntityLayers.UMBER_SPIDER_SERVANT_LAYER,
                     com.qiuyue.goetyominous.client.render.model.of.UmberSpiderServantModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.TERROR_SERVANT_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.of.TerrorServantModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.FIRE_SLIME_SERVANT_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.of.FireSlimeServantModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.GUZZLER_SERVANT_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.of.GuzzlerServantModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.SKYVERN_SERVANT_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.of.SkyvernServantHeadModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.SKYVERN_SERVANT_BODY_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.of.SkyvernServantBodyModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.SKYVERN_SERVANT_TAIL_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.of.SkyvernServantTailModel::createBodyLayer);
         }
 
         if (com.qiuyue.goetyominous.compat.mod.MutantMoreCompat.isMutantMoreLoaded()) {
@@ -400,6 +436,12 @@ public class ModModelLayers {
                     MagispellerServantRenderer::new);
         }
 
+        event.registerEntityRenderer(ModEntityTypes.MIRED_SERVANT.get(), MiredServantRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.BOGGED_SERVANT.get(), BoggedServantRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.SWAMP_WOLF.get(), SwampWolfRenderer::new);
+
         event.registerEntityRenderer(ModEntityTypes.BURNING_POTION.get(), BurningPotionRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.BURNING_GROUND.get(), BurningGroundRenderer::new);
@@ -409,6 +451,8 @@ public class ModModelLayers {
         event.registerEntityRenderer(ModEntityTypes.ACID_FUNGUS.get(), AcidFungusRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.PITCHFORK.get(), PitchforkRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.FEL_BOLT.get(), FelBoltRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.DREDEN.get(), DredenRenderer::new);
 
@@ -439,6 +483,8 @@ public class ModModelLayers {
         event.registerEntityRenderer(ModEntityTypes.CRIMSON_SPIDER_SERVANT.get(), CrimsonSpiderServantRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.WARG.get(), WargRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.CERBERUS.get(), CerberusRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.ZFUNGUS_THROWER.get(), ZFungusThrowerRenderer::new);
 
@@ -595,8 +641,16 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.client.render.of.DicerServantRenderer::new);
 
             event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.DICER_SERVANT_LASER.get(),
+                    com.qiuyue.goetyominous.client.render.of.DicerServantLaserRenderer::new);
+
+            event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.VOLT_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.of.VoltServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.VOLT_SERVANT_ELECTRIC_CHARGE.get(),
+                    com.qiuyue.goetyominous.client.render.of.VoltServantElectricChargeRenderer::new);
 
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.TREMBLER_SERVANT.get(),
@@ -605,6 +659,26 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.UMBER_SPIDER_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.of.UmberSpiderServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.TERROR_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.of.TerrorServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.FIRE_SLIME_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.of.FireSlimeServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.GUZZLER_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.of.GuzzlerServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.SKYVERN_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.of.SkyvernServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.SKYVERN_SEGMENT_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.of.SkyvernSegmentServantRenderer::new);
         }
 
         if (AlexMobsCompat.isAlexMobsLoaded()) {
@@ -691,6 +765,14 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.GUSTER_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderGusterServant::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.EMU_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.am.RenderEmuServant::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.EMU_SERVANT_EGG.get(),
+                    context -> new ThrownItemRenderer<>(context, 1.0F, true));
 
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.SERVANT_CENTIPEDE_HEAD.get(),
@@ -784,6 +866,12 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.ATLATITAN_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderAtlatitanServant::new);
             event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.RELICHEIRUS_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderRelicheirusServant::new);
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.LUXTRUCTOSAURUS_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderLuxtructosaurusServant::new);
+            event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.GUMBEEPER_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderGumbeeperServant::new);
             event.registerEntityRenderer(
@@ -807,7 +895,18 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.PURE_DARK_VOID.get(),
                     com.qiuyue.goetyominous.client.render.ac.PureDarkVoidRenderer::new);
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.SERVANT_TEPHRA.get(),
+                    com.qiuyue.goetyominous.client.render.ac.ServantTephraRenderer::new);
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.TREMORSAURUS_SPIRIT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderTremorsaurusSpirit::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.GROTTOCERATOPS_SPIRIT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderGrottoceratopsSpirit::new);
         }
+        event.registerEntityRenderer(ModSpellControllers.WITHER_BREATH_CONTROLLER.get(), EmptyRenderer::new);
     }
 
     @SubscribeEvent

@@ -2,12 +2,12 @@ package com.qiuyue.goetyominous.common.entities.ally.am;
 
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.config.MobsConfig;
-import com.Polarice3.Goety.utils.CuriosFinder;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.qiuyue.goetyominous.common.entities.projectile.EntityMosquitoServantSpit;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
+import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.*;
 import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
@@ -17,6 +17,7 @@ import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import java.util.EnumSet;
+import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -31,7 +32,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -45,6 +45,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
@@ -73,6 +74,7 @@ public class CrimsonMosquitoServant extends Summoned {
     private static final EntityDataAccessor<Boolean> SICK = SynchedEntityData.defineId(CrimsonMosquitoServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> FLEEING_ENTITY = SynchedEntityData.defineId(CrimsonMosquitoServant.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> STEROID_CONVERSION = SynchedEntityData.defineId(CrimsonMosquitoServant.class, EntityDataSerializers.BOOLEAN);
+    private static final Predicate<LivingEntity> REPELLENT = mob -> mob.hasEffect(AMEffectRegistry.MOSQUITO_REPELLENT.get()) || mob instanceof EntityTriops;
     public float prevFlyProgress;
     public float flyProgress;
     public float prevShootProgress;
@@ -132,12 +134,6 @@ public class CrimsonMosquitoServant extends Summoned {
     @Override
     public void followGoal() {
         this.goalSelector.addGoal(2, new CrimsonMosquitoServant.FlyToOwnerGoal(this, 1.0D, 10.0F, 2.0F));
-    }
-
-    public static boolean canMosquitoSpawn(EntityType<? extends Mob> typeIn, ServerLevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource randomIn) {
-        BlockPos blockpos = pos.below();
-        boolean spawnBlock = worldIn.getBlockState(blockpos).canOcclude();
-        return reason == MobSpawnType.SPAWNER || spawnBlock && worldIn.getBlockState(blockpos).isValidSpawn(worldIn, blockpos, typeIn) && Monster.isDarkEnoughToSpawn(worldIn, pos, randomIn) && checkMobSpawnRules(AMEntityRegistry.CRIMSON_MOSQUITO.get(), worldIn, reason, pos, randomIn);
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
@@ -221,6 +217,12 @@ public class CrimsonMosquitoServant extends Summoned {
             this.tick();
             if (this.isPassenger()) {
                 final Entity mount = this.getVehicle();
+                if (mount instanceof Mob mobMount && mobMount.getFirstPassenger() == this) {
+                    mobMount.goalSelector.setControlFlag(Goal.Flag.MOVE, true);
+                    mobMount.goalSelector.setControlFlag(Goal.Flag.LOOK, true);
+                    mobMount.goalSelector.setControlFlag(Goal.Flag.TARGET, true);
+                    mobMount.goalSelector.setControlFlag(Goal.Flag.JUMP, !(mobMount.getVehicle() instanceof Boat));
+                }
                 if (mount instanceof final LivingEntity livingEntity) {
                     this.yBodyRot = livingEntity.yBodyRot;
                     this.setYRot(livingEntity.getYRot());
@@ -313,21 +315,6 @@ public class CrimsonMosquitoServant extends Summoned {
         this.entityData.set(FLEEING_ENTITY, lure);
     }
 
-    private boolean shouldFleeFrom(LivingEntity mob) {
-        return mob.getMaxHealth() > this.getFleeHealthThreshold();
-    }
-
-    private float getFleeHealthThreshold() {
-
-        LivingEntity owner = this.getMasterOwner();
-        boolean unholyDressed = owner != null
-                && CuriosFinder.hasUnholyHat(owner)
-                && CuriosFinder.hasUnholyRobe(owner);
-        return unholyDressed
-                ? AttributesConfig.CrimsonMosquitoFleeHealthThresholdUnholy.get().floatValue()
-                : AttributesConfig.CrimsonMosquitoFleeHealthThreshold.get().floatValue();
-    }
-
     public int getBloodLevel() {
         return Math.min(this.entityData.get(BLOOD_LEVEL).intValue(), 4);
     }
@@ -413,7 +400,7 @@ public class CrimsonMosquitoServant extends Summoned {
                     repellentCheckTime = tickCount;
                     LivingEntity closestRepel = null;
 
-                    for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(30), e -> this.shouldFleeFrom(e) && !this.isAlliedTo(e))) {
+                    for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(30), REPELLENT)) {
                         if(closestRepel == null || entity.distanceTo(this) < closestRepel.distanceTo(this)){
                             closestRepel = entity;
                         }
@@ -422,12 +409,12 @@ public class CrimsonMosquitoServant extends Summoned {
                         this.setFleeingEntityId(closestRepel.getId());
                     }
                 }
-                if (target != null && !this.isAlliedTo(target) && this.shouldFleeFrom(target) && this.distanceTo(target) < 12) {
+                if (target != null && REPELLENT.test(target) && this.distanceTo(target) < 20) {
                     this.setFleeingEntityId(target.getId());
                 }
             } else {
                 Entity fleeing = level().getEntity(this.getFleeingEntityId());
-                if (fleeing instanceof LivingEntity living && this.shouldFleeFrom(living) && this.distanceTo(living) < 12) {
+                if (fleeing instanceof LivingEntity living && REPELLENT.test(living) && this.distanceTo(living) < 20) {
                     this.setTarget(null);
                     this.setLastHurtByMob(null);
                     if(this.isPassenger()){
@@ -444,8 +431,6 @@ public class CrimsonMosquitoServant extends Summoned {
                     }
                 } else {
                     this.setFleeingEntityId(-1);
-
-                    fleePos = null;
                 }
             }
         }
@@ -526,12 +511,10 @@ public class CrimsonMosquitoServant extends Summoned {
             if (this.getTarget() != null && !this.isPassenger()) {
                 this.setTarget(null);
             }
-            final int growThreshold = this.isSteroidConversion() ? 30 : 100;
-            final int convertThreshold = this.isSteroidConversion() ? 80 : 160;
-            if (sickTicks > growThreshold) {
+            if (sickTicks > 100) {
                 this.setShrink(false);
                 this.setMosquitoScale(this.getMosquitoScale() + 0.015F);
-                if (sickTicks > convertThreshold) {
+                if (sickTicks > 160) {
                     final boolean steroid = this.isSteroidConversion();
                     boolean overLimit = steroid && this.getTrueOwner() instanceof Player owner
                             && countWarpedMoscoServants(owner)

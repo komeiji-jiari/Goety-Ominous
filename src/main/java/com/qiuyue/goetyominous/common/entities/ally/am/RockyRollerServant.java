@@ -6,7 +6,6 @@ import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.utils.CuriosFinder;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.AdvancedPathNavigateNoTeleport;
-import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIWanderRanged;
 import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
@@ -154,12 +153,7 @@ public class RockyRollerServant extends Summoned implements ICustomCollisions {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new AIMelee());
         this.goalSelector.addGoal(2, new AIRollIdle(this));
-        this.goalSelector.addGoal(6, new AnimalAIWanderRanged(this, 90, 1.0D, 7, 7) {
-            @Override
-            public boolean canUse() {
-                return !RockyRollerServant.this.isSitting() && super.canUse();
-            }
-        });
+        this.goalSelector.addGoal(6, new Summoned.WanderGoal<>(this, 1.0D, 90, 0.001F));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, LivingEntity.class, 15.0F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
     }

@@ -134,6 +134,9 @@ public class Agony extends Summoned {
                 && !(this.getTrueOwner() instanceof Player)) {
             return true;
         }
+        if (entity instanceof com.Polarice3.Goety.common.entities.neutral.AbstractObsidianMonolith) {
+            return true;
+        }
         return super.isAlliedTo(entity);
     }
 

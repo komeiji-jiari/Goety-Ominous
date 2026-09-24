@@ -1,0 +1,22 @@
+{
+  "name": "撼地龙魂聚晶",
+  "icon": "goetyominous:tremor_spirit_focus",
+  "category": "goety:primordialcaves",
+  "advancement": "goety:goety/read_bygone_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你已经触及了原始洞穴曾发生的大灭绝的真相。有了这个法术的力量，你呼唤出撼地龙的灵魂与你并肩作战。祝福期间，每次你的近战攻击都会触发撼地龙灵魂的协同攻击。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:tremor_spirit_focus",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "下界魔杖能够稍稍增加撼地龙灵魂的伤害。这个法术接受强效和持久附魔，强效附魔可以提供更高的伤害，持久附魔则延长祝福的时长。"
+    }
+  ]
+}

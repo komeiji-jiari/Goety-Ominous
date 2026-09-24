@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.qiuyue.goetyominous.common.entities.ally.ac.GrottoceratopsServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.GrottoceratopsSpiritEntity;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -354,7 +355,7 @@ public class ModelGrottoceratopsServant extends AdvancedEntityModel<Grottocerato
         this.rleg.rotationPointY += Math.min(0.0F, this.walkValue(limbSwing, limbSwingAmount, walkSpeed, -0.5F, 5.0F, false)) - bob;
         this.rleg.rotationPointZ += this.walkValue(limbSwing, limbSwingAmount, walkSpeed, -0.5F, 1.0F, false);
 
-                if (entity.getAnimation() == GrottoceratopsServant.ANIMATION_MELEE_TAIL_1 || entity.getAnimation() == GrottoceratopsServant.ANIMATION_MELEE_TAIL_2) {
+                if (entity.getAnimation() != GrottoceratopsServant.ANIMATION_MELEE_TAIL_1 && entity.getAnimation() != GrottoceratopsServant.ANIMATION_MELEE_TAIL_2) {
             float yawRad = netHeadYaw / 57.295776F;
             float pitchRad = headPitch / 57.295776F;
             this.neck.rotateAngleX += pitchRad * 0.1F;
@@ -377,6 +378,17 @@ public class ModelGrottoceratopsServant extends AdvancedEntityModel<Grottocerato
         this.lleg.rotationPointY += (backLeftH - maxH) * 16.0F;
     }
 
+    public void animateSpirit(GrottoceratopsSpiritEntity entity, float partialTicks) {
+        this.resetToDefaultPose();
+    }
+
+    public void renderSpiritToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLightIn,
+                                     int packedOverlayIn, float red, float green, float blue, float alpha) {
+        poseStack.pushPose();
+        poseStack.translate(0.0F, 1.3F, 1.0F);
+        this.head.render(poseStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        poseStack.popPose();
+    }
 
     private float walkValue(float speed, float degree, float f, float offset, float weight, boolean invert) {
         return (invert ? -1.0F : 1.0F) * degree * weight * Mth.cos(speed * f + offset);

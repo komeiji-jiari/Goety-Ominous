@@ -2,8 +2,8 @@ package com.qiuyue.goetyominous.common.entities.ally.of.goals;
 
 import com.qiuyue.goetyominous.common.entities.ally.of.VoltServant;
 import com.qiuyue.goetyominous.common.entities.projectile.VoltServantElectricCharge;
+import com.qiuyue.goetyominous.common.init.of.OfEntityRegistry;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
-import com.unusualmodding.opposing_force.registry.OPEntities;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
@@ -67,7 +67,7 @@ public class VoltServantShootInWaterGoal extends RamblerServantAttackGoal {
     }
 
     private void shootCharge(LivingEntity target) {
-        VoltServantElectricCharge charge = new VoltServantElectricCharge(OPEntities.ELECTRIC_CHARGE.get(), this.volt.level());
+        VoltServantElectricCharge charge = new VoltServantElectricCharge(OfEntityRegistry.VOLT_SERVANT_ELECTRIC_CHARGE.get(), this.volt.level());
         charge.setOwner(this.volt);
         charge.moveTo(this.volt.getX(), this.volt.getY() + this.volt.getEyeHeight(), this.volt.getZ());
 

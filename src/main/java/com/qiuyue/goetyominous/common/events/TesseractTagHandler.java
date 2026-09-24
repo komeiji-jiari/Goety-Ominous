@@ -6,6 +6,7 @@ import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
+import com.qiuyue.goetyominous.common.init.of.OfEntityRegistry;
 import com.qiuyue.goetyominous.common.init.ua.UaEntityRegistry;
 import com.qiuyue.goetyominous.compat.ias.IasEntityRegistry;
 import com.qiuyue.goetyominous.compat.mod.*;
@@ -49,7 +50,15 @@ public class TesseractTagHandler {
             addToTag(TESSERACT_SMALL, AmEntityRegistry.BUNFUNGUS_SERVANT);
         }
         if (AlexCavesCompat.isAlexCavesLoaded()) {
-            addToTag(TESSERACT_SMALL, AcEntityRegistry.GAMMAROACH_SERVANT);
+            addToTag(TESSERACT_SMALL, AcEntityRegistry.CORRODENT_SERVANT);
+            addToTag(TESSERACT_SMALL, AcEntityRegistry.CANDICORN_SERVANT);
+            addToTag(TESSERACT_SMALL, AcEntityRegistry.DEEP_ONE_SERVANT);
+            addToTag(TESSERACT_SMALL, AcEntityRegistry.DEEP_ONE_KNIGHT_SERVANT);
+            addToTag(TESSERACT_SMALL, AcEntityRegistry.DEEP_ONE_MAGE_SERVANT);
+        }
+        if (OpposingForceCompat.isOpposingForceLoaded()) {
+            addToTag(TESSERACT_SMALL, OfEntityRegistry.DICER_SERVANT);
+            addToTag(TESSERACT_SMALL, OfEntityRegistry.RAMBLER_SERVANT);
         }
 
         addToTag(TESSERACT_MEDIUM, ModEntityTypes.HERESIARCH_SERVANT);
@@ -71,6 +80,8 @@ public class TesseractTagHandler {
             addToTag(TESSERACT_MEDIUM, AcEntityRegistry.TREMORSAURUS_SERVANT);
             addToTag(TESSERACT_MEDIUM, AcEntityRegistry.GROTTOCERATOPS_SERVANT);
             addToTag(TESSERACT_MEDIUM, AcEntityRegistry.FORSAKEN_SERVANT);
+            addToTag(TESSERACT_MEDIUM, AcEntityRegistry.RELICHEIRUS_SERVANT);
+            addToTag(TESSERACT_MEDIUM, AcEntityRegistry.NUCLEEPER_SERVANT);
         }
 
         if (MutantMoreCompat.isMutantMoreLoaded()) {
@@ -84,6 +95,7 @@ public class TesseractTagHandler {
             addToTag(TESSERACT_LARGE, AcEntityRegistry.HULLBREAKER_SERVANT);
             addToTag(TESSERACT_LARGE, AcEntityRegistry.TREMORZILLA_SERVANT);
             addToTag(TESSERACT_LARGE, AcEntityRegistry.ATLATITAN_SERVANT);
+            addToTag(TESSERACT_LARGE, AcEntityRegistry.LUXTRUCTOSAURUS_SERVANT);
         }
     }
 

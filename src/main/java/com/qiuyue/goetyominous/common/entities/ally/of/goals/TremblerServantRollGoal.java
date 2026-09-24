@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.of.goals;
 
+import com.Polarice3.Goety.api.entities.IOwned;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.entities.ally.of.TremblerServant;
 import net.minecraft.core.BlockPos;
@@ -8,6 +9,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
@@ -109,16 +111,34 @@ public class TremblerServantRollGoal extends RamblerServantAttackGoal {
         return this.trembler.hasEffect(effect) ? this.trembler.getEffect(effect).getAmplifier() + 1 : 0;
     }
 
+    private boolean isFriendly(LivingEntity victim) {
+        if (victim instanceof TremblerServant) {
+            return true;
+        }
+        if (MobUtil.areAllies(this.trembler, victim)) {
+            return true;
+        }
+        LivingEntity owner = this.trembler.getTrueOwner();
+        if (owner == null) {
+            return false;
+        }
+        if (victim == owner) {
+            return true;
+        }
+        if (victim instanceof IOwned owned
+                && (owned.getTrueOwner() == owner || MobUtil.ownerStack(owned, this.trembler))) {
+            return true;
+        }
+        return victim instanceof OwnableEntity ownable && ownable.getOwner() == owner;
+    }
+
     private void tryToHurt() {
         List<LivingEntity> list = this.trembler.level().getEntitiesOfClass(
                 LivingEntity.class, this.trembler.getBoundingBox(),
                 living -> TargetingConditions.forCombat().test(this.trembler, living));
         if (!list.isEmpty()) {
             LivingEntity victim = list.get(0);
-            if (victim instanceof TremblerServant) {
-                return;
-            }
-            if (MobUtil.areAllies(this.trembler, victim)) {
+            if (this.isFriendly(victim)) {
                 return;
             }
 
@@ -127,9 +147,8 @@ public class TremblerServantRollGoal extends RamblerServantAttackGoal {
             boolean blocked = victim.isBlocking();
             float knockback = blocked ? 1.75F : 2.25F;
 
-            victim.hurt(victim.damageSources().mobAttack(this.trembler),
-                    (float) this.trembler.getAttributeValue(Attributes.ATTACK_DAMAGE));
-            victim.push((double) (knockback * dmg * 1.5F), this.rollDirection.x, this.rollDirection.z);
+            victim.hurt(this.trembler.getServantAttack(), (float) this.trembler.getAttributeValue(Attributes.ATTACK_DAMAGE));
+            victim.knockback((double) (knockback * dmg * 1.5F), this.rollDirection.x, this.rollDirection.z);
             if (blocked && victim instanceof Player player) {
                 player.disableShield(true);
             }

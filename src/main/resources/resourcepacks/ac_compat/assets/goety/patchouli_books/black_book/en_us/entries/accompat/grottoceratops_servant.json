@@ -1,0 +1,28 @@
+{
+  "name": "Grottoceratops",
+  "icon": "alexscaves:grottoceratops_egg",
+  "category": "goety:primordialcaves",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Grottoceratops is a large herbivorous dinosaur that lives in the Primordial Caves. Using their favorite curled ferns, a dark magician can easily control and summon these ceratopsians."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:grottoceratops_servant",
+      "text": "Prehistoric Park"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Wearing Wild Robe restores your dinosaurs' health. Feeding them Curled Ferns heals your Grottoceratops. Tree Stars can be used to breed your Grottoceratops; a breeding pair will lay an egg, and the hatchling will still recognize you as its master."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:grottoceratops_servant"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_grottoceratops_to_grottoceratops_servant"
+    }
+  ]
+}

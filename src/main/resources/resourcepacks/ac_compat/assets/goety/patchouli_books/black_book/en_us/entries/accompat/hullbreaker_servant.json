@@ -1,0 +1,31 @@
+{
+  "name": "Hullbreaker",
+  "icon": "alexscaves:immortal_embryo",
+  "category": "goety:abyssalchasm",
+  "advancement": "goety:goety/read_terminus_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Using Aging Cream and some magic, you can artificially cultivate an Immortal Embryo, allowing it to grow into the apex predator of the Abyssal Chasm."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:hullbreaker_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:hullbreaker_servant",
+      "scale": 0.6
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Just like another interdimensional predator, you can right-click the Hullbreaker while holding fish to heal it. When the owner wears Abyss Robe, the Hullbreaker also passively regenerates health over time."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "alexscaves:immortal_embryo",
+      "text": "When a Hullbreaker is slain, it returns an Immortal Embryo. If Goety Cataclysm installed, you can also summon a Hullbreaker through a different ritual."
+    }
+  ]
+}

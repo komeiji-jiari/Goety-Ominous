@@ -1,0 +1,19 @@
+{
+  "name": "渊海祭仪聚晶",
+  "icon": "goetyominous:deep_mage_focus",
+  "category": "goety:abyssalchasm",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "这个法术呼唤出深潜者族群中最为神秘的法师到你的意志之下，这些法师擅长掀起惊涛骇浪席卷你面前的敌人。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:deep_mage_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "使用$(l:crafts/staff/abyss_staff)深渊魔杖$()承载此聚晶施法时，一次可以召唤更多深潜者法师。"
+    }
+  ]
+}

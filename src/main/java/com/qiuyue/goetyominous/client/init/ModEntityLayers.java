@@ -48,6 +48,12 @@ public class ModEntityLayers {
     public static final ModelLayerLocation DISPENSER_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "dispenser_servant"), "main");
 
+    public static final ModelLayerLocation BOGGED_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation("goetyominous", "bogged_servant"), "main");
+
+    public static final ModelLayerLocation BOGGED_SERVANT_OUTER_LAYER = new ModelLayerLocation(
+            new ResourceLocation("goetyominous", "bogged_servant_outer"), "main");
+
     public static final ModelLayerLocation SUNKEN_NECROMANCER_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "sunken_necromancer"), "main");
 
@@ -192,6 +198,12 @@ public class ModEntityLayers {
     public static final ModelLayerLocation WARG_SADDLE = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "warg_saddle"), "main");
 
+    public static final ModelLayerLocation CERBERUS = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "cerberus"), "main");
+
+    public static final ModelLayerLocation CERBERUS_ARMOR = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "cerberus_armor"), "main");
+
     public static final ModelLayerLocation DREDEN_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "dreden"), "main");
 
@@ -212,4 +224,25 @@ public class ModEntityLayers {
 
     public static final ModelLayerLocation UMBER_SPIDER_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "umber_spider_servant"), "main");
+
+    public static final ModelLayerLocation VOLT_SERVANT_CHARGED_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "volt_servant_charged"), "main");
+
+    public static final ModelLayerLocation TERROR_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "terror_servant"), "main");
+
+    public static final ModelLayerLocation FIRE_SLIME_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "fire_slime_servant"), "main");
+
+    public static final ModelLayerLocation GUZZLER_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "guzzler_servant"), "main");
+
+    public static final ModelLayerLocation SKYVERN_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "skyvern_servant"), "main");
+
+    public static final ModelLayerLocation SKYVERN_SERVANT_BODY_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "skyvern_servant_body"), "main");
+
+    public static final ModelLayerLocation SKYVERN_SERVANT_TAIL_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "skyvern_servant_tail"), "main");
 }

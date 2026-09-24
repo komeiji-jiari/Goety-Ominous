@@ -7,7 +7,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.ArrayList;
@@ -67,6 +69,16 @@ public class AtlatitanRenderEvents {
             }
             BLOCKED_ENTITY_RENDERS.remove(entity.getUUID());
         }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void computeCameraAngles(ViewportEvent.ComputeCameraAngles event) {
+        Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
+        if (cameraEntity == null || !cameraEntity.isPassenger()
+                || !(cameraEntity.getVehicle() instanceof AtlatitanServant)) {
+            return;
+        }
+        MountCameraSmoothing.apply(event);
     }
 
     private static boolean isFirstPersonPlayer(Entity entity) {

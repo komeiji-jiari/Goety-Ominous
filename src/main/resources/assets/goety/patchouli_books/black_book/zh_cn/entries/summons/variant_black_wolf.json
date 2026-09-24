@@ -1,0 +1,28 @@
+{
+  "name": "黑狼们的变种",
+  "icon": "minecraft:bone",
+  "category": "goety:summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "看起来狼群扩大了它们的规模。作为一名出色的头狼，你自然不会忽视狼群的潜力。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:swamp_wolf",
+      "scale": 0.5
+    },
+    {
+      "type": "patchouli:text",
+      "text": "你听说了某种潜伏在沼泽中的魔犬会将冒险者拖入它们黑暗巢穴的传说，关于驯服和控制它们的方法与其他黑狼基本没有区别。可通过使用女巫们的魔杖$()施放$(l:focuses/wild/hunting_focus)狩猎聚晶$()、在沼泽生物群系中召唤，或通过另一种仪式召唤。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:swamp_wolf"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "这些疫犬的撕咬带有毒性。如果召唤者装备了巫婆的制服，那么疫犬的攻击将会施加毒液而不是剧毒。"
+    }
+  ]
+}

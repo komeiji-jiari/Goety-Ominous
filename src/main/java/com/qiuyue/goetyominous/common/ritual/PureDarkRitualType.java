@@ -35,8 +35,6 @@ public class PureDarkRitualType implements IRitualType {
 
     private static final long RITUAL_RESYNC_GAP = 40L;
 
-    // 仪式总长 = duration(20s)=400 tick。虚空特效寿命 300 tick,故延后到第 100 tick 才出现,
-    // 让其"收拢/吞没"高潮正好撞上产物出炉(onFinish 于 ~400 tick)。
     private static final int VOID_SPAWN_TICK = 100;
     private static final long CRAFT_TOTAL_TICKS = 400L;
 
@@ -124,7 +122,6 @@ public class PureDarkRitualType implements IRitualType {
             }
         }
 
-        // 先吟唱蓄能(前 100 tick,烟尘/风/诵经在祭坛汇聚),再放虚空特效
         PureDarkVoid activeVoid = RITUAL_VOID.get(tileEntity);
         if (activeVoid == null && elapsed >= VOID_SPAWN_TICK && elapsed < CRAFT_TOTAL_TICKS) {
             Vec3 cloudAt = center.add(0, 3.0, 0);

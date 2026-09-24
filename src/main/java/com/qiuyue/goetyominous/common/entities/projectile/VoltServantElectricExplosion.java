@@ -122,12 +122,16 @@ public class VoltServantElectricExplosion extends ElectricExplosion {
             owner = living;
         }
         for (Entity entity : list) {
+            if (entity.isSpectator()) {
+                continue;
+            }
             double d13 = Math.sqrt(entity.distanceToSqr(vec3)) / (double) f1;
             if (d13 > 1.0D) {
                 continue;
             }
-            if (owner != null && entity instanceof LivingEntity
-                    && MobUtil.areAllies(owner, (LivingEntity) entity)) {
+            if (owner != null && entity instanceof LivingEntity living
+                    && (living == owner || owner.isAlliedTo(living) || living.isAlliedTo(owner)
+                        || MobUtil.areAllies(owner, living))) {
                 continue;
             }
 

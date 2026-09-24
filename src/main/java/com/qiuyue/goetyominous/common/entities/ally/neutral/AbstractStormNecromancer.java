@@ -64,13 +64,14 @@ public class AbstractStormNecromancer extends AbstractNecromancer {
     private int electrifiedFadeTicks = -1;
 
     public void projectileGoal(int priority) {
-        this.goalSelector.addGoal(priority, new StormNecromancerRangedGoal(this, 1.0D, 20, 12.0F));
+        this.goalSelector.addGoal(priority, new StormNecromancerRangedGoal(this, 1.0D, SHOOT_INTERVAL, 12.0F));
     }
 
     public void avoidGoal(int priority) {
     }
 
     public void summonSpells(int priority) {
+        this.goalSelector.addGoal(priority + 1, new MoveToSummonGoal());
         this.goalSelector.addGoal(priority + 1, new StormSummonServantSpell());
         this.goalSelector.addGoal(priority, new LightningStormGoal());
         this.goalSelector.addGoal(priority + 2, ((AbstractNecromancer) this).new SummonUndeadGoal());
@@ -408,7 +409,7 @@ public class AbstractStormNecromancer extends AbstractNecromancer {
                     if (!pPlayer.getAbilities().instabuild) {
                         itemstack.shrink(1);
                     }
-                    this.setSpellCooldown(100);
+                    this.setSpellCooldown(SUMMON_TICK);
                     this.setSpellCasting(true);
                     this.resetSpellTicks = 70;
                     this.setNecromancerSpellType(NecromancerSpellType.ZOMBIE);
@@ -675,7 +676,7 @@ public class AbstractStormNecromancer extends AbstractNecromancer {
 
         public void tick() {
             --this.spellTime;
-            if (this.spellTime == 10) {
+            if (this.spellTime == this.timeToCast()) {
                 AbstractStormNecromancer.this.playSound(ModSounds.NECROMANCER_LAUGH.get(), 2.0F, 0.05F);
                 this.castSpell();
                 AbstractStormNecromancer.this.setNecromancerSpellType(NecromancerSpellType.NONE);

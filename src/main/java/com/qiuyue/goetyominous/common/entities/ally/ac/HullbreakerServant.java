@@ -6,6 +6,8 @@ import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.ai.SummonTargetGoal;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.common.entities.projectiles.FlyingItem;
+import com.Polarice3.Goety.common.items.ModItems;
+import com.Polarice3.Goety.config.ItemConfig;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.github.alexmodguy.alexscaves.AlexsCaves;
 import com.github.alexmodguy.alexscaves.server.entity.ai.AnimalRandomlySwimGoal;
@@ -22,6 +24,7 @@ import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -32,8 +35,12 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -44,9 +51,13 @@ import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.npc.InventoryCarrier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -54,6 +65,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -61,18 +73,23 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.entity.PartEntity;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
 import javax.annotation.Nullable;
 
-public class HullbreakerServant extends Summoned implements IAnimatedEntity, KaijuMob {
+public class HullbreakerServant extends Summoned implements IAnimatedEntity, KaijuMob, InventoryCarrier {
 
     public static final Animation ANIMATION_PUZZLE = Animation.create(60);
     public static final Animation ANIMATION_BITE = Animation.create(20);
     public static final Animation ANIMATION_BASH = Animation.create(25);
     public static final Animation ANIMATION_DIE = Animation.create(50);
+    public static final Animation ANIMATION_VOMIT = Animation.create(25);
 
     private static final EntityDataAccessor<Integer> INTEREST_LEVEL = SynchedEntityData.defineId(HullbreakerServant.class, EntityDataSerializers.INT);
+    private static final float MAX_HEAD_YAW = 60.0F;
+    private static final float FOLLOW_START_DISTANCE = 24.0F;
+    private static final float FOLLOW_STOP_DISTANCE = 8.0F;
 
     public final HullbreakerServantPartEntity headPart;
     public final HullbreakerServantPartEntity tail1Part;
@@ -91,6 +108,7 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
     private float[] yawBuffer = new float[128];
     private int yawPointer = -1;
     private int blockBreakCooldown = 0;
+    private final SimpleContainer inventory = new SimpleContainer(36);
 
     public HullbreakerServant(EntityType<? extends Summoned> entityType, Level level) {
         super(entityType, level);
@@ -100,12 +118,16 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
         tail3Part = new HullbreakerServantPartEntity(this, tail2Part, 2.5F, 1.5F);
         tail4Part = new HullbreakerServantPartEntity(this, tail3Part, 1.5F, 1F);
         allParts = new HullbreakerServantPartEntity[]{headPart, tail1Part, tail2Part, tail3Part, tail4Part};
+        this.setId(ENTITY_COUNTER.getAndAdd(allParts.length + 1) + 1);
         this.moveControl = new VerticalSwimmingMoveControl(this, 0.7F, 30);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED, 0.3D).add(Attributes.MAX_HEALTH, 400.0D).add(Attributes.ATTACK_DAMAGE, 16.0D);
+        return Monster.createMonsterAttributes()
+                .add(Attributes.MAX_HEALTH, AttributesConfig.HullbreakerServantHealth.get())
+                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.HullbreakerServantDamage.get())
+                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.HullbreakerServantMovementSpeed.get());
     }
 
     @Override
@@ -172,7 +194,7 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
 
     @Override
     public void followGoal() {
-        this.goalSelector.addGoal(5, new Summoned.FollowOwnerWaterGoal(this, 1.0D, 10.0F, 2.0F));
+        this.goalSelector.addGoal(5, new Summoned.FollowOwnerWaterGoal(this, 1.0D, FOLLOW_START_DISTANCE, FOLLOW_STOP_DISTANCE));
     }
 
     protected PathNavigation createNavigation(Level level) {
@@ -204,6 +226,57 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
     }
 
     @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        if (!this.level().isClientSide) {
+            ItemStack itemstack = player.getItemInHand(hand);
+            if (this.getTrueOwner() != null && player == this.getTrueOwner()) {
+                if (this.isEmetic(itemstack)) {
+                    if (this.lootCount() > 0) {
+                        if (this.getAnimation() == NO_ANIMATION) {
+                            this.setAnimation(ANIMATION_VOMIT);
+                        } else {
+                            this.spitRemainingLoot();
+                        }
+                        if (!player.getAbilities().instabuild) {
+                            itemstack.shrink(1);
+                        }
+                    }
+                    player.swing(hand);
+                    return InteractionResult.CONSUME;
+                }
+                if (this.getHealth() < this.getMaxHealth()) {
+                    float healAmount;
+                    if (itemstack.is(ItemTags.FISHES)) {
+                        healAmount = 5.0F;
+                    } else if (itemstack.is(ACItemRegistry.BIOLUMINESSCENCE.get()) || itemstack.is(Items.GLOW_INK_SAC)) {
+                        healAmount = 10.0F;
+                    } else {
+                        return super.mobInteract(player, hand);
+                    }
+                    this.heal(healAmount);
+                    if (!player.getAbilities().instabuild) {
+                        itemstack.shrink(1);
+                    }
+                    this.gameEvent(GameEvent.EAT, this);
+                    if (this.level() instanceof ServerLevel serverLevel) {
+                        for (int i = 0; i < 7; ++i) {
+                            double d0 = this.getRandom().nextGaussian() * 0.02D;
+                            double d1 = this.getRandom().nextGaussian() * 0.02D;
+                            double d2 = this.getRandom().nextGaussian() * 0.02D;
+                            serverLevel.sendParticles(ModParticleTypes.HEAL_EFFECT.get(),
+                                    this.getRandomX(1.0D), this.getY() + this.getBbHeight() + 0.3D, this.getRandomZ(1.0D),
+                                    0, d0, d1, d2, 0.5D);
+                        }
+                    }
+                    player.swing(hand);
+                    return InteractionResult.CONSUME;
+                }
+            }
+        }
+        return super.mobInteract(player, hand);
+    }
+
+    @Override
     public boolean isAbleToRide(LivingEntity livingEntity) {
         return false;
     }
@@ -222,12 +295,22 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
         this.setAnimation(ANIMATION_DIE);
         this.setXRot(0.0F);
         this.setYHeadRot(this.getYRot());
+        if (!this.level().isClientSide && this.getAnimation() == ANIMATION_DIE
+                && this.getAnimationTick() > 10 && this.getAnimationTick() % 7 == 0) {
+            int beatsLeft = (42 - this.getAnimationTick()) / 7 + 1;
+            int batch = (this.lootCount() + beatsLeft - 1) / beatsLeft;
+            for (int i = 0; i < batch; ++i) {
+                this.spitRandomLoot();
+            }
+        }
         if (this.getAnimation() == ANIMATION_DIE && this.getAnimationTick() > 45 && !this.level().isClientSide() && !this.isRemoved()) {
             
             if (this.getTrueOwner() != null && MobsConfig.HullbreakerServantReturnEmbryo.get()) {
                 FlyingItem flyingItem = new FlyingItem(ModEntityType.FLYING_ITEM.get(), this.level(), this.getX(), this.getY(), this.getZ());
                 flyingItem.setOwner(this.getTrueOwner());
                 flyingItem.setItem(new ItemStack(ACItemRegistry.IMMORTAL_EMBRYO.get()));
+                flyingItem.setParticle(ParticleTypes.FALLING_WATER);
+                flyingItem.setSecondsCool(ItemConfig.ReviveSecondsCool.get());
                 this.level().addFreshEntity(flyingItem);
             }
             this.level().broadcastEntityEvent(this, (byte) 60);
@@ -247,6 +330,106 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
     protected void dropFromLootTable(DamageSource damageSource, boolean b) {
     }
 
+    @Override
+    public SimpleContainer getInventory() {
+        return this.inventory;
+    }
+
+    public void addDrops(Collection<ItemEntity> items) {
+        for (ItemEntity item : items) {
+            if (item == null) {
+                continue;
+            }
+            ItemStack stack = item.getItem();
+            if (stack.isEmpty()) {
+                continue;
+            }
+            ItemStack loot = stack.copyAndClear();
+            if (this.getInventory().canAddItem(loot)) {
+                this.getInventory().addItem(loot);
+            } else {
+                this.spawnAtLocation(loot);
+            }
+        }
+    }
+
+    private boolean isEmetic(ItemStack stack) {
+        return stack.is(Items.PUFFERFISH)
+                || stack.is(ModItems.HENBANE_FLOWER.get())
+                || stack.is(ModItems.NIGHTSHADE_BLOSSOM.get());
+    }
+
+    private int lootCount() {
+        int count = 0;
+        for (int i = 0; i < this.getInventory().getContainerSize(); ++i) {
+            if (!this.getInventory().getItem(i).isEmpty()) {
+                ++count;
+            }
+        }
+        return count;
+    }
+
+    private void spitRandomLoot() {
+        List<Integer> slots = new ArrayList<>();
+        for (int i = 0; i < this.getInventory().getContainerSize(); ++i) {
+            if (!this.getInventory().getItem(i).isEmpty()) {
+                slots.add(i);
+            }
+        }
+        if (slots.isEmpty()) {
+            return;
+        }
+        ItemStack loot = this.getInventory().removeItemNoUpdate(slots.get(this.random.nextInt(slots.size())));
+        if (EnchantmentHelper.hasVanishingCurse(loot)) {
+            return;
+        }
+        this.spawnAtLocation(loot);
+    }
+
+    private void spitRemainingLoot() {
+        for (int i = 0; i < this.getInventory().getContainerSize(); ++i) {
+            ItemStack loot = this.getInventory().removeItemNoUpdate(i);
+            if (loot.isEmpty() || EnchantmentHelper.hasVanishingCurse(loot)) {
+                continue;
+            }
+            this.spawnAtLocation(loot);
+        }
+    }
+
+    @Override
+    public ItemEntity spawnAtLocation(ItemStack stack, float offsetY) {
+        if (stack.isEmpty() || this.level().isClientSide) {
+            return null;
+        }
+        ItemEntity itemEntity = new ItemEntity(this.level(), this.getX(), this.getY() + (double) offsetY, this.getZ(), stack);
+        Vec3 forward = new Vec3(this.getViewVector(1.0F).x, 0.0D, this.getViewVector(1.0F).z);
+        itemEntity.setPos(this.headPart.position().add(forward.scale(-0.5D)).add(0.0D, 0.5D, 0.0D));
+        itemEntity.setDeltaMovement(forward.add(
+                this.random.nextFloat() * 0.2F - 0.1F,
+                this.random.nextFloat() * 0.2F - 0.1F,
+                this.random.nextFloat() * 0.2F - 0.1F).normalize().scale(0.8D + this.random.nextFloat() * 0.3D));
+        itemEntity.setGlowingTag(true);
+        itemEntity.setDefaultPickUpDelay();
+        if (this.captureDrops() != null) {
+            this.captureDrops().add(itemEntity);
+        } else {
+            this.level().addFreshEntity(itemEntity);
+        }
+        return itemEntity;
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        this.writeInventoryToTag(tag);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        this.readInventoryFromTag(tag);
+    }
+
     protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
         return 0.45F * dimensions.height;
     }
@@ -256,6 +439,10 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
     }
 
     public void remove(Entity.RemovalReason removalReason) {
+        if (!this.level().isClientSide
+                && (removalReason == Entity.RemovalReason.KILLED || removalReason == Entity.RemovalReason.DISCARDED)) {
+            this.spitRemainingLoot();
+        }
         super.remove(removalReason);
         if (allParts != null) {
             for (PartEntity<?> part : allParts) {
@@ -268,6 +455,7 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
         tickMultipart();
         super.tick();
         this.yBodyRot = Mth.approachDegrees(this.yBodyRotO, yBodyRot, getHeadRotSpeed());
+        this.yHeadRot = this.yBodyRot + Mth.clamp(Mth.wrapDegrees(this.yHeadRot - this.yBodyRot), -MAX_HEAD_YAW, MAX_HEAD_YAW);
         prevLandProgress = landProgress;
         prevFishPitch = fishPitch;
         prevPulseAmount = pulseAmount;
@@ -293,6 +481,9 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
         }
         if (this.getAnimation() == HullbreakerServant.ANIMATION_BASH && this.getAnimationTick() > 10 && this.getAnimationTick() <= 20) {
             breakBlock();
+        }
+        if (!this.level().isClientSide && this.getAnimation() == ANIMATION_VOMIT && this.getAnimationTick() >= 5) {
+            this.spitRemainingLoot();
         }
         if (blockBreakCooldown > 0) {
             blockBreakCooldown--;
@@ -436,6 +627,14 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
     }
 
     @Override
+    public void setId(int id) {
+        super.setId(id);
+        for (int i = 0; i < allParts.length; i++) {
+            allParts[i].setId(id + i + 1);
+        }
+    }
+
+    @Override
     public int getAnimationTick() {
         return animationTick;
     }
@@ -458,14 +657,14 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
     @Override
     public boolean hurt(DamageSource source, float amount) {
         if (source.is(DamageTypeTags.IS_PROJECTILE)) {
-            amount *= 0.65F;
+            amount *= PartProjectileHits.projectileMultiplier(this, source, 0.65F, 0.35F);
         }
         return super.hurt(source, amount);
     }
 
     @Override
     public Animation[] getAnimations() {
-        return new Animation[]{ANIMATION_PUZZLE, ANIMATION_BITE, ANIMATION_BASH, ANIMATION_DIE};
+        return new Animation[]{ANIMATION_PUZZLE, ANIMATION_BITE, ANIMATION_BASH, ANIMATION_DIE, ANIMATION_VOMIT};
     }
 
     protected SoundEvent getAmbientSound() {
@@ -484,12 +683,15 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
         return super.getSoundVolume() + 2.0F;
     }
 
-    
+    private static boolean isGlowingPrey(LivingEntity entity) {
+        return entity.hasEffect(MobEffects.GLOWING) || entity.getType().is(ACTagRegistry.GLOWING_ENTITIES);
+    }
+
     private class GlowingTargetGoal extends NearestAttackableTargetGoal<LivingEntity> {
 
         private GlowingTargetGoal(Mob mob) {
             super(mob, LivingEntity.class, 5, false, false, target ->
-                    target.hasEffect(MobEffects.GLOWING)
+                    isGlowingPrey(target)
                             && !MobUtil.areAllies(HullbreakerServant.this, target)
                             && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target));
         }
@@ -551,7 +753,7 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
                 this.tryAnimation(HullbreakerServant.this.getRandom().nextBoolean() && HullbreakerServant.this.hasLineOfSight(target) ? HullbreakerServant.ANIMATION_BITE : HullbreakerServant.ANIMATION_BASH);
             }
             if (dist > (double) (f + 2.0F)) {
-                double chaseSpeed = target.hasEffect(MobEffects.GLOWING)
+                double chaseSpeed = isGlowingPrey(target)
                         ? AttributesConfig.HullbreakerServantGlowChaseSpeed.get()
                         : 1.6D;
                 HullbreakerServant.this.getNavigation().moveTo(target, chaseSpeed);

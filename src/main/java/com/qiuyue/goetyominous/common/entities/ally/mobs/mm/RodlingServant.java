@@ -176,7 +176,7 @@ public class RodlingServant extends Summoned {
     }
 
     public boolean shouldBeStationary() {
-        return this.isDeadOrDying();
+        return this.isStaying() || this.isDeadOrDying();
     }
 
     @Override

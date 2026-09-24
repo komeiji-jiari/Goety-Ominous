@@ -469,7 +469,6 @@ public class ModelTremorzillaServant extends AdvancedEntityModel<TremorzillaServ
         float groundProgress = 1.0F - swimProgress;
         float standProgress = 1.0F - sitProgress;
         float spikesDownProgress = entity.getClientSpikeDownAmount(partialTicks);
-        float buryEggsAmount = entity.getBuryEggsProgress(partialTicks);
         float spikes1Down = TremorzillaServant.calculateSpikesDownAmountAtIndex(spikesDownProgress, 6.0F, 0.0F);
         float spikes2Down = TremorzillaServant.calculateSpikesDownAmountAtIndex(spikesDownProgress, 6.0F, 1.0F);
         float spikes3Down = TremorzillaServant.calculateSpikesDownAmountAtIndex(spikesDownProgress, 6.0F, 2.0F);
@@ -488,10 +487,6 @@ public class ModelTremorzillaServant extends AdvancedEntityModel<TremorzillaServ
         this.articulateLegs(entity.legSolver, partialTicks, groundProgress * (1.0F - danceProgress) * standProgress);
         if (!entity.isFakeEntity()) {
             this.positionTail(entity, partialTicks);
-        }
-        if (buryEggsAmount > 0.0F) {
-            limbSwing = ageInTicks;
-            limbSwingAmount = buryEggsAmount * 0.5F;
         }
         this.animateDancing(entity, danceProgress, ageInTicks);
         this.progressPositionPrev(this.torso, swimProgress, 0.0F, 20.0F, 0.0F, 1.0F);

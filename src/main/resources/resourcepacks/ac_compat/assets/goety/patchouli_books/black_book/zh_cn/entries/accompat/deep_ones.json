@@ -1,0 +1,51 @@
+{
+  "name": "深潜者们",
+  "icon": "alexscaves:pearl",
+  "category": "goety:abyssalchasm",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "渊海陷窟之中居住着一类神秘的种群。这类种群通常倾向于隐蔽自身的存在，对外来者抱有警惕。幸运的是，黑魔法可以很有效地取得它们的信任和忠诚。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:deep_one_servant"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:deep_one_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "深潜者族群中最为普通的个体，他们擅长游泳，但在陆地上也能行动。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:deep_one_knight_servant"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:deep_one_knight_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "这类深潜者属于族群中强大的战士阶层，能够使用螺纹长枪和三叉戟击退敌人。你可以手动为他们装备这两种武器之一。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:deep_one_mage_servant"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:deep_one_mage_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "这些类似水母的深潜者掌握着深渊法术，在族群中享有最高的地位。他们可以依靠水泡在空中飞行，发射水弹或掀起波浪攻击生物。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "每种深潜者都可以用任意一种鱼治疗，或是在召唤者穿上深渊长袍后缓慢利用召唤者的灵魂能量治疗自身。"
+    }
+  ]
+}

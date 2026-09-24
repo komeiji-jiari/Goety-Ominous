@@ -1,0 +1,19 @@
+{
+  "name": "Abyssal Dweller Focus",
+  "icon": "goetyominous:deep_one_focus",
+  "category": "goety:abyssalchasm",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You have devised a way to create a spell for summoning loyal Deep One Servants. Summoning more advanced Deep Ones will still require further refinement of your spell."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:deep_one_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "When cast using an $(l:crafts/staff/abyss_staff)Abyss Staff$() to channel this spell, you can summon more Deep Ones at once."
+    }
+  ]
+}

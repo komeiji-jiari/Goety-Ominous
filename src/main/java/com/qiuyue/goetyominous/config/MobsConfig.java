@@ -17,13 +17,15 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> FrostStalkerLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> MurmurServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> FarseerServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> CrimsonMosquitoServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> HullbreakerServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Boolean> HullbreakerServantReturnEmbryo;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> HullbreakerServantPickUpDrops;
     public static final ForgeConfigSpec.ConfigValue<Integer> IllagerElephantServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> DropBearServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> GusterServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> EmuServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> TusklinServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> ThrasherServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> GreatThrasherServantLimit;
@@ -35,15 +37,23 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> OvergrownColossusServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> HeresiarchServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> WargLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> CerberusLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> RamblerServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> GrottoceratopsServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> RelicheirusServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> TremorsaurusServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> TremorzillaServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> TremorzillaServantReturnEgg;
     public static final ForgeConfigSpec.ConfigValue<Boolean> TremorzillaServantBreakBlocks;
     public static final ForgeConfigSpec.ConfigValue<Integer> AtlatitanServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> AtlatitanServantReturnEgg;
     public static final ForgeConfigSpec.ConfigValue<Boolean> AtlatitanServantBreakBlocks;
+    public static final ForgeConfigSpec.ConfigValue<Integer> LuxtructosaurusServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantFire;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantWaterToStone;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantTephra;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantJumpExplosion;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantPrimalMagma;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantExtinctionCatalyst;
+    public static final ForgeConfigSpec.ConfigValue<Integer> LuxtructosaurusServantRoarInterval;
     public static final ForgeConfigSpec.ConfigValue<Integer> VallumraptorServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> VallumraptorElderChance;
     public static final ForgeConfigSpec.ConfigValue<Integer> NucleeperServantLimit;
@@ -65,6 +75,13 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> LicowitchSummonLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> MineGuardianServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> DicerServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> TremblerServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> TerrorServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> VoltServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FireSlimeServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> GuzzlerServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SkyvernServantLimit;
+
     public static final ForgeConfigSpec.ConfigValue<Integer> MWSSoulShieldHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> MWSSoulShieldDamageBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> MWSHowlingSoulHealthBouns;
@@ -84,6 +101,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> MBBulwarkFocusHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> MBBlazingHelmHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> MBUnholyBloodHealthBouns;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> MBUnholyBloodTexture;
     public static final ForgeConfigSpec.ConfigValue<Boolean> MBUnholyBloodLowHealthTexture;
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoUnholyBloodHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoUnholyBloodDamageBouns;
@@ -153,13 +171,13 @@ public class MobsConfig {
                 .comment("Maximum number of Wargs that can be summoned (Default: 3)")
                 .defineInRange("wargLimit", 3, 1, 100);
 
+        CerberusLimit = BUILDER
+                .comment("The maximum number of living Cerberuses owned by one player (Default: 1)")
+                .defineInRange("cerberusLimit", 1, 0, 100);
+
         FarseerServantLimit = BUILDER
                 .comment("Maximum number of Farseer Servants that can be summoned (Default: 2)")
                 .defineInRange("farseerServantLimit", 2, 1, 100);
-
-        CrimsonMosquitoServantLimit = BUILDER
-                .comment("Maximum number of Crimson Mosquito Servants that can be summoned (Default: 8)")
-                .defineInRange("crimsonMosquitoServantLimit", 8, 1, 100);
 
         WarpedMoscoServantLimit = BUILDER
                 .comment("Maximum number of Warped Mosco Servants that can be summoned (Default: 2)")
@@ -173,6 +191,10 @@ public class MobsConfig {
                 .comment("Whether Hullbreaker Servants drop an immortal embryo when they die while owned (Default: true)")
                 .define("hullbreakerServantReturnEmbryo", true);
 
+        HullbreakerServantPickUpDrops = BUILDER
+                .comment("Whether Hullbreaker Servants collect the drops of the mobs they kill (Default: true)")
+                .define("hullbreakerServantPickUpDrops", true);
+
         IllagerElephantServantLimit = BUILDER
                 .comment("Maximum number of Illager Elephant Servants that can be summoned (Default: 2)")
                 .defineInRange("illagerElephantServantLimit", 2, 1, 100);
@@ -185,6 +207,14 @@ public class MobsConfig {
                 .comment("Maximum number of Guster Servants that can be summoned (Default: 32)")
                 .defineInRange("gusterServantLimit", 32, 1, 100);
 
+        EmuServantLimit = BUILDER
+                .comment("Maximum number of Emu Servants that can be summoned (Default: 16)")
+                .defineInRange("emuServantLimit", 16, 1, 100);
+
+        TusklinServantLimit = BUILDER
+                .comment("Maximum number of Tusklin Servants that can be summoned (Default: 16)")
+                .defineInRange("tusklinServantLimit", 16, 1, 100);
+
         RamblerServantLimit = BUILDER
                 .comment("Maximum number of Rambler Servants that can be summoned (Default: 8)")
                 .defineInRange("ramblerServantLimit", 8, 1, 100);
@@ -192,6 +222,30 @@ public class MobsConfig {
         DicerServantLimit = BUILDER
                 .comment("Maximum number of Dicer Servants that can be summoned (Default: 8)")
                 .defineInRange("dicerServantLimit", 8, 1, 100);
+
+        TremblerServantLimit = BUILDER
+                .comment("Maximum number of Trembler Servants that can be summoned (Default: 16)")
+                .defineInRange("tremblerServantLimit", 16, 1, 100);
+
+        TerrorServantLimit = BUILDER
+                .comment("Maximum number of Terror Servants that can be summoned (Default: 8)")
+                .defineInRange("terrorServantLimit", 8, 1, 100);
+
+        VoltServantLimit = BUILDER
+                .comment("Maximum number of Volt Servants that can be summoned (Default: 12)")
+                .defineInRange("voltServantLimit", 12, 1, 100);
+
+        FireSlimeServantLimit = BUILDER
+                .comment("Maximum number of Fire Slime Servants that can be summoned (Default: 16)")
+                .defineInRange("fireSlimeServantLimit", 16, 1, 100);
+
+        GuzzlerServantLimit = BUILDER
+                .comment("Maximum number of Guzzler Servants that can be summoned (Default: 4)")
+                .defineInRange("guzzlerServantLimit", 4, 1, 100);
+
+        SkyvernServantLimit = BUILDER
+                .comment("Maximum number of Skyvern Servants that can be summoned (Default: 8). Each one spawns 20-23 segment entities.")
+                .defineInRange("skyvernServantLimit", 8, 1, 100);
 
         UrbhadhachServantLimit = BUILDER
                 .comment("Maximum number of Urbhadhach Servants that can be summoned (Default: 8)")
@@ -237,6 +291,10 @@ public class MobsConfig {
                 .comment("Maximum number of Grottoceratops Servants that can be summoned (Default: 16)")
                 .defineInRange("grottoceratopsServantLimit", 16, 1, 100);
 
+        RelicheirusServantLimit = BUILDER
+                .comment("Maximum number of Relicheirus Servants that can be summoned (Default: 4)")
+                .defineInRange("relicheirusServantLimit", 4, 1, 100);
+
         TremorsaurusServantLimit = BUILDER
                 .comment("Maximum number of Tremorsaurus Servants that can be summoned (Default: 4)")
                 .defineInRange("tremorsaurusServantLimit", 4, 1, 100);
@@ -245,25 +303,49 @@ public class MobsConfig {
                 .comment("Maximum number of Tremorzilla Servants that can be summoned (Default: 1)")
                 .defineInRange("tremorzillaServantLimit", 1, 1, 100);
 
-        TremorzillaServantReturnEgg = BUILDER
-                .comment("Whether Tremorzilla Servants drop a Tremorzilla Servant Egg when they die while owned (Default: true)")
-                .define("tremorzillaServantReturnEgg", true);
-
         TremorzillaServantBreakBlocks = BUILDER
                 .comment("Whether Tremorzilla Servants can break blocks (melee attacks, beam and walking through foliage) (Default: false)")
                 .define("tremorzillaServantBreakBlocks", false);
 
         AtlatitanServantLimit = BUILDER
-                .comment("Maximum number of Atlatitan Servants that can be summoned (Default: 1)")
-                .defineInRange("atlatitanServantLimit", 1, 1, 100);
-
-        AtlatitanServantReturnEgg = BUILDER
-                .comment("Whether Atlatitan Servants drop an Atlatitan Servant Egg when they die while owned (Default: true)")
-                .define("atlatitanServantReturnEgg", true);
+                .comment("Maximum number of Atlatitan Servants that can be summoned (Default: 3)")
+                .defineInRange("atlatitanServantLimit", 3, 1, 100);
 
         AtlatitanServantBreakBlocks = BUILDER
                 .comment("Whether Atlatitan Servants can crush blocks with their stomp (Default: true; also requires the mobGriefing game rule)")
                 .define("atlatitanServantBreakBlocks", true);
+
+        LuxtructosaurusServantLimit = BUILDER
+                .comment("Maximum number of Luxtructosaurus Servants that can be summoned (Default: 1)")
+                .defineInRange("luxtructosaurusServantLimit", 1, 1, 100);
+
+        LuxtructosaurusServantFire = BUILDER
+                .comment("Whether Luxtructosaurus Servants set fire to the ground with their flame breath (Default: true; also requires the mobGriefing game rule)")
+                .define("luxtructosaurusServantFire", true);
+
+        LuxtructosaurusServantWaterToStone = BUILDER
+                .comment("Whether Luxtructosaurus Servants turn the water they wade through into stone (Default: true; also requires the mobGriefing game rule)")
+                .define("luxtructosaurusServantWaterToStone", true);
+
+        LuxtructosaurusServantTephra = BUILDER
+                .comment("Whether Luxtructosaurus Servants call down a tephra bombardment while roaring. The meteors never break blocks (Default: true)")
+                .define("luxtructosaurusServantTephra", true);
+
+        LuxtructosaurusServantJumpExplosion = BUILDER
+                .comment("Whether Luxtructosaurus Servants blast the ground alight where they land after a leap, like one of their falling tephra bombs. The blast damages and knocks back everything nearby and lights fires, but never breaks blocks (Default: true)")
+                .define("luxtructosaurusServantJumpExplosion", true);
+
+        LuxtructosaurusServantPrimalMagma = BUILDER
+                .comment("Whether a Luxtructosaurus Servant keeps the primal magma around it molten the way the primordial boss does, and walks over it instead of sinking in (Default: true)")
+                .define("luxtructosaurusServantPrimalMagma", true);
+
+        LuxtructosaurusServantExtinctionCatalyst = BUILDER
+                .comment("Whether owned Luxtructosaurus Servants return an Extinction Catalyst when they die (Default: true)")
+                .define("luxtructosaurusServantExtinctionCatalyst", true);
+
+        LuxtructosaurusServantRoarInterval = BUILDER
+                .comment("How many seconds an enraged Luxtructosaurus Servant may go at most without roaring and calling down another tephra bombardment. The timer only runs while enraged, and never while a player is riding it. Set to 0 to disable (Default: 30)")
+                .defineInRange("luxtructosaurusServantRoarInterval", 30, 0, 3600);
 
         VallumraptorServantLimit = BUILDER
                 .comment("Maximum number of Vallumraptor Servants that can be summoned (Default: 32)")
@@ -395,6 +477,8 @@ public class MobsConfig {
                 .defineInRange("mbBlazingHelmHealthBouns", 15, 0, Integer.MAX_VALUE);
         MBUnholyBloodHealthBouns = BUILDER.comment("Extra health bonus when Mutant Blaze has Unholy Blood, Default: 20")
                 .defineInRange("mbUnholyBloodHealthBouns", 20, 0, Integer.MAX_VALUE);
+        MBUnholyBloodTexture = BUILDER.comment("Use the alternate texture when Mutant Blaze Servant has Unholy Blood (Default: true)")
+                .define("mbUnholyBloodTexture", true);
         MBUnholyBloodLowHealthTexture = BUILDER.comment("Switch the Unholy Blood Mutant Blaze Servant to the enraged texture while at or below half health, and back when healed above it (Default: true)")
                 .define("mbUnholyBloodLowHealthTexture", true);
         BUILDER.pop();

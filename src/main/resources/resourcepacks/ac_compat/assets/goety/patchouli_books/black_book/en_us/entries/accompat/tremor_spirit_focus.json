@@ -1,0 +1,22 @@
+{
+  "name": "Tremor Spirit Focus",
+  "icon": "goetyominous:tremor_spirit_focus",
+  "category": "goety:primordialcaves",
+  "advancement": "goety:goety/read_bygone_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You have uncovered the truth of the great extinction that once befell the Primordial Caves. With the power of this spell, you call upon the spirit of a Tremorsaurus to fight alongside you. During the blessing, each of your melee attacks triggers a coordinated strike from the Tremorsaurus spirit."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:tremor_spirit_focus",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "A Nether Staff slightly increases the damage of the Tremorsaurus spirit. This spell accepts the Potency and Duration enchantments; Potency increases its damage, while Duration extends the blessing's duration."
+    }
+  ]
+}

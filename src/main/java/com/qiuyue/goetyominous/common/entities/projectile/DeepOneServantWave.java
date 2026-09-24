@@ -8,6 +8,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -43,7 +44,9 @@ public class DeepOneServantWave extends AbstractWave {
         DamageSource source = ModDamageSource.indirectDrench(this, this.getOwner());
         for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class,
                 this.getBoundingBox().inflate(0.5F * scale, 0.5F, 0.5F * scale))) {
-            if (!MobUtil.areAllies(entity, this.getOwner() != null ? this.getOwner() : this)) {
+            Entity waveOwner = this.getOwner() != null ? this.getOwner() : this;
+            if (!waveOwner.isAlliedTo(entity) && !entity.isAlliedTo(waveOwner)
+                    && !MobUtil.areAllies(entity, waveOwner)) {
                 float damage = 5.0F;
                 entity.hurt(source, damage);
                 this.setSlamming(true);

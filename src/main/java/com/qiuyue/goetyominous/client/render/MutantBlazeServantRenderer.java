@@ -37,7 +37,7 @@ public class MutantBlazeServantRenderer<T extends MutantBlazeServant> extends Mo
     }
 
     public ResourceLocation getTextureLocation(T pEntity) {
-        if (pEntity.hasUnholyBlood()) {
+        if (pEntity.hasUnholyBlood() && MobsConfig.MBUnholyBloodTexture.get()) {
             if (MobsConfig.MBUnholyBloodLowHealthTexture.get() && pEntity.getHealth() <= pEntity.getMaxHealth() / 2.0F) {
                 return ENRAGED;
             }
