@@ -1,0 +1,19 @@
+{
+  "name": "Volt Focus",
+  "icon": "goetyominous:volt_focus",
+  "category": "goety:ofcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "After studying the habits of the Volt, you had a flash of inspiration and created a spell to bind and command your Volt Servants."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:volt_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "When cast using an Abyss Staff or Storm Staff to channel this focus, you can summon elite Volts, which are more powerful in combat than ordinary Volts."
+    }
+  ]
+}
