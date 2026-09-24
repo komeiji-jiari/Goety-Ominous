@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.of;
 
+import com.Polarice3.Goety.client.particles.ModParticleTypes;
 import com.Polarice3.Goety.common.entities.ai.servant.ServantFollowOwnerGoal;
 import com.Polarice3.Goety.common.entities.ai.servant.ServantFollowOwnerWaterGoal;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
@@ -17,15 +18,20 @@ import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPDamageTypes;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -42,6 +48,7 @@ import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.tags.FluidTags;
@@ -467,6 +474,35 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant, 
     @Override
     public int getSummonLimit(LivingEntity owner) {
         return MobsConfig.VoltServantLimit.get();
+    }
+
+    public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
+        ItemStack itemstack = pPlayer.getItemInHand(pHand);
+        if (this.getTrueOwner() != null && pPlayer == this.getTrueOwner()) {
+            if (itemstack.is(ItemTags.FISHES) && this.getHealth() < this.getMaxHealth()) {
+                if (!pPlayer.getAbilities().instabuild) {
+                    itemstack.shrink(1);
+                }
+
+                this.playSound(SoundEvents.GENERIC_EAT, 1.0F, 1.0F);
+                this.heal(5.0F);
+                Level var5 = this.level();
+                if (var5 instanceof ServerLevel) {
+                    ServerLevel serverLevel = (ServerLevel)var5;
+
+                    for(int i = 0; i < 7; ++i) {
+                        double d0 = this.random.nextGaussian() * 0.02;
+                        double d1 = this.random.nextGaussian() * 0.02;
+                        double d2 = this.random.nextGaussian() * 0.02;
+                        serverLevel.sendParticles((SimpleParticleType) ModParticleTypes.HEAL_EFFECT.get(), this.getRandomX(1.0), this.getRandomY() + 0.5, this.getRandomZ(1.0), 0, d0, d1, d2, 0.5);
+                    }
+                }
+
+                return InteractionResult.SUCCESS;
+            }
+        }
+
+        return InteractionResult.PASS;
     }
 
     @Nullable
