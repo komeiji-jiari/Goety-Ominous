@@ -1,7 +1,5 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm;
 
-import com.google.common.collect.ImmutableList;
-import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.projectiles.FlyingItem;
 import net.minecraft.core.particles.ParticleTypes;
@@ -23,7 +21,6 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.PoisonousShock
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -31,15 +28,12 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -62,31 +56,15 @@ import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class OvergrownColossusServant extends IAnimatedMiniBossServant {
-    private static final EntityDataAccessor<Boolean> ATTACKING =
-            SynchedEntityData.defineId(OvergrownColossusServant.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> RAGE =
-            SynchedEntityData.defineId(OvergrownColossusServant.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> SPAWNED_ENTITIES =
-            SynchedEntityData.defineId(OvergrownColossusServant.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> SPAWNED_ENTITIES2 =
-            SynchedEntityData.defineId(OvergrownColossusServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> TEXTURE_VARIANT =
             SynchedEntityData.defineId(OvergrownColossusServant.class, EntityDataSerializers.INT);
-    public boolean addEffect(MobEffectInstance pEffectInstance, @javax.annotation.Nullable Entity pEntity) {
-        if (isSleep()) {
-            return false;
-        } else return super.addEffect(pEffectInstance, pEntity);
-    }
     @Override
     public MobType getMobType() {
         return com.Polarice3.Goety.init.ModMobType.NATURAL;
@@ -94,9 +72,6 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
 
     protected boolean shouldDespawnInPeaceful() {
         return false;
-    }
-    public boolean WantsToStun() {
-        return this.getTextureVariant() == 1;
     }
     public int getTextureVariant() {
         return this.entityData.get(TEXTURE_VARIANT);
@@ -120,63 +95,6 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
         return itementity;
     }
 
-    public void performAreaAttack() {
-        double attackRadius = 4.0;
-        double attackHeight = 3.0;
-
-        AABB attackBox = new AABB(this.getX() - attackRadius, this.getY(), this.getZ() - attackRadius,
-                this.getX() + attackRadius, this.getY() + attackHeight, this.getZ() + attackRadius);
-        List<Entity> entities = this.getTarget().level().getEntities(this, attackBox);
-
-        for (Entity entity : entities) {
-            if (entity instanceof LivingEntity livingEntity
-                    && entity != this
-                    && entity != this.getTarget()
-                    && !MobUtil.areAllies(this, livingEntity)
-                    && !(entity instanceof CameraShakeEntity)) {
-                if (!livingEntity.isBlocking()) {
-                    if (this.getTrueOwner() != null && CuriosFinder.hasWildRobe(this.getTrueOwner())) {
-                        livingEntity.addEffect(new MobEffectInstance(GoetyEffects.ACID_VENOM.get(), 40, 2));
-                    } else {
-                        livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 40, 2));
-                    }
-                }
-            }
-        }
-    }
-    public OvergrownColossusServant.Crackiness getCrackiness() {
-        return OvergrownColossusServant.Crackiness.byFraction(this.getHealth() / this.getMaxHealth());
-    }
-
-    public enum Crackiness {
-        NONE(1.0F),
-        LOW(0.75F),
-        MEDIUM(0.5F),
-        HIGH(0.25F);
-
-        private static final List<OvergrownColossusServant.Crackiness> BY_DAMAGE = Stream.of(values()).sorted(Comparator.comparingDouble((p_28904_) -> {
-            return (double)p_28904_.fraction;
-        })).collect(ImmutableList.toImmutableList());
-        public final float fraction;
-
-        private Crackiness(float pFraction) {
-            this.fraction = pFraction;
-        }
-
-        public static OvergrownColossusServant.Crackiness byFraction(float pFraction) {
-            for (OvergrownColossusServant.Crackiness crackiness : BY_DAMAGE) {
-                if (pFraction < crackiness.fraction) {
-                    return crackiness;
-                }
-            }
-            return NONE;
-        }
-    }
-
-    public boolean canStun() {
-        return stunCooldown <= 0;
-    }
-
     protected BodyRotationControl createBodyControl()  {
         return new EntityRotationPatcher(this);
     }
@@ -184,11 +102,7 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(ATTACKING, false);
         this.entityData.define(TEXTURE_VARIANT, 0);
-        this.entityData.define(RAGE, false);
-        this.entityData.define(SPAWNED_ENTITIES, false);
-        this.entityData.define(SPAWNED_ENTITIES2, false);
     }
     public void resetSmashCooldown(){
         if(smashCooldown <=0) {
@@ -204,7 +118,6 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
         }
     }
     public int bigsmashCooldown = 0;
-    public final int SMASH_ANCHOR_COOLDOWN = 160;
     public final int SMASH_ANCHOR2_COOLDOWN = 100;
 
     public final int CHARGE_COOLDOWN = 160;
@@ -343,15 +256,6 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
                 OvergrownColossusServant.this.teleportCooldown = 160;
             }
         });
-        this.goalSelector.addGoal(1, new IStateGoal(this, 1, 1, 0, 0, 0) {
-            @Override
-            public void tick() {
-                entity.setDeltaMovement(0, entity.getDeltaMovement().y, 0);
-            }
-        });
-
-        this.goalSelector.addGoal(0, new IAttackGoal(this, 1, 2, 0, 20, 0, 15
-        ));
         this.goalSelector.addGoal(0, new IAttackGoal(this, 0, 10, 11, 20, 20, 15
         ){
             public boolean canUse() {
@@ -435,32 +339,14 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
         return ModSounds.OVERGROWN_COLOSSUS_DEATH.get();
     }
 
-    protected boolean canDespawn() {
-        this.setPersistenceRequired();
-        return true;
-    }
     protected PathNavigation createNavigation(Level worldIn) {
         return new net.minecraft.world.entity.ai.navigation.GroundPathNavigation(this, worldIn);
-    }
-
-    @Nullable
-    public ItemEntity LGspawnatlocation(ItemStack pStack) {
-
-        pStack.addTagElement("Enchantments", new ListTag());
-
-        ItemEntity itemEntity = this.spawnAtLocation(pStack, 0F);
-
-        if (itemEntity != null) {
-            itemEntity.setGlowingTag(true);
-        }
-
-        return itemEntity;
     }
 
     @Override
     public void die(DamageSource source) {
         if (!this.level().isClientSide && this.getTrueOwner() != null) {
-            ItemStack itemStack = new ItemStack(ModItems.NATURE_CRYSTAL.get());
+            ItemStack itemStack = new ItemStack(ModItems.LIVING_STONE.get());
             FlyingItem flyingItem = new FlyingItem(
                     com.Polarice3.Goety.common.entities.ModEntityType.FLYING_ITEM.get(),
                     this.level(),
@@ -486,9 +372,6 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (this.isSleep() && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
-            return false;
-        }
         if (source.is(DamageTypes.IN_FIRE))
             return false;
         if (source.is(DamageTypes.MAGIC))
@@ -558,27 +441,15 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
 
-        compound.putBoolean("is_Sleep", isSleep());
         compound.putInt("TextureVariant", this.getTextureVariant());
-        compound.putInt("StunCooldown", this.stunCooldown);
 
     }
-    private static final int STUN_COOLDOWN_DURATION = 160;
-    private int stunCooldown = 0;
 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
 
-        setSleep(compound.getBoolean("is_Sleep"));
-        this.stunCooldown = compound.getInt("StunCooldown");
         this.entityData.set(TEXTURE_VARIANT, compound.getInt("TextureVariant"));
-        this.entityData.set(RAGE, compound.getBoolean("rage"));
-        this.entityData.set(SPAWNED_ENTITIES, compound.getBoolean("SpawnedEntities"));
-        this.entityData.set(SPAWNED_ENTITIES2, compound.getBoolean("SpawnedEntities2"));
-        if (this.getHealth() == this.getMaxHealth()) {
-
-        }
     }
 
     public AnimationState chargeAnimationState = new AnimationState();
@@ -586,8 +457,6 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
     public AnimationState chargestartAnimationState = new AnimationState();
     public AnimationState upperCutAnimationState = new AnimationState();
     public AnimationState idleAnimationState = new AnimationState();
-    public AnimationState awakeAnimationState = new AnimationState();
-    public AnimationState sleepAnimationState = new AnimationState();
     public AnimationState attackarm1AnimationState = new AnimationState();
     public AnimationState attackarm2AnimationState = new AnimationState();
     public AnimationState attackarmsAnimationState = new AnimationState();
@@ -598,11 +467,7 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
     public AnimationState deathAnimationState = new AnimationState();
 
     public AnimationState getAnimationState(String input) {
-        if (input == "sleep") {
-            return this.sleepAnimationState;
-        } else if (input == "awake") {
-            return this.awakeAnimationState;
-        } else if (input == "idle") {
+        if (input == "idle") {
             return this.idleAnimationState;
         } else if (input == "attackarmright") {
             return this.attackarm1AnimationState;
@@ -636,16 +501,6 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
             return new AnimationState();
         }
     }
-    public int deathtimer() {
-        return 60;
-    }
-    public boolean isSleep() {
-        return false;
-    }
-
-    public void setSleep(boolean sleep) {
-    }
-
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty,
                                          MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData,
@@ -676,14 +531,6 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
             if (this.level().isClientSide)
                 switch (this.getAttackState()) {
                     case 0 -> this.stopAllAnimationStates();
-                    case 1 -> {
-                        this.stopAllAnimationStates();
-                        this.idleAnimationState.startIfStopped(this.tickCount);
-                    }
-                    case 2 -> {
-                        this.stopAllAnimationStates();
-                        this.awakeAnimationState.startIfStopped(this.tickCount);
-                    }
                     case 3 -> {
                         this.stopAllAnimationStates();
                         this.attackarm1AnimationState.startIfStopped(this.tickCount);
@@ -734,9 +581,7 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
         super.onSyncedDataUpdated(p_21104_);
     }
     public void stopAllAnimationStates() {
-        this.sleepAnimationState.stop();
         upperCutAnimationState.stop();
-        this.awakeAnimationState.stop();
         this.attackarmsAnimationState.stop();
         this.attackPoisonCloudAnimationState.stop();
         this.attackComboAnimationState.stop();
@@ -824,26 +669,6 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
         }
 
         if(!(this.getAttackState() == 8)) {
-
-            if (this.getAttackState() == 3) {
-                if (this.attackTicks == 17) {
-                    this.playSound(ModSounds.ENDERSENT_ATTACK.get(), 1, 1);
-                    if (this.getTarget() != null) {
-
-                        this.AreaAttack(5.5F, 5F, 150F, 12F, 40, false, 1F, false, 0F, true);
-                    }
-                }
-            }
-
-            if (this.getAttackState() == 4) {
-                if (this.attackTicks == 17) {
-                    this.playSound(ModSounds.ENDERSENT_ATTACK.get(), 1, 1);
-                    if (this.getTarget() != null) {
-
-                        this.AreaAttack(5.5F, 5F, 150F, 12F, 40, false, 1F, false, 0F, true);
-                    }
-                }
-            }
 
             if (this.getAttackState() == 5) {
 
@@ -1038,23 +863,6 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
                     }
 
                     boolean hurt = entityHit.hurt(this.damageSources().mobAttack(this), (float) damage);
-
-                    if (this.getAttackState() == 4 || this.getAttackState() == 3) {
-                        if (this.attackTicks == 20) {
-                            if (BNknockback && !entityHit.isBlocking()) {
-                                double knockbackRadius = 5.0;
-
-                                double dx = entityHit.getX() - this.getX();
-                                double dz = entityHit.getZ() - this.getZ();
-                                double distance = Math.sqrt(dx * dx + dz * dz);
-                                double knockbackStrength = knockback + 0.5 * (knockbackRadius - distance);
-                                entityHit.push(dx / distance * knockbackStrength, 0.4, dz / distance * knockbackStrength);
-                            }
-
-                            Vec3 entityPosition = this.position();
-                            CameraShakeEntity.cameraShake(this.level(), entityPosition, 20.0F, 0.15F, 0, 20);
-                        }
-                    }
 
                     if (hurt) {
                         if (getAttackState() == 11){

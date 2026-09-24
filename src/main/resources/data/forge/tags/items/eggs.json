@@ -20,10 +20,6 @@
     {
       "id": "goetyominous:vallumraptor_servant_egg",
       "required": false
-    },
-    {
-      "id": "goetyominous:emu_servant_egg",
-      "required": false
     }
   ]
 }
