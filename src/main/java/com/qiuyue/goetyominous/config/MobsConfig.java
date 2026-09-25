@@ -35,6 +35,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> MutantBlazeServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> RodlingServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> OvergrownColossusServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> PossessedPaladinServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> HeresiarchServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> WargLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> CerberusLimit;
@@ -286,6 +287,11 @@ public class MobsConfig {
         OvergrownColossusServantLimit = BUILDER
                 .comment("Maximum number of Overgrown Colossus Servants that can be summoned (Default: 2)")
                 .defineInRange("overgrownColossusServantLimit", 2, 1, 100);
+
+        // 堕落圣骑是 BOSS 级仆从，默认只允许同时存在 1 只。
+        PossessedPaladinServantLimit = BUILDER
+                .comment("Maximum number of Possessed Paladin Servants that can be summoned (Default: 1)")
+                .defineInRange("possessedPaladinServantLimit", 1, 1, 100);
 
         GrottoceratopsServantLimit = BUILDER
                 .comment("Maximum number of Grottoceratops Servants that can be summoned (Default: 16)")

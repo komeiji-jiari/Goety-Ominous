@@ -2,7 +2,11 @@ package com.qiuyue.goetyominous.common.init.lm;
 
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.lm.OvergrownColossusServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.PossessedPaladinServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.PoisonousShockwave;
+import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulStrike;
+import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulTrident;
+import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.ThrownPhantomDagger;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -21,11 +25,51 @@ public class LmEntityRegistry {
                             .sized(3.0F, 5.0F).fireImmune()
                             .build(GoetyOminous.MOD_ID + ":overgrown_colossus_servant"));
 
+    // 碰撞箱尺寸照抄传奇怪物的 posessed_paladin：1.0 宽 x 3.0 高。
+    public static final RegistryObject<EntityType<PossessedPaladinServant>> POSSESSED_PALADIN_SERVANT =
+            LM_ENTITIES.register("possessed_paladin_servant",
+                    () -> EntityType.Builder.of(PossessedPaladinServant::new, MobCategory.MONSTER)
+                            .sized(1.0F, 3.0F)
+                            .build(GoetyOminous.MOD_ID + ":possessed_paladin_servant"));
+
     public static final RegistryObject<EntityType<PoisonousShockwave>> POISONOUS_SHOCKWAVE =
             LM_ENTITIES.register("poisonous_shockwave",
                     () -> EntityType.Builder.<PoisonousShockwave>of(PoisonousShockwave::new, MobCategory.MISC)
                             .sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(1)
                             .build(GoetyOminous.MOD_ID + ":poisonous_shockwave"));
+
+    // 参数逐项照抄传奇怪物 ModEntities:244 的 soul_strike：
+    // MISC 分类、1.0 见方的碰撞箱、客户端 6 格追踪、每 2 tick 同步一次、免疫火焰。
+    //
+    // ⚠️ 它<b>没有模型也没有贴图</b>，外观全靠粒子，所以渲染器注册的是 EmptyRenderer，
+    //    这不是漏了东西。详见 SoulStrike 的类注释。
+    public static final RegistryObject<EntityType<SoulStrike>> SOUL_STRIKE =
+            LM_ENTITIES.register("soul_strike",
+                    () -> EntityType.Builder.<SoulStrike>of(SoulStrike::new, MobCategory.MISC)
+                            .sized(1.0F, 1.0F).clientTrackingRange(6).updateInterval(2).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":soul_strike"));
+
+    // 参数逐项照抄传奇怪物 ModEntities:289 的 thrown_phantom_dagger：
+    // MISC 分类（不参与生物生成、不被当成怪）、0.75 的碰撞箱、客户端 6 格追踪距离
+    // （匕首飞得快，近了会一卡一卡）、每 2 tick 同步一次（默认是 3）、免疫火焰。
+    public static final RegistryObject<EntityType<ThrownPhantomDagger>> THROWN_PHANTOM_DAGGER =
+            LM_ENTITIES.register("thrown_phantom_dagger",
+                    () -> EntityType.Builder.<ThrownPhantomDagger>of(ThrownPhantomDagger::new, MobCategory.MISC)
+                            .sized(0.75F, 0.75F).clientTrackingRange(6).updateInterval(2).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":thrown_phantom_dagger"));
+
+    // 参数逐项照抄传奇怪物 ModEntities:194 的 soul_trident：
+    // MISC 分类、1.0 见方的碰撞箱、客户端 4 格追踪、每 20 tick 同步一次（默认是 3）。
+    //
+    // ⚠️ 追踪距离和同步频率都<b>比别的弹射物低得多</b>，看着像抄错了，但这就是原版的数值。
+    //    原因大概是：灵魂三叉戟从扔出去到插地只有 1 秒多，玩家基本不会贴着它看，
+    //    而且它插地时会自己炸出一圈灵魂柱 —— 真正的演出在那圈柱子上，不在戟本身。
+    //    另外它<b>没有</b> fireImmune()，也和别的弹射物不一样，同样是照抄原版（原版就漏了）。
+    public static final RegistryObject<EntityType<SoulTrident>> SOUL_TRIDENT =
+            LM_ENTITIES.register("soul_trident",
+                    () -> EntityType.Builder.<SoulTrident>of(SoulTrident::new, MobCategory.MISC)
+                            .sized(1.0F, 1.0F).clientTrackingRange(4).updateInterval(20)
+                            .build(GoetyOminous.MOD_ID + ":soul_trident"));
 
     public static void register(IEventBus modEventBus) {
         LM_ENTITIES.register(modEventBus);

@@ -135,6 +135,14 @@ public class ModEntityLayers {
     public static final ModelLayerLocation OVERGROWN_COLOSSUS_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "overgrown_colossus_servant"), "main");
 
+    public static final ModelLayerLocation POSSESSED_PALADIN_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "possessed_paladin_servant"), "main");
+
+    // 幻影匕首（圣骑投出去的弹射物）。注意它属于「联动内容」——只有装了传奇怪物时
+    // 才会被 ModModelLayers 拿去注册，没装的时候这个常量就是个没人碰的空壳。
+    public static final ModelLayerLocation PHANTOM_DAGGER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "phantom_dagger"), "main");
+
     public static final ModelLayerLocation PIGLIN_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "piglin_servant"), "main");
 

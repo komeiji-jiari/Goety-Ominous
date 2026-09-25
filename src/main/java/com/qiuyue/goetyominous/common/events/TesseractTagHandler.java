@@ -71,6 +71,7 @@ public class TesseractTagHandler {
         }
         if (LegendaryMonstersCompat.isLegendaryMonstersLoaded()) {
             addToTag(TESSERACT_MEDIUM, LmEntityRegistry.OVERGROWN_COLOSSUS_SERVANT);
+            addToTag(TESSERACT_MEDIUM, LmEntityRegistry.POSSESSED_PALADIN_SERVANT);
         }
         if (AlexMobsCompat.isAlexMobsLoaded()) {
             addToTag(TESSERACT_MEDIUM, AmEntityRegistry.WARPED_MOSCO_SERVANT);

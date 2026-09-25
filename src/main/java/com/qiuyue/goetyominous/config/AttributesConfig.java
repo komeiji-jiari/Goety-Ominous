@@ -447,6 +447,17 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantAttackKnockback;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> PossessedPaladinServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> PossessedPaladinServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> PossessedPaladinServantArmorToughness;
+    public static final ForgeConfigSpec.ConfigValue<Double> PossessedPaladinServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> PossessedPaladinServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> PossessedPaladinServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> PossessedPaladinServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> PossessedPaladinServantAttackKnockback;
+    public static final ForgeConfigSpec.ConfigValue<Double> PossessedPaladinServantDamageCap;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> PossessedPaladinInvulnerabilityTime;
+
     public static final ForgeConfigSpec.ConfigValue<Double> StormNecromancerHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> StormNecromancerArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> StormNecromancerDamage;
@@ -1592,6 +1603,33 @@ public class AttributesConfig {
                 .defineInRange("overgrownColossusServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
         OvergrownColossusServantAttackKnockback = BUILDER.comment("How much Attack Knockback Overgrown Colossus Servants have, Default: 1.5")
                 .defineInRange("overgrownColossusServantAttackKnockback", 1.5, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        // 堕落圣骑仆从。数值绝大部分照抄传奇怪物 2.1.20 的 PossessedPaladinEntity.createAttributes()，
+        // 只有 MovementSpeed 和 FollowRange 两项例外 —— 原版的 0.1 / 80.0 是给 BOSS 用的
+        // （站在原地靠远距离索敌，不靠移动），当仆从跟随主人会跟不上、看起来像在散步。
+        // 这两项改成跟蔓生巨像仆从一致（0.3 / 30.0），是实测后调的。
+        BUILDER.push("Possessed Paladin Servant (Optional - LM)");
+        PossessedPaladinServantHealth = BUILDER.comment("How much Max Health Possessed Paladin Servants have, Default: 400.0 (Legendary Monsters' value)")
+                .defineInRange("possessedPaladinServantHealth", 400.0, 1.0, Double.MAX_VALUE);
+        PossessedPaladinServantArmor = BUILDER.comment("How much natural Armor Possessed Paladin Servants have, Default: 12.0 (Legendary Monsters' value)")
+                .defineInRange("possessedPaladinServantArmor", 12.0, 0.0, Double.MAX_VALUE);
+        PossessedPaladinServantArmorToughness = BUILDER.comment("How much Armor Toughness Possessed Paladin Servants have, Default: 3.0 (Legendary Monsters' value)")
+                .defineInRange("possessedPaladinServantArmorToughness", 3.0, 0.0, Double.MAX_VALUE);
+        PossessedPaladinServantDamage = BUILDER.comment("How much damage Possessed Paladin Servants deal, Default: 15.0 (Legendary Monsters' value)")
+                .defineInRange("possessedPaladinServantDamage", 15.0, 1.0, Double.MAX_VALUE);
+        PossessedPaladinServantMovementSpeed = BUILDER.comment("How fast Possessed Paladin Servants move, Default: 0.3 (same as Overgrown Colossus Servant; Legendary Monsters' boss value is 0.1)")
+                .defineInRange("possessedPaladinServantMovementSpeed", 0.3, 0.0, Double.MAX_VALUE);
+        PossessedPaladinServantFollowRange = BUILDER.comment("How much following/detection range Possessed Paladin Servants have, Default: 30.0 (same as Overgrown Colossus Servant; Legendary Monsters' boss value is 80.0)")
+                .defineInRange("possessedPaladinServantFollowRange", 30.0, 1.0, Double.MAX_VALUE);
+        PossessedPaladinServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Possessed Paladin Servants have, Default: 1.0 (Legendary Monsters' value)")
+                .defineInRange("possessedPaladinServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
+        PossessedPaladinServantAttackKnockback = BUILDER.comment("How much Attack Knockback Possessed Paladin Servants have, Default: 1.0 (Legendary Monsters' value)")
+                .defineInRange("possessedPaladinServantAttackKnockback", 1.0, 0.0, Double.MAX_VALUE);
+        PossessedPaladinServantDamageCap = BUILDER.comment("Maximum damage a single hit can deal to Possessed Paladin Servants, Default: 21.0 (same as Legendary Monsters' mini-boss cap; bypassed by damage that ignores invulnerability)")
+                .defineInRange("possessedPaladinServantDamageCap", 21.0, 1.0, Double.MAX_VALUE);
+        PossessedPaladinInvulnerabilityTime = BUILDER.comment("Whether Possessed Paladin Servants get 10 ticks of invulnerability after being hit, Default: true (Legendary Monsters' boss behaviour; this is what makes them shrug off rapid hits)")
+                .define("possessedPaladinInvulnerabilityTime", true);
         BUILDER.pop();
 
         BUILDER.push("Rambler Servant");

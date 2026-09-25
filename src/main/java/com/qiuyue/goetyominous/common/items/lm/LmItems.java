@@ -28,6 +28,10 @@ public class LmItems {
             "overgrown_colossus_servant_spawn_egg",
             () -> new ServantSpawnEggItem(LmEntityRegistry.OVERGROWN_COLOSSUS_SERVANT, 0x6B8E23, 0x00AA00, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> POSSESSED_PALADIN_SPAWN_EGG = LM_ITEMS.register(
+            "possessed_paladin_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(LmEntityRegistry.POSSESSED_PALADIN_SERVANT, 0x8B0000, 0xD3D3D3, egg()));
+
     public static void register(IEventBus modEventBus) {
         LM_ITEMS.register(modEventBus);
     }
