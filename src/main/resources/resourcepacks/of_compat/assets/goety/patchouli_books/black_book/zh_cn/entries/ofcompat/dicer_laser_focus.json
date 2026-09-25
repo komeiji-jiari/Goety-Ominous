@@ -1,0 +1,19 @@
+{
+  "name": "切削激光聚晶",
+  "icon": "goetyominous:dicer_laser_focus",
+  "category": "goety:ofcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "得到了切削者的核心之后，你可以通过指示死者的灵魂，为你建造一个能够发射切削者激光的法术，轰炸面前的所有生物。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:dicer_laser_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "使用风暴魔杖施法可以让被激光攻击的生物遭受痉挛，同时还能产生连锁闪电的效果。如果使用下界魔杖施法，那么你能够发射一种灼烧激光。"
+    }
+  ]
+}

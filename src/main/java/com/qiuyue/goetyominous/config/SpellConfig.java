@@ -15,6 +15,14 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> VoltSummonDown;
     public static final ForgeConfigSpec.ConfigValue<Integer> VoltCoolDown;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> VoltBoltCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> VoltBoltCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> VoltBoltCoolDown;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> DicerLaserCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DicerLaserCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DicerLaserCoolDown;
+
     public static final ForgeConfigSpec.ConfigValue<Integer> AcidPoolSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> AcidPoolCastDuration;
     public static final ForgeConfigSpec.ConfigValue<Integer> AcidPoolCoolDown;
@@ -228,6 +236,24 @@ public class SpellConfig {
                 .defineInRange("voltSummonDown", 200, 0, 5000);
         VoltCoolDown = BUILDER.comment("Cooldown of Volt Servant spell in ticks (Default: 300)")
                 .defineInRange("voltCoolDown", 300, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("VoltBolt");
+        VoltBoltCost = BUILDER.comment("Soul cost of Volt Bolt spell (Default: 12)")
+                .defineInRange("voltBoltCost", 12, 1, 100);
+        VoltBoltCastDuration = BUILDER.comment("Cast duration of Volt Bolt spell in ticks (Default: 40)")
+                .defineInRange("voltBoltCastDuration", 40, 0, 2000);
+        VoltBoltCoolDown = BUILDER.comment("Cooldown of Volt Bolt spell in ticks (Default: 60)")
+                .defineInRange("voltBoltCoolDown", 60, 0, 2000);
+        BUILDER.pop();
+
+        BUILDER.push("DicerLaser");
+        DicerLaserCost = BUILDER.comment("Soul cost of Dicer Laser spell (Default: 64)")
+                .defineInRange("dicerLaserCost", 64, 1, 100);
+        DicerLaserCastDuration = BUILDER.comment("Cast duration of Dicer Laser spell in ticks (Default: 40)")
+                .defineInRange("dicerLaserCastDuration", 40, 0, 2000);
+        DicerLaserCoolDown = BUILDER.comment("Cooldown of Dicer Laser spell in ticks (Default: 200)")
+                .defineInRange("dicerLaserCoolDown", 200, 0, 2000);
         BUILDER.pop();
 
         BUILDER.push("ExtinctionBreath");

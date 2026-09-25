@@ -4,6 +4,7 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.CloudGolemServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.HoveringHurricaneServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.OvergrownColossusServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.PossessedPaladinServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.ShulkerMimicServant;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import com.qiuyue.goetyominous.common.init.lm.LmSounds;
 import com.qiuyue.goetyominous.common.items.lm.LmItems;
@@ -30,5 +31,8 @@ public class LmCompatManager {
 
         event.put(LmEntityRegistry.CLOUD_GOLEM_SERVANT.get(),
                 CloudGolemServant.createAttributes().build());
+
+        event.put(LmEntityRegistry.SHULKER_MIMIC_SERVANT.get(),
+                ShulkerMimicServant.createAttributes().build());
     }
 }

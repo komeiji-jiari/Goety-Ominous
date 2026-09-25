@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.projectile;
 
+import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.google.common.collect.Maps;
 import com.unusualmodding.opposing_force.misc.ElectricExplosion;
@@ -42,7 +43,16 @@ public class VoltServantElectricExplosion extends ElectricExplosion {
     private final Map<Player, Vec3> hitPlayers = Maps.newHashMap();
     private final ExplosionDamageCalculator damageCalculator;
 
+    private final float damageBonus;
+    private final int effectDuration;
+    private final int spasmsDuration;
+
     public VoltServantElectricExplosion(Level level, Entity source, double x, double y, double z, float radius) {
+        this(level, source, x, y, z, radius, 0.0F, 300, 0);
+    }
+
+    public VoltServantElectricExplosion(Level level, Entity source, double x, double y, double z, float radius,
+                                        float damageBonus, int effectDuration, int spasmsDuration) {
         super(level, source, null, null, x, y, z, radius, Explosion.BlockInteraction.KEEP);
         this.level = level;
         this.source = source;
@@ -50,6 +60,9 @@ public class VoltServantElectricExplosion extends ElectricExplosion {
         this.y = y;
         this.z = z;
         this.radius = radius;
+        this.damageBonus = damageBonus;
+        this.effectDuration = effectDuration;
+        this.spasmsDuration = spasmsDuration;
         this.damageCalculator = source != null
                 ? new EntityBasedExplosionDamageCalculator(source)
                 : new ExplosionDamageCalculator();
@@ -148,7 +161,7 @@ public class VoltServantElectricExplosion extends ElectricExplosion {
             double d23 = getSeenPercent(vec3, entity);
             double d25 = (1.0D - d13) * d23;
             entity.hurt(this.getDamageSource(),
-                    (float) ((int) ((d25 * d25 + d25) / 2.0D * 5.0D * (double) f1 + 1.0D)));
+                    (float) ((int) ((d25 * d25 + d25) / 2.0D * 5.0D * (double) f1 + 1.0D)) + this.damageBonus);
             double d27;
             if (entity instanceof LivingEntity livingentity) {
                 d27 = ProtectionEnchantment.getExplosionKnockbackAfterDampener(livingentity, d25);
@@ -164,7 +177,12 @@ public class VoltServantElectricExplosion extends ElectricExplosion {
                 this.hitPlayers.put(player, vec31);
             }
             if (entity instanceof LivingEntity livingentity1) {
-                livingentity1.addEffect(new MobEffectInstance(OPMobEffects.ELECTRIFIED.get(), 300, 0));
+                if (this.effectDuration > 0) {
+                    livingentity1.addEffect(new MobEffectInstance(OPMobEffects.ELECTRIFIED.get(), this.effectDuration, 0));
+                }
+                if (this.spasmsDuration > 0) {
+                    livingentity1.addEffect(new MobEffectInstance(GoetyEffects.SPASMS.get(), this.spasmsDuration, 0));
+                }
             }
         }
     }

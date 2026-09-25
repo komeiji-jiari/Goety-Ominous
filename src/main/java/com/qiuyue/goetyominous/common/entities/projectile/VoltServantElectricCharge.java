@@ -30,8 +30,29 @@ public class VoltServantElectricCharge extends WaterHurtingProjectile {
 
     private static final EntityDataAccessor<Boolean> RAINBOW = SynchedEntityData.defineId(VoltServantElectricCharge.class, EntityDataSerializers.BOOLEAN);
 
+    private float damageBonus = 0.0F;
+    private int effectDuration = 300;
+    private int spasmsDuration = 0;
+    private float radiusBonus = 0.0F;
+
     public VoltServantElectricCharge(EntityType<? extends AbstractHurtingProjectile> entityType, Level level) {
         super(entityType, level);
+    }
+
+    public void setDamageBonus(float damageBonus) {
+        this.damageBonus = damageBonus;
+    }
+
+    public void setEffectDuration(int effectDuration) {
+        this.effectDuration = effectDuration;
+    }
+
+    public void setSpasmsDuration(int spasmsDuration) {
+        this.spasmsDuration = spasmsDuration;
+    }
+
+    public void setRadiusBonus(float radiusBonus) {
+        this.radiusBonus = radiusBonus;
     }
 
     @Override
@@ -49,12 +70,20 @@ public class VoltServantElectricCharge extends WaterHurtingProjectile {
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.setRainbow(compound.getBoolean("Rainbow"));
+        this.damageBonus = compound.getFloat("DamageBonus");
+        this.effectDuration = compound.contains("EffectDuration") ? compound.getInt("EffectDuration") : 300;
+        this.spasmsDuration = compound.getInt("SpasmsDuration");
+        this.radiusBonus = compound.getFloat("RadiusBonus");
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putBoolean("Rainbow", this.isRainbow());
+        compound.putFloat("DamageBonus", this.damageBonus);
+        compound.putInt("EffectDuration", this.effectDuration);
+        compound.putInt("SpasmsDuration", this.spasmsDuration);
+        compound.putFloat("RadiusBonus", this.radiusBonus);
     }
 
     public boolean isRainbow() {
@@ -162,7 +191,7 @@ public class VoltServantElectricCharge extends WaterHurtingProjectile {
     protected void onHitEntity(EntityHitResult result) {
         super.onHitEntity(result);
         if (!this.level().isClientSide) {
-            this.createExplosion(3.0F);
+            this.createExplosion(3.0F + this.radiusBonus);
             this.discard();
         }
     }
@@ -171,7 +200,7 @@ public class VoltServantElectricCharge extends WaterHurtingProjectile {
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
         if (!this.level().isClientSide) {
-            this.createExplosion(3.0F);
+            this.createExplosion(3.0F + this.radiusBonus);
             this.discard();
         }
     }
@@ -180,7 +209,8 @@ public class VoltServantElectricCharge extends WaterHurtingProjectile {
         if (!this.level().isClientSide) {
             this.spawnElectricParticles((int) (radius + 1.0F + this.random.nextInt((int) radius + 1)), 0.25F, 16.0F);
             VoltServantElectricExplosion explosion = new VoltServantElectricExplosion(
-                    this.level(), this, this.getX(), this.getY(0.0625D), this.getZ(), radius);
+                    this.level(), this, this.getX(), this.getY(0.0625D), this.getZ(), radius,
+                    this.damageBonus, this.effectDuration, this.spasmsDuration);
             explosion.explode();
             explosion.finalizeExplosion(true);
         }

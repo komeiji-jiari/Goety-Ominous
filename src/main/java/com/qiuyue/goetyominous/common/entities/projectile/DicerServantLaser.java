@@ -1,16 +1,21 @@
 package com.qiuyue.goetyominous.common.entities.projectile;
 
+import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.common.entities.projectiles.SpellEntity;
+import com.Polarice3.Goety.utils.MathHelper;
 import com.Polarice3.Goety.utils.MobUtil;
+import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.client.sound.DicerServantLaserSoundHandler;
 import com.qiuyue.goetyominous.common.init.of.OfDamageTypes;
 import com.qiuyue.goetyominous.common.init.of.OfEntityRegistry;
 import com.unusualmodding.opposing_force.registry.OPParticles;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -33,6 +38,8 @@ public class DicerServantLaser extends SpellEntity {
     private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(DicerServantLaser.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(DicerServantLaser.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> FIERY = SynchedEntityData.defineId(DicerServantLaser.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> STORM = SynchedEntityData.defineId(DicerServantLaser.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> IMMEDIATE = SynchedEntityData.defineId(DicerServantLaser.class, EntityDataSerializers.BOOLEAN);
 
     public LivingEntity caster;
     public double endPosX;
@@ -52,13 +59,15 @@ public class DicerServantLaser extends SpellEntity {
     public boolean on = true;
     public ControlledAnimation appear = new ControlledAnimation(3);
 
+    private boolean eyeSpawn = false;
+
     public DicerServantLaser(EntityType<? extends DicerServantLaser> type, Level level) {
         super(type, level);
         this.noPhysics = true;
     }
 
     public DicerServantLaser(Level level, LivingEntity caster, double x, double y, double z,
-                             float yaw, float pitch, int duration, int damage) {
+                             float yaw, float pitch, int duration, float damage) {
         this(OfEntityRegistry.DICER_SERVANT_LASER.get(), level);
         this.caster = caster;
         this.setOwner(caster);
@@ -78,6 +87,28 @@ public class DicerServantLaser extends SpellEntity {
         this.entityData.define(DURATION, 0);
         this.entityData.define(DAMAGE, 0.0F);
         this.entityData.define(FIERY, false);
+        this.entityData.define(STORM, false);
+        this.entityData.define(IMMEDIATE, false);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.setStorm(compound.getBoolean("Storm"));
+        this.setFiery(compound.getBoolean("Fiery"));
+        this.setDuration(compound.getInt("Duration"));
+        this.setDamage(compound.getFloat("Damage"));
+        this.setImmediate(compound.getBoolean("Immediate"));
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putBoolean("Storm", this.isStorm());
+        compound.putBoolean("Fiery", this.isFiery());
+        compound.putInt("Duration", this.getDuration());
+        compound.putFloat("Damage", this.getDamage());
+        compound.putBoolean("Immediate", this.isImmediate());
     }
 
     @Override
@@ -99,10 +130,21 @@ public class DicerServantLaser extends SpellEntity {
         if (this.caster != null && this.caster.isAlive() && !this.isRemoved()) {
             this.setYaw((float) (((double) this.caster.yHeadRot + 90.0D) * Math.PI / 180.0D));
             this.setPitch((float) (-(double) this.caster.getXRot() * Math.PI / 180.0D));
-            Vec3 offset = this.caster.getLookAngle().normalize().scale(0.75D);
-            this.setPos(this.caster.getX() + offset.x(),
-                    this.caster.getY() + 2.45D + offset.y(),
-                    this.caster.getZ() + offset.z());
+            if (!this.level().isClientSide) {
+                if (this.eyeSpawn) {
+                    Vec3 look = this.caster.getLookAngle().normalize();
+                    Vec3 eyePos = this.caster.getEyePosition();
+                    double backward = 0.3D;
+                    this.setPos(eyePos.x() - look.x() * backward,
+                            eyePos.y() - 0.2D - look.y() * backward,
+                            eyePos.z() - look.z() * backward);
+                } else {
+                    Vec3 offset = this.caster.getLookAngle().normalize().scale(0.75D);
+                    this.setPos(this.caster.getX() + offset.x(),
+                            this.caster.getY() + 2.45D + offset.y(),
+                            this.caster.getZ() + offset.z());
+                }
+            }
         }
         if (this.caster != null) {
             this.renderYaw = (float) (((double) this.caster.yHeadRot + 90.0D) * Math.PI / 180.0D);
@@ -112,7 +154,7 @@ public class DicerServantLaser extends SpellEntity {
         if (!this.on && this.appear.getTimer() == 0) {
             this.discard();
         }
-        if (this.on && this.tickCount > 20) {
+        if (this.on && this.started()) {
             this.appear.increaseTimer();
         } else {
             this.appear.decreaseTimer();
@@ -121,7 +163,7 @@ public class DicerServantLaser extends SpellEntity {
             this.discard();
         }
 
-        if (this.tickCount > 20) {
+        if (this.started()) {
             this.calculateEndPos();
             List<LivingEntity> entities = this.raytraceEntities(this.level(),
                     new Vec3(this.getX(), this.getY(), this.getZ()),
@@ -141,12 +183,33 @@ public class DicerServantLaser extends SpellEntity {
                         target.setSecondsOnFire(5);
                     }
                     target.hurt(OfDamageTypes.laser(this.level(), this, this.caster), this.getDamage());
+                    if (this.isStorm()) {
+                        float chance = 0.25F;
+                        float chainDamage = this.getDamage() / 2.0F;
+                        if (this.level().isThundering() && this.level().isRainingAt(target.blockPosition())) {
+                            chance += 0.25F;
+                            chainDamage = this.getDamage();
+                        }
+                        if (this.level().getRandom().nextFloat() < chance) {
+                            target.addEffect(new MobEffectInstance(GoetyEffects.SPASMS.get(),
+                                    MathHelper.secondsToTicks(5)));
+                        }
+                        WandUtil.chainLightning(target, this.caster, 4.0D, chainDamage);
+                    }
                 }
             }
         }
-        if (this.tickCount - 20 > this.getDuration()) {
+        if (this.elapsed() > this.getDuration()) {
             this.on = false;
         }
+    }
+
+    private boolean started() {
+        return this.isImmediate() || this.tickCount > 20;
+    }
+
+    private int elapsed() {
+        return this.isImmediate() ? this.tickCount : this.tickCount - 20;
     }
 
     private void spawnLaserParticles() {
@@ -206,7 +269,7 @@ public class DicerServantLaser extends SpellEntity {
             }
             if (this.caster != null
                     && (this.caster.isAlliedTo(entity) || entity.isAlliedTo(this.caster)
-                        || MobUtil.areAllies(this.caster, entity))) {
+                    || MobUtil.areAllies(this.caster, entity))) {
                 continue;
             }
 
@@ -262,6 +325,29 @@ public class DicerServantLaser extends SpellEntity {
 
     // tick() 已由远端(2026-09-24)整体重写为 OF 投射物独立实现：在 raytraceEntities 之前
     // 就按施法者视线方向同步了位置，覆盖了本地"把 setPos 提到 super.tick() 之前"的修法。
+    public boolean isStorm() {
+        return this.entityData.get(STORM);
+    }
+
+    public void setStorm(boolean storm) {
+        this.entityData.set(STORM, storm);
+    }
+
+    public boolean isImmediate() {
+        return this.entityData.get(IMMEDIATE);
+    }
+
+    public void setImmediate(boolean immediate) {
+        this.entityData.set(IMMEDIATE, immediate);
+    }
+
+    public boolean isEyeSpawn() {
+        return this.eyeSpawn;
+    }
+
+    public void setEyeSpawn(boolean eyeSpawn) {
+        this.eyeSpawn = eyeSpawn;
+    }
 
     @Override
     public PushReaction getPistonPushReaction() {

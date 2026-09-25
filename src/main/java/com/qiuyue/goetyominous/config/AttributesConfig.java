@@ -473,6 +473,14 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> CloudGolemServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> CloudGolemServantAttackKnockback;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> ShulkerMimicServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> ShulkerMimicServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> ShulkerMimicServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> ShulkerMimicServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> ShulkerMimicServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> ShulkerMimicServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> ShulkerMimicServantAttackKnockback;
+
     public static final ForgeConfigSpec.ConfigValue<Double> StormNecromancerHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> StormNecromancerArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> StormNecromancerDamage;
@@ -1690,6 +1698,23 @@ public class AttributesConfig {
                 .defineInRange("cloudGolemServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
         CloudGolemServantAttackKnockback = BUILDER.comment("How much Attack Knockback Cloud Golem Servants have, Default: 1.0")
                 .defineInRange("cloudGolemServantAttackKnockback", 1.0, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Shulker Mimic Servant (Optional - LM)");
+        ShulkerMimicServantHealth = BUILDER.comment("How much Max Health Shulker Mimic Servants have, Default: 200.0")
+                .defineInRange("shulkerMimicServantHealth", 200.0, 1.0, Double.MAX_VALUE);
+        ShulkerMimicServantArmor = BUILDER.comment("How much natural Armor Shulker Mimic Servants have, Default: 15.0")
+                .defineInRange("shulkerMimicServantArmor", 15.0, 0.0, Double.MAX_VALUE);
+        ShulkerMimicServantDamage = BUILDER.comment("How much damage Shulker Mimic Servants deal, Default: 12.0")
+                .defineInRange("shulkerMimicServantDamage", 12.0, 0.0, Double.MAX_VALUE);
+        ShulkerMimicServantMovementSpeed = BUILDER.comment("How fast Shulker Mimic Servants move, Default: 0.1")
+                .defineInRange("shulkerMimicServantMovementSpeed", 0.1, 0.0, Double.MAX_VALUE);
+        ShulkerMimicServantFollowRange = BUILDER.comment("How much following/detection range Shulker Mimic Servants have, Default: 30.0")
+                .defineInRange("shulkerMimicServantFollowRange", 30.0, 1.0, Double.MAX_VALUE);
+        ShulkerMimicServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Shulker Mimic Servants have, Default: 1.0")
+                .defineInRange("shulkerMimicServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
+        ShulkerMimicServantAttackKnockback = BUILDER.comment("How much Attack Knockback Shulker Mimic Servants have, Default: 0.5")
+                .defineInRange("shulkerMimicServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.push("Rambler Servant");
