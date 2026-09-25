@@ -1,0 +1,19 @@
+{
+  "name": "Dicer Laser Focus",
+  "icon": "goetyominous:dicer_laser_focus",
+  "category": "goety:ofcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "After obtaining a Dicer's laser core, you can command the souls of the dead to construct a spell for you that fires a Dicer Laser, bombarding all creatures in front of you."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:dicer_laser_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Casting this spell with a Storm Staff causes creatures struck by the laser to suffer Spasms, while also producing a chain lightning effect. If cast with a Nether Staff, you can fire a searing laser instead."
+    }
+  ]
+}
