@@ -1,0 +1,28 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:summon_tamed_no_variant",
+  "activation_item": {
+    "item": "legendary_monsters:soul_great_sword"
+  },
+  "craftType": "necroturgy",
+  "entity_to_summon": "goetyominous:possessed_paladin_servant",
+  "soulCost": 5,
+  "duration": 30,
+  "ingredients": [
+    {
+      "item": "goety:cursed_metal_block"
+    },
+    {
+      "item": "goety:shadow_essence"
+    },
+    {
+      "item": "goety:dark_fabric"
+    },
+    {
+      "item": "goety:magic_emerald"
+    }
+  ],
+  "result": {
+    "item": "goety:jei_dummy/none"
+  }
+}

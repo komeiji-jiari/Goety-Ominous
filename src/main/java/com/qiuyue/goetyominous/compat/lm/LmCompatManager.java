@@ -7,6 +7,7 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.OvergrownColossusServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.PossessedPaladinServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.ShulkerMimicServant;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
+import com.qiuyue.goetyominous.common.init.lm.LmParticles;
 import com.qiuyue.goetyominous.common.init.lm.LmSounds;
 import com.qiuyue.goetyominous.common.items.lm.LmItems;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -19,6 +20,11 @@ public class LmCompatManager {
         LmSounds.register(modEventBus);
 
         LmItems.register(modEventBus);
+
+        // 圣骑那一套招式用的粒子（灵魂粒 / 红灵魂火 / 幻影匕首拖尾）。
+        // 注册在这里而不是主类里，是因为这些粒子只服务于「LM 那批仆从」——
+        // LM 不在场时它们一个都用不上，没必要占注册名。
+        LmParticles.register(modEventBus);
     }
 
     public static void setCustomAttributes(net.minecraftforge.event.entity.EntityAttributeCreationEvent event) {
