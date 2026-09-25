@@ -9,6 +9,7 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.Tornado;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import net.miauczel.legendary_monsters.config.ModConfig;
+import net.miauczel.legendary_monsters.item.ModItems;
 import net.miauczel.legendary_monsters.sound.ModSounds;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -17,6 +18,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
@@ -35,6 +38,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.gameevent.GameEvent;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -85,6 +89,36 @@ public class HoveringHurricaneServant extends IAnimatedMonsterServant {
     public void onAddedToWorld() {
         super.onAddedToWorld();
         this.setPersistenceRequired();
+    }
+
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        if (this.getTrueOwner() != null && player == this.getTrueOwner()
+                && itemstack.is(ModItems.CLOUD_ROD.get()) && this.getHealth() < this.getMaxHealth()) {
+            if (!this.level().isClientSide) {
+                this.heal(10.0F);
+                this.playSound(SoundEvents.BEACON_ACTIVATE, 1.0F, 1.2F);
+                this.gameEvent(GameEvent.EAT, this);
+                if (this.level() instanceof ServerLevel serverLevel) {
+                    for (int i = 0; i < 8; ++i) {
+                        double d0 = this.random.nextGaussian() * 0.02D;
+                        double d1 = this.random.nextGaussian() * 0.02D + 0.1D;
+                        double d2 = this.random.nextGaussian() * 0.02D;
+                        serverLevel.sendParticles(ParticleTypes.HEART,
+                                this.getRandomX(1.0F),
+                                this.getY() + this.getBbHeight() + 0.3F + this.random.nextDouble() * 0.5F,
+                                this.getRandomZ(1.0F), 0, d0, d1, d2, 0.5D);
+                    }
+                }
+                if (!player.getAbilities().instabuild) {
+                    itemstack.shrink(1);
+                }
+            }
+            player.swing(hand);
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
+        }
+        return super.mobInteract(player, hand);
     }
 
     @Override
@@ -160,20 +194,12 @@ public class HoveringHurricaneServant extends IAnimatedMonsterServant {
         return new AnimationState();
     }
 
-    public void setSleep(boolean sleep) {
-        this.setAttackState(sleep ? 1 : 0);
-    }
-
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
         if (ATTACK_STATE.equals(accessor) && this.level().isClientSide) {
             switch (this.getAttackState()) {
                 case 0:
                     this.stopAllAnimationStates();
-                    break;
-                case 1:
-                    this.stopAllAnimationStates();
-                    this.idleAnimationState.startIfStopped(this.tickCount);
                     break;
                 case 2:
                     this.stopAllAnimationStates();
@@ -200,9 +226,7 @@ public class HoveringHurricaneServant extends IAnimatedMonsterServant {
     @Override
     public void aiStep() {
         super.aiStep();
-        if (this.getAttackState() != 14 || this.getAttackState() != 17) {
-            this.setNoGravity(false);
-        }
+        this.setNoGravity(false);
         this.level().addParticle(ParticleTypes.CLOUD, this.getRandomX(1.0D), this.getRandomY(), this.getRandomZ(1.0D),
                 0.0D, 0.025D, 0.0D);
     }

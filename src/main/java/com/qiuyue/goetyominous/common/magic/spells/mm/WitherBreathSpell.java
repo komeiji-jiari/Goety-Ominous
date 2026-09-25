@@ -197,7 +197,6 @@ public class WitherBreathSpell extends ContinuousControllerSpell<WitherBreathSpe
         protected void onTick(ServerLevel level, LivingEntity caster) {
             int tick = entityData.get(TICKS);
 
-            // 结束判定
             if (tick >= CHARGE_UP_TICKS + BREATH_TICKS + END_LAG_TICKS) {
                 discard();
                 return;
@@ -213,7 +212,6 @@ public class WitherBreathSpell extends ContinuousControllerSpell<WitherBreathSpe
                 progress = 3.75F + 1.25F * (tick - CHARGE_UP_TICKS - BREATH_TICKS) / END_LAG_TICKS;
             }
 
-            // roar 音效 + 相机震动（progress 达到 1.0 时）
             if (!roarPlayed && progress >= 1.0F) {
                 roarPlayed = true;
                 level.playSound(null, caster.getX(), caster.getY(), caster.getZ(),
@@ -222,7 +220,6 @@ public class WitherBreathSpell extends ContinuousControllerSpell<WitherBreathSpe
                 ShakeCameraEvent.shake(level, 100, 0.1F, caster.blockPosition(), 30);
             }
 
-            // 吐息阶段（progress > 1.0）
             if (progress > 1.0F) {
                 Vec3 particlePos = PositionUtils.getOffsetPos(caster,
                         0.0, caster.getBbHeight() * 0.6, caster.getBbWidth(), 0.0F, caster.yBodyRot);
@@ -250,7 +247,6 @@ public class WitherBreathSpell extends ContinuousControllerSpell<WitherBreathSpe
                 }
             }
 
-            // 迷雾区生成：吐息结束时（tick 达到 CHARGE_UP_TICKS + BREATH_TICKS 首次进入后摇）
             if (!areaDamageSpawned && tick >= CHARGE_UP_TICKS + BREATH_TICKS) {
                 spawnAreaDamage(level, caster);
                 areaDamageSpawned = true;

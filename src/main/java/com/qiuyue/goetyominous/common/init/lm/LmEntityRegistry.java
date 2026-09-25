@@ -5,11 +5,13 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.CloudGolemServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.HoveringHurricaneServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.OvergrownColossusServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.PossessedPaladinServant;
-import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.PoisonousShockwave;
+import com.qiuyue.goetyominous.common.entities.ally.lm.ShulkerMimicServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.BigShulkerBullet;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulStrike;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulTrident;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.ThrownPhantomDagger;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.CloudEntity;
+import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.GravityBigShulkerBullet;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.ElectricityEntity;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.EnergyBeamEntity;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.LightningBoltEntity;
@@ -95,6 +97,24 @@ public class LmEntityRegistry {
                     () -> EntityType.Builder.of(CloudGolemServant::new, MobCategory.MONSTER)
                             .sized(1.5F, 2.5F).fireImmune()
                             .build(GoetyOminous.MOD_ID + ":cloud_golem_servant"));
+
+    public static final RegistryObject<EntityType<ShulkerMimicServant>> SHULKER_MIMIC_SERVANT =
+            LM_ENTITIES.register("shulker_mimic_servant",
+                    () -> EntityType.Builder.of(ShulkerMimicServant::new, MobCategory.MONSTER)
+                            .sized(1.5F, 2.5F).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":shulker_mimic_servant"));
+
+    public static final RegistryObject<EntityType<BigShulkerBullet>> BIG_SHULKER_BULLET =
+            LM_ENTITIES.register("big_shulker_bullet",
+                    () -> EntityType.Builder.<BigShulkerBullet>of(BigShulkerBullet::new, MobCategory.MISC)
+                            .sized(1.0F, 1.0F).clientTrackingRange(6).updateInterval(2).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":big_shulker_bullet"));
+
+    public static final RegistryObject<EntityType<GravityBigShulkerBullet>> GRAVITY_BIG_SHULKER_BULLET =
+            LM_ENTITIES.register("gravity_big_shulker_bullet",
+                    () -> EntityType.Builder.<GravityBigShulkerBullet>of(GravityBigShulkerBullet::new, MobCategory.MISC)
+                            .sized(1.5F, 1.5F).clientTrackingRange(6).updateInterval(2).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":gravity_big_shulker_bullet"));
 
     public static final RegistryObject<EntityType<CloudEntity>> CLOUD =
             LM_ENTITIES.register("cloud",

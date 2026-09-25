@@ -1,14 +1,24 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+
+import java.util.List;
 
 /**
  * 大 Boss 级仆从的基类，对应传奇怪物（Legendary Monsters）原版的 IAnimatedBoss。
@@ -194,5 +204,105 @@ public class IAnimatedBossServant extends IAnimatedMonsterServant {
             return false;
         }
         return super.addEffect(pEffectInstance, pEntity);
+    }
+
+    // ==========================================================================================
+    // 下面 4 个方法是招式的「通用零件」，原本住在爷爷类 IAnimatedMonsterServant 里。
+    //
+    // ⚠️ 2026-09-25 合并 origin/master 时，协作者那边的 IAnimatedMonsterServant 把它们连同
+    //    applyEffectTo / sendBasicHotBarMessage / yaw / pitch / repelEntities 一起删掉了 ——
+    //    他那边没有圣骑仆从，在他眼里这些都是没人调用的死代码。
+    //    而本地从没动过那个文件，所以 git 静默接受了他的删除，一个冲突都不报，
+    //    一路等到编译才炸出 22 个「找不到符号」。
+    //
+    //    因此把它们搬进本类：IAnimatedBossServant 这个文件<b>只存在于我们这边</b>，
+    //    协作者没有，以后合并不可能再被连带删掉。
+    //
+    //    方法体逐字照抄祖先版本，一行逻辑都没改，避免顺手「优化」二次引入 bug。
+    //    只有圣骑仆从（PossessedPaladinServant）在用这四个东西。
+    // ==========================================================================================
+
+    /**
+     * 在半径 {@code PlayerRange} 格内的<b>每个玩家</b>的动作栏上显示一句话。
+     *
+     * <p>和爷爷类里那个 {@code sendBasicHotBarMessage} 的区别：那个只发给某一个指定玩家，
+     * 这个是在范围内广播 —— 圣骑说台词时周围的人都听得到。
+     *
+     * <p>{@code message} 传的是<b>翻译键</b>（如 {@code legendary_monsters.message.possessed_paladin_talk4}），
+     * 走 {@link Component#translatable} 查语言文件，所以中英文会自动切。
+     */
+    public void sendAdvancedHotBarMessage(String message, ChatFormatting chatFormatting, float PlayerRange) {
+        List<Player> list = level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(PlayerRange));
+        for (Player player : list) {
+            Component messageComponent = Component.translatable(message).withStyle(chatFormatting);
+            if (player instanceof ServerPlayer serverPlayer) {
+                serverPlayer.connection.send(new ClientboundSetActionBarTextPacket(messageComponent));
+            }
+        }
+    }
+
+    /**
+     * 朝<b>当前朝向的侧后方</b>冲一下（冲刺位移）。
+     *
+     * <p>{@code vec} 是前后分量、{@code offset} 是左右分量，两者都用 {@code yBodyRot}（身体朝向）
+     * 换算成世界坐标 —— 所以传正数往前、传负数往后（圣骑的某些招式就是靠这个「先后撤再前冲」）。
+     *
+     * <p>{@code Vscale} 是力度缩放：先算出「目标落点相对自己的位移」，再乘这个系数当作速度。
+     * 注意只改 X/Z，<b>Y 轴速度原样保留</b>，所以跳起来用也不会把人往地里按。
+     *
+     * <p>{@code livingEntity} 参数由调用方传 {@code this} —— 是 LM 原版的写法，照抄没动。
+     */
+    public void advancedDash(LivingEntity livingEntity, float vec, float offset, float Vscale) {
+        float f = Mth.cos(livingEntity.yBodyRot * ((float) Math.PI / 180F));
+        float f1 = Mth.sin(livingEntity.yBodyRot * ((float) Math.PI / 180F));
+        double theta = (livingEntity.yBodyRot) * (Math.PI / 180);
+        theta += Math.PI / 2;
+        double vecX = Math.cos(theta);
+        double vecZ = Math.sin(theta);
+        Vec3 rollPos = new Vec3(livingEntity.getX() + vec * vecX + f * offset, getY(), livingEntity.getZ() + vec * vecZ + f1 * offset);
+        Vec3 sub = position().subtract(rollPos);
+        Vec3 finalPos = sub.scale(Vscale);
+        setDeltaMovement(finalPos.x, getDeltaMovement().y, finalPos.z);
+    }
+
+    /**
+     * 给目标「叠层」上 debuff：没说有就上 0 级，已经有了就在原等级上 +{@code bonusLevel}，
+     * 但封顶在 {@code maxLevel}。
+     *
+     * <p>圣骑用它给被砍中的敌人叠「灵魂碎裂」（{@code ModEffects.SOUL_FRACTURE}）：
+     * 砍得越多层数越高，最高 {@code maxLevel} 层。
+     *
+     * <p>⚠️ 中间那个 {@code else if (!(A && B))} 写法很啰嗦（其实就是 {@code else}），
+     * 是 LM 原版这么写的，<b>照抄没动</b>。两者等价，不要顺手简化。
+     */
+    public void applyStackingEffect(LivingEntity entity, MobEffect effect, int bonusLevel, int maxLevel, int duration) {
+
+        MobEffectInstance effectInstance = entity.getEffect(effect);
+
+        if (entity.hasEffect(effect) && effectInstance != null) {
+
+            int effectLevel = effectInstance.getAmplifier();
+            if (effectLevel < maxLevel) {
+                entity.addEffect(new MobEffectInstance(effect, duration, effectLevel + bonusLevel));
+            }
+        } else if (!(entity.hasEffect(effect) && effectInstance != null)) {
+            entity.addEffect(new MobEffectInstance(effect, duration, 0));
+        }
+    }
+
+    /**
+     * 朝一个<b>坐标</b>冲，而不是朝朝向冲 —— 这是和 {@code calculatedDash}（朝目标冲）的区别。
+     *
+     * <p>圣骑的突进类招式用的是这个：先记下目标当时的位置，之后哪怕目标跑了，
+     * 也是照着<b>原来那个点</b>冲过去，不会中途拐弯。
+     *
+     * <p>外面的 {@code if (target != null)} 是 LM 原版就有的 —— 没锁定目标就<b>完全不位移</b>。
+     * 看着像多余，其实是有意的（防止脱战状态下乱冲），照抄保留。
+     */
+    public void calculatedDashToPositon(float Multiplier, Vec3 position) {
+        LivingEntity target = this.getTarget();
+        if (target != null) {
+            this.setDeltaMovement((position.x - this.getX()) * Multiplier, 0, (position.z - this.getZ()) * Multiplier);
+        }
     }
 }
