@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "alexscaves:item/atlatitan_egg"
+    "layer0": "goetyominous:item/atlatitan_servant_egg"
   }
 }

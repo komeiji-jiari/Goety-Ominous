@@ -1,6 +1,5 @@
 package com.qiuyue.goetyominous.common.entities.ally.mobs;
 
-import com.Polarice3.Goety.client.particles.ModParticleTypes;
 import com.Polarice3.Goety.common.entities.ally.AnimalSummon;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
@@ -314,10 +313,10 @@ public class AxolotlServant extends AnimalSummon implements LerpingModel{
                     if (this.explosionCountdown <= 0) {
                         if (!this.level().isClientSide) {
                             float explosionPower = 7.0F;
-                            this.level().explode(null, this.getX(), this.getY(), this.getZ(), explosionPower, Level.ExplosionInteraction.MOB);
+                            this.level().explode(this, this.getX(), this.getY(), this.getZ(), explosionPower, Level.ExplosionInteraction.MOB);
 
                             if (this.getTrueOwner() instanceof Player owner) {
-                                owner.hurt(this.damageSources().explosion(this, null), 100.0F);
+                                owner.hurt(this.damageSources().explosion(this, this), 100.0F);
                             }
 
                             this.discard();
@@ -400,7 +399,7 @@ public class AxolotlServant extends AnimalSummon implements LerpingModel{
                                 double d0 = this.random.nextGaussian() * 0.02D;
                                 double d1 = this.random.nextGaussian() * 0.02D;
                                 double d2 = this.random.nextGaussian() * 0.02D;
-                                serverlevel.sendParticles(ModParticleTypes.HEAL_EFFECT.get(),
+                                serverlevel.sendParticles(ParticleTypes.HEART,
                                         this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D),
                                         0, d0, d1, d2, 0.5F);
                             }

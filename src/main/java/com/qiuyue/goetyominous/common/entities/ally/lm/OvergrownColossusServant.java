@@ -231,9 +231,6 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
         if(bigsmash2Cooldown > 0){
             --bigsmash2Cooldown;
         }
-        this.inActiveTicks = INACTIVE_TICKS;
-        this.return_to_spawn_ticks = RETURN_TO_SPAWN_TICKS;
-
         if (!this.level().isClientSide && this.getAttackState() == 0) {
             if (this.cropGrowthCooldown > 0) {
                 --this.cropGrowthCooldown;
@@ -488,10 +485,6 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
     }
 
     @Override
-    public void regainHealthWithoutTarget(float health, float speed) {
-    }
-
-    @Override
     public boolean hurt(DamageSource source, float amount) {
         if (this.isSleep() && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             return false;
@@ -541,8 +534,8 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
                     double d0 = this.random.nextGaussian() * 0.02D;
                     double d1 = this.random.nextGaussian() * 0.02D;
                     double d2 = this.random.nextGaussian() * 0.02D;
-                    serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER,
-                            this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D),
+                    serverLevel.sendParticles(ParticleTypes.HEART,
+                            this.getRandomX(1.0D), this.getY() + this.getBbHeight() + 0.3F, this.getRandomZ(1.0D),
                             0, d0, d1, d2, 0.5F);
                 }
             }

@@ -1,6 +1,5 @@
 package com.qiuyue.goetyominous.common.entities.ally.am;
 
-import com.Polarice3.Goety.client.particles.ModParticleTypes;
 import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.init.ModMobType;
@@ -20,7 +19,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -272,7 +270,7 @@ public class DropBearServant extends Summoned implements IAnimatedEntity {
                         double d0 = this.random.nextGaussian() * 0.02;
                         double d1 = this.random.nextGaussian() * 0.02;
                         double d2 = this.random.nextGaussian() * 0.02;
-                        serverLevel.sendParticles((SimpleParticleType) ModParticleTypes.HEAL_EFFECT.get(), this.getRandomX(1.0), this.getRandomY() + 0.5, this.getRandomZ(1.0), 0, d0, d1, d2, 0.5);
+                        serverLevel.sendParticles(ParticleTypes.HEART, this.getRandomX(1.0), this.getRandomY() + 0.5, this.getRandomZ(1.0), 0, d0, d1, d2, 0.5);
                     }
                 }
 

@@ -1,0 +1,33 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:animation_core"
+  },
+  "craftType": "deep",
+  "soulCost": 1,
+  "duration": 10,
+  "ingredients": [
+    {
+      "item": "opposing_force:electric_charge"
+    },
+    {
+      "item": "opposing_force:electric_charge"
+    },
+    {
+      "tag": "minecraft:fishes"
+    },
+    {
+      "item": "minecraft:prismarine_bricks"
+    },
+    {
+      "tag": "forge:ingots/copper"
+    },
+    {
+      "tag": "forge:ingots/copper"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:volt_focus"
+  }
+}

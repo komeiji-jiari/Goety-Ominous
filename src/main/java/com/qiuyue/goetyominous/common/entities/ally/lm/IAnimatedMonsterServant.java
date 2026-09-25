@@ -190,12 +190,6 @@ public class IAnimatedMonsterServant extends Summoned {
         return Math.toRadians(-getXRot() + 90);
     }
 
-    public boolean isTargetCheesing(float minHeight, float maxHeight) {
-
-        return targetIsNotNull() && (target().getY() - getY() >= maxHeight || target().getY() - getY() <= minHeight);
-
-    }
-
     public void launch(LivingEntity entity, boolean huge) {
         double deltaX = entity.getX() - this.getX();
         double deltaZ = entity.getZ() - this.getZ();

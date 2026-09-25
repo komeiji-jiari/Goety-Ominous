@@ -25,6 +25,19 @@ public class IStateGoal extends Goal {
         this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK, Goal.Flag.JUMP));
     }
 
+    public IStateGoal(IAnimatedMonsterServant entity, int getattackstate, int attackstate,
+                      int attackendstate, int attackfinaltick, int attackseetick, boolean interruptsAI) {
+        this.entity = entity;
+        this.getattackstate = getattackstate;
+        this.attackstate = attackstate;
+        this.attackendstate = attackendstate;
+        this.attackfinaltick = attackfinaltick;
+        this.attackseetick = attackseetick;
+        if (interruptsAI) {
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK, Goal.Flag.JUMP));
+        }
+    }
+
     @Override
     public boolean canUse() {
         return this.entity.getAttackState() == this.getattackstate;
