@@ -89,7 +89,7 @@ public class VoltSpell extends SummonSpell {
         }
 
         if (!this.isShifting(caster)) {
-            int count = 2;
+            int count = 1;
             boolean elite = false;
             if (this.rightStaff(staff)) {
                 count = 2;

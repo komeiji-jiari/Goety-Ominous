@@ -1,0 +1,19 @@
+{
+  "name": "Volt Bolt Focus",
+  "icon": "goetyominous:volt_bolt_focus",
+  "category": "goety:ofcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "By studying the Volt, you have devised a way to mimic their electrical discharge, allowing you to fire a large orb of electricity at creatures."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:volt_bolt_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Casting this spell with a Storm Staff causes struck creatures to additionally suffer from Spasms."
+    }
+  ]
+}

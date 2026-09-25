@@ -1,0 +1,36 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:shocking_focus"
+  },
+  "craftType": "storm",
+  "soulCost": 1,
+  "duration": 10,
+  "ingredients": [
+    {
+      "tag": "forge:storage_blocks/redstone"
+    },
+    {
+      "tag": "forge:storage_blocks/iron"
+    },
+    {
+      "tag": "forge:storage_blocks/lapis"
+    },
+    {
+      "tag": "forge:storage_blocks/iron"
+    },
+    {
+      "item": "opposing_force:laser_core"
+    },
+    {
+      "item": "goety:jade_block"
+    },
+    {
+      "item": "opposing_force:dicer_head"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:dicer_laser_focus"
+  }
+}
