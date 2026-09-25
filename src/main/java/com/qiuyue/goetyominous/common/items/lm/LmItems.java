@@ -28,9 +28,16 @@ public class LmItems {
             "overgrown_colossus_servant_spawn_egg",
             () -> new ServantSpawnEggItem(LmEntityRegistry.OVERGROWN_COLOSSUS_SERVANT, 0x6B8E23, 0x00AA00, egg()));
 
-    public static final RegistryObject<ServantSpawnEggItem> POSSESSED_PALADIN_SPAWN_EGG = LM_ITEMS.register(
-            "possessed_paladin_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(LmEntityRegistry.POSSESSED_PALADIN_SERVANT, 0x8B0000, 0xD3D3D3, egg()));
+    // ⚠️ 暂时注释掉：堕落圣骑还没做完，先不让它在游戏里被拿到
+    //    （刷怪蛋物品不注册了 → 创造模式物品栏里搜不到，丢不出来）。
+    //    想恢复：把下面三行开头的 // 删掉即可，别的一行都不用动。
+    //
+    //    注意这只挡了「刷怪蛋」一条路。/summon goetyominous:possessed_paladin_servant
+    //    照样能用 —— 因为实体本身必须继续注册（属性 / 渲染器都引用它），
+    //    真要连 /summon 一起禁，得在 LmEntityRegistry 里那节 .sized(1.0F, 3.0F) 后面加 .noSummon()。
+//    public static final RegistryObject<ServantSpawnEggItem> POSSESSED_PALADIN_SPAWN_EGG = LM_ITEMS.register(
+//            "possessed_paladin_servant_spawn_egg",
+//            () -> new ServantSpawnEggItem(LmEntityRegistry.POSSESSED_PALADIN_SERVANT, 0x8B0000, 0xD3D3D3, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> HOVERING_HURRICANE_SPAWN_EGG = LM_ITEMS.register(
             "hovering_hurricane_servant_spawn_egg",
