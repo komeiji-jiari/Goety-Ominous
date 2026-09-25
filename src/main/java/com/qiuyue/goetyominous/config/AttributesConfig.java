@@ -1621,9 +1621,25 @@ public class AttributesConfig {
         BUILDER.pop();
 
         // 堕落圣骑仆从。数值绝大部分照抄传奇怪物 2.1.20 的 PossessedPaladinEntity.createAttributes()，
-        // 只有 MovementSpeed 和 FollowRange 两项例外 —— 原版的 0.1 / 80.0 是给 BOSS 用的
-        // （站在原地靠远距离索敌，不靠移动），当仆从跟随主人会跟不上、看起来像在散步。
-        // 这两项改成跟蔓生巨像仆从一致（0.3 / 30.0），是实测后调的。
+        // 只有 MovementSpeed 和 FollowRange 两项例外 —— 原版的 0.1 / 80.0 都是给 BOSS 用的
+        // （站在原地靠远距离索敌，不靠走路），当仆从会跟不上主人，
+        // 改成跟蔓生巨像仆从一致（0.3 / 30.0）。
+        //
+        // ⚠️ 注意这个 0.3 是「基础移速」，不是「实际移速」。
+        //    实际速度 = 导航倍率 × 基础移速，而三处用的倍率各不相同，同一个 0.3 会跑出三种速度：
+        //      追击（IMoveGoal，倍率 1.0，在 PossessedPaladinServant.registerGoals 里） → 0.30
+        //      跟随（Goety FollowOwnerGoal，倍率＝IServant.getFollowSpeed()）           → 0.5 × 0.3 = 0.15
+        //      闲逛（Goety WanderGoal，倍率写在 registerGoals 里）                       → 0.5 × 0.3 = 0.15
+        //
+        //    原版 BOSS 是 0.1 × 3.0 = 0.30，和我们追击的 0.3 × 1.0 一模一样，所以<b>打架手感没差</b>。
+        //    但原版是 BOSS，根本没有「跟随」「闲逛」这两个 goal（它只有只转头的 LookAtPlayer /
+        //    RandomLookAround），所以那两处从来没暴露过。仆从多了这两个 goal，0.3 的基础速
+        //    就让它们也跑到了 0.30 —— 比僵尸（0.23）还快，四百血的重甲 BOSS 在主人旁边小跑，观感很急躁。
+        //
+        //    ⚠️ 以后想调「跟随 / 闲逛」的观感，去改 PossessedPaladinServant.getFollowSpeed()
+        //       和 registerGoals 里 WanderGoal 的倍率，<b>不要动这个基础值</b> ——
+        //       一动它，追击速度也会跟着变，会把调了很久的战斗手感搞乱。
+        //       （同包的飓旋 / 云铸魔像仆从就是单独覆写 getFollowSpeed() 的，同一个思路。）
         BUILDER.push("Possessed Paladin Servant (Optional - LM)");
         PossessedPaladinServantHealth = BUILDER.comment("How much Max Health Possessed Paladin Servants have, Default: 400.0 (Legendary Monsters' value)")
                 .defineInRange("possessedPaladinServantHealth", 400.0, 1.0, Double.MAX_VALUE);
@@ -1633,7 +1649,7 @@ public class AttributesConfig {
                 .defineInRange("possessedPaladinServantArmorToughness", 3.0, 0.0, Double.MAX_VALUE);
         PossessedPaladinServantDamage = BUILDER.comment("How much damage Possessed Paladin Servants deal, Default: 15.0 (Legendary Monsters' value)")
                 .defineInRange("possessedPaladinServantDamage", 15.0, 1.0, Double.MAX_VALUE);
-        PossessedPaladinServantMovementSpeed = BUILDER.comment("How fast Possessed Paladin Servants move, Default: 0.3 (same as Overgrown Colossus Servant; Legendary Monsters' boss value is 0.1)")
+        PossessedPaladinServantMovementSpeed = BUILDER.comment("How fast Possessed Paladin Servants move, Default: 0.3 (Legendary Monsters' boss uses 0.1 with a x3.0 navigation modifier, giving the same 0.30 chase speed; the walk/follow speed is tuned separately via getFollowSpeed())")
                 .defineInRange("possessedPaladinServantMovementSpeed", 0.3, 0.0, Double.MAX_VALUE);
         PossessedPaladinServantFollowRange = BUILDER.comment("How much following/detection range Possessed Paladin Servants have, Default: 30.0 (same as Overgrown Colossus Servant; Legendary Monsters' boss value is 80.0)")
                 .defineInRange("possessedPaladinServantFollowRange", 30.0, 1.0, Double.MAX_VALUE);
