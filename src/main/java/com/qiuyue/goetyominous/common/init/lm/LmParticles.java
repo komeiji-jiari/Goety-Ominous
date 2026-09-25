@@ -2,7 +2,10 @@ package com.qiuyue.goetyominous.common.init.lm;
 
 import com.mojang.serialization.Codec;
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.client.particle.lm.Circle;
 import com.qiuyue.goetyominous.client.particle.lm.PhantomDaggerTrail;
+import com.qiuyue.goetyominous.client.particle.lm.SoulExplosion;
+import com.qiuyue.goetyominous.client.particle.lm.SoulPillarExplosion;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -17,8 +20,7 @@ import net.minecraftforge.registries.RegistryObject;
  * 整个抄过来。用不到的粒子搬过来只会白白占注册名。
  *
  * <p>命名空间是 {@code goetyominous}，但<b>注册名和 LM 一模一样</b>
- * （{@code ghostly_soul}、{@code ghostly_soul_red}、{@code red_soul_flame}、
- * {@code phantom_dagger_trail}）—— 这是刻意的：贴图、json、粒子行为全部照搬原作，
+ * （和 LM 的注册名逐字相同）—— 这是刻意的：贴图、json、粒子行为全部照搬原作，
  * 只有「属于哪个模组」变了。注册名保持一致，将来对照原版代码时不容易搞混。
  *
  * <h2>为什么这里是 {@code ParticleType<?>} 的 DeferredRegister</h2>
@@ -63,6 +65,28 @@ public class LmParticles {
             LM_PARTICLES.register("red_soul_flame", () -> new SimpleParticleType(true));
 
     /**
+     * 灵魂三叉戟扎中东西那一瞬间炸开的红光。
+     *
+     * <p>贴图是 8 帧的 {@code soul_explosion_red_0..7}，粒子本体 12 tick 就消失。
+     * 它和上面几个灵魂粒<b>不是同一个类</b>，见 {@link SoulExplosion} 的注释。
+     */
+    public static final RegistryObject<SimpleParticleType> SOUL_EXPLOSION_RED =
+            LM_PARTICLES.register("soul_explosion_red", () -> new SimpleParticleType(true));
+
+    /**
+     * 灵魂柱冒出地面之前，地面上先亮起的那团红光。
+     *
+     * <p>7 帧贴图。⚠️ 和下面那个 {@code soul_pillar_explosion} 是两个不同的粒子，
+     * 名字像、类也几乎一样，别搞混 —— 一个是「地上的光」，一个是「炸开的光」。
+     */
+    public static final RegistryObject<SimpleParticleType> GROUNDSOUL_RED =
+            LM_PARTICLES.register("ground_soul_red", () -> new SimpleParticleType(true));
+
+    /** 灵魂柱炸出地面那一瞬间的光。8 帧贴图。见 {@link SoulPillarExplosion}。 */
+    public static final RegistryObject<SimpleParticleType> SOUL_PILLAR_EXPLOSION =
+            LM_PARTICLES.register("soul_pillar_explosion", () -> new SimpleParticleType(true));
+
+    /**
      * 幻影匕首的「拖尾」粒子 —— 这一条是<b>带参数的</b>粒子。
      *
      * <p>参数是 {@link PhantomDaggerTrail.OrbData}：颜色（RGB）、轨道宽高、以及
@@ -80,6 +104,29 @@ public class LmParticles {
                         public Codec<PhantomDaggerTrail.OrbData> codec() {
                             return PhantomDaggerTrail.OrbData.CODEC(
                                     LmParticles.PHANTOM_DAGGER_TRAIL.get());
+                        }
+                    });
+
+    /**
+     * 灵魂柱爆炸时从地上炸开的<b>光圈</b> —— 也是带参数的粒子。
+     *
+     * <p>它的参数包 {@link Circle.RingData} 有 10 个数（朝向、颜色、大小、时长、
+     * 是否正对镜头、半径变化方式），所以和上面那个一样，需要一个匿名子类
+     * 告诉游戏「用 {@code RingData.CODEC} 编解码」。
+     *
+     * <p>⚠️ 在传奇怪物那边这个注册项的名字叫 {@code RING}（类名 {@code Circle}），
+     * 我们<b>类名照搬、字段名改成 {@code CIRCLE}</b> —— 因为字段名跟着
+     * 「贴图 json 叫 circle.json、注册名是 {@code circle}」走更不容易搞混。
+     * 注册名两边逐字相同，都是 {@code circle}。
+     */
+    public static final RegistryObject<ParticleType<Circle.RingData>> CIRCLE =
+            LM_PARTICLES.register("circle",
+                    () -> new ParticleType<Circle.RingData>(false,
+                            Circle.RingData.DESERIALIZER) {
+                        @Override
+                        public Codec<Circle.RingData> codec() {
+                            return Circle.RingData.CODEC(
+                                    LmParticles.CIRCLE.get());
                         }
                     });
 

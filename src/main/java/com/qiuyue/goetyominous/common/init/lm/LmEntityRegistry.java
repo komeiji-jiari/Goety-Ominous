@@ -10,6 +10,7 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.ShulkerMimicServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.AnnihilationExplosion;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.AnnihilationFlameStrike;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.BigShulkerBullet;
+import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulPillarExplosionEntity;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulStrike;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulTrident;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.ThrownPhantomDagger;
@@ -85,6 +86,18 @@ public class LmEntityRegistry {
                     () -> EntityType.Builder.<SoulTrident>of(SoulTrident::new, MobCategory.MISC)
                             .sized(1.0F, 1.0F).clientTrackingRange(4).updateInterval(20)
                             .build(GoetyOminous.MOD_ID + ":soul_trident"));
+
+    // 参数逐项照抄传奇怪物 ModEntities:161 的 soul_pillar_explosion：
+    // MISC 分类、1.0 宽 x 3.0 高、客户端 6 格追踪、每 2 tick 同步一次、免疫火焰。
+    //
+    // ⚠️ 这一条以前是「借」传奇怪物自己的注册项的（三叉戟那边直接 new 它的类）。
+    //    现在三叉戟要搬成我们自己的类，这个爆炸实体也只能跟着搬 ——
+    //    否则我们的三叉戟就得去 new 别人的类，等于没搬干净。
+    public static final RegistryObject<EntityType<SoulPillarExplosionEntity>> SOUL_PILLAR_EXPLOSION =
+            LM_ENTITIES.register("soul_pillar_explosion",
+                    () -> EntityType.Builder.<SoulPillarExplosionEntity>of(SoulPillarExplosionEntity::new, MobCategory.MISC)
+                            .sized(1.0F, 3.0F).clientTrackingRange(6).updateInterval(2).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":soul_pillar_explosion"));
     public static final RegistryObject<EntityType<HoveringHurricaneServant>> HOVERING_HURRICANE_SERVANT =
             LM_ENTITIES.register("hovering_hurricane_servant",
                     () -> EntityType.Builder.of(HoveringHurricaneServant::new, MobCategory.MONSTER)
