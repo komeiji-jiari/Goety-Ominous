@@ -228,7 +228,7 @@ public class IAnimatedBossServant extends IAnimatedMonsterServant {
      * <p>和爷爷类里那个 {@code sendBasicHotBarMessage} 的区别：那个只发给某一个指定玩家，
      * 这个是在范围内广播 —— 圣骑说台词时周围的人都听得到。
      *
-     * <p>{@code message} 传的是<b>翻译键</b>（如 {@code legendary_monsters.message.possessed_paladin_talk4}），
+     * <p>{@code message} 传的是<b>翻译键</b>（如 {@code message.goetyominous.possessed_paladin_servant.awaken.1}），
      * 走 {@link Component#translatable} 查语言文件，所以中英文会自动切。
      */
     public void sendAdvancedHotBarMessage(String message, ChatFormatting chatFormatting, float PlayerRange) {
@@ -271,6 +271,8 @@ public class IAnimatedBossServant extends IAnimatedMonsterServant {
      *
      * <p>圣骑用它给被砍中的敌人叠「灵魂碎裂」（{@code ModEffects.SOUL_FRACTURE}）：
      * 砍得越多层数越高，最高 {@code maxLevel} 层。
+     * 幻影匕首（{@code ThrownPhantomDagger}）命中也叠同一个效果 ——
+     * 那边调的是 LM 的 {@code EntityUtil.applyStackingEffect}，逻辑和这里这份一模一样。
      *
      * <p>⚠️ 中间那个 {@code else if (!(A && B))} 写法很啰嗦（其实就是 {@code else}），
      * 是 LM 原版这么写的，<b>照抄没动</b>。两者等价，不要顺手简化。

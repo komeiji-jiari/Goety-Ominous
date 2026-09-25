@@ -1,8 +1,8 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm.projectile;
 
-import net.miauczel.legendary_monsters.Particle.ModParticles;
-import net.miauczel.legendary_monsters.damagetype.ModDamageTypes;
-import net.miauczel.legendary_monsters.util.MathUtils;
+import com.qiuyue.goetyominous.common.entities.ally.lm.ServantMath;
+import com.qiuyue.goetyominous.common.init.lm.LmDamageTypes;
+import com.qiuyue.goetyominous.common.init.lm.LmParticles;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
@@ -42,7 +42,8 @@ import net.minecraftforge.network.NetworkHooks;
  * <p>所以我们的渲染注册也用 {@code EmptyRenderer}，和原版行为一致，不用怀疑。
  *
  * <h2>继承的是原版的 vanilla 基类，不是传奇怪物的</h2>
- * 匕首 {@link ThrownPhantomDagger} 继承的是传奇怪物自己的 {@code AbstractFlyingProjectile}，
+ * 匕首 {@link ThrownPhantomDagger} 继承的是我们自己抄的那份飞行基类
+ * {@link ServantFlyingProjectile}（源头是原作里的同名类），
  * 因为它需要那套飞行 / 回旋镖逻辑。灵魂冲击<b>不需要</b> —— 它的运动就是
  * 「直线飞 + 一点点重力」，本身已经继承 {@code ThrowableProjectile} 了，
  * 而且 {@link #tick()} 整个覆写掉，基类的飞行逻辑基本没参与。
@@ -64,6 +65,14 @@ import net.minecraftforge.network.NetworkHooks;
  * 而我们的圣骑仆从正好覆写了 {@code isAlliedTo}（主人、同主人的其他仆从、主人的队友
  * 全部算自己人）。所以这一句<b>不用改</b>，直接就能正确避开主人。
  * 对比一下：匕首那边原版查的是传奇怪物的阵营标签，必须换掉才行。
+ *
+ * <h2>✅ 已经没有传奇怪物的依赖了</h2>
+ * 最后剩下的那个 import（{@code ModParticles}）也换掉了 ——
+ * 灵魂粒、红灵魂火现在走本项目自己的注册表 {@code LmParticles}。
+ * 贴图和粒子行为是<b>从原作那边原样搬过来的</b>，只有命名空间变成了
+ * {@code goetyominous}，所以观感和传奇怪物里一模一样。
+ *
+ * <p>至此飞行、伤害类型、数学换算、粒子四样全部是本项目自己的了。
  */
 public class SoulStrike extends ThrowableProjectile {
 
@@ -76,7 +85,7 @@ public class SoulStrike extends ThrowableProjectile {
             SynchedEntityData.defineId(SoulStrike.class, EntityDataSerializers.BOOLEAN);
 
     /** 原版留的字段，我们这边没有任何地方读它（见 {@link #particleOptions()}）。 */
-    public ParticleOptions soulParticle = ModParticles.GHOSTLY_SOUL.get();
+    public ParticleOptions soulParticle = LmParticles.GHOSTLY_SOUL.get();
 
     public SoulStrike(EntityType<? extends SoulStrike> entityType, Level level) {
         super(entityType, level);
@@ -220,9 +229,9 @@ public class SoulStrike extends ThrowableProjectile {
                 }
 
                 // 伤害 = 弹自带伤害(12) + 目标最大生命值换算来的一小截
-                // （MathUtils.entityBasedHpDamage(entity, 3.0F) 里的 3.0F 是百分比系数）。
-                if (target.hurt(ModDamageTypes.causeGhostlyDamage(livingOwner, livingOwner),
-                        this.getDamage() + MathUtils.entityBasedHpDamage(target, 3.0F))) {
+                // （ServantMath.entityBasedHpDamage(entity, 3.0F) 里的 3.0F 是百分比系数）。
+                if (target.hurt(LmDamageTypes.ghostly(livingOwner),
+                        this.getDamage() + ServantMath.entityBasedHpDamage(target, 3.0F))) {
                     // 命中了就给主人回 8 点血。
                     // 原版这里还挂了一个 `!(getOwner() instanceof Player)` —— 那是「主人是玩家就不回」，
                     // 圣骑的主人永远是圣骑，条件恒成立，所以直接回。
@@ -241,8 +250,8 @@ public class SoulStrike extends ThrowableProjectile {
                 double z = this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth() * 2.0F)
                         - (double) this.getBbWidth();
                 this.level().addParticle(this.getRed()
-                                ? ModParticles.GHOSTLY_SOUL_RED.get()
-                                : ModParticles.GHOSTLY_SOUL.get(),
+                                ? LmParticles.GHOSTLY_SOUL_RED.get()
+                                : LmParticles.GHOSTLY_SOUL.get(),
                         x, y, z, 0.0D, 0.0D, 0.0D);
             }
 
@@ -255,7 +264,7 @@ public class SoulStrike extends ThrowableProjectile {
                 double z = this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth() * 2.0F)
                         - (double) this.getBbWidth();
                 this.level().addParticle(this.getRed()
-                                ? ModParticles.RED_SOUL_FLAME.get()
+                                ? LmParticles.RED_SOUL_FLAME.get()
                                 : ParticleTypes.SOUL_FIRE_FLAME,
                         x, y, z, 0.0D, 0.0D, 0.0D);
             }

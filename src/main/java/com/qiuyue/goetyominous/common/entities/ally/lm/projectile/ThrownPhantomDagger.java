@@ -1,12 +1,11 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm.projectile;
 
-import net.miauczel.legendary_monsters.Particle.custom.PhantomDaggerTrail;
-import net.miauczel.legendary_monsters.damagetype.ModDamageTypes;
+import com.qiuyue.goetyominous.client.particle.lm.PhantomDaggerTrail;
+import com.qiuyue.goetyominous.common.entities.ally.lm.ControlledAnim;
+import com.qiuyue.goetyominous.common.entities.ally.lm.ServantMath;
+import com.qiuyue.goetyominous.common.init.lm.LmDamageTypes;
 import net.miauczel.legendary_monsters.effect.ModEffects;
-import net.miauczel.legendary_monsters.entity.AnimatedMonster.Projectile.AbstractFlyingProjectile;
-import net.miauczel.legendary_monsters.entity.client.ControlledAnim;
 import net.miauczel.legendary_monsters.util.EntityUtil;
-import net.miauczel.legendary_monsters.util.MathUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -22,7 +21,7 @@ import net.minecraft.world.phys.Vec3;
  * 堕落圣骑仆从的「幻影匕首」弹射物（对应原版 {@code ThrownPhantomDaggerEntity}）。
  *
  * <h2>它是一把「回旋镖」，不是普通的直线飞行物</h2>
- * 飞行轨迹由基类 {@link AbstractFlyingProjectile} 负责，本类只管三件事：
+ * 飞行轨迹由基类 {@link ServantFlyingProjectile} 负责，本类只管三件事：
  * <ol>
  *   <li><b>拖尾粒子</b> —— 每 tick 在身后撒一颗 {@code PhantomDaggerTrail}（青色；二阶段变红）；</li>
  *   <li><b>回收</b> —— 飞过 {@code returnTick} 之后打开穿墙、转向飞回主人身上，
@@ -30,15 +29,37 @@ import net.minecraft.world.phys.Vec3;
  *   <li><b>命中处理</b> —— 见下面 {@link #onHitEntity}。</li>
  * </ol>
  *
- * <h2>为什么直接继承传奇怪物的 {@code AbstractFlyingProjectile}</h2>
- * 那个基类虽然住在传奇怪物的包里，但<b>通篇只用到原版类</b>
- * （{@code Projectile} / {@code ProjectileUtil} / {@code ForgeEventFactory} / {@code Vec3}），
- * 没有任何传奇怪物自己的东西。继承过来 = 飞行、重力、入水减速、拖尾插值这些行为
- * 零改动的和原作一致。自己重写一遍反而容易在某个系数上走样。
+ * <h2>飞行逻辑是哪来的</h2>
+ * 来自 {@link ServantFlyingProjectile} —— 我们自己抄的一份，
+ * 源头是原作那个「通篇只用到原版类」的飞行基类
+ * （见那个类的注释，里面写清了它和原版的 3 处差异）。
+ * 继承过来 = 飞行、惯性、入水减速这些行为零改动的和原作一致。
+ * 自己重写一遍反而容易在某个系数上走样。
  *
  * <p>这和 {@code PoisonousShockwave} 的处理方式不同 —— 那边是「抄一份改掉内容」
  * （因为要让蔓生巨像的冲击波走 Goety 的毒素而不是原版的），这边是「原样继承」
  * （因为匕首的飞行行为我们一点都不想改）。选择依据是<b>要不要改行为</b>，不是哪个更省事。
+ *
+ * <h2>✅ 匕首自己的东西，全都是本项目自己的了</h2>
+ * 飞行基类、伤害类型、数学换算、动画计时器、拖尾粒子
+ * （{@link com.qiuyue.goetyominous.client.particle.lm.PhantomDaggerTrail}，
+ * 贴图和粒子行为原样照搬，只是命名空间换成了 {@code goetyominous}）——
+ * 这些「只属于这发弹射物」的东西，一个 LM 的都不剩。
+ *
+ * <h2>⏳ 还剩两个 import —— 这两个【故意】保留</h2>
+ * <ul>
+ *   <li>{@code ModEffects.SOUL_FRACTURE} —— 命中后叠的「灵魂碎裂」效果；</li>
+ *   <li>{@code EntityUtil} —— 只是上面那个效果的「叠层」工具方法。</li>
+ * </ul>
+ * <b>为什么不动它们</b>：「灵魂碎裂」不是匕首独有的东西 ——
+ * 圣骑本体（剑砍中时，3 处）也在叠同一个，三叉戟（{@code SoulTrident}）
+ * 继承的那份 LM 原版类里也写死了它。我们要是自己另注册一个同名的，
+ * 同一个目标身上就会冒出<b>两个一模一样的图标</b>、减血上限还会叠两次
+ * （0.8 × 0.8 = 0.64，而不是 0.8）。
+ *
+ * <p><b>结论：LM 是本模组的硬依赖，它的公开 API 直接用就好。</b>
+ * 「去 LM 化」只做弹射物自己的东西，别顺手把公用的效果也拆成两份。
+ * 详见错题本第 4 条 / 第 27 条。
  *
  * <h2>⚠️ 与原版的两处有意偏差</h2>
  * <ol>
@@ -56,7 +77,7 @@ import net.minecraft.world.phys.Vec3;
  * <p>另外原版还跳过了 {@code FracturedApostleEntity}（传奇怪物的另一个 Boss）的叠加效果 ——
  * 那个类不在我们的世界里，删掉。
  */
-public class ThrownPhantomDagger extends AbstractFlyingProjectile {
+public class ThrownPhantomDagger extends ServantFlyingProjectile {
 
     private static final EntityDataAccessor<Integer> RETURN_TICK =
             SynchedEntityData.defineId(ThrownPhantomDagger.class, EntityDataSerializers.INT);
@@ -273,14 +294,24 @@ public class ThrownPhantomDagger extends AbstractFlyingProjectile {
         }
 
         // 主人是玩家时原版不加成；我们的主人永远是圣骑仆从，所以恒加上这个百分比。
-        float m = MathUtils.toPercent(livingTarget.getMaxHealth());
-        boolean hurt = livingTarget.hurt(ModDamageTypes.causeGhostlyDamage(livingOwner, livingOwner),
+        float m = ServantMath.toPercent(livingTarget.getMaxHealth());
+        boolean hurt = livingTarget.hurt(LmDamageTypes.ghostly(livingOwner),
                 this.getDamage() + m);
 
         if (hurt) {
             // 参数含义见 EntityUtil：效果、层数、等级、持续 tick。10 秒。
+            //
+            // ⚠️ 这个效果【故意】用传奇怪物原版的，我们不自己造一份。
+            //    因为圣骑本体（剑砍中时，3 处）用的也是它，而且三叉戟那边
+            //    （继承自传奇怪物自己的类）里面也写死了它。
+            //    自己再注册一个同名效果的话，同一个目标身上会冒出两个一模一样的
+            //    图标、减血上限还会叠两次（0.8 × 0.8 = 0.64，而不是 0.8）。
+            //
+            //    教训：LM 是本模组的**硬依赖**，它的公开 API 直接用就好。
+            //    「去 LM 化」只做弹射物自己的东西（飞行、伤害、粒子），
+            //    别顺手把公用的效果也拆成两份。详见错题本第 4 条 / 第 27 条。
             EntityUtil.applyStackingEffect(livingTarget, ModEffects.SOUL_FRACTURE.get(),
-                    1, 4, MathUtils.toTicks(10.0F));
+                    1, 4, ServantMath.toTicks(10.0F));
             livingOwner.heal(3.0F);
         }
     }

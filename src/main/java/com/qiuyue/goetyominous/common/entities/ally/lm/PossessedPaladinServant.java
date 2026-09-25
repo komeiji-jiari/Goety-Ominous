@@ -27,11 +27,18 @@ import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.ChatFormatting;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -94,7 +101,12 @@ import net.miauczel.legendary_monsters.sound.ModSounds;
 import net.miauczel.legendary_monsters.util.EntityUtil;
 import net.miauczel.legendary_monsters.util.MathUtils;
 import net.miauczel.legendary_monsters.util.ParticleUtils;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 堕落圣骑仆从 —— 传奇怪物（Legendary Monsters）的 Possessed Paladin 移植版。
@@ -132,10 +144,14 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
     /**
      * 是否已唤醒。原版用于「沉眠的圣骑」开场。
      *
-     * <p>仆从版<b>当前没有消费者</b>：原版配套的状态 34（沉睡）/ 35（苏醒）没有搬过来
-     * （原因见 {@link #hurt} 的注释），所以这个标志位一直是默认值 {@code true}。
-     * 留着是为了和原版 {@code PossessedPaladinEntity} 的结构对齐 ——
-     * 哪天要把沉睡演出接回来，开关是现成的。
+     * <p>默认 {@code false} —— 沉睡是<b>出厂状态</b>，喂了堕落之魂才会置 true。
+     *
+     * <p>它只有一个消费者：状态 34 那条 goal 的 {@code canContinueToUse()}，
+     * 语义是「还没唤醒就一直睡」。一旦置 true，34 立刻收尾并切到 35（苏醒演出）。
+     *
+     * <p>⚠️ 判断「现在睡没睡」一律用 {@link #isSleep()}（看状态号 34/35），
+     * <b>不要</b>用这个布尔 —— 它只覆盖「沉睡 vs 已唤醒」，
+     * 而苏醒演出的那 10 秒里 {@code isSleep()} 是 true、这个布尔也已经是 true 了。
      */
     private static final EntityDataAccessor<Boolean> AWAKENED =
             SynchedEntityData.defineId(PossessedPaladinServant.class, EntityDataSerializers.BOOLEAN);
@@ -626,12 +642,21 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(PHASE, 1);
+        // 默认「已唤醒」，这是个保守的兜底值。
+        //
+        // ⚠️ 别把这个布尔当成「睡没睡」的开关 —— 它只管一件事：
+        //    状态 34 那条 goal 要不要收尾（见 registerGoals 里那两条 IStateGoal）。
+        //    「现在人在不在睡」一律看状态号 34/35，用 isSleep() 判。
+        //
+        // 谁会把它置成 false：只有 finalizeSpawn() 里那条「仪式召唤」分支。
+        // 默认给 true 是因为：万一将来冒出别的生成路径没走到 finalizeSpawn，
+        // 圣骑会是清醒能打架的，而不是永远躺在地上叫不醒 —— 后者是删不掉的 bug。
         this.entityData.define(AWAKENED, true);
     }
 
     /**
-     * 存档。<b>只存「阶段」这一个数</b>，和原版一致（原版存 {@code phase} + {@code is_Sleep}，
-     * 我们没搬沉睡系统，所以只剩 phase）。
+     * 存档。存<b>两个</b>键：{@code phase}（一/二阶段）和 {@code is_Sleep}（睡没睡），
+     * 和原版一字不差 —— 原版存的也正好是这两个。
      *
      * <p>⚠️ 为什么这条不能省：{@code PHASE} 是 {@code SynchedEntityData}，
      * 它<b>只负责「服务端改了 → 同步给客户端」，不会自己进存档</b>。
@@ -647,6 +672,25 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putInt("phase", this.getPhase());
+
+        // 沉睡状态。⚠️ 这条不是可有可无的：
+        // 仪式召唤出来的圣骑，玩家可能一直没去喂就存档退出了。不存的话，
+        // 下次进游戏它会「啪」地一下直接站着 —— 那套开场演出就白做了。
+        //
+        // ⚠️ 存的是 isSleep()（状态 34/35 都算「躺着」），<b>不是</b> AWAKENED 那个布尔，
+        //    和原版一致。两个的区别见 {@link #setSleep} 的注释。
+        pCompound.putBoolean("is_Sleep", this.isSleep());
+
+        // 已经说过台词的 BOSS（存的是实体注册名，如 "goety:apostle"）。
+        //
+        // ⚠️ 默认值方向：刚 new 出来的、仪式召唤出来的圣骑，这张表是空的 →
+        //    也就是「一句都没说过」，这正是我们要的。所以这里不用像 AWAKENED 那样
+        //    操心默认值反过来的问题（错题本 #23 那个坑）。
+        ListTag saidList = new ListTag();
+        for (String name : this.saidBossLines) {
+            saidList.add(StringTag.valueOf(name));
+        }
+        pCompound.put("said_boss_lines", saidList);
     }
 
     /**
@@ -655,9 +699,13 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
      * <p>⚠️ 顺序别动：{@code super} 那一句必须先跑（Goety 的 {@code Summoned}
      * 在这里读主人 UUID、命令状态等一堆东西，我们只是往后面追加一个自己的键）。
      *
-     * <p>另外注意这里<b>没有</b> read 那三个字段之外的任何东西：
-     * {@code AWAKENED} 原版也不存（见上），读档后取默认值即可。
-     * {@code ATTACK_STATE} 同理不存 —— 原版也这样，读档就回待机，不会接着挥到一半的刀。
+     * <p>招式状态号（{@code ATTACK_STATE}）<b>不存</b> —— 原版也这样，读档就回待机，
+     * 不会接着挥到一半的刀。沉睡是<b>唯一一个例外</b>，走 {@code is_Sleep} 这个专用键。
+     *
+     * <p>⚠️ {@code AWAKENED} 那个布尔<b>两边都不存</b>，但收尾方式不一样：
+     * 原版默认值是 {@code false}，读档后天然就是「还没醒」，不用管；
+     * 我们把默认值改成了 {@code true}（兜底，见 {@code defineSynchedData}），
+     * 所以读档时如果发现人在睡，必须<b>手动按回 false</b>，否则这事就反了 —— 见下面代码里那段注释。
      */
     @Override
     public void readAdditionalSaveData(CompoundTag pCompound) {
@@ -674,6 +722,33 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         // （顺带一提：原版也有同样的毛病，只是它只影响「升级 mod 之前的老世界」，
         //   而我们的仆从是跟着 mod 版本走的，覆盖面大得多。）
         this.setPhase(pCompound.contains("phase") ? pCompound.getInt("phase") : 1);
+
+        // 沉睡。⚠️ 必须在 super 之后（super 可能会碰状态号），也要在 setPhase 之后（无所谓，排在最后最省心）。
+        if (pCompound.getBoolean("is_Sleep")) {
+            this.setSleep(true);
+
+            // ⚠️ 这一句是<b>我们补的</b>，原版没有 —— 因为两边 AWAKENED 的默认值不一样。
+            //    不补的话：状态被设成 34，可闸门还是默认的 true
+            //    → 状态 34 那条 goal 下一 tick 就收尾 → 直接切 35 开始苏醒演出。
+            //    玩家看到的现象是「一读档圣骑自己就醒了」，喂东西那一步被跳过。
+            this.setAwakened(false);
+        } else {
+            // 醒着就显式回到 0。这句其实是空操作（刚读出来的实体状态号本来就是 0），
+            // 写出来是为了和原版逐行对齐 —— 以后对照原版时不用停下来想「我们是不是漏了」。
+            this.setSleep(false);
+        }
+
+        // 已经说过台词的 BOSS 名单。
+        //
+        // ⚠️ 先 clear：字段是 final 的，读档走的是同一个对象（实体不会重建），
+        //    万一这个方法被调用第二次，不清的话旧数据会叠上去。
+        this.saidBossLines.clear();
+        // ⚠️ 第二个参数 TAG_STRING 不能省。不带类型的那个重载虽然也能读，
+        //    但存档要是被人手改过、列表里混进一个数字，getString 就会抛异常。
+        ListTag saidList = pCompound.getList("said_boss_lines", Tag.TAG_STRING);
+        for (int i = 0; i < saidList.size(); ++i) {
+            this.saidBossLines.add(saidList.getString(i));
+        }
     }
 
     // ==================================================================
@@ -787,17 +862,127 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
     }
 
     /**
-     * 是不是「睡着」的状态 —— 原版指沉睡（34）和苏醒中（35）两个。
+     * 是不是「正躺着没起来」—— 沉睡（34）和苏醒演出中（35）<b>都算</b>。
      *
-     * <p>⚠️ 仆从版<b>当前进不去这两个状态</b>：原版那套沉睡演出没有搬过来
-     * （原因见 {@link #hurt} 的注释），所以这个方法现在恒为 {@code false}。
-     * 留着是为了和原版 {@code PossessedPaladinEntity} 的结构对齐，不是当前的功能开关。
+     * <h2>谁会进这两个状态</h2>
+     * 只有<b>仪式召唤</b>出来的圣骑（见 {@link #finalizeSpawn} 里的 MOB_SUMMONED 分支）。
+     * {@code /summon} 和刷怪蛋出来的都是清醒的，这个方法对它们恒为 {@code false}。
+     *
+     * <h2>这两个状态下会发生什么</h2>
+     * <ul>
+     *   <li><b>完全免伤</b>（{@code hurt} 里最外层那一条）；</li>
+     *   <li><b>定身</b>：水平速度被每 tick 清零，推都推不动（那两条 goal 的 {@code tick()}）；</li>
+     *   <li><b>不锁敌</b>：{@link #setTarget} 直接拦掉，不会被路过的怪勾走。</li>
+     * </ul>
+     * ⚠️ 35（苏醒演出）<b>同样</b>免伤定身。这不是偷懒 —— 那段演出要 10.21 秒，
+     * 期间挨打会把演出打断，玩家看到的就是「喂了东西但没看见苏醒」，
+     * 而且起身到一半被推走会很难看。
      *
      * <p>「待命时该不该有保护」判的是 {@link #isStaying()}，别拿这个当开关。
      */
     public boolean isSleep() {
         int state = this.getAttackState();
         return state == 34 || state == 35;
+    }
+
+    /**
+     * 把圣骑拨进／拨出沉睡。对应原版 {@code PossessedPaladinEntity.setSleep()}。
+     *
+     * <p>⚠️ 原版这个方法<b>起名很坑</b>：传 {@code false} 是<b>醒来</b>（状态回 0），
+     * 传 {@code true} 才是<b>躺下</b>（状态切 34）。这里保持一致，
+     * 免得以后对照原版代码时看糊涂。
+     *
+     * <h2>⚠️ 它只切状态号，不碰 {@link #getIsAwakened()} 那个布尔</h2>
+     * 两件事是<b>分开</b>的，别混：
+     * <table border="1">
+     *   <caption>状态号 vs 布尔</caption>
+     *   <tr><th></th><th>管什么</th></tr>
+     *   <tr><td>状态号 34 / 35</td><td>「人现在在哪」—— 决定播哪个动画、免不免伤</td></tr>
+     *   <tr><td>{@code AWAKENED} 布尔</td><td>「睡够了没有」—— 决定状态 34 的 goal 要不要收尾</td></tr>
+     * </table>
+     * 所以<b>「唤醒」要两个一起动</b>，见 {@link #tryAwaken}：
+     * 光调 {@code setSleep(false)} 会跳过整段苏醒演出（人「啪」地站起来，很难看）；
+     * 光调 {@code setAwakened(true)} 而人不在 34，则什么都不会发生。
+     */
+    public void setSleep(boolean sleep) {
+        this.setAttackState(sleep ? 34 : 0);
+    }
+
+    /**
+     * 主人拿<b>堕落之魂</b>右键沉睡的圣骑 → 把它叫醒。
+     *
+     * <p>堕落之魂是 LM 原版堕落圣骑的掉落物，注册名
+     * {@code legendary_monsters:corrupted_soul}（见它的战利品表
+     * {@code data/legendary_monsters/loot_tables/entities/posessed_paladin.json}）。
+     * 直接拿它当钥匙，不用另造一个专属道具，也符合「圣骑的魂配圣骑」这个味道。
+     *
+     * <h2>⚠️ 真正干活的是状态机，这个方法只负责「松闸」</h2>
+     * 这里<b>不直接播动画</b>，只做两件事：
+     * <pre>
+     *   setAttackState(35);   // 切进苏醒演出
+     *   setAwakened(true);    // 松闸门
+     * </pre>
+     * 剩下全由 {@code registerGoals} 里那两条 goal 自己走完：
+     * 状态 34 收尾 → 35 演 10.21 秒 → 自动切回 0，变成能打能跟随的正常仆从。
+     * 台词、镜头抖动、收尾那下横扫伤害都在 {@code UpdateWithAttack} 的 35 挡位里，不在这里。
+     *
+     * <p>⚠️ 两句<b>都得写</b>，理由见 {@link #setSleep} 的注释：
+     * 只切状态、不松闸门，下一 tick 那条 goal 会用 {@code attackendstate}（也是 35）再覆盖一次 ——
+     * 结果碰巧一样，但那是撞上的，不是设计；只松闸门、不切状态，则人不在 34、
+     * goal 根本没在跑，什么都不会发生。这两句是照着原版 {@code mobInteract} 抄的，别删。
+     *
+     * <p>⚠️ <b>只有主人能喂</b>。原版是「谁点都行」，我们收紧成主人 ——
+     * 和本类其它交互（诅咒金属块修复、金属残骸降阶段）保持一致，
+     * 也免得路人路过随手一颗魂就把你的圣骑提前叫醒。想放开就把 {@code !isOwner} 那条去掉。
+     *
+     * @return 这次交互有没有被我们接手。{@code true} 时调用方直接回 {@code SUCCESS}，
+     * 不要再往下走 {@code super.mobInteract}
+     */
+    private boolean tryAwaken(Player pPlayer, ItemStack itemStack, boolean isOwner) {
+        // ⚠️ 判的是「状态号 == 34」，<b>不是</b> isSleep()。
+        //    isSleep() 把 35（正在醒的那 10.21 秒）也算进去，用它会变成
+        //    「演出期间每右键一次就扣一颗魂，但什么都不会发生」。
+        if (!isOwner || this.getAttackState() != 34) {
+            return false;
+        }
+
+        // ⚠️ 这里直接用 LM 的 Item 类，不会踩「可选联动 mod 的类加载隔离」那个坑：
+        //    圣骑本身就是 LM 联动内容，没装 LM 的时候这个类压根不会被加载。
+        //    本类开头已经 import 了 LM 的 ModItems（金属残骸那条路在用），同一个包。
+        if (!itemStack.is(ModItems.CORRUPTED_SOUL.get())) {
+            return false;
+        }
+
+        // 创造模式不扣，和本类其它交互（修复、降阶段）保持一致。
+        if (!pPlayer.getAbilities().instabuild) {
+            itemStack.shrink(1);
+        }
+
+        // 松闸 + 切状态。顺序无所谓，但两句都要有，理由见上面那段注释。
+        this.setAttackState(35);
+        this.setAwakened(true);
+
+        // 「灵魂被抽走」的音效。原版这里没声音，这一声是我们加的：
+        // 苏醒动画要到 attackTicks == 1 才有反应，玩家点下去到看见动静之间有个空档，
+        // 有这一声「喂进去了」的手感才接得上。
+        // 音高 0.6 是故意压低 —— 默认音高听起来像粒子特效，压低才像有分量的东西被消耗掉。
+        this.playSound(SoundEvents.SOUL_ESCAPE, 1.0F, 0.6F);
+
+        // 灵魂粒子往上冒。写法和本类「诅咒金属块修复」那段完全一致
+        // （count 传 0 是原版的特殊约定：只放 1 颗，后三个偏移量当它的初速度，
+        //   所以真正的数量由外面这层 for 决定）。
+        if (this.level() instanceof ServerLevel serverLevel) {
+            for (int i = 0; i < 12; ++i) {
+                double d0 = this.random.nextGaussian() * 0.02D;
+                double d1 = this.random.nextGaussian() * 0.02D;
+                double d2 = this.random.nextGaussian() * 0.02D;
+                serverLevel.sendParticles(ParticleTypes.SOUL,
+                        this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D),
+                        0, d0, d1, d2, 0.5F);
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -832,7 +1017,35 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         if (pTarget != null && this.isStaying() && pTarget != this.getLastHurtByMob()) {
             return;
         }
+        // 沉睡 / 苏醒演出中：一律不锁敌。
+        //
+        // ⚠️ 这里<b>故意不给挨打还手留口子</b>，和上面「待命」那条不一样 ——
+        //    躺着的人被打了也不该跳起来还手，它压根还没醒。
+        //    何况这个状态下是<b>完全免伤</b>的（见 hurt 最外层），正常也挨不到打。
+        //
+        // ⚠️ pTarget != null 这个判断必须有：传 null 是「清空目标」，
+        //    永远要放行。否则万一切进沉睡时手里还攥着一个旧目标，就再也清不掉了。
+        if (pTarget != null && this.isSleep()) {
+            return;
+        }
         super.setTarget(pTarget);
+    }
+
+    /**
+     * 沉睡时<b>不被野怪当成敌人</b>。原版的沉睡圣骑也是这样躺在那儿没人理的。
+     *
+     * <p>{@code Mob.canBeSeenAsEnemy()} 默认返回 {@code !isInvulnerable()}，
+     * 它被大量 AI 用来判断「这个家伙值不值得打」。
+     *
+     * <p>和 {@link #setTarget} 的区别，别搞混 —— 那两条合起来才是完整的「互不打扰」：
+     * <ul>
+     *   <li>{@link #setTarget}：<b>圣骑不主动打别人</b>（管它自己的目标）；</li>
+     *   <li>本方法：<b>别人不主动打圣骑</b>（管别人的目标选择）。</li>
+     * </ul>
+     */
+    @Override
+    public boolean canBeSeenAsEnemy() {
+        return !this.isSleep() && super.canBeSeenAsEnemy();
     }
 
     // ==================================================================
@@ -1972,29 +2185,59 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
 
         // 状态 9（警觉）不在这里 —— 原版把它注册在招 6 和招 10 中间，已经搬上去了。
 
-        // ---- 状态 34（沉睡）/ 35（苏醒）没有搬 ----
+        // ---- 状态 34（沉睡）/ 35（苏醒演出）----
         //
-        // 原版这两条是「遗迹里躺着的圣骑慢慢醒过来」的开场演出，仆从版不做这件事，
-        // 所以下面<b>没有</b>对应 goal：34 / 35 全项目没有任何地方设置，
-        // 上面 onSyncedDataUpdated 里那两格永远不会走到，isSleep() 也恒为 false。
+        // 「仪式召唤出来的圣骑躺在地上，喂一颗堕落之魂才醒过来」那套开场的状态机。
+        // 两条都逐行对齐原版（PossessedPaladinEntity.java:880 附近），
+        // 唯一的改动是给 34 加了一道闸门，见下。
+
+        // 状态 34：沉睡。优先级 1，原版就是这个数。
         //
-        // ⚠️ 别把这段当成「漏了」—— hurt() 的 javadoc 里那条
-        // 「原版还多包着 !isSleep()」的差异说明，引用的就是这一段。
-        // 哪天想把沉睡演出接回来，照抄下面状态 36（死亡演出）那条 goal 的写法补两条即可。
+        // ⚠️ canContinueToUse 上多挂的那个 !getIsAwakened() 是<b>整个机制的闸门</b>：
+        //    只要那个布尔还是 false，这条 goal 就一直跑着、状态钉在 34 不动；
+        //    玩家喂了堕落之魂 → setAwakened(true) → 下一 tick 这里返回 false
+        //    → stop() 自动把状态切成 attackendstate，也就是 35。
+        //    换句话说「唤醒」不需要谁去手动切状态，<b>把闸门松开就行</b>。
+        this.goalSelector.addGoal(1, new IStateGoal(this, 34, 34, 35, 0, 0) {
+            @Override
+            public boolean canContinueToUse() {
+                return super.canContinueToUse() && !PossessedPaladinServant.this.getIsAwakened();
+            }
+
+            @Override
+            public void tick() {
+                // ⚠️ 只清<b>水平</b>速度（x、z），垂直分量 y 原样留着。
+                //    三个一起清的话躺在地上的圣骑会悬空 —— 重力也是靠 y 速度生效的。
+                this.entity.setDeltaMovement(0.0D, this.entity.getDeltaMovement().y, 0.0D);
+            }
+        });
+
+        // 状态 35：苏醒演出。优先级 0，时长 10.21 秒，原版 PossessedPaladinEntity.java:886。
+        //
+        // 没有 canContinueToUse 覆写：IStateGoal 基类里 attackfinaltick > 0 时
+        // 走的是「attackTicks 还没到点就一直演」，到点了 stop() → 状态切回 0（正常）。
+        // 从这里走出去，圣骑才算真正「能打」。
+        //
+        // ⚠️ 这段同样要定身（而且 isSleep() 把它也算作「躺着」→ 照样免伤）：
+        //    演出 10 秒，人正从地上爬起来，被推走或者被打断都会很难看。
+        this.goalSelector.addGoal(0, new IStateGoal(this, 35, 35, 0, MathUtils.toTicks(10.21F), 0) {
+            @Override
+            public void tick() {
+                this.entity.setDeltaMovement(0.0D, this.entity.getDeltaMovement().y, 0.0D);
+            }
+        });
 
         // 状态 36：死亡演出。优先级 0，原版 PossessedPaladinEntity.java:897。
         //
-        // ⚠️ 原版的 34 / 35 就在这条的上面，内容已经搬过来了，别以为是漏了。
-        // 原版这三条是连在一起注册的，本移植在中间插了状态 39，顺序变成 39 / 34 / 35 / 36。
+        // 原版 34 / 35 / 36 是连在一起注册的。本移植中途插过一个状态 39（已废弃删除），
+        // 现在的顺序和原版一致了：34 / 35 / 36。
         //
         // 顺带记一笔原版那两条的处境，免得以后翻原版代码时看糊涂：
         // 原版状态 34 的唯一入口是 setSleep(true)，而 setSleep(true) 只在
         // readAdditionalSaveData 里被调用 —— 也就是「存档里写着 is_Sleep=true」才睡，
-        // 从来没有播过躺下的过程；35 的唯一入口是 mobInteract（右键点睡着的圣骑）。
-        // 我们把它改成了由「待命」状态驱动，所以才有 39 这一格。
-        //
-        // 另外原版的 talk1~talk3（苏醒演讲）没搬，理由见 UpdateWithAttack 的状态 36 分支；
-        // 睡眠呼噜和起身台词在 #98 单独处理。
+        // 从来没播过躺下的过程；35 的唯一入口是 mobInteract（右键点睡着的圣骑）。
+        // 我们保留了这两条 goal 的原样，但把入口换成了「仪式召唤」+「喂堕落之魂」，
+        // 见 finalizeSpawn() 和 tryAwaken()。
         this.goalSelector.addGoal(0, new IStateGoal(this, 36, 36, 0, MathUtils.toTicks(12.0F), 0));
 
         // 其余 9 招 Stage 2C 在这里往上挂。
@@ -2005,13 +2248,30 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
     // ==================================================================
 
     /**
-     * 数量上限。
+     * 生成收尾。这里干<b>两件事</b>：拦数量上限，和把仪式召唤出来的圣骑按进沉睡。
+     * 两件事都只在 {@code MOB_SUMMONED} 这一条路径上生效。
      *
-     * <p>只在「被主人召唤出来」这一条路径上拦（MOB_SUMMONED）。自然生成、刷怪蛋
+     * <h2>一、数量上限</h2>
+     * 只在「被主人召唤出来」这一条路径上拦（MOB_SUMMONED）。自然生成、刷怪蛋
      * 走的是别的 spawnType，不受这个上限约束 —— 这也是本仓库其它 BOSS 仆从的既有做法。
      *
      * <p>返回 null 是 Forge 约定的「生成失败」信号，<b>不是</b>返回数据。返回 null 后
      * 召唤方会把这个实体丢掉，等于这次召唤白费。
+     *
+     * <h2>二、仪式开场：一出生就是躺着的</h2>
+     * 搬的是 LM 原版「沉眠的圣骑士」那个开场。做出沉睡的判据<b>就是 {@code MOB_SUMMONED} 本身</b>，
+     * 不需要额外的旗标，因为三条生成路径的 spawnType 天然是分开的：
+     * <table border="1">
+     *   <caption>同一个圣骑，三种来法</caption>
+     *   <tr><th>来法</th><th>spawnType</th><th>生成后</th></tr>
+     *   <tr><td>Goety 召唤仪式</td><td>{@code MOB_SUMMONED}</td><td><b>沉睡</b>，等主人喂堕落之魂</td></tr>
+     *   <tr><td>刷怪蛋</td><td>{@code SPAWN_EGG}</td><td>清醒，直接能打</td></tr>
+     *   <tr><td>{@code /summon}</td><td>{@code COMMAND}</td><td>清醒，直接能打</td></tr>
+     * </table>
+     * 这是用户明确要的「<b>只有仪式出来的沉睡</b>」。
+     *
+     * <p>⚠️ 两句判断都放在 {@code super} <b>之后</b>：父类的初始化万一碰了状态号，
+     * 我们这两句才是最后生效的那个。放前面会被冲掉，而且不报错 —— 很难查。
      */
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty,
@@ -2022,7 +2282,21 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                 return null;
             }
         }
-        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+
+        SpawnGroupData spawnData = super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+
+        if (pReason == MobSpawnType.MOB_SUMMONED) {
+            // 状态切 34 = 躺下（setSleep 的命名是反的，传 true 才是睡，见它的注释）。
+            this.setSleep(true);
+
+            // ⚠️ 光切状态<b>不够</b>，闸门也得按回 false。
+            //    我们 AWAKENED 的默认值是 true（兜底，见 defineSynchedData），
+            //    不按的话状态 34 那条 goal 下一 tick 就会收尾 → 立刻切 35 开始苏醒演出，
+            //    「仪式召唤出来是睡着的」这条需求当场就废了。
+            this.setAwakened(false);
+        }
+
+        return spawnData;
     }
 
     /**
@@ -2140,6 +2414,14 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         if (this.BossInvulnerabilityTime > 0) {
             --this.BossInvulnerabilityTime;
         }
+
+        // ---- 台词的两个心跳 ----
+        // 前面那些台词（苏醒 / 二阶段 / 死亡 / 终结技）都挂在某个演出的「第几 tick」上，
+        // 属于剧本；这两条不一样，它们是<b>环境音</b> —— 不依附任何招式，全靠每帧推一下。
+        //
+        // 两个方法内部都自己判 isClientSide 提前返回了：发消息、查成就都只有服务端做得了。
+        this.tickBossLine();
+        this.tickIdleTalk();
 
         // 待机呼吸动画：只在「没有任何招式在进行」时播。
         // 放在 isClientSide 里是因为动画纯粹是客户端的事，服务端算它纯属浪费。
@@ -2308,30 +2590,33 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
      * 会连 {@code BlockItem} 一起注册，所以 {@code asItem()} 一定拿得到东西。
      * 它的注册名是 {@code goety:cursed_metal_block}，中文名「诅咒金属块」。
      *
-     * <h2>⚠️ 这个方法和原版的 {@code mobInteract} 是<b>两回事</b>，别对着原版核对</h2>
-     * 原版也有一个 {@code mobInteract}，但它是给<b>休眠系统</b>用的 —— 右键把沉睡的圣骑叫醒：
+     * <h2>⚠️ 这个方法是「原版的 {@code mobInteract} + 仆从自己的交互」拼起来的</h2>
+     * 原版那个 {@code mobInteract} 只干一件事 —— 右键把沉睡的圣骑叫醒：
      * <pre>
      *   沉睡中（状态 34）→ 切成 35 唤醒，然后返回 FAIL
      *   醒着          → 直接返回 {@code InteractionResult.FAIL}
      * </pre>
-     * 也就是说，<b>原版圣骑醒着时右键它，什么都不会发生</b>（FAIL 会把这次点击整个吞掉）。
-     * 那是 BOSS 该有的脾气：不想被玩家摆弄。
+     * <b>唤醒那半条已经搬进来了</b>（见下面表格第一行），但触发条件从「空手右键」
+     * 换成「主人喂堕落之魂」，理由见 {@link #tryAwaken}。
      *
-     * <p>仆从<b>不能</b>照抄这个。{@code FAIL} 会把 Goety 仆从自带的右键功能
+     * <p>而 {@code FAIL} 那半条<b>没有搬</b>：{@code FAIL} 会把 Goety 仆从自带的右键功能
      * （改姿态、下指令那些）一并挡在门外，主人会以为自己的仆从坏了。
      * 所以这里的兜底是 {@code super.mobInteract(...)} 而不是 {@code FAIL} ——
      * 「不能修就把点击让给别人」，这是仆从版和怪物的根本区别。
      *
-     * <h2>本方法一共有两条交互，靠血量和手里的东西岔开</h2>
+     * <h2>本方法一共有三条交互，靠状态号和手里的东西岔开</h2>
      * <table border="1">
      *   <caption>右键圣骑会发生什么</caption>
      *   <tr><th>手里的东西</th><th>圣骑状态</th><th>结果</th></tr>
+     *   <tr><td>堕落之魂（LM）</td><td>沉睡中（状态 34）</td><td>唤醒，开始苏醒演出</td></tr>
      *   <tr><td>诅咒金属块</td><td>没满血</td><td>回 {@code CURSED_METAL_REPAIR_AMOUNT} 点血</td></tr>
      *   <tr><td>金属残骸（LM）</td><td>满血的二阶段</td><td>降回一阶段</td></tr>
      *   <tr><td>其它任何东西</td><td>—</td><td>交给 {@code super}</td></tr>
      * </table>
-     * 两条的血量条件正好互补（一条要「没满血」、一条要「满血」），所以谁都不会抢谁。
-     * 具体判定在 {@link #tryRevertToFirstPhase(Player, ItemStack, boolean)}。
+     * 三条互不打架：唤醒那条要求「状态号是 34」（躺着才需要叫醒），
+     * 另两条都要求「状态号是 0」—— 修复那条没写死，但沉睡时血量是满的（免伤），
+     * 而它偏偏要「没满血」；降阶段那条则在
+     * {@link #tryRevertToFirstPhase(Player, ItemStack, boolean)} 里明写了要 {@code attackState == 0}。
      */
     @Override
     public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
@@ -2340,6 +2625,14 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         ItemStack itemstack = pPlayer.getItemInHand(pHand);
 
         boolean isOwner = this.getTrueOwner() != null && pPlayer == this.getTrueOwner();
+
+        // 第一条路：喂堕落之魂唤醒。
+        // ⚠️ 排在最前面，因为它的条件最特殊（人得躺在状态 34），绝不会和下面两条撞；
+        //    反过来要是排在后面，一个沉睡的圣骑手里拿着别的东西时，
+        //    还得先跑完两条注定失败的判断才轮到它，白费功夫。
+        if (this.tryAwaken(pPlayer, itemstack, isOwner)) {
+            return InteractionResult.SUCCESS;
+        }
 
         if (isOwner
                 && this.getHealth() < this.getMaxHealth()
@@ -2975,10 +3268,10 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         // ---------------------------------------------------------------
         // 整段演出 147 tick（7.35 秒），真正的时间线只有三个点：
         //
-        //   第 30 tick：念第 4 句台词（青色）—— 变身前的宣告
+        //   第 30 tick：念 phase2.1「真可悲……」（青色）—— 变身前的宣告
         //   第 49 tick：【爆发点】震屏 + 360 度无死角 15 点伤害 + 图腾音效 + 全场挑飞
         //              ⚠️ 同一 tick，PossessedPaladinSecondPhaseGoal 把阶段切成 2
-        //   第 82 tick：念第 5 句台词（红色）+ 震屏 + 凋灵发射音效 + 一圈灵魂弹（还没搬）
+        //   第 82 tick：念 phase2.2「而现在，我正追随着恨意的指引」（红色）+ 震屏 + 凋灵发射音效 + 一圈灵魂弹（还没搬）
         //
         // 中间 49~55 tick 是纯粒子：先青后红，贴着身体灌一层球壳，
         // 「撕开盔甲、露出红光」的观感就靠这一段。
@@ -2989,7 +3282,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         // 免伤 + 大范围击飞是刻意的：原版就是「变身时没人能打断你，但你也别想靠近」。
         if (this.getAttackState() == 26) {
             if (this.attackTicks == 30) {
-                this.sendAdvancedHotBarMessage("legendary_monsters.message.possessed_paladin_talk4",
+                this.sendAdvancedHotBarMessage("message.goetyominous.possessed_paladin_servant.phase2.1",
                         ChatFormatting.AQUA, 10.0F);
             }
 
@@ -3042,8 +3335,15 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             }
 
             if (this.attackTicks == MathUtils.toTicks(4.13F)) {
-                this.sendAdvancedHotBarMessage("legendary_monsters.message.possessed_paladin_talk5",
-                        ChatFormatting.RED, 10.0F);
+                // ⚠️ 这里是 AQUA 而不是原版的 RED —— <b>故意偏离原版</b>，不是抄错。
+                //    原版把它自己「二阶段之后」的台词一律涂成红色，因为那时候它是<b>你的敌人</b>，
+                //    红色是威胁感；我们的圣骑是<b>玩家的仆从</b>，红色读起来就不对了。
+                //    配色约定（全仆从统一，改动前先看这里）：
+                //      这个蓝 = 平时说话（苏醒 / 二阶段 / 对 BOSS / 闲聊）
+                //      红色   = 只剩两处，「死亡演出的 2 句」和「终结技」
+                //              —— 那是它倒下前的遗言，红色才对味
+                this.sendAdvancedHotBarMessage("message.goetyominous.possessed_paladin_servant.phase2.2",
+                        ChatFormatting.AQUA, 10.0F);
                 // 原版这一句后面还有个 bossInfo.setName(..._p2)，是换血条标题的。
                 // 我们的圣骑没有血条，省掉。
                 CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.1F, 5, 5);
@@ -3921,6 +4221,55 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         }
 
         // ---------------------------------------------------------------
+        //  沉睡（attackState 34）/ 苏醒演出（attackState 35）
+        //
+        //  原版对应 PossessedPaladinEntity.java:2110-2140。
+        //  和状态 36 一样，这里的 tick 数全是原版写死的绝对值，不是相对值。
+        //
+        //  ⚠️ 状态 35 <b>不是纯表演</b> —— 第 143 / 146 tick 有两下实打实的伤害判定。
+        //     这正是错题本第 12 条那个坑（「动作照播，一刀打不到」，之前栽过两次）：
+        //     只注册 goal 而不搬这一段，苏醒时就会挥一刀空气。
+        //     那两下走的是 createSweep / SideAreaAttack，友军过滤在 isAlliedTo 里，
+        //     所以打不到主人和同伴（错题本第 9 条）。
+        //
+        //  时间表：
+        //    1         大幅镜头震动，苏醒的第一下
+        //    40 / 80   台词 awaken.1「以复仇为契」/ awaken.2「王国骑士，加入你的麾下」（青字）
+        //    143       横扫：挥击音 + 剑气特效
+        //    146       横扫的伤害判定（扇形 180 度，射程 doubleSlashRange）
+        // ---------------------------------------------------------------
+
+        if (this.getAttackState() == 35) {
+            // 遗言只在周围 10 格内的玩家能听见（和状态 36 用同一个值）。
+            float playerHearTalking = 10.0F;
+
+            if (this.attackTicks == 1) {
+                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.075F, 0, 20);
+            }
+
+            if (this.attackTicks == 40) {
+                this.sendAdvancedHotBarMessage("message.goetyominous.possessed_paladin_servant.awaken.1",
+                        ChatFormatting.AQUA, playerHearTalking);
+            }
+
+            if (this.attackTicks == 80) {
+                this.sendAdvancedHotBarMessage("message.goetyominous.possessed_paladin_servant.awaken.2",
+                        ChatFormatting.AQUA, playerHearTalking);
+            }
+
+            if (this.attackTicks == 143) {
+                this.createSweep(0.0F, 0.0F, bigSweepHeight, (double) bigSweepAdditionalY, true,
+                        sweepSize, sweepRot, false);
+                this.playSound(ModSounds.POSSESSED_PALADIN_SWING.get(), 1.0F, 0.75F);
+            }
+
+            if (this.attackTicks == 146) {
+                this.SideAreaAttack(doubleSlashRange, 3.0F, 180.0F, 0.0F, 0.0F, 18.0F, 100,
+                        SoundEvents.EMPTY, 1.0F, false, 0.0F);
+            }
+        }
+
+        // ---------------------------------------------------------------
         //  死亡演出（attackState 36）
         //
         //  原版对应 PossessedPaladinEntity.java:2142。整段没有一行伤害判定 ——
@@ -3928,12 +4277,12 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         //
         //  时间表（tick 数全是原版写死的绝对值，不是相对值）：
         //    1      清零 rayAmount（灵魂射线计数器）
-        //    20     遗言 talk9「一切...还未结束...」（红字）
+        //    20     遗言 death.1「还……远没有结束……」（红字）
         //    1~     每 10 tick 在身体周围炸一簇灵魂粒子，一直到死
-        //    85     刺出第一刀：挥击音 + 遗言 talk6「吾...」
+        //    85     刺出第一刀：挥击音
         //    85~    每 tick 在身体随机位置冒一缕幽魂
-        //    115    刺出第二刀：命中音 + 遗言 talk7「...终得解脱...」
-        //    180    蓄力音（低音）+ 镜头震动 + 遗言 talk8 + 第一束灵魂射线
+        //    115    刺出第二刀：命中音
+        //    180    蓄力音（低音）+ 镜头震动 + 遗言 death.2「啊……再一次……」+ 第一束灵魂射线
         //    240/250/260  连续三下蓄力音，音调一路升高（0.75 → 1.0 → 1.25），各再加一束射线
         //    270    爆炸音 + 大幅度镜头震动
         //    270~   灵魂粒子大爆发（每 tick 四簇，范围也更大）
@@ -3995,15 +4344,13 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             }
 
             if (this.attackTicks == 20) {
-                this.sendAdvancedHotBarMessage("legendary_monsters.message.possessed_paladin_talk9",
+                this.sendAdvancedHotBarMessage("message.goetyominous.possessed_paladin_servant.death.1",
                         ChatFormatting.RED, playerHearTalking);
             }
 
             // ---- 第一刀（第 85 tick）----
             if (this.attackTicks == stab1) {
                 this.playSound(ModSounds.POSSESSED_PALADIN_STAB.get(), 1.0F, 0.75F);
-                this.sendAdvancedHotBarMessage("legendary_monsters.message.possessed_paladin_talk6",
-                        ChatFormatting.AQUA, playerHearTalking);
                 if (this.level().isClientSide) {
                     this.level().addParticle(this.getPhase() >= 2
                                     ? ModParticles.SOUL_EXPLOSION_RED.get() : ModParticles.SOUL_EXPLOSION.get(),
@@ -4039,8 +4386,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                             0.0D, 0.0D, 0.0D);
                 }
                 this.playSound(ModSounds.STAB_HIT.get(), 1.0F, 1.0F);
-                this.sendAdvancedHotBarMessage("legendary_monsters.message.possessed_paladin_talk7",
-                        ChatFormatting.AQUA, playerHearTalking);
             }
 
             // ---- 第 180 tick：蓄力开始 + 最后一句遗言 + 第一束灵魂射线 ----
@@ -4048,7 +4393,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                 ++this.rayAmount;
                 this.playSound(SoundEvents.RESPAWN_ANCHOR_CHARGE, 1.0F, 0.75F);
                 CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.1F, 5, 5);
-                this.sendAdvancedHotBarMessage("legendary_monsters.message.possessed_paladin_talk8",
+                this.sendAdvancedHotBarMessage("message.goetyominous.possessed_paladin_servant.death.2",
                         ChatFormatting.RED, playerHearTalking);
             }
 
@@ -4210,7 +4555,12 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             if (this.attackTicks == 25) {
                 // 第三个参数是「多少格内的玩家听得见」，原版在这里写的是字面量 10.0F
                 // （状态 36 那边是声明成局部变量 playerHearTalking，作用域不同，不能借过来用）。
-                this.sendAdvancedHotBarMessage("legendary_monsters.message.possessed_paladin_talk10",
+                //
+                // 台词随机二选一。掷骰直接内联在参数里 —— 这个分支每 tick 只成立一次
+                // （attackTicks 恰好等于 25 的那一瞬），不存在重复掷骰的问题。
+                this.sendAdvancedHotBarMessage(this.getRandom().nextBoolean()
+                                ? "message.goetyominous.possessed_paladin_servant.finisher.1"
+                                : "message.goetyominous.possessed_paladin_servant.finisher.2",
                         ChatFormatting.RED, 10.0F);
             }
 
@@ -6012,18 +6362,15 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
      * </ul>
      * 直接抄 {@code LivingEntity.hurt()} 的逻辑就等于把上面这些全丢了。
      *
-     * <h2>⚠️ 和原版的两处主动差异</h2>
-     * 原版最外层还包着一条 {@code !isTargetCheesing(-4.0F, 4.0F) && ... && !isSleep()}，
-     * 这里<b>两条都没搬</b>：
-     * <ol>
-     *   <li>{@code isTargetCheesing(-4, 4)} 是「目标比自己高/低超过 4 格就完全免伤」的防偷鸡判据。
-     *       它是给「玩家站在高台上放风筝打 Boss」设计的，搬到<b>玩家的仆从</b>身上会变成
-     *       「敌人只要站高一点，圣骑就彻底无敌」的漏洞。和基类里那条 15 格距离保护同理
-     *       （见 {@code IAnimatedBossServant} 的类注释），一并去掉。</li>
-     *   <li>{@code isSleep()} 判的是状态 34 / 35（沉睡 / 苏醒），而这两个状态在仆从身上
-     *       <b>永远不会进入</b>（原因见 {@code registerGoals} 里那段说明），
-     *       留着也只会是一个恒为 false 的常量。</li>
-     * </ol>
+     * <h2>⚠️ 和原版的一处主动差异</h2>
+     * 原版最外层包着 {@code !isTargetCheesing(-4.0F, 4.0F) && ... && !isSleep()}，
+     * 其中 {@code isTargetCheesing(-4, 4)} 那半条<b>没有搬</b>：
+     * 它是「目标比自己高/低超过 4 格就完全免伤」的防偷鸡判据，为「玩家站在高台上放风筝
+     * 打 Boss」设计的，搬到<b>玩家的仆从</b>身上会变成「敌人只要站高一点，圣骑就彻底无敌」
+     * 的漏洞。和基类里那条 15 格距离保护同理（见 {@code IAnimatedBossServant} 的类注释），
+     * 一并去掉。
+     *
+     * <p>而 {@code !isSleep()} 那半条<b>已经搬进来了</b>，见下面 ⓪.5 层。
      * 其余每一层都逐行对齐原版。
      */
     @Override
@@ -6032,6 +6379,22 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         //    不在这里放行的话会被第 ④ 层当成「重击」格挡掉，仆从就永远处决不掉了。
         if (this.executedByOwner) {
             return super.hurt(source, amount);
+        }
+
+        // ⓪.5 沉睡（34）/ 苏醒演出（35）中：完全免伤。原版把这条包在最外层，
+        //      我们挪到「主人处决」后面 —— 顺序是有讲究的，见下面的 ⚠️。
+        //
+        // ⚠️ <b>必须排在处决后面。</b>处决是沉睡圣骑唯一的清理手段，
+        //    排在前面的话它就永远清不掉了（那是一次 amount = Float.MAX_VALUE 的 hurt，
+        //    被这层挡下来就等于点了没反应）。
+        //
+        // ⚠️ 和原版的一处主动差异：这里额外放行 BYPASSES_INVULNERABILITY（/kill、虚空这类）。
+        //    原版是连 /kill 都免 —— 那意味着一旦圣骑卡在沉睡状态（主人退游、认主丢了、
+        //    区块出问题），玩家除了开创造没有任何办法把它弄走。
+        //    /kill 是管理手段，不该被演出状态挡。正常战斗伤害一律不带这个标签，
+        //    所以不影响「沉睡免伤」的本意。
+        if (this.isSleep() && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            return false;
         }
 
         // ① 二阶段变身演出中。变身那几秒被打死就没法演了，所以全程无敌。
@@ -6065,13 +6428,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             this.playSound(ModSounds.BLOCK.get(), 1.0F, 1.0F);
             CameraShakeEntity.cameraShake(this.level(), this.position(), 10.0F, 0.15F, 5, 5);
 
-            // 只有「无视无敌的伤害」（/kill、虚空这类）被挡下来时才喊这句话 ——
-            // 挡下普通攻击是家常便饭，不值得到处刷屏。
-            if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
-                // 二阶段喊红字，一阶段喊青字 —— 和原版一致。
-                this.sendAdvancedHotBarMessage("legendary_monsters.message.possessed_paladin_kill_parry",
-                        this.getPhase() >= 2 ? ChatFormatting.RED : ChatFormatting.AQUA, 10.0F);
-            }
             return false;
         }
 
@@ -6086,5 +6442,245 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             this.BossInvulnerabilityTime = BOSS_INVULNERABILITY_TICKS;
         }
         return hurt1;
+    }
+
+    // ==================================================================
+    //  二十、台词：对 BOSS 开打 / 闲聊
+    //
+    //  前面那些台词（苏醒 / 二阶段 / 死亡 / 终结技）都挂在某个演出的
+    //  「第几 tick」上，属于<b>剧本</b>；这一节的两种是<b>环境音</b> ——
+    //  不依附任何招式，由 tick() 每帧推一下，见 {@link #tick()} 里的调用。
+    // ==================================================================
+
+    // ---- 二十·1 对 BOSS 开打 ----
+    //
+    //  锁定到下面这 5 种 BOSS 时，说一句针对它的台词。<b>每只只说一次</b>，
+    //  说过就记进 {@link #saidBossLines}，跟着存档一起走。
+
+    /** 台词能被多少格内的玩家听到（动作栏广播半径）。 */
+    private static final float PLAYER_HEAR_TALKING = 10.0F;
+
+    /** 实体注册名 → 台词键。名单上的每只 BOSS 一句。 */
+    private static final Map<String, String> BOSS_LINES = Map.of(
+            "legendary_monsters:the_obliterator",
+            "message.goetyominous.possessed_paladin_servant.boss.obliterator",
+            "legendary_monsters:cloud_golem",
+            "message.goetyominous.possessed_paladin_servant.boss.cloud_golem",
+            "goety:ender_keeper",
+            "message.goetyominous.possessed_paladin_servant.boss.ender_keeper",
+            "goety:heresiarch",
+            "message.goetyominous.possessed_paladin_servant.boss.heresiarch",
+            "goety:apostle",
+            "message.goetyominous.possessed_paladin_servant.boss.apostle");
+
+    /** 已经说过台词的 BOSS 注册名。进存档（见 addAdditionalSaveData）。 */
+    private final Set<String> saidBossLines = new HashSet<>();
+
+    /**
+     * 每 tick 看一眼：手头锁定的目标，是不是名单上的 BOSS。
+     *
+     * <p>⚠️ 比的是<b>实体注册名的字符串</b>（{@code "goety:apostle"} 这种），
+     * 而不是 {@code import} 对方实体类再 {@code instanceof}。两个理由：
+     * <ol>
+     *   <li>LM 是<b>可选依赖</b>（错题本第 5 条）—— 只要 {@code import} 了它的类，
+     *       没装 LM 的整合包就会在类加载阶段直接崩，而不是「少个功能」。</li>
+     *   <li>不 import 就不会因为对方改包名、改类名而编译不过。字符串对不上，
+     *       最坏也就是这句台词不说，游戏照跑。</li>
+     * </ol>
+     *
+     * <p>项目里同样的写法见 {@code compat/mod/GoetyAwakenCompat.java}。
+     *
+     * <p>⚠️ 名单里的 {@code goety:ender_keeper} 是口头确认的，<b>没能亲眼核对 jar</b>。
+     * 万一 ID 写错，表现是<b>静默不触发</b> —— 不崩、不报错、日志里也没有。
+     * 所以实机验证时这 5 种 BOSS 得一个一个试过去。
+     */
+    private void tickBossLine() {
+        // 发消息只在服务端有意义（sendAdvancedHotBarMessage 内部靠 instanceof ServerPlayer
+        // 兜底，客户端调用是空转）。这里提前返回，纯粹是省掉客户端每帧一次注册表查询。
+        if (this.level().isClientSide) {
+            return;
+        }
+
+        LivingEntity target = this.getTarget();
+        if (target == null) {
+            return;
+        }
+
+        // ⚠️ 比的是注册名，不是显示名、也不是 class 名。getKey 理论上不会返回 null，
+        //    但它是 @Nullable 的，防御性判一下 —— 反正只多一行。
+        ResourceLocation id = ForgeRegistries.ENTITY_TYPES.getKey(target.getType());
+        if (id == null) {
+            return;
+        }
+
+        String name = id.toString();
+        String line = BOSS_LINES.get(name);
+        if (line == null) {
+            return;
+        }
+
+        // ⚠️ 用 Set.add 的返回值判「第一次」，一步到位：
+        //    加进去了 → 之前没说过（返回 true）；已经在里面 → 说过了（返回 false）。
+        //    写成 contains + add 两句等价，但那要查两次哈希表，还容易漏掉一句。
+        if (this.saidBossLines.add(name)) {
+            // 配色约定见「二阶段第 2 句」那处的注释：平时说话一律这个蓝，
+            // 只有「死亡 2 句 + 终结技」才是红的。对 BOSS 开打属于平时说话。
+            this.sendAdvancedHotBarMessage(line, ChatFormatting.AQUA, PLAYER_HEAR_TALKING);
+        }
+    }
+
+    // ---- 二十·2 闲聊 ----
+    //
+    //  闲下来时（没在放招、没锁目标、没睡着）每隔一段时间掷一次骰子，
+    //  中了就自言自语一句。<b>战斗中绝不说</b> —— 打到一半忽然开始怀旧很奇怪。
+    //
+    //  台词分「组」：有的组是两句话连着说（idle.4 / idle.6）。实现上就是第一句说完，
+    //  把第二句排进队列，隔 2 秒再吐出去。
+
+    /** 多久掷一次骰子（400 tick = 20 秒）。 */
+    private static final int IDLE_TALK_INTERVAL = 400;
+
+    /** 距离下次掷骰子还有多少 tick。初值<b>给满</b>：免得刚召唤出来就自言自语。 */
+    public int idle_talk_cooldown = IDLE_TALK_INTERVAL;
+
+    /** 「两句话一组」里的第二句，没在等就是 null。 */
+    private String pendingIdleTalk;
+
+    /** 第二句还要等多少 tick。 */
+    private int pendingIdleTalkDelay;
+
+    /** 每次掷骰子真说出来的概率。20 秒 × 35% ≈ 平均一分钟一句。 */
+    private static final float IDLE_TALK_CHANCE = 0.35F;
+
+    /** 「两句话一组」里，第一句和第二句之间隔多久（40 tick = 2 秒）。 */
+    private static final int IDLE_TALK_GAP = 40;
+
+    /** 主人拿到「下界之影」时，有这么大机会不说普通闲聊、改说那句特殊的。 */
+    private static final float IDLE_SPECIAL_CHANCE = 0.25F;
+
+    /** 普通闲聊。一组是 1~2 句，两行的组会连着说。 */
+    private static final String[][] IDLE_LINES = {
+            {"message.goetyominous.possessed_paladin_servant.idle.1"},
+            {"message.goetyominous.possessed_paladin_servant.idle.2"},
+            {"message.goetyominous.possessed_paladin_servant.idle.3"},
+            {"message.goetyominous.possessed_paladin_servant.idle.4a",
+                    "message.goetyominous.possessed_paladin_servant.idle.4b"},
+            {"message.goetyominous.possessed_paladin_servant.idle.5"},
+            {"message.goetyominous.possessed_paladin_servant.idle.6a",
+                    "message.goetyominous.possessed_paladin_servant.idle.6b"},
+    };
+
+    /** 主人打通「下界之影」之后才会解锁的那句。 */
+    private static final String IDLE_APOSTLE_SLAIN =
+            "message.goetyominous.possessed_paladin_servant.idle.apostle_slain";
+
+    /** 「下界之影」成就的 id（击败使徒）。 */
+    private static final ResourceLocation KILL_APOSTLE_ADVANCEMENT =
+            new ResourceLocation("goety", "kill_apostle");
+
+    /**
+     * 每 tick 推一下闲聊。
+     *
+     * <p>⚠️ 顺序要紧：先处理「等第二句」，再考虑「该不该掷骰子」。反过来写的话，
+     * 两句话中间那 2 秒里会再掷一次骰子，可能蹦出一句毫不相干的话来把对话打断。
+     */
+    private void tickIdleTalk() {
+        if (this.level().isClientSide) {
+            return;
+        }
+
+        // ① 有排队的第二句，先把它吐出去。
+        if (this.pendingIdleTalk != null) {
+            if (--this.pendingIdleTalkDelay <= 0) {
+                this.sendAdvancedHotBarMessage(this.pendingIdleTalk, ChatFormatting.AQUA, PLAYER_HEAR_TALKING);
+                this.pendingIdleTalk = null;
+            }
+            return;
+        }
+
+        // ② 现在闲不闲？三条缺一不可：没在放招、没锁目标、没在睡（34 / 35 都算躺着）。
+        boolean idle = this.getAttackState() == 0
+                && this.getTarget() == null
+                && !this.isSleep();
+
+        if (!idle) {
+            // ⚠️ 不闲就把计时器<b>直接顶满</b>，而不是让它接着往下走。
+            //    否则会出现：打了半天架，冷却早在战斗里耗光了，敌人刚死就蹦出一句闲聊。
+            this.idle_talk_cooldown = IDLE_TALK_INTERVAL;
+            return;
+        }
+
+        // ③ 计时。
+        if (this.idle_talk_cooldown > 0) {
+            --this.idle_talk_cooldown;
+            return;
+        }
+
+        // ④ 到点了，掷骰子。
+        this.idle_talk_cooldown = IDLE_TALK_INTERVAL;
+        if (this.getRandom().nextFloat() >= IDLE_TALK_CHANCE) {
+            return;
+        }
+
+        String[] group = this.pickIdleLine();
+        this.sendAdvancedHotBarMessage(group[0], ChatFormatting.AQUA, PLAYER_HEAR_TALKING);
+
+        // ⑤ 这个组有两句的话，第二句排进队列。
+        if (group.length > 1) {
+            this.pendingIdleTalk = group[1];
+            this.pendingIdleTalkDelay = IDLE_TALK_GAP;
+        }
+    }
+
+    /**
+     * 挑一组闲聊。
+     *
+     * <p>主人已经打通「下界之影」（击败使徒）时，有四分之一的机会不说普通闲聊，
+     * 改说那句专门为这个成就准备的。
+     */
+    private String[] pickIdleLine() {
+        if (this.getRandom().nextFloat() < IDLE_SPECIAL_CHANCE && this.ownerHasSlainApostle()) {
+            return new String[]{IDLE_APOSTLE_SLAIN};
+        }
+        return IDLE_LINES[this.getRandom().nextInt(IDLE_LINES.length)];
+    }
+
+    /**
+     * 主人有没有拿到「下界之影」（击败使徒）。
+     *
+     * <p>⚠️ 1.20.1 的 {@code PlayerAdvancements} <b>只有</b>
+     * {@code getOrStartProgress(Advancement)} 这一个读法 —— 没有 {@code getProgress}，
+     * 也没有 {@code isDone(Advancement)}（这两个都是后来版本才加的，别顺手写）。
+     * 而 getOr<u>Start</u>Progress 里的「Start」是当真的：进度不存在时它会<b>当场建一个</b>。
+     * 本来想避开（为了问一句「你打没打过」就给玩家塞一条成就进度，不太干净），但没得选。
+     *
+     * <p>好在代价很小：新建出来的空进度 {@code isDone()} 是 false，而
+     * {@code PlayerAdvancements.save()} 只写已完成的进度 —— 所以<b>不会进玩家存档</b>，
+     * 只是内存里多一个对象。玩家真去打使徒时 {@code award} 照常生效，
+     * 这个空对象反而把 criteria 预先备好了。
+     *
+     * <p>⚠️ 拿不到就<b>静默返回 false</b>：不崩、不刷日志。这样万一成就 id 写错了
+     * （这个 id 是由语言键反推的，没亲眼看过 advancement json），表现只是
+     * 「这句台词永远不出现」，实机一比就看得出来，不会把玩家存档搅坏。
+     */
+    private boolean ownerHasSlainApostle() {
+        // getTrueOwner() 是 Goety 的 Summoned 提供的，返回 LivingEntity，可能是 null，
+        // 也可能还没绑定主人（比如刚召唤出来、主人掉线）。
+        if (!(this.getTrueOwner() instanceof ServerPlayer owner)) {
+            return false;
+        }
+
+        MinecraftServer server = owner.getServer();
+        if (server == null) {
+            return false;
+        }
+
+        // 成就 id 写错时 getAdvancement 返回 null —— 到此为止，不再往下走。
+        Advancement advancement = server.getAdvancements().getAdvancement(KILL_APOSTLE_ADVANCEMENT);
+        if (advancement == null) {
+            return false;
+        }
+
+        return owner.getAdvancements().getOrStartProgress(advancement).isDone();
     }
 }
