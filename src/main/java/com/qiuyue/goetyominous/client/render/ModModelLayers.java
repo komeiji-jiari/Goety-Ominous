@@ -227,6 +227,12 @@ public class ModModelLayers {
         if (LegendaryMonstersCompat.isLegendaryMonstersLoaded()) {
             event.registerLayerDefinition(ModEntityLayers.OVERGROWN_COLOSSUS_SERVANT_LAYER,
                     com.qiuyue.goetyominous.client.render.model.lm.OvergrownColossusServantModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.POSSESSED_PALADIN_SERVANT_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.lm.PossessedPaladinServantModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.PHANTOM_DAGGER,
+                    com.qiuyue.goetyominous.client.render.model.lm.ThrownPhantomDaggerModel::createBodyLayer);
         }
 
         if (OpposingForceCompat.isOpposingForceLoaded()) {
@@ -565,8 +571,27 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.client.render.lm.OvergrownColossusServantRenderer::new);
 
             event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.POSSESSED_PALADIN_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.lm.PossessedPaladinServantRenderer::new);
+
+            event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.POISONOUS_SHOCKWAVE.get(),
                     EmptyRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.THROWN_PHANTOM_DAGGER.get(),
+                    com.qiuyue.goetyominous.client.render.lm.ThrownPhantomDaggerRenderer::new);
+
+            // 灵魂冲击和上面的毒素冲击波一样，是「没有模型、没有贴图、纯粒子」的实体。
+            // 这不是我们偷懒 —— 传奇怪物原版给它注册的渲染器就是个空壳。
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.SOUL_STRIKE.get(),
+                    EmptyRenderer::new);
+
+            // 招 38 扔出去的三叉戟。模型和贴图都是借传奇怪物的，见渲染器类注释。
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.SOUL_TRIDENT.get(),
+                    com.qiuyue.goetyominous.client.render.lm.SoulTridentServantRenderer::new);
         }
 
         if (com.qiuyue.goetyominous.compat.mod.MutantMoreCompat.isMutantMoreLoaded()) {
