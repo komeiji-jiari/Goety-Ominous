@@ -6,6 +6,10 @@ import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.of.OfEntityRegistry;
 import com.qiuyue.goetyominous.common.magic.spells.ac.ExtinctionBreathSpell;
 import com.qiuyue.goetyominous.common.magic.spells.of.DicerLaserSpell;
+import com.qiuyue.goetyominous.common.magic.spells.of.DicerSpell;
+import com.qiuyue.goetyominous.common.magic.spells.of.SkyvernSpell;
+import com.qiuyue.goetyominous.common.magic.spells.of.TerrorSpell;
+import com.qiuyue.goetyominous.common.magic.spells.of.TremblerSpell;
 import com.qiuyue.goetyominous.common.magic.spells.of.VoltBoltSpell;
 import com.qiuyue.goetyominous.common.magic.spells.of.VoltSpell;
 import net.minecraft.world.item.Item;
@@ -60,6 +64,18 @@ public class OfItems {
 
     public static final RegistryObject<Item> DICER_LASER_FOCUS = OF_ITEMS.register("dicer_laser_focus",
             () -> new MagicFocus(new DicerLaserSpell()));
+
+    public static final RegistryObject<Item> DICER_FOCUS = OF_ITEMS.register("dicer_focus",
+            () -> new MagicFocus(new DicerSpell()));
+
+    public static final RegistryObject<Item> TERROR_FOCUS = OF_ITEMS.register("terror_focus",
+            () -> new MagicFocus(new TerrorSpell()));
+
+    public static final RegistryObject<Item> SKYVERN_FOCUS = OF_ITEMS.register("skyvern_focus",
+            () -> new MagicFocus(new SkyvernSpell()));
+
+    public static final RegistryObject<Item> TREMBLER_FOCUS = OF_ITEMS.register("trembler_focus",
+            () -> new MagicFocus(new TremblerSpell()));
 
 
 
