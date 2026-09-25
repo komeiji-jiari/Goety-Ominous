@@ -1,5 +1,7 @@
 package com.qiuyue.goetyominous.compat.lm;
 
+import com.qiuyue.goetyominous.common.entities.ally.lm.CloudGolemServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.HoveringHurricaneServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.OvergrownColossusServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.PossessedPaladinServant;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
@@ -22,5 +24,11 @@ public class LmCompatManager {
                 OvergrownColossusServant.createAttributes().build());
         event.put(LmEntityRegistry.POSSESSED_PALADIN_SERVANT.get(),
                 PossessedPaladinServant.createAttributes().build());
+
+        event.put(LmEntityRegistry.HOVERING_HURRICANE_SERVANT.get(),
+                HoveringHurricaneServant.createAttributes().build());
+
+        event.put(LmEntityRegistry.CLOUD_GOLEM_SERVANT.get(),
+                CloudGolemServant.createAttributes().build());
     }
 }

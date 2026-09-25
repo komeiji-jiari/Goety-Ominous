@@ -20,7 +20,11 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Just like another interdimensional predator, you can right-click the Hullbreaker while holding fish to heal it. When the owner wears Abyss Robe, the Hullbreaker also passively regenerates health over time."
+      "text": "These voracious marine leviathans swallow the creatures they hunt—even submarines. Creatures killed by a Hullbreaker do not drop loot; instead, it is stored within their bodies. To retrieve the loot, you must feed them Henbane Flowers, Nightshade Blossom, or Poisonous Potatoes to make them spit the items back out."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Just like another interdimensional predator, you can right-click the Hullbreaker while holding fish, Glow Ink Sacs, or Bioluminescence to heal it. When the owner wears Abyss Robe, the Hullbreaker also passively regenerates health over time."
     },
     {
       "type": "patchouli:spotlight",

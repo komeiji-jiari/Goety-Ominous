@@ -70,8 +70,10 @@ public class TesseractTagHandler {
             addToTag(TESSERACT_MEDIUM, UaEntityRegistry.GREAT_THRASHER_SERVANT);
         }
         if (LegendaryMonstersCompat.isLegendaryMonstersLoaded()) {
+            addToTag(TESSERACT_SMALL, LmEntityRegistry.HOVERING_HURRICANE_SERVANT);
             addToTag(TESSERACT_MEDIUM, LmEntityRegistry.OVERGROWN_COLOSSUS_SERVANT);
             addToTag(TESSERACT_MEDIUM, LmEntityRegistry.POSSESSED_PALADIN_SERVANT);
+            addToTag(TESSERACT_LARGE, LmEntityRegistry.CLOUD_GOLEM_SERVANT);
         }
         if (AlexMobsCompat.isAlexMobsLoaded()) {
             addToTag(TESSERACT_MEDIUM, AmEntityRegistry.WARPED_MOSCO_SERVANT);

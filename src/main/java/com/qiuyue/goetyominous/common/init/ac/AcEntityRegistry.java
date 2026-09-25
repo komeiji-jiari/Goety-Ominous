@@ -126,6 +126,12 @@ public class AcEntityRegistry {
                             .setUpdateInterval(1)
                             .build(GoetyOminous.MOD_ID + ":mine_guardian_servant"));
 
+    public static final RegistryObject<EntityType<MineGuardianAnchorServantEntity>> MINE_GUARDIAN_ANCHOR_SERVANT =
+            AC_ENTITIES.register("mine_guardian_anchor_servant",
+                    () -> EntityType.Builder.<MineGuardianAnchorServantEntity>of((type, worldIn) -> new MineGuardianAnchorServantEntity(type, worldIn), MobCategory.MISC)
+                            .sized(0.6F, 1.35F)
+                            .build(GoetyOminous.MOD_ID + ":mine_guardian_anchor_servant"));
+
     public static final RegistryObject<EntityType<MeltedCaramelServantEntity>> MELTED_CARAMEL_SERVANT =
             AC_ENTITIES.register("melted_caramel_servant",
                     () -> EntityType.Builder.<MeltedCaramelServantEntity>of((type, worldIn) -> new MeltedCaramelServantEntity(type, worldIn), MobCategory.MISC)

@@ -486,7 +486,7 @@ public class RelicheirusServant extends AnimalSummon implements LaysEggs, IAnima
                             double d0 = this.random.nextGaussian() * 0.02;
                             double d1 = this.random.nextGaussian() * 0.02 + 0.1;
                             double d2 = this.random.nextGaussian() * 0.02;
-                            serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER,
+                            serverLevel.sendParticles(ParticleTypes.HEART,
                                     this.getRandomX(1.0F),
                                     this.getY() + this.getBbHeight() * this.getScale() + 0.3F + this.random.nextDouble() * 0.5F,
                                     this.getRandomZ(1.0F), 0, d0, d1, d2, 0.5);

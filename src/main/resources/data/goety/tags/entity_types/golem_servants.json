@@ -7,6 +7,14 @@
       "required": false
     },
     {
+      "id": "goetyominous:cloud_golem_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:hovering_hurricane_servant",
+      "required": false
+    },
+    {
       "id": "goetyominous:nucleeper_servant",
       "required": false
     },

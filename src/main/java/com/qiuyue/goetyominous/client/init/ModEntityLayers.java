@@ -142,6 +142,11 @@ public class ModEntityLayers {
     // 才会被 ModModelLayers 拿去注册，没装的时候这个常量就是个没人碰的空壳。
     public static final ModelLayerLocation PHANTOM_DAGGER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "phantom_dagger"), "main");
+    public static final ModelLayerLocation HOVERING_HURRICANE_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "hovering_hurricane_servant"), "main");
+
+    public static final ModelLayerLocation CLOUD_GOLEM_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "cloud_golem_servant"), "main");
 
     public static final ModelLayerLocation PIGLIN_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "piglin_servant"), "main");
@@ -253,4 +258,10 @@ public class ModEntityLayers {
 
     public static final ModelLayerLocation SKYVERN_SERVANT_TAIL_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "skyvern_servant_tail"), "main");
+
+    public static final ModelLayerLocation LM_CLOUD_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "lm_cloud"), "main");
+
+    public static final ModelLayerLocation LM_LIGHTNING_STRIKE_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "lm_lightning_strike"), "main");
 }
