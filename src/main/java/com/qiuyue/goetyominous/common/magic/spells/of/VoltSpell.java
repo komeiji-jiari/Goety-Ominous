@@ -47,8 +47,8 @@ public class VoltSpell extends SummonSpell {
         return (Integer)SpellConfig.VoltCoolDown.get();
     }
 
-    public SoundEvent CastingSound(LivingEntity caster) {
-        return (SoundEvent)ModSounds.PREPARE_SUMMON.get();
+    public SoundEvent CastingSound() {
+        return (SoundEvent)ModSounds.ABYSS_PREPARE_SPELL.get();
     }
 
     public SpellType getSpellType() {
@@ -110,12 +110,14 @@ public class VoltSpell extends SummonSpell {
                 this.buffSummon(caster, volt, potency);
                 this.SummonSap(caster, volt);
                 this.setTarget(caster, volt);
-                worldIn.addFreshEntity(volt);
+                if (worldIn.addFreshEntity(volt)) {
+                    this.uponSummon(worldIn, caster, staff, volt);
+                }
                 this.summonAdvancement(caster, volt);
             }
 
             this.SummonDown(caster);
-            this.playSound(worldIn, caster, (SoundEvent)ModSounds.SUMMON_SPELL.get());
+            this.playSound(worldIn, caster, (SoundEvent)ModSounds.DROWNED_NECROMANCER_SUMMON.get());
         }
 
     }
