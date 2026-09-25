@@ -7,9 +7,13 @@ import com.qiuyue.goetyominous.client.particle.ac.ForsakenServantSpitParticle;
 import com.qiuyue.goetyominous.client.particle.ac.LuxtructosaurusServantAshParticle;
 import com.qiuyue.goetyominous.client.particle.ac.LuxtructosaurusServantSpitParticle;
 import com.qiuyue.goetyominous.client.particle.ac.NucleeperMushroomCloudParticle;
+import com.qiuyue.goetyominous.client.particle.lm.Circle;
 import com.qiuyue.goetyominous.client.particle.lm.GhostlySoul;
+import com.qiuyue.goetyominous.client.particle.lm.GroundSoulParticle;
 import com.qiuyue.goetyominous.client.particle.lm.PhantomDaggerTrail;
 import com.qiuyue.goetyominous.client.particle.lm.SmallGreenFlame;
+import com.qiuyue.goetyominous.client.particle.lm.SoulExplosion;
+import com.qiuyue.goetyominous.client.particle.lm.SoulPillarExplosion;
 import com.qiuyue.goetyominous.client.render.EmptyRenderer;
 import com.qiuyue.goetyominous.client.render.curios.PlushieCurioRenderer;
 import com.qiuyue.goetyominous.common.init.ModBlockEntities;
@@ -100,6 +104,10 @@ public class ClientEvents {
         event.registerSpriteSet(LmParticles.GHOSTLY_SOUL.get(), GhostlySoul.Provider::new);
         event.registerSpriteSet(LmParticles.GHOSTLY_SOUL_RED.get(), GhostlySoul.Provider::new);
         event.registerSpriteSet(LmParticles.RED_SOUL_FLAME.get(), SmallGreenFlame.SmallFlameProvider::new);
+        event.registerSpriteSet(LmParticles.SOUL_EXPLOSION_RED.get(), SoulExplosion.Provider::new);
+        event.registerSpriteSet(LmParticles.GROUNDSOUL_RED.get(), GroundSoulParticle.Factory::new);
+        event.registerSpriteSet(LmParticles.SOUL_PILLAR_EXPLOSION.get(), SoulPillarExplosion.Factory::new);
+        event.registerSpriteSet(LmParticles.CIRCLE.get(), Circle.RingFactory::new);
         event.registerSpecial(LmParticles.PHANTOM_DAGGER_TRAIL.get(), new PhantomDaggerTrail.OrbFactory());
     }
 }

@@ -6,8 +6,11 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+
+import javax.annotation.Nullable;
 
 /**
  * 传奇怪物那批仆从用到的自定义伤害类型。
@@ -53,5 +56,25 @@ public class LmDamageTypes {
         return new DamageSource(
                 level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(SERVANT_GHOST),
                 attacker, attacker);
+    }
+
+    /**
+     * 同上，但<b>允许没有主人</b>。
+     *
+     * <p>用途是「招式打出去了，主人却已经没了」这种边角情况 ——
+     * 主人退出游戏、被卸载、或者存盘读回来时还没加载。这时候照样得有伤害，
+     * 只是没有击杀归属、也不回血。
+     *
+     * <p>这时造出来的 {@code DamageSource} 是<b>没有攻击者</b>的那一种，
+     * 和原版传 {@code null} 进去的结果一致。
+     *
+     * @param attacker 造成伤害的生物，可以为 {@code null}
+     */
+    public static DamageSource ghostlyOrAttackerless(Level level, @Nullable Entity attacker) {
+        if (attacker instanceof LivingEntity living) {
+            return ghostly(living);
+        }
+        return new DamageSource(
+                level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(SERVANT_GHOST));
     }
 }

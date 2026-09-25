@@ -616,6 +616,13 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.SOUL_TRIDENT.get(),
                     com.qiuyue.goetyominous.client.render.lm.SoulTridentServantRenderer::new);
 
+            // 三叉戟插地后炸出来的「灵魂柱爆炸」。同样是「没有模型、没有贴图、纯粒子」，
+            // 传奇怪物原版压根没给它注册渲染器（连空壳都没有）—— 我们补个空壳，
+            // 免得 Forge 找不到渲染器时刷警告。
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.SOUL_PILLAR_EXPLOSION.get(),
+                    EmptyRenderer::new);
+
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.HOVERING_HURRICANE_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.lm.HoveringHurricaneServantRenderer::new);

@@ -535,6 +535,11 @@
       }
     ]
   },
+  "soul_fly": {
+    "sounds": [
+      "goetyominous:soul_fly"
+    ]
+  },
   "disciple_death_3": {
     "subtitle": "subtitles.goetyominous.disciple.death",
     "sounds": [

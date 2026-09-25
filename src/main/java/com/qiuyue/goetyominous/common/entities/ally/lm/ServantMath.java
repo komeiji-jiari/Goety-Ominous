@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm;
 
 import net.minecraft.world.entity.LivingEntity;
+import org.joml.Quaternionf;
 
 /**
  * 仆从代码里反复用到的几个小换算 —— 说白了就是「除法」。
@@ -50,5 +51,27 @@ public final class ServantMath {
      */
     public static float toPercent(float percent) {
         return (float) ((double) percent * 0.01);
+    }
+
+    /**
+     * 用「绕 X、Y、Z 三个轴各转多少」拼出一个四元数（旋转）。
+     *
+     * <p>{@code Circle}（光圈粒子）用它来摆朝向：光圈不是永远正对镜头的，
+     * 有些是<b>平躺在地上</b>或<b>斜插着</b>的，那就得自己算角度。
+     *
+     * <p>{@code degrees} 为 {@code true} 时，传进来的三个数是「度」，会先换成弧度；
+     * 为 {@code false} 时就当弧度直接用 —— {@code Circle} 两处调用都传的 {@code false}。
+     *
+     * <p>⚠️ <b>旋转顺序有讲究</b>：{@code rotationXYZ} 按 Z→Y→X 的顺序依次旋转
+     * （数学上等价于矩阵 R = Rx·Ry·Rz）。原版的 {@code MathUtils} 就是这个实现，
+     * 照抄没动 —— 换成别的顺序光圈会歪。
+     */
+    public static Quaternionf quatFromRotationXYZ(float x, float y, float z, boolean degrees) {
+        if (degrees) {
+            x *= (float) (Math.PI / 180.0);
+            y *= (float) (Math.PI / 180.0);
+            z *= (float) (Math.PI / 180.0);
+        }
+        return new Quaternionf().rotationXYZ(x, y, z);
     }
 }
