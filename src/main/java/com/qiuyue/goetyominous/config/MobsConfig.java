@@ -39,6 +39,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> HoveringHurricaneServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> CloudGolemServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerMimicServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> AnnihilationPursuerServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> HeresiarchServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> WargLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> CerberusLimit;
@@ -85,6 +86,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> FireSlimeServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> GuzzlerServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> SkyvernServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> SkyvernServantGhost;
 
     public static final ForgeConfigSpec.ConfigValue<Integer> MWSSoulShieldHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> MWSSoulShieldDamageBouns;
@@ -224,32 +226,36 @@ public class MobsConfig {
                 .defineInRange("ramblerServantLimit", 8, 1, 100);
 
         DicerServantLimit = BUILDER
-                .comment("Maximum number of Dicer Servants that can be summoned (Default: 8)")
-                .defineInRange("dicerServantLimit", 8, 1, 100);
+                .comment("Maximum number of Dicer Servants that can be summoned (Default: 16)")
+                .defineInRange("dicerServantLimit", 16, 1, 100);
 
         TremblerServantLimit = BUILDER
                 .comment("Maximum number of Trembler Servants that can be summoned (Default: 16)")
                 .defineInRange("tremblerServantLimit", 16, 1, 100);
 
         TerrorServantLimit = BUILDER
-                .comment("Maximum number of Terror Servants that can be summoned (Default: 8)")
-                .defineInRange("terrorServantLimit", 8, 1, 100);
+                .comment("Maximum number of Terror Servants that can be summoned (Default: 16)")
+                .defineInRange("terrorServantLimit", 16, 1, 100);
 
         VoltServantLimit = BUILDER
-                .comment("Maximum number of Volt Servants that can be summoned (Default: 12)")
-                .defineInRange("voltServantLimit", 12, 1, 100);
+                .comment("Maximum number of Volt Servants that can be summoned (Default: 16)")
+                .defineInRange("voltServantLimit", 16, 1, 100);
 
         FireSlimeServantLimit = BUILDER
-                .comment("Maximum number of Fire Slime Servants that can be summoned (Default: 16)")
-                .defineInRange("fireSlimeServantLimit", 16, 1, 100);
+                .comment("Maximum number of Fire Slime Servants that can be summoned (Default: 2147483647 = no limit)")
+                .defineInRange("fireSlimeServantLimit", Integer.MAX_VALUE, 1, Integer.MAX_VALUE);
 
         GuzzlerServantLimit = BUILDER
-                .comment("Maximum number of Guzzler Servants that can be summoned (Default: 4)")
-                .defineInRange("guzzlerServantLimit", 4, 1, 100);
+                .comment("Maximum number of Guzzler Servants that can be summoned (Default: 2)")
+                .defineInRange("guzzlerServantLimit", 2, 1, 100);
 
         SkyvernServantLimit = BUILDER
-                .comment("Maximum number of Skyvern Servants that can be summoned (Default: 8). Each one spawns 20-23 segment entities.")
-                .defineInRange("skyvernServantLimit", 8, 1, 100);
+                .comment("Maximum number of Skyvern Servants that can be summoned (Default: 3). Each one spawns 20-23 segment entities.")
+                .defineInRange("skyvernServantLimit", 3, 1, 100);
+
+        SkyvernServantGhost = BUILDER
+                .comment("Whether Skyvern Servants summoned while the owner wears a Wind Robe become translucent and lose collision (Default: true)")
+                .define("skyvernServantGhost", true);
 
         UrbhadhachServantLimit = BUILDER
                 .comment("Maximum number of Urbhadhach Servants that can be summoned (Default: 8)")
@@ -306,6 +312,10 @@ public class MobsConfig {
         ShulkerMimicServantLimit = BUILDER
                 .comment("Maximum number of Shulker Mimic Servants that can be summoned (Default: 1)")
                 .defineInRange("shulkerMimicServantLimit", 1, 1, 100);
+
+        AnnihilationPursuerServantLimit = BUILDER
+                .comment("Maximum number of Annihilation Pursuer Servants that can be summoned (Default: 1)")
+                .defineInRange("annihilationPursuerServantLimit", 1, 1, 100);
 
         GrottoceratopsServantLimit = BUILDER
                 .comment("Maximum number of Grottoceratops Servants that can be summoned (Default: 16)")

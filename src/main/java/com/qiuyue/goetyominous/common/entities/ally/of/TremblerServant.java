@@ -2,7 +2,6 @@ package com.qiuyue.goetyominous.common.entities.ally.of;
 
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
-import com.Polarice3.Goety.init.ModMobType;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.ModDamageSource;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.TremblerServantRollGoal;
@@ -121,11 +120,6 @@ public class TremblerServant extends Summoned implements EliteVariant {
         this.entityData.define(ROLL_COOLDOWN, 60);
         this.entityData.define(STUNNED_TICKS, 0);
         this.entityData.define(TURBO, false);
-    }
-
-    @Override
-    public MobType getMobType() {
-        return ModMobType.NATURAL;
     }
 
     @Override

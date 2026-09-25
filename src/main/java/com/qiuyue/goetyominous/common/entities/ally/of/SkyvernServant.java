@@ -75,7 +75,6 @@ public class SkyvernServant extends Summoned implements FlyingAnimal, AttackStat
     private int rollTicks;
     private int roarCooldown;
     private int rollCooldown;
-    private int variantCheckCooldown;
     private int segmentCheckCooldown;
 
     private int lSteps;
@@ -373,6 +372,9 @@ public class SkyvernServant extends Summoned implements FlyingAnimal, AttackStat
     @Override
     public void tick() {
         super.tick();
+        if (this.isGhost()) {
+            this.noPhysics = true;
+        }
         this.prevPitch = this.pitch;
         this.yBodyRot = this.getYRot();
         this.yHeadRot = this.getYRot();
@@ -422,10 +424,6 @@ public class SkyvernServant extends Summoned implements FlyingAnimal, AttackStat
             if (--this.segmentCheckCooldown <= 0) {
                 this.segmentCheckCooldown = 10;
                 this.ensureSegments();
-            }
-            if (--this.variantCheckCooldown <= 0) {
-                this.variantCheckCooldown = 20;
-                this.updateVariant();
             }
         }
         if (this.random.nextInt(800) == 0) {
@@ -503,21 +501,14 @@ public class SkyvernServant extends Summoned implements FlyingAnimal, AttackStat
         }
     }
 
-    private void updateVariant() {
-        LivingEntity owner = this.getTrueOwner();
-        Level level = owner != null ? owner.level() : this.level();
-        BlockPos pos = owner != null ? owner.blockPosition() : this.blockPosition();
-        SkyvernVariant variant = variantFor(level, pos);
-        if (this.getVariant() != variant) {
-            this.setVariant(variant);
+    private static SkyvernVariant getSkyvernVariant(ServerLevelAccessor level) {
+        if (level.getLevel().isRaining() && !level.getLevel().isThundering()) {
+            return SkyvernVariant.AZURE;
         }
-    }
-
-    private static SkyvernVariant variantFor(Level level, BlockPos pos) {
-        if (level.isThundering()) {
+        if (level.getLevel().isThundering()) {
             return SkyvernVariant.THUNDER;
         }
-        return level.getBiome(pos).value().getBaseTemperature() >= 1.0F ? SkyvernVariant.AZURE : SkyvernVariant.CLOUDY;
+        return SkyvernVariant.CLOUDY;
     }
 
     private void ensureSegments() {
@@ -590,10 +581,14 @@ public class SkyvernServant extends Summoned implements FlyingAnimal, AttackStat
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag) {
         this.setSegments(20 + level.getRandom().nextInt(4));
         this.applySegmentHealth();
-        this.setVariant(variantFor(level.getLevel(), this.blockPosition()));
+        this.setVariant(getSkyvernVariant(level));
         SpawnGroupData result = super.finalizeSpawn(level, difficulty, spawnType, spawnData, dataTag);
         this.setHealth(this.getMaxHealth());
         return result;
+    }
+
+    public boolean isGhost() {
+        return this.isUpgraded() && MobsConfig.SkyvernServantGhost.get();
     }
 
     @Override

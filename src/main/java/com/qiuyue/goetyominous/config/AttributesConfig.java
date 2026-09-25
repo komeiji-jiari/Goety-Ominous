@@ -481,6 +481,14 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> ShulkerMimicServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> ShulkerMimicServantAttackKnockback;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> AnnihilationPursuerServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> AnnihilationPursuerServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> AnnihilationPursuerServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> AnnihilationPursuerServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> AnnihilationPursuerServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> AnnihilationPursuerServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> AnnihilationPursuerServantAttackKnockback;
+
     public static final ForgeConfigSpec.ConfigValue<Double> StormNecromancerHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> StormNecromancerArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> StormNecromancerDamage;
@@ -1715,6 +1723,23 @@ public class AttributesConfig {
                 .defineInRange("shulkerMimicServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
         ShulkerMimicServantAttackKnockback = BUILDER.comment("How much Attack Knockback Shulker Mimic Servants have, Default: 0.5")
                 .defineInRange("shulkerMimicServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Annihilation Pursuer Servant (Optional - LM)");
+        AnnihilationPursuerServantHealth = BUILDER.comment("How much Max Health Annihilation Pursuer Servants have, Default: 210.0")
+                .defineInRange("annihilationPursuerServantHealth", 210.0, 1.0, Double.MAX_VALUE);
+        AnnihilationPursuerServantArmor = BUILDER.comment("How much natural Armor Annihilation Pursuer Servants have, Default: 13.0")
+                .defineInRange("annihilationPursuerServantArmor", 13.0, 0.0, Double.MAX_VALUE);
+        AnnihilationPursuerServantDamage = BUILDER.comment("How much damage Annihilation Pursuer Servants deal, Default: 10.0")
+                .defineInRange("annihilationPursuerServantDamage", 10.0, 0.0, Double.MAX_VALUE);
+        AnnihilationPursuerServantMovementSpeed = BUILDER.comment("How fast Annihilation Pursuer Servants move, Default: 0.1")
+                .defineInRange("annihilationPursuerServantMovementSpeed", 0.1, 0.0, Double.MAX_VALUE);
+        AnnihilationPursuerServantFollowRange = BUILDER.comment("How much following/detection range Annihilation Pursuer Servants have, Default: 30.0")
+                .defineInRange("annihilationPursuerServantFollowRange", 30.0, 1.0, Double.MAX_VALUE);
+        AnnihilationPursuerServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Annihilation Pursuer Servants have, Default: 1.0")
+                .defineInRange("annihilationPursuerServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
+        AnnihilationPursuerServantAttackKnockback = BUILDER.comment("How much Attack Knockback Annihilation Pursuer Servants have, Default: 0.5")
+                .defineInRange("annihilationPursuerServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.push("Rambler Servant");
