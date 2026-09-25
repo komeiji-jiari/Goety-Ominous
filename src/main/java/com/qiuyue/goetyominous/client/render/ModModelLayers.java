@@ -253,6 +253,9 @@ public class ModModelLayers {
 
             event.registerLayerDefinition(ModEntityLayers.GRAVITY_BIG_SHULKER_BULLET_LAYER,
                     net.miauczel.legendary_monsters.entity.client.Model.GravityBigShulkerBulletModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.ANNIHILATION_PURSUER_SERVANT_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.lm.AnnihilationPursuerServantModel::createBodyLayer);
         }
 
         if (OpposingForceCompat.isOpposingForceLoaded()) {
@@ -652,6 +655,26 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.GRAVITY_BIG_SHULKER_BULLET.get(),
                     com.qiuyue.goetyominous.client.render.lm.GravityBigShulkerBulletRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.ANNIHILATION_PURSUER_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.lm.AnnihilationPursuerServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.SMALL_ANNIHILATION_BOMB.get(),
+                    EmptyRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.ANNIHILATION_EXPLOSION.get(),
+                    EmptyRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.ANNIHILATION_FLAME_STRIKE.get(),
+                    EmptyRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.ENTITY_THROWN.get(),
+                    EmptyRenderer::new);
         }
 
         if (com.qiuyue.goetyominous.compat.mod.MutantMoreCompat.isMutantMoreLoaded()) {

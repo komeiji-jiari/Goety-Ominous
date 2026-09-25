@@ -12,6 +12,10 @@
     {
       "id": "goetyominous:corrodent_servant",
       "required": false
+    },
+    {
+      "id": "goetyominous:trembler_servant",
+      "required": false
     }
   ]
 }

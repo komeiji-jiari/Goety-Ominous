@@ -75,6 +75,7 @@ public class TesseractTagHandler {
             addToTag(TESSERACT_MEDIUM, LmEntityRegistry.POSSESSED_PALADIN_SERVANT);
             addToTag(TESSERACT_LARGE, LmEntityRegistry.CLOUD_GOLEM_SERVANT);
             addToTag(TESSERACT_LARGE, LmEntityRegistry.SHULKER_MIMIC_SERVANT);
+            addToTag(TESSERACT_LARGE, LmEntityRegistry.ANNIHILATION_PURSUER_SERVANT);
         }
         if (AlexMobsCompat.isAlexMobsLoaded()) {
             addToTag(TESSERACT_MEDIUM, AmEntityRegistry.WARPED_MOSCO_SERVANT);

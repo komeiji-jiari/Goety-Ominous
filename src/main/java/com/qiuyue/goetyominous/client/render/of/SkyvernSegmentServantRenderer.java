@@ -66,7 +66,10 @@ public class SkyvernSegmentServantRenderer extends EntityRenderer<SkyvernSegment
             poseStack.translate(0.0F, entity.getBbHeight() + 1.25F, 0.0F);
             poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
         }
-        VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(this.getTextureLocation(entity)));
+        ResourceLocation texture = this.getTextureLocation(entity);
+        VertexConsumer vertexConsumer = bufferSource.getBuffer(entity.isGhost()
+                ? RenderType.entityTranslucent(texture)
+                : RenderType.entityCutoutNoCull(texture));
         if (back == null) {
             this.TAIL.setupAnim(entity, 0.0F, 0.0F, (float) entity.tickCount + partialTicks, 0.0F, 0.0F);
             this.TAIL.renderToBuffer(poseStack, vertexConsumer, packedLight, getOverlayCoords(entity), 1.0F, 1.0F, 1.0F, 1.0F);

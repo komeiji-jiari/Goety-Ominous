@@ -199,6 +199,11 @@ public class SkyvernSegmentServant extends Entity {
         return id == -1 ? null : this.level().getEntity(id);
     }
 
+    public boolean isGhost() {
+        Entity head = this.getHeadEntity();
+        return head instanceof SkyvernServant skyvern && skyvern.isGhost();
+    }
+
     @Nullable
     public Entity getFrontEntity() {
         if (!this.level().isClientSide) {
