@@ -1288,17 +1288,40 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         return new GroundPathNavigation(this, pLevel);
     }
 
+    /**
+     * 跟随主人时的移动倍率。实际速度 = 这个值 × MOVEMENT_SPEED 属性（0.3）。
+     * <p>
+     * Goety 的 {@code IServant.getFollowSpeed()} 默认返回 1.0，也就是跟随和追击一样快（0.30）。
+     * 但原版 BOSS 根本没有「跟随」这个行为，0.30 是它<b>冲过来打人</b>的速度，拿来跟着主人走路
+     * 就显得急躁（比僵尸的 0.23 还快）。这里给 0.5，跟随速度降到 0.15 —— 比玩家走路（0.1）
+     * 快一半，跟得上；拉开 16 格时 Goety 还会自动传送过来，所以不用担心跟丢。
+     * <p>
+     * ⚠️ 不要改成去调 AttributesConfig 里的基础移速 —— 那会把追击速度一起拖慢。
+     * 同包的飓旋 / 云铸魔像仆从也是单独覆写这个方法的。
+     */
+    @Override
+    public double getFollowSpeed() {
+        return 0.5D;
+    }
+
     @Override
     protected void registerGoals() {
         super.registerGoals();
 
         // 优先级必须大于 5：Goety 的 FollowOwnerGoal 占了 5，游荡/环视低于它就会被跟随挤掉。
-        this.goalSelector.addGoal(6, new Summoned.WanderGoal<>(this, 1.0D));
+        // 闲逛倍率给 0.5：0.5 × 0.3(基础移速) = 0.15。原先写 1.0D，闲逛会跑到 0.30
+        // —— 比僵尸（0.23）还快，四百血的重甲 BOSS 在旁边小跑，观感很急躁，所以压掉一半。
+        this.goalSelector.addGoal(6, new Summoned.WanderGoal<>(this, 0.5D));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 
-        // 走向目标。原版传的是 3.0F（BOSS 冲刺感），仆从用 1.0D 跟蔓生巨像对齐。
+        // 走向目标（追击）。倍率保持 1.0，和原版 BOSS 的实际追击速度一致：
+        //     原版 0.1(基础移速) × 3.0(这个倍率) = 0.30
+        //     我们 0.3(基础移速) × 1.0(这个倍率) = 0.30
+        // ⚠️ 别为了调「跟随 / 闲逛」的观感来动这里、或者动 AttributesConfig 里的基础移速
+        //    —— 那会把追击速度一起改掉。跟随和闲逛各有自己的倍率，
+        //    见下面的 getFollowSpeed() 和上面的 WanderGoal。
         this.goalSelector.addGoal(2, new IMoveGoal(this, false, 1.0D));
 
         // ==================================================================
