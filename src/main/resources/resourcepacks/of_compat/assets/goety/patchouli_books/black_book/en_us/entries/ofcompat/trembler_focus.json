@@ -1,0 +1,19 @@
+{
+  "name": "Trembler Focus",
+  "icon": "goetyominous:trembler_focus",
+  "category": "goety:ofcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "This spell allows you to summon Trembler Servants. These mollusks, whose shells are sturdier than stone, excel at rolling forward to slam into enemies."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:trembler_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "When cast using a Geo Staff to channel this focus, you can summon more Tremblers. If you wear the full Geo Set, there is a chance to summon elite Tremblers, which are more powerful in combat than ordinary ones."
+    }
+  ]
+}

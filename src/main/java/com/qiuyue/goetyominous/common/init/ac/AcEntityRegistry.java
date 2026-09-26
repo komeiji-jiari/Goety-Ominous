@@ -328,6 +328,14 @@ public class AcEntityRegistry {
                             .fireImmune()
                             .build(GoetyOminous.MOD_ID + ":grottoceratops_spirit"));
 
+    public static final RegistryObject<EntityType<WaterBoltProjectile>> WATER_BOLT =
+            AC_ENTITIES.register("water_bolt",
+                    () -> EntityType.Builder.<WaterBoltProjectile>of((type, worldIn) -> new WaterBoltProjectile(type, worldIn), MobCategory.MISC)
+                            .sized(0.6F, 0.6F)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .setUpdateInterval(1)
+                            .build(GoetyOminous.MOD_ID + ":water_bolt"));
+
     public static void register(IEventBus modEventBus) {
         AC_ENTITIES.register(modEventBus);
     }

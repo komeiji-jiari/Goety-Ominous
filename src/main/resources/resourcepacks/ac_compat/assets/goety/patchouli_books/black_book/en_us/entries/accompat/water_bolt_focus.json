@@ -1,0 +1,20 @@
+{
+  "name": "Water Bolt Focus",
+  "icon": "goetyominous:water_bolt_focus",
+  "category": "goety:abyssalchasm",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "This spell allows you to condense an arrow made of water. Water bolts have slight homing capability, and upon hitting a creature, they also produce a small explosive splash."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goetyominous:water_bolt_focus",
+      "text": "Wendis Mama"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "An Abyss Staff allows you to fire 3 Water Bolts at once."
+    }
+  ]
+}

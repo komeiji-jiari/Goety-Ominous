@@ -937,6 +937,9 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.DEEP_ONE_MAGE_SERVANT_WATER_BOLT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderDeepOneMageServantWaterBolt::new);
             event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.WATER_BOLT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderWaterBoltProjectile::new);
+            event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.LICOWITCH_SERVANT_HEX.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderLicowitchServantHex::new);
             event.registerEntityRenderer(

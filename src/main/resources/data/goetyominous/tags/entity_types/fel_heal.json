@@ -36,6 +36,14 @@
     {
       "id": "goetyominous:licowitch_servant",
       "required": false
+    },
+    {
+      "id": "goety_spillage:ragno_servant",
+      "required": false
+    },
+    {
+      "id": "goety_spillage:bound_freakager",
+      "required": false
     }
   ]
 }
