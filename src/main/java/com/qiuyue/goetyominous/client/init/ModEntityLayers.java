@@ -257,4 +257,13 @@ public class ModEntityLayers {
 
     public static final ModelLayerLocation LM_LIGHTNING_STRIKE_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "lm_lightning_strike"), "main");
+
+    public static final ModelLayerLocation SHULKER_MIMIC_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "shulker_mimic_servant"), "main");
+
+    public static final ModelLayerLocation BIG_SHULKER_BULLET_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "big_shulker_bullet"), "main");
+
+    public static final ModelLayerLocation GRAVITY_BIG_SHULKER_BULLET_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "gravity_big_shulker_bullet"), "main");
 }

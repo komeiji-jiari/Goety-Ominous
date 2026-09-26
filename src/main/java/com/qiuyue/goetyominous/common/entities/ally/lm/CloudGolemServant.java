@@ -80,101 +80,74 @@ import java.util.stream.Stream;
 
 public class CloudGolemServant extends IAnimatedMiniBossServant {
 
-    public static final EntityDataAccessor<Boolean> GAVE_CHANCE =
-            SynchedEntityData.defineId(CloudGolemServant.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Integer> TEXTURE_VARIANT =
             SynchedEntityData.defineId(CloudGolemServant.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> TEXTURE_VARIANT1 =
-            SynchedEntityData.defineId(CloudGolemServant.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> TEXTURE_VARIANT2 =
             SynchedEntityData.defineId(CloudGolemServant.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> BREAK =
             SynchedEntityData.defineId(CloudGolemServant.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> PTICKS =
             SynchedEntityData.defineId(CloudGolemServant.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Boolean> WEATHER_ON_COOLDOWN =
+            SynchedEntityData.defineId(CloudGolemServant.class, EntityDataSerializers.BOOLEAN);
 
-    public float LayerBrightness;
-    public float oLayerBrightness;
     public float LayerTicks;
 
     private static final int SLEEP_STANDBY_DELAY = 20;
     private static final int AWAKE_TICKS = 20;
 
-    private int stunCooldown = 0;
     private int standbyTicks = 0;
+    private int weatherCooldown = 0;
+
+    public static final int WEATHER_DURATION = 6000;
+    public static final int WEATHER_COOLDOWN_TICKS = 6000;
+    public static final byte EVENT_WEATHER_CLEAR = 64;
+    public static final byte EVENT_WEATHER_THUNDER = 65;
 
     public int tornado = 0;
-    public int pullCooldown = 160;
     public int cooldownTicksThunder = 0;
     public int cooldownStompLeft = 0;
     public int chargeCooldown = 0;
-    public boolean hasSwitched = false;
     public int safetyShouldLaserTornadoSwitchCooldown = 60;
     public int GolemInvulnerabilityTime = 0;
 
-    private int blockhitCooldown = 0;
     private int electricBurstCooldown = 0;
     public int laserCooldown = 300;
 
-    public final int BIG_SMASH_COOLDOWN = 30;
     public int bigsmashCooldown = 0;
     public int bigsmash2Cooldown = 0;
     public int flySmashCooldown = 0;
     public int cloudSwarmCooldown = 0;
 
-    public final int CLOUD_SWARM_SUMMON_COOLDOWN = 40;
-    public final int FLY_SMASH_COOLDOWN = 0;
-    public final int ELECTRIC_BURST_COOLDOWN = 0;
-    public final int TORNADO_SHOOT_COOLDOWN = 40;
-    public final int LIGHTNING_STRIKE_COOLDOWN = 0;
-    public final int BLOCK_HIT_COOLDOWN = 60;
-
     public boolean shouldDoExtraDashes = true;
-    public boolean particle1 = false;
     public int attackLock = 0;
-    private boolean DiedOnce = false;
     private int ArrowDamageCooldown = 0;
 
     public int cloudGolemDeathTime;
-    public int DamageCap = 6;
 
     public boolean shouldLaserAfterTornado = false;
 
-    public final AnimationState DeathAnimationState = new AnimationState();
-    public int DeathAnimationTimeout = 40;
-    public final AnimationState BlockHitStunAState = new AnimationState();
     public final AnimationState PreFractureFallAnimationState = new AnimationState();
     public final AnimationState FractureLandAnimationState = new AnimationState();
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState awakeAnimationState = new AnimationState();
     public final AnimationState sleepAnimationState = new AnimationState();
-    public final AnimationState attackarm1AnimationState = new AnimationState();
-    public final AnimationState attackarm2AnimationState = new AnimationState();
-    public final AnimationState attackarmsAnimationState = new AnimationState();
     public final AnimationState lightningSummonAnimationState = new AnimationState();
     public final AnimationState p2AState = new AnimationState();
     public final AnimationState landAnimationState = new AnimationState();
     public final AnimationState fallAnimationState = new AnimationState();
-    public final AnimationState runAnimationState = new AnimationState();
-    public final AnimationState runpreAnimationState = new AnimationState();
-    public final AnimationState postRunAnimationState = new AnimationState();
     public final AnimationState chargeAnimationState = new AnimationState();
     public final AnimationState chargepreAnimationState = new AnimationState();
-    public final AnimationState chargeEndAnimationState = new AnimationState();
     public final AnimationState chargeAggresiveEndAnimationState = new AnimationState();
     public final AnimationState ExplodeAnimationState = new AnimationState();
-    public final AnimationState cloudSummonAnimationState = new AnimationState();
     public final AnimationState mhitAnimationState = new AnimationState();
-    public final AnimationState flipAnimationState = new AnimationState();
     public final AnimationState cloudSummonBigAnimationState = new AnimationState();
     public final AnimationState deathAnimationState = new AnimationState();
     public final AnimationState bhdbAnimationState = new AnimationState();
     public final AnimationState bhAnimationState = new AnimationState();
     public final AnimationState laserAnimationState = new AnimationState();
-    public final AnimationState laser2AnimationState = new AnimationState();
     public final AnimationState stompLeftAState = new AnimationState();
     public final AnimationState stompAState = new AnimationState();
-    public final AnimationState respawnAState = new AnimationState();
     public final AnimationState flyAState = new AnimationState();
     public final AnimationState blockAState = new AnimationState();
 
@@ -190,9 +163,8 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
         super.defineSynchedData();
         this.entityData.define(TEXTURE_VARIANT, 0);
         this.entityData.define(BREAK, 0);
-        this.entityData.define(GAVE_CHANCE, false);
         this.entityData.define(PTICKS, 0);
-        this.entityData.define(TEXTURE_VARIANT2, 0);
+        this.entityData.define(WEATHER_ON_COOLDOWN, false);
         this.entityData.define(TEXTURE_VARIANT1, 0);
     }
 
@@ -204,14 +176,6 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
         this.entityData.set(TEXTURE_VARIANT, value);
     }
 
-    public boolean getGaveChance() {
-        return this.entityData.get(GAVE_CHANCE);
-    }
-
-    public void setGaveChance(boolean value) {
-        this.entityData.set(GAVE_CHANCE, value);
-    }
-
     public int getPticks() {
         return this.entityData.get(PTICKS);
     }
@@ -220,12 +184,12 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
         this.entityData.set(PTICKS, value);
     }
 
-    public int getTextureVariant2() {
-        return this.entityData.get(TEXTURE_VARIANT2);
+    public boolean isWeatherOnCooldown() {
+        return this.entityData.get(WEATHER_ON_COOLDOWN);
     }
 
-    public void setTextureVariant2(int value) {
-        this.entityData.set(TEXTURE_VARIANT2, value);
+    public void setWeatherOnCooldown(boolean value) {
+        this.entityData.set(WEATHER_ON_COOLDOWN, value);
     }
 
     public int getTextureVariant1() {
@@ -276,10 +240,6 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
 
     public boolean setInLaserMode(boolean isLaserMode) {
         return isLaserMode;
-    }
-
-    public boolean getShouldLaserAfterTornado() {
-        return this.shouldLaserAfterTornado;
     }
 
     @Override
@@ -424,7 +384,6 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
                         && CloudGolemServant.this.shouldGiveHitChance()
                         && CloudGolemServant.this.getTarget() != null
                         && CloudGolemServant.this.isAngry()
-                        && CloudGolemServant.this.getAttackState() != 13
                         && CloudGolemServant.this.getAttackState() != 27
                         && CloudGolemServant.this.attackLock == 0;
             }
@@ -514,7 +473,6 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
                         && !CloudGolemServant.this.shouldGiveHitChance()
                         && CloudGolemServant.this.getTarget() != null
                         && CloudGolemServant.this.isAngry()
-                        && CloudGolemServant.this.getAttackState() != 13
                         && CloudGolemServant.this.getAttackState() != 27
                         && CloudGolemServant.this.attackLock == 0;
             }
@@ -552,7 +510,6 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
                 return super.canUse() && !CloudGolemServant.this.canLaser()
                         && CloudGolemServant.this.getRandom().nextFloat() * 35.0F < 14.0F
                         && CloudGolemServant.this.electricBurstCooldown <= 0
-                        && CloudGolemServant.this.getAttackState() != 13
                         && CloudGolemServant.this.attackLock == 0
                         && !CloudGolemServant.this.shouldLaserAfterTornado;
             }
@@ -571,7 +528,6 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
                         && CloudGolemServant.this.isAngry()
                         && CloudGolemServant.this.getRandom().nextFloat() * 35.0F < 20.0F
                         && CloudGolemServant.this.electricBurstCooldown <= 0
-                        && CloudGolemServant.this.getAttackState() != 13
                         && CloudGolemServant.this.attackLock == 0
                         && !CloudGolemServant.this.shouldLaserAfterTornado;
             }
@@ -597,7 +553,6 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
                         && CloudGolemServant.this.getRandom().nextFloat() * 35.0F < 16.0F
                         && CloudGolemServant.this.getTarget() != null
                         && !CloudGolemServant.this.getTarget().isPassenger()
-                        && CloudGolemServant.this.getAttackState() != 13
                         && CloudGolemServant.this.attackLock == 0
                         && !CloudGolemServant.this.shouldLaserAfterTornado;
             }
@@ -687,7 +642,6 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
             @Override
             public boolean canUse() {
                 return super.canUse() && !CloudGolemServant.this.isAngry()
-                        && CloudGolemServant.this.getAttackState() != 13
                         && CloudGolemServant.this.cloudSwarmCooldown <= 0
                         && CloudGolemServant.this.attackLock == 0
                         && !CloudGolemServant.this.shouldLaserAfterTornado
@@ -724,10 +678,6 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
         if (this.ArrowDamageCooldown > 0) {
             --this.ArrowDamageCooldown;
         }
-        LivingEntity currentTarget = this.getTarget();
-        if (currentTarget != null) {
-            this.DamageCap = currentTarget instanceof Player ? 6 : 27;
-        }
         if (this.getAttackState() == 0 && this.attackLock == 1 && !this.isAngry()) {
             this.setAttackState(21);
         }
@@ -751,7 +701,6 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
         if (this.level().isClientSide) {
             this.idleAnimationState.animateWhen(this.getAttackState() == 0, this.tickCount);
             this.LayerTicks += 1.0F;
-            this.LayerBrightness += (0.0F - this.LayerBrightness) * 0.8F;
         }
         if (this.isBroken() && !this.isAngry()) {
             this.setTextureVariant(2);
@@ -763,14 +712,7 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
             this.attackLock = 1;
         }
         if (this.getAttackState() != 9) {
-            this.particle1 = false;
             this.setTextureVariant1(0);
-        }
-        if (this.getAttackState() != 11) {
-            this.setTextureVariant2(0);
-        }
-        if (this.getAttackState() != 13) {
-            this.setDiscardFriction(false);
         }
         this.updateWithAttack();
         if (this.laserCooldown > 0 && this.isAngry()) {
@@ -803,12 +745,6 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
         if (this.tornado > 0) {
             --this.tornado;
         }
-        if (this.blockhitCooldown > 0) {
-            --this.blockhitCooldown;
-        }
-        if (this.pullCooldown > 0) {
-            --this.pullCooldown;
-        }
         if (this.flySmashCooldown > 0) {
             --this.flySmashCooldown;
         }
@@ -818,8 +754,11 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
         if (this.bigsmash2Cooldown > 0) {
             --this.bigsmash2Cooldown;
         }
-        if (this.isAngry() && this.stunCooldown > 0) {
-            --this.stunCooldown;
+        if (!this.level().isClientSide && this.weatherCooldown > 0) {
+            --this.weatherCooldown;
+            if (this.weatherCooldown <= 0) {
+                this.setWeatherOnCooldown(false);
+            }
         }
     }
 
@@ -840,7 +779,7 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
         if (this.getAttackState() != 14 || this.getAttackState() != 17) {
             this.setNoGravity(false);
         }
-        if (this.level().isClientSide) {
+        if (this.level().isClientSide && !this.isWeatherOnCooldown()) {
             if (this.isAngry()) {
                 this.level().addParticle(ModParticles.BEAM.get(), this.getRandomX(1.0D), this.getRandomY(), this.getRandomZ(1.0D), 0.0D, 0.025D, 0.0D);
             } else {
@@ -1067,18 +1006,72 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
             }
             return InteractionResult.SUCCESS;
         }
+        if (isOwner && itemstack.is(ModItems.CLOUD_ROD.get()) && this.getHealth() < this.getMaxHealth()) {
+            if (!this.level().isClientSide) {
+                this.heal(10.0F);
+                this.playSound(SoundEvents.BEACON_ACTIVATE, 1.0F, 1.2F);
+                this.gameEvent(GameEvent.EAT, this);
+                if (this.level() instanceof ServerLevel serverLevel) {
+                    for (int i = 0; i < 8; ++i) {
+                        double d0 = this.random.nextGaussian() * 0.02D;
+                        double d1 = this.random.nextGaussian() * 0.02D + 0.1D;
+                        double d2 = this.random.nextGaussian() * 0.02D;
+                        serverLevel.sendParticles(ParticleTypes.HEART,
+                                this.getRandomX(1.0D),
+                                this.getY() + this.getBbHeight() + 0.3F + this.random.nextDouble() * 0.5D,
+                                this.getRandomZ(1.0D),
+                                0, d0, d1, d2, 0.5F);
+                    }
+                }
+                if (!pPlayer.getAbilities().instabuild) {
+                    itemstack.shrink(1);
+                }
+            }
+            pPlayer.swing(pHand);
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
+        }
+        if (isOwner && itemstack.isEmpty() && !this.isSleep() && this.weatherCooldown <= 0) {
+            if (this.level() instanceof ServerLevel serverLevel) {
+                if (this.isAngry()) {
+                    serverLevel.setWeatherParameters(0, WEATHER_DURATION, true, true);
+                    this.playSound(SoundEvents.TRIDENT_THUNDER, 3.0F, 1.0F);
+                    this.level().broadcastEntityEvent(this, EVENT_WEATHER_THUNDER);
+                } else {
+                    serverLevel.setWeatherParameters(WEATHER_DURATION, 0, false, false);
+                    this.playSound(SoundEvents.BEACON_ACTIVATE, 2.0F, 1.0F);
+                    this.level().broadcastEntityEvent(this, EVENT_WEATHER_CLEAR);
+                }
+                this.weatherCooldown = WEATHER_COOLDOWN_TICKS;
+                this.setWeatherOnCooldown(true);
+            }
+            return InteractionResult.SUCCESS;
+        }
         return super.mobInteract(pPlayer, pHand);
+    }
+
+    @Override
+    public void handleEntityEvent(byte id) {
+        if (id != EVENT_WEATHER_CLEAR && id != EVENT_WEATHER_THUNDER) {
+            super.handleEntityEvent(id);
+            return;
+        }
+        if (this.getAttackState() == 0) {
+            this.stopAllAnimationStates();
+            if (id == EVENT_WEATHER_CLEAR) {
+                this.ExplodeAnimationState.start(this.tickCount);
+            } else {
+                this.lightningSummonAnimationState.start(this.tickCount);
+            }
+        }
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        compound.putBoolean("DiedOnce", this.DiedOnce);
         compound.putInt("TextureVariant", this.getTextureVariant());
-        compound.putBoolean("gaveChance", this.getGaveChance());
         compound.putBoolean("is_Sleep", this.isSleep());
         compound.putInt("break", this.entityData.get(BREAK));
-        compound.putInt("StunCooldown", this.stunCooldown);
+        compound.putInt("WeatherCooldown", this.weatherCooldown);
     }
 
     @Override
@@ -1086,9 +1079,8 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
         super.readAdditionalSaveData(compound);
         this.entityData.set(BREAK, compound.getInt("break"));
         this.setSleep(compound.getBoolean("is_Sleep"));
-        this.stunCooldown = compound.getInt("StunCooldown");
-        this.setGaveChance(compound.getBoolean("gaveChance"));
-        this.DiedOnce = compound.getBoolean("DiedOnce");
+        this.weatherCooldown = compound.getInt("WeatherCooldown");
+        this.setWeatherOnCooldown(this.weatherCooldown > 0);
         this.setTextureVariant(compound.getInt("TextureVariant"));
     }
 
@@ -1131,20 +1123,8 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
         if (input.equals("idle")) {
             return this.idleAnimationState;
         }
-        if (input.equals("attackarmright")) {
-            return this.attackarm1AnimationState;
-        }
-        if (input.equals("attackarmleft")) {
-            return this.attackarm2AnimationState;
-        }
-        if (input.equals("attackarms")) {
-            return this.attackarmsAnimationState;
-        }
         if (input.equals("attacklightning")) {
             return this.lightningSummonAnimationState;
-        }
-        if (input.equals("cloudattack")) {
-            return this.cloudSummonAnimationState;
         }
         if (input.equals("cloudattackbig")) {
             return this.cloudSummonBigAnimationState;
@@ -1155,12 +1135,6 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
         if (input.equals("explode")) {
             return this.ExplodeAnimationState;
         }
-        if (input.equals("resp")) {
-            return this.respawnAState;
-        }
-        if (input.equals("flip")) {
-            return this.flipAnimationState;
-        }
         if (input.equals("p2")) {
             return this.p2AState;
         }
@@ -1169,9 +1143,6 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
         }
         if (input.equals("laser")) {
             return this.laserAnimationState;
-        }
-        if (input.equals("laser2")) {
-            return this.laser2AnimationState;
         }
         if (input.equals("blockhitdb")) {
             return this.bhdbAnimationState;
@@ -1184,15 +1155,6 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
         }
         if (input.equals("fall")) {
             return this.fallAnimationState;
-        }
-        if (input.equals("pull")) {
-            return this.runAnimationState;
-        }
-        if (input.equals("pullpre")) {
-            return this.runpreAnimationState;
-        }
-        if (input.equals("postpull")) {
-            return this.postRunAnimationState;
         }
         if (input.equals("stompleft")) {
             return this.stompLeftAState;
@@ -1209,9 +1171,6 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
         if (input.equals("charge")) {
             return this.chargeAnimationState;
         }
-        if (input.equals("endcharge")) {
-            return this.chargeEndAnimationState;
-        }
         if (input.equals("aendcharge")) {
             return this.chargeAggresiveEndAnimationState;
         }
@@ -1223,9 +1182,6 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
         }
         if (input.equals("prefracturefall")) {
             return this.PreFractureFallAnimationState;
-        }
-        if (input.equals("blockhitstun")) {
-            return this.BlockHitStunAState;
         }
         return new AnimationState();
     }
@@ -1248,26 +1204,6 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
                     this.stopAllAnimationStates();
                     this.awakeAnimationState.startIfStopped(this.tickCount);
                     break;
-                case 3:
-                    this.stopAllAnimationStates();
-                    this.attackarm1AnimationState.startIfStopped(this.tickCount);
-                    break;
-                case 4:
-                    this.stopAllAnimationStates();
-                    this.attackarm2AnimationState.startIfStopped(this.tickCount);
-                    break;
-                case 5:
-                    this.stopAllAnimationStates();
-                    this.lightningSummonAnimationState.startIfStopped(this.tickCount);
-                    break;
-                case 6:
-                    this.stopAllAnimationStates();
-                    this.attackarmsAnimationState.startIfStopped(this.tickCount);
-                    break;
-                case 7:
-                    this.stopAllAnimationStates();
-                    this.cloudSummonAnimationState.startIfStopped(this.tickCount);
-                    break;
                 case 8:
                     this.stopAllAnimationStates();
                     this.deathAnimationState.startIfStopped(this.tickCount);
@@ -1275,21 +1211,6 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
                 case 9:
                     this.stopAllAnimationStates();
                     this.ExplodeAnimationState.startIfStopped(this.tickCount);
-                    break;
-                case 10:
-                    this.stopAllAnimationStates();
-                    this.runpreAnimationState.startIfStopped(this.tickCount);
-                    break;
-                case 11:
-                    this.stopAllAnimationStates();
-                    this.runAnimationState.startIfStopped(this.tickCount);
-                    break;
-                case 12:
-                    this.stopAllAnimationStates();
-                    this.postRunAnimationState.startIfStopped(this.tickCount);
-                    break;
-                case 13:
-                    this.attackTicks = 0;
                     break;
                 case 14:
                     this.stopAllAnimationStates();
@@ -1323,18 +1244,10 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
                     this.stopAllAnimationStates();
                     this.p2AState.startIfStopped(this.tickCount);
                     break;
-                case 22:
-                    this.stopAllAnimationStates();
-                    this.laser2AnimationState.startIfStopped(this.tickCount);
-                    break;
                 case 23:
                     this.setPticks(0);
                     this.stopAllAnimationStates();
                     this.stompAState.startIfStopped(this.tickCount);
-                    break;
-                case 24:
-                    this.stopAllAnimationStates();
-                    this.flipAnimationState.startIfStopped(this.tickCount);
                     break;
                 case 25:
                     this.stopAllAnimationStates();
@@ -1353,10 +1266,6 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
                     this.stopAllAnimationStates();
                     this.chargeAnimationState.startIfStopped(this.tickCount);
                     break;
-                case 29:
-                    this.stopAllAnimationStates();
-                    this.chargeEndAnimationState.startIfStopped(this.tickCount);
-                    break;
                 case 30:
                     this.stopAllAnimationStates();
                     this.chargeAggresiveEndAnimationState.startIfStopped(this.tickCount);
@@ -1373,10 +1282,6 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
                     this.stopAllAnimationStates();
                     this.PreFractureFallAnimationState.startIfStopped(this.tickCount);
                     break;
-                case 34:
-                    this.stopAllAnimationStates();
-                    this.BlockHitStunAState.startIfStopped(this.tickCount);
-                    break;
                 default:
                     break;
             }
@@ -1385,40 +1290,28 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
     }
 
     public void stopAllAnimationStates() {
-        this.BlockHitStunAState.stop();
         this.sleepAnimationState.stop();
         this.PreFractureFallAnimationState.stop();
         this.FractureLandAnimationState.stop();
         this.awakeAnimationState.stop();
-        this.attackarmsAnimationState.stop();
         this.lightningSummonAnimationState.stop();
-        this.attackarm1AnimationState.stop();
-        this.attackarm2AnimationState.stop();
         this.mhitAnimationState.stop();
         this.chargepreAnimationState.stop();
         this.chargeAnimationState.stop();
-        this.chargeEndAnimationState.stop();
         this.chargeAggresiveEndAnimationState.stop();
         this.blockAState.stop();
         this.deathAnimationState.stop();
         this.stompLeftAState.stop();
-        this.flipAnimationState.stop();
-        this.respawnAState.stop();
         this.laserAnimationState.stop();
         this.flyAState.stop();
         this.stompAState.stop();
-        this.laser2AnimationState.stop();
         this.p2AState.stop();
         this.cloudSummonBigAnimationState.stop();
         this.bhAnimationState.stop();
         this.bhdbAnimationState.stop();
         this.fallAnimationState.stop();
         this.landAnimationState.stop();
-        this.postRunAnimationState.stop();
-        this.runAnimationState.stop();
-        this.runpreAnimationState.stop();
         this.ExplodeAnimationState.stop();
-        this.cloudSummonAnimationState.stop();
     }
 
     public void launchAOE() {
@@ -1442,16 +1335,7 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
         }
     }
 
-    private void launchMini(LivingEntity entity, boolean huge) {
-        double deltaX = entity.getX() - this.getX();
-        double deltaZ = entity.getZ() - this.getZ();
-        double distanceSquared = Math.max(deltaX * deltaX + deltaZ * deltaZ, 0.001D);
-        float multiplier = huge ? 1.2F : 0.5F;
-        entity.push(deltaX / distanceSquared * multiplier, huge ? 0.3D : 0.2D, deltaZ / distanceSquared * multiplier);
-    }
-
-    private void AreaAttack(float range, float height, float arc, float damage, int shieldbreakticks, boolean stun,
-                            float knockback, boolean BNknockback, float Lstrenght, boolean launch) {
+    private void AreaAttack(float range, float height, float arc, float damage, int shieldbreakticks) {
         List<LivingEntity> entitiesHit = this.getEntityLivingBaseNearby(range, height, range, range);
         for (LivingEntity entityHit : entitiesHit) {
             float entityHitAngle = (float) ((Math.atan2(entityHit.getZ() - this.getZ(), entityHit.getX() - this.getX())
@@ -1477,20 +1361,6 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
                 if (hurt) {
                     EntityUtil.cancelBuffs(entityHit);
                 }
-                if ((this.getAttackState() == 4 || this.getAttackState() == 3) && this.attackTicks == 20) {
-                    if (BNknockback && !entityHit.isBlocking()) {
-                        double knockbackRadius = 5.0D;
-                        double dx = entityHit.getX() - this.getX();
-                        double dz = entityHit.getZ() - this.getZ();
-                        double distance = Math.sqrt(dx * dx + dz * dz);
-                        double knockbackStrength = knockback + 0.5D * (knockbackRadius - distance);
-                        entityHit.push(dx / distance * knockbackStrength, 0.4D, dz / distance * knockbackStrength);
-                    }
-                    CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.15F, 0, 20);
-                }
-                if (this.getAttackState() == 4) {
-                    this.launchMini(entityHit, true);
-                }
                 if (this.getAttackState() == 30 && hurt) {
                     this.playSound(SoundEvents.ANVIL_PLACE, 2.0F, 1.0F);
                     entityHit.addEffect(new MobEffectInstance(ModEffects.STUN.get(), 55, 0));
@@ -1503,15 +1373,6 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
                 }
                 if (this.getAttackState() == 21) {
                     this.launchAOE();
-                }
-                if (this.getAttackState() == 12) {
-                    this.launchAOE();
-                }
-                if (this.getAttackState() == 3) {
-                    this.launchMini(entityHit, true);
-                }
-                if (this.getAttackState() == 6) {
-                    this.launch(entityHit, true);
                 }
                 if (this.getAttackState() == 31) {
                     this.launch(entityHit, true);
@@ -1544,14 +1405,14 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
                 this.playSound(SoundEvents.DRAGON_FIREBALL_EXPLODE, 1.0F, 1.0F);
                 LivingEntity target = this.getTarget();
                 int a = target != null ? (int) (target.getMaxHealth() * 0.03D) : 0;
-                this.AreaAttack(4.0F, 4.0F, 130.0F, 16.0F + a, 0, false, 0.5F, false, 0.25F, true);
+                this.AreaAttack(4.0F, 4.0F, 130.0F, 16.0F + a, 0);
             }
         }
         if (this.getAttackState() == 31) {
             if (this.attackTicks == 20) {
                 LivingEntity target = this.getTarget();
                 int a = target != null ? (int) (target.getMaxHealth() * 0.03D) : 0;
-                this.AreaAttack(4.0F, 4.0F, 130.0F, 16.0F + a, 0, false, 0.5F, false, 0.25F, true);
+                this.AreaAttack(4.0F, 4.0F, 130.0F, 16.0F + a, 0);
                 ParticleUtils.controlledSmashParticles(this, 1.5F, 0.0F, 0.0F, 1.5F, 1.0F);
                 this.playSound(SoundEvents.LIGHTNING_BOLT_THUNDER, 10.0F, 1.0F);
                 this.playSound(SoundEvents.DRAGON_FIREBALL_EXPLODE, 1.0F, 1.0F);
@@ -1563,7 +1424,7 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
                 this.playSound(SoundEvents.DRAGON_FIREBALL_EXPLODE, 1.0F, 1.0F);
                 LivingEntity target = this.getTarget();
                 int a = target != null ? (int) (target.getMaxHealth() * 0.03D) : 0;
-                this.AreaAttack(4.0F, 4.0F, 130.0F, 16.0F + a, 0, false, 0.5F, false, 0.25F, true);
+                this.AreaAttack(4.0F, 4.0F, 130.0F, 16.0F + a, 0);
                 this.thunderLine(0.3F);
             }
             if (this.attackTicks == 68) {
@@ -1571,7 +1432,7 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
                 this.playSound(SoundEvents.LIGHTNING_BOLT_THUNDER, 10.0F, 1.0F);
                 LivingEntity target = this.getTarget();
                 int a = target != null ? (int) (target.getMaxHealth() * 0.03D) : 0;
-                this.AreaAttack(5.0F, 4.0F, 130.0F, 18.0F + a, 0, false, 0.5F, false, 0.25F, true);
+                this.AreaAttack(5.0F, 4.0F, 130.0F, 18.0F + a, 0);
                 this.playSound(SoundEvents.DRAGON_FIREBALL_EXPLODE, 1.0F, 1.0F);
                 switch (this.random.nextInt(3)) {
                     case 0:
@@ -1604,7 +1465,7 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
             if (target != null) {
                 this.playSound(SoundEvents.PLAYER_ATTACK_SWEEP, 3.0F, 0.25F);
             }
-            this.AreaAttack(5.0F, 4.0F, 230.0F, 22.0F + a, 70, false, 0.5F, false, 0.25F, true);
+            this.AreaAttack(5.0F, 4.0F, 230.0F, 22.0F + a, 70);
         }
         if (this.getAttackState() == 25) {
             if (this.attackTicks == 41) {
@@ -1616,23 +1477,6 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
                 ParticleUtils.controlledSmashParticles(this, 2.0F, 0.0F, 0.0F, 0.5F, 1.0F);
                 this.playSound(SoundEvents.DRAGON_FIREBALL_EXPLODE, 3.0F, 1.0F);
                 this.spawnElectricRing(7, 30.0F, 7.0F, this.getY(0.15D));
-            }
-        }
-        if (this.getAttackState() == 24) {
-            if (this.attackTicks == 15) {
-                this.playSound(ModSounds.ENDERSENT_ATTACK.get(), 3.0F, 1.0F);
-                LivingEntity target = this.getTarget();
-                int a = target != null ? (int) (target.getMaxHealth() * 0.03D) : 0;
-                this.AreaAttack(5.0F, 4.0F, 90.0F, 16.0F + a, 40, false, 0.5F, false, 0.25F, true);
-            }
-            if (this.attackTicks == 17) {
-                this.dash(2.0F, 1.6F, 0.0F);
-            }
-            if (this.attackTicks == 25) {
-                this.playSound(ModSounds.ENDERSENT_ATTACK.get(), 3.0F, 1.0F);
-                LivingEntity target = this.getTarget();
-                int a = target != null ? (int) (target.getMaxHealth() * 0.04D) : 0;
-                this.AreaAttack(5.0F, 4.0F, 90.0F, 18.0F + a, 40, false, 0.5F, false, 0.25F, true);
             }
         }
         if (this.getAttackState() == 23) {
@@ -1675,7 +1519,7 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
             this.playSound(SoundEvents.DRAGON_FIREBALL_EXPLODE, 3.0F, 1.0F);
             LivingEntity target = this.getTarget();
             int a = target != null ? (int) (target.getMaxHealth() * 0.03D) : 0;
-            this.AreaAttack(5.6F, 4.0F, 130.0F, 19.5F + a, 50, false, 0.5F, false, 0.25F, true);
+            this.AreaAttack(5.6F, 4.0F, 130.0F, 19.5F + a, 50);
         }
         if (this.getAttackState() == 21 && this.attackTicks == 25) {
             if (this.getTarget() != null) {
@@ -1686,7 +1530,7 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
             this.playSound(SoundEvents.TRIDENT_THUNDER, 3.0F, 1.0F);
             LivingEntity target = this.getTarget();
             int a = target != null ? (int) (target.getMaxHealth() * 0.06D) : 0;
-            this.AreaAttack(6.0F, 4.0F, 180.0F, 14.0F + a, 60, false, 0.5F, false, 0.25F, true);
+            this.AreaAttack(6.0F, 4.0F, 180.0F, 14.0F + a, 60);
             this.attackLock = 0;
         }
         if (this.getAttackState() == 20 && this.attackTicks >= 25 && this.attackTicks <= 35) {
@@ -1700,7 +1544,7 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
                 this.playSound(SoundEvents.DRAGON_FIREBALL_EXPLODE, 3.0F, 1.0F);
                 LivingEntity target = this.getTarget();
                 int a = target != null ? (int) (target.getMaxHealth() * 0.03D) : 0;
-                this.AreaAttack(5.6F, 3.0F, 180.0F, 18.0F + a, 0, false, 0.5F, false, 0.25F, true);
+                this.AreaAttack(5.6F, 3.0F, 180.0F, 18.0F + a, 0);
             }
             if (this.attackTicks == 35) {
                 this.dash(1.3F, 0.9F, 4.0F);
@@ -1724,7 +1568,7 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
                 this.playSound(ModSounds.ENDERSENT_ATTACK.get(), 1.0F, 1.0F);
                 LivingEntity target = this.getTarget();
                 int a = target != null ? (int) (target.getMaxHealth() * 0.05D) : 0;
-                this.AreaAttack(5.0F, 4.0F, 180.0F, 19.0F + a, 60, false, 0.5F, false, 0.25F, true);
+                this.AreaAttack(5.0F, 4.0F, 180.0F, 19.0F + a, 60);
             }
         }
         if (this.getAttackState() == 17) {
@@ -1815,26 +1659,12 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
                 this.setDeltaMovement(this.getDeltaMovement().add(0.0D, 0.0D, 0.0D));
             }
         }
-        if (this.getAttackState() == 13) {
-            if (this.attackTicks == 1) {
-                this.setDiscardFriction(true);
-            }
-            if (this.attackTicks == 40) {
-                this.attackLock = 0;
-                this.summonBolt(1.0F, 0.0F, 0.0F);
-                this.setTextureVariant(1);
-            }
-        }
         if (this.getAttackState() == 16 && this.attackTicks == 3) {
             CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.1F, 0, 20);
             this.playSound(SoundEvents.DRAGON_FIREBALL_EXPLODE, 3.0F, 1.0F);
             LivingEntity target = this.getTarget();
             int a = target != null ? (int) (target.getMaxHealth() * 0.08D) : 0;
-            this.AreaAttack(6.5F, 5.0F, 360.0F, 25.0F + a, 140, false, 0.5F, false, 0.25F, true);
-        }
-        if (this.getAttackState() == 11) {
-            this.AreaAttack(5.0F, 4.0F, 360.0F, 5.0F, 0, false, 0.5F, false, 0.25F, false);
-            this.setTextureVariant2(1);
+            this.AreaAttack(6.5F, 5.0F, 360.0F, 25.0F + a, 140);
         }
         if (this.getAttackState() == 9) {
             int damageCloud = 8;
@@ -1847,7 +1677,6 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
                     }
                 }
                 this.playSound(SoundEvents.ENCHANTMENT_TABLE_USE, 3.0F, 0.769F);
-                this.particle1 = true;
                 this.setTextureVariant1(1);
             }
             if (this.attackTicks == 25) {
@@ -1887,12 +1716,8 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
                 }
             }
             if (this.attackTicks == 29) {
-                this.particle1 = false;
                 this.setTextureVariant1(0);
             }
-        }
-        if (this.getAttackState() == 5 && this.attackTicks == 13 && this.getTarget() != null) {
-            this.spawnLightningBolts();
         }
     }
 
@@ -1954,32 +1779,6 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
                     this.spawnThunder(this.getX() + Mth.cos(a) * distance, this.getZ() + Mth.sin(a) * distance,
                             minY, maxY, a, l);
                 }
-            }
-        }
-    }
-
-    private void spawnLightningBolts() {
-        LivingEntity target = this.getTarget();
-        if (target == null) {
-            return;
-        }
-        float angle = (float) Mth.atan2(target.getZ() - this.getZ(), target.getX() - this.getX());
-        float offsetX = Mth.cos(this.getYRot() * ((float) Math.PI / 180)) * 1.1F;
-        float offsetZ = Mth.sin(this.getYRot() * ((float) Math.PI / 180)) * 1.1F;
-        for (int l = 0; l < 10; ++l) {
-            double distance = 1.25D * (l + 1);
-            this.strikeLightning(this.getX() + offsetX + Mth.cos(angle) * distance, this.getZ() + offsetZ + Mth.sin(angle) * distance);
-            this.strikeLightning(this.getX() - offsetX + Mth.cos(angle) * distance, this.getZ() - offsetZ + Mth.sin(angle) * distance);
-        }
-    }
-
-    private void strikeLightning(double x, double z) {
-        if (this.level() instanceof ServerLevel serverLevel) {
-            BlockPos blockpos = new BlockPos((int) x, (int) this.getY(), (int) z);
-            LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create(serverLevel);
-            if (lightningBolt != null) {
-                lightningBolt.moveTo(blockpos.getX(), blockpos.getY(), blockpos.getZ(), this.getYRot(), 0.0F);
-                serverLevel.addFreshEntity(lightningBolt);
             }
         }
     }

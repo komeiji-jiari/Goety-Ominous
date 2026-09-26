@@ -36,6 +36,10 @@ public class LmItems {
             "cloud_golem_servant_spawn_egg",
             () -> new ServantSpawnEggItem(LmEntityRegistry.CLOUD_GOLEM_SERVANT, 0xD8DCE6, 0x5B6B8C, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> SHULKER_MIMIC_SPAWN_EGG = LM_ITEMS.register(
+            "shulker_mimic_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(LmEntityRegistry.SHULKER_MIMIC_SERVANT, 0x9C6BB0, 0x2B1B36, egg()));
+
     public static void register(IEventBus modEventBus) {
         LM_ITEMS.register(modEventBus);
     }

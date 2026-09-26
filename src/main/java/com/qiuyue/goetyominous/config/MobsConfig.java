@@ -37,6 +37,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> OvergrownColossusServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> HoveringHurricaneServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> CloudGolemServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerMimicServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> HeresiarchServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> WargLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> CerberusLimit;
@@ -296,6 +297,10 @@ public class MobsConfig {
         CloudGolemServantLimit = BUILDER
                 .comment("Maximum number of Cloud Golem Servants that can be summoned (Default: 1)")
                 .defineInRange("cloudGolemServantLimit", 1, 1, 100);
+
+        ShulkerMimicServantLimit = BUILDER
+                .comment("Maximum number of Shulker Mimic Servants that can be summoned (Default: 1)")
+                .defineInRange("shulkerMimicServantLimit", 1, 1, 100);
 
         GrottoceratopsServantLimit = BUILDER
                 .comment("Maximum number of Grottoceratops Servants that can be summoned (Default: 16)")
