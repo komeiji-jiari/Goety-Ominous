@@ -4,14 +4,12 @@ import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
-import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
 import com.qiuyue.goetyominous.common.events.MineGuardianExplosionProtectionHandler;
 import com.github.alexmodguy.alexscaves.server.entity.ai.VerticalSwimmingMoveControl;
 import com.github.alexmodguy.alexscaves.server.entity.util.MineExplosion;
 import com.github.alexmodguy.alexscaves.server.level.storage.ACWorldData;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -19,9 +17,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -35,8 +30,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.*;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -46,6 +39,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class MineGuardianServant extends Summoned {
 
@@ -59,6 +53,9 @@ public class MineGuardianServant extends Summoned {
     private int maxSleepTime = 200 + random.nextInt(100);
     private int lastScanTime = 0;
     private int timeSinceHadTarget = 0;
+    private int maxChainLength = 8;
+    private int anchorMissingTime = 0;
+    private UUID anchorUUID;
     private static final EntityDataAccessor<Boolean> EXPLODING = SynchedEntityData.defineId(MineGuardianServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> EYE_CLOSED = SynchedEntityData.defineId(MineGuardianServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> SCANNING = SynchedEntityData.defineId(MineGuardianServant.class, EntityDataSerializers.BOOLEAN);
@@ -153,6 +150,21 @@ public class MineGuardianServant extends Summoned {
         this.entityData.set(SCANNING, scanning);
     }
 
+    public int getMaxChainLength() {
+        return this.maxChainLength;
+    }
+
+    public void setMaxChainLength(int length) {
+        this.maxChainLength = length;
+    }
+
+    public Entity getAnchor() {
+        if (this.anchorUUID == null || this.level().isClientSide) {
+            return null;
+        }
+        return ((ServerLevel) this.level()).getEntity(this.anchorUUID);
+    }
+
     @Override
     public boolean canBreatheUnderwater() {
         return true;
@@ -200,8 +212,29 @@ public class MineGuardianServant extends Summoned {
             this.setDeltaMovement(this.getDeltaMovement().multiply(0.3F, 1, 0.3F));
         }
         if (!level().isClientSide) {
+            Entity anchor = this.getAnchor();
+            if (anchor == null) {
+                if (this.anchorUUID == null || ++this.anchorMissingTime > 20) {
+                    this.anchorMissingTime = 0;
+                    this.setMaxChainLength(7 + this.random.nextInt(6));
+                    MineGuardianAnchorServantEntity created = new MineGuardianAnchorServantEntity(this);
+                    this.level().addFreshEntity(created);
+                    this.anchorUUID = created.getUUID();
+                }
+            } else {
+                this.anchorMissingTime = 0;
+                if (anchor instanceof MineGuardianAnchorServantEntity anchorEntity) {
+                    anchorEntity.linkWithGuardian(this);
+                }
+            }
             if (this.isInWaterOrBubble()) {
                 this.setAirSupply(300);
+            } else if (this.onGround()) {
+                this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.6F, 0.6D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.6F));
+                this.setYRot(this.random.nextFloat() * 360.0F);
+                this.setOnGround(false);
+                this.playSound(ACSoundRegistry.MINE_GUARDIAN_FLOP.get());
+                this.hasImpulse = true;
             }
             Entity target = this.getTarget();
             if (target == null || !target.isAlive()) {
@@ -302,28 +335,6 @@ public class MineGuardianServant extends Summoned {
         }
     }
 
-    public static boolean checkMineGuardianSpawnRules(EntityType entityType, ServerLevelAccessor level, MobSpawnType mobSpawnType, BlockPos blockPos, RandomSource randomSource) {
-        if (!level.getFluidState(blockPos).is(FluidTags.WATER)) {
-            return false;
-        } else {
-            boolean flag = level.getDifficulty() != Difficulty.PEACEFUL && Monster.isDarkEnoughToSpawn(level, blockPos, randomSource) && (mobSpawnType == MobSpawnType.SPAWNER || level.getFluidState(blockPos).is(FluidTags.WATER));
-            if (randomSource.nextInt(10) == 0 && blockPos.getY() < level.getSeaLevel() - 50 && flag) {
-                BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(blockPos.getX(), blockPos.getY(), blockPos.getZ());
-                while (!level.getFluidState(pos).isEmpty() && pos.getY() < level.getSeaLevel()) {
-                    pos.move(0, 1, 0);
-                }
-                int belowAirBy = pos.getY() - blockPos.getY();
-                pos.set(blockPos);
-                while (!level.getFluidState(pos).isEmpty() && pos.getY() > level.getMinBuildHeight()) {
-                    pos.move(0, -1, 0);
-                }
-                BlockState groundState = level.getBlockState(pos);
-                return belowAirBy > 15 && (groundState.is(ACBlockRegistry.MUCK.get()) || groundState.is(ACBlockRegistry.ABYSSMARINE.get()) || groundState.is(Blocks.DEEPSLATE));
-            }
-            return false;
-        }
-    }
-
     public float getScanProgress(float partialTick) {
         return (prevScanProgress + (scanProgress - prevScanProgress) * partialTick) * 0.2F;
     }
@@ -338,6 +349,10 @@ public class MineGuardianServant extends Summoned {
 
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
+        if (compound.hasUUID("AnchorUUID")) {
+            this.anchorUUID = compound.getUUID("AnchorUUID");
+        }
+        this.setMaxChainLength(compound.getInt("MaxChainLength"));
         this.scanTime = compound.getInt("ScanTime");
         this.setEyeClosed(compound.getBoolean("EyeClosed"));
         this.timeSinceHadTarget = compound.getInt("SleepTime");
@@ -348,6 +363,10 @@ public class MineGuardianServant extends Summoned {
 
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
+        if (this.anchorUUID != null) {
+            compound.putUUID("AnchorUUID", this.anchorUUID);
+        }
+        compound.putInt("MaxChainLength", this.maxChainLength);
         compound.putBoolean("EyeClosed", this.isEyeClosed());
         compound.putInt("ScanTime", this.scanTime);
         compound.putInt("SleepTime", this.timeSinceHadTarget);
@@ -434,14 +453,12 @@ public class MineGuardianServant extends Summoned {
             if (target != null) {
                 timer++;
                 double dist = MineGuardianServant.this.distanceTo(target);
-                if (MineGuardianServant.this.isInWaterOrBubble()) {
-                    MineGuardianServant.this.lookAt(EntityAnchorArgument.Anchor.EYES, target.getEyePosition());
-                    if (dist > 2.0F) {
+                MineGuardianServant.this.lookAt(EntityAnchorArgument.Anchor.EYES, target.getEyePosition());
+                if (dist > 2.0F) {
+                    if (MineGuardianServant.this.isInWaterOrBubble()) {
                         MineGuardianServant.this.getNavigation().moveTo(target, 1.6D);
-                    } else {
-                        MineGuardianServant.this.setExploding(true);
                     }
-                } else if (dist <= 1.5F) {
+                } else {
                     MineGuardianServant.this.setExploding(true);
                 }
                 if (timer > 300) {

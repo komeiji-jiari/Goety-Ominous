@@ -35,6 +35,8 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> MutantBlazeServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> RodlingServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> OvergrownColossusServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> HoveringHurricaneServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> CloudGolemServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> HeresiarchServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> WargLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> CerberusLimit;
@@ -286,6 +288,14 @@ public class MobsConfig {
         OvergrownColossusServantLimit = BUILDER
                 .comment("Maximum number of Overgrown Colossus Servants that can be summoned (Default: 2)")
                 .defineInRange("overgrownColossusServantLimit", 2, 1, 100);
+
+        HoveringHurricaneServantLimit = BUILDER
+                .comment("Maximum number of Hovering Hurricane Servants that can be summoned (Default: 8)")
+                .defineInRange("hoveringHurricaneServantLimit", 8, 1, 100);
+
+        CloudGolemServantLimit = BUILDER
+                .comment("Maximum number of Cloud Golem Servants that can be summoned (Default: 1)")
+                .defineInRange("cloudGolemServantLimit", 1, 1, 100);
 
         GrottoceratopsServantLimit = BUILDER
                 .comment("Maximum number of Grottoceratops Servants that can be summoned (Default: 16)")

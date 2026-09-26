@@ -28,6 +28,19 @@ public class IAttackGoal extends Goal {
         this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK, Goal.Flag.JUMP));
     }
 
+    public IAttackGoal(IAnimatedMonsterServant entity, int getattackstate, int attackstate,
+                       int attackendstate, int attackMaxtick, int attackseetick,
+                       float attackrange, EnumSet<Goal.Flag> interruptFlagTypes) {
+        this.entity = entity;
+        this.getattackstate = getattackstate;
+        this.attackstate = attackstate;
+        this.attackendstate = attackendstate;
+        this.attackMaxtick = attackMaxtick;
+        this.attackseetick = attackseetick;
+        this.attackrange = attackrange;
+        this.setFlags(interruptFlagTypes);
+    }
+
     @Override
     public boolean canUse() {
         LivingEntity target = this.entity.getTarget();

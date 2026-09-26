@@ -1,0 +1,24 @@
+{
+  "name": "Volts",
+  "icon": "opposing_force:electric_charge",
+  "category": "goety:ofcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "These strange fish can not only move freely on land without drying out, but can also unleash powerful electric orbs to shock others."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:volt_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:volt_servant",
+      "text": "Use Thunderbolt!"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Feeding it fish, wearing Abyss Robe, or wearing Storm Robe will all heal your Volt servant."
+    }
+  ]
+}

@@ -234,7 +234,7 @@ dependencies {
     compileOnly fg.deobf("curse.maven:blueprint-382216:8048579")
     compileOnly fg.deobf("curse.maven:upgrade-aquatic-326895:6393133")
     compileOnly fg.deobf("curse.maven:mutant-more-831753:7404733")
-    compileOnly fg.deobf("curse.maven:legendary-monsters-944035:8657289")
+    compileOnly fg.deobf("curse.maven:legendary-monsters-944035:8902349")
     compileOnly fg.deobf("curse.maven:ending-library-1471165:8292038")
     implementation fg.deobf("curse.maven:jade-324717:8479276")
     compileOnly fg.deobf("curse.maven:goety-equipped-1504908:8394665")
