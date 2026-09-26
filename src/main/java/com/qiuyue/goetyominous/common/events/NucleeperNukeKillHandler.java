@@ -75,6 +75,7 @@ public class NucleeperNukeKillHandler {
         if (!(serverLevel.getPlayerByUUID(credit.ownerId) instanceof ServerPlayer owner)) {
             return;
         }
+        victim.setLastHurtByPlayer(owner);
         if (!shouldGiveSouls(owner)) {
             return;
         }

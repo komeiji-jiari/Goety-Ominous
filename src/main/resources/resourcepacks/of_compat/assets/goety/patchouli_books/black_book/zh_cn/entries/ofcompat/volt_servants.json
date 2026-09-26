@@ -1,0 +1,24 @@
+{
+  "name": "伏特鳐",
+  "icon": "opposing_force:electric_charge",
+  "category": "goety:ofcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "这些奇怪的鱼类不仅能在陆地上行动自如不会干死，还能够释放强大的电球电击别人。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:volt_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:volt_servant",
+      "text": "使用十万伏特！"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "用鱼类喂食，穿着深渊长袍或者风暴长袍都可以治愈你的伏特鳐仆从。"
+    }
+  ]
+}

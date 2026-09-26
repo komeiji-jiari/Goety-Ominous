@@ -227,6 +227,18 @@ public class ModModelLayers {
         if (LegendaryMonstersCompat.isLegendaryMonstersLoaded()) {
             event.registerLayerDefinition(ModEntityLayers.OVERGROWN_COLOSSUS_SERVANT_LAYER,
                     com.qiuyue.goetyominous.client.render.model.lm.OvergrownColossusServantModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.HOVERING_HURRICANE_SERVANT_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.lm.HoveringHurricaneServantModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.CLOUD_GOLEM_SERVANT_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.lm.CloudGolemServantModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.LM_CLOUD_LAYER,
+                    net.miauczel.legendary_monsters.entity.ProjectileEntityRenderer.CloudModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.LM_LIGHTNING_STRIKE_LAYER,
+                    net.miauczel.legendary_monsters.entity.client.Model.LightningStrikeModel::createBodyLayer);
         }
 
         if (OpposingForceCompat.isOpposingForceLoaded()) {
@@ -567,6 +579,34 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.POISONOUS_SHOCKWAVE.get(),
                     EmptyRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.HOVERING_HURRICANE_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.lm.HoveringHurricaneServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.TORNADO.get(),
+                    EmptyRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.CLOUD_GOLEM_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.lm.CloudGolemServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.CLOUD.get(),
+                    com.qiuyue.goetyominous.client.render.lm.CloudEntityRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.ENERGY_BEAM.get(),
+                    com.qiuyue.goetyominous.client.render.lm.EnergyBeamEntityRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.ELECTRIC_BURST.get(),
+                    EmptyRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.LIGHTNING_STRIKE.get(),
+                    com.qiuyue.goetyominous.client.render.lm.LightningBoltEntityRenderer::new);
         }
 
         if (com.qiuyue.goetyominous.compat.mod.MutantMoreCompat.isMutantMoreLoaded()) {
@@ -829,6 +869,9 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.MINE_GUARDIAN_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderMineGuardianServant::new);
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.MINE_GUARDIAN_ANCHOR_SERVANT.get(),
+                    com.github.alexmodguy.alexscaves.client.render.entity.MineGuardianAnchorRenderer::new);
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.HULLBREAKER_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderHullbreakerServant::new);

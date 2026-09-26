@@ -1,6 +1,5 @@
 package com.qiuyue.goetyominous.common.entities.ally.of;
 
-import com.Polarice3.Goety.client.particles.ModParticleTypes;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.init.ModMobType;
@@ -152,7 +151,7 @@ public class TremblerServant extends Summoned implements EliteVariant {
                         double d0 = this.random.nextGaussian() * 0.02D;
                         double d1 = this.random.nextGaussian() * 0.02D + 0.1D;
                         double d2 = this.random.nextGaussian() * 0.02D;
-                        serverLevel.sendParticles(ModParticleTypes.HEAL_EFFECT.get(),
+                        serverLevel.sendParticles(ParticleTypes.HEART,
                                 this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D),
                                 0, d0, d1, d2, 0.5D);
                     }
