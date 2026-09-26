@@ -173,6 +173,7 @@ public class GoetyOminous {
 
         com.qiuyue.goetyominous.common.init.ModAttributes.init();
         FEL = com.Polarice3.Goety.api.magic.SpellType.create("FEL", "fel");
+        com.qiuyue.goetyominous.compat.mod.GoetyRevelationCompat.registerFelSpellPower(FEL);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {

@@ -5,20 +5,14 @@ import net.miauczel.legendary_monsters.Particle.custom.Circle;
 import net.miauczel.legendary_monsters.entity.AnimatedMonster.Projectile.LMFallingBlockEntity;
 import net.miauczel.legendary_monsters.entity.ai.navigation.EntityRotationPatcher;
 import net.miauczel.legendary_monsters.entity.ai.navigation.ModPathNavigation;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,55 +26,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class IAnimatedMonsterServant extends Summoned {
-    public static void applyEffectTo(LivingEntity livingEntity, MobEffect mobEffect, int timeInSeconds, int amplifier) {
-        int i = timeInSeconds * 20;
-        livingEntity.addEffect(new MobEffectInstance(mobEffect, i, amplifier));
-    }
-
-    public void sendBasicHotBarMessage(String message, Player player) {
-        net.minecraft.network.chat.Component messageComponent =
-                Component.translatable(message);
-        if (player instanceof ServerPlayer serverPlayer)
-            serverPlayer.connection.send(new ClientboundSetActionBarTextPacket(messageComponent));
-    }
-
-    public void sendAdvancedHotBarMessage(String message, ChatFormatting chatFormatting, float PlayerRange) {
-        List<Player> list = level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(PlayerRange));
-        for (Player player : list) {
-            net.minecraft.network.chat.Component messageComponent =
-                    Component.translatable(message).withStyle(chatFormatting);
-            if (player instanceof ServerPlayer serverPlayer)
-                serverPlayer.connection.send(new ClientboundSetActionBarTextPacket(messageComponent));
-        }
-    }
-
-    public void advancedDash(LivingEntity livingEntity, float vec, float offset, float Vscale) {
-        float f = Mth.cos(livingEntity.yBodyRot * ((float) Math.PI / 180F));
-        float f1 = Mth.sin(livingEntity.yBodyRot * ((float) Math.PI / 180F));
-        double theta = (livingEntity.yBodyRot) * (Math.PI / 180);
-        theta += Math.PI / 2;
-        double vecX = Math.cos(theta);
-        double vecZ = Math.sin(theta);
-        Vec3 rollPos = new Vec3(livingEntity.getX() + vec * vecX + f * offset, getY(), livingEntity.getZ() + vec * vecZ + f1 * offset);
-        Vec3 sub = position().subtract(rollPos);
-        Vec3 finalPos = sub.scale(Vscale);
-        setDeltaMovement(finalPos.x, getDeltaMovement().y, finalPos.z);
-    }
-
     @Override
     protected boolean canRide(Entity pVehicle) {
         return false;
     }
 
     public static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(IAnimatedMonsterServant.class, EntityDataSerializers.INT);
-    protected boolean dropAfterDeathAnim = false;
-    private int killDataRecentlyHit;
-    private DamageSource killDataCause;
-    private Player killDataAttackingPlayer;
     public int attackTicks;
     public int attackDelayTicks;
     public int attackCooldown;
@@ -92,21 +46,6 @@ public class IAnimatedMonsterServant extends Summoned {
 
     public int getAttackDelayTicks() {
         return attackDelayTicks;
-    }
-
-    public void applyStackingEffect(LivingEntity entity, MobEffect effect, int bonusLevel, int maxLevel, int duration) {
-
-        MobEffectInstance effectInstance = entity.getEffect(effect);
-
-        if (entity.hasEffect(effect) && effectInstance != null) {
-
-            int effectLevel = effectInstance.getAmplifier();
-            if (effectLevel < maxLevel) {
-                entity.addEffect(new MobEffectInstance(effect, duration, effectLevel + bonusLevel));
-            }
-        } else if (!(entity.hasEffect(effect) && effectInstance != null)) {
-            entity.addEffect(new MobEffectInstance(effect, duration, 0));
-        }
     }
 
     protected BodyRotationControl createBodyControl() {
@@ -182,14 +121,6 @@ public class IAnimatedMonsterServant extends Summoned {
         return getTarget();
     }
 
-    public double yaw() {
-        return Math.toRadians(-yBodyRot + 90);
-    }
-
-    public double pitch() {
-        return Math.toRadians(-getXRot() + 90);
-    }
-
     public void launch(LivingEntity entity, boolean huge) {
         double deltaX = entity.getX() - this.getX();
         double deltaZ = entity.getZ() - this.getZ();
@@ -210,22 +141,6 @@ public class IAnimatedMonsterServant extends Summoned {
         LivingEntity target = this.getTarget();
         if (target != null) {
             this.setDeltaMovement((target.getX() - this.getX()) * Multiplier, 0, (target.getZ() - this.getZ()) * Multiplier);
-        }
-    }
-
-    public void calculatedDashToPositon(float Multiplier, Vec3 position) {
-        LivingEntity target = this.getTarget();
-        if (target != null) {
-            this.setDeltaMovement((position.x - this.getX()) * Multiplier, 0, (position.z - this.getZ()) * Multiplier);
-        }
-    }
-
-    public void calculatedDashToScaledVec(float scale, Vec3 position) {
-        LivingEntity target = this.getTarget();
-        if (target != null) {
-            Vec3 start = position().subtract(position);
-            Vec3 end = start.scale(scale);
-            this.setDeltaMovement((position.x - end.x), 0, (position.z - end.x));
         }
     }
 
@@ -438,20 +353,6 @@ public class IAnimatedMonsterServant extends Summoned {
         livingEntity.level().broadcastEntityEvent(livingEntity, (byte) 30);
     }
 
-    protected void repelEntities(float x, float y, float z, float radius) {
-        List<LivingEntity> nearbyEntities = this.getEntityLivingBaseNearby((double) x, (double) y, (double) z, (double) radius);
-        Iterator var6 = nearbyEntities.iterator();
-
-        while (var6.hasNext()) {
-            Entity entity = (Entity) var6.next();
-            if (entity.isPickable() && !entity.noPhysics) {
-                double angle = (this.getAngleBetweenEntities(this, entity) + 90.0) * Math.PI / 180.0;
-                entity.setDeltaMovement(-0.1 * Math.cos(angle), entity.getDeltaMovement().y, -0.1 * Math.sin(angle));
-            }
-        }
-
-    }
-
     public boolean canBePushedByEntity(Entity entity) {
         return !isVehicle();
     }
@@ -499,10 +400,14 @@ public class IAnimatedMonsterServant extends Summoned {
 
     }
 
+    protected boolean isCarryImmune() {
+        return this.isVehicle();
+    }
+
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
 
-        if (this.isVehicle()) return false;
+        if (this.isCarryImmune()) return false;
         return super.hurt(pSource, pAmount);
     }
 

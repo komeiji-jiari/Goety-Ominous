@@ -7,13 +7,13 @@ import com.Polarice3.Goety.init.ModMobType;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.EntityEmu;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIMeleeNearby;
+import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
-import com.qiuyue.goetyominous.common.items.am.AmItems;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 
@@ -221,7 +221,7 @@ public class EmuServant extends AnimalSummon implements IAnimatedEntity {
         }
         if (!this.level().isClientSide && this.isAlive() && !this.isBaby() && --this.timeUntilNextEgg <= 0) {
             this.playSound(SoundEvents.CHICKEN_EGG, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
-            this.spawnAtLocation(AmItems.EMU_SERVANT_EGG.get());
+            this.spawnAtLocation(AMItemRegistry.EMU_EGG.get());
             this.timeUntilNextEgg = this.random.nextInt(6000) + 6000;
         }
         AnimationHandler.INSTANCE.updateAnimations(this);

@@ -239,6 +239,15 @@ public class ModModelLayers {
 
             event.registerLayerDefinition(ModEntityLayers.LM_LIGHTNING_STRIKE_LAYER,
                     net.miauczel.legendary_monsters.entity.client.Model.LightningStrikeModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.SHULKER_MIMIC_SERVANT_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.lm.ShulkerMimicServantModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.BIG_SHULKER_BULLET_LAYER,
+                    net.miauczel.legendary_monsters.entity.client.Model.BigShulkerBulletModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.GRAVITY_BIG_SHULKER_BULLET_LAYER,
+                    net.miauczel.legendary_monsters.entity.client.Model.GravityBigShulkerBulletModel::createBodyLayer);
         }
 
         if (OpposingForceCompat.isOpposingForceLoaded()) {
@@ -607,6 +616,18 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.LIGHTNING_STRIKE.get(),
                     com.qiuyue.goetyominous.client.render.lm.LightningBoltEntityRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.SHULKER_MIMIC_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.lm.ShulkerMimicServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.BIG_SHULKER_BULLET.get(),
+                    com.qiuyue.goetyominous.client.render.lm.BigShulkerBulletRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.GRAVITY_BIG_SHULKER_BULLET.get(),
+                    com.qiuyue.goetyominous.client.render.lm.GravityBigShulkerBulletRenderer::new);
         }
 
         if (com.qiuyue.goetyominous.compat.mod.MutantMoreCompat.isMutantMoreLoaded()) {
@@ -809,10 +830,6 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.EMU_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderEmuServant::new);
-
-            event.registerEntityRenderer(
-                    com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.EMU_SERVANT_EGG.get(),
-                    context -> new ThrownItemRenderer<>(context, 1.0F, true));
 
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.SERVANT_CENTIPEDE_HEAD.get(),

@@ -5,6 +5,8 @@ import com.Polarice3.Goety.common.items.magic.MagicFocus;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.of.OfEntityRegistry;
 import com.qiuyue.goetyominous.common.magic.spells.ac.ExtinctionBreathSpell;
+import com.qiuyue.goetyominous.common.magic.spells.of.DicerLaserSpell;
+import com.qiuyue.goetyominous.common.magic.spells.of.VoltBoltSpell;
 import com.qiuyue.goetyominous.common.magic.spells.of.VoltSpell;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -71,6 +73,13 @@ public class OfItems {
 
     public static final RegistryObject<Item> VOLT_FOCUS = OF_ITEMS.register("volt_focus",
             () -> new MagicFocus(new VoltSpell()));
+
+    public static final RegistryObject<Item> VOLT_BOLT_FOCUS = OF_ITEMS.register("volt_bolt_focus",
+            () -> new MagicFocus(new VoltBoltSpell()));
+
+    public static final RegistryObject<Item> DICER_LASER_FOCUS = OF_ITEMS.register("dicer_laser_focus",
+            () -> new MagicFocus(new DicerLaserSpell()));
+
 
 
     public static Item.Properties egg() {

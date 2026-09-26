@@ -1,0 +1,19 @@
+{
+  "name": "电球聚晶",
+  "icon": "goetyominous:volt_bolt_focus",
+  "category": "goety:ofcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "通过学习伏特鳐，你想到一种模仿它们放电的方法，允许你向生物发射一大团电球。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:volt_bolt_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "使用风暴魔杖施法，可以让被攻击的生物额外遭受痉挛效果。"
+    }
+  ]
+}

@@ -120,13 +120,9 @@ public class OvergrownColossusServantModel<T extends OvergrownColossusServant> e
         this.root().getAllParts().forEach(ModelPart::resetPose);
 
         this.applyHeadRotation( entity, netHeadYaw, headPitch, ageInTicks);
-        if ((entity.getAttackState() != 6 || entity.getAttackState() != 9) && !entity.isSleep() ) {
-            this.animateWalk(OCAnims.WALK4, limbSwing, limbSwingAmount, 1.5F, 4.0F);
-        }
+        this.animateWalk(OCAnims.WALK4, limbSwing, limbSwingAmount, 1.5F, 4.0F);
         this.animate(entity.getAnimationState("death"), OCAnims.DEATH, ageInTicks, 1.0F);
         this.animate(entity.getAnimationState("idle"), OCAnims.IDLE, ageInTicks, 1.0F);
-        this.animate(entity.getAnimationState("sleep"), OCAnims.SLEEP, ageInTicks, 1.0F);
-        this.animate(entity.getAnimationState("awake"), OCAnims.AWAKE, ageInTicks, 1.0F);
         this.animate(entity.getAnimationState("attackarmright"), OCAnims.ATTACK4, ageInTicks, 1.0F);
         this.animate(entity.getAnimationState("attackarmleft"), OCAnims.ATTACK5, ageInTicks, 1.0F);
         this.animate(entity.getAnimationState("attackarms"), OCAnims.SlamNew, ageInTicks, 1.0F);

@@ -138,36 +138,24 @@ public class CloudGolemServantModel<T extends CloudGolemServant> extends Hierarc
         this.animate(entity.getAnimationState("idle"), CloudGolemAnimations.idle, ageInTicks, 1.0F);
         this.animate(entity.getAnimationState("sleep"), SLEEP_IN, ageInTicks, 1.0F);
         this.animateAwake(entity, ageInTicks);
-        this.animate(entity.getAnimationState("attackarmright"), CloudGolemAnimations.rightarmAttack, ageInTicks, 1.0F);
-        this.animate(entity.getAnimationState("cloudattack"), CloudGolemAnimations.Summon, ageInTicks, 1.0F);
         this.animate(entity.getAnimationState("p2"), CloudGolemAnimations.stompp2, ageInTicks, 1.0F);
         this.animate(entity.getAnimationState("cloudattackbig"), CloudGolemAnimations.BigSummon, ageInTicks, 1.0F);
         this.animate(entity.getAnimationState("blockhitdb"), CloudGolemAnimations.blockhitDB2, ageInTicks, 1.0F);
-        this.animate(entity.getAnimationState("blockhitstun"), CGAnims.blockHitStun2, ageInTicks, 1.0F);
         this.animate(entity.getAnimationState("blockhit"), CloudGolemAnimations.blockhit, ageInTicks, 1.0F);
         this.animate(entity.getAnimationState("explode"), CGAnims.explode2, ageInTicks, 1.0F);
-        this.animate(entity.getAnimationState("attackarmleft"), CloudGolemAnimations.leftarmAttack, ageInTicks, 1.0F);
-        this.animate(entity.getAnimationState("attackarms"), CloudGolemAnimations.slamAttack, ageInTicks, 1.0F);
         this.animate(entity.getAnimationState("attacklightning"), CloudGolemAnimations.attackLight, ageInTicks, 1.0F);
-        this.animate(entity.getAnimationState("flip"), CloudGolemAnimations.flipHit, ageInTicks, 1.0F);
         this.animate(entity.getAnimationState("fractureland"), CGAnims.LandFracture2, ageInTicks, 1.0F);
         this.animate(entity.getAnimationState("aendcharge"), CGAnims.chargeEndAggresive, ageInTicks, 1.0F);
-        this.animate(entity.getAnimationState("endcharge"), CGAnims.chargeEnd, ageInTicks, 1.0F);
         this.animate(entity.getAnimationState("charge"), CGAnims.charge, ageInTicks, 1.0F);
         this.animate(entity.getAnimationState("precharge"), CGAnims.chargePre, ageInTicks, 1.0F);
         this.animate(entity.getAnimationState("block"), CloudGolemAnimations.block, ageInTicks, 1.0F);
         this.animate(entity.getAnimationState("stompleft"), CGAnims.stompsLeft, ageInTicks, 1.0F);
         this.animate(entity.getAnimationState("stomp"), CGAnims.stomps3, ageInTicks, 1.0F);
-        this.animate(entity.getAnimationState("laser2"), CloudGolemAnimations.laser2, ageInTicks, 1.0F);
         this.animate(entity.getAnimationState("fly"), CloudGolemAnimations.fly, ageInTicks, 1.0F);
         this.animate(entity.getAnimationState("land"), CloudGolemAnimations.heroFallEnd, ageInTicks, 1.0F);
         this.animate(entity.getAnimationState("prefracturefall"), CloudGolemAnimations.heroFall, ageInTicks, 1.0F);
         this.animate(entity.getAnimationState("fall"), CloudGolemAnimations.heroFall, ageInTicks, 1.0F);
         this.animate(entity.getAnimationState("laser"), CloudGolemAnimations.laser4, ageInTicks, 1.0F);
-        this.animate(entity.getAnimationState("resp"), CloudGolemAnimations.respawn, ageInTicks, 1.0F);
-        this.animate(entity.getAnimationState("pull"), CloudGolemAnimations.pullin, ageInTicks, 1.0F);
-        this.animate(entity.getAnimationState("pullpre"), CloudGolemAnimations.pullPre, ageInTicks, 1.0F);
-        this.animate(entity.getAnimationState("postpull"), CloudGolemAnimations.pullAttack, ageInTicks, 1.0F);
         this.animate(entity.getAnimationState("mhit"), CGAnims.lightningSummon5, ageInTicks, 1.0F);
     }
 
