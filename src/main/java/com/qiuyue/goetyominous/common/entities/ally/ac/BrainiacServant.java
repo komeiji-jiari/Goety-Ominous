@@ -17,10 +17,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -36,12 +34,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
+import java.util.function.Predicate;
 
 public class BrainiacServant extends Summoned implements IAnimatedEntity {
 
@@ -77,6 +74,16 @@ public class BrainiacServant extends Summoned implements IAnimatedEntity {
         this.entityData.define(TONGUE_SHOOT_TICK, 0);
     }
 
+    @Override
+    public int getSummonLimit(LivingEntity player) {
+        return MobsConfig.BrainiacServantLimit.get();
+    }
+
+    @Override
+    public Predicate<Entity> summonPredicate() {
+        return entity -> entity instanceof BrainiacServant;
+    }
+
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
@@ -96,35 +103,6 @@ public class BrainiacServant extends Summoned implements IAnimatedEntity {
                 .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.BrainiacServantKnockbackResistance.get())
                 .add(Attributes.ARMOR, AttributesConfig.BrainiacServantArmor.get());
     }
-
-    @Override
-    @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor levelAccessor, DifficultyInstance difficulty,
-                                        MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData,
-                                        @Nullable CompoundTag tag) {
-        if (this.getTrueOwner() instanceof Player player) {
-            if (countServants(player) >= MobsConfig.BrainiacServantLimit.get()) {
-                this.discard();
-                return null;
-            }
-        }
-        return super.finalizeSpawn(levelAccessor, difficulty, spawnType, spawnGroupData, tag);
-    }
-
-    private int countServants(Player player) {
-        int count = 0;
-        if (player.level() instanceof ServerLevel serverLevel) {
-            for (Entity entity : serverLevel.getAllEntities()) {
-                if (entity instanceof BrainiacServant servant && servant != this) {
-                    if (servant.getTrueOwner() == player) {
-                        count++;
-                    }
-                }
-            }
-        }
-        return count;
-    }
-
     protected PathNavigation createNavigation(Level level) {
         return new GroundPathNavigatorNoSpin(this, level);
     }

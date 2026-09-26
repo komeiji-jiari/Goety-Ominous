@@ -50,7 +50,6 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -62,11 +61,9 @@ import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.PlayerRideable;
-import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -89,7 +86,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
@@ -102,7 +98,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+import java.util.function.Predicate;
 
 public class LuxtructosaurusServant extends Summoned
         implements IAnimatedEntity, ShakesScreen, KaijuMob, ITallWalker, IAdvancedPathingMob,
@@ -218,21 +214,6 @@ public class LuxtructosaurusServant extends Summoned
                 .add(Attributes.MOVEMENT_SPEED, AttributesConfig.LuxtructosaurusServantMovementSpeed.get())
                 .add(Attributes.ARMOR, AttributesConfig.LuxtructosaurusServantArmor.get());
     }
-
-    public static int countServants(ServerLevel level, UUID ownerId, @Nullable Entity excluded) {
-        int count = 0;
-        if (ownerId == null) {
-            return count;
-        }
-        for (Entity entity : level.getAllEntities()) {
-            if (entity != excluded && entity instanceof LuxtructosaurusServant servant
-                    && ownerId.equals(servant.getOwnerId())) {
-                count++;
-            }
-        }
-        return count;
-    }
-
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
@@ -240,29 +221,6 @@ public class LuxtructosaurusServant extends Summoned
         this.entityData.define(ENRAGED, false);
         this.entityData.define(METER_AMOUNT, 1.0F);
     }
-
-    @Nullable
-    @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
-                                        MobSpawnType spawnType, @Nullable SpawnGroupData groupData,
-                                        @Nullable CompoundTag tag) {
-        if (spawnType == MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player
-                && countServants(level.getLevel(), player.getUUID(), this) >= MobsConfig.LuxtructosaurusServantLimit.get()) {
-            return null;
-        }
-        return super.finalizeSpawn(level, difficulty, spawnType, groupData, tag);
-    }
-
-    @Override
-    public void setTrueOwner(@Nullable LivingEntity livingEntity) {
-        super.setTrueOwner(livingEntity);
-        if (!this.level().isClientSide && livingEntity instanceof Player player
-                && this.level() instanceof ServerLevel serverLevel
-                && countServants(serverLevel, player.getUUID(), this) >= MobsConfig.LuxtructosaurusServantLimit.get()) {
-            this.discard();
-        }
-    }
-
     @Override
     protected PathNavigation createNavigation(Level level) {
         return new AdvancedPathNavigateNoTeleport(this, level);
@@ -272,6 +230,16 @@ public class LuxtructosaurusServant extends Summoned
     public MobType getMobType() {
         return MobType.UNDEAD;
     }
+    @Override
+    public int getSummonLimit(LivingEntity player) {
+        return MobsConfig.LuxtructosaurusServantLimit.get();
+    }
+
+    @Override
+    public Predicate<Entity> summonPredicate() {
+        return entity -> entity instanceof LuxtructosaurusServant;
+    }
+
 
     @Override
     protected void registerGoals() {

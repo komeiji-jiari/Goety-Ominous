@@ -63,6 +63,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 public class TeletorServant extends Summoned {
     private static final TagKey<Item> MAGNETIC_TOOLS = TagKey.create(Registries.ITEM,
@@ -111,6 +112,16 @@ public class TeletorServant extends Summoned {
         super.defineSynchedData();
         this.entityData.define(WEAPON_UUID, Optional.empty());
         this.entityData.define(WEAPON_ID, -1);
+    }
+
+    @Override
+    public int getSummonLimit(LivingEntity player) {
+        return MobsConfig.TeletorServantLimit.get();
+    }
+
+    @Override
+    public Predicate<Entity> summonPredicate() {
+        return entity -> entity instanceof TeletorServant;
     }
 
     @Override
@@ -269,12 +280,6 @@ public class TeletorServant extends Summoned {
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
                                         MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn,
                                         @Nullable CompoundTag dataTag) {
-        if (this.getTrueOwner() instanceof Player player) {
-            if (this.countServants(player) >= MobsConfig.TeletorServantLimit.get()) {
-                this.discard();
-                return null;
-            }
-        }
         SpawnGroupData spawnGroupData = super.finalizeSpawn(level, difficulty, reason, spawnDataIn, dataTag);
         if (!this.level().isClientSide) {
             this.checkForgeBlessing(reason);
@@ -512,21 +517,6 @@ public class TeletorServant extends Summoned {
     protected SoundEvent getDeathSound() {
         return ACSoundRegistry.TELETOR_DEATH.get();
     }
-
-    private int countServants(Player player) {
-        int count = 0;
-        if (player.level() instanceof ServerLevel serverLevel) {
-            for (Entity entity : serverLevel.getAllEntities()) {
-                if (entity instanceof TeletorServant servant && servant != this) {
-                    if (servant.getTrueOwner() == player) {
-                        count++;
-                    }
-                }
-            }
-        }
-        return count;
-    }
-
     private class MeleeGoal extends Goal {
         private int executionTime = 0;
         private BlockPos strafeOrigin = null;

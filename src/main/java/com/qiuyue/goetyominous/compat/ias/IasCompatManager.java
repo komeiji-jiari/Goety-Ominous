@@ -1,8 +1,6 @@
 package com.qiuyue.goetyominous.compat.ias;
 
-import com.qiuyue.goetyominous.common.entities.ally.illager.AbsorberServant;
-import com.qiuyue.goetyominous.common.entities.ally.illager.MagispellerServant;
-import com.qiuyue.goetyominous.common.entities.ally.illager.TwittollagerServant;
+import com.qiuyue.goetyominous.common.entities.ally.ias.*;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.*;
 import net.minecraftforge.eventbus.api.IEventBus;
 

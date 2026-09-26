@@ -18,24 +18,19 @@ import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
@@ -52,7 +47,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.FlyNodeEvaluator;
@@ -65,7 +59,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.entity.PartEntity;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 import java.util.function.Predicate;
@@ -595,30 +588,6 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
     public MobType getMobType() {
         return ModMobType.NATURAL;
     }
-
-    @Nullable
-    @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor levelAccessor, DifficultyInstance difficulty,
-                                        MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData,
-                                        @Nullable CompoundTag tag) {
-        if (spawnType == MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player) {
-            if (countServants(player) >= MobsConfig.CorrodentServantLimit.get()) {
-                return null;
-            }
-        }
-        return super.finalizeSpawn(levelAccessor, difficulty, spawnType, spawnGroupData, tag);
-    }
-
-    @Override
-    public void setTrueOwner(@Nullable LivingEntity livingEntity) {
-        super.setTrueOwner(livingEntity);
-        if (!this.level().isClientSide && livingEntity instanceof Player player) {
-            if (countServants(player) >= MobsConfig.CorrodentServantLimit.get()) {
-                this.discard();
-            }
-        }
-    }
-
     @Override
     public int getSummonLimit(LivingEntity player) {
         return MobsConfig.CorrodentServantLimit.get();
@@ -628,21 +597,6 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
     public Predicate<Entity> summonPredicate() {
         return entity -> entity instanceof CorrodentServant;
     }
-
-    private int countServants(Player player) {
-        int count = 0;
-        if (player.level() instanceof ServerLevel serverLevel) {
-            for (Entity entity : serverLevel.getAllEntities()) {
-                if (entity instanceof CorrodentServant servant && servant != this) {
-                    if (servant.getTrueOwner() == player) {
-                        count++;
-                    }
-                }
-            }
-        }
-        return count;
-    }
-
     @Override
     public int getAnimationTick() {
         return animationTick;

@@ -1,7 +1,7 @@
 package com.qiuyue.goetyominous.client.render.layer.mm;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.qiuyue.goetyominous.client.render.MutantBlazeServantRenderer;
+import com.qiuyue.goetyominous.client.render.mm.MutantBlazeServantRenderer;
 import com.qiuyue.goetyominous.client.render.model.mm.MutantBlazeServantModel;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantBlazeServant;
 import net.minecraft.client.renderer.MultiBufferSource;

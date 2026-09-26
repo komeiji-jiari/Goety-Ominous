@@ -15,7 +15,6 @@ import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.google.common.collect.Maps;
 import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -28,14 +27,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -46,8 +43,6 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.PlayerRideable;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -71,7 +66,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.WoolCarpetBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.Tags;
@@ -146,34 +140,6 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AttributesConfig.IllagerElephantServantDamage.get());
         this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AttributesConfig.IllagerElephantServantMovementSpeed.get());
     }
-
-    @Nullable
-    @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
-                                        MobSpawnType spawnType, @Nullable SpawnGroupData spawnData,
-                                        @Nullable CompoundTag tag) {
-        if (spawnType == MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player) {
-            if (countServants(player) >= MobsConfig.IllagerElephantServantLimit.get()) {
-                return null;
-            }
-        }
-        return super.finalizeSpawn(level, difficulty, spawnType, spawnData, tag);
-    }
-
-    private int countServants(Player player) {
-        int count = 0;
-        if (player.level() instanceof ServerLevel serverLevel) {
-            for (Entity entity : serverLevel.getAllEntities()) {
-                if (entity instanceof IllagerElephantServant servant) {
-                    if (servant.getTrueOwner() == player) {
-                        count++;
-                    }
-                }
-            }
-        }
-        return count;
-    }
-
     @Nullable
     public static DyeColor getCarpetColor(ItemStack stack) {
         Block block = Block.byItem(stack.getItem());

@@ -18,11 +18,11 @@ public class AmItems {
 
     public static final RegistryObject<ServantSpawnEggItem> CENTIPEDE_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("servant_centipede_spawn_egg",
-                    () -> new ServantSpawnEggItem(AmEntityRegistry.SERVANT_CENTIPEDE_HEAD, 13064994, 3810323, egg()));
+                    () -> new ServantSpawnEggItem(AmEntityRegistry.SERVANT_CENTIPEDE_HEAD, 3418926, 7550025, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> MURMUR_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("murmur_servant_spawn_egg",
-                    () -> new ServantSpawnEggItem(AmEntityRegistry.MURMUR_SERVANT, 0x445566, 0x8899AA, egg()));
+                    () -> new ServantSpawnEggItem(AmEntityRegistry.MURMUR_SERVANT, 0x804448, 0xB5AF9C, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> CRIMSON_MOSQUITO_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("crimson_mosquito_servant_spawn_egg",
@@ -38,7 +38,7 @@ public class AmItems {
 
     public static final RegistryObject<ServantSpawnEggItem> TUSKLIN_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("tusklin_servant_spawn_egg",
-                    () -> new ServantSpawnEggItem(AmEntityRegistry.TUSKLIN_SERVANT, 0x5A3B24, 0xC1A15C, egg()));
+                    () -> new ServantSpawnEggItem(AmEntityRegistry.TUSKLIN_SERVANT, 0x735841, 0xE8E2D5, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> FROSTSTALKER_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("froststalker_servant_spawn_egg",
@@ -46,7 +46,7 @@ public class AmItems {
 
     public static final RegistryObject<ServantSpawnEggItem> ROCKY_ROLLER_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("rocky_roller_servant_spawn_egg",
-                    () -> new ServantSpawnEggItem(AmEntityRegistry.ROCKY_ROLLER_SERVANT, 0x8F8F8F, 0xC7A86B, egg()));
+                    () -> new ServantSpawnEggItem(AmEntityRegistry.ROCKY_ROLLER_SERVANT, 0xB0856F, 0x999184, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> ZOMBIE_CROCODILE_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("zombie_crocodile_servant_spawn_egg",
@@ -62,7 +62,7 @@ public class AmItems {
 
     public static final RegistryObject<ServantSpawnEggItem> SKELEWAG_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("skelewag_servant_spawn_egg",
-                    () -> new ServantSpawnEggItem(AmEntityRegistry.SKELEWAG_SERVANT, 0xD4D4AC, 0x9C9C74, egg()));
+                    () -> new ServantSpawnEggItem(AmEntityRegistry.SKELEWAG_SERVANT, 0xD9FCB1, 0x3A4F30, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> WITHER_SKELEWAG_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("wither_skelewag_servant_spawn_egg",
@@ -74,15 +74,15 @@ public class AmItems {
 
     public static final RegistryObject<ServantSpawnEggItem> DROPBEAR_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("dropbear_servant_spawn_egg",
-                    () -> new ServantSpawnEggItem(AmEntityRegistry.DROPBEAR_SERVANT, 0x701F30, 0xBD4B4B, egg()));
+                    () -> new ServantSpawnEggItem(AmEntityRegistry.DROPBEAR_SERVANT, 0x8A2D35, 0x60A3A3, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> GUSTER_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("guster_servant_spawn_egg",
-                    () -> new ServantSpawnEggItem(AmEntityRegistry.GUSTER_SERVANT, 0xF3C389, 0xC66127, egg()));
+                    () -> new ServantSpawnEggItem(AmEntityRegistry.GUSTER_SERVANT, 0xF8D49A, 0xFF720A, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> EMU_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("emu_servant_spawn_egg",
-                    () -> new ServantSpawnEggItem(AmEntityRegistry.EMU_SERVANT, 0x6B5B4A, 0xD8C9A8, egg()));
+                    () -> new ServantSpawnEggItem(AmEntityRegistry.EMU_SERVANT, 0x665346, 0x3B3938, egg()));
 
     public static final RegistryObject<WarpedSteroidsItem> WARPED_STEROIDS =
             AM_ITEMS.register("warped_steroids", WarpedSteroidsItem::new);

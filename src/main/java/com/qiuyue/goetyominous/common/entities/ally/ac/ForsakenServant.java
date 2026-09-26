@@ -76,6 +76,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class ForsakenServant extends Summoned implements IAnimatedEntity, ShakesScreen, PlayerRideable {
     private static final EntityDataAccessor<Boolean> RUNNING = SynchedEntityData.defineId(ForsakenServant.class, EntityDataSerializers.BOOLEAN);
@@ -168,6 +169,16 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
         this.entityData.define(RIDER_CHARGE_HOLD, false);
         this.entityData.define(SONAR_ID, -1);
         this.entityData.define(HELD_MOB_ID, -1);
+    }
+
+    @Override
+    public int getSummonLimit(LivingEntity player) {
+        return MobsConfig.ForsakenServantLimit.get();
+    }
+
+    @Override
+    public Predicate<Entity> summonPredicate() {
+        return entity -> entity instanceof ForsakenServant;
     }
 
     @Override
@@ -852,43 +863,12 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn,
                                         MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn,
                                         @Nullable CompoundTag dataTag) {
-        if (this.getTrueOwner() instanceof Player player) {
-            if (countServants(player) >= MobsConfig.ForsakenServantLimit.get()) {
-                this.discard();
-                return null;
-            }
-        }
         SpawnGroupData spawnGroupData = super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
         if (!this.level().isClientSide) {
             this.setAnimation(ANIMATION_SUMMON);
         }
         return spawnGroupData;
     }
-
-    private int countServants(Player player) {
-        int count = 0;
-        if (player.level() instanceof ServerLevel serverLevel) {
-            for (Entity entity : serverLevel.getAllEntities()) {
-                if (entity instanceof ForsakenServant servant && servant != this) {
-                    if (servant.getTrueOwner() == player) {
-                        count++;
-                    }
-                }
-            }
-        }
-        return count;
-    }
-
-    @Override
-    public void setTrueOwner(@Nullable LivingEntity livingEntity) {
-        super.setTrueOwner(livingEntity);
-        if (!this.level().isClientSide && livingEntity instanceof Player player) {
-            if (countServants(player) >= MobsConfig.ForsakenServantLimit.get()) {
-                this.discard();
-            }
-        }
-    }
-
     @Override
     public int getAnimationTick() {
         return animationTick;
