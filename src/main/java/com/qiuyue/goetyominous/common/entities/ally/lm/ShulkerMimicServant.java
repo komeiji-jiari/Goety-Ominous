@@ -9,7 +9,6 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.BigShulkerBull
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.GravityBigShulkerBullet;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
 import net.miauczel.legendary_monsters.Particle.custom.Circle;
 import net.miauczel.legendary_monsters.config.ModConfig;
@@ -17,7 +16,6 @@ import net.miauczel.legendary_monsters.effect.ModEffects;
 import net.miauczel.legendary_monsters.entity.AnimatedMonster.Effect.CameraShakeEntity;
 import net.miauczel.legendary_monsters.entity.AnimatedMonster.Projectile.LMFallingBlockEntity;
 import net.miauczel.legendary_monsters.sound.ModSounds;
-import net.miauczel.legendary_monsters.util.EntityUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -30,7 +28,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -40,8 +37,6 @@ import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -52,7 +47,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
@@ -79,6 +73,7 @@ public class ShulkerMimicServant extends IAnimatedMiniBossServant {
     public static final int FIREWORK_GRAB_COOLDOWN = 100;
     public static final int REPEL_SLAM_COOLDOWN = 60;
     public static final int BACKSTEP_COOLDOWN = 80;
+    private static final int AWAKE_TICKS = 35;
 
     public int shootCooldown = SHOOT_COOLDOWN;
     public int doubleSlashCooldown = DOUBLE_SLASH_COOLDOWN;
@@ -111,6 +106,8 @@ public class ShulkerMimicServant extends IAnimatedMiniBossServant {
     public final AnimationState fireworkGrabPreAnimationState = new AnimationState();
     public final AnimationState fireworkGrabFailAnimationState = new AnimationState();
     public final AnimationState fireworkGrabSuccessAnimationState = new AnimationState();
+    public final AnimationState sleepAnimationState = new AnimationState();
+    public final AnimationState awakeAnimationState = new AnimationState();
 
     public ShulkerMimicServant(EntityType<? extends ShulkerMimicServant> entityType, Level level) {
         super(entityType, level);
@@ -303,6 +300,26 @@ public class ShulkerMimicServant extends IAnimatedMiniBossServant {
         return super.hurt(source, amount);
     }
 
+    @Override
+    public boolean addEffect(MobEffectInstance pEffectInstance, @Nullable Entity pEntity) {
+        if (this.isSleep()) {
+            return false;
+        }
+        return super.addEffect(pEffectInstance, pEntity);
+    }
+
+    public boolean isSleep() {
+        return this.getAttackState() == 1 || this.getAttackState() == 2;
+    }
+
+    public void setSleep(boolean sleep) {
+        this.setAttackState(sleep ? 1 : 0);
+    }
+
+    private boolean isStandby() {
+        return this.isStaying() && !this.isCommanded() && this.getTarget() == null;
+    }
+
     public boolean applyPartDamage(ShulkerMimicServantPart part, DamageSource source, float amount) {
         return super.hurt(source, amount);
     }
@@ -376,7 +393,19 @@ public class ShulkerMimicServant extends IAnimatedMiniBossServant {
         if (this.level().isClientSide) {
             this.idleAnimationState.animateWhen(this.getAttackState() == 0, this.tickCount);
         }
+        if (!this.level().isClientSide) {
+            if (this.getAttackState() == 0 && this.isStandby()) {
+                this.setSleep(true);
+            }
+        }
         super.tick();
+        if (!this.level().isClientSide) {
+            if (this.getAttackState() == 1 && !this.isStandby()) {
+                this.setAttackState(2);
+            } else if (this.getAttackState() == 2 && this.attackTicks >= AWAKE_TICKS) {
+                this.setSleep(false);
+            }
+        }
     }
 
     @Override
@@ -419,6 +448,7 @@ public class ShulkerMimicServant extends IAnimatedMiniBossServant {
 
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
+        compound.putBoolean("is_Sleep", this.isSleep());
         compound.putInt("phase", this.getPhase());
         super.addAdditionalSaveData(compound);
     }
@@ -426,31 +456,9 @@ public class ShulkerMimicServant extends IAnimatedMiniBossServant {
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         this.setPhase(compound.getInt("phase"));
+        this.setSleep(compound.getBoolean("is_Sleep"));
         super.readAdditionalSaveData(compound);
     }
-
-    @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason,
-                                        @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag) {
-        if (reason == MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player
-                && countServants(player) >= MobsConfig.ShulkerMimicServantLimit.get()) {
-            return null;
-        }
-        return super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
-    }
-
-    private static int countServants(Player player) {
-        int count = 0;
-        if (player.level() instanceof ServerLevel serverLevel) {
-            for (Entity entity : serverLevel.getAllEntities()) {
-                if (entity instanceof ShulkerMimicServant servant && servant.getTrueOwner() == player) {
-                    ++count;
-                }
-            }
-        }
-        return count;
-    }
-
     @Override
     public void onAddedToWorld() {
         super.onAddedToWorld();
@@ -460,7 +468,7 @@ public class ShulkerMimicServant extends IAnimatedMiniBossServant {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(6, new Summoned.WanderGoal<>(this, 1.0D));
+        this.goalSelector.addGoal(6, new Summoned.WanderGoal<>(this, this.getFollowSpeed()));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
@@ -685,6 +693,26 @@ public class ShulkerMimicServant extends IAnimatedMiniBossServant {
                 super.stop();
             }
         });
+
+        this.goalSelector.addGoal(1, new IStateGoal(this, 1, 1, 0, 0, 0) {
+            @Override
+            public boolean canContinueToUse() {
+                return this.entity.getAttackState() == 1 || this.entity.getAttackState() == 2;
+            }
+
+            @Override
+            public void stop() {
+                if (this.entity.getAttackState() == 1) {
+                    super.stop();
+                }
+            }
+
+            @Override
+            public void tick() {
+                this.entity.setDeltaMovement(0.0D, this.entity.getDeltaMovement().y, 0.0D);
+            }
+        });
+        this.goalSelector.addGoal(0, new IAttackGoal(this, 1, 2, 0, AWAKE_TICKS, 10, 7.0F));
     }
 
     public void randomizeAttackPatterns() {
@@ -1233,7 +1261,6 @@ public class ShulkerMimicServant extends IAnimatedMiniBossServant {
             }
             if (foundGround) {
                 this.teleportTo(x, newY, z);
-                EntityUtil.applyServerTeleport(this);
                 if (level.noCollision(this) && !level.containsAnyLiquid(this.getBoundingBox())) {
                     success = true;
                 }
@@ -1241,7 +1268,6 @@ public class ShulkerMimicServant extends IAnimatedMiniBossServant {
         }
         if (!success) {
             this.teleportTo(oldX, oldY, oldZ);
-            EntityUtil.applyServerTeleport(this);
             return false;
         }
         if (broadcast) {
@@ -1252,6 +1278,12 @@ public class ShulkerMimicServant extends IAnimatedMiniBossServant {
     }
 
     public AnimationState getAnimationState(String input) {
+        if (input.equals("sleep")) {
+            return this.sleepAnimationState;
+        }
+        if (input.equals("awaken")) {
+            return this.awakeAnimationState;
+        }
         if (input.equals("idle")) {
             return this.idleAnimationState;
         }
@@ -1302,6 +1334,8 @@ public class ShulkerMimicServant extends IAnimatedMiniBossServant {
 
     public void stopAllAnimationStates() {
         this.idleAnimationState.stop();
+        this.sleepAnimationState.stop();
+        this.awakeAnimationState.stop();
         this.biteAnimationState.stop();
         this.backstepDashAnimationState.stop();
         this.backstepAnimationState.stop();
@@ -1323,6 +1357,8 @@ public class ShulkerMimicServant extends IAnimatedMiniBossServant {
         if (ATTACK_STATE.equals(accessor) && this.level().isClientSide) {
             switch (this.getAttackState()) {
                 case 0 -> this.stopAllAnimationStates();
+                case 1 -> this.startAnimation(this.sleepAnimationState);
+                case 2 -> this.startAnimation(this.awakeAnimationState);
                 case 3 -> this.startAnimation(this.biteAnimationState);
                 case 4 -> this.startAnimation(this.backstepDashAnimationState);
                 case 5 -> this.startAnimation(this.backstepAnimationState);

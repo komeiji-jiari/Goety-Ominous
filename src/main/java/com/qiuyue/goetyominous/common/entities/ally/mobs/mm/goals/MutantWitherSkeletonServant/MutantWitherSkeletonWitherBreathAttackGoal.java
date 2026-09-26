@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantWitherS
 
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.alexander.mutantmore.config.mutant_wither_skeleton.MutantWitherSkeletonCommonConfig;
+import com.alexander.mutantmore.events.ShakeCameraEvent;
 import com.alexander.mutantmore.init.EffectInit;
 import com.alexander.mutantmore.init.SoundEventInit;
 import com.alexander.mutantmore.util.MiscUtils;
@@ -66,6 +67,11 @@ public class MutantWitherSkeletonWitherBreathAttackGoal extends Goal {
     public void tick() {
         this.target = this.mob.getTarget();
         this.mob.getNavigation().stop();
+        if (this.mob.getAnimation("wither_breath").isProgressAt(1.0F)) {
+            this.mob.playSound(SoundEventInit.MUTANT_WITHER_SKELETON_ROAR.get(), 3.0F, 1.0F);
+            ShakeCameraEvent.shake(this.mob.level(), 100, 0.1F, this.mob.blockPosition(), 30);
+        }
+
         if (MiscUtils.isEntityValid(this.target)) {
             this.mob.lookAt(Anchor.EYES, this.target.getEyePosition());
         }

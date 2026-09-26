@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.blocks.ac;
 
+import com.Polarice3.Goety.common.ritual.RitualRequirements;
 import com.github.alexmodguy.alexscaves.server.entity.ACEntityRegistry;
 import com.qiuyue.goetyominous.common.blocks.entities.ac.VallumraptorServantEggBlockEntity;
 import com.qiuyue.goetyominous.common.entities.ally.ac.VallumraptorServant;
@@ -12,6 +13,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -41,7 +43,8 @@ public class VallumraptorServantEggBlock extends ServantEggBlock {
         if (level.getBlockEntity(pos) instanceof VallumraptorServantEggBlockEntity eggBe) {
             owner = eggBe.getOwnerUUID();
         }
-        if (owner != null && VallumraptorServant.countServants(serverLevel, owner) >= MobsConfig.VallumraptorServantLimit.get()) {
+        Player player = owner != null ? serverLevel.getServer().getPlayerList().getPlayer(owner) : null;
+        if (player != null && !RitualRequirements.canSummon(serverLevel, player, AcEntityRegistry.VALLUMRAPTOR_SERVANT.get())) {
             return;
         }
         level.playSound(null, pos, SoundEvents.TURTLE_EGG_HATCH, SoundSource.BLOCKS, 0.7F, 0.9F + level.random.nextFloat() * 0.2F);
@@ -59,7 +62,8 @@ public class VallumraptorServantEggBlock extends ServantEggBlock {
     }
 
     private void spawnServant(ServerLevel level, BlockPos pos, UUID owner, int index) {
-        if (VallumraptorServant.countServants(level, owner) >= MobsConfig.VallumraptorServantLimit.get()) {
+        Player player = level.getServer().getPlayerList().getPlayer(owner);
+        if (player != null && !RitualRequirements.canSummon(level, player, AcEntityRegistry.VALLUMRAPTOR_SERVANT.get())) {
             return;
         }
         VallumraptorServant baby = AcEntityRegistry.VALLUMRAPTOR_SERVANT.get().create(level);

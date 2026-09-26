@@ -42,6 +42,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
+import java.util.function.Predicate;
 
 public class CaramelCubeServant extends Summoned {
 
@@ -77,6 +78,16 @@ public class CaramelCubeServant extends Summoned {
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.CaramelCubeServantDamage.get())
                 .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.CaramelCubeServantKnockbackResistance.get())
                 .add(Attributes.ARMOR, AttributesConfig.CaramelCubeServantArmor.get());
+    }
+
+    @Override
+    public int getSummonLimit(LivingEntity player) {
+        return MobsConfig.CaramelCubeServantLimit.get();
+    }
+
+    @Override
+    public Predicate<Entity> summonPredicate() {
+        return entity -> entity instanceof CaramelCubeServant;
     }
 
     @Override
@@ -261,30 +272,9 @@ public class CaramelCubeServant extends Summoned {
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor levelAccessor, DifficultyInstance difficulty,
                                         MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData,
                                         @Nullable CompoundTag tag) {
-        if (this.getTrueOwner() instanceof Player player) {
-            if (countServants(player) >= MobsConfig.CaramelCubeServantLimit.get()) {
-                this.discard();
-                return null;
-            }
-        }
         this.setSlimeSize(2, true);
         return super.finalizeSpawn(levelAccessor, difficulty, spawnType, spawnGroupData, tag);
     }
-
-    private int countServants(Player player) {
-        int count = 0;
-        if (player.level() instanceof ServerLevel serverLevel) {
-            for (Entity entity : serverLevel.getAllEntities()) {
-                if (entity instanceof CaramelCubeServant servant && servant != this) {
-                    if (servant.getTrueOwner() == player) {
-                        count++;
-                    }
-                }
-            }
-        }
-        return count;
-    }
-
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> dataAccessor) {
         if (SIZE.equals(dataAccessor)) {

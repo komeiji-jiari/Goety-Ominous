@@ -54,13 +54,11 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
-import net.minecraft.world.entity.ai.control.Control;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -435,6 +433,13 @@ public class MutantShulkerServant extends AbstractMutantServant {
             return false;
         }
         if (this.isInBox() && !this.inBoxButOpen() && !p_21016_.is(DamageTypes.GENERIC_KILL) && !p_21016_.is(DamageTypes.FELL_OUT_OF_WORLD)) {
+            if (!this.level().isClientSide && this.isIdleStandby()
+                    && p_21016_.getEntity() instanceof LivingEntity attacker && this.canTarget(attacker)) {
+                this.nextEnterShellTime = this.tickCount + MutantShulkerCommonConfig.enter_shell_cooldown.get();
+                this.playSound(SoundEventInit.MUTANT_SHULKER_OPEN.get());
+                this.setInBox(false);
+                return super.hurt(p_21016_, p_21017_);
+            }
             this.playSound(SoundEvents.SHULKER_HURT_CLOSED, 1.0F, 0.5F);
             return false;
         }
@@ -895,29 +900,6 @@ public class MutantShulkerServant extends AbstractMutantServant {
         this.introAnimationTick = 45;
         this.level().broadcastEntityEvent(this, (byte)11);
     }
-
-    @Override
-    public SpawnGroupData finalizeSpawn(net.minecraft.world.level.ServerLevelAccessor pLevel, net.minecraft.world.DifficultyInstance pDifficulty, net.minecraft.world.entity.MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
-        if (pReason == net.minecraft.world.entity.MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player) {
-            if (countServants(player) >= MobsConfig.MutantShulkerServantLimit.get()) {
-                return null;
-            }
-        }
-        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
-    }
-
-    private int countServants(Player player) {
-        int count = 0;
-        if (player.level() instanceof ServerLevel serverLevel) {
-            for (Entity entity : serverLevel.getAllEntities()) {
-                if (entity instanceof MutantShulkerServant servant && servant.getTrueOwner() == player) {
-                    count++;
-                }
-            }
-        }
-        return count;
-    }
-
     private boolean tryTeleportOutOfWater() {
         BlockPos escape = this.findWaterEscapeSpot();
         if (escape == null) {
@@ -1109,65 +1091,31 @@ public class MutantShulkerServant extends AbstractMutantServant {
         }
     }
 
-    public class MutantShulkerServantBodyRotationControl extends BodyRotationControl implements Control {
-        private final Mob mob;
-        private int headStableTime;
-        private float lastStableYHeadRot;
-
+    public class MutantShulkerServantBodyRotationControl extends MutantBodyRotationControl {
         public MutantShulkerServantBodyRotationControl(Mob p_24879_) {
             super(p_24879_);
-            this.mob = p_24879_;
         }
 
-        public void clientTick() {
-            if (this.isMoving()) {
-                this.mob.yBodyRot = this.mob.getYRot();
-                this.rotateHeadIfNecessary();
-                this.lastStableYHeadRot = this.mob.yHeadRot;
-                this.headStableTime = 0;
-            } else if (this.notCarryingMobPassengers()) {
-                if (Math.abs(this.mob.yHeadRot - this.lastStableYHeadRot) > 15.0F) {
-                    this.headStableTime = 0;
-                    this.lastStableYHeadRot = this.mob.yHeadRot;
-                    this.rotateBodyIfNecessary();
-                } else {
-                    ++this.headStableTime;
-                    if (this.headStableTime > 10) {
-                        this.rotateHeadTowardsFront();
-                    }
-                }
+        protected float getBodyHeadRotLimit() {
+            return 75.0F;
+        }
+
+        protected void rotateBodyIfNecessary() {
+            if (((MutantShulkerServant)this.mob).shouldBodyMoveWithHead()) {
+                super.rotateBodyIfNecessary();
             }
         }
 
-        private void rotateBodyIfNecessary() {
-            if (this.mob instanceof MutantShulkerServant && ((MutantShulkerServant)this.mob).shouldBodyMoveWithHead()) {
-                this.mob.yBodyRot = Mth.rotateIfNecessary(this.mob.yBodyRot, this.mob.yHeadRot, 75.0F);
+        protected void rotateHeadIfNecessary() {
+            if (((MutantShulkerServant)this.mob).shouldBodyMoveWithHead()) {
+                super.rotateHeadIfNecessary();
             }
         }
 
-        private void rotateHeadIfNecessary() {
-            if (this.mob instanceof MutantShulkerServant && ((MutantShulkerServant)this.mob).shouldBodyMoveWithHead()) {
-                this.mob.yHeadRot = Mth.rotateIfNecessary(this.mob.yHeadRot, this.mob.yBodyRot, 75.0F);
+        protected void rotateHeadTowardsFront() {
+            if (((MutantShulkerServant)this.mob).shouldBodyMoveWithHead()) {
+                super.rotateHeadTowardsFront();
             }
-        }
-
-        private void rotateHeadTowardsFront() {
-            if (this.mob instanceof MutantShulkerServant && ((MutantShulkerServant)this.mob).shouldBodyMoveWithHead()) {
-                int i = this.headStableTime - 10;
-                float f = Mth.clamp((float)((float)i / 10.0F), 0.0F, 1.0F);
-                float f1 = 75.0F * (1.0F - f);
-                this.mob.yBodyRot = Mth.rotateIfNecessary(this.mob.yBodyRot, this.mob.yHeadRot, f1);
-            }
-        }
-
-        private boolean notCarryingMobPassengers() {
-            return !(this.mob.getFirstPassenger() instanceof Mob);
-        }
-
-        private boolean isMoving() {
-            double d0 = this.mob.getX() - this.mob.xo;
-            double d1 = this.mob.getZ() - this.mob.zo;
-            return d0 * d0 + d1 * d1 > 2.500000277905201E-7;
         }
     }
 }

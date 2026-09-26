@@ -5,8 +5,11 @@ import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.init.ModEntityLayers;
 import com.qiuyue.goetyominous.client.render.curios.CroneRobeRenderer;
 import com.qiuyue.goetyominous.client.render.curios.RaycatAmuletRenderer;
+import com.qiuyue.goetyominous.client.render.ias.*;
 import com.qiuyue.goetyominous.client.render.layer.CursedWolfArmorLayer;
+import com.qiuyue.goetyominous.client.render.mm.*;
 import com.qiuyue.goetyominous.client.render.model.*;
+import com.qiuyue.goetyominous.client.render.model.ias.*;
 import com.qiuyue.goetyominous.client.render.model.curios.CroneRobeModel;
 import com.qiuyue.goetyominous.client.render.model.equipment.BoneCudgelModel;
 import com.qiuyue.goetyominous.client.render.model.mm.MutantHoglinServantModel;
@@ -238,6 +241,18 @@ public class ModModelLayers {
 
             event.registerLayerDefinition(ModEntityLayers.CLOUD_GOLEM_SERVANT_LAYER,
                     com.qiuyue.goetyominous.client.render.model.lm.CloudGolemServantModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.WANDERING_EYE_SERVANT_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.lm.WanderingEyeServantModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.FLAME_DRIFTER_SERVANT_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.lm.FlameDrifterServantModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.FLAMEBORN_WARRIOR_SERVANT_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.lm.FlamebornWarriorServantModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.FLAMEBORN_GUARD_SERVANT_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.lm.FlamebornGuardServantModel::createBodyLayer);
 
             event.registerLayerDefinition(ModEntityLayers.LM_CLOUD_LAYER,
                     net.miauczel.legendary_monsters.entity.ProjectileEntityRenderer.CloudModel::createBodyLayer);
@@ -636,6 +651,22 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.client.render.lm.CloudGolemServantRenderer::new);
 
             event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.WANDERING_EYE_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.lm.WanderingEyeServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.FLAME_DRIFTER_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.lm.FlameDrifterServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.FLAMEBORN_WARRIOR_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.lm.FlamebornWarriorServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.FLAMEBORN_GUARD_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.lm.FlamebornGuardServantRenderer::new);
+
+            event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.CLOUD.get(),
                     com.qiuyue.goetyominous.client.render.lm.CloudEntityRenderer::new);
 
@@ -687,11 +718,11 @@ public class ModModelLayers {
         if (com.qiuyue.goetyominous.compat.mod.MutantMoreCompat.isMutantMoreLoaded()) {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.MUTANT_WITHER_SKELETON_SERVANT.get(),
-                    com.qiuyue.goetyominous.client.render.MutantWitherSkeletonServantRenderer::new);
+                    com.qiuyue.goetyominous.client.render.mm.MutantWitherSkeletonServantRenderer::new);
 
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.WITHER_SLASH.get(),
-                    com.qiuyue.goetyominous.client.render.WitherSlashRenderer::new);
+                    com.qiuyue.goetyominous.client.render.mm.WitherSlashRenderer::new);
 
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.MUTANT_HOGLIN_SERVANT.get(),
@@ -719,7 +750,7 @@ public class ModModelLayers {
 
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.RODLING_SERVANT.get(),
-                    com.qiuyue.goetyominous.client.render.RodlingServantRenderer::new);
+                    com.qiuyue.goetyominous.client.render.mm.RodlingServantRenderer::new);
             event.registerEntityRenderer(
 
                     com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.RODLING_SERVANT_FIREBALL.get(),
@@ -727,7 +758,7 @@ public class ModModelLayers {
 
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.MUTANT_BLAZE_SERVANT.get(),
-                    com.qiuyue.goetyominous.client.render.MutantBlazeServantRenderer::new);
+                    com.qiuyue.goetyominous.client.render.mm.MutantBlazeServantRenderer::new);
 
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.GIANT_HELL_BLAST.get(),
@@ -967,6 +998,9 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.DEEP_ONE_MAGE_SERVANT_WATER_BOLT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderDeepOneMageServantWaterBolt::new);
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.WATER_BOLT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderWaterBoltProjectile::new);
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.LICOWITCH_SERVANT_HEX.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderLicowitchServantHex::new);

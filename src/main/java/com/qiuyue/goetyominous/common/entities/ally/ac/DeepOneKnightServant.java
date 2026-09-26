@@ -44,7 +44,6 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import java.util.function.Predicate;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.MoverType;
@@ -82,6 +81,7 @@ import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class DeepOneKnightServant extends Summoned implements IDeepOneBarterer, IDeepOneWanderer, IAnimatedEntity {
 
@@ -146,41 +146,11 @@ public class DeepOneKnightServant extends Summoned implements IDeepOneBarterer, 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor levelAccessor, DifficultyInstance difficulty,
                                         MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData,
                                         @Nullable CompoundTag tag) {
-        if (spawnType == MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player) {
-            if (countServants(player) >= MobsConfig.DeepOneKnightServantLimit.get()) {
-                return null;
-            }
-        }
         SpawnGroupData data = super.finalizeSpawn(levelAccessor, difficulty, spawnType, spawnGroupData, tag);
         this.setItemSlot(EquipmentSlot.MAINHAND, this.random.nextFloat() < AttributesConfig.DeepOneKnightServantOrtholanceChance.get().floatValue() ? new ItemStack(ACItemRegistry.ORTHOLANCE.get()) : new ItemStack(Items.TRIDENT));
         this.weaponIsInitialSpawn = !this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty();
         return data;
     }
-
-    private int countServants(Player player) {
-        int count = 0;
-        if (player.level() instanceof ServerLevel serverLevel) {
-            for (Entity entity : serverLevel.getAllEntities()) {
-                if (entity instanceof DeepOneKnightServant servant && servant != this) {
-                    if (servant.getTrueOwner() == player) {
-                        count++;
-                    }
-                }
-            }
-        }
-        return count;
-    }
-
-    @Override
-    public void setTrueOwner(@Nullable LivingEntity livingEntity) {
-        super.setTrueOwner(livingEntity);
-        if (!this.level().isClientSide && livingEntity instanceof Player player) {
-            if (countServants(player) >= MobsConfig.DeepOneKnightServantLimit.get()) {
-                this.discard();
-            }
-        }
-    }
-
     @Override
     protected void registerGoals() {
         super.registerGoals();

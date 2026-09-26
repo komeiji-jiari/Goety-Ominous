@@ -1,0 +1,19 @@
+{
+  "name": "震颤聚晶",
+  "icon": "goetyominous:trembler_focus",
+  "category": "goety:ofcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "用这个法术可以召唤出震颤蜗牛仆从，这些外壳比石头还要坚固的软体动物擅长滚动来撞击敌人。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:trembler_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "使用地卜魔杖承载此聚晶施法时可以召唤更多震颤蜗牛。如果你穿戴了全套地卜套装，则有概率召唤出精英版本的震颤蜗牛，它们的战斗力比普通切削者更强大。"
+    }
+  ]
+}

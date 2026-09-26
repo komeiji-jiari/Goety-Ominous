@@ -46,7 +46,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.util.Mth;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -57,9 +56,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.PlayerRideable;
-import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -75,7 +72,6 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -88,7 +84,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 import java.util.List;
-import java.util.UUID;
+import java.util.function.Predicate;
 
 public class TremorsaurusServant extends AnimalSummon implements LaysEggs, KeybindUsingMount, IAnimatedEntity, ShakesScreen, PlayerRideable {
 
@@ -138,49 +134,6 @@ public class TremorsaurusServant extends AnimalSummon implements LaysEggs, Keybi
                 .add(Attributes.MOVEMENT_SPEED, AttributesConfig.TremorsaurusServantMovementSpeed.get())
                 .add(Attributes.ARMOR, AttributesConfig.TremorsaurusServantArmor.get());
     }
-
-    public static int countServants(ServerLevel level, UUID ownerId) {
-        int count = 0;
-        if (ownerId == null) {
-            return count;
-        }
-        for (Entity entity : level.getAllEntities()) {
-            if (entity instanceof TremorsaurusServant servant) {
-                if (ownerId.equals(servant.getOwnerId())) {
-                    count++;
-                }
-            }
-        }
-        return count;
-    }
-
-    @Nullable
-    @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor levelAccessor, DifficultyInstance difficulty,
-                                        MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData,
-                                        @Nullable CompoundTag tag) {
-        if (spawnType == MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player) {
-            if (countServants(player) >= MobsConfig.TremorsaurusServantLimit.get()) {
-                return null;
-            }
-        }
-        return super.finalizeSpawn(levelAccessor, difficulty, spawnType, spawnGroupData, tag);
-    }
-
-    private int countServants(Player player) {
-        int count = 0;
-        if (player.level() instanceof ServerLevel serverLevel) {
-            for (Entity entity : serverLevel.getAllEntities()) {
-                if (entity instanceof TremorsaurusServant servant) {
-                    if (servant.getTrueOwner() == player) {
-                        count++;
-                    }
-                }
-            }
-        }
-        return count;
-    }
-
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
@@ -190,6 +143,16 @@ public class TremorsaurusServant extends AnimalSummon implements LaysEggs, Keybi
         this.entityData.define(HELD_MOB_ID, -1);
         this.entityData.define(METER_AMOUNT, 1.0F);
     }
+    @Override
+    public int getSummonLimit(LivingEntity player) {
+        return MobsConfig.TremorsaurusServantLimit.get();
+    }
+
+    @Override
+    public Predicate<Entity> summonPredicate() {
+        return entity -> entity instanceof TremorsaurusServant;
+    }
+
 
     @Override
     protected void registerGoals() {

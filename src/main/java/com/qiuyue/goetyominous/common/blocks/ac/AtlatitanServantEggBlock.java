@@ -1,17 +1,18 @@
 package com.qiuyue.goetyominous.common.blocks.ac;
 
+import com.Polarice3.Goety.common.ritual.RitualRequirements;
 import com.github.alexmodguy.alexscaves.server.entity.ACEntityRegistry;
 import com.qiuyue.goetyominous.common.blocks.entities.ac.AtlatitanServantEggBlockEntity;
 import com.qiuyue.goetyominous.common.entities.ally.ac.AtlatitanServant;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockEntityRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -40,7 +41,8 @@ public class AtlatitanServantEggBlock extends ServantEggBlock {
         if (level.getBlockEntity(pos) instanceof AtlatitanServantEggBlockEntity eggBe) {
             owner = eggBe.getOwnerUUID();
         }
-        if (owner != null && AtlatitanServant.countServants(serverLevel, owner) >= MobsConfig.AtlatitanServantLimit.get()) {
+        Player player = owner != null ? serverLevel.getServer().getPlayerList().getPlayer(owner) : null;
+        if (player != null && !RitualRequirements.canSummon(serverLevel, player, AcEntityRegistry.ATLATITAN_SERVANT.get())) {
             return;
         }
         level.playSound(null, pos, SoundEvents.TURTLE_EGG_HATCH, SoundSource.BLOCKS, 0.7F, 0.9F + level.random.nextFloat() * 0.2F);
@@ -58,7 +60,8 @@ public class AtlatitanServantEggBlock extends ServantEggBlock {
     }
 
     private void spawnServant(ServerLevel level, BlockPos pos, UUID owner, int index) {
-        if (AtlatitanServant.countServants(level, owner) >= MobsConfig.AtlatitanServantLimit.get()) {
+        Player player = level.getServer().getPlayerList().getPlayer(owner);
+        if (player != null && !RitualRequirements.canSummon(level, player, AcEntityRegistry.ATLATITAN_SERVANT.get())) {
             return;
         }
         AtlatitanServant baby = AcEntityRegistry.ATLATITAN_SERVANT.get().create(level);

@@ -17,7 +17,6 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.LightningBoltE
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.Tornado;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
 import net.miauczel.legendary_monsters.Particle.custom.Circle;
 import net.miauczel.legendary_monsters.config.ModConfig;
@@ -40,7 +39,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -51,8 +49,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -66,7 +62,6 @@ import net.minecraft.world.entity.projectile.ThrownPotion;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -90,15 +85,20 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
             SynchedEntityData.defineId(CloudGolemServant.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Boolean> WEATHER_ON_COOLDOWN =
             SynchedEntityData.defineId(CloudGolemServant.class, EntityDataSerializers.BOOLEAN);
+    public static final EntityDataAccessor<Float> WEATHER_CAST_YAW =
+            SynchedEntityData.defineId(CloudGolemServant.class, EntityDataSerializers.FLOAT);
 
     public float LayerTicks;
 
-    private static final int SLEEP_STANDBY_DELAY = 20;
     private static final int AWAKE_TICKS = 20;
 
-    private int standbyTicks = 0;
     private int weatherCooldown = 0;
+    private int weatherCastTicks = 0;
 
+    public static final int WEATHER_CAST_THUNDER_TICKS = 56;
+    public static final int WEATHER_CAST_CLEAR_TICKS = 48;
+    public static final int WEATHER_CAST_BOLT_TICK = 25;
+    public static final float WEATHER_TURN_SPEED = 15.0F;
     public static final int WEATHER_DURATION = 6000;
     public static final int WEATHER_COOLDOWN_TICKS = 6000;
     public static final byte EVENT_WEATHER_CLEAR = 64;
@@ -132,7 +132,6 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState awakeAnimationState = new AnimationState();
     public final AnimationState sleepAnimationState = new AnimationState();
-    public final AnimationState lightningSummonAnimationState = new AnimationState();
     public final AnimationState p2AState = new AnimationState();
     public final AnimationState landAnimationState = new AnimationState();
     public final AnimationState fallAnimationState = new AnimationState();
@@ -165,6 +164,7 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
         this.entityData.define(BREAK, 0);
         this.entityData.define(PTICKS, 0);
         this.entityData.define(WEATHER_ON_COOLDOWN, false);
+        this.entityData.define(WEATHER_CAST_YAW, 0.0F);
         this.entityData.define(TEXTURE_VARIANT1, 0);
     }
 
@@ -190,6 +190,19 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
 
     public void setWeatherOnCooldown(boolean value) {
         this.entityData.set(WEATHER_ON_COOLDOWN, value);
+    }
+
+    public float getWeatherCastYaw() {
+        return this.entityData.get(WEATHER_CAST_YAW);
+    }
+
+    public void setWeatherCastYaw(float value) {
+        this.entityData.set(WEATHER_CAST_YAW, value);
+    }
+
+    private float yawTowards(Entity target) {
+        return (float) (Mth.atan2(target.getZ() - this.getZ(), target.getX() - this.getX())
+                * (180.0D / Math.PI)) - 90.0F;
     }
 
     public int getTextureVariant1() {
@@ -322,7 +335,7 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(6, new Summoned.WanderGoal<>(this, 1.0D));
+        this.goalSelector.addGoal(6, new Summoned.WanderGoal<>(this, this.getFollowSpeed()));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
@@ -657,6 +670,18 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
 
         this.goalSelector.addGoal(1, new IStateGoal(this, 1, 1, 0, 0, 0) {
             @Override
+            public boolean canContinueToUse() {
+                return this.entity.getAttackState() == 1 || this.entity.getAttackState() == 2;
+            }
+
+            @Override
+            public void stop() {
+                if (this.entity.getAttackState() == 1) {
+                    super.stop();
+                }
+            }
+
+            @Override
             public void tick() {
                 this.entity.setDeltaMovement(0.0D, this.entity.getDeltaMovement().y, 0.0D);
             }
@@ -683,14 +708,15 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
         }
         if (!this.level().isClientSide) {
             if (this.isStandby() && this.getAttackState() == 0 && this.attackLock == 0) {
-                if (++this.standbyTicks >= SLEEP_STANDBY_DELAY) {
-                    this.setSleep(true);
-                }
-            } else {
-                this.standbyTicks = 0;
+                this.setSleep(true);
             }
         }
         super.tick();
+        if (this.weatherCastTicks > 0) {
+            float delta = Mth.wrapDegrees(this.getWeatherCastYaw() - this.getYRot());
+            this.setYRot(this.getYRot() + Mth.clamp(delta, -WEATHER_TURN_SPEED, WEATHER_TURN_SPEED));
+            this.yBodyRot = this.getYRot();
+        }
         if (!this.level().isClientSide) {
             if (this.getAttackState() == 1 && !this.isStandby()) {
                 this.setAttackState(2);
@@ -754,6 +780,13 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
         if (this.bigsmash2Cooldown > 0) {
             --this.bigsmash2Cooldown;
         }
+        if (this.weatherCastTicks > 0) {
+            if (this.weatherCastTicks == WEATHER_CAST_THUNDER_TICKS - WEATHER_CAST_BOLT_TICK && this.isAngry()) {
+                this.summonBolt(1.0F, 0.0F, 0.0F);
+                this.playSound(SoundEvents.TRIDENT_THUNDER, 3.0F, 1.0F);
+            }
+            --this.weatherCastTicks;
+        }
         if (!this.level().isClientSide && this.weatherCooldown > 0) {
             --this.weatherCooldown;
             if (this.weatherCooldown <= 0) {
@@ -793,6 +826,11 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
         if (this.horizontalCollision && this.isInWall()) {
             this.setDeltaMovement(this.getDeltaMovement().add(0.1D, 0.0D, 0.1D));
         }
+    }
+
+    @Override
+    protected boolean isImmobile() {
+        return super.isImmobile() || this.weatherCastTicks > 0;
     }
 
     public void attackParticle() {
@@ -931,7 +969,7 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
                 && this.canBreak() && !this.isBroken() && amount > 5.0F) {
             amount = 4.0F;
         }
-        if ((this.isSleep() && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) || this.getAttackState() == 21) {
+        if (this.getAttackState() == 21) {
             return false;
         }
         boolean hurt = super.hurt(source, amount);
@@ -1032,9 +1070,13 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
         }
         if (isOwner && itemstack.isEmpty() && !this.isSleep() && this.weatherCooldown <= 0) {
             if (this.level() instanceof ServerLevel serverLevel) {
+                if (this.getAttackState() == 0) {
+                    this.getNavigation().stop();
+                    this.setWeatherCastYaw(this.yawTowards(pPlayer));
+                    this.weatherCastTicks = this.isAngry() ? WEATHER_CAST_THUNDER_TICKS : WEATHER_CAST_CLEAR_TICKS;
+                }
                 if (this.isAngry()) {
                     serverLevel.setWeatherParameters(0, WEATHER_DURATION, true, true);
-                    this.playSound(SoundEvents.TRIDENT_THUNDER, 3.0F, 1.0F);
                     this.level().broadcastEntityEvent(this, EVENT_WEATHER_THUNDER);
                 } else {
                     serverLevel.setWeatherParameters(WEATHER_DURATION, 0, false, false);
@@ -1057,10 +1099,11 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
         }
         if (this.getAttackState() == 0) {
             this.stopAllAnimationStates();
+            this.weatherCastTicks = id == EVENT_WEATHER_CLEAR ? WEATHER_CAST_CLEAR_TICKS : WEATHER_CAST_THUNDER_TICKS;
             if (id == EVENT_WEATHER_CLEAR) {
                 this.ExplodeAnimationState.start(this.tickCount);
             } else {
-                this.lightningSummonAnimationState.start(this.tickCount);
+                this.p2AState.start(this.tickCount);
             }
         }
     }
@@ -1083,30 +1126,6 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
         this.setWeatherOnCooldown(this.weatherCooldown > 0);
         this.setTextureVariant(compound.getInt("TextureVariant"));
     }
-
-    @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty,
-                                        MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData,
-                                        @Nullable CompoundTag pDataTag) {
-        if (pReason == MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player
-                && countServants(player) >= MobsConfig.CloudGolemServantLimit.get()) {
-            return null;
-        }
-        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
-    }
-
-    private static int countServants(Player player) {
-        int count = 0;
-        if (player.level() instanceof ServerLevel serverLevel) {
-            for (Entity entity : serverLevel.getAllEntities()) {
-                if (entity instanceof CloudGolemServant servant && servant.getTrueOwner() == player) {
-                    ++count;
-                }
-            }
-        }
-        return count;
-    }
-
     @Override
     public void onAddedToWorld() {
         super.onAddedToWorld();
@@ -1122,9 +1141,6 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
         }
         if (input.equals("idle")) {
             return this.idleAnimationState;
-        }
-        if (input.equals("attacklightning")) {
-            return this.lightningSummonAnimationState;
         }
         if (input.equals("cloudattackbig")) {
             return this.cloudSummonBigAnimationState;
@@ -1294,7 +1310,6 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
         this.PreFractureFallAnimationState.stop();
         this.FractureLandAnimationState.stop();
         this.awakeAnimationState.stop();
-        this.lightningSummonAnimationState.stop();
         this.mhitAnimationState.stop();
         this.chargepreAnimationState.stop();
         this.chargeAnimationState.stop();

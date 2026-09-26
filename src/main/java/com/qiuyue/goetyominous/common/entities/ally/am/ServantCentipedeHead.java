@@ -7,6 +7,7 @@ import com.github.alexthe666.alexsmobs.entity.EntityCockroach;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
 import com.qiuyue.goetyominous.config.AttributesConfig;
+import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -68,6 +69,16 @@ public class ServantCentipedeHead extends Summoned {
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.ServantCentipedeAttackDamage.get())
                 .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.ServantCentipedeKnockbackResistance.get())
                 .add(Attributes.MOVEMENT_SPEED, AttributesConfig.ServantCentipedeMovementSpeed.get());
+    }
+
+    @Override
+    public int getSummonLimit(LivingEntity player) {
+        return MobsConfig.CentipedeLimit.get();
+    }
+
+    @Override
+    public Predicate<Entity> summonPredicate() {
+        return entity -> entity instanceof ServantCentipedeHead;
     }
 
     protected void registerGoals() {
@@ -165,29 +176,8 @@ public class ServantCentipedeHead extends Summoned {
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, SpawnGroupData spawnDataIn, CompoundTag dataTag) {
         this.setSegmentCount(this.random.nextInt(4) + 5);
-        if (this.overSummonLimit()) {
-            this.discard();
-            return null;
-        }
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
-
-    private boolean overSummonLimit() {
-        if (this.level().isClientSide || this.getTrueOwner() == null) {
-            return false;
-        }
-        int count = 0;
-        for (Entity entity : ((ServerLevel) this.level()).getAllEntities()) {
-            if (entity instanceof ServantCentipedeHead head
-                    && head.getTrueOwner() == this.getTrueOwner() && head.isAlive()) {
-                if (++count >= (Integer) com.qiuyue.goetyominous.config.MobsConfig.CentipedeLimit.get()) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         if (this.getChildId() != null) {

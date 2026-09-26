@@ -26,7 +26,7 @@ public class LmItems {
 
     public static final RegistryObject<ServantSpawnEggItem> OVERGROWN_COLOSSUS_SPAWN_EGG = LM_ITEMS.register(
             "overgrown_colossus_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(LmEntityRegistry.OVERGROWN_COLOSSUS_SERVANT, 0x6B8E23, 0x00AA00, egg()));
+            () -> new ServantSpawnEggItem(LmEntityRegistry.OVERGROWN_COLOSSUS_SERVANT, 0x999999, 0x669900, egg()));
 
     // ⚠️ 暂时注释掉：堕落圣骑还没做完，先不让它在游戏里被拿到
     //    （刷怪蛋物品不注册了 → 创造模式物品栏里搜不到，丢不出来）。
@@ -45,15 +45,31 @@ public class LmItems {
 
     public static final RegistryObject<ServantSpawnEggItem> CLOUD_GOLEM_SPAWN_EGG = LM_ITEMS.register(
             "cloud_golem_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(LmEntityRegistry.CLOUD_GOLEM_SERVANT, 0xD8DCE6, 0x5B6B8C, egg()));
+            () -> new ServantSpawnEggItem(LmEntityRegistry.CLOUD_GOLEM_SERVANT, 0xFFFFFF, 0xCCFFFF, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> WANDERING_EYE_SPAWN_EGG = LM_ITEMS.register(
+            "wandering_eye_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(LmEntityRegistry.WANDERING_EYE_SERVANT, 0xD5DA94, 0x659B7D, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> SHULKER_MIMIC_SPAWN_EGG = LM_ITEMS.register(
             "shulker_mimic_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(LmEntityRegistry.SHULKER_MIMIC_SERVANT, 0x9C6BB0, 0x2B1B36, egg()));
+            () -> new ServantSpawnEggItem(LmEntityRegistry.SHULKER_MIMIC_SERVANT, 0x914A91, 0x543054, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> ANNIHILATION_PURSUER_SPAWN_EGG = LM_ITEMS.register(
             "annihilation_pursuer_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(LmEntityRegistry.ANNIHILATION_PURSUER_SERVANT, 0x2E7D32, 0x1A1A1A, egg()));
+            () -> new ServantSpawnEggItem(LmEntityRegistry.ANNIHILATION_PURSUER_SERVANT, 0x132E37, 0x579143, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> FLAME_DRIFTER_SPAWN_EGG = LM_ITEMS.register(
+            "flame_drifter_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(LmEntityRegistry.FLAME_DRIFTER_SERVANT, 0xD7DA94, 0x88C35A, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> FLAMEBORN_WARRIOR_SPAWN_EGG = LM_ITEMS.register(
+            "flameborn_warrior_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(LmEntityRegistry.FLAMEBORN_WARRIOR_SERVANT, 0x161616, 0x579143, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> FLAMEBORN_GUARD_SPAWN_EGG = LM_ITEMS.register(
+            "flameborn_guard_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(LmEntityRegistry.FLAMEBORN_GUARD_SERVANT, 0x161616, 0x427367, egg()));
 
     public static void register(IEventBus modEventBus) {
         LM_ITEMS.register(modEventBus);

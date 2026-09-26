@@ -15,7 +15,6 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IMoveGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IStateGoal;
 import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.PoisonousShockwave;
 import net.minecraft.core.BlockPos;
@@ -29,7 +28,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -51,7 +49,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -65,6 +62,7 @@ import java.util.List;
 public class OvergrownColossusServant extends IAnimatedMiniBossServant {
     private static final EntityDataAccessor<Integer> TEXTURE_VARIANT =
             SynchedEntityData.defineId(OvergrownColossusServant.class, EntityDataSerializers.INT);
+    private static final int AWAKE_TICKS = 20;
     @Override
     public MobType getMobType() {
         return com.Polarice3.Goety.init.ModMobType.NATURAL;
@@ -127,8 +125,17 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
 
     @Override
     public void tick() {
-
+        if (!this.level().isClientSide && this.isStandby() && this.getAttackState() == 0) {
+            this.setSleep(true);
+        }
         super.tick();
+        if (!this.level().isClientSide) {
+            if (this.getAttackState() == 1 && !this.isStandby()) {
+                this.setAttackState(2);
+            } else if (this.getAttackState() == 2 && this.attackTicks >= AWAKE_TICKS) {
+                this.setSleep(false);
+            }
+        }
         if(smashCooldown > 0){
             --smashCooldown;
         }
@@ -144,7 +151,7 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
         if(bigsmash2Cooldown > 0){
             --bigsmash2Cooldown;
         }
-        if (!this.level().isClientSide && this.getAttackState() == 0) {
+        if (!this.level().isClientSide && (this.getAttackState() == 0 || this.isSleep())) {
             if (this.cropGrowthCooldown > 0) {
                 --this.cropGrowthCooldown;
             } else if (this.canIncreaseCropGrowth()) {
@@ -217,7 +224,7 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(6, new Summoned.WanderGoal<>(this, 1.0D));
+        this.goalSelector.addGoal(6, new Summoned.WanderGoal<>(this, this.getFollowSpeed()));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
@@ -294,6 +301,27 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
                 super.stop();
             }
         });
+
+        this.goalSelector.addGoal(1, new IStateGoal(this, 1, 1, 0, 0, 0) {
+            @Override
+            public boolean canContinueToUse() {
+                return this.entity.getAttackState() == 1 || this.entity.getAttackState() == 2;
+            }
+
+            @Override
+            public void stop() {
+                if (this.entity.getAttackState() == 1) {
+                    super.stop();
+                }
+            }
+
+            @Override
+            public void tick() {
+                this.entity.setDeltaMovement(0.0D, this.entity.getDeltaMovement().y, 0.0D);
+            }
+        });
+
+        this.goalSelector.addGoal(0, new IAttackGoal(this, 1, 2, 0, AWAKE_TICKS, 50, 8.0F));
     }
 
     @Override
@@ -442,6 +470,7 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
         super.addAdditionalSaveData(compound);
 
         compound.putInt("TextureVariant", this.getTextureVariant());
+        compound.putBoolean("is_Sleep", this.isSleep());
 
     }
 
@@ -450,6 +479,7 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
         super.readAdditionalSaveData(compound);
 
         this.entityData.set(TEXTURE_VARIANT, compound.getInt("TextureVariant"));
+        this.setSleep(compound.getBoolean("is_Sleep"));
     }
 
     public AnimationState chargeAnimationState = new AnimationState();
@@ -457,6 +487,8 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
     public AnimationState chargestartAnimationState = new AnimationState();
     public AnimationState upperCutAnimationState = new AnimationState();
     public AnimationState idleAnimationState = new AnimationState();
+    public AnimationState sleepAnimationState = new AnimationState();
+    public AnimationState awakeAnimationState = new AnimationState();
     public AnimationState attackarm1AnimationState = new AnimationState();
     public AnimationState attackarm2AnimationState = new AnimationState();
     public AnimationState attackarmsAnimationState = new AnimationState();
@@ -469,6 +501,10 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
     public AnimationState getAnimationState(String input) {
         if (input == "idle") {
             return this.idleAnimationState;
+        } else if (input == "sleep") {
+            return this.sleepAnimationState;
+        } else if (input == "awake") {
+            return this.awakeAnimationState;
         } else if (input == "attackarmright") {
             return this.attackarm1AnimationState;
         } else if (input == "attackarmleft") {
@@ -501,36 +537,24 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
             return new AnimationState();
         }
     }
-    @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty,
-                                         MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData,
-                                         @Nullable CompoundTag pDataTag) {
-        if (pReason == MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player) {
-            if (countServants(player) >= MobsConfig.OvergrownColossusServantLimit.get()) {
-                return null;
-            }
-        }
-        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
-    }
-
-    private int countServants(Player player) {
-        int count = 0;
-        if (player.level() instanceof ServerLevel serverLevel) {
-            for (Entity entity : serverLevel.getAllEntities()) {
-                if (entity instanceof OvergrownColossusServant servant
-                        && servant.getTrueOwner() == player) {
-                    count++;
-                }
-            }
-        }
-        return count;
-    }
-
     public void onSyncedDataUpdated(EntityDataAccessor<?> p_21104_) {
         if (ATTACK_STATE.equals(p_21104_)) {
             if (this.level().isClientSide)
                 switch (this.getAttackState()) {
-                    case 0 -> this.stopAllAnimationStates();
+                    case 0 -> {
+                        if (!this.sleepAnimationState.isStarted()) {
+                            break;
+                        }
+                        this.stopAllAnimationStates();
+                    }
+                    case 1 -> {
+                        this.stopAllAnimationStates();
+                        this.sleepAnimationState.startIfStopped(this.tickCount);
+                    }
+                    case 2 -> {
+                        this.stopAllAnimationStates();
+                        this.awakeAnimationState.startIfStopped(this.tickCount);
+                    }
                     case 3 -> {
                         this.stopAllAnimationStates();
                         this.attackarm1AnimationState.startIfStopped(this.tickCount);
@@ -580,7 +604,21 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
 
         super.onSyncedDataUpdated(p_21104_);
     }
+    public boolean isSleep() {
+        return this.getAttackState() == 1 || this.getAttackState() == 2;
+    }
+
+    public void setSleep(boolean sleep) {
+        this.setAttackState(sleep ? 1 : 0);
+    }
+
+    private boolean isStandby() {
+        return this.isStaying() && !this.isCommanded() && this.getTarget() == null;
+    }
+
     public void stopAllAnimationStates() {
+        this.sleepAnimationState.stop();
+        this.awakeAnimationState.stop();
         upperCutAnimationState.stop();
         this.attackarmsAnimationState.stop();
         this.attackPoisonCloudAnimationState.stop();

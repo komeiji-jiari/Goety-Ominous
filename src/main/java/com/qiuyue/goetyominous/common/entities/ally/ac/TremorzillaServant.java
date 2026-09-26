@@ -53,7 +53,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -65,12 +64,10 @@ import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -90,7 +87,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -109,7 +105,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -196,7 +191,6 @@ public class TremorzillaServant extends AnimalSummon
     private boolean makingBeamSoundOnClient = false;
     private Player lastFedPlayer = null;
     private int killCountFromBeam = 0;
-    private boolean servantLimitEnforced = false;
     private float prevSitProgress;
     private float sitProgress;
     private boolean followingStanceEnforced = false;
@@ -336,7 +330,6 @@ public class TremorzillaServant extends AnimalSummon
         }
         super.tick();
         this.enforceFollowingStanceOnce();
-        this.enforceServantLimitOnce();
         AnimationHandler.INSTANCE.updateAnimations(this);
         this.legSolver.update(this, this.yBodyRot, this.getScale());
         this.prevScreenShakeAmount = this.screenShakeAmount;
@@ -1697,63 +1690,6 @@ public class TremorzillaServant extends AnimalSummon
     public float getSitProgress(float partialTicks) {
         return (this.prevSitProgress + (this.sitProgress - this.prevSitProgress) * partialTicks) / this.maxSitTicks();
     }
-
-    @Nullable
-    @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
-                                        MobSpawnType spawnType, @Nullable SpawnGroupData groupData,
-                                        @Nullable CompoundTag tag) {
-        if (spawnType == MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player) {
-            if (countServants(player) >= MobsConfig.TremorzillaServantLimit.get()) {
-                return null;
-            }
-        }
-        return super.finalizeSpawn(level, difficulty, spawnType, groupData, tag);
-    }
-
-    private void enforceServantLimitOnce() {
-        if (this.level().isClientSide || this.servantLimitEnforced) {
-            return;
-        }
-        this.servantLimitEnforced = true;
-        UUID ownerId = this.getOwnerId();
-        if (ownerId == null || !(this.level() instanceof ServerLevel serverLevel)) {
-            return;
-        }
-        if (countServants(serverLevel, ownerId) > MobsConfig.TremorzillaServantLimit.get()) {
-            this.discard();
-        }
-    }
-
-    public static int countServants(ServerLevel level, UUID ownerId) {
-        int count = 0;
-        if (ownerId == null) {
-            return count;
-        }
-        for (Entity entity : level.getAllEntities()) {
-            if (entity instanceof TremorzillaServant servant) {
-                if (ownerId.equals(servant.getOwnerId())) {
-                    count++;
-                }
-            }
-        }
-        return count;
-    }
-
-    private int countServants(Player player) {
-        int count = 0;
-        if (player.level() instanceof ServerLevel serverLevel) {
-            for (Entity entity : serverLevel.getAllEntities()) {
-                if (entity instanceof TremorzillaServant servant) {
-                    if (servant.getTrueOwner() == player) {
-                        count++;
-                    }
-                }
-            }
-        }
-        return count;
-    }
-
     @Override
     public int getSummonLimit(LivingEntity player) {
         return MobsConfig.TremorzillaServantLimit.get();

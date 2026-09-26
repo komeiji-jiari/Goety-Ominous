@@ -21,6 +21,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.level.BlockGetter;
@@ -44,6 +45,10 @@ public abstract class AbstractMutantServant extends Summoned implements IMutatab
 
     protected PathNavigation createNavigation(Level p_33348_) {
         return new MutantNavigation(this, p_33348_);
+    }
+
+    protected BodyRotationControl createBodyControl() {
+        return new MutantBodyRotationControl(this);
     }
 
     public abstract NodeEvaluatorDimensions getNodeEvaluatorDimensions();

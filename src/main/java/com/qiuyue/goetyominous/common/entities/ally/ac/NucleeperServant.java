@@ -32,13 +32,10 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.level.ServerLevelAccessor;
-import org.jetbrains.annotations.Nullable;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -55,6 +52,7 @@ import net.minecraft.world.phys.AABB;
 
 import java.util.EnumSet;
 import java.util.stream.Stream;
+import java.util.function.Predicate;
 
 public class NucleeperServant extends Summoned implements ActivatesSirens, PowerableMob {
 
@@ -75,6 +73,16 @@ public class NucleeperServant extends Summoned implements ActivatesSirens, Power
 
     public NucleeperServant(EntityType<? extends Summoned> entityType, Level level) {
         super(entityType, level);
+    }
+
+    @Override
+    public int getSummonLimit(LivingEntity player) {
+        return MobsConfig.NucleeperServantLimit.get();
+    }
+
+    @Override
+    public Predicate<Entity> summonPredicate() {
+        return entity -> entity instanceof NucleeperServant;
     }
 
     protected void registerGoals() {
@@ -110,35 +118,6 @@ public class NucleeperServant extends Summoned implements ActivatesSirens, Power
                 .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.NucleeperServantKnockbackResistance.get())
                 .add(Attributes.ARMOR, AttributesConfig.NucleeperServantArmor.get());
     }
-
-    @Override
-    @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor levelAccessor, DifficultyInstance difficulty,
-                                        MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData,
-                                        @Nullable CompoundTag tag) {
-        if (this.getTrueOwner() instanceof Player player) {
-            if (countServants(player) >= MobsConfig.NucleeperServantLimit.get()) {
-                this.discard();
-                return null;
-            }
-        }
-        return super.finalizeSpawn(levelAccessor, difficulty, spawnType, spawnGroupData, tag);
-    }
-
-    private int countServants(Player player) {
-        int count = 0;
-        if (player.level() instanceof ServerLevel serverLevel) {
-            for (Entity entity : serverLevel.getAllEntities()) {
-                if (entity instanceof NucleeperServant servant && servant != this) {
-                    if (servant.getTrueOwner() == player) {
-                        count++;
-                    }
-                }
-            }
-        }
-        return count;
-    }
-
     protected PathNavigation createNavigation(Level level) {
         return new GroundPathNavigatorNoSpin(this, level);
     }

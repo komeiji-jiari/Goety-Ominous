@@ -1,6 +1,5 @@
 package com.qiuyue.goetyominous.common.entities.ally.ac;
 
-import java.util.UUID;
 
 import com.Polarice3.Goety.api.entities.IAutoRideable;
 import com.Polarice3.Goety.api.items.magic.IWand;
@@ -63,6 +62,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import java.util.function.Predicate;
 
 public class GrottoceratopsServant extends AnimalSummon implements LaysEggs, IAnimatedEntity, PlayerRideable, IAutoRideable {
 
@@ -100,22 +100,6 @@ public class GrottoceratopsServant extends AnimalSummon implements LaysEggs, IAn
                 .add(Attributes.MOVEMENT_SPEED, AttributesConfig.GrottoceratopsServantMovementSpeed.get())
                 .add(Attributes.ARMOR, AttributesConfig.GrottoceratopsServantArmor.get());
     }
-
-    public static int countServants(ServerLevel level, UUID ownerId) {
-        int count = 0;
-        if (ownerId == null) {
-            return count;
-        }
-        for (Entity entity : level.getAllEntities()) {
-            if (entity instanceof GrottoceratopsServant servant) {
-                if (ownerId.equals(servant.getOwnerId())) {
-                    count++;
-                }
-            }
-        }
-        return count;
-    }
-
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
@@ -124,6 +108,16 @@ public class GrottoceratopsServant extends AnimalSummon implements LaysEggs, IAn
         this.entityData.define(TAIL_SWING_ROT, 0F);
         this.entityData.define(AUTO_MODE, false);
     }
+    @Override
+    public int getSummonLimit(LivingEntity player) {
+        return com.qiuyue.goetyominous.config.MobsConfig.GrottoceratopsServantLimit.get();
+    }
+
+    @Override
+    public Predicate<Entity> summonPredicate() {
+        return entity -> entity instanceof GrottoceratopsServant;
+    }
+
 
     @Override
     protected void registerGoals() {
