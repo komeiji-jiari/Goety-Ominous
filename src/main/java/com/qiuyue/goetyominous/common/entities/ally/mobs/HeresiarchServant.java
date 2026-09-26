@@ -31,13 +31,13 @@ import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.compat.mod.GoetyAwakenCompat;
 import com.qiuyue.goetyominous.compat.mod.GoetyRevelationCompat;
 import com.qiuyue.goetyominous.config.AttributesConfig;
+import com.qiuyue.goetyominous.config.MobsConfig;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -329,13 +329,6 @@ public class HeresiarchServant extends CultistServant {
         }
         return this.goetyAwakenMonolith.position();
     }
-
-    private int countServants(Player player, Class<? extends HeresiarchServant> servantClass) {
-        return (int) player.level().getEntitiesOfClass(servantClass,
-                        player.getBoundingBox().inflate(64.0D))
-                .stream().filter(s -> s.getTrueOwner() == player).count();
-    }
-
     @Override
     public void setCommandPosEntityOrder(LivingEntity living) {
         if (living instanceof AbstractObsidianMonolith monolith1 && MobUtil.areAllies(this, monolith1)) {
@@ -490,11 +483,6 @@ public class HeresiarchServant extends CultistServant {
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         this.populateDefaultEquipmentSlots(worldIn.getRandom(), difficultyIn);
         this.populateDefaultEquipmentEnchantments(worldIn.getRandom(), difficultyIn);
-        if (reason == MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player) {
-            if (countServants(player, this.getClass()) >= MobsConfig.HeresiarchServantLimit.get()) {
-                return null;
-            }
-        }
         if (!this.hasCustomName()) {
             int random = this.random.nextInt(25);
             int random2 = this.random.nextInt(25);

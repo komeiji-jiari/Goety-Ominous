@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.util;
 
 import com.Polarice3.Goety.common.items.revive.ReviveServantItem;
+import com.Polarice3.Goety.common.ritual.RitualRequirements;
 import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
 import com.github.alexmodguy.alexscaves.server.misc.ACTagRegistry;
 import com.qiuyue.goetyominous.common.entities.ally.ac.LuxtructosaurusServant;
@@ -113,10 +114,10 @@ public class ExtinctionCatalystEntity extends ItemEntity {
                 return;
             }
             if (this.getOwner() instanceof Player player) {
-                servant.setTrueOwner(player);
-                if (servant.isRemoved()) {
+                if (!RitualRequirements.canSummon(serverLevel, player, servant.getType())) {
                     return;
                 }
+                servant.setTrueOwner(player);
             }
         }
         servant.setHealth(servant.getMaxHealth());

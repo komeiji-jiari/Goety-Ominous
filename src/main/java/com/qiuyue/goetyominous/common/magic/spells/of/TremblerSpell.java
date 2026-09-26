@@ -6,6 +6,7 @@ import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.common.magic.SummonSpell;
 import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.BlockFinder;
+import com.Polarice3.Goety.utils.CuriosFinder;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.ally.of.TremblerServant;
@@ -79,12 +80,8 @@ public class TremblerSpell extends SummonSpell {
         }
 
         if (!this.isShifting(caster)) {
-            int count = 1;
-            boolean elite = false;
-            if (this.rightStaff(staff)) {
-                count = worldIn.getRandom().nextIntBetweenInclusive(2, 5);
-                elite = true;
-            }
+            int count = this.rightStaff(staff) ? worldIn.getRandom().nextIntBetweenInclusive(2, 5) : 1;
+            boolean geoSet = CuriosFinder.hasGeoSet(caster);
 
             for (int i = 0; i < count; ++i) {
                 TremblerServant trembler = new TremblerServant(OfEntityRegistry.TREMBLER_SERVANT.get(), worldIn);
@@ -94,7 +91,7 @@ public class TremblerSpell extends SummonSpell {
                 MobUtil.moveDownToGround(trembler);
                 trembler.setLimitedLife(MobUtil.getSummonLifespan(worldIn) * duration);
                 trembler.finalizeSpawn(worldIn, caster.level().getCurrentDifficultyAt(blockpos), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
-                if (elite && !trembler.isElite()) {
+                if (geoSet && worldIn.getRandom().nextBoolean() && !trembler.isElite()) {
                     trembler.setElite(true);
                     trembler.setEliteStats(trembler);
                 }

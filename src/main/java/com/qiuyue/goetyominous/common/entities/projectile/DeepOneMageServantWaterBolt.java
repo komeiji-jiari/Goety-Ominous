@@ -64,6 +64,7 @@ public class DeepOneMageServantWaterBolt extends WaterHurtingProjectile {
     private double lxd;
     private double lyd;
     private double lzd;
+    private float damageBonus = 0.0F;
 
     public DeepOneMageServantWaterBolt(EntityType<? extends AbstractHurtingProjectile> entityType, Level level) {
         super(entityType, level);
@@ -81,6 +82,14 @@ public class DeepOneMageServantWaterBolt extends WaterHurtingProjectile {
         super.defineSynchedData();
         this.entityData.define(BUBBLING, false);
         this.entityData.define(ARC_TOWARDS_ENTITY_UUID, Optional.empty());
+    }
+
+    public float getDamageBonus() {
+        return this.damageBonus;
+    }
+
+    public void setDamageBonus(float damageBonus) {
+        this.damageBonus = damageBonus;
     }
 
     @Override
@@ -246,7 +255,7 @@ public class DeepOneMageServantWaterBolt extends WaterHurtingProjectile {
                 continue;
             }
             candidate = entity;
-            if (entity.hurt(source, 3.0F)) {
+            if (entity.hurt(source, 3.0F + this.damageBonus)) {
                 if (this.isBubbling()) {
                     entity.addEffect(new MobEffectInstance(ACEffectRegistry.BUBBLED.get(), 200));
                     AlexsCaves.sendMSGToAll(new UpdateEffectVisualityEntityMessage(entity.getId(), this.getId(), 1, 200));
@@ -379,10 +388,12 @@ public class DeepOneMageServantWaterBolt extends WaterHurtingProjectile {
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         this.setBubbling(compound.getBoolean("Bubbling"));
+        this.damageBonus = compound.getFloat("DamageBonus");
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         compound.putBoolean("Bubbling", this.isBubbling());
+        compound.putFloat("DamageBonus", this.damageBonus);
     }
 }

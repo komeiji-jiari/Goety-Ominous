@@ -148,6 +148,18 @@ public class ModEntityLayers {
     public static final ModelLayerLocation CLOUD_GOLEM_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "cloud_golem_servant"), "main");
 
+    public static final ModelLayerLocation WANDERING_EYE_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "wandering_eye_servant"), "main");
+
+    public static final ModelLayerLocation FLAME_DRIFTER_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "flame_drifter_servant"), "main");
+
+    public static final ModelLayerLocation FLAMEBORN_WARRIOR_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "flameborn_warrior_servant"), "main");
+
+    public static final ModelLayerLocation FLAMEBORN_GUARD_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "flameborn_guard_servant"), "main");
+
     public static final ModelLayerLocation PIGLIN_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "piglin_servant"), "main");
 

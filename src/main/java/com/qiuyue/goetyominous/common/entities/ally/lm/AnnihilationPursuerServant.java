@@ -10,9 +10,7 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.AnnihilationEx
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.AnnihilationFlameStrike;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.EntityThrown;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SmallAnnihilationBomb;
-import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
 import net.miauczel.legendary_monsters.Particle.custom.BigAnnihilationSweepParticle;
 import net.miauczel.legendary_monsters.Particle.custom.Circle;
@@ -27,8 +25,6 @@ import net.miauczel.legendary_monsters.util.EntityUtil;
 import net.miauczel.legendary_monsters.util.MathUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.server.level.ServerLevel;
@@ -36,7 +32,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -44,8 +39,6 @@ import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -53,9 +46,7 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
@@ -65,7 +56,6 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
 
@@ -97,6 +87,7 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
     public final int STAB_FINISHER_COOLDOWN = 200;
     public final int BUCKSHOT_COOLDOWN = 40;
     public final int STOMP_COMBO_COOLDOWN = 100;
+    private static final int AWAKE_TICKS = 30;
     public int stomp_combo_cooldown;
     public int teleport_slam_cooldown;
     public int shield_stun_cooldown;
@@ -179,6 +170,11 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
         if (this.buckshot_cooldown > 0) {
             --this.buckshot_cooldown;
         }
+        if (!this.level().isClientSide) {
+            if (this.getAttackState() == 0 && this.isStandby()) {
+                this.setSleep(true);
+            }
+        }
         if (this.level().isClientSide) {
             if (this.isDuringTeleportation() && !this.isInvisible()) {
                 this.setInvisible(true);
@@ -192,12 +188,19 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
             this.idleAnimationState.animateWhen(this.getAttackState() == 0, this.tickCount);
         }
         super.tick();
+        if (!this.level().isClientSide) {
+            if (this.getAttackState() == 6 && !this.isStandby()) {
+                this.setAttackState(7);
+            } else if (this.getAttackState() == 7 && this.attackTicks >= AWAKE_TICKS) {
+                this.setSleep(false);
+            }
+        }
     }
 
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(6, new Summoned.WanderGoal<>(this, 1.0D));
+        this.goalSelector.addGoal(6, new Summoned.WanderGoal<>(this, this.getFollowSpeed()));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
@@ -215,7 +218,6 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
             @Override
             public void stop() {
                 AnnihilationPursuerServant.this.setAttackState(AnnihilationPursuerServant.this.getRandom().nextInt() * 100 < 50 ? 22 : 23);
-                super.stop();
             }
         });
         this.goalSelector.addGoal(0, new IStateGoal(this, 22, 22, 0, MathUtils.toTicks(1.08F), 10) {
@@ -370,11 +372,23 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
         });
         this.goalSelector.addGoal(1, new IStateGoal(this, 6, 6, 0, 0, 0) {
             @Override
+            public boolean canContinueToUse() {
+                return this.entity.getAttackState() == 6 || this.entity.getAttackState() == 7;
+            }
+
+            @Override
+            public void stop() {
+                if (this.entity.getAttackState() == 6) {
+                    super.stop();
+                }
+            }
+
+            @Override
             public void tick() {
                 this.entity.setDeltaMovement(0.0D, this.entity.getDeltaMovement().y, 0.0D);
             }
         });
-        this.goalSelector.addGoal(0, new IAttackGoal(this, 6, 7, 0, 30, 0, 10.0F));
+        this.goalSelector.addGoal(0, new IAttackGoal(this, 6, 7, 0, AWAKE_TICKS, 0, 10.0F));
         this.goalSelector.addGoal(1, new IStateGoal(this, 17, 17, 0, 85, 0));
     }
 
@@ -386,9 +400,8 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
         return this.getAttackState() == 6 || this.getAttackState() == 7;
     }
 
-    @Override
-    public boolean canBeSeenAsEnemy() {
-        return !this.isSleep() && super.canBeSeenAsEnemy();
+    private boolean isStandby() {
+        return this.isStaying() && !this.isCommanded() && this.getTarget() == null;
     }
 
     public boolean isDuringTeleportation() {
@@ -398,28 +411,6 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
                 || this.getAttackState() == 19 && this.attackTicks > 8 && this.attackTicks < 14
                 || this.getAttackState() == 14 && this.attackTicks > 12 && this.attackTicks < 18
                 || this.getAttackState() == 23 && this.attackTicks > 10 && this.attackTicks < MathUtils.toTicks(0.83F);
-    }
-
-    @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason,
-                                        @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag) {
-        if (reason == MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player
-                && countServants(player) >= MobsConfig.AnnihilationPursuerServantLimit.get()) {
-            return null;
-        }
-        return super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
-    }
-
-    private static int countServants(Player player) {
-        int count = 0;
-        if (player.level() instanceof ServerLevel serverLevel) {
-            for (Entity entity : serverLevel.getAllEntities()) {
-                if (entity instanceof AnnihilationPursuerServant servant && servant.getTrueOwner() == player) {
-                    ++count;
-                }
-            }
-        }
-        return count;
     }
 
     @Override
@@ -507,7 +498,7 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
             this.teleportRandomly(10.0D);
             return false;
         }
-        if (this.isDuringTeleportation() && !pSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY) || this.isSleep()) {
+        if (this.isDuringTeleportation() && !pSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             return false;
         }
         return super.hurt(pSource, pAmount);
@@ -885,8 +876,9 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
             float entityHitDistance = (float) Math.sqrt(dx * dx + dz * dz);
             float entityRelativeAngle = entityHitAngle - entityAttackingAngle;
             boolean inArc = entityHitDistance <= range
-                    && (entityRelativeAngle <= arc / 2.0F && entityRelativeAngle >= -arc / 2.0F || entityRelativeAngle >= 360.0F - arc / 2.0F)
-                    || entityRelativeAngle <= -360.0F + arc / 2.0F;
+                    && (entityRelativeAngle <= arc / 2.0F && entityRelativeAngle >= -arc / 2.0F
+                    || entityRelativeAngle >= 360.0F - arc / 2.0F
+                    || entityRelativeAngle <= -360.0F + arc / 2.0F);
             if (!inArc || this.isFriendlyTo(entityHit)) {
                 continue;
             }
@@ -1110,7 +1102,6 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
             }
             if (flag1) {
                 this.teleportTo(x, d3, z);
-                EntityUtil.applyServerTeleport(this);
                 if (level.noCollision(this) && !level.containsAnyLiquid(this.getBoundingBox())) {
                     flag = true;
                 }
@@ -1118,7 +1109,6 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
         }
         if (!flag) {
             this.teleportTo(d0, d1, d2);
-            EntityUtil.applyServerTeleport(this);
             return false;
         }
         if (p_20988_) {

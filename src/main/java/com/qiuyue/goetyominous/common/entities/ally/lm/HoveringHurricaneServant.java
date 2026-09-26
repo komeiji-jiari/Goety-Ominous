@@ -7,26 +7,20 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IMoveGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.StratlingAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.Tornado;
 import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.miauczel.legendary_monsters.config.ModConfig;
 import net.miauczel.legendary_monsters.item.ModItems;
 import net.miauczel.legendary_monsters.sound.ModSounds;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -37,7 +31,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
 
 import javax.annotation.Nullable;
@@ -124,7 +117,7 @@ public class HoveringHurricaneServant extends IAnimatedMonsterServant {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(6, new Summoned.WanderGoal<>(this, 1.0D));
+        this.goalSelector.addGoal(6, new Summoned.WanderGoal<>(this, this.getFollowSpeed()));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
@@ -300,29 +293,5 @@ public class HoveringHurricaneServant extends IAnimatedMonsterServant {
                 this.AreaAttack(4.5F, 3.0F, 180.0F, 13.0F);
             }
         }
-    }
-
-    @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty,
-                                        MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData,
-                                        @Nullable CompoundTag pDataTag) {
-        if (pReason == MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player) {
-            if (countServants(player) >= MobsConfig.HoveringHurricaneServantLimit.get()) {
-                return null;
-            }
-        }
-        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
-    }
-
-    private int countServants(Player player) {
-        int count = 0;
-        if (player.level() instanceof ServerLevel serverLevel) {
-            for (Entity entity : serverLevel.getAllEntities()) {
-                if (entity instanceof HoveringHurricaneServant servant && servant.getTrueOwner() == player) {
-                    ++count;
-                }
-            }
-        }
-        return count;
     }
 }

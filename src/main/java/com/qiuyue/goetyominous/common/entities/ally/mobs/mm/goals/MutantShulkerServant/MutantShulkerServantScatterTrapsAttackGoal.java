@@ -33,7 +33,7 @@ public class MutantShulkerServantScatterTrapsAttackGoal extends Goal {
 
     public boolean canUse() {
         this.target = this.mob.getTarget();
-        return this.target != null && !this.target.isRemoved() && !this.target.isDeadOrDying() && this.mob.getRandom().nextInt(MutantShulkerCommonConfig.scatter_traps_chance.get()) == 0 && this.animationsUseable() && !this.mob.isInBox() && !this.mob.isStaying();
+        return this.target != null && !this.target.isRemoved() && !this.target.isDeadOrDying() && this.mob.getRandom().nextInt(MutantShulkerCommonConfig.scatter_traps_chance.get()) == 0 && this.animationsUseable() && !this.mob.isInBox();
     }
 
     public boolean canContinueToUse() {

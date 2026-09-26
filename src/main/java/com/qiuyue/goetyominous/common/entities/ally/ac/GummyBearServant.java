@@ -65,6 +65,7 @@ import org.jetbrains.annotations.Nullable;
 import java.time.LocalDate;
 import java.time.temporal.ChronoField;
 import java.util.EnumSet;
+import java.util.function.Predicate;
 
 public class GummyBearServant extends AnimalSummon implements IAnimatedEntity {
 
@@ -137,6 +138,16 @@ public class GummyBearServant extends AnimalSummon implements IAnimatedEntity {
     }
 
     @Override
+    public int getSummonLimit(LivingEntity player) {
+        return MobsConfig.GummyBearServantLimit.get();
+    }
+
+    @Override
+    public Predicate<Entity> summonPredicate() {
+        return entity -> entity instanceof GummyBearServant;
+    }
+
+    @Override
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
@@ -155,12 +166,6 @@ public class GummyBearServant extends AnimalSummon implements IAnimatedEntity {
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor levelAccessor, DifficultyInstance difficulty,
                                         MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData,
                                         @Nullable CompoundTag tag) {
-        if (this.getTrueOwner() instanceof Player player) {
-            if (countServants(player) >= MobsConfig.GummyBearServantLimit.get()) {
-                this.discard();
-                return null;
-            }
-        }
         this.setGummyColor(GummyColors.getRandom(this.random, true));
         return super.finalizeSpawn(levelAccessor, difficulty, spawnType, spawnGroupData, tag);
     }

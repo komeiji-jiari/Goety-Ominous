@@ -939,30 +939,9 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
         this.populateDefaultEquipmentSlots(this.random, this.level().getCurrentDifficultyAt(this.blockPosition()));
         this.populateDefaultEquipmentEnchantments(this.random, this.level().getCurrentDifficultyAt(this.blockPosition()));
 
-        if (p_21436_ == MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player) {
-            if (countServants(player) >= MobsConfig.MutantWitherSkeletonServantLimit.get()) {
-                return null;
-            }
-        }
-
         MiscUtils.spawnWithPumpkinOnHalloween(this, p_21434_.getRandom());
         return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
     }
-
-    private int countServants(Player player) {
-        int count = 0;
-        if (player.level() instanceof ServerLevel serverLevel) {
-            for (Entity entity : serverLevel.getAllEntities()) {
-                if (entity instanceof MutantWitherSkeletonServant servant) {
-                    if (servant.getTrueOwner() == player) {
-                        count++;
-                    }
-                }
-            }
-        }
-        return count;
-    }
-
     public TagKey<Block> walksThroughTag() {
         return Blocks.MUTANT_WITHER_SKELETON_WALKS_THROUGH;
     }

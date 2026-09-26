@@ -37,7 +37,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -45,10 +44,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -59,14 +56,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import java.util.function.Predicate;
 
-import java.util.UUID;
 
 public class RelicheirusServant extends AnimalSummon implements LaysEggs, IAnimatedEntity {
 
@@ -115,49 +111,6 @@ public class RelicheirusServant extends AnimalSummon implements LaysEggs, IAnima
                 .add(Attributes.MOVEMENT_SPEED, AttributesConfig.RelicheirusServantMovementSpeed.get())
                 .add(Attributes.ARMOR, AttributesConfig.RelicheirusServantArmor.get());
     }
-
-    public static int countServants(ServerLevel level, UUID ownerId) {
-        int count = 0;
-        if (ownerId == null) {
-            return count;
-        }
-        for (Entity entity : level.getAllEntities()) {
-            if (entity instanceof RelicheirusServant servant) {
-                if (ownerId.equals(servant.getOwnerId())) {
-                    count++;
-                }
-            }
-        }
-        return count;
-    }
-
-    @Nullable
-    @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor levelAccessor, DifficultyInstance difficulty,
-                                        MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData,
-                                        @Nullable CompoundTag tag) {
-        if (spawnType == MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player) {
-            if (countServants(player) >= MobsConfig.RelicheirusServantLimit.get()) {
-                return null;
-            }
-        }
-        return super.finalizeSpawn(levelAccessor, difficulty, spawnType, spawnGroupData, tag);
-    }
-
-    private int countServants(Player player) {
-        int count = 0;
-        if (player.level() instanceof ServerLevel serverLevel) {
-            for (Entity entity : serverLevel.getAllEntities()) {
-                if (entity instanceof RelicheirusServant servant) {
-                    if (servant.getTrueOwner() == player) {
-                        count++;
-                    }
-                }
-            }
-        }
-        return count;
-    }
-
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
@@ -167,6 +120,16 @@ public class RelicheirusServant extends AnimalSummon implements LaysEggs, IAnima
         this.entityData.define(DATA_HAS_EGG, false);
         this.entityData.define(PUSHING_TREES_FOR, 0);
     }
+    @Override
+    public int getSummonLimit(LivingEntity player) {
+        return MobsConfig.RelicheirusServantLimit.get();
+    }
+
+    @Override
+    public Predicate<Entity> summonPredicate() {
+        return entity -> entity instanceof RelicheirusServant;
+    }
+
 
     @Override
     protected void registerGoals() {

@@ -139,6 +139,9 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> DeepMageSummonDown;
     public static final ForgeConfigSpec.ConfigValue<Integer> DeepMageCoolDown;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> WaterBoltCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> WaterBoltCoolDown;
+
     public static final ForgeConfigSpec.ConfigValue<Integer> HogChargeSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> HogChargeCooldown;
     public static final ForgeConfigSpec.ConfigValue<Double> HogChargeDamage;
@@ -312,12 +315,12 @@ public class SpellConfig {
         BUILDER.push("Trembler");
         TremblerSoulCost = BUILDER.comment("Soul cost of Trembler Servant spell (Default: 32)")
                 .defineInRange("tremblerSoulCost", 32, 1, 128);
-        TremblerCastDuration = BUILDER.comment("Cast duration of Trembler Servant spell in ticks (Default: 60)")
-                .defineInRange("tremblerCastDuration", 60, 0, 500);
-        TremblerSummonDown = BUILDER.comment("Summon down duration of Trembler Servant spell in ticks (Default: 200)")
-                .defineInRange("tremblerSummonDown", 200, 0, 5000);
-        TremblerCoolDown = BUILDER.comment("Cooldown of Trembler Servant spell in ticks (Default: 200)")
-                .defineInRange("tremblerCoolDown", 200, 0, 5000);
+        TremblerCastDuration = BUILDER.comment("Cast duration of Trembler Servant spell in ticks (Default: 100)")
+                .defineInRange("tremblerCastDuration", 100, 0, 500);
+        TremblerSummonDown = BUILDER.comment("Summon down duration of Trembler Servant spell in ticks (Default: 240)")
+                .defineInRange("tremblerSummonDown", 240, 0, 5000);
+        TremblerCoolDown = BUILDER.comment("Cooldown of Trembler Servant spell in ticks (Default: 600)")
+                .defineInRange("tremblerCoolDown", 600, 0, 5000);
         BUILDER.pop();
 
         BUILDER.push("ExtinctionBreath");
@@ -418,6 +421,13 @@ public class SpellConfig {
                 .defineInRange("deepMageSummonDown", 300, 0, 5000);
         DeepMageCoolDown = BUILDER.comment("Cooldown of DeepMage Servant spell in ticks (Default: 600)")
                 .defineInRange("deepMageCoolDown", 600, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("WaterBolt");
+        WaterBoltCost = BUILDER.comment("Soul cost of Water Bolt spell (Default: 8)")
+                .defineInRange("waterBoltCost", 8, 1, 100);
+        WaterBoltCoolDown = BUILDER.comment("Cooldown of Water Bolt spell in ticks (Default: 20)")
+                .defineInRange("waterBoltCoolDown", 20, 0, 2000);
         BUILDER.pop();
 
         BUILDER.push("Sand Spell");

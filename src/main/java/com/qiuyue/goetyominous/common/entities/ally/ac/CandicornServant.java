@@ -70,6 +70,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
+import java.util.function.Predicate;
 
 public class CandicornServant extends AnimalSummon implements IAnimatedEntity, PlayerRideableJumping, KeybindUsingMount {
 
@@ -141,6 +142,16 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
         this.entityData.define(METER_AMOUNT, 0.0F);
         this.entityData.define(LEAP_PITCH, 0.0F);
         this.entityData.define(VARIANT, 0);
+    }
+
+    @Override
+    public int getSummonLimit(LivingEntity player) {
+        return MobsConfig.CandicornServantLimit.get();
+    }
+
+    @Override
+    public Predicate<Entity> summonPredicate() {
+        return entity -> entity instanceof CandicornServant;
     }
 
     @Override
@@ -732,12 +743,6 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn,
                                         MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn,
                                         @Nullable CompoundTag dataTag) {
-        if (this.getTrueOwner() instanceof Player player) {
-            if (countServants(player) >= MobsConfig.CandicornServantLimit.get()) {
-                this.discard();
-                return null;
-            }
-        }
         SpawnGroupData spawnGroupData = super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
         if (dataTag != null && dataTag.contains("Variant")) {
             this.setVariant(dataTag.getInt("Variant"));
@@ -795,17 +800,6 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
         super.ageBoundaryReached();
         this.refreshDimensions();
     }
-
-    @Override
-    public void setTrueOwner(@Nullable LivingEntity livingEntity) {
-        super.setTrueOwner(livingEntity);
-        if (!this.level().isClientSide && livingEntity instanceof Player player) {
-            if (countServants(player) >= MobsConfig.CandicornServantLimit.get()) {
-                this.discard();
-            }
-        }
-    }
-
     @Override
     public boolean canBeAffected(MobEffectInstance effectInstance) {
         return super.canBeAffected(effectInstance) && effectInstance.getEffect() != MobEffects.HUNGER;
