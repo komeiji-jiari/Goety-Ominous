@@ -1,17 +1,22 @@
 package com.qiuyue.goetyominous.common.init.lm;
 
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.common.entities.ally.lm.AnnihilationPursuerServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.CloudGolemServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.HoveringHurricaneServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.OvergrownColossusServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.ShulkerMimicServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.AnnihilationExplosion;
+import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.AnnihilationFlameStrike;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.BigShulkerBullet;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.CloudEntity;
+import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.EntityThrown;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.GravityBigShulkerBullet;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.ElectricityEntity;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.EnergyBeamEntity;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.LightningBoltEntity;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.PoisonousShockwave;
+import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SmallAnnihilationBomb;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.Tornado;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -96,6 +101,36 @@ public class LmEntityRegistry {
                     () -> EntityType.Builder.<LightningBoltEntity>of(LightningBoltEntity::new, MobCategory.MISC)
                             .sized(1.0F, 4.0F).clientTrackingRange(6).updateInterval(2).fireImmune()
                             .build(GoetyOminous.MOD_ID + ":lightning_strike"));
+
+    public static final RegistryObject<EntityType<AnnihilationPursuerServant>> ANNIHILATION_PURSUER_SERVANT =
+            LM_ENTITIES.register("annihilation_pursuer_servant",
+                    () -> EntityType.Builder.of(AnnihilationPursuerServant::new, MobCategory.MONSTER)
+                            .sized(1.5F, 5.0F).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":annihilation_pursuer_servant"));
+
+    public static final RegistryObject<EntityType<SmallAnnihilationBomb>> SMALL_ANNIHILATION_BOMB =
+            LM_ENTITIES.register("small_annihilation_bomb",
+                    () -> EntityType.Builder.<SmallAnnihilationBomb>of(SmallAnnihilationBomb::new, MobCategory.MISC)
+                            .sized(0.5F, 0.5F).clientTrackingRange(6).updateInterval(2).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":small_annihilation_bomb"));
+
+    public static final RegistryObject<EntityType<AnnihilationExplosion>> ANNIHILATION_EXPLOSION =
+            LM_ENTITIES.register("annihilation_explosion",
+                    () -> EntityType.Builder.<AnnihilationExplosion>of(AnnihilationExplosion::new, MobCategory.MISC)
+                            .sized(2.25F, 3.0F).clientTrackingRange(6).updateInterval(2).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":annihilation_explosion"));
+
+    public static final RegistryObject<EntityType<AnnihilationFlameStrike>> ANNIHILATION_FLAME_STRIKE =
+            LM_ENTITIES.register("annihilation_flame_strike",
+                    () -> EntityType.Builder.<AnnihilationFlameStrike>of(AnnihilationFlameStrike::new, MobCategory.MISC)
+                            .sized(1.0F, 2.0F).clientTrackingRange(6).updateInterval(2).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":annihilation_flame_strike"));
+
+    public static final RegistryObject<EntityType<EntityThrown>> ENTITY_THROWN =
+            LM_ENTITIES.register("entity_thrown",
+                    () -> EntityType.Builder.<EntityThrown>of(EntityThrown::new, MobCategory.MISC)
+                            .sized(1.5F, 1.5F).clientTrackingRange(6).updateInterval(2).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":entity_thrown"));
 
     public static void register(IEventBus modEventBus) {
         LM_ENTITIES.register(modEventBus);

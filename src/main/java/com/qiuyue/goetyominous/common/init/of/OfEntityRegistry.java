@@ -110,7 +110,6 @@ public class OfEntityRegistry {
                     () -> EntityType.Builder.<SkyvernSegmentServant>of(SkyvernSegmentServant::new, MobCategory.MISC)
                             .sized(1.2F, 1.2F)
                             .setTrackingRange(10)
-                            .setUpdateInterval(1)
                             .build(GoetyOminous.MOD_ID + ":skyvern_segment_servant"));
 
     public static void register(IEventBus modEventBus) {

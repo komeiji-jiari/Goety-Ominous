@@ -40,6 +40,10 @@ public class LmItems {
             "shulker_mimic_servant_spawn_egg",
             () -> new ServantSpawnEggItem(LmEntityRegistry.SHULKER_MIMIC_SERVANT, 0x9C6BB0, 0x2B1B36, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> ANNIHILATION_PURSUER_SPAWN_EGG = LM_ITEMS.register(
+            "annihilation_pursuer_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(LmEntityRegistry.ANNIHILATION_PURSUER_SERVANT, 0x2E7D32, 0x1A1A1A, egg()));
+
     public static void register(IEventBus modEventBus) {
         LM_ITEMS.register(modEventBus);
     }
