@@ -6,6 +6,7 @@ import com.Polarice3.Goety.common.items.ModItems;
 import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.common.magic.SummonSpell;
 import com.Polarice3.Goety.init.ModSounds;
+import com.Polarice3.Goety.utils.CuriosFinder;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import java.util.ArrayList;
@@ -85,16 +86,12 @@ public class VoltSpell extends SummonSpell {
         int duration = spellStat.getDuration();
         if (WandUtil.enchantedFocus(caster)) {
             potency += WandUtil.getPotencyLevel(caster);
-            duration += WandUtil.getLevels((Enchantment)ModEnchantments.DURATION.get(), caster) + 1;
+            duration += WandUtil.getLevels((Enchantment) ModEnchantments.DURATION.get(), caster) + 1;
         }
 
         if (!this.isShifting(caster)) {
-            int count = 1;
-            boolean elite = false;
-            if (this.rightStaff(staff)) {
-                count = 2;
-                elite = true;
-            }
+            int count = this.rightStaff(staff) ? 2 : 1;
+            boolean elite = CuriosFinder.hasStormSet(caster);
 
             for (int i = 0; i < count; ++i) {
                 BlockPos blockpos = caster.blockPosition().offset(-2 + caster.getRandom().nextInt(5), 1, -2 + caster.getRandom().nextInt(5));
@@ -102,7 +99,7 @@ public class VoltSpell extends SummonSpell {
                 volt.setTrueOwner(caster);
                 volt.moveTo(blockpos, caster.getYRot(), 0.0F);
                 volt.setLimitedLife(MobUtil.getSummonLifespan(worldIn) * duration);
-                volt.finalizeSpawn(worldIn, caster.level().getCurrentDifficultyAt(blockpos), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                volt.finalizeSpawn(worldIn, caster.level().getCurrentDifficultyAt(blockpos), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
                 if (elite && !volt.isElite()) {
                     volt.setElite(true);
                     volt.setEliteStats(volt);
@@ -117,8 +114,7 @@ public class VoltSpell extends SummonSpell {
             }
 
             this.SummonDown(caster);
-            this.playSound(worldIn, caster, (SoundEvent)ModSounds.DROWNED_NECROMANCER_SUMMON.get());
+            this.playSound(worldIn, caster, ModSounds.DROWNED_NECROMANCER_SUMMON.get());
         }
-
     }
 }

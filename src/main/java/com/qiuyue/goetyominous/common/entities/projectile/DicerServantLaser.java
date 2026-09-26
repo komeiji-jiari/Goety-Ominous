@@ -134,7 +134,7 @@ public class DicerServantLaser extends SpellEntity {
                 if (this.eyeSpawn) {
                     Vec3 look = this.caster.getLookAngle().normalize();
                     Vec3 eyePos = this.caster.getEyePosition();
-                    double backward = 0.3D;
+                    double backward = 0.4D;
                     this.setPos(eyePos.x() - look.x() * backward,
                             eyePos.y() - 0.2D - look.y() * backward,
                             eyePos.z() - look.z() * backward);

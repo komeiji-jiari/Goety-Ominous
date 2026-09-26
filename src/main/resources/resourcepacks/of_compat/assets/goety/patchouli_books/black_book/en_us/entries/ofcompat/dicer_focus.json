@@ -1,0 +1,19 @@
+{
+  "name": "Dicer Focus",
+  "icon": "goetyominous:dicer_focus",
+  "category": "goety:ofcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "By inscribing the blueprints of the mysterious automaton into a spell, you have invented an incantation for quickly producing and constructing Dicers."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:dicer_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "When cast using a Storm Staff to channel this focus, you can summon an additional Dicer. If you wear the full Nether Set, you can summon elite Dicers, which are more powerful in combat than ordinary Dicers."
+    }
+  ]
+}

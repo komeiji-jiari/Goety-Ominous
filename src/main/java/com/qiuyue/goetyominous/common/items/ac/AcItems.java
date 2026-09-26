@@ -166,6 +166,9 @@ public class AcItems {
     public static final RegistryObject<Item> DEEP_MAGE_FOCUS = AC_ITEMS.register("deep_mage_focus",
             () -> new MagicFocus(new DeepMageSpell()));
 
+    public static final RegistryObject<Item> WATER_BOLT_FOCUS = AC_ITEMS.register("water_bolt_focus",
+            () -> new MagicFocus(new WaterBoltSpell()));
+
     public static final RegistryObject<Item> RAYCAT_AMULET =
             AC_ITEMS.register("raycat_amulet", () -> new RaycatAmuletItem());
 
