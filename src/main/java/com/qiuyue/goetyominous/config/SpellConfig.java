@@ -81,12 +81,6 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> SpiderCoolDown;
     public static final ForgeConfigSpec.ConfigValue<Integer> SpiderSummonDown;
 
-    public static final ForgeConfigSpec.ConfigValue<Integer> VoltSoulCost;
-    public static final ForgeConfigSpec.ConfigValue<Integer> VoltCastDuration;
-    public static final ForgeConfigSpec.ConfigValue<Integer> VoltCoolDown;
-    public static final ForgeConfigSpec.ConfigValue<Integer> VoltSummonDown;
-    public static final ForgeConfigSpec.ConfigValue<Integer> VoltLimit;
-
     public static final ForgeConfigSpec.ConfigValue<Integer> RedstoneCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> RedstoneDuration;
     public static final ForgeConfigSpec.ConfigValue<Integer> RedstoneCoolDown;
@@ -649,19 +643,6 @@ public class SpellConfig {
                 .defineInRange("spiderCoolDown", 100, 0, 5000);
         SpiderSummonDown = BUILDER.comment("Summon down duration of Spider spell in ticks (Default: 80)")
                 .defineInRange("spiderSummonDown", 80, 0, 5000);
-        BUILDER.pop();
-
-        BUILDER.push("Volt");
-        VoltSoulCost = BUILDER.comment("Soul cost of Volt Servant spell (Default: 100)")
-                .defineInRange("voltSoulCost", 100, 1, 100);
-        VoltCastDuration = BUILDER.comment("Cast duration of Volt Servant spell in ticks (Default: 100)")
-                .defineInRange("voltCastDuration", 100, 0, 500);
-        VoltCoolDown = BUILDER.comment("Cooldown of Volt Servant spell in ticks (Default: 1000)")
-                .defineInRange("voltCoolDown", 1000, 0, 5000);
-        VoltSummonDown = BUILDER.comment("Summon down duration of Volt Servant spell in ticks (Default: 200)")
-                .defineInRange("voltSummonDown", 200, 0, 5000);
-        VoltLimit = BUILDER.comment("Max number of Volt Servants summoned (Default: 8)")
-                .defineInRange("voltLimit", 8, 1, 100);
         BUILDER.pop();
 
         BUILDER.push("Redstone Cube");
