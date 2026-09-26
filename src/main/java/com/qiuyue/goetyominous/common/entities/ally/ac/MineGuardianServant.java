@@ -40,6 +40,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 public class MineGuardianServant extends Summoned {
 
@@ -76,6 +77,16 @@ public class MineGuardianServant extends Summoned {
         this.entityData.define(EXPLODING, false);
         this.entityData.define(EYE_CLOSED, false);
         this.entityData.define(SCANNING, false);
+    }
+
+    @Override
+    public int getSummonLimit(LivingEntity player) {
+        return MobsConfig.MineGuardianServantLimit.get();
+    }
+
+    @Override
+    public Predicate<Entity> summonPredicate() {
+        return entity -> entity instanceof MineGuardianServant;
     }
 
     protected void registerGoals() {
@@ -380,39 +391,8 @@ public class MineGuardianServant extends Summoned {
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @javax.annotation.Nullable SpawnGroupData spawnDataIn, @javax.annotation.Nullable CompoundTag dataTag) {
         this.setEyeClosed(true);
         timeSinceHadTarget = 10;
-        if (this.getTrueOwner() instanceof Player player) {
-            if (countServants(player) >= MobsConfig.MineGuardianServantLimit.get()) {
-                this.discard();
-                return null;
-            }
-        }
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
-
-    private int countServants(Player player) {
-        int count = 0;
-        if (player.level() instanceof ServerLevel serverLevel) {
-            for (Entity entity : serverLevel.getAllEntities()) {
-                if (entity instanceof MineGuardianServant servant && servant != this) {
-                    if (servant.getTrueOwner() == player) {
-                        count++;
-                    }
-                }
-            }
-        }
-        return count;
-    }
-
-    @Override
-    public void setTrueOwner(@javax.annotation.Nullable LivingEntity livingEntity) {
-        super.setTrueOwner(livingEntity);
-        if (!this.level().isClientSide && livingEntity instanceof Player player) {
-            if (countServants(player) >= MobsConfig.MineGuardianServantLimit.get()) {
-                this.discard();
-            }
-        }
-    }
-
     @Override
     protected void dropAllDeathLoot(DamageSource damageSource) {
         super.dropAllDeathLoot(damageSource);

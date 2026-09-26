@@ -61,7 +61,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
-import java.util.UUID;
+import java.util.function.Predicate;
 
 public class VallumraptorServant extends AnimalSummon implements LaysEggs, IAnimatedEntity {
 
@@ -124,32 +124,11 @@ public class VallumraptorServant extends AnimalSummon implements LaysEggs, IAnim
                 .add(Attributes.MOVEMENT_SPEED, AttributesConfig.VallumraptorServantMovementSpeed.get())
                 .add(Attributes.ARMOR, AttributesConfig.VallumraptorServantArmor.get());
     }
-
-    public static int countServants(ServerLevel level, UUID ownerId) {
-        int count = 0;
-        if (ownerId == null) {
-            return count;
-        }
-        for (Entity entity : level.getAllEntities()) {
-            if (entity instanceof VallumraptorServant servant) {
-                if (ownerId.equals(servant.getOwnerId())) {
-                    count++;
-                }
-            }
-        }
-        return count;
-    }
-
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor levelAccessor, DifficultyInstance difficulty,
                                         MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData,
                                         @Nullable CompoundTag tag) {
-        if (spawnType == MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player) {
-            if (countServants(player) >= MobsConfig.VallumraptorServantLimit.get()) {
-                return null;
-            }
-        }
         this.setElder(this.getRandom().nextInt(100) < MobsConfig.VallumraptorElderChance.get());
         return super.finalizeSpawn(levelAccessor, difficulty, spawnType, spawnGroupData, tag);
     }
@@ -161,21 +140,6 @@ public class VallumraptorServant extends AnimalSummon implements LaysEggs, IAnim
     public void setElder(boolean bool) {
         this.entityData.set(ELDER, bool);
     }
-
-    private int countServants(Player player) {
-        int count = 0;
-        if (player.level() instanceof ServerLevel serverLevel) {
-            for (Entity entity : serverLevel.getAllEntities()) {
-                if (entity instanceof VallumraptorServant servant) {
-                    if (servant.getTrueOwner() == player) {
-                        count++;
-                    }
-                }
-            }
-        }
-        return count;
-    }
-
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
@@ -187,6 +151,16 @@ public class VallumraptorServant extends AnimalSummon implements LaysEggs, IAnim
         this.entityData.define(ELDER, false);
         this.entityData.define(HIDING_FOR, 0);
     }
+    @Override
+    public int getSummonLimit(LivingEntity player) {
+        return MobsConfig.VallumraptorServantLimit.get();
+    }
+
+    @Override
+    public Predicate<Entity> summonPredicate() {
+        return entity -> entity instanceof VallumraptorServant;
+    }
+
 
     @Override
     protected void registerGoals() {

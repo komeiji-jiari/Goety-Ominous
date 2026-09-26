@@ -4,7 +4,6 @@ import com.Polarice3.Goety.common.entities.ally.Summoned;
 import net.miauczel.legendary_monsters.Particle.custom.Circle;
 import net.miauczel.legendary_monsters.entity.AnimatedMonster.Projectile.LMFallingBlockEntity;
 import net.miauczel.legendary_monsters.entity.ai.navigation.EntityRotationPatcher;
-import net.miauczel.legendary_monsters.entity.ai.navigation.ModPathNavigation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -57,7 +56,7 @@ public class IAnimatedMonsterServant extends Summoned {
     }
 
     protected PathNavigation createNavigation(Level worldIn) {
-        return new ModPathNavigation(this, worldIn);
+        return new ServantPathNavigation(this, worldIn);
     }
 
     public void SpawnDamagingBlocks(float spreadarc, int distance, float mxy, float vec, float damage, float hpdamage, float airborne) {
@@ -305,6 +304,7 @@ public class IAnimatedMonsterServant extends Summoned {
 
     public IAnimatedMonsterServant(EntityType entity, Level world) {
         super(entity, world);
+        this.moveControl = new ServantMoveControl(this);
     }
 
     protected void defineSynchedData() {

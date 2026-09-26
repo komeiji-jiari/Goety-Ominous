@@ -3,9 +3,13 @@ package com.qiuyue.goetyominous.common.init.lm;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.lm.AnnihilationPursuerServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.CloudGolemServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.FlameDrifterServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.FlamebornGuardServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.FlamebornWarriorServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.HoveringHurricaneServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.OvergrownColossusServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.ShulkerMimicServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.WanderingEyeServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.AnnihilationExplosion;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.AnnihilationFlameStrike;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.BigShulkerBullet;
@@ -33,7 +37,7 @@ public class LmEntityRegistry {
     public static final RegistryObject<EntityType<OvergrownColossusServant>> OVERGROWN_COLOSSUS_SERVANT =
             LM_ENTITIES.register("overgrown_colossus_servant",
                     () -> EntityType.Builder.of(OvergrownColossusServant::new, MobCategory.MONSTER)
-                            .sized(3.0F, 5.0F).fireImmune()
+                            .sized(2.0F, 2.6F)
                             .build(GoetyOminous.MOD_ID + ":overgrown_colossus_servant"));
 
     public static final RegistryObject<EntityType<PoisonousShockwave>> POISONOUS_SHOCKWAVE =
@@ -59,6 +63,12 @@ public class LmEntityRegistry {
                     () -> EntityType.Builder.of(CloudGolemServant::new, MobCategory.MONSTER)
                             .sized(1.5F, 2.5F).fireImmune()
                             .build(GoetyOminous.MOD_ID + ":cloud_golem_servant"));
+
+    public static final RegistryObject<EntityType<WanderingEyeServant>> WANDERING_EYE_SERVANT =
+            LM_ENTITIES.register("wandering_eye_servant",
+                    () -> EntityType.Builder.of(WanderingEyeServant::new, MobCategory.MONSTER)
+                            .sized(1.0F, 1.75F).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":wandering_eye_servant"));
 
     public static final RegistryObject<EntityType<ShulkerMimicServant>> SHULKER_MIMIC_SERVANT =
             LM_ENTITIES.register("shulker_mimic_servant",
@@ -107,6 +117,24 @@ public class LmEntityRegistry {
                     () -> EntityType.Builder.of(AnnihilationPursuerServant::new, MobCategory.MONSTER)
                             .sized(1.5F, 5.0F).fireImmune()
                             .build(GoetyOminous.MOD_ID + ":annihilation_pursuer_servant"));
+
+    public static final RegistryObject<EntityType<FlameDrifterServant>> FLAME_DRIFTER_SERVANT =
+            LM_ENTITIES.register("flame_drifter_servant",
+                    () -> EntityType.Builder.of(FlameDrifterServant::new, MobCategory.MONSTER)
+                            .sized(1.5F, 1.5F).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":flame_drifter_servant"));
+
+    public static final RegistryObject<EntityType<FlamebornWarriorServant>> FLAMEBORN_WARRIOR_SERVANT =
+            LM_ENTITIES.register("flameborn_warrior_servant",
+                    () -> EntityType.Builder.of(FlamebornWarriorServant::new, MobCategory.MONSTER)
+                            .sized(1.0F, 3.0F).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":flameborn_warrior_servant"));
+
+    public static final RegistryObject<EntityType<FlamebornGuardServant>> FLAMEBORN_GUARD_SERVANT =
+            LM_ENTITIES.register("flameborn_guard_servant",
+                    () -> EntityType.Builder.of(FlamebornGuardServant::new, MobCategory.MONSTER)
+                            .sized(1.0F, 3.0F).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":flameborn_guard_servant"));
 
     public static final RegistryObject<EntityType<SmallAnnihilationBomb>> SMALL_ANNIHILATION_BOMB =
             LM_ENTITIES.register("small_annihilation_bomb",

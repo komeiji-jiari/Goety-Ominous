@@ -5,6 +5,10 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.qiuyue.goetyominous.common.entities.ally.lm.AnnihilationPursuerServant;
 import net.miauczel.legendary_monsters.entity.AnimatedMonster.Animations.Flameborn.AnnihilationPursuer.AnnihilationPursuerAnimations;
 import net.miauczel.legendary_monsters.entity.AnimatedMonster.Animations.Flameborn.AnnihilationPursuer.AnnihilationPursuerAnimations2;
+import net.minecraft.client.animation.AnimationChannel;
+import net.minecraft.client.animation.AnimationDefinition;
+import net.minecraft.client.animation.Keyframe;
+import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -14,11 +18,19 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.joml.Vector3f;
+
+import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 public class AnnihilationPursuerServantModel<T extends AnnihilationPursuerServant> extends HierarchicalModel<T> {
+
+    private static final AnimationDefinition SLEEP_IN = reverse(AnnihilationPursuerAnimations.awaken);
+    private static final long SLEEP_IN_MILLIS = (long) (lastTimestamp(SLEEP_IN) * 1000.0F);
+    private static final Vector3f ANIMATION_VECTOR_CACHE = new Vector3f();
 
     private final ModelPart root;
     private final ModelPart coreBody;
@@ -27,6 +39,60 @@ public class AnnihilationPursuerServantModel<T extends AnnihilationPursuerServan
     private final ModelPart leftUpperArm;
     private final ModelPart forearm2;
     private final ModelPart fist2;
+
+    private static float lastTimestamp(AnimationDefinition definition) {
+        float last = 0.0F;
+        for (List<AnimationChannel> channels : definition.boneAnimations().values()) {
+            for (AnimationChannel channel : channels) {
+                Keyframe[] frames = channel.keyframes();
+                if (frames.length > 0) {
+                    last = Math.max(last, frames[frames.length - 1].timestamp());
+                }
+            }
+        }
+        return last;
+    }
+
+    private static AnimationDefinition reverse(AnimationDefinition definition) {
+        float end = lastTimestamp(definition);
+        AnimationDefinition.Builder builder = AnimationDefinition.Builder.withLength(definition.lengthInSeconds());
+        definition.boneAnimations().forEach((bone, channels) -> {
+            for (AnimationChannel channel : channels) {
+                Keyframe[] frames = channel.keyframes();
+                Keyframe[] flipped = new Keyframe[frames.length];
+                for (int i = 0; i < frames.length; ++i) {
+                    Keyframe frame = frames[frames.length - 1 - i];
+                    flipped[i] = new Keyframe(end - frame.timestamp(), frame.target(), frame.interpolation());
+                }
+                builder.addAnimation(bone, new AnimationChannel(channel.target(), flipped));
+            }
+        });
+        return builder.build();
+    }
+
+    private void animateSleep(T entity, float ageInTicks) {
+        AnimationState sleep = entity.getAnimationState("sleep");
+        sleep.updateTime(ageInTicks, 1.0F);
+        sleep.ifStarted(state -> {
+            long elapsed = state.getAccumulatedTime();
+            if (elapsed < SLEEP_IN_MILLIS) {
+                KeyframeAnimations.animate(this, SLEEP_IN, elapsed, 1.0F, ANIMATION_VECTOR_CACHE);
+            } else {
+                KeyframeAnimations.animate(this, AnnihilationPursuerAnimations.sleep,
+                        elapsed - SLEEP_IN_MILLIS, 1.0F, ANIMATION_VECTOR_CACHE);
+            }
+        });
+    }
+
+    private void animateAwaken(T entity, float ageInTicks) {
+        AnimationState awaken = entity.getAnimationState("awaken");
+        AnimationState sleep = entity.getAnimationState("sleep");
+        awaken.updateTime(ageInTicks, 1.0F);
+        long sleptMillis = sleep.isStarted() ? 0L : sleep.getAccumulatedTime();
+        long skippedMillis = sleptMillis > 0L ? Math.max(0L, SLEEP_IN_MILLIS - sleptMillis) : 0L;
+        awaken.ifStarted(state -> KeyframeAnimations.animate(this, AnnihilationPursuerAnimations.awaken,
+                state.getAccumulatedTime() + skippedMillis, 1.0F, ANIMATION_VECTOR_CACHE));
+    }
 
     public AnnihilationPursuerServantModel(ModelPart root) {
         this.root = root.getChild("root");
@@ -102,8 +168,8 @@ public class AnnihilationPursuerServantModel<T extends AnnihilationPursuerServan
             this.animateWalk(AnnihilationPursuerAnimations.walk, limbSwing, limbSwingAmount, 1.5F, 4.0F);
         }
         this.animate(entity.getAnimationState("idle"), AnnihilationPursuerAnimations.idle, ageInTicks, 1.0F);
-        this.animate(entity.getAnimationState("sleep"), AnnihilationPursuerAnimations.sleep, ageInTicks, 1.0F);
-        this.animate(entity.getAnimationState("awaken"), AnnihilationPursuerAnimations.awaken, ageInTicks, 1.0F);
+        this.animateSleep(entity, ageInTicks);
+        this.animateAwaken(entity, ageInTicks);
         this.animate(entity.getAnimationState("stomp_combo"), AnnihilationPursuerAnimations.stompSlashCut, ageInTicks, 1.0F);
         this.animate(entity.getAnimationState("stomp_combo_end"), AnnihilationPursuerAnimations2.stompSlashEnd, ageInTicks, 1.0F);
         this.animate(entity.getAnimationState("stomp_combo_teleport_end"), AnnihilationPursuerAnimations2.stompSlashTeleportEnd, ageInTicks, 1.0F);

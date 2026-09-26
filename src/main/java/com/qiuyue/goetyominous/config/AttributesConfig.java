@@ -463,6 +463,14 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> CloudGolemServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> CloudGolemServantAttackKnockback;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> WanderingEyeServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> WanderingEyeServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> WanderingEyeServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> WanderingEyeServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> WanderingEyeServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> WanderingEyeServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> WanderingEyeServantAttackKnockback;
+
     public static final ForgeConfigSpec.ConfigValue<Double> ShulkerMimicServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> ShulkerMimicServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> ShulkerMimicServantDamage;
@@ -478,6 +486,29 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> AnnihilationPursuerServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> AnnihilationPursuerServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> AnnihilationPursuerServantAttackKnockback;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> FlameDrifterServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> FlameDrifterServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> FlameDrifterServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> FlameDrifterServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> FlameDrifterServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> FlameDrifterServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> FlameDrifterServantAttackKnockback;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornWarriorServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornWarriorServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornWarriorServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornWarriorServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornWarriorServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornWarriorServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornWarriorServantAttackKnockback;
+    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornGuardServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornGuardServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornGuardServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornGuardServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornGuardServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornGuardServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornGuardServantAttackKnockback;
 
     public static final ForgeConfigSpec.ConfigValue<Double> StormNecromancerHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> StormNecromancerArmor;
@@ -1660,6 +1691,23 @@ public class AttributesConfig {
                 .defineInRange("cloudGolemServantAttackKnockback", 1.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
 
+        BUILDER.push("Wandering Eye Servant (Optional - LM)");
+        WanderingEyeServantHealth = BUILDER.comment("How much Max Health Wandering Eye Servants have, Default: 30.0")
+                .defineInRange("wanderingEyeServantHealth", 30.0, 1.0, Double.MAX_VALUE);
+        WanderingEyeServantArmor = BUILDER.comment("How much natural Armor Wandering Eye Servants have, Default: 7.0")
+                .defineInRange("wanderingEyeServantArmor", 7.0, 0.0, Double.MAX_VALUE);
+        WanderingEyeServantDamage = BUILDER.comment("How much damage Wandering Eye Servants deal, Default: 10.0")
+                .defineInRange("wanderingEyeServantDamage", 10.0, 1.0, Double.MAX_VALUE);
+        WanderingEyeServantMovementSpeed = BUILDER.comment("How fast Wandering Eye Servants move, Default: 0.1")
+                .defineInRange("wanderingEyeServantMovementSpeed", 0.1, 0.0, Double.MAX_VALUE);
+        WanderingEyeServantFollowRange = BUILDER.comment("How much following/detection range Wandering Eye Servants have, Default: 20.0")
+                .defineInRange("wanderingEyeServantFollowRange", 20.0, 1.0, Double.MAX_VALUE);
+        WanderingEyeServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Wandering Eye Servants have, Default: 0.34754")
+                .defineInRange("wanderingEyeServantKnockbackResistance", 0.34754D, 0.0, Double.MAX_VALUE);
+        WanderingEyeServantAttackKnockback = BUILDER.comment("How much Attack Knockback Wandering Eye Servants have, Default: 0.5")
+                .defineInRange("wanderingEyeServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
         BUILDER.push("Shulker Mimic Servant (Optional - LM)");
         ShulkerMimicServantHealth = BUILDER.comment("How much Max Health Shulker Mimic Servants have, Default: 200.0")
                 .defineInRange("shulkerMimicServantHealth", 200.0, 1.0, Double.MAX_VALUE);
@@ -1692,6 +1740,57 @@ public class AttributesConfig {
                 .defineInRange("annihilationPursuerServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
         AnnihilationPursuerServantAttackKnockback = BUILDER.comment("How much Attack Knockback Annihilation Pursuer Servants have, Default: 0.5")
                 .defineInRange("annihilationPursuerServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Flame Drifter Servant (Optional - LM)");
+        FlameDrifterServantHealth = BUILDER.comment("How much Max Health Flame Drifter Servants have, Default: 60.0")
+                .defineInRange("flameDrifterServantHealth", 60.0, 1.0, Double.MAX_VALUE);
+        FlameDrifterServantArmor = BUILDER.comment("How much natural Armor Flame Drifter Servants have, Default: 8.0")
+                .defineInRange("flameDrifterServantArmor", 8.0, 0.0, Double.MAX_VALUE);
+        FlameDrifterServantDamage = BUILDER.comment("How much damage Flame Drifter Servants deal, Default: 10.0")
+                .defineInRange("flameDrifterServantDamage", 10.0, 0.0, Double.MAX_VALUE);
+        FlameDrifterServantMovementSpeed = BUILDER.comment("How fast Flame Drifter Servants move, Default: 0.1")
+                .defineInRange("flameDrifterServantMovementSpeed", 0.1, 0.0, Double.MAX_VALUE);
+        FlameDrifterServantFollowRange = BUILDER.comment("How much following/detection range Flame Drifter Servants have, Default: 20.0")
+                .defineInRange("flameDrifterServantFollowRange", 20.0, 1.0, Double.MAX_VALUE);
+        FlameDrifterServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Flame Drifter Servants have, Default: 1.0")
+                .defineInRange("flameDrifterServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
+        FlameDrifterServantAttackKnockback = BUILDER.comment("How much Attack Knockback Flame Drifter Servants have, Default: 0.5")
+                .defineInRange("flameDrifterServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Flameborn Warrior Servant (Optional - LM)");
+        FlamebornWarriorServantHealth = BUILDER.comment("How much Max Health Flameborn Warrior Servants have, Default: 50.0")
+                .defineInRange("flamebornWarriorServantHealth", 50.0, 1.0, Double.MAX_VALUE);
+        FlamebornWarriorServantArmor = BUILDER.comment("How much natural Armor Flameborn Warrior Servants have, Default: 4.0")
+                .defineInRange("flamebornWarriorServantArmor", 4.0, 0.0, Double.MAX_VALUE);
+        FlamebornWarriorServantDamage = BUILDER.comment("How much damage Flameborn Warrior Servants deal, Default: 12.0")
+                .defineInRange("flamebornWarriorServantDamage", 12.0, 0.0, Double.MAX_VALUE);
+        FlamebornWarriorServantMovementSpeed = BUILDER.comment("How fast Flameborn Warrior Servants move, Default: 0.1")
+                .defineInRange("flamebornWarriorServantMovementSpeed", 0.1, 0.0, Double.MAX_VALUE);
+        FlamebornWarriorServantFollowRange = BUILDER.comment("How much following/detection range Flameborn Warrior Servants have, Default: 20.0")
+                .defineInRange("flamebornWarriorServantFollowRange", 20.0, 1.0, Double.MAX_VALUE);
+        FlamebornWarriorServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Flameborn Warrior Servants have, Default: 0.3")
+                .defineInRange("flamebornWarriorServantKnockbackResistance", 0.3, 0.0, Double.MAX_VALUE);
+        FlamebornWarriorServantAttackKnockback = BUILDER.comment("How much Attack Knockback Flameborn Warrior Servants have, Default: 0.5")
+                .defineInRange("flamebornWarriorServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Flameborn Guard Servant (Optional - LM)");
+        FlamebornGuardServantHealth = BUILDER.comment("How much Max Health Flameborn Guard Servants have, Default: 60.0")
+                .defineInRange("flamebornGuardServantHealth", 60.0, 1.0, Double.MAX_VALUE);
+        FlamebornGuardServantArmor = BUILDER.comment("How much natural Armor Flameborn Guard Servants have, Default: 8.0")
+                .defineInRange("flamebornGuardServantArmor", 8.0, 0.0, Double.MAX_VALUE);
+        FlamebornGuardServantDamage = BUILDER.comment("How much damage Flameborn Guard Servants deal, Default: 12.0")
+                .defineInRange("flamebornGuardServantDamage", 12.0, 0.0, Double.MAX_VALUE);
+        FlamebornGuardServantMovementSpeed = BUILDER.comment("How fast Flameborn Guard Servants move, Default: 0.1")
+                .defineInRange("flamebornGuardServantMovementSpeed", 0.1, 0.0, Double.MAX_VALUE);
+        FlamebornGuardServantFollowRange = BUILDER.comment("How much following/detection range Flameborn Guard Servants have, Default: 20.0")
+                .defineInRange("flamebornGuardServantFollowRange", 20.0, 1.0, Double.MAX_VALUE);
+        FlamebornGuardServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Flameborn Guard Servants have, Default: 1.0")
+                .defineInRange("flamebornGuardServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
+        FlamebornGuardServantAttackKnockback = BUILDER.comment("How much Attack Knockback Flameborn Guard Servants have, Default: 0.5")
+                .defineInRange("flamebornGuardServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.push("Rambler Servant");

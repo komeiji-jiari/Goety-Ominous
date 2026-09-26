@@ -25,23 +25,23 @@ public class OfItems {
 
     public static final RegistryObject<ServantSpawnEggItem> RAMBLER_SERVANT_SPAWN_EGG = OF_ITEMS.register(
             "rambler_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(OfEntityRegistry.RAMBLER_SERVANT, 0xE8E0D0, 0xC4BBA8, egg()));
+            () -> new ServantSpawnEggItem(OfEntityRegistry.RAMBLER_SERVANT, 0xEDEDCF, 0x685944, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> DICER_SERVANT_SPAWN_EGG = OF_ITEMS.register(
             "dicer_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(OfEntityRegistry.DICER_SERVANT, 0xD8D8D8, 0x2A8BD6, egg()));
+            () -> new ServantSpawnEggItem(OfEntityRegistry.DICER_SERVANT, 0x1C0D1C, 0x3850F9, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> VOLT_SERVANT_SPAWN_EGG = OF_ITEMS.register(
             "volt_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(OfEntityRegistry.VOLT_SERVANT, 0x9B5DE5, 0x2EC4F6, egg()));
+            () -> new ServantSpawnEggItem(OfEntityRegistry.VOLT_SERVANT, 0x2C1538, 0x00BFFF, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> TREMBLER_SERVANT_SPAWN_EGG = OF_ITEMS.register(
             "trembler_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(OfEntityRegistry.TREMBLER_SERVANT, 0x9C8F82, 0x5A4636, egg()));
+            () -> new ServantSpawnEggItem(OfEntityRegistry.TREMBLER_SERVANT, 0x465641, 0x0D0E0D, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> TERROR_SERVANT_SPAWN_EGG = OF_ITEMS.register(
             "terror_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(OfEntityRegistry.TERROR_SERVANT, 0x5B6770, 0xC9A227, egg()));
+            () -> new ServantSpawnEggItem(OfEntityRegistry.TERROR_SERVANT, 0x074230, 0xFF0000, egg()));
 
 
     public static final RegistryObject<ServantSpawnEggItem> FIRE_SLIME_SERVANT_SPAWN_EGG = OF_ITEMS.register(
@@ -54,7 +54,7 @@ public class OfItems {
 
     public static final RegistryObject<ServantSpawnEggItem> SKYVERN_SERVANT_SPAWN_EGG = OF_ITEMS.register(
             "skyvern_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(OfEntityRegistry.SKYVERN_SERVANT, 0x2E3A4D, 0x8FD6E8, egg()));
+            () -> new ServantSpawnEggItem(OfEntityRegistry.SKYVERN_SERVANT, 0xF0E2E7, 0x124077, egg()));
 
     public static final RegistryObject<Item> VOLT_FOCUS = OF_ITEMS.register("volt_focus",
             () -> new MagicFocus(new VoltSpell()));

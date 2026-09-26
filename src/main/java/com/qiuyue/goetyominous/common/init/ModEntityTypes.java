@@ -1,6 +1,6 @@
 package com.qiuyue.goetyominous.common.init;
 
-import com.qiuyue.goetyominous.common.entities.ally.illager.*;
+import com.qiuyue.goetyominous.common.entities.ally.ias.*;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.*;
 
 import com.qiuyue.goetyominous.common.entities.ally.mobs.StormNecromancerServant;

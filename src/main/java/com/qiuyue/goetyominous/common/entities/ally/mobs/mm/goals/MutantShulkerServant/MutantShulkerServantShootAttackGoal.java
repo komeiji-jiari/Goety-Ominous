@@ -34,7 +34,7 @@ public class MutantShulkerServantShootAttackGoal extends Goal {
     public boolean canUse() {
         this.target = this.mob.getTarget();
         int nearbyBullets = this.mob.level().getEntities(this.mob, this.mob.getBoundingBox().inflate(100.0), MUTANT_SHULKER_BULLET).size();
-        return this.target != null && !this.target.isRemoved() && !this.target.isDeadOrDying() && nearbyBullets <= MutantShulkerCommonConfig.shoot_max_nearby_mutant_shulker_bullets.get() && this.mob.getRandom().nextInt(MutantShulkerCommonConfig.shoot_chance.get()) == 0 && this.animationsUseable() && !this.mob.isInBox() && !this.mob.isStaying();
+        return this.target != null && !this.target.isRemoved() && !this.target.isDeadOrDying() && nearbyBullets <= MutantShulkerCommonConfig.shoot_max_nearby_mutant_shulker_bullets.get() && this.mob.getRandom().nextInt(MutantShulkerCommonConfig.shoot_chance.get()) == 0 && this.animationsUseable() && !this.mob.isInBox();
     }
 
     public boolean canContinueToUse() {

@@ -1,7 +1,7 @@
 package com.qiuyue.goetyominous.client.render.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.qiuyue.goetyominous.client.render.model.TwittollagerServantModel;
+import com.qiuyue.goetyominous.client.render.model.ias.TwittollagerServantModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;

@@ -1,9 +1,7 @@
 package com.qiuyue.goetyominous.compat.ias;
 
 import com.qiuyue.goetyominous.GoetyOminous;
-import com.qiuyue.goetyominous.common.entities.ally.illager.AbsorberServant;
-import com.qiuyue.goetyominous.common.entities.ally.illager.MagispellerServant;
-import com.qiuyue.goetyominous.common.entities.ally.illager.TwittollagerServant;
+import com.qiuyue.goetyominous.common.entities.ally.ias.*;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.*;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;

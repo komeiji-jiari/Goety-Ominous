@@ -20,7 +20,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
@@ -53,6 +52,7 @@ import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
+import java.util.function.Predicate;
 
 public class VesperServant extends Summoned implements IAnimatedEntity {
 
@@ -114,6 +114,16 @@ public class VesperServant extends Summoned implements IAnimatedEntity {
             this.navigation = new FlightPathNavigatorNoSpin(this, level(), 1.0F);
             this.isLandNavigator = false;
         }
+    }
+
+    @Override
+    public int getSummonLimit(LivingEntity player) {
+        return MobsConfig.VesperServantLimit.get();
+    }
+
+    @Override
+    public Predicate<Entity> summonPredicate() {
+        return entity -> entity instanceof VesperServant;
     }
 
     @Override
@@ -395,39 +405,8 @@ public class VesperServant extends Summoned implements IAnimatedEntity {
                                         @Nullable CompoundTag dataTag) {
         this.setFlying(true);
         this.setHanging(false);
-        if (this.getTrueOwner() instanceof Player player) {
-            if (countServants(player) >= MobsConfig.VesperServantLimit.get()) {
-                this.discard();
-                return null;
-            }
-        }
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
-
-    private int countServants(Player player) {
-        int count = 0;
-        if (player.level() instanceof ServerLevel serverLevel) {
-            for (Entity entity : serverLevel.getAllEntities()) {
-                if (entity instanceof VesperServant servant && servant != this) {
-                    if (servant.getTrueOwner() == player) {
-                        count++;
-                    }
-                }
-            }
-        }
-        return count;
-    }
-
-    @Override
-    public void setTrueOwner(@Nullable LivingEntity livingEntity) {
-        super.setTrueOwner(livingEntity);
-        if (!this.level().isClientSide && livingEntity instanceof Player player) {
-            if (countServants(player) >= MobsConfig.VesperServantLimit.get()) {
-                this.discard();
-            }
-        }
-    }
-
     @Override
     protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
     }

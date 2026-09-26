@@ -4,7 +4,6 @@ import com.Polarice3.Goety.api.entities.IOwned;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.qiuyue.goetyominous.common.entities.ally.ua.goals.*;
 import com.qiuyue.goetyominous.common.items.ua.UaItems;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.teamabnormals.blueprint.core.endimator.Endimatable;
 import com.teamabnormals.blueprint.core.endimator.PlayableEndimation;
 import com.teamabnormals.blueprint.core.endimator.TimedEndimation;
@@ -139,16 +138,6 @@ public class ThrasherServant extends Summoned implements Endimatable {
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         this.setAirSupply(this.getMaxAirSupply());
-
-        if (reason == MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player) {
-            int limit = this instanceof GreatThrasherServant ?
-                    MobsConfig.GreatThrasherServantLimit.get() :
-                    MobsConfig.ThrasherServantLimit.get();
-
-            if (countServants(player, this.getClass()) >= limit) {
-                return null;
-            }
-        }
 
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
@@ -371,22 +360,6 @@ public class ThrasherServant extends Summoned implements Endimatable {
         }
         return false;
     }
-
-    private int countServants(Player player, Class<? extends ThrasherServant> servantClass) {
-        int count = 0;
-        if (player.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
-            for (Entity entity : serverLevel.getAllEntities()) {
-                if (servantClass.isInstance(entity)) {
-                    ThrasherServant servant = (ThrasherServant) entity;
-                    if (servant.getTrueOwner() == player) {
-                        count++;
-                    }
-                }
-            }
-        }
-        return count;
-    }
-
     @Override
     protected PathNavigation createNavigation(Level worldIn) {
         return new WaterBoundPathNavigation(this, worldIn);

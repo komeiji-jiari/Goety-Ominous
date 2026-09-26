@@ -21,7 +21,6 @@ import com.alexander.mutantmore.util.PositionUtils;
 import com.google.common.collect.Lists;
 
 import java.util.*;
-import java.util.function.Predicate;
 
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantBlazeServant.MutantBlazeServantFlyStrafeMovementGoal;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantBlazeServant.MutantBlazeServantSoundInstance;
@@ -41,7 +40,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -57,6 +55,7 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -81,8 +80,8 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.entity.PartEntity;
 import org.joml.Vector3d;
+import java.util.function.Predicate;
 
-import javax.annotation.Nullable;
 
 public class MutantBlazeServant extends AbstractMutantServant implements IHeatSource, IHasCustomExplosion {
     private static final List<EntityDataAccessor<Boolean>> SHIELDS_BROKEN;
@@ -184,31 +183,6 @@ public class MutantBlazeServant extends AbstractMutantServant implements IHeatSo
             }
         });
     }
-
-    @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty,
-                                        MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData,
-                                        @Nullable CompoundTag pDataTag) {
-        if (pReason == MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player) {
-            if (countServants(player) >= MobsConfig.MutantBlazeServantLimit.get()) {
-                return null;
-            }
-        }
-        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
-    }
-
-    private int countServants(Player player) {
-        int count = 0;
-        if (player.level() instanceof ServerLevel serverLevel) {
-            for (Entity entity : serverLevel.getAllEntities()) {
-                if (entity instanceof MutantBlazeServant servant && servant.getTrueOwner() == player) {
-                    count++;
-                }
-            }
-        }
-        return count;
-    }
-
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
@@ -277,6 +251,10 @@ public class MutantBlazeServant extends AbstractMutantServant implements IHeatSo
 
     protected PathNavigation createNavigation(Level p_33348_) {
         return new MutantBlazeServantNavigation(this, p_33348_);
+    }
+
+    protected BodyRotationControl createBodyControl() {
+        return new BodyRotationControl(this);
     }
 
     public NodeEvaluatorDimensions getNodeEvaluatorDimensions() {

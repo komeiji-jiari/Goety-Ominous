@@ -245,23 +245,23 @@ public class ModItems {
 
     public static final RegistryObject<ServantSpawnEggItem> PIGLIN_BRUTE_SERVANT_SPAWN_EGG = ITEMS.register(
             "piglin_brute_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.PIGLIN_BRUTE_SERVANT, 0x9C7A3C, 0x4A2800, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.PIGLIN_BRUTE_SERVANT, 0x9C7A3C, 0x492F24, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> STRONG_PIGLIN_BRUTE_SERVANT_SPAWN_EGG = ITEMS.register(
             "piglin_brute_servant_strong_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.STRONG_PIGLIN_BRUTE_SERVANT, 0x9C7A3C, 0x4A2800, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.STRONG_PIGLIN_BRUTE_SERVANT, 0x9C7A3C, 0x003049, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> ELITE_PIGLIN_BRUTE_SERVANT_SPAWN_EGG = ITEMS.register(
             "piglin_brute_servant_elite_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.ELITE_PIGLIN_BRUTE_SERVANT, 0x9C7A3C, 0x4A2800, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.ELITE_PIGLIN_BRUTE_SERVANT, 0x9C7A3C, 0x490300, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> STRONG_ZPIGLIN_BRUTE_SERVANT_SPAWN_EGG = ITEMS.register(
             "strong_zpiglin_brute_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.STRONG_ZPIGLIN_BRUTE_SERVANT, 0x5A7A3A, 0x4A6A2A, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.STRONG_ZPIGLIN_BRUTE_SERVANT, 0xE6918B, 0x003049, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> ELITE_ZPIGLIN_BRUTE_SERVANT_SPAWN_EGG = ITEMS.register(
             "elite_zpiglin_brute_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.ELITE_ZPIGLIN_BRUTE_SERVANT, 0x5A7A3A, 0x2D4A1E, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.ELITE_ZPIGLIN_BRUTE_SERVANT, 0xE6918B, 0x490300, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> PIGLIN_HUNTER_SERVANT_SPAWN_EGG = ITEMS.register(
             "piglin_hunter_servant_spawn_egg",
@@ -269,23 +269,23 @@ public class ModItems {
 
     public static final RegistryObject<ServantSpawnEggItem> STRONG_PIGLIN_HUNTER_SERVANT_SPAWN_EGG = ITEMS.register(
             "strong_piglin_hunter_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.STRONG_PIGLIN_HUNTER_SERVANT, 0x9C7A3C, 0x7A5C2A, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.STRONG_PIGLIN_HUNTER_SERVANT, 0x9C7A3C, 0x2A6E9E, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> ELITE_PIGLIN_HUNTER_SERVANT_SPAWN_EGG = ITEMS.register(
             "elite_piglin_hunter_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.ELITE_PIGLIN_HUNTER_SERVANT, 0x9C7A3C, 0x3D1A00, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.ELITE_PIGLIN_HUNTER_SERVANT, 0x9C7A3C, 0x7A2A14, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> ZPIGLIN_HUNTER_SERVANT_SPAWN_EGG = ITEMS.register(
             "zpiglin_hunter_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.ZPIGLIN_HUNTER_SERVANT, 0x5A7A3A, 0x3A5A2A, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.ZPIGLIN_HUNTER_SERVANT, 0xE6918B, 0x594036, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> STRONG_ZPIGLIN_HUNTER_SERVANT_SPAWN_EGG = ITEMS.register(
             "strong_zpiglin_hunter_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.STRONG_ZPIGLIN_HUNTER_SERVANT, 0x5A7A3A, 0x4A6A2A, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.STRONG_ZPIGLIN_HUNTER_SERVANT, 0xE6918B, 0x2A6E9E, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> ELITE_ZPIGLIN_HUNTER_SERVANT_SPAWN_EGG = ITEMS.register(
             "elite_zpiglin_hunter_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.ELITE_ZPIGLIN_HUNTER_SERVANT, 0x5A7A3A, 0x2D4A1E, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.ELITE_ZPIGLIN_HUNTER_SERVANT, 0xE6918B, 0x7A2A14, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> FUNGUS_THROWER_SPAWN_EGG = ITEMS.register(
             "fungus_thrower_spawn_egg",
@@ -293,7 +293,7 @@ public class ModItems {
 
     public static final RegistryObject<ServantSpawnEggItem> ZFUNGUS_THROWER_SPAWN_EGG = ITEMS.register(
             "zfungus_thrower_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.ZFUNGUS_THROWER, 0x5A7A3A, 0x3366FF, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.ZFUNGUS_THROWER, 0xE6918B, 0x3366FF, egg()));
 
     public static final RegistryObject<net.minecraftforge.common.ForgeSpawnEggItem> PIGLIN_MERCHANT_SPAWN_EGG = ITEMS.register(
             "piglin_merchant_spawn_egg",
