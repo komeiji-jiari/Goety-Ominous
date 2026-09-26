@@ -266,4 +266,7 @@ public class ModEntityLayers {
 
     public static final ModelLayerLocation GRAVITY_BIG_SHULKER_BULLET_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "gravity_big_shulker_bullet"), "main");
+
+    public static final ModelLayerLocation ANNIHILATION_PURSUER_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "annihilation_pursuer_servant"), "main");
 }

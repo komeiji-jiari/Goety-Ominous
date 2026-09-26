@@ -23,6 +23,26 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> DicerLaserCastDuration;
     public static final ForgeConfigSpec.ConfigValue<Integer> DicerLaserCoolDown;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> DicerSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DicerCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DicerSummonDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DicerCoolDown;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> TerrorSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> TerrorCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> TerrorSummonDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> TerrorCoolDown;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> SkyvernSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SkyvernCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SkyvernSummonDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SkyvernCoolDown;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> TremblerSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> TremblerCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> TremblerSummonDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> TremblerCoolDown;
+
     public static final ForgeConfigSpec.ConfigValue<Integer> AcidPoolSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> AcidPoolCastDuration;
     public static final ForgeConfigSpec.ConfigValue<Integer> AcidPoolCoolDown;
@@ -238,10 +258,10 @@ public class SpellConfig {
                 .defineInRange("voltSoulCost", 32, 1, 128);
         VoltCastDuration = BUILDER.comment("Cast duration of Volt Servant spell in ticks (Default: 100)")
                 .defineInRange("voltCastDuration", 100, 0, 500);
-        VoltSummonDown = BUILDER.comment("Summon down duration of Volt Servant spell in ticks (Default: 200)")
-                .defineInRange("voltSummonDown", 200, 0, 5000);
-        VoltCoolDown = BUILDER.comment("Cooldown of Volt Servant spell in ticks (Default: 300)")
-                .defineInRange("voltCoolDown", 300, 0, 5000);
+        VoltSummonDown = BUILDER.comment("Summon down duration of Volt Servant spell in ticks (Default: 340)")
+                .defineInRange("voltSummonDown", 340, 0, 5000);
+        VoltCoolDown = BUILDER.comment("Cooldown of Volt Servant spell in ticks (Default: 900)")
+                .defineInRange("voltCoolDown", 900, 0, 5000);
         BUILDER.pop();
 
         BUILDER.push("VoltBolt");
@@ -260,6 +280,50 @@ public class SpellConfig {
                 .defineInRange("dicerLaserCastDuration", 40, 0, 2000);
         DicerLaserCoolDown = BUILDER.comment("Cooldown of Dicer Laser spell in ticks (Default: 200)")
                 .defineInRange("dicerLaserCoolDown", 200, 0, 2000);
+        BUILDER.pop();
+
+        BUILDER.push("Dicer");
+        DicerSoulCost = BUILDER.comment("Soul cost of Dicer Servant spell (Default: 32)")
+                .defineInRange("dicerSoulCost", 32, 1, 128);
+        DicerCastDuration = BUILDER.comment("Cast duration of Dicer Servant spell in ticks (Default: 100)")
+                .defineInRange("dicerCastDuration", 100, 0, 500);
+        DicerSummonDown = BUILDER.comment("Summon down duration of Dicer Servant spell in ticks (Default: 240)")
+                .defineInRange("dicerSummonDown", 240, 0, 5000);
+        DicerCoolDown = BUILDER.comment("Cooldown of Dicer Servant spell in ticks (Default: 600)")
+                .defineInRange("dicerCoolDown", 600, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("Terror");
+        TerrorSoulCost = BUILDER.comment("Soul cost of Terror Servant spell (Default: 32)")
+                .defineInRange("terrorSoulCost", 32, 1, 128);
+        TerrorCastDuration = BUILDER.comment("Cast duration of Terror Servant spell in ticks (Default: 100)")
+                .defineInRange("terrorCastDuration", 100, 0, 500);
+        TerrorSummonDown = BUILDER.comment("Summon down duration of Terror Servant spell in ticks (Default: 240)")
+                .defineInRange("terrorSummonDown", 240, 0, 5000);
+        TerrorCoolDown = BUILDER.comment("Cooldown of Terror Servant spell in ticks (Default: 600)")
+                .defineInRange("terrorCoolDown", 600, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("Skyvern");
+        SkyvernSoulCost = BUILDER.comment("Soul cost of Skyvern Servant spell (Default: 64)")
+                .defineInRange("skyvernSoulCost", 64, 1, 128);
+        SkyvernCastDuration = BUILDER.comment("Cast duration of Skyvern Servant spell in ticks (Default: 120)")
+                .defineInRange("skyvernCastDuration", 120, 0, 500);
+        SkyvernSummonDown = BUILDER.comment("Summon down duration of Skyvern Servant spell in ticks (Default: 400)")
+                .defineInRange("skyvernSummonDown", 400, 0, 5000);
+        SkyvernCoolDown = BUILDER.comment("Cooldown of Skyvern Servant spell in ticks (Default: 1200)")
+                .defineInRange("skyvernCoolDown", 1200, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("Trembler");
+        TremblerSoulCost = BUILDER.comment("Soul cost of Trembler Servant spell (Default: 32)")
+                .defineInRange("tremblerSoulCost", 32, 1, 128);
+        TremblerCastDuration = BUILDER.comment("Cast duration of Trembler Servant spell in ticks (Default: 60)")
+                .defineInRange("tremblerCastDuration", 60, 0, 500);
+        TremblerSummonDown = BUILDER.comment("Summon down duration of Trembler Servant spell in ticks (Default: 200)")
+                .defineInRange("tremblerSummonDown", 200, 0, 5000);
+        TremblerCoolDown = BUILDER.comment("Cooldown of Trembler Servant spell in ticks (Default: 200)")
+                .defineInRange("tremblerCoolDown", 200, 0, 5000);
         BUILDER.pop();
 
         BUILDER.push("ExtinctionBreath");

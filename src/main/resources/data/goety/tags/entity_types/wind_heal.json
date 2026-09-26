@@ -13,6 +13,10 @@
     {
       "id": "goetyominous:forsaken_servant",
       "required": false
+    },
+    {
+      "id": "goetyominous:skyvern_servant",
+      "required": false
     }
   ]
 }

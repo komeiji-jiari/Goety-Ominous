@@ -6,6 +6,7 @@ import com.qiuyue.goetyominous.client.init.ModEntityLayers;
 import com.qiuyue.goetyominous.client.render.model.of.SkyvernServantHeadModel;
 import com.qiuyue.goetyominous.common.entities.ally.of.SkyvernServant;
 import com.unusualmodding.opposing_force.entity.Skyvern.SkyvernVariant;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -31,6 +32,14 @@ public class SkyvernServantRenderer extends MobRenderer<SkyvernServant, SkyvernS
             case AZURE -> AZURE;
             case THUNDER -> THUNDER;
         };
+    }
+
+    @Override
+    protected RenderType getRenderType(@NotNull SkyvernServant entity, boolean visible, boolean translucent, boolean glowing) {
+        if (entity.isGhost()) {
+            return RenderType.entityTranslucent(this.getTextureLocation(entity));
+        }
+        return super.getRenderType(entity, visible, translucent, glowing);
     }
 
     @Override
