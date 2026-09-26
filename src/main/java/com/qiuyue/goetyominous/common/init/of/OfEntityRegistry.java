@@ -9,6 +9,7 @@ import com.qiuyue.goetyominous.common.entities.ally.of.SkyvernSegmentServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.SkyvernServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.TerrorServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.TremblerServant;
+import com.qiuyue.goetyominous.common.entities.ally.of.UmberSpiderServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.VoltServant;
 import com.qiuyue.goetyominous.common.entities.projectile.DicerServantLaser;
 import com.qiuyue.goetyominous.common.entities.projectile.VoltServantElectricCharge;
@@ -67,6 +68,13 @@ public class OfEntityRegistry {
                             .sized(0.8F, 0.9F)
                             .setTrackingRange(10)
                             .build(GoetyOminous.MOD_ID + ":trembler_servant"));
+
+    public static final RegistryObject<EntityType<UmberSpiderServant>> UMBER_SPIDER_SERVANT =
+            OF_ENTITIES.register("umber_spider_servant",
+                    () -> EntityType.Builder.<UmberSpiderServant>of(UmberSpiderServant::new, MobCategory.MISC)
+                            .sized(1.4F, 0.9F)
+                            .setTrackingRange(10)
+                            .build(GoetyOminous.MOD_ID + ":umber_spider_servant"));
 
     public static final RegistryObject<EntityType<TerrorServant>> TERROR_SERVANT =
             OF_ENTITIES.register("terror_servant",

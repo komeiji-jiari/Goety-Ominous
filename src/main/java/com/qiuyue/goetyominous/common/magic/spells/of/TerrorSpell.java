@@ -5,6 +5,7 @@ import com.Polarice3.Goety.common.enchantments.ModEnchantments;
 import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.common.magic.SummonSpell;
 import com.Polarice3.Goety.init.ModSounds;
+import com.Polarice3.Goety.utils.CuriosFinder;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.ally.of.TerrorServant;
@@ -78,12 +79,8 @@ public class TerrorSpell extends SummonSpell {
         }
 
         if (!this.isShifting(caster)) {
-            int count = 1;
-            boolean elite = false;
-            if (this.rightStaff(staff)) {
-                count = 2;
-                elite = true;
-            }
+            int count = this.rightStaff(staff) ? 2 : 1;
+            boolean elite = CuriosFinder.hasAbyssSet(caster);
 
             for (int i = 0; i < count; ++i) {
                 BlockPos blockpos = caster.blockPosition().offset(-2 + caster.getRandom().nextInt(5), 1, -2 + caster.getRandom().nextInt(5));
@@ -106,7 +103,7 @@ public class TerrorSpell extends SummonSpell {
             }
 
             this.SummonDown(caster);
-            this.playSound(worldIn, caster, ModSounds.DROWNED_NECROMANCER_SUMMON.get());
+            this.playSound(worldIn, caster, ModSounds.SUMMON_SPELL.get());
         }
     }
 }

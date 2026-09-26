@@ -1,0 +1,19 @@
+{
+  "name": "Volt Focus",
+  "icon": "goetyominous:volt_focus",
+  "category": "goety:focuses/storm",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Volts are electric predators that lurk in water. They leap out of it to snap at their prey, and spit orbs of condensed charge at their foes. Having learned the rhythm of their discharges, you have devised a spell to bend that ferocity into a servant that answers on command."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goetyominous:volt_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Casting with a $(l:crafts/staff/storm_staff)Storm Staff$() summons 3 to 5 Volt Servants at once, while any other staff summons only one. The spell is quite costly in soul energy, and you may keep at most 8 Volt Servants at your side."
+    }
+  ]
+}

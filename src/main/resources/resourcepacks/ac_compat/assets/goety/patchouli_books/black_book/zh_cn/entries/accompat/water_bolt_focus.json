@@ -1,0 +1,20 @@
+{
+  "name": "水箭聚晶",
+  "icon": "goetyominous:water_bolt_focus",
+  "category": "goety:abyssalchasm",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "这个法术允许你凝聚出由水构成的箭。水箭具有少许追踪能力，命中生物时还会产生一定的爆炸溅射。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goetyominous:water_bolt_focus",
+      "text": "深水妈妈"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "深渊魔杖能够一次允许你发射3发水箭。"
+    }
+  ]
+}
