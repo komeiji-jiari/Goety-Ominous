@@ -22,17 +22,6 @@ import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * 堕落圣骑仆从的模型。
- *
- * <p>对应传奇怪物的 {@code NewPossessedPaladinModel}。两者的区别只有一个：
- * 原版把泛型写死成 {@code T extends PossessedPaladinEntity}，那是怪物本体；
- * 这里必须放宽成 {@code T extends PossessedPaladinServant}（仆从）。
- * 所以外壳要重写，但 {@link #createBodyLayer()} 是一个数字都没改、整段照抄过来的。
- *
- * <p>骨骼结构（谁挂在谁下面）也原样保留了，包括现在还暂时用不到的
- * 盾牌 / 三叉戟 / 匕首 / 翅膀 —— Stage 2 做招式时会用到，提前留好省得返工。
- */
 @OnlyIn(Dist.CLIENT)
 public class PossessedPaladinServantModel<T extends PossessedPaladinServant> extends HierarchicalModel<T> {
 
@@ -161,38 +150,15 @@ public class PossessedPaladinServantModel<T extends PossessedPaladinServant> ext
         return LayerDefinition.create(meshdefinition, 256, 256);
     }
 
-    /**
-     * 招式动画的分派处。整段照抄原版 {@code NewPossessedPaladinModel.setupAnim}，
-     * 只动了两处：
-     * <ul>
-     *   <li>原版把 {@code applyHeadRotation} 连着调了两遍，是复制粘贴留下的重复调用，
-     *       第二遍结果完全一样，这里只调一次；</li>
-     *   <li>走路动画加了「只在待机/警觉时播」的条件 —— 这本来就是原版有的，
-     *       Stage 1 因为身上一个招式都没有才省掉的。</li>
-     * </ul>
-     *
-     * <p>每个 {@code animate} 的四个参数是：(动画状态, 动画定义, 已存在 tick 数, 播放速度)。
-     * 动画状态由实体那边的 {@code onSyncedDataUpdated} 按 attackState 启动，两边靠
-     * {@link PossessedPaladinServant#getAnimationState(String) getAnimationState} 里的
-     * 名字字符串对上号。名字写错不会报任何错，只会静默不播 —— 改这里时务必跟实体那边核对。
-     *
-     * <p>另外原版有两行都写了 {@code getAnimationState("death")}（一行用 FlamebornGuardAnimations.death2、
-     * 一行用 PossessedPaladinAnimations4.death2），后一行会覆盖前一行。这是原版自己的冗余，
-     * 保持原样照抄，免得玩家看到的死亡动作跟原版不一样。
-     */
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.root().getAllParts().forEach(ModelPart::resetPose);
         this.applyHeadRotation(netHeadYaw, headPitch);
 
-        // 走路只在待机(0)和警觉(9)时播。出招期间腿要摆招式姿势，再叠一层走路会打架。
         if (entity.getAttackState() == 0 || entity.getAttackState() == 9) {
             this.animateWalk(PPAnims.walk, limbSwing, limbSwingAmount, 1.0F, 4.0F);
         }
 
-        // 「沉睡 / 苏醒」这两段是原版传奇怪物的动画，仆从版当前<b>不会进入</b>这两个状态
-        // （状态 34 / 35 全项目都没有地方设置），所以下面两行实际上是恒空的。
-        // 留着是为了和原版模型的结构对齐 —— 哪天要把沉睡演出接回来，这里现成的。
         this.animate(entity.getAnimationState("sleep"), PossessedPaladinAnimations4.sleep, ageInTicks, 1.0F);
         this.animate(entity.getAnimationState("awaken"), PossessedPaladinAnimations4.awaken3, ageInTicks, 1.0F);
         this.animate(entity.getAnimationState("idle"), PossessedPaladinAnimations4.newIdle, ageInTicks, 1.0F);
@@ -241,28 +207,6 @@ public class PossessedPaladinServantModel<T extends PossessedPaladinServant> ext
         this.head.xRot = pHeadPitch * ((float) Math.PI / 180F);
     }
 
-    /**
-     * 把「右臂那一条骨头链」的位移和旋转全部叠到 {@link PoseStack} 上
-     * （照抄原版 {@code NewPossessedPaladinModel.translateModel}）。
-     *
-     * <h2>它是干什么用的</h2>
-     * {@link ModelPart#translateAndRotate(PoseStack)} 会把<b>这一个</b>部件相对父级的
-     * 位移/旋转压进矩阵，但<b>不会</b>压它的子级。所以要一路从根走到手指尖，
-     * 必须自己按父子顺序逐个调用 —— 本方法干的就是这件事。
-     *
-     * <p>调用完之后，坐标系就变成了<b>「剑尖/手心的坐标系」</b>：
-     * 原点在右手握剑的位置，朝向跟着手臂的动画走。抓取图层接着在这个坐标系里
-     * 画被抓的敌人和那几束灵魂射线，于是它们就「跟着手臂动」，
-     * 而不是死死钉在圣骑脚下。
-     *
-     * <h2>为什么只走右臂这一条链</h2>
-     * 因为抓取用的就是右手。左臂（{@code leftArm → lowerarm → bone2 → shield}）
-     * 那条链是盾牌图层的事，和这里无关。
-     *
-     * <p>顺序不能乱：{@code root → lowerbody → body → GimbalRotator → rightArm
-     * → lowerarm2 → sword → SoulGreatSword}，每一步都必须是上一步的子节点。
-     * 中途插错一个，后面的位移就会被套在错误的坐标系里，手会跑到身体外面去。
-     */
     public void translateModel(PoseStack poseStack) {
         this.root.translateAndRotate(poseStack);
         this.lowerbody.translateAndRotate(poseStack);

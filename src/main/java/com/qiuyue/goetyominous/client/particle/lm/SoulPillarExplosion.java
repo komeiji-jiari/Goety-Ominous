@@ -16,23 +16,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-/**
- * 「灵魂柱爆炸」—— 灵魂柱从地里炸出来那一瞬间的那团光。
- *
- * <p>从传奇怪物的同名类逐字照搬，<b>只换了包名</b>。贴图在
- * {@code assets/goetyominous/textures/particle/soul_pillar_explosion_0..7.png}（8 帧）。
- *
- * <p>⚠️ <b>别和 {@link SoulExplosion} 搞混</b>：那个是「灵魂三叉戟扎中目标」时炸的红光
- * （12 tick、8 帧）；这个是「灵魂柱冒出地面」时炸的光（16 tick、8 帧）。
- * 名字像、长得也像，但是两个不同的粒子，贴图也不是同一套。
- *
- * <p>它和 {@link GroundSoulParticle} <b>逐字一样</b>，只差一个 {@code lifetime}
- * （这里 16，那边 14）。原版就是复制粘贴的两份，我们照搬保留两份。
- *
- * <p>渲染上同样是「Y 轴公告板」（只绕 Y 转、不跟着你抬头低头翻），
- * 以及 {@link #getLightColor} 里那段「算了半天最后无条件返回 240」的原版死代码 ——
- * 详情见 {@link GroundSoulParticle} 的类注释，那边写得详细。
- */
 @OnlyIn(Dist.CLIENT)
 public class SoulPillarExplosion extends TextureSheetParticle {
 
@@ -42,7 +25,6 @@ public class SoulPillarExplosion extends TextureSheetParticle {
                         double pXSpeed, double pYSpeed, double pZSpeed, SpriteSet pSprites) {
         super(pLevel, pX, pY, pZ, 0.0, 0.0, 0.0);
         this.sprites = pSprites;
-        // ↓ 赋值一次、又 += 一次 —— 等价于「速度乘 2」。原版如此。
         this.xd = pXSpeed;
         this.yd = pYSpeed;
         this.zd = pZSpeed;
@@ -60,13 +42,11 @@ public class SoulPillarExplosion extends TextureSheetParticle {
         return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
-    /** 尺寸恒定不变 —— 覆写成常数，把基类「随年龄缩放」的行为摁掉。 */
     @Override
     public float getQuadSize(float pScaleFactor) {
         return this.quadSize;
     }
 
-    /** 不调 {@code super.tick()}，所以没有物理，粒子匀速飘到寿命结束。 */
     @Override
     public void tick() {
         this.setSpriteFromAge(this.sprites);
@@ -78,7 +58,6 @@ public class SoulPillarExplosion extends TextureSheetParticle {
         }
     }
 
-    /** Y 轴公告板渲染，见 {@link GroundSoulParticle} 的类注释。 */
     @Override
     public void render(VertexConsumer buffer, Camera camera, float partialTicks) {
         Vec3 vec3 = camera.getPosition();
@@ -111,7 +90,6 @@ public class SoulPillarExplosion extends TextureSheetParticle {
         buffer.vertex(avector3f[3].x(), avector3f[3].y(), avector3f[3].z()).uv(f6, f5).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
     }
 
-    /** ⚠️ 前面全是白算的，最后无条件返回 240（满亮）。原版如此。 */
     @Override
     public int getLightColor(float p_106821_) {
         float f = (this.age + p_106821_) / this.lifetime;
@@ -144,7 +122,6 @@ public class SoulPillarExplosion extends TextureSheetParticle {
         }
     }
 
-    /** 原版的染色版 provider，注册表里没派活，照抄保留。 */
     @OnlyIn(Dist.CLIENT)
     public static class SneezeProvider implements ParticleProvider<SimpleParticleType> {
 
