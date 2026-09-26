@@ -190,17 +190,29 @@ public class ModEventHandler {
             return;
         }
 
-        com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant hullbreaker = null;
-        if (sourceEntity instanceof com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant direct) {
-            hullbreaker = direct;
-        } else if (killedEntity.getLastHurtByMob() instanceof com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant lastHurt) {
-            hullbreaker = lastHurt;
-        }
-        if (hullbreaker != null && hullbreaker.getTrueOwner() != null
-                && com.qiuyue.goetyominous.config.MobsConfig.HullbreakerServantPickUpDrops.get()) {
-            hullbreaker.addDrops(event.getDrops());
-            event.getDrops().clear();
-            return;
+        // ⚠️ 必须先确认装了 alexscaves，才允许碰 HullbreakerServant 这个类。
+        // 原因：HullbreakerServant 自己 import 了 Citadel 的 IAnimatedEntity / AnimationHandler，
+        // 而 build.gradle 里 citadel 是 compileOnly —— 只在编译期存在，运行期 classpath 上没有。
+        // JVM 只要链接 HullbreakerServant 就会去解析 Citadel，于是抛
+        // NoClassDefFoundError: com/github/alexthe666/citadel/animation/IAnimatedEntity。
+        // 而下面这段原本是无条件执行的（只有上面的 Piglin 分支会提前 return），
+        // 结果就是「杀任何会掉落的生物都崩」。
+        //
+        // 用 if 包起来是有效的隔离手段：JVM 解析类是惰性的，只有真正执行到那条字节码才解析。
+        // 条件为 false 时大括号里的 instanceof 压根不会被执行，也就不会去加载那个类。
+        if (com.qiuyue.goetyominous.compat.mod.AlexCavesCompat.isAlexCavesLoaded()) {
+            com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant hullbreaker = null;
+            if (sourceEntity instanceof com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant direct) {
+                hullbreaker = direct;
+            } else if (killedEntity.getLastHurtByMob() instanceof com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant lastHurt) {
+                hullbreaker = lastHurt;
+            }
+            if (hullbreaker != null && hullbreaker.getTrueOwner() != null
+                    && com.qiuyue.goetyominous.config.MobsConfig.HullbreakerServantPickUpDrops.get()) {
+                hullbreaker.addDrops(event.getDrops());
+                event.getDrops().clear();
+                return;
+            }
         }
 
         if (!(sourceEntity instanceof ExecutionerServant executionerServant)) {

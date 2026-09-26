@@ -285,6 +285,9 @@ public class ModModelLayers {
             event.registerLayerDefinition(ModEntityLayers.TREMBLER_SERVANT_LAYER,
                     com.qiuyue.goetyominous.client.render.model.of.TremblerServantModel::createBodyLayer);
 
+            event.registerLayerDefinition(ModEntityLayers.UMBER_SPIDER_SERVANT_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.of.UmberSpiderServantModel::createBodyLayer);
+
             event.registerLayerDefinition(ModEntityLayers.TERROR_SERVANT_LAYER,
                     com.qiuyue.goetyominous.client.render.model.of.TerrorServantModel::createBodyLayer);
 
@@ -769,6 +772,10 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.client.render.of.TremblerServantRenderer::new);
 
             event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.UMBER_SPIDER_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.of.UmberSpiderServantRenderer::new);
+
+            event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.TERROR_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.of.TerrorServantRenderer::new);
 
@@ -960,6 +967,9 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.DEEP_ONE_MAGE_SERVANT_WATER_BOLT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderDeepOneMageServantWaterBolt::new);
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.WATER_BOLT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderWaterBoltProjectile::new);
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.LICOWITCH_SERVANT_HEX.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderLicowitchServantHex::new);

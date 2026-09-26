@@ -240,6 +240,9 @@ public class ModEntityLayers {
     public static final ModelLayerLocation TREMBLER_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "trembler_servant"), "main");
 
+    public static final ModelLayerLocation UMBER_SPIDER_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "umber_spider_servant"), "main");
+
     public static final ModelLayerLocation VOLT_SERVANT_CHARGED_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "volt_servant_charged"), "main");
 
@@ -276,6 +279,7 @@ public class ModEntityLayers {
     public static final ModelLayerLocation GRAVITY_BIG_SHULKER_BULLET_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "gravity_big_shulker_bullet"), "main");
 
+    // 湮灭猎影仆从（协作者 TenkenAmainu 的 LM 移植，2026-09-25 合并进来）。
     public static final ModelLayerLocation ANNIHILATION_PURSUER_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "annihilation_pursuer_servant"), "main");
 }

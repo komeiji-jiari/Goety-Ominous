@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "nfn",
+    "fef",
+    "nfn"
+  ],
+  "key":
+  {
+    "f":
+    {
+      "item": "minecraft:arrow"
+    },
+    "e":
+    {
+      "item": "goety:soul_bolt_focus"
+    },
+    "n":
+    {
+      "item": "minecraft:water_bucket"
+    }
+  },
+  "result": {
+    "item": "goetyominous:water_bolt_focus"
+  }
+}

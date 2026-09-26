@@ -6,6 +6,7 @@ import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.common.magic.SummonSpell;
 import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.BlockFinder;
+import com.Polarice3.Goety.utils.CuriosFinder;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.ally.of.DicerServant;
@@ -84,12 +85,8 @@ public class DicerSpell extends SummonSpell {
         }
 
         if (!this.isShifting(caster)) {
-            int count = 1;
-            boolean elite = false;
-            if (this.rightStaff(staff)) {
-                count = 2;
-                elite = true;
-            }
+            int count = this.rightStaff(staff) ? 2 : 1;
+            boolean elite = CuriosFinder.hasNetherSet(caster);
 
             for (int i = 0; i < count; ++i) {
                 DicerServant dicer = new DicerServant(OfEntityRegistry.DICER_SERVANT.get(), worldIn);

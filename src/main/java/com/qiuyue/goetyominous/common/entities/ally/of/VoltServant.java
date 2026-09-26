@@ -102,21 +102,35 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant, 
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
+                // 对齐 OF 原版 Volt：16 点血（8 颗心）。合并远端后改走配置项，默认值就是 16.0。
                 .add(Attributes.MAX_HEALTH, AttributesConfig.VoltServantHealth.get())
                 .add(Attributes.MOVEMENT_SPEED, AttributesConfig.VoltServantMovementSpeed.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.VoltServantFollowRange.get());
+                .add(Attributes.FOLLOW_RANGE, AttributesConfig.VoltServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, 5.0D)
+                .add(Attributes.ATTACK_KNOCKBACK, 0.5D);
     }
 
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, false, false,
+        // mustSee 必须是 true！
+        // Goety 的 FollowOwnerGoal.canUse() 里有一条硬性条件：getTarget() != null 就直接 return false。
+        // 而 TargetGoal.canContinueToUse() 里是 return !mustSee || hasLineOfSight(target)，
+        // mustSee=false 时恒为 true —— 仆从会隔着墙/山/地洞锁定一个根本看不见的敌人并且永不放手，
+        // 跟随 goal 从此再也启动不了（优先级调到多少都没用，因为它压根没跑过）。
+        // Goety 自己的 SummonTargetGoal 用的就是 (mob, LivingEntity.class, 5, true, false, predicate)。
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false,
                 (target) -> target instanceof Enemy && !MobUtil.areAllies(this, target)));
         this.goalSelector.addGoal(1, new VoltServantLeapGoal(this));
         this.goalSelector.addGoal(2, new VoltServantShootGoal(this));
         this.goalSelector.addGoal(2, new VoltServantShootInWaterGoal(this));
-        this.goalSelector.addGoal(5, new Summoned.WanderGoal<>(this, 1.0D, 110, 0.001F));
-        this.goalSelector.addGoal(5, new RandomSwimmingGoal(this, 1.0D, 10) {
+        // 游荡/环视排在 7 之后：Goety 的 FollowOwnerGoal 默认优先级是 5，
+        // 而 Goal.canBeReplacedBy 允许「优先级数字更小」的 goal 抢占正在跑的 goal，
+        // 所以只要数字小于 5，伏特瑶就会追到一半跑去闲逛、回不到主人身边。
+        // 合并远端(2026-09-24)：游荡改用 Goety 原生的 Summoned.WanderGoal，游泳 goal 加上
+        // 「驻守/被指令时不动」的守卫；优先级仍保留本项目的 7/8/9。
+        this.goalSelector.addGoal(7, new Summoned.WanderGoal<>(this, 1.0D, 110, 0.001F));
+        this.goalSelector.addGoal(7, new RandomSwimmingGoal(this, 1.0D, 10) {
             @Override
             public boolean canUse() {
                 return super.canUse() && !VoltServant.this.isStaying() && !VoltServant.this.isCommanded();
@@ -127,8 +141,8 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant, 
                 return super.canContinueToUse() && !VoltServant.this.isStaying() && !VoltServant.this.isCommanded();
             }
         });
-        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
     }
 
     @Override
@@ -151,20 +165,26 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant, 
         this.rebuildFollowGoal();
     }
 
+    /**
+     * 故意把 Goety 的默认跟随 goal 注册变成空操作，改由 rebuildFollowGoal() 手动挂。
+     *
+     * 原因：Summoned$FollowOwnerGoal 在**构造的那一刻**就把 mob.getNavigation() 存进了自己的
+     * final 字段（字节码：invokevirtual Mob.getNavigation() → putfield），此后永不更新。
+     * 它假定「一个生物的导航器一辈子不变」，普通陆生仆从确实如此 —— 但伏特瑶是水陆双栖的，
+     * switchNavigator() 会把整个导航器对象换掉，这个假定就不成立了。
+     * 后果：跟随 goal 每 10 tick 把算好的路径塞给**已经被丢弃的旧导航器**，而 Mob.serverAiStep()
+     * 每 tick 驱动的是 this.navigation（新导航器）→ 新导航器手里永远没有路径，实体一步都迈不出去。
+     * 偏偏 FollowOwnerGoal.tick() 第一句就是 setLookAt(owner)，LOOK 标志位照常工作，
+     * 所以表现是「一直扭头盯着主人但不动」，看着像想跟随却跟不上。
+     */
     @Override
     public void followGoal() {
     }
 
-    @Override
-    public boolean isPushedByFluid() {
-        return false;
-    }
-
-    @Override
-    public boolean canBreatheUnderwater() {
-        return true;
-    }
-
+    /**
+     * 按当前真正在用的导航器重新挂载跟随 goal：陆/空用 FollowOwnerGoal，水里用 FollowOwnerWaterGoal。
+     * 优先级 4 比 Goety 默认的 5 更高，保证跟随优先于游荡。
+     */
     private void rebuildFollowGoal() {
         for (WrappedGoal wrapped : new ArrayList<>(this.goalSelector.getAvailableGoals())) {
             Goal goal = wrapped.getGoal();
@@ -191,6 +211,21 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant, 
         } else {
             super.travel(vec3);
         }
+    }
+
+    /**
+     * 水下呼吸。OF 原版 Volt 覆写了 canBreatheUnderwater() 返回 true，
+     * 移植时漏了，导致伏特瑶一进水就按普通陆生生物扣氧气、被淹死。
+     */
+    @Override
+    public boolean canBreatheUnderwater() {
+        return true;
+    }
+
+    /** 不被水流推着走，自己在水里游（OF 原版 isPushedByFluid() 返回 false）。 */
+    @Override
+    public boolean isPushedByFluid() {
+        return false;
     }
 
     @Override
@@ -459,6 +494,15 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant, 
     @Override
     public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
         return false;
+    }
+
+    /**
+     * 落地不对方块做任何处理（OF 原版 Volt 的 checkFallDamage 就是空实现）。
+     * 少了它，伏特瑶跳来跳去会把主人的农田踩成泥土、把雪踩实。
+     */
+    @Override
+    protected void checkFallDamage(double y, boolean onGround, @NotNull BlockState state, @NotNull BlockPos pos) {
+        // 故意留空，对齐原版
     }
 
     @Override

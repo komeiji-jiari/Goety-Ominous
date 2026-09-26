@@ -83,12 +83,19 @@ public class TremblerServant extends Summoned implements EliteVariant {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, false, false,
+        // mustSee 必须是 true：Goety 的 FollowOwnerGoal.canUse() 要求 getTarget() == null，
+        // 而 mustSee=false 时 TargetGoal.canContinueToUse() 恒为 true，会隔着墙永久锁定看不见的敌人，
+        // 导致跟随 goal 永远启动不了。
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false,
                 (target) -> target instanceof Enemy && !MobUtil.areAllies(this, target)));
         this.goalSelector.addGoal(1, new TremblerServantRollGoal(this));
-        this.goalSelector.addGoal(5, new Summoned.WanderGoal<>(this, 1.0D, 110, 0.001F));
-        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
-        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        // 游荡/环视排在 7 之后：Goety 的 FollowOwnerGoal 优先级是 5，
+        // 而 Goal.canBeReplacedBy 允许「优先级数字更小」的 goal 抢占正在跑的 goal。
+        // 合并远端(2026-09-24)：游荡改用 Goety 原生的 Summoned.WanderGoal，但仍保留
+        // 本项目的 7/8/9 优先级，避免游荡 goal 把跟随打断。
+        this.goalSelector.addGoal(7, new Summoned.WanderGoal<>(this, 1.0D, 110, 0.001F));
+        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
     }
 
     @Override

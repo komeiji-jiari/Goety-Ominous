@@ -134,7 +134,7 @@ public class DicerServantLaser extends SpellEntity {
                 if (this.eyeSpawn) {
                     Vec3 look = this.caster.getLookAngle().normalize();
                     Vec3 eyePos = this.caster.getEyePosition();
-                    double backward = 0.3D;
+                    double backward = 0.4D;
                     this.setPos(eyePos.x() - look.x() * backward,
                             eyePos.y() - 0.2D - look.y() * backward,
                             eyePos.z() - look.z() * backward);
@@ -323,6 +323,8 @@ public class DicerServantLaser extends SpellEntity {
         this.entityData.set(FIERY, fiery);
     }
 
+    // tick() 已由远端(2026-09-24)整体重写为 OF 投射物独立实现：在 raytraceEntities 之前
+    // 就按施法者视线方向同步了位置，覆盖了本地"把 setPos 提到 super.tick() 之前"的修法。
     public boolean isStorm() {
         return this.entityData.get(STORM);
     }
