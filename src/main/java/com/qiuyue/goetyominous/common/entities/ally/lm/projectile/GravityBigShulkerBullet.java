@@ -1,6 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm.projectile;
 
-import com.Polarice3.Goety.utils.MobUtil;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.qiuyue.goetyominous.common.entities.ally.lm.ShulkerMimicServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.ShulkerMimicServantPart;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
@@ -83,7 +83,7 @@ public class GravityBigShulkerBullet extends ThrowableProjectile {
             return true;
         }
         return this.getOwner() instanceof LivingEntity owner && entity instanceof LivingEntity living
-                && MobUtil.areAllies(owner, living);
+                && ServantAllyUtil.areAllied(owner, living);
     }
 
     @Override

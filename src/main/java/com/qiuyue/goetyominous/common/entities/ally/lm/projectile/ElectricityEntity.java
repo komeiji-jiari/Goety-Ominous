@@ -1,6 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm.projectile;
 
-import com.Polarice3.Goety.utils.MobUtil;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
 import net.minecraft.core.BlockPos;
@@ -148,7 +148,7 @@ public class ElectricityEntity extends Entity {
             impactEntity.hurt(damageSource, this.getDamage());
             return;
         }
-        if (MobUtil.areAllies(owner, impactEntity)) {
+        if (ServantAllyUtil.areAllied(owner, impactEntity)) {
             return;
         }
         if (impactEntity instanceof TamableAnimal animal && animal.getOwner() == owner) {

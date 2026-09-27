@@ -2,7 +2,6 @@ package com.qiuyue.goetyominous.common.entities.ally.ac;
 
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.utils.MobUtil;
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.common.events.MineGuardianExplosionProtectionHandler;
 import com.github.alexmodguy.alexscaves.server.entity.ai.VerticalSwimmingMoveControl;
@@ -210,7 +209,7 @@ public class MineGuardianServant extends Summoned {
         if (this.isExploding()) {
             if (explodeProgress >= 10.0F) {
                 this.remove(RemovalReason.KILLED);
-                boolean noGriefing = !AttributesConfig.MineGuardianServantExplosionGriefing.get()
+                boolean noGriefing = !MobsConfig.MineGuardianServantExplosionGriefing.get()
                         || !level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
                 Explosion.BlockInteraction blockinteraction = noGriefing ? Explosion.BlockInteraction.KEEP
                         : level().getGameRules().getBoolean(GameRules.RULE_MOB_EXPLOSION_DROP_DECAY) ? Explosion.BlockInteraction.DESTROY_WITH_DECAY : Explosion.BlockInteraction.DESTROY;

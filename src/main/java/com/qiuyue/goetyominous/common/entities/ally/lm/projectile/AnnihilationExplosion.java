@@ -1,7 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm.projectile;
 
 import com.Polarice3.Goety.api.entities.ISpellEntity;
-import com.Polarice3.Goety.utils.MobUtil;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
 import net.miauczel.legendary_monsters.Particle.custom.Circle;
@@ -166,7 +166,7 @@ public class AnnihilationExplosion extends Entity implements ISpellEntity {
         if (!impactEntity.isAlive() || impactEntity.isInvulnerable() || impactEntity == livingentity) {
             return;
         }
-        if (livingentity != null && MobUtil.areAllies(livingentity, impactEntity)) {
+        if (livingentity != null && ServantAllyUtil.areAllied(livingentity, impactEntity)) {
             return;
         }
         if (impactEntity instanceof TamableAnimal animal && animal.getOwner() != null) {

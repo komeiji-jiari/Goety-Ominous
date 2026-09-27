@@ -289,4 +289,13 @@ public class ModEntityLayers {
     // 湮灭猎影仆从（协作者 TenkenAmainu 的 LM 移植，2026-09-25 合并进来）。
     public static final ModelLayerLocation ANNIHILATION_PURSUER_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "annihilation_pursuer_servant"), "main");
+
+    public static final ModelLayerLocation THE_OBLITERATOR_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "the_obliterator_servant"), "main");
+
+    public static final ModelLayerLocation THE_OBLITERATOR_CLONE_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "the_obliterator_clone"), "main");
+
+    public static final ModelLayerLocation THE_OBLITERATOR_ARMED_CLONE_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "the_obliterator_armed_clone"), "main");
 }

@@ -131,8 +131,6 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> NucleeperServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> NucleeperServantTauntRange;
 
-    public static final ForgeConfigSpec.ConfigValue<Boolean> MineGuardianServantExplosionGriefing;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> HullbreakerServantBlockBreakGriefing;
     public static final ForgeConfigSpec.ConfigValue<Double> HullbreakerServantGlowTargetRange;
     public static final ForgeConfigSpec.ConfigValue<Double> HullbreakerServantGlowChaseSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> HullbreakerServantProximityTargetRange;
@@ -437,7 +435,8 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> RodlingServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> RodlingServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> RodlingServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> LeapkelpMoistness;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> MiniBossServantDamageCap;
 
     public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantArmor;
@@ -456,7 +455,6 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> PossessedPaladinServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> PossessedPaladinServantAttackKnockback;
     public static final ForgeConfigSpec.ConfigValue<Double> PossessedPaladinServantDamageCap;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> PossessedPaladinInvulnerabilityTime;
     public static final ForgeConfigSpec.ConfigValue<Double> HoveringHurricaneServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> HoveringHurricaneServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> HoveringHurricaneServantDamage;
@@ -472,6 +470,7 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> CloudGolemServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> CloudGolemServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> CloudGolemServantAttackKnockback;
+    public static final ForgeConfigSpec.ConfigValue<Double> CloudGolemServantDamageCap;
 
     public static final ForgeConfigSpec.ConfigValue<Double> WanderingEyeServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> WanderingEyeServantArmor;
@@ -496,6 +495,17 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> AnnihilationPursuerServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> AnnihilationPursuerServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> AnnihilationPursuerServantAttackKnockback;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> TheObliteratorServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> TheObliteratorServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> TheObliteratorServantArmorToughness;
+    public static final ForgeConfigSpec.ConfigValue<Double> TheObliteratorServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> TheObliteratorServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> TheObliteratorServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> TheObliteratorServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> TheObliteratorServantAttackKnockback;
+    public static final ForgeConfigSpec.ConfigValue<Double> TheObliteratorServantDamageCap;
+    public static final ForgeConfigSpec.ConfigValue<Integer> TheObliteratorServantAdaptationFactorMultiplier;
 
     public static final ForgeConfigSpec.ConfigValue<Double> FlameDrifterServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> FlameDrifterServantArmor;
@@ -1001,11 +1011,6 @@ public class AttributesConfig {
                 .defineInRange("heresiarchServantDamage", 2.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
 
-        BUILDER.push("Leapkelp Servant");
-        LeapkelpMoistness = BUILDER.comment("Whether Leapkelp Servants have a moistness meter; when false they never dry out (Default: true)")
-                .define("leapkelpMoistness", true);
-        BUILDER.pop();
-
         BUILDER.push("SAR Servants (Optional)");
         CreepieServantHealth = BUILDER.comment("How much Max Health Creepie Servants have, Default: 5.0")
                 .defineInRange("creepieServantHealth", 5.0, 1.0, Double.MAX_VALUE);
@@ -1260,8 +1265,8 @@ public class AttributesConfig {
                 .defineInRange("tremorsaurusServantArmor", 8.0, 0.0, Double.MAX_VALUE);
         TremorzillaServantHealth = BUILDER.comment("How much Max Health Tremorzilla Servants have, Default: 500.0 (matches Alex's Caves Tremorzilla)")
                 .defineInRange("tremorzillaServantHealth", 500.0, 1.0, Double.MAX_VALUE);
-        TremorzillaServantDamage = BUILDER.comment("How much damage Tremorzilla Servants' scratch, bite, stomp and tail whip deal, Default: 20.0")
-                .defineInRange("tremorzillaServantDamage", 20.0, 1.0, Double.MAX_VALUE);
+        TremorzillaServantDamage = BUILDER.comment("How much damage Tremorzilla Servants' scratch, bite, stomp and tail whip deal, Default: 10.0 (matches Alex's Caves Tremorzilla)")
+                .defineInRange("tremorzillaServantDamage", 10.0, 1.0, Double.MAX_VALUE);
         TremorzillaServantMovementSpeed = BUILDER.comment("How fast Tremorzilla Servants move, Default: 0.3")
                 .defineInRange("tremorzillaServantMovementSpeed", 0.3, 0.0, Double.MAX_VALUE);
         TremorzillaServantFollowRange = BUILDER.comment("How much following/detection range Tremorzilla Servants have, Default: 32.0 (32 block radius)")
@@ -1334,10 +1339,6 @@ public class AttributesConfig {
                 .defineInRange("nucleeperServantArmor", 4.0, 0.0, Double.MAX_VALUE);
         NucleeperServantTauntRange = BUILDER.comment("How far (in blocks) Nucleeper Servants taunt mobs that are attacking their owner, pulling the mob's aggro onto the servant. Default: 12.0 (set to 0.0 to disable taunting)")
                 .defineInRange("nucleeperServantTauntRange", 12.0, 0.0, Double.MAX_VALUE);
-        MineGuardianServantExplosionGriefing = BUILDER.comment("Whether Mine Guardian Servant explosions destroy blocks, Default: false (set to true to allow block destruction, which also respects the mobGriefing game rule)")
-                .define("mineGuardianServantExplosionGriefing", false);
-        HullbreakerServantBlockBreakGriefing = BUILDER.comment("Whether Hullbreaker Servants break blocks when bashing, Default: false (set to true to allow block destruction, which also respects the mobGriefing game rule)")
-                .define("hullbreakerServantBlockBreakGriefing", false);
         HullbreakerServantGlowTargetRange = BUILDER.comment("How far (in blocks) Hullbreaker Servants search for glowing targets, Default: 48.0 (normal follow range is 16)")
                 .defineInRange("hullbreakerServantGlowTargetRange", 48.0, 8.0, Double.MAX_VALUE);
         HullbreakerServantGlowChaseSpeed = BUILDER.comment("Swim speed Hullbreaker Servants use when chasing a glowing target, Default: 2.0 (normal approach speed is 1.6)")
@@ -1650,6 +1651,12 @@ public class AttributesConfig {
                 .defineInRange("servantCentipedeBodyMovementSpeed", 0.25, 0.0, 1.0);
         BUILDER.pop();
 
+        BUILDER.push("Legendary Monsters Mini-Boss Servants (Optional - LM)");
+        MiniBossServantDamageCap = BUILDER.comment("Maximum damage a single hit can deal to a Legendary Monsters mini-boss servant, Default: 21.0 (Legendary Monsters' own MiniBoss DamageCap; bypassed by damage that ignores invulnerability)",
+                        "Unlike Legendary Monsters' option, this one does not touch the original bosses")
+                .defineInRange("miniBossServantDamageCap", 21.0, 0.0, 1000.0);
+        BUILDER.pop();
+
         BUILDER.push("Overgrown Colossus Servant (Optional - LM)");
         OvergrownColossusServantHealth = BUILDER.comment("How much Max Health Overgrown Colossus Servants have, Default: 170.0")
                 .defineInRange("overgrownColossusServantHealth", 170.0, 1.0, Double.MAX_VALUE);
@@ -1667,23 +1674,6 @@ public class AttributesConfig {
                 .defineInRange("overgrownColossusServantAttackKnockback", 1.5, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
 
-        // 堕落圣骑仆从。数值绝大部分照抄传奇怪物 2.1.20 的 PossessedPaladinEntity.createAttributes()，
-        // 只有 MovementSpeed 和 FollowRange 两项例外 —— 原版的 0.1 / 80.0 都是给 BOSS 用的
-        // （站在原地靠远距离索敌，不靠走路），当仆从会跟不上主人，
-        // 改成跟蔓生巨像仆从一致（0.3 / 30.0）。
-        //
-        // ⚠️ 这个 0.3 是「基础移速」，不是「实际移速」。实际速度 = 导航倍率 × 基础移速。
-        //    本仆从「追击 / 跟随 / 闲逛」三档的导航倍率**都是 1.0**，所以三档实际速度都是 0.30，
-        //    和蔓生巨像仆从（OvergrownColossusServant）完全对齐 ——
-        //    这也正是当初把原版的 0.1 / 80.0 改成 0.3 / 30.0 的目的。
-        //
-        //    原版 BOSS 是 0.1 × 3.0 = 0.30，乘积一样，所以<b>打架手感没差</b>。
-        //
-        //    ⚠️ 曾经试着单独压低「跟随」（覆写 getFollowSpeed()，0.5 → 0.9）和「闲逛」
-        //       （WanderGoal 倍率，0.5 → 0.75）来改善跟随观感，实机手感不对，已全部撤销。
-        //       想再动这两处之前，先读一遍 错题本.md 第 21 条。
-        //       另外别照抄飓旋 / 云铸魔像仆从的 getFollowSpeed() 覆写 ——
-        //       它们基础速是 0.1，不覆写会慢得没法玩；本仆从基础速是 0.3，不需要。
         BUILDER.push("Possessed Paladin Servant (Optional - LM)");
         PossessedPaladinServantHealth = BUILDER.comment("How much Max Health Possessed Paladin Servants have, Default: 400.0 (Legendary Monsters' value)")
                 .defineInRange("possessedPaladinServantHealth", 400.0, 1.0, Double.MAX_VALUE);
@@ -1701,10 +1691,10 @@ public class AttributesConfig {
                 .defineInRange("possessedPaladinServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
         PossessedPaladinServantAttackKnockback = BUILDER.comment("How much Attack Knockback Possessed Paladin Servants have, Default: 1.0 (Legendary Monsters' value)")
                 .defineInRange("possessedPaladinServantAttackKnockback", 1.0, 0.0, Double.MAX_VALUE);
-        PossessedPaladinServantDamageCap = BUILDER.comment("Maximum damage a single hit can deal to Possessed Paladin Servants, Default: 21.0 (same as Legendary Monsters' mini-boss cap; bypassed by damage that ignores invulnerability)")
+        PossessedPaladinServantDamageCap = BUILDER.comment("Maximum damage a single hit can deal to Possessed Paladin Servants, Default: 21.0 (Legendary Monsters' own Possessed Paladin Damage Cap; bypassed by damage that ignores invulnerability)")
                 .defineInRange("possessedPaladinServantDamageCap", 21.0, 1.0, Double.MAX_VALUE);
-        PossessedPaladinInvulnerabilityTime = BUILDER.comment("Whether Possessed Paladin Servants get 10 ticks of invulnerability after being hit, Default: true (Legendary Monsters' boss behaviour; this is what makes them shrug off rapid hits)")
-                .define("possessedPaladinInvulnerabilityTime", true);
+        BUILDER.pop();
+
         BUILDER.push("Hovering Hurricane Servant (Optional - LM)");
         HoveringHurricaneServantHealth = BUILDER.comment("How much Max Health Hovering Hurricane Servants have, Default: 30.0")
                 .defineInRange("hoveringHurricaneServantHealth", 30.0, 1.0, Double.MAX_VALUE);
@@ -1737,6 +1727,8 @@ public class AttributesConfig {
                 .defineInRange("cloudGolemServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
         CloudGolemServantAttackKnockback = BUILDER.comment("How much Attack Knockback Cloud Golem Servants have, Default: 1.0")
                 .defineInRange("cloudGolemServantAttackKnockback", 1.0, 0.0, Double.MAX_VALUE);
+        CloudGolemServantDamageCap = BUILDER.comment("Maximum damage a single hit can deal to Cloud Golem Servants, Default: 18.0 (Legendary Monsters' own Cloud Golem Damage Cap; bypassed by damage that ignores invulnerability)")
+                .defineInRange("cloudGolemServantDamageCap", 18.0, 0.0, 1000.0);
         BUILDER.pop();
 
         BUILDER.push("Wandering Eye Servant (Optional - LM)");
@@ -1788,6 +1780,29 @@ public class AttributesConfig {
                 .defineInRange("annihilationPursuerServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
         AnnihilationPursuerServantAttackKnockback = BUILDER.comment("How much Attack Knockback Annihilation Pursuer Servants have, Default: 0.5")
                 .defineInRange("annihilationPursuerServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("The Obliterator Servant (Optional - LM)");
+        TheObliteratorServantHealth = BUILDER.comment("How much Max Health The Obliterator Servants have, Default: 450.0 (Legendary Monsters' value)")
+                .defineInRange("theObliteratorServantHealth", 450.0, 1.0, Double.MAX_VALUE);
+        TheObliteratorServantArmor = BUILDER.comment("How much natural Armor The Obliterator Servants have, Default: 14.0 (Legendary Monsters' value)")
+                .defineInRange("theObliteratorServantArmor", 14.0, 0.0, Double.MAX_VALUE);
+        TheObliteratorServantArmorToughness = BUILDER.comment("How much Armor Toughness The Obliterator Servants have, Default: 4.0 (Legendary Monsters' value). Halved from phase 2 on, same as the boss")
+                .defineInRange("theObliteratorServantArmorToughness", 4.0, 0.0, Double.MAX_VALUE);
+        TheObliteratorServantDamage = BUILDER.comment("How much damage The Obliterator Servants deal, Default: 6.0 (Legendary Monsters' value). Most of its moves carry their own hardcoded damage")
+                .defineInRange("theObliteratorServantDamage", 6.0, 0.0, Double.MAX_VALUE);
+        TheObliteratorServantMovementSpeed = BUILDER.comment("How fast The Obliterator Servants move, Default: 0.36 (Legendary Monsters' boss uses 0.12 with a x3.0 navigation modifier, giving the same 0.36 chase speed)")
+                .defineInRange("theObliteratorServantMovementSpeed", 0.36, 0.0, Double.MAX_VALUE);
+        TheObliteratorServantFollowRange = BUILDER.comment("How much following/detection range The Obliterator Servants have, Default: 30.0 (Legendary Monsters' boss value is 60.0)")
+                .defineInRange("theObliteratorServantFollowRange", 30.0, 1.0, Double.MAX_VALUE);
+        TheObliteratorServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance The Obliterator Servants have, Default: 1.0 (Legendary Monsters' value)")
+                .defineInRange("theObliteratorServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
+        TheObliteratorServantAttackKnockback = BUILDER.comment("How much Attack Knockback The Obliterator Servants have, Default: 0.5 (Legendary Monsters' value)")
+                .defineInRange("theObliteratorServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
+        TheObliteratorServantDamageCap = BUILDER.comment("Maximum damage a single hit can deal to The Obliterator Servants, Default: 20.0 (Legendary Monsters' own The Obliterator Damage Cap; bypassed by damage that ignores invulnerability)")
+                .defineInRange("theObliteratorServantDamageCap", 20.0, 1.0, Double.MAX_VALUE);
+        TheObliteratorServantAdaptationFactorMultiplier = BUILDER.comment("The bigger it is the stronger The Obliterator Servants' damage adaptation becomes, Default: 1 (Legendary Monsters' own The Obliterator Damage Adaptation Multiplier)")
+                .defineInRange("theObliteratorServantAdaptationFactorMultiplier", 1, 0, 1000);
         BUILDER.pop();
 
         BUILDER.push("Flame Drifter Servant (Optional - LM)");

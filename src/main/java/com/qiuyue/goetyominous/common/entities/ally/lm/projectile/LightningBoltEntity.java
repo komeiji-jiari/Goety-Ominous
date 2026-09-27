@@ -1,6 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm.projectile;
 
-import com.Polarice3.Goety.utils.MobUtil;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import net.miauczel.legendary_monsters.Particle.custom.Circle;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -235,7 +235,7 @@ public class LightningBoltEntity extends Entity {
         if (!impactEntity.isAlive() || impactEntity.isInvulnerable() || impactEntity == caster || this.tickCount % 5 != 0) {
             return;
         }
-        if (caster != null && MobUtil.areAllies(caster, impactEntity)) {
+        if (caster != null && ServantAllyUtil.areAllied(caster, impactEntity)) {
             return;
         }
         if (impactEntity instanceof TamableAnimal animal && animal.getOwner() == caster) {

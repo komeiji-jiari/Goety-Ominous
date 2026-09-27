@@ -1,6 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm.projectile;
 
-import com.Polarice3.Goety.utils.MobUtil;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
 import net.miauczel.legendary_monsters.damagetype.ModDamageTypes;
 import net.miauczel.legendary_monsters.entity.AnimatedMonster.Effect.CameraShakeEntity;
@@ -246,7 +246,7 @@ public class EnergyBeamEntity extends Entity {
             }
             if (!this.level().isClientSide) {
                 for (LivingEntity target : hit) {
-                    if (this.caster == null || target == this.caster || MobUtil.areAllies(this.caster, target)) {
+                    if (this.caster == null || target == this.caster || ServantAllyUtil.areAllied(this.caster, target)) {
                         continue;
                     }
                     boolean flag = target.hurt(ModDamageTypes.causeEnergyBeamDamage(this, this.caster),

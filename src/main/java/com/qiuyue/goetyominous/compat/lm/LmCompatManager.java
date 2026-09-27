@@ -9,6 +9,7 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.HoveringHurricaneServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.OvergrownColossusServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.PossessedPaladinServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.ShulkerMimicServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.TheObliteratorServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.WanderingEyeServant;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import com.qiuyue.goetyominous.common.init.lm.LmParticles;
@@ -36,6 +37,9 @@ public class LmCompatManager {
                 OvergrownColossusServant.createAttributes().build());
         event.put(LmEntityRegistry.POSSESSED_PALADIN_SERVANT.get(),
                 PossessedPaladinServant.createAttributes().build());
+
+        event.put(LmEntityRegistry.THE_OBLITERATOR_SERVANT.get(),
+                TheObliteratorServant.createAttributes().build());
 
         event.put(LmEntityRegistry.HOVERING_HURRICANE_SERVANT.get(),
                 HoveringHurricaneServant.createAttributes().build());

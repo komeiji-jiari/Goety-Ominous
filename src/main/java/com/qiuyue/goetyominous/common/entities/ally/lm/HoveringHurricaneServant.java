@@ -1,13 +1,14 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm;
 
+import com.qiuyue.goetyominous.config.MobsConfig;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.utils.MobUtil;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IMoveGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.StratlingAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.Tornado;
 import com.qiuyue.goetyominous.config.AttributesConfig;
-import net.miauczel.legendary_monsters.config.ModConfig;
 import net.miauczel.legendary_monsters.item.ModItems;
 import net.miauczel.legendary_monsters.sound.ModSounds;
 import net.minecraft.core.particles.ParticleTypes;
@@ -49,6 +50,11 @@ public class HoveringHurricaneServant extends IAnimatedMonsterServant {
         this.xpReward = 5;
         this.setNoAi(false);
         this.setPersistenceRequired();
+    }
+
+    @Override
+    public double damageMultiplier() {
+        return MobsConfig.HoveringHurricaneServantDamageMultiplier.get();
     }
 
     @Override
@@ -242,11 +248,11 @@ public class HoveringHurricaneServant extends IAnimatedMonsterServant {
             if ((entityHitDistance <= range && entityRelativeAngle <= arc / 2.0F && entityRelativeAngle >= -arc / 2.0F)
                     || entityRelativeAngle >= 360.0F - arc / 2.0F
                     || entityRelativeAngle <= -360.0F + arc / 2.0F) {
-                if (MobUtil.areAllies(this, entityHit) || entityHit instanceof HoveringHurricaneServant || entityHit == this) {
+                if (ServantAllyUtil.areAllied(this, entityHit) || entityHit instanceof HoveringHurricaneServant || entityHit == this) {
                     continue;
                 }
                 entityHit.hurt(this.damageSources().mobAttack(this),
-                        (float) ((double) damage * ModConfig.MOB_CONFIG.StratlingDamageMultiplier.get()));
+                        (float) damage);
             }
         }
     }

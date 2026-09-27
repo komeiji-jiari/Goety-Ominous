@@ -9,6 +9,7 @@ import com.qiuyue.goetyominous.common.entities.ally.ac.NucleeperServant;
 import com.qiuyue.goetyominous.compat.mod.AlexCavesCompat;
 import com.qiuyue.goetyominous.common.network.ModNetwork;
 import com.qiuyue.goetyominous.common.network.NucleeperExplosionZonePacket;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -112,17 +113,42 @@ public class NucleeperNukeProtectionHandler {
     }
 
     public static void protectOwnerAndServants(ServerLevel level, NucleeperServant nucleeper) {
-        long until = level.getServer().getTickCount() + protectionTicks(nucleeper);
-        Set<UUID> ownerIds = collectOwnerIds(nucleeper);
+        registerProtection(level, nucleeper.position(), nukeSize(nucleeper), collectOwnerIds(nucleeper));
+    }
 
-        if (ownerIds.isEmpty()) {
-            GoetyOminous.LOGGER.warn("[Nucleeper] 核爆仆从无主,无法提供保护");
+    public static void registerProtection(ServerLevel level, Vec3 origin, float size, Set<UUID> ownerIds) {
+        MinecraftServer server = level.getServer();
+        long until = server.getTickCount() + protectionTicks(size);
+        Set<UUID> protectedIds = withAlliedPlayers(server, ownerIds);
+
+        if (protectedIds.isEmpty()) {
+            GoetyOminous.LOGGER.warn("[Nucleeper] 核爆无主,无法提供保护");
         }
-        double[] radii = zoneRadii(nucleeper);
+        double[] radii = zoneRadii(size);
 
-        PROTECTED_NUKES.add(new NukeProtection(nucleeper.level().dimension(), nucleeper.position(), radii[0], radii[1], until, ownerIds));
+        PROTECTED_NUKES.add(new NukeProtection(level.dimension(), origin, radii[0], radii[1], until, protectedIds));
         GoetyOminous.LOGGER.warn("[Nucleeper] 注册保护 zone: 位置={} 半径=({},{}) ownerIds={} until={}",
-                nucleeper.blockPosition(), radii[0], radii[1], ownerIds, until);
+                BlockPos.containing(origin), radii[0], radii[1], protectedIds, until);
+    }
+
+    private static Set<UUID> withAlliedPlayers(MinecraftServer server, Set<UUID> ownerIds) {
+        Set<UUID> protectedIds = new HashSet<>(ownerIds);
+        for (UUID ownerId : ownerIds) {
+            Player owner = server.getPlayerList().getPlayer(ownerId);
+            if (owner == null) {
+                continue;
+            }
+            for (Player other : server.getPlayerList().getPlayers()) {
+                if (other != owner && SEHelper.isAlly(owner, other)) {
+                    protectedIds.add(other.getUUID());
+                }
+            }
+        }
+        return protectedIds;
+    }
+
+    public static float nukeSize(NucleeperServant nucleeper) {
+        return nucleeper.isCharged() ? 1.75F : 1.0F;
     }
 
     private static Set<UUID> collectOwnerIds(NucleeperServant nucleeper) {
@@ -140,13 +166,17 @@ public class NucleeperNukeProtectionHandler {
     }
 
     public static void syncZoneToClients(ServerLevel level, NucleeperServant nucleeper) {
-        double[] radii = zoneRadii(nucleeper);
-        long until = level.getGameTime() + protectionTicks(nucleeper);
-        Vec3 pos = nucleeper.position();
+        syncZoneToClients(level, nucleeper.position(), nukeSize(nucleeper), collectOwnerIds(nucleeper));
+    }
+
+    public static void syncZoneToClients(ServerLevel level, Vec3 pos, float size, Set<UUID> ownerIds) {
+        double[] radii = zoneRadii(size);
+        long until = level.getGameTime() + protectionTicks(size);
+        Set<UUID> protectedIds = withAlliedPlayers(level.getServer(), ownerIds);
         ModNetwork.CHANNEL.send(PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(
                         pos.x, pos.y, pos.z, 128.0, level.dimension())),
                 new NucleeperExplosionZonePacket(level.dimension(), pos.x, pos.y, pos.z,
-                        radii[0], radii[1], until, collectOwnerIds(nucleeper)));
+                        radii[0], radii[1], until, protectedIds));
     }
 
     public static void registerClientZone(ResourceKey<Level> dimension, double x, double y, double z,
@@ -157,8 +187,7 @@ public class NucleeperNukeProtectionHandler {
         }
     }
 
-    private static double[] zoneRadii(NucleeperServant nucleeper) {
-        float size = nucleeper.isCharged() ? 1.75F : 1.0F;
+    private static double[] zoneRadii(float size) {
         int chunks = (int) Math.ceil(size);
         return new double[]{chunks * 22.5 + 1.0, chunks * 9.0 + 1.0};
     }
@@ -169,11 +198,10 @@ public class NucleeperNukeProtectionHandler {
         }
     }
 
-    private static long protectionTicks(NucleeperServant nucleeper) {
-        float size = nucleeper.isCharged() ? 1.75F : 1.0F;
+    public static int protectionTicks(float size) {
         int chunks = (int) Math.ceil(size);
         long stack = (long) (2 * chunks + 1) * (2 * chunks + 1) * (2 * chunks + 1);
-        return 60 + stack / 3;
+        return (int) (60 + stack / 3);
     }
 
     @SubscribeEvent
@@ -269,6 +297,10 @@ public class NucleeperNukeProtectionHandler {
         synchronized (CLIENT_NUCKS) {
             CLIENT_NUCKS.clear();
         }
+    }
+
+    public static boolean isRadiationProtected(LivingEntity entity) {
+        return entity.level().isClientSide ? clientZoneCovering(entity) != null : coveringZone(entity) != null;
     }
 
     private static NukeProtection coveringZone(LivingEntity entity) {

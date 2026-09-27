@@ -17,8 +17,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class RenderDropBearServant extends MobRenderer<DropBearServant, ModelDropBearServant> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("goetyominous:textures/entity/dropbear.png");
-    private static final ResourceLocation TEXTURE_EYES = new ResourceLocation("goetyominous:textures/entity/dropbear_eyes.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/dropbear.png");
+    private static final ResourceLocation TEXTURE_EYES = new ResourceLocation("alexsmobs:textures/entity/dropbear_eyes.png");
 
     public RenderDropBearServant(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelDropBearServant(), 0.7F);

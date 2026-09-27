@@ -4,14 +4,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.qiuyue.goetyominous.common.entities.ally.lm.FlameDrifterServant;
 import net.miauczel.legendary_monsters.entity.AnimatedMonster.Animations.Flameborn.FlameDrifter.FlameDrifterAnimations;
+import net.miauczel.legendary_monsters.entity.client.Model.FlameDrifterModel;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -30,20 +26,7 @@ public class FlameDrifterServantModel<T extends FlameDrifterServant> extends Hie
     }
 
     public static LayerDefinition createBodyLayer() {
-        MeshDefinition meshdefinition = new MeshDefinition();
-        PartDefinition partdefinition = meshdefinition.getRoot();
-        PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 9.0F, 0.0F));
-        PartDefinition Body = root.addOrReplaceChild("Body", CubeListBuilder.create(), PartPose.offset(0.0F, -1.0F, 0.0F));
-        Body.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(0, 0).addBox(-13.0F, -10.0F, -9.5F, 26.0F, 19.0F, 19.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
-        PartDefinition leftCannonRotator = Body.addOrReplaceChild("leftCannonRotator", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
-        PartDefinition LeftCannon = leftCannonRotator.addOrReplaceChild("LeftCannon", CubeListBuilder.create().texOffs(64, 71).mirror().addBox(-3.0F, -4.0F, -4.0F, 6.0F, 8.0F, 8.0F, new CubeDeformation(0.0F)).mirror(false).texOffs(64, 38).mirror().addBox(3.0F, -11.5F, -5.0F, 10.0F, 23.0F, 10.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(18.0F, -0.5F, 0.0F));
-        LeftCannon.addOrReplaceChild("LeftRingTop", CubeListBuilder.create().texOffs(0, 38).mirror().addBox(-8.0F, -1.0F, -8.0F, 16.0F, 2.0F, 16.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(8.0F, -14.5F, 0.0F));
-        LeftCannon.addOrReplaceChild("LeftRingBottom", CubeListBuilder.create().texOffs(0, 38).mirror().addBox(-8.0F, -1.0F, -8.0F, 16.0F, 2.0F, 16.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(8.0F, 14.5F, 0.0F));
-        PartDefinition rightCannonRotator = Body.addOrReplaceChild("rightCannonRotator", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
-        PartDefinition RightCannon = rightCannonRotator.addOrReplaceChild("RightCannon", CubeListBuilder.create().texOffs(64, 71).addBox(-3.0F, -4.0F, -4.0F, 6.0F, 8.0F, 8.0F, new CubeDeformation(0.0F)).texOffs(64, 38).addBox(-13.0F, -11.5F, -5.0F, 10.0F, 23.0F, 10.0F, new CubeDeformation(0.0F)), PartPose.offset(-18.0F, -0.5F, 0.0F));
-        RightCannon.addOrReplaceChild("RightRingTop", CubeListBuilder.create().texOffs(0, 38).addBox(-8.0F, -1.0F, -8.0F, 16.0F, 2.0F, 16.0F, new CubeDeformation(0.0F)), PartPose.offset(-8.0F, -14.5F, 0.0F));
-        RightCannon.addOrReplaceChild("RightRingBottom", CubeListBuilder.create().texOffs(0, 38).addBox(-8.0F, -1.0F, -8.0F, 16.0F, 2.0F, 16.0F, new CubeDeformation(0.0F)), PartPose.offset(-8.0F, 14.5F, 0.0F));
-        return LayerDefinition.create(meshdefinition, 128, 128);
+        return FlameDrifterModel.createBodyLayer();
     }
 
     @Override

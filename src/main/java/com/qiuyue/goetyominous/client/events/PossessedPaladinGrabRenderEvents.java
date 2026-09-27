@@ -1,18 +1,14 @@
 package com.qiuyue.goetyominous.client.events;
 
-import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.render.layer.lm.PossessedPaladinServantGrabLayer;
 import com.qiuyue.goetyominous.common.entities.ally.lm.PossessedPaladinServant;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID, value = Dist.CLIENT)
 public final class PossessedPaladinGrabRenderEvents {
 
     private PossessedPaladinGrabRenderEvents() {

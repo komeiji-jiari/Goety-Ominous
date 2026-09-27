@@ -141,6 +141,7 @@ public class GoetyOminous {
             MinecraftForge.EVENT_BUS.register(NucleeperNukeProtectionHandler.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.NucleeperNukeKillHandler.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.RaycatAmuletEvents.class);
+            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.RadiationAllyEvents.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.MineGuardianExplosionProtectionHandler.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.NucleeperSummonHandler.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.BubbledVisualCleanupHandler.class);
@@ -329,6 +330,9 @@ public class GoetyOminous {
     }
 
     public void onClientSetup(final FMLClientSetupEvent event) {
+        if (LegendaryMonstersCompat.isLegendaryMonstersLoaded()) {
+            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.client.events.PossessedPaladinGrabRenderEvents.class);
+        }
         if (AlexCavesCompat.isAlexCavesLoaded()) {
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.TremorsaurusHudEvents.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.TremorzillaHudEvents.class);

@@ -10,7 +10,6 @@ import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.BlockFinder;
 import com.Polarice3.Goety.utils.ColorUtil;
 import com.Polarice3.Goety.utils.MobUtil;
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -200,7 +199,7 @@ public class Leapkelp extends Leapleaf {
             this.setCharging(false);
             this.chargeTick = 0;
         }
-        if (this.isInWaterRainOrBubble() || !AttributesConfig.LeapkelpMoistness.get()) {
+        if (this.isInWaterRainOrBubble() || !com.qiuyue.goetyominous.config.MobsConfig.LeapkelpMoistness.get()) {
             if (this.getMoistness() < MAX_MOISTNESS) {
                 this.setMoistness(this.getMoistness() + 2);
             }

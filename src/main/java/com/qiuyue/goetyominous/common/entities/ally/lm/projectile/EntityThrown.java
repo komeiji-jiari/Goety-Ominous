@@ -1,6 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm.projectile;
 
-import com.Polarice3.Goety.utils.MobUtil;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import net.miauczel.legendary_monsters.Particle.custom.Circle;
 import net.miauczel.legendary_monsters.damagetype.ModDamageTypes;
@@ -90,7 +90,7 @@ public class EntityThrown extends ThrowableProjectile {
             return true;
         }
         return this.getOwner() instanceof LivingEntity owner && entity instanceof LivingEntity living
-                && MobUtil.areAllies(owner, living);
+                && ServantAllyUtil.areAllied(owner, living);
     }
 
     private List<LivingEntity> getEntityLivingBaseNearby(double distanceX, double distanceY, double distanceZ, double radius) {

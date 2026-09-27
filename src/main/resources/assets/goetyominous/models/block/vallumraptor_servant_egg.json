@@ -1,6 +1,6 @@
 {
   "parent": "goetyominous:block/vallumraptor_servant_egg_template",
   "textures": {
-    "egg": "goetyominous:block/egg/vallumraptor_servant_egg"
+    "egg": "alexscaves:block/egg/vallumraptor_egg"
   }
 }

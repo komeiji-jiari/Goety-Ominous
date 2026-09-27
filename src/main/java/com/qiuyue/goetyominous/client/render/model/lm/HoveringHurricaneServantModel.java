@@ -4,9 +4,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.qiuyue.goetyominous.common.entities.ally.lm.HoveringHurricaneServant;
 import net.miauczel.legendary_monsters.entity.animations.HoveringHurricaneAnimations;
+import net.miauczel.legendary_monsters.entity.client.Model.HoveringHurricaneModel;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
@@ -24,58 +24,7 @@ public class HoveringHurricaneServantModel<T extends HoveringHurricaneServant> e
     }
 
     public static LayerDefinition createBodyLayer() {
-        MeshDefinition meshdefinition = new MeshDefinition();
-        PartDefinition partdefinition = meshdefinition.getRoot();
-
-        PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 7.0F, 0.0F));
-        PartDefinition body = root.addOrReplaceChild("body", CubeListBuilder.create(), PartPose.offset(0.0F, 6.0F, 0.0F));
-
-        PartDefinition leftarm = body.addOrReplaceChild("leftarm", CubeListBuilder.create()
-                .texOffs(64, 0).addBox(-2.5F, -3.0F, -2.5F, 5.0F, 14.0F, 5.0F, new CubeDeformation(0.0F))
-                .texOffs(72, 38).addBox(-2.5F, -3.0F, -2.5F, 5.0F, 14.0F, 5.0F, new CubeDeformation(0.3F)),
-                PartPose.offset(12.0F, -16.0F, 0.0F));
-
-        leftarm.addOrReplaceChild("lower", CubeListBuilder.create()
-                .texOffs(32, 0).addBox(-4.0F, -1.0F, -4.0F, 8.0F, 10.0F, 8.0F, new CubeDeformation(0.0F))
-                .texOffs(32, 18).addBox(-4.0F, -1.0F, -4.0F, 8.0F, 10.0F, 8.0F, new CubeDeformation(0.3F)),
-                PartPose.offset(0.0F, 13.0F, 0.0F));
-
-        PartDefinition rightarm = body.addOrReplaceChild("rightarm", CubeListBuilder.create()
-                .texOffs(64, 19).addBox(-2.5F, -3.0F, -2.5F, 5.0F, 14.0F, 5.0F, new CubeDeformation(0.0F))
-                .texOffs(0, 68).addBox(-2.5F, -3.0F, -2.5F, 5.0F, 14.0F, 5.0F, new CubeDeformation(0.3F)),
-                PartPose.offset(-12.0F, -16.0F, 0.0F));
-
-        rightarm.addOrReplaceChild("lower2", CubeListBuilder.create()
-                .texOffs(32, 36).addBox(-4.0F, -1.0F, -4.0F, 8.0F, 10.0F, 8.0F, new CubeDeformation(0.0F))
-                .texOffs(0, 50).addBox(-4.0F, -1.0F, -4.0F, 8.0F, 10.0F, 8.0F, new CubeDeformation(0.3F)),
-                PartPose.offset(0.0F, 13.0F, 0.0F));
-
-        body.addOrReplaceChild("head", CubeListBuilder.create()
-                .texOffs(0, 0).addBox(-4.0F, -16.0F, -4.0F, 8.0F, 17.0F, 8.0F, new CubeDeformation(0.0F))
-                .texOffs(0, 25).addBox(-4.0F, -16.0F, -4.0F, 8.0F, 17.0F, 8.0F, new CubeDeformation(0.3F)),
-                PartPose.offset(0.0F, -19.0F, 0.0F));
-
-        body.addOrReplaceChild("rod", CubeListBuilder.create()
-                .texOffs(32, 54).addBox(-2.5F, -11.5F, -2.5F, 5.0F, 23.0F, 5.0F, new CubeDeformation(0.0F))
-                .texOffs(52, 54).addBox(-2.5F, -11.5F, -2.5F, 5.0F, 23.0F, 5.0F, new CubeDeformation(0.3F)),
-                PartPose.offset(0.0F, -5.5F, 0.0F));
-
-        root.addOrReplaceChild("bone", CubeListBuilder.create()
-                .texOffs(20, 68).addBox(-1.5F, -3.0F, -1.5F, 3.0F, 12.0F, 3.0F, new CubeDeformation(0.0F))
-                .texOffs(72, 57).addBox(-1.5F, -3.0F, -1.5F, 3.0F, 12.0F, 3.0F, new CubeDeformation(0.3F)),
-                PartPose.offset(3.5F, 6.0F, -7.5F));
-
-        root.addOrReplaceChild("bone2", CubeListBuilder.create()
-                .texOffs(72, 72).addBox(-1.5F, -3.0F, -1.5F, 3.0F, 12.0F, 3.0F, new CubeDeformation(0.0F))
-                .texOffs(32, 82).addBox(-1.5F, -3.0F, -1.5F, 3.0F, 12.0F, 3.0F, new CubeDeformation(0.3F)),
-                PartPose.offset(6.5F, -8.0F, 7.5F));
-
-        root.addOrReplaceChild("bone3", CubeListBuilder.create()
-                .texOffs(44, 82).addBox(-1.5F, -3.0F, -1.5F, 3.0F, 12.0F, 3.0F, new CubeDeformation(0.0F))
-                .texOffs(56, 82).addBox(-1.5F, -3.0F, -1.5F, 3.0F, 12.0F, 3.0F, new CubeDeformation(0.3F)),
-                PartPose.offset(-5.5F, -4.0F, -2.5F));
-
-        return LayerDefinition.create(meshdefinition, 128, 128);
+        return HoveringHurricaneModel.createBodyLayer();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm;
 
 import com.Polarice3.Goety.common.entities.ally.Summoned;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.miauczel.legendary_monsters.Particle.custom.Circle;
 import net.miauczel.legendary_monsters.entity.AnimatedMonster.Projectile.LMFallingBlockEntity;
 import net.miauczel.legendary_monsters.entity.ai.navigation.EntityRotationPatcher;
@@ -45,6 +46,10 @@ public class IAnimatedMonsterServant extends Summoned {
 
     public int getAttackDelayTicks() {
         return attackDelayTicks;
+    }
+
+    public double damageMultiplier() {
+        return 1.0D;
     }
 
     protected BodyRotationControl createBodyControl() {
@@ -94,7 +99,7 @@ public class IAnimatedMonsterServant extends Summoned {
             AABB selection = new AABB(px - 0.5, minY, pz - 0.5, px + 0.5, maxY, pz + 0.5);
             List<LivingEntity> hit = level().getEntitiesOfClass(LivingEntity.class, selection);
             for (LivingEntity entity : hit) {
-                if (!isAlliedTo(entity) && entity != this) {
+                if (!isAlliedTo(entity) && !ServantAllyUtil.areAllied(this, entity) && entity != this) {
                     boolean flag = entity.hurt(level().damageSources().mobAttack(this), 11 * damage + Math.min(11 * damage, entity.getMaxHealth() * hpdamage));
                     if (flag) {
                         entity.setDeltaMovement(entity.getDeltaMovement().add(0.0D, airborne * distance + level().random.nextDouble() * 0.15, 0.0D));
@@ -118,6 +123,12 @@ public class IAnimatedMonsterServant extends Summoned {
 
     public LivingEntity target() {
         return getTarget();
+    }
+
+    public boolean isTargetCheesing(float minHeight, float maxHeight) {
+        return this.targetIsNotNull()
+                && (this.target().getY() - this.getY() >= (double) maxHeight
+                || this.target().getY() - this.getY() <= (double) minHeight);
     }
 
     public void launch(LivingEntity entity, boolean huge) {

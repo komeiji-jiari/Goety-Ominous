@@ -1,7 +1,8 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm;
 
+import com.qiuyue.goetyominous.config.MobsConfig;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
-import com.Polarice3.Goety.utils.MobUtil;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.FlamebornGuardBlockGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IMoveGoal;
@@ -9,7 +10,6 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IStateGoal;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
 import net.miauczel.legendary_monsters.Particle.custom.BigAnnihilationSweepParticle;
-import net.miauczel.legendary_monsters.config.ModConfig;
 import net.miauczel.legendary_monsters.sound.ModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -55,6 +55,11 @@ public class FlamebornGuardServant extends AbstractFlamebornServant {
         super(entityType, level);
         this.xpReward = 5;
         this.setPersistenceRequired();
+    }
+
+    @Override
+    public double damageMultiplier() {
+        return MobsConfig.FlamebornGuardServantDamageMultiplier.get();
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -263,12 +268,11 @@ public class FlamebornGuardServant extends AbstractFlamebornServant {
                     && !(entityRelativeAngle <= -360.0F + arc / 2.0F)) {
                 continue;
             }
-            if (MobUtil.areAllies(this, entityHit) || entityHit == this) {
+            if (ServantAllyUtil.areAllied(this, entityHit) || entityHit == this) {
                 continue;
             }
             boolean flag = entityHit.hurt(this.damageSources().mobAttack(this),
-                    (float) ((double) damage * ModConfig.MOB_CONFIG.FlamebornGuardDamageMutliplier.get()
-                            * AttributesConfig.FlamebornGuardServantDamage.get() / 12.0D));
+                    (float) ((double) damage * AttributesConfig.FlamebornGuardServantDamage.get() / 12.0D));
             if (flag) {
                 this.playSound(soundEvent, 1.0F, pitch);
             }

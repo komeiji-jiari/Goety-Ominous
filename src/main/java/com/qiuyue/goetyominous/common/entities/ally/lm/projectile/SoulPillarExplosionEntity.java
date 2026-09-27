@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.common.entities.ally.lm.projectile;
 import com.qiuyue.goetyominous.client.particle.lm.Circle;
 import com.qiuyue.goetyominous.client.particle.lm.Circle.EnumRingBehavior;
 import com.qiuyue.goetyominous.common.entities.ally.lm.ServantMath;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.qiuyue.goetyominous.common.init.lm.LmDamageTypes;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import com.qiuyue.goetyominous.common.init.lm.LmParticles;
@@ -207,7 +208,7 @@ public class SoulPillarExplosionEntity extends Entity {
             return;
         }
 
-        if (caster.isAlliedTo(impactEntity)) {
+        if (caster.isAlliedTo(impactEntity) || ServantAllyUtil.areAllied(caster, impactEntity)) {
             return;
         }
 

@@ -1,6 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm;
 
-import net.miauczel.legendary_monsters.config.ModConfig;
+import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -23,7 +23,7 @@ public class IAnimatedMiniBossServant extends IAnimatedMobServant {
     }
 
     public double damageCap() {
-        return ModConfig.MOB_CONFIG.MiniBossDamageCap.get();
+        return AttributesConfig.MiniBossServantDamageCap.get();
     }
 
     public float damageReduction() {

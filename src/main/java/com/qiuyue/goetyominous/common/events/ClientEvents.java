@@ -1,11 +1,13 @@
 package com.qiuyue.goetyominous.common.events;
 
+import com.Polarice3.Goety.client.render.block.TrainingBlockRenderer;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.render.block.PlushieBlockEntityRenderer;
 import com.qiuyue.goetyominous.client.particle.ac.CandicornServantChargeParticle;
 import com.qiuyue.goetyominous.client.particle.ac.ForsakenServantSpitParticle;
 import com.qiuyue.goetyominous.client.particle.ac.LuxtructosaurusServantAshParticle;
 import com.qiuyue.goetyominous.client.particle.ac.LuxtructosaurusServantSpitParticle;
+import com.qiuyue.goetyominous.client.particle.ac.TremorzillaServantSteamParticle;
 import com.qiuyue.goetyominous.client.particle.ac.NucleeperMushroomCloudParticle;
 import com.qiuyue.goetyominous.client.particle.lm.Circle;
 import com.qiuyue.goetyominous.client.particle.lm.GhostlySoul;
@@ -17,6 +19,7 @@ import com.qiuyue.goetyominous.client.particle.lm.SoulPillarExplosion;
 import com.qiuyue.goetyominous.client.render.EmptyRenderer;
 import com.qiuyue.goetyominous.client.render.curios.PlushieCurioRenderer;
 import com.qiuyue.goetyominous.common.init.ModBlockEntities;
+import com.qiuyue.goetyominous.common.init.ac.AcBlockEntityRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcParticles;
 import com.qiuyue.goetyominous.common.init.lm.LmParticles;
@@ -48,6 +51,7 @@ public class ClientEvents {
 
         if (AlexCavesCompat.isAlexCavesLoaded()) {
             event.registerEntityRenderer(AcEntityRegistry.EXTINCTION_CATALYST.get(), ItemEntityRenderer::new);
+            event.registerBlockEntityRenderer(AcBlockEntityRegistry.GAMMAROACH_NEST.get(), TrainingBlockRenderer::new);
         }
     }
 
@@ -68,6 +72,8 @@ public class ClientEvents {
                 LuxtructosaurusServantSpitParticle.Factory::new);
         event.registerSpriteSet(AcParticles.LUXTRUCTOSAURUS_SERVANT_ASH.get(),
                 LuxtructosaurusServantAshParticle.Factory::new);
+        event.registerSpriteSet(AcParticles.TREMORZILLA_SERVANT_STEAM.get(),
+                TremorzillaServantSteamParticle.Factory::new);
     }
 
     /**
@@ -92,9 +98,11 @@ public class ClientEvents {
      *       （比如拖尾：它自己知道要用哪张图、什么颜色）。</li>
      * </ul>
      *
-     * <p>⚠️ {@code RED_SOUL_FLAME} 配的是 {@code SmallFlameProvider} 而不是
-     * {@code Provider} —— 两者只差一句「缩小一半」，配错的话火苗会大一倍。
-     * 依据见 {@code LmParticles.RED_SOUL_FLAME} 的注释。
+     * <p>⚠️ {@code RED_SOUL_FLAME} 配的是 {@code Provider} 而不是
+     * {@code SmallFlameProvider} —— 两者只差一句「缩小一半」，
+     * 配错的话火苗会小一半。原版 {@code ModParticleFactiories} 里
+     * {@code RED_SOUL_FLAME} 是 {@code Provider}，{@code SmallFlameProvider}
+     * 配的是另一个粒子 {@code SMALL_SOUL_FIRE_FLAME}。
      */
     private static void registerLmParticles(RegisterParticleProvidersEvent event) {
         if (!LegendaryMonstersCompat.isLegendaryMonstersLoaded()) {
@@ -103,7 +111,7 @@ public class ClientEvents {
 
         event.registerSpriteSet(LmParticles.GHOSTLY_SOUL.get(), GhostlySoul.Provider::new);
         event.registerSpriteSet(LmParticles.GHOSTLY_SOUL_RED.get(), GhostlySoul.Provider::new);
-        event.registerSpriteSet(LmParticles.RED_SOUL_FLAME.get(), SmallGreenFlame.SmallFlameProvider::new);
+        event.registerSpriteSet(LmParticles.RED_SOUL_FLAME.get(), SmallGreenFlame.Provider::new);
         event.registerSpriteSet(LmParticles.SOUL_EXPLOSION_RED.get(), SoulExplosion.Provider::new);
         event.registerSpriteSet(LmParticles.GROUNDSOUL_RED.get(), GroundSoulParticle.Factory::new);
         event.registerSpriteSet(LmParticles.SOUL_PILLAR_EXPLOSION.get(), SoulPillarExplosion.Factory::new);

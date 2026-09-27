@@ -7,6 +7,12 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import java.io.File;
 
 public class MobsConfig {
+    private static final String[] LM_DAMAGE_MULTIPLIER_COMMENT = {
+            "Damage multiplier for every single attack of this servant, including the ones fired by its projectiles (Default: 1.0)",
+            "Every move keeps its own ratio from Legendary Monsters; this single value scales all of them at once",
+            "Unlike Legendary Monsters' own *DamageMutliplier options, this one does not touch the original boss"
+    };
+
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
@@ -21,6 +27,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> HullbreakerServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Boolean> HullbreakerServantReturnEmbryo;
     public static final ForgeConfigSpec.ConfigValue<Boolean> HullbreakerServantPickUpDrops;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> HullbreakerServantBlockBreakGriefing;
     public static final ForgeConfigSpec.ConfigValue<Integer> IllagerElephantServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> DropBearServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> GusterServantLimit;
@@ -35,11 +42,31 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> MutantBlazeServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> RodlingServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> OvergrownColossusServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> OvergrownColossusServantProjectileImmunity;
     public static final ForgeConfigSpec.ConfigValue<Integer> PossessedPaladinServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> HoveringHurricaneServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> CloudGolemServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerMimicServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> AnnihilationPursuerServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> TheObliteratorServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Double> TheObliteratorServantDamageMultiplier;
+    public static final ForgeConfigSpec.ConfigValue<Double> PossessedPaladinServantDamageMultiplier;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> PossessedPaladinServantInvulnerabilityTime;
+    public static final ForgeConfigSpec.ConfigValue<Double> HoveringHurricaneServantDamageMultiplier;
+    public static final ForgeConfigSpec.ConfigValue<Double> CloudGolemServantDamageMultiplier;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> CloudGolemServantLosesConsciousness;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> CloudGolemServantCanCharge2Times;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> CloudGolemServantInvulnerabilityTime;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> CloudGolemServantProjectileImmunityTimer;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> CloudGolemServantFallingCloudParticles;
+    public static final ForgeConfigSpec.ConfigValue<Double> ShulkerMimicServantDamageMultiplier;
+    public static final ForgeConfigSpec.ConfigValue<Double> AnnihilationPursuerServantDamageMultiplier;
+    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornGuardServantDamageMultiplier;
+    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornWarriorServantDamageMultiplier;
+    public static final ForgeConfigSpec.ConfigValue<Double> FlameDrifterServantDamageMultiplier;
+    public static final ForgeConfigSpec.ConfigValue<Double> WanderingEyeServantDamageMultiplier;
+    public static final ForgeConfigSpec.ConfigValue<Integer> TheObliteratorCloneBurstHpDamage;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> TheObliteratorServantFirstPhaseProjectileImmunity;
     public static final ForgeConfigSpec.ConfigValue<Integer> HeresiarchServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> WargLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> CerberusLimit;
@@ -79,6 +106,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> LicowitchSummonsLife;
     public static final ForgeConfigSpec.ConfigValue<Integer> LicowitchSummonLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> MineGuardianServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> MineGuardianServantExplosionGriefing;
     public static final ForgeConfigSpec.ConfigValue<Integer> DicerServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> TremblerServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> TerrorServantLimit;
@@ -87,6 +115,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> GuzzlerServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> SkyvernServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Boolean> SkyvernServantGhost;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> LeapkelpMoistness;
 
     public static final ForgeConfigSpec.ConfigValue<Integer> MWSSoulShieldHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> MWSSoulShieldDamageBouns;
@@ -201,6 +230,9 @@ public class MobsConfig {
                 .comment("Whether Hullbreaker Servants collect the drops of the mobs they kill (Default: true)")
                 .define("hullbreakerServantPickUpDrops", true);
 
+        HullbreakerServantBlockBreakGriefing = BUILDER.comment("Whether Hullbreaker Servants break blocks when bashing, Default: false (set to true to allow block destruction, which also respects the mobGriefing game rule)")
+                .define("hullbreakerServantBlockBreakGriefing", false);
+
         IllagerElephantServantLimit = BUILDER
                 .comment("Maximum number of Illager Elephant Servants that can be summoned (Default: 2)")
                 .defineInRange("illagerElephantServantLimit", 2, 1, 100);
@@ -257,6 +289,9 @@ public class MobsConfig {
                 .comment("Whether Skyvern Servants summoned while the owner wears a Wind Robe become translucent and lose collision (Default: true)")
                 .define("skyvernServantGhost", true);
 
+        LeapkelpMoistness = BUILDER.comment("Whether Leapkelp Servants have a moistness meter; when false they never dry out (Default: true)")
+                .define("leapkelpMoistness", true);
+
         UrbhadhachServantLimit = BUILDER
                 .comment("Maximum number of Urbhadhach Servants that can be summoned (Default: 8)")
                 .defineInRange("urbhadhachServantLimit", 8, 1, 100);
@@ -297,25 +332,107 @@ public class MobsConfig {
                 .comment("Maximum number of Overgrown Colossus Servants that can be summoned (Default: 2)")
                 .defineInRange("overgrownColossusServantLimit", 2, 1, 100);
 
+        OvergrownColossusServantProjectileImmunity = BUILDER
+                .comment("Whether Overgrown Colossus Servants are immune to arrows (Default: true; Legendary Monsters' Allow Overgrown Colosuss Projectile Immunity)")
+                .define("overgrownColossusServantProjectileImmunity", true);
+
         // 堕落圣骑是 BOSS 级仆从，默认只允许同时存在 1 只。
         PossessedPaladinServantLimit = BUILDER
                 .comment("Maximum number of Possessed Paladin Servants that can be summoned (Default: 1)")
                 .defineInRange("possessedPaladinServantLimit", 1, 1, 100);
+
+        PossessedPaladinServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("possessedPaladinServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
+
+        PossessedPaladinServantInvulnerabilityTime = BUILDER
+                .comment("Whether Possessed Paladin Servants get 10 ticks of invulnerability after being hit (Default: true; Legendary Monsters' boss behaviour, this is what makes them shrug off rapid hits)")
+                .define("possessedPaladinServantInvulnerabilityTime", true);
+
         HoveringHurricaneServantLimit = BUILDER
                 .comment("Maximum number of Hovering Hurricane Servants that can be summoned (Default: 8)")
                 .defineInRange("hoveringHurricaneServantLimit", 8, 1, 100);
+
+        HoveringHurricaneServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("hoveringHurricaneServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
 
         CloudGolemServantLimit = BUILDER
                 .comment("Maximum number of Cloud Golem Servants that can be summoned (Default: 1)")
                 .defineInRange("cloudGolemServantLimit", 1, 1, 100);
 
+        CloudGolemServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("cloudGolemServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
+
+        CloudGolemServantLosesConsciousness = BUILDER
+                .comment("Whether Cloud Golem Servants go dormant after their laser attack (Default: true; Legendary Monsters' Allow Cloud Golem Loses Consciousness)")
+                .define("cloudGolemServantLosesConsciousness", true);
+
+        CloudGolemServantCanCharge2Times = BUILDER
+                .comment("Whether Cloud Golem Servants charge one more time after missing while low on health (Default: true; Legendary Monsters' Allow Cloud Golem Charge once More)")
+                .define("cloudGolemServantCanCharge2Times", true);
+
+        CloudGolemServantInvulnerabilityTime = BUILDER
+                .comment("Whether Cloud Golem Servants get a short window of invulnerability after every hit they take (Default: true; Legendary Monsters' Allow Cloud Golem Invulnerability Time)")
+                .define("cloudGolemServantInvulnerabilityTime", true);
+
+        CloudGolemServantProjectileImmunityTimer = BUILDER
+                .comment("Whether the arrows a Cloud Golem Servant shrugs off share a cooldown, so it cannot ignore an entire volley (Default: true; Legendary Monsters' Allow Projectile Immunity cooldown Damage)")
+                .define("cloudGolemServantProjectileImmunityTimer", true);
+
+        CloudGolemServantFallingCloudParticles = BUILDER
+                .comment("Whether the clouds a Cloud Golem Servant drops keep their falling particles (Default: true; Legendary Monsters' Allow Falling Cloud Particles)")
+                .define("cloudGolemServantFallingCloudParticles", true);
+
         ShulkerMimicServantLimit = BUILDER
                 .comment("Maximum number of Shulker Mimic Servants that can be summoned (Default: 1)")
                 .defineInRange("shulkerMimicServantLimit", 1, 1, 100);
 
+        ShulkerMimicServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("shulkerMimicServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
+
         AnnihilationPursuerServantLimit = BUILDER
                 .comment("Maximum number of Annihilation Pursuer Servants that can be summoned (Default: 1)")
                 .defineInRange("annihilationPursuerServantLimit", 1, 1, 100);
+
+        AnnihilationPursuerServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("annihilationPursuerServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
+
+        TheObliteratorServantLimit = BUILDER
+                .comment("Maximum number of The Obliterator Servants that can be summoned (Default: 1)")
+                .defineInRange("theObliteratorServantLimit", 1, 1, 100);
+
+        TheObliteratorServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("theObliteratorServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
+
+        FlamebornGuardServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("flamebornGuardServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
+
+        FlamebornWarriorServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("flamebornWarriorServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
+
+        FlameDrifterServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("flameDrifterServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
+
+        WanderingEyeServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("wanderingEyeServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
+
+        TheObliteratorCloneBurstHpDamage = BUILDER
+                .comment("Percentage of the victim's max health added on top of an armed clone's burst (Default: 7)",
+                        "Matches Legendary Monsters' own theObliteratorCloneBurstHPDamage, but only affects the servant's clones")
+                .defineInRange("theObliteratorCloneBurstHpDamage", 7, 0, 1000);
+
+        TheObliteratorServantFirstPhaseProjectileImmunity = BUILDER
+                .comment("Whether The Obliterator Servants are immune to arrows and other projectiles while in their first phase (Default: true; Legendary Monsters' ON/OFF The Obliterator Projectile immunity in first Phase)")
+                .define("theObliteratorServantFirstPhaseProjectileImmunity", true);
 
         GrottoceratopsServantLimit = BUILDER
                 .comment("Maximum number of Grottoceratops Servants that can be summoned (Default: 16)")
@@ -455,6 +572,9 @@ public class MobsConfig {
 
         MineGuardianServantLimit = BUILDER
                 .defineInRange("mineGuardianServantLimit", 16, 1, 100);
+
+        MineGuardianServantExplosionGriefing = BUILDER.comment("Whether Mine Guardian Servant explosions destroy blocks, Default: false (set to true to allow block destruction, which also respects the mobGriefing game rule)")
+                .define("mineGuardianServantExplosionGriefing", false);
 
         BUILDER.pop();
 

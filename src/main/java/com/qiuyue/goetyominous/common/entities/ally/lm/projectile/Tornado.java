@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.entities.ally.lm.projectile;
 
 import com.Polarice3.Goety.common.entities.projectiles.WaterHurtingProjectile;
 import com.Polarice3.Goety.utils.MobUtil;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
 import net.minecraft.core.BlockPos;
@@ -187,7 +188,7 @@ public class Tornado extends WaterHurtingProjectile {
         List<LivingEntity> entities = this.level().getEntitiesOfClass(LivingEntity.class,
                 this.getBoundingBox().inflate(0.75D, this.getBbHeight(), 0.75D), EntitySelector.NO_CREATIVE_OR_SPECTATOR);
         for (LivingEntity livingentity : entities) {
-            if (owner == null || MobUtil.areAllies(owner, livingentity)) {
+            if (owner == null || ServantAllyUtil.areAllied(owner, livingentity)) {
                 continue;
             }
             if (!livingentity.hurt(this.damageSources().mobAttack(owner), 1.0F) || this.hasHurt) {
@@ -219,7 +220,7 @@ public class Tornado extends WaterHurtingProjectile {
                 continue;
             }
             if (livingentity.isPassenger() || livingentity == owner
-                    || MobUtil.areAllies(owner, livingentity) || !livingentity.isAlive()) {
+                    || ServantAllyUtil.areAllied(owner, livingentity) || !livingentity.isAlive()) {
                 continue;
             }
             this.hasHurt = true;

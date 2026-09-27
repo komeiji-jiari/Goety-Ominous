@@ -1,7 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm.projectile;
 
 import com.qiuyue.goetyominous.client.particle.lm.PhantomDaggerTrail;
-import com.qiuyue.goetyominous.common.entities.ally.lm.ControlledAnim;
+import net.miauczel.legendary_monsters.entity.client.ControlledAnim;
 import com.qiuyue.goetyominous.common.entities.ally.lm.ServantMath;
 import com.qiuyue.goetyominous.common.init.lm.LmDamageTypes;
 import net.miauczel.legendary_monsters.effect.ModEffects;

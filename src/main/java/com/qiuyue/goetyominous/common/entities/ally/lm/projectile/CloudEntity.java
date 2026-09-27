@@ -1,7 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm.projectile;
 
-import com.Polarice3.Goety.utils.MobUtil;
-import net.miauczel.legendary_monsters.config.ModConfig;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
+import com.qiuyue.goetyominous.config.MobsConfig;
 import net.miauczel.legendary_monsters.damagetype.ModDamageTypes;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -38,7 +38,7 @@ public class CloudEntity extends ThrowableProjectile {
     }
 
     public void Particle() {
-        if (!ModConfig.MOB_CONFIG.allowFallingCloudParticles.get()) {
+        if (!MobsConfig.CloudGolemServantFallingCloudParticles.get()) {
             return;
         }
         for (int i = 0; i < 360; ++i) {
@@ -68,7 +68,7 @@ public class CloudEntity extends ThrowableProjectile {
     public void onHit(HitResult result) {
         for (LivingEntity livingEntity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(this.attackRange, this.attackRange, this.attackRange))) {
             Entity ownerEntity = this.getOwner();
-            if (livingEntity == ownerEntity || MobUtil.areAllies(ownerEntity, livingEntity)
+            if (livingEntity == ownerEntity || ServantAllyUtil.areAllied(ownerEntity, livingEntity)
                     || livingEntity instanceof TamableAnimal animal && animal.getOwner() == ownerEntity) {
                 continue;
             }
@@ -107,7 +107,7 @@ public class CloudEntity extends ThrowableProjectile {
     @Override
     public void tick() {
         super.tick();
-        if (!ModConfig.MOB_CONFIG.allowFallingCloudParticles.get() && this.level().isClientSide) {
+        if (!MobsConfig.CloudGolemServantFallingCloudParticles.get() && this.level().isClientSide) {
             Vec3 vec3 = this.getDeltaMovement();
             if (this.level().isClientSide()) {
                 this.level().addParticle(ParticleTypes.CLOUD, this.getX() - vec3.x, this.getY() - vec3.y, this.getZ() - vec3.z, 0.0, 0.0, 0.0);

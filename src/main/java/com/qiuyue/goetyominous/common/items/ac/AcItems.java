@@ -8,6 +8,7 @@ import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
 import com.qiuyue.goetyominous.common.magic.spells.ac.*;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -81,6 +82,15 @@ public class AcItems {
     public static final RegistryObject<ServantSpawnEggItem> GAMMAROACH_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("gammaroach_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AcEntityRegistry.GAMMAROACH_SERVANT, 0x56682A, 0x2A2B19, egg()));
+
+    public static final RegistryObject<BlockItem> GAMMAROACH_NEST =
+            AC_ITEMS.register("gammaroach_nest",
+                    () -> new BlockItem(AcBlockRegistry.GAMMAROACH_NEST.get(), egg()));
+
+    public static final RegistryObject<BlockItem> ANNIHILATION_BOMB =
+            AC_ITEMS.register("annihilation_core",
+                    () -> new AnnihilationBombBlockItem(AcBlockRegistry.ANNIHILATION_BOMB.get(),
+                            new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));
 
     public static final RegistryObject<ServantSpawnEggItem> CORRODENT_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("corrodent_servant_spawn_egg",
