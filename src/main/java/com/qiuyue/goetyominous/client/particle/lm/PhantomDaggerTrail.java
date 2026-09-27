@@ -4,7 +4,6 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.lm.LmParticles;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -24,7 +23,7 @@ import java.util.Locale;
 public class PhantomDaggerTrail extends AbstractNotGlowingTrailParticle {
 
     private static final ResourceLocation TRAIL_TEXTURE =
-            new ResourceLocation(GoetyOminous.MOD_ID, "textures/particle/trail_soul.png");
+            new ResourceLocation("legendary_monsters", "textures/particle/trail_soul.png");
 
     private final int EntityId;
 

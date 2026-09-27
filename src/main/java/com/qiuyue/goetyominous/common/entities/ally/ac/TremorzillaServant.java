@@ -2,8 +2,10 @@ package com.qiuyue.goetyominous.common.entities.ally.ac;
 
 import com.Polarice3.Goety.api.entities.ally.IServant;
 import com.Polarice3.Goety.api.items.magic.IWand;
+import com.Polarice3.Goety.common.entities.ModEntityType;
 import com.Polarice3.Goety.common.entities.ally.AnimalSummon;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
+import com.Polarice3.Goety.common.entities.projectiles.FlyingItem;
 import com.Polarice3.Goety.common.entities.util.CameraShake;
 import com.Polarice3.Goety.init.ModMobType;
 import com.github.alexmodguy.alexscaves.AlexsCaves;
@@ -36,15 +38,20 @@ import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.IAdvancedPathingMob;
 import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.ITallWalker;
+import com.qiuyue.goetyominous.common.blocks.entities.ac.AnnihilationBombBlockEntity;
 import com.qiuyue.goetyominous.common.entities.ai.ac.ServantTemptGoal;
+import com.qiuyue.goetyominous.common.items.ac.AcItems;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
+import com.qiuyue.goetyominous.common.init.ac.AcParticles;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -82,6 +89,7 @@ import net.minecraft.world.entity.ai.village.poi.PoiManager;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ClipContext;
@@ -142,7 +150,7 @@ public class TremorzillaServant extends AnimalSummon
     private static final int MAX_CHARGE = 1000;
     private static final float SCARE_MAX_HEALTH = 100.0F;
     private static final EntityDimensions SWIMMING_SIZE = new EntityDimensions(4.0F, 5.0F, true);
-    private static final float FOLLOW_START_DISTANCE = 10.0F;
+    private static final float FOLLOW_START_DISTANCE = 14.0F;
 
     private final TremorzillaServantPartEntity[] allParts;
     public final TremorzillaServantPartEntity tailPart1;
@@ -159,7 +167,9 @@ public class TremorzillaServant extends AnimalSummon
 
     private Animation currentAnimation;
     private int animationTick;
+    public int deathTime;
     private int blastFlingGuard;
+    private int nukeRecoveryTicks;
     private float lastYawBeforeWhip;
     protected boolean isLandNavigator;
     private double lastStompX = 0.0;
@@ -238,7 +248,15 @@ public class TremorzillaServant extends AnimalSummon
 
     @Override
     public void followGoal() {
-        this.goalSelector.addGoal(5, new TremorzillaServantFollowGoal(this, 1.0D, FOLLOW_START_DISTANCE, 2.0F));
+        this.goalSelector.addGoal(5, new TremorzillaServantFollowGoal(this, 1.0D, FOLLOW_START_DISTANCE, 6.0F));
+    }
+
+    public void beginNukeRecovery(int ticks) {
+        this.nukeRecoveryTicks = ticks;
+    }
+
+    public boolean isRecoveringFromNuke() {
+        return this.nukeRecoveryTicks > 0;
     }
 
     @Override
@@ -327,6 +345,9 @@ public class TremorzillaServant extends AnimalSummon
         if (this.blastFlingGuard > 0) {
             --this.blastFlingGuard;
             this.setDeltaMovement(Vec3.ZERO);
+        }
+        if (this.nukeRecoveryTicks > 0) {
+            --this.nukeRecoveryTicks;
         }
         super.tick();
         this.enforceFollowingStanceOnce();
@@ -470,12 +491,8 @@ public class TremorzillaServant extends AnimalSummon
             if (this.isFiring()) {
                 this.tickBreath();
             } else if (this.steamFromMouthFor > 0 && this.level().isClientSide) {
-                Vec3 steamPos = this.getBeamShootFrom(1.0F).add(new Vec3(this.random.nextBoolean() ? -0.9F : 0.9F, 0.8F, 1.8F)
-                        .scale(this.getScale())
-                        .xRot((float) Math.toRadians(-this.getXRot()))
-                        .yRot((float) Math.toRadians(-this.getYHeadRot())));
-                this.level().addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, true,
-                        steamPos.x, steamPos.y, steamPos.z, 0.0, 0.0, 0.0);
+                this.level().addAlwaysVisibleParticle(AcParticles.TREMORZILLA_SERVANT_STEAM.get(), true,
+                        this.getX(), this.getEyeY(), this.getZ(), this.getId(), 0.0D, 0.0D);
             }
             if (!this.isFiring() && this.killCountFromBeam > 0) {
                 if (this.killCountFromBeam > 20 && !this.level().isClientSide && this.isVehicle()) {
@@ -667,6 +684,62 @@ public class TremorzillaServant extends AnimalSummon
         return super.hurt(source, amount);
     }
 
+    public CompoundTag saveIdentity() {
+        CompoundTag identity = new CompoundTag();
+        if (this.hasCustomName()) {
+            identity.putString("CustomName", Component.Serializer.toJson(this.getCustomName()));
+        }
+        if (this.isUpgraded()) {
+            identity.putBoolean("Upgraded", true);
+        }
+        if (this.getAltSkin() > 0) {
+            identity.putInt("AltSkin", this.getAltSkin());
+        }
+        if (this.isBaby()) {
+            identity.putBoolean("Baby", true);
+        }
+        return identity;
+    }
+
+    public void loadIdentity(CompoundTag identity) {
+        if (identity.contains("CustomName", Tag.TAG_STRING)) {
+            this.setCustomName(Component.Serializer.fromJson(identity.getString("CustomName")));
+        }
+        if (identity.getBoolean("Upgraded")) {
+            this.setUpgraded(true);
+        }
+        if (identity.contains("AltSkin")) {
+            this.setAltSkin(identity.getInt("AltSkin"));
+        }
+        if (identity.getBoolean("Baby")) {
+            this.setBaby(true);
+        }
+    }
+
+    @Override
+    protected void dropEquipment() {
+        super.dropEquipment();
+        if (this.level().isClientSide) {
+            return;
+        }
+        ItemStack stack = new ItemStack(AcItems.ANNIHILATION_BOMB.get());
+        CompoundTag identity = this.saveIdentity();
+        if (!identity.isEmpty()) {
+            CompoundTag blockEntityTag = new CompoundTag();
+            blockEntityTag.put(AnnihilationBombBlockEntity.IDENTITY_TAG, identity);
+            stack.addTagElement(BlockItem.BLOCK_ENTITY_TAG, blockEntityTag);
+        }
+        LivingEntity owner = this.getTrueOwner();
+        if (owner == null) {
+            this.spawnAtLocation(stack);
+            return;
+        }
+        FlyingItem flyingItem = new FlyingItem(ModEntityType.FLYING_ITEM.get(), this.level(), this.getX(), this.getY(), this.getZ());
+        flyingItem.setOwner(owner);
+        flyingItem.setItem(stack);
+        this.level().addFreshEntity(flyingItem);
+    }
+
     private double getMaxFluidHeight() {
         return this.getFluidTypeHeight(this.getMaxHeightFluidType());
     }
@@ -782,6 +855,27 @@ public class TremorzillaServant extends AnimalSummon
     }
 
     @Override
+    protected void tickDeath() {
+        ++this.deathTime;
+        if (this.deathTime == 1) {
+            this.setAnimationTick(0);
+            this.screenShakeAmount = 0.0F;
+        }
+        this.setAnimation(ANIMATION_ROAR_2);
+        this.setXRot(0.0F);
+        this.setYHeadRot(this.getYRot());
+        if (this.isFiring()) {
+            this.setFiring(false);
+            this.setBeamEndPosition(null);
+            this.setCharge(0);
+        }
+        if (this.deathTime > ANIMATION_ROAR_2.getDuration() && !this.level().isClientSide && !this.isRemoved()) {
+            this.level().broadcastEntityEvent(this, (byte) 61);
+            this.remove(Entity.RemovalReason.KILLED);
+        }
+    }
+
+    @Override
     public void remove(Entity.RemovalReason removalReason) {
         AlexsCaves.PROXY.clearSoundCacheFor(this);
         super.remove(removalReason);
@@ -876,6 +970,7 @@ public class TremorzillaServant extends AnimalSummon
         this.setCharge(compound.getInt("Charge"));
         this.setSpikesDownAmount(compound.getFloat("SpikesDownAmount"));
         this.wantsToUseBeamFromServer = compound.getBoolean("ServerBeamTrigger");
+        this.nukeRecoveryTicks = compound.getInt("NukeRecoveryTicks");
     }
 
     @Override
@@ -886,6 +981,7 @@ public class TremorzillaServant extends AnimalSummon
         compound.putInt("Charge", this.getCharge());
         compound.putFloat("SpikesDownAmount", this.getSpikesDownAmount());
         compound.putBoolean("ServerBeamTrigger", this.wantsToUseBeamFromServer);
+        compound.putInt("NukeRecoveryTicks", this.nukeRecoveryTicks);
     }
 
     private void tickBreath() {
@@ -1252,6 +1348,15 @@ public class TremorzillaServant extends AnimalSummon
                             this.getRandomX(1.0F), this.getY() + this.getBbHeight() + 0.3F, this.getRandomZ(1.0F),
                             this.random.nextGaussian() * 0.05, this.random.nextFloat() * 0.2, this.random.nextGaussian() * 0.05);
                 }
+            }
+        } else if (b == 61) {
+            int count = (int) (this.getBbWidth() * this.getBbHeight() * 5.0F);
+            for (int i = 0; i < count; ++i) {
+                double particleX = this.getX() + (this.random.nextDouble() - 0.5) * this.getBbWidth() * 1.8;
+                double particleY = this.getY() + this.random.nextDouble() * this.getBbHeight() * 1.2;
+                double particleZ = this.getZ() + (this.random.nextDouble() - 0.5) * this.getBbWidth() * 1.8;
+                this.level().addParticle(ParticleTypes.POOF, particleX, particleY, particleZ,
+                        this.random.nextGaussian() * 0.06, this.random.nextFloat() * 0.08F + 0.02F, this.random.nextGaussian() * 0.06);
             }
         } else {
             super.handleEntityEvent(b);
@@ -1729,6 +1834,8 @@ public class TremorzillaServant extends AnimalSummon
                 return false;
             } else if (!this.summonedEntity.isFollowing() || this.summonedEntity.isCommanded()) {
                 return false;
+            } else if (this.summonedEntity.isRecoveringFromNuke()) {
+                return false;
             } else if (this.summonedEntity.getTarget() != null) {
                 return false;
             } else {
@@ -1748,6 +1855,8 @@ public class TremorzillaServant extends AnimalSummon
             } else if (this.owner == null || !this.owner.isAlive()) {
                 return false;
             } else if (!this.summonedEntity.isFollowing() || this.summonedEntity.isCommanded()) {
+                return false;
+            } else if (this.summonedEntity.isRecoveringFromNuke()) {
                 return false;
             } else {
                 return this.summonedEntity.distanceToSqr(this.owner) > (double) (Mth.square(this.stopDistance));
@@ -1915,6 +2024,9 @@ public class TremorzillaServant extends AnimalSummon
         @Override
         public boolean canUse() {
             LivingEntity owner = TremorzillaServant.this.getTrueOwner();
+            if (TremorzillaServant.this.isRecoveringFromNuke()) {
+                return false;
+            }
             if (owner != null
                     && (TremorzillaServant.this.isStaying() || TremorzillaServant.this.isCommanded())) {
                 return false;

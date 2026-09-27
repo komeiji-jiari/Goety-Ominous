@@ -17,12 +17,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class RenderGusterServant extends MobRenderer<GusterServant, ModelGusterServant> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("goetyominous:textures/entity/guster.png");
-    private static final ResourceLocation TEXTURE_GOOGLY = new ResourceLocation("goetyominous:textures/entity/guster_silly.png");
-    private static final ResourceLocation TEXTURE_EYES = new ResourceLocation("goetyominous:textures/entity/guster_eye.png");
-    private static final ResourceLocation TEXTURE_RED = new ResourceLocation("goetyominous:textures/entity/guster_red.png");
-    private static final ResourceLocation TEXTURE_SOUL = new ResourceLocation("goetyominous:textures/entity/guster_soul.png");
-    private static final ResourceLocation TEXTURE_SOUL_EYES = new ResourceLocation("goetyominous:textures/entity/guster_eye_soul.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/guster.png");
+    private static final ResourceLocation TEXTURE_GOOGLY = new ResourceLocation("alexsmobs:textures/entity/guster_silly.png");
+    private static final ResourceLocation TEXTURE_EYES = new ResourceLocation("alexsmobs:textures/entity/guster_eye.png");
+    private static final ResourceLocation TEXTURE_RED = new ResourceLocation("alexsmobs:textures/entity/guster_red.png");
+    private static final ResourceLocation TEXTURE_SOUL = new ResourceLocation("alexsmobs:textures/entity/guster_soul.png");
+    private static final ResourceLocation TEXTURE_SOUL_EYES = new ResourceLocation("alexsmobs:textures/entity/guster_eye_soul.png");
 
     public RenderGusterServant(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelGusterServant(), 0.25F);

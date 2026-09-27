@@ -1,7 +1,8 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm;
 
+import com.qiuyue.goetyominous.config.MobsConfig;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
-import com.Polarice3.Goety.utils.MobUtil;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IAttackGoalMin;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IMoveGoal;
@@ -16,7 +17,6 @@ import net.miauczel.legendary_monsters.Particle.custom.BigAnnihilationSweepParti
 import net.miauczel.legendary_monsters.Particle.custom.Circle;
 import net.miauczel.legendary_monsters.Particle.custom.GiantAnnihilationSweepParticle;
 import net.miauczel.legendary_monsters.Particle.custom.MovingTrailParticle;
-import net.miauczel.legendary_monsters.config.ModConfig;
 import net.miauczel.legendary_monsters.damagetype.ModDamageTypes;
 import net.miauczel.legendary_monsters.effect.ModEffects;
 import net.miauczel.legendary_monsters.entity.AnimatedMonster.Effect.CameraShakeEntity;
@@ -93,6 +93,7 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
     public int shield_stun_cooldown;
     public int stab_finisher_cooldown;
     public int buckshot_cooldown;
+    public boolean suppressTeleportShake;
     public double lastX;
     public double lastY;
     public double lastZ;
@@ -104,6 +105,11 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
         super(entityType, level);
         this.xpReward = 15;
         this.setPersistenceRequired();
+    }
+
+    @Override
+    public double damageMultiplier() {
+        return MobsConfig.AnnihilationPursuerServantDamageMultiplier.get();
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -505,7 +511,7 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
     }
 
     private boolean isFriendlyTo(LivingEntity other) {
-        return other == this || other instanceof AnnihilationPursuerServant || MobUtil.areAllies(this, other);
+        return other == this || other instanceof AnnihilationPursuerServant || ServantAllyUtil.areAllied(this, other);
     }
 
     public void UpdateWithAttack() {
@@ -680,7 +686,7 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
             }
             if ((this.attackTicks == 21 || this.attackTicks == 45) && this.isVehicle() && this.getFirstPassenger() != null) {
                 this.getFirstPassenger().hurt(ModDamageTypes.causeAnnihilationDamage(this, this),
-                        (float) (8.0D * ModConfig.MOB_CONFIG.AnnihilationPursuerDamageMutliplier.get()));
+                        8.0F);
             }
             if (this.attackTicks == 21 && this.level().isClientSide) {
                 this.level().addParticle(ModParticles.ANNIHILATION_EXPLOSION.get(), this.getX() + 2.5F * vecX + f * 1.5F,
@@ -823,7 +829,7 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
         }
     }
 
-    public void teleportRandomly(LivingEntity entity, float range, float iteractions) {
+    public Vec3 findTeleportSpot(LivingEntity entity, float range, float iteractions) {
         Vec3 entityPos = entity.position();
         Level level = this.level();
         for (int i = 0; (float) i < iteractions; ++i) {
@@ -832,9 +838,16 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
             double y = entityPos.y();
             BlockPos pos = new BlockPos(Mth.floor(x), Mth.floor(y), Mth.floor(z));
             if (level.isEmptyBlock(pos) && !level.getBlockState(pos.below()).isAir()) {
-                this.teleport(x, y, z);
-                return;
+                return new Vec3(x, y, z);
             }
+        }
+        return null;
+    }
+
+    public void teleportRandomly(LivingEntity entity, float range, float iteractions) {
+        Vec3 spot = this.findTeleportSpot(entity, range, iteractions);
+        if (spot != null) {
+            this.teleport(spot.x, spot.y, spot.z);
         }
     }
 
@@ -884,7 +897,7 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
             }
             DamageSource damageSource = this.getAttackState() == 15
                     ? ModDamageTypes.causeAnnihilationDamage(this, this) : this.damageSources().mobAttack(this);
-            if (entityHit.hurt(damageSource, (float) (damage * ModConfig.MOB_CONFIG.AnnihilationPursuerDamageMutliplier.get()))) {
+            if (entityHit.hurt(damageSource, (float) damage)) {
                 EntityUtil.cancelBuffs(entityHit);
                 entityHit.invulnerableTime = 0;
                 this.hasHit = true;
@@ -925,7 +938,7 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
                 continue;
             }
             hitAny = true;
-            if (entityHit.hurt(this.damageSources().mobAttack(this), (float) (damage * ModConfig.MOB_CONFIG.AnnihilationPursuerDamageMutliplier.get()))) {
+            if (entityHit.hurt(this.damageSources().mobAttack(this), (float) damage)) {
                 entityHit.setShiftKeyDown(false);
                 this.playSound(soundEvent, 1.0F, pitch);
                 this.hasHit = true;
@@ -969,7 +982,7 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
             if (entityHit.isDamageSourceBlocked(damageSource)) {
                 this.succedGrabbing = false;
             }
-            if (entityHit.hurt(damageSource, (float) (damage * ModConfig.MOB_CONFIG.AnnihilationPursuerDamageMutliplier.get()))) {
+            if (entityHit.hurt(damageSource, (float) damage)) {
                 this.playSound(soundEvent, 1.0F, pitch);
                 if (entityHitisTarget && entityHit.startRiding(this, true)) {
                     entityHit.setShiftKeyDown(false);
@@ -998,7 +1011,7 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
             if (this.isFriendlyTo(entityHit)) {
                 continue;
             }
-            if (entityHit.hurt(this.damageSources().mobAttack(this), (float) (damage * ModConfig.MOB_CONFIG.AnnihilationPursuerDamageMutliplier.get())) && launch) {
+            if (entityHit.hurt(this.damageSources().mobAttack(this), (float) damage) && launch) {
                 EntityUtil.cancelBuffs(entityHit);
                 this.launch(entityHit, true);
             }
@@ -1073,7 +1086,9 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
         if (this.teleportBoolean(event.getTargetX(), event.getTargetY(), event.getTargetZ(), true)) {
             this.level().gameEvent(GameEvent.TELEPORT, vec3, GameEvent.Context.of(this));
             if (!this.isSilent()) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 10.0F, 0.1F, 5, 5);
+                if (!this.suppressTeleportShake) {
+                    CameraShakeEntity.cameraShake(this.level(), this.position(), 10.0F, 0.1F, 5, 5);
+                }
                 this.playSound(SoundEvents.SHULKER_TELEPORT, 4.0F, 1.0F);
             }
             return true;

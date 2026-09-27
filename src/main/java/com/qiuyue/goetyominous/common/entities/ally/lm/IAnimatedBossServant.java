@@ -131,24 +131,25 @@ public class IAnimatedBossServant extends IAnimatedMonsterServant {
      *   <li><b>摔落 / 溺水 / 火焰 / 冰冻完全免伤。</b>注意火焰在这里挡一道，
      *       {@code fireImmune()} 在 {@code LivingEntity.hurt} 里再挡一道 —— 两道都要有：
      *       前者挡的是「火焰伤害」，后者挡的是「身上着火」。</li>
+     *   <li><b>限伤</b>（{@link #damageCap()}）：{@code Math.min(amount, damageCap())}。</li>
      *   <li><b>动态减伤</b>：已进入减伤状态时，乘上一个系数 ——
      *       刻度尺满格（{@code reducedDamageTicks = 100}）时是 1.0（等于没减），
      *       掉到 50 以下就锁死在 0.5。所以减伤是「越打越硬」，而不是一挨打就砍半。</li>
      *   <li>挨打成功后才推进伤害适应 —— 被格挡 / 被免疫的那些不算数。</li>
      * </ol>
      *
-     * <p><b>限伤（{@link #damageCap()}）就写在本方法里，紧跟在动态减伤后面</b>，
-     * 顺序是「先减后限」：先乘减伤系数，再 {@code Math.min(amount, damageCap())}。
-     * 这两步走完之后才交给 {@code super.hurt}，由它去扣护甲和抗性。
-     * 所以限的是<b>护甲之前</b>的伤害 —— 一记 100 点的重击，先被减伤砍到 50、
-     * 再被限到 21，最后才过护甲，最终掉的血只会比 21 更少，上限是硬的。
+     * <p><b>顺序是「先限后减」</b>：先 {@code Math.min(amount, damageCap())}，
+     * 再乘减伤系数 —— 和 LM 原版 {@code IAnimatedBoss.hurt()} 逐行同构。
+     * 这两步走完之后才交给 {@code super.hurt}，由它去扣护甲和抗性，
+     * 所以限的是<b>护甲之前</b>的伤害。顺序不能换：反过来先乘 0.5 再取 min，
+     * 减伤就被上限吃掉了 —— 一记 100 点的重击会变成 {@code min(50, 21) = 21}，
+     * 而原版是 {@code min(21, 100) × 0.5 = 10.5}，掉血正好翻倍，
+     * 动态减伤在重击面前形同虚设。
      *
      * <p>⚠️ 这里踩过一个坑：限伤曾经写在 {@code actuallyHurt} 里，当时的想法是
      * 「那里 amount 已经算完护甲，才是真正掉的血，限在那儿更准」。结果恰好相反 ——
      * {@code actuallyHurt} 拿到的 amount 早就被护甲削过一轮了（100 → 减伤 50 → 护甲 15），
      * 再去 {@code min(15, 21)} 还是 15，上限 21 根本碰不到，<b>限伤形同虚设</b>。
-     * LM 原版 {@code IAnimatedBoss.hurt()} 是把 {@code Math.min(damageCap, amount)}
-     * 写在方法最前面的，现在按那个位置搬回来。
      *
      * <p>注意最上面那条 {@code BYPASSES_INVULNERABILITY} 分支直接就 return 了，
      * 所以 {@code /kill}、虚空伤害这类依然连限伤都不吃，和原版一致。
@@ -164,15 +165,14 @@ public class IAnimatedBossServant extends IAnimatedMonsterServant {
             return false;
         }
 
+        amount = (float) Math.min((double) amount, this.damageCap());
+
         if (this.reducedDamage()) {
             // 原版这里夹的是 (0.5, amount)：amount 当上限是原作者的写法，
             // 效果是「伤害本来就低于 0.5 时不减」，原样保留。
             amount *= Mth.clamp(toPercent((float) this.reducedDamageTicks),
                     MIN_DAMAGE_REDUCTION, amount);
         }
-
-        // 限伤。位置在减伤之后、护甲之前 —— 也就是「先减后限」。
-        amount = (float) Math.min((double) amount, this.damageCap());
 
         boolean hurt1 = super.hurt(source, amount);
         if (hurt1) {
@@ -219,16 +219,15 @@ public class IAnimatedBossServant extends IAnimatedMonsterServant {
     //    协作者没有，以后合并不可能再被连带删掉。
     //
     //    方法体逐字照抄祖先版本，一行逻辑都没改，避免顺手「优化」二次引入 bug。
-    //    只有圣骑仆从（PossessedPaladinServant）在用这四个东西。
     // ==========================================================================================
 
     /**
      * 在半径 {@code PlayerRange} 格内的<b>每个玩家</b>的动作栏上显示一句话。
      *
      * <p>和爷爷类里那个 {@code sendBasicHotBarMessage} 的区别：那个只发给某一个指定玩家，
-     * 这个是在范围内广播 —— 圣骑说台词时周围的人都听得到。
+     * 这个是在范围内广播。
      *
-     * <p>{@code message} 传的是<b>翻译键</b>（如 {@code message.goetyominous.possessed_paladin_servant.awaken.1}），
+     * <p>{@code message} 传的是<b>翻译键</b>，
      * 走 {@link Component#translatable} 查语言文件，所以中英文会自动切。
      */
     public void sendAdvancedHotBarMessage(String message, ChatFormatting chatFormatting, float PlayerRange) {

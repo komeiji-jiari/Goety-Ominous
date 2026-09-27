@@ -1,7 +1,9 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm;
 
+import com.qiuyue.goetyominous.config.MobsConfig;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.utils.MobUtil;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IMoveGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IStateGoal;
@@ -11,7 +13,6 @@ import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
 import net.miauczel.legendary_monsters.Particle.custom.Circle;
-import net.miauczel.legendary_monsters.config.ModConfig;
 import net.miauczel.legendary_monsters.effect.ModEffects;
 import net.miauczel.legendary_monsters.entity.AnimatedMonster.Effect.CameraShakeEntity;
 import net.miauczel.legendary_monsters.entity.AnimatedMonster.Projectile.LMFallingBlockEntity;
@@ -117,6 +118,11 @@ public class ShulkerMimicServant extends IAnimatedMiniBossServant {
         this.entityParts = new ShulkerMimicServantPart[]{this.head};
         this.setNoAi(false);
         this.setPersistenceRequired();
+    }
+
+    @Override
+    public double damageMultiplier() {
+        return MobsConfig.ShulkerMimicServantDamageMultiplier.get();
     }
 
     @Override
@@ -325,7 +331,7 @@ public class ShulkerMimicServant extends IAnimatedMiniBossServant {
     }
 
     private boolean isFriendlyTo(LivingEntity other) {
-        return other == this || other instanceof ShulkerMimicServant || MobUtil.areAllies(this, other);
+        return other == this || other instanceof ShulkerMimicServant || ServantAllyUtil.areAllied(this, other);
     }
 
     private void tickPart(ShulkerMimicServantPart part, double offsetX, double offsetY, double offsetZ) {
@@ -1064,7 +1070,7 @@ public class ShulkerMimicServant extends IAnimatedMiniBossServant {
                 continue;
             }
             boolean flag = entityHit.hurt(this.damageSources().mobAttack(this),
-                    (float) ((damage - this.damageNerf()) * ModConfig.MOB_CONFIG.ShulkerMimicDamageMutliplier.get()));
+                    (float) (damage - this.damageNerf()));
             if (flag) {
                 this.playSound(ModSounds.POSESSED_PALADIN_ATTACK3.get(), 1.0F, 0.5F);
                 if (launch) {
@@ -1087,7 +1093,7 @@ public class ShulkerMimicServant extends IAnimatedMiniBossServant {
                 continue;
             }
             boolean flag = entityHit.hurt(this.damageSources().mobAttack(this),
-                    (float) ((damage - this.damageNerf()) * ModConfig.MOB_CONFIG.ShulkerMimicDamageMutliplier.get()));
+                    (float) (damage - this.damageNerf()));
             if (flag) {
                 this.addEffect(new MobEffectInstance(ModEffects.GRAVITY_PULL.get(), 100, 2));
             }
@@ -1121,7 +1127,7 @@ public class ShulkerMimicServant extends IAnimatedMiniBossServant {
                 continue;
             }
             boolean flag = entityHit.hurt(this.damageSources().mobAttack(this),
-                    (float) ((damage - this.damageNerf()) * ModConfig.MOB_CONFIG.ShulkerMimicDamageMutliplier.get()));
+                    (float) (damage - this.damageNerf()));
             if (flag) {
                 if (canStun) {
                     if (entityHit == this.getTarget()) {
@@ -1154,7 +1160,7 @@ public class ShulkerMimicServant extends IAnimatedMiniBossServant {
             }
             hitAny = true;
             boolean flag = entityHit.hurt(this.damageSources().mobAttack(this),
-                    (float) (damage - this.damageNerf() * ModConfig.MOB_CONFIG.ShulkerMimicDamageMutliplier.get()
+                    (float) (damage - this.damageNerf()
                             + (this.getTarget() != null ? this.getTarget().getMaxHealth() * 0.03F : 0.0F)));
             boolean mounted = entityHit == this.target() && entityHit.startRiding(this, true);
             if (flag && mounted) {

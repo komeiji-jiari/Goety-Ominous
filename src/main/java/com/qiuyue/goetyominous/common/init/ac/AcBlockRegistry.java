@@ -1,7 +1,9 @@
 package com.qiuyue.goetyominous.common.init.ac;
 
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.common.blocks.ac.AnnihilationBombBlock;
 import com.qiuyue.goetyominous.common.blocks.ac.AtlatitanServantEggBlock;
+import com.qiuyue.goetyominous.common.blocks.ac.GammaroachNestBlock;
 import com.qiuyue.goetyominous.common.blocks.ac.GrottoceratopsServantEggBlock;
 import com.qiuyue.goetyominous.common.blocks.ac.RelicheirusServantEggBlock;
 import com.qiuyue.goetyominous.common.blocks.ac.TremorsaurusServantEggBlock;
@@ -64,6 +66,17 @@ public class AcBlockRegistry {
                                     .strength(0.5F)
                                     .sound(SoundType.METAL)
                                     .randomTicks()));
+
+    public static final RegistryObject<Block> GAMMAROACH_NEST =
+            AC_BLOCKS.register("gammaroach_nest", GammaroachNestBlock::new);
+
+    public static final RegistryObject<Block> ANNIHILATION_BOMB =
+            AC_BLOCKS.register("annihilation_core",
+                    () -> new AnnihilationBombBlock(
+                            BlockBehaviour.Properties.of()
+                                    .mapColor(MapColor.METAL)
+                                    .strength(8.0F, 1001.0F)
+                                    .sound(SoundType.METAL)));
 
     public static void register(IEventBus modEventBus) {
         AC_BLOCKS.register(modEventBus);

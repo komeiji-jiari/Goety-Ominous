@@ -4,7 +4,6 @@ import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
 import net.miauczel.legendary_monsters.Particle.custom.AnnihilationBombTrail;
-import net.miauczel.legendary_monsters.config.ModConfig;
 import net.miauczel.legendary_monsters.damagetype.ModDamageTypes;
 import net.miauczel.legendary_monsters.sound.ModSounds;
 import net.miauczel.legendary_monsters.util.MathUtils;
@@ -82,8 +81,7 @@ public class SmallAnnihilationBomb extends ThrowableProjectile {
             return;
         }
         living.hurt(ModDamageTypes.causeAnnihilationDamage(owner, owner),
-                (float) ((this.getDamage() + MathUtils.entityBasedHpDamage(living, 3.0F))
-                        * ModConfig.MOB_CONFIG.FlameDrifterDamageMutliplier.get()));
+                (float) (this.getDamage() + MathUtils.entityBasedHpDamage(living, 3.0F)));
     }
 
     @Override

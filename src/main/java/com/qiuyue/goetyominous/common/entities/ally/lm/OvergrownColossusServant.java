@@ -6,7 +6,8 @@ import net.minecraft.core.particles.ParticleTypes;
 import com.Polarice3.Goety.config.ItemConfig;
 import com.Polarice3.Goety.utils.CuriosFinder;
 import com.Polarice3.Goety.utils.MobUtil;
-import net.miauczel.legendary_monsters.config.ModConfig;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
+import com.qiuyue.goetyominous.config.MobsConfig;
 import net.miauczel.legendary_monsters.entity.AnimatedMonster.Effect.CameraShakeEntity;
 import net.miauczel.legendary_monsters.item.ModItems;
 import net.miauczel.legendary_monsters.entity.ai.navigation.EntityRotationPatcher;
@@ -39,7 +40,6 @@ import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -367,10 +367,6 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
         return ModSounds.OVERGROWN_COLOSSUS_DEATH.get();
     }
 
-    protected PathNavigation createNavigation(Level worldIn) {
-        return new net.minecraft.world.entity.ai.navigation.GroundPathNavigation(this, worldIn);
-    }
-
     @Override
     public void die(DamageSource source) {
         if (!this.level().isClientSide && this.getTrueOwner() != null) {
@@ -404,7 +400,7 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
             return false;
         if (source.is(DamageTypes.MAGIC))
             return false;
-        if (ModConfig.MOB_CONFIG.Overgrownprojectile.get()) {
+        if (MobsConfig.OvergrownColossusServantProjectileImmunity.get()) {
             if (source.getDirectEntity() instanceof AbstractArrow) {
                 return false;
             }
@@ -893,7 +889,7 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
             float entityRelativeAngle = entityHitAngle - entityAttackingAngle;
             float entityHitDistance = (float) Math.sqrt((entityHit.getZ() - this.getZ()) * (entityHit.getZ() - this.getZ()) + (entityHit.getX() - this.getX()) * (entityHit.getX() - this.getX()));
             if (entityHitDistance <= range && (entityRelativeAngle <= arc / 2 && entityRelativeAngle >= -arc / 2) || (entityRelativeAngle >= 360 - arc / 2 || entityRelativeAngle <= -360 + arc / 2)) {
-                if (!isAlliedTo(entityHit) && !MobUtil.areAllies(this, entityHit) && !(entityHit instanceof OvergrownColossusServant) && entityHit != this) {
+                if (!isAlliedTo(entityHit) && !ServantAllyUtil.areAllied(this, entityHit) && !(entityHit instanceof OvergrownColossusServant) && entityHit != this) {
                     if (!stun) {
                         if (!entityHit.isBlocking() && Math.random() > 0.5) {
 

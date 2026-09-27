@@ -20,25 +20,24 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.goals.PossessedPaladinSla
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.PossessedPaladinStabGrabGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.PossessedPaladinThrowDaggersGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.PossessedPaladinStateGoal;
+import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.EntityThrown;
+import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.FallingSoulBlade;
+import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulBlade;
+import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulPillar;
+import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulPillarExplosionEntity;
+import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulShield;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulStrike;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulTrident;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.ThrownPhantomDagger;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
-import net.minecraft.ChatFormatting;
-import net.minecraft.advancements.Advancement;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -56,8 +55,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -70,7 +67,6 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.miauczel.legendary_monsters.damagetype.ModDamageTypes;
-import net.miauczel.legendary_monsters.entity.AnimatedMonster.Projectile.ThrownEntity.EntityThrownEntity;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
@@ -85,25 +81,16 @@ import net.miauczel.legendary_monsters.Particle.custom.Circle;
 import net.miauczel.legendary_monsters.Particle.custom.SoulSweepParticle;
 import net.miauczel.legendary_monsters.Particle.custom.SoulSweepRedParticle;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
-import net.miauczel.legendary_monsters.config.ModConfig;
 import net.miauczel.legendary_monsters.effect.ModEffects;
-import net.miauczel.legendary_monsters.entity.AnimatedMonster.AnimatedEntity.FallingSoulBladeEntity;
-import net.miauczel.legendary_monsters.entity.AnimatedMonster.AnimatedEntity.SoulBladeEntity;
-import net.miauczel.legendary_monsters.entity.AnimatedMonster.AnimatedEntity.SoulShieldEntity;
 import net.miauczel.legendary_monsters.effect.DynamicCameraZoomEntity;
 import net.miauczel.legendary_monsters.entity.AnimatedMonster.Effect.CameraShakeEntity;
-import net.miauczel.legendary_monsters.entity.AnimatedMonster.Projectile.SoulPillarEntity;
+import net.miauczel.legendary_monsters.entity.client.ControlledAnim;
 import net.miauczel.legendary_monsters.item.ModItems;
 import net.miauczel.legendary_monsters.sound.ModSounds;
 import net.miauczel.legendary_monsters.util.EntityUtil;
 import net.miauczel.legendary_monsters.util.MathUtils;
 import net.miauczel.legendary_monsters.util.ParticleUtils;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 public class PossessedPaladinServant extends IAnimatedBossServant {
 
@@ -195,18 +182,13 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
     public AnimationState idleAnimationState;
     public AnimationState DoubleSlashAnimationState;
     public AnimationState DoubleSlashEndAnimationState;
-    public AnimationState DoubleSlashSlamEndAnimationState;
     public AnimationState ParryAnimationState;
-    public AnimationState deathAnimationState;
     public AnimationState SwordSlamAnimationState;
     public AnimationState SwordSlamEndAnimationState;
     public AnimationState SwordSlamCounterEndAnimationState;
     public AnimationState SwordSlamCounterReleaseAnimationState;
     public AnimationState AllertedAnimationState;
     public AnimationState BackflipAnimationState;
-    public AnimationState BackflipEndAnimationState;
-    public AnimationState BackflipDoubleAnimationState;
-    public AnimationState FlyAwaySlashAnimationState;
     public AnimationState FlipSmashAnimationState;
     public AnimationState FlipSmashEndAnimationState;
     public AnimationState FlipSmashFlipAnimationState;
@@ -303,18 +285,13 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         this.idleAnimationState = new AnimationState();
         this.DoubleSlashAnimationState = new AnimationState();
         this.DoubleSlashEndAnimationState = new AnimationState();
-        this.DoubleSlashSlamEndAnimationState = new AnimationState();
         this.ParryAnimationState = new AnimationState();
-        this.deathAnimationState = new AnimationState();
         this.SwordSlamAnimationState = new AnimationState();
         this.SwordSlamEndAnimationState = new AnimationState();
         this.SwordSlamCounterEndAnimationState = new AnimationState();
         this.SwordSlamCounterReleaseAnimationState = new AnimationState();
         this.AllertedAnimationState = new AnimationState();
         this.BackflipAnimationState = new AnimationState();
-        this.BackflipEndAnimationState = new AnimationState();
-        this.BackflipDoubleAnimationState = new AnimationState();
-        this.FlyAwaySlashAnimationState = new AnimationState();
         this.FlipSmashAnimationState = new AnimationState();
         this.FlipSmashEndAnimationState = new AnimationState();
         this.FlipSmashFlipAnimationState = new AnimationState();
@@ -347,6 +324,11 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         this.succedGrabbing = false;
         this.hasHurt = false;
         this.shouldAttackMore = false;
+    }
+
+    @Override
+    public double damageMultiplier() {
+        return MobsConfig.PossessedPaladinServantDamageMultiplier.get();
     }
 
     private static int toTicks(float seconds) {
@@ -384,12 +366,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         pCompound.putInt("phase", this.getPhase());
 
         pCompound.putBoolean("is_Sleep", this.isSleep());
-
-        ListTag saidList = new ListTag();
-        for (String name : this.saidBossLines) {
-            saidList.add(StringTag.valueOf(name));
-        }
-        pCompound.put("said_boss_lines", saidList);
     }
 
     @Override
@@ -404,12 +380,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         } else {
             this.setSleep(false);
         }
-
-        this.saidBossLines.clear();
-        ListTag saidList = pCompound.getList("said_boss_lines", Tag.TAG_STRING);
-        for (int i = 0; i < saidList.size(); ++i) {
-            this.saidBossLines.add(saidList.getString(i));
-        }
     }
 
     @Override
@@ -422,7 +392,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         float f = Mth.cos(this.yBodyRot * ((float) Math.PI / 180F));
         float f1 = Mth.sin(this.yBodyRot * ((float) Math.PI / 180F));
         double theta = (double) this.yBodyRot * (Math.PI / 180D);
-        ++theta;
+        theta += 1.5707963267948966;
         double vecX = Math.cos(theta);
         double vecZ = Math.sin(theta);
         float vec = 1.0F;
@@ -533,8 +503,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             return this.DoubleSlashAnimationState;
         } else if (input.equals("double_slash_end")) {
             return this.DoubleSlashEndAnimationState;
-        } else if (input.equals("double_slash_slam_end")) {
-            return this.DoubleSlashSlamEndAnimationState;
         } else if (input.equals("parry")) {
             return this.ParryAnimationState;
         } else if (input.equals("sword_slam_cut")) {
@@ -547,8 +515,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             return this.SwordSlamCounterReleaseAnimationState;
         } else if (input.equals("backflip")) {
             return this.BackflipAnimationState;
-        } else if (input.equals("fly_away_slash")) {
-            return this.FlyAwaySlashAnimationState;
         } else if (input.equals("flip_smash")) {
             return this.FlipSmashAnimationState;
         } else if (input.equals("flip_smash_end")) {
@@ -581,10 +547,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             return this.JumpSmashAnimationState;
         } else if (input.equals("shield_smash")) {
             return this.ShieldSmashAnimationState;
-        } else if (input.equals("backflip_double")) {
-            return this.BackflipDoubleAnimationState;
-        } else if (input.equals("backflip_end")) {
-            return this.BackflipEndAnimationState;
         } else if (input.equals("second_phase")) {
             return this.SecondPhaseAnimationState;
         } else if (input.equals("side_roll_spin")) {
@@ -612,10 +574,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         if (ATTACK_STATE.equals(pKey) && this.level().isClientSide) {
             switch (this.getAttackState()) {
                 case 0 -> this.stopAllAnimationStates();
-                case 1 -> {
-                    this.stopAllAnimationStates();
-                    this.idleAnimationState.startIfStopped(this.tickCount);
-                }
                 case 2 -> {
                     this.stopAllAnimationStates();
                     this.DoubleSlashAnimationState.startIfStopped(this.tickCount);
@@ -623,10 +581,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                 case 3 -> {
                     this.stopAllAnimationStates();
                     this.DoubleSlashEndAnimationState.startIfStopped(this.tickCount);
-                }
-                case 4 -> {
-                    this.stopAllAnimationStates();
-                    this.DoubleSlashSlamEndAnimationState.startIfStopped(this.tickCount);
                 }
                 case 5 -> {
                     this.stopAllAnimationStates();
@@ -651,10 +605,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                 case 10 -> {
                     this.stopAllAnimationStates();
                     this.BackflipAnimationState.startIfStopped(this.tickCount);
-                }
-                case 11 -> {
-                    this.stopAllAnimationStates();
-                    this.FlyAwaySlashAnimationState.startIfStopped(this.tickCount);
                 }
                 case 12 -> {
                     this.stopAllAnimationStates();
@@ -716,10 +666,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                     this.stopAllAnimationStates();
                     this.SecondPhaseAnimationState.startIfStopped(this.tickCount);
                 }
-                case 27 -> {
-                    this.stopAllAnimationStates();
-                    this.BackflipEndAnimationState.startIfStopped(this.tickCount);
-                }
                 case 28 -> {
                     this.stopAllAnimationStates();
                     this.ThrowDoubleAnimationState.startIfStopped(this.tickCount);
@@ -776,16 +722,13 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         this.ThrowDoubleAnimationState.stop();
         this.idleAnimationState.stop();
         this.DoubleSlashAnimationState.stop();
-        this.deathAnimationState.stop();
         this.DoubleSlashEndAnimationState.stop();
-        this.DoubleSlashSlamEndAnimationState.stop();
         this.ParryAnimationState.stop();
         this.SwordSlamEndAnimationState.stop();
         this.SwordSlamCounterEndAnimationState.stop();
         this.SwordSlamAnimationState.stop();
         this.AllertedAnimationState.stop();
         this.BackflipAnimationState.stop();
-        this.FlyAwaySlashAnimationState.stop();
         this.FlipSmashEndAnimationState.stop();
         this.FlipSmashFlipAnimationState.stop();
         this.FlipSmashAnimationState.stop();
@@ -799,8 +742,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         this.JumpPreAnimationState.stop();
         this.JumpFallAnimationState.stop();
         this.JumpSmashAnimationState.stop();
-        this.BackflipDoubleAnimationState.stop();
-        this.BackflipEndAnimationState.stop();
         this.ShieldSmashAnimationState.stop();
         this.SecondPhaseAnimationState.stop();
         this.SideRollSpinAnimationState.stop();
@@ -863,11 +804,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
     public boolean canRenderTelegraph() {
         return this.attackTicks >= 48 && this.attackTicks <= 60 && this.getAttackState() == 32
                 || this.getAttackState() == 38 && this.attackTicks >= 48 && this.attackTicks <= 69;
-    }
-
-    @Override
-    protected PathNavigation createNavigation(Level pLevel) {
-        return new GroundPathNavigation(this, pLevel);
     }
 
     @Override
@@ -1371,9 +1307,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             --this.BossInvulnerabilityTime;
         }
 
-        this.tickBossLine();
-        this.tickIdleTalk();
-
         if (this.level().isClientSide) {
             this.idleAnimationState.animateWhen(this.getAttackState() == 0, this.tickCount);
         }
@@ -1579,7 +1512,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         float f = Mth.cos(this.yBodyRot * ((float) Math.PI / 180F));
         float f1 = Mth.sin(this.yBodyRot * ((float) Math.PI / 180F));
         double theta = (double) this.yBodyRot * (Math.PI / 180D);
-        ++theta;
+        theta += 1.5707963267948966;
         double vecX = Math.cos(theta);
         double vecZ = Math.sin(theta);
 
@@ -1786,11 +1719,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         }
 
         if (this.getAttackState() == 26) {
-            if (this.attackTicks == 30) {
-                this.sendAdvancedHotBarMessage("message.goetyominous.possessed_paladin_servant.phase2.1",
-                        ChatFormatting.AQUA, 10.0F);
-            }
-
             if (this.attackTicks == 49) {
                 CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.15F, 5, 5);
                 this.SideAreaAttack(3.0F, 4.0F, 360.0F, 0.0F, 0.0F, 15.0F, 0,
@@ -1833,8 +1761,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             }
 
             if (this.attackTicks == MathUtils.toTicks(4.13F)) {
-                this.sendAdvancedHotBarMessage("message.goetyominous.possessed_paladin_servant.phase2.2",
-                        ChatFormatting.AQUA, 10.0F);
                 CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.1F, 5, 5);
                 this.playSound(SoundEvents.WITHER_SHOOT, 1.0F, 1.0F);
                 this.soulStrikeRing(1.0F, 15, 0.0F);
@@ -2142,8 +2068,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                         continue;
                     }
                     boolean hurt = livingPassenger.hurt(ModDamageTypes.causeGhostlyDamage(this, this),
-                            (float) (2.0D + (double) MathUtils.entityBasedHpDamage(livingPassenger, 5.0F)
-                                    * (Double) ModConfig.MOB_CONFIG.PosessedPaladinDamageMutliplier.get()));
+                            (float) (2.0D + (double) MathUtils.entityBasedHpDamage(livingPassenger, 5.0F)));
                     if (hurt) {
                         this.heal(3.0F + MathUtils.entityBasedHpDamage(livingPassenger, 0.25F));
                     }
@@ -2456,20 +2381,8 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         }
 
         if (this.getAttackState() == 35) {
-            float playerHearTalking = 10.0F;
-
             if (this.attackTicks == 1) {
                 CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.075F, 0, 20);
-            }
-
-            if (this.attackTicks == 40) {
-                this.sendAdvancedHotBarMessage("message.goetyominous.possessed_paladin_servant.awaken.1",
-                        ChatFormatting.AQUA, playerHearTalking);
-            }
-
-            if (this.attackTicks == 80) {
-                this.sendAdvancedHotBarMessage("message.goetyominous.possessed_paladin_servant.awaken.2",
-                        ChatFormatting.AQUA, playerHearTalking);
             }
 
             if (this.attackTicks == 143) {
@@ -2485,8 +2398,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         }
 
         if (this.getAttackState() == 36) {
-            float playerHearTalking = 10.0F;
-
             float vec = 1.0F;
             float offset = 0.0F;
             float f3 = (this.random.nextFloat() - 0.0F) * 0.5F;
@@ -2511,11 +2422,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                                 ? ModParticles.GHOSTLY_SOUL_RED.get() : ModParticles.GHOSTLY_SOUL.get(),
                         this.getX() + (double) f9, this.getY() + 2.0D + (double) f10,
                         this.getZ() + (double) f2, 0.0D, 0.5D, 0.0D);
-            }
-
-            if (this.attackTicks == 20) {
-                this.sendAdvancedHotBarMessage("message.goetyominous.possessed_paladin_servant.death.1",
-                        ChatFormatting.RED, playerHearTalking);
             }
 
             if (this.attackTicks == stab1) {
@@ -2557,8 +2463,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                 ++this.rayAmount;
                 this.playSound(SoundEvents.RESPAWN_ANCHOR_CHARGE, 1.0F, 0.75F);
                 CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.1F, 5, 5);
-                this.sendAdvancedHotBarMessage("message.goetyominous.possessed_paladin_servant.death.2",
-                        ChatFormatting.RED, playerHearTalking);
             }
 
             if (this.attackTicks == 240) {
@@ -2653,13 +2557,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             }
             if (this.attackTicks >= 312) {
                 this.ghostItemFade.increaseTimer();
-            }
-
-            if (this.attackTicks == 25) {
-                this.sendAdvancedHotBarMessage(this.getRandom().nextBoolean()
-                                ? "message.goetyominous.possessed_paladin_servant.finisher.1"
-                                : "message.goetyominous.possessed_paladin_servant.finisher.2",
-                        ChatFormatting.RED, 10.0F);
             }
 
             if (this.attackTicks == crossSlash - 3) {
@@ -2920,9 +2817,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         for (LivingEntity entityHit : this.level().getEntitiesOfClass(LivingEntity.class, attackRange)) {
             if (!this.isAlliedTo(entityHit) && entityHit != this) {
                 boolean flag = entityHit.hurt(this.damageSources().mobAttack(this),
-                        (float) ((double) damage
-                                + (double) MathUtils.entityBasedHpDamage(entityHit, 3.0F)
-                                * (Double) ModConfig.MOB_CONFIG.PosessedPaladinDamageMutliplier.get()));
+                        (float) ((double) damage + (double) MathUtils.entityBasedHpDamage(entityHit, 3.0F)));
                 if (flag) {
                     EntityUtil.cancelBuffs(entityHit);
                     entityHit.invulnerableTime = 0;
@@ -2944,7 +2839,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         float f = Mth.cos(this.yBodyRot * ((float) Math.PI / 180F));
         float f1 = Mth.sin(this.yBodyRot * ((float) Math.PI / 180F));
         double theta = (double) this.yBodyRot * (Math.PI / 180D);
-        ++theta;
+        theta += 1.5707963267948966;
         double vecX = Math.cos(theta);
         double vecZ = Math.sin(theta);
         int standingOnY = Mth.floor(this.getY()) - 1;
@@ -2985,7 +2880,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         float f = Mth.cos(this.yBodyRot * ((float) Math.PI / 180F));
         float f1 = Mth.sin(this.yBodyRot * ((float) Math.PI / 180F));
         double theta = (double) this.yBodyRot * (Math.PI / 180D);
-        ++theta;
+        theta += 1.5707963267948966;
         double vecX = Math.cos(theta);
         double vecZ = Math.sin(theta);
         float angle = 360.0F / (float) quake;
@@ -3027,7 +2922,38 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         } while (blockpos.getY() >= lowestYCheck);
 
         if (flag) {
-            world.addFreshEntity(new SoulPillarEntity(world, x, (double) blockpos.getY() + d0, z, yRot,
+            world.addFreshEntity(new SoulPillar(world, x, (double) blockpos.getY() + d0, z, yRot,
+                    warmupDelayTicks, this, 20, 8.0F, this.getIsSecondPhase()));
+            return true;
+        }
+        return false;
+    }
+
+    private boolean spawnSoulPillarExplosions(double x, double y, double z, int lowestYCheck, float yRot,
+                                              int warmupDelayTicks, Level world, LivingEntity player) {
+        BlockPos blockpos = BlockPos.containing(x, y, z);
+        boolean flag = false;
+        double d0 = 0.0D;
+
+        do {
+            BlockPos blockpos1 = blockpos.below();
+            BlockState blockstate = world.getBlockState(blockpos1);
+            if (blockstate.isFaceSturdy(world, blockpos1, Direction.UP)) {
+                if (!world.isEmptyBlock(blockpos)) {
+                    BlockState blockstate1 = world.getBlockState(blockpos);
+                    VoxelShape voxelshape = blockstate1.getCollisionShape(world, blockpos);
+                    if (!voxelshape.isEmpty()) {
+                        d0 = voxelshape.max(Direction.Axis.Y);
+                    }
+                }
+                flag = true;
+                break;
+            }
+            blockpos = blockpos.below();
+        } while (blockpos.getY() >= lowestYCheck);
+
+        if (flag) {
+            world.addFreshEntity(new SoulPillarExplosionEntity(world, x, (double) blockpos.getY() + d0, z, yRot,
                     warmupDelayTicks, this, 20, 8.0F, this.getIsSecondPhase()));
             return true;
         }
@@ -3102,7 +3028,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                         x, (double) blockpos.getY() + 0.25D + d0, z, 0.0D, 0.0D, 0.0D);
             }
         } else {
-            this.level().addFreshEntity(new SoulShieldEntity(this.level(), x,
+            this.level().addFreshEntity(new SoulShield(this.level(), x,
                     (double) blockpos.getY() + d0, z, rotation, delay, this, 10.0F,
                     destX, destY, destZ, isOuter, this.getPhase() >= 2));
         }
@@ -3119,7 +3045,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         float f = Mth.cos(this.yBodyRot * ((float) Math.PI / 180F));
         float f1 = Mth.sin(this.yBodyRot * ((float) Math.PI / 180F));
         double theta = (double) this.yBodyRot * (Math.PI / 180D);
-        ++theta;
+        theta += 1.5707963267948966;
         double vecX = Math.cos(theta);
         double vecZ = Math.sin(theta);
         this.level().addParticle(
@@ -3192,7 +3118,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         float f = Mth.cos(this.yBodyRot * ((float) Math.PI / 180F));
         float f1 = Mth.sin(this.yBodyRot * ((float) Math.PI / 180F));
         double theta = (double) this.yBodyRot * (Math.PI / 180D);
-        ++theta;
+        theta += 1.5707963267948966;
         double vecX = Math.cos(theta);
         double vecZ = Math.sin(theta);
         double x = this.getX() + (double) pos * vecX + (double) (f * posOffset);
@@ -3205,10 +3131,10 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             float pitch = (float) (reverse ? -1 : 1)
                     * (float) Math.atan2((double) yHeight, Math.sqrt(lookX * lookX + lookZ * lookZ));
             if (this.getPhase() >= 2) {
-                this.level().addParticle(new SoulSweepRedParticle.SweepData(2.0F * scale, yaw, pitch),
+                this.level().addParticle(new SoulSweepRedParticle.SweepData(this.getScale() * scale, yaw, pitch),
                         x, d1, z, 0.0D, 0.0D, 0.0D);
             } else {
-                this.level().addParticle(new SoulSweepParticle.SweepData(2.0F * scale, yaw, pitch),
+                this.level().addParticle(new SoulSweepParticle.SweepData(this.getScale() * scale, yaw, pitch),
                         x, d1, z, 0.0D, 0.0D, 0.0D);
             }
         }
@@ -3226,9 +3152,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         for (LivingEntity entityHit : this.level().getEntitiesOfClass(LivingEntity.class, attackRange)) {
             if (!this.isAlliedTo(entityHit) && entityHit != this) {
                 boolean flag = entityHit.hurt(this.damageSources().mobAttack(this),
-                        (float) ((double) damage
-                                + (double) MathUtils.entityBasedHpDamage(entityHit, 3.0F)
-                                * (Double) ModConfig.MOB_CONFIG.PosessedPaladinDamageMutliplier.get()));
+                        (float) ((double) damage + (double) MathUtils.entityBasedHpDamage(entityHit, 3.0F)));
                 if (flag) {
                     this.applyStackingEffect(entityHit, ModEffects.SOUL_FRACTURE.get(), 1, 4,
                             MathUtils.toTicks(10.0F));
@@ -3257,7 +3181,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             double d1 = this.getY() + (double) height;
             double d2 = this.getZ();
             double theta = (double) this.yBodyRot * (Math.PI / 180D);
-            ++theta;
+            theta += 1.5707963267948966;
             double vecX = Math.cos(theta);
             double vecZ = Math.sin(theta);
 
@@ -3284,8 +3208,8 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
     public void throwAnGravityEntity(float velocity, double destX, double destY, double destZ,
                                      double x, double y, double z, float damage, LivingEntity passenger) {
         if (passenger != null) {
-            EntityThrownEntity thrownEntity = new EntityThrownEntity(this.level(), this, x, y, z,
-                    damage, 1.0F, passenger);
+            EntityThrown thrownEntity = new EntityThrown(this.level(), this, x, y, z,
+                    damage, passenger);
             thrownEntity.setPosRaw(x, y, z);
             double d0 = destX - x;
             double d1 = destY + 0.5D - thrownEntity.getY();
@@ -3359,10 +3283,10 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                                 0.8F, 15.0F, false, Circle.EnumRingBehavior.SHRINK),
                         x, spawnY + 0.25D, z, 0.0D, 0.0D, 0.0D);
             } else if (falling) {
-                this.level().addFreshEntity(new FallingSoulBladeEntity(this.level(), x, spawnY, z,
+                this.level().addFreshEntity(new FallingSoulBlade(this.level(), x, spawnY, z,
                         rotation, delay, this, damage, this.getPhase() >= 2));
             } else {
-                this.level().addFreshEntity(new SoulBladeEntity(this.level(), x, spawnY, z,
+                this.level().addFreshEntity(new SoulBlade(this.level(), x, spawnY, z,
                         rotation, delay, this, damage, this.getPhase() >= 2));
             }
         }
@@ -3433,9 +3357,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                         ? ModDamageTypes.causeGhostlyDamage(this, this)
                         : this.damageSources().mobAttack(this);
                 boolean flag = entityHit.hurt(damageSource,
-                        (float) ((double) damage
-                                + (double) MathUtils.entityBasedHpDamage(entityHit, 3.0F)
-                                * (Double) ModConfig.MOB_CONFIG.PosessedPaladinDamageMutliplier.get()));
+                        (float) ((double) damage + (double) MathUtils.entityBasedHpDamage(entityHit, 3.0F)));
                 if (flag) {
                     EntityUtil.cancelBuffs(entityHit);
                     entityHit.invulnerableTime = 0;
@@ -3485,7 +3407,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         float f = Mth.cos(this.yBodyRot * ((float) Math.PI / 180F));
         float f1 = Mth.sin(this.yBodyRot * ((float) Math.PI / 180F));
         double theta1 = (double) this.yBodyRot * (Math.PI / 180D);
-        ++theta1;
+        theta1 += 1.5707963267948966;
         double vecX = Math.cos(theta1);
         double vecZ = Math.sin(theta1);
 
@@ -3515,7 +3437,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         float f = Mth.cos(this.yBodyRot * ((float) Math.PI / 180F));
         float f1 = Mth.sin(this.yBodyRot * ((float) Math.PI / 180F));
         double theta = (double) this.yBodyRot * (Math.PI / 180D);
-        ++theta;
+        theta += 1.5707963267948966;
         double vecX = Math.cos(theta);
         double vecZ = Math.sin(theta);
         double lowestYCheck = this.getY() - 1.0D;
@@ -3548,16 +3470,16 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                 if (l % 2 == 0) {
                     double d2 = 1.25D * (double) (l + 1);
                     double lowestY = this.getY();
-                    this.spawnSoulPillars(v1.x + (double) Mth.cos(v1v2atan2) * d2, lowestY,
+                    this.spawnSoulPillarExplosions(v1.x + (double) Mth.cos(v1v2atan2) * d2, lowestY,
                             v1.z + (double) Mth.sin(v1v2atan2) * d2, (int) lowestYCheck, f,
                             delay + loopDelay, this.level(), this);
-                    this.spawnSoulPillars(v2.x + (double) Mth.cos(v2v3atan2) * d2, lowestY,
+                    this.spawnSoulPillarExplosions(v2.x + (double) Mth.cos(v2v3atan2) * d2, lowestY,
                             v2.z + (double) Mth.sin(v2v3atan2) * d2, (int) lowestYCheck, f,
                             delay + loopDelay, this.level(), this);
-                    this.spawnSoulPillars(v1.x + (double) Mth.cos(v1v4atan2) * d2, lowestY,
+                    this.spawnSoulPillarExplosions(v1.x + (double) Mth.cos(v1v4atan2) * d2, lowestY,
                             v1.z + (double) Mth.sin(v1v4atan2) * d2, (int) lowestYCheck, f,
                             delay + loopDelay, this.level(), this);
-                    this.spawnSoulPillars(v4.x + (double) Mth.cos(v4v3atan2) * d2, lowestY,
+                    this.spawnSoulPillarExplosions(v4.x + (double) Mth.cos(v4v3atan2) * d2, lowestY,
                             v4.z + (double) Mth.sin(v4v3atan2) * d2, (int) lowestYCheck, f,
                             delay + loopDelay, this.level(), this);
                 }
@@ -3568,7 +3490,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                     this.level().addParticle(ModParticles.SOUL_EXPLOSION_RED.get(),
                             x, this.getY() + 0.5D, z, 0.0D, 0.0D, 0.0D);
                 }
-                this.spawnSoulPillars(x, this.getY() - 1.0D, z, (int) lowestYCheck, f,
+                this.spawnSoulPillarExplosions(x, this.getY() - 1.0D, z, (int) lowestYCheck, f,
                         delay, this.level(), this);
             }
         }
@@ -3579,7 +3501,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         float f = Mth.cos(this.yBodyRot * ((float) Math.PI / 180F));
         float f1 = Mth.sin(this.yBodyRot * ((float) Math.PI / 180F));
         double theta = (double) this.yBodyRot * (Math.PI / 180D);
-        ++theta;
+        theta += 1.5707963267948966;
         double vecX = Math.cos(theta);
         double vecZ = Math.sin(theta);
         int rX = this.random1.nextInt(-cap, cap);
@@ -3650,7 +3572,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         }
 
         if (this.BossInvulnerabilityTime > 0
-                && ModConfig.MOB_CONFIG.PossessedPaladinInvulnerabilityTime.get()) {
+                && MobsConfig.PossessedPaladinServantInvulnerabilityTime.get()) {
             return false;
         }
 
@@ -3672,149 +3594,10 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
 
         boolean hurt1 = super.hurt(source, amount);
         if (hurt1 && !this.level().isClientSide
-                && ModConfig.MOB_CONFIG.PossessedPaladinInvulnerabilityTime.get()
+                && MobsConfig.PossessedPaladinServantInvulnerabilityTime.get()
                 && this.BossInvulnerabilityTime <= 0) {
             this.BossInvulnerabilityTime = BOSS_INVULNERABILITY_TICKS;
         }
         return hurt1;
-    }
-
-    private static final float PLAYER_HEAR_TALKING = 10.0F;
-
-    private static final Map<String, String> BOSS_LINES = Map.of(
-            "legendary_monsters:the_obliterator",
-            "message.goetyominous.possessed_paladin_servant.boss.obliterator",
-            "legendary_monsters:cloud_golem",
-            "message.goetyominous.possessed_paladin_servant.boss.cloud_golem",
-            "goety:ender_keeper",
-            "message.goetyominous.possessed_paladin_servant.boss.ender_keeper",
-            "goety:heresiarch",
-            "message.goetyominous.possessed_paladin_servant.boss.heresiarch",
-            "goety:apostle",
-            "message.goetyominous.possessed_paladin_servant.boss.apostle");
-
-    private final Set<String> saidBossLines = new HashSet<>();
-
-    private void tickBossLine() {
-        if (this.level().isClientSide) {
-            return;
-        }
-
-        LivingEntity target = this.getTarget();
-        if (target == null) {
-            return;
-        }
-
-        ResourceLocation id = ForgeRegistries.ENTITY_TYPES.getKey(target.getType());
-        if (id == null) {
-            return;
-        }
-
-        String name = id.toString();
-        String line = BOSS_LINES.get(name);
-        if (line == null) {
-            return;
-        }
-
-        if (this.saidBossLines.add(name)) {
-            this.sendAdvancedHotBarMessage(line, ChatFormatting.AQUA, PLAYER_HEAR_TALKING);
-        }
-    }
-
-    private static final int IDLE_TALK_INTERVAL = 400;
-
-    public int idle_talk_cooldown = IDLE_TALK_INTERVAL;
-
-    private String pendingIdleTalk;
-
-    private int pendingIdleTalkDelay;
-
-    private static final float IDLE_TALK_CHANCE = 0.35F;
-
-    private static final int IDLE_TALK_GAP = 40;
-
-    private static final float IDLE_SPECIAL_CHANCE = 0.25F;
-
-    private static final String[][] IDLE_LINES = {
-            {"message.goetyominous.possessed_paladin_servant.idle.1"},
-            {"message.goetyominous.possessed_paladin_servant.idle.2"},
-            {"message.goetyominous.possessed_paladin_servant.idle.3"},
-            {"message.goetyominous.possessed_paladin_servant.idle.4a",
-                    "message.goetyominous.possessed_paladin_servant.idle.4b"},
-            {"message.goetyominous.possessed_paladin_servant.idle.5"},
-            {"message.goetyominous.possessed_paladin_servant.idle.6a",
-                    "message.goetyominous.possessed_paladin_servant.idle.6b"},
-    };
-
-    private static final String IDLE_APOSTLE_SLAIN =
-            "message.goetyominous.possessed_paladin_servant.idle.apostle_slain";
-
-    private static final ResourceLocation KILL_APOSTLE_ADVANCEMENT =
-            new ResourceLocation("goety", "kill_apostle");
-
-    private void tickIdleTalk() {
-        if (this.level().isClientSide) {
-            return;
-        }
-
-        if (this.pendingIdleTalk != null) {
-            if (--this.pendingIdleTalkDelay <= 0) {
-                this.sendAdvancedHotBarMessage(this.pendingIdleTalk, ChatFormatting.AQUA, PLAYER_HEAR_TALKING);
-                this.pendingIdleTalk = null;
-            }
-            return;
-        }
-
-        boolean idle = this.getAttackState() == 0
-                && this.getTarget() == null
-                && !this.isSleep();
-
-        if (!idle) {
-            this.idle_talk_cooldown = IDLE_TALK_INTERVAL;
-            return;
-        }
-
-        if (this.idle_talk_cooldown > 0) {
-            --this.idle_talk_cooldown;
-            return;
-        }
-
-        this.idle_talk_cooldown = IDLE_TALK_INTERVAL;
-        if (this.getRandom().nextFloat() >= IDLE_TALK_CHANCE) {
-            return;
-        }
-
-        String[] group = this.pickIdleLine();
-        this.sendAdvancedHotBarMessage(group[0], ChatFormatting.AQUA, PLAYER_HEAR_TALKING);
-
-        if (group.length > 1) {
-            this.pendingIdleTalk = group[1];
-            this.pendingIdleTalkDelay = IDLE_TALK_GAP;
-        }
-    }
-
-    private String[] pickIdleLine() {
-        if (this.getRandom().nextFloat() < IDLE_SPECIAL_CHANCE && this.ownerHasSlainApostle()) {
-            return new String[]{IDLE_APOSTLE_SLAIN};
-        }
-        return IDLE_LINES[this.getRandom().nextInt(IDLE_LINES.length)];
-    }
-
-    private boolean ownerHasSlainApostle() {
-        if (!(this.getTrueOwner() instanceof ServerPlayer owner)) {
-            return false;
-        }
-
-        MinecraftServer server = owner.getServer();
-        if (server == null) {
-            return false;
-        }
-
-        Advancement advancement = server.getAdvancements().getAdvancement(KILL_APOSTLE_ADVANCEMENT);
-        if (advancement == null) {
-            return false;
-        }
-
-        return owner.getAdvancements().getOrStartProgress(advancement).isDone();
     }
 }

@@ -1,7 +1,7 @@
 {
   "name": "Alex's Caves Compat",
   "description": "Seize dark arts from those strange caverns.",
-  "icon": "alexscaves:cave_book",
+  "icon": "alexscaves:tectonic_shard",
   "sortnum": 6,
   "parent": "goety:goetyominous"
 }

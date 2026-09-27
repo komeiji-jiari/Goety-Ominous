@@ -4,18 +4,14 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.qiuyue.goetyominous.common.entities.ally.lm.ShulkerMimicServant;
 import net.miauczel.legendary_monsters.entity.AnimatedMonster.Animations.ShulkerMimic.NewShulkerMimicAnimations;
+import net.miauczel.legendary_monsters.entity.client.Model.Shulker_MimicModel;
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.Keyframe;
 import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraftforge.api.distmarker.Dist;
@@ -88,27 +84,7 @@ public class ShulkerMimicServantModel<T extends ShulkerMimicServant> extends Hie
     }
 
     public static LayerDefinition createBodyLayer() {
-        MeshDefinition meshdefinition = new MeshDefinition();
-        PartDefinition partdefinition = meshdefinition.getRoot();
-        PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, -1.0F));
-        PartDefinition body = root.addOrReplaceChild("body", CubeListBuilder.create(), PartPose.offset(0.0F, -6.0F, 0.0F));
-        PartDefinition head = body.addOrReplaceChild("head", CubeListBuilder.create(), PartPose.offset(0.0F, -5.0F, 1.0F));
-        head.addOrReplaceChild("headmini", CubeListBuilder.create().texOffs(0, 94).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F)).texOffs(32, 94).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.3F)), PartPose.offset(0.0F, -6.1F, -1.0F));
-        PartDefinition upperboxinnerrotation = head.addOrReplaceChild("upperboxinnerrotation", CubeListBuilder.create(), PartPose.offset(0.0F, -13.2F, -0.5F));
-        PartDefinition upperbox = upperboxinnerrotation.addOrReplaceChild("upperbox", CubeListBuilder.create().texOffs(0, 67).addBox(-10.0F, -9.8F, -20.0F, 20.0F, 7.0F, 20.0F, new CubeDeformation(0.0F)).texOffs(80, 66).addBox(-10.0F, -2.8F, -20.0F, 20.0F, 6.0F, 20.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 3.0F, 10.0F));
-        upperbox.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(64, 94).addBox(8.5706F, -5.0F, -11.5706F, 0.0F, 10.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -6.8F, 2.122F, -3.1416F, 0.7854F, -3.1416F));
-        upperbox.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(64, 94).addBox(8.5706F, -5.0F, -11.5706F, 0.0F, 10.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-12.1213F, -6.8F, -10.0007F, 0.0F, 0.7854F, 0.0F));
-        upperbox.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(64, 94).mirror().addBox(-8.5706F, -5.0F, -11.5706F, 0.0F, 10.0F, 6.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(12.1213F, -6.8F, -10.0007F, 0.0F, -0.7854F, 0.0F));
-        upperbox.addOrReplaceChild("cube_r4", CubeListBuilder.create().texOffs(64, 94).mirror().addBox(-8.5706F, -5.0F, -11.5706F, 0.0F, 10.0F, 6.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(0.0F, -6.8F, 2.122F, -3.1416F, -0.7854F, 3.1416F));
-        PartDefinition lowerboxinnerrotation = head.addOrReplaceChild("lowerboxinnerrotation", CubeListBuilder.create(), PartPose.offset(0.0F, -7.0F, 0.0F));
-        PartDefinition lowerbox = lowerboxinnerrotation.addOrReplaceChild("lowerbox", CubeListBuilder.create().texOffs(0, 40).addBox(-10.0F, 2.8F, -20.0F, 20.0F, 7.0F, 20.0F, new CubeDeformation(0.0F)).texOffs(80, 40).addBox(-10.0F, -3.2F, -20.0F, 20.0F, 6.0F, 20.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -2.8F, 9.5F));
-        lowerbox.addOrReplaceChild("cube_r5", CubeListBuilder.create().texOffs(76, 104).mirror().addBox(-8.5706F, -5.0F, -11.5706F, 0.0F, 10.0F, 6.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(12.1213F, 6.8F, -10.0007F, 0.0F, -0.7854F, 0.0F));
-        lowerbox.addOrReplaceChild("cube_r6", CubeListBuilder.create().texOffs(76, 104).addBox(8.5706F, -5.0F, -11.5706F, 0.0F, 10.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-12.1213F, 6.8F, -10.0007F, 0.0F, 0.7854F, 0.0F));
-        lowerbox.addOrReplaceChild("cube_r7", CubeListBuilder.create().texOffs(76, 104).addBox(8.5706F, -5.0F, -11.5706F, 0.0F, 10.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 6.8F, 2.122F, 3.1416F, 0.7854F, 3.1416F));
-        lowerbox.addOrReplaceChild("cube_r8", CubeListBuilder.create().texOffs(76, 104).mirror().addBox(-8.5706F, -5.0F, -11.5706F, 0.0F, 10.0F, 6.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(0.0F, 6.8F, 2.122F, 3.1416F, -0.7854F, -3.1416F));
-        PartDefinition lowerbody = body.addOrReplaceChild("lowerbody", CubeListBuilder.create().texOffs(80, 92).addBox(-5.0F, 15.0F, -4.5F, 10.0F, 2.0F, 10.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -15.0F, 0.0F));
-        lowerbody.addOrReplaceChild("rotors", CubeListBuilder.create().texOffs(0, 0).addBox(-20.0F, 0.0F, -20.0F, 40.0F, 0.0F, 40.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 16.0F, 0.5F));
-        return LayerDefinition.create(meshdefinition, 256, 256);
+        return Shulker_MimicModel.createBodyLayer();
     }
 
     public void translateModel(PoseStack poseStack) {

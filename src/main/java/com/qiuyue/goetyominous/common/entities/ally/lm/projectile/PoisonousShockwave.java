@@ -1,7 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm.projectile;
 
 import com.Polarice3.Goety.api.entities.ISpellEntity;
-import com.Polarice3.Goety.utils.MobUtil;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.qiuyue.goetyominous.common.entities.ally.lm.OvergrownColossusServant;
 import net.miauczel.legendary_monsters.sound.ModSounds;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -248,7 +248,7 @@ PoisonousShockwave extends Entity implements ISpellEntity {
                     ImpactEntity.hurt(damageSource, getDamage());
 
                 } else {
-                    if (MobUtil.areAllies(livingentity, ImpactEntity)) {
+                    if (ServantAllyUtil.areAllied(livingentity, ImpactEntity)) {
                         return;
                     }
                     DamageSource damageSource = new DamageSource(this.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK), this.caster);

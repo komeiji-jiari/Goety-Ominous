@@ -336,6 +336,17 @@ public class AcEntityRegistry {
                             .setUpdateInterval(1)
                             .build(GoetyOminous.MOD_ID + ":water_bolt"));
 
+    public static final RegistryObject<EntityType<AnnihilationBombEntity>> ANNIHILATION_BOMB =
+            AC_ENTITIES.register("annihilation_core",
+                    () -> EntityType.Builder.<AnnihilationBombEntity>of((type, worldIn) -> new AnnihilationBombEntity(type, worldIn), MobCategory.MISC)
+                            .sized(0.98F, 0.98F)
+                            .setCustomClientFactory((spawnEntity, world) -> new AnnihilationBombEntity(spawnEntity, world))
+                            .setUpdateInterval(1)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .updateInterval(10)
+                            .clientTrackingRange(20)
+                            .build(GoetyOminous.MOD_ID + ":annihilation_core"));
+
     public static void register(IEventBus modEventBus) {
         AC_ENTITIES.register(modEventBus);
     }

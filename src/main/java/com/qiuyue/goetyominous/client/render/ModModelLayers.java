@@ -271,6 +271,15 @@ public class ModModelLayers {
 
             event.registerLayerDefinition(ModEntityLayers.ANNIHILATION_PURSUER_SERVANT_LAYER,
                     com.qiuyue.goetyominous.client.render.model.lm.AnnihilationPursuerServantModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.THE_OBLITERATOR_SERVANT_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.lm.TheObliteratorServantModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.THE_OBLITERATOR_CLONE_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.lm.TheObliteratorCloneModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.THE_OBLITERATOR_ARMED_CLONE_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.lm.TheObliteratorArmedCloneModel::createBodyLayer);
         }
 
         if (OpposingForceCompat.isOpposingForceLoaded()) {
@@ -613,6 +622,22 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.client.render.lm.PossessedPaladinServantRenderer::new);
 
             event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.THE_OBLITERATOR_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.lm.TheObliteratorServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.THE_OBLITERATOR_CLONE.get(),
+                    com.qiuyue.goetyominous.client.render.lm.TheObliteratorCloneRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.THE_OBLITERATOR_CLONE_ARMED.get(),
+                    com.qiuyue.goetyominous.client.render.lm.TheObliteratorArmedCloneRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.ANNIHILATION_BOMB.get(),
+                    EmptyRenderer::new);
+
+            event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.POISONOUS_SHOCKWAVE.get(),
                     EmptyRenderer::new);
 
@@ -637,6 +662,22 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.SOUL_PILLAR_EXPLOSION.get(),
                     EmptyRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.SOUL_PILLAR.get(),
+                    EmptyRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.SOUL_BLADE_UNDERGROUND.get(),
+                    com.qiuyue.goetyominous.client.render.lm.SoulBladeServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.FALLING_SOUL_BLADE.get(),
+                    com.qiuyue.goetyominous.client.render.lm.FallingSoulBladeServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.SOUL_SHIELD.get(),
+                    com.qiuyue.goetyominous.client.render.lm.SoulShieldServantRenderer::new);
 
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.HOVERING_HURRICANE_SERVANT.get(),
@@ -968,6 +1009,9 @@ public class ModModelLayers {
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.MELTED_CARAMEL_SERVANT.get(),
                     com.github.alexmodguy.alexscaves.client.render.entity.MeltedCaramelRenderer::new);
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.ANNIHILATION_BOMB.get(),
+                    com.github.alexmodguy.alexscaves.client.render.entity.NuclearBombRenderer::new);
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.MINE_GUARDIAN_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderMineGuardianServant::new);

@@ -1,12 +1,11 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm.projectile;
 
-import com.Polarice3.Goety.utils.MobUtil;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.qiuyue.goetyominous.common.entities.ally.lm.ShulkerMimicServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.ShulkerMimicServantPart;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
 import net.miauczel.legendary_monsters.Particle.custom.AnnihilationBombTrail;
-import net.miauczel.legendary_monsters.config.ModConfig;
 import net.miauczel.legendary_monsters.damagetype.ModDamageTypes;
 import net.miauczel.legendary_monsters.entity.AnimatedMonster.Projectile.AbstractFlyingProjectile;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -134,7 +133,7 @@ public class BigShulkerBullet extends AbstractFlyingProjectile {
             return true;
         }
         return this.getOwner() instanceof LivingEntity owner && entity instanceof LivingEntity living
-                && MobUtil.areAllies(owner, living);
+                && ServantAllyUtil.areAllied(owner, living);
     }
 
     @Override
@@ -250,7 +249,7 @@ public class BigShulkerBullet extends AbstractFlyingProjectile {
             }
             float extra = entityHit.getMaxHealth() * 0.01F;
             entityHit.hurt(ModDamageTypes.causeGravityDamage(owner, owner),
-                    (float) (damage * ModConfig.MOB_CONFIG.ShulkerMimicDamageMutliplier.get() + extra));
+                    (float) (damage + extra));
         }
     }
 }

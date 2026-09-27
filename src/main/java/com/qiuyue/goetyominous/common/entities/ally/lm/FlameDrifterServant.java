@@ -1,7 +1,8 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm;
 
+import com.qiuyue.goetyominous.config.MobsConfig;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
-import com.Polarice3.Goety.utils.MobUtil;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IAttackGoalMin;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IMoveGoal;
@@ -13,7 +14,6 @@ import net.miauczel.legendary_monsters.Particle.custom.BigAnnihilationSweepParti
 import net.miauczel.legendary_monsters.Particle.custom.Circle;
 import net.miauczel.legendary_monsters.Particle.custom.LightningParticle;
 import net.miauczel.legendary_monsters.Particle.custom.MovingTrailParticle;
-import net.miauczel.legendary_monsters.config.ModConfig;
 import net.miauczel.legendary_monsters.entity.AnimatedMonster.Effect.CameraShakeEntity;
 import net.miauczel.legendary_monsters.sound.ModSounds;
 import net.minecraft.core.BlockPos;
@@ -65,6 +65,11 @@ public class FlameDrifterServant extends AbstractFlamebornServant {
         this.lastZ = this.getZ();
         this.setPersistenceRequired();
         this.setMaxUpStep(2.0F);
+    }
+
+    @Override
+    public double damageMultiplier() {
+        return MobsConfig.FlameDrifterServantDamageMultiplier.get();
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -352,7 +357,7 @@ public class FlameDrifterServant extends AbstractFlamebornServant {
     }
 
     private boolean isFriendlyTo(LivingEntity other) {
-        return other == this || MobUtil.areAllies(this, other);
+        return other == this || ServantAllyUtil.areAllied(this, other);
     }
 
     public void SideAreaAttack(float range, float height, float arc, float boxOffset, float damage, int brokenShieldTicks, boolean canlaunch, SoundEvent soundEvent, float pitch) {
@@ -376,7 +381,7 @@ public class FlameDrifterServant extends AbstractFlamebornServant {
                 continue;
             }
             boolean flag = entityHit.hurt(this.damageSources().mobAttack(this),
-                    (float) (damage * ModConfig.MOB_CONFIG.FlameDrifterDamageMutliplier.get()));
+                    (float) damage);
             if (flag) {
                 this.playSound(soundEvent, 1.0F, pitch);
                 if (canlaunch) {

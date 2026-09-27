@@ -19,7 +19,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class RenderServantSandShot extends EntityRenderer<EntityServentSandShot> {
 
-    private static final ResourceLocation SAND_SHOT_TEXTURE = new ResourceLocation("goetyominous:textures/entity/sand_shot.png");
+    private static final ResourceLocation SAND_SHOT_TEXTURE = new ResourceLocation("alexsmobs:textures/entity/sand_shot.png");
     private final LlamaSpitModel<LlamaSpit> model;
 
     public RenderServantSandShot(EntityRendererProvider.Context context) {

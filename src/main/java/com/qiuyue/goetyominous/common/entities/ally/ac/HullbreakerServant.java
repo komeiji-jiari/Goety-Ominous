@@ -491,7 +491,7 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
         }
         boolean flag = false;
         AABB damageBox = this.headPart.getBoundingBox().inflate(1.2F).move(this.calculateViewVector(this.getXRot(), this.getYRot()));
-        boolean noGriefing = !AttributesConfig.HullbreakerServantBlockBreakGriefing.get()
+        boolean noGriefing = !MobsConfig.HullbreakerServantBlockBreakGriefing.get()
                 || !level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
         
         if (!level().isClientSide && this.getTarget() != null) {

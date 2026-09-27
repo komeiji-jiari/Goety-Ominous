@@ -45,7 +45,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  * <h2>为什么有两个 Provider</h2>
  * {@link SmallFlameProvider} 比 {@link Provider} 多一句
  * {@code scale(0.5F)}（缩小一半）。原版给 {@code red_soul_flame} 配的是
- * <b>{@link SmallFlameProvider}</b>，别配错了 —— 配错的话火苗会大一倍。
+ * <b>{@link Provider}</b>，{@link SmallFlameProvider} 配的是另一个粒子
+ * {@code small_soul_fire_flame}，别配错了 —— 配错的话火苗会小一半。
  */
 @OnlyIn(Dist.CLIENT)
 public class SmallGreenFlame extends RisingParticle {
@@ -108,7 +109,7 @@ public class SmallGreenFlame extends RisingParticle {
         }
     }
 
-    /** 原版给 {@code red_soul_flame} 配的就是这个（多一句缩小一半）。 */
+    /** 原版给 {@code small_soul_fire_flame} 配的就是这个（多一句缩小一半）。 */
     @OnlyIn(Dist.CLIENT)
     public static class SmallFlameProvider implements ParticleProvider<SimpleParticleType> {
 

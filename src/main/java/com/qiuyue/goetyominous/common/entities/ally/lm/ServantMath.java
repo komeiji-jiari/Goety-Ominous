@@ -1,6 +1,8 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm;
 
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.joml.Quaternionf;
 
 /**
@@ -66,6 +68,19 @@ public final class ServantMath {
      * （数学上等价于矩阵 R = Rx·Ry·Rz）。原版的 {@code MathUtils} 就是这个实现，
      * 照抄没动 —— 换成别的顺序光圈会歪。
      */
+    public static double opArmorNerf(LivingEntity entity, int attackState) {
+        double opArmorLevel = 20.0;
+        AttributeInstance attributeInstance = entity.getAttribute(Attributes.ARMOR);
+        if (attributeInstance != null && attributeInstance.getValue() > opArmorLevel) {
+            double difference = attributeInstance.getValue() - opArmorLevel;
+            boolean cantScaleDamage = attackState == 20 || attackState == 14 || attackState == 24
+                    || attackState == 40 || attackState == 50
+                    || attackState == 53 && attributeInstance.getValue() < opArmorLevel;
+            return cantScaleDamage ? 1.0 : 1.0 + difference * 0.075;
+        }
+        return 1.0;
+    }
+
     public static Quaternionf quatFromRotationXYZ(float x, float y, float z, boolean degrees) {
         if (degrees) {
             x *= (float) (Math.PI / 180.0);

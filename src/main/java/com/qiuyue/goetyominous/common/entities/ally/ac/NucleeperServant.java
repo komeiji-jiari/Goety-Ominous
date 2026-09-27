@@ -28,6 +28,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.ItemTags;
@@ -318,8 +319,13 @@ public class NucleeperServant extends Summoned implements ActivatesSirens, Power
 
     private void spawnSurfaceCloud(ServerLevel level) {
         double size = isCharged() ? 1.75F : 1F;
-        level.sendParticles((SimpleParticleType) AcParticles.NUCLEEPER_MUSHROOM_CLOUD.get(),
-                getX(), findSurfaceY(level, getX(), getZ()), getZ(), 0, 1.0, 0.0, 0.0, size);
+        double x = getX();
+        double z = getZ();
+        double y = findSurfaceY(level, x, z);
+        for (ServerPlayer player : level.players()) {
+            level.sendParticles(player, (SimpleParticleType) AcParticles.NUCLEEPER_MUSHROOM_CLOUD.get(), true,
+                    x, y, z, 0, 1.0D, 0.0D, 0.0D, size);
+        }
     }
 
     private static double findSurfaceY(Level level, double x, double z) {

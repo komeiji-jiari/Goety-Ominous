@@ -71,15 +71,12 @@ public class TesseractTagHandler {
         }
         if (LegendaryMonstersCompat.isLegendaryMonstersLoaded()) {
             addToTag(TESSERACT_SMALL, LmEntityRegistry.HOVERING_HURRICANE_SERVANT);
-            addToTag(TESSERACT_SMALL, LmEntityRegistry.WANDERING_EYE_SERVANT);
-            addToTag(TESSERACT_SMALL, LmEntityRegistry.FLAME_DRIFTER_SERVANT);
-            addToTag(TESSERACT_SMALL, LmEntityRegistry.FLAMEBORN_WARRIOR_SERVANT);
-            addToTag(TESSERACT_SMALL, LmEntityRegistry.FLAMEBORN_GUARD_SERVANT);
             addToTag(TESSERACT_MEDIUM, LmEntityRegistry.OVERGROWN_COLOSSUS_SERVANT);
-            addToTag(TESSERACT_MEDIUM, LmEntityRegistry.POSSESSED_PALADIN_SERVANT);
+            addToTag(TESSERACT_MEDIUM, LmEntityRegistry.ANNIHILATION_PURSUER_SERVANT);
+            addToTag(TESSERACT_MEDIUM, LmEntityRegistry.SHULKER_MIMIC_SERVANT);
             addToTag(TESSERACT_LARGE, LmEntityRegistry.CLOUD_GOLEM_SERVANT);
-            addToTag(TESSERACT_LARGE, LmEntityRegistry.SHULKER_MIMIC_SERVANT);
-            addToTag(TESSERACT_LARGE, LmEntityRegistry.ANNIHILATION_PURSUER_SERVANT);
+            addToTag(TESSERACT_LARGE, LmEntityRegistry.THE_OBLITERATOR_SERVANT);
+            addToTag(TESSERACT_LARGE, LmEntityRegistry.POSSESSED_PALADIN_SERVANT);
         }
         if (AlexMobsCompat.isAlexMobsLoaded()) {
             addToTag(TESSERACT_MEDIUM, AmEntityRegistry.WARPED_MOSCO_SERVANT);

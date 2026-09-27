@@ -29,11 +29,8 @@ public class AcParticles {
     public static final RegistryObject<SimpleParticleType> LUXTRUCTOSAURUS_SERVANT_ASH =
             AC_PARTICLES.register("luxtructosaurus_servant_ash", () -> new SimpleParticleType(true));
 
-    public static final RegistryObject<SimpleParticleType> RITUAL_VOID_EYE =
-            AC_PARTICLES.register("ritual_void_eye", () -> new SimpleParticleType(false));
-
-    public static final RegistryObject<SimpleParticleType> RITUAL_VOID_TENDRIL =
-            AC_PARTICLES.register("ritual_void_tendril", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> TREMORZILLA_SERVANT_STEAM =
+            AC_PARTICLES.register("tremorzilla_servant_steam", () -> new SimpleParticleType(false));
 
     public static void register(IEventBus modEventBus) {
         AC_PARTICLES.register(modEventBus);

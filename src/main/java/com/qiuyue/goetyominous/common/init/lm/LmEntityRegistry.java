@@ -10,11 +10,19 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.HoveringHurricaneServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.OvergrownColossusServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.PossessedPaladinServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.ShulkerMimicServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.TheObliteratorServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.WanderingEyeServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.obliterator.TheObliteratorClone;
+import com.qiuyue.goetyominous.common.entities.ally.lm.obliterator.TheObliteratorCloneArmed;
+import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.AnnihilationBomb;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.AnnihilationExplosion;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.AnnihilationFlameStrike;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.BigShulkerBullet;
+import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.FallingSoulBlade;
+import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulBlade;
+import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulPillar;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulPillarExplosionEntity;
+import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulShield;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulStrike;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulTrident;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.ThrownPhantomDagger;
@@ -44,6 +52,13 @@ public class LmEntityRegistry {
                     () -> EntityType.Builder.of(OvergrownColossusServant::new, MobCategory.MONSTER)
                             .sized(2.0F, 2.6F)
                             .build(GoetyOminous.MOD_ID + ":overgrown_colossus_servant"));
+
+    public static final RegistryObject<EntityType<TheObliteratorServant>> THE_OBLITERATOR_SERVANT =
+            LM_ENTITIES.register("the_obliterator_servant",
+                    () -> EntityType.Builder.of(TheObliteratorServant::new, MobCategory.MONSTER)
+                            .sized(3.0F, 5.0F)
+                            .fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":the_obliterator_servant"));
 
     // 碰撞箱尺寸照抄传奇怪物的 posessed_paladin：1.0 宽 x 3.0 高。
     public static final RegistryObject<EntityType<PossessedPaladinServant>> POSSESSED_PALADIN_SERVANT =
@@ -78,6 +93,24 @@ public class LmEntityRegistry {
                             .sized(0.75F, 0.75F).clientTrackingRange(6).updateInterval(2).fireImmune()
                             .build(GoetyOminous.MOD_ID + ":thrown_phantom_dagger"));
 
+    public static final RegistryObject<EntityType<SoulBlade>> SOUL_BLADE_UNDERGROUND =
+            LM_ENTITIES.register("underground_soul_blade",
+                    () -> EntityType.Builder.<SoulBlade>of(SoulBlade::new, MobCategory.MISC)
+                            .sized(1.0F, 3.0F).clientTrackingRange(6).updateInterval(2).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":underground_soul_blade"));
+
+    public static final RegistryObject<EntityType<FallingSoulBlade>> FALLING_SOUL_BLADE =
+            LM_ENTITIES.register("falling_soul_blade",
+                    () -> EntityType.Builder.<FallingSoulBlade>of(FallingSoulBlade::new, MobCategory.MISC)
+                            .sized(1.0F, 3.0F).clientTrackingRange(6).updateInterval(2).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":falling_soul_blade"));
+
+    public static final RegistryObject<EntityType<SoulShield>> SOUL_SHIELD =
+            LM_ENTITIES.register("soul_shield",
+                    () -> EntityType.Builder.<SoulShield>of(SoulShield::new, MobCategory.MISC)
+                            .sized(1.75F, 2.75F).clientTrackingRange(6).updateInterval(2).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":soul_shield"));
+
     // 参数逐项照抄传奇怪物 ModEntities:194 的 soul_trident：
     // MISC 分类、1.0 见方的碰撞箱、客户端 4 格追踪、每 20 tick 同步一次（默认是 3）。
     //
@@ -102,6 +135,13 @@ public class LmEntityRegistry {
                     () -> EntityType.Builder.<SoulPillarExplosionEntity>of(SoulPillarExplosionEntity::new, MobCategory.MISC)
                             .sized(1.0F, 3.0F).clientTrackingRange(6).updateInterval(2).fireImmune()
                             .build(GoetyOminous.MOD_ID + ":soul_pillar_explosion"));
+
+    public static final RegistryObject<EntityType<SoulPillar>> SOUL_PILLAR =
+            LM_ENTITIES.register("soul_pillar",
+                    () -> EntityType.Builder.<SoulPillar>of(SoulPillar::new, MobCategory.MISC)
+                            .sized(1.0F, 3.0F).clientTrackingRange(6).updateInterval(2).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":soul_pillar"));
+
     public static final RegistryObject<EntityType<HoveringHurricaneServant>> HOVERING_HURRICANE_SERVANT =
             LM_ENTITIES.register("hovering_hurricane_servant",
                     () -> EntityType.Builder.of(HoveringHurricaneServant::new, MobCategory.MONSTER)
@@ -215,6 +255,24 @@ public class LmEntityRegistry {
                     () -> EntityType.Builder.<EntityThrown>of(EntityThrown::new, MobCategory.MISC)
                             .sized(1.5F, 1.5F).clientTrackingRange(6).updateInterval(2).fireImmune()
                             .build(GoetyOminous.MOD_ID + ":entity_thrown"));
+
+    public static final RegistryObject<EntityType<TheObliteratorClone>> THE_OBLITERATOR_CLONE =
+            LM_ENTITIES.register("the_obliterator_clone",
+                    () -> EntityType.Builder.<TheObliteratorClone>of(TheObliteratorClone::new, MobCategory.MISC)
+                            .sized(2.0F, 2.5F).clientTrackingRange(6).updateInterval(2).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":the_obliterator_clone"));
+
+    public static final RegistryObject<EntityType<TheObliteratorCloneArmed>> THE_OBLITERATOR_CLONE_ARMED =
+            LM_ENTITIES.register("the_obliterator_clone_armed",
+                    () -> EntityType.Builder.<TheObliteratorCloneArmed>of(TheObliteratorCloneArmed::new, MobCategory.MISC)
+                            .sized(2.0F, 2.5F).clientTrackingRange(6).updateInterval(2).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":the_obliterator_clone_armed"));
+
+    public static final RegistryObject<EntityType<AnnihilationBomb>> ANNIHILATION_BOMB =
+            LM_ENTITIES.register("annihilation_bomb",
+                    () -> EntityType.Builder.<AnnihilationBomb>of(AnnihilationBomb::new, MobCategory.MISC)
+                            .sized(2.0F, 2.0F).clientTrackingRange(6).updateInterval(2).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":annihilation_bomb"));
 
     public static void register(IEventBus modEventBus) {
         LM_ENTITIES.register(modEventBus);

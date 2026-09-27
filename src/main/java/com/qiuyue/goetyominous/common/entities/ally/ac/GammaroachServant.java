@@ -217,6 +217,7 @@ public class GammaroachServant extends Summoned implements IAnimatedEntity, Play
                 areaeffectcloud.setParticle(ACParticleRegistry.GAMMAROACH.get());
                 areaeffectcloud.setFixedColor(0X77D60E);
                 areaeffectcloud.addEffect(new MobEffectInstance(ACEffectRegistry.IRRADIATED.get(), 2000, 2));
+                areaeffectcloud.setOwner(this);
                 areaeffectcloud.setRadius(2.3F);
                 areaeffectcloud.setDuration(200);
                 areaeffectcloud.setWaitTime(10);

@@ -1,9 +1,11 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm;
 
+import com.qiuyue.goetyominous.config.MobsConfig;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.projectiles.FlyingItem;
 import com.Polarice3.Goety.config.ItemConfig;
 import com.Polarice3.Goety.utils.MobUtil;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IAttackGoalMin;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IMoveGoal;
@@ -19,7 +21,6 @@ import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
 import net.miauczel.legendary_monsters.Particle.custom.Circle;
-import net.miauczel.legendary_monsters.config.ModConfig;
 import net.miauczel.legendary_monsters.effect.ModEffects;
 import net.miauczel.legendary_monsters.entity.AnimatedMonster.Effect.CameraShakeEntity;
 import net.miauczel.legendary_monsters.item.ModItems;
@@ -73,7 +74,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class CloudGolemServant extends IAnimatedMiniBossServant {
+public class CloudGolemServant extends IAnimatedBossServant {
 
     public static final EntityDataAccessor<Integer> TEXTURE_VARIANT =
             SynchedEntityData.defineId(CloudGolemServant.class, EntityDataSerializers.INT);
@@ -150,11 +151,16 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
     public final AnimationState flyAState = new AnimationState();
     public final AnimationState blockAState = new AnimationState();
 
-    public CloudGolemServant(EntityType<? extends IAnimatedMiniBossServant> entityType, Level level) {
+    public CloudGolemServant(EntityType<? extends IAnimatedBossServant> entityType, Level level) {
         super(entityType, level);
         this.xpReward = 100;
         this.setNoAi(false);
         this.setPersistenceRequired();
+    }
+
+    @Override
+    public double damageMultiplier() {
+        return MobsConfig.CloudGolemServantDamageMultiplier.get();
     }
 
     @Override
@@ -243,12 +249,12 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
     }
 
     public boolean shouldGiveHitChance() {
-        return this.getTarget() != null && ModConfig.MOB_CONFIG.CloudGolemLosesConsciousness.get();
+        return this.getTarget() != null && MobsConfig.CloudGolemServantLosesConsciousness.get();
     }
 
     public boolean shouldChargeOnceMore() {
         return this.shouldDoExtraDashes && this.getCrackiness() == Crackiness.HIGH
-                && ModConfig.MOB_CONFIG.CloudGolemCanCharge2Times.get();
+                && MobsConfig.CloudGolemServantCanCharge2Times.get();
     }
 
     public boolean setInLaserMode(boolean isLaserMode) {
@@ -314,7 +320,7 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
 
     @Override
     public double damageCap() {
-        return ModConfig.MOB_CONFIG.CloudGolemDamageCap.get();
+        return AttributesConfig.CloudGolemServantDamageCap.get();
     }
 
     @Override
@@ -917,7 +923,7 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (this.GolemInvulnerabilityTime > 0 && ModConfig.MOB_CONFIG.CloudGolemInvulnerabilityTime.get()) {
+        if (this.GolemInvulnerabilityTime > 0 && MobsConfig.CloudGolemServantInvulnerabilityTime.get()) {
             return false;
         }
         if (source.is(DamageTypes.IN_FIRE) || source.is(DamageTypes.ON_FIRE) || source.is(DamageTypes.LAVA)
@@ -952,7 +958,7 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
             if (this.ArrowDamageCooldown > 0) {
                 return false;
             }
-            if (ModConfig.MOB_CONFIG.CloudGolemProjectileImmunityTimer.get()) {
+            if (MobsConfig.CloudGolemServantProjectileImmunityTimer.get()) {
                 this.ArrowDamageCooldown = 30;
             }
         }
@@ -1334,7 +1340,7 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
         List<Entity> nearbyEntities = this.level().getEntities(this, this.getBoundingBox().inflate(knockbackRadius),
                 e -> e instanceof LivingEntity && e != this);
         for (Entity target : nearbyEntities) {
-            if (MobUtil.areAllies(this, target)) {
+            if (ServantAllyUtil.areAllied(this, target)) {
                 continue;
             }
             double dx = target.getX() - this.getX();
@@ -1368,11 +1374,11 @@ public class CloudGolemServant extends IAnimatedMiniBossServant {
             if ((entityHitDistance <= range && entityRelativeAngle <= arc / 2.0F && entityRelativeAngle >= -arc / 2.0F)
                     || entityRelativeAngle >= 360.0F - arc / 2.0F
                     || entityRelativeAngle <= -360.0F + arc / 2.0F) {
-                if (MobUtil.areAllies(this, entityHit) || entityHit instanceof CloudGolemServant || entityHit == this) {
+                if (ServantAllyUtil.areAllied(this, entityHit) || entityHit instanceof CloudGolemServant || entityHit == this) {
                     continue;
                 }
                 boolean hurt = entityHit.hurt(this.damageSources().mobAttack(this),
-                        (float) (damage * ModConfig.MOB_CONFIG.CloudGolemDamageMutliplier.get()));
+                        (float) damage);
                 if (hurt) {
                     EntityUtil.cancelBuffs(entityHit);
                 }
