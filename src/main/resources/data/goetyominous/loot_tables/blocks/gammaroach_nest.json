@@ -3,15 +3,15 @@
   "pools": [
     {
       "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
       "entries": [
         {
-          "name": "goetyominous:gammaroach_nest",
           "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:survives_explosion"
-            }
-          ]
+          "name": "goetyominous:gammaroach_nest"
         }
       ],
       "rolls": 1.0
