@@ -15,11 +15,7 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
@@ -39,6 +35,7 @@ import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,8 +48,6 @@ public class GammaroachServant extends Summoned implements IAnimatedEntity, Play
     private int animationTick;
     public static final Animation ANIMATION_SPRAY = Animation.create(40);
     public static final Animation ANIMATION_RAM = Animation.create(25);
-
-    private static final EntityDataAccessor<Boolean> FED = SynchedEntityData.defineId(GammaroachServant.class, EntityDataSerializers.BOOLEAN);
 
     public GammaroachServant(EntityType<? extends Summoned> entityType, Level level) {
         super(entityType, level);
@@ -89,19 +84,6 @@ public class GammaroachServant extends Summoned implements IAnimatedEntity, Play
                 .add(Attributes.ARMOR, AttributesConfig.GammaroachServantArmor.get());
     }
 
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(FED, false);
-    }
-
-    public boolean isFed() {
-        return this.entityData.get(FED);
-    }
-
-    public void setFed(boolean fed) {
-        this.entityData.set(FED, fed);
-    }
     protected PathNavigation createNavigation(Level level) {
         return new GroundPathNavigatorNoSpin(this, level);
     }
@@ -161,13 +143,23 @@ public class GammaroachServant extends Summoned implements IAnimatedEntity, Play
         }
     }
 
+    protected void clampRotation(LivingEntity livingEntity, float clampRange) {
+        livingEntity.setYBodyRot(this.getYRot());
+        float f = Mth.wrapDegrees(livingEntity.getYRot() - this.getYRot());
+        float f1 = Mth.clamp(f, -clampRange, clampRange);
+        livingEntity.yRotO += f1 - f;
+        livingEntity.yBodyRotO += f1 - f;
+        livingEntity.setYRot(livingEntity.getYRot() + f1 - f);
+        livingEntity.setYHeadRot(livingEntity.getYRot());
+    }
+
     @Override
     public void positionRider(Entity passenger, Entity.MoveFunction moveFunction) {
         if (this.isPassengerOfSameVehicle(passenger) && passenger instanceof LivingEntity living) {
             if (!this.touchingUnloadedChunk()) {
                 living.setYBodyRot(this.yBodyRot);
-                living.setYHeadRot(this.getYRot());
                 living.fallDistance = 0.0F;
+                this.clampRotation(living, 105.0F);
                 Vec3 seatOffset = new Vec3(0.0D, 0.0D, 0.2D).yRot((float) Math.toRadians(-this.yBodyRot));
                 double riderOffset = passenger instanceof Player ? passenger.getMyRidingOffset() : 0.0D;
                 moveFunction.accept(passenger, this.getX() + seatOffset.x, this.getY() + seatOffset.y + this.getPassengersRidingOffset() + riderOffset, this.getZ() + seatOffset.z);
@@ -294,37 +286,50 @@ public class GammaroachServant extends Summoned implements IAnimatedEntity, Play
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemStack = player.getItemInHand(hand);
+        if (isFeedItem(itemStack)) {
+            if (!this.level().isClientSide && this.getTrueOwner() != null && player == this.getTrueOwner()) {
+                if (this.getHealth() < this.getMaxHealth()) {
+                    this.heal(4.0F);
+                    if (!player.getAbilities().instabuild) {
+                        itemStack.shrink(1);
+                    }
+                    this.gameEvent(GameEvent.EAT, this);
+                    if (this.level() instanceof ServerLevel serverLevel) {
+                        for (int i = 0; i < 7; ++i) {
+                            double d0 = this.random.nextGaussian() * 0.02D;
+                            double d1 = this.random.nextGaussian() * 0.02D;
+                            double d2 = this.random.nextGaussian() * 0.02D;
+                            serverLevel.sendParticles(ParticleTypes.HEART,
+                                    this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D),
+                                    0, d0, d1, d2, 0.5D);
+                        }
+                    }
+                    player.swing(hand);
+                }
+            }
+            return InteractionResult.SUCCESS;
+        }
         if (!this.level().isClientSide) {
-            ItemStack itemStack = player.getItemInHand(hand);
             InteractionResult prev = super.mobInteract(player, hand);
             if (prev == InteractionResult.SUCCESS) {
                 return prev;
             }
-            if (itemStack.is(ACItemRegistry.SPELUNKIE.get()) && (this.getTarget() == player || !isFed())) {
-                if (!player.getAbilities().instabuild) {
-                    itemStack.shrink(1);
-                }
-                this.setFed(true);
-                this.setLastHurtByMob(null);
-                this.setTarget(null);
-                this.level().broadcastEntityEvent(this, (byte) 49);
-                if (this.level() instanceof ServerLevel serverLevel) {
-                    serverLevel.sendParticles(ParticleTypes.HEART,
-                            this.getX(), this.getY() + this.getBbHeight() / 2, this.getZ(),
-                            5, 0.5, 0.5, 0.5, 0.0);
-                }
-                return InteractionResult.SUCCESS;
-            }
-            if (this.getTrueOwner() != null && player == this.getTrueOwner() && !this.isBaby() && !player.isCrouching()
-                    && !itemStack.is(ACItemRegistry.SPELUNKIE.get()) && !(itemStack.getItem() instanceof IWand)) {
-                Entity passenger = this.getFirstPassenger();
-                if (passenger != null && passenger != player) {
-                    passenger.stopRiding();
-                    return InteractionResult.SUCCESS;
-                }
-                if (this.getPassengers().isEmpty()) {
-                    this.doPlayerRide(player);
-                    return InteractionResult.SUCCESS;
+            ItemStack mainHand = player.getMainHandItem();
+            ItemStack offHand = player.getOffhandItem();
+            if (this.getTrueOwner() != null && player == this.getTrueOwner()) {
+                if (!this.isBaby() && !player.isCrouching()
+                        && !isFeedItem(mainHand) && !isFeedItem(offHand)
+                        && !(mainHand.getItem() instanceof IWand) && !(offHand.getItem() instanceof IWand)) {
+                    Entity passenger = this.getFirstPassenger();
+                    if (passenger != null && passenger != player) {
+                        passenger.stopRiding();
+                        return InteractionResult.SUCCESS;
+                    }
+                    if (this.getPassengers().isEmpty()) {
+                        this.doPlayerRide(player);
+                        return InteractionResult.SUCCESS;
+                    }
                 }
             }
             return prev;
@@ -332,16 +337,8 @@ public class GammaroachServant extends Summoned implements IAnimatedEntity, Play
         return super.mobInteract(player, hand);
     }
 
-    public void handleEntityEvent(byte b) {
-        if (b == 49) {
-            ItemStack itemstack = new ItemStack(ACItemRegistry.SPELUNKIE.get());
-            for (int i = 0; i < 8; ++i) {
-                Vec3 headPos = (new Vec3(0D, 0.1D, 0.5D)).xRot(-this.getXRot() * ((float) Math.PI / 180F)).yRot(-this.yBodyRot * ((float) Math.PI / 180F));
-                this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, itemstack), this.getX() + headPos.x, this.getY(0.5) + headPos.y, this.getZ() + headPos.z, (random.nextFloat() - 0.5F) * 0.1F, random.nextFloat() * 0.15F, (random.nextFloat() - 0.5F) * 0.1F);
-            }
-        } else {
-            super.handleEntityEvent(b);
-        }
+    private static boolean isFeedItem(ItemStack itemStack) {
+        return itemStack.is(ACItemRegistry.SULFUR_DUST.get()) || itemStack.is(ACItemRegistry.SPELUNKIE.get());
     }
 
     protected SoundEvent getAmbientSound() {

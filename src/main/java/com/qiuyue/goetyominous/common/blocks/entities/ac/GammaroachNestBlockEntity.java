@@ -96,6 +96,6 @@ public class GammaroachNestBlockEntity extends TrainingBlockEntity {
 
     @Override
     public boolean isFuel(ItemStack itemStack) {
-        return itemStack.is(ACItemRegistry.SPELUNKIE.get());
+        return itemStack.is(ACItemRegistry.SULFUR_DUST.get());
     }
 }
