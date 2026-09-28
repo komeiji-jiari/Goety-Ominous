@@ -1,0 +1,19 @@
+{
+  "name": "碎浪聚晶",
+  "icon": "goetyominous:deep_wave_focus",
+  "category": "goety:abyssalchasm",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "这个法术允许你像深潜者法师一样掀起惊涛骇浪，犹如一场海啸一般吹散你面前的生物。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:deep_wave_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "使用$(l:crafts/staff/abyss_staff)深渊魔杖$()承载此聚晶施法时，你可以一次发射额外两道水浪。"
+    }
+  ]
+}

@@ -5,7 +5,10 @@ import com.Polarice3.Goety.common.items.magic.MagicFocus;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
+import com.qiuyue.goetyominous.common.items.KeyOfRlyehItem;
+import com.qiuyue.goetyominous.common.items.KeyOfRlyehStaffItem;
 import com.qiuyue.goetyominous.common.magic.spells.ac.*;
+import com.qiuyue.goetyominous.compat.mod.GoetyRevelationCompat;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -14,10 +17,35 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.awt.*;
+import java.util.function.Supplier;
+
 public class AcItems {
 
     public static final DeferredRegister<Item> AC_ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, GoetyOminous.MOD_ID);
+
+    public static final Rarity RARITY_DEEP_SEA = Rarity.create("goetyominous:deep_sea",
+            style -> {
+                float progress = (float) (System.currentTimeMillis() % 6000L) / 6000.0F;
+                float hue = 0.58F + 0.08F * (float) Math.sin(progress * Math.PI * 2.0D);
+                return style.withColor(Color.HSBtoRGB(hue, 0.85F, 0.95F));
+            });
+
+    public static final RegistryObject<Item> KEY_OF_RLYEH = AC_ITEMS.register("key_of_rlyeh",
+            () -> GoetyRevelationCompat.isLoaded()
+                    ? KeyOfRlyehHolder.REVELATION.get()
+                    : new KeyOfRlyehItem(new Item.Properties().stacksTo(1).rarity(RARITY_DEEP_SEA)));
+
+    private static final class KeyOfRlyehHolder {
+        private static final Supplier<Item> REVELATION = () -> {
+            try {
+                return new KeyOfRlyehStaffItem(new Item.Properties().stacksTo(1).rarity(RARITY_DEEP_SEA));
+            } catch (Throwable t) {
+                return new KeyOfRlyehItem(new Item.Properties().stacksTo(1).rarity(RARITY_DEEP_SEA));
+            }
+        };
+    }
 
     public static final RegistryObject<ServantSpawnEggItem> ATLATITAN_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("atlatitan_servant_spawn_egg",
@@ -83,14 +111,18 @@ public class AcItems {
             AC_ITEMS.register("gammaroach_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AcEntityRegistry.GAMMAROACH_SERVANT, 0x56682A, 0x2A2B19, egg()));
 
-    public static final RegistryObject<BlockItem> GAMMAROACH_NEST =
-            AC_ITEMS.register("gammaroach_nest",
-                    () -> new BlockItem(AcBlockRegistry.GAMMAROACH_NEST.get(), egg()));
-
     public static final RegistryObject<BlockItem> ANNIHILATION_BOMB =
             AC_ITEMS.register("annihilation_core",
                     () -> new AnnihilationBombBlockItem(AcBlockRegistry.ANNIHILATION_BOMB.get(),
                             new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));
+
+    public static final RegistryObject<BlockItem> GAMMAROACH_NEST =
+            AC_ITEMS.register("gammaroach_nest",
+                    () -> new BlockItem(AcBlockRegistry.GAMMAROACH_NEST.get(), egg()));
+
+    public static final RegistryObject<BlockItem> MINE_GUARDIAN_BLOCK =
+            AC_ITEMS.register("mine_guardian_block",
+                    () -> new BlockItem(AcBlockRegistry.MINE_GUARDIAN_BLOCK.get(), egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> CORRODENT_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("corrodent_servant_spawn_egg",
@@ -178,6 +210,12 @@ public class AcItems {
 
     public static final RegistryObject<Item> WATER_BOLT_FOCUS = AC_ITEMS.register("water_bolt_focus",
             () -> new MagicFocus(new WaterBoltSpell()));
+
+    public static final RegistryObject<Item> DEEP_WAVE_FOCUS = AC_ITEMS.register("deep_wave_focus",
+            () -> new MagicFocus(new DeepWaveSpell()));
+
+    public static final RegistryObject<Item> WAVE_BASH_FOCUS = AC_ITEMS.register("wave_bash_focus",
+            () -> new MagicFocus(new WaveBashSpell()));
 
     public static final RegistryObject<Item> RAYCAT_AMULET =
             AC_ITEMS.register("raycat_amulet", () -> new RaycatAmuletItem());

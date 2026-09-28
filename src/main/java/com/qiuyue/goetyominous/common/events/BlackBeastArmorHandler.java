@@ -4,6 +4,7 @@ import com.Polarice3.Goety.common.entities.ally.BlackBeast;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.common.items.CursedBlackBeastArmorItem;
+import com.qiuyue.goetyominous.common.items.DarkBlackBeastArmorItem;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,6 +31,20 @@ public class BlackBeastArmorHandler {
         ItemStack armor = blackBeast.getItemBySlot(EquipmentSlot.CHEST);
 
         if (blackBeast.getTrueOwner() != player) return;
+
+        if (held.getItem() instanceof DarkBlackBeastArmorItem dark && dark.isBroken(held)) {
+            event.setCancellationResult(InteractionResult.FAIL);
+            event.setCanceled(true);
+            return;
+        }
+
+        if (armor.getItem() instanceof DarkBlackBeastArmorItem dark && dark.isBroken(armor)) {
+            blackBeast.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
+            blackBeast.spawnAtLocation(armor.copy());
+            event.setCancellationResult(InteractionResult.SUCCESS);
+            event.setCanceled(true);
+            return;
+        }
 
         if (held.getItem() instanceof CursedBlackBeastArmorItem && armor.isEmpty()) {
             if (player.getAbilities().instabuild) {

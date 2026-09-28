@@ -1,0 +1,29 @@
+{
+  "name": "水雷守卫者",
+  "icon": "goetyominous:mine_guardian_block",
+  "category": "goety:abyssalchasm",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "尽管水雷守卫者最初的建造者已经无从考证，但你可以通过指示死者的灵魂，为你搭建一个未激活的水雷守卫者方块。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:mine_guardian_block"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:mine_guardian_servant",
+      "text": ""
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goety:animation_core",
+      "text": "将未激活的水雷守卫者放在地上，用活力核心右击，即可生成你的水雷守卫者。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "被创造的水雷守卫者会自带一条锚。用剪刀即可剪断使其能够自由漂浮。如果想要栓回去，再手持锁链右击你的水雷守卫者即可。"
+    }
+  ]
+}

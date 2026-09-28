@@ -65,7 +65,7 @@ public class GrottoceratopsSpiritSpell extends Spell {
         int lifetime = SpellConfig.GrottoSpiritTime.get();
         if (WandUtil.enchantedFocus(caster)) {
             count += WandUtil.getPotencyLevel(caster);
-            lifetime *= Math.min(4, WandUtil.getLevels(ModEnchantments.DURATION.get(), caster) + 1);  // DURATION：每级 +100%，封顶 400%
+            lifetime *= Math.min(4, WandUtil.getLevels(ModEnchantments.DURATION.get(), caster) + 1);
         }
         if (this.rightStaff(staff)) {
             count += 1;

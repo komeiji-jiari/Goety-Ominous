@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "goetyominous:block/mine_guardian_block" },
+    "facing=east":  { "model": "goetyominous:block/mine_guardian_block", "y": 90 },
+    "facing=south": { "model": "goetyominous:block/mine_guardian_block", "y": 180 },
+    "facing=west":  { "model": "goetyominous:block/mine_guardian_block", "y": 270 }
+  }
+}

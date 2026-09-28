@@ -14,10 +14,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * 阴影蜘蛛仆从渲染器：纹理沿用 OF 原版两张（umber_spider 普通 / tenebrous_umber_spider 精英变体），
- * 阴影 0.8、精英暗处发亮(getBlockLightLevel 15)、眼睛层发光。复刻原版 UmberSpiderRenderer。
- */
 @OnlyIn(Dist.CLIENT)
 public class UmberSpiderServantRenderer extends MobRenderer<UmberSpiderServant, UmberSpiderServantModel> {
     private static final ResourceLocation UMBER_SPIDER = new ResourceLocation("opposing_force", "textures/entity/umber_spider/umber_spider.png");

@@ -8,12 +8,6 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
 
-/**
- * 跳扑目标：复刻 OF 原版 UmberSpiderLeapAtTargetGoal（原版蜘蛛 LeapAtTargetGoal 的改版）。
- * 距离 4~16 格、在地面、且每 5 tick 摇一次奖才触发；目标是跳起来扑向目标脸。
- * 非精英只在"目标站在暗处"时才会扑（和怕光主题呼应），精英任何时候都会扑。
- * 扑出去后只要还在空中、脚下还够暗、攻击状态还挂着，就保持本目标。
- */
 public class UmberSpiderServantLeapAtTargetGoal extends Goal {
     private final UmberSpiderServant umberSpider;
     private LivingEntity target;

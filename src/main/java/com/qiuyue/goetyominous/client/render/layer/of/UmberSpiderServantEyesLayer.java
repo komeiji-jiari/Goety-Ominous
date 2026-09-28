@@ -13,11 +13,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * 阴影蜘蛛仆从发光眼睛层：复刻 OF 原版 UmberSpiderEyesLayer。
- * 用 RenderType.eyes 把整套模型按"发光的眼睛"方式再画一遍（只显示发光部分），
- * 精英用另一张贴图。15728640 = 满格光照，让眼睛永远亮着。
- */
 @OnlyIn(Dist.CLIENT)
 public class UmberSpiderServantEyesLayer extends RenderLayer<UmberSpiderServant, UmberSpiderServantModel> {
     private static final RenderType EYES = RenderType.eyes(new ResourceLocation("opposing_force", "textures/entity/umber_spider/umber_spider_eyes.png"));

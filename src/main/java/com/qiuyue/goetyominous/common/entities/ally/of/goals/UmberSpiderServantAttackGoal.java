@@ -5,12 +5,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.LightLayer;
 
-/**
- * 撕咬攻击目标：复刻 OF 原版 UmberSpiderAttackGoal（继承 OF AttackGoal）。
- * 只有"不在怕光冷却中(fleeLightFor<=0)"且"目标站在暗处(非精英)"才肯攻击；
- * 精英无此限制。attackState==1 时走攻击计时器：第 4 tick 够得着就咬一口并挥主手，
- * 满 20 tick 收手；没进攻击态时一旦距离够近就切到攻击态。
- */
 public class UmberSpiderServantAttackGoal extends RamblerServantAttackGoal {
     private final UmberSpiderServant umberSpider;
 

@@ -38,6 +38,13 @@ public class WolfArmorDamageHandler {
         float amount = event.getAmount();
         if (amount <= 0.0F) return;
 
+        if (armor.getItem() instanceof DarkWolfArmorItem dark && dark.isBroken(armor)) {
+            entity.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
+            entity.spawnAtLocation(armor.copy());
+            entity.playSound(ModSounds.WOLF_ARMOR_BREAK.get(), 1.0F, 1.0F);
+            return;
+        }
+
         entity.playSound(ModSounds.WOLF_ARMOR_DAMAGE.get(), 1.0F, 1.0F);
 
         WolfArmorCrackiness before = WolfArmorCrackiness.byDamage(armor);
@@ -50,6 +57,13 @@ public class WolfArmorDamageHandler {
         }
         armor.hurtAndBreak(durabilityDamage, entity, (wolf) ->
                 wolf.playSound(ModSounds.WOLF_ARMOR_BREAK.get(), 1.0F, 1.0F));
+
+        if (armor.getItem() instanceof DarkWolfArmorItem dark && dark.isBroken(armor)) {
+            entity.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
+            entity.spawnAtLocation(armor.copy());
+            entity.playSound(ModSounds.WOLF_ARMOR_BREAK.get(), 1.0F, 1.0F);
+            return;
+        }
 
         WolfArmorCrackiness after = WolfArmorCrackiness.byDamage(armor);
         if (after != before && after != WolfArmorCrackiness.NONE) {

@@ -1,0 +1,25 @@
+{
+  "name": "Skyverns",
+  "icon": "opposing_force:skyvern_claw",
+  "category": "goety:ofcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "These multi-limbed flying creatures may not look like true dragons, but they are nonetheless formidable aerial units not to be underestimated. Through magic, you have learned how to call upon these lords of the sky and secure their aid."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:skyvern_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:skyvern_servant",
+      "scale": 0.6,
+      "text": "Dragon in the sky"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Feed your Skyvern any kind of meat to heal it. You can also wear Wind Robe to provide passive healing for your Skyvern."
+    }
+  ]
+}

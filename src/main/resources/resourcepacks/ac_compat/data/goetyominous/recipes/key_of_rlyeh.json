@@ -1,0 +1,40 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:abyss_staff"
+  },
+  "craftType": "deep",
+  "entity_to_sacrifice": {
+    "tag": "goety:mage_sacrifice",
+    "display_name": "entity.goetyominous.deep_one_mage_servant"
+  },
+  "soulCost": 5,
+  "duration": 10,
+  "ingredients": [
+    {
+      "item": "alexscaves:immortal_embryo"
+    },
+    {
+      "item": "alexscaves:sea_staff"
+    },
+    {
+      "item": "alexscaves:block_of_pearl"
+    },
+    {
+      "item": "minecraft:heart_of_the_sea"
+    },
+    {
+      "item": "minecraft:nautilus_shell"
+    },
+    {
+      "item": "minecraft:ink_sac"
+    },
+    {
+      "item": "alexscaves:gazing_pearl"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:key_of_rlyeh"
+  }
+}

@@ -1,13 +1,8 @@
 package com.qiuyue.goetyominous.common.init.ac;
 
+import com.github.alexmodguy.alexscaves.server.block.ACSoundTypes;
 import com.qiuyue.goetyominous.GoetyOminous;
-import com.qiuyue.goetyominous.common.blocks.ac.AnnihilationBombBlock;
-import com.qiuyue.goetyominous.common.blocks.ac.AtlatitanServantEggBlock;
-import com.qiuyue.goetyominous.common.blocks.ac.GammaroachNestBlock;
-import com.qiuyue.goetyominous.common.blocks.ac.GrottoceratopsServantEggBlock;
-import com.qiuyue.goetyominous.common.blocks.ac.RelicheirusServantEggBlock;
-import com.qiuyue.goetyominous.common.blocks.ac.TremorsaurusServantEggBlock;
-import com.qiuyue.goetyominous.common.blocks.ac.VallumraptorServantEggBlock;
+import com.qiuyue.goetyominous.common.blocks.ac.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -21,6 +16,15 @@ public class AcBlockRegistry {
 
     private static final DeferredRegister<Block> AC_BLOCKS =
             DeferredRegister.create(ForgeRegistries.BLOCKS, GoetyOminous.MOD_ID);
+
+    public static final RegistryObject<Block> MINE_GUARDIAN_BLOCK =
+            AC_BLOCKS.register("mine_guardian_block",
+                    () -> new MineGuardianBlock(BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.METAL)
+                            .requiresCorrectToolForDrops()
+                            .strength(5.0F, 15.0F)
+                            .sound(ACSoundTypes.SCRAP_METAL)
+                            .noOcclusion()));
 
     public static final RegistryObject<Block> ATLATITAN_SERVANT_EGG =
             AC_BLOCKS.register("atlatitan_servant_egg",
@@ -67,9 +71,6 @@ public class AcBlockRegistry {
                                     .sound(SoundType.METAL)
                                     .randomTicks()));
 
-    public static final RegistryObject<Block> GAMMAROACH_NEST =
-            AC_BLOCKS.register("gammaroach_nest", GammaroachNestBlock::new);
-
     public static final RegistryObject<Block> ANNIHILATION_BOMB =
             AC_BLOCKS.register("annihilation_core",
                     () -> new AnnihilationBombBlock(
@@ -77,6 +78,9 @@ public class AcBlockRegistry {
                                     .mapColor(MapColor.METAL)
                                     .strength(8.0F, 1001.0F)
                                     .sound(SoundType.METAL)));
+
+    public static final RegistryObject<Block> GAMMAROACH_NEST =
+            AC_BLOCKS.register("gammaroach_nest", GammaroachNestBlock::new);
 
     public static void register(IEventBus modEventBus) {
         AC_BLOCKS.register(modEventBus);

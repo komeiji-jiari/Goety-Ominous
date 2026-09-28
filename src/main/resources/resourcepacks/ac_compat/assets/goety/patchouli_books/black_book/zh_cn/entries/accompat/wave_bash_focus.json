@@ -1,0 +1,19 @@
+{
+  "name": "踏浪聚晶",
+  "icon": "goetyominous:wave_bash_focus",
+  "category": "goety:abyssalchasm",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "通过改良发射聚晶，你发明了一个咒语，允许将你瞬间弹射出去的同时掀起波浪。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:wave_bash_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "使用$(l:crafts/staff/abyss_staff)深渊魔杖$()承载此聚晶施法时，法术允许你将自己发射出更远的距离。"
+    }
+  ]
+}

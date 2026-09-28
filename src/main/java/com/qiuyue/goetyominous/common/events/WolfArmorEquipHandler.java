@@ -8,6 +8,7 @@ import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.Warg;
 import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.common.items.CursedMetalWolfArmorItem;
+import com.qiuyue.goetyominous.common.items.DarkWolfArmorItem;
 import com.qiuyue.goetyominous.utils.GoetyOminousWolfArmorUtil;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -44,6 +45,7 @@ public class WolfArmorEquipHandler {
                 && (target instanceof Wolf
                 || target instanceof BlackWolf
                 || target instanceof SkeletonWolf);
+        if (!isWolf) return;
 
         Player player = event.getEntity();
         ItemStack held = event.getItemStack();
@@ -58,6 +60,20 @@ public class WolfArmorEquipHandler {
             owned = false;
         }
         if (!owned) return;
+
+        if (held.getItem() instanceof DarkWolfArmorItem dark && dark.isBroken(held)) {
+            event.setCancellationResult(InteractionResult.FAIL);
+            event.setCanceled(true);
+            return;
+        }
+
+        if (armor.getItem() instanceof DarkWolfArmorItem dark && dark.isBroken(armor)) {
+            target.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
+            target.spawnAtLocation(armor.copy());
+            event.setCancellationResult(InteractionResult.SUCCESS);
+            event.setCanceled(true);
+            return;
+        }
 
         if (held.getItem() instanceof CursedMetalWolfArmorItem) {
             if (!armor.isEmpty()) return;

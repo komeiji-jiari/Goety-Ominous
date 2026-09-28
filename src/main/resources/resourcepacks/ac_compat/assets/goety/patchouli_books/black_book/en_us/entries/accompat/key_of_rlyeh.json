@@ -1,0 +1,27 @@
+{
+  "name": "Clavicula R'lyensis",
+  "icon": "goetyominous:key_of_rlyeh",
+  "category": "goety:abyssalchasm",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "After deeply studying the customs and culture of the Deep Ones, you have learned of certain beings that were once great. It is said that the Deep Ones of old would use a kind of 'Key' to open the doors to a great realm, and you feel it is necessary to record these rumors."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "To craft one such 'Key', you require magical items belonging to the Deep Ones, the embryo of a mysterious creature, and a willing Deep One Mage servant as a sacrifice. Kill the Deep One Mage, offer the sacrifice to the great being, and let His power guide the shaping of the 'Key'."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:key_of_rlyeh"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "This powerful staff amplifies all your abyssal spells, is lightweight, and deals considerable attack damage. While you hold this staff—which symbolizes the faith of the Deep One kin—all Deep Ones will regard you as an ancient priest and protect you to the death."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(o)It rose lightly from the sea level, and then floated upon the black waters. It was colossal, bearing a resemblance to Polyphemus, its visage sickeningly hideous. It swooped toward that great stone, spread its enormous scaled wings, arched its neck, and let out several thunderous cries. Ia! Dagon!$()"
+    }
+  ]
+}

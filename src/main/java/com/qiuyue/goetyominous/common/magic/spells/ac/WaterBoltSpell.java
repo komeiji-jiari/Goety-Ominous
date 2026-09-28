@@ -9,6 +9,7 @@ import com.github.alexmodguy.alexscaves.server.item.SeaStaffItem;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.qiuyue.goetyominous.common.entities.projectile.WaterBoltProjectile;
 import com.qiuyue.goetyominous.config.SpellConfig;
+import com.qiuyue.goetyominous.utils.KeyOfRlyehMixinHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
@@ -97,6 +98,12 @@ public class WaterBoltSpell extends Spell {
                     0.0F, velocity, INACCURACY);
 
             bolt.setBubbling(worldIn.random.nextInt(2) == 0);
+
+            if (KeyOfRlyehMixinHelper.isKeyOfRlyeh(staff)) {
+                bolt.ricochet = true;
+                bolt.seekAmount = 0.5F;
+            }
+
             worldIn.addFreshEntity(bolt);
         }
 

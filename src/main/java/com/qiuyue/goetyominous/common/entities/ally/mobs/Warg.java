@@ -16,6 +16,7 @@ import com.qiuyue.goetyominous.common.blocks.entities.WolfTotemHooks;
 import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.common.items.CursedMetalWolfArmorItem;
 import com.qiuyue.goetyominous.common.items.CursedWargArmorItem;
+import com.qiuyue.goetyominous.common.items.DarkWargArmorItem;
 import com.qiuyue.goetyominous.common.items.curios.CroneRobeItem;
 import com.qiuyue.goetyominous.common.world.WargTotemData;
 import com.qiuyue.goetyominous.config.AttributesConfig;
@@ -585,6 +586,7 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
     }
 
     private void startSwordAttack(LivingEntity target) {
+        this.damageSword();
         this.queuedTarget = target;
         this.lockAttackFacing(target);
         int attack = this.horizontalDistanceToSqr(target) > 4.0D ? ATTACK_SLASH : ATTACK_SPIN;
@@ -644,6 +646,11 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
                 EnchantmentHelper.doPostHurtEffects(target, this);
             }
         }
+    }
+
+    private void damageSword() {
+        this.getItemBySlot(EquipmentSlot.MAINHAND).hurtAndBreak(1, this,
+                (entity) -> entity.broadcastBreakEvent(EquipmentSlot.MAINHAND));
     }
 
     @Override
@@ -774,8 +781,17 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
             if (held.getItem() instanceof CursedMetalWolfArmorItem) {
                 return InteractionResult.FAIL;
             }
+            if (held.getItem() instanceof DarkWargArmorItem dark && dark.isBroken(held)) {
+                return InteractionResult.FAIL;
+            }
             boolean sneaking = player.isShiftKeyDown();
             ItemStack wargArmor = this.getItemBySlot(EquipmentSlot.CHEST);
+
+            if (wargArmor.getItem() instanceof DarkWargArmorItem dark && dark.isBroken(wargArmor)) {
+                this.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
+                this.spawnAtLocation(wargArmor.copy());
+                return InteractionResult.sidedSuccess(this.level().isClientSide);
+            }
 
             if (sneaking) {
 
