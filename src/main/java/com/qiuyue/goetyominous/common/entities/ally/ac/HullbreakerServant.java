@@ -11,7 +11,6 @@ import com.Polarice3.Goety.config.ItemConfig;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.github.alexmodguy.alexscaves.AlexsCaves;
 import com.github.alexmodguy.alexscaves.server.entity.ai.AnimalRandomlySwimGoal;
-import com.github.alexmodguy.alexscaves.server.entity.ai.VerticalSwimmingMoveControl;
 import com.github.alexmodguy.alexscaves.server.entity.item.SubmarineEntity;
 import com.github.alexmodguy.alexscaves.server.entity.util.KaijuMob;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
@@ -44,6 +43,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
@@ -117,7 +117,7 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
         tail4Part = new HullbreakerServantPartEntity(this, tail3Part, 1.5F, 1F);
         allParts = new HullbreakerServantPartEntity[]{headPart, tail1Part, tail2Part, tail3Part, tail4Part};
         this.setId(ENTITY_COUNTER.getAndAdd(allParts.length + 1) + 1);
-        this.moveControl = new VerticalSwimmingMoveControl(this, 0.7F, 30);
+        this.moveControl = new HullbreakerSwimMoveControl(this, 0.7F, 10.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
     }
 
@@ -655,6 +655,42 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
 
     private static boolean isGlowingPrey(LivingEntity entity) {
         return entity.hasEffect(MobEffects.GLOWING) || entity.getType().is(ACTagRegistry.GLOWING_ENTITIES);
+    }
+
+    private static class HullbreakerSwimMoveControl extends MoveControl {
+
+        private final float speedMultiplier;
+        private final float maxTurn;
+
+        private HullbreakerSwimMoveControl(Mob mob, float speedMultiplier, float maxTurn) {
+            super(mob);
+            this.speedMultiplier = speedMultiplier;
+            this.maxTurn = maxTurn;
+        }
+
+        @Override
+        public void tick() {
+            if (this.operation == Operation.MOVE_TO && !this.mob.getNavigation().isDone()) {
+                double dx = this.wantedX - this.mob.getX();
+                double dy = this.wantedY - this.mob.getY();
+                double dz = this.wantedZ - this.mob.getZ();
+                double distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+                double flatDistance = Math.sqrt(dx * dx + dz * dz);
+                float speed = (float) (this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED) * (double) this.speedMultiplier);
+                float approach = Mth.clamp((float) (flatDistance / (this.mob.getBbWidth() + 1.4D)), 0.7F, 1.0F);
+                this.mob.yBodyRot = this.mob.getYRot();
+                if (distance > 1.0E-4D) {
+                    this.mob.setDeltaMovement(this.mob.getDeltaMovement().add(0.0D, (double) speed * (dy / distance) * 0.4D, 0.0D));
+                }
+                if (flatDistance > 0.3D) {
+                    float wantedYRot = (float) (Math.atan2(dz, dx) * (180.0D / Math.PI)) - 90.0F;
+                    this.mob.setYRot(this.rotlerp(this.mob.getYRot(), wantedYRot, this.maxTurn));
+                }
+                this.mob.setSpeed(distance > 0.3D ? speed * approach : 0.0F);
+            } else {
+                this.mob.setSpeed(0.0F);
+            }
+        }
     }
 
     private class GlowingTargetGoal extends NearestAttackableTargetGoal<LivingEntity> {
