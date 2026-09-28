@@ -104,6 +104,10 @@ public class GoetyOminous {
             }
         });
 
+        if (GoetyCataclysmCompat.isLoaded()) {
+            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.CataclysmKeySpellHandler.class);
+        }
+
         if (SpearBackportCompat.isSpearBackportLoaded()) {
             com.qiuyue.goetyominous.compat.spear.SpearBackportCompat.init(modEventBus);
         }
@@ -132,6 +136,7 @@ public class GoetyOminous {
             com.qiuyue.goetyominous.compat.of.OfCompatManager.init(modEventBus);
         }
 
+
         if (AlexMobsCompat.isAlexMobsLoaded()) {
             com.qiuyue.goetyominous.compat.am.AmCompatManager.init(modEventBus);
         }
@@ -144,6 +149,7 @@ public class GoetyOminous {
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.RadiationAllyEvents.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.MineGuardianExplosionProtectionHandler.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.NucleeperSummonHandler.class);
+            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.MineGuardianSummonHandler.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.BubbledVisualCleanupHandler.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.LuxtructosaurusTephraHandler.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ExtinctionCatalystHandler.class);

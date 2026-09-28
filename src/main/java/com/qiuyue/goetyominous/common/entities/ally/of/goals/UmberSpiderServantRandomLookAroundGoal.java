@@ -7,10 +7,6 @@ import net.minecraft.world.level.LightLayer;
 
 import java.util.EnumSet;
 
-/**
- * 环视目标：复刻 OF 原版 UmberSpiderRandomLookAroundGoal。
- * 和怕光闲逛同理，非精英只在暗处才环视，精英随时环视，被骑乘不环视。
- */
 public class UmberSpiderServantRandomLookAroundGoal extends RandomLookAroundGoal {
     private final UmberSpiderServant umberSpider;
 

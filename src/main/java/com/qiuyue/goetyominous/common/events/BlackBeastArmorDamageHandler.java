@@ -1,6 +1,5 @@
 package com.qiuyue.goetyominous.common.events;
 
-import com.Polarice3.Goety.common.entities.ally.BlackBeast;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.common.items.CursedBlackBeastArmorItem;
@@ -21,7 +20,7 @@ public class BlackBeastArmorDamageHandler {
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
         if (event.getEntity().level().isClientSide) return;
-        if (!(event.getEntity() instanceof BlackBeast)) return;
+        if (!(event.getEntity() instanceof com.Polarice3.Goety.common.entities.ally.BlackBeast)) return;
 
         ItemStack armor = event.getEntity().getItemBySlot(EquipmentSlot.CHEST);
         if (!(armor.getItem() instanceof CursedBlackBeastArmorItem)) return;
@@ -32,6 +31,14 @@ public class BlackBeastArmorDamageHandler {
         if (amount <= 0.0F) return;
 
         LivingEntity entity = event.getEntity();
+
+        if (armor.getItem() instanceof DarkBlackBeastArmorItem dark && dark.isBroken(armor)) {
+            entity.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
+            entity.spawnAtLocation(armor.copy());
+            entity.playSound(ModSounds.WOLF_ARMOR_BREAK.get(), 1.0F, 1.0F);
+            return;
+        }
+
         entity.playSound(ModSounds.WOLF_ARMOR_DAMAGE.get(), 1.0F, 1.0F);
 
         WolfArmorCrackiness before = WolfArmorCrackiness.byDamage(armor);
@@ -44,6 +51,13 @@ public class BlackBeastArmorDamageHandler {
         }
         armor.hurtAndBreak(durabilityDamage, entity, (wolf) ->
                 wolf.playSound(ModSounds.WOLF_ARMOR_BREAK.get(), 1.0F, 1.0F));
+
+        if (armor.getItem() instanceof DarkBlackBeastArmorItem dark && dark.isBroken(armor)) {
+            entity.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
+            entity.spawnAtLocation(armor.copy());
+            entity.playSound(ModSounds.WOLF_ARMOR_BREAK.get(), 1.0F, 1.0F);
+            return;
+        }
 
         WolfArmorCrackiness after = WolfArmorCrackiness.byDamage(armor);
         if (after != before && after != WolfArmorCrackiness.NONE) {

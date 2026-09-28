@@ -13,10 +13,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * 阴影蜘蛛仆从模型：直接复用 OF 原版 UmberSpiderModel 的几何（纯几何，与实体类型无关）。
- * 33 个部件的查找链照搬原版 UmberSpiderModel（javap 反汇编确认），动画直接用 OF 的 UmberSpiderAnimations。
- */
 @OnlyIn(Dist.CLIENT)
 public class UmberSpiderServantModel extends OPModel<UmberSpiderServant> {
     private final ModelPart root;

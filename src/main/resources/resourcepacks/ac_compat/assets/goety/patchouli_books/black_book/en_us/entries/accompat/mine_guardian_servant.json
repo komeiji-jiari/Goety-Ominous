@@ -1,0 +1,29 @@
+{
+  "name": "Mine Guardian",
+  "icon": "goetyominous:mine_guardian_block",
+  "category": "goety:abyssalchasm",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Although the original builders of the Mine Guardian can no longer be identified, you can command the souls of the dead to construct an Inactive Mine Guardian Block for you."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:mine_guardian_block"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:mine_guardian_servant",
+      "text": ""
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goety:animation_core",
+      "text": "Place the Inactive Mine Guardian on the ground and right-click it with a Animation Core to spawn your Mine Guardian."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "A created Mine Guardian comes with an anchor attached. You can cut it with Shears to allow it to float freely. If you want to tether it back, right-click your Mine Guardian while holding a Chain."
+    }
+  ]
+}

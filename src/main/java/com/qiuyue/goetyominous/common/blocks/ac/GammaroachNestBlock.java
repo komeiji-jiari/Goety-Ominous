@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.blocks.ac;
 
 import com.Polarice3.Goety.common.blocks.TrainingBlock;
 import com.Polarice3.Goety.common.blocks.entities.TrainingBlockEntity;
+import com.github.alexmodguy.alexscaves.server.block.ACSoundTypes;
 import com.qiuyue.goetyominous.common.blocks.entities.ac.GammaroachNestBlockEntity;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockEntityRegistry;
 import net.minecraft.core.BlockPos;
@@ -44,8 +45,9 @@ public class GammaroachNestBlock extends TrainingBlock {
         super(BlockBehaviour.Properties.of()
                 .mapColor(MapColor.TERRACOTTA_WHITE)
                 .ignitedByLava()
-                .strength(0.2F, 3.0F)
-                .sound(SoundType.WART_BLOCK)
+                .strength(5.0F, 3.0F)
+                .requiresCorrectToolForDrops()
+                .sound(ACSoundTypes.NUCLEAR_BOMB)
                 .noOcclusion());
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false));
     }

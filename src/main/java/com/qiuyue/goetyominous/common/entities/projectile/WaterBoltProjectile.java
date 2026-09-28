@@ -308,6 +308,7 @@ public class WaterBoltProjectile extends WaterHurtingProjectile {
         if (ricochetTo != null && owner instanceof LivingEntity living) {
             WaterBoltProjectile bolt = new WaterBoltProjectile(this.level(), living);
             bolt.copyPosition(this);
+            bolt.setDamageBonus(this.damageBonus);
             bolt.setArcingTowards(ricochetTo.getUUID());
             Vec3 arcVec = ricochetTo.position()
                     .add(0.0, (double) (0.3F + 1.0F * ricochetTo.getBbHeight()), 0.0)

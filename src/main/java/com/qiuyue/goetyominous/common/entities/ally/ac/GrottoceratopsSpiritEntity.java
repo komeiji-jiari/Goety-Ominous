@@ -26,7 +26,7 @@ public class GrottoceratopsSpiritEntity extends Entity {
 
     private static final EntityDataAccessor<Optional<UUID>> OWNER_ID =
             SynchedEntityData.defineId(GrottoceratopsSpiritEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-    private static final EntityDataAccessor<Integer> OWNER_ENTITY_ID =      // ★ 给客户端渲染用（UUID 解析不到非玩家主人）
+    private static final EntityDataAccessor<Integer> OWNER_ENTITY_ID =
             SynchedEntityData.defineId(GrottoceratopsSpiritEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> ROTATE_OFFSET =
             SynchedEntityData.defineId(GrottoceratopsSpiritEntity.class, EntityDataSerializers.FLOAT);
@@ -73,7 +73,7 @@ public class GrottoceratopsSpiritEntity extends Entity {
             return;
         }
 
-        if (!this.level().isClientSide && this.getLifetime() > 0) {      // ★ 75 秒寿命，到期全体淡出
+        if (!this.level().isClientSide && this.getLifetime() > 0) {
             this.setLifetime(this.getLifetime() - 1);
             if (this.getLifetime() <= 0) {
                 this.setFading(true);
@@ -111,7 +111,6 @@ public class GrottoceratopsSpiritEntity extends Entity {
         }
     }
 
-    /** AC DinosaurSpiritEntity.tickGrottoceratops:168-179 原样，只把 Player 换成 LivingEntity、去掉"手持长矛"判定 */
     private void tickGrottoceratops(LivingEntity owner) {
         float rot = this.getRotateOffset() + (float) (owner.tickCount * 5);
         Vec3 orbitBy = new Vec3(0.0D, 1.0D, 2.0D).yRot((float) (-Math.toRadians(rot)));
@@ -167,7 +166,7 @@ public class GrottoceratopsSpiritEntity extends Entity {
 
     @Nullable
     public LivingEntity getUsingEntity() {
-        if (this.level().isClientSide) {                       // 客户端：主人的实体 id 也在同步字段里
+        if (this.level().isClientSide) {
             Entity entity = this.level().getEntity(this.getOwnerEntityId());
             return entity instanceof LivingEntity living ? living : null;
         }

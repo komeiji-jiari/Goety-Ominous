@@ -4,8 +4,11 @@ import com.Polarice3.Goety.api.items.ISoulRepair;
 import com.Polarice3.Goety.common.items.ModItems;
 import com.qiuyue.goetyominous.GoetyOminous;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+
+import java.util.function.Consumer;
 
 public class DarkWolfArmorItem extends CursedMetalWolfArmorItem implements ISoulRepair {
     public static final ResourceLocation VANILLA_WOLF_TEXTURE = new ResourceLocation(
@@ -21,5 +24,18 @@ public class DarkWolfArmorItem extends CursedMetalWolfArmorItem implements ISoul
     public boolean isValidRepairItem(ItemStack stack, ItemStack repairCandidate) {
         return repairCandidate.is(ModItems.DARK_ALLOY_INGOT.get())
                 || repairCandidate.is(ModItems.CURSED_METAL_INGOT.get());
+    }
+
+    public boolean isBroken(ItemStack stack) {
+        return stack.getDamageValue() >= stack.getMaxDamage() - 1;
+    }
+
+    @Override
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
+        if (stack.getDamageValue() + amount >= stack.getMaxDamage()) {
+            stack.setDamageValue(stack.getMaxDamage() - 1);
+            return 0;
+        }
+        return amount;
     }
 }

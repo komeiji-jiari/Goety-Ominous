@@ -100,7 +100,7 @@ public class DicerServantAttackGoal extends RamblerServantAttackGoal {
                 }
 
                 if (this.timer == 28) {
-                    this.dicer.addDeltaMovement(this.dicer.getLookAngle().scale(3.25D).multiply(1.0D, 0.0D, 1.0D));   // ★ 对齐 OF
+                    this.dicer.addDeltaMovement(this.dicer.getLookAngle().scale(3.25D).multiply(1.0D, 0.0D, 1.0D));
                 }
 
                 if (this.timer > 28 && this.timer < 32) {

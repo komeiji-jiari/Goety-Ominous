@@ -1,0 +1,19 @@
+{
+  "name": "Deep Wave Focus",
+  "icon": "goetyominous:deep_wave_focus",
+  "category": "goety:abyssalchasm",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "This spell allows you to raise surging waves like a Deep One Mage, sweeping creatures before you away as if with a tsunami."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:deep_wave_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "When cast using an $(l:crafts/staff/abyss_staff)Abyss Staff$() to channel this focus, you can fire two additional waves of water at once."
+    }
+  ]
+}

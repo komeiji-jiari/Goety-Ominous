@@ -32,6 +32,14 @@ public class WargArmorDamageHandler {
         if (amount <= 0.0F) return;
 
         LivingEntity entity = event.getEntity();
+
+        if (armor.getItem() instanceof DarkWargArmorItem dark && dark.isBroken(armor)) {
+            entity.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
+            entity.spawnAtLocation(armor.copy());
+            entity.playSound(ModSounds.WOLF_ARMOR_BREAK.get(), 1.0F, 1.0F);
+            return;
+        }
+
         entity.playSound(ModSounds.WOLF_ARMOR_DAMAGE.get(), 1.0F, 1.0F);
 
         WolfArmorCrackiness before = WolfArmorCrackiness.byDamage(armor);
@@ -44,6 +52,13 @@ public class WargArmorDamageHandler {
         }
         armor.hurtAndBreak(durabilityDamage, entity, (wolf) ->
                 wolf.playSound(ModSounds.WOLF_ARMOR_BREAK.get(), 1.0F, 1.0F));
+
+        if (armor.getItem() instanceof DarkWargArmorItem dark && dark.isBroken(armor)) {
+            entity.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
+            entity.spawnAtLocation(armor.copy());
+            entity.playSound(ModSounds.WOLF_ARMOR_BREAK.get(), 1.0F, 1.0F);
+            return;
+        }
 
         WolfArmorCrackiness after = WolfArmorCrackiness.byDamage(armor);
         if (after != before && after != WolfArmorCrackiness.NONE) {

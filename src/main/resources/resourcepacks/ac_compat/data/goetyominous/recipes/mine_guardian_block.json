@@ -1,0 +1,30 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "alexscaves:depth_charge"
+  },
+  "craftType": "deep",
+  "soulCost": 1,
+  "duration": 10,
+  "ingredients": [
+    {
+      "item": "alexscaves:scrap_metal_plate"
+    },
+    {
+      "item": "alexscaves:scrap_metal_plate"
+    },
+    {
+      "item": "alexscaves:scrap_metal_plate"
+    },
+    {
+      "item": "minecraft:redstone"
+    },
+    {
+      "item": "minecraft:prismarine_shard"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:mine_guardian_block"
+  }
+}

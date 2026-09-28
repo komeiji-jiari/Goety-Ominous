@@ -1,0 +1,19 @@
+{
+  "name": "Tide Bash Focus",
+  "icon": "goetyominous:wave_bash_focus",
+  "category": "goety:abyssalchasm",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "By improving upon the Launching Focus, you have invented a spell that instantly propels you forward while raising a wave of water."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:wave_bash_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "When cast using an $(l:crafts/staff/abyss_staff)Abyss Staff$() to channel this focus, the spell launches you a greater distance."
+    }
+  ]
+}

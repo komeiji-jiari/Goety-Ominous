@@ -81,6 +81,9 @@ public class SkyvernSpell extends SummonSpell {
 
         if (!this.isShifting(caster)) {
             int count = 1;
+            if (this.rightStaff(staff) && worldIn.getRandom().nextFloat() < 0.15F) {
+                count = 2;
+            }
 
             for (int i = 0; i < count; ++i) {
                 SkyvernServant skyvern = new SkyvernServant(OfEntityRegistry.SKYVERN_SERVANT.get(), worldIn);

@@ -8,11 +8,6 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
 
-/**
- * 怕光逃跑目标：复刻 OF 原版 UmberSpiderFearLightGoal。
- * 非精英、没被骑乘时，如果身边块亮度超过阈值或着火了（且记录过光的位置），
- * 就锁定逃跑：设 fleeLightFor=50 倒计时、关掉攻击状态，并朝远离光的方向随机找位置快跑(1.6 倍速)。
- */
 public class UmberSpiderServantFearLightGoal extends Goal {
     private final UmberSpiderServant umberSpider;
 

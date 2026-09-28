@@ -44,28 +44,16 @@ import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.Event;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * 阴影蜘蛛仆从：对照 OF 原版 UmberSpider 逐项移植。
- * 原版是"阴影"主题的蜘蛛怪，核心特色三件套：
- *  1) 怕光：周围块光照超过阈值(LIGHT_THRESHOLD=10)就会跑开；白天被太阳晒会着火 8 秒；
- *     精英(黑暗形态 TENEBROUS)免疫怕光逃跑，但白天依然会被晒。
- *  2) 阴郁毒素(GLOOM_TOXIN)：近战咬中按难度附加，普通难度 5 秒、困难 10 秒、精英再叠 1 级。
- *  3) 蜘蛛本能：继承原版蜘蛛的爬墙(WallClimberNavigation)、远距离跳扑扑脸。
- */
 public class UmberSpiderServant extends Summoned implements AttackState, EliteVariant {
-    // ===== 同步数据（字段名照抄 OF 原版 UmberSpider）=====
-    private static final EntityDataAccessor<Integer> ATTACK_STATE;   // 攻击状态：0=待机 1=撕咬中
-    private static final EntityDataAccessor<Boolean> ATTACKING;      // 是否正在攻击（驱动动画/跳扑衔接）
-    public static final EntityDataAccessor<Integer> LIGHT_THRESHOLD; // 怕光阈值（默认 10）
-    private static final EntityDataAccessor<Boolean> TENEBROUS;      // 黑暗精英形态（isElite 存这里）
-    /** 爬墙标志（照抄原版 Spider 的 DATA_FLAGS_ID，bit0 = 是否贴墙）。 */
+    private static final EntityDataAccessor<Integer> ATTACK_STATE;
+    private static final EntityDataAccessor<Boolean> ATTACKING;
+    public static final EntityDataAccessor<Integer> LIGHT_THRESHOLD;
+    private static final EntityDataAccessor<Boolean> TENEBROUS;
     private static final EntityDataAccessor<Byte> DATA_FLAGS_ID;
 
-    // ===== 怕光逃跑字段（照抄原版）=====
-    public int fleeLightFor;              // 逃跑倒计时（>0 时不会主动攻击）
-    public Vec3 fleeFromPosition;         // 光的位置，蜘蛛要跑远的地方
+    public int fleeLightFor;
+    public Vec3 fleeFromPosition;
 
-    // ===== 动画：原版只有两个（爬行 + 待机）=====
     public final AnimationState idleAnimationState = new AnimationState();
 
     public UmberSpiderServant(EntityType<? extends Owned> entityType, Level level) {
@@ -73,8 +61,6 @@ public class UmberSpiderServant extends Summoned implements AttackState, EliteVa
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
-        // 逐项对齐 OF 原版 UmberSpider（继承原版蜘蛛的属性）：
-        // 20 血 / 0.3 速 / 5 攻击力；FOLLOW_RANGE 原版继承 Spider 的默认 16，仆从跟随也需要
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 20.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.3D)
@@ -85,40 +71,22 @@ public class UmberSpiderServant extends Summoned implements AttackState, EliteVa
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        // 主动索敌：Goety 默认的 SummonTargetGoal 是"仇恨驱动"，不会见敌就打。
-        // 补上 NearestAttackableTargetGoal 才能像原版 UmberSpider 一样主动追敌对生物（Enemy）。
-        // mustSee 必须是 true：Goety 的 FollowOwnerGoal.canUse() 要求 getTarget() == null，
-        // 而 mustSee=false 时 TargetGoal.canContinueToUse() 恒为 true，会隔着墙永久锁定看不见的敌人，
-        // 导致跟随 goal 永远启动不了。
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false,
                 (target) -> target instanceof Enemy && !MobUtil.areAllies(this, target)));
-        // 对齐原版优先级：1=怕光逃跑（最高），2=跳扑，3=撕咬攻击，5=怕光闲逛，6/7=观察环视
-        // 0 号 FloatGoal 是原版 UmberSpider 就有的：蜘蛛掉进水里得先浮起来，
-        // 少了它会沉底淹死。移植时漏了这一个。
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new UmberSpiderServantFearLightGoal(this));
         this.goalSelector.addGoal(2, new UmberSpiderServantLeapAtTargetGoal(this));
         this.goalSelector.addGoal(3, new UmberSpiderServantAttackGoal(this));
-        // 游荡/环视排在 7 之后：Goety 的 FollowOwnerGoal 优先级是 5，
-        // 而 Goal.canBeReplacedBy 允许「优先级数字更小」的 goal 抢占正在跑的 goal，
-        // 所以数字一旦小于 5，仆从就会追到一半跑去闲逛、回不到主人身边。
         this.goalSelector.addGoal(7, new UmberSpiderServantRandomStrollGoal(this));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 16.0F));
         this.goalSelector.addGoal(9, new UmberSpiderServantRandomLookAroundGoal(this));
     }
 
-    // ===== 蜘蛛爬墙：用原版蜘蛛的贴墙导航 =====
     @Override
     protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
         return new WallClimberNavigation(this, level);
     }
 
-    // ===== 蜘蛛爬墙三件套（逐字照抄原版 Spider）=====
-    // 为什么必须自己写：原版 UmberSpider 是 extends Spider，白送这三样；
-    // 我们继承的是 Goety 的 Summoned，这个血统里根本没有蜘蛛的爬墙代码。
-    // 而 WallClimberNavigation 只负责「在墙上也能算出路径」，真正让蜘蛛贴墙往上爬的
-    // 是下面这套标志位 —— 少了它，路径点算得出来，但物理一贴墙就被重力拽下来，
-    // 表现就是「阴影蜘蛛完全不爬墙」。
     public boolean isClimbing() {
         return (this.entityData.get(DATA_FLAGS_ID) & 1) != 0;
     }
@@ -133,20 +101,16 @@ public class UmberSpiderServant extends Summoned implements AttackState, EliteVa
         this.entityData.set(DATA_FLAGS_ID, flag);
     }
 
-    /** 原版 Entity 的物理靠 onClimbable() 决定「贴墙时能不能垂直移动」。 */
     @Override
     public boolean onClimbable() {
         return this.isClimbing();
     }
 
-    // ===== 节肢动物（照抄原版 Spider.getMobType）=====
-    // 影响「节肢杀手」附魔对它的额外伤害，以及其它按生物类型判定的逻辑。
     @Override
     public MobType getMobType() {
         return MobType.ARTHROPOD;
     }
 
-    // ===== 蛛网不减速（照抄原版 Spider.makeStuckInBlock）=====
     @Override
     public void makeStuckInBlock(@NotNull BlockState state, @NotNull Vec3 motion) {
         if (!state.is(Blocks.COBWEB)) {
@@ -159,7 +123,6 @@ public class UmberSpiderServant extends Summoned implements AttackState, EliteVa
         return dimensions.height * 0.65F;
     }
 
-    // ===== AttackState 接口：攻击状态 =====
     @Override
     public int getAttackState() {
         return this.entityData.get(ATTACK_STATE);
@@ -170,7 +133,6 @@ public class UmberSpiderServant extends Summoned implements AttackState, EliteVa
         this.entityData.set(ATTACK_STATE, attackState);
     }
 
-    // ===== AttackState 接口：是否正在攻击 =====
     public boolean isAttacking() {
         return this.entityData.get(ATTACKING);
     }
@@ -179,7 +141,6 @@ public class UmberSpiderServant extends Summoned implements AttackState, EliteVa
         this.entityData.set(ATTACKING, attacking);
     }
 
-    // ===== 怕光阈值 =====
     public int getLightThreshold() {
         return this.entityData.get(LIGHT_THRESHOLD);
     }
@@ -188,7 +149,6 @@ public class UmberSpiderServant extends Summoned implements AttackState, EliteVa
         this.entityData.set(LIGHT_THRESHOLD, lightThreshold);
     }
 
-    // ===== EliteVariant 接口：黑暗精英形态（isElite 读的就是 TENEBROUS）=====
     @Override
     public boolean isElite() {
         return this.entityData.get(TENEBROUS);
@@ -230,7 +190,6 @@ public class UmberSpiderServant extends Summoned implements AttackState, EliteVa
     @Override
     public void tick() {
         super.tick();
-        // 照抄原版 Spider.tick()：服务端每 tick 把「是否有横向碰撞」同步成爬墙标志。
         if (!this.level().isClientSide) {
             this.setClimbing(this.horizontalCollision);
         }
@@ -239,12 +198,10 @@ public class UmberSpiderServant extends Summoned implements AttackState, EliteVa
         }
     }
 
-    // ===== 客户端动画状态：只有待机动画（原版 setupAnimationStates）=====
     private void setupAnimationStates() {
         this.idleAnimationState.animateWhen(this.isAlive(), this.tickCount);
     }
 
-    // ===== 免疫毒药与阴郁毒素（照抄原版 canBeAffected，走 Forge 事件）=====
     @Override
     public boolean canBeAffected(@NotNull MobEffectInstance effect) {
         if (effect.getEffect() == MobEffects.POISON || effect.getEffect() == OPMobEffects.GLOOM_TOXIN.get()) {
@@ -255,7 +212,6 @@ public class UmberSpiderServant extends Summoned implements AttackState, EliteVa
         return super.canBeAffected(effect);
     }
 
-    // ===== 怕太阳：白天被晒会着火 8 秒（同 Rambler，原版 aiStep 行为）=====
     @Override
     protected boolean isSunSensitive() {
         return true;
@@ -269,7 +225,6 @@ public class UmberSpiderServant extends Summoned implements AttackState, EliteVa
                 this.setSecondsOnFire(8);
             }
         }
-        // ===== 怕光逃跑位置刷新（照抄原版 aiStep）：非精英才会跑 =====
         if (!this.isElite()) {
             BlockPos pos = this.blockPosition();
             BlockPos offset = pos.offset(this.getRandom().nextInt(20) - 10,
@@ -286,7 +241,6 @@ public class UmberSpiderServant extends Summoned implements AttackState, EliteVa
         super.aiStep();
     }
 
-    // ===== 咬人附带阴郁毒素（照抄原版 doHurtTarget）=====
     @Override
     public boolean doHurtTarget(@NotNull Entity target) {
         if (super.doHurtTarget(target)) {
@@ -307,7 +261,6 @@ public class UmberSpiderServant extends Summoned implements AttackState, EliteVa
         return false;
     }
 
-    // ===== 音效（原版 3 个 + 蜘蛛脚步）=====
     @Override
     protected SoundEvent getAmbientSound() {
         return OPSoundEvents.UMBER_SPIDER_IDLE.get();

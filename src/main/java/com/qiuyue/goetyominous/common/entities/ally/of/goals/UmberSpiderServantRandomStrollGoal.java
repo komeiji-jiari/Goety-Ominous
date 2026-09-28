@@ -4,11 +4,6 @@ import com.qiuyue.goetyominous.common.entities.ally.of.UmberSpiderServant;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.level.LightLayer;
 
-/**
- * 怕光闲逛目标：复刻 OF 原版 UmberSpiderRandomStrollGoal。
- * 非精英只在脚下够暗时才肯乱逛（和怕光主题一致），精英随时乱逛；
- * 被骑乘时不会乱逛。
- */
 public class UmberSpiderServantRandomStrollGoal extends WaterAvoidingRandomStrollGoal {
     private final UmberSpiderServant umberSpider;
 

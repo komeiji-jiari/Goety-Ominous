@@ -142,6 +142,13 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> WaterBoltCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> WaterBoltCoolDown;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> DeepWaveCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DeepWaveCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DeepWaveCoolDown;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> TideBashCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> TideBashCoolDown;
+
     public static final ForgeConfigSpec.ConfigValue<Integer> HogChargeSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> HogChargeCooldown;
     public static final ForgeConfigSpec.ConfigValue<Double> HogChargeDamage;
@@ -302,8 +309,8 @@ public class SpellConfig {
         BUILDER.pop();
 
         BUILDER.push("Skyvern");
-        SkyvernSoulCost = BUILDER.comment("Soul cost of Skyvern Servant spell (Default: 64)")
-                .defineInRange("skyvernSoulCost", 64, 1, 128);
+        SkyvernSoulCost = BUILDER.comment("Soul cost of Skyvern Servant spell (Default: 100)")
+                .defineInRange("skyvernSoulCost", 100, 1, 128);
         SkyvernCastDuration = BUILDER.comment("Cast duration of Skyvern Servant spell in ticks (Default: 120)")
                 .defineInRange("skyvernCastDuration", 120, 0, 500);
         SkyvernSummonDown = BUILDER.comment("Summon down duration of Skyvern Servant spell in ticks (Default: 400)")
@@ -313,12 +320,12 @@ public class SpellConfig {
         BUILDER.pop();
 
         BUILDER.push("Trembler");
-        TremblerSoulCost = BUILDER.comment("Soul cost of Trembler Servant spell (Default: 32)")
+        TremblerSoulCost = BUILDER.comment("Soul cost of Trembler Servant spell (Default: 36)")
                 .defineInRange("tremblerSoulCost", 32, 1, 128);
-        TremblerCastDuration = BUILDER.comment("Cast duration of Trembler Servant spell in ticks (Default: 100)")
-                .defineInRange("tremblerCastDuration", 100, 0, 500);
-        TremblerSummonDown = BUILDER.comment("Summon down duration of Trembler Servant spell in ticks (Default: 240)")
-                .defineInRange("tremblerSummonDown", 240, 0, 5000);
+        TremblerCastDuration = BUILDER.comment("Cast duration of Trembler Servant spell in ticks (Default: 120)")
+                .defineInRange("tremblerCastDuration", 120, 0, 500);
+        TremblerSummonDown = BUILDER.comment("Summon down duration of Trembler Servant spell in ticks (Default: 300)")
+                .defineInRange("tremblerSummonDown", 300, 0, 5000);
         TremblerCoolDown = BUILDER.comment("Cooldown of Trembler Servant spell in ticks (Default: 600)")
                 .defineInRange("tremblerCoolDown", 600, 0, 5000);
         BUILDER.pop();
@@ -428,6 +435,22 @@ public class SpellConfig {
                 .defineInRange("waterBoltCost", 8, 1, 100);
         WaterBoltCoolDown = BUILDER.comment("Cooldown of Water Bolt spell in ticks (Default: 20)")
                 .defineInRange("waterBoltCoolDown", 20, 0, 2000);
+        BUILDER.pop();
+
+        BUILDER.push("DeepWave");
+        DeepWaveCost = BUILDER.comment("Soul cost of Deep Wave spell (Default: 12)")
+                .defineInRange("deepWaveCost", 12, 1, 100);
+        DeepWaveCastDuration = BUILDER.comment("Cast duration of Deep Wave spell in ticks (Default: 40)")
+                .defineInRange("deepWaveCastDuration", 40, 0, 2000);
+        DeepWaveCoolDown = BUILDER.comment("Cooldown of Deep Wave spell in ticks (Default: 50)")
+                .defineInRange("deepWaveCoolDown", 50, 0, 2000);
+        BUILDER.pop();
+
+        BUILDER.push("TideBash");
+        TideBashCost = BUILDER.comment("Soul cost of Tide Bash spell (Default: 8)")
+                .defineInRange("tideBashCost", 8, 1, 100);
+        TideBashCoolDown = BUILDER.comment("Cooldown of Tide Bash spell in ticks (Default: 40)")
+                .defineInRange("tideBashCoolDown", 40, 0, 2000);
         BUILDER.pop();
 
         BUILDER.push("Sand Spell");

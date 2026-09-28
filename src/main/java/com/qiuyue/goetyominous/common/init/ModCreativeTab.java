@@ -80,6 +80,7 @@ public class ModCreativeTab {
                         if (AlexCavesCompat.isAlexCavesLoaded()) {
                             collectFrom(AcItems.AC_ITEMS, spawnEggs, foci, weapons, otherItems, blocks);
                             moveAfter(otherItems, AcItems.RAYCAT_AMULET.get(), ModItems.SCREAMING_SKULL_JAR.get());
+                            moveAfter(otherItems, AcItems.KEY_OF_RLYEH.get(), ModItems.FEL_STAFF.get());
                         }
 
                         otherItems.forEach(output::accept);

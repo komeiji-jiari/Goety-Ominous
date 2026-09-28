@@ -61,9 +61,9 @@ public class VoltServantModel extends OPModel<VoltServant> {
         this.root().getAllParts().forEach(ModelPart::resetPose);
         if (entity.getPose() == Pose.STANDING) {
             if (entity.isInWater()) {
-                this.animateWalk(VoltAnimations.SWIM, limbSwing, limbSwingAmount, 2.5F, 5.0F);   // ★ 对齐 OF
+                this.animateWalk(VoltAnimations.SWIM, limbSwing, limbSwingAmount, 2.5F, 5.0F);
             } else {
-                this.animateWalk(VoltAnimations.WALK, limbSwing, limbSwingAmount, 3.0F, 6.0F);   // ★ 对齐 OF
+                this.animateWalk(VoltAnimations.WALK, limbSwing, limbSwingAmount, 3.0F, 6.0F);
             }
         }
         this.animateIdle(entity.idleAnimationState, VoltAnimations.IDLE, ageInTicks, 1.0F, limbSwingAmount * 4.0F);

@@ -49,17 +49,17 @@ public class AcBlockEntityRegistry {
                             VallumraptorServantEggBlockEntity::new,
                             AcBlockRegistry.VALLUMRAPTOR_SERVANT_EGG.get()).build(null));
 
-    public static final RegistryObject<BlockEntityType<GammaroachNestBlockEntity>> GAMMAROACH_NEST =
-            AC_BLOCK_ENTITIES.register("gammaroach_nest",
-                    () -> BlockEntityType.Builder.of(
-                            GammaroachNestBlockEntity::new,
-                            AcBlockRegistry.GAMMAROACH_NEST.get()).build(null));
-
     public static final RegistryObject<BlockEntityType<AnnihilationBombBlockEntity>> ANNIHILATION_BOMB =
             AC_BLOCK_ENTITIES.register("annihilation_core",
                     () -> BlockEntityType.Builder.of(
                             AnnihilationBombBlockEntity::new,
                             AcBlockRegistry.ANNIHILATION_BOMB.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<GammaroachNestBlockEntity>> GAMMAROACH_NEST =
+            AC_BLOCK_ENTITIES.register("gammaroach_nest",
+                    () -> BlockEntityType.Builder.of(
+                            GammaroachNestBlockEntity::new,
+                            AcBlockRegistry.GAMMAROACH_NEST.get()).build(null));
 
     public static void register(IEventBus modEventBus) {
         AC_BLOCK_ENTITIES.register(modEventBus);

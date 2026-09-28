@@ -67,7 +67,7 @@ public class DeepOneMageServantWave extends AbstractWave {
             if (!this.canWaveHit(entity, owner)) {
                 continue;
             }
-            entity.hurt(source, scale + 1.0F);
+            entity.hurt(source, scale + 1.0F + this.getExtraDamage());
             this.setSlamming(true);
             entity.knockback(0.1D + 0.5D * scale,
                     (double) Mth.sin(this.getYRot() * ((float) Math.PI / 180F)),
