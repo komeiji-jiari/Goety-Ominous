@@ -50,12 +50,14 @@ public class OpenFungusPackPacket {
     }
 
     private static void openGui(ServerPlayer player, ItemStack stack) {
+        FungusPackItemHandler handler = FungusPackItemHandler.get(stack);
+        if (handler == null) return;
         net.minecraftforge.network.NetworkHooks.openScreen(
                 player,
                 new net.minecraft.world.SimpleMenuProvider(
                         (id, inv, p) -> new com.qiuyue.goetyominous.client.inventory.container.FungusPackContainer(
                                 id, inv,
-                                FungusPackItemHandler.get(stack),
+                                handler,
                                 stack),
                         stack.getHoverName()),
                 buf -> {});
