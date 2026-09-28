@@ -17,6 +17,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -26,6 +28,8 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.*;
@@ -34,6 +38,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.Tags;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -55,6 +60,7 @@ public class MineGuardianServant extends Summoned {
     private int timeSinceHadTarget = 0;
     private int maxChainLength = 8;
     private int anchorMissingTime = 0;
+    private boolean chainCut;
     private UUID anchorUUID;
     private static final EntityDataAccessor<Boolean> EXPLODING = SynchedEntityData.defineId(MineGuardianServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> EYE_CLOSED = SynchedEntityData.defineId(MineGuardianServant.class, EntityDataSerializers.BOOLEAN);
@@ -168,11 +174,38 @@ public class MineGuardianServant extends Summoned {
         this.maxChainLength = length;
     }
 
+    public boolean isChainCut() {
+        return this.chainCut;
+    }
+
+    public void setChainCut(boolean cut) {
+        this.chainCut = cut;
+    }
+
     public Entity getAnchor() {
         if (this.anchorUUID == null || this.level().isClientSide) {
             return null;
         }
         return ((ServerLevel) this.level()).getEntity(this.anchorUUID);
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        if (!this.level().isClientSide
+                && (reason == RemovalReason.KILLED || reason == RemovalReason.DISCARDED)) {
+            if (this.getAnchor() instanceof MineGuardianAnchorServantEntity anchorEntity) {
+                anchorEntity.releaseChain();
+            }
+        }
+        super.remove(reason);
+    }
+
+    private void tieAnchor() {
+        this.setMaxChainLength(7 + this.random.nextInt(6));
+        MineGuardianAnchorServantEntity created = new MineGuardianAnchorServantEntity(this);
+        this.level().addFreshEntity(created);
+        this.anchorUUID = created.getUUID();
+        this.anchorMissingTime = 0;
     }
 
     @Override
@@ -188,6 +221,41 @@ public class MineGuardianServant extends Summoned {
     @Override
     public boolean checkSpawnObstruction(LevelReader levelReader) {
         return levelReader.isUnobstructed(this);
+    }
+
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        if (!this.level().isClientSide) {
+            ItemStack itemStack = player.getItemInHand(hand);
+            if (this.getTrueOwner() != null && player == this.getTrueOwner()) {
+                if (itemStack.is(Tags.Items.SHEARS)) {
+                    if (!this.isChainCut()) {
+                        if (this.getAnchor() instanceof MineGuardianAnchorServantEntity anchorEntity) {
+                            anchorEntity.releaseChain();
+                        }
+                        this.setChainCut(true);
+                        this.anchorUUID = null;
+                        this.anchorMissingTime = 0;
+                        itemStack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+                        this.playSound(SoundEvents.CHAIN_BREAK, 1.0F, 1.0F);
+                        player.swing(hand);
+                        return InteractionResult.CONSUME;
+                    }
+                } else if (itemStack.is(Items.CHAIN)) {
+                    if (this.isChainCut()) {
+                        this.setChainCut(false);
+                        this.tieAnchor();
+                        if (!player.getAbilities().instabuild) {
+                            itemStack.shrink(1);
+                        }
+                        this.playSound(SoundEvents.CHAIN_PLACE, 1.0F, 1.0F);
+                        player.swing(hand);
+                        return InteractionResult.CONSUME;
+                    }
+                }
+            }
+        }
+        return super.mobInteract(player, hand);
     }
 
     public void tick() {
@@ -222,19 +290,17 @@ public class MineGuardianServant extends Summoned {
             this.setDeltaMovement(this.getDeltaMovement().multiply(0.3F, 1, 0.3F));
         }
         if (!level().isClientSide) {
-            Entity anchor = this.getAnchor();
-            if (anchor == null) {
-                if (this.anchorUUID == null || ++this.anchorMissingTime > 20) {
+            if (!this.isChainCut()) {
+                Entity anchor = this.getAnchor();
+                if (anchor == null) {
+                    if (this.anchorUUID == null || ++this.anchorMissingTime > 20) {
+                        this.tieAnchor();
+                    }
+                } else {
                     this.anchorMissingTime = 0;
-                    this.setMaxChainLength(7 + this.random.nextInt(6));
-                    MineGuardianAnchorServantEntity created = new MineGuardianAnchorServantEntity(this);
-                    this.level().addFreshEntity(created);
-                    this.anchorUUID = created.getUUID();
-                }
-            } else {
-                this.anchorMissingTime = 0;
-                if (anchor instanceof MineGuardianAnchorServantEntity anchorEntity) {
-                    anchorEntity.linkWithGuardian(this);
+                    if (anchor instanceof MineGuardianAnchorServantEntity anchorEntity) {
+                        anchorEntity.linkWithGuardian(this);
+                    }
                 }
             }
             if (this.isInWaterOrBubble()) {
@@ -363,6 +429,7 @@ public class MineGuardianServant extends Summoned {
             this.anchorUUID = compound.getUUID("AnchorUUID");
         }
         this.setMaxChainLength(compound.getInt("MaxChainLength"));
+        this.setChainCut(compound.getBoolean("ChainCut"));
         this.scanTime = compound.getInt("ScanTime");
         this.setEyeClosed(compound.getBoolean("EyeClosed"));
         this.timeSinceHadTarget = compound.getInt("SleepTime");
@@ -377,6 +444,7 @@ public class MineGuardianServant extends Summoned {
             compound.putUUID("AnchorUUID", this.anchorUUID);
         }
         compound.putInt("MaxChainLength", this.maxChainLength);
+        compound.putBoolean("ChainCut", this.isChainCut());
         compound.putBoolean("EyeClosed", this.isEyeClosed());
         compound.putInt("ScanTime", this.scanTime);
         compound.putInt("SleepTime", this.timeSinceHadTarget);
