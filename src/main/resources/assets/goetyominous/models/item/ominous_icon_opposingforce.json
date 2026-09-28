@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "opposing_force:item/slug_eggs"
+    "layer0": "opposing_force:item/skyvern_claw"
   }
 }

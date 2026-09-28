@@ -2,13 +2,24 @@ package com.qiuyue.goetyominous.common.entities.ally.ac;
 
 import com.github.alexmodguy.alexscaves.server.entity.item.MineGuardianAnchorEntity;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 
 public class MineGuardianAnchorServantEntity extends MineGuardianAnchorEntity {
+
+    private static final EntityDataAccessor<Boolean> CHAIN_RELEASED = SynchedEntityData.defineId(MineGuardianAnchorServantEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final int LANDED_LINGER_TICKS = 60;
+
+    private boolean landed;
+    private int landedTicks;
 
     public MineGuardianAnchorServantEntity(EntityType<?> entityType, Level level) {
         super(entityType, level);
@@ -22,9 +33,46 @@ public class MineGuardianAnchorServantEntity extends MineGuardianAnchorEntity {
     }
 
     @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(CHAIN_RELEASED, false);
+    }
+
+    public boolean isChainReleased() {
+        return this.entityData.get(CHAIN_RELEASED);
+    }
+
+    public void releaseChain() {
+        this.entityData.set(CHAIN_RELEASED, true);
+        this.landed = false;
+        this.landedTicks = 0;
+    }
+
+    @Override
     public void tick() {
+        if (this.isChainReleased()) {
+            this.baseTick();
+            if (!this.onGround()) {
+                this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.08D, 0.0D));
+            } else {
+                this.landed = true;
+            }
+            this.move(MoverType.SELF, this.getDeltaMovement().scale(0.9F));
+            this.setDeltaMovement(this.getDeltaMovement().multiply(0.9D, 0.9D, 0.9D));
+            if (!this.level().isClientSide && this.landed && ++this.landedTicks > LANDED_LINGER_TICKS) {
+                this.discard();
+            }
+            return;
+        }
         super.tick();
-        if (!this.level().isClientSide && this.getGuardian() instanceof MineGuardianServant servant) {
+        if (this.level().isClientSide) {
+            return;
+        }
+        if (this.getGuardian() instanceof MineGuardianServant servant) {
+            if (servant.isChainCut()) {
+                this.releaseChain();
+                return;
+            }
             this.linkWithGuardian(servant);
             LivingEntity attackTarget = servant.getTarget();
             boolean hasTarget = attackTarget != null && attackTarget.isAlive();
@@ -53,9 +101,23 @@ public class MineGuardianAnchorServantEntity extends MineGuardianAnchorEntity {
 
     @Override
     public Vec3 getChainTo(float partialTicks) {
-        if (this.getGuardian() instanceof MineGuardianServant servant) {
+        if (!this.isChainReleased() && this.getGuardian() instanceof MineGuardianServant servant) {
             return servant.getPosition(partialTicks);
         }
         return super.getChainTo(partialTicks);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.entityData.set(CHAIN_RELEASED, compound.getBoolean("ChainReleased"));
+        this.landedTicks = compound.getInt("LandedTicks");
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putBoolean("ChainReleased", this.isChainReleased());
+        compound.putInt("LandedTicks", this.landedTicks);
     }
 }
