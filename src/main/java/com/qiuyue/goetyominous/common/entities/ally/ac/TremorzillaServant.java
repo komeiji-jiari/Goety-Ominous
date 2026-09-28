@@ -38,6 +38,7 @@ import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.IAdvancedPathingMob;
 import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.ITallWalker;
+import com.qiuyue.goetyominous.client.sound.TremorzillaEmergenceRoarSound;
 import com.qiuyue.goetyominous.common.blocks.entities.ac.AnnihilationBombBlockEntity;
 import com.qiuyue.goetyominous.common.entities.ai.ac.ServantTemptGoal;
 import com.qiuyue.goetyominous.common.items.ac.AcItems;
@@ -133,6 +134,8 @@ public class TremorzillaServant extends AnimalSummon
             SynchedEntityData.defineId(TremorzillaServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> ALT_SKIN =
             SynchedEntityData.defineId(TremorzillaServant.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> EMERGING =
+            SynchedEntityData.defineId(TremorzillaServant.class, EntityDataSerializers.BOOLEAN);
 
     public static final Animation ANIMATION_SPEAK = Animation.create(20);
     public static final Animation ANIMATION_ROAR_1 = Animation.create(60);
@@ -151,6 +154,8 @@ public class TremorzillaServant extends AnimalSummon
     private static final float SCARE_MAX_HEALTH = 100.0F;
     private static final EntityDimensions SWIMMING_SIZE = new EntityDimensions(4.0F, 5.0F, true);
     private static final float FOLLOW_START_DISTANCE = 14.0F;
+    private static final int NUKE_EMERGENCE_DELAY = 2;
+    private static final int NUKE_EMERGENCE_FLING_GUARD = 60;
 
     private final TremorzillaServantPartEntity[] allParts;
     public final TremorzillaServantPartEntity tailPart1;
@@ -169,7 +174,8 @@ public class TremorzillaServant extends AnimalSummon
     private int animationTick;
     public int deathTime;
     private int blastFlingGuard;
-    private int nukeRecoveryTicks;
+    private int emergingTicks;
+    private boolean emergenceRoarPlayed;
     private float lastYawBeforeWhip;
     protected boolean isLandNavigator;
     private double lastStompX = 0.0;
@@ -251,14 +257,6 @@ public class TremorzillaServant extends AnimalSummon
         this.goalSelector.addGoal(5, new TremorzillaServantFollowGoal(this, 1.0D, FOLLOW_START_DISTANCE, 6.0F));
     }
 
-    public void beginNukeRecovery(int ticks) {
-        this.nukeRecoveryTicks = ticks;
-    }
-
-    public boolean isRecoveringFromNuke() {
-        return this.nukeRecoveryTicks > 0;
-    }
-
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
@@ -269,6 +267,7 @@ public class TremorzillaServant extends AnimalSummon
         this.entityData.define(SPIKES_DOWN_PROGRESS, 0.0F);
         this.entityData.define(MAX_BEAM_BREAK_LENGTH, 100.0F);
         this.entityData.define(FIRING, false);
+        this.entityData.define(EMERGING, false);
     }
 
     @Override
@@ -313,15 +312,6 @@ public class TremorzillaServant extends AnimalSummon
     }
 
     @Override
-    protected void actuallyHurt(DamageSource source, float amount) {
-        float initialAmount = amount;
-        if (!source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
-            amount = Math.min(initialAmount, AttributesConfig.TremorzillaServantDamageCap.get().floatValue());
-        }
-        super.actuallyHurt(source, amount);
-    }
-
-    @Override
     public boolean canBreatheUnderwater() {
         return true;
     }
@@ -340,14 +330,45 @@ public class TremorzillaServant extends AnimalSummon
         return this.firstTick;
     }
 
+    public void beginNukeEmergence() {
+        this.entityData.set(EMERGING, true);
+        this.emergingTicks = 0;
+        this.emergenceRoarPlayed = false;
+        this.blastFlingGuard = NUKE_EMERGENCE_FLING_GUARD;
+    }
+
+    public boolean isEmerging() {
+        return this.entityData.get(EMERGING);
+    }
+
     @Override
     public void tick() {
+        if (this.isEmerging()) {
+            float yaw = this.getYRot();
+            this.yRotO = yaw;
+            this.yBodyRot = yaw;
+            this.yBodyRotO = yaw;
+            this.yHeadRot = yaw;
+            this.yHeadRotO = yaw;
+            this.lastYawBeforeWhip = yaw;
+            if (this.level().isClientSide) {
+                if (!this.emergenceRoarPlayed && this.getAnimation() == ANIMATION_ROAR_2) {
+                    this.emergenceRoarPlayed = true;
+                    TremorzillaEmergenceRoarSound.play(this);
+                }
+            } else {
+                ++this.emergingTicks;
+                if (this.emergingTicks == NUKE_EMERGENCE_DELAY) {
+                    this.setAnimationTick(0);
+                    this.syncAnimation(ANIMATION_ROAR_2);
+                } else if (this.emergingTicks > NUKE_EMERGENCE_DELAY && this.getAnimation() == NO_ANIMATION) {
+                    this.entityData.set(EMERGING, false);
+                }
+            }
+        }
         if (this.blastFlingGuard > 0) {
             --this.blastFlingGuard;
             this.setDeltaMovement(Vec3.ZERO);
-        }
-        if (this.nukeRecoveryTicks > 0) {
-            --this.nukeRecoveryTicks;
         }
         super.tick();
         this.enforceFollowingStanceOnce();
@@ -882,6 +903,11 @@ public class TremorzillaServant extends AnimalSummon
     }
 
     @Override
+    protected boolean isImmobile() {
+        return super.isImmobile() || this.isEmerging();
+    }
+
+    @Override
     public void tryKill(Player player) {
         if (this.killChance <= 0) {
             this.warnKill(player);
@@ -970,7 +996,6 @@ public class TremorzillaServant extends AnimalSummon
         this.setCharge(compound.getInt("Charge"));
         this.setSpikesDownAmount(compound.getFloat("SpikesDownAmount"));
         this.wantsToUseBeamFromServer = compound.getBoolean("ServerBeamTrigger");
-        this.nukeRecoveryTicks = compound.getInt("NukeRecoveryTicks");
     }
 
     @Override
@@ -981,7 +1006,6 @@ public class TremorzillaServant extends AnimalSummon
         compound.putInt("Charge", this.getCharge());
         compound.putFloat("SpikesDownAmount", this.getSpikesDownAmount());
         compound.putBoolean("ServerBeamTrigger", this.wantsToUseBeamFromServer);
-        compound.putInt("NukeRecoveryTicks", this.nukeRecoveryTicks);
     }
 
     private void tickBreath() {
@@ -1834,8 +1858,6 @@ public class TremorzillaServant extends AnimalSummon
                 return false;
             } else if (!this.summonedEntity.isFollowing() || this.summonedEntity.isCommanded()) {
                 return false;
-            } else if (this.summonedEntity.isRecoveringFromNuke()) {
-                return false;
             } else if (this.summonedEntity.getTarget() != null) {
                 return false;
             } else {
@@ -1855,8 +1877,6 @@ public class TremorzillaServant extends AnimalSummon
             } else if (this.owner == null || !this.owner.isAlive()) {
                 return false;
             } else if (!this.summonedEntity.isFollowing() || this.summonedEntity.isCommanded()) {
-                return false;
-            } else if (this.summonedEntity.isRecoveringFromNuke()) {
                 return false;
             } else {
                 return this.summonedEntity.distanceToSqr(this.owner) > (double) (Mth.square(this.stopDistance));
@@ -2024,9 +2044,6 @@ public class TremorzillaServant extends AnimalSummon
         @Override
         public boolean canUse() {
             LivingEntity owner = TremorzillaServant.this.getTrueOwner();
-            if (TremorzillaServant.this.isRecoveringFromNuke()) {
-                return false;
-            }
             if (owner != null
                     && (TremorzillaServant.this.isStaying() || TremorzillaServant.this.isCommanded())) {
                 return false;

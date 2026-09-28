@@ -20,6 +20,7 @@ public class NucleeperMushroomCloudParticle extends MushroomCloudParticle {
         super.tick();
         if (AlexsCaves.PROXY instanceof ClientProxy proxy) {
             proxy.renderNukeSkyDarkFor = 0;
+            proxy.muteNonNukeSoundsFor = 0;
         }
     }
 

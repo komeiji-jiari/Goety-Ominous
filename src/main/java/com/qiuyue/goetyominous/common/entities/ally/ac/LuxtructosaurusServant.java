@@ -1384,14 +1384,6 @@ public class LuxtructosaurusServant extends Summoned
     }
 
     @Override
-    protected void actuallyHurt(DamageSource source, float amount) {
-        if (!source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
-            amount = Math.min(amount, AttributesConfig.LuxtructosaurusServantDamageCap.get().floatValue());
-        }
-        super.actuallyHurt(source, amount);
-    }
-
-    @Override
     public boolean isInvulnerableTo(DamageSource damageSource) {
         return super.isInvulnerableTo(damageSource) || damageSource.is(DamageTypes.IN_WALL);
     }

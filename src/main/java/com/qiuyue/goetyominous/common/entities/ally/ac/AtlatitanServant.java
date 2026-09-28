@@ -194,8 +194,7 @@ public class AtlatitanServant extends AnimalSummon
                 .add(Attributes.FOLLOW_RANGE, AttributesConfig.AtlatitanServantFollowRange.get())
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.AtlatitanServantDamage.get())
                 .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.AtlatitanServantKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.AtlatitanServantMovementSpeed.get())
-                .add(Attributes.ARMOR, AttributesConfig.AtlatitanServantArmor.get());
+                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.AtlatitanServantMovementSpeed.get());
     }
     @Override
     protected void defineSynchedData() {
@@ -860,15 +859,6 @@ public class AtlatitanServant extends AnimalSummon
             amount *= PartProjectileHits.projectileMultiplier(this, source, this.getProjectileDamageReduction(), 0.33F);
         }
         return super.hurt(source, amount);
-    }
-
-    @Override
-    protected void actuallyHurt(DamageSource source, float amount) {
-        float initialAmount = amount;
-        if (!source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
-            amount = Math.min(initialAmount, AttributesConfig.AtlatitanServantDamageCap.get().floatValue());
-        }
-        super.actuallyHurt(source, amount);
     }
 
     @Override

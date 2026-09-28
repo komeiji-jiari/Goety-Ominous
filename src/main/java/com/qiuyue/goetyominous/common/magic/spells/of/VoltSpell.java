@@ -104,6 +104,9 @@ public class VoltSpell extends SummonSpell {
                     volt.setElite(true);
                     volt.setEliteStats(volt);
                 }
+                if (potency > 0) {
+                    volt.setChargeDamageBonus(potency);
+                }
                 this.buffSummon(caster, volt, potency);
                 this.SummonSap(caster, volt);
                 this.setTarget(caster, volt);

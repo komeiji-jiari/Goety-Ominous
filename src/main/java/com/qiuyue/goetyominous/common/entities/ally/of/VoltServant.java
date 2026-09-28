@@ -83,6 +83,7 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant, 
 
     public int leapCooldown;
     public boolean isLandNavigator;
+    private float chargeDamageBonus;
     private boolean wasOnGround;
     private Pose lastPose;
     private int jumpTicks;
@@ -248,6 +249,14 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant, 
         this.entityData.set(CHARGED, charged);
     }
 
+    public float getChargeDamageBonus() {
+        return this.chargeDamageBonus;
+    }
+
+    public void setChargeDamageBonus(float chargeDamageBonus) {
+        this.chargeDamageBonus = chargeDamageBonus;
+    }
+
     public boolean isVoltSwimming() {
         return this.entityData.get(SWIMMING);
     }
@@ -271,6 +280,7 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant, 
         compoundTag.putInt("AttackState", this.getAttackState());
         compoundTag.putBoolean("Charged", this.isCharged());
         compoundTag.putBoolean("Elite", this.isElite());
+        compoundTag.putFloat("ChargeDamageBonus", this.getChargeDamageBonus());
     }
 
     @Override
@@ -279,6 +289,9 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant, 
         this.setAttackState(compoundTag.getInt("AttackState"));
         this.setCharged(compoundTag.getBoolean("Charged"));
         this.setElite(compoundTag.getBoolean("Elite"));
+        if (compoundTag.contains("ChargeDamageBonus")) {
+            this.setChargeDamageBonus(compoundTag.getFloat("ChargeDamageBonus"));
+        }
     }
 
     @Override
