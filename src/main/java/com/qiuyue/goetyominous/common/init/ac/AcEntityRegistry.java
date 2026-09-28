@@ -144,6 +144,7 @@ public class AcEntityRegistry {
                     () -> EntityType.Builder.<HullbreakerServant>of((type, worldIn) -> new HullbreakerServant(type, worldIn), MobCategory.MISC)
                             .sized(4.65F, 4.5F)
                             .setTrackingRange(20)
+                            .setUpdateInterval(1)
                             .build(GoetyOminous.MOD_ID + ":hullbreaker_servant"));
 
     public static final RegistryObject<EntityType<DeepOneServant>> DEEP_ONE_SERVANT =
