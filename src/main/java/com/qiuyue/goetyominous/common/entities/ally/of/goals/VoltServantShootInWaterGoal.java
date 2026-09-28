@@ -69,6 +69,7 @@ public class VoltServantShootInWaterGoal extends RamblerServantAttackGoal {
     private void shootCharge(LivingEntity target) {
         VoltServantElectricCharge charge = new VoltServantElectricCharge(OfEntityRegistry.VOLT_SERVANT_ELECTRIC_CHARGE.get(), this.volt.level());
         charge.setOwner(this.volt);
+        charge.setDamageBonus(this.volt.getChargeDamageBonus());
         charge.moveTo(this.volt.getX(), this.volt.getY() + this.volt.getEyeHeight(), this.volt.getZ());
 
         double d0 = target.getX() - this.volt.getX();

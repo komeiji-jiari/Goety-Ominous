@@ -51,10 +51,6 @@ public class AnnihilationBombEntity extends NuclearBombEntity {
 
     private static final String IDENTITY_TAG = "Identity";
 
-    private static final double SERVANT_MIN_DISTANCE = 4.0;
-
-    private static final double SERVANT_MAX_DISTANCE = 10.0;
-
     private static final EntityDataAccessor<CompoundTag> DATA_IDENTITY =
             SynchedEntityData.defineId(AnnihilationBombEntity.class, EntityDataSerializers.COMPOUND_TAG);
 
@@ -142,7 +138,7 @@ public class AnnihilationBombEntity extends NuclearBombEntity {
         }
         if (this.level() instanceof ServerLevel serverLevel) {
             this.spawnSurfaceCloud(serverLevel, size);
-            this.reviveServant(serverLevel, size);
+            this.reviveServant(serverLevel);
         }
     }
 
@@ -156,7 +152,7 @@ public class AnnihilationBombEntity extends NuclearBombEntity {
         }
     }
 
-    private void reviveServant(ServerLevel level, float size) {
+    private void reviveServant(ServerLevel level) {
         TremorzillaServant servant = AcEntityRegistry.TREMORZILLA_SERVANT.get().create(level);
         if (servant == null) {
             return;
@@ -170,11 +166,9 @@ public class AnnihilationBombEntity extends NuclearBombEntity {
         }
         servant.loadIdentity(this.identity);
         servant.setHealth(servant.getMaxHealth());
-        servant.beginNukeRecovery(NucleeperNukeProtectionHandler.protectionTicks(size));
-        double angle = this.random.nextDouble() * (Math.PI * 2.0);
-        double distance = SERVANT_MIN_DISTANCE + this.random.nextDouble() * (SERVANT_MAX_DISTANCE - SERVANT_MIN_DISTANCE);
-        double x = this.getX() + Math.cos(angle) * distance;
-        double z = this.getZ() + Math.sin(angle) * distance;
+        servant.beginNukeEmergence();
+        double x = this.getX();
+        double z = this.getZ();
         float yaw = this.random.nextFloat() * 360.0F;
         if (player != null) {
             yaw = (float) (Mth.atan2(player.getZ() - z, player.getX() - x) * (180.0 / Math.PI)) - 90.0F;
@@ -184,18 +178,7 @@ public class AnnihilationBombEntity extends NuclearBombEntity {
     }
 
     private static double findSurfaceY(Level level, double x, double z) {
-        int cx = Mth.floor(x);
-        int cz = Mth.floor(z);
-        int surface = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, cx, cz);
-        for (int dx = -8; dx <= 8; dx += 4) {
-            for (int dz = -8; dz <= 8; dz += 4) {
-                int h = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, cx + dx, cz + dz);
-                if (h > surface) {
-                    surface = h;
-                }
-            }
-        }
-        return surface + 1.0;
+        return level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mth.floor(x), Mth.floor(z));
     }
 
     private Stream<BlockPos> getNearbySirens(ServerLevel level, int range) {

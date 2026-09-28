@@ -77,7 +77,8 @@ public class AcBlockRegistry {
                             BlockBehaviour.Properties.of()
                                     .mapColor(MapColor.METAL)
                                     .strength(8.0F, 1001.0F)
-                                    .sound(SoundType.METAL)));
+                                    .sound(SoundType.METAL)
+                                    .noOcclusion()));
 
     public static final RegistryObject<Block> GAMMAROACH_NEST =
             AC_BLOCKS.register("gammaroach_nest", GammaroachNestBlock::new);
