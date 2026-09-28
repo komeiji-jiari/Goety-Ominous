@@ -7,6 +7,7 @@ import com.qiuyue.goetyominous.common.items.AcidFungusItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class FungusPackItemHandler extends ItemStackHandler {
 
@@ -39,9 +40,11 @@ public class FungusPackItemHandler extends ItemStackHandler {
         return this.extractItem(0, 1, false);
     }
 
+    @Nullable
     public static FungusPackItemHandler get(ItemStack stack) {
-        return (FungusPackItemHandler) stack.getCapability(
+        net.minecraftforge.items.IItemHandler handler = stack.getCapability(
                         net.minecraftforge.common.capabilities.ForgeCapabilities.ITEM_HANDLER)
-                .orElseThrow(() -> new IllegalArgumentException("No handler for " + stack));
+                .orElse(null);
+        return handler instanceof FungusPackItemHandler fungusPack ? fungusPack : null;
     }
 }

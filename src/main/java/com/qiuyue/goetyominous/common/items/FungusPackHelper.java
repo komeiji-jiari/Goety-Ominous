@@ -17,8 +17,10 @@ public class FungusPackHelper {
         ItemStack chestStack = entity.getItemBySlot(EquipmentSlot.CHEST);
         if (chestStack.is(ModTags.FUNGUS_PACKS)) {
             FungusPackItemHandler handler = FungusPackItemHandler.get(chestStack);
-            ItemStack fungus = handler.getFungus();
-            if (!fungus.isEmpty() && fungus.is(fungusType)) return true;
+            if (handler != null) {
+                ItemStack fungus = handler.getFungus();
+                if (!fungus.isEmpty() && fungus.is(fungusType)) return true;
+            }
         }
 
         Optional<SlotResult> result = CuriosApi.getCuriosInventory(entity)
@@ -26,8 +28,10 @@ public class FungusPackHelper {
                 .orElse(Optional.empty());
         if (result.isPresent()) {
             FungusPackItemHandler handler = FungusPackItemHandler.get(result.get().stack());
-            ItemStack fungus = handler.getFungus();
-            return !fungus.isEmpty() && fungus.is(fungusType);
+            if (handler != null) {
+                ItemStack fungus = handler.getFungus();
+                return !fungus.isEmpty() && fungus.is(fungusType);
+            }
         }
 
         return false;

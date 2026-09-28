@@ -78,7 +78,7 @@ public class ColdHeartItem extends Item {
     private <T extends Mob & com.Polarice3.Goety.api.entities.IOwned> InteractionResult convertServant(
             Player player, ItemStack stack, Mob oldServant, java.util.UUID ownerId,
             java.util.function.Function<ServerLevel, T> factory) {
-        if (!ownerId.equals(player.getUUID())) {
+        if (ownerId == null || !ownerId.equals(player.getUUID())) {
             return InteractionResult.FAIL;
         }
 
