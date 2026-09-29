@@ -1,10 +1,10 @@
 package com.qiuyue.goetyominous.client.render.ac;
 
 import com.github.alexmodguy.alexscaves.client.render.entity.NuclearBombRenderer;
-import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
 import com.github.alexmodguy.alexscaves.server.entity.item.NuclearBombEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.qiuyue.goetyominous.common.entities.projectile.AnnihilationBombEntity;
+import com.qiuyue.goetyominous.common.entities.projectile.TitanBombEntity;
+import com.qiuyue.goetyominous.common.init.ac.AcBlockRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -23,22 +23,22 @@ import net.minecraftforge.client.RenderTypeHelper;
 import net.minecraftforge.client.model.data.ModelData;
 
 @OnlyIn(Dist.CLIENT)
-public class RenderAnnihilationBomb extends EntityRenderer<AnnihilationBombEntity> {
+public class RenderTitanBomb extends EntityRenderer<TitanBombEntity> {
 
-    public RenderAnnihilationBomb(EntityRendererProvider.Context context) {
+    public RenderTitanBomb(EntityRendererProvider.Context context) {
         super(context);
         this.shadowRadius = 0.0F;
     }
 
     @Override
-    public void render(AnnihilationBombEntity entity, float entityYaw, float partialTicks, PoseStack poseStack,
+    public void render(TitanBombEntity entity, float entityYaw, float partialTicks, PoseStack poseStack,
                        MultiBufferSource buffer, int packedLight) {
         float progress = ((float) entity.getTime() + partialTicks) / (float) NuclearBombEntity.MAX_TIME;
         float expandScale = 1.0F + Mth.sin(progress * progress * (float) Math.PI) * 0.5F;
         float red = 1.0F - progress * 0.5F;
         float green = 1.0F + progress;
         float blue = 1.0F - progress;
-        BlockState state = ACBlockRegistry.TREMORZILLA_EGG.get().defaultBlockState();
+        BlockState state = AcBlockRegistry.TITAN_BOMB.get().defaultBlockState();
         BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(state);
         poseStack.pushPose();
         poseStack.scale(1.0F + progress * 0.03F, 1.0F, 1.0F + progress * 0.03F);
@@ -57,7 +57,7 @@ public class RenderAnnihilationBomb extends EntityRenderer<AnnihilationBombEntit
     }
 
     @Override
-    public ResourceLocation getTextureLocation(AnnihilationBombEntity entity) {
+    public ResourceLocation getTextureLocation(TitanBombEntity entity) {
         return TextureAtlas.LOCATION_BLOCKS;
     }
 }

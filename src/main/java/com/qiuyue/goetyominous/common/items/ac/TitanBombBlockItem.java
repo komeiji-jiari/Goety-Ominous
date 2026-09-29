@@ -6,9 +6,9 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
 
-public class AnnihilationBombBlockItem extends BlockItem {
+public class TitanBombBlockItem extends BlockItem {
 
-    public AnnihilationBombBlockItem(Block block, Properties properties) {
+    public TitanBombBlockItem(Block block, Properties properties) {
         super(block, properties);
     }
 

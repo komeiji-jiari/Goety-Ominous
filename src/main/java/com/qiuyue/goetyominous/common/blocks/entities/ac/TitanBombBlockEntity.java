@@ -6,14 +6,14 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class AnnihilationBombBlockEntity extends BlockEntity {
+public class TitanBombBlockEntity extends BlockEntity {
 
     public static final String IDENTITY_TAG = "Identity";
 
     private CompoundTag identity = new CompoundTag();
 
-    public AnnihilationBombBlockEntity(BlockPos pos, BlockState state) {
-        super(AcBlockEntityRegistry.ANNIHILATION_BOMB.get(), pos, state);
+    public TitanBombBlockEntity(BlockPos pos, BlockState state) {
+        super(AcBlockEntityRegistry.TITAN_BOMB.get(), pos, state);
     }
 
     public CompoundTag getIdentity() {

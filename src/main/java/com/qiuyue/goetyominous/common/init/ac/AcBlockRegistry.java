@@ -71,9 +71,9 @@ public class AcBlockRegistry {
                                     .sound(SoundType.METAL)
                                     .randomTicks()));
 
-    public static final RegistryObject<Block> ANNIHILATION_BOMB =
-            AC_BLOCKS.register("annihilation_core",
-                    () -> new AnnihilationBombBlock(
+    public static final RegistryObject<Block> TITAN_BOMB =
+            AC_BLOCKS.register("titan_bomb",
+                    () -> new TitanBombBlock(
                             BlockBehaviour.Properties.of()
                                     .mapColor(MapColor.METAL)
                                     .strength(8.0F, 1001.0F)

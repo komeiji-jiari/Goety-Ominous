@@ -111,9 +111,9 @@ public class AcItems {
             AC_ITEMS.register("gammaroach_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AcEntityRegistry.GAMMAROACH_SERVANT, 0x56682A, 0x2A2B19, egg()));
 
-    public static final RegistryObject<BlockItem> ANNIHILATION_BOMB =
-            AC_ITEMS.register("annihilation_core",
-                    () -> new AnnihilationBombBlockItem(AcBlockRegistry.ANNIHILATION_BOMB.get(),
+    public static final RegistryObject<BlockItem> TITAN_BOMB =
+            AC_ITEMS.register("titan_bomb",
+                    () -> new TitanBombBlockItem(AcBlockRegistry.TITAN_BOMB.get(),
                             new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));
 
     public static final RegistryObject<BlockItem> GAMMAROACH_NEST =
