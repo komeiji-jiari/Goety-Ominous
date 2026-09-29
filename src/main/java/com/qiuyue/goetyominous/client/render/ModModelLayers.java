@@ -1010,8 +1010,8 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.MELTED_CARAMEL_SERVANT.get(),
                     com.github.alexmodguy.alexscaves.client.render.entity.MeltedCaramelRenderer::new);
             event.registerEntityRenderer(
-                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.ANNIHILATION_BOMB.get(),
-                    com.qiuyue.goetyominous.client.render.ac.RenderAnnihilationBomb::new);
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.TITAN_BOMB.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderTitanBomb::new);
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.MINE_GUARDIAN_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderMineGuardianServant::new);

@@ -1,7 +1,7 @@
 package com.qiuyue.goetyominous.common.init.ac;
 
 import com.qiuyue.goetyominous.GoetyOminous;
-import com.qiuyue.goetyominous.common.blocks.entities.ac.AnnihilationBombBlockEntity;
+import com.qiuyue.goetyominous.common.blocks.entities.ac.TitanBombBlockEntity;
 import com.qiuyue.goetyominous.common.blocks.entities.ac.AtlatitanServantEggBlockEntity;
 import com.qiuyue.goetyominous.common.blocks.entities.ac.GammaroachNestBlockEntity;
 import com.qiuyue.goetyominous.common.blocks.entities.ac.GrottoceratopsServantEggBlockEntity;
@@ -49,11 +49,11 @@ public class AcBlockEntityRegistry {
                             VallumraptorServantEggBlockEntity::new,
                             AcBlockRegistry.VALLUMRAPTOR_SERVANT_EGG.get()).build(null));
 
-    public static final RegistryObject<BlockEntityType<AnnihilationBombBlockEntity>> ANNIHILATION_BOMB =
-            AC_BLOCK_ENTITIES.register("annihilation_core",
+    public static final RegistryObject<BlockEntityType<TitanBombBlockEntity>> TITAN_BOMB =
+            AC_BLOCK_ENTITIES.register("titan_bomb",
                     () -> BlockEntityType.Builder.of(
-                            AnnihilationBombBlockEntity::new,
-                            AcBlockRegistry.ANNIHILATION_BOMB.get()).build(null));
+                            TitanBombBlockEntity::new,
+                            AcBlockRegistry.TITAN_BOMB.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<GammaroachNestBlockEntity>> GAMMAROACH_NEST =
             AC_BLOCK_ENTITIES.register("gammaroach_nest",

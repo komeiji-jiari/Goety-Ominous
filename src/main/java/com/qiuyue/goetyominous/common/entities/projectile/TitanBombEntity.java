@@ -9,7 +9,7 @@ import com.github.alexmodguy.alexscaves.server.entity.item.NuclearBombEntity;
 import com.github.alexmodguy.alexscaves.server.entity.item.NuclearExplosionEntity;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.Polarice3.Goety.common.ritual.RitualRequirements;
-import com.qiuyue.goetyominous.common.blocks.entities.ac.AnnihilationBombBlockEntity;
+import com.qiuyue.goetyominous.common.blocks.entities.ac.TitanBombBlockEntity;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TremorzillaServant;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
 import com.qiuyue.goetyominous.common.events.NucleeperNukeProtectionHandler;
@@ -45,14 +45,14 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-public class AnnihilationBombEntity extends NuclearBombEntity {
+public class TitanBombEntity extends NuclearBombEntity {
 
     private static final String IGNITER_TAG = "Igniter";
 
     private static final String IDENTITY_TAG = "Identity";
 
     private static final EntityDataAccessor<CompoundTag> DATA_IDENTITY =
-            SynchedEntityData.defineId(AnnihilationBombEntity.class, EntityDataSerializers.COMPOUND_TAG);
+            SynchedEntityData.defineId(TitanBombEntity.class, EntityDataSerializers.COMPOUND_TAG);
 
     private UUID igniter;
 
@@ -60,12 +60,12 @@ public class AnnihilationBombEntity extends NuclearBombEntity {
 
     private boolean detonated;
 
-    public AnnihilationBombEntity(EntityType<?> entityType, Level level) {
+    public TitanBombEntity(EntityType<?> entityType, Level level) {
         super(entityType, level);
     }
 
-    public AnnihilationBombEntity(PlayMessages.SpawnEntity spawnEntity, Level level) {
-        this(com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.ANNIHILATION_BOMB.get(), level);
+    public TitanBombEntity(PlayMessages.SpawnEntity spawnEntity, Level level) {
+        this(com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.TITAN_BOMB.get(), level);
         this.setBoundingBox(this.makeBoundingBox());
     }
 
@@ -218,11 +218,11 @@ public class AnnihilationBombEntity extends NuclearBombEntity {
     }
 
     private ItemStack createBombItem() {
-        ItemStack stack = new ItemStack(AcItems.ANNIHILATION_BOMB.get());
+        ItemStack stack = new ItemStack(AcItems.TITAN_BOMB.get());
         CompoundTag identity = this.getIdentity();
         if (!identity.isEmpty()) {
             CompoundTag blockEntityTag = new CompoundTag();
-            blockEntityTag.put(AnnihilationBombBlockEntity.IDENTITY_TAG, identity.copy());
+            blockEntityTag.put(TitanBombBlockEntity.IDENTITY_TAG, identity.copy());
             stack.addTagElement(BlockItem.BLOCK_ENTITY_TAG, blockEntityTag);
         }
         return stack;

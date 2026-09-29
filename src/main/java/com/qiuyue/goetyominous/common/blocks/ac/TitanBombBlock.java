@@ -1,8 +1,8 @@
 package com.qiuyue.goetyominous.common.blocks.ac;
 
 import com.Polarice3.Goety.utils.SEHelper;
-import com.qiuyue.goetyominous.common.blocks.entities.ac.AnnihilationBombBlockEntity;
-import com.qiuyue.goetyominous.common.entities.projectile.AnnihilationBombEntity;
+import com.qiuyue.goetyominous.common.blocks.entities.ac.TitanBombBlockEntity;
+import com.qiuyue.goetyominous.common.entities.projectile.TitanBombEntity;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockEntityRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
 import net.minecraft.core.BlockPos;
@@ -36,17 +36,17 @@ import net.minecraft.world.phys.BlockHitResult;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class AnnihilationBombBlock extends Block implements EntityBlock {
+public class TitanBombBlock extends Block implements EntityBlock {
 
     public static final int COOLDOWN_TICKS = 24000;
 
-    public AnnihilationBombBlock(Properties properties) {
+    public TitanBombBlock(Properties properties) {
         super(properties);
     }
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return AcBlockEntityRegistry.ANNIHILATION_BOMB.get().create(pos, state);
+        return AcBlockEntityRegistry.TITAN_BOMB.get().create(pos, state);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class AnnihilationBombBlock extends Block implements EntityBlock {
             }
             SEHelper.addCooldown(player, this.asItem(), COOLDOWN_TICKS);
         }
-        AnnihilationBombEntity bomb = AcEntityRegistry.ANNIHILATION_BOMB.get().create(level);
+        TitanBombEntity bomb = AcEntityRegistry.TITAN_BOMB.get().create(level);
         if (bomb == null) {
             return;
         }
@@ -71,7 +71,7 @@ public class AnnihilationBombBlock extends Block implements EntityBlock {
         if (igniter instanceof Player player) {
             bomb.setIgniter(player);
         }
-        if (level.getBlockEntity(pos) instanceof AnnihilationBombBlockEntity bombBlockEntity) {
+        if (level.getBlockEntity(pos) instanceof TitanBombBlockEntity bombBlockEntity) {
             bomb.setIdentity(bombBlockEntity.getIdentity());
         }
         level.addFreshEntity(bomb);
@@ -81,11 +81,11 @@ public class AnnihilationBombBlock extends Block implements EntityBlock {
 
     private ItemStack createBombItem(Level level, BlockPos pos) {
         ItemStack stack = new ItemStack(this);
-        if (level.getBlockEntity(pos) instanceof AnnihilationBombBlockEntity bombBlockEntity) {
+        if (level.getBlockEntity(pos) instanceof TitanBombBlockEntity bombBlockEntity) {
             CompoundTag identity = bombBlockEntity.getIdentity();
             if (!identity.isEmpty()) {
                 CompoundTag blockEntityTag = new CompoundTag();
-                blockEntityTag.put(AnnihilationBombBlockEntity.IDENTITY_TAG, identity.copy());
+                blockEntityTag.put(TitanBombBlockEntity.IDENTITY_TAG, identity.copy());
                 stack.addTagElement(BlockItem.BLOCK_ENTITY_TAG, blockEntityTag);
             }
         }
@@ -95,11 +95,11 @@ public class AnnihilationBombBlock extends Block implements EntityBlock {
     @Override
     public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
         List<ItemStack> drops = super.getDrops(state, builder);
-        if (builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY) instanceof AnnihilationBombBlockEntity bombBlockEntity) {
+        if (builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY) instanceof TitanBombBlockEntity bombBlockEntity) {
             CompoundTag identity = bombBlockEntity.getIdentity();
             if (!identity.isEmpty()) {
                 CompoundTag blockEntityTag = new CompoundTag();
-                blockEntityTag.put(AnnihilationBombBlockEntity.IDENTITY_TAG, identity.copy());
+                blockEntityTag.put(TitanBombBlockEntity.IDENTITY_TAG, identity.copy());
                 for (ItemStack stack : drops) {
                     if (stack.is(this.asItem())) {
                         stack.addTagElement(BlockItem.BLOCK_ENTITY_TAG, blockEntityTag.copy());

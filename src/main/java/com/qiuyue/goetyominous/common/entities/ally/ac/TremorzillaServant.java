@@ -39,7 +39,7 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.IAdvancedPathingMob;
 import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.ITallWalker;
 import com.qiuyue.goetyominous.client.sound.TremorzillaEmergenceRoarSound;
-import com.qiuyue.goetyominous.common.blocks.entities.ac.AnnihilationBombBlockEntity;
+import com.qiuyue.goetyominous.common.blocks.entities.ac.TitanBombBlockEntity;
 import com.qiuyue.goetyominous.common.entities.ai.ac.ServantTemptGoal;
 import com.qiuyue.goetyominous.common.items.ac.AcItems;
 import com.qiuyue.goetyominous.config.AttributesConfig;
@@ -743,11 +743,11 @@ public class TremorzillaServant extends AnimalSummon
         if (this.level().isClientSide) {
             return;
         }
-        ItemStack stack = new ItemStack(AcItems.ANNIHILATION_BOMB.get());
+        ItemStack stack = new ItemStack(AcItems.TITAN_BOMB.get());
         CompoundTag identity = this.saveIdentity();
         if (!identity.isEmpty()) {
             CompoundTag blockEntityTag = new CompoundTag();
-            blockEntityTag.put(AnnihilationBombBlockEntity.IDENTITY_TAG, identity);
+            blockEntityTag.put(TitanBombBlockEntity.IDENTITY_TAG, identity);
             stack.addTagElement(BlockItem.BLOCK_ENTITY_TAG, blockEntityTag);
         }
         LivingEntity owner = this.getTrueOwner();
