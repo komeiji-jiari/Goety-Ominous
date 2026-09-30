@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm.projectile;
 
+import com.Polarice3.Goety.common.entities.projectiles.SpellEntity;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
@@ -7,14 +8,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
@@ -29,16 +27,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.NetworkHooks;
 
-import javax.annotation.Nullable;
-import java.util.UUID;
-
-public class ElectricityEntity extends Entity {
+public class ElectricityEntity extends SpellEntity {
     public double xPower;
     public double yPower;
     public double zPower;
-    private LivingEntity caster;
-    private UUID casterUuid;
     private boolean leftOwner;
 
     private static final EntityDataAccessor<Float> DAMAGE =
@@ -91,24 +85,9 @@ public class ElectricityEntity extends Entity {
 
     @Override
     protected void defineSynchedData() {
+        super.defineSynchedData();
         this.entityData.define(DAMAGE, 0.0F);
         this.entityData.define(TRANSPARENCY, 0);
-    }
-
-    public void setOwner(@Nullable LivingEntity owner) {
-        this.caster = owner;
-        this.casterUuid = owner == null ? null : owner.getUUID();
-    }
-
-    @Nullable
-    public LivingEntity getOwner() {
-        if (this.caster == null && this.casterUuid != null && this.level() instanceof ServerLevel serverLevel) {
-            Entity entity = serverLevel.getEntity(this.casterUuid);
-            if (entity instanceof LivingEntity living) {
-                this.caster = living;
-            }
-        }
-        return this.caster;
     }
 
     public float getDamage() {
@@ -164,7 +143,7 @@ public class ElectricityEntity extends Entity {
 
     @Override
     public void tick() {
-        super.tick();
+        this.baseTick();
         for (LivingEntity livingentity : this.level().getEntitiesOfClass(LivingEntity.class,
                 this.getBoundingBox().inflate(0.5, 4.0, 0.75))) {
             this.damage(livingentity);
@@ -246,10 +225,8 @@ public class ElectricityEntity extends Entity {
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag compound) {
-        if (compound.hasUUID("Owner")) {
-            this.casterUuid = compound.getUUID("Owner");
-        }
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
         if (compound.contains("power", 9)) {
             ListTag listtag = compound.getList("power", 6);
             if (listtag.size() == 3) {
@@ -262,10 +239,8 @@ public class ElectricityEntity extends Entity {
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag compound) {
-        if (this.casterUuid != null) {
-            compound.putUUID("Owner", this.casterUuid);
-        }
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
         if (this.leftOwner) {
             compound.putBoolean("LeftOwner", true);
         }
@@ -309,15 +284,6 @@ public class ElectricityEntity extends Entity {
 
     @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        LivingEntity owner = this.getOwner();
-        int i = owner == null ? 0 : owner.getId();
-        return new ClientboundAddEntityPacket(this.getId(), this.getUUID(), this.getX(), this.getY(), this.getZ(),
-                this.getXRot(), this.getYRot(), this.getType(), i,
-                new Vec3(this.xPower, this.yPower, this.zPower), 0.0);
-    }
-
-    @Override
-    public void recreateFromPacket(ClientboundAddEntityPacket packet) {
-        super.recreateFromPacket(packet);
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

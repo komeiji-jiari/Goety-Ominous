@@ -13,13 +13,13 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.TamableAnimal;
-import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import com.Polarice3.Goety.common.entities.projectiles.SpellThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 
-public class CloudEntity extends ThrowableProjectile {
+public class CloudEntity extends SpellThrowableProjectile {
     public boolean particleOptimalization = false;
     public int damage = 5;
     public float attackRange = 2.0F;
@@ -35,6 +35,7 @@ public class CloudEntity extends ThrowableProjectile {
 
     @Override
     protected void defineSynchedData() {
+        super.defineSynchedData();
     }
 
     public void Particle() {
@@ -113,11 +114,6 @@ public class CloudEntity extends ThrowableProjectile {
                 this.level().addParticle(ParticleTypes.CLOUD, this.getX() - vec3.x, this.getY() - vec3.y, this.getZ() - vec3.z, 0.0, 0.0, 0.0);
             }
         }
-    }
-
-    @Override
-    protected float getGravity() {
-        return 0.03F;
     }
 
     @Override
