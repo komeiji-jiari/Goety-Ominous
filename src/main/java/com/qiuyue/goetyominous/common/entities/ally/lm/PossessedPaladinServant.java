@@ -163,8 +163,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
 
     public final ControlledAnim ghostItemFade = new ControlledAnim(10);
 
-    public final ControlledAnim telegraphFadeAway = new ControlledAnim(15);
-
     public int rayAmount;
 
     public int SideRollSpinRandom;
@@ -219,8 +217,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
     public int SideRollSpinType;
     public boolean hasParried;
     public boolean succedGrabbing;
-
-    public boolean executedByOwner;
 
     public int deathTicks;
 
@@ -799,11 +795,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
 
     public boolean hasWings() {
         return this.getAttackState() == 37;
-    }
-
-    public boolean canRenderTelegraph() {
-        return this.attackTicks >= 48 && this.attackTicks <= 60 && this.getAttackState() == 32
-                || this.getAttackState() == 38 && this.attackTicks >= 48 && this.attackTicks <= 69;
     }
 
     @Override
@@ -2194,10 +2185,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         }
 
         if (this.getAttackState() == 32) {
-            if (this.attackTicks == 1) {
-                this.telegraphFadeAway.resetTimer();
-            }
-
             if (this.attackTicks == 4) {
                 this.SideAreaAttack(3.0F, 3.0F, 180.0F, 0.0F, 0.0F, 24.0F, 100,
                         SoundEvents.EMPTY, 0.0F, true, 1.5F);
@@ -2241,10 +2228,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
 
             if (this.attackTicks >= 55 && this.attackTicks <= 56) {
                 this.saveTargetPos();
-            }
-
-            if (this.attackTicks >= 56) {
-                this.telegraphFadeAway.increaseTimer();
             }
 
             if (this.attackTicks >= 58 && this.attackTicks < 62) {
@@ -2754,10 +2737,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                 this.ghostItemFade.decreaseTimer();
             }
 
-            if (this.attackTicks == 1) {
-                this.telegraphFadeAway.resetTimer();
-            }
-
             if (this.attackTicks == throwAttack && this.targetIsNotNull()) {
                 this.throwSoulTrident(this.target(), 1.0F);
             }
@@ -2792,10 +2771,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                         SoundEvents.EMPTY, 1.0F, false, 0.0F);
             }
 
-            if (this.attackTicks >= 64 && this.attackTicks <= 69) {
-                this.telegraphFadeAway.increaseTimer();
-            }
-
             for (int i = 69; i <= 83; i += 2) {
                 if (this.attackTicks == i) {
                     int distance = i - 67;
@@ -2822,8 +2797,10 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                     EntityUtil.cancelBuffs(entityHit);
                     entityHit.invulnerableTime = 0;
                     this.shouldAttackMore = true;
-                    this.applyStackingEffect(entityHit, ModEffects.SOUL_FRACTURE.get(), 1, 4,
-                            MathUtils.toTicks(10.0F));
+                    if (MobsConfig.SoulFractureOnServantHit.get()) {
+                        this.applyStackingEffect(entityHit, ModEffects.SOUL_FRACTURE.get(), 1, 4,
+                                MathUtils.toTicks(10.0F));
+                    }
                 }
                 if (flag && launch) {
                     this.launch(entityHit, true);
@@ -3154,8 +3131,10 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                 boolean flag = entityHit.hurt(this.damageSources().mobAttack(this),
                         (float) ((double) damage + (double) MathUtils.entityBasedHpDamage(entityHit, 3.0F)));
                 if (flag) {
-                    this.applyStackingEffect(entityHit, ModEffects.SOUL_FRACTURE.get(), 1, 4,
-                            MathUtils.toTicks(10.0F));
+                    if (MobsConfig.SoulFractureOnServantHit.get()) {
+                        this.applyStackingEffect(entityHit, ModEffects.SOUL_FRACTURE.get(), 1, 4,
+                                MathUtils.toTicks(10.0F));
+                    }
                     EntityUtil.cancelBuffs(entityHit);
                     boolean mounted = entityHit.startRiding(this, true);
                     if (mounted) {
@@ -3374,8 +3353,10 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                         entityHit.addEffect(new MobEffectInstance(ModEffects.STUN.get(),
                                 this.getStunDuration(), 0));
                     }
-                    this.applyStackingEffect(entityHit, ModEffects.SOUL_FRACTURE.get(), 1, 4,
-                            MathUtils.toTicks(10.0F));
+                    if (MobsConfig.SoulFractureOnServantHit.get()) {
+                        this.applyStackingEffect(entityHit, ModEffects.SOUL_FRACTURE.get(), 1, 4,
+                                MathUtils.toTicks(10.0F));
+                    }
                     this.playSound(soundEvent, 1.0F, pitch);
                 }
                 if (entityHit instanceof Player && entityHit.isBlocking() && brokenShieldTicks > 0) {
@@ -3549,21 +3530,17 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         if (this.killChance <= 0) {
             this.warnKill(player);
         } else {
-            this.executedByOwner = true;
             super.tryKill(player);
-            if (this.isAlive()) {
-                this.executedByOwner = false;
-            }
         }
     }
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (this.executedByOwner) {
+        if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             return super.hurt(source, amount);
         }
 
-        if (this.isSleep() && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+        if (this.isSleep()) {
             return false;
         }
 

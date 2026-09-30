@@ -48,6 +48,11 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> CloudGolemServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerMimicServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> AnnihilationPursuerServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BeheadedKnightServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ResurrectedKnightServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Double> BeheadedKnightServantDamageMultiplier;
+    public static final ForgeConfigSpec.ConfigValue<Double> ResurrectedKnightServantDamageMultiplier;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> SoulFractureOnServantHit;
     public static final ForgeConfigSpec.ConfigValue<Integer> TheObliteratorServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Double> TheObliteratorServantDamageMultiplier;
     public static final ForgeConfigSpec.ConfigValue<Double> PossessedPaladinServantDamageMultiplier;
@@ -400,6 +405,28 @@ public class MobsConfig {
         AnnihilationPursuerServantDamageMultiplier = BUILDER
                 .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
                 .defineInRange("annihilationPursuerServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
+
+        BeheadedKnightServantLimit = BUILDER
+                .comment("Maximum number of Beheaded Knight Servants that can be summoned (Default: 2, so a Beheaded Knight and a Resurrected Knight can pair up)")
+                .defineInRange("beheadedKnightServantLimit", 2, 1, 100);
+
+        BeheadedKnightServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("beheadedKnightServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
+
+        ResurrectedKnightServantLimit = BUILDER
+                .comment("Maximum number of Resurrected Knight Servants that can be summoned (Default: 2, so a Beheaded Knight and a Resurrected Knight can pair up)")
+                .defineInRange("resurrectedKnightServantLimit", 2, 1, 100);
+
+        ResurrectedKnightServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("resurrectedKnightServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
+
+        SoulFractureOnServantHit = BUILDER
+                .comment("Whether Beheaded Knight, Resurrected Knight and Possessed Paladin Servants apply Soul Fracture to the enemies they hit (Default: false)",
+                        "Soul Fracture is Legendary Monsters' stacking -20% max health debuff; only the attacks of these three servants ever apply it",
+                        "This never touches the original Legendary Monsters bosses")
+                .define("soulFractureOnServantHit", false);
 
         TheObliteratorServantLimit = BUILDER
                 .comment("Maximum number of The Obliterator Servants that can be summoned (Default: 1)")

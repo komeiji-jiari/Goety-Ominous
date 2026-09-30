@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm.projectile;
 
+import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.client.particle.lm.PhantomDaggerTrail;
 import net.miauczel.legendary_monsters.entity.client.ControlledAnim;
 import com.qiuyue.goetyominous.common.entities.ally.lm.ServantMath;
@@ -172,8 +173,10 @@ public class ThrownPhantomDagger extends ServantFlyingProjectile {
                 this.getDamage() + m);
 
         if (hurt) {
-            EntityUtil.applyStackingEffect(livingTarget, ModEffects.SOUL_FRACTURE.get(),
-                    1, 4, ServantMath.toTicks(10.0F));
+            if (MobsConfig.SoulFractureOnServantHit.get()) {
+                EntityUtil.applyStackingEffect(livingTarget, ModEffects.SOUL_FRACTURE.get(),
+                        1, 4, ServantMath.toTicks(10.0F));
+            }
             livingOwner.heal(3.0F);
         }
     }

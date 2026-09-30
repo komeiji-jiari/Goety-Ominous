@@ -923,6 +923,9 @@ public class CloudGolemServant extends IAnimatedBossServant {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
+        if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            return super.hurt(source, amount);
+        }
         if (this.GolemInvulnerabilityTime > 0 && MobsConfig.CloudGolemServantInvulnerabilityTime.get()) {
             return false;
         }

@@ -15,9 +15,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -47,7 +45,6 @@ public class PossessedPaladinServantRenderer extends MobRenderer<PossessedPaladi
                        MultiBufferSource buffer, int packedLight) {
         poseStack.scale(MODEL_SCALE, MODEL_SCALE, MODEL_SCALE);
         this.renderSoulRays(entity, poseStack, buffer, packedLight, partialTicks);
-        this.renderTelegraph(entity, poseStack, buffer, packedLight);
         super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
     }
 
@@ -59,21 +56,6 @@ public class PossessedPaladinServantRenderer extends MobRenderer<PossessedPaladi
         VertexConsumer consumer = buffer.getBuffer(LmServantRenderTypes.LIGHTNING_NO_CULL);
         LmServantSoulRays.render(consumer, poseStack, entity.rayAmount, 1.35F,
                 entity.getPhase() >= 2, entity.attackTicks, partialTicks);
-    }
-
-    private void renderTelegraph(PossessedPaladinServant entity, PoseStack poseStack,
-                                 MultiBufferSource buffer, int packedLight) {
-        float alpha = Mth.clamp(1.0F - Math.min(entity.telegraphFadeAway.getAnimationFraction(), 1.0F) - 0.65F,
-                0.0F, 1.0F);
-        if (alpha <= 0.0F || !entity.canRenderTelegraph()) {
-            return;
-        }
-
-        float yaw = -entity.getYRot() + 90.0F;
-        VertexConsumer consumer = buffer.getBuffer(LmServantRenderTypes.LIGHTNING_NO_CULL);
-        LmServantRenderUtils.renderPivotedQuad(8.0F, 2.0F, 0.0D, 0.25D, 0.0D,
-                90.0D, (double) yaw, 0.0D, consumer, poseStack,
-                OverlayTexture.NO_OVERLAY, packedLight, 1.0F, 0.25F, 0.25F, alpha);
     }
 
     @Override

@@ -432,8 +432,6 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> RodlingServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> RodlingServantMovementSpeed;
 
-    public static final ForgeConfigSpec.ConfigValue<Double> MiniBossServantDamageCap;
-
     public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantDamage;
@@ -502,6 +500,24 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> TheObliteratorServantAttackKnockback;
     public static final ForgeConfigSpec.ConfigValue<Double> TheObliteratorServantDamageCap;
     public static final ForgeConfigSpec.ConfigValue<Integer> TheObliteratorServantAdaptationFactorMultiplier;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> BeheadedKnightServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> BeheadedKnightServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> BeheadedKnightServantArmorToughness;
+    public static final ForgeConfigSpec.ConfigValue<Double> BeheadedKnightServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> BeheadedKnightServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> BeheadedKnightServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> BeheadedKnightServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> BeheadedKnightServantAttackKnockback;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> ResurrectedKnightServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> ResurrectedKnightServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> ResurrectedKnightServantArmorToughness;
+    public static final ForgeConfigSpec.ConfigValue<Double> ResurrectedKnightServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> ResurrectedKnightServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> ResurrectedKnightServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> ResurrectedKnightServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> ResurrectedKnightServantAttackKnockback;
 
     public static final ForgeConfigSpec.ConfigValue<Double> FlameDrifterServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> FlameDrifterServantArmor;
@@ -1639,12 +1655,6 @@ public class AttributesConfig {
                 .defineInRange("servantCentipedeBodyMovementSpeed", 0.25, 0.0, 1.0);
         BUILDER.pop();
 
-        BUILDER.push("Legendary Monsters Mini-Boss Servants (Optional - LM)");
-        MiniBossServantDamageCap = BUILDER.comment("Maximum damage a single hit can deal to a Legendary Monsters mini-boss servant, Default: 21.0 (Legendary Monsters' own MiniBoss DamageCap; bypassed by damage that ignores invulnerability)",
-                        "Unlike Legendary Monsters' option, this one does not touch the original bosses")
-                .defineInRange("miniBossServantDamageCap", 21.0, 0.0, 1000.0);
-        BUILDER.pop();
-
         BUILDER.push("Overgrown Colossus Servant (Optional - LM)");
         OvergrownColossusServantHealth = BUILDER.comment("How much Max Health Overgrown Colossus Servants have, Default: 170.0")
                 .defineInRange("overgrownColossusServantHealth", 170.0, 1.0, Double.MAX_VALUE);
@@ -1842,6 +1852,44 @@ public class AttributesConfig {
                 .defineInRange("flamebornGuardServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
         FlamebornGuardServantAttackKnockback = BUILDER.comment("How much Attack Knockback Flameborn Guard Servants have, Default: 0.5")
                 .defineInRange("flamebornGuardServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Beheaded Knight Servant (Optional - LM)");
+        BeheadedKnightServantHealth = BUILDER.comment("How much Max Health Beheaded Knight Servants have, Default: 195.0 (Legendary Monsters' value)")
+                .defineInRange("beheadedKnightServantHealth", 195.0, 1.0, Double.MAX_VALUE);
+        BeheadedKnightServantArmor = BUILDER.comment("How much natural Armor Beheaded Knight Servants have, Default: 14.0 (Legendary Monsters' value)")
+                .defineInRange("beheadedKnightServantArmor", 14.0, 0.0, Double.MAX_VALUE);
+        BeheadedKnightServantArmorToughness = BUILDER.comment("How much Armor Toughness Beheaded Knight Servants have, Default: 4.0 (Legendary Monsters' value)")
+                .defineInRange("beheadedKnightServantArmorToughness", 4.0, 0.0, Double.MAX_VALUE);
+        BeheadedKnightServantDamage = BUILDER.comment("How much damage Beheaded Knight Servants deal, Default: 10.0 (Legendary Monsters' value)")
+                .defineInRange("beheadedKnightServantDamage", 10.0, 0.0, Double.MAX_VALUE);
+        BeheadedKnightServantMovementSpeed = BUILDER.comment("How fast Beheaded Knight Servants move, Default: 0.1 (Legendary Monsters' value)")
+                .defineInRange("beheadedKnightServantMovementSpeed", 0.1, 0.0, Double.MAX_VALUE);
+        BeheadedKnightServantFollowRange = BUILDER.comment("How much following/detection range Beheaded Knight Servants have, Default: 30.0 (Legendary Monsters' value)")
+                .defineInRange("beheadedKnightServantFollowRange", 30.0, 1.0, Double.MAX_VALUE);
+        BeheadedKnightServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Beheaded Knight Servants have, Default: 1.0 (Legendary Monsters' value)")
+                .defineInRange("beheadedKnightServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
+        BeheadedKnightServantAttackKnockback = BUILDER.comment("How much Attack Knockback Beheaded Knight Servants have, Default: 0.5 (Legendary Monsters' value)")
+                .defineInRange("beheadedKnightServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Resurrected Knight Servant (Optional - LM)");
+        ResurrectedKnightServantHealth = BUILDER.comment("How much Max Health Resurrected Knight Servants have, Default: 190.0 (Legendary Monsters' value)")
+                .defineInRange("resurrectedKnightServantHealth", 190.0, 1.0, Double.MAX_VALUE);
+        ResurrectedKnightServantArmor = BUILDER.comment("How much natural Armor Resurrected Knight Servants have, Default: 12.0 (Legendary Monsters' value)")
+                .defineInRange("resurrectedKnightServantArmor", 12.0, 0.0, Double.MAX_VALUE);
+        ResurrectedKnightServantArmorToughness = BUILDER.comment("How much Armor Toughness Resurrected Knight Servants have, Default: 2.0 (Legendary Monsters' value)")
+                .defineInRange("resurrectedKnightServantArmorToughness", 2.0, 0.0, Double.MAX_VALUE);
+        ResurrectedKnightServantDamage = BUILDER.comment("How much damage Resurrected Knight Servants deal, Default: 10.0 (Legendary Monsters' value)")
+                .defineInRange("resurrectedKnightServantDamage", 10.0, 0.0, Double.MAX_VALUE);
+        ResurrectedKnightServantMovementSpeed = BUILDER.comment("How fast Resurrected Knight Servants move, Default: 0.1 (Legendary Monsters' value)")
+                .defineInRange("resurrectedKnightServantMovementSpeed", 0.1, 0.0, Double.MAX_VALUE);
+        ResurrectedKnightServantFollowRange = BUILDER.comment("How much following/detection range Resurrected Knight Servants have, Default: 30.0 (Legendary Monsters' value)")
+                .defineInRange("resurrectedKnightServantFollowRange", 30.0, 1.0, Double.MAX_VALUE);
+        ResurrectedKnightServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Resurrected Knight Servants have, Default: 1.0 (Legendary Monsters' value)")
+                .defineInRange("resurrectedKnightServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
+        ResurrectedKnightServantAttackKnockback = BUILDER.comment("How much Attack Knockback Resurrected Knight Servants have, Default: 0.5 (Legendary Monsters' value)")
+                .defineInRange("resurrectedKnightServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.push("Rambler Servant");

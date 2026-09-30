@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm.projectile;
 
+import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.common.entities.ally.lm.ServantMath;
 import com.qiuyue.goetyominous.common.init.lm.LmDamageTypes;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
@@ -159,8 +160,10 @@ public class SoulTrident extends AbstractArrow {
                     livingOwner.heal(8.0F);
                 }
 
-                EntityUtil.applyStackingEffect(livingEntity, ModEffects.SOUL_FRACTURE.get(),
-                        1, 5, ServantMath.toTicks(10.0F));
+                if (MobsConfig.SoulFractureOnServantHit.get()) {
+                    EntityUtil.applyStackingEffect(livingEntity, ModEffects.SOUL_FRACTURE.get(),
+                            1, 5, ServantMath.toTicks(10.0F));
+                }
 
                 if (hitEntity.getType() == EntityType.ENDERMAN) {
                     return;
