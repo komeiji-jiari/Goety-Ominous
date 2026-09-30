@@ -297,4 +297,10 @@ public class ModEntityLayers {
 
     public static final ModelLayerLocation THE_OBLITERATOR_ARMED_CLONE_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "the_obliterator_armed_clone"), "main");
+
+    public static final ModelLayerLocation BEHEADED_KNIGHT_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "beheaded_knight_servant"), "main");
+
+    public static final ModelLayerLocation RESURRECTED_KNIGHT_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "resurrected_knight_servant"), "main");
 }
