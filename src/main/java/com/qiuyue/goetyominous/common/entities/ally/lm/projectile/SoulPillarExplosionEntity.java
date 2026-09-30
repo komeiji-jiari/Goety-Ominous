@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm.projectile;
 
+import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.client.particle.lm.Circle;
 import com.qiuyue.goetyominous.client.particle.lm.Circle.EnumRingBehavior;
 import com.qiuyue.goetyominous.common.entities.ally.lm.ServantMath;
@@ -213,8 +214,10 @@ public class SoulPillarExplosionEntity extends Entity {
         }
 
         if (impactEntity.hurt(LmDamageTypes.ghostly(caster), this.getDamage())) {
-            EntityUtil.applyStackingEffect(impactEntity, ModEffects.SOUL_FRACTURE.get(),
-                    1, 4, ServantMath.toTicks(10.0F));
+            if (MobsConfig.SoulFractureOnServantHit.get()) {
+                EntityUtil.applyStackingEffect(impactEntity, ModEffects.SOUL_FRACTURE.get(),
+                        1, 4, ServantMath.toTicks(10.0F));
+            }
             impactEntity.setDeltaMovement(this.getDeltaMovement().x,
                     this.getDeltaMovement().y + 0.85D, this.getDeltaMovement().z);
             EntityUtil.applyPlayerDeltaMovement(impactEntity);

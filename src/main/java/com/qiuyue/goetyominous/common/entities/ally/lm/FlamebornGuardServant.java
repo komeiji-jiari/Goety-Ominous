@@ -225,6 +225,9 @@ public class FlamebornGuardServant extends AbstractFlamebornServant {
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
+        if (pSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            return super.hurt(pSource, pAmount);
+        }
         if (this.getAttackState() == 4 && this.attackTicks < 15) {
             return false;
         }
