@@ -81,9 +81,11 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> TremorsaurusServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> TremorzillaServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Boolean> TremorzillaServantBreakBlocks;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> TremorzillaServantBreakTrees;
     public static final ForgeConfigSpec.ConfigValue<Integer> AtlatitanServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Boolean> AtlatitanServantBreakBlocks;
     public static final ForgeConfigSpec.ConfigValue<Integer> LuxtructosaurusServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantBreakTrees;
     public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantFire;
     public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantWaterToStone;
     public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantTephra;
@@ -477,8 +479,12 @@ public class MobsConfig {
                 .defineInRange("tremorzillaServantLimit", 1, 1, 100);
 
         TremorzillaServantBreakBlocks = BUILDER
-                .comment("Whether Tremorzilla Servants can break blocks (melee attacks, beam and walking through foliage) (Default: false)")
+                .comment("Whether Tremorzilla Servants can break blocks (melee attacks, beam, tail sweep and stomping through terrain while walking) (Default: false)")
                 .define("tremorzillaServantBreakBlocks", false);
+
+        TremorzillaServantBreakTrees = BUILDER
+                .comment("Whether Tremorzilla Servants smash the leaves, logs and wool they walk through, like a Redstone Monstrosity (Default: true; also requires the mobGriefing game rule)")
+                .define("tremorzillaServantBreakTrees", true);
 
         AtlatitanServantLimit = BUILDER
                 .comment("Maximum number of Atlatitan Servants that can be summoned (Default: 3)")
@@ -491,6 +497,10 @@ public class MobsConfig {
         LuxtructosaurusServantLimit = BUILDER
                 .comment("Maximum number of Luxtructosaurus Servants that can be summoned (Default: 1)")
                 .defineInRange("luxtructosaurusServantLimit", 1, 1, 100);
+
+        LuxtructosaurusServantBreakTrees = BUILDER
+                .comment("Whether Luxtructosaurus Servants smash the leaves, logs and wool they walk through, like a Redstone Monstrosity (Default: true; also requires the mobGriefing game rule)")
+                .define("luxtructosaurusServantBreakTrees", true);
 
         LuxtructosaurusServantFire = BUILDER
                 .comment("Whether Luxtructosaurus Servants set fire to the ground with their flame breath (Default: true; also requires the mobGriefing game rule)")

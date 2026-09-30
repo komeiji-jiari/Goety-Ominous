@@ -1029,25 +1029,15 @@ public class AtlatitanServant extends AnimalSummon
                 seatZ += animationIntensity * -4.5F;
             }
             Vec3 seatOffset = new Vec3(0.0F, seatY, seatZ).yRot((float) Math.toRadians(-this.yBodyRot));
-            passenger.setYBodyRot(this.yBodyRot);
+            living.setYBodyRot(this.getYRot());
+            living.setYHeadRot(living.getYRot());
             passenger.fallDistance = 0.0F;
-            this.clampRotation(living, 105.0F);
             moveFunction.accept(passenger, this.getX() + seatOffset.x,
                     this.getY() + seatOffset.y + this.getPassengersRidingOffset() - this.seatBodyOffset,
                     this.getZ() + seatOffset.z);
         } else {
             super.positionRider(passenger, moveFunction);
         }
-    }
-
-    protected void clampRotation(LivingEntity livingEntity, float clampRange) {
-        livingEntity.setYBodyRot(this.getYRot());
-        float f = Mth.wrapDegrees(livingEntity.getYRot() - this.getYRot());
-        float f1 = Mth.clamp(f, -clampRange, clampRange);
-        livingEntity.yRotO += f1 - f;
-        livingEntity.yBodyRotO += f1 - f;
-        livingEntity.setYRot(livingEntity.getYRot() + f1 - f);
-        livingEntity.setYHeadRot(livingEntity.getYRot());
     }
 
     @Override

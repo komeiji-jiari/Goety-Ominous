@@ -8,6 +8,7 @@ import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.common.entities.projectiles.FlyingItem;
 import com.Polarice3.Goety.common.entities.util.CameraShake;
 import com.Polarice3.Goety.init.ModMobType;
+import com.Polarice3.Goety.utils.SEHelper;
 import com.github.alexmodguy.alexscaves.AlexsCaves;
 import com.github.alexmodguy.alexscaves.client.particle.ACParticleRegistry;
 import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
@@ -39,6 +40,7 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.IAdvancedPathingMob;
 import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.ITallWalker;
 import com.qiuyue.goetyominous.client.sound.TremorzillaEmergenceRoarSound;
+import com.qiuyue.goetyominous.common.blocks.ac.TitanBombBlock;
 import com.qiuyue.goetyominous.common.blocks.entities.ac.TitanBombBlockEntity;
 import com.qiuyue.goetyominous.common.entities.ai.ac.ServantTemptGoal;
 import com.qiuyue.goetyominous.common.items.ac.AcItems;
@@ -758,6 +760,9 @@ public class TremorzillaServant extends AnimalSummon
             this.spawnAtLocation(stack);
             return;
         }
+        if (owner instanceof Player player) {
+            SEHelper.addCooldown(player, AcItems.TITAN_BOMB.get(), TitanBombBlock.COOLDOWN_TICKS);
+        }
         FlyingItem flyingItem = new FlyingItem(ModEntityType.FLYING_ITEM.get(), this.level(), this.getX(), this.getY(), this.getZ());
         flyingItem.setOwner(owner);
         flyingItem.setItem(stack);
@@ -870,6 +875,9 @@ public class TremorzillaServant extends AnimalSummon
     public void aiStep() {
         super.aiStep();
         if (!this.level().isClientSide) {
+            if (MobsConfig.TremorzillaServantBreakTrees.get() && !this.isBaby()) {
+                FoliageSmash.smash(this);
+            }
             if (ForgeEventFactory.getMobGriefingEvent(this.level(), this) && this.blockBreakCounter <= 0) {
                 this.breakBlocksInBoundingBox(0.1F);
                 this.blockBreakCounter = 10;
