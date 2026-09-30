@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.entities.ally.lm;
 
 import com.Polarice3.Goety.api.entities.ally.IServant;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
+import com.Polarice3.Goety.common.items.ModItems;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.knight.BHGrabAndThrowGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.knight.BHSynergyStateGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.knight.GhostUppercutGoal;
@@ -27,6 +28,7 @@ import net.miauczel.legendary_monsters.util.MathUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -75,6 +77,10 @@ public class BeheadedKnightServant extends IAnimatedMiniBossServant {
             SynchedEntityData.defineId(BeheadedKnightServant.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> ENHANCED =
             SynchedEntityData.defineId(BeheadedKnightServant.class, EntityDataSerializers.BOOLEAN);
+
+    public static final int DEFAULT_VARIANT = 1;
+    public static final int GOLDEN_VARIANT = 2;
+    public static final int DIAMOND_VARIANT = 3;
 
     public final int UPPERCUT_COOLDOWN = 0;
     public int upperCutCooldown = 0;
@@ -443,7 +449,78 @@ public class BeheadedKnightServant extends IAnimatedMiniBossServant {
             pPlayer.swing(pHand);
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
+        if (this.getTrueOwner() == pPlayer && this.isEnhanced() && itemstack.is(ModItems.ECTOPLASM.get())) {
+            if (!this.level().isClientSide) {
+                if (!pPlayer.getAbilities().instabuild) {
+                    itemstack.shrink(1);
+                }
+                this.setEnhanced(false);
+                this.playSound(SoundEvents.SOUL_ESCAPE, 1.0F, 1.3F);
+                this.gameEvent(GameEvent.ENTITY_INTERACT, pPlayer);
+                if (this.level() instanceof ServerLevel serverLevel) {
+                    for (int i = 0; i < 12; ++i) {
+                        double d0 = this.random.nextGaussian() * 0.02D;
+                        double d1 = this.random.nextGaussian() * 0.02D;
+                        double d2 = this.random.nextGaussian() * 0.02D;
+                        serverLevel.sendParticles(this.soulParticle(),
+                                this.getRandomX(1.0D), this.getY() + this.getBbHeight() + 0.3F, this.getRandomZ(1.0D),
+                                0, d0, d1, d2, 0.5F);
+                    }
+                }
+            }
+            pPlayer.swing(pHand);
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
+        }
+        if (this.getTrueOwner() == pPlayer && this.tryRestyle(pPlayer, pHand, itemstack)) {
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
+        }
         return super.mobInteract(pPlayer, pHand);
+    }
+
+    private boolean tryRestyle(Player pPlayer, InteractionHand pHand, ItemStack itemstack) {
+        int variant;
+        SoundEvent sound;
+        ParticleOptions particle;
+        if (itemstack.is(Items.GOLD_INGOT)) {
+            variant = GOLDEN_VARIANT;
+            sound = SoundEvents.ARMOR_EQUIP_GOLD;
+            particle = ParticleTypes.WAX_ON;
+        } else if (itemstack.is(Items.DIAMOND)) {
+            variant = DIAMOND_VARIANT;
+            sound = SoundEvents.ARMOR_EQUIP_DIAMOND;
+            particle = ParticleTypes.ELECTRIC_SPARK;
+        } else if (itemstack.is(Items.IRON_INGOT)) {
+            variant = DEFAULT_VARIANT;
+            sound = SoundEvents.ARMOR_EQUIP_IRON;
+            particle = ParticleTypes.WAX_OFF;
+        } else {
+            return false;
+        }
+
+        if (this.getTextureVariant() == variant) {
+            return false;
+        }
+
+        if (!this.level().isClientSide) {
+            if (!pPlayer.getAbilities().instabuild) {
+                itemstack.shrink(1);
+            }
+            this.setTextureVariant(variant);
+            this.playSound(sound, 1.0F, 1.0F);
+            this.gameEvent(GameEvent.ENTITY_INTERACT, pPlayer);
+            if (this.level() instanceof ServerLevel serverLevel) {
+                for (int i = 0; i < 12; ++i) {
+                    double d0 = this.random.nextGaussian() * 0.02D;
+                    double d1 = this.random.nextGaussian() * 0.02D;
+                    double d2 = this.random.nextGaussian() * 0.02D;
+                    serverLevel.sendParticles(particle,
+                            this.getRandomX(1.0D), this.getY() + this.getBbHeight() + 0.3F, this.getRandomZ(1.0D),
+                            0, d0, d1, d2, 0.5F);
+                }
+            }
+        }
+        pPlayer.swing(pHand);
+        return true;
     }
 
     @Override

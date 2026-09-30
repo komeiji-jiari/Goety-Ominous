@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.entities.ally.lm;
 
 import com.Polarice3.Goety.api.entities.ally.IServant;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
+import com.Polarice3.Goety.common.items.ModItems;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IMoveGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.knight.KnightAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.knight.KnightStateGoal;
@@ -15,6 +16,7 @@ import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
 import net.miauczel.legendary_monsters.Particle.custom.SoulSweepParticle;
 import net.miauczel.legendary_monsters.Particle.custom.SoulSweepRedParticle;
@@ -70,6 +72,10 @@ public class ResurrectedKnightServant extends IAnimatedMiniBossServant {
             SynchedEntityData.defineId(ResurrectedKnightServant.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> ENHANCED =
             SynchedEntityData.defineId(ResurrectedKnightServant.class, EntityDataSerializers.BOOLEAN);
+
+    public static final int DEFAULT_VARIANT = 1;
+    public static final int GOLDEN_VARIANT = 2;
+    public static final int DIAMOND_VARIANT = 3;
 
     public final int FORWARD_STEP_COOLDOWN = 40;
     public int forwardStepCooldown = 40;
@@ -362,9 +368,6 @@ public class ResurrectedKnightServant extends IAnimatedMiniBossServant {
             this.duoFight = false;
         }
         for (BeheadedKnightServant knight : knights) {
-            if (this.synchronisedDuoKnight() != null) {
-                this.setTextureVariant(this.synchronisedDuoKnight().getTextureVariant());
-            }
             this.duoFight = true;
             this.shouldAttack = knight.getAttackState() != 2;
             this.syncedEntity = knight;
@@ -494,7 +497,78 @@ public class ResurrectedKnightServant extends IAnimatedMiniBossServant {
             pPlayer.swing(pHand);
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
+        if (this.getTrueOwner() == pPlayer && this.isEnhanced() && itemstack.is(ModItems.ECTOPLASM.get())) {
+            if (!this.level().isClientSide) {
+                if (!pPlayer.getAbilities().instabuild) {
+                    itemstack.shrink(1);
+                }
+                this.setEnhanced(false);
+                this.playSound(SoundEvents.SOUL_ESCAPE, 1.0F, 1.3F);
+                this.gameEvent(GameEvent.ENTITY_INTERACT, pPlayer);
+                if (this.level() instanceof ServerLevel serverLevel) {
+                    for (int i = 0; i < 12; ++i) {
+                        double d0 = this.random.nextGaussian() * 0.02D;
+                        double d1 = this.random.nextGaussian() * 0.02D;
+                        double d2 = this.random.nextGaussian() * 0.02D;
+                        serverLevel.sendParticles(this.soulParticle(),
+                                this.getRandomX(1.0D), this.getY() + this.getBbHeight() + 0.3F, this.getRandomZ(1.0D),
+                                0, d0, d1, d2, 0.5F);
+                    }
+                }
+            }
+            pPlayer.swing(pHand);
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
+        }
+        if (this.getTrueOwner() == pPlayer && this.tryRestyle(pPlayer, pHand, itemstack)) {
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
+        }
         return super.mobInteract(pPlayer, pHand);
+    }
+
+    private boolean tryRestyle(Player pPlayer, InteractionHand pHand, ItemStack itemstack) {
+        int variant;
+        SoundEvent sound;
+        ParticleOptions particle;
+        if (itemstack.is(Items.GOLD_INGOT)) {
+            variant = GOLDEN_VARIANT;
+            sound = SoundEvents.ARMOR_EQUIP_GOLD;
+            particle = ParticleTypes.WAX_ON;
+        } else if (itemstack.is(Items.DIAMOND)) {
+            variant = DIAMOND_VARIANT;
+            sound = SoundEvents.ARMOR_EQUIP_DIAMOND;
+            particle = ParticleTypes.ELECTRIC_SPARK;
+        } else if (itemstack.is(Items.IRON_INGOT)) {
+            variant = DEFAULT_VARIANT;
+            sound = SoundEvents.ARMOR_EQUIP_IRON;
+            particle = ParticleTypes.WAX_OFF;
+        } else {
+            return false;
+        }
+
+        if (this.getTextureVariant() == variant) {
+            return false;
+        }
+
+        if (!this.level().isClientSide) {
+            if (!pPlayer.getAbilities().instabuild) {
+                itemstack.shrink(1);
+            }
+            this.setTextureVariant(variant);
+            this.playSound(sound, 1.0F, 1.0F);
+            this.gameEvent(GameEvent.ENTITY_INTERACT, pPlayer);
+            if (this.level() instanceof ServerLevel serverLevel) {
+                for (int i = 0; i < 12; ++i) {
+                    double d0 = this.random.nextGaussian() * 0.02D;
+                    double d1 = this.random.nextGaussian() * 0.02D;
+                    double d2 = this.random.nextGaussian() * 0.02D;
+                    serverLevel.sendParticles(particle,
+                            this.getRandomX(1.0D), this.getY() + this.getBbHeight() + 0.3F, this.getRandomZ(1.0D),
+                            0, d0, d1, d2, 0.5F);
+                }
+            }
+        }
+        pPlayer.swing(pHand);
+        return true;
     }
 
     @Override
