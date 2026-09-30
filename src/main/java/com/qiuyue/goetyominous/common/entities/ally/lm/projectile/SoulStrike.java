@@ -15,12 +15,12 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import com.Polarice3.Goety.common.entities.projectiles.SpellThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 
-public class SoulStrike extends ThrowableProjectile {
+public class SoulStrike extends SpellThrowableProjectile {
 
     private int lifeTime = 20;
 
@@ -37,6 +37,7 @@ public class SoulStrike extends ThrowableProjectile {
 
     @Override
     protected void defineSynchedData() {
+        super.defineSynchedData();
         this.entityData.define(DAMAGE, 0.0F);
         this.entityData.define(IS_RED, false);
     }

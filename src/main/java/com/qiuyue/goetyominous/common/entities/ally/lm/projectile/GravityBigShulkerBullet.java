@@ -20,12 +20,12 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import com.Polarice3.Goety.common.entities.projectiles.SpellThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 
-public class GravityBigShulkerBullet extends ThrowableProjectile {
+public class GravityBigShulkerBullet extends SpellThrowableProjectile {
 
     private static final EntityDataAccessor<Float> SIZE =
             SynchedEntityData.defineId(GravityBigShulkerBullet.class, EntityDataSerializers.FLOAT);
@@ -36,6 +36,7 @@ public class GravityBigShulkerBullet extends ThrowableProjectile {
 
     @Override
     protected void defineSynchedData() {
+        super.defineSynchedData();
         this.entityData.define(SIZE, 1.0F);
     }
 
@@ -82,7 +83,8 @@ public class GravityBigShulkerBullet extends ThrowableProjectile {
         if (entity instanceof ShulkerMimicServant || entity instanceof ShulkerMimicServantPart) {
             return true;
         }
-        return this.getOwner() instanceof LivingEntity owner && entity instanceof LivingEntity living
+        LivingEntity owner = this.getOwner();
+        return owner != null && entity instanceof LivingEntity living
                 && ServantAllyUtil.areAllied(owner, living);
     }
 
@@ -116,7 +118,8 @@ public class GravityBigShulkerBullet extends ThrowableProjectile {
         if (this.isAlly(hit) || hit instanceof ShulkerMimicServantPart) {
             return;
         }
-        if (!(this.getOwner() instanceof LivingEntity owner)) {
+        LivingEntity owner = this.getOwner();
+        if (owner == null) {
             return;
         }
         boolean flag = hit.hurt(ModDamageTypes.causeGravityDamage(owner, owner), 3.0F + this.getBulletSize() * 3.0F);

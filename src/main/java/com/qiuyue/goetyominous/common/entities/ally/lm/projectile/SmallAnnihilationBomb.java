@@ -17,14 +17,14 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import com.Polarice3.Goety.common.entities.projectiles.SpellThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 
-public class SmallAnnihilationBomb extends ThrowableProjectile {
+public class SmallAnnihilationBomb extends SpellThrowableProjectile {
 
     private static final EntityDataAccessor<Float> DAMAGE =
             SynchedEntityData.defineId(SmallAnnihilationBomb.class, EntityDataSerializers.FLOAT);
@@ -43,6 +43,7 @@ public class SmallAnnihilationBomb extends ThrowableProjectile {
 
     @Override
     protected void defineSynchedData() {
+        super.defineSynchedData();
         this.entityData.define(DAMAGE, 0.0F);
         this.entityData.define(TURN_RATE, 0.075F);
     }
@@ -74,7 +75,8 @@ public class SmallAnnihilationBomb extends ThrowableProjectile {
             return;
         }
         Entity target = result.getEntity();
-        if (!(this.getOwner() instanceof LivingEntity owner) || !(target instanceof LivingEntity living)) {
+        LivingEntity owner = this.getOwner();
+        if (owner == null || !(target instanceof LivingEntity living)) {
             return;
         }
         if (target == owner || MobUtil.areAllies(owner, living)) {
@@ -125,11 +127,6 @@ public class SmallAnnihilationBomb extends ThrowableProjectile {
         } else {
             super.handleEntityEvent(id);
         }
-    }
-
-    @Override
-    protected float getGravity() {
-        return 0.03F;
     }
 
     @Override

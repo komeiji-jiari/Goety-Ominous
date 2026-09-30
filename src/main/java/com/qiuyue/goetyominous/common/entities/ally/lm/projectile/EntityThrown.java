@@ -18,7 +18,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import com.Polarice3.Goety.common.entities.projectiles.SpellThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -27,7 +27,7 @@ import net.minecraftforge.network.NetworkHooks;
 
 import java.util.List;
 
-public class EntityThrown extends ThrowableProjectile {
+public class EntityThrown extends SpellThrowableProjectile {
 
     private static final EntityDataAccessor<Float> DAMAGE =
             SynchedEntityData.defineId(EntityThrown.class, EntityDataSerializers.FLOAT);
@@ -49,6 +49,7 @@ public class EntityThrown extends ThrowableProjectile {
 
     @Override
     protected void defineSynchedData() {
+        super.defineSynchedData();
         this.entityData.define(DAMAGE, 0.0F);
     }
 
@@ -89,7 +90,8 @@ public class EntityThrown extends ThrowableProjectile {
         if (entity == this || entity == this.getOwner()) {
             return true;
         }
-        return this.getOwner() instanceof LivingEntity owner && entity instanceof LivingEntity living
+        LivingEntity owner = this.getOwner();
+        return owner != null && entity instanceof LivingEntity living
                 && ServantAllyUtil.areAllied(owner, living);
     }
 
@@ -99,7 +101,8 @@ public class EntityThrown extends ThrowableProjectile {
     }
 
     private void AreaAttack(float range, float height, float arc, float damage) {
-        if (!(this.getOwner() instanceof LivingEntity owner)) {
+        LivingEntity owner = this.getOwner();
+        if (owner == null) {
             return;
         }
         for (LivingEntity entityHit : this.getEntityLivingBaseNearby(range, height, range, range)) {
@@ -157,7 +160,8 @@ public class EntityThrown extends ThrowableProjectile {
             return;
         }
         super.onHitEntity(result);
-        if (!this.level().isClientSide && this.getOwner() instanceof LivingEntity owner) {
+        LivingEntity owner = this.getOwner();
+        if (!this.level().isClientSide && owner != null) {
             Entity entity = result.getEntity();
             if (entity.hurt(this.damageSources().mobAttack(owner), 8.0F) && entity.isAlive()) {
                 this.doEnchantDamageEffects(owner, entity);

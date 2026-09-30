@@ -44,8 +44,8 @@ public class EnergyBeamEntityRenderer extends EntityRenderer<EnergyBeamEntity> {
 
     @Override
     public void render(EnergyBeamEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        this.clearerView = entity.caster instanceof Player
-                && Minecraft.getInstance().player == entity.caster
+        this.clearerView = entity.getOwner() instanceof Player
+                && Minecraft.getInstance().player == entity.getOwner()
                 && Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON;
         double collidePosX = entity.prevCollidePosX + (entity.collidePosX - entity.prevCollidePosX) * (double) partialTicks;
         double collidePosY = entity.prevCollidePosY + (entity.collidePosY - entity.prevCollidePosY) * (double) partialTicks;

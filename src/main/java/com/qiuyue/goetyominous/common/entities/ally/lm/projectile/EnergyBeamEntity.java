@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm.projectile;
 
+import com.Polarice3.Goety.common.entities.projectiles.SpellEntity;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
 import net.miauczel.legendary_monsters.damagetype.ModDamageTypes;
@@ -35,9 +36,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class EnergyBeamEntity extends Entity {
+public class EnergyBeamEntity extends SpellEntity {
     public static final double RADIUS = 30.0;
-    public LivingEntity caster;
     public double endPosX;
     public double endPosY;
     public double endPosZ;
@@ -64,8 +64,6 @@ public class EnergyBeamEntity extends Entity {
             SynchedEntityData.defineId(EnergyBeamEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> DURATION =
             SynchedEntityData.defineId(EnergyBeamEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> CASTER =
-            SynchedEntityData.defineId(EnergyBeamEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> HEAD =
             SynchedEntityData.defineId(EnergyBeamEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> FIRE =
@@ -89,7 +87,7 @@ public class EnergyBeamEntity extends Entity {
     public EnergyBeamEntity(EntityType<? extends EnergyBeamEntity> type, Level world, LivingEntity caster, double x, double y, double z,
                             float yaw, float pitch, int duration, float damage, float hpDamage) {
         this(type, world);
-        this.caster = caster;
+        this.setOwner(caster);
         this.setYaw(yaw);
         this.setPitch(pitch);
         this.setDuration(duration);
@@ -97,9 +95,6 @@ public class EnergyBeamEntity extends Entity {
         this.setDamage(damage);
         this.setHpDamage(hpDamage);
         this.calculateEndPos();
-        if (!world.isClientSide) {
-            this.setCasterID(caster.getId());
-        }
     }
 
     @Override
@@ -107,20 +102,18 @@ public class EnergyBeamEntity extends Entity {
         return PushReaction.IGNORE;
     }
 
-    private void updateWithCaster() {
-        if (this.caster != null) {
-            double theta = this.caster.yBodyRot * (Math.PI / 180);
-            double vecX = Math.cos(theta + 1.5707963267948966);
-            double vecZ = Math.sin(theta + 1.5707963267948966);
-            double spawnY = this.caster.getY(0.0);
-            float radius = 1.0F;
-            float angle = (float) Math.PI / 180 * this.caster.yBodyRot;
-            double extraX = (double) (radius * Mth.sin((float) (Math.PI + (double) angle))) + 0.5;
-            double extraZ = (double) (radius * Mth.cos(angle)) - 0.5 * (double) Mth.sin(angle);
-            this.setYaw((float) ((double) (this.caster.yHeadRot + 90.0F) * Math.PI / 180.0));
-            this.setPitch((float) ((double) (-this.caster.getXRot()) * Math.PI / 180.0));
-            this.setPos(this.caster.getX() + extraX, spawnY + 1.0, this.caster.getZ() + extraZ);
-        }
+    private void updateWithCaster(LivingEntity owner) {
+        double theta = owner.yBodyRot * (Math.PI / 180);
+        double vecX = Math.cos(theta + 1.5707963267948966);
+        double vecZ = Math.sin(theta + 1.5707963267948966);
+        double spawnY = owner.getY(0.0);
+        float radius = 1.0F;
+        float angle = (float) Math.PI / 180 * owner.yBodyRot;
+        double extraX = (double) (radius * Mth.sin((float) (Math.PI + (double) angle))) + 0.5;
+        double extraZ = (double) (radius * Mth.cos(angle)) - 0.5 * (double) Mth.sin(angle);
+        this.setYaw((float) ((double) (owner.yHeadRot + 90.0F) * Math.PI / 180.0));
+        this.setPitch((float) ((double) (-owner.getXRot()) * Math.PI / 180.0));
+        this.setPos(owner.getX() + extraX, spawnY + 1.0, owner.getZ() + extraZ);
     }
 
     private void spawnParticlesAlongLine(Level level, Vec3 from, Vec3 to, double step) {
@@ -178,7 +171,8 @@ public class EnergyBeamEntity extends Entity {
 
     @Override
     public void tick() {
-        super.tick();
+        this.baseTick();
+        LivingEntity beamOwner = this.getOwner();
         if (this.NextSound == 0 && this.tickCount >= 20) {
             this.NextSound = 10;
         }
@@ -188,8 +182,8 @@ public class EnergyBeamEntity extends Entity {
         if (this.tickCount == this.getDuration()) {
             this.discard();
         }
-        if (this.caster != null) {
-            this.updateWithCaster();
+        if (beamOwner != null) {
+            this.updateWithCaster(beamOwner);
             this.calculateEndPos();
         }
         if (!this.on && this.appear.getTimer() == 0) {
@@ -211,14 +205,11 @@ public class EnergyBeamEntity extends Entity {
         this.xo = this.getX();
         this.yo = this.getY();
         this.zo = this.getZ();
-        if (this.tickCount == 1 && this.level().isClientSide) {
-            this.caster = (LivingEntity) this.level().getEntity(this.getCasterID());
+        if (beamOwner != null) {
+            this.renderYaw = (float) (((double) beamOwner.yHeadRot + 90.0) * Math.PI / 180.0);
+            this.renderPitch = (float) ((double) (-beamOwner.getXRot()) * Math.PI / 180.0);
         }
-        if (this.caster != null) {
-            this.renderYaw = (float) (((double) this.caster.yHeadRot + 90.0) * Math.PI / 180.0);
-            this.renderPitch = (float) ((double) (-this.caster.getXRot()) * Math.PI / 180.0);
-        }
-        if (this.caster != null && !this.caster.isAlive()) {
+        if (beamOwner != null && !beamOwner.isAlive()) {
             this.discard();
         }
         if (this.tickCount > 20) {
@@ -246,12 +237,12 @@ public class EnergyBeamEntity extends Entity {
             }
             if (!this.level().isClientSide) {
                 for (LivingEntity target : hit) {
-                    if (this.caster == null || target == this.caster || ServantAllyUtil.areAllied(this.caster, target)) {
+                    if (beamOwner == null || target == beamOwner || ServantAllyUtil.areAllied(beamOwner, target)) {
                         continue;
                     }
-                    boolean flag = target.hurt(ModDamageTypes.causeEnergyBeamDamage(this, this.caster),
+                    boolean flag = target.hurt(ModDamageTypes.causeEnergyBeamDamage(this, beamOwner),
                             (float) ((double) this.getDamage() + (double) target.getMaxHealth() * 0.01));
-                    if (flag && this.caster instanceof Mob mob && mob.getTarget() != null) {
+                    if (flag && beamOwner instanceof Mob mob && mob.getTarget() != null) {
                         float f = (float) ((double) mob.getTarget().getMaxHealth() * 0.0025);
                     }
                     if (this.getFire() && flag) {
@@ -278,10 +269,10 @@ public class EnergyBeamEntity extends Entity {
 
     @Override
     protected void defineSynchedData() {
+        super.defineSynchedData();
         this.entityData.define(YAW, 0.0F);
         this.entityData.define(PITCH, 0.0F);
         this.entityData.define(DURATION, 0);
-        this.entityData.define(CASTER, -1);
         this.entityData.define(HEAD, 0);
         this.entityData.define(FIRE, false);
         this.entityData.define(DAMAGE, 0.0F);
@@ -336,14 +327,6 @@ public class EnergyBeamEntity extends Entity {
         this.entityData.set(HEAD, head);
     }
 
-    public int getCasterID() {
-        return this.entityData.get(CASTER);
-    }
-
-    public void setCasterID(int id) {
-        this.entityData.set(CASTER, id);
-    }
-
     public boolean getFire() {
         return this.entityData.get(FIRE);
     }
@@ -353,11 +336,13 @@ public class EnergyBeamEntity extends Entity {
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag nbt) {
+    public void readAdditionalSaveData(CompoundTag nbt) {
+        super.readAdditionalSaveData(nbt);
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag nbt) {
+    public void addAdditionalSaveData(CompoundTag nbt) {
+        super.addAdditionalSaveData(nbt);
     }
 
     @Override
@@ -397,8 +382,9 @@ public class EnergyBeamEntity extends Entity {
                 Math.min(this.getX(), this.collidePosX), Math.min(this.getY(), this.collidePosY), Math.min(this.getZ(), this.collidePosZ),
                 Math.max(this.getX(), this.collidePosX), Math.max(this.getY(), this.collidePosY), Math.max(this.getZ(), this.collidePosZ))
                 .inflate(1.0, 1.0, 1.0));
+        LivingEntity beamOwner = this.getOwner();
         for (LivingEntity entity : entities) {
-            if (entity == this.caster) {
+            if (entity == beamOwner) {
                 continue;
             }
             float pad = entity.getPickRadius() + 0.5F;

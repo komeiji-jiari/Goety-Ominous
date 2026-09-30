@@ -18,13 +18,13 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
-import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import com.Polarice3.Goety.common.entities.projectiles.SpellThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.network.NetworkHooks;
 
-public class AnnihilationBomb extends ThrowableProjectile {
+public class AnnihilationBomb extends SpellThrowableProjectile {
 
     private static final EntityDataAccessor<Float> DAMAGE =
             SynchedEntityData.defineId(AnnihilationBomb.class, EntityDataSerializers.FLOAT);
@@ -48,6 +48,7 @@ public class AnnihilationBomb extends ThrowableProjectile {
 
     @Override
     protected void defineSynchedData() {
+        super.defineSynchedData();
         this.entityData.define(DAMAGE, 0.0F);
         this.entityData.define(BULLETS_AMOUNT, 0);
         this.entityData.define(SILENT, false);
@@ -118,7 +119,7 @@ public class AnnihilationBomb extends ThrowableProjectile {
             serverLevel.sendParticles(ModParticles.GROUND_ANNIHILATION_NUKE.get(),
                     this.getX() + f3, this.getY() + 2.0D + f4, this.getZ() + f5, 1, 0.0D, 0.0D, 0.0D, 0.0D);
         }
-        LivingEntity entity = (LivingEntity) this.getOwner();
+        LivingEntity entity = this.getOwner();
         float smallBulletAmount = this.getBulletAmount() * 0.5F;
         for (int i = 0; (float) i < smallBulletAmount; ++i) {
             if (entity != null) {
@@ -187,11 +188,6 @@ public class AnnihilationBomb extends ThrowableProjectile {
         } else {
             super.handleEntityEvent(id);
         }
-    }
-
-    @Override
-    protected float getGravity() {
-        return 0.03F;
     }
 
     @Override
