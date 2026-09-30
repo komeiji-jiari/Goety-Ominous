@@ -338,6 +338,7 @@ public class GoetyOminous {
     public void onClientSetup(final FMLClientSetupEvent event) {
         if (LegendaryMonstersCompat.isLegendaryMonstersLoaded()) {
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.client.events.PossessedPaladinGrabRenderEvents.class);
+            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.client.events.BeheadedKnightGrabRenderEvents.class);
         }
         if (AlexCavesCompat.isAlexCavesLoaded()) {
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.TremorsaurusHudEvents.class);

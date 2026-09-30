@@ -248,6 +248,12 @@ public class ModModelLayers {
             event.registerLayerDefinition(ModEntityLayers.FLAME_DRIFTER_SERVANT_LAYER,
                     com.qiuyue.goetyominous.client.render.model.lm.FlameDrifterServantModel::createBodyLayer);
 
+            event.registerLayerDefinition(ModEntityLayers.BEHEADED_KNIGHT_SERVANT_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.lm.BeheadedKnightServantModel::createBodyLayer);
+
+            event.registerLayerDefinition(ModEntityLayers.RESURRECTED_KNIGHT_SERVANT_LAYER,
+                    com.qiuyue.goetyominous.client.render.model.lm.ResurrectedKnightServantModel::createBodyLayer);
+
             event.registerLayerDefinition(ModEntityLayers.FLAMEBORN_WARRIOR_SERVANT_LAYER,
                     com.qiuyue.goetyominous.client.render.model.lm.FlamebornWarriorServantModel::createBodyLayer);
 
@@ -656,6 +662,10 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.SOUL_TRIDENT.get(),
                     com.qiuyue.goetyominous.client.render.lm.SoulTridentServantRenderer::new);
 
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.SOUL_JAVELIN.get(),
+                    com.qiuyue.goetyominous.client.render.lm.SoulJavelinServantRenderer::new);
+
             // 三叉戟插地后炸出来的「灵魂柱爆炸」。同样是「没有模型、没有贴图、纯粒子」，
             // 传奇怪物原版压根没给它注册渲染器（连空壳都没有）—— 我们补个空壳，
             // 免得 Forge 找不到渲染器时刷警告。
@@ -753,6 +763,18 @@ public class ModModelLayers {
 
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.ENTITY_THROWN.get(),
+                    EmptyRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.BEHEADED_KNIGHT_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.lm.BeheadedKnightServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.RESURRECTED_KNIGHT_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.lm.ResurrectedKnightServantRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.THROWN_KNIGHT.get(),
                     EmptyRenderer::new);
         }
 
