@@ -68,6 +68,14 @@ public class LmItems {
             "flameborn_guard_servant_spawn_egg",
             () -> new ServantSpawnEggItem(LmEntityRegistry.FLAMEBORN_GUARD_SERVANT, 0x161616, 0x427367, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> BEHEADED_KNIGHT_SPAWN_EGG = LM_ITEMS.register(
+            "beheaded_knight_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(LmEntityRegistry.BEHEADED_KNIGHT_SERVANT, 0xCBD4D6, 0x4A2F4A, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> RESURRECTED_KNIGHT_SPAWN_EGG = LM_ITEMS.register(
+            "resurrected_knight_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(LmEntityRegistry.RESURRECTED_KNIGHT_SERVANT, 0x8A8F99, 0x3B4A5C, egg()));
+
     public static void register(IEventBus modEventBus) {
         LM_ITEMS.register(modEventBus);
     }

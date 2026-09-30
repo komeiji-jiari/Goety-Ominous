@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.compat.lm;
 
 import com.qiuyue.goetyominous.common.entities.ally.lm.AnnihilationPursuerServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.BeheadedKnightServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.CloudGolemServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.FlameDrifterServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.FlamebornGuardServant;
@@ -8,6 +9,7 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.FlamebornWarriorServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.HoveringHurricaneServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.OvergrownColossusServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.PossessedPaladinServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.ResurrectedKnightServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.ShulkerMimicServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.TheObliteratorServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.WanderingEyeServant;
@@ -64,5 +66,11 @@ public class LmCompatManager {
 
         event.put(LmEntityRegistry.FLAMEBORN_GUARD_SERVANT.get(),
                 FlamebornGuardServant.createAttributes().build());
+
+        event.put(LmEntityRegistry.BEHEADED_KNIGHT_SERVANT.get(),
+                BeheadedKnightServant.createAttributes().build());
+
+        event.put(LmEntityRegistry.RESURRECTED_KNIGHT_SERVANT.get(),
+                ResurrectedKnightServant.createAttributes().build());
     }
 }

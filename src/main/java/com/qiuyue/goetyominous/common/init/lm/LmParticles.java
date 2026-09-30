@@ -73,6 +73,9 @@ public class LmParticles {
     public static final RegistryObject<SimpleParticleType> SOUL_EXPLOSION_RED =
             LM_PARTICLES.register("soul_explosion_red", () -> new SimpleParticleType(true));
 
+    public static final RegistryObject<SimpleParticleType> SOUL_EXPLOSION =
+            LM_PARTICLES.register("soul_explosion", () -> new SimpleParticleType(true));
+
     /**
      * 灵魂柱冒出地面之前，地面上先亮起的那团红光。
      *

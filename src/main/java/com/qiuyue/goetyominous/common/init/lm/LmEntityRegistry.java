@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.init.lm;
 
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.lm.AnnihilationPursuerServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.BeheadedKnightServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.CloudGolemServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.FlameDrifterServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.FlamebornGuardServant;
@@ -9,6 +10,7 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.FlamebornWarriorServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.HoveringHurricaneServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.OvergrownColossusServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.PossessedPaladinServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.ResurrectedKnightServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.ShulkerMimicServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.TheObliteratorServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.WanderingEyeServant;
@@ -22,9 +24,11 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.FallingSoulBla
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulBlade;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulPillar;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulPillarExplosionEntity;
+import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulJavelin;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulShield;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulStrike;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulTrident;
+import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.ThrownKnight;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.ThrownPhantomDagger;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.CloudEntity;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.EntityThrown;
@@ -124,6 +128,12 @@ public class LmEntityRegistry {
                             .sized(1.0F, 1.0F).clientTrackingRange(4).updateInterval(20)
                             .build(GoetyOminous.MOD_ID + ":soul_trident"));
 
+    public static final RegistryObject<EntityType<SoulJavelin>> SOUL_JAVELIN =
+            LM_ENTITIES.register("soul_javelin",
+                    () -> EntityType.Builder.<SoulJavelin>of(SoulJavelin::new, MobCategory.MISC)
+                            .sized(1.0F, 1.0F).clientTrackingRange(4).updateInterval(20)
+                            .build(GoetyOminous.MOD_ID + ":soul_javelin"));
+
     // 参数逐项照抄传奇怪物 ModEntities:161 的 soul_pillar_explosion：
     // MISC 分类、1.0 宽 x 3.0 高、客户端 6 格追踪、每 2 tick 同步一次、免疫火焰。
     //
@@ -219,6 +229,24 @@ public class LmEntityRegistry {
                     () -> EntityType.Builder.of(FlameDrifterServant::new, MobCategory.MONSTER)
                             .sized(1.5F, 1.5F).fireImmune()
                             .build(GoetyOminous.MOD_ID + ":flame_drifter_servant"));
+
+    public static final RegistryObject<EntityType<BeheadedKnightServant>> BEHEADED_KNIGHT_SERVANT =
+            LM_ENTITIES.register("beheaded_knight_servant",
+                    () -> EntityType.Builder.of(BeheadedKnightServant::new, MobCategory.MONSTER)
+                            .sized(1.5F, 4.0F).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":beheaded_knight_servant"));
+
+    public static final RegistryObject<EntityType<ResurrectedKnightServant>> RESURRECTED_KNIGHT_SERVANT =
+            LM_ENTITIES.register("resurrected_knight_servant",
+                    () -> EntityType.Builder.of(ResurrectedKnightServant::new, MobCategory.MONSTER)
+                            .sized(1.25F, 3.0F).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":resurrected_knight_servant"));
+
+    public static final RegistryObject<EntityType<ThrownKnight>> THROWN_KNIGHT =
+            LM_ENTITIES.register("thrown_knight",
+                    () -> EntityType.Builder.<ThrownKnight>of(ThrownKnight::new, MobCategory.MISC)
+                            .sized(1.5F, 1.5F).clientTrackingRange(6).updateInterval(2).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":thrown_knight"));
 
     public static final RegistryObject<EntityType<FlamebornWarriorServant>> FLAMEBORN_WARRIOR_SERVANT =
             LM_ENTITIES.register("flameborn_warrior_servant",
