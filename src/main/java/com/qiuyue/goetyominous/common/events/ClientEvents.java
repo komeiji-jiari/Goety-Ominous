@@ -113,6 +113,7 @@ public class ClientEvents {
         event.registerSpriteSet(LmParticles.GHOSTLY_SOUL_RED.get(), GhostlySoul.Provider::new);
         event.registerSpriteSet(LmParticles.RED_SOUL_FLAME.get(), SmallGreenFlame.Provider::new);
         event.registerSpriteSet(LmParticles.SOUL_EXPLOSION_RED.get(), SoulExplosion.Provider::new);
+        event.registerSpriteSet(LmParticles.SOUL_EXPLOSION.get(), SoulExplosion.Provider::new);
         event.registerSpriteSet(LmParticles.GROUNDSOUL_RED.get(), GroundSoulParticle.Factory::new);
         event.registerSpriteSet(LmParticles.SOUL_PILLAR_EXPLOSION.get(), SoulPillarExplosion.Factory::new);
         event.registerSpriteSet(LmParticles.CIRCLE.get(), Circle.RingFactory::new);
