@@ -32,6 +32,7 @@ import com.qiuyue.goetyominous.compat.curios.CuriosIntegration;
 import com.qiuyue.goetyominous.config.WeaponConfig;
 import com.qiuyue.goetyominous.utils.BuiltinPacksRegistry;
 import com.qiuyue.goetyominous.client.OminousIconRotation;
+import com.qiuyue.goetyominous.utils.ModRituals;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Difficulty;
@@ -94,6 +95,7 @@ public class GoetyOminous {
         ModBlocks.register(modEventBus);
         ModProcessorTypes.register(modEventBus);
         ModBlockEntities.register(modEventBus);
+        ModRituals.register(modEventBus);
         ModCreativeTab.CREATIVE_MODE_TABS.register(modEventBus);
         com.Polarice3.Goety.api.ritual.RitualType.addRitualType("fel",
                 new FelRitualType("fel"));
@@ -149,6 +151,8 @@ public class GoetyOminous {
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.RadiationAllyEvents.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.MineGuardianExplosionProtectionHandler.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.NucleeperSummonHandler.class);
+            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.AtomicBombCleanupHandler.class);
+            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.TremorzillaBreathHandler.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.MineGuardianSummonHandler.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.BubbledVisualCleanupHandler.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.LuxtructosaurusTephraHandler.class);
@@ -185,6 +189,10 @@ public class GoetyOminous {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         new CuriosIntegration().setup(event);
+
+        if (AlexCavesCompat.isAlexCavesLoaded() && PatchouliCompat.isLoaded()) {
+            com.qiuyue.goetyominous.compat.patchouli.GoetyOminousPatchouliIntegration.setup(event);
+        }
 
         event.enqueueWork(() -> {
             net.minecraftforge.common.brewing.BrewingRecipeRegistry.addRecipe(
@@ -348,6 +356,8 @@ public class GoetyOminous {
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ForsakenRiderHudEvents.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.CandicornRiderHudEvents.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.TremorzillaRenderEvents.class);
+            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.client.render.ac.TremorzillaBreathRenderer.class);
+            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.client.render.ac.XRayRenderer.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.AtlatitanRenderEvents.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.LuxtructosaurusRenderEvents.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.CorrodentDigCrackRenderEvents.class);

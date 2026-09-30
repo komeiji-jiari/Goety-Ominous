@@ -1,0 +1,24 @@
+{
+  "name": "Nucleeper",
+  "icon": "alexscaves:siren_light",
+  "category": "goety:toxiccaves",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You have studied the biochemical Creepers wandering the Toxic Caves and concluded that they were designed and built as weapons of war by the ancient inhabitants of the Toxic Caves. Using nuclear bomb crafting techniques and some other components, you had a flash of inspiration and devised a way to create your own Nucleepers."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:nucleeper_servant"
+    },
+    {
+      "type": "multiblock",
+      "multiblock_id": "goetyominous:nucleeper",
+      "text": "Right click the center Uranium Block with an Animation Core."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "For certain arcane reasons, the explosions produced by these Nucleepers do not affect you or your minions, nor do they destroy any blocks. However, their detonation time is longer, making them vulnerable to attack. They can be repaired by right-clicking them with a Uranium."
+    }
+  ]
+}

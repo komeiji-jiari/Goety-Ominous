@@ -6,6 +6,7 @@ import com.google.common.collect.Multimap;
 import com.mega.revelationfix.common.init.ModAttributes;
 import com.mega.revelationfix.common.item.tool.wand.SecondPhaseStaff;
 import com.qiuyue.goetyominous.common.items.ac.AcItems;
+import com.qiuyue.goetyominous.common.rlyeh.RlyehStyled;
 import com.qiuyue.goetyominous.utils.KeyOfRlyehMixinHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -19,7 +20,7 @@ import net.minecraft.world.level.Level;
 
 import java.util.UUID;
 
-public class KeyOfRlyehStaffItem extends SecondPhaseStaff {
+public class KeyOfRlyehStaffItem extends SecondPhaseStaff implements RlyehStyled {
 
     private static final UUID BASE_ABYSS_POWER_UUID = UUID.fromString("8e4c2f61-b793-4a05-9d3e-6f1a8b5c7d20");
 

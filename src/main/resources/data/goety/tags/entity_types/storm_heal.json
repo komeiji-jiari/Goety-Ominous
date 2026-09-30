@@ -3,10 +3,6 @@
   "__comment": "servants that heal and lose limited lifespan through the Storm set, and can be healed by the Storm Crown.",
   "values": [
     {
-      "id": "goetyominous:nucleeper_servant",
-      "required": false
-    },
-    {
       "id": "goetyominous:dicer_servant",
       "required": false
     },

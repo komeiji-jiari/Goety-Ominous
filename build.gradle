@@ -223,6 +223,7 @@ dependencies {
     implementation fg.deobf("curse.maven:goety-586095:8951387")
     compileOnly fg.deobf("curse.maven:illage-and-spillage-respillaged-1079714:6156035")
     implementation fg.deobf("top.theillusivec4.curios:curios-forge:5.14.1+1.20.1")
+    compileOnly fg.deobf("curse.maven:patchouli-306770:7731017")
 
     // 仅编译时使用，运行时可选
     compileOnly fg.deobf("curse.maven:goety-spillage-1108014:8157704")
@@ -234,19 +235,14 @@ dependencies {
     compileOnly fg.deobf("curse.maven:blueprint-382216:8048579")
     compileOnly fg.deobf("curse.maven:upgrade-aquatic-326895:6393133")
     compileOnly fg.deobf("curse.maven:mutant-more-831753:7404733")
-    // 传奇怪物（LM）。
-    // 用 implementation 而不是 compileOnly —— 区别在于 compileOnly 只进「编译时」classpath，
-    // 跑 runClient 时 LM 根本不会被加载，进游戏召唤仆从就是 NoClassDefFoundError。
-    // 版本号 8902349 与协作者保持一致（他那边也是这个文件号）。
-    // 对应的反混淆 jar 已在本机 gradle 缓存里，所以离线也能编译。
-    implementation fg.deobf("curse.maven:legendary-monsters-944035:8902349")
+    compileOnly fg.deobf("curse.maven:legendary-monsters-944035:8902349")
     compileOnly fg.deobf("curse.maven:ending-library-1471165:8292038")
-    implementation fg.deobf("curse.maven:jade-324717:8479276")
-    compileOnly fg.deobf("curse.maven:goety-equipped-1504908:8394665")
+    compileOnly fg.deobf("curse.maven:jade-324717:8479276")
     //compileOnly fg.deobf("curse.maven:revelation-fix-???:???")
     compileOnly fg.deobf("curse.maven:illager-invasion-891324:6192869")
     compileOnly fg.deobf("curse.maven:piglin-proliferation-657831:8065407")
     compileOnly files('libs/[Forge]RevelationFix-1.20.1-4.4.jar')
+    compileOnly files('libs/ModernUI-Forge-1.20.1-3.12.0.1-universal.jar')
 
     compileOnly fg.deobf("curse.maven:touhou-little-maid-355044:8061847")
     compileOnly fg.deobf("curse.maven:goety-delight-1363736:8712123")

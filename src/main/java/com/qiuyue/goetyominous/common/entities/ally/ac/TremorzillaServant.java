@@ -686,7 +686,7 @@ public class TremorzillaServant extends AnimalSummon
             }
         }
         if (!this.level().isClientSide && this.getAnimation() == ANIMATION_CHEW && this.getAnimationTick() == 34 && this.lastFedPlayer != null) {
-            this.heal(50.0F);
+            this.heal(10.0F);
             this.lastFedPlayer = null;
         }
         this.lastStompX = this.xo;
@@ -752,13 +752,32 @@ public class TremorzillaServant extends AnimalSummon
         }
         LivingEntity owner = this.getTrueOwner();
         if (owner == null) {
+            if (this.level() instanceof ServerLevel serverLevel) {
+                this.spawnReturnParticles(serverLevel);
+            }
             this.spawnAtLocation(stack);
             return;
         }
         FlyingItem flyingItem = new FlyingItem(ModEntityType.FLYING_ITEM.get(), this.level(), this.getX(), this.getY(), this.getZ());
         flyingItem.setOwner(owner);
         flyingItem.setItem(stack);
+        flyingItem.setParticle(ACParticleRegistry.FALLOUT.get());
         this.level().addFreshEntity(flyingItem);
+    }
+
+    private void spawnReturnParticles(ServerLevel serverLevel) {
+        int count = (int) (12 * this.getScale());
+        for (int i = 0; i < count; ++i) {
+            double dx = this.random.nextGaussian() * 0.02D;
+            double dy = this.random.nextGaussian() * 0.02D;
+            double dz = this.random.nextGaussian() * 0.02D;
+            ParticleOptions particle = this.random.nextInt(3) == 0
+                    ? ACParticleRegistry.ACID_BUBBLE.get()
+                    : ACParticleRegistry.GREEN_VENT_SMOKE.get();
+            serverLevel.sendParticles(particle,
+                    this.getRandomX(1.2D), this.getRandomY(), this.getRandomZ(1.2D),
+                    0, dx, dy, dz, 0.5D);
+        }
     }
 
     private double getMaxFluidHeight() {

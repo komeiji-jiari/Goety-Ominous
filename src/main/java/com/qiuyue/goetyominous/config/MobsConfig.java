@@ -287,7 +287,7 @@ public class MobsConfig {
                 .defineInRange("guzzlerServantLimit", 2, 1, 100);
 
         SkyvernServantLimit = BUILDER
-                .comment("Maximum number of Skyvern Servants that can be summoned (Default: 3). Each one spawns 20-23 segment entities.")
+                .comment("Maximum number of Skyvern Servants that can be summoned (Default: 3)")
                 .defineInRange("skyvernServantLimit", 3, 1, 100);
 
         SkyvernServantGhost = BUILDER
@@ -338,10 +338,9 @@ public class MobsConfig {
                 .defineInRange("overgrownColossusServantLimit", 2, 1, 100);
 
         OvergrownColossusServantProjectileImmunity = BUILDER
-                .comment("Whether Overgrown Colossus Servants are immune to arrows (Default: true; Legendary Monsters' Allow Overgrown Colosuss Projectile Immunity)")
+                .comment("Whether Overgrown Colossus Servants are immune to arrows (Default: true")
                 .define("overgrownColossusServantProjectileImmunity", true);
 
-        // 堕落圣骑是 BOSS 级仆从，默认只允许同时存在 1 只。
         PossessedPaladinServantLimit = BUILDER
                 .comment("Maximum number of Possessed Paladin Servants that can be summoned (Default: 1)")
                 .defineInRange("possessedPaladinServantLimit", 1, 1, 100);
@@ -351,7 +350,7 @@ public class MobsConfig {
                 .defineInRange("possessedPaladinServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
 
         PossessedPaladinServantInvulnerabilityTime = BUILDER
-                .comment("Whether Possessed Paladin Servants get 10 ticks of invulnerability after being hit (Default: true; Legendary Monsters' boss behaviour, this is what makes them shrug off rapid hits)")
+                .comment("Whether Possessed Paladin Servants get 10 ticks of invulnerability after being hit (Default: true)")
                 .define("possessedPaladinServantInvulnerabilityTime", true);
 
         HoveringHurricaneServantLimit = BUILDER
@@ -371,23 +370,23 @@ public class MobsConfig {
                 .defineInRange("cloudGolemServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
 
         CloudGolemServantLosesConsciousness = BUILDER
-                .comment("Whether Cloud Golem Servants go dormant after their laser attack (Default: true; Legendary Monsters' Allow Cloud Golem Loses Consciousness)")
+                .comment("Whether Cloud Golem Servants go dormant after their laser attack (Default: true)")
                 .define("cloudGolemServantLosesConsciousness", true);
 
         CloudGolemServantCanCharge2Times = BUILDER
-                .comment("Whether Cloud Golem Servants charge one more time after missing while low on health (Default: true; Legendary Monsters' Allow Cloud Golem Charge once More)")
+                .comment("Whether Cloud Golem Servants charge one more time after missing while low on health (Default: true)")
                 .define("cloudGolemServantCanCharge2Times", true);
 
         CloudGolemServantInvulnerabilityTime = BUILDER
-                .comment("Whether Cloud Golem Servants get a short window of invulnerability after every hit they take (Default: true; Legendary Monsters' Allow Cloud Golem Invulnerability Time)")
+                .comment("Whether Cloud Golem Servants get a short window of invulnerability after every hit they take (Default: true)")
                 .define("cloudGolemServantInvulnerabilityTime", true);
 
         CloudGolemServantProjectileImmunityTimer = BUILDER
-                .comment("Whether the arrows a Cloud Golem Servant shrugs off share a cooldown, so it cannot ignore an entire volley (Default: true; Legendary Monsters' Allow Projectile Immunity cooldown Damage)")
+                .comment("Whether the arrows a Cloud Golem Servant shrugs off share a cooldown, so it cannot ignore an entire volley (Default: true)")
                 .define("cloudGolemServantProjectileImmunityTimer", true);
 
         CloudGolemServantFallingCloudParticles = BUILDER
-                .comment("Whether the clouds a Cloud Golem Servant drops keep their falling particles (Default: true; Legendary Monsters' Allow Falling Cloud Particles)")
+                .comment("Whether the clouds a Cloud Golem Servant drops keep their falling particles (Default: true)")
                 .define("cloudGolemServantFallingCloudParticles", true);
 
         ShulkerMimicServantLimit = BUILDER
@@ -407,7 +406,7 @@ public class MobsConfig {
                 .defineInRange("annihilationPursuerServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
 
         BeheadedKnightServantLimit = BUILDER
-                .comment("Maximum number of Beheaded Knight Servants that can be summoned (Default: 2, so a Beheaded Knight and a Resurrected Knight can pair up)")
+                .comment("Maximum number of Beheaded Knight Servants that can be summoned (Default: 2)")
                 .defineInRange("beheadedKnightServantLimit", 2, 1, 100);
 
         BeheadedKnightServantDamageMultiplier = BUILDER
@@ -415,7 +414,7 @@ public class MobsConfig {
                 .defineInRange("beheadedKnightServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
 
         ResurrectedKnightServantLimit = BUILDER
-                .comment("Maximum number of Resurrected Knight Servants that can be summoned (Default: 2, so a Beheaded Knight and a Resurrected Knight can pair up)")
+                .comment("Maximum number of Resurrected Knight Servants that can be summoned (Default: 2)")
                 .defineInRange("resurrectedKnightServantLimit", 2, 1, 100);
 
         ResurrectedKnightServantDamageMultiplier = BUILDER
@@ -562,7 +561,7 @@ public class MobsConfig {
                 .defineInRange("teletorServantLimit", 16, 1, 100);
 
         ForsakenServantLimit = BUILDER
-                .comment("Maximum number of Forsaken Servants that can be summoned (Default: 2; boss-tier summon, 250 HP + AOE)")
+                .comment("Maximum number of Forsaken Servants that can be summoned (Default: 2)")
                 .defineInRange("forsakenServantLimit", 2, 1, 100);
 
         CandicornServantLimit = BUILDER
@@ -578,15 +577,15 @@ public class MobsConfig {
                 .defineInRange("corrodentServantLimit", 16, 1, 100);
 
         DeepOneServantLimit = BUILDER
-                .comment("Maximum number of Deep One Servants that can be summoned (Default: 32, same summon type as goety_cataclysm DeepingServant)")
+                .comment("Maximum number of Deep One Servants that can be summoned (Default: 32)")
                 .defineInRange("deepOneServantLimit", 32, 1, 100);
 
         DeepOneKnightServantLimit = BUILDER
-                .comment("Maximum number of Deep One Knight Servants that can be summoned (Default: 16, same summon type as goety_cataclysm DeepingServant)")
+                .comment("Maximum number of Deep One Knight Servants that can be summoned (Default: 16)")
                 .defineInRange("deepOneKnightServantLimit", 16, 1, 100);
 
         DeepOneMageServantLimit = BUILDER
-                .comment("Maximum number of Deep One Mage Servants that can be summoned (Default: 16, same summon type as goety_cataclysm DeepingServant)")
+                .comment("Maximum number of Deep One Mage Servants that can be summoned (Default: 16)")
                 .defineInRange("deepOneMageServantLimit", 16, 1, 100);
 
         LicowitchSummonsLife = BUILDER
@@ -594,7 +593,7 @@ public class MobsConfig {
                 .define("licowitchSummonsLife", true);
 
         LicowitchSummonLimit = BUILDER
-                .comment("Maximum number of candy servants one Licowitch Servant can keep summoned at once (Necromancer-style per-summoner army cap, counted near the Licowitch; Default: 6)")
+                .comment("Maximum number of candy servants one Licowitch Servant can keep summoned at once, Default: 6)")
                 .defineInRange("licowitchSummonLimit", 6, 1, 100);
 
         MineGuardianServantLimit = BUILDER

@@ -1,0 +1,19 @@
+{
+  "name": "射线聚晶",
+  "icon": "goetyominous:xray_focus",
+  "category": "goety:toxiccaves",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "一个真正的法师会将科技与魔法结合创造强大的法术！这个咒语内置了一个射线枪，允许你向你不喜欢的人发射辐射射线！"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:xray_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "这个法术接受强效附魔，越高级的强效会使得你的射线威力更大。"
+    }
+  ]
+}

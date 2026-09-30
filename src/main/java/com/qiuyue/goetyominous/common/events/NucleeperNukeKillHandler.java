@@ -39,16 +39,22 @@ public class NucleeperNukeKillHandler {
                 ownerId = trueOwner.getUUID();
             }
         }
+        if (ownerId == null || !(nucleeper.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+        register(serverLevel, ownerId, nucleeper.position(), nucleeper.isCharged() ? 1.75F : 1.0F);
+    }
+
+    public static void register(ServerLevel level, UUID ownerId, Vec3 origin, float size) {
         if (ownerId == null) {
             return;
         }
-        float size = nucleeper.isCharged() ? 1.75F : 1.0F;
         int chunks = (int) Math.ceil(size);
-
         double radius = chunks * 22.5 + 1.0;
-        MinecraftServer server = nucleeper.level().getServer();
-        long until = (server != null ? server.getTickCount() : 0) + 60 + (long) (2 * chunks + 1) * (2 * chunks + 1) * (2 * chunks + 1) / 3;
-        NUKE_CREDITS.add(new NukeCredit(nucleeper.level().dimension(), ownerId, nucleeper.position(), radius * radius, until));
+        MinecraftServer server = level.getServer();
+        long until = (server != null ? server.getTickCount() : 0) + 60
+                + (long) (2 * chunks + 1) * (2 * chunks + 1) * (2 * chunks + 1) / 3;
+        NUKE_CREDITS.add(new NukeCredit(level.dimension(), ownerId, origin, radius * radius, until));
     }
 
     @SubscribeEvent

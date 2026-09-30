@@ -1,0 +1,19 @@
+{
+  "name": "舐脑聚晶",
+  "icon": "goetyominous:brainiac_focus",
+  "category": "goety:toxiccaves",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "这个法术允许你召唤和指挥舐脑魔。这些辐射生化怪物会用舌头和手臂攻击生物，灵活使用背后的废料桶进攻或是治疗自身。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:brainiac_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "使用死灵魔杖承载此聚晶施法时可以召唤更多舐脑魔。如果使用无名魔杖施法，则固定召唤3名舐脑魔。"
+    }
+  ]
+}

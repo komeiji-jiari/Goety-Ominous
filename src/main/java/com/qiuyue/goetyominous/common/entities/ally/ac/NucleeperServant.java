@@ -22,6 +22,7 @@ import com.qiuyue.goetyominous.common.init.ac.AcParticles;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -48,6 +49,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 
@@ -188,8 +190,38 @@ public class NucleeperServant extends Summoned implements ActivatesSirens, Power
         this.setCharged(true);
     }
 
+    private static final float URANIUM_HEAL = 2.0F;
+
+    private static boolean isHealItem(ItemStack itemStack) {
+        return itemStack.is(ACItemRegistry.URANIUM.get());
+    }
+
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
+        if (isHealItem(itemstack)) {
+            if (!this.level().isClientSide
+                    && this.getOwnerId() != null
+                    && player.getUUID().equals(this.getOwnerId())
+                    && this.getHealth() < this.getMaxHealth()) {
+                this.heal(URANIUM_HEAL);
+                if (!player.getAbilities().instabuild) {
+                    itemstack.shrink(1);
+                }
+                this.gameEvent(GameEvent.EAT, this);
+                if (this.level() instanceof ServerLevel serverLevel) {
+                    for (int i = 0; i < 7; ++i) {
+                        double d0 = this.random.nextGaussian() * 0.02D;
+                        double d1 = this.random.nextGaussian() * 0.02D;
+                        double d2 = this.random.nextGaussian() * 0.02D;
+                        serverLevel.sendParticles(ParticleTypes.HEART,
+                                this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D),
+                                0, d0, d1, d2, 0.5D);
+                    }
+                }
+                player.swing(hand);
+            }
+            return InteractionResult.SUCCESS;
+        }
         if (itemstack.is(ItemTags.CREEPER_IGNITERS)) {
             if (this.getOwnerId() == null || !player.getUUID().equals(this.getOwnerId())) {
                 return InteractionResult.PASS;

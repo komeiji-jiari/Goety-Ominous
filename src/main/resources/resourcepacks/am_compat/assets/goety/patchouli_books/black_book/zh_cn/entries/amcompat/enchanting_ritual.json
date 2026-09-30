@@ -1,0 +1,27 @@
+{
+  "name": "用仪式进行附魔",
+  "icon": "minecraft:enchanted_book",
+  "category": "goety:amcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你发现了更多附魔书的配方。关于仪式附魔的使用方式可以在仪式部分翻阅得到。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:board_return"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:lavawax"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:serpentfriend"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:straddle_jump"
+    }
+  ]
+}

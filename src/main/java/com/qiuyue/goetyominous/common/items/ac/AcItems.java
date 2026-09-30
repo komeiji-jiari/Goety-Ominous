@@ -217,6 +217,18 @@ public class AcItems {
     public static final RegistryObject<Item> WAVE_BASH_FOCUS = AC_ITEMS.register("wave_bash_focus",
             () -> new MagicFocus(new WaveBashSpell()));
 
+    public static final RegistryObject<Item> ATOMIC_BOMB_FOCUS = AC_ITEMS.register("atomic_bomb_focus",
+            () -> new MagicFocus(new AtomicBombSpell()));
+
+    public static final RegistryObject<Item> ATOMIC_BREATH_FOCUS = AC_ITEMS.register("atomic_breath_focus",
+            () -> new MagicFocus(new TremorzillaBreathSpell()));
+
+    public static final RegistryObject<Item> XRAY_FOCUS = AC_ITEMS.register("xray_focus",
+            () -> new MagicFocus(new XRaySpell()));
+
+    public static final RegistryObject<Item> BRAINIAC_FOCUS = AC_ITEMS.register("brainiac_focus",
+            () -> new MagicFocus(new BrainiacSpell()));
+
     public static final RegistryObject<Item> RAYCAT_AMULET =
             AC_ITEMS.register("raycat_amulet", () -> new RaycatAmuletItem());
 

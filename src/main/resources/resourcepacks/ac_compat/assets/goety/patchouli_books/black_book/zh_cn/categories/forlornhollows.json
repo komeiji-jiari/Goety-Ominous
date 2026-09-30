@@ -2,6 +2,6 @@
   "name": "异寂空谷",
   "description": "深邃黑暗的洞穴中蕴藏着恐怖。",
   "icon": "alexscaves:occult_gem",
-  "sortnum": 3,
+  "sortnum": 4,
   "parent": "goety:accompat"
 }

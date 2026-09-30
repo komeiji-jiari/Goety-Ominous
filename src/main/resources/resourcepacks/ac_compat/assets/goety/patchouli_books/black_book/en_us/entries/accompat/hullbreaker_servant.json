@@ -24,6 +24,10 @@
     },
     {
       "type": "patchouli:text",
+      "text": "Keep in mind that your Hullbreaker still suffers from limited eyesight. It will not actively seek out combat or protect its owner; it will only actively attack creatures with glowing effects or retaliate against attackers."
+    },
+    {
+      "type": "patchouli:text",
       "text": "Just like another interdimensional predator, you can right-click the Hullbreaker while holding fish, Glow Ink Sacs, or Bioluminescence to heal it. When the owner wears Abyss Robe, the Hullbreaker also passively regenerates health over time."
     },
     {

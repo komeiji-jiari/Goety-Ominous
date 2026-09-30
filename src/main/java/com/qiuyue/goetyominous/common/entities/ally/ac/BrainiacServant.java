@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.ac;
 
+import com.Polarice3.Goety.client.particles.ModParticleTypes;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
 import com.github.alexmodguy.alexscaves.server.entity.ACEntityRegistry;
@@ -17,7 +18,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -32,6 +35,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
@@ -294,23 +298,45 @@ public class BrainiacServant extends Summoned implements IAnimatedEntity {
         this.entityData.set(HAS_BARREL, barrel);
     }
 
-    
     @Override
-    public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        ItemStack itemstack = player.getItemInHand(hand);
-        if (this.getTrueOwner() != null && player == this.getTrueOwner()
-                && !this.hasBarrel()
-                && itemstack.is(ACBlockRegistry.WASTE_DRUM.get().asItem())) {
-            if (!this.level().isClientSide) {
-                if (!player.getAbilities().instabuild) {
+    public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
+        ItemStack itemstack = pPlayer.getItemInHand(pHand);
+        if (this.getTrueOwner() == pPlayer) {
+            if (itemstack.is(Items.ROTTEN_FLESH) && this.getHealth() < this.getMaxHealth()) {
+                if (!pPlayer.getAbilities().instabuild) {
                     itemstack.shrink(1);
                 }
-                this.setHasBarrel(true);
-                this.playSound(ACSoundRegistry.BRAINIAC_ATTACK.get(), 1.0F, this.getVoicePitch());
+                this.playSound(SoundEvents.GENERIC_EAT, 1.0F, 1.0F);
+                this.heal(2.0F);
+                Level level = this.level();
+                if (level instanceof ServerLevel serverLevel) {
+                    for (int i = 0; i < 7; ++i) {
+                        double d0 = this.random.nextGaussian() * 0.02;
+                        double d1 = this.random.nextGaussian() * 0.02;
+                        double d2 = this.random.nextGaussian() * 0.02;
+                        serverLevel.sendParticles(
+                                ModParticleTypes.HEAL_EFFECT.get(),
+                                this.getRandomX(1.0), this.getRandomY() + 0.5, this.getRandomZ(1.0),
+                                0, d0, d1, d2, 0.5);
+                    }
+                }
+                return InteractionResult.SUCCESS;
             }
-            return InteractionResult.sidedSuccess(this.level().isClientSide);
+
+            if (!this.hasBarrel()
+                    && itemstack.is(ACBlockRegistry.WASTE_DRUM.get().asItem())) {
+                if (!this.level().isClientSide) {
+                    if (!pPlayer.getAbilities().instabuild) {
+                        itemstack.shrink(1);
+                    }
+                    this.setHasBarrel(true);
+                    this.playSound(ACSoundRegistry.BRAINIAC_ATTACK.get(), 1.0F, this.getVoicePitch());
+                }
+                return InteractionResult.sidedSuccess(this.level().isClientSide);
+            }
         }
-        return super.mobInteract(player, hand);
+
+        return super.mobInteract(pPlayer, pHand);
     }
 
     protected SoundEvent getAmbientSound() {

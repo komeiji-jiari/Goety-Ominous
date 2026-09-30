@@ -49,5 +49,13 @@ public class ModNetwork {
                 CExtractPotionPacket::encode,
                 CExtractPotionPacket::decode,
                 CExtractPotionPacket::handle);
+        CHANNEL.registerMessage(id++, TremorzillaBreathPacket.class,
+                TremorzillaBreathPacket::encode,
+                TremorzillaBreathPacket::decode,
+                TremorzillaBreathPacket::handle);
+        CHANNEL.registerMessage(id++, XRayPacket.class,
+                XRayPacket::encode,
+                XRayPacket::decode,
+                XRayPacket::handle);
     }
 }

@@ -1,0 +1,20 @@
+{
+  "name": "Gammaroach Servant",
+  "icon": "alexscaves:toxic_paste",
+  "category": "goety:toxiccaves",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "It appears that radiation has caused some cave-dwelling creatures to mutate. These giant irradiated cockroaches release toxic gas and can serve excellently as mounts for your other servants."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:gammaroach_servant",
+      "text": "Woah, woah, I'm radioactive, radioactive."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "These arthropods can be healed by feeding them Sulfur Powder or Spelunkie. To summon them, you must craft a specialized nest for them to breed."
+    }
+  ]
+}

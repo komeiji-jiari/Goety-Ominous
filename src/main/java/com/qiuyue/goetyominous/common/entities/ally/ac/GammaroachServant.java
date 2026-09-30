@@ -3,7 +3,6 @@ package com.qiuyue.goetyominous.common.entities.ally.ac;
 import com.Polarice3.Goety.api.entities.ally.IServant;
 import com.Polarice3.Goety.api.items.magic.IWand;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
-import com.Polarice3.Goety.init.ModMobType;
 import com.github.alexmodguy.alexscaves.client.particle.ACParticleRegistry;
 import com.github.alexmodguy.alexscaves.server.entity.ai.GroundPathNavigatorNoSpin;
 import com.github.alexmodguy.alexscaves.server.item.ACItemRegistry;
@@ -225,7 +224,7 @@ public class GammaroachServant extends Summoned implements IAnimatedEntity, Play
     }
 
     public MobType getMobType() {
-        return ModMobType.NATURAL;
+        return MobType.ARTHROPOD;
     }
 
     @Override
@@ -287,10 +286,11 @@ public class GammaroachServant extends Summoned implements IAnimatedEntity, Play
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
-        if (isFeedItem(itemStack)) {
+        float healAmount = feedHealAmount(itemStack);
+        if (healAmount > 0.0F) {
             if (!this.level().isClientSide && this.getTrueOwner() != null && player == this.getTrueOwner()) {
                 if (this.getHealth() < this.getMaxHealth()) {
-                    this.heal(4.0F);
+                    this.heal(healAmount);
                     if (!player.getAbilities().instabuild) {
                         itemStack.shrink(1);
                     }
@@ -337,8 +337,21 @@ public class GammaroachServant extends Summoned implements IAnimatedEntity, Play
         return super.mobInteract(player, hand);
     }
 
+    private static final float SULFUR_DUST_HEAL = 2.0F;
+    private static final float SPELUNKIE_HEAL = 8.0F;
+
+    private static float feedHealAmount(ItemStack itemStack) {
+        if (itemStack.is(ACItemRegistry.SULFUR_DUST.get())) {
+            return SULFUR_DUST_HEAL;
+        }
+        if (itemStack.is(ACItemRegistry.SPELUNKIE.get())) {
+            return SPELUNKIE_HEAL;
+        }
+        return 0.0F;
+    }
+
     private static boolean isFeedItem(ItemStack itemStack) {
-        return itemStack.is(ACItemRegistry.SULFUR_DUST.get()) || itemStack.is(ACItemRegistry.SPELUNKIE.get());
+        return feedHealAmount(itemStack) > 0.0F;
     }
 
     protected SoundEvent getAmbientSound() {

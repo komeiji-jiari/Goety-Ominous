@@ -1,0 +1,19 @@
+{
+  "name": "原子吐息聚晶",
+  "icon": "goetyominous:atomic_breath_focus",
+  "category": "goety:toxiccaves",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "这个法术允许你像撼地斯拉那样在蓄力过后吐出毁灭性的高能原子束，轰炸你面前的一切生物，将毒化洞穴曾经发生的灾难洒向这片大地！"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:atomic_breath_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "如果你处于潜行状态，那么该法术发射的原子吐息将能够破坏方块。"
+    }
+  ]
+}

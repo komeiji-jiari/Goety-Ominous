@@ -2,6 +2,6 @@
   "name": "Abyssal Chasm",
   "description": "The darkness lurking in the deep sea.",
   "icon": "alexscaves:diving_helmet",
-  "sortnum": 1,
+  "sortnum": 2,
   "parent": "goety:accompat"
 }

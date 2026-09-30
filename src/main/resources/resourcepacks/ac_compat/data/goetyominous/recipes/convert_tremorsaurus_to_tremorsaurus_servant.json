@@ -2,7 +2,7 @@
   "type": "goety:ritual",
   "ritual_type": "goety:convert_tamed",
   "activation_item": {
-    "item": "alexscaves:dinosaur_chop"
+    "item": "alexscaves:waste_drum"
   },
   "craftType": "overgrown",
   "entity_to_convert": {

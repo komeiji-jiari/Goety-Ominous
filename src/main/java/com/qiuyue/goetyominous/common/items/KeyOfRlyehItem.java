@@ -5,6 +5,7 @@ import com.Polarice3.Goety.common.items.magic.DarkStaff;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.qiuyue.goetyominous.common.items.ac.AcItems;
+import com.qiuyue.goetyominous.common.rlyeh.RlyehStyled;
 import com.qiuyue.goetyominous.utils.KeyOfRlyehMixinHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -16,7 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 
-public class KeyOfRlyehItem extends DarkStaff {
+public class KeyOfRlyehItem extends DarkStaff implements RlyehStyled {
 
     public static final float DAMAGE = 11.0F;
     public static final float ATTACK_SPEED = 1.8F;

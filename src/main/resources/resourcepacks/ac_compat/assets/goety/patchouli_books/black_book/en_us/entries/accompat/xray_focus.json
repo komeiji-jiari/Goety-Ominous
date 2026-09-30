@@ -1,0 +1,19 @@
+{
+  "name": "X-Ray Focus",
+  "icon": "goetyominous:xray_focus",
+  "category": "goety:toxiccaves",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "A true mage combines technology with magic to create powerful spells! This incantation has a Ray Gun built into it, allowing you to fire radiation rays at people you don't like!"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:xray_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "This spell accepts the Potency enchantment, higher levels of Potency make your ray more powerful."
+    }
+  ]
+}

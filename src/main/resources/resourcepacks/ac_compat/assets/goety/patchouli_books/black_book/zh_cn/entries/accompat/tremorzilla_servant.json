@@ -1,0 +1,40 @@
+{
+  "name": "撼地斯拉",
+  "icon": "alexscaves:tremorzilla_egg",
+  "category": "goety:toxiccaves",
+  "advancement": "goety:goety/read_terminus_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "拜辐射所赐，这些恐龙变得更大更强，而且比起自然孵化的同类对你更加顺从。只需要一点黑魔法就能将这种辐射恐龙绑定于你的意志下。当然，被转化为仆从的撼地斯拉必须是幼年的。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:tremorzilla_servant",
+      "text": ""
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_tremorzilla_to_tremorzilla_servant",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "这些恐龙需要食用废料桶来治愈自己。喂食核弹可以加快它们的蓄力进度，当蓄力完成时，撼地斯拉会喷射出毁灭吐息，轰炸面前的一切生物。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "你可以骑乘你的撼地斯拉。当蓄力进度已满时，按下特殊能力按键即可让你的撼地斯拉发动吐息。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goetyominous:titan_bomb",
+      "text": "当撼地斯拉被消灭时，它们会返还泰坦炸弹。用打火石将其点燃，核爆之后你的撼地斯拉将于毁灭中重生。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "出于某些奥术上的原因，一个主人通常只能拥有一只撼地斯拉仆从，因此你无法让你的撼地斯拉仆从互相繁殖。"
+    }
+  ]
+}

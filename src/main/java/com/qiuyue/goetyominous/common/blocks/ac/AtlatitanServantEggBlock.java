@@ -24,7 +24,7 @@ import java.util.UUID;
 public class AtlatitanServantEggBlock extends ServantEggBlock {
 
     public AtlatitanServantEggBlock(Properties properties) {
-        super(properties, ACEntityRegistry.ATLATITAN, 2, 4);
+        super(properties, ACEntityRegistry.ATLATITAN, 16, 16);
     }
 
     @Override
