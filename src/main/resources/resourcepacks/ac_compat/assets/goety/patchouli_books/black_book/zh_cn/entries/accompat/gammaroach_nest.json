@@ -1,0 +1,19 @@
+{
+  "name": "伽马蟑螂巢穴",
+  "icon": "goetyominous:gammaroach_nest",
+  "category": "goety:toxiccaves",
+  "pages": [
+      {
+        "type": "patchouli:text",
+        "text": "用毒化洞穴的各种废料，你创造出一种放射性的巢穴，用硫粉右键即可生产忠诚的伽马蟑螂仆从。"
+      },
+      {
+        "type": "goety:ritual",
+        "recipe": "goetyominous:gammaroach_nest"
+      },
+      {
+        "type": "patchouli:text",
+        "text": "用魔杖或法杖右键点击伽马蟑螂巢穴，那么它只会在附近存在有效目标的情况下才会生成仆从，如果手持魔杖或法杖潜行右键，则可以改变仆从的初始行为（在该方块附近巡逻或跟随玩家）。"
+      }
+    ]
+}

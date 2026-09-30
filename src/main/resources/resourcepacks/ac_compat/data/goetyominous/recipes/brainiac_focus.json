@@ -1,0 +1,30 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:rotting_focus"
+  },
+  "craftType": "necroturgy",
+  "soulCost": 1,
+  "duration": 10,
+  "ingredients": [
+    {
+      "item": "alexscaves:charred_remnant"
+    },
+    {
+      "item": "alexscaves:charred_remnant"
+    },
+    {
+      "item": "minecraft:rotten_flesh"
+    },
+    {
+      "item": "alexscaves:green_soylent"
+    },
+    {
+      "item": "alexscaves:waste_drum"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:brainiac_focus"
+  }
+}

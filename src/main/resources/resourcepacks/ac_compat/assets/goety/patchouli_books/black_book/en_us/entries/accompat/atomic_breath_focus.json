@@ -1,0 +1,19 @@
+{
+  "name": "Atomic Breath Focus",
+  "icon": "goetyominous:atomic_breath_focus",
+  "category": "goety:toxiccaves",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "This spell allows you to charge up and then exhale a devastating high-energy atomic beam like a Tremorzilla, bombarding everything in front of you and unleashing upon this land the very catastrophe that once befell the Toxic Caves!"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:atomic_breath_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "If you are sneaking, the atomic breath fired by this spell will be able to destroy blocks."
+    }
+  ]
+}

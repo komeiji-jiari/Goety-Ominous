@@ -1,0 +1,19 @@
+{
+  "name": "Nuclear Bomb Focus",
+  "icon": "goetyominous:atomic_bomb_focus",
+  "category": "goety:toxiccaves",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Call forth the end! You have successfully embedded a nuclear bomb into your spell—now you are the herald of apocalypse, bringing calamity and destruction!"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:atomic_bomb_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Fortunately, this nuclear blast does not harm you or your allies, nor does it destroy terrain. If you wish to destroy blocks, you must sneak while finishing the cast."
+    }
+  ]
+}

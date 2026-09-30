@@ -1,0 +1,16 @@
+{
+  "name": "Tablet Divination",
+  "icon": "alexscaves:cave_tablet",
+  "category": "goety:accompat",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Necromancy includes not only the art of divination through the spirits of the dead, but also the use of souls to decipher knowledge—an essential discipline for any necromantic scholar. Rather than painfully searching these tablets for the correct clues yourself, you have devised a way to let the souls crack the secrets for you."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:undead_tablet"
+    }
+  ]
+}

@@ -149,6 +149,29 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> TideBashCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> TideBashCoolDown;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> AtomicBombCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> AtomicBombCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> AtomicBombCoolDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> AtomicBombRange;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> BrainiacCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BrainiacDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BrainiacSummonDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BrainiacCoolDown;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> TremorzillaBreathCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> TremorzillaBreathCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> TremorzillaBreathCoolDown;
+    public static final ForgeConfigSpec.ConfigValue<Double> TremorzillaBreathDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> TremorzillaBreathRange;
+    public static final ForgeConfigSpec.ConfigValue<Integer> TremorzillaBreathDuration;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> TremorzillaBreathBreakBlocks;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> XRaySoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> XRayCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> XRayRange;
+    public static final ForgeConfigSpec.ConfigValue<Integer> XRayCoolDown;
+
     public static final ForgeConfigSpec.ConfigValue<Integer> HogChargeSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> HogChargeCooldown;
     public static final ForgeConfigSpec.ConfigValue<Double> HogChargeDamage;
@@ -451,6 +474,56 @@ public class SpellConfig {
                 .defineInRange("tideBashCost", 8, 1, 100);
         TideBashCoolDown = BUILDER.comment("Cooldown of Tide Bash spell in ticks (Default: 40)")
                 .defineInRange("tideBashCoolDown", 40, 0, 2000);
+        BUILDER.pop();
+
+        BUILDER.push("AtomicBomb");
+        AtomicBombCost = BUILDER.comment("Soul cost of Atomic Bomb spell, Default: 10000")
+                .defineInRange("atomicBombCost", 10000, 1, 10000);
+        AtomicBombCastDuration = BUILDER.comment("Cast duration of Atomic Bomb spell in ticks, Default: 600")
+                .defineInRange("atomicBombCastDuration", 600, 0, 2000);
+        AtomicBombCoolDown = BUILDER.comment("Cooldown of Atomic Bomb spell in ticks, Default: 12000")
+                .defineInRange("atomicBombCoolDown", 12000, 0, 100000);
+        AtomicBombRange = BUILDER.comment("Base targeting range of Atomic Bomb spell in blocks, Default: 25")
+                .defineInRange("atomicBombRange", 25, 1, 512);
+        BUILDER.pop();
+
+        BUILDER.push("Brainiac");
+        BrainiacCost = BUILDER.comment("Soul cost of Brainiac Servant spell (Default: 16)")
+                .defineInRange("brainiacSoulCost", 16, 1, 100);
+        BrainiacDuration = BUILDER.comment("Cast duration of Brainiac Servant spell in ticks (Default: 60)")
+                .defineInRange("brainiacCastDuration", 60, 0, 500);
+        BrainiacSummonDown = BUILDER.comment("Summon down duration of Brainiac Servant spell in ticks (Default: 160)")
+                .defineInRange("brainiacSummonDown", 160, 0, 5000);
+        BrainiacCoolDown = BUILDER.comment("Cooldown of Brainiac Servant spell in ticks (Default: 200)")
+                .defineInRange("brainiacCoolDown", 200, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("TremorzillaBreath");
+        TremorzillaBreathCost = BUILDER.comment("Soul cost of Tremorzilla Breath spell, Default: 500")
+                .defineInRange("tremorzillaBreathCost", 500, 1, 10000);
+        TremorzillaBreathCastDuration = BUILDER.comment("Cast duration of Tremorzilla Breath spell in ticks, Default: 200")
+                .defineInRange("tremorzillaBreathCastDuration", 200, 0, 2000);
+        TremorzillaBreathCoolDown = BUILDER.comment("Cooldown of Tremorzilla Breath spell in ticks, Default: 1200")
+                .defineInRange("tremorzillaBreathCoolDown", 1200, 0, 100000);
+        TremorzillaBreathDamage = BUILDER.comment("Damage per hit of the Tremorzilla Breath beam, Default: 20.0")
+                .defineInRange("tremorzillaBreathDamage", 20.0, 1.0, Double.MAX_VALUE);
+        TremorzillaBreathRange = BUILDER.comment("Beam length in blocks, Default: 100.0")
+                .defineInRange("tremorzillaBreathRange", 100.0, 1.0, 512.0);
+        TremorzillaBreathDuration = BUILDER.comment("Base beam duration in ticks, Default: 100")
+                .defineInRange("tremorzillaBreathDuration", 100, 1, 100000);
+        TremorzillaBreathBreakBlocks = BUILDER.comment("Whether sneaking while casting lets the beam break blocks, Default: true")
+                .define("tremorzillaBreathBreakBlocks", true);
+        BUILDER.pop();
+
+        BUILDER.push("XRay");
+        XRaySoulCost = BUILDER.comment("Soul cost of XRay Servant spell (Default: 12)")
+                .defineInRange("xRaySoulCost", 12, 1, 100);
+        XRayCastDuration = BUILDER.comment("Cast duration of XRay Servant spell in ticks (Default: 200)")
+                .defineInRange("xRayCastDuration", 200, 0, 500);
+        XRayRange = BUILDER.comment("Base range of X-Ray spell in blocks, Default: 25")
+                .defineInRange("xrayRange", 25, 1, 512);
+        XRayCoolDown = BUILDER.comment("Cooldown of XRay Servant spell in ticks (Default: 600)")
+                .defineInRange("xRayCoolDown", 600, 0, 5000);
         BUILDER.pop();
 
         BUILDER.push("Sand Spell");

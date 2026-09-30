@@ -1,0 +1,24 @@
+{
+  "name": "Brainiac Servant",
+  "icon": "alexscaves:waste_drum",
+  "category": "goety:toxiccaves",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You once suspected that Brainiacs were bio-augmented humans created by the ancient civilization responsible for the environment here. After the Toxic Caves became what they are today, these long-uncontrolled augmented beings began to mutate under the effects of radiation. As a necromancy genius, you have discovered how to create a Brainiac."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:brainiac_servant",
+      "text": "Brainiac Maniac"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Equipping Necro Cape grants your Brainiac passive healing, and Rotten Flesh can also be fed to heal it. If a Brainiac loses its Waste Drum, you can hand it a new one by right-clicking it while holding a Waste Drum."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:brainiac_servant"
+    }
+  ]
+}

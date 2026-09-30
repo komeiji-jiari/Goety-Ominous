@@ -1,0 +1,20 @@
+{
+  "name": "伽马蟑螂仆从",
+  "icon": "alexscaves:toxic_paste",
+  "category": "goety:toxiccaves",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "看起来辐射令一些居住在洞穴里的生物发生了突变。这些巨大的辐射蟑螂会释放毒气，而且能够很好地作为你的其他仆从的坐骑。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:gammaroach_servant",
+      "text": "Woah, woah, I'm radioactive, radioactive."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "这些节肢动物可以通过喂食硫粉或者硫心蛋糕卷来治疗。要召唤它们，你需要制作一个专门供它们繁殖的巢穴。"
+    }
+  ]
+}

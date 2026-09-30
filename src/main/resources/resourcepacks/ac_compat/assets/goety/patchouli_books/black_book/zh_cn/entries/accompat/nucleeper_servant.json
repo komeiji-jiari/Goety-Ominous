@@ -1,0 +1,24 @@
+{
+  "name": "核能苦力怕",
+  "icon": "alexscaves:siren_light",
+  "category": "goety:toxiccaves",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你研究了游荡在毒化洞穴中的生化苦力怕，得出了它们是被古代毒化洞穴的居民设计并建造的一种战争兵器的结论。利用制作核弹的技术以及其他一些零件，你灵光一现想出了创造你的核能苦力怕的方式。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:nucleeper_servant"
+    },
+    {
+      "type": "multiblock",
+      "multiblock_id": "goetyominous:nucleeper",
+      "text": "持有活力核心的时候对中心铀块单击鼠标右键."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "因为一些奥术层面的原因，这些核能苦力怕产生的爆炸不会影响你和你的随从，也不会破坏任何方块，然而它们的起爆时间较长，因此很容易受到攻击。它们可以用铀晶右键单击进行修复。"
+    }
+  ]
+}

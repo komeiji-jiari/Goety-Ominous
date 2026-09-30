@@ -1,0 +1,19 @@
+{
+  "name": "核爆聚晶",
+  "icon": "goetyominous:atomic_bomb_focus",
+  "category": "goety:toxiccaves",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "呼唤终结！你成功把一枚核弹镶嵌到了你的法术里，现在你即是带来天灾与毁灭的天启使者！"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:atomic_bomb_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "幸运的是，这种核爆并不会伤害你和你的盟友，也不会破坏地形。如果想破坏方块，则需要在施法完成时潜行。"
+    }
+  ]
+}

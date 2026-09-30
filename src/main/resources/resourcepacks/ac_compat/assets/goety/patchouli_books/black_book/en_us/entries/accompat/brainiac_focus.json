@@ -1,0 +1,19 @@
+{
+  "name": "Brainiac Focus",
+  "icon": "goetyominous:brainiac_focus",
+  "category": "goety:toxiccaves",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "This spell allows you to summon and command Brainiacs. These irradiated biochemical monsters attack creatures with their tongues and arms, and deftly use the Waste Drums on their backs both to attack and to heal themselves."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:brainiac_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "When cast using a Necro Staff to channel this focus, you can summon more Brainiacs. If cast with a Nameless Staff, it always summons 3 Brainiacs."
+    }
+  ]
+}

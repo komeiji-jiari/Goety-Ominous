@@ -2,6 +2,6 @@
   "name": "毒化洞穴",
   "description": "黑暗的切尔诺贝利。",
   "icon": "alexscaves:fissile_core",
-  "sortnum": 6,
+  "sortnum": 7,
   "parent": "goety:accompat"
 }

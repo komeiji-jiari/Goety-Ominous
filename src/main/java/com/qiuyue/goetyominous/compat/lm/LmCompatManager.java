@@ -21,16 +21,17 @@ import net.minecraftforge.eventbus.api.IEventBus;
 
 public class LmCompatManager {
 
+    public static final boolean ENABLE_LM_ITEMS = false;
+
     public static void init(IEventBus modEventBus) {
         LmEntityRegistry.register(modEventBus);
 
         LmSounds.register(modEventBus);
 
-        LmItems.register(modEventBus);
+        if (ENABLE_LM_ITEMS) {
+            LmItems.register(modEventBus);
+        }
 
-        // 圣骑那一套招式用的粒子（灵魂粒 / 红灵魂火 / 幻影匕首拖尾）。
-        // 注册在这里而不是主类里，是因为这些粒子只服务于「LM 那批仆从」——
-        // LM 不在场时它们一个都用不上，没必要占注册名。
         LmParticles.register(modEventBus);
     }
 

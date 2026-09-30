@@ -1,0 +1,24 @@
+{
+  "name": "舐脑魔仆从",
+  "icon": "alexscaves:waste_drum",
+  "category": "goety:toxiccaves",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你曾怀疑舐脑魔是造成该环境的古代文明制造的生化改造人，在毒化洞穴变成如今的样子之后这些长期无人控制的改造人也开始受辐射的影响而变异。作为死灵术天才的你已经发现了如何制作一个舐脑魔的方法。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:brainiac_servant",
+      "text": "Brainiac Maniac"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "装备死灵长袍可以让你的舐脑魔获得自然治疗，腐肉也可以用于喂食治疗。如果舐脑魔失去了废料桶，你可以拿着一个废料桶右键交给他。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:brainiac_servant"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "name": "Tremorzilla",
+  "icon": "alexscaves:tremorzilla_egg",
+  "category": "goety:toxiccaves",
+  "advancement": "goety:goety/read_terminus_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Thanks to radiation, these dinosaurs have grown larger and stronger, and are more obedient to you than their naturally hatched kin. Just a touch of dark magic is enough to bind this irradiated dinosaur to your will. Naturally, the Tremorzilla converted into a servant must be a baby."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:tremorzilla_servant",
+      "text": ""
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_tremorzilla_to_tremorzilla_servant",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "These dinosaurs need to consume Waste Drums to heal themselves. Feeding them Nuclear Bombs accelerates their charge progress. When fully charged, the Tremorzilla unleashes its devastating breath, bombarding everything in front of it."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "You can ride your Tremorzilla. When its charge is full, pressing the special ability key makes your Tremorzilla unleash its breath."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goetyominous:titan_bomb",
+      "text": "When a Tremorzilla is slain, it returns a Titan Bomb. Ignite it with Flint and Steel, and after the nuclear blast, your Tremorzilla will be reborn from the destruction."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "For certain arcane reasons, a master can normally only keep one Tremorzilla Servant, so you cannot breed your Tremorzilla Servants with each other."
+    }
+  ]
+}

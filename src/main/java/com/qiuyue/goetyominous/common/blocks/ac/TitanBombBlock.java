@@ -20,6 +20,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -32,6 +33,8 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -39,6 +42,7 @@ import java.util.List;
 public class TitanBombBlock extends Block implements EntityBlock {
 
     public static final int COOLDOWN_TICKS = 24000;
+    private static final VoxelShape SHAPE = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 16.0D, 13.0D);
 
     public TitanBombBlock(Properties properties) {
         super(properties);
@@ -142,6 +146,11 @@ public class TitanBombBlock extends Block implements EntityBlock {
     @Override
     public boolean dropFromExplosion(Explosion explosion) {
         return false;
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return SHAPE;
     }
 
     @Override

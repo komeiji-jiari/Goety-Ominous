@@ -60,6 +60,11 @@ public class TesseractTagHandler {
             addToTag(TESSERACT_SMALL, OfEntityRegistry.DICER_SERVANT);
             addToTag(TESSERACT_SMALL, OfEntityRegistry.RAMBLER_SERVANT);
         }
+        if (LegendaryMonstersCompat.isLegendaryMonstersLoaded()) {
+            addToTag(TESSERACT_SMALL, LmEntityRegistry.HOVERING_HURRICANE_SERVANT);
+        }
+
+
 
         addToTag(TESSERACT_MEDIUM, ModEntityTypes.HERESIARCH_SERVANT);
         addToTag(TESSERACT_MEDIUM, ModEntityTypes.STORM_NECROMANCER_SERVANT);
@@ -69,14 +74,13 @@ public class TesseractTagHandler {
         if (UpgradeAquaticCompat.isUpgradeAquaticLoaded()) {
             addToTag(TESSERACT_MEDIUM, UaEntityRegistry.GREAT_THRASHER_SERVANT);
         }
+        if (OpposingForceCompat.isOpposingForceLoaded()) {
+            addToTag(TESSERACT_MEDIUM, OfEntityRegistry.SKYVERN_SERVANT);
+        }
         if (LegendaryMonstersCompat.isLegendaryMonstersLoaded()) {
-            addToTag(TESSERACT_SMALL, LmEntityRegistry.HOVERING_HURRICANE_SERVANT);
             addToTag(TESSERACT_MEDIUM, LmEntityRegistry.OVERGROWN_COLOSSUS_SERVANT);
             addToTag(TESSERACT_MEDIUM, LmEntityRegistry.ANNIHILATION_PURSUER_SERVANT);
             addToTag(TESSERACT_MEDIUM, LmEntityRegistry.SHULKER_MIMIC_SERVANT);
-            addToTag(TESSERACT_LARGE, LmEntityRegistry.CLOUD_GOLEM_SERVANT);
-            addToTag(TESSERACT_LARGE, LmEntityRegistry.THE_OBLITERATOR_SERVANT);
-            addToTag(TESSERACT_LARGE, LmEntityRegistry.POSSESSED_PALADIN_SERVANT);
         }
         if (AlexMobsCompat.isAlexMobsLoaded()) {
             addToTag(TESSERACT_MEDIUM, AmEntityRegistry.WARPED_MOSCO_SERVANT);
@@ -90,18 +94,24 @@ public class TesseractTagHandler {
             addToTag(TESSERACT_MEDIUM, AcEntityRegistry.NUCLEEPER_SERVANT);
         }
 
+
+
         if (MutantMoreCompat.isMutantMoreLoaded()) {
             addToTag(TESSERACT_LARGE, MmEntityRegistry.MUTANT_HOGLIN_SERVANT);
             addToTag(TESSERACT_LARGE, MmEntityRegistry.MUTANT_WITHER_SKELETON_SERVANT);
             addToTag(TESSERACT_LARGE, MmEntityRegistry.MUTANT_SHULKER_SERVANT);
             addToTag(TESSERACT_LARGE, MmEntityRegistry.MUTANT_BLAZE_SERVANT);
         }
-
         if (AlexCavesCompat.isAlexCavesLoaded()) {
             addToTag(TESSERACT_LARGE, AcEntityRegistry.HULLBREAKER_SERVANT);
             addToTag(TESSERACT_LARGE, AcEntityRegistry.TREMORZILLA_SERVANT);
             addToTag(TESSERACT_LARGE, AcEntityRegistry.ATLATITAN_SERVANT);
             addToTag(TESSERACT_LARGE, AcEntityRegistry.LUXTRUCTOSAURUS_SERVANT);
+        }
+        if (LegendaryMonstersCompat.isLegendaryMonstersLoaded()) {
+            addToTag(TESSERACT_LARGE, LmEntityRegistry.CLOUD_GOLEM_SERVANT);
+            addToTag(TESSERACT_LARGE, LmEntityRegistry.THE_OBLITERATOR_SERVANT);
+            addToTag(TESSERACT_LARGE, LmEntityRegistry.POSSESSED_PALADIN_SERVANT);
         }
     }
 

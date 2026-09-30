@@ -1,0 +1,16 @@
+{
+  "name": "石板占卜",
+  "icon": "alexscaves:cave_tablet",
+  "category": "goety:accompat",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "死灵术不仅包括借助死者之灵进行占卜的技艺，利用灵魂解读知识也是死灵学者的必修课。比起对着这些石板痛苦地查找正确线索，你想到一种让灵魂帮你破解秘密的方法。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:undead_tablet"
+    }
+  ]
+}

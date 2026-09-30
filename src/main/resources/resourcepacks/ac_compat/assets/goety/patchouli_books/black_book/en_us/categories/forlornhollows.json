@@ -2,6 +2,6 @@
   "name": "Forlorn Hollow",
   "description": "Terror lies within the deep, dark caverns.",
   "icon": "alexscaves:occult_gem",
-  "sortnum": 3,
+  "sortnum": 4,
   "parent": "goety:accompat"
 }

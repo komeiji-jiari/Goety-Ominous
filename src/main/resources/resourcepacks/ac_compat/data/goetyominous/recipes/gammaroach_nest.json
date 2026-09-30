@@ -1,0 +1,36 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "alexscaves:acid_bucket"
+  },
+  "craftType": "magic",
+  "soulCost": 1,
+  "duration": 10,
+  "ingredients": [
+    {
+      "item": "alexscaves:charred_remnant"
+    },
+    {
+      "item": "alexscaves:charred_remnant"
+    },
+    {
+      "item": "alexscaves:unrefined_waste"
+    },
+    {
+      "item": "alexscaves:polymer_plate"
+    },
+    {
+      "item": "alexscaves:polymer_plate"
+    },
+    {
+      "item": "alexscaves:uranium"
+    },
+    {
+      "item": "alexscaves:radon_bottle"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:gammaroach_nest"
+  }
+}

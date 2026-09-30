@@ -14,6 +14,7 @@ import com.qiuyue.goetyominous.common.items.sar.SarItems;
 import com.qiuyue.goetyominous.common.items.spear.SpearItems;
 import com.qiuyue.goetyominous.common.items.ua.UaItems;
 import com.qiuyue.goetyominous.compat.ias.IasItems;
+import com.qiuyue.goetyominous.compat.lm.LmCompatManager;
 import com.qiuyue.goetyominous.compat.mod.*;
 import com.qiuyue.goetyominous.compat.spear.SpearBackportCompat;
 import net.minecraft.core.registries.Registries;
@@ -64,7 +65,7 @@ public class ModCreativeTab {
                             moveAfter(otherItems, MmItems.SHULKER_EMBRYO.get(), ModItems.COLD_HEART.get());
                         }
 
-                        if (LegendaryMonstersCompat.isLegendaryMonstersLoaded()) {
+                        if (LmCompatManager.ENABLE_LM_ITEMS) {
                             collectFrom(LmItems.LM_ITEMS, spawnEggs, foci, weapons, otherItems, blocks);
                         }
 

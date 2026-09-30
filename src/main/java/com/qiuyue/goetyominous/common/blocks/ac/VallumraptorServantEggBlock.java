@@ -22,11 +22,10 @@ import net.minecraft.world.level.gameevent.GameEvent;
 
 import java.util.UUID;
 
-
 public class VallumraptorServantEggBlock extends ServantEggBlock {
 
     public VallumraptorServantEggBlock(Properties properties) {
-        super(properties, ACEntityRegistry.VALLUMRAPTOR, 8, 12);
+        super(properties, ACEntityRegistry.VALLUMRAPTOR, 8, 9);
     }
 
     @Override

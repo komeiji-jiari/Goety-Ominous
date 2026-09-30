@@ -1,0 +1,19 @@
+{
+  "name": "Gammaroach Nest",
+  "icon": "goetyominous:gammaroach_nest",
+  "category": "goety:toxiccaves",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Using various scraps from the Toxic Caves, you have created a radioactive nest. Right-clicking it with Sulfur Dust produces loyal Gammaroach Servants."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:gammaroach_nest"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Right-clicking the nest with a Wand or Staff will make it so that it will only spawn a servant if a valid target is near it. While crouching, however, it will change whether the servant will spawn guarding the block or following the owner."
+    }
+  ]
+}
