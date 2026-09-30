@@ -1,6 +1,5 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm;
 
-import com.Polarice3.Goety.common.blocks.ModBlocks;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IMoveGoal;
@@ -1335,8 +1334,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         return false;
     }
 
-    private static final float CURSED_METAL_REPAIR_AMOUNT = 30.0F;
-
     @Override
     public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
         ItemStack itemstack = pPlayer.getItemInHand(pHand);
@@ -1344,30 +1341,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         boolean isOwner = this.getTrueOwner() != null && pPlayer == this.getTrueOwner();
 
         if (this.tryAwaken(pPlayer, itemstack, isOwner)) {
-            return InteractionResult.SUCCESS;
-        }
-
-        if (isOwner
-                && this.getHealth() < this.getMaxHealth()
-                && !this.isDeadOrDying()
-                && itemstack.is(ModBlocks.CURSED_METAL_BLOCK.get().asItem())) {
-            if (!pPlayer.getAbilities().instabuild) {
-                itemstack.shrink(1);
-            }
-            this.playSound(SoundEvents.IRON_GOLEM_REPAIR, 1.0F, 1.0F);
-            this.heal(CURSED_METAL_REPAIR_AMOUNT);
-
-            if (this.level() instanceof ServerLevel serverLevel) {
-                for (int i = 0; i < 7; ++i) {
-                    double d0 = this.random.nextGaussian() * 0.02D;
-                    double d1 = this.random.nextGaussian() * 0.02D;
-                    double d2 = this.random.nextGaussian() * 0.02D;
-                    serverLevel.sendParticles(ParticleTypes.SOUL,
-                            this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D),
-                            0, d0, d1, d2, 0.5F);
-                }
-            }
-
             return InteractionResult.SUCCESS;
         }
 
@@ -1382,9 +1355,8 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         if (!isOwner
                 || this.isDeadOrDying()
                 || !this.getIsSecondPhase()
-                || this.getHealth() < this.getMaxHealth()
                 || this.getAttackState() != 0
-                || !itemstack.is(ModItems.METAL_DEBRIS.get())) {
+                || !itemstack.is(ModItems.CORRUPTED_SOUL.get())) {
             return false;
         }
 
@@ -1393,6 +1365,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         }
 
         this.setPhase(1);
+        this.setHealth(this.getMaxHealth());
 
         this.playSound(SoundEvents.BEACON_DEACTIVATE, 1.0F, 1.0F);
 
