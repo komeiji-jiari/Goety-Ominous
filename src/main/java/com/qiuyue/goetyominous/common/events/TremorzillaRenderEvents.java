@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.common.events;
 
 import com.github.alexmodguy.alexscaves.AlexsCaves;
+import com.github.alexmodguy.alexscaves.server.entity.util.HeadRotationEntityAccessor;
 import com.github.alexmodguy.alexscaves.server.entity.util.ShakesScreen;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TremorzillaServant;
 import net.minecraft.client.Minecraft;
@@ -54,6 +55,9 @@ public class TremorzillaRenderEvents {
     @SubscribeEvent
     public static void preRenderLiving(RenderLivingEvent.Pre event) {
         LivingEntity entity = event.getEntity();
+        if (entity instanceof HeadRotationEntityAccessor magnetic) {
+            magnetic.setMagnetHeadRotation();
+        }
         if (entity.getVehicle() instanceof TremorzillaServant) {
             if (!isCurrentRenderingPassenger(entity.getUUID())) {
                 if (!isFirstPersonPlayer(entity)) {

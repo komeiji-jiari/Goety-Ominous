@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.events;
 
+import com.github.alexmodguy.alexscaves.server.entity.util.HeadRotationEntityAccessor;
 import com.qiuyue.goetyominous.common.entities.ally.ac.AtlatitanServant;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
@@ -48,6 +49,9 @@ public class AtlatitanRenderEvents {
     @SubscribeEvent
     public static void preRenderLiving(RenderLivingEvent.Pre event) {
         LivingEntity entity = event.getEntity();
+        if (entity instanceof HeadRotationEntityAccessor magnetic) {
+            magnetic.setMagnetHeadRotation();
+        }
         if (entity.getVehicle() instanceof AtlatitanServant) {
             if (!isCurrentRenderingPassenger(entity.getUUID())) {
                 if (!isFirstPersonPlayer(entity)) {

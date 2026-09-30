@@ -568,6 +568,9 @@ public class LuxtructosaurusServant extends Summoned
         this.tickRoarFallback();
         super.aiStep();
         if (!this.level().isClientSide) {
+            if (MobsConfig.LuxtructosaurusServantBreakTrees.get()) {
+                FoliageSmash.smash(this);
+            }
             if (this.reducedDamageTicks > 0) {
                 --this.reducedDamageTicks;
             }

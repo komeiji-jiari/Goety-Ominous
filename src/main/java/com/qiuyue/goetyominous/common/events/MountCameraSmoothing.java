@@ -18,6 +18,13 @@ import org.joml.Vector3f;
 public final class MountCameraSmoothing {
 
     private static final double MAX_PUSH = 8.0;
+    private static final double PUSH_IN_RATE = 0.5;
+    private static final double PUSH_OUT_RATE = 0.12;
+
+    private static Entity cachedEntity;
+    private static int cachedTick = -1;
+    private static double cachedPush = MAX_PUSH;
+    private static double cachedRaw = MAX_PUSH;
 
     private MountCameraSmoothing() {
     }
@@ -38,13 +45,27 @@ public final class MountCameraSmoothing {
         float pitch = cameraEntity.getViewXRot(partialTick) * (mirrored ? -1.0F : 1.0F);
         Vector3f forwards = forwards(yaw, pitch);
         Vec3 eye = cameraEntity.getEyePosition(partialTick);
-        double push = maxZoom(cameraEntity, eye, forwards);
+        double push = push(cameraEntity, eye, forwards);
         Vec3 target = eye.add(-forwards.x() * push, -forwards.y() * push, -forwards.z() * push);
         Vec3 delta = target.subtract(camera.getPosition());
         camera.move(dot(delta, camera.getLookVector()), dot(delta, camera.getUpVector()), dot(delta, camera.getLeftVector()));
-        event.setYaw(yaw);
-        event.setPitch(pitch);
-        event.setRoll(0.0F);
+    }
+
+    private static double push(Entity cameraEntity, Vec3 eye, Vector3f forwards) {
+        if (cameraEntity != cachedEntity) {
+            cachedEntity = cameraEntity;
+            cachedTick = cameraEntity.tickCount;
+            cachedRaw = maxZoom(cameraEntity, eye, forwards);
+            cachedPush = cachedRaw;
+            return cachedPush;
+        }
+        if (cameraEntity.tickCount == cachedTick) {
+            return cachedPush;
+        }
+        cachedTick = cameraEntity.tickCount;
+        cachedRaw = maxZoom(cameraEntity, eye, forwards);
+        cachedPush += (cachedRaw - cachedPush) * (cachedRaw < cachedPush ? PUSH_IN_RATE : PUSH_OUT_RATE);
+        return cachedPush;
     }
 
     private static Vector3f forwards(float yaw, float pitch) {
