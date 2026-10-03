@@ -17,6 +17,7 @@ public class MineGuardianAnchorServantEntity extends MineGuardianAnchorEntity {
 
     private static final EntityDataAccessor<Boolean> CHAIN_RELEASED = SynchedEntityData.defineId(MineGuardianAnchorServantEntity.class, EntityDataSerializers.BOOLEAN);
     private static final int LANDED_LINGER_TICKS = 60;
+    private static final double ORBIT_BLEND = 1.0D;
 
     private boolean landed;
     private int landedTicks;
@@ -93,10 +94,29 @@ public class MineGuardianAnchorServantEntity extends MineGuardianAnchorEntity {
                 if (moveTo.length() > 1.0D) {
                     moveTo = moveTo.normalize();
                 }
+                if (hasTarget) {
+                    moveTo = this.orbitFromTarget(servant, attackTarget, moveTo);
+                }
                 double damping = hasTarget ? 1.0D : 0.8D;
                 servant.setDeltaMovement(servant.getDeltaMovement().multiply(damping, damping, damping).add(moveTo.scale(disRem)));
             }
         }
+    }
+
+    private Vec3 orbitFromTarget(MineGuardianServant servant, LivingEntity target, Vec3 pull) {
+        Vec3 flat = new Vec3(pull.x, 0.0D, pull.z);
+        if (flat.lengthSqr() < 1.0E-6D) {
+            return pull;
+        }
+        Vec3 radial = flat.normalize();
+        Vec3 tangent = new Vec3(radial.z, 0.0D, -radial.x);
+        double dx = target.getX() - servant.getX();
+        double dz = target.getZ() - servant.getZ();
+        if (tangent.x * dx + tangent.z * dz > 0.0D) {
+            tangent = tangent.scale(-1.0D);
+        }
+        Vec3 blended = new Vec3(pull.x + tangent.x * ORBIT_BLEND, pull.y, pull.z + tangent.z * ORBIT_BLEND);
+        return blended.lengthSqr() < 1.0E-6D ? pull : blended.normalize();
     }
 
     @Override

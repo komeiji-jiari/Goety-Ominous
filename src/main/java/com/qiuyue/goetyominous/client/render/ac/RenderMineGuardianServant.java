@@ -25,24 +25,39 @@ import org.joml.Matrix4f;
 @OnlyIn(Dist.CLIENT)
 public class RenderMineGuardianServant extends MobRenderer<MineGuardianServant, ModelMineGuardianServant> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexscaves:textures/entity/mine_guardian.png");
-    private static final ResourceLocation TEXTURE_SLEEPING = new ResourceLocation("alexscaves:textures/entity/mine_guardian_sleeping.png");
-    private static final ResourceLocation TEXTURE_EYE = new ResourceLocation("alexscaves:textures/entity/mine_guardian_eye.png");
-    private static final ResourceLocation TEXTURE_EXPLODE = new ResourceLocation("alexscaves:textures/entity/mine_guardian_explode.png");
+    protected static final float DEFAULT_MODEL_SCALE = 1.5F;
+    protected static final ResourceLocation TEXTURE = new ResourceLocation("alexscaves:textures/entity/mine_guardian.png");
+    protected static final ResourceLocation TEXTURE_SLEEPING = new ResourceLocation("alexscaves:textures/entity/mine_guardian_sleeping.png");
+    protected static final ResourceLocation TEXTURE_EYE = new ResourceLocation("alexscaves:textures/entity/mine_guardian_eye.png");
+    protected static final ResourceLocation TEXTURE_EXPLODE = new ResourceLocation("alexscaves:textures/entity/mine_guardian_explode.png");
+
+    private final ResourceLocation texture;
+    private final ResourceLocation sleepingTexture;
 
     public RenderMineGuardianServant(EntityRendererProvider.Context context) {
+        this(context, TEXTURE, TEXTURE_SLEEPING, TEXTURE_EYE);
+    }
+
+    protected RenderMineGuardianServant(EntityRendererProvider.Context context, ResourceLocation texture, ResourceLocation sleepingTexture, ResourceLocation eyeTexture) {
         super(context, new ModelMineGuardianServant(), 0.8F);
-        this.addLayer(new LayerGlow(this));
+        this.texture = texture;
+        this.sleepingTexture = sleepingTexture;
+        this.addLayer(new LayerGlow(this, eyeTexture));
+    }
+
+    protected float getModelScale() {
+        return DEFAULT_MODEL_SCALE;
     }
 
     @Override
     protected void scale(MineGuardianServant entity, PoseStack poseStack, float partialTicks) {
-        poseStack.scale(1.5F, 1.5F, 1.5F);
+        float modelScale = this.getModelScale();
+        poseStack.scale(modelScale, modelScale, modelScale);
     }
 
     @Override
     public ResourceLocation getTextureLocation(MineGuardianServant entity) {
-        return entity.isEyeClosed() ? TEXTURE_SLEEPING : TEXTURE;
+        return entity.isEyeClosed() ? this.sleepingTexture : this.texture;
     }
 
     @Override
@@ -56,6 +71,8 @@ public class RenderMineGuardianServant extends MobRenderer<MineGuardianServant, 
             float width = scanProgress * scanProgress * 1.0F;
             float extraX = (float) ((double) scanProgress * Math.sin((double) (ticks * 0.1F)) * (double) 3.0F);
             poseStack.pushPose();
+            float coneScale = this.getModelScale() / DEFAULT_MODEL_SCALE;
+            poseStack.scale(coneScale, coneScale, coneScale);
             poseStack.translate(0.0F, 0.5F, 0.0F);
             poseStack.mulPose(Axis.YN.rotationDegrees(bodyYaw));
             poseStack.translate(extraX * 0.5F / 16.0F, 0.25F, 0.75F);
@@ -92,8 +109,11 @@ public class RenderMineGuardianServant extends MobRenderer<MineGuardianServant, 
 
     public static class LayerGlow extends RenderLayer<MineGuardianServant, ModelMineGuardianServant> {
 
-        public LayerGlow(RenderLayerParent<MineGuardianServant, ModelMineGuardianServant> renderLayerParent) {
+        private final ResourceLocation eyeTexture;
+
+        public LayerGlow(RenderLayerParent<MineGuardianServant, ModelMineGuardianServant> renderLayerParent, ResourceLocation eyeTexture) {
             super(renderLayerParent);
+            this.eyeTexture = eyeTexture;
         }
 
         @Override
@@ -101,7 +121,7 @@ public class RenderMineGuardianServant extends MobRenderer<MineGuardianServant, 
             float explodeProgress = entity.getExplodeProgress(partialTicks);
             
             if (!entity.isEyeClosed()) {
-                VertexConsumer glowBuffer = bufferSource.getBuffer(RenderType.eyes(TEXTURE_EYE));
+                VertexConsumer glowBuffer = bufferSource.getBuffer(RenderType.eyes(this.eyeTexture));
                 this.getParentModel().renderToBuffer(poseStack, glowBuffer, packedLight, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
             }
             

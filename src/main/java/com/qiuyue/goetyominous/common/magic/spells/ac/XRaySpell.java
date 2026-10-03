@@ -156,8 +156,8 @@ public class XRaySpell extends ChargingSpell {
         return null;
     }
 
-    private static void hurtAround(ServerLevel level, LivingEntity caster, Vec3 center,
-                                   float radius, boolean gamma, float damage) {
+    public static void hurtAround(ServerLevel level, LivingEntity caster, Vec3 center,
+                                  float radius, boolean gamma, float damage) {
         AABB hitBox = new AABB(center.subtract(radius, radius, radius), center.add(radius, radius, radius));
         for (Entity entity : level.getEntities(caster, hitBox, Entity::canBeHitByProjectile)) {
             if (entity == caster || entity.is(caster)
