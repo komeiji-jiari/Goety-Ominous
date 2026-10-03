@@ -201,7 +201,7 @@ vec3 sceneAbyss(vec2 uv, float t, vec2 uv0) {
     vec3 col = mix(vec3(0.020, 0.070, 0.150), vec3(0.002, 0.008, 0.022), depth * 0.88);
 
     // Water-caustic shimmer, warped like the surface seen from far below.
-    vec2 wp = uv * vec2(uAspect.x, 1.0) * vec2(3.4, 2.4) + vec2(0.0, t * 0.021);
+    vec2 wp = uv * uAspect * vec2(3.4, 2.4) + vec2(0.0, t * 0.021);
     vec2 w = vec2(fbm(wp + vec2(t * 0.024, 0.0)), fbm(wp + vec2(0.0, -t * 0.017) + 4.7));
     float caustic = fbm(wp * 1.7 + w * 1.9);
     col += vec3(0.10, 0.36, 0.72) * smoothstep(0.52, 0.94, caustic) * (1.0 - depth) * 0.38;
@@ -215,7 +215,7 @@ vec3 sceneAbyss(vec2 uv, float t, vec2 uv0) {
     // Marine snow: two layers of pale motes drifting down through the blue.
     for (int layer = 0; layer < 2; layer++) {
         float scale = layer == 0 ? 24.0 : 42.0;
-        vec2 g = uv * vec2(uAspect.x, 1.0) * scale;
+        vec2 g = uv * uAspect * scale;
         g.y += t * (layer == 0 ? 0.34 : 0.58);
         g.x += sin(t * 0.21 + g.y * 0.9) * 0.5;
         vec2 cell = floor(g);
@@ -257,8 +257,7 @@ vec3 sceneAbyss(vec2 uv, float t, vec2 uv0) {
 
     // The shape below: a vast silhouette drifting across the deep, its wake bending the light.
     float drift = sin(t * 0.045) * 0.30;
-    vec2 sc = uv - vec2(0.5 + drift, 0.88);
-    sc.x *= uAspect.x;
+    vec2 sc = (uv - vec2(0.5 + drift, 0.88)) * uAspect;
     float mass = smoothstep(0.55, 0.16, length(sc * vec2(1.0, 2.8)));
     float ridge = 0.030 * sin(sc.x * 11.0 + t * 0.28) * smoothstep(0.55, 0.0, abs(sc.x));
     float fin = smoothstep(0.05, 0.0, abs(sc.y - ridge)) * smoothstep(0.50, 0.12, abs(sc.x));
