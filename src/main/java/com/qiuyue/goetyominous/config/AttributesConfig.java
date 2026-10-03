@@ -110,6 +110,13 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> LuxtructosaurusServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> LuxtructosaurusServantTargetRange;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> GumWormServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> GumWormServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> GumWormServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> GumWormServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> GumWormServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> GumWormServantArmor;
+
     public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantMovementSpeed;
@@ -1313,6 +1320,18 @@ public class AttributesConfig {
                 .defineInRange("luxtructosaurusServantArmor", 20.0, 0.0, Double.MAX_VALUE);
         LuxtructosaurusServantTargetRange = BUILDER.comment("How far (in blocks) Luxtructosaurus Servants look for their own targets, Default: 32.0 (their follow range of 256 is only used for following)")
                 .defineInRange("luxtructosaurusServantTargetRange", 32.0, 0.0, Double.MAX_VALUE);
+        GumWormServantHealth = BUILDER.comment("How much Max Health Gum Worm Servants have, Default: 150.0 (matches Alex's Caves Gum Worm)")
+                .defineInRange("gumWormServantHealth", 150.0, 1.0, Double.MAX_VALUE);
+        GumWormServantDamage = BUILDER.comment("How much damage Gum Worm Servants' bite deals, Default: 9.0 (matches Alex's Caves Gum Worm)")
+                .defineInRange("gumWormServantDamage", 9.0, 1.0, Double.MAX_VALUE);
+        GumWormServantMovementSpeed = BUILDER.comment("How fast Gum Worm Servants move, Default: 0.25 (matches Alex's Caves Gum Worm)")
+                .defineInRange("gumWormServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
+        GumWormServantFollowRange = BUILDER.comment("How much following/detection range Gum Worm Servants have, Default: 128.0 (matches Alex's Caves Gum Worm)")
+                .defineInRange("gumWormServantFollowRange", 128.0, 0.0, Double.MAX_VALUE);
+        GumWormServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Gum Worm Servants have, Default: 0.0 (Alex's Caves Gum Worm has none)")
+                .defineInRange("gumWormServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
+        GumWormServantArmor = BUILDER.comment("How much natural Armor Gum Worm Servants have, Default: 10.0 (matches Alex's Caves Gum Worm)")
+                .defineInRange("gumWormServantArmor", 10.0, 0.0, Double.MAX_VALUE);
         VallumraptorServantHealth = BUILDER.comment("How much Max Health Vallumraptor Servants have, Default: 28.0 (matches Alex's Caves Vallumraptor)")
                 .defineInRange("vallumraptorServantHealth", 28.0, 1.0, Double.MAX_VALUE);
         VallumraptorServantDamage = BUILDER.comment("How much damage Vallumraptor Servants deal, Default: 3.0 (matches Alex's Caves Vallumraptor)")

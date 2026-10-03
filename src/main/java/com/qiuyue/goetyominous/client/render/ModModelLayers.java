@@ -1089,6 +1089,12 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.GUMBEEPER_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderGumbeeperServant::new);
             event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.GUM_WORM_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderGumWormServant::new);
+            event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.GUM_WORM_SEGMENT_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderGumWormSegmentServant::new);
+            event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.GUMBALL_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderGumballServantEntity::new);
             event.registerEntityRenderer(

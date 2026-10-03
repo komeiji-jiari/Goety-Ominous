@@ -59,6 +59,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrownPotion;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -133,7 +134,7 @@ public class LicowitchServant extends Summoned implements IAnimatedEntity {
         this.goalSelector.addGoal(1, new LicowitchAttackGoal());
         this.goalSelector.addGoal(2, new LicowitchUseCrucibleGoal());
         this.goalSelector.addGoal(3, new RandomlyTeleportGoal());
-        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 10.0F));
+        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 15.0F));
         this.goalSelector.addGoal(6, new Summoned.WanderGoal<>(this, 1.0D, 45, 0.001F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
     }
@@ -185,14 +186,19 @@ public class LicowitchServant extends Summoned implements IAnimatedEntity {
         }
         if (updateHeldItems && !level().isClientSide) {
             ItemStack main = ItemStack.EMPTY;
-            if (this.getAnimation() == ANIMATION_SPELL_0 || this.getAnimation() == ANIMATION_SPELL_1
-                    || this.getAnimation() == ANIMATION_SWING_LEFT || this.getAnimation() == ANIMATION_SWING_RIGHT) {
+            ItemStack offhand = ItemStack.EMPTY;
+            if (this.getAnimation() == ANIMATION_SPELL_0 || this.getAnimation() == ANIMATION_SPELL_1) {
                 main = new ItemStack(ACItemRegistry.SUGAR_STAFF.get());
             }
             if (this.getAnimation() == ANIMATION_EAT && this.getAnimationTick() < 90) {
                 main = new ItemStack(ACBlockRegistry.CANDY_CANE.get());
             }
-            this.setItemInHand(InteractionHand.MAIN_HAND, main);
+            if (!main.isEmpty() || this.areArmsVisuallyCrossed(1.0F)) {
+                this.setItemInHand(InteractionHand.MAIN_HAND, main);
+            }
+            if (!offhand.isEmpty() || this.areArmsVisuallyCrossed(1.0F)) {
+                this.setItemInHand(InteractionHand.OFF_HAND, offhand);
+            }
         }
         if (updateFoldedArms) {
             boolean unfold = this.teleportingProgress > 0 || this.getAnimation() == ANIMATION_SPELL_0
@@ -387,7 +393,8 @@ public class LicowitchServant extends Summoned implements IAnimatedEntity {
 
     @Override
     public boolean canBeAffected(MobEffectInstance effectInstance) {
-        return super.canBeAffected(effectInstance) && effectInstance.getEffect() != MobEffects.HUNGER;
+        return super.canBeAffected(effectInstance) && effectInstance.getEffect() != MobEffects.HUNGER
+                && effectInstance.getEffect() != MobEffects.MOVEMENT_SLOWDOWN;
     }
 
     public boolean canReach(BlockPos pos) {
@@ -420,8 +427,8 @@ public class LicowitchServant extends Summoned implements IAnimatedEntity {
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (player == this.getTrueOwner() && hand == InteractionHand.MAIN_HAND && player.getMainHandItem().isEmpty()
-                && this.getTarget() == null && this.canCastSummon()) {
+        if (player == this.getTrueOwner() && hand == InteractionHand.MAIN_HAND && !player.isSecondaryUseActive()
+                && player.getMainHandItem().isEmpty() && this.getTarget() == null && this.canCastSummon()) {
             if (this.startSummonCast()) {
                 return InteractionResult.sidedSuccess(this.level().isClientSide);
             }
@@ -436,6 +443,11 @@ public class LicowitchServant extends Summoned implements IAnimatedEntity {
     @Override
     protected float getEquipmentDropChance(EquipmentSlot slot) {
         return slot.isArmor() ? super.getEquipmentDropChance(slot) : 0.0F;
+    }
+
+    @Override
+    protected int calculateFallDamage(float fallDistance, float damageMultiplier) {
+        return super.calculateFallDamage(fallDistance, damageMultiplier) - 2;
     }
 
     @Override
@@ -488,8 +500,8 @@ public class LicowitchServant extends Summoned implements IAnimatedEntity {
         return this.position().add(angle);
     }
 
-    public static ItemStack getHungerPotion() {
-        return ACEffectRegistry.createSplashPotion(ACEffectRegistry.STRONG_HUNGER_POTION.get());
+    public static ItemStack getSlownessPotion() {
+        return ACEffectRegistry.createSplashPotion(Potions.STRONG_SLOWNESS);
     }
 
     @Override
@@ -661,10 +673,10 @@ public class LicowitchServant extends Summoned implements IAnimatedEntity {
                         } else if (this.hexCooldown <= 0 && LicowitchServant.this.getRandom().nextBoolean()) {
                             this.enqueuedAttackType = 2;
                             this.hexCooldown = 200;
-                        } else if (this.potionCooldown <= 0 && distance < 10.0D && !target.hasEffect(MobEffects.HUNGER)) {
+                        } else if (this.potionCooldown <= 0 && distance < 10.0D && !target.hasEffect(MobEffects.MOVEMENT_SLOWDOWN)) {
                             this.enqueuedAttackType = 3;
                             LicowitchServant.this.updateHeldItems = false;
-                            LicowitchServant.this.setItemInHand(InteractionHand.MAIN_HAND, getHungerPotion());
+                            LicowitchServant.this.setItemInHand(InteractionHand.MAIN_HAND, getSlownessPotion());
                             this.potionCooldown = 100;
                         }
                     }
@@ -708,7 +720,7 @@ public class LicowitchServant extends Summoned implements IAnimatedEntity {
             double d2 = target.getZ() + vec3.z - LicowitchServant.this.getZ();
             double d3 = Math.sqrt(d0 * d0 + d2 * d2);
             ThrownPotion thrownPotion = new ThrownPotion(LicowitchServant.this.level(), LicowitchServant.this);
-            thrownPotion.setItem(getHungerPotion());
+            thrownPotion.setItem(getSlownessPotion());
             thrownPotion.setXRot(thrownPotion.getXRot() - -20.0F);
             thrownPotion.shoot(d0, d1 + d3 * 0.2D, d2, 0.75F, 8.0F);
             if (!LicowitchServant.this.isSilent()) {
@@ -740,6 +752,7 @@ public class LicowitchServant extends Summoned implements IAnimatedEntity {
                 Vec3 groundThere = ACMath.getGroundBelowPosition(target.level(), target.getEyePosition());
                 LicowitchServantHex hex = new LicowitchServantHex(AcEntityRegistry.LICOWITCH_SERVANT_HEX.get(), LicowitchServant.this.level());
                 hex.setOwner(LicowitchServant.this);
+                hex.setTarget(target);
                 hex.setPos(ground.x, groundThere.y, ground.z);
                 hex.setDeltaMovement(groundThere.subtract(ground).multiply(0.25, 0.0, 0.25));
                 LicowitchServant.this.level().addFreshEntity(hex);

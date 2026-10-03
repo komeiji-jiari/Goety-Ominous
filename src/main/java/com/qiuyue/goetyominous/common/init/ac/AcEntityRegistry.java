@@ -103,6 +103,27 @@ public class AcEntityRegistry {
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":corrodent_servant"));
 
+    public static final RegistryObject<EntityType<GumWormServant>> GUM_WORM_SERVANT =
+            AC_ENTITIES.register("gum_worm_servant",
+                    () -> EntityType.Builder.<GumWormServant>of((type, worldIn) -> new GumWormServant(type, worldIn), MobCategory.MISC)
+                            .sized(3.5F, 2.7F)
+                            .setTrackingRange(14)
+                            .setUpdateInterval(1)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":gum_worm_servant"));
+
+    public static final RegistryObject<EntityType<GumWormSegmentServantEntity>> GUM_WORM_SEGMENT_SERVANT =
+            AC_ENTITIES.register("gum_worm_segment_servant",
+                    () -> EntityType.Builder.<GumWormSegmentServantEntity>of((entityType, worldIn) -> new GumWormSegmentServantEntity(entityType, worldIn), MobCategory.MISC)
+                            .sized(2.0F, 2.0F)
+                            .setTrackingRange(14)
+                            .setUpdateInterval(1)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .fireImmune()
+                            .setCustomClientFactory((spawnEntity, world) -> new GumWormSegmentServantEntity(spawnEntity, world))
+                            .build(GoetyOminous.MOD_ID + ":gum_worm_segment_servant"));
+
     public static final RegistryObject<EntityType<GummyBearServant>> GUMMY_BEAR_SERVANT =
             AC_ENTITIES.register("gummy_bear_servant",
                     () -> EntityType.Builder.<GummyBearServant>of((type, worldIn) -> new GummyBearServant(type, worldIn), MobCategory.MISC)
@@ -205,7 +226,7 @@ public class AcEntityRegistry {
     public static final RegistryObject<EntityType<LicowitchServantPeppermint>> LICOWITCH_SERVANT_PEPPERMINT =
             AC_ENTITIES.register("licowitch_servant_peppermint",
                     () -> EntityType.Builder.<LicowitchServantPeppermint>of((type, worldIn) -> new LicowitchServantPeppermint(type, worldIn), MobCategory.MISC)
-                            .sized(0.5F, 0.5F)
+                            .sized(0.8F, 0.4F)
                             .setTrackingRange(8)
                             .setShouldReceiveVelocityUpdates(true)
                             .setUpdateInterval(1)

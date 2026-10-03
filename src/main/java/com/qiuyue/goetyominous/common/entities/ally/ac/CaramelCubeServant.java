@@ -368,13 +368,19 @@ public class CaramelCubeServant extends Summoned {
     }
 
     @Override
+    protected boolean shouldDropLoot() {
+        return !this.limitedLifespan && this.limitedLifeTicks <= 0;
+    }
+
+    @Override
     protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
         return 0.5F * dimensions.height;
     }
 
     @Override
     public boolean canBeAffected(MobEffectInstance effectInstance) {
-        return super.canBeAffected(effectInstance) && effectInstance.getEffect() != MobEffects.HUNGER;
+        return super.canBeAffected(effectInstance) && effectInstance.getEffect() != MobEffects.HUNGER
+                && effectInstance.getEffect() != MobEffects.MOVEMENT_SLOWDOWN;
     }
 
     @Override

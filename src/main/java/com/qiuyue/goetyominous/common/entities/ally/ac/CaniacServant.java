@@ -300,7 +300,8 @@ public class CaniacServant extends Summoned implements IAnimatedEntity {
 
     @Override
     public boolean canBeAffected(MobEffectInstance effectInstance) {
-        return super.canBeAffected(effectInstance) && effectInstance.getEffect() != MobEffects.HUNGER;
+        return super.canBeAffected(effectInstance) && effectInstance.getEffect() != MobEffects.HUNGER
+                && effectInstance.getEffect() != MobEffects.MOVEMENT_SLOWDOWN;
     }
 
     private class CaniacMeleeGoal extends Goal {

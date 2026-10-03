@@ -107,6 +107,7 @@ public class TesseractTagHandler {
             addToTag(TESSERACT_LARGE, AcEntityRegistry.TREMORZILLA_SERVANT);
             addToTag(TESSERACT_LARGE, AcEntityRegistry.ATLATITAN_SERVANT);
             addToTag(TESSERACT_LARGE, AcEntityRegistry.LUXTRUCTOSAURUS_SERVANT);
+            addToTag(TESSERACT_LARGE, AcEntityRegistry.GUM_WORM_SERVANT);
         }
         if (LegendaryMonstersCompat.isLegendaryMonstersLoaded()) {
             addToTag(TESSERACT_LARGE, LmEntityRegistry.CLOUD_GOLEM_SERVANT);
