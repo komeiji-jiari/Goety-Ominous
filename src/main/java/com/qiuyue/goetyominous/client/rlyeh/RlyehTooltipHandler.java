@@ -12,6 +12,8 @@ import com.qiuyue.goetyominous.compat.mod.ModernUiTooltipCompat;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraftforge.api.distmarker.Dist;
@@ -116,9 +118,11 @@ public final class RlyehTooltipHandler {
         RenderSystem.disableCull();
         RenderSystem.setShader(RlyehShaders::tooltip);
         shader.safeGetUniform("uTime").set(time);
-        float aspectX = Math.max(1.0F, (float) (right - left) / Math.max(1, bottom - top));
-        shader.safeGetUniform("uAspect").set(aspectX, 1.0F);
-        shader.safeGetUniform("uPanelSize").set((float) (right - left), (float) (bottom - top));
+        float panelW = Math.max(1.0F, (float) (right - left));
+        float panelH = Math.max(1.0F, (float) (bottom - top));
+        float panelShort = Math.min(panelW, panelH);
+        shader.safeGetUniform("uAspect").set(panelW / panelShort, panelH / panelShort);
+        shader.safeGetUniform("uPanelSize").set(panelW, panelH);
         shader.safeGetUniform("uTheme").set(RlyehShaders.RLYEH_THEME);
         shader.safeGetUniform("uIntro").set(intro);
         BufferBuilder builder = Tesselator.getInstance().getBuilder();
@@ -211,6 +215,17 @@ public final class RlyehTooltipHandler {
         float g = ((rgb >> 8) & 0xFF) / 255.0F;
         float bl = (rgb & 0xFF) / 255.0F;
         b.vertex(pose, px, py, Z).color(r, g, bl, 1.0F).endVertex();
+    }
+
+    @SubscribeEvent
+    public static void onItemTooltip(net.minecraftforge.event.entity.player.ItemTooltipEvent event) {
+        if (!(event.getItemStack().getItem() instanceof com.qiuyue.goetyominous.common.rlyeh.RlyehStyled)) {
+            return;
+        }
+        List<Component> tooltip = event.getToolTip();
+        if (!tooltip.isEmpty() && !tooltip.get(0).getString().isBlank()) {
+            tooltip.set(0, RlyehFont.abyss(tooltip.get(0).getString()));
+        }
     }
 
     private static int sample(int[] palette, float t) {
