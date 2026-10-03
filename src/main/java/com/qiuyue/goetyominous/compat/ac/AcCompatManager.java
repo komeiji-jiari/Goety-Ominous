@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.compat.ac;
 
+import com.qiuyue.goetyominous.common.entities.ally.ac.NuclearGuardianServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.AtlatitanServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.BrainiacServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.CandicornServant;
@@ -65,6 +66,7 @@ public class AcCompatManager {
         event.put(AcEntityRegistry.FORSAKEN_SERVANT.get(), ForsakenServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.CANDICORN_SERVANT.get(), CandicornServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.MINE_GUARDIAN_SERVANT.get(), MineGuardianServant.setCustomAttributes().build());
+        event.put(AcEntityRegistry.NUCLEAR_GUARDIAN_SERVANT.get(), NuclearGuardianServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.HULLBREAKER_SERVANT.get(), HullbreakerServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.DEEP_ONE_SERVANT.get(), DeepOneServant.setCustomAttributes().build());
         event.put(AcEntityRegistry.DEEP_ONE_KNIGHT_SERVANT.get(), DeepOneKnightServant.setCustomAttributes().build());

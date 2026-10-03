@@ -10,6 +10,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.qiuyue.goetyominous.common.events.XRayHandler;
+import com.qiuyue.goetyominous.utils.IRayMuzzle;
 import net.minecraft.client.Camera;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
@@ -106,6 +107,9 @@ public class XRayRenderer {
             if (hand.isPresent()) {
                 return hand.get();
             }
+        }
+        if (caster instanceof IRayMuzzle muzzle) {
+            return muzzle.getRayMuzzle(partialTick);
         }
         return caster.getEyePosition(partialTick);
     }

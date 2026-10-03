@@ -668,6 +668,10 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> TerrorServantMovementSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> TerrorServantAttackDamage;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> NuclearGuardianServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> NuclearGuardianServantBeamDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> NuclearGuardianServantSelfDestructHealth;
+
     static {
         BUILDER.push("Servants Attributes");
 
@@ -1190,6 +1194,16 @@ public class AttributesConfig {
         BUILDER.pop();
 
         BUILDER.push("AM Servants (Optional)");
+
+        BUILDER.push("Nuclear Guardian Servant");
+        NuclearGuardianServantHealth = BUILDER.comment("How much Max Health Nuclear Guardian Servants have, Default: 100.0")
+                .defineInRange("nuclearGuardianServantHealth", 100.0, 1.0, Double.MAX_VALUE);
+        NuclearGuardianServantBeamDamage = BUILDER.comment("How much damage the Nuclear Guardian Servant beam deals per hit, Default: 1.5")
+                .defineInRange("nuclearGuardianServantBeamDamage", 1.5, 0.0, Double.MAX_VALUE);
+        NuclearGuardianServantSelfDestructHealth = BUILDER.comment("Health ratio at or below which Nuclear Guardian Servants stop beaming and charge to self destruct, Default: 0.2")
+                .defineInRange("nuclearGuardianServantSelfDestructHealth", 0.2, 0.0, 1.0);
+        BUILDER.pop();
+
         MurmurServantHealth = BUILDER.comment("How much Max Health Murmur Servants have, Default: 30.0")
                 .defineInRange("murmurServantHealth", 30.0, 1.0, Double.MAX_VALUE);
         MurmurServantDamage = BUILDER.comment("How much damage Murmur Servants deal, Default: 3.0")

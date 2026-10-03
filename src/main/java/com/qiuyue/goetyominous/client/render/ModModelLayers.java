@@ -1038,6 +1038,9 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.MINE_GUARDIAN_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.ac.RenderMineGuardianServant::new);
             event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.NUCLEAR_GUARDIAN_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.ac.RenderNuclearGuardianServant::new);
+            event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.MINE_GUARDIAN_ANCHOR_SERVANT.get(),
                     com.github.alexmodguy.alexscaves.client.render.entity.MineGuardianAnchorRenderer::new);
             event.registerEntityRenderer(

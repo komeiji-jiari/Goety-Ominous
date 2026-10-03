@@ -258,6 +258,22 @@ public class MineGuardianServant extends Summoned {
         return super.mobInteract(player, hand);
     }
 
+    protected void explode() {
+        boolean noGriefing = !MobsConfig.MineGuardianServantExplosionGriefing.get()
+                || !level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
+        Explosion.BlockInteraction blockinteraction = noGriefing ? Explosion.BlockInteraction.KEEP
+                : level().getGameRules().getBoolean(GameRules.RULE_MOB_EXPLOSION_DROP_DECAY) ? Explosion.BlockInteraction.DESTROY_WITH_DECAY : Explosion.BlockInteraction.DESTROY;
+        List<Map.Entry<Entity, Vec3>> protectedSnapshots = MineGuardianExplosionProtectionHandler.snapshotProtectedVelocities(level(), this, this.getX(), this.getY(0.5), this.getZ(), 5.0F);
+        MineExplosion explosion = new MineExplosion(level(), this, this.getX(), this.getY(0.5), this.getZ(), 5.0F, this.isInWaterOrBubble(), blockinteraction);
+        explosion.explode();
+        explosion.finalizeExplosion(this.spawnsExplosionParticles());
+        MineGuardianExplosionProtectionHandler.restoreProtectedVelocities(protectedSnapshots);
+    }
+
+    protected boolean spawnsExplosionParticles() {
+        return true;
+    }
+
     public void tick() {
         super.tick();
         prevExplodeProgress = explodeProgress;
@@ -277,15 +293,7 @@ public class MineGuardianServant extends Summoned {
         if (this.isExploding()) {
             if (explodeProgress >= 10.0F) {
                 this.remove(RemovalReason.KILLED);
-                boolean noGriefing = !MobsConfig.MineGuardianServantExplosionGriefing.get()
-                        || !level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
-                Explosion.BlockInteraction blockinteraction = noGriefing ? Explosion.BlockInteraction.KEEP
-                        : level().getGameRules().getBoolean(GameRules.RULE_MOB_EXPLOSION_DROP_DECAY) ? Explosion.BlockInteraction.DESTROY_WITH_DECAY : Explosion.BlockInteraction.DESTROY;
-                List<Map.Entry<Entity, Vec3>> protectedSnapshots = MineGuardianExplosionProtectionHandler.snapshotProtectedVelocities(level(), this, this.getX(), this.getY(0.5), this.getZ(), 5.0F);
-                MineExplosion explosion = new MineExplosion(level(), this, this.getX(), this.getY(0.5), this.getZ(), 5.0F, this.isInWaterOrBubble(), blockinteraction);
-                explosion.explode();
-                explosion.finalizeExplosion(true);
-                MineGuardianExplosionProtectionHandler.restoreProtectedVelocities(protectedSnapshots);
+                this.explode();
             }
             this.setDeltaMovement(this.getDeltaMovement().multiply(0.3F, 1, 0.3F));
         }
@@ -477,6 +485,19 @@ public class MineGuardianServant extends Summoned {
         return 2;
     }
 
+    protected boolean isDesperate() {
+        return true;
+    }
+
+    @Override
+    public void tryKill(Player player) {
+        if (this.killChance <= 0) {
+            this.warnKill(player);
+        } else {
+            super.tryKill(player);
+        }
+    }
+
     private class MeleeGoal extends Goal {
 
         private int timer = 0;
@@ -505,7 +526,7 @@ public class MineGuardianServant extends Summoned {
                     if (MineGuardianServant.this.isInWaterOrBubble()) {
                         MineGuardianServant.this.getNavigation().moveTo(target, 1.6D);
                     }
-                } else {
+                } else if (MineGuardianServant.this.isDesperate()) {
                     MineGuardianServant.this.setExploding(true);
                 }
                 if (timer > 300) {

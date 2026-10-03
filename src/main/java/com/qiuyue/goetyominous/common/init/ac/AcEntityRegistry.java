@@ -147,6 +147,15 @@ public class AcEntityRegistry {
                             .setUpdateInterval(1)
                             .build(GoetyOminous.MOD_ID + ":mine_guardian_servant"));
 
+    public static final RegistryObject<EntityType<NuclearGuardianServant>> NUCLEAR_GUARDIAN_SERVANT =
+            AC_ENTITIES.register("nuclear_guardian_servant",
+                    () -> EntityType.Builder.<NuclearGuardianServant>of((type, worldIn) -> new NuclearGuardianServant(type, worldIn), MobCategory.MISC)
+                            .sized(1.95F, 1.95F)
+                            .setTrackingRange(8)
+                            .setShouldReceiveVelocityUpdates(true)
+                            .setUpdateInterval(1)
+                            .build(GoetyOminous.MOD_ID + ":nuclear_guardian_servant"));
+
     public static final RegistryObject<EntityType<MineGuardianAnchorServantEntity>> MINE_GUARDIAN_ANCHOR_SERVANT =
             AC_ENTITIES.register("mine_guardian_anchor_servant",
                     () -> EntityType.Builder.<MineGuardianAnchorServantEntity>of((type, worldIn) -> new MineGuardianAnchorServantEntity(type, worldIn), MobCategory.MISC)

@@ -165,6 +165,10 @@ public class AcItems {
             AC_ITEMS.register("mine_guardian_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AcEntityRegistry.MINE_GUARDIAN_SERVANT, 0x404253, 0xE62008, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> NUCLEAR_GUARDIAN_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("nuclear_guardian_servant_spawn_egg",
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.NUCLEAR_GUARDIAN_SERVANT, 0x242E36, 0x00DF00, egg()));
+
     public static final RegistryObject<ServantSpawnEggItem> HULLBREAKER_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("hullbreaker_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AcEntityRegistry.HULLBREAKER_SERVANT, 0x182538, 0x76FFFD, egg()));

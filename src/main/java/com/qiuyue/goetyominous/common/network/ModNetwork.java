@@ -57,5 +57,9 @@ public class ModNetwork {
                 XRayPacket::encode,
                 XRayPacket::decode,
                 XRayPacket::handle);
+        CHANNEL.registerMessage(id++, NuclearExplosionEffectPacket.class,
+                NuclearExplosionEffectPacket::encode,
+                NuclearExplosionEffectPacket::decode,
+                NuclearExplosionEffectPacket::handle);
     }
 }

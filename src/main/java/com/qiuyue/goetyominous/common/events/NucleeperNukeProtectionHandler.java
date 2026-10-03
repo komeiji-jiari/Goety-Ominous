@@ -4,6 +4,7 @@ import com.Polarice3.Goety.api.entities.IOwned;
 import com.Polarice3.Goety.utils.SEHelper;
 import com.github.alexmodguy.alexscaves.server.entity.item.NuclearExplosionEntity;
 import com.github.alexmodguy.alexscaves.server.misc.ACDamageTypes;
+import com.github.alexmodguy.alexscaves.server.potion.ACEffectRegistry;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.ac.NucleeperServant;
 import com.qiuyue.goetyominous.compat.mod.AlexCavesCompat;
@@ -14,10 +15,12 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -42,6 +45,8 @@ public class NucleeperNukeProtectionHandler {
     private static final List<NukeProtection> PROTECTED_NUKES = new ArrayList<>();
 
     private static final List<NukeProtection> CLIENT_NUCKS = new ArrayList<>();
+
+    private static final int NUKE_IRRADIATED_DURATION = 48000;
 
     private static Field spawnedParticleField;
 
@@ -151,14 +156,14 @@ public class NucleeperNukeProtectionHandler {
         return nucleeper.isCharged() ? 1.75F : 1.0F;
     }
 
-    private static Set<UUID> collectOwnerIds(NucleeperServant nucleeper) {
+    public static Set<UUID> collectOwnerIds(IOwned owned) {
         Set<UUID> ownerIds = new HashSet<>();
-        addOwner(ownerIds, nucleeper.getOwnerId());
-        LivingEntity trueOwner = nucleeper.getTrueOwner();
+        addOwner(ownerIds, owned.getOwnerId());
+        LivingEntity trueOwner = owned.getTrueOwner();
         if (trueOwner != null) {
             addOwner(ownerIds, trueOwner.getUUID());
         }
-        LivingEntity masterOwner = nucleeper.getMasterOwner();
+        LivingEntity masterOwner = owned.getMasterOwner();
         if (masterOwner != null) {
             addOwner(ownerIds, masterOwner.getUUID());
         }
@@ -202,6 +207,14 @@ public class NucleeperNukeProtectionHandler {
         int chunks = (int) Math.ceil(size);
         long stack = (long) (2 * chunks + 1) * (2 * chunks + 1) * (2 * chunks + 1);
         return (int) (60 + stack / 3);
+    }
+
+    public static void irradiateBlast(ServerLevel level, Vec3 origin, double radius, int amplifier) {
+        AABB box = new AABB(origin, origin).inflate(radius);
+        for (LivingEntity entity : level.getEntitiesOfClass(LivingEntity.class, box)) {
+            entity.addEffect(new MobEffectInstance(ACEffectRegistry.IRRADIATED.get(),
+                    NUKE_IRRADIATED_DURATION, amplifier, false, false, true));
+        }
     }
 
     @SubscribeEvent
