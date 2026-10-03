@@ -140,6 +140,10 @@ public class AcItems {
             AC_ITEMS.register("gumbeeper_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AcEntityRegistry.GUMBEEPER_SERVANT, 0xFF2B44, 0xE7BAFF, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> GUM_WORM_SERVANT_SPAWN_EGG =
+            AC_ITEMS.register("gum_worm_servant_spawn_egg",
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.GUM_WORM_SERVANT, 0x92FFD9, 0xFFA1DC, egg()));
+
     public static final RegistryObject<ServantSpawnEggItem> VESPER_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("vesper_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AcEntityRegistry.VESPER_SERVANT, 0x884E2A, 0xA54A6B, egg()));

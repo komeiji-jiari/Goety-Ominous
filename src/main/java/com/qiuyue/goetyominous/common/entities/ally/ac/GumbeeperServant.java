@@ -340,7 +340,8 @@ public class GumbeeperServant extends Summoned implements PowerableMob {
 
     @Override
     public boolean canBeAffected(MobEffectInstance effectInstance) {
-        return super.canBeAffected(effectInstance) && effectInstance.getEffect() != MobEffects.HUNGER;
+        return super.canBeAffected(effectInstance) && effectInstance.getEffect() != MobEffects.HUNGER
+                && effectInstance.getEffect() != MobEffects.MOVEMENT_SLOWDOWN;
     }
 
     @Override

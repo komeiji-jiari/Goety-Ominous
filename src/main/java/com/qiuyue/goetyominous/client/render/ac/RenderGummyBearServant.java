@@ -30,6 +30,7 @@ public class RenderGummyBearServant extends MobRenderer<GummyBearServant, ModelG
     public RenderGummyBearServant(EntityRendererProvider.Context context) {
         super(context, new ModelGummyBearServant(-1.8F), 0.85F);
         this.addLayer(new LayerOutside());
+        this.addLayer(new GummyBearServantHeldMobLayer(this));
     }
 
     @Override

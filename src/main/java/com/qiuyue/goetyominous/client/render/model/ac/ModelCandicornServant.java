@@ -320,14 +320,29 @@ public class ModelCandicornServant extends AdvancedEntityModel<CandicornServant>
     }
 
     public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        this.horn.showModel = !this.young;
         if (this.young) {
+            float f = 1.35F;
+            this.head.setScale(f, f, f);
+            this.head.setShouldScaleChildren(true);
+            this.right_backLeg.setScale(1.0F, 1.5F, 1.0F);
+            this.left_backLeg.setScale(1.0F, 1.5F, 1.0F);
+            this.right_frontLeg.setScale(1.0F, 1.5F, 1.0F);
+            this.left_frontLeg.setScale(1.0F, 1.5F, 1.0F);
             matrixStackIn.pushPose();
-            matrixStackIn.scale(0.5F, 0.5F, 0.5F);
-            matrixStackIn.translate(0.0D, 1.5D, 0.0D);
+            matrixStackIn.scale(0.45F, 0.45F, 0.45F);
+            matrixStackIn.translate(0.0D, 1.25D, 0.125D);
             parts().forEach((part) -> part.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha));
             matrixStackIn.popPose();
+            this.head.setScale(1.0F, 1.0F, 1.0F);
+            this.right_backLeg.setScale(1.0F, 1.0F, 1.0F);
+            this.left_backLeg.setScale(1.0F, 1.0F, 1.0F);
+            this.right_frontLeg.setScale(1.0F, 1.0F, 1.0F);
+            this.left_frontLeg.setScale(1.0F, 1.0F, 1.0F);
         } else {
+            matrixStackIn.pushPose();
             parts().forEach((part) -> part.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha));
+            matrixStackIn.popPose();
         }
     }
 
@@ -359,7 +374,7 @@ public class ModelCandicornServant extends AdvancedEntityModel<CandicornServant>
         if (entity.isVehicle() && Minecraft.getInstance().player != null && Minecraft.getInstance().player.isPassengerOfSameVehicle(entity) && Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
             mane1.showModel = false;
         } else {
-            this.mane1.showModel = true;
+            this.mane1.showModel = !this.young;
         }
         this.horn.setScale(1F, 1F + chargeProgress * 0.35F, 1F);
         progressRotationPrev(tail1, stillAmount, (float) Math.toRadians(-65), 0, 0, 1F);

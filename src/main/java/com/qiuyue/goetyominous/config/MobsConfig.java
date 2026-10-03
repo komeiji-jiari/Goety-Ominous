@@ -85,6 +85,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> AtlatitanServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Boolean> AtlatitanServantBreakBlocks;
     public static final ForgeConfigSpec.ConfigValue<Integer> LuxtructosaurusServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> GumWormServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantBreakTrees;
     public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantFire;
     public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantWaterToStone;
@@ -497,6 +498,10 @@ public class MobsConfig {
         LuxtructosaurusServantLimit = BUILDER
                 .comment("Maximum number of Luxtructosaurus Servants that can be summoned (Default: 1)")
                 .defineInRange("luxtructosaurusServantLimit", 1, 1, 100);
+
+        GumWormServantLimit = BUILDER
+                .comment("Maximum number of Gum Worm Servants that can be summoned (Default: 1; each one is a head plus 15-19 body segment entities)")
+                .defineInRange("gumWormServantLimit", 1, 1, 100);
 
         LuxtructosaurusServantBreakTrees = BUILDER
                 .comment("Whether Luxtructosaurus Servants smash the leaves, logs and wool they walk through, like a Redstone Monstrosity (Default: true; also requires the mobGriefing game rule)")

@@ -382,7 +382,7 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
                 float dist = (float) entity.distanceToSqr(chargeFocalPoint);
                 if (!this.isAlliedTo(entity) && !entity.isAlliedTo(this) && !entity.isPassengerOfSameVehicle(this) && !(entity instanceof CandicornServant) && entity != this && dist < 7.0F) {
                     float dmgExtra = 7.0F - dist;
-                    entity.hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue() + dmgExtra);
+                    entity.hurt(this.damageSources().mobAttack(this), 7.0F + dmgExtra);
                     entity.knockback(2.0F, chargeFocalPoint.x - entity.getX(), chargeFocalPoint.z - entity.getZ());
                 }
             }
@@ -589,8 +589,8 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
     }
 
     @Override
-    public float maxUpStep() {
-        return this.isCharging() ? 2.2F : (this.isRunning() || this.hasRiderController()) ? 1.1F : 0.6F;
+    public float getStepHeight() {
+        return this.isCharging() && this.isVehicle() ? 2.2F : 1.2F;
     }
 
     public float getLeapProgress(float partialTicks) {
@@ -802,7 +802,8 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
     }
     @Override
     public boolean canBeAffected(MobEffectInstance effectInstance) {
-        return super.canBeAffected(effectInstance) && effectInstance.getEffect() != MobEffects.HUNGER;
+        return super.canBeAffected(effectInstance) && effectInstance.getEffect() != MobEffects.HUNGER
+                && effectInstance.getEffect() != MobEffects.MOVEMENT_SLOWDOWN;
     }
 
     @Override
@@ -875,7 +876,7 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
         @Override
         public boolean canUse() {
             LivingEntity target = CandicornServant.this.getTarget();
-            return target != null && target.isAlive() && !CandicornServant.this.hasRiderController();
+            return target != null && target.isAlive() && !CandicornServant.this.isBaby() && !CandicornServant.this.hasRiderController();
         }
 
         @Override

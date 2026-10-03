@@ -13,6 +13,7 @@ import com.github.alexmodguy.alexscaves.server.potion.ACEffectRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import com.github.alexthe666.citadel.server.entity.IDancesToJukebox;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.utils.ModMobType;
@@ -57,6 +58,7 @@ import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -67,7 +69,7 @@ import java.time.temporal.ChronoField;
 import java.util.EnumSet;
 import java.util.function.Predicate;
 
-public class GummyBearServant extends AnimalSummon implements IAnimatedEntity {
+public class GummyBearServant extends AnimalSummon implements IAnimatedEntity, IDancesToJukebox {
 
     @Override
     public MobType getMobType() {
@@ -78,6 +80,7 @@ public class GummyBearServant extends AnimalSummon implements IAnimatedEntity {
     private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(GummyBearServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> STANDING = SynchedEntityData.defineId(GummyBearServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> SLEEPING = SynchedEntityData.defineId(GummyBearServant.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DANCING = SynchedEntityData.defineId(GummyBearServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DIGESTING = SynchedEntityData.defineId(GummyBearServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Float> STOMACH_RED = SynchedEntityData.defineId(GummyBearServant.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> STOMACH_GREEN = SynchedEntityData.defineId(GummyBearServant.class, EntityDataSerializers.FLOAT);
@@ -103,6 +106,7 @@ public class GummyBearServant extends AnimalSummon implements IAnimatedEntity {
     private float prevStomachAlpha;
     private float stomachAlpha;
     public boolean lookForTheGummyBearAlbumInStoresOnNovember13th = checkNovember13th();
+    private BlockPos jukeboxPosition;
     private ResourceLocation digestingEffect;
     private int standFor = 0;
     private int sitFor = 0;
@@ -120,6 +124,7 @@ public class GummyBearServant extends AnimalSummon implements IAnimatedEntity {
         this.entityData.define(SITTING, false);
         this.entityData.define(STANDING, false);
         this.entityData.define(SLEEPING, false);
+        this.entityData.define(DANCING, false);
         this.entityData.define(DIGESTING, false);
         this.entityData.define(STOMACH_RED, 0.0F);
         this.entityData.define(STOMACH_GREEN, 0.0F);
@@ -317,7 +322,22 @@ public class GummyBearServant extends AnimalSummon implements IAnimatedEntity {
     }
 
     public boolean isDancing() {
-        return false;
+        return this.entityData.get(DANCING);
+    }
+
+    @Override
+    public void setDancing(boolean bool) {
+        this.entityData.set(DANCING, bool);
+    }
+
+    @Override
+    public void setJukeboxPos(BlockPos blockPos) {
+        this.jukeboxPosition = blockPos;
+    }
+
+    @Override
+    public void setRecordPlayingNearby(BlockPos pos, boolean playing) {
+        this.onClientPlayMusicDisc(this.getId(), pos, playing);
     }
 
     public boolean isSitting() {
@@ -440,6 +460,16 @@ public class GummyBearServant extends AnimalSummon implements IAnimatedEntity {
         this.prevDanceProgress = this.danceProgress;
         this.prevSleepProgress = this.sleepProgress;
         this.prevStomachAlpha = this.stomachAlpha;
+        if (this.jukeboxPosition == null || !this.jukeboxPosition.closerToCenterThan(this.position(), 15.0D) || !this.level().getBlockState(this.jukeboxPosition).is(Blocks.JUKEBOX)) {
+            this.setDancing(false);
+            this.jukeboxPosition = null;
+        }
+        if (this.isDancing() && this.danceProgress < 5.0F) {
+            this.danceProgress++;
+        }
+        if (!this.isDancing() && this.danceProgress > 0.0F) {
+            this.danceProgress--;
+        }
         if (this.isSitting() && this.sitProgress < 10.0F) {
             this.sitProgress++;
         }
@@ -565,7 +595,7 @@ public class GummyBearServant extends AnimalSummon implements IAnimatedEntity {
 
     @Override
     public void travel(Vec3 vec3d) {
-        if (this.isSitting() || this.isMovementBlocked()) {
+        if (this.isDancing() || this.isSitting() || this.isMovementBlocked()) {
             if (this.getNavigation().getPath() != null) {
                 this.getNavigation().stop();
             }
@@ -588,7 +618,7 @@ public class GummyBearServant extends AnimalSummon implements IAnimatedEntity {
                 if (!this.level().isClientSide) {
                     this.digestEffect(PotionUtils.getPotion(itemStack));
                     this.setDigesting(true);
-                    this.sleepFor = 1200;
+                    this.sleepFor = 24000;
                     this.jellybeansToMake = this.random.nextInt(2) + 3;
                     this.playSound(ACSoundRegistry.GUMMY_BEAR_EAT.get(), this.getSoundVolume(), this.getVoicePitch());
                     if (!player.getAbilities().instabuild) {
@@ -604,7 +634,8 @@ public class GummyBearServant extends AnimalSummon implements IAnimatedEntity {
 
     @Override
     public boolean canBeAffected(MobEffectInstance effectInstance) {
-        return super.canBeAffected(effectInstance) && effectInstance.getEffect() != MobEffects.HUNGER;
+        return super.canBeAffected(effectInstance) && effectInstance.getEffect() != MobEffects.HUNGER
+                && effectInstance.getEffect() != MobEffects.MOVEMENT_SLOWDOWN;
     }
 
     @Override
@@ -629,7 +660,9 @@ public class GummyBearServant extends AnimalSummon implements IAnimatedEntity {
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(ACSoundRegistry.GUMMY_BEAR_STEP.get(), 0.3F, this.getVoicePitch());
+        if (!this.isBaby()) {
+            this.playSound(ACSoundRegistry.GUMMY_BEAR_STEP.get(), 0.3F, this.getVoicePitch());
+        }
     }
 
     @Override

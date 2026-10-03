@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.qiuyue.goetyominous.common.entities.ally.ac.GummyBearServant;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -122,6 +123,16 @@ public class ModelGummyBearServant extends AdvancedEntityModel<GummyBearServant>
     @Override
     public Iterable<AdvancedModelBox> getAllParts() {
         return ImmutableList.of(this.main, this.head, this.body, this.nose, this.tail, this.left_Arm, this.right_Arm, this.left_Ear, this.right_Ear, this.right_Leg, this.left_Leg);
+    }
+
+    public void translateToHand(HumanoidArm humanoidArm, PoseStack matrixStackIn) {
+        this.main.translateAndRotate(matrixStackIn);
+        this.body.translateAndRotate(matrixStackIn);
+        if (humanoidArm == HumanoidArm.RIGHT) {
+            this.right_Arm.translateAndRotate(matrixStackIn);
+        } else {
+            this.left_Arm.translateAndRotate(matrixStackIn);
+        }
     }
 
     public void animate(GummyBearServant entity) {

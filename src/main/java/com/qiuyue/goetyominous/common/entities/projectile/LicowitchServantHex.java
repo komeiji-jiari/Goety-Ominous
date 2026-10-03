@@ -3,11 +3,14 @@ package com.qiuyue.goetyominous.common.entities.projectile;
 import com.Polarice3.Goety.common.entities.projectiles.SpellTargetProjectile;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.github.alexmodguy.alexscaves.client.particle.ACParticleRegistry;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -16,6 +19,7 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 public class LicowitchServantHex extends SpellTargetProjectile {
@@ -67,9 +71,37 @@ public class LicowitchServantHex extends SpellTargetProjectile {
         }
         this.hurtEntities(this.despawnsIn < 5);
         Vec3 vec3 = this.getDeltaMovement();
+        double nextX = this.getX() + vec3.x;
+        double nextZ = this.getZ() + vec3.z;
+        LivingEntity target = this.getTarget();
         this.noPhysics = true;
-        this.move(MoverType.SELF, vec3);
-        this.setDeltaMovement(vec3.multiply(0.7F, 0.8F, 0.7F));
+        if (target != null && target.isAlive()) {
+            double dx = target.getX() - this.getX();
+            double dz = target.getZ() - this.getZ();
+            double p0 = Math.min(target.getY(), this.getY() - 50.0D);
+            double p1 = Math.max(target.getY(), this.getY());
+            BlockPos blockpos = BlockPos.containing(target.getX(), p1, target.getZ());
+            double d0 = 0.0D;
+            boolean foundGround = false;
+            do {
+                BlockPos below = blockpos.below();
+                if (!this.level().getBlockState(below).isFaceSturdy(this.level(), below, Direction.UP)) {
+                    continue;
+                }
+                foundGround = true;
+                BlockState state = this.level().getBlockState(blockpos);
+                if (this.level().isEmptyBlock(blockpos) || state.getCollisionShape(this.level(), blockpos).isEmpty()) {
+                    break;
+                }
+                d0 = state.getCollisionShape(this.level(), blockpos).max(Direction.Axis.Y);
+                break;
+            } while ((blockpos = blockpos.below()).getY() >= Mth.floor(p0) - 1);
+            this.setPos(nextX, foundGround ? (double) blockpos.getY() + d0 : this.getY(), nextZ);
+            this.setDeltaMovement(vec3.add(dx, 0.0D, dz).scale(0.05D));
+        } else {
+            this.move(MoverType.SELF, vec3);
+            this.setDeltaMovement(vec3.multiply(0.7F, 0.8F, 0.7F));
+        }
     }
 
     public float getDespawnTime(float partialTicks) {
