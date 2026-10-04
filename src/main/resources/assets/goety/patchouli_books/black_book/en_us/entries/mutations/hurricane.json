@@ -1,0 +1,26 @@
+{
+  "name": "Hurricane",
+  "icon": "goetyominous:heavy_core",
+  "category": "goety:mutations",
+  "advancement": "goety:goety/read_mistral_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "After obtaining a Heavy Core, you conducted some research on it and discovered that it carries powerful wind magic. Using the Heavy Core and some magic, you can implant the core into a Breeze, transforming it into a mighty Hurricane."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:hurricane_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:hurricane_servant"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goetyominous:hurricane_core",
+      "text": "These Breeze masters can be healed with Wind Charges or Breeze Rods. If you wear Wind Robe, that will also heal them. If your Hurricane is destroyed in battle, it will return a Hurricane Core; hold the core and right-click a Breeze to revive your Hurricane."
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:summon_tamed",
+  "activation_item": {
+    "item": "opposing_force:terror_saw"
+  },
+  "craftType": "forge",
+  "entity_to_summon": "goetyominous:terror_servant",
+  "soulCost": 1,
+  "duration": 5,
+  "ingredients": [
+    {
+      "item": "opposing_force:terror_leg"
+    },
+    {
+      "tag": "minecraft:fishes"
+    },
+    {
+      "tag": "minecraft:fishes"
+    }
+  ],
+  "result": {
+    "item": "goety:jei_dummy/none"
+  }
+}

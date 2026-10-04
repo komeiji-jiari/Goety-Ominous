@@ -133,7 +133,7 @@ public class XRaySpell extends ChargingSpell {
 
     private static HitResult firstEntityHit(LivingEntity caster, Vec3 from, Vec3 to, Vec3 blockEnd) {
         HitResult hit = ProjectileUtil.getHitResultOnViewVector(caster,
-                Entity::canBeHitByProjectile, from.distanceTo(to));
+                e -> canRayHit(caster, e), from.distanceTo(to));
         if (hit instanceof EntityHitResult entityHit
                 && entityHit.getLocation().distanceToSqr(from) > blockEnd.distanceToSqr(from)) {
             return null;
@@ -147,7 +147,7 @@ public class XRaySpell extends ChargingSpell {
         for (double step = 1.0D; step < distance; ++step) {
             Vec3 next = cursor.add(look);
             HitResult hit = ProjectileUtil.getEntityHitResult(level, caster, cursor, next, maxAABB,
-                    Entity::canBeHitByProjectile);
+                    e -> canRayHit(caster, e));
             if (hit != null) {
                 return hit;
             }
@@ -156,16 +156,20 @@ public class XRaySpell extends ChargingSpell {
         return null;
     }
 
+    private static boolean canRayHit(LivingEntity caster, Entity entity) {
+        return entity.canBeHitByProjectile()
+                && entity != caster
+                && !entity.is(caster)
+                && !MobUtil.areAllies(caster, entity)
+                && !entity.isAlliedTo(caster)
+                && !caster.isAlliedTo(entity)
+                && !caster.isPassengerOfSameVehicle(entity);
+    }
+
     public static void hurtAround(ServerLevel level, LivingEntity caster, Vec3 center,
                                   float radius, boolean gamma, float damage) {
         AABB hitBox = new AABB(center.subtract(radius, radius, radius), center.add(radius, radius, radius));
-        for (Entity entity : level.getEntities(caster, hitBox, Entity::canBeHitByProjectile)) {
-            if (entity == caster || entity.is(caster)
-                    || MobUtil.areAllies(caster, entity)
-                    || entity.isAlliedTo(caster) || caster.isAlliedTo(entity)
-                    || caster.isPassengerOfSameVehicle(entity)) {
-                continue;
-            }
+        for (Entity entity : level.getEntities(caster, hitBox, e -> canRayHit(caster, e))) {
             if (!entity.hurt(ACDamageTypes.causeRaygunDamage(level.registryAccess(), caster), damage)) {
                 continue;
             }

@@ -1,0 +1,39 @@
+package com.qiuyue.goetyominous.utils;
+
+import javax.annotation.Nullable;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.phys.Vec3;
+
+@FunctionalInterface
+public interface ProjectileDeflection {
+    ProjectileDeflection NONE = (projectile, entity, random) -> {
+    };
+
+    ProjectileDeflection REVERSE = (projectile, entity, random) -> {
+        float f = 170.0F + random.nextFloat() * 20.0F;
+        projectile.setDeltaMovement(projectile.getDeltaMovement().scale(-0.5D));
+        projectile.setYRot(projectile.getYRot() + f);
+        projectile.yRotO += f;
+        projectile.hasImpulse = true;
+    };
+
+    ProjectileDeflection AIM_DEFLECT = (projectile, entity, random) -> {
+        if (entity != null) {
+            Vec3 vec3 = entity.getLookAngle().normalize();
+            projectile.setDeltaMovement(vec3);
+            projectile.hasImpulse = true;
+        }
+    };
+
+    ProjectileDeflection MOMENTUM_DEFLECT = (projectile, entity, random) -> {
+        if (entity != null) {
+            Vec3 vec3 = entity.getDeltaMovement().normalize();
+            projectile.setDeltaMovement(vec3);
+            projectile.hasImpulse = true;
+        }
+    };
+
+    void deflect(Projectile projectile, @Nullable Entity entity, RandomSource random);
+}

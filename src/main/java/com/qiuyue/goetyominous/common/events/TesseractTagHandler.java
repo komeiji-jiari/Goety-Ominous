@@ -37,6 +37,7 @@ public class TesseractTagHandler {
     @SubscribeEvent
     public static void onTagsUpdated(TagsUpdatedEvent event) {
         addToTag(TESSERACT_SMALL, ModEntityTypes.URBHADHACH_SERVANT);
+        addToTag(TESSERACT_SMALL, ModEntityTypes.HURRICANE_SERVANT);
         if (IllageAndSpillageCompat.isIllageAndSpillageLoaded()) {
             addToTag(TESSERACT_SMALL, IasEntityRegistry.ABSORBER_SERVANT);
         }

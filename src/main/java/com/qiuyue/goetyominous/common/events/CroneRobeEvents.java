@@ -4,7 +4,6 @@ import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.ModTags;
 import com.qiuyue.goetyominous.utils.CroneCuriosUtil;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
@@ -93,14 +92,4 @@ public class CroneRobeEvents {
         }
     }
 
-    @SubscribeEvent
-    public static void onClientTick(net.minecraftforge.event.TickEvent.ClientTickEvent event) {
-        if (event.phase != net.minecraftforge.event.TickEvent.Phase.END) return;
-        net.minecraft.client.player.LocalPlayer player = net.minecraft.client.Minecraft.getInstance().player;
-        if (player != null && CroneCuriosUtil.hasCroneSet(player) && player.tickCount % 5 == 0) {
-            player.level().addParticle(ParticleTypes.WITCH,
-                    player.getX(), player.getY() + player.getBbHeight() + 0.3D, player.getZ(),
-                    0.0D, 0.02D, 0.0D);
-        }
-    }
 }

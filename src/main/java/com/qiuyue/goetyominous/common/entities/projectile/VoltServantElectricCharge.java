@@ -34,6 +34,7 @@ public class VoltServantElectricCharge extends WaterHurtingProjectile {
     private int effectDuration = 300;
     private int spasmsDuration = 0;
     private float radiusBonus = 0.0F;
+    private static final int MAX_LIFE_TICKS = 200;
 
     public VoltServantElectricCharge(EntityType<? extends AbstractHurtingProjectile> entityType, Level level) {
         super(entityType, level);
@@ -152,6 +153,9 @@ public class VoltServantElectricCharge extends WaterHurtingProjectile {
         }
         if (!this.level().isClientSide && this.getBlockY() > this.level().getMaxBuildHeight() + 30) {
             this.createExplosion(3.0F);
+            this.discard();
+        }
+        if (!this.level().isClientSide && this.tickCount >= MAX_LIFE_TICKS) {
             this.discard();
         }
     }

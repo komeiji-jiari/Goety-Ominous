@@ -33,6 +33,9 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import com.qiuyue.goetyominous.client.particle.GustParticle;
+import com.qiuyue.goetyominous.client.particle.GustSeedParticle;
+import com.qiuyue.goetyominous.common.init.ModParticleTypes;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -59,6 +62,10 @@ public class ClientEvents {
     public static void registerParticles(RegisterParticleProvidersEvent event) {
         registerLmParticles(event);
 
+        event.registerSpecial(ModParticleTypes.GUST_EMITTER_SMALL.get(), new GustSeedParticle.Provider(1.0D, 3, 2));
+        event.registerSpecial(ModParticleTypes.GUST_EMITTER_LARGE.get(), new GustSeedParticle.Provider(3.0D, 7, 0));
+        event.registerSpriteSet(ModParticleTypes.GUST.get(), GustParticle.Provider::new);
+
         if (!AlexCavesCompat.isAlexCavesLoaded()) {
             return;
         }
@@ -76,34 +83,6 @@ public class ClientEvents {
                 TremorzillaServantSteamParticle.Factory::new);
     }
 
-    /**
-     * 传奇怪物（LM）那批粒子的「生产车间」登记。
-     *
-     * <p>注册粒子的<b>类型</b>（{@code LmParticles}，在 {@code LmCompatManager} 里）
-     * 和注册粒子的<b>外观</b>（这里）是两件不同的事，很容易搞混：
-     * <ul>
-     *   <li>类型走 {@code DeferredRegister}，是<b>通用</b>代码（两边都跑）；</li>
-     *   <li>外观（{@code ParticleProvider}）只能用<b>客户端</b>的类来写，
-     *       所以必须在客户端事件里登记;</li>
-     *   <li>少登记了不会崩，表现是<b>「粒子不显示」</b> —— 服务端照发报文，
-     *       客户端收到却没有车间能生产它，报文被默默丢掉。
-     *       这类「不报错的坏事」最难查，别漏。</li>
-     * </ul>
-     *
-     * <p>三种粒子的登记方式各不相同，是因为它们的参数形态不同：
-     * <ul>
-     *   <li>{@code registerSpriteSet} —— 给「一帧一图」的普通粒子，
-     *       游戏会把 json 里那张贴图表交给工厂（{@code SpriteSet}）；</li>
-     *   <li>{@code registerSpecial} —— 给「自带全部参数、不需要贴图表」的粒子
-     *       （比如拖尾：它自己知道要用哪张图、什么颜色）。</li>
-     * </ul>
-     *
-     * <p>⚠️ {@code RED_SOUL_FLAME} 配的是 {@code Provider} 而不是
-     * {@code SmallFlameProvider} —— 两者只差一句「缩小一半」，
-     * 配错的话火苗会小一半。原版 {@code ModParticleFactiories} 里
-     * {@code RED_SOUL_FLAME} 是 {@code Provider}，{@code SmallFlameProvider}
-     * 配的是另一个粒子 {@code SMALL_SOUL_FIRE_FLAME}。
-     */
     private static void registerLmParticles(RegisterParticleProvidersEvent event) {
         if (!LegendaryMonstersCompat.isLegendaryMonstersLoaded()) {
             return;

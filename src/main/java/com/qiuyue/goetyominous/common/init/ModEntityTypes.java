@@ -10,6 +10,7 @@ import com.qiuyue.goetyominous.common.entities.hostile.cultists.*;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.ArchGeomancerEntity;
 import com.qiuyue.goetyominous.common.entities.projectile.*;
 import com.qiuyue.goetyominous.common.entities.util.BurningGroundEntity;
+import com.qiuyue.goetyominous.utils.HurricaneCoreSummon;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -336,6 +337,67 @@ public class ModEntityTypes {
                     .clientTrackingRange(4)
                     .updateInterval(20)
                     .build(MOD_ID + ":pitchfork"));
+
+    public static final RegistryObject<EntityType<ServantWindCharge>> SERVANT_WIND_CHARGE = ENTITY_TYPES.register("servant_wind_charge",
+            () -> EntityType.Builder.<ServantWindCharge>of(ServantWindCharge::new, MobCategory.MISC)
+                    .sized(0.3125F, 0.3125F)
+                    .clientTrackingRange(4)
+                    .updateInterval(10)
+                    .build(MOD_ID + ":servant_wind_charge"));
+
+    public static final RegistryObject<EntityType<BreezeWindCharge>> BREEZE_WIND_CHARGE = ENTITY_TYPES.register("breeze_wind_charge",
+            () -> EntityType.Builder.<BreezeWindCharge>of(BreezeWindCharge::new, MobCategory.MISC)
+                    .sized(0.3125F, 0.3125F)
+                    .clientTrackingRange(4)
+                    .updateInterval(10)
+                    .build(MOD_ID + ":breeze_wind_charge"));
+
+    public static final RegistryObject<EntityType<BreezeServant>> BREEZE_SERVANT = ENTITY_TYPES.register("breeze_servant",
+            () -> EntityType.Builder.<BreezeServant>of(BreezeServant::new, MobCategory.MISC)
+                    .sized(0.6F, 1.77F)
+                    .clientTrackingRange(10)
+                    .build(MOD_ID + ":breeze_servant"));
+
+    public static final RegistryObject<EntityType<BreezeEntity>> BREEZE = ENTITY_TYPES.register("breeze",
+            () -> EntityType.Builder.<BreezeEntity>of(BreezeEntity::new, MobCategory.MONSTER)
+                    .sized(0.6F, 1.77F)
+                    .clientTrackingRange(10)
+                    .build(MOD_ID + ":breeze"));
+
+    public static final RegistryObject<EntityType<Hurricane>> HURRICANE = ENTITY_TYPES.register("hurricane",
+            () -> EntityType.Builder.of(Hurricane::new, MobCategory.MONSTER)
+                    .sized(1.6F, 3.4F)
+                    .clientTrackingRange(10)
+                    .build(MOD_ID + ":hurricane"));
+
+    public static final RegistryObject<EntityType<HurricaneServant>> HURRICANE_SERVANT = ENTITY_TYPES.register("hurricane_servant",
+            () -> EntityType.Builder.of(HurricaneServant::new, MobCategory.MONSTER)
+                    .sized(1.6F, 3.4F)
+                    .clientTrackingRange(10)
+                    .build(MOD_ID + ":hurricane_servant"));
+
+    public static final RegistryObject<EntityType<HurricanePunch>> HURRICANE_PUNCH = ENTITY_TYPES.register("hurricane_punch",
+            () -> EntityType.Builder.<HurricanePunch>of(HurricanePunch::new, MobCategory.MISC)
+                    .sized(1.0F, 1.0F)
+                    .clientTrackingRange(6)
+                    .updateInterval(2)
+                    .build(MOD_ID + ":hurricane_punch"));
+
+    public static final RegistryObject<EntityType<HurricaneCyclone>> HURRICANE_CYCLONE = ENTITY_TYPES.register("hurricane_cyclone",
+            () -> EntityType.Builder.<HurricaneCyclone>of(HurricaneCyclone::new, MobCategory.MISC)
+                    .sized(1.0F, 1.5F)
+                    .clientTrackingRange(4)
+                    .updateInterval(1)
+                    .build(MOD_ID + ":hurricane_cyclone"));
+
+    public static final RegistryObject<EntityType<HurricaneCoreSummon>> HURRICANE_CORE_SUMMON = ENTITY_TYPES.register("hurricane_core_summon",
+            () -> EntityType.Builder.<HurricaneCoreSummon>of(HurricaneCoreSummon::new, MobCategory.MISC)
+                    .fireImmune()
+                    .noSummon()
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(10)
+                    .updateInterval(1)
+                    .build(MOD_ID + ":hurricane_core_summon"));
 
     public static final RegistryObject<EntityType<ArchGeomancerEntity>> ARCH_GEOMANCER = ENTITY_TYPES.register(
             "arch_geomancer",

@@ -73,6 +73,9 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> TheObliteratorCloneBurstHpDamage;
     public static final ForgeConfigSpec.ConfigValue<Boolean> TheObliteratorServantFirstPhaseProjectileImmunity;
     public static final ForgeConfigSpec.ConfigValue<Integer> HeresiarchServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BreezeServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> HurricaneServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> HurricaneServantCore;
     public static final ForgeConfigSpec.ConfigValue<Integer> WargLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> CerberusLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> RamblerServantLimit;
@@ -213,6 +216,18 @@ public class MobsConfig {
         WargLimit = BUILDER
                 .comment("Maximum number of Wargs that can be summoned (Default: 3)")
                 .defineInRange("wargLimit", 3, 1, 100);
+
+        BreezeServantLimit = BUILDER
+                .comment("Maximum number of Breeze Servants that can be summoned (Default: 16)")
+                .defineInRange("breezeServantLimit", 16, 1, 100);
+
+        HurricaneServantLimit = BUILDER
+                .comment("Number of Hurricane Servants that an individual player can have in total (Default: 3)")
+                .defineInRange("hurricaneServantLimit", 3, 1, 100);
+
+        HurricaneServantCore = BUILDER
+                .comment("Whether owned Hurricane Servants drop Hurricane Cores, Default: true")
+                .define("hurricaneServantCore", true);
 
         CerberusLimit = BUILDER
                 .comment("The maximum number of living Cerberuses owned by one player (Default: 1)")

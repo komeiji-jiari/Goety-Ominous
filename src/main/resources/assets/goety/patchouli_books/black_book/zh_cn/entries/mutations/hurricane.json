@@ -1,0 +1,26 @@
+{
+  "name": "飓风",
+  "icon": "goetyominous:heavy_core",
+  "category": "goety:mutations",
+  "advancement": "goety:goety/read_mistral_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "得到了沉重核心之后，你对其进行了一些研究，发现它带有强大的烈风魔力。利用沉重核心和一些魔法，你可以将核心植入到一个旋风人中，将其转化为强大的飓风。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:hurricane_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:hurricane_servant"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goetyominous:hurricane_core",
+      "text": "这些旋风人宗师可以通过风弹或者旋风棒来治愈。如果你穿着烈风长袍，也能为期提供治疗。如果你的飓风在战斗中瓦解了，它会返还飓风核心，拿着核心右击一个旋风人来复活你的飓风。"
+    }
+  ]
+}

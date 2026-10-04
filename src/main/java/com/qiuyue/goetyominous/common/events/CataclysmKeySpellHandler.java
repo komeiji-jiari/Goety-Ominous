@@ -6,6 +6,7 @@ import com.Polarice3.Goety.common.events.spell.CastMagicEvent;
 import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.utils.SEHelper;
 import com.Polarice3.Goety.utils.WandUtil;
+import com.qiuyue.goetyominous.compat.mod.AlexCavesCompat;
 import com.qiuyue.goetyominous.compat.mod.GoetyCataclysmCompat;
 import com.qiuyue.goetyominous.utils.KeyOfRlyehMixinHelper;
 import net.minecraft.world.entity.Entity;
@@ -96,6 +97,9 @@ public class CataclysmKeySpellHandler {
     }
 
     private static boolean isHoldingKey(LivingEntity caster) {
+        if (!AlexCavesCompat.isAlexCavesLoaded()) {
+            return false;
+        }
         return KeyOfRlyehMixinHelper.isKeyOfRlyeh(caster.getMainHandItem())
                 || KeyOfRlyehMixinHelper.isKeyOfRlyeh(caster.getOffhandItem());
     }

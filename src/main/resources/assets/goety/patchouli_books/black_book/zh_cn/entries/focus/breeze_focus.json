@@ -1,0 +1,21 @@
+{
+  "name": "微风聚晶",
+  "icon": "goetyominous:breeze_focus",
+  "category": "goety:focuses/wind",
+  "advancement": "goety:goety/read_mistral_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "圣所里的卷轴记载了召唤和控制风的秘密。据此你灵光一现设计出一个法术，允许你召唤和控制旋风人。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:breeze_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "使用风之魔杖允许你召唤更多旋风人。"
+    }
+  ]
+}

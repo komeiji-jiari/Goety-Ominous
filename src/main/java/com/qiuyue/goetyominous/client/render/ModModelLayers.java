@@ -38,12 +38,53 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ModModelLayers {
 
+    public static final net.minecraft.client.model.geom.ModelLayerLocation SERVANT_WIND_CHARGE =
+            new net.minecraft.client.model.geom.ModelLayerLocation(
+                    new net.minecraft.resources.ResourceLocation(
+                            com.qiuyue.goetyominous.GoetyOminous.MOD_ID, "servant_wind_charge"), "main");
+
+    public static final net.minecraft.client.model.geom.ModelLayerLocation BREEZE_SERVANT =
+            new net.minecraft.client.model.geom.ModelLayerLocation(
+                    new net.minecraft.resources.ResourceLocation(
+                            com.qiuyue.goetyominous.GoetyOminous.MOD_ID, "breeze_servant"), "main");
+
+    public static final net.minecraft.client.model.geom.ModelLayerLocation BREEZE_SERVANT_WIND =
+            new net.minecraft.client.model.geom.ModelLayerLocation(
+                    new net.minecraft.resources.ResourceLocation(
+                            com.qiuyue.goetyominous.GoetyOminous.MOD_ID, "breeze_servant_wind"), "main");
+
+    public static final net.minecraft.client.model.geom.ModelLayerLocation HURRICANE =
+            new net.minecraft.client.model.geom.ModelLayerLocation(
+                    new net.minecraft.resources.ResourceLocation(
+                            com.qiuyue.goetyominous.GoetyOminous.MOD_ID, "hurricane"), "main");
+
+    public static final net.minecraft.client.model.geom.ModelLayerLocation HURRICANE_PUNCH =
+            new net.minecraft.client.model.geom.ModelLayerLocation(
+                    new net.minecraft.resources.ResourceLocation(
+                            com.qiuyue.goetyominous.GoetyOminous.MOD_ID, "hurricane_punch"), "main");
+
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-                event.registerLayerDefinition(ModEntityLayers.CONQUILLAGER_SERVANT_LAYER,
+        event.registerLayerDefinition(ModEntityLayers.CONQUILLAGER_SERVANT_LAYER,
                 ConquillagerServantModel::createBodyLayer);
-                event.registerLayerDefinition(ModEntityLayers.INQUILLAGER_SERVANT_LAYER,
+
+        event.registerLayerDefinition(ModEntityLayers.INQUILLAGER_SERVANT_LAYER,
                 InquillagerServantModel::createBodyLayer);
+
+        event.registerLayerDefinition(SERVANT_WIND_CHARGE,
+                com.qiuyue.goetyominous.client.render.model.mm.WindChargeModel::createBodyLayer);
+
+        event.registerLayerDefinition(BREEZE_SERVANT,
+                () -> com.qiuyue.goetyominous.client.render.model.BreezeServantModel.createBodyLayer(32, 32));
+
+        event.registerLayerDefinition(BREEZE_SERVANT_WIND,
+                () -> com.qiuyue.goetyominous.client.render.model.BreezeServantModel.createBodyLayer(128, 128));
+
+        event.registerLayerDefinition(HURRICANE,
+                com.qiuyue.goetyominous.client.render.model.HurricaneModel::createBodyLayer);
+
+        event.registerLayerDefinition(HURRICANE_PUNCH,
+                com.qiuyue.goetyominous.client.render.model.HurricanePunchModel::createBodyLayer);
 
         event.registerLayerDefinition(CroneRobeModel.LAYER_LOCATION, CroneRobeModel::createBodyLayer);
 
@@ -510,6 +551,33 @@ public class ModModelLayers {
         event.registerEntityRenderer(ModEntityTypes.ACID_FUNGUS.get(), AcidFungusRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.PITCHFORK.get(), PitchforkRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.SERVANT_WIND_CHARGE.get(),
+                com.qiuyue.goetyominous.client.render.projectile.ServantWindChargeRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.BREEZE_WIND_CHARGE.get(),
+                com.qiuyue.goetyominous.client.render.projectile.ServantWindChargeRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.BREEZE_SERVANT.get(),
+                com.qiuyue.goetyominous.client.render.BreezeServantRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.BREEZE.get(),
+                com.qiuyue.goetyominous.client.render.BreezeRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.HURRICANE.get(),
+                com.qiuyue.goetyominous.client.render.HurricaneRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.HURRICANE_SERVANT.get(),
+                com.qiuyue.goetyominous.client.render.HurricaneRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.HURRICANE_PUNCH.get(),
+                com.qiuyue.goetyominous.client.render.HurricanePunchRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.HURRICANE_CYCLONE.get(),
+                com.qiuyue.goetyominous.client.render.HurricaneCycloneRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.HURRICANE_CORE_SUMMON.get(),
+                com.qiuyue.goetyominous.client.render.HurricaneCoreSummonRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.FEL_BOLT.get(), FelBoltRenderer::new);
 

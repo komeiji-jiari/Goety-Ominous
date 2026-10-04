@@ -25,14 +25,5 @@
   ],
   "result": {
     "item": "goetyominous:warped_steroids"
-  },
-  "conditions": [
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:mod_loaded",
-        "modid": "goety_revelation"
-      }
-    }
-  ]
+  }
 }

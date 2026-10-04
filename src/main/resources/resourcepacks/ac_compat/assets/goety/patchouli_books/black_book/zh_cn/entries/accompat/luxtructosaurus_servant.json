@@ -2,7 +2,7 @@
   "name": "暝煌龙",
   "icon": "alexscaves:tectonic_shard",
   "category": "goety:primordialcaves",
-  "advancement": "goety:goety/read_bygone_scroll",
+  "advancement": "goety:goety/read_terminus_scroll",
   "secret": true,
   "pages": [
     {
