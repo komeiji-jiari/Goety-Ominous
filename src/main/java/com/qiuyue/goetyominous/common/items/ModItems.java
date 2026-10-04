@@ -40,6 +40,15 @@ public class ModItems {
     public static final RegistryObject<Item> FEL_CORE = ITEMS.register("fel_core",
             () -> new Item(new Item.Properties().rarity(Rarity.COMMON).stacksTo(64)));
 
+    public static final RegistryObject<Item> WIND_CHARGE = ITEMS.register("wind_charge",
+            () -> new WindChargeItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> BREEZE_ROD = ITEMS.register("breeze_rod",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> HURRICANE_CORE = ITEMS.register("hurricane_core",
+            () -> new HurricaneCoreItem());
+
     public static final RegistryObject<Item> HARMONIOUS_DIAMOND = ITEMS.register("harmonious_diamond",
             () -> new Item(new Item.Properties().rarity(Rarity.COMMON).stacksTo(64)));
 
@@ -152,6 +161,9 @@ public class ModItems {
     public static final RegistryObject<Item> NETHER_WART_POTION = ITEMS.register("nether_wart_potion",
             () -> new NetherWartPotion());
 
+    public static final RegistryObject<Item> BREEZE_FOCUS = ITEMS.register("breeze_focus",
+            () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.BreezeSpell()));
+
     public static final RegistryObject<Item> HAUNT_FOCUS = ITEMS.register("haunt_focus",
             () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.HauntSpell()));
 
@@ -185,7 +197,28 @@ public class ModItems {
     public static final RegistryObject<Item> WOLF_TOTEM = ITEMS.register("wolf_totem",
             () -> new BlockItemBase(ModBlocks.WOLF_TOTEM.get()));
 
+    public static final RegistryObject<Item> WHIRLING_CAGE = ITEMS.register("whirling_cage",
+            () -> new BlockItemBase(ModBlocks.WHIRLING_CAGE.get()));
 
+    public static final RegistryObject<Item> HEAVY_CORE = ITEMS.register("heavy_core",
+            () -> new BlockItemBase(ModBlocks.HEAVY_CORE.get()));
+
+
+    public static final RegistryObject<ForgeSpawnEggItem> BREEZE_SPAWN_EGG = ITEMS.register(
+            "breeze_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.BREEZE, 0xAF94DF, 0x9F5CC0, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> BREEZE_SERVANT_SPAWN_EGG = ITEMS.register(
+            "breeze_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.BREEZE_SERVANT, 0xAF94DF, 0x9F5CC0, egg()));
+
+    public static final RegistryObject<ForgeSpawnEggItem> HURRICANE_SPAWN_EGG = ITEMS.register(
+            "hurricane_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.HURRICANE, 0x5E6FA8, 0xE8ECFF, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> HURRICANE_SERVANT_SPAWN_EGG = ITEMS.register(
+            "hurricane_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.HURRICANE_SERVANT, 0xB9C4E8, 0x5E6FA8, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> MIRED_SERVANT_SPAWN_EGG = ITEMS.register(
             "mired_servant_spawn_egg",

@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.events;
 
 import com.qiuyue.goetyominous.common.entities.util.ExtinctionCatalystEntity;
 import com.qiuyue.goetyominous.common.items.ac.AcItems;
+import com.qiuyue.goetyominous.compat.mod.AlexCavesCompat;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -14,6 +15,9 @@ public class ExtinctionCatalystHandler {
 
     @SubscribeEvent
     public static void onEntityJoinLevel(EntityJoinLevelEvent event) {
+        if (!AlexCavesCompat.isAlexCavesLoaded()) {
+            return;
+        }
         Level level = event.getLevel();
         if (!(level instanceof ServerLevel serverLevel)) {
             return;

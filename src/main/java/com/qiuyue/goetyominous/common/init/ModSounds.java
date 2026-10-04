@@ -15,6 +15,28 @@ public class ModSounds {
         SOUNDS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
+    public static final RegistryObject<SoundEvent> BREEZE_IDLE_GROUND = create("breeze_idle_ground");
+    public static final RegistryObject<SoundEvent> BREEZE_IDLE_AIR = create("breeze_idle_air");
+    public static final RegistryObject<SoundEvent> BREEZE_CHARGE = create("breeze_charge");
+    public static final RegistryObject<SoundEvent> BREEZE_DEATH = create("breeze_death");
+    public static final RegistryObject<SoundEvent> BREEZE_DEFLECT = create("breeze_deflect");
+    public static final RegistryObject<SoundEvent> BREEZE_HURT = create("breeze_hurt");
+    public static final RegistryObject<SoundEvent> BREEZE_INHALE = create("breeze_inhale");
+    public static final RegistryObject<SoundEvent> BREEZE_JUMP = create("breeze_jump");
+    public static final RegistryObject<SoundEvent> BREEZE_LAND = create("breeze_land");
+    public static final RegistryObject<SoundEvent> BREEZE_SHOOT = create("breeze_shoot");
+    public static final RegistryObject<SoundEvent> BREEZE_SLIDE = create("breeze_slide");
+    public static final RegistryObject<SoundEvent> BREEZE_WHIRL = create("breeze_whirl");
+
+    public static final RegistryObject<SoundEvent> HEAVY_CORE_BREAK = create("heavy_core_break");
+    public static final RegistryObject<SoundEvent> HEAVY_CORE_STEP = create("heavy_core_step");
+    public static final RegistryObject<SoundEvent> HEAVY_CORE_PLACE = create("heavy_core_place");
+    public static final RegistryObject<SoundEvent> HEAVY_CORE_HIT = create("heavy_core_hit");
+    public static final RegistryObject<SoundEvent> HEAVY_CORE_FALL = create("heavy_core_fall");
+
+    public static final RegistryObject<SoundEvent> MACE_SMASH_AIR = create("mace_smash_air");
+    public static final RegistryObject<SoundEvent> MACE_SMASH_GROUND_HEAVY = create("mace_smash_ground_heavy");
+
     public static final RegistryObject<SoundEvent> BOGGED_SERVANT_AMBIENT = create("bogged_servant_ambient");
     public static final RegistryObject<SoundEvent> BOGGED_SERVANT_HURT = create("bogged_servant_hurt");
     public static final RegistryObject<SoundEvent> BOGGED_SERVANT_DEATH = create("bogged_servant_death");
@@ -26,6 +48,9 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> WOLF_ARMOR_CRACK = create("wolf_armor_crack");
     public static final RegistryObject<SoundEvent> WOLF_ARMOR_BREAK = create("wolf_armor_break");
     public static final RegistryObject<SoundEvent> WOLF_ARMOR_REPAIR = create("wolf_armor_repair");
+
+    public static final RegistryObject<SoundEvent> WIND_CHARGE_THROW = create("wind_charge_throw");
+    public static final RegistryObject<SoundEvent> BREEZE_WIND_CHARGE_BURST = create("breeze_wind_charge_burst");
 
     public static final RegistryObject<SoundEvent> DREDEN_IDLE = create("dreden_idle");
     public static final RegistryObject<SoundEvent> DREDEN_HURT = create("dreden_hurt");

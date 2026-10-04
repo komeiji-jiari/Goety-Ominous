@@ -1,0 +1,40 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:animation_core"
+  },
+  "craftType": "sky",
+  "soulCost": 1,
+  "duration": 10,
+  "research": "mistral",
+  "ingredients": [
+    {
+      "item": "goetyominous:breeze_rod"
+    },
+    {
+      "item": "goetyominous:breeze_rod"
+    },
+    {
+      "item": "goetyominous:breeze_rod"
+    },
+    {
+      "item": "goetyominous:breeze_rod"
+    },
+    {
+      "item": "goetyominous:wind_charge"
+    },
+    {
+      "item": "goetyominous:wind_charge"
+    },
+    {
+      "item": "minecraft:sugar_cane"
+    },
+    {
+      "item": "minecraft:note_block"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:breeze_focus"
+  }
+}

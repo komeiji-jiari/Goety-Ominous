@@ -1,0 +1,29 @@
+{
+  "name": "Breeze Servant",
+  "icon": "goetyominous:breeze_rod",
+  "category": "goety:summons",
+  "advancement": "goety:goety/read_mistral_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "As cousins of the fiery entities that roam the Nether Fortress, these elemental creatures composed of winds excel at leaping high and moving quickly. They fire wind charges that can knock creatures away, and possess a natural repulsion against projectiles."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:breeze_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "You can summon these gale creatures through a Breeze Focus, or through a ritual that summons one without a limited lifespan."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:breeze_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "If the owner wears Wind Robe, the Breeze servant gains passive healing. Additionally, right-clicking your Breeze with a Breeze Rod or Wind Charge also heals it."
+    }
+  ]
+}

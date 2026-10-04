@@ -1,0 +1,21 @@
+{
+  "name": "Breeze Focus",
+  "icon": "goetyominous:breeze_focus",
+  "category": "goety:focuses/wind",
+  "advancement": "goety:goety/read_mistral_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The scrolls within the Sanctum record the secrets of summoning and commanding the wind. From these, you had a flash of inspiration and devised a spell that allows you to summon and control Breezes."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:breeze_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Using a Wind Staff allows you to summon more Breezes."
+    }
+  ]
+}

@@ -1,12 +1,13 @@
 package com.qiuyue.goetyominous.common.init;
 
 import com.qiuyue.goetyominous.GoetyOminous;
-import com.qiuyue.goetyominous.common.blocks.PiglinMerchantSpawnerBlock;
-import com.qiuyue.goetyominous.common.blocks.PlushieBlock;
-import com.qiuyue.goetyominous.common.blocks.WolfTotemBlock;
+import com.qiuyue.goetyominous.common.blocks.*;
 import com.qiuyue.goetyominous.common.items.ModItems;
 import com.qiuyue.goetyominous.common.items.PlushieBlockItem;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -21,6 +22,16 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> PIGLIN_MERCHANT_SPAWNER =
             BLOCKS.register("piglin_merchant_spawner", PiglinMerchantSpawnerBlock::new);
+
+    public static final RegistryObject<Block> WHIRLING_CAGE =
+            BLOCKS.register("whirling_cage", WhirlingCageBlock::new);
+
+    public static final RegistryObject<Block> HEAVY_CORE = BLOCKS.register("heavy_core",
+            () -> new HeavyCoreBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.METAL)
+                    .instrument(NoteBlockInstrument.SNARE)
+                    .sound(HeavyCoreBlock.HEAVY_CORE_SOUND)
+                    .strength(10.0F, 1200.0F)));
 
     public static final RegistryObject<WolfTotemBlock> WOLF_TOTEM =
             BLOCKS.register("wolf_totem", WolfTotemBlock::new);

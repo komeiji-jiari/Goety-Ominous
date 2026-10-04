@@ -17,14 +17,6 @@
     "RitualRequirementsMixin",
     "MutantMoreItemMixin",
     "MixinOssuaryBlockEntity",
-    "MixinBlackWolfRenderer",
-    "MixinWolfRenderer",
-    "MixinSkeletonWolfRenderer",
-    "MixinStormhoundRenderer",
-    "MixinWinterWolfRenderer",
-    "MixinHellhoundRenderer",
-    "MixinBlackBeastRenderer",
-    "MixinBlackBeastModel",
     "MixinBlackBeastHowlingSoul",
     "CuriosFinderMixin",
     "BrewCauldronBlockEntityMixin",
@@ -61,9 +53,22 @@
     "abyss.BouncyBubbleSpellKeyOfRlyehMixin",
     "abyss.TridentStormSpellKeyOfRlyehMixin",
     "abyss.GulfTentacleSpellKeyOfRlyehMixin",
-    "abyss.WaterJetSpellKeyOfRlyehMixin"
+    "abyss.WaterJetSpellKeyOfRlyehMixin",
+    "ExplosionAccessor",
+    "PlayerImpulseMixin",
+    "AbstractHurtingProjectileMixin",
+    "TrapDoorBlockInvoker"
   ],
-  "client": [],
+  "client": [
+    "MixinBlackWolfRenderer",
+    "MixinWolfRenderer",
+    "MixinSkeletonWolfRenderer",
+    "MixinStormhoundRenderer",
+    "MixinWinterWolfRenderer",
+    "MixinHellhoundRenderer",
+    "MixinBlackBeastRenderer",
+    "MixinBlackBeastModel"
+  ],
   "server": [],
   "injectors": {
     "defaultRequire": 0

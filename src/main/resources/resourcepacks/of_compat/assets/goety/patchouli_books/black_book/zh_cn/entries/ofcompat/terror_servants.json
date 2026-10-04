@@ -1,0 +1,25 @@
+{
+  "name": "惧鱼",
+  "icon":"opposing_force:terror_saw",
+  "category": "goety:ofcompat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "这些凶残的鱼类会用生物电锯切割面前的生物，不仅在水下来去自如，在陆地上也能灵活行动。很少见的情况下，可能会出现比其他惧鱼仆从更强大的精英个体。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:terror_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:terror_servant",
+      "scale": 0.6,
+      "text": "欢乐喜锯鱼"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "手持鱼类喂食或穿着深渊长袍即可治愈你的惧鱼。"
+    }
+  ]
+}

@@ -11,6 +11,16 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> BreezeServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> BreezeServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> BreezeServantRangeDamage;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> HurricaneHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> HurricaneArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> HurricanePunchDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> HurricaneSmashDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> HurricaneCycloneDamage;
+
     public static final ForgeConfigSpec.ConfigValue<Double> MiredHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> MiredDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> MiredArmor;
@@ -675,6 +685,28 @@ public class AttributesConfig {
     static {
         BUILDER.push("Servants Attributes");
 
+        BUILDER.push("Breeze Servant");
+        BreezeServantHealth = BUILDER.comment("How much Max Health Breeze Servants have, Default: 30.0")
+                .defineInRange("breezeServantHealth", 30.0, 1.0, Double.MAX_VALUE);
+        BreezeServantArmor = BUILDER.comment("How much natural Armor Breeze Servants have, Default: 0.0")
+                .defineInRange("breezeServantArmor", 0.0, 0.0, Double.MAX_VALUE);
+        BreezeServantRangeDamage = BUILDER.comment("How much damage a direct hit from a Breeze Servant's wind charge deals, Default: 3.0")
+                .defineInRange("breezeServantRangeDamage", 3.0, 1.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Hurricane");
+        HurricaneHealth = BUILDER.comment("How much Max Health Hurricanes have, Default: 110.0")
+                .defineInRange("hurricaneHealth", 110.0, 1.0, Double.MAX_VALUE);
+        HurricaneArmor = BUILDER.comment("How much natural Armor Hurricanes have, Default: 0.0")
+                .defineInRange("hurricaneArmor", 0.0, 0.0, Double.MAX_VALUE);
+        HurricanePunchDamage = BUILDER.comment("How much damage the Hurricane's Zoom-Punch deals, Default: 15.0")
+                .defineInRange("hurricanePunchDamage", 15.0, 1.0, Double.MAX_VALUE);
+        HurricaneSmashDamage = BUILDER.comment("How much damage the Hurricane's landing smash deals, Default: 8.0")
+                .defineInRange("hurricaneSmashDamage", 8.0, 1.0, Double.MAX_VALUE);
+        HurricaneCycloneDamage = BUILDER.comment("How much damage the Hurricane's cyclone deals each time it strikes, Default: 2.0")
+                .defineInRange("hurricaneCycloneDamage", 2.0, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
         BUILDER.push("Mired");
         MiredHealth = BUILDER.comment("How much Max Health Mired Servants have, Default: 24.0")
                 .defineInRange("miredHealth", 24.0, 1.0, Double.MAX_VALUE);
@@ -718,8 +750,8 @@ public class AttributesConfig {
         BUILDER.push("Dreden");
         DredenHealth = BUILDER.comment("How much Max Health Dredens have, Default: 30.0")
                 .defineInRange("dredenHealth", 30.0, 1.0, Double.MAX_VALUE);
-        DredenDamage = BUILDER.comment("How much damage Dreden deals, Default: 4.0")
-                .defineInRange("dredenDamage", 4.0, 1.0, Double.MAX_VALUE);
+        DredenDamage = BUILDER.comment("How much damage Dreden deals, Default: 2.0")
+                .defineInRange("dredenDamage", 2.0, 1.0, Double.MAX_VALUE);
         DredenFollowRange = BUILDER.comment("Dreden follow range, Default: 35.0")
                 .defineInRange("dredenFollowRange", 35.0, 1.0, Double.MAX_VALUE);
         DredenMovementSpeed = BUILDER.comment("Dreden movement speed, Default: 0.25")

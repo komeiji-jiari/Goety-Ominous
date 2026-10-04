@@ -62,6 +62,11 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachSummonDown;
     public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachCoolDown;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> BreezeCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BreezeDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BreezeSummonDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BreezeCoolDown;
+
     public static final ForgeConfigSpec.ConfigValue<Integer> DredenSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> DredenCastDuration;
     public static final ForgeConfigSpec.ConfigValue<Integer> DredenSummonDown;
@@ -501,8 +506,8 @@ public class SpellConfig {
         BUILDER.push("TremorzillaBreath");
         TremorzillaBreathCost = BUILDER.comment("Soul cost of Tremorzilla Breath spell, Default: 500")
                 .defineInRange("tremorzillaBreathCost", 500, 1, 10000);
-        TremorzillaBreathCastDuration = BUILDER.comment("Cast duration of Tremorzilla Breath spell in ticks, Default: 200")
-                .defineInRange("tremorzillaBreathCastDuration", 200, 0, 2000);
+        TremorzillaBreathCastDuration = BUILDER.comment("Cast duration of Tremorzilla Breath spell in ticks, Default: 600")
+                .defineInRange("tremorzillaBreathCastDuration", 600, 0, 2000);
         TremorzillaBreathCoolDown = BUILDER.comment("Cooldown of Tremorzilla Breath spell in ticks, Default: 1200")
                 .defineInRange("tremorzillaBreathCoolDown", 1200, 0, 100000);
         TremorzillaBreathDamage = BUILDER.comment("Damage per hit of the Tremorzilla Breath beam, Default: 20.0")
@@ -718,6 +723,17 @@ public class SpellConfig {
                 .defineInRange("dredenSummonDown", 300, 0, 5000);
         DredenCoolDown = BUILDER.comment("Cooldown of Dreden Servant spell in ticks (Default: 120)")
                 .defineInRange("dredenCoolDown", 120, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("Breeze");
+        BreezeCost = BUILDER.comment("Soul cost of Breeze Servant spell (Default: 16)")
+                .defineInRange("breezeSoulCost", 16, 1, 100);
+        BreezeDuration = BUILDER.comment("Cast duration of Breeze Servant spell in ticks (Default: 100)")
+                .defineInRange("breezeCastDuration", 100, 0, 500);
+        BreezeSummonDown = BUILDER.comment("Summon down duration of Breeze Servant spell in ticks (Default: 400)")
+                .defineInRange("breezeSummonDown", 400, 0, 5000);
+        BreezeCoolDown = BUILDER.comment("Cooldown of Breeze Servant spell in ticks (Default: 200)")
+                .defineInRange("breezeCoolDown", 200, 0, 5000);
         BUILDER.pop();
 
         BUILDER.push("Scorch");

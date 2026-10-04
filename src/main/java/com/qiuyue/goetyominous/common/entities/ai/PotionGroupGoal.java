@@ -21,6 +21,7 @@ public class PotionGroupGoal<T extends AbstractGOCultist> extends Goal {
 
     @Override
     public boolean canUse() {
+        this.beldam = null;
         List<Beldam> beldams = this.mob.level().getEntitiesOfClass(Beldam.class,
                 this.mob.getBoundingBox().inflate(8.0F, 4.0F, 8.0F));
         for (Beldam beldamEntity : beldams) {
@@ -28,22 +29,20 @@ public class PotionGroupGoal<T extends AbstractGOCultist> extends Goal {
                 this.beldam = beldamEntity;
             }
         }
-        if (this.beldam != null) {
-            return this.mob.getActiveEffects().isEmpty()
-                    && this.mob.getTarget() != null
-                    && this.mob.getSensing().hasLineOfSight(this.beldam);
-        }
-        return false;
+        return this.beldam != null
+                && this.mob.getActiveEffects().isEmpty()
+                && this.mob.getTarget() != null
+                && this.mob.getSensing().hasLineOfSight(this.beldam);
     }
 
     @Override
     public boolean canContinueToUse() {
-        return this.mob.getActiveEffects().isEmpty()
-                && this.mob.getTarget() != null
-                && this.mob.getSensing().hasLineOfSight(this.beldam)
-                && this.beldam != null
+        return this.beldam != null
                 && !this.beldam.isDeadOrDying()
-                && !this.beldam.isInvisible();
+                && !this.beldam.isInvisible()
+                && this.mob.getActiveEffects().isEmpty()
+                && this.mob.getTarget() != null
+                && this.mob.getSensing().hasLineOfSight(this.beldam);
     }
 
     @Override

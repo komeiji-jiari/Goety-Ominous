@@ -1,0 +1,29 @@
+{
+  "name": "旋风人仆从",
+  "icon": "goetyominous:breeze_rod",
+  "category": "goety:summons",
+  "advancement": "goety:goety/read_mistral_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "作为游荡在下界的火焰集合体的亲戚，这些由烈风构成的元素生物擅长高高跃起快速移动，发射能够弹飞生物的风弹，并且对弹射物有着天然的排斥效果。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:breeze_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "你可以通过微风聚晶来召唤这些烈风生物，或者通过一个仪式来召唤一只没有寿命限制的旋风人仆从。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:breeze_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "如果主人穿戴了烈风长袍，那么旋风人仆从将获得被动治疗。此外，用旋风棒或者风弹右键也可以治愈你的旋风人。"
+    }
+  ]
+}

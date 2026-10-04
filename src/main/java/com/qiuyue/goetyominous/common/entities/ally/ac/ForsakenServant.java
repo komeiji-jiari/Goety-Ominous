@@ -20,7 +20,6 @@ import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.common.network.ForsakenRiderJumpPacket;
 import com.qiuyue.goetyominous.common.network.ModNetwork;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -290,10 +289,10 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
     }
 
     private void tickRiderChargeSensing(Player player) {
-        if (!(player instanceof LocalPlayer local)) {
+        if (!com.qiuyue.goetyominous.client.ForsakenRiderInput.isLocalPlayer(player)) {
             return;
         }
-        boolean held = local.input.jumping;
+        boolean held = com.qiuyue.goetyominous.client.ForsakenRiderInput.isJumpHeld(player);
         boolean grounded = this.onGround() && !this.isLeaping() && !this.isInWater();
         if (held) {
             if (!this.riderPrevJumpHeld) {

@@ -21,14 +21,5 @@
   ],
   "result": {
     "item": "goetyominous:fel_core"
-  },
-  "conditions": [
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:mod_loaded",
-        "modid": "goety_revelation"
-      }
-    }
-  ]
+  }
 }

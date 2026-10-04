@@ -27,7 +27,8 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestHealableRaiderTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableWitchTargetGoal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.raid.Raider;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.monster.Witch;
@@ -59,6 +60,7 @@ import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 public class Beldam extends AbstractGOCultist implements RangedAttackMob, ICultist {
 
@@ -69,9 +71,8 @@ public class Beldam extends AbstractGOCultist implements RangedAttackMob, ICulti
             SynchedEntityData.defineId(Beldam.class, EntityDataSerializers.BOOLEAN);
 
     private int usingTime;
-    private int healCooldown;
-    private NearestHealableRaiderTargetGoal<Raider> healRaidersGoal;
-    private NearestAttackableTargetGoal<Player> attackPlayersGoal;
+    private HealRaiderGoal<Raider> healRaidersGoal;
+    private NearestAttackableWitchTargetGoal<Player> attackPlayersGoal;
 
     public Beldam(EntityType<? extends Beldam> type, Level worldIn) {
         super(type, worldIn);
@@ -82,26 +83,21 @@ public class Beldam extends AbstractGOCultist implements RangedAttackMob, ICulti
     protected void registerGoals() {
         super.registerGoals();
 
-        this.healRaidersGoal = new NearestHealableRaiderTargetGoal<>(this, Raider.class, true,
-                (raider) -> raider instanceof Raider
-                        && ((Raider) raider).getTarget() != null
-                        && ((Raider) raider).getTarget().isAlive()
-                        && raider.distanceToSqr(((Raider) raider).getTarget()) >= 36.0D
+        this.healRaidersGoal = new HealRaiderGoal<>(this, Raider.class, true,
+                (raider) -> raider instanceof Raider r
+                        && r.getTarget() != null
+                        && r.getTarget().isAlive()
+                        && raider.distanceToSqr(r.getTarget()) >= 36.0D
                         && !(raider instanceof Witch)
-                        && !(raider instanceof Beldam));
+                        && !(raider instanceof Beldam)
+                        && selectSupportPotion(r) != null);
 
-        this.attackPlayersGoal = new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, null) {
-            @Override
-            public boolean canUse() {
-                return Beldam.this.healCooldown <= 0 && super.canUse();
-            }
-        };
-        this.attackPlayersGoal.setFlags(EnumSet.of(Goal.Flag.TARGET));
+        this.attackPlayersGoal = new NearestAttackableWitchTargetGoal<>(this, Player.class, 10, true, false, null);
         this.goalSelector.addGoal(1, new BeldamBarterGoal());
         this.goalSelector.addGoal(2, new PotionAttackGoal(this));
         this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(2, this.healRaidersGoal);
-        this.targetSelector.addGoal(3, this.attackPlayersGoal);
+        this.targetSelector.addGoal(3, this.healRaidersGoal);
+        this.targetSelector.addGoal(4, this.attackPlayersGoal);
     }
 
     @Override
@@ -147,6 +143,15 @@ public class Beldam extends AbstractGOCultist implements RangedAttackMob, ICulti
 
     public boolean isDrinkingPotion() { return this.entityData.get(DATA_USING_ITEM); }
 
+    private boolean isUnderAttack() {
+        LivingEntity attacker = this.getLastHurtByMob();
+        if (attacker == null || !attacker.isAlive()) {
+            return false;
+        }
+        double d = this.getAttributeValue(Attributes.FOLLOW_RANGE);
+        return this.distanceToSqr(attacker) <= d * d;
+    }
+
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn,
@@ -177,9 +182,7 @@ public class Beldam extends AbstractGOCultist implements RangedAttackMob, ICulti
     @Override
     public void aiStep() {
         if (!this.level().isClientSide && this.isAlive()) {
-            if (this.healCooldown > 0) {
-                --this.healCooldown;
-            }
+            this.healRaidersGoal.decrementCooldown();
 
             if (this.isDrinkingPotion()) {
                 if (this.usingTime-- <= 0) {
@@ -302,10 +305,19 @@ public class Beldam extends AbstractGOCultist implements RangedAttackMob, ICulti
             this.level().addFreshEntity(potion);
         } else {
             Potion potion = this.selectCombatPotion(target, f);
+            if (potion == null) {
+                this.setTarget(null);
+                return;
+            }
             ThrownPotion thrown = new ThrownPotion(this.level(), this);
             thrown.setItem(PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), potion));
             thrown.setXRot(thrown.getXRot() - 20.0F);
-            thrown.shoot(d0, d1 + (double) (f * 0.2F), d2, 0.75F, 8.0F);
+            double throwY = d1 + (double) (f * 0.2F);
+            if (target instanceof Raider) {
+                throwY = target.getY() + (double) target.getBbHeight() * 0.5D - (this.getEyeY() - 0.1D)
+                        + (double) (f * f * 0.045F);
+            }
+            thrown.shoot(d0, throwY, d2, 0.75F, 8.0F);
             if (!this.isSilent()) {
                 this.level().playSound(null, this.getX(), this.getY(), this.getZ(),
                         SoundEvents.WITCH_THROW, this.getSoundSource(), 1.0F,
@@ -317,24 +329,9 @@ public class Beldam extends AbstractGOCultist implements RangedAttackMob, ICulti
 
     private Potion selectCombatPotion(LivingEntity target, float distance) {
         if (target instanceof Raider raider) {
-            if (raider.isOnFire()) return Potions.FIRE_RESISTANCE;
-            if (raider.getHealth() <= raider.getMaxHealth() / 2) {
-                if (!raider.isInvertedHealAndHarm()) return Potions.HEALING;
-            }
-            if (!(raider.getMainHandItem().getItem() instanceof ProjectileWeaponItem)) {
-                if (!raider.hasEffect(MobEffects.DAMAGE_BOOST)) return Potions.STRENGTH;
-                if (!raider.hasEffect(MobEffects.MOVEMENT_SPEED)) return Potions.SWIFTNESS;
-                if (!raider.hasEffect(MobEffects.REGENERATION) && !raider.isInvertedHealAndHarm())
-                    return Potions.REGENERATION;
-                if (!raider.isInvertedHealAndHarm()) return Potions.HEALING;
-            } else {
-                if (!raider.hasEffect(MobEffects.WEAKNESS)) return Potions.WEAKNESS;
-                if (!raider.hasEffect(MobEffects.REGENERATION) && !raider.isInvertedHealAndHarm())
-                    return Potions.REGENERATION;
-                if (!raider.isInvertedHealAndHarm()) return Potions.HEALING;
-            }
+            Potion potion = selectSupportPotion(raider);
             this.setTarget(null);
-            return Potions.HARMING;
+            return potion;
         }
 
         if (target.getMobType() == MobType.UNDEAD) return Potions.HEALING;
@@ -345,6 +342,25 @@ public class Beldam extends AbstractGOCultist implements RangedAttackMob, ICulti
             return Potions.WEAKNESS;
 
         return Potions.HARMING;
+    }
+
+    @Nullable
+    private static Potion selectSupportPotion(Raider raider) {
+        if (raider.isOnFire() && !raider.hasEffect(MobEffects.FIRE_RESISTANCE)) return Potions.FIRE_RESISTANCE;
+        if (raider.getHealth() <= raider.getMaxHealth() / 2) {
+            if (!raider.isInvertedHealAndHarm()) return Potions.HEALING;
+        }
+        if (!(raider.getMainHandItem().getItem() instanceof ProjectileWeaponItem)) {
+            if (!raider.hasEffect(MobEffects.DAMAGE_BOOST)) return Potions.STRENGTH;
+            if (!raider.hasEffect(MobEffects.MOVEMENT_SPEED)) return Potions.SWIFTNESS;
+            if (!raider.hasEffect(MobEffects.REGENERATION) && !raider.isInvertedHealAndHarm())
+                return Potions.REGENERATION;
+        } else {
+            if (!raider.hasEffect(MobEffects.WEAKNESS)) return Potions.WEAKNESS;
+            if (!raider.hasEffect(MobEffects.REGENERATION) && !raider.isInvertedHealAndHarm())
+                return Potions.REGENERATION;
+        }
+        return null;
     }
 
     @Override
@@ -540,6 +556,49 @@ public class Beldam extends AbstractGOCultist implements RangedAttackMob, ICulti
             } else if (this.attackTime < 0) {
                 this.attackTime = Mth.floor(f * 60.0F);
             }
+        }
+    }
+
+    class HealRaiderGoal<T extends LivingEntity> extends NearestAttackableTargetGoal<T> {
+        private int cooldown;
+
+        public HealRaiderGoal(Raider mob, Class<T> type, boolean mustSee, @Nullable Predicate<LivingEntity> predicate) {
+            super(mob, type, 10, mustSee, false, predicate);
+            this.targetConditions = TargetingConditions.forNonCombat().range(this.getFollowDistance()).selector(predicate);
+        }
+
+        public int getCooldown() {
+            return this.cooldown;
+        }
+
+        public void decrementCooldown() {
+            --this.cooldown;
+        }
+
+        @Override
+        public boolean canUse() {
+            if (this.cooldown <= 0
+                    && Beldam.this.getHealth() >= Beldam.this.getMaxHealth()
+                    && !Beldam.this.isUnderAttack()
+                    && this.mob.getRandom().nextBoolean()) {
+                this.findTarget();
+                return this.target != null;
+            }
+            return false;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return this.mob.getTarget() != null
+                    && this.target instanceof Raider raider
+                    && selectSupportPotion(raider) != null
+                    && super.canContinueToUse();
+        }
+
+        @Override
+        public void start() {
+            this.cooldown = 100;
+            super.start();
         }
     }
 }

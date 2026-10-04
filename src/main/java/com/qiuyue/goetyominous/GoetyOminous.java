@@ -5,9 +5,11 @@ import com.Polarice3.Goety.common.entities.ally.BlackWolf;
 import com.Polarice3.Goety.common.entities.neutral.ZPiglinServant;
 import com.qiuyue.goetyominous.common.entities.ally.ias.*;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractDredenEntity;
+import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractHurricane;
 import com.qiuyue.goetyominous.common.entities.ally.spider.CrimsonSpiderServant;
 import com.qiuyue.goetyominous.common.entities.hostile.Scorch;
 import com.qiuyue.goetyominous.common.entities.hostile.cultists.Disciple;
+import com.qiuyue.goetyominous.common.entities.hostile.BreezeEntity;
 import com.qiuyue.goetyominous.common.entities.hostile.UrbhadhachEntity;
 import com.qiuyue.goetyominous.common.entities.hostile.cultists.*;
 import com.qiuyue.goetyominous.common.init.*;
@@ -91,6 +93,7 @@ public class GoetyOminous {
         biomeModifiers.register(modEventBus);
         biomeModifiers.register("mob_spawns", ModMobSpawnBiomeModifier::makeCodec);
         ModSounds.init();
+        ModParticleTypes.init();
         ModItems.init();
         ModBlocks.register(modEventBus);
         ModProcessorTypes.register(modEventBus);
@@ -232,6 +235,10 @@ public class GoetyOminous {
         if (IllageAndSpillageCompat.isIllageAndSpillageLoaded()) {
             com.qiuyue.goetyominous.compat.ias.IasCompatManager.setCustomAttributes(event);
         }
+        event.put(ModEntityTypes.BREEZE_SERVANT.get(), BreezeServant.setCustomAttributes().build());
+        event.put(ModEntityTypes.BREEZE.get(), BreezeEntity.setCustomAttributes().build());
+        event.put(ModEntityTypes.HURRICANE.get(), AbstractHurricane.setCustomAttributes().build());
+        event.put(ModEntityTypes.HURRICANE_SERVANT.get(), AbstractHurricane.setCustomAttributes().build());
         event.put(ModEntityTypes.URBHADHACH.get(), UrbhadhachEntity.setCustomAttributes().build());
         event.put(ModEntityTypes.URBHADHACH_SERVANT.get(), UrbhadhachServant.setCustomAttributes().build());
         event.put(ModEntityTypes.MIRED_SERVANT.get(), MiredServant.setCustomAttributes().build());

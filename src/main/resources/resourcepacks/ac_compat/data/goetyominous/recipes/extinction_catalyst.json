@@ -7,7 +7,7 @@
   "craftType": "expert_nether",
   "soulCost": 50,
   "duration": 30,
-  "research": "bygone",
+  "research": "terminus",
   "ingredients": [
     {
       "item": "alexscaves:tectonic_shard"

@@ -1,7 +1,14 @@
 {
   "replace": false,
   "values": [
-    "goetyominous:mine_guardian_block",
-    "goetyominous:gammaroach_nest"
+    "goetyominous:heavy_core",
+    {
+      "id": "goetyominous:gammaroach_nest",
+      "required": false
+    },
+    {
+      "id": "goetyominous:mine_guardian_block",
+      "required": false
+    }
   ]
 }

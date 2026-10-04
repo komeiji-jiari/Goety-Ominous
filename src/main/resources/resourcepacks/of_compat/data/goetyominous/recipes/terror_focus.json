@@ -1,0 +1,33 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:hunting_focus"
+  },
+  "craftType": "deep",
+  "soulCost": 1,
+  "duration": 10,
+  "ingredients": [
+    {
+      "item": "opposing_force:terror_saw"
+    },
+    {
+      "item": "opposing_force:terror_saw"
+    },
+    {
+      "item": "opposing_force:terror_leg"
+    },
+    {
+      "tag": "minecraft:fishes"
+    },
+    {
+      "item": "goety:venomous_fang"
+    },
+    {
+      "item": "goety:hunger_core"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:terror_focus"
+  }
+}

@@ -64,7 +64,7 @@ public class WitherScytheItem extends DarkScytheItem implements ISoulRepair, IPe
     }
 
     public void strike(Level level, Player player, ItemStack stack) {
-        if (player.getAttackStrengthScale(0.5F) > 0.848F && !player.isSwimming() && !player.isFallFlying()) {
+        if (player.getAttackStrengthScale(0.5F) > 0.848F) {
             level.playSound(null, player.getX(), player.getY(), player.getZ(),
                     SoundEventInit.MUTANT_WITHER_SKELETON_FIRE_SLASH.get(), SoundSource.PLAYERS, 2.0F,
                     0.8F + level.random.nextFloat() * 0.4F / 0.8F);
