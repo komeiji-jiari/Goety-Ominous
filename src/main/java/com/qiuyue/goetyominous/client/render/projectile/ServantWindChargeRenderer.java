@@ -4,8 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.render.ModModelLayers;
+import com.qiuyue.goetyominous.client.render.model.mm.WindChargeModel;
 import com.qiuyue.goetyominous.common.entities.projectile.AbstractWindCharge;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -17,11 +17,11 @@ public class ServantWindChargeRenderer extends EntityRenderer<AbstractWindCharge
     private static final float MAX_RENDER_DISTANCE = Mth.square(3.5F);
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(GoetyOminous.MOD_ID, "textures/entity/projectile/wind_charge.png");
-    private final ModelPart model;
+    private final WindChargeModel model;
 
     public ServantWindChargeRenderer(EntityRendererProvider.Context context) {
         super(context);
-        this.model = context.bakeLayer(ModModelLayers.SERVANT_WIND_CHARGE);
+        this.model = new WindChargeModel(context.bakeLayer(ModModelLayers.SERVANT_WIND_CHARGE));
     }
 
     @Override
@@ -35,7 +35,8 @@ public class ServantWindChargeRenderer extends EntityRenderer<AbstractWindCharge
         }
         float age = (float) entity.tickCount + partialTick;
         VertexConsumer consumer = buffer.getBuffer(WindChargeRenderTypes.breezeWind(TEXTURE, this.getOffset(age) % 1.0F, 0.0F));
-        this.model.render(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY);
+        this.model.setupAnim(entity, 0.0F, 0.0F, age, 0.0F, 0.0F);
+        this.model.renderToBuffer(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         super.render(entity, entityYaw, partialTick, poseStack, buffer, packedLight);
     }
 
