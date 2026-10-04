@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.projectile;
 
+import com.Polarice3.Goety.client.particles.ModParticleTypes;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.ModTags;
 import com.qiuyue.goetyominous.utils.SimpleExplosionDamageCalculator;
@@ -31,9 +32,11 @@ public abstract class AbstractWindCharge extends AbstractHurtingProjectile imple
             new SimpleExplosionDamageCalculator(true, false, Optional.empty(),
                     BuiltInRegistries.BLOCK.getTag(ModTags.Blocks.BLOCKS_WIND_CHARGE_EXPLOSIONS)
                             .map(holders -> (HolderSet<Block>) holders));
-    public static final double JUMP_SCALE = 0.25D;
     public static final ResourceKey<DamageType> WIND_CHARGE_DAMAGE_TYPE =
             ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(GoetyOminous.MOD_ID, "wind_charge"));
+    private static final double MAX_DISTANCE = 40.0D;
+    private static final int MAX_LIFE = 60;
+    private double traveled;
 
     public AbstractWindCharge(EntityType<? extends AbstractWindCharge> type, Level level) {
         super(type, level);
@@ -111,8 +114,24 @@ public abstract class AbstractWindCharge extends AbstractHurtingProjectile imple
         if (!this.level().isClientSide && this.getBlockY() > this.level().getMaxBuildHeight() + 30) {
             this.explode(this.position());
             this.discard();
-        } else {
-            super.tick();
+            return;
+        }
+        Vec3 from = this.position();
+        Vec3 motion = this.getDeltaMovement();
+        super.tick();
+        if (!this.level().isClientSide) {
+            if (this.isRemoved()) {
+                return;
+            }
+            this.traveled += from.distanceTo(this.position());
+            if (this.traveled >= MAX_DISTANCE || this.tickCount > MAX_LIFE) {
+                this.explode(this.position());
+                this.discard();
+                return;
+            }
+        }
+        if (this.isInWater()) {
+            this.setDeltaMovement(motion.add(this.xPower, this.yPower, this.zPower));
         }
     }
 
@@ -138,6 +157,7 @@ public abstract class AbstractWindCharge extends AbstractHurtingProjectile imple
     public void addAdditionalSaveData(net.minecraft.nbt.CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("GrantsFallDamageImmunity", this.grantsFallDamageImmunity);
+        tag.putDouble("Traveled", this.traveled);
     }
 
     @Override
@@ -145,6 +165,9 @@ public abstract class AbstractWindCharge extends AbstractHurtingProjectile imple
         super.readAdditionalSaveData(tag);
         if (tag.contains("GrantsFallDamageImmunity")) {
             this.grantsFallDamageImmunity = tag.getBoolean("GrantsFallDamageImmunity");
+        }
+        if (tag.contains("Traveled")) {
+            this.traveled = tag.getDouble("Traveled");
         }
     }
 
@@ -167,7 +190,7 @@ public abstract class AbstractWindCharge extends AbstractHurtingProjectile imple
 
     @Override
     protected ParticleOptions getTrailParticle() {
-        return null;
+        return ModParticleTypes.NONE.get();
     }
 
     @Override
