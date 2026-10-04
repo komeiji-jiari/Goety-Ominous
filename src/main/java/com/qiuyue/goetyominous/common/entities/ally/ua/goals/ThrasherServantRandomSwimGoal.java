@@ -18,6 +18,10 @@ public class ThrasherServantRandomSwimGoal extends RandomSwimmingGoal {
     }
 
     public boolean canUse() {
+        if (this.thrasher.getControllingPassenger() != null) {
+            return false;
+        }
+
         if (!this.forceTrigger) {
             if (this.thrasher.getNoActionTime() >= 100) {
                 return false;

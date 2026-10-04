@@ -29,7 +29,7 @@ public class ThrasherServantFindDetectionPointGoal extends Goal {
         boolean flag = !this.thrasher.isStunned() && this.thrasher.getRandom().nextFloat() < 0.05F;
         if (flag) {
             this.findNearestTarget();
-            return this.foundTarget != null && this.thrasher.getTicksSinceLastSonarFire() > 55 && ThrasherServant.ENEMY_MATCHER.test(this.foundTarget);
+            return this.foundTarget != null && this.thrasher.getTicksSinceLastSonarFire() > 55 && this.thrasher.isValidTarget(this.foundTarget);
         }
         return false;
     }
@@ -58,7 +58,8 @@ public class ThrasherServantFindDetectionPointGoal extends Goal {
     }
 
     private void findNearestTarget() {
-        Predicate<LivingEntity> predicate = entity -> ThrasherServant.ENEMY_MATCHER.test(entity);
+        Predicate<LivingEntity> predicate = entity -> this.thrasher.isSonarTarget(entity)
+                && this.thrasher.distanceTo(entity) > ThrasherServant.BITE_RANGE;
         this.foundTarget = this.thrasher.level().getNearestEntity(
                 this.thrasher.level().getEntitiesOfClass(LivingEntity.class, this.getTargetableArea(32), predicate),
                 TargetingConditions.forCombat().range(this.getTargetDistance()).selector(null),
