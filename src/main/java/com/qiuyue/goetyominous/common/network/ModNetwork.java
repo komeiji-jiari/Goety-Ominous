@@ -61,5 +61,9 @@ public class ModNetwork {
                 NuclearExplosionEffectPacket::encode,
                 NuclearExplosionEffectPacket::decode,
                 NuclearExplosionEffectPacket::handle);
+        CHANNEL.registerMessage(id++, WindChargeImpulsePacket.class,
+                WindChargeImpulsePacket::encode,
+                WindChargeImpulsePacket::decode,
+                WindChargeImpulsePacket::handle);
     }
 }

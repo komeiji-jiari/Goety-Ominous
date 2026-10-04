@@ -99,7 +99,7 @@ public class ServantWindCharge extends AbstractWindCharge {
                         .map(holders -> (HolderSet<Block>) holders));
         if (!this.level().isClientSide) {
             WindChargeExplosion explosion = new WindChargeExplosion(this.level(), this,
-                    windChargeDamage(this.level(), this, null), calculator, pos.x, pos.y, pos.z, this.radius,
+                    windChargeDamage(this.level(), this, this.getOwner()), calculator, pos.x, pos.y, pos.z, this.radius,
                     ModParticleTypes.GUST_EMITTER_SMALL.get(), ModParticleTypes.GUST_EMITTER_LARGE.get(),
                     ModSounds.BREEZE_WIND_CHARGE_BURST.get());
             explosion.explode();
