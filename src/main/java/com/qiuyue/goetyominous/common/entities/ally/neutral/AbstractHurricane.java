@@ -23,6 +23,7 @@ import javax.annotation.Nullable;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -36,6 +37,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
@@ -47,6 +49,8 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.HitResult;
@@ -67,6 +71,14 @@ public abstract class AbstractHurricane extends Summoned implements ProjectileDe
     private static final float VOICE_PITCH = 0.45F;
     private static final int WHIRL_SOUND_FREQUENCY_MIN = 1;
     private static final int WHIRL_SOUND_FREQUENCY_MAX = 80;
+    private static final int IDLE_PARTICLES_AMOUNT = 1;
+    private static final int JUMP_TRAIL_PARTICLES_AMOUNT = 3;
+    private static final int JUMP_TRAIL_DURATION_TICKS = 5;
+    private static final int WIND_BURST_PARTICLES_AMOUNT = 16;
+    private static final int WIND_BURST_VISUAL_COOLDOWN = 4;
+    private static final float FALL_DISTANCE_SOUND_TRIGGER_THRESHOLD = 3.0F;
+    private static final int MAX_HEAD_Y_ROT = 30;
+    private static final int HEAD_ROT_SPEED = 25;
     private static final ProjectileDeflection PROJECTILE_DEFLECTION = (projectile, entity, random) -> {
         entity.level().playSound(null, entity, ModSounds.BREEZE_DEFLECT.get(), entity.getSoundSource(), 1.2F, 0.6F);
         ProjectileDeflection.REVERSE.deflect(projectile, entity, random);
@@ -80,10 +92,14 @@ public abstract class AbstractHurricane extends Summoned implements ProjectileDe
     private int punchCooldown;
     private int stormCooldown;
     private int jumpCooldown;
+    private int windBurstCooldown;
     private int soundTick;
+    private int jumpTrailTicks;
     private boolean jumpActive;
     @Nullable
     private Vec3 retreatFrom;
+    @Nullable
+    private BlockState goetyominous$inBlockState;
 
     public AbstractHurricane(EntityType<? extends Owned> type, Level level) {
         super(type, level);
@@ -108,8 +124,19 @@ public abstract class AbstractHurricane extends Summoned implements ProjectileDe
     }
 
     @Override
+    public int getMaxHeadYRot() {
+        return MAX_HEAD_Y_ROT;
+    }
+
+    @Override
+    public int getHeadRotSpeed() {
+        return HEAD_ROT_SPEED;
+    }
+
+    @Override
     protected void registerGoals() {
         super.registerGoals();
+        this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new DivineStormGoal());
         this.goalSelector.addGoal(2, new ZoomPunchGoal());
         this.goalSelector.addGoal(3, new SmashJumpGoal());
@@ -210,6 +237,12 @@ public abstract class AbstractHurricane extends Summoned implements ProjectileDe
     public void tick() {
         super.tick();
         if (this.level().isClientSide && this.isAlive()) {
+            if (this.jumpActive && !this.onGround()) {
+                this.emitJumpTrailParticles();
+            } else {
+                this.resetJumpTrail();
+                this.emitGroundParticles(IDLE_PARTICLES_AMOUNT);
+            }
             if (--this.soundTick <= 0) {
                 this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), ModSounds.BREEZE_WHIRL.get(), this.getSoundSource(), this.getSoundVolume() * 0.8F, this.getVoicePitch(), false);
                 this.soundTick = Mth.randomBetweenInclusive(this.random, WHIRL_SOUND_FREQUENCY_MIN, WHIRL_SOUND_FREQUENCY_MAX);
@@ -218,6 +251,47 @@ public abstract class AbstractHurricane extends Summoned implements ProjectileDe
                 this.level().addParticle(ParticleTypes.CLOUD, this.getRandomX(0.6D), this.getY() + this.random.nextDouble() * 0.6D, this.getRandomZ(0.6D), 0.0D, 0.02D, 0.0D);
             }
         }
+    }
+
+    @Override
+    public void baseTick() {
+        this.goetyominous$inBlockState = null;
+        super.baseTick();
+    }
+
+    public BlockState getInBlockState() {
+        if (this.goetyominous$inBlockState == null) {
+            this.goetyominous$inBlockState = this.level().getBlockState(this.blockPosition());
+        }
+        return this.goetyominous$inBlockState;
+    }
+
+    public void emitGroundParticles(int amount) {
+        if (!this.isPassenger()) {
+            Vec3 center = this.getBoundingBox().getCenter();
+            Vec3 pos = new Vec3(center.x, this.position().y, center.z);
+            BlockState blockstate = !this.getInBlockState().isAir() ? this.getInBlockState() : this.getBlockStateOn();
+            if (blockstate.getRenderShape() != RenderShape.INVISIBLE) {
+                for (int i = 0; i < amount; i++) {
+                    this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, blockstate), pos.x, pos.y, pos.z, 0.0D, 0.0D, 0.0D);
+                }
+            }
+        }
+    }
+
+    public void emitJumpTrailParticles() {
+        if (++this.jumpTrailTicks > JUMP_TRAIL_DURATION_TICKS) {
+            return;
+        }
+        BlockState blockstate = !this.getInBlockState().isAir() ? this.getInBlockState() : this.getBlockStateOn();
+        Vec3 pos = this.position().add(this.getDeltaMovement()).add(0.0D, 0.1D, 0.0D);
+        for (int i = 0; i < JUMP_TRAIL_PARTICLES_AMOUNT; i++) {
+            this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, blockstate), pos.x, pos.y, pos.z, 0.0D, 0.0D, 0.0D);
+        }
+    }
+
+    public void resetJumpTrail() {
+        this.jumpTrailTicks = 0;
     }
 
     @Override
@@ -232,6 +306,9 @@ public abstract class AbstractHurricane extends Summoned implements ProjectileDe
             }
             if (this.jumpCooldown > 0) {
                 --this.jumpCooldown;
+            }
+            if (this.windBurstCooldown > 0) {
+                --this.windBurstCooldown;
             }
         }
     }
@@ -279,8 +356,12 @@ public abstract class AbstractHurricane extends Summoned implements ProjectileDe
                 MobUtil.knockBack(entity, this, strength, 0.15D * strength, strength);
             }
         }
+        if (this.windBurstCooldown > 0) {
+            return;
+        }
+        this.windBurstCooldown = WIND_BURST_VISUAL_COOLDOWN;
         double y = this.getY(0.5D);
-        for (int i = 0; i < 16; i++) {
+        for (int i = 0; i < WIND_BURST_PARTICLES_AMOUNT; i++) {
             float angle = this.random.nextFloat() * (float) Math.PI * 2.0F;
             double velocity = 0.3D + this.random.nextDouble() * 0.3D * strength;
             int width = this.random.nextIntBetweenInclusive(1, 4);
@@ -309,6 +390,16 @@ public abstract class AbstractHurricane extends Summoned implements ProjectileDe
         return this.onGround() ? ModSounds.BREEZE_IDLE_GROUND.get() : ModSounds.BREEZE_IDLE_AIR.get();
     }
 
+    @Override
+    public void playAmbientSound() {
+        if (this.getTarget() == null || !this.onGround()) {
+            SoundEvent sound = this.getAmbientSound();
+            if (sound != null) {
+                this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), sound, this.getSoundSource(), 1.0F, 1.0F, false);
+            }
+        }
+    }
+
     @Nullable
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
@@ -322,7 +413,16 @@ public abstract class AbstractHurricane extends Summoned implements ProjectileDe
     }
 
     @Override
-    protected void playStepSound(BlockPos pos, BlockState state) {
+    protected Entity.MovementEmission getMovementEmission() {
+        return Entity.MovementEmission.EVENTS;
+    }
+
+    @Override
+    public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
+        if (fallDistance > FALL_DISTANCE_SOUND_TRIGGER_THRESHOLD) {
+            this.playVoice(ModSounds.BREEZE_LAND.get(), 1.5F);
+        }
+        return super.causeFallDamage(fallDistance, multiplier, source);
     }
 
     private void playVoice(SoundEvent sound, float volumeScale) {
@@ -408,6 +508,8 @@ public abstract class AbstractHurricane extends Summoned implements ProjectileDe
         private static final int DURATION = 25;
         private static final double MIN_RANGE_SQR = 3.0D * 3.0D;
         private static final double MAX_RANGE_SQR = 14.0D * 14.0D;
+        private static final double HAND_BELOW_EYE = 0.25D;
+        private static final double HAND_FORWARD = 1.2D;
         private int timer;
         @Nullable
         private Vec3 aim;
@@ -475,9 +577,9 @@ public abstract class AbstractHurricane extends Summoned implements ProjectileDe
         }
 
         private void launch() {
-            Vec3 origin = new Vec3(AbstractHurricane.this.getX(), AbstractHurricane.this.getEyeY() - 0.8D, AbstractHurricane.this.getZ());
+            Vec3 origin = new Vec3(AbstractHurricane.this.getX(), AbstractHurricane.this.getEyeY() - HAND_BELOW_EYE, AbstractHurricane.this.getZ());
             Vec3 direction = this.aim.subtract(origin).normalize();
-            origin = origin.add(direction.scale(1.2D));
+            origin = origin.add(direction.scale(HAND_FORWARD));
             HurricanePunch punch = new HurricanePunch(AbstractHurricane.this.level(), AbstractHurricane.this, AbstractHurricane.this.getPunchDamage());
             punch.setPos(origin);
             punch.setDeltaMovement(direction.scale(HurricanePunch.SPEED));
@@ -740,6 +842,9 @@ public abstract class AbstractHurricane extends Summoned implements ProjectileDe
 
         private boolean canJumpFromCurrentPosition() {
             BlockPos pos = AbstractHurricane.this.blockPosition();
+            if (AbstractHurricane.this.level().getBlockState(pos).is(Blocks.HONEY_BLOCK)) {
+                return false;
+            }
             int top = Mth.ceil(AbstractHurricane.this.getBbHeight());
             for (int i = top; i <= top + REQUIRED_AIR_BLOCKS_ABOVE; i++) {
                 if (!AbstractHurricane.this.level().getBlockState(pos.relative(Direction.UP, i)).isAir()) {

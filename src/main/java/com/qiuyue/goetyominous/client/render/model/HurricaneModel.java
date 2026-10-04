@@ -105,10 +105,6 @@ public class HurricaneModel<T extends AbstractHurricane> extends HierarchicalMod
             this.head.xRot = headPitch * ((float) Math.PI / 180F);
         }
         this.rods.yRot = ageInTicks * (float) Math.PI * 0.1F;
-        if (limbSwingAmount > 0.01F) {
-            this.body.zRot = Mth.cos(limbSwing * 0.6F) * 0.06F * limbSwingAmount;
-            this.bodyTop.xRot += 0.08F * limbSwingAmount;
-        }
         this.wobble(entity, limbSwing, limbSwingAmount, ageInTicks);
         this.animate(entity.idleAnimationState, HurricaneAnimations.IDLE, ageInTicks);
         this.animate(entity.punchAnimationState, HurricaneAnimations.PUNCH, ageInTicks);
