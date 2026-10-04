@@ -5,6 +5,9 @@ import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.utils.EffectsUtil;
 import com.Polarice3.Goety.utils.MobUtil;
+import com.qiuyue.goetyominous.common.entities.ai.BreezeIdleSlideGoal;
+import com.qiuyue.goetyominous.common.entities.ai.BreezeLike;
+import com.qiuyue.goetyominous.common.entities.hostile.BreezeEntity;
 import com.qiuyue.goetyominous.common.entities.projectile.AbstractWindCharge;
 import com.qiuyue.goetyominous.common.entities.projectile.ServantWindCharge;
 import com.qiuyue.goetyominous.common.init.ModSounds;
@@ -36,6 +39,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -45,6 +49,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
@@ -55,13 +60,14 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
-public class BreezeServant extends Summoned implements ProjectileDeflector {
+public class BreezeServant extends Summoned implements ProjectileDeflector, BreezeLike {
     private static final int SLIDE_PARTICLES_AMOUNT = 20;
     private static final int IDLE_PARTICLES_AMOUNT = 1;
     private static final int JUMP_TRAIL_PARTICLES_AMOUNT = 3;
@@ -134,6 +140,16 @@ public class BreezeServant extends Summoned implements ProjectileDeflector {
         this.setPose(Pose.STANDING);
     }
 
+    @Override
+    public void setBreezeSliding() {
+        this.setBreezePose(POSE_SLIDING);
+    }
+
+    @Override
+    public boolean canIdleSlide() {
+        return !this.isStaying() && !this.isCommanded() && !this.isFollowing();
+    }
+
     public BlockState getInBlockState() {
         if (this.goetyominous$inBlockState == null) {
             this.goetyominous$inBlockState = this.level().getBlockState(this.blockPosition());
@@ -164,7 +180,9 @@ public class BreezeServant extends Summoned implements ProjectileDeflector {
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(4, new BreezeAttackGoal(this));
+        this.goalSelector.addGoal(6, new BreezeIdleSlideGoal<>(this));
         this.goalSelector.addGoal(7, new Summoned.WanderGoal<>(this, 0.6D, 0.0F));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
@@ -174,17 +192,17 @@ public class BreezeServant extends Summoned implements ProjectileDeflector {
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MOVEMENT_SPEED, 0.63D)
-                .add(Attributes.MAX_HEALTH, AttributesConfig.BreezeServantHealth.get())
-                .add(Attributes.ARMOR, AttributesConfig.BreezeServantArmor.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.BreezeServantRangeDamage.get())
+                .add(Attributes.MAX_HEALTH, AttributesConfig.BreezeHealth.get())
+                .add(Attributes.ARMOR, AttributesConfig.BreezeArmor.get())
+                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.BreezeRangeDamage.get())
                 .add(Attributes.FOLLOW_RANGE, 24.0D);
     }
 
     @Override
     public void setConfigurableAttributes() {
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), AttributesConfig.BreezeServantHealth.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), AttributesConfig.BreezeServantArmor.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), AttributesConfig.BreezeServantRangeDamage.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), AttributesConfig.BreezeHealth.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), AttributesConfig.BreezeArmor.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), AttributesConfig.BreezeRangeDamage.get());
     }
 
     @Override
@@ -349,12 +367,9 @@ public class BreezeServant extends Summoned implements ProjectileDeflector {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source.getEntity() instanceof BreezeServant || super.isInvulnerableTo(source);
-    }
-
-    @Override
-    public double getFluidJumpThreshold() {
-        return this.getEyeHeight();
+        return source.getEntity() instanceof BreezeEntity
+                || source.getEntity() instanceof BreezeServant
+                || super.isInvulnerableTo(source);
     }
 
     @Override
@@ -375,7 +390,7 @@ public class BreezeServant extends Summoned implements ProjectileDeflector {
     }
 
     public float getWindChargeDamage() {
-        return ServantCombatUtil.getSpecialAttackDamage(this, AttributesConfig.BreezeServantRangeDamage.get().floatValue());
+        return ServantCombatUtil.getSpecialAttackDamage(this, AttributesConfig.BreezeRangeDamage.get().floatValue());
     }
 
     public float getWindChargeKnockback() {
@@ -424,10 +439,12 @@ public class BreezeServant extends Summoned implements ProjectileDeflector {
     }
 
     static class BreezeAttackGoal extends Goal {
-        private static final int ATTACK_RANGE_MIN_SQRT = 4;
         private static final int ATTACK_RANGE_MAX_SQRT = 256;
+        private static final int ATTACK_RANGE_MIN_SQRT = 4;
         private static final float PROJECTILE_MOVEMENT_SCALE = 0.7F;
-        private static final float PROJECTILE_INACCURACY = 1.0F;
+        private static final float PROJECTILE_DIVERGENCY = 5.0F;
+        private static final float PROJECTILE_DIVERGENCY_DIFFICULTY_MODIFIER = 4.0F;
+        private static final int STUCK_SHOOT_WINDOW = 60;
         private static final int SHOOT_INITIAL_DELAY_TICKS = 15;
         private static final int SHOOT_RECOVER_DELAY_TICKS = 4;
         private static final int SHOOT_COOLDOWN_TICKS = 10;
@@ -437,7 +454,7 @@ public class BreezeServant extends Summoned implements ProjectileDeflector {
         private static final int JUMP_COOLDOWN_WHEN_HURT_TICKS = 2;
         private static final int INHALING_DURATION_TICKS = 10;
         private static final int REQUIRED_AIR_BLOCKS_ABOVE = 4;
-        private static final float MAX_JUMP_VELOCITY = 1.4F;
+        private static final float FOLLOW_RANGE_MULTIPLIER_FOR_VELOCITY = 0.058333334F;
         private static final float SLIDE_SPEED = 0.6F;
         private static final int SLIDE_TIMEOUT_TICKS = 60;
         private static final int STUCK_TICKS_BEFORE_SHOOTING = 20;
@@ -471,6 +488,12 @@ public class BreezeServant extends Summoned implements ProjectileDeflector {
 
         @Override
         public boolean canUse() {
+            LivingEntity target = this.breeze.getTarget();
+            return target != null && target.isAlive() && this.breeze.canAttack(target);
+        }
+
+        @Override
+        public boolean canContinueToUse() {
             LivingEntity target = this.breeze.getTarget();
             return target != null && target.isAlive() && this.breeze.canAttack(target);
         }
@@ -524,11 +547,22 @@ public class BreezeServant extends Summoned implements ProjectileDeflector {
         }
 
         private boolean isTargetWithinShootRange(LivingEntity target) {
-            double distance = this.breeze.position().distanceToSqr(target.position());
-            return distance > ATTACK_RANGE_MIN_SQRT && distance < ATTACK_RANGE_MAX_SQRT;
+            double distanceSqr = this.breeze.position().distanceToSqr(target.position());
+            return distanceSqr > ATTACK_RANGE_MIN_SQRT && distanceSqr < ATTACK_RANGE_MAX_SQRT;
         }
 
         private void tickReposition(LivingEntity target) {
+            double followRange = this.breeze.getAttributeValue(Attributes.FOLLOW_RANGE);
+            if (this.breeze.distanceToSqr(target) > followRange * followRange) {
+                this.breeze.setTarget(null);
+                return;
+            }
+            boolean stuck = this.breeze.isPassenger()
+                    || this.breeze.isInWater()
+                    || this.breeze.hasEffect(MobEffects.LEVITATION);
+            if (stuck) {
+                this.shootWindow = STUCK_SHOOT_WINDOW;
+            }
             this.breeze.getLookControl().setLookAt(target, 10.0F, 10.0F);
             if (this.shootWindow > 0 && this.shootCooldown <= 0 && this.isTargetWithinShootRange(target) && this.breeze.isBreezeStanding()) {
                 this.beginShooting();
@@ -578,6 +612,9 @@ public class BreezeServant extends Summoned implements ProjectileDeflector {
 
         private boolean canJumpFromCurrentPosition() {
             BlockPos pos = this.breeze.blockPosition();
+            if (this.breeze.level().getBlockState(pos).is(Blocks.HONEY_BLOCK)) {
+                return false;
+            }
             for (int i = 1; i <= REQUIRED_AIR_BLOCKS_ABOVE; i++) {
                 BlockPos above = pos.relative(Direction.UP, i);
                 if (!this.breeze.level().getBlockState(above).isAir() && !this.breeze.level().getFluidState(above).is(FluidTags.WATER)) {
@@ -623,9 +660,14 @@ public class BreezeServant extends Summoned implements ProjectileDeflector {
         }
 
         private Optional<Vec3> calculateOptimalJumpVector(Vec3 target) {
+            float maxVelocity = FOLLOW_RANGE_MULTIPLIER_FOR_VELOCITY * (float) this.breeze.getAttributeValue(Attributes.FOLLOW_RANGE);
             for (int angle : net.minecraft.Util.toShuffledList(ALLOWED_ANGLES.stream(), this.breeze.getRandom())) {
-                Optional<Vec3> vector = LongJumpUtil.calculateJumpVectorForAngle(this.breeze, target, MAX_JUMP_VELOCITY, angle, false);
+                Optional<Vec3> vector = LongJumpUtil.calculateJumpVectorForAngle(this.breeze, target, maxVelocity, angle, false);
                 if (vector.isPresent()) {
+                    if (this.breeze.hasEffect(MobEffects.JUMP)) {
+                        Vec3 velocity = vector.get();
+                        return Optional.of(velocity.add(0.0D, velocity.normalize().y * this.breeze.getJumpBoostPower(), 0.0D));
+                    }
                     return vector;
                 }
             }
@@ -709,7 +751,8 @@ public class BreezeServant extends Summoned implements ProjectileDeflector {
                     ServantWindCharge charge = new ServantWindCharge(serverLevel, this.breeze, this.breeze.getX(), this.breeze.getSnoutYPosition(), this.breeze.getZ(),
                             this.breeze.getWindChargeDamage(), this.breeze.getWindChargeKnockback());
                     this.breeze.playSound(ModSounds.BREEZE_SHOOT.get(), 1.5F, 1.0F);
-                    charge.shoot(dx, dy, dz, PROJECTILE_MOVEMENT_SCALE, PROJECTILE_INACCURACY);
+                    charge.shoot(dx, dy, dz, PROJECTILE_MOVEMENT_SCALE,
+                            PROJECTILE_DIVERGENCY - serverLevel.getDifficulty().getId() * PROJECTILE_DIVERGENCY_DIFFICULTY_MODIFIER);
                     serverLevel.addFreshEntity(charge);
                 }
             }

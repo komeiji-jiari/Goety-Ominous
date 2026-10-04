@@ -2,6 +2,8 @@ package com.qiuyue.goetyominous.common.entities.hostile;
 
 import com.Polarice3.Goety.api.entities.ICustomAttributes;
 import com.Polarice3.Goety.utils.MobUtil;
+import com.qiuyue.goetyominous.common.entities.ai.BreezeIdleSlideGoal;
+import com.qiuyue.goetyominous.common.entities.ai.BreezeLike;
 import com.qiuyue.goetyominous.common.entities.projectile.AbstractWindCharge;
 import com.qiuyue.goetyominous.common.entities.projectile.BreezeWindCharge;
 import com.qiuyue.goetyominous.common.init.ModSounds;
@@ -29,6 +31,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -38,6 +41,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
@@ -51,13 +55,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
-public class BreezeEntity extends Monster implements ICustomAttributes, ProjectileDeflector {
+public class BreezeEntity extends Monster implements ICustomAttributes, ProjectileDeflector, BreezeLike {
     private static final int SLIDE_PARTICLES_AMOUNT = 20;
     private static final int IDLE_PARTICLES_AMOUNT = 1;
     private static final int JUMP_TRAIL_PARTICLES_AMOUNT = 3;
@@ -98,7 +103,9 @@ public class BreezeEntity extends Monster implements ICustomAttributes, Projecti
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(4, new BreezeAttackGoal(this));
+        this.goalSelector.addGoal(5, new BreezeIdleSlideGoal<>(this));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
@@ -110,17 +117,17 @@ public class BreezeEntity extends Monster implements ICustomAttributes, Projecti
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MOVEMENT_SPEED, 0.63D)
-                .add(Attributes.MAX_HEALTH, AttributesConfig.BreezeServantHealth.get())
-                .add(Attributes.ARMOR, AttributesConfig.BreezeServantArmor.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.BreezeServantRangeDamage.get())
+                .add(Attributes.MAX_HEALTH, AttributesConfig.BreezeHealth.get())
+                .add(Attributes.ARMOR, AttributesConfig.BreezeArmor.get())
+                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.BreezeRangeDamage.get())
                 .add(Attributes.FOLLOW_RANGE, 24.0D);
     }
 
     @Override
     public void setConfigurableAttributes() {
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), AttributesConfig.BreezeServantHealth.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), AttributesConfig.BreezeServantArmor.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), AttributesConfig.BreezeServantRangeDamage.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), AttributesConfig.BreezeHealth.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), AttributesConfig.BreezeArmor.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), AttributesConfig.BreezeRangeDamage.get());
     }
 
     @Override
@@ -165,6 +172,16 @@ public class BreezeEntity extends Monster implements ICustomAttributes, Projecti
     public void setBreezeStanding() {
         this.setBreezePose(POSE_STANDING);
         this.setPose(Pose.STANDING);
+    }
+
+    @Override
+    public void setBreezeSliding() {
+        this.setBreezePose(POSE_SLIDING);
+    }
+
+    @Override
+    public boolean canIdleSlide() {
+        return true;
     }
 
     public BlockState getInBlockState() {
@@ -336,11 +353,6 @@ public class BreezeEntity extends Monster implements ICustomAttributes, Projecti
     }
 
     @Override
-    public double getFluidJumpThreshold() {
-        return this.getEyeHeight();
-    }
-
-    @Override
     public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
         if (fallDistance > FALL_DISTANCE_SOUND_TRIGGER_THRESHOLD) {
             this.playSound(ModSounds.BREEZE_LAND.get(), 1.0F, 1.0F);
@@ -351,14 +363,6 @@ public class BreezeEntity extends Monster implements ICustomAttributes, Projecti
     @Override
     protected Entity.MovementEmission getMovementEmission() {
         return Entity.MovementEmission.EVENTS;
-    }
-
-    public float getWindChargeDamage() {
-        return (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
-    }
-
-    public float getWindChargeKnockback() {
-        return 1.0F;
     }
 
     public static Vec3 randomPointBehindTarget(LivingEntity target, RandomSource random) {
@@ -375,10 +379,12 @@ public class BreezeEntity extends Monster implements ICustomAttributes, Projecti
     }
 
     static class BreezeAttackGoal extends Goal {
-        private static final int ATTACK_RANGE_MIN_SQRT = 4;
         private static final int ATTACK_RANGE_MAX_SQRT = 256;
+        private static final int ATTACK_RANGE_MIN_SQRT = 4;
         private static final float PROJECTILE_MOVEMENT_SCALE = 0.7F;
-        private static final float PROJECTILE_INACCURACY = 1.0F;
+        private static final float PROJECTILE_DIVERGENCY = 5.0F;
+        private static final float PROJECTILE_DIVERGENCY_DIFFICULTY_MODIFIER = 4.0F;
+        private static final int STUCK_SHOOT_WINDOW = 60;
         private static final int SHOOT_INITIAL_DELAY_TICKS = 15;
         private static final int SHOOT_RECOVER_DELAY_TICKS = 4;
         private static final int SHOOT_COOLDOWN_TICKS = 10;
@@ -388,7 +394,7 @@ public class BreezeEntity extends Monster implements ICustomAttributes, Projecti
         private static final int JUMP_COOLDOWN_WHEN_HURT_TICKS = 2;
         private static final int INHALING_DURATION_TICKS = 10;
         private static final int REQUIRED_AIR_BLOCKS_ABOVE = 4;
-        private static final float MAX_JUMP_VELOCITY = 1.4F;
+        private static final float FOLLOW_RANGE_MULTIPLIER_FOR_VELOCITY = 0.058333334F;
         private static final float SLIDE_SPEED = 0.6F;
         private static final int SLIDE_TIMEOUT_TICKS = 60;
         private static final int STUCK_TICKS_BEFORE_SHOOTING = 20;
@@ -422,6 +428,12 @@ public class BreezeEntity extends Monster implements ICustomAttributes, Projecti
 
         @Override
         public boolean canUse() {
+            LivingEntity target = this.breeze.getTarget();
+            return target != null && target.isAlive() && this.breeze.canAttack(target);
+        }
+
+        @Override
+        public boolean canContinueToUse() {
             LivingEntity target = this.breeze.getTarget();
             return target != null && target.isAlive() && this.breeze.canAttack(target);
         }
@@ -475,11 +487,22 @@ public class BreezeEntity extends Monster implements ICustomAttributes, Projecti
         }
 
         private boolean isTargetWithinShootRange(LivingEntity target) {
-            double distance = this.breeze.position().distanceToSqr(target.position());
-            return distance > ATTACK_RANGE_MIN_SQRT && distance < ATTACK_RANGE_MAX_SQRT;
+            double distanceSqr = this.breeze.position().distanceToSqr(target.position());
+            return distanceSqr > ATTACK_RANGE_MIN_SQRT && distanceSqr < ATTACK_RANGE_MAX_SQRT;
         }
 
         private void tickReposition(LivingEntity target) {
+            double followRange = this.breeze.getAttributeValue(Attributes.FOLLOW_RANGE);
+            if (this.breeze.distanceToSqr(target) > followRange * followRange) {
+                this.breeze.setTarget(null);
+                return;
+            }
+            boolean stuck = this.breeze.isPassenger()
+                    || this.breeze.isInWater()
+                    || this.breeze.hasEffect(MobEffects.LEVITATION);
+            if (stuck) {
+                this.shootWindow = STUCK_SHOOT_WINDOW;
+            }
             this.breeze.getLookControl().setLookAt(target, 10.0F, 10.0F);
             if (this.shootWindow > 0 && this.shootCooldown <= 0 && this.isTargetWithinShootRange(target) && this.breeze.isBreezeStanding()) {
                 this.beginShooting();
@@ -529,6 +552,9 @@ public class BreezeEntity extends Monster implements ICustomAttributes, Projecti
 
         private boolean canJumpFromCurrentPosition() {
             BlockPos pos = this.breeze.blockPosition();
+            if (this.breeze.level().getBlockState(pos).is(Blocks.HONEY_BLOCK)) {
+                return false;
+            }
             for (int i = 1; i <= REQUIRED_AIR_BLOCKS_ABOVE; i++) {
                 BlockPos above = pos.relative(Direction.UP, i);
                 if (!this.breeze.level().getBlockState(above).isAir() && !this.breeze.level().getFluidState(above).is(FluidTags.WATER)) {
@@ -574,9 +600,14 @@ public class BreezeEntity extends Monster implements ICustomAttributes, Projecti
         }
 
         private Optional<Vec3> calculateOptimalJumpVector(Vec3 target) {
+            float maxVelocity = FOLLOW_RANGE_MULTIPLIER_FOR_VELOCITY * (float) this.breeze.getAttributeValue(Attributes.FOLLOW_RANGE);
             for (int angle : net.minecraft.Util.toShuffledList(ALLOWED_ANGLES.stream(), this.breeze.getRandom())) {
-                Optional<Vec3> vector = LongJumpUtil.calculateJumpVectorForAngle(this.breeze, target, MAX_JUMP_VELOCITY, angle, false);
+                Optional<Vec3> vector = LongJumpUtil.calculateJumpVectorForAngle(this.breeze, target, maxVelocity, angle, false);
                 if (vector.isPresent()) {
+                    if (this.breeze.hasEffect(MobEffects.JUMP)) {
+                        Vec3 velocity = vector.get();
+                        return Optional.of(velocity.add(0.0D, velocity.normalize().y * this.breeze.getJumpBoostPower(), 0.0D));
+                    }
                     return vector;
                 }
             }
@@ -659,7 +690,8 @@ public class BreezeEntity extends Monster implements ICustomAttributes, Projecti
                     double dz = target.getZ() - this.breeze.getZ();
                     BreezeWindCharge charge = new BreezeWindCharge(serverLevel, this.breeze, this.breeze.getX(), this.breeze.getSnoutYPosition(), this.breeze.getZ());
                     this.breeze.playSound(ModSounds.BREEZE_SHOOT.get(), 1.5F, 1.0F);
-                    charge.shoot(dx, dy, dz, PROJECTILE_MOVEMENT_SCALE, PROJECTILE_INACCURACY);
+                    charge.shoot(dx, dy, dz, PROJECTILE_MOVEMENT_SCALE,
+                            PROJECTILE_DIVERGENCY - serverLevel.getDifficulty().getId() * PROJECTILE_DIVERGENCY_DIFFICULTY_MODIFIER);
                     serverLevel.addFreshEntity(charge);
                 }
             }
