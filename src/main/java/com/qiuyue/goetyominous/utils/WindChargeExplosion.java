@@ -1,12 +1,14 @@
 package com.qiuyue.goetyominous.utils;
 
 import com.qiuyue.goetyominous.common.mixin.ExplosionAccessor;
+import com.qiuyue.goetyominous.common.network.WindChargeImpulsePacket;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.util.List;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -21,6 +23,7 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.ExplosionDamageCalculator;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -59,6 +62,7 @@ public class WindChargeExplosion extends Explosion {
         double centerZ = this.goetyominous$z;
         float radius = this.goetyominous$radius;
         ExplosionDamageCalculator calculator = accessor.getDamageCalculator();
+        level.gameEvent(accessor.getSource(), GameEvent.EXPLODE, new Vec3(centerX, centerY, centerZ));
 
         ObjectArrayList<BlockPos> toBlow = new ObjectArrayList<>();
         rayLoop:
@@ -141,9 +145,9 @@ public class WindChargeExplosion extends Explosion {
             if (entity instanceof Player player && !player.isSpectator()
                     && (!player.isCreative() || !player.getAbilities().flying)) {
                 accessor.getHitPlayers().put(player, impulse);
-                player.hasImpulse = true;
-                player.hurtMarked = true;
-                player.setOnGround(false);
+                if (player instanceof ServerPlayer serverPlayer) {
+                    WindChargeImpulsePacket.send(serverPlayer, impulse);
+                }
             }
             WindChargeImpulse.onExplosionHit(entity, accessor.getSource());
         }
@@ -152,9 +156,9 @@ public class WindChargeExplosion extends Explosion {
     @Override
     public void finalizeExplosion(boolean spawnParticles) {
         Level level = this.goetyominous$level;
-        if (level.isClientSide) {
-            level.playLocalSound(this.goetyominous$x, this.goetyominous$y, this.goetyominous$z, this.goetyominous$sound,
-                    SoundSource.BLOCKS, 4.0F, (1.0F + (level.random.nextFloat() - level.random.nextFloat()) * 0.2F) * 0.7F, false);
+        if (!level.isClientSide) {
+            level.playSound(null, this.goetyominous$x, this.goetyominous$y, this.goetyominous$z, this.goetyominous$sound,
+                    SoundSource.BLOCKS, 4.0F, (1.0F + (level.random.nextFloat() - level.random.nextFloat()) * 0.2F) * 0.7F);
         }
         if (spawnParticles) {
             ParticleOptions particle = this.goetyominous$radius < 2.0F || !this.interactsWithBlocks()
