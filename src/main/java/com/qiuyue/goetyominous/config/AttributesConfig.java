@@ -11,9 +11,9 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
-    public static final ForgeConfigSpec.ConfigValue<Double> BreezeServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> BreezeServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> BreezeServantRangeDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> BreezeHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> BreezeArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> BreezeRangeDamage;
 
     public static final ForgeConfigSpec.ConfigValue<Double> HurricaneHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> HurricaneArmor;
@@ -685,13 +685,13 @@ public class AttributesConfig {
     static {
         BUILDER.push("Servants Attributes");
 
-        BUILDER.push("Breeze Servant");
-        BreezeServantHealth = BUILDER.comment("How much Max Health Breeze Servants have, Default: 30.0")
-                .defineInRange("breezeServantHealth", 30.0, 1.0, Double.MAX_VALUE);
-        BreezeServantArmor = BUILDER.comment("How much natural Armor Breeze Servants have, Default: 0.0")
-                .defineInRange("breezeServantArmor", 0.0, 0.0, Double.MAX_VALUE);
-        BreezeServantRangeDamage = BUILDER.comment("How much damage a direct hit from a Breeze Servant's wind charge deals, Default: 3.0")
-                .defineInRange("breezeServantRangeDamage", 3.0, 1.0, Double.MAX_VALUE);
+        BUILDER.push("Breeze");
+        BreezeHealth = BUILDER.comment("How much Max Health Breezes have, Default: 30.0")
+                .defineInRange("breezeHealth", 30.0, 1.0, Double.MAX_VALUE);
+        BreezeArmor = BUILDER.comment("How much natural Armor Breezes have, Default: 0.0")
+                .defineInRange("breezeArmor", 0.0, 0.0, Double.MAX_VALUE);
+        BreezeRangeDamage = BUILDER.comment("How much damage a direct hit from a Breeze Servant's wind charge deals, Default: 3.0. Hostile Breezes keep vanilla's flat 1.0 direct hit; this value only feeds their ATTACK_DAMAGE attribute.")
+                .defineInRange("breezeRangeDamage", 3.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.push("Hurricane");
