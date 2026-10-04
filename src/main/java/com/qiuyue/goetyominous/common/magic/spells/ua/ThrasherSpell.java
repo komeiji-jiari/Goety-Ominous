@@ -125,11 +125,8 @@ public class ThrasherSpell extends SummonSpell {
                 summonedentity.setTrueOwner(caster);
                 summonedentity.moveTo(blockPos, 0.0F, 0.0F);
 
-                if (CuriosFinder.hasAbyssCrown(caster)) {
-                    summonedentity.setPersistenceRequired();
-                } else {
-                    summonedentity.setLimitedLife(MobUtil.getSummonLifespan(worldIn) * duration);
-                }
+                summonedentity.setLimitedLife(MobUtil.getSummonLifespan(worldIn) * duration);
+                summonedentity.setPersistenceRequired();
 
                 summonedentity.finalizeSpawn(worldIn, caster.level().getCurrentDifficultyAt(caster.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
                 this.buffSummon(caster, summonedentity, potency);
