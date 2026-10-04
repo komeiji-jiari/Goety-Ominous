@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.ally.ua;
 
 import com.Polarice3.Goety.api.entities.IOwned;
+import com.Polarice3.Goety.api.items.magic.IWand;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.qiuyue.goetyominous.common.entities.ally.ua.goals.*;
 import com.qiuyue.goetyominous.common.items.ua.UaItems;
@@ -35,9 +36,11 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.LookControl;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -49,25 +52,19 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ForgeMod;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Predicate;
 
 public class ThrasherServant extends Summoned implements Endimatable {
-    public static final Predicate<Entity> ENEMY_MATCHER = (entity) -> {
-        if (entity == null) {
-            return false;
-        }
-        if (entity instanceof Player && !(((Player) entity).isCreative() || entity.isSpectator())) {
-            return entity.isInWater();
-        }
-        return entity.getType().is(UAEntityTypeTags.THRASHER_SONAR_TARGETS) && entity.isInWater();
-    };
+    public static final double BITE_RANGE = 8.0D;
     private static final UUID KNOCKBACK_RESISTANCE_MODIFIER_ID = UUID.fromString("3158fbca-89d7-4c15-b1ee-448cefd023b7");
     private static final AttributeModifier KNOCKBACK_RESISTANCE_MODIFIER = new AttributeModifier(KNOCKBACK_RESISTANCE_MODIFIER_ID, "Knockback Resistance", 4.0D, AttributeModifier.Operation.MULTIPLY_BASE);
+    private static final UUID RIDDEN_SWIM_SPEED_ID = UUID.fromString("a5b1e0c4-5d7f-4a92-8c3e-6f0b2d1e9a73");
+    private static final AttributeModifier RIDDEN_SWIM_SPEED = new AttributeModifier(RIDDEN_SWIM_SPEED_ID, "Ridden swim speed", 0.75D, AttributeModifier.Operation.MULTIPLY_TOTAL);
     private static final EntityDataAccessor<Boolean> MOVING = SynchedEntityData.defineId(ThrasherServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> WATER_TIME = SynchedEntityData.defineId(ThrasherServant.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> STUN_TIME = SynchedEntityData.defineId(ThrasherServant.class, EntityDataSerializers.INT);
@@ -119,6 +116,11 @@ public class ThrasherServant extends Summoned implements Endimatable {
     }
 
     @Override
+    public void targetSelectGoal() {
+        this.targetSelector.addGoal(1, new ThrasherServantCloseTargetGoal(this));
+    }
+
+    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(MOVING, false);
@@ -156,21 +158,24 @@ public class ThrasherServant extends Summoned implements Endimatable {
 
     @Override
     public void positionRider(Entity passenger, Entity.MoveFunction function) {
-        if (passenger instanceof LivingEntity) {
-            float distance = this.getMountDistance();
-
-            double dx = Math.cos((this.getYRot() + 90) * Math.PI / 180.0D) * distance;
-            double dy = -Math.sin(this.getXRot() * (Math.PI / 180.0D));
-            double dz = Math.sin((this.getYRot() + 90) * Math.PI / 180.0D) * distance;
-
-            Vec3 riderPos = new Vec3(this.getX() + dx, this.getY(), this.getZ() + dz);
-
-            double offset = passenger instanceof Player ? this.getPassengersRidingOffset() - 0.2D : this.getPassengersRidingOffset() - 0.5F;
-
-            function.accept(passenger, riderPos.x, this.getY() + dy + offset, riderPos.z);
-        } else {
-            super.positionRider(passenger);
+        if (!(passenger instanceof LivingEntity)) {
+            super.positionRider(passenger, function);
+            return;
         }
+        if (passenger instanceof Player) {
+            super.positionRider(passenger, function);
+            return;
+        }
+
+        float distance = this.getMountDistance();
+
+        double dx = Math.cos((this.getYRot() + 90) * Math.PI / 180.0D) * distance;
+        double dy = -Math.sin(this.getXRot() * (Math.PI / 180.0D));
+        double dz = Math.sin((this.getYRot() + 90) * Math.PI / 180.0D) * distance;
+
+        Vec3 riderPos = new Vec3(this.getX() + dx, this.getY(), this.getZ() + dz);
+
+        function.accept(passenger, riderPos.x, this.getY() + dy + this.getPassengersRidingOffset() - 0.5D, riderPos.z);
     }
 
     @Override
@@ -201,8 +206,80 @@ public class ThrasherServant extends Summoned implements Endimatable {
     }
 
     @Nullable
+    @Override
     public LivingEntity getControllingPassenger() {
+        Entity first = this.getFirstPassenger();
+        if (first instanceof Player player && player == this.getTrueOwner()) {
+            return player;
+        }
         return null;
+    }
+
+    @Override
+    protected boolean canAddPassenger(Entity passenger) {
+        if (passenger instanceof Player player) {
+            return player == this.getTrueOwner();
+        }
+        return super.canAddPassenger(passenger);
+    }
+
+    @Override
+    public boolean isControlledByLocalInstance() {
+        return this.isEffectiveAi();
+    }
+
+    @Override
+    protected Vec3 getRiddenInput(Player player, Vec3 travelVector) {
+        float sideways = player.xxa * 0.5F;
+        float forward = player.zza;
+        if (forward <= 0.0F) {
+            forward *= 0.25F;
+        }
+        double vertical = this.isInWater() ? player.getLookAngle().y : 0.0D;
+        return new Vec3(sideways, vertical, forward);
+    }
+
+    @Override
+    protected void tickRidden(Player player, Vec3 travelVector) {
+        super.tickRidden(player, travelVector);
+        this.setRot(player.getYRot(), player.getXRot() * 0.5F);
+        this.yHeadRot = this.yBodyRot = this.yRotO = this.getYRot();
+        this.setMoving(player.zza != 0.0F || player.xxa != 0.0F);
+    }
+
+    @Override
+    protected float getRiddenSpeed(Player player) {
+        return (float) this.getAttributeValue(Attributes.MOVEMENT_SPEED) * 0.2F;
+    }
+
+    @Override
+    protected void updateControlFlags() {
+        super.updateControlFlags();
+        boolean busy = this.isRiderBusy();
+        this.goalSelector.setControlFlag(Goal.Flag.MOVE, !busy);
+        this.goalSelector.setControlFlag(Goal.Flag.JUMP, !busy);
+        this.goalSelector.setControlFlag(Goal.Flag.LOOK, !busy);
+    }
+
+    private boolean isRiderBusy() {
+        if (!(this.getControllingPassenger() instanceof Player player)) {
+            return false;
+        }
+        return player.zza != 0.0F || player.xxa != 0.0F;
+    }
+
+    private void updateRiddenSwimSpeed() {
+        AttributeInstance swimSpeed = this.getAttribute(ForgeMod.SWIM_SPEED.get());
+        if (swimSpeed == null) {
+            return;
+        }
+        boolean ridden = this.getControllingPassenger() != null;
+        boolean hasModifier = swimSpeed.hasModifier(RIDDEN_SWIM_SPEED);
+        if (ridden && !hasModifier) {
+            swimSpeed.addTransientModifier(RIDDEN_SWIM_SPEED);
+        } else if (!ridden && hasModifier) {
+            swimSpeed.removeModifier(RIDDEN_SWIM_SPEED_ID);
+        }
     }
 
     public float getMountDistance() {
@@ -217,6 +294,11 @@ public class ThrasherServant extends Summoned implements Endimatable {
     @Override
     public boolean shouldRiderFaceForward(Player player) {
         return true;
+    }
+
+    @Override
+    public boolean shouldRiderSit() {
+        return this.getFirstPassenger() instanceof Player;
     }
 
     @Override
@@ -260,19 +342,28 @@ public class ThrasherServant extends Summoned implements Endimatable {
                     return InteractionResult.SUCCESS;
                 }
             }
+
+            if (!player.isShiftKeyDown() && !(itemstack.getItem() instanceof IWand) && !this.level().isClientSide) {
+                if (this.getFirstPassenger() == player) {
+                    return InteractionResult.SUCCESS;
+                }
+                if (!this.getPassengers().isEmpty() && !(this.getFirstPassenger() instanceof Player)) {
+                    this.ejectPassengers();
+                    return InteractionResult.SUCCESS;
+                }
+                player.setYRot(this.getYRot());
+                player.setXRot(this.getXRot());
+                player.startRiding(this);
+                return InteractionResult.SUCCESS;
+            }
         }
 
         return super.mobInteract(player, hand);
     }
 
     @Override
-    public boolean shouldRiderSit() {
-        return false;
-    }
-
-    @Override
     public EntityDimensions getDimensions(Pose pose) {
-        if (!this.getPassengers().isEmpty()) {
+        if (!this.getPassengers().isEmpty() && !(this.getFirstPassenger() instanceof Player)) {
             return this.getCaughtSize();
         }
         return super.getDimensions(pose);
@@ -346,6 +437,31 @@ public class ThrasherServant extends Summoned implements Endimatable {
         }
         if (!this.level().isClientSide() && this.isNoEndimationPlaying()) NetworkUtil.setPlayingAnimation(this, UAPlayableEndimations.THRASHER_HURT);
         return super.hurt(source, amount);
+    }
+
+    public boolean isValidTarget(Entity entity) {
+        if (!(entity instanceof LivingEntity living) || !living.isAlive()) {
+            return false;
+        }
+        if (living instanceof Player) {
+            return false;
+        }
+        if (this.shouldAllyIgnore(living)) {
+            return false;
+        }
+        return living instanceof Enemy || living.getType().is(UAEntityTypeTags.THRASHER_SONAR_TARGETS);
+    }
+
+    public boolean isSonarTarget(Entity entity) {
+        return entity.isInWater() && this.isValidTarget(entity);
+    }
+
+    @Override
+    public void setTarget(@Nullable LivingEntity target) {
+        if (target != null && target == this.getTrueOwner()) {
+            target = null;
+        }
+        super.setTarget(target);
     }
 
     private boolean shouldAllyIgnore(Entity entity) {
@@ -441,7 +557,7 @@ public class ThrasherServant extends Summoned implements Endimatable {
                     this.hurt(this.damageSources().dryOut(), 1.0F);
                 }
 
-                if (!this.isInWater() && !this.isStunned() && this.onGround()) {
+                if (!this.isInWater() && !this.isStunned() && this.onGround() && this.getControllingPassenger() == null) {
                     this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.2F, 0.5D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F));
                     this.setYRot(this.random.nextFloat() * 360.0F);
                     this.setXRot(this.random.nextFloat() * -50.0F);
@@ -472,6 +588,9 @@ public class ThrasherServant extends Summoned implements Endimatable {
     @Override
     public void aiStep() {
         if (this.isAlive()) {
+            if (!this.level().isClientSide) {
+                this.updateRiddenSwimSpeed();
+            }
             if (this.level().isClientSide) {
                 this.prevTailAnimation = this.tailAnimation;
                 this.prevFinAnimation = this.finAnimation;
@@ -513,21 +632,7 @@ public class ThrasherServant extends Summoned implements Endimatable {
             }
 
             if (!this.isStunned()) {
-                List<LivingEntity> nearbyEntities = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.5F), entity -> {
-                    if (entity == null || !entity.isAlive()) {
-                        return false;
-                    }
-
-                    if (entity instanceof Player) {
-                        return false;
-                    }
-
-                    if (this.shouldAllyIgnore(entity)) {
-                        return false;
-                    }
-
-                    return entity.getType().is(UAEntityTypeTags.THRASHER_SONAR_TARGETS) && entity.isInWater();
-                });
+                List<LivingEntity> nearbyEntities = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.5F), this::isValidTarget);
                 for (LivingEntity entities : nearbyEntities) {
                     if (this.getTarget() == null) {
                         this.setTarget(entities);

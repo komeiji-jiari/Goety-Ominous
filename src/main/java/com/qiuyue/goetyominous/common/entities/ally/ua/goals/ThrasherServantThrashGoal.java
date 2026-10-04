@@ -23,10 +23,8 @@ public class ThrasherServantThrashGoal extends Goal {
     @Override
     public boolean canUse() {
         Entity passenger = this.thrasher.getFirstPassenger();
-        if (passenger instanceof Player player) {
-            if (player.isCreative() || passenger.isSpectator()) {
-                return false;
-            }
+        if (passenger instanceof Player) {
+            return false;
         }
         return !this.thrasher.isStunned() && passenger != null && this.thrasher.isNoEndimationPlaying() && this.thrasher.getRandom().nextFloat() < 0.1F;
     }
@@ -34,10 +32,8 @@ public class ThrasherServantThrashGoal extends Goal {
     @Override
     public boolean canContinueToUse() {
         Entity passenger = this.thrasher.getFirstPassenger();
-        if (passenger instanceof Player player) {
-            if (player.isCreative() || passenger.isSpectator()) {
-                return false;
-            }
+        if (passenger instanceof Player) {
+            return false;
         }
         return !this.thrasher.isStunned() && this.thrashedTicks <= 55 && passenger != null;
     }

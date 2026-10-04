@@ -32,6 +32,11 @@ public class GreatThrasherServant extends ThrasherServant {
     }
 
     @Override
+    public double getPassengersRidingOffset() {
+        return 0.875D;
+    }
+
+    @Override
     protected double getStunDamageThreshold() {
         return 8.0F;
     }

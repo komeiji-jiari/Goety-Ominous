@@ -8,8 +8,10 @@ import com.teamabnormals.upgrade_aquatic.core.registry.UAEntityTypes;
 import com.teamabnormals.upgrade_aquatic.core.registry.UAPlayableEndimations;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
@@ -82,6 +84,7 @@ public class ThrasherServantFireSonarGoal extends Goal {
             this.sonarTicks++;
 
             this.stablilizeDirection();
+            this.scanSonarBeam(this.sonarTicks - 5);
 
             if (this.sonarTicks % 5 == 0 && this.sonarTicks < this.sonarFireDuration) {
                 SonarWave sonarWave = UAEntityTypes.SONAR_WAVE.get().create(this.thrasher.level());
@@ -108,6 +111,35 @@ public class ThrasherServantFireSonarGoal extends Goal {
     @Override
     public boolean requiresUpdateEveryTick() {
         return true;
+    }
+
+    private void scanSonarBeam(int age) {
+        if (age < 0 || age > 40 || this.thrasher.getTarget() != null) {
+            return;
+        }
+
+        float xMotion = -Mth.sin(this.originalYaw * ((float) Math.PI / 180F)) * Mth.cos(this.originalPitch * ((float) Math.PI / 180F));
+        float yMotion = -Mth.sin(this.originalPitch * ((float) Math.PI / 180F));
+        float zMotion = Mth.cos(this.originalYaw * ((float) Math.PI / 180F)) * Mth.cos(this.originalPitch * ((float) Math.PI / 180F));
+
+        Vec3 direction = new Vec3(xMotion, yMotion, zMotion).normalize();
+        Vec3 head = new Vec3(this.thrasher.getX() + direction.x, this.thrasher.getY(), this.thrasher.getZ() + direction.z).add(direction.scale(0.75D * age));
+        AABB area = new AABB(head, head).inflate(waveGrowProgress(age));
+
+        for (LivingEntity found : this.thrasher.level().getEntitiesOfClass(LivingEntity.class, area, this.thrasher::isSonarTarget)) {
+            this.thrasher.setTarget(found);
+            break;
+        }
+    }
+
+    private static double waveGrowProgress(int age) {
+        double grow = 0.0D;
+
+        for (int i = 0; i < age; ++i) {
+            grow = grow < 0.1D ? grow + 0.025D : grow + 0.1D;
+        }
+
+        return grow;
     }
 
     private void stablilizeDirection() {
