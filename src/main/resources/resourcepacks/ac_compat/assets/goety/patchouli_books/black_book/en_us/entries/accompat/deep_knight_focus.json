@@ -2,6 +2,7 @@
   "name": "Abyssal Knight Focus",
   "icon": "goetyominous:deep_knight_focus",
   "category": "goety:abyssalchasm",
+  "sortnum": 40,
   "pages": [
     {
       "type": "patchouli:text",

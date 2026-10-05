@@ -2,6 +2,7 @@
   "name": "突变疣猪兽仆从",
   "icon": "mutantmore:mutant_hoglin_tusk",
   "category": "goety:mmcompat",
+  "sortnum": 40,
   "pages": [
     {
       "type": "patchouli:text",

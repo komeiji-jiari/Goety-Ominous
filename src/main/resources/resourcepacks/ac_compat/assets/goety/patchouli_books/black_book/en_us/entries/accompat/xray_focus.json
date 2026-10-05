@@ -2,6 +2,7 @@
   "name": "X-Ray Focus",
   "icon": "goetyominous:xray_focus",
   "category": "goety:toxiccaves",
+  "sortnum": 20,
   "pages": [
     {
       "type": "patchouli:text",

@@ -1,7 +1,8 @@
 {
   "name": "诡术师仆从",
-  "icon": "goety:mystic_core",
+  "icon": "savage_and_ravage:mask_of_dishonesty",
   "category": "goety:savageandravagecompat",
+  "sortnum": 70,
   "pages": [
     {
       "type": "patchouli:text",

@@ -2,6 +2,7 @@
   "name": "Loyal Froststalker",
   "icon": "alexsmobs:froststalker_horn",
   "category": "goety:amcompat",
+  "sortnum": 120,
   "pages": [
     {
       "type": "patchouli:text",

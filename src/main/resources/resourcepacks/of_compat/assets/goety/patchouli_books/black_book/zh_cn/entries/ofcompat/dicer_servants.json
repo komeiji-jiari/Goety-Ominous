@@ -2,6 +2,7 @@
   "name": "切削者",
   "icon": "opposing_force:laser_core",
   "category": "goety:ofcompat",
+  "sortnum": 10,
   "pages": [
     {
       "type": "patchouli:text",

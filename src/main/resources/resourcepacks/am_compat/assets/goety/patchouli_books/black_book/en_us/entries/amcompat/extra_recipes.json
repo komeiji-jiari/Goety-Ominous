@@ -2,6 +2,7 @@
   "name": "More Magical Recipes",
   "icon": "goety:cursed_infuser",
   "category": "goety:amcompat",
+  "sortnum": 310,
   "pages": [
     {
       "type": "patchouli:text",

@@ -2,6 +2,7 @@
   "name": "Crimson Mosquito Servant",
   "icon": "alexsmobs:blood_sac",
   "category": "goety:amcompat",
+  "sortnum": 50,
   "pages": [
     {
       "type": "patchouli:text",

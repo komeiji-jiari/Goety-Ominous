@@ -2,6 +2,7 @@
   "name": "Stench Focus",
   "icon": "goetyominous:fart_focus",
   "category": "goety:amcompat",
+  "sortnum": 280,
   "pages": [
     {
       "type": "text",

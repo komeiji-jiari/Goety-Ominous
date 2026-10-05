@@ -2,6 +2,7 @@
   "name": "Deep Wave Focus",
   "icon": "goetyominous:deep_wave_focus",
   "category": "goety:abyssalchasm",
+  "sortnum": 60,
   "pages": [
     {
       "type": "patchouli:text",

@@ -2,6 +2,7 @@
   "name": "Nucleeper",
   "icon": "alexscaves:siren_light",
   "category": "goety:toxiccaves",
+  "sortnum": 70,
   "pages": [
     {
       "type": "patchouli:text",

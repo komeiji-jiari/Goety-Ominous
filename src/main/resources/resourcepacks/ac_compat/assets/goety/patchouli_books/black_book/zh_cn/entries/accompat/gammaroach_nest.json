@@ -2,6 +2,7 @@
   "name": "伽马蟑螂巢穴",
   "icon": "goetyominous:gammaroach_nest",
   "category": "goety:toxiccaves",
+  "sortnum": 40,
   "pages": [
       {
         "type": "patchouli:text",

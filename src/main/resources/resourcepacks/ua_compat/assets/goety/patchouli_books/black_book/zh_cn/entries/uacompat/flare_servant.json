@@ -1,7 +1,8 @@
 {
   "name": "耀翼仆从",
-  "icon": "minecraft:cocoa_beans",
+  "icon": "minecraft:potion{Potion:\"upgrade_aquatic:insomnia\"}",
   "category": "goety:uacompat",
+  "sortnum": 10,
   "pages": [
     {
       "type": "patchouli:text",

@@ -2,6 +2,7 @@
   "name": "Spore Cloud Focus",
   "icon": "goetyominous:spore_cloud_focus",
   "category": "goety:savageandravagecompat",
+  "sortnum": 30,
   "pages": [
     {
       "type": "text",

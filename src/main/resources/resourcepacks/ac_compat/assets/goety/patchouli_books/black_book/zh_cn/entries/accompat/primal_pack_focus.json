@@ -2,6 +2,7 @@
   "name": "原始龙群聚晶",
   "icon": "goetyominous:primal_pack_focus",
   "category": "goety:primordialcaves",
+  "sortnum": 20,
   "pages": [
     {
       "type": "patchouli:text",

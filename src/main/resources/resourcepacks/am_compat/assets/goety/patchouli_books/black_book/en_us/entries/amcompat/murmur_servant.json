@@ -2,6 +2,7 @@
   "name": "Murmur Servant",
   "icon": "alexsmobs:unsettling_kimono",
   "category": "goety:amcompat",
+  "sortnum": 180,
   "pages": [
     {
       "type": "patchouli:text",

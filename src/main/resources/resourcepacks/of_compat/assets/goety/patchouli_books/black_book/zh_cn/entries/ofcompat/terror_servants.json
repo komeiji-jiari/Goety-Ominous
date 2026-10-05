@@ -2,6 +2,7 @@
   "name": "惧鱼",
   "icon":"opposing_force:terror_saw",
   "category": "goety:ofcompat",
+  "sortnum": 60,
   "pages": [
     {
       "type": "patchouli:text",

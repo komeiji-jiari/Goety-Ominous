@@ -2,6 +2,7 @@
   "name": "友方魔法师",
   "icon": "goetyominous:mysterious_contract",
   "category": "goety:iascompat",
+  "sortnum": 30,
   "advancement": "goety:goety/read_ravaging_scroll",
   "pages": [
     {

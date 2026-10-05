@@ -2,6 +2,7 @@
   "name": "Atlatitan",
   "icon": "alexscaves:atlatitan_egg",
   "category": "goety:primordialcaves",
+  "sortnum": 60,
   "pages": [
     {
       "type": "patchouli:text",

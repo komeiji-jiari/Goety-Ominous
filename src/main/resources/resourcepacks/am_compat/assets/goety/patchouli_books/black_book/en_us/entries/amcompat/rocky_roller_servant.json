@@ -2,6 +2,7 @@
   "name": "Rocky Roller Servant",
   "icon": "alexsmobs:rocky_shell",
   "category": "goety:amcompat",
+  "sortnum": 200,
   "pages": [
     {
       "type": "patchouli:text",

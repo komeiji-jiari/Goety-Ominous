@@ -2,6 +2,7 @@
   "name": "Gammaroach Servant",
   "icon": "alexscaves:toxic_paste",
   "category": "goety:toxiccaves",
+  "sortnum": 30,
   "pages": [
     {
       "type": "patchouli:text",

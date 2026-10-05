@@ -2,6 +2,7 @@
   "name": "Abyssal Dweller Focus",
   "icon": "goetyominous:deep_one_focus",
   "category": "goety:abyssalchasm",
+  "sortnum": 30,
   "pages": [
     {
       "type": "patchouli:text",

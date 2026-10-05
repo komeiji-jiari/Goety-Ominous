@@ -2,6 +2,7 @@
   "name": "Tusklin Servant",
   "icon": "goety:savage_tooth",
   "category": "goety:amcompat",
+  "sortnum": 240,
   "pages": [
     {
       "type": "patchouli:text",

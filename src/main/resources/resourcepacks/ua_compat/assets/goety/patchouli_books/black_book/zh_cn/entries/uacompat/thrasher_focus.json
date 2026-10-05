@@ -2,6 +2,7 @@
   "name": "猛袭聚晶",
   "icon": "goetyominous:thrasher_focus",
   "category": "goety:uacompat",
+  "sortnum": 40,
   "pages": [
     {
       "type": "text",

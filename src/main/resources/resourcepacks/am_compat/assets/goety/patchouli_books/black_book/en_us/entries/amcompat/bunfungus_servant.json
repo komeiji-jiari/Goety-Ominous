@@ -2,6 +2,7 @@
   "name": "Friendly Bunfungus",
   "icon": "alexsmobs:mungal_spores",
   "category": "goety:amcompat",
+  "sortnum": 20,
   "pages": [
     {
       "type": "patchouli:text",

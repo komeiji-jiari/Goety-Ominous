@@ -2,6 +2,7 @@
   "name": "Clavicula R'lyensis",
   "icon": "goetyominous:key_of_rlyeh",
   "category": "goety:abyssalchasm",
+  "sortnum": 10,
   "pages": [
     {
       "type": "patchouli:text",

@@ -2,6 +2,7 @@
   "name": "核爆聚晶",
   "icon": "goetyominous:atomic_bomb_focus",
   "category": "goety:toxiccaves",
+  "sortnum": 100,
   "pages": [
     {
       "type": "patchouli:text",

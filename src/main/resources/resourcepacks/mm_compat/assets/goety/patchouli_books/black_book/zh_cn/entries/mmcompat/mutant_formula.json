@@ -2,6 +2,7 @@
   "name": "复合物配方",
   "icon": "mutantmore:compound_z",
   "category": "goety:mmcompat",
+  "sortnum": 10,
   "pages": [
     {
       "type": "patchouli:text",

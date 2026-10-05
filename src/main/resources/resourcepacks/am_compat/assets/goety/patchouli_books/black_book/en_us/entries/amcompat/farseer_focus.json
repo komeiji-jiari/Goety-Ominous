@@ -2,6 +2,7 @@
   "name": "Farseer Focus",
   "icon": "goetyominous:farseer_focus",
   "category": "goety:amcompat",
+  "sortnum": 110,
   "pages": [
     {
       "type": "text",

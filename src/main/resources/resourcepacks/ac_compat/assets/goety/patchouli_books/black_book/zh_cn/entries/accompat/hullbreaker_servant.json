@@ -2,6 +2,7 @@
   "name": "碎船兽",
   "icon": "alexscaves:immortal_embryo",
   "category": "goety:abyssalchasm",
+  "sortnum": 100,
   "advancement": "goety:goety/read_terminus_scroll",
   "secret": true,
   "pages": [

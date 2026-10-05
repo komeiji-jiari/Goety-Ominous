@@ -2,6 +2,7 @@
   "name": "瞻远者仆从",
   "icon": "alexsmobs:farseer_arm",
   "category": "goety:amcompat",
+  "sortnum": 100,
   "pages": [
     {
       "type": "text",

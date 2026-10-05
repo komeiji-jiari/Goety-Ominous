@@ -2,6 +2,7 @@
   "name": "疣猪冲刺聚晶",
   "icon": "goetyominous:hog_charge_focus",
   "category": "goety:mmcompat",
+  "sortnum": 50,
   "pages": [
     {
       "type": "text",

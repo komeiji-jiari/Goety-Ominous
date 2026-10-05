@@ -2,6 +2,7 @@
   "name": "Sandy Focus",
   "icon": "goetyominous:sand_focus",
   "category": "goety:amcompat",
+  "sortnum": 160,
   "pages": [
     {
       "type": "text",

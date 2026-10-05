@@ -2,6 +2,7 @@
   "name": "Skyverns",
   "icon": "opposing_force:skyvern_claw",
   "category": "goety:ofcompat",
+  "sortnum": 40,
   "pages": [
     {
       "type": "patchouli:text",

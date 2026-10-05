@@ -2,6 +2,7 @@
   "name": "烈焰灵仆从",
   "icon": "mutantmore:rodling_helmet",
   "category": "goety:mmcompat",
+  "sortnum": 130,
   "advancement": "goety:goety/read_bygone_scroll",
   "secret": true,
   "pages": [

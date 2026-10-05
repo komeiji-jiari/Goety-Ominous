@@ -2,6 +2,7 @@
   "name": "射线聚晶",
   "icon": "goetyominous:xray_focus",
   "category": "goety:toxiccaves",
+  "sortnum": 20,
   "pages": [
     {
       "type": "patchouli:text",

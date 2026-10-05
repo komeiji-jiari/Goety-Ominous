@@ -2,6 +2,7 @@
   "name": "Battle Emu",
   "icon": "alexsmobs:emu_feather",
   "category": "goety:amcompat",
+  "sortnum": 10,
   "pages": [
     {
       "type": "patchouli:text",

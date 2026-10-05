@@ -1,7 +1,8 @@
 {
   "name": "Griefer Servant",
-  "icon": "minecraft:tnt",
+  "icon": "savage_and_ravage:spore_bomb",
   "category": "goety:savageandravagecompat",
+  "sortnum": 40,
   "pages": [
     {
       "type": "patchouli:text",

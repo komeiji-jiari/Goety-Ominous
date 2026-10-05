@@ -2,6 +2,7 @@
   "name": "轻语聚晶",
   "icon": "goetyominous:murmur_focus",
   "category": "goety:amcompat",
+  "sortnum": 190,
   "pages": [
     {
       "type": "text",

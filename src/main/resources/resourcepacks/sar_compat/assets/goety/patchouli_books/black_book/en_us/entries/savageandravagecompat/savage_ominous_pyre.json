@@ -2,6 +2,7 @@
   "name": "Savage Ominous Pyre",
   "icon": "goety:ominous_pyre",
   "category": "goety:savageandravagecompat",
+  "sortnum": 10,
   "pages": [
     {
       "type": "patchouli:text",

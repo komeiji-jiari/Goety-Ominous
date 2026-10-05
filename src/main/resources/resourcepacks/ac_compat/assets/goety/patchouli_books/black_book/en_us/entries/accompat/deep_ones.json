@@ -2,6 +2,7 @@
   "name": "Deep Ones",
   "icon": "alexscaves:pearl",
   "category": "goety:abyssalchasm",
+  "sortnum": 20,
   "pages": [
     {
       "type": "patchouli:text",

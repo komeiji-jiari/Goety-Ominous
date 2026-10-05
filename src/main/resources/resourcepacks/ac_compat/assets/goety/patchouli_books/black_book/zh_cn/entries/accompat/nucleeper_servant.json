@@ -2,6 +2,7 @@
   "name": "核能苦力怕",
   "icon": "alexscaves:siren_light",
   "category": "goety:toxiccaves",
+  "sortnum": 70,
   "pages": [
     {
       "type": "patchouli:text",

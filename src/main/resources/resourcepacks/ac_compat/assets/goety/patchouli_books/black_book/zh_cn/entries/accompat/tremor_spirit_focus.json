@@ -2,6 +2,7 @@
   "name": "撼地龙魂聚晶",
   "icon": "goetyominous:tremor_spirit_focus",
   "category": "goety:primordialcaves",
+  "sortnum": 80,
   "advancement": "goety:goety/read_bygone_scroll",
   "secret": true,
   "pages": [

@@ -2,6 +2,7 @@
   "name": "射线猫护符",
   "icon": "goetyominous:raycat_amulet",
   "category": "goety:toxiccaves",
+  "sortnum": 10,
   "pages": [
     {
       "type": "text",

@@ -2,6 +2,7 @@
   "name": "伏特聚晶",
   "icon": "goetyominous:volt_focus",
   "category": "goety:ofcompat",
+  "sortnum": 110,
   "pages": [
     {
       "type": "patchouli:text",

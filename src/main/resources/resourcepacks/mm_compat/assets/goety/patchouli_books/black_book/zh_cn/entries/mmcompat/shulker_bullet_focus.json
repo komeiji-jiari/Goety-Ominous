@@ -2,6 +2,7 @@
   "name": "潜影导弹聚晶",
   "icon": "goetyominous:shulker_bullet_focus",
   "category": "goety:mmcompat",
+  "sortnum": 70,
   "pages": [
     {
       "type": "text",

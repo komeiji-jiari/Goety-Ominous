@@ -2,6 +2,7 @@
   "name": "Gammaroach Nest",
   "icon": "goetyominous:gammaroach_nest",
   "category": "goety:toxiccaves",
+  "sortnum": 40,
   "pages": [
     {
       "type": "patchouli:text",

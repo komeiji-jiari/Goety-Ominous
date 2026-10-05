@@ -2,6 +2,7 @@
   "name": "角龙灵魂聚晶",
   "icon": "goetyominous:grotto_spirit_focus",
   "category": "goety:primordialcaves",
+  "sortnum": 90,
   "advancement": "goety:goety/read_bygone_scroll",
   "secret": true,
   "pages": [

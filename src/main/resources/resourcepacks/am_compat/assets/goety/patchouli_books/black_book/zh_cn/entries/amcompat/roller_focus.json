@@ -2,6 +2,7 @@
   "name": "磙岩聚晶",
   "icon": "goetyominous:roller_focus",
   "category": "goety:amcompat",
+  "sortnum": 210,
   "pages": [
     {
       "type": "text",

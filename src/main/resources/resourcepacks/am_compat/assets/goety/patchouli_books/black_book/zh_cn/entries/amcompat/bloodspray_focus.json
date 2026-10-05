@@ -2,6 +2,7 @@
   "name": "呕血聚晶",
   "icon": "goetyominous:bloodspray_focus",
   "category": "goety:amcompat",
+  "sortnum": 70,
   "pages": [
     {
       "type": "patchouli:text",

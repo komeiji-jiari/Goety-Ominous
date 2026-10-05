@@ -2,6 +2,7 @@
   "name": "怪奇刌民们",
   "icon": "goety:magic_emerald",
   "category": "goety:iascompat",
+  "sortnum": 20,
   "pages": [
     {
       "type": "patchouli:text",

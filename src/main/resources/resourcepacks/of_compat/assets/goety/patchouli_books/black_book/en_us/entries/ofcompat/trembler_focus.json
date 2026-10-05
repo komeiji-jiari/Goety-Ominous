@@ -2,6 +2,7 @@
   "name": "Trembler Focus",
   "icon": "goetyominous:trembler_focus",
   "category": "goety:ofcompat",
+  "sortnum": 90,
   "pages": [
     {
       "type": "patchouli:text",

@@ -2,6 +2,7 @@
   "name": "岩磙兽仆从",
   "icon": "alexsmobs:rocky_shell",
   "category": "goety:amcompat",
+  "sortnum": 200,
   "pages": [
     {
       "type": "patchouli:text",

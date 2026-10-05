@@ -2,6 +2,7 @@
   "name": "诡异类固醇",
   "icon": "goetyominous:warped_steroids",
   "category": "goety:amcompat",
+  "sortnum": 260,
   "pages": [
     {
       "type": "patchouli:text",

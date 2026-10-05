@@ -2,6 +2,7 @@
   "name": "原子吐息聚晶",
   "icon": "goetyominous:atomic_breath_focus",
   "category": "goety:toxiccaves",
+  "sortnum": 90,
   "pages": [
     {
       "type": "patchouli:text",

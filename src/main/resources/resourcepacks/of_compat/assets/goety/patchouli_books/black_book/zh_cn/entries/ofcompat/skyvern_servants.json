@@ -2,6 +2,7 @@
   "name": "天空飞龙",
   "icon": "opposing_force:skyvern_claw",
   "category": "goety:ofcompat",
+  "sortnum": 40,
   "pages": [
     {
       "type": "patchouli:text",

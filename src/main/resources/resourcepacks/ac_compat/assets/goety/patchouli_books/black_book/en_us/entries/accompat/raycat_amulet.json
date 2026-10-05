@@ -2,6 +2,7 @@
   "name": "Raycat Amulet",
   "icon": "goetyominous:raycat_amulet",
   "category": "goety:toxiccaves",
+  "sortnum": 10,
   "pages": [
     {
       "type": "text",

@@ -2,6 +2,7 @@
   "name": "Guster Focus",
   "icon": "goetyominous:guster_focus",
   "category": "goety:amcompat",
+  "sortnum": 150,
   "pages": [
     {
       "type": "text",

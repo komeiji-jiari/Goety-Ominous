@@ -2,6 +2,7 @@
   "name": "魔法闪光聚晶",
   "icon": "goetyominous:confusion_bolt_focus",
   "category": "goety:savageandravagecompat",
+  "sortnum": 80,
   "pages": [
     {
       "type": "text",

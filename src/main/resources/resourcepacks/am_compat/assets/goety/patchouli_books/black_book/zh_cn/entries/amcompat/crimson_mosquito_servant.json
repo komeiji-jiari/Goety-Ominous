@@ -2,6 +2,7 @@
   "name": "绯红蚊子仆从",
   "icon": "alexsmobs:blood_sac",
   "category": "goety:amcompat",
+  "sortnum": 50,
   "pages": [
     {
       "type": "patchouli:text",

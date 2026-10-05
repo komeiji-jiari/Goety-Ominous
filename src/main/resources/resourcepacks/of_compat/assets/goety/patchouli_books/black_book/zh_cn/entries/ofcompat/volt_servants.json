@@ -2,6 +2,7 @@
   "name": "伏特鳐",
   "icon": "opposing_force:electric_charge",
   "category": "goety:ofcompat",
+  "sortnum": 100,
   "pages": [
     {
       "type": "patchouli:text",

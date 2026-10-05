@@ -2,6 +2,7 @@
   "name": "粉碎聚晶",
   "icon": "goetyominous:dicer_focus",
   "category": "goety:ofcompat",
+  "sortnum": 20,
   "pages": [
     {
       "type": "patchouli:text",

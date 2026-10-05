@@ -2,6 +2,7 @@
   "name": "Froststalker Focus",
   "icon": "goetyominous:froststalker_focus",
   "category": "goety:amcompat",
+  "sortnum": 130,
   "pages": [
     {
       "type": "text",

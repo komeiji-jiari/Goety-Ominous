@@ -2,6 +2,7 @@
   "name": "用仪式进行附魔",
   "icon": "minecraft:enchanted_book",
   "category": "goety:amcompat",
+  "sortnum": 300,
   "pages": [
     {
       "type": "patchouli:text",

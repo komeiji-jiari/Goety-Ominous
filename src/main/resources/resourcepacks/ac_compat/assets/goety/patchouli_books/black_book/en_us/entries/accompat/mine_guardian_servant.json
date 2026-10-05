@@ -2,6 +2,7 @@
   "name": "Mine Guardian",
   "icon": "alexscaves:depth_charge",
   "category": "goety:abyssalchasm",
+  "sortnum": 90,
   "pages": [
     {
       "type": "patchouli:text",

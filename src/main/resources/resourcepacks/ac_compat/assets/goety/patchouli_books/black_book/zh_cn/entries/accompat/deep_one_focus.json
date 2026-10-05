@@ -2,6 +2,7 @@
   "name": "渊海悚伏聚晶",
   "icon": "goetyominous:deep_one_focus",
   "category": "goety:abyssalchasm",
+  "sortnum": 30,
   "pages": [
     {
       "type": "patchouli:text",

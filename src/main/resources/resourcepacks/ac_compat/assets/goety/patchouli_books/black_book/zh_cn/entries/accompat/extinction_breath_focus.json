@@ -2,6 +2,7 @@
   "name": "灭绝呼吸聚晶",
   "icon": "goetyominous:extinction_breath_focus",
   "category": "goety:primordialcaves",
+  "sortnum": 100,
   "advancement": "goety:goety/read_bygone_scroll",
   "secret": true,
   "pages": [

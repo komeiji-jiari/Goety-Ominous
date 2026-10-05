@@ -2,6 +2,7 @@
   "name": "Further Mutations",
   "icon": "mutantmore:formula_y",
   "category": "goety:mmcompat",
+  "sortnum": 20,
   "pages": [
     {
       "type": "patchouli:text",
