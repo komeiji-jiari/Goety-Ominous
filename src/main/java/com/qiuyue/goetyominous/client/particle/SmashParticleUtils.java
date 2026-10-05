@@ -11,7 +11,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class SmashParticleUtils {
     public static void spawnSmashAttackParticles(LevelAccessor level, BlockPos pos, int count) {
-        Vec3 center = Vec3.atBottomCenterOf(pos).add(0.0D, 0.5D, 0.0D);
+        Vec3 center = Vec3.atCenterOf(pos).add(0.0D, 0.5D, 0.0D);
         BlockParticleOption dustPillar = new BlockParticleOption(ModParticleTypes.DUST_PILLAR.get(), level.getBlockState(pos));
 
         for (int i = 0; (float)i < (float)count / 3.0F; ++i) {
