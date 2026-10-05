@@ -37,6 +37,12 @@ public final class RlyehFont {
         return out;
     }
 
+    public static boolean isRlyehFont(ResourceLocation font) {
+        return font != null
+                && GoetyOminous.MOD_ID.equals(font.getNamespace())
+                && font.getPath().startsWith("rlyeh_");
+    }
+
     private static int sample(int[] palette, double t) {
         t -= Math.floor(t);
         double scaled = t * (palette.length - 1);
