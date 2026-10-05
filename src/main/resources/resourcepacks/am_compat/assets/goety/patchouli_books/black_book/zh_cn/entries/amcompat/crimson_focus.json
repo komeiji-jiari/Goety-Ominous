@@ -2,6 +2,7 @@
   "name": "绯红集群聚晶",
   "icon": "goetyominous:crimson_focus",
   "category": "goety:amcompat",
+  "sortnum": 60,
   "pages": [
     {
       "type": "text",

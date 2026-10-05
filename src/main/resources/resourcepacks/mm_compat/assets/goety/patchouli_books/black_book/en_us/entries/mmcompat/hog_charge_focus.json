@@ -2,6 +2,7 @@
   "name": "Hog Charge Focus",
   "icon": "goetyominous:hog_charge_focus",
   "category": "goety:mmcompat",
+  "sortnum": 50,
   "pages": [
     {
       "type": "text",

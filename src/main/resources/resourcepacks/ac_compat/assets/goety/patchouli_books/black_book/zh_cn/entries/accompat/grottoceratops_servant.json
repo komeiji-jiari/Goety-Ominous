@@ -2,6 +2,7 @@
   "name": "洞穴角龙",
   "icon": "alexscaves:grottoceratops_egg",
   "category": "goety:primordialcaves",
+  "sortnum": 30,
   "pages": [
     {
       "type": "patchouli:text",

@@ -858,6 +858,11 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
     }
 
     @Override
+    public Vec3 getDismountLocationForPassenger(LivingEntity passenger) {
+        return new Vec3(this.getX(), this.getBoundingBox().minY, this.getZ());
+    }
+
+    @Override
     protected Vec3 getRiddenInput(Player player, Vec3 deltaIn) {
         if (player.zza != 0.0f || player.xxa != 0.0f) {
             float f = player.zza < 0.0f ? 0.5f : 1.0f;

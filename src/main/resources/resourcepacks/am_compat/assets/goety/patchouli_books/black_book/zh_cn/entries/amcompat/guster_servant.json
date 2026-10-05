@@ -2,6 +2,7 @@
   "name": "沙风怪",
   "icon": "alexsmobs:guster_eye",
   "category": "goety:amcompat",
+  "sortnum": 140,
   "pages": [
     {
       "type": "patchouli:text",

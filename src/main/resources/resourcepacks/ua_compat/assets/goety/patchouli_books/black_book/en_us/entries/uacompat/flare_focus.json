@@ -2,6 +2,7 @@
   "name": "Flare Focus",
   "icon": "goetyominous:flare_focus",
   "category": "goety:uacompat",
+  "sortnum": 20,
   "pages": [
     {
       "type": "text",

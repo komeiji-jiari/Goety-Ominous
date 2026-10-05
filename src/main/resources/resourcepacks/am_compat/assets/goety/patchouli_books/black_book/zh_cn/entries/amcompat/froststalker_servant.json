@@ -2,6 +2,7 @@
   "name": "忠诚的寒霜潜伏者",
   "icon": "alexsmobs:froststalker_horn",
   "category": "goety:amcompat",
+  "sortnum": 120,
   "pages": [
     {
       "type": "patchouli:text",

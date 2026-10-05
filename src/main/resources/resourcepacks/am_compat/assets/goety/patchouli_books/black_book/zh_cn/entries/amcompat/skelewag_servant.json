@@ -2,6 +2,7 @@
   "name": "骷髅剑鱼们",
   "icon": "alexsmobs:fish_bones",
   "category": "goety:amcompat",
+  "sortnum": 220,
   "pages": [
     {
       "type": "text",

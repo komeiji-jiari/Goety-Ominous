@@ -2,6 +2,7 @@
   "name": "Cave Centipede Servant",
   "icon": "alexsmobs:centipede_leg",
   "category": "goety:amcompat",
+  "sortnum": 30,
   "pages": [
     {
       "type": "patchouli:text",

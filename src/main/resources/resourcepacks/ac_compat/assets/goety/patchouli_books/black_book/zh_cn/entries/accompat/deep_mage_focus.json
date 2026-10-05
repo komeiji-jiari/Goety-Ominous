@@ -2,6 +2,7 @@
   "name": "渊海祭仪聚晶",
   "icon": "goetyominous:deep_mage_focus",
   "category": "goety:abyssalchasm",
+  "sortnum": 50,
   "pages": [
     {
       "type": "patchouli:text",

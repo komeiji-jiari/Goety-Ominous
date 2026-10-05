@@ -2,6 +2,7 @@
   "name": "Illager Elephant",
   "icon": "alexsmobs:acacia_blossom",
   "category": "goety:amcompat",
+  "sortnum": 170,
   "pages": [
     {
       "type": "patchouli:text",

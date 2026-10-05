@@ -2,6 +2,7 @@
   "name": "孢子云聚晶",
   "icon": "goetyominous:spore_cloud_focus",
   "category": "goety:savageandravagecompat",
+  "sortnum": 30,
   "pages": [
     {
       "type": "text",

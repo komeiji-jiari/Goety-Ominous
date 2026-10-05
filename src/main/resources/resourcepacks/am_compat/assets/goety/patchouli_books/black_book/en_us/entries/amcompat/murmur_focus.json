@@ -2,6 +2,7 @@
   "name": "Murmur Focus",
   "icon": "goetyominous:murmur_focus",
   "category": "goety:amcompat",
+  "sortnum": 190,
   "pages": [
     {
       "type": "text",

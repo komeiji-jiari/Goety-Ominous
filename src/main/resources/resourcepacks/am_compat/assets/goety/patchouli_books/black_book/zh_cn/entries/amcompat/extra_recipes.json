@@ -2,6 +2,7 @@
   "name": "更多魔法配方",
   "icon": "goety:cursed_infuser",
   "category": "goety:amcompat",
+  "sortnum": 310,
   "pages": [
     {
       "type": "patchouli:text",

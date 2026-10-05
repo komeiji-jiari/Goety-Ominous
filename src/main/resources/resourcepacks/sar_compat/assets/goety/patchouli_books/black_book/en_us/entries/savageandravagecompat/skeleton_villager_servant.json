@@ -1,7 +1,8 @@
 {
   "name": "Skeleton Villager Servant",
-  "icon": "minecraft:skeleton_skull",
+  "icon": "goety:tall_skull",
   "category": "goety:savageandravagecompat",
+  "sortnum": 60,
   "pages": [
     {
       "type": "patchouli:text",

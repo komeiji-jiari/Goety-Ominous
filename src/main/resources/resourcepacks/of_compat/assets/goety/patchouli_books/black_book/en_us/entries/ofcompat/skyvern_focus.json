@@ -2,6 +2,7 @@
   "name": "Skyvern Focus",
   "icon": "goetyominous:skyvern_focus",
   "category": "goety:ofcompat",
+  "sortnum": 50,
   "pages": [
     {
       "type": "patchouli:text",

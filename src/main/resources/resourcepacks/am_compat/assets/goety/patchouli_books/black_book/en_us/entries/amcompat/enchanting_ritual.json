@@ -2,6 +2,7 @@
   "name": "Enchanting with Ritual",
   "icon": "minecraft:enchanted_book",
   "category": "goety:amcompat",
+  "sortnum": 300,
   "pages": [
     {
       "type": "patchouli:text",

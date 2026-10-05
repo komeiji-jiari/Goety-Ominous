@@ -1,7 +1,8 @@
 {
   "name": "Creepie Servant",
-  "icon": "minecraft:creeper_head",
+  "icon": "savage_and_ravage:creeper_spores",
   "category": "goety:savageandravagecompat",
+  "sortnum": 20,
   "pages": [
     {
       "type": "patchouli:text",

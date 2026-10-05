@@ -1,7 +1,8 @@
 {
   "name": "刽子手仆从",
-  "icon": "minecraft:iron_axe",
+  "icon": "savage_and_ravage:cleaver_of_beheading",
   "category": "goety:savageandravagecompat",
+  "sortnum": 50,
   "pages": [
     {
       "type": "patchouli:text",

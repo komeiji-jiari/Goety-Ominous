@@ -2,6 +2,7 @@
   "name": "獠牙兽仆从",
   "icon": "goety:savage_tooth",
   "category": "goety:amcompat",
+  "sortnum": 240,
   "pages": [
     {
       "type": "patchouli:text",

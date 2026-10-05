@@ -2,6 +2,7 @@
   "name": "Warped Mosco Servant",
   "icon": "alexsmobs:hemolymph_sac",
   "category": "goety:amcompat",
+  "sortnum": 250,
   "pages": [
     {
       "type": "patchouli:text",

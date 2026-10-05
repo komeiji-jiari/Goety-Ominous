@@ -2,6 +2,7 @@
   "name": "枯萎呼吸聚晶",
   "icon": "goetyominous:wither_breath_focus",
   "category": "goety:mmcompat",
+  "sortnum": 100,
   "advancement": "goety:goety/read_bygone_scroll",
   "secret": true,
   "pages": [

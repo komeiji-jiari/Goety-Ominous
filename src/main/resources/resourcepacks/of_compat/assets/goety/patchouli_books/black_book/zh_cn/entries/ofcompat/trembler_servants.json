@@ -2,6 +2,7 @@
   "name": "震颤蜗牛",
   "icon": "opposing_force:trembler_shell",
   "category": "goety:ofcompat",
+  "sortnum": 80,
   "pages": [
     {
       "type": "patchouli:text",

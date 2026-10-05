@@ -2,6 +2,7 @@
   "name": "Volt Bolt Focus",
   "icon": "goetyominous:volt_bolt_focus",
   "category": "goety:ofcompat",
+  "sortnum": 120,
   "pages": [
     {
       "type": "patchouli:text",

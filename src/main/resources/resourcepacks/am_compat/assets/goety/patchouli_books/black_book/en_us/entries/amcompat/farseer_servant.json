@@ -2,6 +2,7 @@
   "name": "Farseer Servant",
   "icon": "alexsmobs:farseer_arm",
   "category": "goety:amcompat",
+  "sortnum": 100,
   "pages": [
     {
       "type": "text",

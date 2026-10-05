@@ -2,6 +2,7 @@
   "name": "Water Bolt Focus",
   "icon": "goetyominous:water_bolt_focus",
   "category": "goety:abyssalchasm",
+  "sortnum": 80,
   "pages": [
     {
       "type": "patchouli:text",

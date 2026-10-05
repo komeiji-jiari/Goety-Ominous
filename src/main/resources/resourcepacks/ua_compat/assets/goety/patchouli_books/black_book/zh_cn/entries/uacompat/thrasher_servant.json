@@ -2,6 +2,7 @@
   "name": "长尾鲨仆从",
   "icon": "upgrade_aquatic:thrasher_tooth",
   "category": "goety:uacompat",
+  "sortnum": 30,
   "pages": [
     {
       "type": "patchouli:text",

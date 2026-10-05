@@ -2,6 +2,7 @@
   "name": "符文监狱聚晶",
   "icon": "goetyominous:rune_prison_focus",
   "category": "goety:savageandravagecompat",
+  "sortnum": 90,
   "pages": [
     {
       "type": "text",

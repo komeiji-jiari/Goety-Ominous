@@ -2,6 +2,7 @@
   "name": "拉莱耶之钥",
   "icon": "goetyominous:key_of_rlyeh",
   "category": "goety:abyssalchasm",
+  "sortnum": 10,
   "pages": [
     {
       "type": "patchouli:text",

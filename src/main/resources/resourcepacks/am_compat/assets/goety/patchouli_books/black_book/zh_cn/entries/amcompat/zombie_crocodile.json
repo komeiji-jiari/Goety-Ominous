@@ -2,6 +2,7 @@
   "name": "僵尸鳄鱼",
   "icon": "alexsmobs:crocodile_scute",
   "category": "goety:amcompat",
+  "sortnum": 270,
   "pages": [
     {
       "type": "patchouli:text",

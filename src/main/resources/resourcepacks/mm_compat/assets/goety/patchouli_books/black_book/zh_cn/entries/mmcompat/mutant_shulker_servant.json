@@ -2,6 +2,7 @@
   "name": "突变潜影贝仆从",
   "icon": "mutantmore:mutant_shulker_shell",
   "category": "goety:mmcompat",
+  "sortnum": 60,
   "pages": [
     {
       "type": "patchouli:text",

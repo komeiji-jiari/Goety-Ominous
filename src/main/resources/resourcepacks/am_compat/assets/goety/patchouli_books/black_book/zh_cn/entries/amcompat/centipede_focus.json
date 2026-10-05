@@ -2,6 +2,7 @@
   "name": "百足聚晶",
   "icon": "goetyominous:centipede_focus",
   "category": "goety:amcompat",
+  "sortnum": 40,
   "pages": [
     {
       "type": "patchouli:text",

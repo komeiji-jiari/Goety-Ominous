@@ -2,6 +2,7 @@
   "name": "踏浪聚晶",
   "icon": "goetyominous:wave_bash_focus",
   "category": "goety:abyssalchasm",
+  "sortnum": 70,
   "pages": [
     {
       "type": "patchouli:text",

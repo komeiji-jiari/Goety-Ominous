@@ -1,7 +1,8 @@
 {
   "name": "Flare Servant",
-  "icon": "minecraft:cocoa_beans",
+  "icon": "minecraft:potion{Potion:\"upgrade_aquatic:insomnia\"}",
   "category": "goety:uacompat",
+  "sortnum": 10,
   "pages": [
     {
       "type": "patchouli:text",

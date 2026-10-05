@@ -2,6 +2,7 @@
   "name": "怪奇不祥火炬",
   "icon": "goety:ominous_pyre",
   "category": "goety:iascompat",
+  "sortnum": 10,
   "pages": [
     {
       "type": "patchouli:text",

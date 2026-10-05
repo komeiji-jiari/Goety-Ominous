@@ -2,6 +2,7 @@
   "name": "Brainiac Focus",
   "icon": "goetyominous:brainiac_focus",
   "category": "goety:toxiccaves",
+  "sortnum": 60,
   "pages": [
     {
       "type": "patchouli:text",

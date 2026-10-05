@@ -2,6 +2,7 @@
   "name": "遗迹恐手龙",
   "icon": "alexscaves:relicheirus_egg",
   "category": "goety:primordialcaves",
+  "sortnum": 50,
   "pages": [
     {
       "type": "patchouli:text",

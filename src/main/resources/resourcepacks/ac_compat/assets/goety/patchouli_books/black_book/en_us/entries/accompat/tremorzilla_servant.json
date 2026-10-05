@@ -2,6 +2,7 @@
   "name": "Tremorzilla",
   "icon": "alexscaves:tremorzilla_egg",
   "category": "goety:toxiccaves",
+  "sortnum": 80,
   "advancement": "goety:goety/read_terminus_scroll",
   "secret": true,
   "pages": [

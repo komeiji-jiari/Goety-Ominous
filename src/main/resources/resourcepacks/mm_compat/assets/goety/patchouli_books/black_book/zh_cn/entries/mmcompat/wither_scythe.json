@@ -2,6 +2,7 @@
   "name": "凋亡死镰",
   "icon": "goetyominous:wither_scythe",
   "category": "goety:mmcompat",
+  "sortnum": 120,
   "advancement": "goety:goety/kill_a_apostle",
   "secret": true,
   "pages": [

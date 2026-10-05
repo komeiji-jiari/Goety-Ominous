@@ -2,6 +2,7 @@
   "name": "Tremor Spirit Focus",
   "icon": "goetyominous:tremor_spirit_focus",
   "category": "goety:primordialcaves",
+  "sortnum": 80,
   "advancement": "goety:goety/read_bygone_scroll",
   "secret": true,
   "pages": [

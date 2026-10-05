@@ -2,6 +2,7 @@
   "name": "友善的蘑菇兔",
   "icon": "alexsmobs:mungal_spores",
   "category": "goety:amcompat",
+  "sortnum": 20,
   "pages": [
     {
       "type": "patchouli:text",

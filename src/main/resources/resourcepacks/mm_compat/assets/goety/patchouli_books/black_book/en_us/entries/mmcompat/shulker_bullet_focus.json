@@ -2,6 +2,7 @@
   "name": "Shulker Bullet Focus",
   "icon": "goetyominous:shulker_bullet_focus",
   "category": "goety:mmcompat",
+  "sortnum": 70,
   "pages": [
     {
       "type": "text",

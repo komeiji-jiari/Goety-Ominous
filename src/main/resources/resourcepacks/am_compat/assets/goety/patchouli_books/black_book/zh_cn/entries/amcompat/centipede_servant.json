@@ -2,6 +2,7 @@
   "name": "洞穴蜈蚣仆从",
   "icon": "alexsmobs:centipede_leg",
   "category": "goety:amcompat",
+  "sortnum": 30,
   "pages": [
     {
       "type": "patchouli:text",

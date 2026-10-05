@@ -2,6 +2,7 @@
   "name": "Rune Prison Focus",
   "icon": "goetyominous:rune_prison_focus",
   "category": "goety:savageandravagecompat",
+  "sortnum": 90,
   "pages": [
     {
       "type": "text",

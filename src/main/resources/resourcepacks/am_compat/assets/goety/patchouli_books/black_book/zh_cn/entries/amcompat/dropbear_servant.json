@@ -2,6 +2,7 @@
   "name": "悬熊仆从",
   "icon": "alexsmobs:dropbear_claw",
   "category": "goety:amcompat",
+  "sortnum": 80,
   "pages": [
     {
       "type": "patchouli:text",

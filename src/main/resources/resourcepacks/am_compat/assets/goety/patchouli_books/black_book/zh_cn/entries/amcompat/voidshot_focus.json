@@ -2,6 +2,7 @@
   "name": "虚晶聚晶",
   "icon": "goetyominous:voidshot_focus",
   "category": "goety:amcompat",
+  "sortnum": 290,
   "pages": [
     {
       "type": "patchouli:text",

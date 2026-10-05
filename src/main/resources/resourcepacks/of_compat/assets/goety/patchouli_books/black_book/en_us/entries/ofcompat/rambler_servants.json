@@ -2,6 +2,7 @@
   "name": "Ramblers",
   "icon": "opposing_force:heavy_bone",
   "category": "goety:ofcompat",
+  "sortnum": 130,
   "pages": [
     {
       "type": "patchouli:text",

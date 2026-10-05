@@ -2,6 +2,7 @@
   "name": "Thrasher Focus",
   "icon": "goetyominous:thrasher_focus",
   "category": "goety:uacompat",
+  "sortnum": 40,
   "pages": [
     {
       "type": "text",

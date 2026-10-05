@@ -2,6 +2,7 @@
   "name": "Wither Slash Focus",
   "icon": "goetyominous:wither_slash_focus",
   "category": "goety:mmcompat",
+  "sortnum": 110,
   "advancement": "goety:goety/read_bygone_scroll",
   "secret": true,
   "pages": [

@@ -1,7 +1,8 @@
 {
   "name": "骷髅村民仆从",
-  "icon": "minecraft:skeleton_skull",
+  "icon": "goety:tall_skull",
   "category": "goety:savageandravagecompat",
+  "sortnum": 60,
   "pages": [
     {
       "type": "patchouli:text",

@@ -2,6 +2,7 @@
   "name": "电球聚晶",
   "icon": "goetyominous:volt_bolt_focus",
   "category": "goety:ofcompat",
+  "sortnum": 120,
   "pages": [
     {
       "type": "patchouli:text",
