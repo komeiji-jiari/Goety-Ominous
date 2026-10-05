@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "goetyominous:block/tuff_bricks",
+    "side": "goetyominous:block/tuff_bricks",
+    "top": "goetyominous:block/tuff_bricks"
+  }
+}

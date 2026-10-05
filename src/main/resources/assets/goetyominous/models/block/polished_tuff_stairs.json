@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "goetyominous:block/polished_tuff",
+    "side": "goetyominous:block/polished_tuff",
+    "top": "goetyominous:block/polished_tuff"
+  }
+}

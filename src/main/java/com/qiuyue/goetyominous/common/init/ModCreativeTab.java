@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.init;
 
 import com.Polarice3.Goety.common.items.magic.MagicFocus;
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.common.blocks.trial.TrialBlocks;
 import com.qiuyue.goetyominous.common.items.ModItems;
 import com.qiuyue.goetyominous.common.items.OminousIconItem;
 import com.qiuyue.goetyominous.common.items.PlushieBlockItem;
@@ -53,7 +54,7 @@ public class ModCreativeTab {
 
     public static final RegistryObject<CreativeModeTab> PLUSHIE_TAB = CREATIVE_MODE_TABS
             .register("goetyominous_plushies", () -> CreativeModeTab.builder()
-                    .icon(() -> ModBlocks.PLUSHIE_SPDISH.get().asItem().getDefaultInstance())
+                    .icon(() -> ModBlocks.PLUSHIE_HIM.get().asItem().getDefaultInstance())
                     .title(Component.translatable("itemGroup.goetyominous.plushies"))
                     .withTabsBefore(SPAWN_EGG_TAB.getKey())
                     .displayItems((parameters, output) -> {
@@ -112,8 +113,14 @@ public class ModCreativeTab {
                 moveAfter(buckets.other, AcItems.KEY_OF_RLYEH.get(), ModItems.FEL_STAFF.get());
             }
 
+            removeTrialBlocks(buckets);
+
             return buckets;
         }
+    }
+
+    private static void removeTrialBlocks(Buckets buckets) {
+        TrialBlocks.BLOCKS.getEntries().forEach(entry -> buckets.blocks.remove(entry.get().asItem()));
     }
 
     private static void collectFrom(DeferredRegister<Item> registry, Buckets buckets) {
