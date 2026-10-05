@@ -36,6 +36,7 @@ public class ModSounds {
 
     public static final RegistryObject<SoundEvent> MACE_SMASH_AIR = create("mace_smash_air");
     public static final RegistryObject<SoundEvent> MACE_SMASH_GROUND_HEAVY = create("mace_smash_ground_heavy");
+    public static final RegistryObject<SoundEvent> MACE_SMASH_GROUND = create("mace_smash_ground");
 
     public static final RegistryObject<SoundEvent> BOGGED_SERVANT_AMBIENT = create("bogged_servant_ambient");
     public static final RegistryObject<SoundEvent> BOGGED_SERVANT_HURT = create("bogged_servant_hurt");

@@ -21,6 +21,7 @@ public abstract class PlayerImpulseMixin implements WindChargeImpulse {
     @Unique private Entity goetyominous$currentExplosionCause;
     @Unique private boolean goetyominous$ignoreFallDamageFromCurrentExplosion;
     @Unique private int goetyominous$currentImpulseContextResetGraceTime;
+    @Unique private boolean goetyominous$spawnExtraParticlesOnFall;
 
     @Override
     public void onExplosionHitImpulse(@Nullable Entity source) {
@@ -96,5 +97,28 @@ public abstract class PlayerImpulseMixin implements WindChargeImpulse {
         }
         tag.putBoolean("ignore_fall_damage_from_current_explosion", this.goetyominous$ignoreFallDamageFromCurrentExplosion);
         tag.putInt("current_impulse_context_reset_grace_time", this.goetyominous$currentImpulseContextResetGraceTime);
+    }
+
+    @Override
+    public void onMaceSmashImpact() {
+        Player self = (Player) (Object) this;
+        if (this.goetyominous$ignoreFallDamageFromCurrentExplosion && this.goetyominous$currentImpulseImpactPos != null) {
+            if (this.goetyominous$currentImpulseImpactPos.y > self.getY()) {
+                this.goetyominous$currentImpulseImpactPos = self.position();
+            }
+        } else {
+            this.goetyominous$currentImpulseImpactPos = self.position();
+        }
+        this.setIgnoreFallDamageFromCurrentImpulse(true);
+    }
+
+    @Override
+    public void setSpawnExtraParticlesOnFall(boolean spawn) {
+        this.goetyominous$spawnExtraParticlesOnFall = spawn;
+    }
+
+    @Override
+    public boolean getSpawnExtraParticlesOnFall() {
+        return this.goetyominous$spawnExtraParticlesOnFall;
     }
 }

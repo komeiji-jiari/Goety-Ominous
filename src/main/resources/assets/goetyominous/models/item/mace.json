@@ -1,0 +1,6 @@
+{
+  "parent": "goetyominous:item/handheld_mace",
+  "textures": {
+    "layer0": "goetyominous:item/mace"
+  }
+}

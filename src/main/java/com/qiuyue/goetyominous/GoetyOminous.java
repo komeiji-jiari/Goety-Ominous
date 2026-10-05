@@ -94,6 +94,7 @@ public class GoetyOminous {
         biomeModifiers.register("mob_spawns", ModMobSpawnBiomeModifier::makeCodec);
         ModSounds.init();
         ModParticleTypes.init();
+        com.qiuyue.goetyominous.common.init.ModEnchantments.init();
         ModItems.init();
         ModBlocks.register(modEventBus);
         com.qiuyue.goetyominous.common.blocks.trial.TrialSounds.register(modEventBus);

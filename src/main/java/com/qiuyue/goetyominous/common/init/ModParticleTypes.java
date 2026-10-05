@@ -1,6 +1,8 @@
 package com.qiuyue.goetyominous.common.init;
 
+import com.mojang.serialization.Codec;
 import com.qiuyue.goetyominous.GoetyOminous;
+import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -18,4 +20,12 @@ public class ModParticleTypes {
     public static final RegistryObject<SimpleParticleType> GUST = PARTICLE_TYPES.register("gust", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> GUST_EMITTER_SMALL = PARTICLE_TYPES.register("gust_emitter_small", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> GUST_EMITTER_LARGE = PARTICLE_TYPES.register("gust_emitter_large", () -> new SimpleParticleType(false));
+
+    public static final RegistryObject<ParticleType<BlockParticleOption>> DUST_PILLAR = PARTICLE_TYPES.register("dust_pillar",
+            () -> new ParticleType<BlockParticleOption>(true, BlockParticleOption.DESERIALIZER) {
+                @Override
+                public Codec<BlockParticleOption> codec() {
+                    return BlockParticleOption.codec(this);
+                }
+            });
 }
