@@ -121,6 +121,11 @@ public class ShulkerMimicServant extends IAnimatedMiniBossServant {
     }
 
     @Override
+    public int getSummonLimit(LivingEntity owner) {
+        return MobsConfig.ShulkerMimicServantLimit.get();
+    }
+
+    @Override
     public double damageMultiplier() {
         return MobsConfig.ShulkerMimicServantDamageMultiplier.get();
     }

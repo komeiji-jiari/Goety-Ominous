@@ -171,6 +171,11 @@ public class MutantShulkerServant extends AbstractMutantServant {
         super(p_i50189_1_, p_i50189_2_);
     }
 
+    @Override
+    public int getSummonLimit(LivingEntity owner) {
+        return MobsConfig.MutantShulkerServantLimit.get();
+    }
+
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));

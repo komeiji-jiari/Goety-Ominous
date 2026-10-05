@@ -139,6 +139,11 @@ public class HeresiarchServant extends CultistServant {
         this.xpReward = 0;
     }
 
+    @Override
+    public int getSummonLimit(LivingEntity owner) {
+        return MobsConfig.HeresiarchServantLimit.get();
+    }
+
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(1, new com.qiuyue.goetyominous.common.entities.ai.HeresiarchServantBarterGoal(this) {

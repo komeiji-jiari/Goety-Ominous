@@ -108,6 +108,11 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
     }
 
     @Override
+    public int getSummonLimit(LivingEntity owner) {
+        return MobsConfig.AnnihilationPursuerServantLimit.get();
+    }
+
+    @Override
     public double damageMultiplier() {
         return MobsConfig.AnnihilationPursuerServantDamageMultiplier.get();
     }

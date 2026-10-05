@@ -15,6 +15,7 @@ import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.google.common.collect.Maps;
 import com.qiuyue.goetyominous.config.AttributesConfig;
+import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -122,6 +123,11 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
         super(type, level);
         this.initElephantInventory();
         this.setMaxUpStep(1.1f);
+    }
+
+    @Override
+    public int getSummonLimit(LivingEntity owner) {
+        return MobsConfig.IllagerElephantServantLimit.get();
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {

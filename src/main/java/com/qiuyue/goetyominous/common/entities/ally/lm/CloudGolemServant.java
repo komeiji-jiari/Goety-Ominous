@@ -159,6 +159,11 @@ public class CloudGolemServant extends IAnimatedBossServant {
     }
 
     @Override
+    public int getSummonLimit(LivingEntity owner) {
+        return MobsConfig.CloudGolemServantLimit.get();
+    }
+
+    @Override
     public double damageMultiplier() {
         return MobsConfig.CloudGolemServantDamageMultiplier.get();
     }

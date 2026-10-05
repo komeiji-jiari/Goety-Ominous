@@ -231,6 +231,11 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
         this.SPEED_MODIFIER_CROUCHING = new AttributeModifier(SPEED_MODIFIER_CROUCHING_UUID, "Crouching speed decrease", -(Double)MutantWitherSkeletonCommonConfig.crouching_movement_speed_decrease.get(), Operation.ADDITION);
     }
 
+    @Override
+    public int getSummonLimit(LivingEntity owner) {
+        return MobsConfig.MutantWitherSkeletonServantLimit.get();
+    }
+
     public static AttributeSupplier.Builder createConfiguredAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, AttributesConfig.MutantWitherSkeletonServantHealth.get())
