@@ -10,6 +10,7 @@ import com.teamabnormals.blueprint.core.endimator.PlayableEndimation;
 import com.teamabnormals.blueprint.core.endimator.TimedEndimation;
 import com.teamabnormals.blueprint.core.util.NetworkUtil;
 import com.qiuyue.goetyominous.config.AttributesConfig;
+import com.qiuyue.goetyominous.config.MobsConfig;
 import com.teamabnormals.upgrade_aquatic.core.other.UADataSerializers;
 import com.teamabnormals.upgrade_aquatic.core.other.tags.UAEntityTypeTags;
 import com.teamabnormals.upgrade_aquatic.core.registry.UAPlayableEndimations;
@@ -88,6 +89,11 @@ public class ThrasherServant extends Summoned implements Endimatable {
         this.lookControl = new ThrasherLookController(this);
         this.tailAnimation = this.random.nextFloat();
         this.prevTailAnimation = this.tailAnimation;
+    }
+
+    @Override
+    public int getSummonLimit(LivingEntity owner) {
+        return MobsConfig.ThrasherServantLimit.get();
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {

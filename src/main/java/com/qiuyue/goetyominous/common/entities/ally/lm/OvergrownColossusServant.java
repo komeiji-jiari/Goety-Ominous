@@ -84,6 +84,10 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
         }
     }
     @Override
+    public int getSummonLimit(LivingEntity owner) {
+        return MobsConfig.OvergrownColossusServantLimit.get();
+    }
+    @Override
     public ItemEntity spawnAtLocation(ItemStack stack) {
         ItemEntity itementity = this.spawnAtLocation(stack,0.0f);
         if (itementity != null) {

@@ -130,6 +130,11 @@ public class MutantHoglinServant extends AbstractMutantServant implements Player
     }
 
     @Override
+    public int getSummonLimit(LivingEntity owner) {
+        return MobsConfig.MutantHoglinServantLimit.get();
+    }
+
+    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(CHARGING, false);

@@ -28,14 +28,26 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> HullbreakerServantReturnEmbryo;
     public static final ForgeConfigSpec.ConfigValue<Boolean> HullbreakerServantPickUpDrops;
     public static final ForgeConfigSpec.ConfigValue<Boolean> HullbreakerServantBlockBreakGriefing;
+    public static final ForgeConfigSpec.ConfigValue<Integer> IllagerElephantServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> DropBearServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> GusterServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> EmuServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> TusklinServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ThrasherServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> GreatThrasherServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MutantWitherSkeletonServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MutantHoglinServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MutantShulkerServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MutantBlazeServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> RodlingServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> OvergrownColossusServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Boolean> OvergrownColossusServantProjectileImmunity;
     public static final ForgeConfigSpec.ConfigValue<Integer> PossessedPaladinServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> HoveringHurricaneServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> CloudGolemServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerMimicServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> AnnihilationPursuerServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> BeheadedKnightServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> ResurrectedKnightServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Double> BeheadedKnightServantDamageMultiplier;
@@ -60,6 +72,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> WanderingEyeServantDamageMultiplier;
     public static final ForgeConfigSpec.ConfigValue<Integer> TheObliteratorCloneBurstHpDamage;
     public static final ForgeConfigSpec.ConfigValue<Boolean> TheObliteratorServantFirstPhaseProjectileImmunity;
+    public static final ForgeConfigSpec.ConfigValue<Integer> HeresiarchServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> BreezeServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> HurricaneServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Boolean> HurricaneServantCore;
@@ -240,6 +253,10 @@ public class MobsConfig {
         HullbreakerServantBlockBreakGriefing = BUILDER.comment("Whether Hullbreaker Servants break blocks when bashing, Default: false (set to true to allow block destruction, which also respects the mobGriefing game rule)")
                 .define("hullbreakerServantBlockBreakGriefing", false);
 
+        IllagerElephantServantLimit = BUILDER
+                .comment("Maximum number of Illager Elephant Servants that can be summoned (Default: 2)")
+                .defineInRange("illagerElephantServantLimit", 2, 1, 100);
+
         DropBearServantLimit = BUILDER
                 .comment("Maximum number of Drop Bear Servants that can be summoned (Default: 16)")
                 .defineInRange("dropBearServantLimit", 16, 1, 100);
@@ -299,9 +316,41 @@ public class MobsConfig {
                 .comment("Maximum number of Urbhadhach Servants that can be summoned (Default: 8)")
                 .defineInRange("urbhadhachServantLimit", 8, 1, 100);
 
+        HeresiarchServantLimit = BUILDER
+                .comment("Maximum number of Heresiarch Servants that can be summoned (Default: 3)")
+                .defineInRange("heresiarchServantLimit", 3, 1, 100);
+
+        ThrasherServantLimit = BUILDER
+                .comment("Maximum number of Thrasher Servants that can be summoned (Default: 10)")
+                .defineInRange("thrasherServantLimit", 10, 1, 100);
+
+        GreatThrasherServantLimit = BUILDER
+                .comment("Maximum number of Great Thrasher Servants that can be summoned (Default: 3)")
+                .defineInRange("greatThrasherServantLimit", 3, 1, 100);
+
+        MutantWitherSkeletonServantLimit = BUILDER
+                .comment("Maximum number of Mutant Wither Skeleton Servants that can be summoned (Default: 2)")
+                .defineInRange("mutantWitherSkeletonServantLimit", 2, 1, 100);
+
+        MutantHoglinServantLimit = BUILDER
+                .comment("Maximum number of Mutant Hoglin Servants that can be summoned (Default: 2)")
+                .defineInRange("mutantHoglinServantLimit", 2, 1, 100);
+
+        MutantShulkerServantLimit = BUILDER
+                .comment("Maximum number of Mutant Shulker Servants that can be summoned (Default: 2)")
+                .defineInRange("mutantShulkerServantLimit", 2, 1, 100);
+
+        MutantBlazeServantLimit = BUILDER
+                .comment("Maximum number of Mutant Blaze Servants that can be summoned (Default: 2)")
+                .defineInRange("mutantBlazeServantLimit", 2, 1, 100);
+
         RodlingServantLimit = BUILDER
                 .comment("Maximum number of Rodling Servants that can be summoned (Default: 16)")
                 .defineInRange("rodlingServantLimit", 16, 1, 100);
+
+        OvergrownColossusServantLimit = BUILDER
+                .comment("Maximum number of Overgrown Colossus Servants that can be summoned (Default: 2)")
+                .defineInRange("overgrownColossusServantLimit", 2, 1, 100);
 
         OvergrownColossusServantProjectileImmunity = BUILDER
                 .comment("Whether Overgrown Colossus Servants are immune to arrows (Default: true")
@@ -319,9 +368,17 @@ public class MobsConfig {
                 .comment("Whether Possessed Paladin Servants get 10 ticks of invulnerability after being hit (Default: true)")
                 .define("possessedPaladinServantInvulnerabilityTime", true);
 
+        HoveringHurricaneServantLimit = BUILDER
+                .comment("Maximum number of Hovering Hurricane Servants that can be summoned (Default: 8)")
+                .defineInRange("hoveringHurricaneServantLimit", 8, 1, 100);
+
         HoveringHurricaneServantDamageMultiplier = BUILDER
                 .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
                 .defineInRange("hoveringHurricaneServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
+
+        CloudGolemServantLimit = BUILDER
+                .comment("Maximum number of Cloud Golem Servants that can be summoned (Default: 1)")
+                .defineInRange("cloudGolemServantLimit", 1, 1, 100);
 
         CloudGolemServantDamageMultiplier = BUILDER
                 .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
@@ -347,9 +404,17 @@ public class MobsConfig {
                 .comment("Whether the clouds a Cloud Golem Servant drops keep their falling particles (Default: true)")
                 .define("cloudGolemServantFallingCloudParticles", true);
 
+        ShulkerMimicServantLimit = BUILDER
+                .comment("Maximum number of Shulker Mimic Servants that can be summoned (Default: 1)")
+                .defineInRange("shulkerMimicServantLimit", 1, 1, 100);
+
         ShulkerMimicServantDamageMultiplier = BUILDER
                 .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
                 .defineInRange("shulkerMimicServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
+
+        AnnihilationPursuerServantLimit = BUILDER
+                .comment("Maximum number of Annihilation Pursuer Servants that can be summoned (Default: 1)")
+                .defineInRange("annihilationPursuerServantLimit", 1, 1, 100);
 
         AnnihilationPursuerServantDamageMultiplier = BUILDER
                 .comment(LM_DAMAGE_MULTIPLIER_COMMENT)

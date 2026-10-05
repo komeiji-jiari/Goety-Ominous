@@ -1,9 +1,11 @@
 package com.qiuyue.goetyominous.common.entities.ally.ua;
 
 import com.qiuyue.goetyominous.config.AttributesConfig;
+import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.common.items.ua.UaItems;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -17,6 +19,11 @@ public class GreatThrasherServant extends ThrasherServant {
     public GreatThrasherServant(EntityType<? extends ThrasherServant> type, Level world) {
         super(type, world);
         this.xpReward = 0;
+    }
+
+    @Override
+    public int getSummonLimit(LivingEntity owner) {
+        return MobsConfig.GreatThrasherServantLimit.get();
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {

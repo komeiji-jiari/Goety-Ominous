@@ -53,6 +53,11 @@ public class HoveringHurricaneServant extends IAnimatedMonsterServant {
     }
 
     @Override
+    public int getSummonLimit(LivingEntity owner) {
+        return MobsConfig.HoveringHurricaneServantLimit.get();
+    }
+
+    @Override
     public double damageMultiplier() {
         return MobsConfig.HoveringHurricaneServantDamageMultiplier.get();
     }

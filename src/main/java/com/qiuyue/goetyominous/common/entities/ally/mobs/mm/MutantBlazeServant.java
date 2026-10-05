@@ -155,6 +155,11 @@ public class MutantBlazeServant extends AbstractMutantServant implements IHeatSo
         }
     }
 
+    @Override
+    public int getSummonLimit(LivingEntity owner) {
+        return MobsConfig.MutantBlazeServantLimit.get();
+    }
+
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new RemainStationaryGoal());

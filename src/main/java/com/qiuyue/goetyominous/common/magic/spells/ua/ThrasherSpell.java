@@ -68,6 +68,14 @@ public class ThrasherSpell extends SummonSpell {
         return list;
     }
 
+    private boolean summonGreatThrasher;
+
+    @Override
+    public boolean conditionsMet(ServerLevel worldIn, LivingEntity caster) {
+        this.summonGreatThrasher = this.rightStaff(WandUtil.findWand(caster)) && CuriosFinder.hasAbyssRobes(caster);
+        return super.conditionsMet(worldIn, caster);
+    }
+
     @Override
     public Predicate<LivingEntity> summonPredicate() {
         return livingEntity -> livingEntity instanceof ThrasherServant;
@@ -75,7 +83,9 @@ public class ThrasherSpell extends SummonSpell {
 
     @Override
     public int summonLimit() {
-        return 10;
+        return this.summonGreatThrasher
+                ? com.qiuyue.goetyominous.config.MobsConfig.GreatThrasherServantLimit.get()
+                : com.qiuyue.goetyominous.config.MobsConfig.ThrasherServantLimit.get();
     }
 
     @Override
