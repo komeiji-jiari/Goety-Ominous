@@ -67,7 +67,9 @@
     "MixinWinterWolfRenderer",
     "MixinHellhoundRenderer",
     "MixinBlackBeastRenderer",
-    "MixinBlackBeastModel"
+    "MixinBlackBeastModel",
+    "FontAccessor",
+    "MixinClientTextTooltip"
   ],
   "server": [],
   "injectors": {
