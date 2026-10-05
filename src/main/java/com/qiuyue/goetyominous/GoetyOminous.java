@@ -96,6 +96,8 @@ public class GoetyOminous {
         ModParticleTypes.init();
         ModItems.init();
         ModBlocks.register(modEventBus);
+        com.qiuyue.goetyominous.common.blocks.trial.TrialSounds.register(modEventBus);
+        com.qiuyue.goetyominous.common.blocks.trial.TrialBlocks.register(modEventBus);
         ModProcessorTypes.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModRituals.register(modEventBus);

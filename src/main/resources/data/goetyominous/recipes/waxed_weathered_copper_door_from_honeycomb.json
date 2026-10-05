@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "waxed_weathered_copper_door",
+  "ingredients": [
+    {
+      "item": "goetyominous:weathered_copper_door"
+    },
+    {
+      "item": "minecraft:honeycomb"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "goetyominous:waxed_weathered_copper_door"
+  }
+}

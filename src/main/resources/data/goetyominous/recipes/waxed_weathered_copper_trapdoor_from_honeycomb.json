@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "waxed_weathered_copper_trapdoor",
+  "ingredients": [
+    {
+      "item": "goetyominous:weathered_copper_trapdoor"
+    },
+    {
+      "item": "minecraft:honeycomb"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "goetyominous:waxed_weathered_copper_trapdoor"
+  }
+}
