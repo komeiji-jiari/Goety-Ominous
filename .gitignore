@@ -85,3 +85,5 @@ _strip_comments.tmp.js
 /decompiled-goeticlegacy/
 # 反编译器与映射表本体（12M，不入库）
 /tools/
+# 重锤移植的 Maced 反编译参照（不入库）
+/tmp_mace_decompile/
