@@ -57,7 +57,11 @@
     "ExplosionAccessor",
     "PlayerImpulseMixin",
     "AbstractHurtingProjectileMixin",
-    "TrapDoorBlockInvoker"
+    "TrapDoorBlockInvoker",
+    "MaceAttackMixin",
+    "MaceFallDustMixin",
+    "MaceBreachMixin",
+    "MaceAnvilEnchantMixin"
   ],
   "client": [
     "MixinBlackWolfRenderer",
@@ -69,7 +73,8 @@
     "MixinBlackBeastRenderer",
     "MixinBlackBeastModel",
     "FontAccessor",
-    "MixinClientTextTooltip"
+    "MixinClientTextTooltip",
+    "MaceLevelRendererMixin"
   ],
   "server": [],
   "injectors": {

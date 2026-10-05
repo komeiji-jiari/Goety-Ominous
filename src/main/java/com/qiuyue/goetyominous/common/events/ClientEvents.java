@@ -33,6 +33,7 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import com.qiuyue.goetyominous.client.particle.DustPillarProvider;
 import com.qiuyue.goetyominous.client.particle.GustParticle;
 import com.qiuyue.goetyominous.client.particle.GustSeedParticle;
 import com.qiuyue.goetyominous.common.init.ModParticleTypes;
@@ -65,6 +66,7 @@ public class ClientEvents {
         event.registerSpecial(ModParticleTypes.GUST_EMITTER_SMALL.get(), new GustSeedParticle.Provider(1.0D, 3, 2));
         event.registerSpecial(ModParticleTypes.GUST_EMITTER_LARGE.get(), new GustSeedParticle.Provider(3.0D, 7, 0));
         event.registerSpriteSet(ModParticleTypes.GUST.get(), GustParticle.Provider::new);
+        event.registerSpecial(ModParticleTypes.DUST_PILLAR.get(), new DustPillarProvider());
 
         if (!AlexCavesCompat.isAlexCavesLoaded()) {
             return;

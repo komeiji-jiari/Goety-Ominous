@@ -23,6 +23,10 @@
     "subtitle": "subtitles.goetyominous.mace.smash_air",
     "sounds": [ "goetyominous:mace/smash_air1", "goetyominous:mace/smash_air2", "goetyominous:mace/smash_air3" ]
   },
+  "mace_smash_ground": {
+    "subtitle": "subtitles.goetyominous.mace.smash_ground",
+    "sounds": [ "goetyominous:mace/smash_ground1", "goetyominous:mace/smash_ground2", "goetyominous:mace/smash_ground3", "goetyominous:mace/smash_ground4" ]
+  },
   "mace_smash_ground_heavy": {
     "subtitle": "subtitles.goetyominous.mace.smash_ground",
     "sounds": [ "goetyominous:mace/smash_ground_heavy" ]
@@ -78,9 +82,9 @@
   "breeze_wind_charge_burst": {
     "subtitle": "subtitles.goetyominous.breeze.wind_charge_burst",
     "sounds": [
-      "goetyominous:breeze/wind_burst1",
-      "goetyominous:breeze/wind_burst2",
-      "goetyominous:breeze/wind_burst3"
+      { "name": "goetyominous:breeze/wind_burst1", "pitch": 1.25, "attenuation_distance": 8 },
+      { "name": "goetyominous:breeze/wind_burst2", "pitch": 1.25, "attenuation_distance": 8 },
+      { "name": "goetyominous:breeze/wind_burst3", "pitch": 1.25, "attenuation_distance": 8 }
     ]
   },
   "bogged_servant_ambient": {

@@ -10,6 +10,12 @@ public interface WindChargeImpulse {
 
     void onExplosionHitImpulse(@Nullable Entity source);
 
+    void onMaceSmashImpact();
+
+    void setSpawnExtraParticlesOnFall(boolean spawn);
+
+    boolean getSpawnExtraParticlesOnFall();
+
     static void onExplosionHit(Entity entity, @Nullable Entity source) {
         if (entity instanceof WindChargeImpulse impulse) {
             impulse.onExplosionHitImpulse(source);

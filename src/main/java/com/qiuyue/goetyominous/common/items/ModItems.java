@@ -96,6 +96,9 @@ public class ModItems {
     public static final RegistryObject<DarkBlackBeastArmorItem> DARK_BLACK_BEAST_ARMOR = ITEMS.register(
             "black_beast_dark_armor", () -> new DarkBlackBeastArmorItem(new Item.Properties()));
 
+    public static final RegistryObject<Item> MACE = ITEMS.register("mace",
+            () -> new MaceItem(new Item.Properties().durability(500).rarity(Rarity.EPIC)));
+
     public static final RegistryObject<PitchforkItem> PITCHFORK = ITEMS.register("pitchfork",
             () -> new PitchforkItem());
 

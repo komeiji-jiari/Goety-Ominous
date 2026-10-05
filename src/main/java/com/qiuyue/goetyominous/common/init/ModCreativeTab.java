@@ -164,6 +164,7 @@ public class ModCreativeTab {
         if (item instanceof com.qiuyue.goetyominous.common.items.PiglinPrideItem) return true;
         if (item instanceof com.qiuyue.goetyominous.common.items.PitchforkItem) return true;
         if (item instanceof com.qiuyue.goetyominous.common.items.WitchBowItem) return true;
+        if (item instanceof com.qiuyue.goetyominous.common.items.MaceItem) return true;
         return false;
     }
 }

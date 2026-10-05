@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "goetyominous:heavy_core"
+    },
+    "I": {
+      "item": "goetyominous:breeze_rod"
+    }
+  },
+  "pattern": [
+    " # ",
+    " I "
+  ],
+  "result": {
+    "item": "goetyominous:mace",
+    "count": 1
+  }
+}
