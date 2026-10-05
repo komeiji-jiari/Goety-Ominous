@@ -36,86 +36,101 @@ public class ModCreativeTab {
                     .icon(() -> ModItems.DARK_ANKH.get().getDefaultInstance())
                     .title(Component.translatable("itemGroup." + GoetyOminous.MOD_ID))
                     .displayItems((parameters, output) -> {
-                        List<Item> foci = new ArrayList<>();
-                        List<Item> weapons = new ArrayList<>();
-                        List<Item> otherItems = new ArrayList<>();
-                        List<Item> blocks = new ArrayList<>();
-                        List<Item> spawnEggs = new ArrayList<>();
-
-                        collectFrom(ModItems.ITEMS, spawnEggs, foci, weapons, otherItems, blocks);
-
-                        if (SpearBackportCompat.isSpearBackportLoaded()) {
-                            collectFrom(SpearItems.SPEAR_ITEMS, spawnEggs, foci, weapons, otherItems, blocks);
-                        }
-
-                        if (IllageAndSpillageCompat.isIllageAndSpillageLoaded()) {
-                            collectFrom(IasItems.IAS_ITEMS, spawnEggs, foci, weapons, otherItems, blocks);
-                        }
-
-                        if (SavageRavageCompat.isSavageRavageLoaded()) {
-                            collectFrom(SarItems.SAR_ITEMS, spawnEggs, foci, weapons, otherItems, blocks);
-                        }
-
-                        if (UpgradeAquaticCompat.isUpgradeAquaticLoaded()) {
-                            collectFrom(UaItems.UA_ITEMS, spawnEggs, foci, weapons, otherItems, blocks);
-                        }
-
-                        if (MutantMoreCompat.isMutantMoreLoaded()) {
-                            collectFrom(MmItems.MM_ITEMS, spawnEggs, foci, weapons, otherItems, blocks);
-                            moveAfter(otherItems, MmItems.SHULKER_EMBRYO.get(), ModItems.COLD_HEART.get());
-                        }
-
-                        if (LmCompatManager.ENABLE_LM_ITEMS) {
-                            collectFrom(LmItems.LM_ITEMS, spawnEggs, foci, weapons, otherItems, blocks);
-                        }
-
-                        if (OpposingForceCompat.isOpposingForceLoaded()) {
-                            collectFrom(OfItems.OF_ITEMS, spawnEggs, foci, weapons, otherItems, blocks);
-                        }
-
-                        if (AlexMobsCompat.isAlexMobsLoaded()) {
-                            collectFrom(AmItems.AM_ITEMS, spawnEggs, foci, weapons, otherItems, blocks);
-                            moveAfter(otherItems, AmItems.WARPED_STEROIDS.get(), ModItems.NETHER_WART_POTION.get());
-                        }
-
-                        if (AlexCavesCompat.isAlexCavesLoaded()) {
-                            collectFrom(AcItems.AC_ITEMS, spawnEggs, foci, weapons, otherItems, blocks);
-                            moveAfter(otherItems, AcItems.RAYCAT_AMULET.get(), ModItems.SCREAMING_SKULL_JAR.get());
-                            moveAfter(otherItems, AcItems.KEY_OF_RLYEH.get(), ModItems.FEL_STAFF.get());
-                        }
-
-                        otherItems.forEach(output::accept);
-                        weapons.forEach(output::accept);
-                        foci.forEach(output::accept);
-                        blocks.forEach(output::accept);
-                        spawnEggs.forEach(output::accept);
+                        Buckets buckets = Buckets.collect();
+                        buckets.other.forEach(output::accept);
+                        buckets.weapons.forEach(output::accept);
+                        buckets.foci.forEach(output::accept);
+                        buckets.blocks.forEach(output::accept);
                     }).build());
 
+    public static final RegistryObject<CreativeModeTab> SPAWN_EGG_TAB = CREATIVE_MODE_TABS
+            .register("goetyominous_spawn_eggs", () -> CreativeModeTab.builder()
+                    .icon(() -> ModItems.HURRICANE_SPAWN_EGG.get().getDefaultInstance())
+                    .title(Component.translatable("itemGroup.goetyominous.spawn_eggs"))
+                    .withTabsBefore(MAIN_TAB.getKey())
+                    .displayItems((parameters, output) ->
+                            Buckets.collect().spawnEggs.forEach(output::accept)).build());
+
     public static final RegistryObject<CreativeModeTab> PLUSHIE_TAB = CREATIVE_MODE_TABS
-            .register("plushies", () -> CreativeModeTab.builder()
+            .register("goetyominous_plushies", () -> CreativeModeTab.builder()
                     .icon(() -> ModBlocks.PLUSHIE_SPDISH.get().asItem().getDefaultInstance())
                     .title(Component.translatable("itemGroup.goetyominous.plushies"))
+                    .withTabsBefore(SPAWN_EGG_TAB.getKey())
                     .displayItems((parameters, output) -> {
                         ModBlocks.PLUSHIES.forEach(block -> output.accept(block.get()));
                     }).build());
 
-    private static void collectFrom(DeferredRegister<Item> registry,
-                                     List<Item> spawnEggs, List<Item> foci,
-                                     List<Item> weapons, List<Item> other, List<Item> blocks) {
+    private static final class Buckets {
+        final List<Item> spawnEggs = new ArrayList<>();
+        final List<Item> foci = new ArrayList<>();
+        final List<Item> weapons = new ArrayList<>();
+        final List<Item> other = new ArrayList<>();
+        final List<Item> blocks = new ArrayList<>();
+
+        static Buckets collect() {
+            Buckets buckets = new Buckets();
+
+            collectFrom(ModItems.ITEMS, buckets);
+
+            if (SpearBackportCompat.isSpearBackportLoaded()) {
+                collectFrom(SpearItems.SPEAR_ITEMS, buckets);
+            }
+
+            if (IllageAndSpillageCompat.isIllageAndSpillageLoaded()) {
+                collectFrom(IasItems.IAS_ITEMS, buckets);
+            }
+
+            if (SavageRavageCompat.isSavageRavageLoaded()) {
+                collectFrom(SarItems.SAR_ITEMS, buckets);
+            }
+
+            if (UpgradeAquaticCompat.isUpgradeAquaticLoaded()) {
+                collectFrom(UaItems.UA_ITEMS, buckets);
+            }
+
+            if (MutantMoreCompat.isMutantMoreLoaded()) {
+                collectFrom(MmItems.MM_ITEMS, buckets);
+                moveAfter(buckets.other, MmItems.SHULKER_EMBRYO.get(), ModItems.COLD_HEART.get());
+            }
+
+            if (LmCompatManager.ENABLE_LM_ITEMS) {
+                collectFrom(LmItems.LM_ITEMS, buckets);
+            }
+
+            if (OpposingForceCompat.isOpposingForceLoaded()) {
+                collectFrom(OfItems.OF_ITEMS, buckets);
+            }
+
+            if (AlexMobsCompat.isAlexMobsLoaded()) {
+                collectFrom(AmItems.AM_ITEMS, buckets);
+                moveAfter(buckets.other, AmItems.WARPED_STEROIDS.get(), ModItems.NETHER_WART_POTION.get());
+            }
+
+            if (AlexCavesCompat.isAlexCavesLoaded()) {
+                collectFrom(AcItems.AC_ITEMS, buckets);
+                moveAfter(buckets.other, AcItems.RAYCAT_AMULET.get(), ModItems.SCREAMING_SKULL_JAR.get());
+                moveAfter(buckets.other, AcItems.KEY_OF_RLYEH.get(), ModItems.FEL_STAFF.get());
+            }
+
+            return buckets;
+        }
+    }
+
+    private static void collectFrom(DeferredRegister<Item> registry, Buckets buckets) {
         registry.getEntries().forEach(entry -> {
             if (entry.isPresent()) {
                 Item item = entry.get();
                 if (item instanceof SpawnEggItem) {
-                    spawnEggs.add(item);
+                    buckets.spawnEggs.add(item);
                 } else if (item instanceof MagicFocus) {
-                    foci.add(item);
+                    buckets.foci.add(item);
                 } else if (isWeapon(item)) {
-                    weapons.add(item);
+                    buckets.weapons.add(item);
                 } else if (!(item instanceof PlushieBlockItem) && !(item instanceof OminousIconItem)) {
                     if (item instanceof BlockItem) {
-                        blocks.add(item);
+                        buckets.blocks.add(item);
                     } else {
-                        other.add(item);
+                        buckets.other.add(item);
                     }
                 }
             }
