@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "goetyominous:block/oxidized_copper_bulb"
+  }
+}
