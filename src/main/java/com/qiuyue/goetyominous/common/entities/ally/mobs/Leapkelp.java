@@ -13,7 +13,6 @@ import com.Polarice3.Goety.utils.ColorUtil;
 import com.Polarice3.Goety.utils.MobUtil;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -47,7 +46,6 @@ import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.Nullable;
 import java.util.EnumSet;
@@ -62,6 +60,7 @@ public class Leapkelp extends Leapleaf {
     private static final int SWIM_MAX_TURN_Y = 90;
     private static final int SWIM_MAX_TURN_X = 85;
     private static final float SWIM_PITCH_STEP = 5.0F;
+    private static final float SWIM_CLIMB_SPEED = 0.3F;
     private static final float SWIM_MIN_DISTANCE_SQR = 2.5E-7F;
     private static final float SWIM_POSE_STEP = 0.15F;
     private static final int SWIM_UP_RETARGET_COOLDOWN = 10;
@@ -403,13 +402,12 @@ public class Leapkelp extends Leapleaf {
                     this.leapkelp.yHeadRot = this.leapkelp.getYRot();
                     float speed = (float) (this.speedModifier * SWIM_SPEED_MULTIPLIER * this.leapkelp.getAttributeValue(Attributes.MOVEMENT_SPEED));
                     this.leapkelp.setSpeed(speed);
-                    BlockPos pos = this.leapkelp.blockPosition();
-                    BlockState state = this.leapkelp.level().getBlockState(pos);
-                    VoxelShape shape = state.getCollisionShape(this.leapkelp.level(), pos);
-                    if (dy > (double) this.leapkelp.getStepHeight() && dx * dx + dz * dz < (double) Math.max(1.0F, this.leapkelp.getBbWidth())
-                            || !shape.isEmpty() && this.leapkelp.getY() < shape.max(Direction.Axis.Y) + (double) pos.getY()
-                            && !state.is(BlockTags.DOORS) && !state.is(BlockTags.FENCES)) {
-                        this.leapkelp.getJumpControl().jump();
+                    Vec3 movement = this.leapkelp.getDeltaMovement();
+                    if (movement.y < (double) SWIM_CLIMB_SPEED
+                            && dy > (double) this.leapkelp.getStepHeight()
+                            && dx * dx + dz * dz < (double) Math.max(1.0F, this.leapkelp.getBbWidth())
+                            && this.leapkelp.level().getFluidState(BlockPos.containing(this.wantedX, this.wantedY, this.wantedZ)).isEmpty()) {
+                        this.leapkelp.setDeltaMovement(movement.x, SWIM_CLIMB_SPEED, movement.z);
                     }
                     double horizontal = Math.sqrt(dx * dx + dz * dz);
                     if (Math.abs(dy) > 1.0E-5D || horizontal > 1.0E-5D) {
