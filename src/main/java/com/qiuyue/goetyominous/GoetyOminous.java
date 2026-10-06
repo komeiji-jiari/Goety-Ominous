@@ -21,7 +21,6 @@ import com.qiuyue.goetyominous.common.research.ResearchList;
 import com.qiuyue.goetyominous.common.ritual.FelRitualType;
 import com.qiuyue.goetyominous.common.world.ModMobSpawnBiomeModifier;
 import com.qiuyue.goetyominous.compat.mod.*;
-import com.qiuyue.goetyominous.compat.spear.SpearBackportCompat;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.config.SpellConfig;
 import com.qiuyue.goetyominous.common.entities.ally.illager.train.GoetyOminousType;
@@ -117,10 +116,6 @@ public class GoetyOminous {
 
         if (GoetyCataclysmCompat.isLoaded()) {
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.CataclysmKeySpellHandler.class);
-        }
-
-        if (SpearBackportCompat.isSpearBackportLoaded()) {
-            com.qiuyue.goetyominous.compat.spear.SpearBackportCompat.init(modEventBus);
         }
 
         if (SavageRavageCompat.isSavageRavageLoaded()) {
