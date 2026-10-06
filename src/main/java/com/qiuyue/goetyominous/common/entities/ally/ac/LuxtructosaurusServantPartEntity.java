@@ -138,7 +138,7 @@ public class LuxtructosaurusServantPartEntity extends PartEntity<Luxtructosaurus
             connection = connection.add(0.0, 2.0F * parent.getScale(), 0.0);
         }
         if (parent != null) {
-            parentRot = -(parent.yBodyRotO + (parent.yBodyRot - parent.yBodyRotO) * partialTicks) - 90.0F;
+            parentRot = -(parent.yBodyRotO + Mth.wrapDegrees(parent.yBodyRot - parent.yBodyRotO) * partialTicks) - 90.0F;
         }
         Vec3 center = this.centeredPosition(partialTicks);
         Vec3 offset = connection.subtract(center).normalize();
