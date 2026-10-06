@@ -35,7 +35,7 @@ public abstract class MaceFallDustMixin extends Player {
         }
         BlockPos pos = this.getOnPos(0.2F);
         BlockState state = this.serverLevel().getBlockState(pos);
-        Vec3 center = Vec3.atCenterOf(pos).add(0.0D, 0.5D, 0.0D);
+        Vec3 center = Vec3.atBottomCenterOf(pos).add(0.0D, 0.5D, 0.0D);
         int count = (int)(50.0F * self.fallDistance);
         this.serverLevel().sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, state), center.x, center.y, center.z, count, 0.3D, 0.3D, 0.3D, 0.15D);
         impulse.setSpawnExtraParticlesOnFall(false);

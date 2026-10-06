@@ -121,6 +121,7 @@ public class AtlatitanServant extends AnimalSummon
     public static final Animation ANIMATION_RIGHT_WHIP = Animation.create(40);
     public static final Animation ANIMATION_EAT_LEAVES = Animation.create(100);
     private static final int STOMP_CRUSH_HEIGHT = 6;
+    private static final float RIDDEN_TURN_SPEED = 4.0F;
 
     public LuxtructosaurusLegSolver legSolver = new LuxtructosaurusLegSolver(0.2F, 2.0F, 1.2F, 1.9F, 2.0F);
     private Animation currentAnimation;
@@ -303,7 +304,12 @@ public class AtlatitanServant extends AnimalSummon
             this.screenShakeAmount = Math.max(0.0F, this.screenShakeAmount - 0.3F);
         }
         if (this.getAnimation() != ANIMATION_LEFT_WHIP && this.getAnimation() != ANIMATION_RIGHT_WHIP) {
-            this.yBodyRot = Mth.approachDegrees(this.yBodyRotO, this.getYRot(), this.turningFast ? 10.0F : 2.0F);
+            if (this.getControllingPassenger() instanceof Player) {
+                this.yBodyRot = this.getYRot();
+                this.setYHeadRot(this.getYRot());
+            } else {
+                this.yBodyRot = Mth.approachDegrees(this.yBodyRotO, this.getYRot(), this.turningFast ? 10.0F : 2.0F);
+            }
             this.lastYawBeforeWhip = this.getYRot();
         } else {
             float negative = this.getAnimation() == ANIMATION_RIGHT_WHIP ? -1.0F : 1.0F;
@@ -440,7 +446,7 @@ public class AtlatitanServant extends AnimalSummon
             }
         }
         if (f <= 0.05F && this.walkAnimSpeed > 0.0F && this.onGround()
-                && (speed > 0.003F || this.getControllingPassenger() != null) && this.stepSoundCooldown <= 0) {
+                && (speed > 0.003F || this.entityData.get(WALKING)) && this.stepSoundCooldown <= 0) {
             this.onStep();
             this.stepSoundCooldown = 5;
         }
@@ -662,8 +668,8 @@ public class AtlatitanServant extends AnimalSummon
         int i = this.yawPointer - pointer & 0x7F;
         int j = this.yawPointer - pointer - 1 & 0x7F;
         float d0 = this.yawBuffer[j];
-        float d1 = this.yawBuffer[i] - d0;
-        return d0 + d1 * partialTick;
+        float d1 = Mth.wrapDegrees(this.yawBuffer[i] - d0);
+        return this.yBodyRot + Mth.wrapDegrees(d0 + d1 * partialTick - this.yBodyRot);
     }
 
     public float getTargetNeckXRot() {
@@ -681,6 +687,9 @@ public class AtlatitanServant extends AnimalSummon
     }
 
     public float getTargetNeckYRot() {
+        if (this.getControllingPassenger() instanceof Player) {
+            return Mth.clamp(this.getYawFromBuffer(10, 1.0F) - this.yBodyRot, -40.0F, 40.0F);
+        }
         float buffered = this.getYawFromBuffer(10, 1.0F) - this.yBodyRot;
         return this.getYHeadRot() - this.yBodyRot + buffered;
     }
@@ -965,19 +974,21 @@ public class AtlatitanServant extends AnimalSummon
     @Override
     protected Vec3 getRiddenInput(Player player, Vec3 deltaIn) {
         float f = player.zza < 0.0F ? 0.5F : 1.0F;
-        return new Vec3(player.xxa * 0.35F, 0.0D, player.zza * 0.8F * f);
+        float forward = player.zza != 0.0F ? player.zza : player.xxa;
+        return new Vec3(0.0D, 0.0D, forward * 0.8F * f);
     }
 
     @Override
     protected void tickRidden(Player player, Vec3 vec3) {
         super.tickRidden(player, vec3);
+        if (player.xxa != 0.0F) {
+            player.setYRot(Mth.wrapDegrees(player.getYRot() - player.xxa * RIDDEN_TURN_SPEED));
+        }
         if (player.zza != 0.0F || player.xxa != 0.0F) {
             this.setRot(player.getYRot(), player.getXRot() * 0.25F);
             this.setTarget(null);
-            this.entityData.set(WALKING, true);
-        } else {
-            this.entityData.set(WALKING, false);
         }
+        this.entityData.set(WALKING, player.zza != 0.0F || player.xxa != 0.0F);
     }
 
     @Override
