@@ -1,0 +1,29 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:enchant",
+  "activation_item": {
+    "item": "minecraft:book"
+  },
+  "craftType": "magic",
+  "soulCost": 10,
+  "duration": 10,
+  "enchantment": "goetyominous:wind_burst",
+  "xpLevelCost": 10,
+  "ingredients": [
+    {
+      "item": "goetyominous:wind_charge"
+    },
+    {
+      "item": "goety:soul_emerald"
+    },
+    {
+      "tag": "forge:gems/diamond"
+    },
+    {
+      "tag": "forge:storage_blocks/lapis"
+    }
+  ],
+  "result": {
+    "item": "minecraft:enchanted_book"
+  }
+}

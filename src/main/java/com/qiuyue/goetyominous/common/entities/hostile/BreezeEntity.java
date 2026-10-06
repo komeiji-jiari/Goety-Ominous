@@ -50,6 +50,7 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -128,6 +129,11 @@ public class BreezeEntity extends Monster implements ICustomAttributes, Projecti
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), AttributesConfig.BreezeHealth.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), AttributesConfig.BreezeArmor.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), AttributesConfig.BreezeRangeDamage.get());
+    }
+
+    @Override
+    public boolean isAlliedTo(Entity entity) {
+        return entity instanceof Enemy || super.isAlliedTo(entity);
     }
 
     @Override

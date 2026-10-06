@@ -4,6 +4,7 @@ import com.Polarice3.Goety.common.items.magic.MagicFocus;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.blocks.trial.TrialBlocks;
 import com.qiuyue.goetyominous.common.items.ModItems;
+import com.qiuyue.goetyominous.common.items.OminousBottleItem;
 import com.qiuyue.goetyominous.common.items.OminousIconItem;
 import com.qiuyue.goetyominous.common.items.PlushieBlockItem;
 import com.qiuyue.goetyominous.common.items.ac.AcItems;
@@ -39,6 +40,11 @@ public class ModCreativeTab {
                     .displayItems((parameters, output) -> {
                         Buckets buckets = Buckets.collect();
                         buckets.other.forEach(output::accept);
+                        for (int amplifier = 0; amplifier <= OminousBottleItem.MAX_AMPLIFIER; ++amplifier) {
+                            ItemStack stack = new ItemStack(ModItems.OMINOUS_BOTTLE.get());
+                            OminousBottleItem.setAmplifier(stack, amplifier);
+                            output.accept(stack);
+                        }
                         buckets.weapons.forEach(output::accept);
                         buckets.foci.forEach(output::accept);
                         buckets.blocks.forEach(output::accept);
@@ -114,7 +120,7 @@ public class ModCreativeTab {
             }
 
             removeTrialBlocks(buckets);
-
+            buckets.other.remove(ModItems.OMINOUS_BOTTLE.get());
             return buckets;
         }
     }

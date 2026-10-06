@@ -1,0 +1,32 @@
+{
+  "name": "Mace",
+  "icon": "goetyominous:mace",
+  "category": "goety:crafts/equipment",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Mace is a weapon that relies on gravity to deliver a deadly aerial strike upon enemies. While wielding the Mace, the greater the fall distance, the more damage it deals to struck creatures, and a successful hit also reduces your fall damage."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goetyominous:mace",
+      "text": "The materials needed to craft a Mace do not appear to exist in the howling winds' domain. You have heard rumors that certain giant underground chambers may contain items imbued with a trace of wind magic...?"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Thrash Gloves can help you lift this Mace more effectively. Repairing your Mace requires consuming Breeze Rods at an Anvil. The Mace also accepts several exclusive enchantments, which can likewise be obtained through rituals."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:breach"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:density"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:wind_burst"
+    }
+  ]
+}

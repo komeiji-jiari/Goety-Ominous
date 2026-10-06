@@ -1,0 +1,32 @@
+{
+  "name": "重锤",
+  "icon": "goetyominous:mace",
+  "category": "goety:crafts/equipment",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "重锤是一种依靠重力来对敌人施展死亡空降的武器。当你握着重锤时，下落距离越多，就能对被攻击到的生物造成越高的伤害，成功击中还能减免你的摔落伤害。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goetyominous:mace",
+      "text": "制作重锤所需的材料似乎并不存在于烈风呼啸之地。你听说了某些传言，深埋在地下的某些巨型密室里或许存在蕴含着少许风魔力的物品...？"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "锤击手套可以帮助你更好的举起这把重锤。修复你的重锤需要在铁砧上消耗旋风棒。重锤也能接受一些专属附魔，这些附魔同样可以通过仪式来取得。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:breach"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:density"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:wind_burst"
+    }
+  ]
+}

@@ -2,26 +2,23 @@
   "type": "goety:ritual",
   "ritual_type": "goety:craft",
   "activation_item": {
-    "item": "goety:soul_heal_focus"
+    "item": "goety:soul_healer"
   },
   "craftType": "forge",
   "soulCost": 1,
-  "duration": 15,
+  "duration": 10,
   "ingredients": [
     {
-      "item": "goety:dark_ingot"
+      "item": "goety:cursed_ingot"
     },
     {
-      "item": "goety:dark_ingot"
+      "item": "goety:shadow_essence"
     },
     {
-      "item": "goety:dark_ingot"
+      "item": "goety:soul_transfer"
     },
     {
-      "item": "goety:dark_ingot"
-    },
-    {
-      "item": "goety:soul_absorber"
+      "item": "goety:shadow_essence"
     }
   ],
   "result": {

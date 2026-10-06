@@ -12,6 +12,7 @@
     "BerserkFungusItemMixin",
     "BerserkFungusMixin",
     "RaidMixin",
+    "RaiderCaptainDropMixin",
     "SpiderEggMixin",
     "RitualMixin",
     "RitualRequirementsMixin",
@@ -57,6 +58,7 @@
     "ExplosionAccessor",
     "PlayerImpulseMixin",
     "AbstractHurtingProjectileMixin",
+    "EffectApplySoundMixin",
     "TrapDoorBlockInvoker",
     "MaceAttackMixin",
     "MaceFallDustMixin",
@@ -74,7 +76,9 @@
     "MixinBlackBeastModel",
     "FontAccessor",
     "MixinClientTextTooltip",
-    "MaceLevelRendererMixin"
+    "MaceLevelRendererMixin",
+    "TrialOmenLevelRendererMixin",
+    "TrialOmenParticleMixin"
   ],
   "server": [],
   "injectors": {
