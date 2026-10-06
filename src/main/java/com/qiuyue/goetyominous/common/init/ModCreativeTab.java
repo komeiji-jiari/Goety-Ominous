@@ -13,12 +13,10 @@ import com.qiuyue.goetyominous.common.items.lm.LmItems;
 import com.qiuyue.goetyominous.common.items.mm.MmItems;
 import com.qiuyue.goetyominous.common.items.of.OfItems;
 import com.qiuyue.goetyominous.common.items.sar.SarItems;
-import com.qiuyue.goetyominous.common.items.spear.SpearItems;
 import com.qiuyue.goetyominous.common.items.ua.UaItems;
 import com.qiuyue.goetyominous.compat.ias.IasItems;
 import com.qiuyue.goetyominous.compat.lm.LmCompatManager;
 import com.qiuyue.goetyominous.compat.mod.*;
-import com.qiuyue.goetyominous.compat.spear.SpearBackportCompat;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
@@ -78,10 +76,6 @@ public class ModCreativeTab {
             Buckets buckets = new Buckets();
 
             collectFrom(ModItems.ITEMS, buckets);
-
-            if (SpearBackportCompat.isSpearBackportLoaded()) {
-                collectFrom(SpearItems.SPEAR_ITEMS, buckets);
-            }
 
             if (IllageAndSpillageCompat.isIllageAndSpillageLoaded()) {
                 collectFrom(IasItems.IAS_ITEMS, buckets);
