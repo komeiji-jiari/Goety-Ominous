@@ -7,7 +7,6 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -37,7 +36,7 @@ public abstract class MaceFallDustMixin extends Player {
         BlockPos pos = this.getOnPos(0.2F);
         BlockState state = this.serverLevel().getBlockState(pos);
         Vec3 center = Vec3.atCenterOf(pos).add(0.0D, 0.5D, 0.0D);
-        int count = (int) Mth.clamp(50.0F * self.fallDistance, 0.0F, 200.0F);
+        int count = (int)(50.0F * self.fallDistance);
         this.serverLevel().sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, state), center.x, center.y, center.z, count, 0.3D, 0.3D, 0.3D, 0.15D);
         impulse.setSpawnExtraParticlesOnFall(false);
     }

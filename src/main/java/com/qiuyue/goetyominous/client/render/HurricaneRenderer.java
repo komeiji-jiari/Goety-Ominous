@@ -29,11 +29,13 @@ public class HurricaneRenderer<T extends AbstractHurricane> extends MobRenderer<
     private static final ResourceLocation SERVANT_HEAVY_CORE_TEXTURE = new ResourceLocation(GoetyOminous.MOD_ID, "textures/entity/hurricane_servant_heavy_core.png");
     private static final ResourceLocation WIND_TEXTURE = new ResourceLocation(GoetyOminous.MOD_ID, "textures/entity/hurricane_wind.png");
     private static final ResourceLocation BREEZE_WIND_TEXTURE = new ResourceLocation(GoetyOminous.MOD_ID, "textures/entity/breeze_wind.png");
+    private static final ResourceLocation LAYER_TEXTURE = new ResourceLocation(GoetyOminous.MOD_ID, "textures/hurricane_layer.png");
     private static final float WIND_SCROLL_SPEED = 0.02F;
     private static final float TORNADO_SCALE = 1.2F;
 
     public HurricaneRenderer(EntityRendererProvider.Context context) {
         super(context, new HurricaneModel<>(context.bakeLayer(ModModelLayers.HURRICANE)), 0.9F);
+        this.addLayer(new EyesLayer<>(this));
         this.addLayer(new TornadoLayer<>(context, this));
         this.addLayer(new HeavyCoreLayer<>(this));
         this.addLayer(new WindLayer<>(this));
@@ -123,6 +125,23 @@ public class HurricaneRenderer<T extends AbstractHurricane> extends MobRenderer<
             VertexConsumer consumer = buffer.getBuffer(WindChargeRenderTypes.breezeWind(BREEZE_WIND_TEXTURE, windOffset(entity, partialTicks), 0.0F));
             this.model.renderToBuffer(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
             poseStack.popPose();
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static class EyesLayer<T extends AbstractHurricane> extends RenderLayer<T, HurricaneModel<T>> {
+        private static final RenderType LAYER = RenderType.entityTranslucentEmissive(LAYER_TEXTURE, false);
+
+        public EyesLayer(RenderLayerParent<T, HurricaneModel<T>> parent) {
+            super(parent);
+        }
+
+        @Override
+        public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+            HurricaneModel<T> model = this.getParentModel();
+            model.showBody();
+            VertexConsumer consumer = buffer.getBuffer(LAYER);
+            model.renderToBuffer(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         }
     }
 }

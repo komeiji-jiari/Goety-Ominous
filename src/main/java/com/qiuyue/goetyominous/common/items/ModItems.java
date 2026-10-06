@@ -16,7 +16,9 @@ import com.qiuyue.goetyominous.common.items.revive.ThunderHorn;
 import com.qiuyue.goetyominous.common.research.ResearchList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -163,6 +165,10 @@ public class ModItems {
 
     public static final RegistryObject<Item> NETHER_WART_POTION = ITEMS.register("nether_wart_potion",
             () -> new NetherWartPotion());
+
+    public static final RegistryObject<Item> OMINOUS_BOTTLE = ITEMS.register("ominous_bottle",
+            () -> new OminousBottleItem(new Item.Properties().food(
+                    new FoodProperties.Builder().nutrition(1).saturationMod(0.1F).build())));
 
     public static final RegistryObject<Item> BREEZE_FOCUS = ITEMS.register("breeze_focus",
             () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.BreezeSpell()));

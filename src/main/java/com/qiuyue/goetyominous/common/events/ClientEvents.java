@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.events;
 
 import com.Polarice3.Goety.client.render.block.TrainingBlockRenderer;
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.client.particle.TrialSpawnerDetectionParticle;
 import com.qiuyue.goetyominous.client.render.block.PlushieBlockEntityRenderer;
 import com.qiuyue.goetyominous.client.particle.ac.CandicornServantChargeParticle;
 import com.qiuyue.goetyominous.client.particle.ac.ForsakenServantSpitParticle;
@@ -27,6 +28,7 @@ import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
 import com.qiuyue.goetyominous.compat.mod.AlexCavesCompat;
 import com.qiuyue.goetyominous.compat.mod.LegendaryMonstersCompat;
 import com.qiuyue.goetyominous.compat.mod.MutantMoreCompat;
+import net.minecraft.client.particle.SpellParticle;
 import net.minecraft.client.renderer.entity.ItemEntityRenderer;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -67,6 +69,8 @@ public class ClientEvents {
         event.registerSpecial(ModParticleTypes.GUST_EMITTER_LARGE.get(), new GustSeedParticle.Provider(3.0D, 7, 0));
         event.registerSpriteSet(ModParticleTypes.GUST.get(), GustParticle.Provider::new);
         event.registerSpecial(ModParticleTypes.DUST_PILLAR.get(), new DustPillarProvider());
+        event.registerSpriteSet(ModParticleTypes.TRIAL_OMEN.get(), SpellParticle.Provider::new);
+        event.registerSpriteSet(ModParticleTypes.TRIAL_SPAWNER_DETECTION_OMINOUS.get(), TrialSpawnerDetectionParticle.Provider::new);
 
         if (!AlexCavesCompat.isAlexCavesLoaded()) {
             return;

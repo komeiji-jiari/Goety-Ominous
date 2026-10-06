@@ -28,6 +28,11 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> BREEZE_SLIDE = create("breeze_slide");
     public static final RegistryObject<SoundEvent> BREEZE_WHIRL = create("breeze_whirl");
 
+    public static final RegistryObject<SoundEvent> OMINOUS_BOTTLE_DISPOSE = create("ominous_bottle_dispose");
+    public static final RegistryObject<SoundEvent> APPLY_EFFECT_BAD_OMEN = create("apply_effect_bad_omen");
+    public static final RegistryObject<SoundEvent> APPLY_EFFECT_TRIAL_OMEN = create("apply_effect_trial_omen");
+    public static final RegistryObject<SoundEvent> TRIAL_SPAWNER_OMINOUS_ACTIVATE = create("trial_spawner_ominous_activate");
+
     public static final RegistryObject<SoundEvent> HEAVY_CORE_BREAK = create("heavy_core_break");
     public static final RegistryObject<SoundEvent> HEAVY_CORE_STEP = create("heavy_core_step");
     public static final RegistryObject<SoundEvent> HEAVY_CORE_PLACE = create("heavy_core_place");
