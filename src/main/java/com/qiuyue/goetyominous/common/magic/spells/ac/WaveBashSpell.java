@@ -7,7 +7,7 @@ import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
-import com.qiuyue.goetyominous.common.entities.projectile.DeepOneServantWave;
+import com.qiuyue.goetyominous.common.entities.projectile.ac.DeepOneServantWave;
 import com.qiuyue.goetyominous.config.SpellConfig;
 import com.qiuyue.goetyominous.utils.KeyOfRlyehMixinHelper;
 import net.minecraft.server.level.ServerLevel;

@@ -1,7 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.ally.ac;
 
 import com.Polarice3.Goety.common.entities.ally.Summoned;
-import com.qiuyue.goetyominous.common.entities.projectile.GumballServantEntity;
+import com.qiuyue.goetyominous.common.entities.projectile.ac.GumballServantEntity;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.utils.ModMobType;

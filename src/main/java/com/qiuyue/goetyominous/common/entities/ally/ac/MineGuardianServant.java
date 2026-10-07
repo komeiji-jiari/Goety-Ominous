@@ -3,7 +3,7 @@ package com.qiuyue.goetyominous.common.entities.ally.ac;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.config.MobsConfig;
-import com.qiuyue.goetyominous.common.events.MineGuardianExplosionProtectionHandler;
+import com.qiuyue.goetyominous.common.events.ac.MineGuardianExplosionProtectionHandler;
 import com.github.alexmodguy.alexscaves.server.entity.ai.VerticalSwimmingMoveControl;
 import com.github.alexmodguy.alexscaves.server.entity.util.MineExplosion;
 import com.github.alexmodguy.alexscaves.server.level.storage.ACWorldData;

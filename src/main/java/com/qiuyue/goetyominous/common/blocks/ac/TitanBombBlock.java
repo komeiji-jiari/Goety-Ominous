@@ -2,7 +2,7 @@ package com.qiuyue.goetyominous.common.blocks.ac;
 
 import com.Polarice3.Goety.utils.SEHelper;
 import com.qiuyue.goetyominous.common.blocks.entities.ac.TitanBombBlockEntity;
-import com.qiuyue.goetyominous.common.entities.projectile.TitanBombEntity;
+import com.qiuyue.goetyominous.common.entities.projectile.ac.TitanBombEntity;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockEntityRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
 import net.minecraft.core.BlockPos;

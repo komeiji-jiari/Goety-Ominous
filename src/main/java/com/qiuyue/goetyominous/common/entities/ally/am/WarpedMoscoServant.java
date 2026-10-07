@@ -24,7 +24,7 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.common.entities.projectile.EntityServantHemolymph;
+import com.qiuyue.goetyominous.common.entities.projectile.am.EntityServantHemolymph;
 import com.qiuyue.goetyominous.common.items.am.AmItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;

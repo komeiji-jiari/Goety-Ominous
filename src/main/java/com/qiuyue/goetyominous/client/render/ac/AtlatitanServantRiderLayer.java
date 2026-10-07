@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.qiuyue.goetyominous.client.render.model.ac.ModelAtlatitanServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.AtlatitanServant;
-import com.qiuyue.goetyominous.common.events.AtlatitanRenderEvents;
+import com.qiuyue.goetyominous.common.events.ac.AtlatitanRenderEvents;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;

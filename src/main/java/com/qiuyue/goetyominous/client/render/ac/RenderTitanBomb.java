@@ -3,7 +3,7 @@ package com.qiuyue.goetyominous.client.render.ac;
 import com.github.alexmodguy.alexscaves.client.render.entity.NuclearBombRenderer;
 import com.github.alexmodguy.alexscaves.server.entity.item.NuclearBombEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.qiuyue.goetyominous.common.entities.projectile.TitanBombEntity;
+import com.qiuyue.goetyominous.common.entities.projectile.ac.TitanBombEntity;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;

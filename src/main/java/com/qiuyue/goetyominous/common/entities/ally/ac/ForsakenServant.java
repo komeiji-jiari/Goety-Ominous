@@ -18,7 +18,7 @@ import com.github.alexthe666.citadel.animation.LegSolverQuadruped;
 import com.qiuyue.goetyominous.common.init.ac.AcParticles;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
-import com.qiuyue.goetyominous.common.network.ForsakenRiderJumpPacket;
+import com.qiuyue.goetyominous.common.network.ac.ForsakenRiderJumpPacket;
 import com.qiuyue.goetyominous.common.network.ModNetwork;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;

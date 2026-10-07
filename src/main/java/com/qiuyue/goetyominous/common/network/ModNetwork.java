@@ -4,6 +4,12 @@ import com.qiuyue.goetyominous.GoetyOminous;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
+import com.qiuyue.goetyominous.common.network.mm.CWitherScytheStrikePacket;
+import com.qiuyue.goetyominous.common.network.am.ElephantChargePacket;
+import com.qiuyue.goetyominous.common.network.ac.ForsakenRiderJumpPacket;
+import com.qiuyue.goetyominous.common.network.ac.NuclearExplosionEffectPacket;
+import com.qiuyue.goetyominous.common.network.mm.RiderChargePacket;
+import com.qiuyue.goetyominous.common.network.ac.NucleeperExplosionZonePacket;
 
 public class ModNetwork {
     private static final String PROTOCOL_VERSION = "1";

@@ -2,10 +2,10 @@ package com.qiuyue.goetyominous.common.entities.ally.ac;
 
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
-import com.qiuyue.goetyominous.common.events.NucleeperNukeProtectionHandler;
+import com.qiuyue.goetyominous.common.events.ac.NucleeperNukeProtectionHandler;
 import com.qiuyue.goetyominous.common.magic.spells.ac.XRaySpell;
 import com.qiuyue.goetyominous.common.network.ModNetwork;
-import com.qiuyue.goetyominous.common.network.NuclearExplosionEffectPacket;
+import com.qiuyue.goetyominous.common.network.ac.NuclearExplosionEffectPacket;
 import com.qiuyue.goetyominous.common.network.XRayPacket;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.utils.IRayMuzzle;

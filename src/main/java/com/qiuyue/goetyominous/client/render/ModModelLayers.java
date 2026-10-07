@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.init.ModEntityLayers;
 import com.qiuyue.goetyominous.client.render.curios.CroneRobeRenderer;
-import com.qiuyue.goetyominous.client.render.curios.RaycatAmuletRenderer;
+import com.qiuyue.goetyominous.client.render.curios.ac.RaycatAmuletRenderer;
 import com.qiuyue.goetyominous.client.render.ias.*;
 import com.qiuyue.goetyominous.client.render.layer.CursedWolfArmorLayer;
 import com.qiuyue.goetyominous.client.render.mm.*;
@@ -21,7 +21,7 @@ import com.qiuyue.goetyominous.client.render.model.projectile.AcidFungus;
 import com.qiuyue.goetyominous.client.render.model.projectile.PitchforkModel;
 import com.qiuyue.goetyominous.client.render.projectile.*;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
-import com.qiuyue.goetyominous.common.init.ModSpellControllers;
+import com.qiuyue.goetyominous.common.init.mm.ModSpellControllers;
 import com.qiuyue.goetyominous.compat.mod.*;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -34,6 +34,13 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import com.qiuyue.goetyominous.client.render.projectile.mm.MutantBlazeServantRodProjectileRenderer;
+import com.qiuyue.goetyominous.client.render.projectile.mm.MutantShulkerServantBulletRenderer;
+import com.qiuyue.goetyominous.client.render.projectile.mm.ServantWindChargeRenderer;
+import com.qiuyue.goetyominous.client.render.projectile.am.RenderIceShard;
+import com.qiuyue.goetyominous.client.render.projectile.am.RenderMosquitoServantSpit;
+import com.qiuyue.goetyominous.client.render.projectile.am.RenderServantHemolymph;
+import com.qiuyue.goetyominous.client.render.projectile.am.RenderServantSandShot;
 
 @Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ModModelLayers {
@@ -553,10 +560,10 @@ public class ModModelLayers {
         event.registerEntityRenderer(ModEntityTypes.PITCHFORK.get(), PitchforkRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.SERVANT_WIND_CHARGE.get(),
-                com.qiuyue.goetyominous.client.render.projectile.ServantWindChargeRenderer::new);
+                com.qiuyue.goetyominous.client.render.projectile.mm.ServantWindChargeRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.BREEZE_WIND_CHARGE.get(),
-                com.qiuyue.goetyominous.client.render.projectile.ServantWindChargeRenderer::new);
+                com.qiuyue.goetyominous.client.render.projectile.mm.ServantWindChargeRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.BREEZE_SERVANT.get(),
                 com.qiuyue.goetyominous.client.render.BreezeServantRenderer::new);
@@ -869,7 +876,7 @@ public class ModModelLayers {
 
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.MUTANT_SHULKER_SERVANT_BULLET.get(),
-                    com.qiuyue.goetyominous.client.render.projectile.MutantShulkerServantBulletRenderer::new);
+                    com.qiuyue.goetyominous.client.render.projectile.mm.MutantShulkerServantBulletRenderer::new);
 
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.MUTANT_BLAZE_SERVANT_FIREBALL.get(),
@@ -877,7 +884,7 @@ public class ModModelLayers {
 
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.MUTANT_BLAZE_SERVANT_ROD_PROJECTILE.get(),
-                    com.qiuyue.goetyominous.client.render.projectile.MutantBlazeServantRodProjectileRenderer::new);
+                    com.qiuyue.goetyominous.client.render.projectile.mm.MutantBlazeServantRodProjectileRenderer::new);
 
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.RODLING_SERVANT.get(),
@@ -977,15 +984,15 @@ public class ModModelLayers {
 
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.MOSQUITO_SERVANT_SPIT.get(),
-                    com.qiuyue.goetyominous.client.render.projectile.RenderMosquitoServantSpit::new);
+                    com.qiuyue.goetyominous.client.render.projectile.am.RenderMosquitoServantSpit::new);
 
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.SERVANT_SAND_SHOT.get(),
-                    com.qiuyue.goetyominous.client.render.projectile.RenderServantSandShot::new);
+                    com.qiuyue.goetyominous.client.render.projectile.am.RenderServantSandShot::new);
 
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.SERVANT_HEMOLYMPH.get(),
-                    com.qiuyue.goetyominous.client.render.projectile.RenderServantHemolymph::new);
+                    com.qiuyue.goetyominous.client.render.projectile.am.RenderServantHemolymph::new);
 
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.FARSEER_SERVANT.get(),

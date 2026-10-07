@@ -15,7 +15,7 @@ import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
-import com.qiuyue.goetyominous.client.sound.CandicornServantChargeSoundHandler;
+import com.qiuyue.goetyominous.client.sound.ac.CandicornServantChargeSoundHandler;
 import com.qiuyue.goetyominous.common.init.ac.AcParticles;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;

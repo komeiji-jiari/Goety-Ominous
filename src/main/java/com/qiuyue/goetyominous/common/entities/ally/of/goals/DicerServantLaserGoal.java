@@ -1,7 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.ally.of.goals;
 
 import com.qiuyue.goetyominous.common.entities.ally.of.DicerServant;
-import com.qiuyue.goetyominous.common.entities.projectile.DicerServantLaser;
+import com.qiuyue.goetyominous.common.entities.projectile.of.DicerServantLaser;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;

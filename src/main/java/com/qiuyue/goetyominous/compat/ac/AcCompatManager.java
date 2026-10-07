@@ -30,7 +30,7 @@ import com.qiuyue.goetyominous.common.entities.ally.ac.VesperServant;
 import com.Polarice3.Goety.api.ritual.RitualType;
 import com.qiuyue.goetyominous.common.init.ac.*;
 import com.qiuyue.goetyominous.common.items.ac.AcItems;
-import com.qiuyue.goetyominous.common.ritual.PureDarkRitualType;
+import com.qiuyue.goetyominous.common.ritual.ac.PureDarkRitualType;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 

@@ -11,7 +11,7 @@ import com.qiuyue.goetyominous.common.entities.ally.of.TerrorServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.TremblerServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.UmberSpiderServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.VoltServant;
-import com.qiuyue.goetyominous.common.entities.projectile.DicerServantLaser;
+import com.qiuyue.goetyominous.common.entities.projectile.of.DicerServantLaser;
 import com.qiuyue.goetyominous.common.entities.projectile.VoltServantElectricCharge;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;

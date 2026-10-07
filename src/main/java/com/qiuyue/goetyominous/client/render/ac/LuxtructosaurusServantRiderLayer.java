@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.qiuyue.goetyominous.client.render.model.ac.ModelLuxtructosaurusServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.LuxtructosaurusServant;
-import com.qiuyue.goetyominous.common.events.LuxtructosaurusRenderEvents;
+import com.qiuyue.goetyominous.common.events.ac.LuxtructosaurusRenderEvents;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;

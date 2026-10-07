@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.qiuyue.goetyominous.client.render.model.ac.ModelDeepOneMageServantWaterBolt;
-import com.qiuyue.goetyominous.common.entities.projectile.DeepOneMageServantWaterBolt;
+import com.qiuyue.goetyominous.common.entities.projectile.ac.DeepOneMageServantWaterBolt;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

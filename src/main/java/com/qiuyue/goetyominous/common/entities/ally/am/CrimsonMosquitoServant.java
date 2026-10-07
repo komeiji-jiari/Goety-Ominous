@@ -3,7 +3,7 @@ package com.qiuyue.goetyominous.common.entities.ally.am;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.config.MobsConfig;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
-import com.qiuyue.goetyominous.common.entities.projectile.EntityMosquitoServantSpit;
+import com.qiuyue.goetyominous.common.entities.projectile.am.EntityMosquitoServantSpit;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.github.alexthe666.alexsmobs.config.AMConfig;

@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.qiuyue.goetyominous.client.render.model.ac.ModelWaterBoltProjectile;
-import com.qiuyue.goetyominous.common.entities.projectile.WaterBoltProjectile;
+import com.qiuyue.goetyominous.common.entities.projectile.ac.WaterBoltProjectile;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

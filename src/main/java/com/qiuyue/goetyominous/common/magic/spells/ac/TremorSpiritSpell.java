@@ -10,7 +10,7 @@ import com.Polarice3.Goety.utils.WandUtil;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEffects;
 import com.qiuyue.goetyominous.config.SpellConfig;
-import com.qiuyue.goetyominous.common.events.TremorsaurusSpiritHandler;
+import com.qiuyue.goetyominous.common.events.ac.TremorsaurusSpiritHandler;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.effect.MobEffectInstance;

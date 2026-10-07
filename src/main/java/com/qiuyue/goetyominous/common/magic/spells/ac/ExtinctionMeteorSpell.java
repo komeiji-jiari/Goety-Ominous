@@ -8,7 +8,7 @@ import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.utils.ColorUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
-import com.qiuyue.goetyominous.common.entities.projectile.ServantTephraEntity;
+import com.qiuyue.goetyominous.common.entities.projectile.ac.ServantTephraEntity;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
 import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.core.BlockPos;
