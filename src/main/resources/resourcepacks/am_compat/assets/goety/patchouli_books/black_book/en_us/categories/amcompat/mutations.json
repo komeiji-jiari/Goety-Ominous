@@ -1,0 +1,7 @@
+{
+  "name": "Mutations",
+  "description": "Transforming one creature into another.",
+  "icon": "goetyominous:warped_steroids",
+  "parent": "goety:amcompat",
+  "sortnum": 4
+}

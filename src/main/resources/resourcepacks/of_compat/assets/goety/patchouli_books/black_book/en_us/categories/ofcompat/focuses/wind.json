@@ -1,0 +1,7 @@
+{
+  "name": "Wind",
+  "description": "The power over the winds and gales.",
+  "icon": "goetyominous:skyvern_focus",
+  "parent": "goety:ofcompat/focuses",
+  "sortnum": 9
+}

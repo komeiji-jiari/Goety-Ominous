@@ -1,0 +1,7 @@
+{
+  "name": "Summons",
+  "description": "More servants for a darker wizard.",
+  "icon": "mutantmore:mutant_blaze_core",
+  "parent": "goety:mmcompat",
+  "sortnum": 3
+}

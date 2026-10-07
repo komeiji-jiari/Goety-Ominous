@@ -1,0 +1,7 @@
+{
+  "name": "Mutations",
+  "description": "Transforming one creature into another.",
+  "icon": "mutantmore:formula_y",
+  "parent": "goety:mmcompat",
+  "sortnum": 4
+}

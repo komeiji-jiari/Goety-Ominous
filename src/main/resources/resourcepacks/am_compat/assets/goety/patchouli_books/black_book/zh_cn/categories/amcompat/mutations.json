@@ -1,0 +1,7 @@
+{
+  "name": "变异",
+  "description": "将一种生物转化为另一种。",
+  "icon": "goetyominous:warped_steroids",
+  "parent": "goety:amcompat",
+  "sortnum": 4
+}

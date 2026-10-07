@@ -1,0 +1,7 @@
+{
+  "name": "Storm",
+  "description": "The power over the storms.",
+  "icon": "goetyominous:volt_bolt_focus",
+  "parent": "goety:ofcompat/focuses",
+  "sortnum": 6
+}

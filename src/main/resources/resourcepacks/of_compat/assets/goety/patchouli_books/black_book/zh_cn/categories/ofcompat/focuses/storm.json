@@ -1,0 +1,7 @@
+{
+  "name": "风暴",
+  "description": "直面于风暴的力量...",
+  "icon": "goetyominous:volt_bolt_focus",
+  "parent": "goety:ofcompat/focuses",
+  "sortnum": 6
+}

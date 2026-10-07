@@ -1,0 +1,7 @@
+{
+  "name": "Void",
+  "description": "The power over the voids.",
+  "icon": "goetyominous:shulker_bullet_focus",
+  "parent": "goety:mmcompat/focuses",
+  "sortnum": 7
+}
