@@ -18,8 +18,10 @@ public class ModParticleTypes {
     }
 
     public static final RegistryObject<SimpleParticleType> GUST = PARTICLE_TYPES.register("gust", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> SMALL_GUST = PARTICLE_TYPES.register("small_gust", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> GUST_EMITTER_SMALL = PARTICLE_TYPES.register("gust_emitter_small", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> GUST_EMITTER_LARGE = PARTICLE_TYPES.register("gust_emitter_large", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> INFESTED = PARTICLE_TYPES.register("infested", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> TRIAL_OMEN = PARTICLE_TYPES.register("trial_omen", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> TRIAL_SPAWNER_DETECTION_OMINOUS =
             PARTICLE_TYPES.register("trial_spawner_detection_ominous", () -> new SimpleParticleType(true));

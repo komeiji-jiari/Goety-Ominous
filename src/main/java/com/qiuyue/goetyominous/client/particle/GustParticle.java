@@ -39,10 +39,10 @@ public class GustParticle extends TextureSheetParticle {
         this.setSpriteFromAge(this.sprites);
     }
 
-    public static class LargeProvider implements ParticleProvider<SimpleParticleType> {
+    public static class SmallProvider implements ParticleProvider<SimpleParticleType> {
         private final SpriteSet sprites;
 
-        public LargeProvider(SpriteSet sprites) {
+        public SmallProvider(SpriteSet sprites) {
             this.sprites = sprites;
         }
 

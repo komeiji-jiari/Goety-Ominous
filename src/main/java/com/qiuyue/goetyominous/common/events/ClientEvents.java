@@ -67,6 +67,8 @@ public class ClientEvents {
         event.registerSpecial(ModParticleTypes.GUST_EMITTER_SMALL.get(), new GustSeedParticle.Provider(1.0D, 3, 2));
         event.registerSpecial(ModParticleTypes.GUST_EMITTER_LARGE.get(), new GustSeedParticle.Provider(3.0D, 7, 0));
         event.registerSpriteSet(ModParticleTypes.GUST.get(), GustParticle.Provider::new);
+        event.registerSpriteSet(ModParticleTypes.SMALL_GUST.get(), GustParticle.SmallProvider::new);
+        event.registerSpriteSet(ModParticleTypes.INFESTED.get(), SpellParticle.Provider::new);
         event.registerSpecial(ModParticleTypes.DUST_PILLAR.get(), new DustPillarProvider());
         event.registerSpriteSet(ModParticleTypes.TRIAL_OMEN.get(), SpellParticle.Provider::new);
         event.registerSpriteSet(ModParticleTypes.VAULT_CONNECTION.get(), FlyTowardsPositionParticle.VaultConnectionProvider::new);

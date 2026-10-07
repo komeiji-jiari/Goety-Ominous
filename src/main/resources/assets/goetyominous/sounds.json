@@ -103,36 +103,36 @@
       { "name": "goetyominous:breeze/wind_burst3", "pitch": 1.25, "attenuation_distance": 8 }
     ]
   },
-  "bogged_servant_ambient": {
-    "subtitle": "subtitles.goetyominous.bogged_servant.ambient",
+  "bogged_ambient": {
+    "subtitle": "subtitles.goetyominous.bogged.ambient",
     "sounds": [
-      "goetyominous:bogged_servant/ambient1",
-      "goetyominous:bogged_servant/ambient2",
-      "goetyominous:bogged_servant/ambient3",
-      "goetyominous:bogged_servant/ambient4"
+      "goetyominous:bogged/ambient1",
+      "goetyominous:bogged/ambient2",
+      "goetyominous:bogged/ambient3",
+      "goetyominous:bogged/ambient4"
     ]
   },
-  "bogged_servant_hurt": {
-    "subtitle": "subtitles.goetyominous.bogged_servant.hurt",
+  "bogged_hurt": {
+    "subtitle": "subtitles.goetyominous.bogged.hurt",
     "sounds": [
-      "goetyominous:bogged_servant/hurt1",
-      "goetyominous:bogged_servant/hurt2",
-      "goetyominous:bogged_servant/hurt3",
-      "goetyominous:bogged_servant/hurt4"
+      "goetyominous:bogged/hurt1",
+      "goetyominous:bogged/hurt2",
+      "goetyominous:bogged/hurt3",
+      "goetyominous:bogged/hurt4"
     ]
   },
-  "bogged_servant_death": {
-    "subtitle": "subtitles.goetyominous.bogged_servant.death",
+  "bogged_death": {
+    "subtitle": "subtitles.goetyominous.bogged.death",
     "sounds": [
-      "goetyominous:bogged_servant/death"
+      "goetyominous:bogged/death"
     ]
   },
-  "bogged_servant_step": {
+  "bogged_step": {
     "sounds": [
-      "goetyominous:bogged_servant/step1",
-      "goetyominous:bogged_servant/step2",
-      "goetyominous:bogged_servant/step3",
-      "goetyominous:bogged_servant/step4"
+      "goetyominous:bogged/step1",
+      "goetyominous:bogged/step2",
+      "goetyominous:bogged/step3",
+      "goetyominous:bogged/step4"
     ]
   },
   "dreden_idle": {

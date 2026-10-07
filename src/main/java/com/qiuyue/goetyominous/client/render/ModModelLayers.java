@@ -185,10 +185,10 @@ public class ModModelLayers {
 
         event.registerLayerDefinition(ModEntityLayers.PITCHFORK_LAYER, PitchforkModel::createBodyLayer);
 
-        event.registerLayerDefinition(ModEntityLayers.BOGGED_SERVANT_LAYER,
-                BoggedServantModel::createBodyLayer);
+        event.registerLayerDefinition(ModEntityLayers.BOGGED_LAYER,
+                BoggedModel::createBodyLayer);
 
-        event.registerLayerDefinition(ModEntityLayers.BOGGED_SERVANT_OUTER_LAYER,
+        event.registerLayerDefinition(ModEntityLayers.BOGGED_OUTER_LAYER,
                 () -> LayerDefinition.create(
                         HumanoidModel.createMesh(new CubeDeformation(0.25F), 0.0F), 64, 32));
 
@@ -543,9 +543,13 @@ public class ModModelLayers {
                     MagispellerServantRenderer::new);
         }
 
-        event.registerEntityRenderer(ModEntityTypes.MIRED_SERVANT.get(), MiredServantRenderer::new);
+        event.registerEntityRenderer(ModEntityTypes.MIRED_SERVANT.get(), MiredRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.MIRED.get(), MiredRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.BOGGED_SERVANT.get(), BoggedServantRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.BOGGED.get(), BoggedRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.SWAMP_WOLF.get(), SwampWolfRenderer::new);
 

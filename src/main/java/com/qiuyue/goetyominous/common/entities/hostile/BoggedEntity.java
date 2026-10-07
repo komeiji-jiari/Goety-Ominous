@@ -1,53 +1,55 @@
-package com.qiuyue.goetyominous.common.entities.ally.mobs;
+package com.qiuyue.goetyominous.common.entities.hostile;
 
-import com.Polarice3.Goety.common.effects.GoetyEffects;
-import com.Polarice3.Goety.common.entities.ally.undead.skeleton.AbstractSkeletonServant;
-import com.Polarice3.Goety.utils.CuriosFinder;
+import com.Polarice3.Goety.api.entities.ICustomAttributes;
 import com.Polarice3.Goety.utils.MathHelper;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.entities.util.BoggedLike;
 import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.utils.CroneCuriosUtil;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RangedBowAttackGoal;
+import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 
-public class BoggedServant extends AbstractSkeletonServant implements BoggedLike {
+public class BoggedEntity extends AbstractSkeleton implements ICustomAttributes, BoggedLike {
+
+    private static final int HARD_ATTACK_INTERVAL = 50;
+    private static final int NORMAL_ATTACK_INTERVAL = 70;
+    private static final int POISON_DURATION = MathHelper.secondsToTicks(4);
 
     private static final EntityDataAccessor<Boolean> DATA_SHEARED =
-            SynchedEntityData.defineId(BoggedServant.class, EntityDataSerializers.BOOLEAN);
+            SynchedEntityData.defineId(BoggedEntity.class, EntityDataSerializers.BOOLEAN);
 
-    private boolean lastNecroCape;
-    private static final int REGROW_DELAY = 12000;
-    private int regrowCooldown;
+    private RangedBowAttackGoal<BoggedEntity> bowGoal;
+    private MeleeAttackGoal meleeGoal;
 
-    public BoggedServant(EntityType<? extends AbstractSkeletonServant> type, Level level) {
+    public BoggedEntity(EntityType<? extends AbstractSkeleton> type, Level level) {
         super(type, level);
     }
 
@@ -66,52 +68,6 @@ public class BoggedServant extends AbstractSkeletonServant implements BoggedLike
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), AttributesConfig.BoggedDamage.get());
     }
 
-    public boolean hasNecroCapeOwner() {
-        LivingEntity owner = this.getTrueOwner();
-        return owner != null && CuriosFinder.hasNecroCape(owner);
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
-        if (this.level().isClientSide) {
-            return;
-        }
-        if (this.tickCount % 20 == 0) {
-            boolean cape = this.hasNecroCapeOwner();
-            if (cape != this.lastNecroCape) {
-                this.lastNecroCape = cape;
-                this.reassessWeaponGoal();
-            }
-        }
-        if (this.isSheared() && this.tickCount % 20 == 0) {
-            if (this.regrowCooldown > 0) {
-                this.regrowCooldown -= 20;
-                if (this.regrowCooldown < 0) {
-                    this.regrowCooldown = 0;
-                }
-            } else if (this.random.nextFloat() < 0.15F) {
-                this.setSheared(false);
-                this.level().playSound(null, this, SoundEvents.BONE_MEAL_USE,
-                        SoundSource.PLAYERS, 0.8F, 1.2F);
-                if (this.level() instanceof ServerLevel serverLevel) {
-                    serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER,
-                            this.getX(), this.getY() + (double) this.getBbHeight() * 0.5D, this.getZ(),
-                            8,
-                            (double) this.getBbWidth() * 0.5D,
-                            (double) this.getBbHeight() * 0.4D,
-                            (double) this.getBbWidth() * 0.5D,
-                            0.0D);
-                }
-            }
-        }
-    }
-
-    @Override
-    public double getBaseRangeDamage() {
-        return AttributesConfig.BoggedRangeDamage.get();
-    }
-
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
@@ -122,23 +78,22 @@ public class BoggedServant extends AbstractSkeletonServant implements BoggedLike
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("sheared", this.isSheared());
-        tag.putInt("RegrowCooldown", this.regrowCooldown);
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         this.setSheared(tag.getBoolean("sheared"));
-        this.regrowCooldown = tag.getInt("RegrowCooldown");
     }
 
+    @Override
     public boolean isSheared() {
         return this.entityData.get(DATA_SHEARED);
     }
 
+    @Override
     public void setSheared(boolean sheared) {
         this.entityData.set(DATA_SHEARED, sheared);
-        this.regrowCooldown = sheared ? REGROW_DELAY : 0;
     }
 
     @Override
@@ -152,7 +107,7 @@ public class BoggedServant extends AbstractSkeletonServant implements BoggedLike
         if (!this.level().isClientSide) {
             for (int i = 0; i < 2; i++) {
                 this.spawnAtLocation(new ItemStack(this.random.nextBoolean()
-                        ? Items.BROWN_MUSHROOM : Items.RED_MUSHROOM));
+                        ? Items.RED_MUSHROOM : Items.BROWN_MUSHROOM));
             }
         }
         this.setSheared(true);
@@ -169,41 +124,52 @@ public class BoggedServant extends AbstractSkeletonServant implements BoggedLike
             }
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
-        if (stack.is(Items.BONE_MEAL) && this.isSheared() && this.getTrueOwner() == player) {
-            if (!this.level().isClientSide) {
-                if (!player.getAbilities().instabuild) {
-                    stack.shrink(1);
-                }
-                this.setSheared(false);
-                this.level().playSound(null, this, SoundEvents.BONE_MEAL_USE,
-                        SoundSource.PLAYERS, 1.0F, 1.0F);
-                if (this.level() instanceof ServerLevel serverLevel) {
-                    serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER,
-                            this.getX(), this.getY() + (double) this.getBbHeight() * 0.5D, this.getZ(),
-                            8,
-                            (double) this.getBbWidth() * 0.5D,
-                            (double) this.getBbHeight() * 0.4D,
-                            (double) this.getBbWidth() * 0.5D,
-                            0.0D);
-                }
-            }
-            return InteractionResult.sidedSuccess(this.level().isClientSide);
-        }
         return super.mobInteract(player, hand);
     }
 
     @Override
-    protected AbstractArrow getMobArrow(ItemStack arrowStack, float velocity) {
-        AbstractArrow arrow = super.getMobArrow(arrowStack, velocity);
-        if (arrow instanceof Arrow a) {
-            a.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,
-                    MathHelper.secondsToTicks(5), 0, false, false));
-            MobEffect poison = MobEffects.POISON;
-            LivingEntity owner = this.getTrueOwner();
-            if (owner != null && CroneCuriosUtil.hasCroneRobe(owner)) {
-                poison = GoetyEffects.ACID_VENOM.get();
+    public void reassessWeaponGoal() {
+        if (this.level() == null || this.level().isClientSide) {
+            return;
+        }
+        this.goalSelector.removeAllGoals(goal ->
+                goal instanceof RangedBowAttackGoal || goal instanceof MeleeAttackGoal);
+        int interval = this.level().getDifficulty() == Difficulty.HARD
+                ? HARD_ATTACK_INTERVAL : NORMAL_ATTACK_INTERVAL;
+        ItemStack stack = this.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this,
+                item -> item instanceof BowItem));
+        if (stack.is(Items.BOW)) {
+            if (this.bowGoal == null) {
+                this.bowGoal = new RangedBowAttackGoal<>(this, 1.0D, interval, 15.0F);
+            } else {
+                this.bowGoal.setMinAttackInterval(interval);
             }
-            a.addEffect(new MobEffectInstance(poison, MathHelper.secondsToTicks(5), 0));
+            this.goalSelector.addGoal(4, this.bowGoal);
+        } else {
+            if (this.meleeGoal == null) {
+                this.meleeGoal = new MeleeAttackGoal(this, 1.2D, false) {
+                    @Override
+                    public void start() {
+                        super.start();
+                        BoggedEntity.this.setAggressive(true);
+                    }
+
+                    @Override
+                    public void stop() {
+                        super.stop();
+                        BoggedEntity.this.setAggressive(false);
+                    }
+                };
+            }
+            this.goalSelector.addGoal(4, this.meleeGoal);
+        }
+    }
+
+    @Override
+    protected AbstractArrow getArrow(ItemStack arrowStack, float velocity) {
+        AbstractArrow arrow = super.getArrow(arrowStack, velocity);
+        if (arrow instanceof Arrow a) {
+            a.addEffect(new MobEffectInstance(MobEffects.POISON, POISON_DURATION));
         }
         return arrow;
     }

@@ -1,6 +1,6 @@
 package com.qiuyue.goetyominous.client.render.model;
 
-import com.qiuyue.goetyominous.common.entities.ally.mobs.BoggedServant;
+import com.qiuyue.goetyominous.common.entities.util.BoggedLike;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.SkeletonModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -10,12 +10,14 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.monster.RangedAttackMob;
 
-public class BoggedServantModel<T extends BoggedServant> extends SkeletonModel<T> {
+public class BoggedModel<T extends Mob & RangedAttackMob & BoggedLike> extends SkeletonModel<T> {
 
     private final ModelPart mushrooms;
 
-    public BoggedServantModel(ModelPart root) {
+    public BoggedModel(ModelPart root) {
         super(root);
         this.mushrooms = root.getChild("head").getChild("mushrooms");
     }

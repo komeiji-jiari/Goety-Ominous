@@ -43,10 +43,10 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> MACE_SMASH_GROUND_HEAVY = create("mace_smash_ground_heavy");
     public static final RegistryObject<SoundEvent> MACE_SMASH_GROUND = create("mace_smash_ground");
 
-    public static final RegistryObject<SoundEvent> BOGGED_SERVANT_AMBIENT = create("bogged_servant_ambient");
-    public static final RegistryObject<SoundEvent> BOGGED_SERVANT_HURT = create("bogged_servant_hurt");
-    public static final RegistryObject<SoundEvent> BOGGED_SERVANT_DEATH = create("bogged_servant_death");
-    public static final RegistryObject<SoundEvent> BOGGED_SERVANT_STEP = create("bogged_servant_step");
+    public static final RegistryObject<SoundEvent> BOGGED_AMBIENT = create("bogged_ambient");
+    public static final RegistryObject<SoundEvent> BOGGED_HURT = create("bogged_hurt");
+    public static final RegistryObject<SoundEvent> BOGGED_DEATH = create("bogged_death");
+    public static final RegistryObject<SoundEvent> BOGGED_STEP = create("bogged_step");
 
     public static final RegistryObject<SoundEvent> WOLF_ARMOR_EQUIP = create("wolf_armor_equip");
     public static final RegistryObject<SoundEvent> WOLF_ARMOR_UNEQUIP = create("wolf_armor_unequip");
