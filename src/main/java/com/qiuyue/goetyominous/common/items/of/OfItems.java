@@ -41,7 +41,7 @@ public class OfItems {
 
     public static final RegistryObject<ServantSpawnEggItem> UMBER_SPIDER_SERVANT_SPAWN_EGG = OF_ITEMS.register(
             "umber_spider_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(OfEntityRegistry.UMBER_SPIDER_SERVANT, 0x241631, 0xB03BE0, egg()));
+            () -> new ServantSpawnEggItem(OfEntityRegistry.UMBER_SPIDER_SERVANT, 0x241D2C, 0x44A9F6, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> TERROR_SERVANT_SPAWN_EGG = OF_ITEMS.register(
             "terror_servant_spawn_egg",
