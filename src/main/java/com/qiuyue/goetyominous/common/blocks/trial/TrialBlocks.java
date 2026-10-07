@@ -98,6 +98,16 @@ public class TrialBlocks {
     public static final RegistryObject<Block> WAXED_WEATHERED_COPPER_TRAPDOOR = block("waxed_weathered_copper_trapdoor", () -> new TrapDoorBlock(trapdoorProps(WEATHERED), TrialBlockSetTypes.COPPER));
     public static final RegistryObject<Block> WAXED_OXIDIZED_COPPER_TRAPDOOR = block("waxed_oxidized_copper_trapdoor", () -> new TrapDoorBlock(trapdoorProps(OXIDIZED), TrialBlockSetTypes.COPPER));
 
+    public static final RegistryObject<Block> VAULT = block("vault", () -> new VaultBlock(
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.STONE)
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .noOcclusion()
+                    .sound(TrialSoundTypes.VAULT)
+                    .lightLevel(state -> state.getValue(VaultBlock.STATE).lightLevel())
+                    .strength(50.0F)
+                    .isViewBlocking((state, level, pos) -> false)));
+
     public static final Supplier<BiMap<Block, Block>> WAXABLES = Suppliers.memoize(TrialBlocks::waxingMap);
     public static final Supplier<BiMap<Block, Block>> WAX_OFF_BY_BLOCK = Suppliers.memoize(() -> WAXABLES.get().inverse());
 

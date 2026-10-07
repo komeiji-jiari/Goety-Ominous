@@ -1,0 +1,9 @@
+{
+  "parent": "goetyominous:block/template_vault",
+  "textures": {
+    "bottom": "goetyominous:block/vault_bottom",
+    "front": "goetyominous:block/vault_front_off",
+    "side": "goetyominous:block/vault_side_off",
+    "top": "goetyominous:block/vault_top"
+  }
+}

@@ -21,6 +21,9 @@
     },
     {
       "tag": "forge:storage_blocks/lapis"
+    },
+    {
+      "item": "goety:dark_ingot"
     }
   ],
   "result": {

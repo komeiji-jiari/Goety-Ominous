@@ -54,7 +54,7 @@ public class WolfTotemBlock extends BaseEntityBlock implements SimpleWaterlogged
     private static final VoxelShape UPPER_SHAPE = Block.box(4.0D, 0.0D, 3.0D, 12.0D, 15.0D, 13.0D);
 
     public WolfTotemBlock() {
-        super(ModBlocks.ShadeStoneProperties().requiresCorrectToolForDrops().noOcclusion().dynamicShape().strength(2.0F, 6.0F).lightLevel(state -> state.getValue(POWERED) ? 10 : 0));
+        super(ModBlocks.ShadeStoneProperties().requiresCorrectToolForDrops().noOcclusion().dynamicShape().strength(1.5F, 6.0F).lightLevel(state -> state.getValue(POWERED) ? 10 : 0));
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(POWERED, false)
                 .setValue(WATERLOGGED, false)

@@ -1,0 +1,7 @@
+{
+  "asset_id": "goetyominous:bolt",
+  "description": {
+    "translate": "trim_pattern.minecraft.bolt"
+  },
+  "template_item": "goetyominous:bolt_armor_trim_smithing_template"
+}

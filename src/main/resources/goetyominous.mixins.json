@@ -12,7 +12,6 @@
     "BerserkFungusItemMixin",
     "BerserkFungusMixin",
     "RaidMixin",
-    "RaiderCaptainDropMixin",
     "SpiderEggMixin",
     "RitualMixin",
     "RitualRequirementsMixin",
@@ -78,6 +77,7 @@
     "MixinClientTextTooltip",
     "MaceLevelRendererMixin",
     "TrialOmenLevelRendererMixin",
+    "VaultLevelRendererMixin",
     "TrialOmenParticleMixin"
   ],
   "server": [],

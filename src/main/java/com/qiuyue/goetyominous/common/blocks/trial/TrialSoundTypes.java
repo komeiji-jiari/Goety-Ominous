@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.blocks.trial;
 
+import com.qiuyue.goetyominous.common.init.ModSounds;
 import net.minecraft.world.level.block.SoundType;
 
 public class TrialSoundTypes {
@@ -30,4 +31,11 @@ public class TrialSoundTypes {
             TrialSounds.COPPER_BULB_PLACE.get(),
             TrialSounds.COPPER_BULB_HIT.get(),
             TrialSounds.COPPER_BULB_FALL.get());
+
+    public static final SoundType VAULT = new SoundType(1.0F, 1.0F,
+            ModSounds.VAULT_BREAK.get(),
+            ModSounds.VAULT_STEP.get(),
+            ModSounds.VAULT_PLACE.get(),
+            ModSounds.VAULT_HIT.get(),
+            ModSounds.VAULT_FALL.get());
 }

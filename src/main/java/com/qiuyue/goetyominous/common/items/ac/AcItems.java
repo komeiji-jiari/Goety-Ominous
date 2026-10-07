@@ -51,10 +51,6 @@ public class AcItems {
             AC_ITEMS.register("atlatitan_servant_spawn_egg",
                                         () -> new ServantSpawnEggItem(AcEntityRegistry.ATLATITAN_SERVANT, 0xB67000, 0xBFBAA4, egg()));
 
-    public static final RegistryObject<BlockItem> ATLATITAN_SERVANT_EGG =
-            AC_ITEMS.register("atlatitan_servant_egg",
-                    () -> new BlockItem(AcBlockRegistry.ATLATITAN_SERVANT_EGG.get(), egg()));
-
     public static final RegistryObject<ServantSpawnEggItem> LUXTRUCTOSAURUS_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("luxtructosaurus_servant_spawn_egg",
                                         () -> new ServantSpawnEggItem(AcEntityRegistry.LUXTRUCTOSAURUS_SERVANT, 0x1F0E15, 0xB30C03, egg()));
@@ -75,6 +71,10 @@ public class AcItems {
             AC_ITEMS.register("titan_bomb",
                     () -> new TitanBombBlockItem(AcBlockRegistry.TITAN_BOMB.get(),
                             new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));
+
+    public static final RegistryObject<BlockItem> ATLATITAN_SERVANT_EGG =
+            AC_ITEMS.register("atlatitan_servant_egg",
+                    () -> new BlockItem(AcBlockRegistry.ATLATITAN_SERVANT_EGG.get(), egg()));
 
     public static final RegistryObject<BlockItem> GROTTOCERATOPS_SERVANT_EGG =
             AC_ITEMS.register("grottoceratops_servant_egg",

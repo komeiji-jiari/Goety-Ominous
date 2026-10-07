@@ -24,6 +24,8 @@ public class ModParticleTypes {
     public static final RegistryObject<SimpleParticleType> TRIAL_SPAWNER_DETECTION_OMINOUS =
             PARTICLE_TYPES.register("trial_spawner_detection_ominous", () -> new SimpleParticleType(true));
 
+    public static final RegistryObject<SimpleParticleType> VAULT_CONNECTION = PARTICLE_TYPES.register("vault_connection", () -> new SimpleParticleType(false));
+
     public static final RegistryObject<ParticleType<BlockParticleOption>> DUST_PILLAR = PARTICLE_TYPES.register("dust_pillar",
             () -> new ParticleType<BlockParticleOption>(true, BlockParticleOption.DESERIALIZER) {
                 @Override

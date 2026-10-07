@@ -4,6 +4,8 @@ import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.blocks.PiglinMerchantSpawnerBlockEntity;
 import com.qiuyue.goetyominous.common.blocks.entities.PlushieBlockEntity;
 import com.qiuyue.goetyominous.common.blocks.entities.WolfTotemBlockEntity;
+import com.qiuyue.goetyominous.common.blocks.trial.TrialBlocks;
+import com.qiuyue.goetyominous.common.blocks.trial.VaultBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -13,6 +15,12 @@ import net.minecraftforge.registries.RegistryObject;
 public class ModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
             DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, GoetyOminous.MOD_ID);
+
+    public static final RegistryObject<BlockEntityType<VaultBlockEntity>> VAULT =
+            BLOCK_ENTITIES.register("vault",
+                    () -> BlockEntityType.Builder.of(
+                            VaultBlockEntity::new,
+                            TrialBlocks.VAULT.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<PiglinMerchantSpawnerBlockEntity>> PIGLIN_MERCHANT_SPAWNER =
             BLOCK_ENTITIES.register("piglin_merchant_spawner",

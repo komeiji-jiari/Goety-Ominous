@@ -8,6 +8,7 @@ import com.qiuyue.goetyominous.client.render.item.BoneCudgelRenderer;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.Warg;
 import com.qiuyue.goetyominous.common.init.ModBlocks;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
+import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.common.items.curios.*;
 import com.qiuyue.goetyominous.common.items.revive.BrokenStormCrown;
 import com.qiuyue.goetyominous.common.items.revive.StormSoulJar;
@@ -16,10 +17,11 @@ import com.qiuyue.goetyominous.common.items.revive.ThunderHorn;
 import com.qiuyue.goetyominous.common.research.ResearchList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.*;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
@@ -48,8 +50,11 @@ public class ModItems {
     public static final RegistryObject<Item> BREEZE_ROD = ITEMS.register("breeze_rod",
             () -> new Item(new Item.Properties()));
 
-    public static final RegistryObject<Item> HURRICANE_CORE = ITEMS.register("hurricane_core",
-            () -> new HurricaneCoreItem());
+    public static final RegistryObject<Item> TRIAL_KEY = ITEMS.register("trial_key",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> OMINOUS_TRIAL_KEY = ITEMS.register("ominous_trial_key",
+            () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> HARMONIOUS_DIAMOND = ITEMS.register("harmonious_diamond",
             () -> new Item(new Item.Properties().rarity(Rarity.COMMON).stacksTo(64)));
@@ -169,6 +174,35 @@ public class ModItems {
     public static final RegistryObject<Item> OMINOUS_BOTTLE = ITEMS.register("ominous_bottle",
             () -> new OminousBottleItem(new Item.Properties().food(
                     new FoodProperties.Builder().nutrition(1).saturationMod(0.1F).build())));
+
+    public static final RegistryObject<Item> BOLT_ARMOR_TRIM_SMITHING_TEMPLATE = ITEMS.register("bolt_armor_trim_smithing_template",
+            () -> SmithingTemplateItem.createArmorTrimTemplate(new ResourceLocation("bolt")));
+
+    public static final RegistryObject<Item> FLOW_ARMOR_TRIM_SMITHING_TEMPLATE = ITEMS.register("flow_armor_trim_smithing_template",
+            () -> SmithingTemplateItem.createArmorTrimTemplate(new ResourceLocation("flow")));
+
+    public static final RegistryObject<Item> FLOW_BANNER_PATTERN = ITEMS.register("flow_banner_pattern",
+            () -> new BannerPatternItem(TagKey.create(Registries.BANNER_PATTERN,
+                    new ResourceLocation(GoetyOminous.MOD_ID, "pattern_item/flow")), new Item.Properties()));
+
+    public static final RegistryObject<Item> GUSTER_BANNER_PATTERN = ITEMS.register("guster_banner_pattern",
+            () -> new BannerPatternItem(TagKey.create(Registries.BANNER_PATTERN,
+                    new ResourceLocation(GoetyOminous.MOD_ID, "pattern_item/guster")), new Item.Properties()));
+
+    public static final RegistryObject<Item> MUSIC_DISC_CREATOR = ITEMS.register("music_disc_creator",
+            () -> new RecordItem(12, ModSounds.MUSIC_DISC_CREATOR.get(),
+                    new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 3520));
+
+    public static final RegistryObject<Item> MUSIC_DISC_CREATOR_MUSIC_BOX = ITEMS.register("music_disc_creator_music_box",
+            () -> new RecordItem(11, ModSounds.MUSIC_DISC_CREATOR_MUSIC_BOX.get(),
+                    new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 1460));
+
+    public static final RegistryObject<Item> MUSIC_DISC_PRECIPICE = ITEMS.register("music_disc_precipice",
+            () -> new RecordItem(13, ModSounds.MUSIC_DISC_PRECIPICE.get(),
+                    new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 5980));
+
+    public static final RegistryObject<Item> HURRICANE_CORE = ITEMS.register("hurricane_core",
+            () -> new HurricaneCoreItem());
 
     public static final RegistryObject<Item> BREEZE_FOCUS = ITEMS.register("breeze_focus",
             () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.BreezeSpell()));
