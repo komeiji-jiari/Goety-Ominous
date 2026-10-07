@@ -460,12 +460,26 @@ public class ModEntityTypes {
                     .clientTrackingRange(8)
                     .build(MOD_ID + ":mired_servant"));
 
+    public static final RegistryObject<EntityType<MiredEntity>> MIRED = ENTITY_TYPES.register(
+            "mired",
+            () -> EntityType.Builder.of(MiredEntity::new, MobCategory.MONSTER)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":mired"));
+
     public static final RegistryObject<EntityType<BoggedServant>> BOGGED_SERVANT = ENTITY_TYPES.register(
             "bogged_servant",
             () -> EntityType.Builder.of(BoggedServant::new, MobCategory.MISC)
                     .sized(0.6F, 1.99F)
                     .clientTrackingRange(8)
                     .build(MOD_ID + ":bogged_servant"));
+
+    public static final RegistryObject<EntityType<BoggedEntity>> BOGGED = ENTITY_TYPES.register(
+            "bogged",
+            () -> EntityType.Builder.of(BoggedEntity::new, MobCategory.MONSTER)
+                    .sized(0.6F, 1.99F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":bogged"));
 
     public static final RegistryObject<EntityType<SwampWolf>> SWAMP_WOLF = ENTITY_TYPES.register(
             "swamp_wolf",

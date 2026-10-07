@@ -5,6 +5,7 @@ import com.Polarice3.Goety.common.entities.ally.undead.skeleton.AbstractSkeleton
 import com.Polarice3.Goety.utils.CuriosFinder;
 import com.Polarice3.Goety.utils.MathHelper;
 import com.Polarice3.Goety.utils.MobUtil;
+import com.qiuyue.goetyominous.common.entities.util.BoggedLike;
 import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.utils.CroneCuriosUtil;
@@ -27,7 +28,6 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.Shearable;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -38,7 +38,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 
-public class BoggedServant extends AbstractSkeletonServant implements Shearable {
+public class BoggedServant extends AbstractSkeletonServant implements BoggedLike {
 
     private static final EntityDataAccessor<Boolean> DATA_SHEARED =
             SynchedEntityData.defineId(BoggedServant.class, EntityDataSerializers.BOOLEAN);
@@ -53,17 +53,17 @@ public class BoggedServant extends AbstractSkeletonServant implements Shearable 
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.BoggedServantHealth.get())
-                .add(Attributes.ARMOR, AttributesConfig.BoggedServantArmor.get())
+                .add(Attributes.MAX_HEALTH, AttributesConfig.BoggedHealth.get())
+                .add(Attributes.ARMOR, AttributesConfig.BoggedArmor.get())
                 .add(Attributes.MOVEMENT_SPEED, 0.25D)
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.BoggedServantDamage.get());
+                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.BoggedDamage.get());
     }
 
     @Override
     public void setConfigurableAttributes() {
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), AttributesConfig.BoggedServantHealth.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), AttributesConfig.BoggedServantArmor.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), AttributesConfig.BoggedServantDamage.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), AttributesConfig.BoggedHealth.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), AttributesConfig.BoggedArmor.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), AttributesConfig.BoggedDamage.get());
     }
 
     public boolean hasNecroCapeOwner() {
@@ -109,7 +109,7 @@ public class BoggedServant extends AbstractSkeletonServant implements Shearable 
 
     @Override
     public double getBaseRangeDamage() {
-        return AttributesConfig.BoggedServantRangeDamage.get();
+        return AttributesConfig.BoggedRangeDamage.get();
     }
 
     @Override
@@ -218,21 +218,21 @@ public class BoggedServant extends AbstractSkeletonServant implements Shearable 
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return ModSounds.BOGGED_SERVANT_AMBIENT.get();
+        return ModSounds.BOGGED_AMBIENT.get();
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return ModSounds.BOGGED_SERVANT_HURT.get();
+        return ModSounds.BOGGED_HURT.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return ModSounds.BOGGED_SERVANT_DEATH.get();
+        return ModSounds.BOGGED_DEATH.get();
     }
 
     @Override
     protected SoundEvent getStepSound() {
-        return ModSounds.BOGGED_SERVANT_STEP.get();
+        return ModSounds.BOGGED_STEP.get();
     }
 }

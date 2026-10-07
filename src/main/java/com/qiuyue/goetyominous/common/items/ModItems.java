@@ -267,9 +267,17 @@ public class ModItems {
             "mired_servant_spawn_egg",
             () -> new ServantSpawnEggItem(ModEntityTypes.MIRED_SERVANT, 0x2D2013, 0xEEC5AD, egg()));
 
+    public static final RegistryObject<ForgeSpawnEggItem> MIRED_SPAWN_EGG = ITEMS.register(
+            "mired_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.MIRED, 0x2D2013, 0xEEC5AD, egg()));
+
     public static final RegistryObject<ServantSpawnEggItem> BOGGED_SERVANT_SPAWN_EGG = ITEMS.register(
             "bogged_servant_spawn_egg",
             () -> new ServantSpawnEggItem(ModEntityTypes.BOGGED_SERVANT, 0x8FB85A, 0x1D3B06, egg()));
+
+    public static final RegistryObject<ForgeSpawnEggItem> BOGGED_SPAWN_EGG = ITEMS.register(
+            "bogged_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.BOGGED, 0x8FB85A, 0x1D3B06, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> AXOLOTL_SERVANT_SPAWN_EGG = ITEMS.register(
             "axolotl_servant_spawn_egg",

@@ -62,7 +62,9 @@
     "MaceAttackMixin",
     "MaceFallDustMixin",
     "MaceBreachMixin",
-    "MaceAnvilEnchantMixin"
+    "MaceAnvilEnchantMixin",
+    "LivingEntityRemoveMixin",
+    "WebBlockMixin"
   ],
   "client": [
     "MixinBlackWolfRenderer",
@@ -78,7 +80,7 @@
     "MaceLevelRendererMixin",
     "TrialOmenLevelRendererMixin",
     "VaultLevelRendererMixin",
-    "TrialOmenParticleMixin"
+    "ModEffectParticleMixin"
   ],
   "server": [],
   "injectors": {
