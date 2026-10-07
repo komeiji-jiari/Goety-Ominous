@@ -3,5 +3,6 @@
   "description": "策划更怪奇的阴谋。",
   "icon": "goetyominous:mysterious_contract",
   "sortnum": 4,
-  "parent": "goety:goetyominous"
+  "parent": "goety:goetyominous",
+  "flag": "!mod:goety_spillage"
 }

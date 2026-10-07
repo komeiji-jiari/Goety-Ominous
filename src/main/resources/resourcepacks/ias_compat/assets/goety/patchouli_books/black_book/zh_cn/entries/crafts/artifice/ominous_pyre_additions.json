@@ -1,0 +1,39 @@
+{
+  "name": "不祥火炬内容追加",
+  "icon": "goety:ominous_pyre",
+  "category": "goety:spillage/crafts/artifice",
+  "flag": "mod:goety_spillage",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "随着新型灾厄村民的普及，你的训练场也要与时俱进"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "与不祥火炬相关的更多内容请点击$(l:goety:crafts/artifice/ominous_pyre)此处$()."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "纵火者仆从",
+      "text": "需求：$(li)新刌民 $(li)32个岩浆块 $(li)16个雪块 $(li)1个工作台 $(li)2个铁块 $(li)4个煤炭块 $(li)4个红石块 $(li)64个圆石"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "保护者仆从",
+      "text": "需求：$(li)新刌民 $(li)64个干草块 $(li)16个活塞 $(li)16个木桶"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "暴躁推特哥仆从",
+      "text": "需求: $(li)新刌民 $(li)64个圆石 $(li)1个铁砧 $(li)2个铁块 $(li)2个红石块 $(li)8个玻璃 $(li)4个侦测器 $(li)8个TNT"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "伤害吸收者仆从",
+      "text": "需求: $(li)粉碎者仆从 $(li)8个锁链 $(li)4个铁块 $(li)2个金块 $(li)2个绿宝石块 $(li)2个铁砧 $(li)2个苍白金属块 $(li)2个诅咒金属块 $(li)2个黑暗金属块"
+    }
+  ],
+  "extra_recipe_mappings": {
+    "goety:ominous_pyre": 4
+  }
+}
