@@ -705,6 +705,144 @@
       }
     ]
   },
+  "music_disc_precipice": {
+    "sounds": [
+      {
+        "name": "goetyominous:records/precipice",
+        "stream": true
+      }
+    ]
+  },
+  "music_disc_creator": {
+    "sounds": [
+      {
+        "name": "goetyominous:records/creator",
+        "stream": true
+      }
+    ]
+  },
+  "music_disc_creator_music_box": {
+    "sounds": [
+      {
+        "name": "goetyominous:records/creator_music_box",
+        "stream": true
+      }
+    ]
+  },
+  "vault_activate": {
+    "subtitle": "subtitles.goetyominous.vault.activate",
+    "sounds": [
+      { "name": "goetyominous:vault/activate" }
+    ]
+  },
+  "vault_ambient": {
+    "subtitle": "subtitles.goetyominous.vault.ambient",
+    "sounds": [
+      { "name": "goetyominous:vault/ambient1" },
+      { "name": "goetyominous:vault/ambient2" },
+      { "name": "goetyominous:vault/ambient3" }
+    ]
+  },
+  "vault_break": {
+    "subtitle": "subtitles.block.generic.break",
+    "sounds": [
+      { "name": "goetyominous:vault/break1" },
+      { "name": "goetyominous:vault/break2" },
+      { "name": "goetyominous:vault/break3" },
+      { "name": "goetyominous:vault/break4" }
+    ]
+  },
+  "vault_close_shutter": {
+    "subtitle": "subtitles.goetyominous.vault.close_shutter",
+    "sounds": [
+      { "name": "goetyominous:trial_spawner/close_shutter" }
+    ]
+  },
+  "vault_deactivate": {
+    "subtitle": "subtitles.goetyominous.vault.deactivate",
+    "sounds": [
+      { "name": "goetyominous:vault/deactivate" }
+    ]
+  },
+  "vault_eject_item": {
+    "subtitle": "subtitles.goetyominous.vault.eject_item",
+    "sounds": [
+      { "name": "goetyominous:vault/eject1" },
+      { "name": "goetyominous:vault/eject2" },
+      { "name": "goetyominous:vault/eject3" }
+    ]
+  },
+  "vault_fall": {
+    "sounds": [
+      { "name": "goetyominous:vault/step1" },
+      { "name": "goetyominous:vault/step2" },
+      { "name": "goetyominous:vault/step3" },
+      { "name": "goetyominous:vault/step4" },
+      { "name": "goetyominous:vault/step5" },
+      { "name": "goetyominous:vault/step6" },
+      { "name": "goetyominous:vault/step7" },
+      { "name": "goetyominous:vault/step8" }
+    ]
+  },
+  "vault_hit": {
+    "subtitle": "subtitles.block.generic.hit",
+    "sounds": [
+      { "name": "goetyominous:vault/step1" },
+      { "name": "goetyominous:vault/step2" },
+      { "name": "goetyominous:vault/step3" },
+      { "name": "goetyominous:vault/step4" },
+      { "name": "goetyominous:vault/step5" },
+      { "name": "goetyominous:vault/step6" },
+      { "name": "goetyominous:vault/step7" },
+      { "name": "goetyominous:vault/step8" }
+    ]
+  },
+  "vault_insert_item": {
+    "subtitle": "subtitles.goetyominous.vault.insert_item",
+    "sounds": [
+      { "name": "goetyominous:vault/insert" }
+    ]
+  },
+  "vault_insert_item_fail": {
+    "subtitle": "subtitles.goetyominous.vault.insert_item_fail",
+    "sounds": [
+      { "name": "goetyominous:vault/insert_fail" }
+    ]
+  },
+  "vault_open_shutter": {
+    "subtitle": "subtitles.goetyominous.vault.open_shutter",
+    "sounds": [
+      { "name": "goetyominous:vault/open_shutter" }
+    ]
+  },
+  "vault_place": {
+    "subtitle": "subtitles.block.generic.place",
+    "sounds": [
+      { "name": "goetyominous:vault/place1" },
+      { "name": "goetyominous:vault/place2" },
+      { "name": "goetyominous:vault/place3" },
+      { "name": "goetyominous:vault/place4" }
+    ]
+  },
+  "vault_reject_rewarded_player": {
+    "subtitle": "subtitles.goetyominous.vault.reject_rewarded_player",
+    "sounds": [
+      { "name": "goetyominous:vault/reject_rewarded_player" }
+    ]
+  },
+  "vault_step": {
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": [
+      { "name": "goetyominous:vault/step1" },
+      { "name": "goetyominous:vault/step2" },
+      { "name": "goetyominous:vault/step3" },
+      { "name": "goetyominous:vault/step4" },
+      { "name": "goetyominous:vault/step5" },
+      { "name": "goetyominous:vault/step6" },
+      { "name": "goetyominous:vault/step7" },
+      { "name": "goetyominous:vault/step8" }
+    ]
+  },
   "soul_fly": {
     "sounds": [
       "goetyominous:soul_fly"

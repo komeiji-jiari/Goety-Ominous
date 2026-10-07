@@ -1,0 +1,7 @@
+{
+  "asset_id": "goetyominous:flow",
+  "description": {
+    "translate": "trim_pattern.minecraft.flow"
+  },
+  "template_item": "goetyominous:flow_armor_trim_smithing_template"
+}

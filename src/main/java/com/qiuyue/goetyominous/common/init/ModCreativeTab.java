@@ -4,7 +4,6 @@ import com.Polarice3.Goety.common.items.magic.MagicFocus;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.blocks.trial.TrialBlocks;
 import com.qiuyue.goetyominous.common.items.ModItems;
-import com.qiuyue.goetyominous.common.items.OminousBottleItem;
 import com.qiuyue.goetyominous.common.items.OminousIconItem;
 import com.qiuyue.goetyominous.common.items.PlushieBlockItem;
 import com.qiuyue.goetyominous.common.items.ac.AcItems;
@@ -38,11 +37,6 @@ public class ModCreativeTab {
                     .displayItems((parameters, output) -> {
                         Buckets buckets = Buckets.collect();
                         buckets.other.forEach(output::accept);
-                        for (int amplifier = 0; amplifier <= OminousBottleItem.MAX_AMPLIFIER; ++amplifier) {
-                            ItemStack stack = new ItemStack(ModItems.OMINOUS_BOTTLE.get());
-                            OminousBottleItem.setAmplifier(stack, amplifier);
-                            output.accept(stack);
-                        }
                         buckets.weapons.forEach(output::accept);
                         buckets.foci.forEach(output::accept);
                         buckets.blocks.forEach(output::accept);
@@ -114,13 +108,30 @@ public class ModCreativeTab {
             }
 
             removeTrialBlocks(buckets);
-            buckets.other.remove(ModItems.OMINOUS_BOTTLE.get());
+            removeVanillaTabItems(buckets);
             return buckets;
         }
     }
 
     private static void removeTrialBlocks(Buckets buckets) {
         TrialBlocks.BLOCKS.getEntries().forEach(entry -> buckets.blocks.remove(entry.get().asItem()));
+    }
+
+    private static void removeVanillaTabItems(Buckets buckets) {
+        buckets.other.remove(ModItems.WIND_CHARGE.get());
+        buckets.other.remove(ModItems.BREEZE_ROD.get());
+        buckets.weapons.remove(ModItems.MACE.get());
+        buckets.other.remove(ModItems.BOLT_ARMOR_TRIM_SMITHING_TEMPLATE.get());
+        buckets.other.remove(ModItems.FLOW_ARMOR_TRIM_SMITHING_TEMPLATE.get());
+        buckets.other.remove(ModItems.FLOW_BANNER_PATTERN.get());
+        buckets.other.remove(ModItems.GUSTER_BANNER_PATTERN.get());
+        buckets.other.remove(ModItems.MUSIC_DISC_PRECIPICE.get());
+        buckets.other.remove(ModItems.MUSIC_DISC_CREATOR.get());
+        buckets.other.remove(ModItems.MUSIC_DISC_CREATOR_MUSIC_BOX.get());
+        buckets.other.remove(ModItems.OMINOUS_BOTTLE.get());
+        buckets.other.remove(ModItems.TRIAL_KEY.get());
+        buckets.other.remove(ModItems.OMINOUS_TRIAL_KEY.get());
+        buckets.blocks.remove(ModItems.HEAVY_CORE.get());
     }
 
     private static void collectFrom(DeferredRegister<Item> registry, Buckets buckets) {

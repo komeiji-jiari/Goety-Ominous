@@ -147,6 +147,26 @@ public class ModSounds {
 
     public static final RegistryObject<SoundEvent> ARCHGEOMANCER_MUSIC = create("archgeomancer");
 
+    public static final RegistryObject<SoundEvent> MUSIC_DISC_PRECIPICE = create("music_disc_precipice");
+
+    public static final RegistryObject<SoundEvent> MUSIC_DISC_CREATOR = create("music_disc_creator");
+    public static final RegistryObject<SoundEvent> MUSIC_DISC_CREATOR_MUSIC_BOX = create("music_disc_creator_music_box");
+
+    public static final RegistryObject<SoundEvent> VAULT_ACTIVATE = create("vault_activate");
+    public static final RegistryObject<SoundEvent> VAULT_AMBIENT = create("vault_ambient");
+    public static final RegistryObject<SoundEvent> VAULT_BREAK = create("vault_break");
+    public static final RegistryObject<SoundEvent> VAULT_CLOSE_SHUTTER = create("vault_close_shutter");
+    public static final RegistryObject<SoundEvent> VAULT_DEACTIVATE = create("vault_deactivate");
+    public static final RegistryObject<SoundEvent> VAULT_EJECT_ITEM = create("vault_eject_item");
+    public static final RegistryObject<SoundEvent> VAULT_FALL = create("vault_fall");
+    public static final RegistryObject<SoundEvent> VAULT_HIT = create("vault_hit");
+    public static final RegistryObject<SoundEvent> VAULT_INSERT_ITEM = create("vault_insert_item");
+    public static final RegistryObject<SoundEvent> VAULT_INSERT_ITEM_FAIL = create("vault_insert_item_fail");
+    public static final RegistryObject<SoundEvent> VAULT_OPEN_SHUTTER = create("vault_open_shutter");
+    public static final RegistryObject<SoundEvent> VAULT_PLACE = create("vault_place");
+    public static final RegistryObject<SoundEvent> VAULT_REJECT_REWARDED_PLAYER = create("vault_reject_rewarded_player");
+    public static final RegistryObject<SoundEvent> VAULT_STEP = create("vault_step");
+
     private static RegistryObject<SoundEvent> create(String name) {
         return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(GoetyOminous.MOD_ID, name)));
     }

@@ -2,7 +2,7 @@ package com.qiuyue.goetyominous.common.events;
 
 import com.Polarice3.Goety.client.render.block.TrainingBlockRenderer;
 import com.qiuyue.goetyominous.GoetyOminous;
-import com.qiuyue.goetyominous.client.particle.TrialSpawnerDetectionParticle;
+import com.qiuyue.goetyominous.client.particle.*;
 import com.qiuyue.goetyominous.client.render.block.PlushieBlockEntityRenderer;
 import com.qiuyue.goetyominous.client.particle.ac.CandicornServantChargeParticle;
 import com.qiuyue.goetyominous.client.particle.ac.ForsakenServantSpitParticle;
@@ -18,6 +18,7 @@ import com.qiuyue.goetyominous.client.particle.lm.SmallGreenFlame;
 import com.qiuyue.goetyominous.client.particle.lm.SoulExplosion;
 import com.qiuyue.goetyominous.client.particle.lm.SoulPillarExplosion;
 import com.qiuyue.goetyominous.client.render.EmptyRenderer;
+import com.qiuyue.goetyominous.client.render.block.VaultRenderer;
 import com.qiuyue.goetyominous.client.render.curios.PlushieCurioRenderer;
 import com.qiuyue.goetyominous.common.init.ModBlockEntities;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockEntityRegistry;
@@ -35,9 +36,6 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
-import com.qiuyue.goetyominous.client.particle.DustPillarProvider;
-import com.qiuyue.goetyominous.client.particle.GustParticle;
-import com.qiuyue.goetyominous.client.particle.GustSeedParticle;
 import com.qiuyue.goetyominous.common.init.ModParticleTypes;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -48,6 +46,7 @@ public class ClientEvents {
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
 
+        event.registerBlockEntityRenderer(ModBlockEntities.VAULT.get(), VaultRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.PLUSHIE.get(), PlushieBlockEntityRenderer::new);
         PlushieCurioRenderer.register();
 
@@ -70,6 +69,7 @@ public class ClientEvents {
         event.registerSpriteSet(ModParticleTypes.GUST.get(), GustParticle.Provider::new);
         event.registerSpecial(ModParticleTypes.DUST_PILLAR.get(), new DustPillarProvider());
         event.registerSpriteSet(ModParticleTypes.TRIAL_OMEN.get(), SpellParticle.Provider::new);
+        event.registerSpriteSet(ModParticleTypes.VAULT_CONNECTION.get(), FlyTowardsPositionParticle.VaultConnectionProvider::new);
         event.registerSpriteSet(ModParticleTypes.TRIAL_SPAWNER_DETECTION_OMINOUS.get(), TrialSpawnerDetectionParticle.Provider::new);
 
         if (!AlexCavesCompat.isAlexCavesLoaded()) {

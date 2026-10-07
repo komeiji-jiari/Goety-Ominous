@@ -96,6 +96,8 @@ public class GoetyOminous {
         ModSounds.init();
         ModParticleTypes.init();
         ModEffects.init();
+        ModBannerPatterns.init();
+        ModLootFunctions.register(modEventBus);
         ModEnchantments.init();
         ModItems.init();
         ModBlocks.register(modEventBus);
