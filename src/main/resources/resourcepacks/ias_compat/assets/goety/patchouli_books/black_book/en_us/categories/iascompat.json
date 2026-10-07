@@ -3,5 +3,6 @@
   "description": "Scheme ever stranger plots.",
   "icon": "goetyominous:mysterious_contract",
   "sortnum": 4,
-  "parent": "goety:goetyominous"
+  "parent": "goety:goetyominous",
+  "flag": "!mod:goety_spillage"
 }

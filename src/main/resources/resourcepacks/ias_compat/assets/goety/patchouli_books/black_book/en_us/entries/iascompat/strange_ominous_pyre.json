@@ -2,6 +2,7 @@
   "name": "Stranger Pyre Additions",
   "icon": "goety:ominous_pyre",
   "category": "goety:iascompat",
+  "flag": "!mod:goety_spillage",
   "sortnum": 10,
   "pages": [
     {

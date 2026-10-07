@@ -1,8 +1,8 @@
 {
   "name": "友方魔法师",
   "icon": "goetyominous:mysterious_contract",
-  "category": "goety:iascompat",
-  "flag": "!mod:goety_spillage",
+  "category": "goety:spillage/summons",
+  "flag": "mod:goety_spillage",
   "sortnum": 30,
   "advancement": "goety:goety/read_ravaging_scroll",
   "pages": [
