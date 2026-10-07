@@ -1,7 +1,7 @@
 package com.qiuyue.goetyominous.common.init.of;
 
 import com.qiuyue.goetyominous.GoetyOminous;
-import com.qiuyue.goetyominous.common.entities.projectile.DicerServantLaser;
+import com.qiuyue.goetyominous.common.entities.projectile.of.DicerServantLaser;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;

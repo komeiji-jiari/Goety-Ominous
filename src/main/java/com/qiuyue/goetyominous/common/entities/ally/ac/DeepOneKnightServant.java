@@ -18,7 +18,7 @@ import com.qiuyue.goetyominous.common.entities.ai.ac.DeepOneStrollGoal;
 import com.qiuyue.goetyominous.common.entities.ai.ac.DeepOneWanderGoal;
 import com.qiuyue.goetyominous.common.entities.ai.ac.IDeepOneBarterer;
 import com.qiuyue.goetyominous.common.entities.ai.ac.IDeepOneWanderer;
-import com.qiuyue.goetyominous.common.entities.projectile.DeepOneServantWave;
+import com.qiuyue.goetyominous.common.entities.projectile.ac.DeepOneServantWave;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.ChatFormatting;

@@ -9,7 +9,7 @@ import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.qiuyue.goetyominous.common.entities.ally.ac.GrottoceratopsSpiritEntity;
-import com.qiuyue.goetyominous.common.events.GrottoceratopsSpiritHandler;
+import com.qiuyue.goetyominous.common.events.ac.GrottoceratopsSpiritHandler;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
 import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.server.level.ServerLevel;

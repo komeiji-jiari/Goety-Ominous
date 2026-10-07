@@ -39,7 +39,7 @@ import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.IAdvancedPathingMob;
 import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.ITallWalker;
-import com.qiuyue.goetyominous.client.sound.TremorzillaEmergenceRoarSound;
+import com.qiuyue.goetyominous.client.sound.ac.TremorzillaEmergenceRoarSound;
 import com.qiuyue.goetyominous.common.blocks.ac.TitanBombBlock;
 import com.qiuyue.goetyominous.common.blocks.entities.ac.TitanBombBlockEntity;
 import com.qiuyue.goetyominous.common.entities.ai.ac.ServantTemptGoal;

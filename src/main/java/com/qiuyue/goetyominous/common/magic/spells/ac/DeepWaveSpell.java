@@ -6,7 +6,7 @@ import com.Polarice3.Goety.common.magic.Spell;
 import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.WandUtil;
-import com.qiuyue.goetyominous.common.entities.projectile.DeepOneMageServantWave;
+import com.qiuyue.goetyominous.common.entities.projectile.ac.DeepOneMageServantWave;
 import com.qiuyue.goetyominous.config.SpellConfig;
 import com.qiuyue.goetyominous.utils.KeyOfRlyehMixinHelper;
 import net.minecraft.core.BlockPos;

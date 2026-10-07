@@ -5,7 +5,7 @@ import com.Polarice3.Goety.common.magic.Spell;
 import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.init.ModSounds;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
-import com.qiuyue.goetyominous.common.entities.projectile.FartServantEntity;
+import com.qiuyue.goetyominous.common.entities.projectile.am.FartServantEntity;
 import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;

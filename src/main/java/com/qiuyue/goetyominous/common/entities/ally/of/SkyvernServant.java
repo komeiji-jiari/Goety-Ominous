@@ -4,7 +4,7 @@ import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.SkyvernServantChargeGoal;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.SkyvernServantFlightGoal;
-import com.qiuyue.goetyominous.client.sound.SkyvernServantLoopSoundHandler;
+import com.qiuyue.goetyominous.client.sound.of.SkyvernServantLoopSoundHandler;
 import com.qiuyue.goetyominous.common.init.of.OfEntityRegistry;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;

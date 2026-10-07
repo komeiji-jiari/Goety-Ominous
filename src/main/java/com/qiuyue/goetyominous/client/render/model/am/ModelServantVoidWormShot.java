@@ -3,7 +3,7 @@ package com.qiuyue.goetyominous.client.render.model.am;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
-import com.qiuyue.goetyominous.common.entities.projectile.EntityServantVoidWormShot;
+import com.qiuyue.goetyominous.common.entities.projectile.am.EntityServantVoidWormShot;
 
 public class ModelServantVoidWormShot extends AdvancedEntityModel<EntityServantVoidWormShot> {
     private final AdvancedModelBox root;

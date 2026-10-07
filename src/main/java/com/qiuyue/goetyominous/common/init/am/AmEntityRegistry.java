@@ -15,6 +15,12 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import com.qiuyue.goetyominous.common.entities.projectile.am.EntityMosquitoServantSpit;
+import com.qiuyue.goetyominous.common.entities.projectile.am.EntityServantHemolymph;
+import com.qiuyue.goetyominous.common.entities.projectile.am.EntityServantVoidWormShot;
+import com.qiuyue.goetyominous.common.entities.projectile.am.EntityServentSandShot;
+import com.qiuyue.goetyominous.common.entities.projectile.am.FartServantEntity;
+import com.qiuyue.goetyominous.common.entities.projectile.am.IceShard;
 
 
 public class AmEntityRegistry {

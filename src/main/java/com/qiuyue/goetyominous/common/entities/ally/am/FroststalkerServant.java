@@ -4,7 +4,7 @@ import com.Polarice3.Goety.common.entities.ally.AnimalSummon;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.init.ModMobType;
 import com.Polarice3.Goety.utils.CuriosFinder;
-import com.qiuyue.goetyominous.common.entities.projectile.IceShard;
+import com.qiuyue.goetyominous.common.entities.projectile.am.IceShard;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.github.alexthe666.alexsmobs.entity.ISemiAquatic;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIFindWater;

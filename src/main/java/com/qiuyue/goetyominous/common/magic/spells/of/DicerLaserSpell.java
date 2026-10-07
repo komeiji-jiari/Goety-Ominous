@@ -5,7 +5,7 @@ import com.Polarice3.Goety.common.enchantments.ModEnchantments;
 import com.Polarice3.Goety.common.magic.Spell;
 import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.utils.WandUtil;
-import com.qiuyue.goetyominous.common.entities.projectile.DicerServantLaser;
+import com.qiuyue.goetyominous.common.entities.projectile.of.DicerServantLaser;
 import com.qiuyue.goetyominous.config.SpellConfig;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.server.level.ServerLevel;

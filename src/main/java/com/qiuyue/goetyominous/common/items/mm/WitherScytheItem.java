@@ -89,7 +89,7 @@ public class WitherScytheItem extends DarkScytheItem implements ISoulRepair, IPe
     public static void emptyClick(ItemStack stack) {
         if (!stack.isEmpty() && stack.getItem() instanceof WitherScytheItem) {
             com.qiuyue.goetyominous.common.network.ModNetwork.CHANNEL.sendToServer(
-                    new com.qiuyue.goetyominous.common.network.CWitherScytheStrikePacket());
+                    new com.qiuyue.goetyominous.common.network.mm.CWitherScytheStrikePacket());
         }
     }
 

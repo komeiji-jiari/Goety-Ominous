@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.qiuyue.goetyominous.client.render.model.ac.ModelTremorzillaServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TremorzillaServant;
-import com.qiuyue.goetyominous.common.events.TremorzillaRenderEvents;
+import com.qiuyue.goetyominous.common.events.ac.TremorzillaRenderEvents;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;

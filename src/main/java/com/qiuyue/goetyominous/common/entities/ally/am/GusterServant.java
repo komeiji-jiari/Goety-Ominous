@@ -2,7 +2,7 @@ package com.qiuyue.goetyominous.common.entities.ally.am;
 
 import com.Polarice3.Goety.api.entities.IOwned;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
-import com.qiuyue.goetyominous.common.entities.projectile.EntityServentSandShot;
+import com.qiuyue.goetyominous.common.entities.projectile.am.EntityServentSandShot;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.utils.CuriosFinder;
 import com.Polarice3.Goety.utils.MobUtil;

@@ -9,7 +9,7 @@ import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.EntityFinder;
 import com.Polarice3.Goety.utils.SEHelper;
 import com.Polarice3.Goety.utils.WandUtil;
-import com.qiuyue.goetyominous.common.entities.projectile.EntityServantVoidWormShot;
+import com.qiuyue.goetyominous.common.entities.projectile.am.EntityServantVoidWormShot;
 import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;

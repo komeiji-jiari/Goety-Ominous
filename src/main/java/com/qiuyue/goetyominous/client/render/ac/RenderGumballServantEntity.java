@@ -3,7 +3,7 @@ package com.qiuyue.goetyominous.client.render.ac;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import com.qiuyue.goetyominous.common.entities.projectile.GumballServantEntity;
+import com.qiuyue.goetyominous.common.entities.projectile.ac.GumballServantEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;

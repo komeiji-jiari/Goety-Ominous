@@ -4,7 +4,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import com.qiuyue.goetyominous.common.entities.projectile.DeepOneMageServantWaterBolt;
+import com.qiuyue.goetyominous.common.entities.projectile.ac.DeepOneMageServantWaterBolt;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 

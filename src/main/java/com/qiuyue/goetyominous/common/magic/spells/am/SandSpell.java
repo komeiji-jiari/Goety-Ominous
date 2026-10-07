@@ -5,7 +5,7 @@ import com.Polarice3.Goety.common.enchantments.ModEnchantments;
 import com.Polarice3.Goety.common.magic.Spell;
 import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.utils.WandUtil;
-import com.qiuyue.goetyominous.common.entities.projectile.EntityServentSandShot;
+import com.qiuyue.goetyominous.common.entities.projectile.am.EntityServentSandShot;
 import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;

@@ -3,7 +3,7 @@ package com.qiuyue.goetyominous.common.init.ac;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.ac.*;
 import com.qiuyue.goetyominous.common.entities.projectile.*;
-import com.qiuyue.goetyominous.common.entities.util.ExtinctionCatalystEntity;
+import com.qiuyue.goetyominous.common.entities.util.ac.ExtinctionCatalystEntity;
 import com.qiuyue.goetyominous.common.entities.util.PureDarkVoid;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -11,6 +11,13 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import com.qiuyue.goetyominous.common.entities.projectile.ac.DeepOneMageServantWaterBolt;
+import com.qiuyue.goetyominous.common.entities.projectile.ac.DeepOneMageServantWave;
+import com.qiuyue.goetyominous.common.entities.projectile.ac.DeepOneServantWave;
+import com.qiuyue.goetyominous.common.entities.projectile.ac.GumballServantEntity;
+import com.qiuyue.goetyominous.common.entities.projectile.ac.ServantTephraEntity;
+import com.qiuyue.goetyominous.common.entities.projectile.ac.TitanBombEntity;
+import com.qiuyue.goetyominous.common.entities.projectile.ac.WaterBoltProjectile;
 
 public class AcEntityRegistry {
 
