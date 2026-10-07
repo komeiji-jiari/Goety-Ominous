@@ -19,7 +19,9 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -36,6 +38,7 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -43,6 +46,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.Event;
 import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nullable;
 
 public class UmberSpiderServant extends Summoned implements AttackState, EliteVariant {
     private static final EntityDataAccessor<Integer> ATTACK_STATE;
@@ -85,6 +90,11 @@ public class UmberSpiderServant extends Summoned implements AttackState, EliteVa
     @Override
     protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
         return new WallClimberNavigation(this, level);
+    }
+
+    @Override
+    public double getPassengersRidingOffset() {
+        return this.getBbHeight() * 0.5F;
     }
 
     public boolean isClimbing() {
@@ -284,6 +294,22 @@ public class UmberSpiderServant extends Summoned implements AttackState, EliteVa
     @Override
     public int getAmbientSoundInterval() {
         return 180;
+    }
+
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
+                                        MobSpawnType spawnType, @Nullable SpawnGroupData spawnData,
+                                        @Nullable CompoundTag compoundTag) {
+        spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData, compoundTag);
+
+        RandomSource random = level.getRandom();
+        if (random.nextInt(this.getEliteSpawnChance()) == 0) {
+            this.setElite(true);
+            this.setEliteStats(this);
+        }
+
+        return spawnData;
     }
 
     static {
