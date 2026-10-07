@@ -1,0 +1,7 @@
+{
+  "name": "Rituals",
+  "description": "Rituals beyond the black book.",
+  "icon": "minecraft:enchanted_book",
+  "parent": "goety:amcompat",
+  "sortnum": 6
+}

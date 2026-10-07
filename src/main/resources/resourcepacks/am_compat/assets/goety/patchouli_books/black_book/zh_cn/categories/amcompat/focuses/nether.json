@@ -1,0 +1,7 @@
+{
+  "name": "下界",
+  "description": "升腾于下界炼狱之中的力量...",
+  "icon": "goetyominous:dropbear_focus",
+  "parent": "goety:amcompat/focuses",
+  "sortnum": 5
+}

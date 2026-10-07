@@ -1,0 +1,7 @@
+{
+  "name": "Focuses",
+  "description": "More spells to cast.",
+  "icon": "goetyominous:bloodspray_focus",
+  "parent": "goety:amcompat",
+  "sortnum": 2
+}

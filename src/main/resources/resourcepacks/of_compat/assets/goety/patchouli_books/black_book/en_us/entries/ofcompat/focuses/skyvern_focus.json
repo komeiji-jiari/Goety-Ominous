@@ -1,0 +1,20 @@
+{
+  "name": "Skyvern Focus",
+  "icon": "goetyominous:skyvern_focus",
+  "category": "goety:ofcompat/focuses",
+  "sortnum": 910,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "This spell allows you to call upon the aid of Skyverns, which will destroy any creature that dares stand in your way."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:skyvern_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "When cast using a Wind Staff to channel this focus, there is a small chance to summon an additional Skyvern."
+    }
+  ]
+}

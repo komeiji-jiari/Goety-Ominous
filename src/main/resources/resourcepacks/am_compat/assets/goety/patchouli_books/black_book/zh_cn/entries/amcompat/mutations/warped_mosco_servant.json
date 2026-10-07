@@ -1,0 +1,25 @@
+{
+  "name": "诡异蚊鬼仆从",
+  "icon": "alexsmobs:hemolymph_sac",
+  "category": "goety:amcompat/mutations",
+  "sortnum": 20,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "爆肌蚊！这些结实的变异兄贵蚊子继承了吸血能力的同时获得了强大的肉体力量。尽管他看起来十分危险，但幸运的是，他对你完全忠诚。只要你小心不要超过召唤上限的话..."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:warped_mosco_servant",
+      "text": "蚊类高质量男性"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "你可以用血囊右键喂食你的诡异蚊鬼为其恢复血量。如果用血淋巴囊喂食，则可以一次恢复更多血量。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "既然蘑菇君的血液能够把一只蚊子变成诡异蚊鬼，如果你尝试对一只诡异蚊鬼使用那些苍白下界使者的血液可能会发生什么事呢...？"
+    }
+  ]
+}

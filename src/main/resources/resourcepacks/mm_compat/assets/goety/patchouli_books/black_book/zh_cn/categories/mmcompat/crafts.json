@@ -1,0 +1,7 @@
+{
+  "name": "合成",
+  "description": "更多可供合成的物品与方块。",
+  "icon": "goetyominous:wither_scythe",
+  "parent": "goety:mmcompat",
+  "sortnum": 5
+}

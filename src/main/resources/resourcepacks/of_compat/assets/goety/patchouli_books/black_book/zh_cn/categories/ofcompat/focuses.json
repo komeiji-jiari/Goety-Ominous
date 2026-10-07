@@ -1,0 +1,7 @@
+{
+  "name": "聚晶",
+  "description": "更多可供施放的聚晶。",
+  "icon": "goetyominous:dicer_focus",
+  "parent": "goety:ofcompat",
+  "sortnum": 2
+}

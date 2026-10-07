@@ -1,0 +1,7 @@
+{
+  "name": "Focuses",
+  "description": "More spells to cast.",
+  "icon": "goetyominous:dicer_focus",
+  "parent": "goety:ofcompat",
+  "sortnum": 2
+}

@@ -1,0 +1,7 @@
+{
+  "name": "Geomancy",
+  "description": "The power over the earth.",
+  "icon": "goetyominous:roller_focus",
+  "parent": "goety:amcompat/focuses",
+  "sortnum": 3
+}

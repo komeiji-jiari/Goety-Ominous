@@ -1,0 +1,7 @@
+{
+  "name": "Necromancy",
+  "description": "The power over the dead.",
+  "icon": "goetyominous:murmur_focus",
+  "parent": "goety:amcompat/focuses",
+  "sortnum": 4
+}

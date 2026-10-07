@@ -1,0 +1,7 @@
+{
+  "name": "Frost",
+  "description": "The power over the cold and frost.",
+  "icon": "goetyominous:froststalker_focus",
+  "parent": "goety:amcompat/focuses",
+  "sortnum": 2
+}

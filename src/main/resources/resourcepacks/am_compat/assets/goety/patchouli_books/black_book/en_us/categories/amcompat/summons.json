@@ -1,0 +1,7 @@
+{
+  "name": "Summons",
+  "description": "More servants for a darker wizard.",
+  "icon": "alexsmobs:unsettling_kimono",
+  "parent": "goety:amcompat",
+  "sortnum": 3
+}

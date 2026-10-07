@@ -1,0 +1,7 @@
+{
+  "name": "召唤",
+  "description": "为更黑暗的巫师带来更多仆从。",
+  "icon": "opposing_force:electric_charge",
+  "parent": "goety:ofcompat",
+  "sortnum": 3
+}

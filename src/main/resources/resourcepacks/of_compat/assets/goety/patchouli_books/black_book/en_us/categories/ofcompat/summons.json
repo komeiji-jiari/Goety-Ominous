@@ -1,0 +1,7 @@
+{
+  "name": "Summons",
+  "description": "More servants for a darker wizard.",
+  "icon": "opposing_force:electric_charge",
+  "parent": "goety:ofcompat",
+  "sortnum": 3
+}

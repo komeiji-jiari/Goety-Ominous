@@ -1,0 +1,7 @@
+{
+  "name": "Crafts",
+  "description": "More items and blocks to craft.",
+  "icon": "goetyominous:wither_scythe",
+  "parent": "goety:mmcompat",
+  "sortnum": 5
+}

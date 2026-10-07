@@ -1,0 +1,7 @@
+{
+  "name": "霜冻",
+  "description": "觉悟于严寒与霜冻的力量...",
+  "icon": "goetyominous:froststalker_focus",
+  "parent": "goety:amcompat/focuses",
+  "sortnum": 2
+}

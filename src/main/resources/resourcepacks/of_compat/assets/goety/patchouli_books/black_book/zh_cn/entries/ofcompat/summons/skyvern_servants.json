@@ -1,0 +1,26 @@
+{
+  "name": "天空飞龙",
+  "icon": "opposing_force:skyvern_claw",
+  "category": "goety:ofcompat/summons",
+  "sortnum": 20,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "这些多肢体的飞行生物虽然看起来并不像真正的龙，但仍是不可小觑的强大空中单位。通过一些魔法，你学会了如何呼唤这些天空之主并取得它们的帮助。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:skyvern_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:skyvern_servant",
+      "scale": 0.6,
+      "text": "龙，可是帝王之征啊（赞赏）！"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "喂食天空飞龙任意肉来治愈它们。你也穿戴烈风长袍来为你的飞龙提供被动治疗。"
+    }
+  ]
+}

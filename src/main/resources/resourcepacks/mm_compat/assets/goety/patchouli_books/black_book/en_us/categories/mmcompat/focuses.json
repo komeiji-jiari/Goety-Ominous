@@ -1,0 +1,7 @@
+{
+  "name": "Focuses",
+  "description": "More spells to cast.",
+  "icon": "goetyominous:wither_breath_focus",
+  "parent": "goety:mmcompat",
+  "sortnum": 2
+}

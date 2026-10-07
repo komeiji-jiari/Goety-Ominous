@@ -1,0 +1,7 @@
+{
+  "name": "Abyss",
+  "description": "The power over the tides and waves.",
+  "icon": "goetyominous:terror_focus",
+  "parent": "goety:ofcompat/focuses",
+  "sortnum": 1
+}

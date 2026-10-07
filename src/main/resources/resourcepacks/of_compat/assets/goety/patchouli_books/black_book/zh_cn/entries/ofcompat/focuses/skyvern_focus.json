@@ -1,0 +1,20 @@
+{
+  "name": "龙征聚晶",
+  "icon": "goetyominous:skyvern_focus",
+  "category": "goety:ofcompat/focuses",
+  "sortnum": 910,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "这个法术允许你呼唤天空飞龙的帮助，它们会摧毁任何敢于妨碍你的生物。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:skyvern_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "使用烈风魔杖承载此聚晶施法，有较低概率额外多召唤一只天空飞龙。"
+    }
+  ]
+}

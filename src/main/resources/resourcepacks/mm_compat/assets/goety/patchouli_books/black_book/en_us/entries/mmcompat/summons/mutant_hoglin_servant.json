@@ -1,0 +1,33 @@
+{
+  "name": "Mutant Hoglin Servant",
+  "icon": "mutantmore:mutant_hoglin_tusk",
+  "category": "goety:mmcompat/summons",
+  "sortnum": 20,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "A powerful and ferocious beast, born in rage, trampling everything before it with unbelievable brute force. Though the Mutant Hoglin appears formidable, you can forcibly bind its wild nature through a ritual, thus ensuring that the resulting Mutant Hoglin remains loyal to you."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_hoglin_to_mutant_hoglin"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Just like the Hoglin Servant, you can ride this massive beast and control its movement in a similar manner. You can even command it to charge, crushing everything in its path."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:mutant_hoglin_servant",
+      "text": "Mutant laowang237"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Certain specific items can enhance your Mutant Hoglin servant. A Wither Necromancer's Soul Jar causes its stomps to erupt with pillars of fire, a Blazing Helmet fuels its rage even further, and Unholy Blood makes the beast's body even harder to shake."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Sneak + right-click your Mutant Hoglin Servant with Crimson Fungus to heal them. If their owner wears Nether Robes, they can also heal themselves using their owner's Soul Energy."
+    }
+  ]
+}

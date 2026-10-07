@@ -1,0 +1,7 @@
+{
+  "name": "Nether",
+  "description": "The power over the fiery pits of the Nether.",
+  "icon": "goetyominous:wither_breath_focus",
+  "parent": "goety:mmcompat/focuses",
+  "sortnum": 5
+}
