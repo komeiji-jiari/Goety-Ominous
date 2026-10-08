@@ -6,7 +6,7 @@ import com.qiuyue.goetyominous.common.events.ac.NucleeperNukeProtectionHandler;
 import com.qiuyue.goetyominous.common.magic.spells.ac.XRaySpell;
 import com.qiuyue.goetyominous.common.network.ModNetwork;
 import com.qiuyue.goetyominous.common.network.ac.NuclearExplosionEffectPacket;
-import com.qiuyue.goetyominous.common.network.XRayPacket;
+import com.qiuyue.goetyominous.common.network.ac.XRayPacket;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.utils.IRayMuzzle;
 import net.minecraft.network.syncher.EntityDataAccessor;

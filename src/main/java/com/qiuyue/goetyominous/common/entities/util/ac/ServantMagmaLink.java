@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
-import com.qiuyue.goetyominous.common.entities.util.ServantMagmaData;
+import com.qiuyue.goetyominous.common.entities.util.ac.ServantMagmaData;
 
 public final class ServantMagmaLink {
 

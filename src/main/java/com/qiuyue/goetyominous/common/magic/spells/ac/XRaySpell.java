@@ -10,7 +10,7 @@ import com.github.alexmodguy.alexscaves.server.misc.ACDamageTypes;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.github.alexmodguy.alexscaves.server.potion.ACEffectRegistry;
 import com.qiuyue.goetyominous.common.network.ModNetwork;
-import com.qiuyue.goetyominous.common.network.XRayPacket;
+import com.qiuyue.goetyominous.common.network.ac.XRayPacket;
 import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;

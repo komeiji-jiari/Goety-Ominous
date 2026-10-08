@@ -3,7 +3,7 @@ package com.qiuyue.goetyominous.client.render.ac;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.qiuyue.goetyominous.client.particle.ac.RitualNoise;
-import com.qiuyue.goetyominous.common.entities.util.PureDarkVoid;
+import com.qiuyue.goetyominous.common.entities.util.ac.PureDarkVoid;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;

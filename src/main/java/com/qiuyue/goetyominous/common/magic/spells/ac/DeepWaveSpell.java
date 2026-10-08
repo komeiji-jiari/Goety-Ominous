@@ -8,7 +8,7 @@ import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.projectile.ac.DeepOneMageServantWave;
 import com.qiuyue.goetyominous.config.SpellConfig;
-import com.qiuyue.goetyominous.utils.KeyOfRlyehMixinHelper;
+import com.qiuyue.goetyominous.utils.ac.KeyOfRlyehMixinHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;

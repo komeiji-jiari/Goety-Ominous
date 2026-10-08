@@ -9,7 +9,7 @@ import com.Polarice3.Goety.utils.ColorUtil;
 import com.Polarice3.Goety.utils.ServerParticleUtil;
 import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
-import com.qiuyue.goetyominous.common.entities.util.PureDarkVoid;
+import com.qiuyue.goetyominous.common.entities.util.ac.PureDarkVoid;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;

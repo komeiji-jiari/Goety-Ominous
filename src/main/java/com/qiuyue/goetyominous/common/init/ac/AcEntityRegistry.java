@@ -4,7 +4,7 @@ import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.ac.*;
 import com.qiuyue.goetyominous.common.entities.projectile.*;
 import com.qiuyue.goetyominous.common.entities.util.ac.ExtinctionCatalystEntity;
-import com.qiuyue.goetyominous.common.entities.util.PureDarkVoid;
+import com.qiuyue.goetyominous.common.entities.util.ac.PureDarkVoid;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -18,6 +18,8 @@ import com.qiuyue.goetyominous.common.entities.projectile.ac.GumballServantEntit
 import com.qiuyue.goetyominous.common.entities.projectile.ac.ServantTephraEntity;
 import com.qiuyue.goetyominous.common.entities.projectile.ac.TitanBombEntity;
 import com.qiuyue.goetyominous.common.entities.projectile.ac.WaterBoltProjectile;
+import com.qiuyue.goetyominous.common.entities.projectile.ac.LicowitchServantHex;
+import com.qiuyue.goetyominous.common.entities.projectile.ac.LicowitchServantPeppermint;
 
 public class AcEntityRegistry {
 

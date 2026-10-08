@@ -6,7 +6,7 @@ import com.Polarice3.Goety.common.magic.Spell;
 import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
-import com.qiuyue.goetyominous.common.events.TremorzillaBreathHandler;
+import com.qiuyue.goetyominous.common.events.ac.TremorzillaBreathHandler;
 import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
