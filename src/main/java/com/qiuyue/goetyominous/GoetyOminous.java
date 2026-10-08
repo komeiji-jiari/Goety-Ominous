@@ -120,7 +120,7 @@ public class GoetyOminous {
         });
 
         if (GoetyCataclysmCompat.isLoaded()) {
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.CataclysmKeySpellHandler.class);
+            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.CataclysmKeySpellHandler.class);
         }
 
         if (SavageRavageCompat.isSavageRavageLoaded()) {
@@ -161,7 +161,7 @@ public class GoetyOminous {
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.MineGuardianExplosionProtectionHandler.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.NucleeperSummonHandler.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.AtomicBombCleanupHandler.class);
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.TremorzillaBreathHandler.class);
+            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.TremorzillaBreathHandler.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.MineGuardianSummonHandler.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.BubbledVisualCleanupHandler.class);
             MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.LuxtructosaurusTephraHandler.class);
@@ -200,7 +200,7 @@ public class GoetyOminous {
         new CuriosIntegration().setup(event);
 
         if (AlexCavesCompat.isAlexCavesLoaded() && PatchouliCompat.isLoaded()) {
-            com.qiuyue.goetyominous.compat.patchouli.GoetyOminousPatchouliIntegration.setup(event);
+            com.qiuyue.goetyominous.compat.ac.GoetyOminousPatchouliIntegration.setup(event);
         }
 
         event.enqueueWork(() -> {

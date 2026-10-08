@@ -11,6 +11,8 @@ import com.qiuyue.goetyominous.common.network.ac.NuclearExplosionEffectPacket;
 import com.qiuyue.goetyominous.common.network.mm.RiderChargePacket;
 import com.qiuyue.goetyominous.common.network.ac.NucleeperExplosionZonePacket;
 import com.qiuyue.goetyominous.common.network.ac.ServantAbilityKeyPacket;
+import com.qiuyue.goetyominous.common.network.ac.TremorzillaBreathPacket;
+import com.qiuyue.goetyominous.common.network.ac.XRayPacket;
 
 public class ModNetwork {
     private static final String PROTOCOL_VERSION = "1";

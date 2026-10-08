@@ -289,10 +289,10 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
     }
 
     private void tickRiderChargeSensing(Player player) {
-        if (!com.qiuyue.goetyominous.client.ForsakenRiderInput.isLocalPlayer(player)) {
+        if (!com.qiuyue.goetyominous.client.ac.ForsakenRiderInput.isLocalPlayer(player)) {
             return;
         }
-        boolean held = com.qiuyue.goetyominous.client.ForsakenRiderInput.isJumpHeld(player);
+        boolean held = com.qiuyue.goetyominous.client.ac.ForsakenRiderInput.isJumpHeld(player);
         boolean grounded = this.onGround() && !this.isLeaping() && !this.isInWater();
         if (held) {
             if (!this.riderPrevJumpHeld) {

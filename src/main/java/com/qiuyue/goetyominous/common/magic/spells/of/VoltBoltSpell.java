@@ -7,7 +7,7 @@ import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.ColorUtil;
 import com.Polarice3.Goety.utils.WandUtil;
-import com.qiuyue.goetyominous.common.entities.projectile.VoltServantElectricCharge;
+import com.qiuyue.goetyominous.common.entities.projectile.of.VoltServantElectricCharge;
 import com.qiuyue.goetyominous.common.init.of.OfEntityRegistry;
 import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.server.level.ServerLevel;

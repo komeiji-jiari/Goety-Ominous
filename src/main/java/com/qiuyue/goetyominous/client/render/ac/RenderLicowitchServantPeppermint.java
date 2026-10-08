@@ -6,7 +6,7 @@ import com.github.alexthe666.citadel.client.shader.PostEffectRegistry;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import com.qiuyue.goetyominous.common.entities.projectile.LicowitchServantPeppermint;
+import com.qiuyue.goetyominous.common.entities.projectile.ac.LicowitchServantPeppermint;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;

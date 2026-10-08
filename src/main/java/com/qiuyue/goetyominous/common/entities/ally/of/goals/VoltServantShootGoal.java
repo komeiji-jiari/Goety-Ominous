@@ -1,7 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.ally.of.goals;
 
 import com.qiuyue.goetyominous.common.entities.ally.of.VoltServant;
-import com.qiuyue.goetyominous.common.entities.projectile.VoltServantElectricCharge;
+import com.qiuyue.goetyominous.common.entities.projectile.of.VoltServantElectricCharge;
 import com.qiuyue.goetyominous.common.init.of.OfEntityRegistry;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;

@@ -41,6 +41,7 @@ import com.qiuyue.goetyominous.client.render.projectile.am.RenderIceShard;
 import com.qiuyue.goetyominous.client.render.projectile.am.RenderMosquitoServantSpit;
 import com.qiuyue.goetyominous.client.render.projectile.am.RenderServantHemolymph;
 import com.qiuyue.goetyominous.client.render.projectile.am.RenderServantSandShot;
+import com.qiuyue.goetyominous.client.render.projectile.mm.GiantHellBlastRenderer;
 
 @Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ModModelLayers {
@@ -904,7 +905,7 @@ public class ModModelLayers {
 
             event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.GIANT_HELL_BLAST.get(),
-                    com.qiuyue.goetyominous.client.render.projectile.GiantHellBlastRenderer::new);
+                    com.qiuyue.goetyominous.client.render.projectile.mm.GiantHellBlastRenderer::new);
         }
 
         event.registerEntityRenderer(ModEntityTypes.ARCH_GEOMANCER.get(), ArchGeomancerRenderer::new);
