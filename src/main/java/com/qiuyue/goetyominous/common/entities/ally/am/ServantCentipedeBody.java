@@ -355,29 +355,16 @@ public class ServantCentipedeBody extends Summoned implements IHurtableMultipart
     }
 
     @Override
-    public boolean isWandering() {
-        ServantCentipedeHead head = this.getCentipedeHead();
-        return head != null ? head.isWandering() : super.isWandering();
-    }
-
-    @Override
-    public boolean isStaying() {
-        ServantCentipedeHead head = this.getCentipedeHead();
-        return head != null ? head.isStaying() : super.isStaying();
-    }
-
-    @Override
     public boolean isCommanded() {
-        ServantCentipedeHead head = this.getCentipedeHead();
-        return head != null ? head.isCommanded() : super.isCommanded();
+        return false;
     }
 
     @Override
-    public void setWandering(boolean wandering) {
+    public void servantTick() {
     }
 
     @Override
-    public void setStaying(boolean staying) {
+    public void ownedTick() {
     }
 
     @Override

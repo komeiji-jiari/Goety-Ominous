@@ -294,6 +294,8 @@ public class ServantCentipedeHead extends Summoned {
                     for (int j = 1; j < this.parts.length && this.parts[j - 1].getChild() instanceof ServantCentipedeBody; ++j) {
                         this.parts[j] = (ServantCentipedeBody) this.parts[j - 1].getChild();
                     }
+
+                    this.updatePartModes();
                 }
 
                 Vec3 prev = this.position();
@@ -321,7 +323,7 @@ public class ServantCentipedeHead extends Summoned {
     }
 
     private void strongFollow() {
-        if (this.isCommanded() || this.isStaying()) {
+        if (this.isCommanded() || this.isStaying() || this.isWandering()) {
             return;
         }
         LivingEntity owner = this.getTrueOwner();
@@ -337,11 +339,43 @@ public class ServantCentipedeHead extends Summoned {
         }
     }
 
+    @Override
+    public void setWandering(boolean wandering) {
+        super.setWandering(wandering);
+        this.updatePartModes();
+    }
+
+    @Override
+    public void setStaying(boolean staying) {
+        super.setStaying(staying);
+        this.updatePartModes();
+    }
+
+    @Override
+    public void setCommandPos(BlockPos blockPos, boolean removeEntity) {
+        super.setCommandPos(blockPos, removeEntity);
+        this.updatePartModes();
+    }
+
+    private void updatePartModes() {
+        if (this.level().isClientSide || this.parts == null) {
+            return;
+        }
+        for (ServantCentipedeBody part : this.parts) {
+            if (part != null) {
+                part.setWandering(this.isWandering());
+                part.setStaying(this.isStaying());
+            }
+        }
+    }
+
     public ServantCentipedeBody createBody(LivingEntity parent, boolean tail) {
         ServantCentipedeBody part = tail
                 ? new ServantCentipedeTail((EntityType) AmEntityRegistry.SERVANT_CENTIPEDE_TAIL.get(), parent, 0.84F, 180.0F, 0.0F)
                 : new ServantCentipedeBody((EntityType) AmEntityRegistry.SERVANT_CENTIPEDE_BODY.get(), parent, 0.84F, 180.0F, 0.0F);
         part.setTrueOwner(this.getTrueOwner());
+        part.setWandering(this.isWandering());
+        part.setStaying(this.isStaying());
         return part;
     }
 
