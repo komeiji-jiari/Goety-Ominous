@@ -133,6 +133,10 @@ public class TrialCreativeTabs {
             }
             return;
         }
+        if (CreativeModeTabs.SPAWN_EGGS.equals(event.getTabKey())) {
+            after(event, Items.SPAWNER, TrialBlocks.TRIAL_SPAWNER.get());
+            return;
+        }
     }
 
     private static void before(BuildCreativeModeTabContentsEvent event, Item anchor, ItemLike... items) {

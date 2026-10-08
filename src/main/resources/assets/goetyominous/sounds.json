@@ -1,4 +1,113 @@
 {
+  "trial_spawner_break": {
+    "subtitle": "subtitles.block.generic.break",
+    "sounds": [
+      { "name": "goetyominous:trial_spawner/break1" },
+      { "name": "goetyominous:trial_spawner/break2" },
+      { "name": "goetyominous:trial_spawner/break3" }
+    ]
+  },
+  "trial_spawner_step": {
+    "sounds": [
+      { "name": "goetyominous:trial_spawner/step1" },
+      { "name": "goetyominous:trial_spawner/step2" },
+      { "name": "goetyominous:trial_spawner/step3" },
+      { "name": "goetyominous:trial_spawner/step4" },
+      { "name": "goetyominous:trial_spawner/step5" }
+    ]
+  },
+  "trial_spawner_place": {
+    "subtitle": "subtitles.block.generic.place",
+    "sounds": [
+      { "name": "goetyominous:trial_spawner/place1" },
+      { "name": "goetyominous:trial_spawner/place2" },
+      { "name": "goetyominous:trial_spawner/place3" }
+    ]
+  },
+  "trial_spawner_fall": {
+    "sounds": [
+      { "name": "goetyominous:trial_spawner/step1" },
+      { "name": "goetyominous:trial_spawner/step2" },
+      { "name": "goetyominous:trial_spawner/step3" }
+    ]
+  },
+  "trial_spawner_spawn_mob": {
+    "subtitle": "subtitles.goetyominous.trial_spawner.spawn_mob",
+    "sounds": [
+      { "name": "goetyominous:trial_spawner/spawn1" },
+      { "name": "goetyominous:trial_spawner/spawn2" },
+      { "name": "goetyominous:trial_spawner/spawn3" },
+      { "name": "goetyominous:trial_spawner/spawn4" }
+    ]
+  },
+  "trial_spawner_about_to_spawn_item": {
+    "subtitle": "subtitles.goetyominous.trial_spawner.about_to_spawn_item",
+    "sounds": [
+      { "name": "goetyominous:trial_spawner/about_to_spawn_item" }
+    ]
+  },
+  "trial_spawner_spawn_item": {
+    "subtitle": "subtitles.goetyominous.trial_spawner.spawn_item",
+    "sounds": [
+      { "name": "goetyominous:trial_spawner/spawn_item1" },
+      { "name": "goetyominous:trial_spawner/spawn_item2" },
+      { "name": "goetyominous:trial_spawner/spawn_item3" }
+    ]
+  },
+  "trial_spawner_spawn_item_begin": {
+    "subtitle": "subtitles.goetyominous.trial_spawner.spawn_item_begin",
+    "sounds": [
+      { "name": "goetyominous:trial_spawner/spawn_item_begin1" },
+      { "name": "goetyominous:trial_spawner/spawn_item_begin2" },
+      { "name": "goetyominous:trial_spawner/spawn_item_begin3" }
+    ]
+  },
+  "trial_spawner_detect_player": {
+    "subtitle": "subtitles.goetyominous.trial_spawner.detect_player",
+    "sounds": [
+      { "name": "goetyominous:trial_spawner/detect_player1" },
+      { "name": "goetyominous:trial_spawner/detect_player2" },
+      { "name": "goetyominous:trial_spawner/detect_player3" }
+    ]
+  },
+  "trial_spawner_ambient": {
+    "subtitle": "subtitles.goetyominous.trial_spawner.ambient",
+    "sounds": [
+      { "name": "goetyominous:trial_spawner/ambient1" },
+      { "name": "goetyominous:trial_spawner/ambient2" },
+      { "name": "goetyominous:trial_spawner/ambient3" },
+      { "name": "goetyominous:trial_spawner/ambient4" },
+      { "name": "goetyominous:trial_spawner/ambient5" }
+    ]
+  },
+  "trial_spawner_ambient_ominous": {
+    "subtitle": "subtitles.goetyominous.trial_spawner.ambient_ominous",
+    "sounds": [
+      { "name": "goetyominous:trial_spawner/ambient_ominous1" },
+      { "name": "goetyominous:trial_spawner/ambient_ominous2" },
+      { "name": "goetyominous:trial_spawner/ambient_ominous3" },
+      { "name": "goetyominous:trial_spawner/ambient_ominous4" },
+      { "name": "goetyominous:trial_spawner/ambient_ominous5" }
+    ]
+  },
+  "trial_spawner_open_shutter": {
+    "subtitle": "subtitles.goetyominous.trial_spawner.open_shutter",
+    "sounds": [
+      { "name": "goetyominous:trial_spawner/open_shutter" }
+    ]
+  },
+  "trial_spawner_close_shutter": {
+    "subtitle": "subtitles.goetyominous.trial_spawner.close_shutter",
+    "sounds": [
+      { "name": "goetyominous:trial_spawner/close_shutter" }
+    ]
+  },
+  "trial_spawner_eject_item": {
+    "subtitle": "subtitles.goetyominous.trial_spawner.eject_item",
+    "sounds": [
+      { "name": "goetyominous:trial_spawner/eject_item1" }
+    ]
+  },
   "ominous_bottle_dispose": {
     "subtitle": "subtitles.goetyominous.item.ominous_bottle.dispose",
     "sounds": [ "goetyominous:ominous_bottle/dispose" ]
@@ -860,6 +969,14 @@
       "goetyominous:wind_charge/wind_burst1",
       "goetyominous:wind_charge/wind_burst2",
       "goetyominous:wind_charge/wind_burst3"
+    ]
+  },
+  "wind_charge_burst": {
+    "subtitle": "subtitles.goetyominous.wind_charge.wind_burst",
+    "sounds": [
+      { "name": "goetyominous:wind_charge/wind_burst1" },
+      { "name": "goetyominous:wind_charge/wind_burst2" },
+      { "name": "goetyominous:wind_charge/wind_burst3" }
     ]
   },
   "tuff_bricks_break": {

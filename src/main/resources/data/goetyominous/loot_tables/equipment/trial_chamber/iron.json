@@ -1,0 +1,67 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "chance": 0.5,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{Trim:{material:\"minecraft:copper\",pattern:\"minecraft:flow\"}}"
+            },
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:fire_protection": 4.0,
+                "minecraft:projectile_protection": 4.0,
+                "minecraft:protection": 4.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:iron_helmet"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "chance": 0.5,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{Trim:{material:\"minecraft:copper\",pattern:\"minecraft:flow\"}}"
+            },
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:fire_protection": 4.0,
+                "minecraft:projectile_protection": 4.0,
+                "minecraft:protection": 4.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:iron_chestplate"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

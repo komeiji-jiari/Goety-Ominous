@@ -38,4 +38,11 @@ public class TrialSoundTypes {
             ModSounds.VAULT_PLACE.get(),
             ModSounds.VAULT_HIT.get(),
             ModSounds.VAULT_FALL.get());
+
+    public static final SoundType TRIAL_SPAWNER = new SoundType(1.0F, 1.0F,
+            ModSounds.TRIAL_SPAWNER_BREAK.get(),
+            ModSounds.TRIAL_SPAWNER_STEP.get(),
+            ModSounds.TRIAL_SPAWNER_PLACE.get(),
+            ModSounds.TRIAL_SPAWNER_HIT.get(),
+            ModSounds.TRIAL_SPAWNER_FALL.get());
 }

@@ -13,6 +13,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import net.minecraft.core.UUIDUtil;
@@ -35,7 +36,7 @@ public class VaultServerData {
                     .forGetter(data -> data.totalEjectionsNeeded)
     ).apply(instance, VaultServerData::new));
 
-    static <T> MapCodec<T> lenientOptionalFieldOf(Codec<T> codec, String name, T defaultValue) {
+    public static <T> MapCodec<T> lenientOptionalFieldOf(Codec<T> codec, String name, T defaultValue) {
         MapCodec<T> delegate = codec.optionalFieldOf(name, defaultValue);
         return delegate.mapResult(new MapCodec.ResultFunction<T>() {
             @Override
@@ -46,6 +47,22 @@ public class VaultServerData {
 
             @Override
             public <V> RecordBuilder<V> coApply(DynamicOps<V> ops, T input, RecordBuilder<V> prefix) {
+                return prefix;
+            }
+        });
+    }
+
+    public static <T> MapCodec<Optional<T>> lenientOptionalFieldOf(Codec<T> codec, String name) {
+        MapCodec<Optional<T>> delegate = codec.optionalFieldOf(name);
+        return delegate.mapResult(new MapCodec.ResultFunction<Optional<T>>() {
+            @Override
+            public <V> DataResult<Optional<T>> apply(DynamicOps<V> ops, MapLike<V> input, DataResult<Optional<T>> result) {
+                return result.result().map(DataResult::success)
+                        .orElseGet(() -> DataResult.success(Optional.empty()));
+            }
+
+            @Override
+            public <V> RecordBuilder<V> coApply(DynamicOps<V> ops, Optional<T> input, RecordBuilder<V> prefix) {
                 return prefix;
             }
         });

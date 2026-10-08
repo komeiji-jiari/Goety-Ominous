@@ -1,0 +1,9 @@
+{
+  "parent": "goetyominous:block/cube_bottom_top_inner_faces",
+  "textures": {
+    "bottom": "goetyominous:block/trial_spawner_bottom",
+    "side": "goetyominous:block/trial_spawner_side_active",
+    "top": "goetyominous:block/trial_spawner_top_active"
+  },
+  "render_type": "minecraft:cutout"
+}

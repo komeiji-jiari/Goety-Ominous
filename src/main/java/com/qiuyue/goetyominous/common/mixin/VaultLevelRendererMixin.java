@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.mixin;
 
+import com.qiuyue.goetyominous.common.blocks.trial.TrialSpawner;
 import com.qiuyue.goetyominous.common.blocks.trial.VaultBlockEntity;
 import com.qiuyue.goetyominous.common.init.ModSounds;
 import javax.annotation.Nullable;
@@ -28,17 +29,7 @@ public abstract class VaultLevelRendererMixin {
         }
         ClientLevel clientLevel = this.level;
         if (type == 3017) {
-            RandomSource random = clientLevel.getRandom();
-            for (int i = 0; i < 20; ++i) {
-                double x = pos.getX() + 0.4D + random.nextDouble() * 0.2D;
-                double y = pos.getY() + 0.4D + random.nextDouble() * 0.2D;
-                double z = pos.getZ() + 0.4D + random.nextDouble() * 0.2D;
-                double xd = random.nextGaussian() * 0.02D;
-                double yd = random.nextGaussian() * 0.02D;
-                double zd = random.nextGaussian() * 0.02D;
-                clientLevel.addParticle(ParticleTypes.SMALL_FLAME, x, y, z, xd, yd, zd * 0.25D);
-                clientLevel.addParticle(ParticleTypes.SMOKE, x, y, z, xd, yd, zd);
-            }
+            TrialSpawner.addEjectItemParticles(clientLevel, pos, clientLevel.getRandom());
             return;
         }
         if (type != 3015 && type != 3016) {

@@ -18,9 +18,12 @@ import com.qiuyue.goetyominous.client.particle.lm.SmallGreenFlame;
 import com.qiuyue.goetyominous.client.particle.lm.SoulExplosion;
 import com.qiuyue.goetyominous.client.particle.lm.SoulPillarExplosion;
 import com.qiuyue.goetyominous.client.render.EmptyRenderer;
+import com.qiuyue.goetyominous.client.render.block.TrialSpawnerRenderer;
 import com.qiuyue.goetyominous.client.render.block.VaultRenderer;
+import com.qiuyue.goetyominous.client.render.entity.OminousItemSpawnerRenderer;
 import com.qiuyue.goetyominous.client.render.curios.PlushieCurioRenderer;
 import com.qiuyue.goetyominous.common.init.ModBlockEntities;
+import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockEntityRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcParticles;
@@ -47,6 +50,8 @@ public class ClientEvents {
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
 
         event.registerBlockEntityRenderer(ModBlockEntities.VAULT.get(), VaultRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.TRIAL_SPAWNER.get(), TrialSpawnerRenderer::new);
+        event.registerEntityRenderer(ModEntityTypes.OMINOUS_ITEM_SPAWNER.get(), OminousItemSpawnerRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.PLUSHIE.get(), PlushieBlockEntityRenderer::new);
         PlushieCurioRenderer.register();
 
@@ -72,7 +77,9 @@ public class ClientEvents {
         event.registerSpecial(ModParticleTypes.DUST_PILLAR.get(), new DustPillarProvider());
         event.registerSpriteSet(ModParticleTypes.TRIAL_OMEN.get(), SpellParticle.Provider::new);
         event.registerSpriteSet(ModParticleTypes.VAULT_CONNECTION.get(), FlyTowardsPositionParticle.VaultConnectionProvider::new);
+        event.registerSpriteSet(ModParticleTypes.TRIAL_SPAWNER_DETECTION.get(), TrialSpawnerDetectionParticle.Provider::new);
         event.registerSpriteSet(ModParticleTypes.TRIAL_SPAWNER_DETECTION_OMINOUS.get(), TrialSpawnerDetectionParticle.Provider::new);
+        event.registerSpriteSet(ModParticleTypes.OMINOUS_SPAWNING.get(), FlyStraightTowardsParticle.OminousSpawnerProvider::new);
 
         if (!AlexCavesCompat.isAlexCavesLoaded()) {
             return;

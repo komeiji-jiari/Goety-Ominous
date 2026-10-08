@@ -108,6 +108,16 @@ public class TrialBlocks {
                     .strength(50.0F)
                     .isViewBlocking((state, level, pos) -> false)));
 
+    public static final RegistryObject<Block> TRIAL_SPAWNER = block("trial_spawner", () -> new TrialSpawnerBlock(
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.STONE)
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .noOcclusion()
+                    .sound(TrialSoundTypes.TRIAL_SPAWNER)
+                    .lightLevel(state -> state.getValue(TrialSpawnerBlock.STATE).lightLevel())
+                    .strength(50.0F)
+                    .isViewBlocking((state, level, pos) -> false)));
+
     public static final Supplier<BiMap<Block, Block>> WAXABLES = Suppliers.memoize(TrialBlocks::waxingMap);
     public static final Supplier<BiMap<Block, Block>> WAX_OFF_BY_BLOCK = Suppliers.memoize(() -> WAXABLES.get().inverse());
 

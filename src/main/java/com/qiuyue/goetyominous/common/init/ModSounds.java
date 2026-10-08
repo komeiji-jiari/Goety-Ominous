@@ -33,6 +33,22 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> APPLY_EFFECT_TRIAL_OMEN = create("apply_effect_trial_omen");
     public static final RegistryObject<SoundEvent> TRIAL_SPAWNER_OMINOUS_ACTIVATE = create("trial_spawner_ominous_activate");
 
+    public static final RegistryObject<SoundEvent> TRIAL_SPAWNER_BREAK = create("trial_spawner_break");
+    public static final RegistryObject<SoundEvent> TRIAL_SPAWNER_STEP = create("trial_spawner_step");
+    public static final RegistryObject<SoundEvent> TRIAL_SPAWNER_PLACE = create("trial_spawner_place");
+    public static final RegistryObject<SoundEvent> TRIAL_SPAWNER_HIT = create("trial_spawner_hit");
+    public static final RegistryObject<SoundEvent> TRIAL_SPAWNER_FALL = create("trial_spawner_fall");
+    public static final RegistryObject<SoundEvent> TRIAL_SPAWNER_SPAWN_MOB = create("trial_spawner_spawn_mob");
+    public static final RegistryObject<SoundEvent> TRIAL_SPAWNER_ABOUT_TO_SPAWN_ITEM = create("trial_spawner_about_to_spawn_item");
+    public static final RegistryObject<SoundEvent> TRIAL_SPAWNER_SPAWN_ITEM = create("trial_spawner_spawn_item");
+    public static final RegistryObject<SoundEvent> TRIAL_SPAWNER_SPAWN_ITEM_BEGIN = create("trial_spawner_spawn_item_begin");
+    public static final RegistryObject<SoundEvent> TRIAL_SPAWNER_DETECT_PLAYER = create("trial_spawner_detect_player");
+    public static final RegistryObject<SoundEvent> TRIAL_SPAWNER_AMBIENT = create("trial_spawner_ambient");
+    public static final RegistryObject<SoundEvent> TRIAL_SPAWNER_AMBIENT_OMINOUS = create("trial_spawner_ambient_ominous");
+    public static final RegistryObject<SoundEvent> TRIAL_SPAWNER_OPEN_SHUTTER = create("trial_spawner_open_shutter");
+    public static final RegistryObject<SoundEvent> TRIAL_SPAWNER_CLOSE_SHUTTER = create("trial_spawner_close_shutter");
+    public static final RegistryObject<SoundEvent> TRIAL_SPAWNER_EJECT_ITEM = create("trial_spawner_eject_item");
+
     public static final RegistryObject<SoundEvent> HEAVY_CORE_BREAK = create("heavy_core_break");
     public static final RegistryObject<SoundEvent> HEAVY_CORE_STEP = create("heavy_core_step");
     public static final RegistryObject<SoundEvent> HEAVY_CORE_PLACE = create("heavy_core_place");
@@ -56,6 +72,7 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> WOLF_ARMOR_REPAIR = create("wolf_armor_repair");
 
     public static final RegistryObject<SoundEvent> WIND_CHARGE_THROW = create("wind_charge_throw");
+    public static final RegistryObject<SoundEvent> WIND_CHARGE_BURST = create("wind_charge_burst");
     public static final RegistryObject<SoundEvent> BREEZE_WIND_CHARGE_BURST = create("breeze_wind_charge_burst");
 
     public static final RegistryObject<SoundEvent> DREDEN_IDLE = create("dreden_idle");

@@ -564,6 +564,9 @@ public class ModModelLayers {
 
         event.registerEntityRenderer(ModEntityTypes.PITCHFORK.get(), PitchforkRenderer::new);
 
+        event.registerEntityRenderer(ModEntityTypes.WIND_CHARGE.get(),
+                com.qiuyue.goetyominous.client.render.projectile.mm.ServantWindChargeRenderer::new);
+
         event.registerEntityRenderer(ModEntityTypes.SERVANT_WIND_CHARGE.get(),
                 com.qiuyue.goetyominous.client.render.projectile.mm.ServantWindChargeRenderer::new);
 
