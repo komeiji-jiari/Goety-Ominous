@@ -12,6 +12,7 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.server.entity.collision.ICustomCollisions;
+import com.qiuyue.goetyominous.client.sound.ac.CorrodentServantDigSoundHandler;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
@@ -41,12 +42,13 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.FlyNodeEvaluator;
@@ -66,6 +68,10 @@ import java.util.function.Predicate;
 public class CorrodentServant extends Summoned implements IAnimatedEntity, ICustomCollisions {
 
     public static final int LIGHT_THRESHOLD = 7;
+    public static final int EMERGE_LIGHT_THRESHOLD = 4;
+    public static final int LIGHT_DIRECTION_MARGIN = 2;
+    public static final int DIG_SEEK_DEPTH = 3;
+    public static final int PANIC_DIG_TIME = 100;
     public static final Animation ANIMATION_BITE = Animation.create(15);
 
     private static final EntityDataAccessor<Boolean> DIGGING = SynchedEntityData.defineId(CorrodentServant.class, EntityDataSerializers.BOOLEAN);
@@ -85,10 +91,10 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
     private float prevDigProgress;
     public int timeDigging = 0;
     public int fleeLightFor = 0;
-    private int regenTimer = 0;
-    private boolean holdDigging = false;
+    public int lightAvoidFor = 0;
+    private boolean lightHide = false;
+    private boolean panicHide = false;
     private int surfaceCooldown = 0;
-    private boolean regenBurrow = false;
     private boolean prevDigging = false;
     private boolean noFallDamageOnSurface = false;
     private Vec3 surfacePosition;
@@ -100,8 +106,12 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
         super(entityType, level);
         this.tailPart = new CorrodentServantTailEntity(this);
         this.allParts = new CorrodentServantTailEntity[]{this.tailPart};
-        this.setMaxUpStep(1.1F);
         this.switchNavigator(true);
+    }
+
+    @Override
+    public float getStepHeight() {
+        return Math.max(1.1F, super.getStepHeight());
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
@@ -129,17 +139,15 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
         this.goalSelector.addGoal(1, new CorrodentFearLightGoal());
         this.goalSelector.addGoal(2, new CorrodentAttackGoal());
         this.goalSelector.addGoal(2, new CorrodentDigFollowOwnerGoal());
-        this.goalSelector.addGoal(2, new CorrodentDigRandomlyGoal());
-        this.goalSelector.addGoal(2, new CorrodentDigInPlaceGoal());
         this.goalSelector.addGoal(7, new RandomStrollGoal(this, 1.0D, 20) {
             @Override
             public boolean canUse() {
-                return !CorrodentServant.this.isStaying() && !CorrodentServant.this.isGuardingArea() && !CorrodentServant.this.regenBurrow && super.canUse();
+                return !CorrodentServant.this.isStaying() && !CorrodentServant.this.isGuardingArea() && super.canUse();
             }
 
             @Override
             public boolean canContinueToUse() {
-                return !CorrodentServant.this.isStaying() && !CorrodentServant.this.isGuardingArea() && !CorrodentServant.this.regenBurrow && super.canContinueToUse();
+                return !CorrodentServant.this.isStaying() && !CorrodentServant.this.isGuardingArea() && super.canContinueToUse();
             }
         });
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 15.0F));
@@ -159,7 +167,7 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
 
     protected void switchNavigator(boolean onLand) {
         if (onLand) {
-            this.moveControl = new MoveControl(this);
+            this.moveControl = new LandMoveControl();
             this.navigation = this.createNavigation(this.level());
             this.isLandNavigator = true;
         } else {
@@ -171,7 +179,7 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
 
     @Override
     protected PathNavigation createNavigation(Level level) {
-        return new GroundPathNavigatorNoSpin(this, level);
+        return new CorrodentLandNavigator(this, level);
     }
 
     @Override
@@ -201,10 +209,23 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
             this.fearProgress -= 1.0F;
         }
         if (!this.level().isClientSide) {
+            boolean startDigging = !this.prevDigging && this.isDigging();
             if (this.prevDigging && !this.isDigging()) {
                 this.noFallDamageOnSurface = true;
             }
             this.prevDigging = this.isDigging();
+            if (this.lightHide && (!this.isDigging() || this.isCommanded() || this.isOwnerSneaking() || this.isStaying() || this.getTrueOwner() == null)) {
+                this.lightHide = false;
+            }
+            if (this.panicHide && (!this.isDigging() || this.isCommanded() || this.isOwnerSneaking() || this.isStaying())) {
+                this.panicHide = false;
+            }
+            if (startDigging && this.isInLight() && this.surfaceCooldown <= 0 && this.isFollowing()
+                    && !this.isStaying() && !this.isGuardingArea() && !this.isCommanded() && this.getTrueOwner() != null
+                    && (this.isInWall() || canDigBlock(this.level().getBlockState(this.blockPosition().below())))) {
+                this.lightHide = true;
+                this.setTarget(null);
+            }
             if (this.noFallDamageOnSurface && this.onGround()) {
                 this.noFallDamageOnSurface = false;
             }
@@ -219,8 +240,6 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
                     this.setDigPitch(90.0F);
                 }
                 if (this.isOwnerSneaking() && this.getTarget() == null) {
-                    this.holdDigging = false;
-                    this.regenBurrow = false;
                     this.surfaceCooldown = 80;
                     if (this.isInWall()) {
                         this.nudgeUp(0.25F);
@@ -231,25 +250,60 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
                         this.setDeltaMovement(this.getDeltaMovement().add(0.0, 0.35, 0.0));
                     }
                 }
-                if (this.regenBurrow && this.isDigging() && !this.isRegenerating() && this.getHealth() >= this.getMaxHealth() && this.timeDigging > 40) {
-                    this.regenBurrow = false;
-                    if (this.isInWall()) {
+                if (this.isDigging() && this.timeDigging > 40 && !this.isInWall() && !this.lightHide && !this.panicHide) {
+                    boolean traveling = !this.getNavigation().isDone() && !this.getNavigation().isStuck();
+                    double layerY = this.getMoveControl().getWantedY();
+                    if (traveling && this.getY() < layerY - 0.5D) {
                         this.nudgeUp(0.25F);
-                    } else {
-                        this.setDigging(false);
-                        this.timeDigging = 0;
-                        this.setPos(this.position().add(0.0, 1.0, 0.0));
-                        this.setDeltaMovement(this.getDeltaMovement().add(0.0, 0.35, 0.0));
+                    } else if (!traveling || this.getY() > layerY + 0.5D) {
+                        if (this.digSinkBelow(this.blockPosition(), DIG_SEEK_DEPTH) != null) {
+                            this.nudgeDown(0.25F);
+                        } else if (!traveling && this.digRiseAbove(this.blockPosition(), DIG_SEEK_DEPTH) != null) {
+                            this.nudgeUp(0.25F);
+                        } else {
+                            this.setDigging(false);
+                            this.setPos(this.position().add(0.0, 1.0, 0.0));
+                            this.setDeltaMovement(this.getDeltaMovement().add(0.0, 0.35, 0.0));
+                        }
                     }
                 }
-                if (this.isDigging() && this.timeDigging > 40 && !this.isInWall() && !this.isRegenerating() && !this.holdDigging) {
-                    this.setDigging(false);
-                    this.setPos(this.position().add(0.0, 1.0, 0.0));
-                    this.setDeltaMovement(this.getDeltaMovement().add(0.0, 0.35, 0.0));
+                if (this.lightHide) {
+                    LivingEntity hideOwner = this.getTrueOwner();
+                    if (hideOwner != null && lightAt(hideOwner.level(), hideOwner.blockPosition()) <= EMERGE_LIGHT_THRESHOLD
+                            && this.distanceToSqr(hideOwner) <= 64.0D && this.isSurfaceDark()) {
+                        if (this.isInWall()) {
+                            this.nudgeUp(0.25F);
+                        } else if (!this.onGround() && this.digSinkBelow(this.blockPosition(), DIG_SEEK_DEPTH) != null) {
+                            this.nudgeDown(0.25F);
+                        } else {
+                            this.lightHide = false;
+                            this.surfaceCooldown = 80;
+                            this.setDigging(false);
+                            this.timeDigging = 0;
+                            this.setPos(this.position().add(0.0, 1.0, 0.0));
+                            this.setDeltaMovement(this.getDeltaMovement().add(0.0, 0.35, 0.0));
+                        }
+                    }
+                }
+                if (this.panicHide && !this.lightHide) {
+                    if (this.isSurfaceDark()) {
+                        if (this.isInWall()) {
+                            this.nudgeUp(0.25F);
+                        } else {
+                            this.panicHide = false;
+                            this.surfaceCooldown = 80;
+                            this.setDigging(false);
+                            this.timeDigging = 0;
+                            this.setPos(this.position().add(0.0, 1.0, 0.0));
+                            this.setDeltaMovement(this.getDeltaMovement().add(0.0, 0.35, 0.0));
+                        }
+                    } else if (!this.isInWall() && this.digSinkBelow(this.blockPosition(), DIG_SEEK_DEPTH) != null) {
+                        this.nudgeDown(0.25F);
+                    }
                 }
                 if (this.isDigging() && this.isStaying()
                         && this.getHealth() > this.getMaxHealth() * 0.5F
-                        && !this.regenBurrow && !this.holdDigging && this.getTarget() == null) {
+                        && this.getTarget() == null) {
                     if (this.isInWall()) {
                         this.nudgeUp(0.25F);
                     } else {
@@ -275,19 +329,8 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
                 }
                 this.setNoGravity(false);
             }
-            if (this.regenBurrow && !this.isDigging()) {
-                this.regenBurrow = false;
-            }
-            if (this.isRegenerating()) {
-                if (++this.regenTimer >= 20) {
-                    this.regenTimer = 0;
-                    this.heal(1.0F);
-                }
-            } else {
-                this.regenTimer = 0;
-            }
-        } else if (this.isDigging() && this.isAlive() && this.random.nextFloat() < 0.05F) {
-            this.playSound(ACSoundRegistry.CORRODENT_DIG_LOOP.get(), 0.4F, 1.0F);
+        } else if (this.isDigging() && this.isAlive()) {
+            CorrodentServantDigSoundHandler.startDigFor(this);
         }
         this.prevSurfacePosition = this.surfacePosition;
         if (this.isMoving() || this.surfacePosition == null) {
@@ -313,6 +356,9 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
         }
         if (this.fleeLightFor > 0) {
             --this.fleeLightFor;
+        }
+        if (this.lightAvoidFor > 0) {
+            --this.lightAvoidFor;
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
@@ -343,10 +389,6 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
         }
     }
 
-    private boolean isRegenerating() {
-        return this.isDigging() && !this.isAfraid() && this.getHealth() < this.getMaxHealth();
-    }
-
     private boolean isOwnerSneaking() {
         LivingEntity owner = this.getTrueOwner();
         return owner != null && owner.isShiftKeyDown();
@@ -356,6 +398,40 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
         Vec3 current = this.getDeltaMovement();
         this.setDeltaMovement(current.x, Math.min(current.y + amount, 0.5F), current.z);
     }
+
+    private void nudgeDown(float amount) {
+        Vec3 current = this.getDeltaMovement();
+        this.setDeltaMovement(current.x, Math.max(current.y - amount, -0.5F), current.z);
+    }
+
+    private BlockPos digSinkBelow(BlockPos from, int maxDrop) {
+        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+        for (int i = 1; i <= maxDrop; ++i) {
+            mutable.set(from.getX(), from.getY() - i, from.getZ());
+            if (mutable.getY() <= this.level().getMinBuildHeight()) {
+                return null;
+            }
+            if (isSafeDig(this.level(), mutable)) {
+                return mutable.immutable();
+            }
+        }
+        return null;
+    }
+
+    private BlockPos digRiseAbove(BlockPos from, int maxRise) {
+        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+        for (int i = 1; i <= maxRise; ++i) {
+            mutable.set(from.getX(), from.getY() + i, from.getZ());
+            if (mutable.getY() >= this.level().getMaxBuildHeight()) {
+                return null;
+            }
+            if (isSafeDig(this.level(), mutable)) {
+                return mutable.immutable();
+            }
+        }
+        return null;
+    }
+
 
     private Vec3 calculateLightAbovePosition() {
         BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
@@ -480,6 +556,9 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
 
     @Override
     public void remove(Entity.RemovalReason removalReason) {
+        if (this.level().isClientSide) {
+            CorrodentServantDigSoundHandler.clearDigFor(this);
+        }
         super.remove(removalReason);
         if (this.allParts != null) {
             for (PartEntity<?> part : this.allParts) {
@@ -544,6 +623,42 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
         return canDigBlock(state) && canDigBlock(below);
     }
 
+    public static int lightAt(LevelReader level, BlockPos pos) {
+        return level.getMaxLocalRawBrightness(pos);
+    }
+
+    private boolean isInLight() {
+        return lightAt(this.level(), this.blockPosition()) > LIGHT_THRESHOLD;
+    }
+
+    private boolean isSurfaceDark() {
+        return lightAt(this.level(), BlockPos.containing(this.calculateLightAbovePosition())) <= EMERGE_LIGHT_THRESHOLD;
+    }
+
+    private void faceLightSource() {
+        BlockPos origin = this.blockPosition();
+        int sum = 0;
+        int brightest = -1;
+        int bestX = 0;
+        int bestZ = 0;
+        for (int i = 0; i < 8; ++i) {
+            float angle = i * ((float) Math.PI / 4.0F);
+            int dx = Mth.floor(-Mth.sin(angle) * 4.0F);
+            int dz = Mth.floor(Mth.cos(angle) * 4.0F);
+            int light = lightAt(this.level(), origin.offset(dx, 0, dz));
+            sum += light;
+            if (light > brightest) {
+                brightest = light;
+                bestX = dx;
+                bestZ = dz;
+            }
+        }
+        if (brightest - sum / 8 < LIGHT_DIRECTION_MARGIN) {
+            return;
+        }
+        this.lookAt(EntityAnchorArgument.Anchor.EYES, new Vec3(this.getX() + bestX, this.getY(), this.getZ() + bestZ));
+    }
+
     public Vec3 clampToGuardRange(Vec3 pos) {
         if (!this.isGuardingArea() || this.getBoundPos() == null) {
             return pos;
@@ -566,6 +681,14 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
 
     public void setDigging(boolean bool) {
         this.entityData.set(DIGGING, bool);
+    }
+
+    @Override
+    public void setTarget(LivingEntity target) {
+        if (this.lightHide && target != null) {
+            return;
+        }
+        super.setTarget(target);
     }
 
     public boolean isAfraid() {
@@ -635,6 +758,71 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
     @Override
     protected SoundEvent getDeathSound() {
         return ACSoundRegistry.CORRODENT_DEATH.get();
+    }
+
+    private class LandMoveControl extends MoveControl {
+        private boolean fearStrafe = false;
+
+        public LandMoveControl() {
+            super(CorrodentServant.this);
+        }
+
+        public void setFearStrafe(boolean fearStrafe) {
+            this.fearStrafe = fearStrafe;
+            this.speedModifier = 0.25D;
+        }
+
+        public void clearStrafe() {
+            this.fearStrafe = false;
+            this.operation = MoveControl.Operation.WAIT;
+            this.mob.setZza(0.0F);
+            this.mob.setXxa(0.0F);
+        }
+
+        @Override
+        public void tick() {
+            if (!this.fearStrafe) {
+                super.tick();
+                return;
+            }
+            this.mob.setSpeed((float) (this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
+            this.mob.setZza(-1.0F);
+            this.mob.setXxa(0.0F);
+            this.operation = MoveControl.Operation.WAIT;
+        }
+    }
+
+    private LandMoveControl landMoveControl() {
+        return this.moveControl instanceof LandMoveControl ? (LandMoveControl) this.moveControl : null;
+    }
+
+    private class CorrodentLandNavigator extends GroundPathNavigatorNoSpin {
+
+        public CorrodentLandNavigator(Mob mob, Level level) {
+            super(mob, level);
+        }
+
+        @Override
+        protected PathFinder createPathFinder(int maxVisitedNodes) {
+            this.nodeEvaluator = new LightAvoidingNodeEvaluator();
+            this.nodeEvaluator.setCanPassDoors(true);
+            return new PathFinder(this.nodeEvaluator, maxVisitedNodes);
+        }
+    }
+
+    private class LightAvoidingNodeEvaluator extends WalkNodeEvaluator {
+        private final BlockPos.MutableBlockPos lightCheck = new BlockPos.MutableBlockPos();
+
+        @Override
+        protected BlockPathTypes getCachedBlockType(Mob mob, int x, int y, int z) {
+            BlockPathTypes type = super.getCachedBlockType(mob, x, y, z);
+            if (type != BlockPathTypes.BLOCKED && CorrodentServant.this.lightAvoidFor > 0
+                    && !CorrodentServant.this.isCommanded()
+                    && lightAt(mob.level(), this.lightCheck.set(x, y, z)) > LIGHT_THRESHOLD) {
+                return BlockPathTypes.BLOCKED;
+            }
+            return type;
+        }
     }
 
     private class DiggingNavigator extends FlyingPathNavigation {
@@ -712,6 +900,17 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
             }
             return CorrodentServant.isSafeDig(level, pos) && pos.getY() > level.getMinBuildHeight() ? BlockPathTypes.WALKABLE : BlockPathTypes.BLOCKED;
         }
+
+        @Override
+        public BlockPathTypes getBlockPathType(BlockGetter level, int x, int y, int z, Mob mob) {
+            BlockPathTypes type = super.getBlockPathType(level, x, y, z, mob);
+            if (type != BlockPathTypes.BLOCKED && CorrodentServant.this.lightAvoidFor > 0
+                    && !CorrodentServant.this.isCommanded()
+                    && lightAt(mob.level(), new BlockPos(x, y, z)) > LIGHT_THRESHOLD) {
+                return BlockPathTypes.BLOCKED;
+            }
+            return type;
+        }
     }
 
     private class DiggingMoveControl extends MoveControl {
@@ -723,19 +922,27 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
         @Override
         public void tick() {
             if (this.operation == MoveControl.Operation.MOVE_TO) {
+                if (!CorrodentServant.isSafeDig(CorrodentServant.this.level(), BlockPos.containing(this.wantedX, this.wantedY, this.wantedZ))) {
+                    BlockPos wanted = BlockPos.containing(this.wantedX, this.wantedY, this.wantedZ);
+                    BlockPos sink = CorrodentServant.this.digSinkBelow(wanted, CorrodentServant.DIG_SEEK_DEPTH);
+                    BlockPos layer = sink != null ? sink : CorrodentServant.this.digRiseAbove(wanted, CorrodentServant.DIG_SEEK_DEPTH);
+                    if (layer == null) {
+                        this.mob.setDeltaMovement(this.mob.getDeltaMovement().add(0.0, 0.3, 0.0).scale(0.7F));
+                        this.operation = MoveControl.Operation.WAIT;
+                        this.mob.getNavigation().stop();
+                        return;
+                    }
+                    this.wantedX = layer.getX() + 0.5D;
+                    this.wantedY = layer.getY();
+                    this.wantedZ = layer.getZ() + 0.5D;
+                }
                 Vec3 vector3d = new Vec3(this.wantedX - this.mob.getX(), this.wantedY - this.mob.getY(), this.wantedZ - this.mob.getZ());
                 double d0 = vector3d.length();
                 double width = this.mob.getBoundingBox().getSize();
                 float burySpeed = CorrodentServant.this.timeDigging < 40 ? 0.25F : 1.0F;
                 double buryFactor = d0 < 1.0E-4 ? 0.0 : this.speedModifier * burySpeed * 0.025 / d0;
                 Vec3 vector3d1 = vector3d.scale(buryFactor);
-                if (CorrodentServant.isSafeDig(CorrodentServant.this.level(), BlockPos.containing(this.wantedX, this.wantedY, this.wantedZ))) {
-                    this.mob.setDeltaMovement(this.mob.getDeltaMovement().add(vector3d1).scale(0.9F));
-                } else {
-                    this.mob.setDeltaMovement(this.mob.getDeltaMovement().add(0.0, 0.3, 0.0).scale(0.7F));
-                    this.operation = MoveControl.Operation.WAIT;
-                    this.mob.getNavigation().stop();
-                }
+                this.mob.setDeltaMovement(this.mob.getDeltaMovement().add(vector3d1).scale(0.9F));
                 if (d0 < width * 0.15F) {
                     this.operation = MoveControl.Operation.WAIT;
                 } else if (d0 >= width) {
@@ -759,8 +966,8 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
         @Override
         public boolean canUse() {
             return CorrodentServant.this.getTarget() != null && CorrodentServant.this.getTarget().isAlive()
-                    && CorrodentServant.this.fleeLightFor <= 0 && !CorrodentServant.this.isRegenerating()
-                    && !CorrodentServant.this.regenBurrow;
+                    && CorrodentServant.this.fleeLightFor <= 0 && !CorrodentServant.this.lightHide
+                    && !CorrodentServant.this.panicHide;
         }
 
         @Override
@@ -797,10 +1004,13 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
                         CorrodentServant.this.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, 1.0);
                     }
                 } else if (this.burrowing) {
-                    if (CorrodentServant.this.onGround()) {
+                    if (CorrodentServant.this.onGround() || CorrodentServant.this.isInWall()) {
                         CorrodentServant.this.setDigging(true);
                     }
                     this.moveToClamped(target, 2.0);
+                    if (CorrodentServant.this.isInWall() && target.getY() > CorrodentServant.this.getY() + 0.5) {
+                        CorrodentServant.this.setDeltaMovement(CorrodentServant.this.getDeltaMovement().add(0.0, 0.1, 0.0));
+                    }
                     if (!CorrodentServant.this.isInWall()) {
                         CorrodentServant.this.setDigging(false);
                         this.burrowing = false;
@@ -814,11 +1024,13 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
                     }
                     this.moveToClamped(target, 1.5);
                 }
-                if (dist < f + 1.0F) {
+                if (dist < f + 1.0F && CorrodentServant.this.hasLineOfSight(target)) {
                     this.tryAnimation(CorrodentServant.ANIMATION_BITE);
                 }
                 if (CorrodentServant.this.getAnimation() == CorrodentServant.ANIMATION_BITE) {
-                    CorrodentServant.this.setDigging(false);
+                    if (!CorrodentServant.this.isInWall()) {
+                        CorrodentServant.this.setDigging(false);
+                    }
                     if (CorrodentServant.this.getAnimationTick() == 8) {
                         this.checkAndDealDamage(target, 1.5F);
                         if (CorrodentServant.this.getRandom().nextBoolean()) {
@@ -890,226 +1102,81 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
 
     private class CorrodentFearLightGoal extends Goal {
         private Vec3 retreatTo = null;
-        private int tryDigTime = 0;
-        private BlockPos tryDigPos = null;
+        private int panicTime = 0;
 
         public CorrodentFearLightGoal() {
-            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
         }
 
         @Override
         public boolean canUse() {
-            return CorrodentServant.this.getHealth() <= CorrodentServant.this.getMaxHealth() * 0.5F
-                    && CorrodentServant.this.level().getBrightness(LightLayer.BLOCK, CorrodentServant.this.blockPosition()) > LIGHT_THRESHOLD
+            return CorrodentServant.this.isInLight()
                     && !CorrodentServant.this.isDigging()
                     && !CorrodentServant.this.isStaying()
                     && !CorrodentServant.this.isOwnerSneaking();
         }
 
         @Override
+        public void start() {
+            if (CorrodentServant.this.fleeLightFor <= 0) {
+                this.panicTime = 0;
+            }
+        }
+
+        @Override
         public void tick() {
             CorrodentServant.this.fleeLightFor = 50;
+            CorrodentServant.this.lightAvoidFor = 50;
+            if (++this.panicTime >= PANIC_DIG_TIME
+                    && (CorrodentServant.this.isInWall()
+                    || canDigBlock(CorrodentServant.this.level().getBlockState(CorrodentServant.this.blockPosition().below())))) {
+                this.panicTime = 0;
+                LandMoveControl moveControl = CorrodentServant.this.landMoveControl();
+                if (moveControl != null) {
+                    moveControl.clearStrafe();
+                }
+                CorrodentServant.this.getNavigation().stop();
+                CorrodentServant.this.panicHide = true;
+                CorrodentServant.this.setDigging(true);
+                return;
+            }
+            if (this.retreatTo == null || CorrodentServant.this.distanceToSqr(this.retreatTo) < 6.0D) {
+                this.retreatTo = null;
+                for (int i = 0; i < 15; ++i) {
+                    Vec3 vec3 = DefaultRandomPos.getPosAway(CorrodentServant.this, 30, 15, CorrodentServant.this.position());
+                    if (vec3 == null || lightAt(CorrodentServant.this.level(), BlockPos.containing(vec3)) >= LIGHT_THRESHOLD) {
+                        continue;
+                    }
+                    this.retreatTo = vec3;
+                    break;
+                }
+            }
             CorrodentServant.this.setAfraid(true);
             CorrodentServant.this.getNavigation().stop();
+            CorrodentServant.this.faceLightSource();
+            LandMoveControl moveControl = CorrodentServant.this.landMoveControl();
             if (this.retreatTo == null) {
-                float dir = CorrodentServant.this.getRandom().nextFloat() * (float) Math.PI * 2.0F;
-                this.retreatTo = CorrodentServant.this.position().add(Math.cos(dir) * 2.0F, 0, Math.sin(dir) * 2.0F);
-            }
-            Vec3 flip = this.retreatTo.subtract(CorrodentServant.this.position()).yRot(1.5707964F).add(CorrodentServant.this.position());
-            CorrodentServant.this.lookAt(EntityAnchorArgument.Anchor.EYES, flip);
-            if (CorrodentServant.this.onGround() && this.tryDigTime++ > 20) {
-                this.tryDigTime = 0;
-                if (this.tryDigPos != null && this.tryDigPos.distSqr(CorrodentServant.this.blockPosition()) < 2.25) {
-                    CorrodentServant.this.setDigging(true);
+                if (moveControl != null) {
+                    moveControl.clearStrafe();
                 }
-                this.tryDigPos = CorrodentServant.this.blockPosition();
+                return;
+            }
+            if (moveControl != null) {
+                moveControl.setFearStrafe(true);
             }
         }
 
         @Override
         public void stop() {
             CorrodentServant.this.setAfraid(false);
-            if (CorrodentServant.this.onGround() && !CorrodentServant.this.isOwnerSneaking()) {
+            if (CorrodentServant.this.onGround() && !CorrodentServant.this.isOwnerSneaking()
+                    && canDigBlock(CorrodentServant.this.level().getBlockState(CorrodentServant.this.blockPosition().below()))) {
                 CorrodentServant.this.fleeLightFor = 50;
                 CorrodentServant.this.setDigging(true);
             }
-            if (!CorrodentServant.this.isOwnerSneaking()) {
-                CorrodentServant.this.regenBurrow = true;
-            }
-            this.tryDigPos = null;
-            this.tryDigTime = 0;
-            this.retreatTo = null;
-        }
-    }
-
-    private class CorrodentDigRandomlyGoal extends Goal {
-        private double x;
-        private double y;
-        private double z;
-        private boolean surface = false;
-
-        public CorrodentDigRandomlyGoal() {
-            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
-        }
-
-        @Override
-        public boolean canUse() {
-            if (CorrodentServant.this.isVehicle() || CorrodentServant.this.getTarget() != null && CorrodentServant.this.getTarget().isAlive()
-                    || CorrodentServant.this.isPassenger() || !CorrodentServant.this.isDigging() && !CorrodentServant.this.onGround() && !CorrodentServant.this.isInWall()) {
-                return false;
-            }
-            if (CorrodentServant.this.isStaying()) {
-                return false;
-            }
-            if (CorrodentServant.this.regenBurrow) {
-                return false;
-            }
-            if (CorrodentServant.this.isOwnerSneaking()) {
-                return false;
-            }
-            if (!CorrodentServant.this.isDigging() && !CorrodentServant.this.isInWall() && CorrodentServant.this.getRandom().nextInt(20) != 0) {
-                return false;
-            }
-            if (CorrodentServant.this.isDigging() && CorrodentServant.this.timeDigging > 300) {
-                this.surface = true;
-            }
-            if (CorrodentServant.this.fleeLightFor > 0 || CorrodentServant.this.isAfraid()
-                    || CorrodentServant.this.isCommanded() || CorrodentServant.this.isRegenerating()) {
-                return false;
-            }
-            Vec3 target = this.generatePosition();
-            if (target == null) {
-                return false;
-            }
-            this.x = target.x;
-            this.y = target.y;
-            this.z = target.z;
-            return true;
-        }
-
-        @Override
-        public void start() {
-            CorrodentServant.this.setDigging(true);
-            CorrodentServant.this.getNavigation().moveTo(this.x, this.y, this.z, 1.0);
-        }
-
-        @Override
-        public boolean canContinueToUse() {
-            return !CorrodentServant.this.getNavigation().isDone() && !CorrodentServant.this.getNavigation().isStuck() && CorrodentServant.this.isDigging();
-        }
-
-        @Override
-        public void tick() {
-            if (this.surface && CorrodentServant.this.distanceToSqr(this.x, this.y, this.z) < 4.0) {
-                CorrodentServant.this.setDigging(false);
-            }
-        }
-
-        @Override
-        public void stop() {
-            this.surface = false;
-        }
-
-        private Vec3 generatePosition() {
-            BlockPos.MutableBlockPos check = new BlockPos.MutableBlockPos();
-            for (int i = 0; i < 20; ++i) {
-                if (CorrodentServant.this.isGuardingArea() && CorrodentServant.this.getBoundPos() != null) {
-                    BlockPos bound = CorrodentServant.this.getBoundPos();
-                    float angle = CorrodentServant.this.getRandom().nextFloat() * (float) Math.PI * 2.0F;
-                    double radius = CorrodentServant.this.getRandom().nextDouble() * (double) IServant.GUARDING_RANGE;
-                    int ox = (int) (Math.cos(angle) * radius);
-                    int oz = (int) (Math.sin(angle) * radius);
-                    check.set(bound.getX() + ox, CorrodentServant.this.blockPosition().getY() + CorrodentServant.this.getRandom().nextInt(32) - 16, bound.getZ() + oz);
-                } else {
-                    check.move(CorrodentServant.this.blockPosition());
-                    check.move(CorrodentServant.this.getRandom().nextInt(32) - 16, CorrodentServant.this.getRandom().nextInt(32) - 16, CorrodentServant.this.getRandom().nextInt(32) - 16);
-                }
-                if (check.getY() < CorrodentServant.this.level().getMinBuildHeight() || !CorrodentServant.this.level().isLoaded(check)) {
-                    break;
-                }
-                if (this.surface) {
-                    while (!CorrodentServant.this.level().isEmptyBlock(check) && check.getY() < CorrodentServant.this.level().getMaxBuildHeight()) {
-                        check.move(0, 1, 0);
-                    }
-                    if (!CorrodentServant.this.level().isEmptyBlock(check)) {
-                        continue;
-                    }
-                    return check.immutable().getCenter();
-                }
-                while (CorrodentServant.this.level().isEmptyBlock(check) && check.getY() > CorrodentServant.this.level().getMinBuildHeight() - 1) {
-                    check.move(0, -1, 0);
-                }
-                if (!CorrodentServant.isSafeDig(CorrodentServant.this.level(), check.immutable()) || !CorrodentServant.this.canReach(check)) {
-                    continue;
-                }
-                return Vec3.atCenterOf(check.immutable());
-            }
-            return null;
-        }
-    }
-
-    private class CorrodentDigInPlaceGoal extends Goal {
-        private Vec3 anchor = null;
-
-        public CorrodentDigInPlaceGoal() {
-            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
-        }
-
-        @Override
-        public boolean canUse() {
-            return CorrodentServant.this.isGuardingArea()
-                    && CorrodentServant.this.getHealth() <= CorrodentServant.this.getMaxHealth() * 0.5F
-                    && !CorrodentServant.this.isOwnerSneaking()
-                    && CorrodentServant.this.getTarget() == null
-                    && CorrodentServant.this.fleeLightFor <= 0
-                    && !CorrodentServant.this.isAfraid()
-                    && !CorrodentServant.this.isCommanded()
-                    && CorrodentServant.this.surfaceCooldown <= 0;
-        }
-
-        @Override
-        public boolean canContinueToUse() {
-            return CorrodentServant.this.isGuardingArea()
-                    && CorrodentServant.this.getHealth() <= CorrodentServant.this.getMaxHealth() * 0.5F
-                    && !CorrodentServant.this.isOwnerSneaking()
-                    && CorrodentServant.this.getTarget() == null
-                    && CorrodentServant.this.fleeLightFor <= 0
-                    && !CorrodentServant.this.isAfraid()
-                    && !CorrodentServant.this.isCommanded()
-                    && CorrodentServant.this.holdDigging;
-        }
-
-        @Override
-        public void start() {
-            CorrodentServant.this.holdDigging = true;
-            this.anchor = CorrodentServant.this.clampToGuardRange(CorrodentServant.this.position());
-        }
-
-        @Override
-        public void tick() {
-            CorrodentServant.this.holdDigging = true;
-            if (this.anchor == null) {
-                this.anchor = CorrodentServant.this.clampToGuardRange(CorrodentServant.this.position());
-            }
-            if (CorrodentServant.this.position().distanceToSqr(this.anchor) > 1.0) {
-                CorrodentServant.this.getNavigation().moveTo(this.anchor.x, this.anchor.y, this.anchor.z, 1.0);
-            } else {
-                this.digInPlace();
-            }
-        }
-
-        @Override
-        public void stop() {
-            CorrodentServant.this.holdDigging = false;
-            this.anchor = null;
-        }
-
-        private void digInPlace() {
-            CorrodentServant.this.getNavigation().stop();
-            if (CorrodentServant.this.isInWall()
-                    || CorrodentServant.canDigBlock(CorrodentServant.this.level().getBlockState(CorrodentServant.this.blockPosition()))
-                    || CorrodentServant.canDigBlock(CorrodentServant.this.level().getBlockState(CorrodentServant.this.blockPosition().below()))) {
-                CorrodentServant.this.setDigging(true);
+            LandMoveControl moveControl = CorrodentServant.this.landMoveControl();
+            if (moveControl != null) {
+                moveControl.clearStrafe();
             }
         }
     }
@@ -1283,7 +1350,7 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
                 return false;
             } else if (!this.summonedEntity.isDigging()) {
                 return false;
-            } else if (this.summonedEntity.isAfraid() || this.summonedEntity.regenBurrow || this.summonedEntity.isOwnerSneaking()) {
+            } else if (this.summonedEntity.isAfraid() || this.summonedEntity.isOwnerSneaking()) {
                 return false;
             } else if (this.summonedEntity.distanceToSqr(livingentity) < (double) Mth.square(8.0F)) {
                 return false;
@@ -1305,7 +1372,7 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
                 return false;
             } else if (!this.summonedEntity.isDigging()) {
                 return false;
-            } else if (this.summonedEntity.isAfraid() || this.summonedEntity.regenBurrow || this.summonedEntity.isOwnerSneaking()) {
+            } else if (this.summonedEntity.isAfraid() || this.summonedEntity.isOwnerSneaking()) {
                 return false;
             } else {
                 return this.summonedEntity.distanceToSqr(this.owner) > (double) Mth.square(4.0F);

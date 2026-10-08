@@ -238,25 +238,6 @@ public class BuiltinPacksRegistry {
             }
         }
 
-        if (event.getPackType() == PackType.CLIENT_RESOURCES) {
-            Path packPath = modFile.findResource("resourcepacks/old_textures");
-            if (packPath != null) {
-                event.addRepositorySource(consumer -> {
-                    Pack pack = Pack.readMetaAndCreate(
-                            "goetyominous/old_textures",
-                            Component.literal("GO Old Textures"),
-                            false,
-                            id -> new PathPackResources(id, packPath, true),
-                            PackType.CLIENT_RESOURCES,
-                            Pack.Position.TOP,
-                            PackSource.BUILT_IN
-                    );
-                    if (pack != null) {
-                        consumer.accept(pack);
-                    }
-                });
-            }
-        }
         if (event.getPackType() == PackType.SERVER_DATA && SavageRavageCompat.isSavageRavageLoaded()) {
             Path packPath = modFile.findResource("resourcepacks/sar_compat");
             if (packPath != null) {
