@@ -187,7 +187,7 @@ public class MobsConfig {
     static {
         BUILDER.push("Servant Limits");
 
-        CentipedeLimit = BUILDER.comment("Maximum number of Centipede Servants that can exist at once (Default: 8)")
+        CentipedeLimit = BUILDER.comment("Maximum number of Centipede Servants that can exist at once (Default: 12)")
                 .defineInRange("centipedeLimit", 12, 1, 100);
 
         SkelewagLimit = BUILDER
@@ -604,16 +604,16 @@ public class MobsConfig {
                 .defineInRange("corrodentServantLimit", 16, 1, 100);
 
         DeepOneServantLimit = BUILDER
-                .comment("Maximum number of Deep One Servants that can be summoned (Default: 32)")
-                .defineInRange("deepOneServantLimit", 32, 1, 100);
+                .comment("Maximum number of Deep One Servants that can be summoned (Default: 16)")
+                .defineInRange("deepOneServantLimit", 16, 1, 100);
 
         DeepOneKnightServantLimit = BUILDER
-                .comment("Maximum number of Deep One Knight Servants that can be summoned (Default: 16)")
-                .defineInRange("deepOneKnightServantLimit", 16, 1, 100);
+                .comment("Maximum number of Deep One Knight Servants that can be summoned (Default: 8, same as Goety Cataclysm's Deepling Brute Servant)")
+                .defineInRange("deepOneKnightServantLimit", 8, 1, 100);
 
         DeepOneMageServantLimit = BUILDER
-                .comment("Maximum number of Deep One Mage Servants that can be summoned (Default: 16)")
-                .defineInRange("deepOneMageServantLimit", 16, 1, 100);
+                .comment("Maximum number of Deep One Mage Servants that can be summoned (Default: 6)")
+                .defineInRange("deepOneMageServantLimit", 6, 1, 100);
 
         LicowitchSummonsLife = BUILDER
                 .comment("Whether candy servants a Licowitch Servant summons have a limited lifespan (45~120s); when false they persist until killed, like Goety Necromancer summons with NecromancerSummonsLife off (Default: true)")
