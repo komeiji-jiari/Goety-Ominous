@@ -10,6 +10,7 @@ import com.qiuyue.goetyominous.common.network.ac.ForsakenRiderJumpPacket;
 import com.qiuyue.goetyominous.common.network.ac.NuclearExplosionEffectPacket;
 import com.qiuyue.goetyominous.common.network.mm.RiderChargePacket;
 import com.qiuyue.goetyominous.common.network.ac.NucleeperExplosionZonePacket;
+import com.qiuyue.goetyominous.common.network.ac.ServantAbilityKeyPacket;
 
 public class ModNetwork {
     private static final String PROTOCOL_VERSION = "1";
@@ -71,5 +72,9 @@ public class ModNetwork {
                 WindChargeImpulsePacket::encode,
                 WindChargeImpulsePacket::decode,
                 WindChargeImpulsePacket::handle);
+        CHANNEL.registerMessage(id++, ServantAbilityKeyPacket.class,
+                ServantAbilityKeyPacket::encode,
+                ServantAbilityKeyPacket::decode,
+                ServantAbilityKeyPacket::handle);
     }
 }

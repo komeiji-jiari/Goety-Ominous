@@ -1578,7 +1578,7 @@ public class AttributesConfig {
                 .defineInRange("deepOneKnightServantOrtholanceWaveRange", 8.0, 1.0, 64.0);
         DeepOneKnightServantOrtholanceWaveCount = BUILDER.comment("How many fan wave indexes Deep One Knight Servants fire per Ortholance attack (each index spawns a left + right wave), Default: 4 (=8 waves), Ortholance maxes at 12 (=24 waves)")
                 .defineInRange("deepOneKnightServantOrtholanceWaveCount", 4, 1, 12);
-        DeepOneKnightServantOrtholanceWaveScale = BUILDER.comment("Wave scale of Ortholance waves, Default: 1.0 (matches Ortholance normal waves; scale+4 damage = 5.0)")
+        DeepOneKnightServantOrtholanceWaveScale = BUILDER.comment("Wave scale of Ortholance waves, Default: 1.0 (matches Ortholance normal waves; contact damage ramps from waveScale+2 while travelling to waveScale+4 on impact, so 3.0 to 5.0 at default)")
                 .defineInRange("deepOneKnightServantOrtholanceWaveScale", 1.0, 0.5, 10.0);
         DeepOneMageServantHealth = BUILDER.comment("How much Max Health Deep One Mage Servants have, Default: 80.0 (matches Alex's Caves Deep One Mage)")
                 .defineInRange("deepOneMageServantHealth", 80.0, 1.0, Double.MAX_VALUE);

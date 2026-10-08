@@ -3,10 +3,10 @@ package com.qiuyue.goetyominous.common.entities.projectile.ac;
 import com.Polarice3.Goety.common.entities.projectiles.AbstractWave;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.ModDamageSource;
+import com.github.alexmodguy.alexscaves.client.particle.ACParticleRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -33,14 +33,17 @@ public class DeepOneServantWave extends AbstractWave {
     @Override
     public void tick() {
         super.tick();
-        if (this.tickCount % 5 == 0) {
-            this.playSound(SoundEvents.GENERIC_SWIM, 0.15F, 1.0F);
-        }
         if (this.level().isClientSide) {
-            for (int i = 0; i <= 4; ++i) {
-                float xOffset = (float) i / 4.0F - 0.5F + (this.random.nextFloat() - 0.5F) * 0.2F;
-                this.spawnParticleAt((0.2F + this.random.nextFloat() * 0.2F) * this.getWaveScale(), -0.2F,
-                        xOffset * 1.4F * this.getWaveScale(), ParticleTypes.SPLASH);
+            int particleCount = 0;
+            while ((float) particleCount < this.getWaveScale()) {
+                for (int i = 0; i <= 4; ++i) {
+                    float xOffset = (float) i / 4.0F - 0.5F + (this.random.nextFloat() - 0.5F) * 0.2F;
+                    this.spawnParticleAt((0.2F + this.random.nextFloat() * 0.2F) * this.getWaveScale(), 1.2F,
+                            xOffset * 1.2F * this.getWaveScale(), ACParticleRegistry.WATER_FOAM.get());
+                    this.spawnParticleAt((0.2F + this.random.nextFloat() * 0.2F) * this.getWaveScale(), -0.2F,
+                            xOffset * 1.4F * this.getWaveScale(), ParticleTypes.SPLASH);
+                }
+                ++particleCount;
             }
         }
     }
@@ -82,7 +85,7 @@ public class DeepOneServantWave extends AbstractWave {
             Entity waveOwner = this.getOwner() != null ? this.getOwner() : this;
             if (!waveOwner.isAlliedTo(entity) && !entity.isAlliedTo(waveOwner)
                     && !MobUtil.areAllies(entity, waveOwner)) {
-                float damage = (this.scaleBasedDamage ? scale + 1.0F : 5.0F) + this.getExtraDamage();
+                float damage = scale + 1.0F + this.getExtraDamage();
                 entity.hurt(source, damage);
                 this.setSlamming(true);
                 entity.knockback(0.1D + 0.5D * scale,
