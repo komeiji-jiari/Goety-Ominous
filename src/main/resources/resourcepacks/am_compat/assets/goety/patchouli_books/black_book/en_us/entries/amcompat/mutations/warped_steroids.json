@@ -2,7 +2,7 @@
   "name": "Warped Steroids",
   "icon": "goetyominous:warped_steroids",
   "category": "goety:amcompat/mutations",
-  "sortnum": 10,
+  "sortnum": 7,
   "pages": [
     {
       "type": "patchouli:text",

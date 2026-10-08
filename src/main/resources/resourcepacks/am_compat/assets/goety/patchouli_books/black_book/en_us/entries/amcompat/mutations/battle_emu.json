@@ -1,8 +1,8 @@
 {
   "name": "Battle Emu",
   "icon": "alexsmobs:emu_feather",
-  "category": "goety:amcompat/summons",
-  "sortnum": 10,
+  "category": "goety:amcompat/mutations",
+  "sortnum": 1,
   "pages": [
     {
       "type": "patchouli:text",

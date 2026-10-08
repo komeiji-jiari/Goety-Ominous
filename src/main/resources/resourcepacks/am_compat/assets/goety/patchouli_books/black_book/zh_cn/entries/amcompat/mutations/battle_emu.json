@@ -1,8 +1,8 @@
 {
   "name": "战斗鸸鹋",
   "icon": "alexsmobs:emu_feather",
-  "category": "goety:amcompat/summons",
-  "sortnum": 10,
+  "category": "goety:amcompat/mutations",
+  "sortnum": 1,
   "pages": [
     {
       "type": "patchouli:text",

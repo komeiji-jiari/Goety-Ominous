@@ -2,7 +2,7 @@
   "name": "诡异蚊鬼仆从",
   "icon": "alexsmobs:hemolymph_sac",
   "category": "goety:amcompat/mutations",
-  "sortnum": 20,
+  "sortnum": 6,
   "pages": [
     {
       "type": "patchouli:text",

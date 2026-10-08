@@ -2,7 +2,7 @@
   "name": "Zombie Crocodile",
   "icon": "alexsmobs:crocodile_scute",
   "category": "goety:amcompat/mutations",
-  "sortnum": 50,
+  "sortnum": 3,
   "pages": [
     {
       "type": "patchouli:text",
