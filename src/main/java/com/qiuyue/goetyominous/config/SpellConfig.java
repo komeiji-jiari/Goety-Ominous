@@ -348,7 +348,7 @@ public class SpellConfig {
         BUILDER.pop();
 
         BUILDER.push("Trembler");
-        TremblerSoulCost = BUILDER.comment("Soul cost of Trembler Servant spell (Default: 36)")
+        TremblerSoulCost = BUILDER.comment("Soul cost of Trembler Servant spell (Default: 32)")
                 .defineInRange("tremblerSoulCost", 32, 1, 128);
         TremblerCastDuration = BUILDER.comment("Cast duration of Trembler Servant spell in ticks (Default: 120)")
                 .defineInRange("tremblerCastDuration", 120, 0, 500);

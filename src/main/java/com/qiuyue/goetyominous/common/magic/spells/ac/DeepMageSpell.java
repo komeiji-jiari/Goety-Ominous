@@ -70,7 +70,7 @@ public class DeepMageSpell extends SummonSpell {
     }
 
     public int summonLimit() {
-        return MobsConfig.DeepOneServantLimit.get();
+        return MobsConfig.DeepOneMageServantLimit.get();
     }
 
     public void commonResult(ServerLevel worldIn, LivingEntity caster) {
