@@ -2,7 +2,7 @@
   "name": "灾厄战象",
   "icon": "alexsmobs:acacia_blossom",
   "category": "goety:amcompat/mutations",
-  "sortnum": 40,
+  "sortnum": 4,
   "pages": [
     {
       "type": "patchouli:text",

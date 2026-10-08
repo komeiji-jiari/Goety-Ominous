@@ -1,8 +1,8 @@
 {
   "name": "Tusklin Servant",
   "icon": "goety:savage_tooth",
-  "category": "goety:amcompat/summons",
-  "sortnum": 130,
+  "category": "goety:amcompat/mutations",
+  "sortnum": 2,
   "pages": [
     {
       "type": "patchouli:text",

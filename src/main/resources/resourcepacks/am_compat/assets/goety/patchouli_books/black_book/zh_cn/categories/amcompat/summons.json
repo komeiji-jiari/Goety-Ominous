@@ -1,7 +1,7 @@
 {
   "name": "召唤",
   "description": "为更黑暗的巫师带来更多仆从。",
-  "icon": "alexsmobs:unsettling_kimono",
+  "icon": "alexsmobs:rocky_shell",
   "parent": "goety:amcompat",
   "sortnum": 3
 }
