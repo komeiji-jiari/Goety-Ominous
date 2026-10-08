@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "goetyominous:copper_door",
+    "goetyominous:exposed_copper_door",
+    "goetyominous:weathered_copper_door",
+    "goetyominous:oxidized_copper_door",
+    "goetyominous:waxed_copper_door",
+    "goetyominous:waxed_exposed_copper_door",
+    "goetyominous:waxed_weathered_copper_door",
+    "goetyominous:waxed_oxidized_copper_door"
+  ]
+}
