@@ -266,6 +266,9 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> EmuServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> EmuServantMovementSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> EmuServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> SoulVultureServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> SoulVultureServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> SoulVultureServantFollowRange;
 
     public static final ForgeConfigSpec.ConfigValue<Double> RockyRollerServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> RockyRollerServantDamage;
@@ -1646,6 +1649,12 @@ public class AttributesConfig {
                 .defineInRange("emuServantMovementSpeed", 0.35, 0.0, Double.MAX_VALUE);
         EmuServantFollowRange = BUILDER.comment("How much following/detection range Emu Servants have, Default: 32.0")
                 .defineInRange("emuServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
+        SoulVultureServantHealth = BUILDER.comment("How much Max Health Soul Vulture Servants have, Default: 12.0 (matches Alex's Mobs soul vulture)")
+                .defineInRange("soulVultureServantHealth", 12.0, 1.0, Double.MAX_VALUE);
+        SoulVultureServantDamage = BUILDER.comment("How much damage Soul Vulture Servants deal, Default: 4.0 (matches Alex's Mobs soul vulture)")
+                .defineInRange("soulVultureServantDamage", 4.0, 1.0, Double.MAX_VALUE);
+        SoulVultureServantFollowRange = BUILDER.comment("How much following/detection range Soul Vulture Servants have, Default: 18.0 (matches Alex's Mobs soul vulture)")
+                .defineInRange("soulVultureServantFollowRange", 18.0, 0.0, Double.MAX_VALUE);
         RockyRollerServantHealth = BUILDER.comment("How much Max Health Rocky Roller Servants have, Default: 10.0 (matches Alex's Mobs rocky roller)")
                 .defineInRange("rockyRollerServantHealth", 10.0, 1.0, Double.MAX_VALUE);
         RockyRollerServantDamage = BUILDER.comment("How much damage Rocky Roller Servants deal, Default: 2.0 (matches Alex's Mobs rocky roller)")

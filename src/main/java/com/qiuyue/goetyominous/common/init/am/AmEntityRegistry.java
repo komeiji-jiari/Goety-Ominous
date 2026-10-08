@@ -184,6 +184,16 @@ public class AmEntityRegistry {
                             .setTrackingRange(10)
                             .build(GoetyOminous.MOD_ID + ":emu_servant"));
 
+    public static final RegistryObject<EntityType<SoulVultureServant>> SOUL_VULTURE_SERVANT =
+            AM_ENTITIES.register("soul_vulture_servant",
+                    () -> EntityType.Builder.<SoulVultureServant>of((type, worldIn) -> new SoulVultureServant(type, worldIn), MobCategory.MISC)
+                            .sized(0.9F, 1.3F)
+                            .fireImmune()
+                            .setShouldReceiveVelocityUpdates(true)
+                            .setUpdateInterval(1)
+                            .setTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":soul_vulture_servant"));
+
     public static final RegistryObject<EntityType<IceShard>> ICE_SHARD =
             AM_ENTITIES.register("ice_shard",
                     () -> EntityType.Builder.<IceShard>of((type, worldIn) -> new IceShard(type, worldIn), MobCategory.MISC)

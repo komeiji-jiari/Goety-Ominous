@@ -30,6 +30,10 @@
       "id": "goetyominous:dicer_servant",
       "required": false
     },
+    {
+      "id": "goetyominous:soul_vulture_servant",
+      "required": false
+    },
     "goetyominous:returned",
     "goetyominous:agony"
   ]

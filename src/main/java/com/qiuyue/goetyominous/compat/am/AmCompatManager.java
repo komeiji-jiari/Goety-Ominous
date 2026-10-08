@@ -31,6 +31,7 @@ public class AmCompatManager {
         event.put(AmEntityRegistry.DROPBEAR_SERVANT.get(), DropBearServant.setCustomAttributes().build());
         event.put(AmEntityRegistry.GUSTER_SERVANT.get(), GusterServant.setCustomAttributes().build());
         event.put(AmEntityRegistry.EMU_SERVANT.get(), EmuServant.setCustomAttributes().build());
+        event.put(AmEntityRegistry.SOUL_VULTURE_SERVANT.get(), SoulVultureServant.setCustomAttributes().build());
         event.put(AmEntityRegistry.SERVANT_CENTIPEDE_HEAD.get(), ServantCentipedeHead.bakeAttributes().build());
         event.put(AmEntityRegistry.SERVANT_CENTIPEDE_BODY.get(), ServantCentipedeBody.bakeAttributes().build());
         event.put(AmEntityRegistry.SERVANT_CENTIPEDE_TAIL.get(), ServantCentipedeBody.bakeAttributes().build());

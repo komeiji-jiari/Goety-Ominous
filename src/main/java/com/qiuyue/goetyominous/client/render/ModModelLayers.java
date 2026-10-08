@@ -1063,6 +1063,10 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.client.render.am.RenderEmuServant::new);
 
             event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.SOUL_VULTURE_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.am.RenderSoulVultureServant::new);
+
+            event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.SERVANT_CENTIPEDE_HEAD.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderServantCentipedeHead::new);
 
