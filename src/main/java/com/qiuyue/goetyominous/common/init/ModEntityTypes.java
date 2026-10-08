@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.init;
 
+import com.qiuyue.goetyominous.common.blocks.trial.OminousItemSpawner;
 import com.qiuyue.goetyominous.common.entities.ally.ias.*;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.*;
 
@@ -338,6 +339,13 @@ public class ModEntityTypes {
                     .updateInterval(20)
                     .build(MOD_ID + ":pitchfork"));
 
+    public static final RegistryObject<EntityType<WindCharge>> WIND_CHARGE = ENTITY_TYPES.register("wind_charge",
+            () -> EntityType.Builder.<WindCharge>of(WindCharge::new, MobCategory.MISC)
+                    .sized(0.3125F, 0.3125F)
+                    .clientTrackingRange(4)
+                    .updateInterval(10)
+                    .build(MOD_ID + ":wind_charge"));
+
     public static final RegistryObject<EntityType<ServantWindCharge>> SERVANT_WIND_CHARGE = ENTITY_TYPES.register("servant_wind_charge",
             () -> EntityType.Builder.<ServantWindCharge>of(ServantWindCharge::new, MobCategory.MISC)
                     .sized(0.3125F, 0.3125F)
@@ -487,6 +495,13 @@ public class ModEntityTypes {
                     .sized(0.6F, 0.85F)
                     .clientTrackingRange(8)
                     .build(MOD_ID + ":swamp_wolf"));
+
+    public static final RegistryObject<EntityType<OminousItemSpawner>> OMINOUS_ITEM_SPAWNER = ENTITY_TYPES.register(
+            "ominous_item_spawner",
+            () -> EntityType.Builder.<OminousItemSpawner>of(OminousItemSpawner::new, MobCategory.MISC)
+                    .sized(0.25F, 0.25F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":ominous_item_spawner"));
 
     public static void register(IEventBus modEventBus) {
         ENTITY_TYPES.register(modEventBus);

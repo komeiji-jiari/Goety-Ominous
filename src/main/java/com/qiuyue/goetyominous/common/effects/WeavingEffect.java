@@ -51,6 +51,7 @@ public class WeavingEffect extends MobEffect {
         }
         for (BlockPos cobweb : cobwebs) {
             level.setBlock(cobweb, Blocks.COBWEB.defaultBlockState(), 3);
+            level.levelEvent(3018, cobweb, 0);
         }
     }
 }

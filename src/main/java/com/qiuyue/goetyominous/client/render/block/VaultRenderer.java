@@ -61,7 +61,7 @@ public class VaultRenderer implements BlockEntityRenderer<VaultBlockEntity> {
         return stack.isEmpty() ? 187 : Item.getId(stack.getItem()) + stack.getDamageValue();
     }
 
-    private static void renderMultipleFromCount(ItemRenderer itemRenderer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, ItemStack itemStack, RandomSource random, Level level) {
+    public static void renderMultipleFromCount(ItemRenderer itemRenderer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, ItemStack itemStack, RandomSource random, Level level) {
         BakedModel model = itemRenderer.getModel(itemStack, level, null, 0);
         renderMultipleFromCount(itemRenderer, poseStack, bufferSource, packedLight, itemStack, model, model.isGui3d(), random);
     }

@@ -5,6 +5,7 @@ import com.qiuyue.goetyominous.common.blocks.PiglinMerchantSpawnerBlockEntity;
 import com.qiuyue.goetyominous.common.blocks.entities.PlushieBlockEntity;
 import com.qiuyue.goetyominous.common.blocks.entities.WolfTotemBlockEntity;
 import com.qiuyue.goetyominous.common.blocks.trial.TrialBlocks;
+import com.qiuyue.goetyominous.common.blocks.trial.TrialSpawnerBlockEntity;
 import com.qiuyue.goetyominous.common.blocks.trial.VaultBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -21,6 +22,12 @@ public class ModBlockEntities {
                     () -> BlockEntityType.Builder.of(
                             VaultBlockEntity::new,
                             TrialBlocks.VAULT.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TrialSpawnerBlockEntity>> TRIAL_SPAWNER =
+            BLOCK_ENTITIES.register("trial_spawner",
+                    () -> BlockEntityType.Builder.of(
+                            TrialSpawnerBlockEntity::new,
+                            TrialBlocks.TRIAL_SPAWNER.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<PiglinMerchantSpawnerBlockEntity>> PIGLIN_MERCHANT_SPAWNER =
             BLOCK_ENTITIES.register("piglin_merchant_spawner",

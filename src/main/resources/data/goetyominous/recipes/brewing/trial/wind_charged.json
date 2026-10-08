@@ -1,0 +1,10 @@
+{
+  "type": "goety:brewing",
+  "ingredient": {
+    "item": "goetyominous:breeze_rod"
+  },
+  "effect": "goetyominous:wind_charged",
+  "soulCost": 25,
+  "capacityExtra": 0,
+  "duration": 3600
+}

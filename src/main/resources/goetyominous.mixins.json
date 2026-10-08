@@ -13,6 +13,7 @@
     "BerserkFungusMixin",
     "RaidMixin",
     "SpiderEggMixin",
+    "SpawnEggItemMixin",
     "RitualMixin",
     "RitualRequirementsMixin",
     "mm.MutantMoreItemMixin",
@@ -80,7 +81,9 @@
     "MaceLevelRendererMixin",
     "TrialOmenLevelRendererMixin",
     "VaultLevelRendererMixin",
-    "ModEffectParticleMixin"
+    "WeavingLevelRendererMixin",
+    "ModEffectParticleMixin",
+    "TrialSpawnerLevelRendererMixin"
   ],
   "server": [],
   "injectors": {

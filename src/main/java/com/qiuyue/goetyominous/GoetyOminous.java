@@ -99,6 +99,7 @@ public class GoetyOminous {
         ModSounds.init();
         ModParticleTypes.init();
         ModEffects.init();
+        ModPotions.init();
         ModBannerPatterns.init();
         ModLootFunctions.register(modEventBus);
         ModEnchantments.init();
@@ -198,7 +199,6 @@ public class GoetyOminous {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         new CuriosIntegration().setup(event);
-
         if (AlexCavesCompat.isAlexCavesLoaded() && PatchouliCompat.isLoaded()) {
             com.qiuyue.goetyominous.compat.ac.GoetyOminousPatchouliIntegration.setup(event);
         }
@@ -212,7 +212,40 @@ public class GoetyOminous {
                             new net.minecraft.world.item.ItemStack(
                                     com.qiuyue.goetyominous.common.items.ModItems.ACID_FUNGUS.get())
                     ));
+            net.minecraftforge.common.brewing.BrewingRecipeRegistry.addRecipe(
+                    new com.Polarice3.Goety.utils.ModPotionUtil(
+                            com.Polarice3.Goety.utils.ModPotionUtil.setPotion(
+                                    net.minecraft.world.item.alchemy.Potions.AWKWARD),
+                            net.minecraft.world.item.crafting.Ingredient.of(
+                                    com.qiuyue.goetyominous.common.items.ModItems.BREEZE_ROD.get()),
+                            com.Polarice3.Goety.utils.ModPotionUtil.setPotion(
+                                    ModPotions.WIND_CHARGED.get())));
+            net.minecraftforge.common.brewing.BrewingRecipeRegistry.addRecipe(
+                    new com.Polarice3.Goety.utils.ModPotionUtil(
+                            com.Polarice3.Goety.utils.ModPotionUtil.setPotion(
+                                    net.minecraft.world.item.alchemy.Potions.AWKWARD),
+                            net.minecraft.world.item.crafting.Ingredient.of(
+                                    net.minecraft.world.item.Items.SLIME_BLOCK),
+                            com.Polarice3.Goety.utils.ModPotionUtil.setPotion(
+                                    ModPotions.OOZING.get())));
+            net.minecraftforge.common.brewing.BrewingRecipeRegistry.addRecipe(
+                    new com.Polarice3.Goety.utils.ModPotionUtil(
+                            com.Polarice3.Goety.utils.ModPotionUtil.setPotion(
+                                    net.minecraft.world.item.alchemy.Potions.AWKWARD),
+                            net.minecraft.world.item.crafting.Ingredient.of(
+                                    net.minecraft.world.item.Items.STONE),
+                            com.Polarice3.Goety.utils.ModPotionUtil.setPotion(
+                                    ModPotions.INFESTED.get())));
+            net.minecraftforge.common.brewing.BrewingRecipeRegistry.addRecipe(
+                    new com.Polarice3.Goety.utils.ModPotionUtil(
+                            com.Polarice3.Goety.utils.ModPotionUtil.setPotion(
+                                    net.minecraft.world.item.alchemy.Potions.AWKWARD),
+                            net.minecraft.world.item.crafting.Ingredient.of(
+                                    net.minecraft.world.item.Items.COBWEB),
+                            com.Polarice3.Goety.utils.ModPotionUtil.setPotion(
+                                    ModPotions.WEAVING.get())));
         });
+
         SpawnPlacements.register(ModEntityTypes.DREDEN.get(), SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 (type, level, spawnType, pos, random) ->
