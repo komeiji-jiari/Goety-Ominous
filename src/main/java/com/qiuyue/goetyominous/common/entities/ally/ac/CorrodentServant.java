@@ -4,6 +4,7 @@ import com.Polarice3.Goety.api.entities.ally.IServant;
 import com.Polarice3.Goety.common.entities.ai.SummonTargetGoal;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.init.ModMobType;
+import com.github.alexmodguy.alexscaves.AlexsCaves;
 import com.github.alexmodguy.alexscaves.server.entity.ai.GroundPathNavigatorNoSpin;
 import com.github.alexmodguy.alexscaves.server.misc.ACMath;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
@@ -13,6 +14,8 @@ import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.server.entity.collision.ICustomCollisions;
 import com.qiuyue.goetyominous.client.sound.ac.CorrodentServantDigSoundHandler;
+import com.qiuyue.goetyominous.common.network.ModNetwork;
+import com.qiuyue.goetyominous.common.network.ac.ServantAbilityKeyPacket;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
@@ -42,7 +45,6 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
@@ -71,7 +73,8 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
     public static final int EMERGE_LIGHT_THRESHOLD = 4;
     public static final int LIGHT_DIRECTION_MARGIN = 2;
     public static final int DIG_SEEK_DEPTH = 3;
-    public static final int PANIC_DIG_TIME = 100;
+    public static final int PANIC_DIG_TIME = 60;
+    public static final int EMERGE_REQUEST_WINDOW = 100;
     public static final Animation ANIMATION_BITE = Animation.create(15);
 
     private static final EntityDataAccessor<Boolean> DIGGING = SynchedEntityData.defineId(CorrodentServant.class, EntityDataSerializers.BOOLEAN);
@@ -85,6 +88,7 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
     private int trailPointer = -1;
     private float prevDigPitch = 0.0F;
     private float fakeYRot = 0.0F;
+    private float fakeDigPitch = 0.0F;
     private float fearProgress;
     private float prevFearProgress;
     private float digProgress;
@@ -97,6 +101,8 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
     private int surfaceCooldown = 0;
     private boolean prevDigging = false;
     private boolean noFallDamageOnSurface = false;
+    private boolean prevAbilityKeyDown = false;
+    private int emergeRequestTicks = 0;
     private Vec3 surfacePosition;
     private Vec3 prevSurfacePosition;
     private Animation currentAnimation;
@@ -139,6 +145,7 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
         this.goalSelector.addGoal(1, new CorrodentFearLightGoal());
         this.goalSelector.addGoal(2, new CorrodentAttackGoal());
         this.goalSelector.addGoal(2, new CorrodentDigFollowOwnerGoal());
+        this.goalSelector.addGoal(2, new CorrodentDigRandomlyGoal());
         this.goalSelector.addGoal(7, new RandomStrollGoal(this, 1.0D, 20) {
             @Override
             public boolean canUse() {
@@ -209,15 +216,21 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
             this.fearProgress -= 1.0F;
         }
         if (!this.level().isClientSide) {
+            LivingEntity commandOwner = this.getTrueOwner();
+            if (commandOwner == null || !commandOwner.isAlive()) {
+                this.emergeRequestTicks = 0;
+            } else if (this.emergeRequestTicks > 0) {
+                --this.emergeRequestTicks;
+            }
             boolean startDigging = !this.prevDigging && this.isDigging();
             if (this.prevDigging && !this.isDigging()) {
                 this.noFallDamageOnSurface = true;
             }
             this.prevDigging = this.isDigging();
-            if (this.lightHide && (!this.isDigging() || this.isCommanded() || this.isOwnerSneaking() || this.isStaying() || this.getTrueOwner() == null)) {
+            if (this.lightHide && (!this.isDigging() || this.isCommanded() || this.hasOwnerEmergeRequest() || this.isStaying() || this.getTrueOwner() == null)) {
                 this.lightHide = false;
             }
-            if (this.panicHide && (!this.isDigging() || this.isCommanded() || this.isOwnerSneaking() || this.isStaying())) {
+            if (this.panicHide && (!this.isDigging() || this.isCommanded() || this.hasOwnerEmergeRequest() || this.isStaying())) {
                 this.panicHide = false;
             }
             if (startDigging && this.isInLight() && this.surfaceCooldown <= 0 && this.isFollowing()
@@ -239,7 +252,7 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
                     this.level().broadcastEntityEvent(this, (byte) 77);
                     this.setDigPitch(90.0F);
                 }
-                if (this.isOwnerSneaking() && this.getTarget() == null) {
+                if (this.hasOwnerEmergeRequest() && this.getTarget() == null) {
                     this.surfaceCooldown = 80;
                     if (this.isInWall()) {
                         this.nudgeUp(0.25F);
@@ -329,8 +342,17 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
                 }
                 this.setNoGravity(false);
             }
-        } else if (this.isDigging() && this.isAlive()) {
-            CorrodentServantDigSoundHandler.startDigFor(this);
+        } else {
+            if (this.isDigging() && this.isAlive()) {
+                CorrodentServantDigSoundHandler.startDigFor(this);
+            }
+            Player localPlayer = AlexsCaves.PROXY.getClientSidePlayer();
+            boolean abilityKeyDown = localPlayer != null && localPlayer.getUUID().equals(this.getOwnerId())
+                    && AlexsCaves.PROXY.isKeyDown(2);
+            if (abilityKeyDown && !this.prevAbilityKeyDown) {
+                ModNetwork.CHANNEL.sendToServer(new ServantAbilityKeyPacket(this.getId()));
+            }
+            this.prevAbilityKeyDown = abilityKeyDown;
         }
         this.prevSurfacePosition = this.surfacePosition;
         if (this.isMoving() || this.surfacePosition == null) {
@@ -389,9 +411,12 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
         }
     }
 
-    private boolean isOwnerSneaking() {
-        LivingEntity owner = this.getTrueOwner();
-        return owner != null && owner.isShiftKeyDown();
+    public boolean hasOwnerEmergeRequest() {
+        return this.emergeRequestTicks > 0;
+    }
+
+    public void requestEmerge() {
+        this.emergeRequestTicks = EMERGE_REQUEST_WINDOW;
     }
 
     private void nudgeUp(float amount) {
@@ -446,16 +471,18 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
         float digPitch = this.getDigPitch();
         if (this.trailPointer == -1) {
             this.fakeYRot = this.yBodyRot;
+            this.fakeDigPitch = digPitch;
             for (int i = 0; i < this.trailTransformations.length; ++i) {
                 this.trailTransformations[i][0] = digPitch;
                 this.trailTransformations[i][1] = this.fakeYRot;
             }
         }
         this.fakeYRot = Mth.approachDegrees(this.fakeYRot, this.yBodyRot, 10.0F);
+        this.fakeDigPitch = Mth.approachDegrees(this.fakeDigPitch, digPitch, 15.0F);
         if (++this.trailPointer == this.trailTransformations.length) {
             this.trailPointer = 0;
         }
-        this.trailTransformations[this.trailPointer][0] = digPitch;
+        this.trailTransformations[this.trailPointer][0] = this.fakeDigPitch;
         this.trailTransformations[this.trailPointer][1] = this.fakeYRot;
 
         Vec3[] avector3d = new Vec3[this.allParts.length];
@@ -477,13 +504,6 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
     public boolean isMoving() {
         float f = (float) Mth.length(this.getX() - this.xo, this.getY() - this.yo, this.getZ() - this.zo);
         return f > 0.1F;
-    }
-
-    @Override
-    public void calculateEntityAnimation(boolean flying) {
-        float f1 = (float) Mth.length(this.getX() - this.xo, flying || this.isDigging() ? this.getY() - this.yo : 0, this.getZ() - this.zo);
-        float f2 = Math.min(f1 * 8.0F, 1.0F);
-        this.walkAnimation.update(f2, 0.4F);
     }
 
     public float getDigPitch(float partialTick) {
@@ -1101,7 +1121,6 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
     }
 
     private class CorrodentFearLightGoal extends Goal {
-        private Vec3 retreatTo = null;
         private int panicTime = 0;
 
         public CorrodentFearLightGoal() {
@@ -1113,7 +1132,7 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
             return CorrodentServant.this.isInLight()
                     && !CorrodentServant.this.isDigging()
                     && !CorrodentServant.this.isStaying()
-                    && !CorrodentServant.this.isOwnerSneaking();
+                    && !CorrodentServant.this.hasOwnerEmergeRequest();
         }
 
         @Override
@@ -1140,27 +1159,10 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
                 CorrodentServant.this.setDigging(true);
                 return;
             }
-            if (this.retreatTo == null || CorrodentServant.this.distanceToSqr(this.retreatTo) < 6.0D) {
-                this.retreatTo = null;
-                for (int i = 0; i < 15; ++i) {
-                    Vec3 vec3 = DefaultRandomPos.getPosAway(CorrodentServant.this, 30, 15, CorrodentServant.this.position());
-                    if (vec3 == null || lightAt(CorrodentServant.this.level(), BlockPos.containing(vec3)) >= LIGHT_THRESHOLD) {
-                        continue;
-                    }
-                    this.retreatTo = vec3;
-                    break;
-                }
-            }
             CorrodentServant.this.setAfraid(true);
             CorrodentServant.this.getNavigation().stop();
             CorrodentServant.this.faceLightSource();
             LandMoveControl moveControl = CorrodentServant.this.landMoveControl();
-            if (this.retreatTo == null) {
-                if (moveControl != null) {
-                    moveControl.clearStrafe();
-                }
-                return;
-            }
             if (moveControl != null) {
                 moveControl.setFearStrafe(true);
             }
@@ -1169,7 +1171,7 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
         @Override
         public void stop() {
             CorrodentServant.this.setAfraid(false);
-            if (CorrodentServant.this.onGround() && !CorrodentServant.this.isOwnerSneaking()
+            if (CorrodentServant.this.onGround() && !CorrodentServant.this.hasOwnerEmergeRequest()
                     && canDigBlock(CorrodentServant.this.level().getBlockState(CorrodentServant.this.blockPosition().below()))) {
                 CorrodentServant.this.fleeLightFor = 50;
                 CorrodentServant.this.setDigging(true);
@@ -1178,6 +1180,106 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
             if (moveControl != null) {
                 moveControl.clearStrafe();
             }
+        }
+    }
+
+    private class CorrodentDigRandomlyGoal extends Goal {
+        private double x;
+        private double y;
+        private double z;
+        private boolean surface = false;
+
+        public CorrodentDigRandomlyGoal() {
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+        }
+
+        @Override
+        public boolean canUse() {
+            if (CorrodentServant.this.isVehicle() || CorrodentServant.this.getTarget() != null && CorrodentServant.this.getTarget().isAlive()
+                    || CorrodentServant.this.isPassenger() || !CorrodentServant.this.isDigging() && !CorrodentServant.this.onGround() && !CorrodentServant.this.isInWall()) {
+                return false;
+            }
+            if (!CorrodentServant.this.isFollowing() || CorrodentServant.this.isStaying() || CorrodentServant.this.isGuardingArea()
+                    || CorrodentServant.this.isCommanded() || CorrodentServant.this.getTrueOwner() == null
+                    || CorrodentServant.this.surfaceCooldown > 0) {
+                return false;
+            }
+            if (!CorrodentServant.this.isDigging() && !CorrodentServant.this.isInWall() && CorrodentServant.this.getRandom().nextInt(20) != 0) {
+                return false;
+            }
+            if (CorrodentServant.this.isDigging() && CorrodentServant.this.timeDigging > 300) {
+                this.surface = true;
+            }
+            if (CorrodentServant.this.fleeLightFor > 0 || CorrodentServant.this.isAfraid()
+                    || CorrodentServant.this.lightHide || CorrodentServant.this.panicHide
+                    || CorrodentServant.this.hasOwnerEmergeRequest()) {
+                return false;
+            }
+            Vec3 target = this.generatePosition();
+            if (target == null) {
+                return false;
+            }
+            this.x = target.x;
+            this.y = target.y;
+            this.z = target.z;
+            return true;
+        }
+
+        @Override
+        public void start() {
+            CorrodentServant.this.setDigging(true);
+            CorrodentServant.this.getNavigation().moveTo(this.x, this.y, this.z, 1.0);
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return !CorrodentServant.this.getNavigation().isDone() && !CorrodentServant.this.getNavigation().isStuck()
+                    && CorrodentServant.this.isDigging()
+                    && CorrodentServant.this.isFollowing() && !CorrodentServant.this.isCommanded()
+                    && CorrodentServant.this.fleeLightFor <= 0 && !CorrodentServant.this.isAfraid()
+                    && !CorrodentServant.this.lightHide && !CorrodentServant.this.panicHide
+                    && !CorrodentServant.this.hasOwnerEmergeRequest();
+        }
+
+        @Override
+        public void tick() {
+            if (this.surface && CorrodentServant.this.distanceToSqr(this.x, this.y, this.z) < 4.0) {
+                CorrodentServant.this.setDigging(false);
+            }
+        }
+
+        @Override
+        public void stop() {
+            this.surface = false;
+            CorrodentServant.this.getNavigation().stop();
+        }
+
+        private Vec3 generatePosition() {
+            BlockPos.MutableBlockPos check = new BlockPos.MutableBlockPos();
+            for (int i = 0; i < 20; ++i) {
+                check.move(CorrodentServant.this.blockPosition());
+                check.move(CorrodentServant.this.getRandom().nextInt(32) - 16, CorrodentServant.this.getRandom().nextInt(32) - 16, CorrodentServant.this.getRandom().nextInt(32) - 16);
+                if (check.getY() < CorrodentServant.this.level().getMinBuildHeight() || !CorrodentServant.this.level().isLoaded(check)) {
+                    break;
+                }
+                if (this.surface) {
+                    while (!CorrodentServant.this.level().isEmptyBlock(check) && check.getY() < CorrodentServant.this.level().getMaxBuildHeight()) {
+                        check.move(0, 1, 0);
+                    }
+                    if (!CorrodentServant.this.level().isEmptyBlock(check)) {
+                        continue;
+                    }
+                    return check.immutable().getCenter();
+                }
+                while (CorrodentServant.this.level().isEmptyBlock(check) && check.getY() > CorrodentServant.this.level().getMinBuildHeight() - 1) {
+                    check.move(0, -1, 0);
+                }
+                if (!CorrodentServant.isSafeDig(CorrodentServant.this.level(), check.immutable()) || !CorrodentServant.this.canReach(check)) {
+                    continue;
+                }
+                return Vec3.atCenterOf(check.immutable());
+            }
+            return null;
         }
     }
 
@@ -1350,7 +1452,7 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
                 return false;
             } else if (!this.summonedEntity.isDigging()) {
                 return false;
-            } else if (this.summonedEntity.isAfraid() || this.summonedEntity.isOwnerSneaking()) {
+            } else if (this.summonedEntity.isAfraid() || this.summonedEntity.hasOwnerEmergeRequest()) {
                 return false;
             } else if (this.summonedEntity.distanceToSqr(livingentity) < (double) Mth.square(8.0F)) {
                 return false;
@@ -1372,7 +1474,7 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
                 return false;
             } else if (!this.summonedEntity.isDigging()) {
                 return false;
-            } else if (this.summonedEntity.isAfraid() || this.summonedEntity.isOwnerSneaking()) {
+            } else if (this.summonedEntity.isAfraid() || this.summonedEntity.hasOwnerEmergeRequest()) {
                 return false;
             } else {
                 return this.summonedEntity.distanceToSqr(this.owner) > (double) Mth.square(4.0F);

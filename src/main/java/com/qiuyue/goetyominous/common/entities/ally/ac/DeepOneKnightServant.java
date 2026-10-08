@@ -402,6 +402,7 @@ public class DeepOneKnightServant extends Summoned implements IDeepOneBarterer, 
         }
         double distance = this.distanceTo(target);
         float f = this.getBbWidth() + target.getBbWidth();
+        boolean inMeleeRange = distance < (double) f + 1.0F;
         boolean meleeOnly = this.getItemInHand(InteractionHand.MAIN_HAND).is(ACItemRegistry.ORTHOLANCE.get());
         boolean hasTrident = this.getItemInHand(InteractionHand.MAIN_HAND).is(Items.TRIDENT);
         if (hasTrident) {
@@ -414,13 +415,13 @@ public class DeepOneKnightServant extends Summoned implements IDeepOneBarterer, 
                         this.throwTrident(target);
                         this.throwCooldown = 20;
                     }
-                } else {
+                } else if (!inMeleeRange) {
                     this.getNavigation().moveTo(target, 1.2);
                 }
-            } else {
+            } else if (!inMeleeRange) {
                 this.getNavigation().moveTo(target, 1.2);
             }
-            if (distance < (double) f + 1.0F && this.getAnimation() == IAnimatedEntity.NO_ANIMATION) {
+            if (inMeleeRange && this.getAnimation() == IAnimatedEntity.NO_ANIMATION) {
                 this.setAnimation(this.getRandom().nextBoolean() ? ANIMATION_SCRATCH : ANIMATION_BITE);
                 this.playSound(ACSoundRegistry.DEEP_ONE_KNIGHT_ATTACK.get());
             }
@@ -435,10 +436,10 @@ public class DeepOneKnightServant extends Summoned implements IDeepOneBarterer, 
                 this.performOrtholanceWaveAttack(target);
                 this.comboCooldown = AttributesConfig.DeepOneKnightServantOrtholanceWaveCooldown.get();
                 this.dashPending = true;
-            } else {
+            } else if (!inMeleeRange) {
                 this.getNavigation().moveTo(target, 1.2);
             }
-            if (distance < (double) f + 1.0F && this.getAnimation() == IAnimatedEntity.NO_ANIMATION) {
+            if (inMeleeRange && this.getAnimation() == IAnimatedEntity.NO_ANIMATION) {
                 this.setAnimation(this.getRandom().nextBoolean() ? ANIMATION_SCRATCH : ANIMATION_BITE);
                 this.playSound(ACSoundRegistry.DEEP_ONE_KNIGHT_ATTACK.get());
             }
