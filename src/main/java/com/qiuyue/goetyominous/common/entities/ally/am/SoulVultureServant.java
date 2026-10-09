@@ -1,8 +1,12 @@
 package com.qiuyue.goetyominous.common.entities.ally.am;
 
+import com.Polarice3.Goety.api.entities.IOwned;
+import com.Polarice3.Goety.common.entities.ai.SummonTargetGoal;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
+import com.Polarice3.Goety.config.MainConfig;
 import com.Polarice3.Goety.utils.CuriosFinder;
+import com.Polarice3.Goety.utils.SEHelper;
 import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.GroundPathNavigatorWide;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
@@ -10,19 +14,21 @@ import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
@@ -35,16 +41,14 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-import java.util.Comparator;
+import javax.annotation.Nullable;
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Optional;
 
 public class SoulVultureServant extends Summoned implements FlyingAnimal {
@@ -52,16 +56,10 @@ public class SoulVultureServant extends Summoned implements FlyingAnimal {
     private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(SoulVultureServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> TACKLING = SynchedEntityData.defineId(SoulVultureServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Optional<BlockPos>> PERCH_POS = SynchedEntityData.defineId(SoulVultureServant.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
-    private static final EntityDataAccessor<Integer> SOUL_LEVEL = SynchedEntityData.defineId(SoulVultureServant.class, EntityDataSerializers.INT);
     private static final int OWNER_CIRCLE_HEIGHT = 6;
     private static final float DESCEND_SPEED = 0.4F;
-    private static final float ORBIT_SPEED = 0.022F;
     private static final float PURSUIT_ORBIT_SPEED = 0.052F;
-    private static final float FORMATION_RADIUS_MOVING = 2.5F;
-    private static final float FORMATION_RADIUS_IDLE = 6.0F;
-    private static final double FORMATION_SPEED_MOVING = 1.4D;
-    private static final double FORMATION_SPEED_IDLE = 0.8D;
-    private static final double OWNER_MOVING_THRESHOLD = 0.0025D;
+    private static final float SOUL_SCALE_MAX = 2.5F;
 
     public float prevFlyProgress;
     public float flyProgress;
@@ -72,6 +70,7 @@ public class SoulVultureServant extends Summoned implements FlyingAnimal {
     private int perchSearchCooldown;
     private int landingCooldown;
     private int tackleCooldown;
+    private float soulScale = 1.0F;
 
     public SoulVultureServant(EntityType<? extends Owned> type, Level level) {
         super(type, level);
@@ -89,14 +88,27 @@ public class SoulVultureServant extends Summoned implements FlyingAnimal {
     @Override
     public void setConfigurableAttributes() {
         if (this.getAttribute(Attributes.MAX_HEALTH) != null) {
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(AttributesConfig.SoulVultureServantHealth.get());
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(AttributesConfig.SoulVultureServantHealth.get() * this.soulScale);
         }
         if (this.getAttribute(Attributes.ATTACK_DAMAGE) != null) {
-            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AttributesConfig.SoulVultureServantDamage.get());
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AttributesConfig.SoulVultureServantDamage.get() * this.soulScale);
         }
         if (this.getAttribute(Attributes.FOLLOW_RANGE) != null) {
             this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(AttributesConfig.SoulVultureServantFollowRange.get());
         }
+    }
+
+    @Nullable
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason,
+            @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag) {
+        SpawnGroupData data = super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
+        if (this.getMasterOwner() instanceof Player player) {
+            this.soulScale = 1.0F + (SOUL_SCALE_MAX - 1.0F)
+                    * Mth.clamp((float) SEHelper.getSoulAmountInt(player) / MainConfig.MaxArcaSouls.get(), 0.0F, 1.0F);
+            this.setConfigurableAttributes();
+            this.setHealth(this.getMaxHealth());
+        }
+        return data;
     }
 
     @Override
@@ -138,6 +150,22 @@ public class SoulVultureServant extends Summoned implements FlyingAnimal {
         this.goalSelector.addGoal(6, new FlyToOwnerGoal(this, 1.0D, 10.0F, 2.0F));
     }
 
+    @Override
+    public void targetSelectGoal() {
+        this.targetSelector.addGoal(1, new HoverTargetGoal(this));
+    }
+
+    private static class HoverTargetGoal extends SummonTargetGoal {
+        HoverTargetGoal(Mob mob) {
+            super(mob);
+        }
+
+        @Override
+        protected AABB getTargetSearchArea(double distance) {
+            return this.mob.getBoundingBox().inflate(distance, distance, distance);
+        }
+    }
+
     protected PathNavigation createNavigation(Level level) {
         return new GroundPathNavigatorWide(this, level);
     }
@@ -159,7 +187,6 @@ public class SoulVultureServant extends Summoned implements FlyingAnimal {
         this.entityData.define(FLYING, false);
         this.entityData.define(TACKLING, false);
         this.entityData.define(PERCH_POS, Optional.empty());
-        this.entityData.define(SOUL_LEVEL, 0);
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
@@ -171,14 +198,14 @@ public class SoulVultureServant extends Summoned implements FlyingAnimal {
             compound.putInt("PerchY", perchPos.getY());
             compound.putInt("PerchZ", perchPos.getZ());
         }
-        compound.putInt("SoulLevel", this.getSoulLevel());
         compound.putInt("LandingCooldown", this.landingCooldown);
+        compound.putFloat("SoulScale", this.soulScale);
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
+        this.soulScale = compound.contains("SoulScale") ? compound.getFloat("SoulScale") : 1.0F;
         super.readAdditionalSaveData(compound);
         this.setFlying(compound.getBoolean("Flying"));
-        this.setSoulLevel(compound.getInt("SoulLevel"));
         this.landingCooldown = compound.getInt("LandingCooldown");
         if (compound.contains("PerchX") && compound.contains("PerchY") && compound.contains("PerchZ")) {
             this.setPerchPos(new BlockPos(compound.getInt("PerchX"), compound.getInt("PerchY"), compound.getInt("PerchZ")));
@@ -208,18 +235,6 @@ public class SoulVultureServant extends Summoned implements FlyingAnimal {
 
     public void setPerchPos(BlockPos pos) {
         this.entityData.set(PERCH_POS, Optional.ofNullable(pos));
-    }
-
-    public int getSoulLevel() {
-        return this.entityData.get(SOUL_LEVEL);
-    }
-
-    public void setSoulLevel(int soulLevel) {
-        this.entityData.set(SOUL_LEVEL, soulLevel);
-    }
-
-    public boolean hasSoulHeart() {
-        return this.getSoulLevel() > 2;
     }
 
     public boolean shouldSwoop() {
@@ -268,6 +283,20 @@ public class SoulVultureServant extends Summoned implements FlyingAnimal {
         return this.level().isEmptyBlock(pos.above()) && this.level().isEmptyBlock(pos.above(2)) && state.is(AMTagRegistry.SOUL_VULTURE_PERCHES);
     }
 
+    private boolean isStandable(BlockPos pos) {
+        BlockState state = this.level().getBlockState(pos);
+        if (state.is(BlockTags.LEAVES) || !state.getFluidState().isEmpty()) {
+            return false;
+        }
+        return !state.getCollisionShape(this.level(), pos).isEmpty()
+                && this.level().isEmptyBlock(pos.above())
+                && this.level().isEmptyBlock(pos.above(2));
+    }
+
+    private boolean isValidPerch(BlockPos pos) {
+        return this.isPerchBlock(pos) || this.isStandable(pos);
+    }
+
     public void tick() {
         super.tick();
         this.prevTackleProgress = this.tackleProgress;
@@ -283,7 +312,7 @@ public class SoulVultureServant extends Summoned implements FlyingAnimal {
             this.wasStationed = stationed;
             if (stationed && !this.isStaying()) {
                 BlockPos perchPos = this.getPerchPos();
-                if (perchPos != null && !this.isPerchBlock(perchPos)) {
+                if (perchPos != null && !this.isValidPerch(perchPos)) {
                     this.setPerchPos(null);
                 }
                 if (this.getPerchPos() == null && this.perchSearchCooldown == 0 && this.isFlying()) {
@@ -307,7 +336,7 @@ public class SoulVultureServant extends Summoned implements FlyingAnimal {
             if (!this.isFlying() && this.shouldTakeOff()) {
                 this.setFlying(true);
             }
-            if (this.isFlying() && this.landingCooldown > 0 && this.onGround() && this.getTarget() == null) {
+            if (this.isFlying() && this.landingCooldown > 0 && this.onGround() && this.getTarget() == null && stationed && !this.isStaying()) {
                 this.setFlying(false);
             }
             if (this.getTrueOwner() != null && CuriosFinder.hasNetherCrown(this.getTrueOwner())) {
@@ -345,20 +374,6 @@ public class SoulVultureServant extends Summoned implements FlyingAnimal {
             this.tackleCooldown--;
         }
         this.setNoGravity(this.isFlying());
-        if (this.level().isClientSide && this.hasSoulHeart()) {
-            float radius = 0.25F + this.random.nextFloat() * 1.0F;
-            float fly = this.flyProgress * 0.2F;
-            float wingSpread = 15.0F + 65.0F * fly + (float) this.random.nextInt(5);
-            float angle = Mth.DEG_TO_RAD * ((this.random.nextBoolean() ? -1.0F : 1.0F) * (wingSpread + 180.0F) + this.yBodyRot);
-            float angleMotion = Mth.DEG_TO_RAD * this.yBodyRot;
-            double extraX = radius * Mth.sin((float) Math.PI + angle);
-            double extraZ = radius * Mth.cos(angle);
-            double mov = this.getDeltaMovement().length();
-            double extraXMotion = -mov * Mth.sin((float) Math.PI + angleMotion);
-            double extraZMotion = -mov * Mth.cos(angleMotion);
-            double yRandom = 0.2F + this.random.nextFloat() * 0.3F;
-            this.level().addParticle(ParticleTypes.SOUL_FIRE_FLAME, this.getX() + extraX, this.getY() + yRandom, this.getZ() + extraZ, extraXMotion, this.random.nextFloat() * 0.1F, extraZMotion);
-        }
     }
 
     @Override
@@ -392,20 +407,6 @@ public class SoulVultureServant extends Summoned implements FlyingAnimal {
         }
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public void handleEntityEvent(byte id) {
-        if (id == 68) {
-            for (int i = 0; i < 6 + this.random.nextInt(3); i++) {
-                double d2 = this.random.nextGaussian() * 0.02D;
-                double d0 = this.random.nextGaussian() * 0.02D;
-                double d1 = this.random.nextGaussian() * 0.02D;
-                this.level().addParticle(ParticleTypes.SOUL, this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5D, this.getY() + (double) (this.getBbHeight() * 0.5F) + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5D, d0, d1, d2);
-            }
-        } else {
-            super.handleEntityEvent(id);
-        }
-    }
-
     public BlockPos findNewPerchPos() {
         BlockPos below = this.getBlockPosBelowThatAffectsMyMovement();
         if (this.isPerchBlock(below)) {
@@ -423,7 +424,45 @@ public class SoulVultureServant extends Summoned implements FlyingAnimal {
             }
             blockpos = blockpos1;
         }
-        return blockpos;
+        if (blockpos != null) {
+            return blockpos;
+        }
+        return this.findGroundPos();
+    }
+
+    private BlockPos findGroundPos() {
+        BlockPos below = this.getBlockPosBelowThatAffectsMyMovement();
+        if (this.isStandable(below)) {
+            return below;
+        }
+        int range = 14;
+        for (int i = 0; i < 15; i++) {
+            BlockPos pos = this.blockPosition().offset(this.random.nextInt(range) - range / 2, 0, this.random.nextInt(range) - range / 2);
+            BlockPos groundPos = this.findGroundAt(pos);
+            if (groundPos != null) {
+                return groundPos;
+            }
+        }
+        return null;
+    }
+
+    private BlockPos findGroundAt(BlockPos from) {
+        BlockPos pos = from;
+        while (pos.getY() > this.level().getMinBuildHeight()) {
+            BlockState state = this.level().getBlockState(pos);
+            if (!state.getFluidState().isEmpty()) {
+                return null;
+            }
+            if (state.is(BlockTags.LEAVES)) {
+                pos = pos.below();
+                continue;
+            }
+            if (!state.getCollisionShape(this.level(), pos).isEmpty()) {
+                return this.isStandable(pos) ? pos : null;
+            }
+            pos = pos.below();
+        }
+        return null;
     }
 
     public boolean isTargetBlocked(Vec3 target) {
@@ -439,14 +478,11 @@ public class SoulVultureServant extends Summoned implements FlyingAnimal {
     }
 
     private class FollowFormationGoal extends Goal {
-        private float radius = FORMATION_RADIUS_IDLE;
-        private float orbitScale = 1.0F;
-        private float radiusOffset;
+        private float radius = 5.0F;
         private float heightOffset;
-        private int formationIndex;
-        private int formationSize = 1;
-        private int rescanCooldown;
-        private int movingTicks;
+        private float orbitScale = 1.0F;
+        private float phase;
+        private float speed = 1.0F;
 
         public FollowFormationGoal() {
             this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
@@ -461,11 +497,12 @@ public class SoulVultureServant extends Summoned implements FlyingAnimal {
         }
 
         public void start() {
-            this.rescanCooldown = 0;
-            this.movingTicks = 0;
-            this.orbitScale = 0.88F + (float) (SoulVultureServant.this.getId() % 7) * 0.04F;
-            this.radiusOffset = (float) (SoulVultureServant.this.getId() % 4) * 0.6F;
-            this.heightOffset = (float) (SoulVultureServant.this.getId() % 3) - 1.0F;
+            int id = SoulVultureServant.this.getId();
+            this.radius = 4.0F + (float) (id % 3);
+            this.heightOffset = (float) (id % 5);
+            this.phase = (float) (id % 8) * (Mth.TWO_PI / 8.0F);
+            this.orbitScale = 0.9F + (float) (id % 5) * 0.05F;
+            this.speed = (0.8F + SoulVultureServant.this.random.nextFloat() * 0.4F) * 1.55F;
         }
 
         public void tick() {
@@ -473,33 +510,13 @@ public class SoulVultureServant extends Summoned implements FlyingAnimal {
             if (owner == null) {
                 return;
             }
-            if (this.rescanCooldown-- <= 0) {
-                this.rescanCooldown = 10;
-                this.rescanFormation(owner);
-            }
-            if (owner.getDeltaMovement().horizontalDistanceSqr() > OWNER_MOVING_THRESHOLD) {
-                this.movingTicks = 20;
-            } else if (this.movingTicks > 0) {
-                this.movingTicks--;
-            }
-            boolean moving = this.movingTicks > 0;
-            this.radius = Mth.lerp(0.08F, this.radius, moving ? FORMATION_RADIUS_MOVING : FORMATION_RADIUS_IDLE);
-            double angle = (double) SoulVultureServant.this.level().getGameTime() * ORBIT_SPEED * (double) this.orbitScale + Mth.TWO_PI * (double) this.formationIndex / (double) this.formationSize;
-            double slotRadius = (double) (this.radius + this.radiusOffset);
-            double slotX = owner.getX() + slotRadius * Mth.sin((float) angle);
-            double slotY = owner.getY() + OWNER_CIRCLE_HEIGHT + (double) this.heightOffset;
-            double slotZ = owner.getZ() + slotRadius * Mth.cos((float) angle);
+            double angle = (double) SoulVultureServant.this.level().getGameTime() * PURSUIT_ORBIT_SPEED * (double) this.orbitScale + (double) this.phase;
             SoulVultureServant.this.getLookControl().setLookAt(owner, 10.0F, (float) SoulVultureServant.this.getMaxHeadXRot());
-            SoulVultureServant.this.getMoveControl().setWantedPosition(slotX, slotY, slotZ, moving ? FORMATION_SPEED_MOVING : FORMATION_SPEED_IDLE);
-        }
-
-        private void rescanFormation(LivingEntity owner) {
-            List<SoulVultureServant> flock = SoulVultureServant.this.level().getEntitiesOfClass(SoulVultureServant.class, owner.getBoundingBox().inflate(16.0D),
-                    mate -> mate.getTrueOwner() == owner && mate.isFollowing() && !mate.isCommanded() && mate.getTarget() == null);
-            flock.sort(Comparator.comparingInt(Entity::getId));
-            int index = flock.indexOf(SoulVultureServant.this);
-            this.formationSize = Math.max(1, flock.size());
-            this.formationIndex = index < 0 ? 0 : index;
+            SoulVultureServant.this.getMoveControl().setWantedPosition(
+                    owner.getX() + (double) this.radius * Mth.sin((float) angle),
+                    owner.getY() + OWNER_CIRCLE_HEIGHT + (double) this.heightOffset,
+                    owner.getZ() + (double) this.radius * Mth.cos((float) angle),
+                    this.speed);
         }
     }
 
@@ -510,6 +527,7 @@ public class SoulVultureServant extends Summoned implements FlyingAnimal {
         private float maxCirclingTime = 80.0F;
         private boolean clockwise;
         private int yLevel = 1;
+        private int circleStall;
 
         public PerchGoal() {
             this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
@@ -533,6 +551,7 @@ public class SoulVultureServant extends Summoned implements FlyingAnimal {
 
         private void resetCircle() {
             this.circlingTime = 0.0F;
+            this.circleStall = 0;
             this.speed = 0.8F + SoulVultureServant.this.random.nextFloat() * 0.4F;
             this.yLevel = SoulVultureServant.this.random.nextInt(3);
             this.maxCirclingTime = 360 + SoulVultureServant.this.random.nextInt(80);
@@ -550,12 +569,17 @@ public class SoulVultureServant extends Summoned implements FlyingAnimal {
                 localSpeed *= 1.55D;
             }
             this.circlingTime += 1.0F;
-            if (this.circlingTime <= this.maxCirclingTime) {
+            if (SoulVultureServant.this.isPerchBlock(perchPos) && this.circlingTime <= this.maxCirclingTime) {
                 BlockPos circlePos = this.getCirclePos(perchPos);
                 if (circlePos != null) {
+                    this.circleStall = 0;
                     SoulVultureServant.this.getMoveControl().setWantedPosition(circlePos.getX() + 0.5D, circlePos.getY() + 0.5D, circlePos.getZ() + 0.5D, localSpeed);
+                    return;
                 }
-                return;
+                this.circleStall++;
+                if (this.circleStall < 30) {
+                    return;
+                }
             }
             SoulVultureServant.this.getMoveControl().setWantedPosition(perchPos.getX() + 0.5D, perchPos.getY() + 1.1D, perchPos.getZ() + 0.5D, localSpeed);
             double distToPerch = SoulVultureServant.this.distanceToSqr(perchPos.getX() + 0.5D, perchPos.getY() + 1.1D, perchPos.getZ() + 0.5D);
@@ -717,11 +741,14 @@ public class SoulVultureServant extends Summoned implements FlyingAnimal {
                 SoulVultureServant.this.yBodyRot = SoulVultureServant.this.getYRot();
                 if (SoulVultureServant.this.getBoundingBox().inflate(0.3D).intersects(target.getBoundingBox()) && SoulVultureServant.this.tackleCooldown == 0) {
                     SoulVultureServant.this.tackleCooldown = 100 + SoulVultureServant.this.random.nextInt(200);
+                    if (SoulVultureServant.this.getMasterOwner() instanceof Player master) {
+                        SEHelper.increaseSouls(master, 5);
+                    }
                     float dmg = (float) SoulVultureServant.this.getAttributeValue(Attributes.ATTACK_DAMAGE);
-                    if (target.hurt(SoulVultureServant.this.damageSources().mobAttack(SoulVultureServant.this), dmg) && SoulVultureServant.this.getHealth() < SoulVultureServant.this.getMaxHealth() - dmg && SoulVultureServant.this.getSoulLevel() < 5) {
-                        SoulVultureServant.this.setSoulLevel(SoulVultureServant.this.getSoulLevel() + 1);
-                        SoulVultureServant.this.heal(dmg);
-                        SoulVultureServant.this.level().broadcastEntityEvent(SoulVultureServant.this, (byte) 68);
+                    if (target.hurt(SoulVultureServant.this.damageSources().mobAttack(SoulVultureServant.this), dmg)
+                            && !(target instanceof IOwned owned && owned.getMasterOwner() == SoulVultureServant.this)
+                            && SoulVultureServant.this.getMasterOwner() instanceof Player master) {
+                        SEHelper.increaseSouls(master, 5);
                     }
                     this.stop();
                 }
