@@ -1,6 +1,6 @@
 {
   "type": "minecraft:jigsaw",
-  "biomes": "#minecraft:has_structure/trial_chambers",
+  "biomes": "#goetyominous:has_structure/trial_chambers",
   "dimension_padding": 10,
   "liquid_settings": "ignore_waterlogging",
   "max_distance_from_center": 116,

@@ -65,7 +65,15 @@
     "MaceBreachMixin",
     "MaceAnvilEnchantMixin",
     "LivingEntityRemoveMixin",
-    "WebBlockMixin"
+    "WebBlockMixin",
+    "trial.DecoratedPotLootMixin",
+    "trial.PotLootOnRemoveMixin",
+    "trial.JigsawStructureMixin",
+    "trial.JigsawStructureAccessor",
+    "trial.JigsawPlacementPlacerMixin",
+    "trial.TerrainAdjustmentMixin",
+    "trial.BeardifierMixin",
+    "trial.LightningBoltCopperMixin"
   ],
   "client": [
     "MixinBlackWolfRenderer",

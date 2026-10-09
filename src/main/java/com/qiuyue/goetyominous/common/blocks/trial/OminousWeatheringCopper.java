@@ -3,15 +3,19 @@ package com.qiuyue.goetyominous.common.blocks.trial;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChangeOverTimeBlock;
 import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
+import net.minecraftforge.common.extensions.IForgeBlock;
 
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public interface OminousWeatheringCopper extends ChangeOverTimeBlock<WeatheringCopper.WeatherState> {
+public interface OminousWeatheringCopper extends ChangeOverTimeBlock<WeatheringCopper.WeatherState>, IForgeBlock {
     Supplier<BiMap<Block, Block>> NEXT_BY_BLOCK = Suppliers.memoize(TrialBlocks::copperAgingMap);
     Supplier<BiMap<Block, Block>> PREVIOUS_BY_BLOCK = Suppliers.memoize(() -> NEXT_BY_BLOCK.get().inverse());
 
@@ -51,5 +55,13 @@ public interface OminousWeatheringCopper extends ChangeOverTimeBlock<WeatheringC
     @Override
     default float getChanceModifier() {
         return this.getAge() == WeatheringCopper.WeatherState.UNAFFECTED ? 0.75F : 1.0F;
+    }
+
+    @Override
+    default BlockState getToolModifiedState(BlockState state, UseOnContext context, ToolAction toolAction, boolean simulate) {
+        if (toolAction == ToolActions.AXE_SCRAPE) {
+            return getPrevious(state).orElse(null);
+        }
+        return IForgeBlock.super.getToolModifiedState(state, context, toolAction, simulate);
     }
 }
