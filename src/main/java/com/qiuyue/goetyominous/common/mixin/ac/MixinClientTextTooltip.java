@@ -33,10 +33,9 @@ public class MixinClientTextTooltip {
             return;
         }
         if (MODERN_UI) {
-            RlyehStyledText.draw(font, seq, x, y, matrix, source);
+            RlyehStyledText.draw(font, seq, x, y, matrix);
         } else {
-            font.drawInBatch8xOutline(seq, (float) x, (float) y, 0xFFFFFFFF, 0xFF000000,
-                    matrix, source, 15728880);
+            RlyehStyledText.drawNative(font, seq, x, y, matrix);
         }
         ci.cancel();
     }
