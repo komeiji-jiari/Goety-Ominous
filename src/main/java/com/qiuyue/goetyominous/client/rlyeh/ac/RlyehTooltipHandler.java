@@ -52,11 +52,9 @@ public final class RlyehTooltipHandler {
     private static final long INTRO_GAP_MILLIS = 130L;
 
     private static final float SPIN_SECONDS = 30.0F;
-    private static final float ITEM_HEIGHT_FRACTION = 0.62F;
-    private static final float ITEM_MIN_PX = 12.0F;
-    private static final float ITEM_MAX_PX = 26.0F;
-    private static final float ITEM_BACKSET = 40.0F;
-    private static final float ITEM_Z = Z - ITEM_BACKSET;
+    private static final float ITEM_HEIGHT_FRACTION = 0.90F;
+    private static final float ITEM_MIN_PX = 14.0F;
+    private static final float ITEM_MAX_PX = 56.0F;
     private static final float ITEM_MARGIN = 4.0F;
     private static final float ITEM_DIM = 0.78F;
     private static final BufferBuilder ITEM_BUILDER = new BufferBuilder(1536);
@@ -183,13 +181,14 @@ public final class RlyehTooltipHandler {
         float half = size * 0.5F;
         float cx = Mth.clamp(left + (right - left) * (5.0F / 6.0F),
                 left + ITEM_MARGIN + half, right - ITEM_MARGIN - half);
+        cx = Mth.clamp(cx, ITEM_MARGIN + half, (float) gt.guiWidth() - ITEM_MARGIN - half);
         float cy = (top + bottom) * 0.5F;
 
         PoseStack pose = gt.pose();
         pose.pushPose();
         boolean flat = false;
         try {
-            pose.translate(cx, cy, ITEM_Z);
+            pose.translate(cx, cy, Z);
             pose.mulPose(Axis.YP.rotationDegrees(time * (360.0F / SPIN_SECONDS)));
             pose.mulPoseMatrix(new Matrix4f().scaling(1.0F, -1.0F, 1.0F));
             pose.scale(size, size, size);
