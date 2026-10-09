@@ -33,8 +33,11 @@ public class SimpleExplosionDamageCalculator extends ExplosionDamageCalculator {
     @Override
     public Optional<Float> getBlockExplosionResistance(Explosion explosion, BlockGetter level, BlockPos pos,
                                                        BlockState state, FluidState fluid) {
-        if (this.immuneBlocks.isPresent() && state.is(this.immuneBlocks.get())) {
-            return Optional.of(3600000.0F);
+        if (this.immuneBlocks.isPresent()) {
+            if (state.is(this.immuneBlocks.get())) {
+                return Optional.of(3600000.0F);
+            }
+            return Optional.empty();
         }
         return super.getBlockExplosionResistance(explosion, level, pos, state, fluid);
     }
