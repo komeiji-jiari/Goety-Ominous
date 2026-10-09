@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.utils;
 
+import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.common.mixin.ExplosionAccessor;
 import com.qiuyue.goetyominous.common.network.WindChargeImpulsePacket;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -21,6 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.ProtectionEnchantment;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.ExplosionDamageCalculator;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -168,10 +170,22 @@ public class WindChargeExplosion extends Explosion {
             }
         }
         if (!(level instanceof ServerLevel)) return;
+        if (!this.canTriggerBlocks()) return;
         ObjectArrayList<BlockPos> blocks = ((ExplosionAccessor) this).getToBlow();
         for (BlockPos pos : blocks) {
-            com.qiuyue.goetyominous.utils.WindChargeBlockTrigger.trigger(level, pos, level.getBlockState(pos));
+            WindChargeBlockTrigger.trigger(level, pos, level.getBlockState(pos));
         }
+    }
+
+    private boolean canTriggerBlocks() {
+        if (this.goetyominous$level.isClientSide) {
+            return false;
+        }
+        Entity source = ((ExplosionAccessor) this).getSource();
+        if (source != null && source.getType() == ModEntityTypes.BREEZE_WIND_CHARGE.get()) {
+            return this.goetyominous$level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
+        }
+        return true;
     }
 
     // 1.21 风弹爆炸是 Level.ExplosionInteraction.TRIGGER：interactsWithBlocks() == true，
