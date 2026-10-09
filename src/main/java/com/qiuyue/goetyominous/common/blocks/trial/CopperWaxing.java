@@ -60,7 +60,7 @@ public class CopperWaxing {
                 stack.hurtAndBreak(1, player, entity -> entity.broadcastBreakEvent(event.getHand()));
             }
             level.playSound(player, pos, SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
-            level.levelEvent(player, 3005, pos, 0);
+            level.levelEvent(player, 3004, pos, 0);
             event.setCancellationResult(InteractionResult.sidedSuccess(level.isClientSide));
             event.setCanceled(true);
         }
