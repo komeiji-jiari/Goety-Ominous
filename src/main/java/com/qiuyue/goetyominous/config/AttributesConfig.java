@@ -1653,8 +1653,8 @@ public class AttributesConfig {
                 .defineInRange("soulVultureServantHealth", 12.0, 1.0, Double.MAX_VALUE);
         SoulVultureServantDamage = BUILDER.comment("How much damage Soul Vulture Servants deal, Default: 4.0 (matches Alex's Mobs soul vulture)")
                 .defineInRange("soulVultureServantDamage", 4.0, 1.0, Double.MAX_VALUE);
-        SoulVultureServantFollowRange = BUILDER.comment("How much following/detection range Soul Vulture Servants have, Default: 18.0 (matches Alex's Mobs soul vulture)")
-                .defineInRange("soulVultureServantFollowRange", 18.0, 0.0, Double.MAX_VALUE);
+        SoulVultureServantFollowRange = BUILDER.comment("How much following/detection range Soul Vulture Servants have, Default: 32.0 (they circle 6-10 blocks above the owner, so 18 was too short to reach the owner's enemies)")
+                .defineInRange("soulVultureServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
         RockyRollerServantHealth = BUILDER.comment("How much Max Health Rocky Roller Servants have, Default: 10.0 (matches Alex's Mobs rocky roller)")
                 .defineInRange("rockyRollerServantHealth", 10.0, 1.0, Double.MAX_VALUE);
         RockyRollerServantDamage = BUILDER.comment("How much damage Rocky Roller Servants deal, Default: 2.0 (matches Alex's Mobs rocky roller)")

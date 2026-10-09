@@ -154,8 +154,6 @@ public class ModelSoulVultureServant extends AdvancedEntityModel<SoulVultureServ
         this.walk(neck, idleSpeed, idleDegree, false, 0.0F, 0.0F, ageInTicks, 1.0F);
         this.walk(head, idleSpeed, idleDegree, false, -1.0F, 0.2F, ageInTicks, 1.0F);
         this.faceTarget(netHeadYaw, headPitch, 2.0F, neck, head);
-        float bloatScale = 1.0F + Math.min(1.0F, (float) entity.getSoulLevel() * 0.5F);
-        heart.setScale(bloatScale, bloatScale, bloatScale);
     }
 
     @Override

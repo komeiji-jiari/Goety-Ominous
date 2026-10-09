@@ -271,8 +271,8 @@ public class MobsConfig {
                 .defineInRange("emuServantLimit", 16, 1, 100);
 
         SoulVultureServantLimit = BUILDER
-                .comment("Maximum number of Soul Vulture Servants that can be summoned (Default: 16)")
-                .defineInRange("soulVultureServantLimit", 16, 1, 100);
+                .comment("Maximum number of Soul Vulture Servants that can be summoned (Default: 64)")
+                .defineInRange("soulVultureServantLimit", 64, 1, 100);
 
         TusklinServantLimit = BUILDER
                 .comment("Maximum number of Tusklin Servants that can be summoned (Default: 16)")
