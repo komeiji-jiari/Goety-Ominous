@@ -56,6 +56,15 @@ public class ModItems {
     public static final RegistryObject<Item> OMINOUS_TRIAL_KEY = ITEMS.register("ominous_trial_key",
             () -> new Item(new Item.Properties()));
 
+    public static final RegistryObject<Item> FLOW_POTTERY_SHERD = ITEMS.register("flow_pottery_sherd",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> GUSTER_POTTERY_SHERD = ITEMS.register("guster_pottery_sherd",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> SCRAPE_POTTERY_SHERD = ITEMS.register("scrape_pottery_sherd",
+            () -> new Item(new Item.Properties()));
+
     public static final RegistryObject<Item> HARMONIOUS_DIAMOND = ITEMS.register("harmonious_diamond",
             () -> new Item(new Item.Properties().rarity(Rarity.COMMON).stacksTo(64)));
 

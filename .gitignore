@@ -83,8 +83,9 @@ _strip_comments.tmp.js
 /decompiled-1.21.1/
 # 哥特遗产反编译参照（不入库）
 /decompiled-goeticlegacy/
-# 反编译器与映射表本体（12M，不入库）
-/tools/
+# 反编译器与映射表本体（12M，不入库）；但 tools 下的移植脚本要入库
+/tools/*
+!/tools/*.py
 # 重锤移植的 Maced 反编译参照（不入库）
 /tmp_mace_decompile/
 # 凶兆/试炼刷怪笼移植的 1.21.1 反编译参照（不入库）
