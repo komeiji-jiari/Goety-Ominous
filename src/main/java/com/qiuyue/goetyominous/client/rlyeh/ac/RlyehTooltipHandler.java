@@ -1,19 +1,28 @@
 package com.qiuyue.goetyominous.client.rlyeh.ac;
 
+import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.math.Axis;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.rlyeh.ac.RlyehStyled;
 import com.qiuyue.goetyominous.compat.mod.ModernUiTooltipCompat;
 import java.util.List;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
@@ -38,6 +47,15 @@ public final class RlyehTooltipHandler {
     private static final long INTRO_MILLIS = 520L;
 
     private static final long INTRO_GAP_MILLIS = 130L;
+
+    private static final float SPIN_SECONDS = 30.0F;
+    private static final float ITEM_HEIGHT_FRACTION = 0.62F;
+    private static final float ITEM_MIN_PX = 12.0F;
+    private static final float ITEM_MAX_PX = 26.0F;
+    private static final float ITEM_BACKSET = 40.0F;
+    private static final float ITEM_Z = Z - ITEM_BACKSET;
+    private static final float ITEM_MARGIN = 4.0F;
+    private static final float ITEM_DIM = 0.78F;
 
     private static long introStartMillis = 0L;
     private static long lastEventMillis = 0L;
@@ -103,7 +121,7 @@ public final class RlyehTooltipHandler {
         int top = y - 3;
         int right = x + w + 3;
         int bottom = y + h + 3;
-        float time = (System.currentTimeMillis() % 100000000L) / 1000.0F;
+        float time = (System.currentTimeMillis() % 3600000L) / 1000.0F;
         float intro = updateIntro(event.getItemStack().getItem(), System.currentTimeMillis());
 
         event.setBackgroundStart(0);
@@ -112,6 +130,8 @@ public final class RlyehTooltipHandler {
         event.setBorderEnd(0);
 
         Matrix4f pose = gt.pose().last().pose();
+
+        RenderSystem.depthMask(false);
 
         gt.enableScissor(left, top, right, bottom);
         RenderSystem.enableBlend();
@@ -137,6 +157,46 @@ public final class RlyehTooltipHandler {
         gt.disableScissor();
 
         drawFrame(pose, left, top, right, bottom, time);
+
+        RenderSystem.depthMask(true);
+
+        drawSpinningItem(gt, event.getItemStack(), left, top, right, bottom, time);
+    }
+
+    private static void drawSpinningItem(GuiGraphics gt, ItemStack stack, int left, int top,
+                                         int right, int bottom, float time) {
+        if (stack.isEmpty()) {
+            return;
+        }
+        Minecraft mc = Minecraft.getInstance();
+        BakedModel model = mc.getItemRenderer().getModel(stack, null, null, 0);
+        float panelH = Math.max(1.0F, (float) (bottom - top));
+        float size = Mth.clamp(panelH * ITEM_HEIGHT_FRACTION, ITEM_MIN_PX, ITEM_MAX_PX);
+        float half = size * 0.5F;
+        float cx = Mth.clamp(left + (right - left) * (5.0F / 6.0F),
+                left + ITEM_MARGIN + half, right - ITEM_MARGIN - half);
+        float cy = (top + bottom) * 0.5F;
+
+        PoseStack pose = gt.pose();
+        pose.pushPose();
+        pose.translate(cx, cy, ITEM_Z);
+        pose.mulPose(Axis.YP.rotationDegrees(time * (360.0F / SPIN_SECONDS)));
+        pose.mulPoseMatrix(new Matrix4f().scaling(1.0F, -1.0F, 1.0F));
+        pose.scale(size, size, size);
+        boolean flat = !model.usesBlockLight();
+        if (flat) {
+            Lighting.setupForFlatItems();
+        }
+        float[] was = RenderSystem.getShaderColor();
+        RenderSystem.setShaderColor(ITEM_DIM, ITEM_DIM, ITEM_DIM, 1.0F);
+        mc.getItemRenderer().render(stack, ItemDisplayContext.GUI, false, pose, gt.bufferSource(),
+                15728880, OverlayTexture.NO_OVERLAY, model);
+        gt.flush();
+        RenderSystem.setShaderColor(was[0], was[1], was[2], was[3]);
+        if (flat) {
+            Lighting.setupFor3DItems();
+        }
+        pose.popPose();
     }
 
     private static void drawFrame(Matrix4f pose, int left, int top, int right, int bottom, float time) {
