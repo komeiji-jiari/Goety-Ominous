@@ -18,10 +18,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -35,6 +38,7 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 @Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID, value = Dist.CLIENT)
 public final class RlyehTooltipHandler {
@@ -52,9 +56,9 @@ public final class RlyehTooltipHandler {
     private static final long INTRO_GAP_MILLIS = 130L;
 
     private static final float SPIN_SECONDS = 30.0F;
-    private static final float ITEM_HEIGHT_FRACTION = 0.90F;
-    private static final float ITEM_MIN_PX = 14.0F;
-    private static final float ITEM_MAX_PX = 56.0F;
+    private static final float ITEM_HEIGHT_FRACTION = 1.00F;
+    private static final float ITEM_MIN_PX = 16.0F;
+    private static final float ITEM_MAX_PX = 88.0F;
     private static final float ITEM_MARGIN = 4.0F;
     private static final float ITEM_DIM = 0.78F;
     private static final BufferBuilder ITEM_BUILDER = new BufferBuilder(1536);
@@ -176,12 +180,18 @@ public final class RlyehTooltipHandler {
         }
         Minecraft mc = Minecraft.getInstance();
         BakedModel model = mc.getItemRenderer().getModel(stack, mc.level, mc.player, 0);
+        Vector3f min = new Vector3f(Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE);
+        Vector3f max = new Vector3f(-Float.MAX_VALUE, -Float.MAX_VALUE, -Float.MAX_VALUE);
+        boolean measured = expand(model, min, max);
+        float modelW = measured ? Math.max(1.0E-4F, max.x - min.x) : 1.0F;
+        float modelH = measured ? Math.max(1.0E-4F, max.y - min.y) : 1.0F;
         float panelH = Math.max(1.0F, (float) (bottom - top));
-        float size = Mth.clamp(panelH * ITEM_HEIGHT_FRACTION, ITEM_MIN_PX, ITEM_MAX_PX);
-        float half = size * 0.5F;
+        float height = Mth.clamp(panelH * ITEM_HEIGHT_FRACTION, ITEM_MIN_PX, ITEM_MAX_PX);
+        float scale = height / modelH;
+        float halfW = modelW * scale * 0.5F;
         float cx = Mth.clamp(left + (right - left) * (5.0F / 6.0F),
-                left + ITEM_MARGIN + half, right - ITEM_MARGIN - half);
-        cx = Mth.clamp(cx, ITEM_MARGIN + half, (float) gt.guiWidth() - ITEM_MARGIN - half);
+                left + ITEM_MARGIN + halfW, right - ITEM_MARGIN - halfW);
+        cx = Mth.clamp(cx, ITEM_MARGIN + halfW, (float) gt.guiWidth() - ITEM_MARGIN - halfW);
         float cy = (top + bottom) * 0.5F;
 
         PoseStack pose = gt.pose();
@@ -193,7 +203,11 @@ public final class RlyehTooltipHandler {
             pose.translate(cx, cy, Z);
             pose.mulPose(Axis.YP.rotationDegrees(time * (360.0F / SPIN_SECONDS)));
             pose.mulPoseMatrix(new Matrix4f().scaling(1.0F, -1.0F, 1.0F));
-            pose.scale(size, size, size);
+            pose.scale(scale, scale, scale);
+            if (measured) {
+                pose.translate(0.5F - (min.x + max.x) * 0.5F, 0.5F - (min.y + max.y) * 0.5F,
+                        0.5F - (min.z + max.z) * 0.5F);
+            }
             flat = !model.usesBlockLight();
             if (flat) {
                 Lighting.setupForFlatItems();
@@ -201,7 +215,7 @@ public final class RlyehTooltipHandler {
             float[] was = RenderSystem.getShaderColor().clone();
             RenderSystem.setShaderColor(ITEM_DIM, ITEM_DIM, ITEM_DIM, 1.0F);
             try {
-                mc.getItemRenderer().render(stack, ItemDisplayContext.GUI, false, pose, ITEM_BUFFER,
+                mc.getItemRenderer().render(stack, ItemDisplayContext.NONE, false, pose, ITEM_BUFFER,
                         15728880, OverlayTexture.NO_OVERLAY, model);
             } finally {
                 ITEM_BUFFER.endBatch();
@@ -215,6 +229,35 @@ public final class RlyehTooltipHandler {
             }
             pose.popPose();
         }
+    }
+
+    private static boolean expand(BakedModel model, Vector3f min, Vector3f max) {
+        RandomSource random = RandomSource.create(42L);
+        boolean any = false;
+        for (Direction direction : Direction.values()) {
+            random.setSeed(42L);
+            any |= expand(model.getQuads(null, direction, random), min, max);
+        }
+        random.setSeed(42L);
+        any |= expand(model.getQuads(null, null, random), min, max);
+        return any;
+    }
+
+    private static boolean expand(List<BakedQuad> quads, Vector3f min, Vector3f max) {
+        boolean any = false;
+        for (BakedQuad quad : quads) {
+            int[] data = quad.getVertices();
+            int stride = data.length / 4;
+            for (int i = 0; i < 4; i++) {
+                float x = Float.intBitsToFloat(data[i * stride]);
+                float y = Float.intBitsToFloat(data[i * stride + 1]);
+                float z = Float.intBitsToFloat(data[i * stride + 2]);
+                min.set(Math.min(min.x, x), Math.min(min.y, y), Math.min(min.z, z));
+                max.set(Math.max(max.x, x), Math.max(max.y, y), Math.max(max.z, z));
+                any = true;
+            }
+        }
+        return any;
     }
 
     private static void drawFrame(Matrix4f pose, int left, int top, int right, int bottom, float time) {
