@@ -13,6 +13,7 @@ import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.rlyeh.ac.RlyehStyled;
 import com.qiuyue.goetyominous.compat.mod.ModernUiTooltipCompat;
 import java.util.List;
+import java.util.Map;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -25,6 +26,8 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderTooltipEvent;
@@ -56,6 +59,11 @@ public final class RlyehTooltipHandler {
     private static final float ITEM_Z = Z - ITEM_BACKSET;
     private static final float ITEM_MARGIN = 4.0F;
     private static final float ITEM_DIM = 0.78F;
+    private static final BufferBuilder ITEM_BUILDER = new BufferBuilder(1536);
+    private static final MultiBufferSource.BufferSource ITEM_BUFFER = MultiBufferSource.immediateWithBuffers(
+            Map.of(RenderType.glintDirect(), new BufferBuilder(RenderType.glintDirect().bufferSize()),
+                    RenderType.glint(), new BufferBuilder(RenderType.glint().bufferSize())),
+            ITEM_BUILDER);
 
     private static long introStartMillis = 0L;
     private static long lastEventMillis = 0L;
@@ -169,7 +177,7 @@ public final class RlyehTooltipHandler {
             return;
         }
         Minecraft mc = Minecraft.getInstance();
-        BakedModel model = mc.getItemRenderer().getModel(stack, null, null, 0);
+        BakedModel model = mc.getItemRenderer().getModel(stack, mc.level, mc.player, 0);
         float panelH = Math.max(1.0F, (float) (bottom - top));
         float size = Mth.clamp(panelH * ITEM_HEIGHT_FRACTION, ITEM_MIN_PX, ITEM_MAX_PX);
         float half = size * 0.5F;
@@ -179,24 +187,31 @@ public final class RlyehTooltipHandler {
 
         PoseStack pose = gt.pose();
         pose.pushPose();
-        pose.translate(cx, cy, ITEM_Z);
-        pose.mulPose(Axis.YP.rotationDegrees(time * (360.0F / SPIN_SECONDS)));
-        pose.mulPoseMatrix(new Matrix4f().scaling(1.0F, -1.0F, 1.0F));
-        pose.scale(size, size, size);
-        boolean flat = !model.usesBlockLight();
-        if (flat) {
-            Lighting.setupForFlatItems();
+        boolean flat = false;
+        try {
+            pose.translate(cx, cy, ITEM_Z);
+            pose.mulPose(Axis.YP.rotationDegrees(time * (360.0F / SPIN_SECONDS)));
+            pose.mulPoseMatrix(new Matrix4f().scaling(1.0F, -1.0F, 1.0F));
+            pose.scale(size, size, size);
+            flat = !model.usesBlockLight();
+            if (flat) {
+                Lighting.setupForFlatItems();
+            }
+            float[] was = RenderSystem.getShaderColor().clone();
+            RenderSystem.setShaderColor(ITEM_DIM, ITEM_DIM, ITEM_DIM, 1.0F);
+            try {
+                mc.getItemRenderer().render(stack, ItemDisplayContext.GUI, false, pose, ITEM_BUFFER,
+                        15728880, OverlayTexture.NO_OVERLAY, model);
+            } finally {
+                ITEM_BUFFER.endBatch();
+                RenderSystem.setShaderColor(was[0], was[1], was[2], was[3]);
+            }
+        } finally {
+            if (flat) {
+                Lighting.setupFor3DItems();
+            }
+            pose.popPose();
         }
-        float[] was = RenderSystem.getShaderColor();
-        RenderSystem.setShaderColor(ITEM_DIM, ITEM_DIM, ITEM_DIM, 1.0F);
-        mc.getItemRenderer().render(stack, ItemDisplayContext.GUI, false, pose, gt.bufferSource(),
-                15728880, OverlayTexture.NO_OVERLAY, model);
-        gt.flush();
-        RenderSystem.setShaderColor(was[0], was[1], was[2], was[3]);
-        if (flat) {
-            Lighting.setupFor3DItems();
-        }
-        pose.popPose();
     }
 
     private static void drawFrame(Matrix4f pose, int left, int top, int right, int bottom, float time) {
