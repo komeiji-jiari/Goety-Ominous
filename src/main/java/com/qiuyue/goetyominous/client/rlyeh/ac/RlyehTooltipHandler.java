@@ -187,6 +187,8 @@ public final class RlyehTooltipHandler {
         PoseStack pose = gt.pose();
         pose.pushPose();
         boolean flat = false;
+        RenderSystem.disableDepthTest();
+        RenderSystem.depthMask(false);
         try {
             pose.translate(cx, cy, Z);
             pose.mulPose(Axis.YP.rotationDegrees(time * (360.0F / SPIN_SECONDS)));
@@ -206,6 +208,8 @@ public final class RlyehTooltipHandler {
                 RenderSystem.setShaderColor(was[0], was[1], was[2], was[3]);
             }
         } finally {
+            RenderSystem.depthMask(true);
+            RenderSystem.enableDepthTest();
             if (flat) {
                 Lighting.setupFor3DItems();
             }
