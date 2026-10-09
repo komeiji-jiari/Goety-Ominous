@@ -3,3 +3,5 @@
 # are changed when only line endings change.
 src/generated/**/.cache/cache text eol=lf
 src/generated/**/*.json text eol=lf
+# 结构模板是 gzip + 长度前缀的二进制 NBT，绝不能被换行转换碰
+*.nbt binary

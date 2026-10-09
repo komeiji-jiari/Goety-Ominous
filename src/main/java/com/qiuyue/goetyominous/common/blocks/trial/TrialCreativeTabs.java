@@ -114,6 +114,10 @@ public class TrialCreativeTabs {
             return;
         }
         if (CreativeModeTabs.INGREDIENTS.equals(event.getTabKey())) {
+            after(event, Items.SNORT_POTTERY_SHERD,
+                    ModItems.FLOW_POTTERY_SHERD.get(),
+                    ModItems.GUSTER_POTTERY_SHERD.get(),
+                    ModItems.SCRAPE_POTTERY_SHERD.get());
             after(event, Items.BLAZE_ROD, ModItems.BREEZE_ROD.get(), ModItems.HEAVY_CORE.get());
             after(event, Items.PIGLIN_BANNER_PATTERN, ModItems.FLOW_BANNER_PATTERN.get(), ModItems.GUSTER_BANNER_PATTERN.get());
             after(event, Items.SPIRE_ARMOR_TRIM_SMITHING_TEMPLATE,

@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.common.blocks;
 
 import com.Polarice3.Goety.utils.MobUtil;
+import com.qiuyue.goetyominous.common.blocks.trial.TrialSoundTypes;
 import com.qiuyue.goetyominous.common.entities.hostile.Hurricane;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.common.init.ModSounds;
@@ -18,7 +19,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
@@ -30,8 +30,9 @@ public class WhirlingCageBlock extends Block {
     public WhirlingCageBlock() {
         super(Properties.of()
                 .mapColor(MapColor.METAL)
-                .strength(2.0F, 1200.0F)
-                .sound(SoundType.METAL)
+                .requiresCorrectToolForDrops()
+                .strength(5.0F, 1200.0F)
+                .sound(TrialSoundTypes.TRIAL_SPAWNER)
                 .noOcclusion()
                 .isValidSpawn((state, level, pos, type) -> false)
                 .isRedstoneConductor((state, level, pos) -> false)

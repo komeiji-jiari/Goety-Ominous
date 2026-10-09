@@ -131,6 +131,9 @@ public class ModCreativeTab {
         buckets.other.remove(ModItems.OMINOUS_BOTTLE.get());
         buckets.other.remove(ModItems.TRIAL_KEY.get());
         buckets.other.remove(ModItems.OMINOUS_TRIAL_KEY.get());
+        buckets.other.remove(ModItems.FLOW_POTTERY_SHERD.get());
+        buckets.other.remove(ModItems.GUSTER_POTTERY_SHERD.get());
+        buckets.other.remove(ModItems.SCRAPE_POTTERY_SHERD.get());
         buckets.blocks.remove(ModItems.HEAVY_CORE.get());
     }
 
