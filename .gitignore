@@ -90,3 +90,6 @@ _strip_comments.tmp.js
 /tmp_mace_decompile/
 # 凶兆/试炼刷怪笼移植的 1.21.1 反编译参照（不入库）
 /tmp_omen_decompile/
+
+# 运行时日志目录（不入库）
+/logs/
