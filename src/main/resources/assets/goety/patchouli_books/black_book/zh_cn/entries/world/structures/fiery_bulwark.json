@@ -14,6 +14,11 @@
       "text": "猪灵族群重兵看守的堡垒"
     },
     {
+      "type": "goety:ritual",
+      "advancement": "goety:goety/get_crystal_ball",
+      "recipe": "goetyominous:locate/fiery_bulwark"
+    },
+    {
       "type": "patchouli:entity",
       "entity": "goetyominous:piglin_merchant",
       "text": "别忘了带上你的黄金！货真价实，童叟无欺！"

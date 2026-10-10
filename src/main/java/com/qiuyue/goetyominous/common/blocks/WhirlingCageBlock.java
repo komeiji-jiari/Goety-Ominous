@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.common.blocks;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.blocks.trial.TrialSoundTypes;
 import com.qiuyue.goetyominous.common.entities.hostile.Hurricane;
+import com.qiuyue.goetyominous.common.init.ModEffects;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.common.init.ModSounds;
 import javax.annotation.Nullable;
@@ -13,7 +14,11 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -24,8 +29,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.UUID;
+
 public class WhirlingCageBlock extends Block {
     private static final double CORE_HEIGHT = 0.25D;
+    private static final UUID OMINOUS_HEALTH_ID = UUID.fromString("6f2b1c3a-9e4d-4a7b-8c1e-2d3f4a5b6c7d");
 
     public WhirlingCageBlock() {
         super(Properties.of()
@@ -51,6 +59,14 @@ public class WhirlingCageBlock extends Block {
                 hurricane.setTarget(player);
             }
             hurricane.setPersistenceRequired();
+            if (player.hasEffect(MobEffects.BAD_OMEN) || player.hasEffect(ModEffects.TRIAL_OMEN.get())) {
+                AttributeInstance maxHealth = hurricane.getAttribute(Attributes.MAX_HEALTH);
+                if (maxHealth != null && maxHealth.getModifier(OMINOUS_HEALTH_ID) == null) {
+                    maxHealth.addPermanentModifier(new AttributeModifier(OMINOUS_HEALTH_ID, "goetyominous:ominous_health", 1.0D, AttributeModifier.Operation.MULTIPLY_BASE));
+                    hurricane.setHealth(hurricane.getMaxHealth());
+                }
+                hurricane.setOminousBuffed(true);
+            }
             level.addFreshEntity(new HurricaneCoreSummon(level, ground.add(0.0D, CORE_HEIGHT, 0.0D), ground.y, hurricane));
         }
         super.playerDestroy(level, player, pos, state, blockEntity, tool);

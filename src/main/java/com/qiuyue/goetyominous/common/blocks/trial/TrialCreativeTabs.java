@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.blocks.trial;
 
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.items.ModItems;
+import com.qiuyue.goetyominous.common.items.OminousBottleItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
@@ -101,10 +102,15 @@ public class TrialCreativeTabs {
             return;
         }
         if (CreativeModeTabs.TOOLS_AND_UTILITIES.equals(event.getTabKey())) {
+            after(event, Items.WRITABLE_BOOK, ModItems.WIND_CHARGE.get());
             after(event, Items.MUSIC_DISC_RELIC,
                     ModItems.MUSIC_DISC_CREATOR.get(),
                     ModItems.MUSIC_DISC_CREATOR_MUSIC_BOX.get(),
                     ModItems.MUSIC_DISC_PRECIPICE.get());
+            return;
+        }
+        if (CreativeModeTabs.COMBAT.equals(event.getTabKey())) {
+            after(event, Items.TRIDENT, ModItems.MACE.get());
             return;
         }
         if (CreativeModeTabs.INGREDIENTS.equals(event.getTabKey())) {
@@ -115,9 +121,26 @@ public class TrialCreativeTabs {
                     ModItems.FLOW_POTTERY_SHERD.get(),
                     ModItems.GUSTER_POTTERY_SHERD.get(),
                     ModItems.SCRAPE_POTTERY_SHERD.get());
+            after(event, Items.BLAZE_ROD, ModItems.BREEZE_ROD.get(), ModItems.HEAVY_CORE.get());
             after(event, Items.SPIRE_ARMOR_TRIM_SMITHING_TEMPLATE,
                     ModItems.FLOW_ARMOR_TRIM_SMITHING_TEMPLATE.get(),
-                    ModItems.BOLT_ARMOR_TRIM_SMITHING_TEMPLATE.get());
+                    ModItems.BOLT_ARMOR_TRIM_SMITHING_TEMPLATE.get(),
+                    ModItems.TRIAL_KEY.get(),
+                    ModItems.OMINOUS_TRIAL_KEY.get());
+            return;
+        }
+        if (CreativeModeTabs.FOOD_AND_DRINKS.equals(event.getTabKey())) {
+            ItemStack prev = new ItemStack(Items.HONEY_BOTTLE);
+            for (int amplifier = 0; amplifier <= OminousBottleItem.MAX_AMPLIFIER; ++amplifier) {
+                ItemStack stack = new ItemStack(ModItems.OMINOUS_BOTTLE.get());
+                OminousBottleItem.setAmplifier(stack, amplifier);
+                event.getEntries().putAfter(prev, stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                prev = stack;
+            }
+            return;
+        }
+        if (CreativeModeTabs.SPAWN_EGGS.equals(event.getTabKey())) {
+            after(event, Items.SPAWNER, TrialBlocks.TRIAL_SPAWNER.get());
             return;
         }
     }

@@ -1,7 +1,6 @@
 package com.qiuyue.goetyominous.common.blocks.trial;
 
 import com.qiuyue.goetyominous.common.init.ModSounds;
-import com.qiuyue.goetyominous.config.VaultConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;

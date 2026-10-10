@@ -379,7 +379,7 @@ public class ModEntityTypes {
                     .build(MOD_ID + ":hurricane"));
 
     public static final RegistryObject<EntityType<HurricaneServant>> HURRICANE_SERVANT = ENTITY_TYPES.register("hurricane_servant",
-            () -> EntityType.Builder.of(HurricaneServant::new, MobCategory.MONSTER)
+            () -> EntityType.Builder.of(HurricaneServant::new, MobCategory.MISC)
                     .sized(1.6F, 3.4F)
                     .clientTrackingRange(10)
                     .build(MOD_ID + ":hurricane_servant"));

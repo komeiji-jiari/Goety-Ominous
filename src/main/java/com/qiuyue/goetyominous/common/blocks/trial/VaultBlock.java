@@ -2,9 +2,13 @@ package com.qiuyue.goetyominous.common.blocks.trial;
 
 import com.qiuyue.goetyominous.common.init.ModBlockEntities;
 import javax.annotation.Nullable;
+
+import com.qiuyue.goetyominous.common.init.ModSounds;
+import com.qiuyue.goetyominous.common.items.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -44,18 +48,43 @@ public class VaultBlock extends BaseEntityBlock {
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         ItemStack stack = player.getItemInHand(hand);
+        if (isResetKey(stack) && state.getValue(STATE) == VaultState.INACTIVE) {
+            if (!(level instanceof ServerLevel serverLevel)) {
+                return InteractionResult.CONSUME;
+            }
+            if (!(level.getBlockEntity(pos) instanceof VaultBlockEntity vault)) {
+                return InteractionResult.PASS;
+            }
+            if (stack.is(ModItems.OMINOUS_RESET_KEY.get()) != state.getValue(OMINOUS)) {
+                level.playSound(null, pos, ModSounds.VAULT_INSERT_ITEM_FAIL.get(), SoundSource.BLOCKS);
+                return InteractionResult.SUCCESS;
+            }
+            vault.getServerData().getRewardedPlayers().clear();
+            vault.getServerData().isDirty = true;
+            level.playSound(null, pos, ModSounds.VAULT_INSERT_ITEM.get(), SoundSource.BLOCKS);
+            VaultBlockEntity.Server.setVaultState(serverLevel, pos, state,
+                    state.setValue(STATE, VaultState.ACTIVE), vault.getConfig(), vault.getSharedData());
+            if (!player.getAbilities().instabuild) {
+                stack.shrink(1);
+            }
+            return InteractionResult.SUCCESS;
+        }
         if (stack.isEmpty() || state.getValue(STATE) != VaultState.ACTIVE) {
             return InteractionResult.PASS;
         }
-        if (!(level instanceof ServerLevel serverLevel)) {
+        if (!(level instanceof ServerLevel)) {
             return InteractionResult.CONSUME;
         }
         if (level.getBlockEntity(pos) instanceof VaultBlockEntity vault) {
-            VaultBlockEntity.Server.tryInsertKey(serverLevel, pos, state, vault.getConfig(),
+            VaultBlockEntity.Server.tryInsertKey((ServerLevel) level, pos, state, vault.getConfig(),
                     vault.getServerData(), vault.getSharedData(), player, stack);
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
+    }
+
+    private static boolean isResetKey(ItemStack stack) {
+        return stack.is(ModItems.RESET_KEY.get()) || stack.is(ModItems.OMINOUS_RESET_KEY.get());
     }
 
     @Nullable

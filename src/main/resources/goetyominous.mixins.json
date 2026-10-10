@@ -66,13 +66,14 @@
     "MaceAnvilEnchantMixin",
     "LivingEntityRemoveMixin",
     "WebBlockMixin",
+    "DecoratedPotPatternsMixin",
     "trial.DecoratedPotLootMixin",
     "trial.PotLootOnRemoveMixin",
+    "trial.TerrainAdjustmentMixin",
     "trial.JigsawStructureMixin",
     "trial.JigsawStructureAccessor",
-    "trial.JigsawPlacementPlacerMixin",
-    "trial.TerrainAdjustmentMixin",
     "trial.BeardifierMixin",
+    "trial.JigsawPlacementPlacerMixin",
     "trial.LightningBoltCopperMixin"
   ],
   "client": [

@@ -27,4 +27,11 @@ public final class PoolAliasContext {
             }
         }
     }
+
+    public static void run(PoolAliasLookup lookup, Runnable action) {
+        with(lookup, () -> {
+            action.run();
+            return null;
+        });
+    }
 }

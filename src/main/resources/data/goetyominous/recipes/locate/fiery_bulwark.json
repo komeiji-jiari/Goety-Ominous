@@ -1,0 +1,34 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:locate",
+  "activation_item": {
+    "item": "minecraft:map"
+  },
+  "craftType": "divination",
+  "structure_to_locate": {
+    "tag": "goetyominous:explorer_maps/fiery_bulwark",
+    "display_name": "filled_map.goetyominous.fiery_bulwark"
+  },
+  "soulCost": 1,
+  "duration": 10,
+  "ingredients": [
+    {
+      "tag": "goety:full_blackstone_craft"
+    },
+    {
+      "tag": "forge:storage_blocks/gold"
+    },
+    {
+      "tag": "forge:storage_blocks/gold"
+    },
+    {
+      "tag": "forge:storage_blocks/quartz"
+    },
+    {
+      "tag": "forge:storage_blocks/quartz"
+    }
+  ],
+  "result": {
+    "item": "goety:jei_dummy/none"
+  }
+}

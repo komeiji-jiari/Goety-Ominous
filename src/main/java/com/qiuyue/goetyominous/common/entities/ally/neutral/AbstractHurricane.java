@@ -58,6 +58,7 @@ import net.minecraft.world.phys.Vec3;
 
 public abstract class AbstractHurricane extends Summoned implements ProjectileDeflector {
     private static final EntityDataAccessor<Integer> ANIM_STATE = SynchedEntityData.defineId(AbstractHurricane.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> OMINOUS_BUFFED = SynchedEntityData.defineId(AbstractHurricane.class, EntityDataSerializers.BOOLEAN);
     public static final int ANIM_NONE = 0;
     public static final int ANIM_IDLE = 1;
     public static final int ANIM_PUNCH = 2;
@@ -168,6 +169,7 @@ public abstract class AbstractHurricane extends Summoned implements ProjectileDe
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(ANIM_STATE, ANIM_NONE);
+        this.entityData.define(OMINOUS_BUFFED, false);
     }
 
     @Override
@@ -210,6 +212,7 @@ public abstract class AbstractHurricane extends Summoned implements ProjectileDe
         tag.putInt("PunchCool", this.punchCooldown);
         tag.putInt("StormCool", this.stormCooldown);
         tag.putInt("JumpCool", this.jumpCooldown);
+        tag.putBoolean("OminousBuffed", this.entityData.get(OMINOUS_BUFFED));
     }
 
     @Override
@@ -218,6 +221,15 @@ public abstract class AbstractHurricane extends Summoned implements ProjectileDe
         this.punchCooldown = tag.getInt("PunchCool");
         this.stormCooldown = tag.getInt("StormCool");
         this.jumpCooldown = tag.getInt("JumpCool");
+        this.entityData.set(OMINOUS_BUFFED, tag.getBoolean("OminousBuffed"));
+    }
+
+    public boolean isOminousBuffed() {
+        return this.entityData.get(OMINOUS_BUFFED);
+    }
+
+    public void setOminousBuffed(boolean buffed) {
+        this.entityData.set(OMINOUS_BUFFED, buffed);
     }
 
     @Override
@@ -250,6 +262,23 @@ public abstract class AbstractHurricane extends Summoned implements ProjectileDe
             if (this.random.nextInt(4) == 0) {
                 this.level().addParticle(ParticleTypes.CLOUD, this.getRandomX(0.6D), this.getY() + this.random.nextDouble() * 0.6D, this.getRandomZ(0.6D), 0.0D, 0.02D, 0.0D);
             }
+            if (this.isOminousBuffed()) {
+                this.emitOminousParticles();
+            }
+        }
+    }
+
+    public void emitOminousParticles() {
+        int amount = this.random.nextInt(1, 2);
+        for (int i = 0; i < amount; i++) {
+            double angle = this.random.nextDouble() * Math.PI * 2.0D;
+            double radius = 0.4D + this.random.nextDouble() * 0.4D;
+            double x = this.getX() + Math.cos(angle) * radius;
+            double y = this.getY() + this.random.nextDouble() * this.getBbHeight();
+            double z = this.getZ() + Math.sin(angle) * radius;
+            double speed = 0.04D + this.random.nextDouble() * 0.04D;
+            this.level().addParticle(ModParticleTypes.TRIAL_OMEN.get(), x, y, z,
+                    -Math.sin(angle) * speed, 0.02D + this.random.nextDouble() * 0.03D, Math.cos(angle) * speed);
         }
     }
 

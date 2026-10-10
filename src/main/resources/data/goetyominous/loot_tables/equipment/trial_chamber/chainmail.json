@@ -15,7 +15,7 @@
           "functions": [
             {
               "function": "minecraft:set_nbt",
-              "tag": "{Trim:{material:\"minecraft:copper\",pattern:\"minecraft:bolt\"}}"
+              "tag": "{Trim:{material:\"minecraft:copper\",pattern:\"goetyominous:bolt\"}}"
             },
             {
               "add": false,
@@ -46,7 +46,7 @@
           "functions": [
             {
               "function": "minecraft:set_nbt",
-              "tag": "{Trim:{material:\"minecraft:copper\",pattern:\"minecraft:bolt\"}}"
+              "tag": "{Trim:{material:\"minecraft:copper\",pattern:\"goetyominous:bolt\"}}"
             },
             {
               "add": false,

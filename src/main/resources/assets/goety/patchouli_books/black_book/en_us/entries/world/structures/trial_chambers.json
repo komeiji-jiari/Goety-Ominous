@@ -1,0 +1,22 @@
+{
+  "name": "Trial Chambers",
+  "icon": "minecraft:copper_block",
+  "category": "goety:world",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Rumors speak of ancient trial grounds buried deep underground. Only the brave have what it takes to break into them, face the terrifying monsters within, and claim their unique treasures."
+    },
+    {
+      "type": "patchouli:image",
+      "images": ["goetyominous:textures/gui/entries/trial_chambers.png"],
+      "border": true,
+      "text": "The location of hidden chambers can be learned from an adventurer's map..."
+    },
+    {
+      "type": "goety:ritual",
+      "advancement": "goety:goety/get_crystal_ball",
+      "recipe": "goetyominous:locate/trial_chambers"
+    }
+  ]
+}

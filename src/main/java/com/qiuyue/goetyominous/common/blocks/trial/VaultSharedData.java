@@ -2,7 +2,6 @@ package com.qiuyue.goetyominous.common.blocks.trial;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.qiuyue.goetyominous.config.VaultConfig;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 import java.util.Set;
 import java.util.UUID;

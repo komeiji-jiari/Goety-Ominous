@@ -14,6 +14,11 @@
       "text": "A fortress heavily guarded by Piglin Hordes"
     },
     {
+      "type": "goety:ritual",
+      "advancement": "goety:goety/get_crystal_ball",
+      "recipe": "goetyominous:locate/fiery_bulwark"
+    },
+    {
       "type": "patchouli:entity",
       "entity": "goetyominous:piglin_merchant",
       "text": "Don't forget to bring your gold! Genuine goods, fair prices!"

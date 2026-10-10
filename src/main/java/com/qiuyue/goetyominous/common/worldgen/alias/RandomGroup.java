@@ -4,7 +4,6 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.stream.Stream;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedEntry;
@@ -24,14 +23,6 @@ public record RandomGroup(WeightedRandomList<WeightedEntry.Wrapper<List<PoolAlia
                                 BiConsumer<ResourceKey<StructureTemplatePool>, ResourceKey<StructureTemplatePool>> consumer) {
         this.groups.getRandom(random)
                 .ifPresent(entry -> entry.getData().forEach(binding -> binding.forEachResolved(random, consumer)));
-    }
-
-    @Override
-    public Stream<ResourceKey<StructureTemplatePool>> allTargets() {
-        return this.groups.unwrap().stream()
-                .map(WeightedEntry.Wrapper::getData)
-                .flatMap(List::stream)
-                .flatMap(PoolAliasBinding::allTargets);
     }
 
     @Override

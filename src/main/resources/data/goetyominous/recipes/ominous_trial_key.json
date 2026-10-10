@@ -1,0 +1,8 @@
+{
+  "type": "goety:cursed_infuser_recipes",
+  "ingredient": {
+    "item": "goetyominous:ominous_reset_key"
+  },
+  "result": "goetyominous:ominous_trial_key",
+  "cookingTime": 60
+}
