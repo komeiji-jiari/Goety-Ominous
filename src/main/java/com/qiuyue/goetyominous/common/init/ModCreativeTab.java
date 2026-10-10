@@ -307,10 +307,16 @@ public class ModCreativeTab {
             items.add(ModItems.MUSIC_DISC_CREATOR.get());
             items.add(ModItems.MUSIC_DISC_CREATOR_MUSIC_BOX.get());
             items.add(ModItems.MUSIC_DISC_PRECIPICE.get());
+            items.add(ModItems.WIND_CHARGE.get());
+            items.add(ModItems.MACE.get());
+            items.add(ModItems.BREEZE_ROD.get());
+            items.add(ModItems.HEAVY_CORE.get());
+            items.add(ModItems.TRIAL_KEY.get());
+            items.add(ModItems.OMINOUS_TRIAL_KEY.get());
+            items.add(ModItems.OMINOUS_BOTTLE.get());
             TrialBlocks.BLOCKS.getEntries().stream()
                     .map(RegistryObject::get)
                     .filter(Item.BY_BLOCK::containsKey)
-                    .filter(block -> block != TrialBlocks.VAULT.get() && block != TrialBlocks.TRIAL_SPAWNER.get())
                     .map(Item.BY_BLOCK::get)
                     .forEach(items::add);
             vanillaTabbedItems = items;

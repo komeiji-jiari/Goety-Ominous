@@ -3,7 +3,6 @@ package com.qiuyue.goetyominous.common.worldgen.alias;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.function.BiConsumer;
-import java.util.stream.Stream;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
@@ -25,11 +24,6 @@ public record Random(ResourceKey<StructureTemplatePool> alias,
     public void forEachResolved(RandomSource random,
                                 BiConsumer<ResourceKey<StructureTemplatePool>, ResourceKey<StructureTemplatePool>> consumer) {
         this.targets.getRandom(random).ifPresent(entry -> consumer.accept(this.alias, entry.getData()));
-    }
-
-    @Override
-    public Stream<ResourceKey<StructureTemplatePool>> allTargets() {
-        return this.targets.unwrap().stream().map(WeightedEntry.Wrapper::getData);
     }
 
     @Override

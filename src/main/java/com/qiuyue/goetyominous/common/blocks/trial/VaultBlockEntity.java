@@ -6,7 +6,6 @@ import com.mojang.serialization.DynamicOps;
 import com.qiuyue.goetyominous.common.init.ModBlockEntities;
 import com.qiuyue.goetyominous.common.init.ModParticleTypes;
 import com.qiuyue.goetyominous.common.init.ModSounds;
-import com.qiuyue.goetyominous.config.VaultConfig;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.util.List;
 import java.util.Set;

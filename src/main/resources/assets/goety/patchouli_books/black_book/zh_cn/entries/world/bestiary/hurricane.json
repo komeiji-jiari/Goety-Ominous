@@ -1,0 +1,20 @@
+{
+  "name": "飓风",
+  "icon": "goetyominous:heavy_core",
+  "category": "goety:world/bestiary",
+  "advancement": "goetyominous:goetyominous/kill_a_hurricane",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "作为野火的远亲，这些庞大的旋风聚合体和他们的小兄弟一样擅长跳跃，在风爆的呼啸中挥出风拳，还能够依靠高速旋转的力量制造出旋风。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:hurricane"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "如果你拥有不祥之兆或者试炼之兆，此时破坏旋风之笼而产生的飓风将会变得更为强大。"
+    }
+  ]
+}

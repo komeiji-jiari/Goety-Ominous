@@ -46,7 +46,6 @@ public class PoolAliasReloadListener extends SimpleJsonResourceReloadListener {
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> files, ResourceManager manager, ProfilerFiller profiler) {
         BY_START_POOL.clear();
-        int count = 0;
         for (Map.Entry<ResourceLocation, JsonElement> entry : files.entrySet()) {
             JsonElement root = entry.getValue();
             if (!root.isJsonObject()) {
@@ -75,8 +74,6 @@ public class PoolAliasReloadListener extends SimpleJsonResourceReloadListener {
                 continue;
             }
             BY_START_POOL.put(startPoolId, bindings);
-            count++;
         }
-        LOGGER.info("goetyominous: 已载入 {} 个结构的 pool_aliases（按 start_pool 索引）", count);
     }
 }

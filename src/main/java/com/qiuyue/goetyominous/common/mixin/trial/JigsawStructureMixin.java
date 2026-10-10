@@ -7,6 +7,7 @@ import com.qiuyue.goetyominous.common.worldgen.alias.PoolAliasLookup;
 import com.qiuyue.goetyominous.common.worldgen.alias.PoolAliasReloadListener;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
@@ -14,6 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.pools.JigsawPlacement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
@@ -26,9 +28,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(JigsawStructure.class)
 public abstract class JigsawStructureMixin {
-
-    private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger("goetyominous/pool_alias");
-    private static final java.util.Set<ResourceLocation> REPORTED = java.util.concurrent.ConcurrentHashMap.newKeySet();
 
     @Inject(method = "verifyRange", at = @At("HEAD"), cancellable = true, require = 1)
     private static void goetyominous$verifyRange(JigsawStructure structure, CallbackInfoReturnable<DataResult<JigsawStructure>> cir) {
@@ -58,17 +57,18 @@ public abstract class JigsawStructureMixin {
                                                                                 boolean useExpansionHack, Optional<Heightmap.Types> projectStartToHeightmap, int maxDistanceFromCenter) {
         ResourceLocation startPoolId = startPool.unwrapKey().map(ResourceKey::location).orElse(null);
         List<PoolAliasBinding> bindings = PoolAliasReloadListener.forStartPool(startPoolId);
-        if (REPORTED.add(startPoolId)) {
-            LOGGER.info("goetyominous: findGenerationPoint start_pool={} → 别名 {} 条，目标示例 {}",
-                    startPoolId, bindings.size(),
-                    bindings.stream().flatMap(PoolAliasBinding::allTargets).limit(3).toList());
-        }
+        Optional<Structure.GenerationStub> stub = JigsawPlacement.addPieces(context, startPool, startJigsawName,
+                maxDepth, pos, useExpansionHack, projectStartToHeightmap, maxDistanceFromCenter);
         if (bindings.isEmpty()) {
-            return JigsawPlacement.addPieces(context, startPool, startJigsawName, maxDepth, pos, useExpansionHack,
-                    projectStartToHeightmap, maxDistanceFromCenter);
+            return stub;
         }
-        return PoolAliasContext.with(PoolAliasLookup.create(bindings, pos, context.seed()), () ->
-                JigsawPlacement.addPieces(context, startPool, startJigsawName, maxDepth, pos, useExpansionHack,
-                        projectStartToHeightmap, maxDistanceFromCenter));
+        PoolAliasLookup lookup = PoolAliasLookup.create(bindings, pos, context.seed());
+        return stub.map(s -> s.generator().left()
+                .map(original -> {
+                    Consumer<StructurePiecesBuilder> wrapped =
+                            builder -> PoolAliasContext.run(lookup, () -> original.accept(builder));
+                    return new Structure.GenerationStub(s.position(), wrapped);
+                })
+                .orElse(s));
     }
 }

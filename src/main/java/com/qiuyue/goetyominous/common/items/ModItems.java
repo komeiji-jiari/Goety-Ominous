@@ -50,6 +50,12 @@ public class ModItems {
     public static final RegistryObject<Item> BREEZE_ROD = ITEMS.register("breeze_rod",
             () -> new Item(new Item.Properties()));
 
+    public static final RegistryObject<Item> RESET_KEY = ITEMS.register("reset_key",
+            () -> new ResetKeyItem(new Item.Properties(), "info.goetyominous.reset_key"));
+
+    public static final RegistryObject<Item> OMINOUS_RESET_KEY = ITEMS.register("ominous_reset_key",
+            () -> new ResetKeyItem(new Item.Properties(), "info.goetyominous.ominous_reset_key"));
+
     public static final RegistryObject<Item> TRIAL_KEY = ITEMS.register("trial_key",
             () -> new Item(new Item.Properties()));
 

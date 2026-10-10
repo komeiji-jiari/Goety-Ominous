@@ -1,0 +1,22 @@
+{
+  "name": "试炼密室",
+  "icon": "minecraft:copper_block",
+  "category": "goety:world",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "传闻称一些古代的试炼场所深埋在地下，只有勇敢之人才有能力闯入其中直面可怕的怪物，取得独特的宝藏。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": ["goetyominous:textures/gui/entries/trial_chambers.png"],
+      "border": true,
+      "text": "可以通过冒险家地图得知埋藏着密室的地点..."
+    },
+    {
+      "type": "goety:ritual",
+      "advancement": "goety:goety/get_crystal_ball",
+      "recipe": "goetyominous:locate/trial_chambers"
+    }
+  ]
+}

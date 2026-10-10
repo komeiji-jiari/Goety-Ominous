@@ -3,6 +3,7 @@
   "values": [
     "goetyominous:heavy_core",
     "goetyominous:wolf_totem",
+    "goetyominous:whirling_cage",
     {
       "id": "goetyominous:gammaroach_nest",
       "required": false

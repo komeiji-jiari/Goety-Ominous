@@ -1,0 +1,20 @@
+{
+  "name": "Hurricane",
+  "icon": "goetyominous:heavy_core",
+  "category": "goety:world/bestiary",
+  "advancement": "goetyominous:goetyominous/kill_a_hurricane",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "As distant cousins of the Wildfire, these colossal whirlwind amalgamations are just as skilled at leaping as their smaller kin. They hurl wind fists amid the howling of wind bursts, and can also harness the power of high-speed rotation to create cyclones."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:hurricane"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "If you possess Bad Omen or Trial Omen, the Hurricane that emerges from breaking a Whirling Cage will become even more powerful."
+    }
+  ]
+}
