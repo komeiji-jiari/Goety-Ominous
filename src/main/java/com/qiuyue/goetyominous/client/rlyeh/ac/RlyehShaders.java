@@ -21,6 +21,7 @@ public final class RlyehShaders {
 
     @Nullable private static ShaderInstance tooltip;
     @Nullable private static ShaderInstance frame;
+    @Nullable private static ShaderInstance textGlyph;
 
     private RlyehShaders() {
     }
@@ -29,6 +30,7 @@ public final class RlyehShaders {
     public static void onRegisterShaders(RegisterShadersEvent event) {
         register(event, "rlyeh_tooltip", DefaultVertexFormat.POSITION_COLOR_TEX, s -> tooltip = s);
         register(event, "rlyeh_frame", DefaultVertexFormat.POSITION_COLOR_TEX, s -> frame = s);
+        register(event, "rlyeh_text_glyph", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, s -> textGlyph = s);
     }
 
     private static void register(RegisterShadersEvent event, String name, VertexFormat format,
@@ -47,5 +49,9 @@ public final class RlyehShaders {
 
     @Nullable public static ShaderInstance frame() {
         return frame;
+    }
+
+    @Nullable public static ShaderInstance textGlyph() {
+        return textGlyph;
     }
 }

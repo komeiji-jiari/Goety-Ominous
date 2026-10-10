@@ -85,6 +85,7 @@
     "MixinBlackBeastRenderer",
     "MixinBlackBeastModel",
     "FontAccessor",
+    "ac.GameRendererAccessor",
     "ac.MixinClientTextTooltip",
     "MaceLevelRendererMixin",
     "TrialOmenLevelRendererMixin",

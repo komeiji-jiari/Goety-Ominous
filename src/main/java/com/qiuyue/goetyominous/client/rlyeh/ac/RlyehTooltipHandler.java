@@ -1,21 +1,40 @@
 package com.qiuyue.goetyominous.client.rlyeh.ac;
 
+import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.math.Axis;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.rlyeh.ac.RlyehStyled;
 import com.qiuyue.goetyominous.compat.mod.ModernUiTooltipCompat;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderTooltipEvent;
@@ -23,6 +42,7 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 @Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID, value = Dist.CLIENT)
 public final class RlyehTooltipHandler {
@@ -38,6 +58,25 @@ public final class RlyehTooltipHandler {
     private static final long INTRO_MILLIS = 520L;
 
     private static final long INTRO_GAP_MILLIS = 130L;
+
+    private static final float SPIN_SECONDS = 30.0F;
+    private static final float ITEM_HEIGHT_FRACTION = 1.00F;
+    private static final float ITEM_MIN_PX = 16.0F;
+    private static final float ITEM_MAX_PX = 88.0F;
+    private static final float ITEM_MARGIN = 4.0F;
+    private static final float ITEM_DIM = 0.78F;
+    private static final BufferBuilder ITEM_BUILDER = new BufferBuilder(1536);
+    private static final MultiBufferSource.BufferSource ITEM_BUFFER = MultiBufferSource.immediateWithBuffers(
+            Map.of(RenderType.glintDirect(), new BufferBuilder(RenderType.glintDirect().bufferSize()),
+                    RenderType.glint(), new BufferBuilder(RenderType.glint().bufferSize())),
+            ITEM_BUILDER);
+
+    private static final int TOOLTIP_BLUE = 0x5555FF;
+    private static final float TEXT_MIN_LUMA = 0.22F;
+    private static final float TEXT_TARGET_LUMA =
+            0.2126F * ((TOOLTIP_BLUE >> 16) & 0xFF) / 255.0F
+                    + 0.7152F * ((TOOLTIP_BLUE >> 8) & 0xFF) / 255.0F
+                    + 0.0722F * (TOOLTIP_BLUE & 0xFF) / 255.0F;
 
     private static long introStartMillis = 0L;
     private static long lastEventMillis = 0L;
@@ -103,7 +142,7 @@ public final class RlyehTooltipHandler {
         int top = y - 3;
         int right = x + w + 3;
         int bottom = y + h + 3;
-        float time = (System.currentTimeMillis() % 100000000L) / 1000.0F;
+        float time = (System.currentTimeMillis() % 3600000L) / 1000.0F;
         float intro = updateIntro(event.getItemStack().getItem(), System.currentTimeMillis());
 
         event.setBackgroundStart(0);
@@ -112,6 +151,8 @@ public final class RlyehTooltipHandler {
         event.setBorderEnd(0);
 
         Matrix4f pose = gt.pose().last().pose();
+
+        RenderSystem.depthMask(false);
 
         gt.enableScissor(left, top, right, bottom);
         RenderSystem.enableBlend();
@@ -137,6 +178,97 @@ public final class RlyehTooltipHandler {
         gt.disableScissor();
 
         drawFrame(pose, left, top, right, bottom, time);
+
+        RenderSystem.depthMask(true);
+
+        drawSpinningItem(gt, event.getItemStack(), left, top, right, bottom, time);
+    }
+
+    private static void drawSpinningItem(GuiGraphics gt, ItemStack stack, int left, int top,
+                                         int right, int bottom, float time) {
+        if (stack.isEmpty()) {
+            return;
+        }
+        Minecraft mc = Minecraft.getInstance();
+        BakedModel model = mc.getItemRenderer().getModel(stack, mc.level, mc.player, 0);
+        Vector3f min = new Vector3f(Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE);
+        Vector3f max = new Vector3f(-Float.MAX_VALUE, -Float.MAX_VALUE, -Float.MAX_VALUE);
+        boolean measured = expand(model, min, max);
+        float modelW = measured ? Math.max(1.0E-4F, max.x - min.x) : 1.0F;
+        float modelH = measured ? Math.max(1.0E-4F, max.y - min.y) : 1.0F;
+        float panelH = Math.max(1.0F, (float) (bottom - top));
+        float height = Mth.clamp(panelH * ITEM_HEIGHT_FRACTION, ITEM_MIN_PX, ITEM_MAX_PX);
+        float scale = height / modelH;
+        float halfW = modelW * scale * 0.5F;
+        float cx = Mth.clamp(left + (right - left) * (5.0F / 6.0F),
+                left + ITEM_MARGIN + halfW, right - ITEM_MARGIN - halfW);
+        cx = Mth.clamp(cx, ITEM_MARGIN + halfW, (float) gt.guiWidth() - ITEM_MARGIN - halfW);
+        float cy = (top + bottom) * 0.5F;
+
+        PoseStack pose = gt.pose();
+        pose.pushPose();
+        boolean flat = false;
+        RenderSystem.disableDepthTest();
+        RenderSystem.depthMask(false);
+        try {
+            pose.translate(cx, cy, Z);
+            pose.mulPose(Axis.YP.rotationDegrees(time * (360.0F / SPIN_SECONDS)));
+            pose.mulPoseMatrix(new Matrix4f().scaling(1.0F, -1.0F, 1.0F));
+            pose.scale(scale, scale, scale);
+            if (measured) {
+                pose.translate(0.5F - (min.x + max.x) * 0.5F, 0.5F - (min.y + max.y) * 0.5F,
+                        0.5F - (min.z + max.z) * 0.5F);
+            }
+            flat = !model.usesBlockLight();
+            if (flat) {
+                Lighting.setupForFlatItems();
+            }
+            float[] was = RenderSystem.getShaderColor().clone();
+            RenderSystem.setShaderColor(ITEM_DIM, ITEM_DIM, ITEM_DIM, 1.0F);
+            try {
+                mc.getItemRenderer().render(stack, ItemDisplayContext.NONE, false, pose, ITEM_BUFFER,
+                        15728880, OverlayTexture.NO_OVERLAY, model);
+            } finally {
+                ITEM_BUFFER.endBatch();
+                RenderSystem.setShaderColor(was[0], was[1], was[2], was[3]);
+            }
+        } finally {
+            RenderSystem.depthMask(true);
+            RenderSystem.enableDepthTest();
+            if (flat) {
+                Lighting.setupFor3DItems();
+            }
+            pose.popPose();
+        }
+    }
+
+    private static boolean expand(BakedModel model, Vector3f min, Vector3f max) {
+        RandomSource random = RandomSource.create(42L);
+        boolean any = false;
+        for (Direction direction : Direction.values()) {
+            random.setSeed(42L);
+            any |= expand(model.getQuads(null, direction, random), min, max);
+        }
+        random.setSeed(42L);
+        any |= expand(model.getQuads(null, null, random), min, max);
+        return any;
+    }
+
+    private static boolean expand(List<BakedQuad> quads, Vector3f min, Vector3f max) {
+        boolean any = false;
+        for (BakedQuad quad : quads) {
+            int[] data = quad.getVertices();
+            int stride = data.length / 4;
+            for (int i = 0; i < 4; i++) {
+                float x = Float.intBitsToFloat(data[i * stride]);
+                float y = Float.intBitsToFloat(data[i * stride + 1]);
+                float z = Float.intBitsToFloat(data[i * stride + 2]);
+                min.set(Math.min(min.x, x), Math.min(min.y, y), Math.min(min.z, z));
+                max.set(Math.max(max.x, x), Math.max(max.y, y), Math.max(max.z, z));
+                any = true;
+            }
+        }
+        return any;
     }
 
     private static void drawFrame(Matrix4f pose, int left, int top, int right, int bottom, float time) {
@@ -219,14 +351,53 @@ public final class RlyehTooltipHandler {
     }
 
     @SubscribeEvent
-    public static void onItemTooltip(net.minecraftforge.event.entity.player.ItemTooltipEvent event) {
-        if (!(event.getItemStack().getItem() instanceof com.qiuyue.goetyominous.common.rlyeh.ac.RlyehStyled)) {
+    public static void onItemTooltip(ItemTooltipEvent event) {
+        if (!(event.getItemStack().getItem() instanceof RlyehStyled)) {
             return;
         }
         List<Component> tooltip = event.getToolTip();
-        if (!tooltip.isEmpty() && !tooltip.get(0).getString().isBlank()) {
+        if (tooltip.isEmpty()) {
+            return;
+        }
+        if (!tooltip.get(0).getString().isBlank()) {
             tooltip.set(0, RlyehFont.abyss(tooltip.get(0).getString()));
         }
+        for (int i = 1; i < tooltip.size(); i++) {
+            tooltip.set(i, readable(tooltip.get(i)));
+        }
+    }
+
+    private static Component readable(Component component) {
+        MutableComponent rebuilt = Component.empty();
+        boolean[] changed = {false};
+        component.visit((style, text) -> {
+            TextColor colour = style.getColor();
+            if (colour != null) {
+                int lifted = liftLuma(colour.getValue());
+                if (lifted != colour.getValue()) {
+                    changed[0] = true;
+                    rebuilt.append(Component.literal(text).setStyle(style.withColor(lifted)));
+                    return Optional.empty();
+                }
+            }
+            rebuilt.append(Component.literal(text).setStyle(style));
+            return Optional.empty();
+        }, Style.EMPTY);
+        return changed[0] ? rebuilt : component;
+    }
+
+    private static int liftLuma(int rgb) {
+        float r = ((rgb >> 16) & 0xFF) / 255.0F;
+        float g = ((rgb >> 8) & 0xFF) / 255.0F;
+        float b = (rgb & 0xFF) / 255.0F;
+        float luma = 0.2126F * r + 0.7152F * g + 0.0722F * b;
+        if (luma >= TEXT_MIN_LUMA) {
+            return rgb;
+        }
+        float t = (TEXT_TARGET_LUMA - luma) / (1.0F - luma);
+        return (Math.round((r + (1.0F - r) * t) * 255.0F) << 16)
+                | (Math.round((g + (1.0F - g) * t) * 255.0F) << 8)
+                | Math.round((b + (1.0F - b) * t) * 255.0F);
     }
 
     private static int sample(int[] palette, float t) {
