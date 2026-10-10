@@ -13,7 +13,7 @@ public class ModKeyBindings {
     public static final KeyMapping RIDER_CHARGE_KEY = new KeyMapping(
             "key.goetyominous.rider_charge",
             InputConstants.Type.KEYSYM,
-            GLFW.GLFW_KEY_K,
+            GLFW.GLFW_KEY_G,
             "key.categories.goetyominous"
     );
 
