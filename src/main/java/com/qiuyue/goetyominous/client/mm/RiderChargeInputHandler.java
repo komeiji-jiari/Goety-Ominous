@@ -14,15 +14,20 @@ public class RiderChargeInputHandler {
 
     @SubscribeEvent
     public static void onKeyInput(InputEvent.Key event) {
+        var player = net.minecraft.client.Minecraft.getInstance().player;
+        if (player == null || player.getVehicle() == null) {
+            return;
+        }
+        if (!MutantMoreCompat.isMutantMoreLoaded()) {
+            return;
+        }
+        if (!player.getVehicle().getClass().getName().equals(
+                "com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantHoglinServant")) {
+            return;
+        }
         if (ModKeyBindings.RIDER_CHARGE_KEY.consumeClick()) {
-            var player = net.minecraft.client.Minecraft.getInstance().player;
-            if (player != null && player.getVehicle() != null
-                    && MutantMoreCompat.isMutantMoreLoaded()
-                    && player.getVehicle().getClass().getName().equals(
-                    "com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantHoglinServant")) {
-                ModNetwork.CHANNEL.sendToServer(
-                        new RiderChargePacket(player.getVehicle().getId()));
-            }
+            ModNetwork.CHANNEL.sendToServer(
+                    new RiderChargePacket(player.getVehicle().getId()));
         }
     }
 }

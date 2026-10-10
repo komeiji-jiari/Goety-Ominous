@@ -46,7 +46,7 @@ public class ModCreativeTab {
 
     public static final RegistryObject<CreativeModeTab> MAIN_TAB = CREATIVE_MODE_TABS
             .register(GoetyOminous.MOD_ID, () -> CreativeModeTab.builder()
-                    .icon(() -> com.Polarice3.Goety.common.items.ModItems.CRONE_HAT.get().getDefaultInstance())
+                    .icon(() -> ModItems.DARK_ANKH.get().getDefaultInstance())
                     .title(Component.translatable("itemGroup." + GoetyOminous.MOD_ID))
                     .withSearchBar()
                     .displayItems((parameters, output) -> {

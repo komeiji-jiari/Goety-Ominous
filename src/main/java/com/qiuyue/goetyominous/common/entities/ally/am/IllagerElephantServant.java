@@ -14,6 +14,7 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.google.common.collect.Maps;
+import com.qiuyue.goetyominous.common.entities.ai.SmoothBodyRotationControl;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.Util;
@@ -47,6 +48,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PlayerRideable;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
@@ -85,6 +87,8 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
     public static final Animation ANIMATION_STOMP = Animation.create(20);
     public static final Animation ANIMATION_FLING = Animation.create(25);
     public static final Animation ANIMATION_EAT = Animation.create(30);
+    private static final float RIDDEN_TURN_SPEED = 12.0f;
+    public static final float RIDER_TURN_SPEED = 6.0f;
     private static final EntityDataAccessor<Boolean> STANDING = SynchedEntityData.defineId(IllagerElephantServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(IllagerElephantServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> CARPET_COLOR = SynchedEntityData.defineId(IllagerElephantServant.class, EntityDataSerializers.INT);
@@ -118,11 +122,13 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
     private int standingTime = 0;
     private boolean hasChestVarChanged = false;
     private boolean hasChargedSpeed = false;
-    private int chargingTicks = 0;
+    private boolean riderInitiatedCharge = false;
     private int chestFeedCooldown = 0;
     private int reachCheckTick = -20;
     private int reachTargetId = -1;
     private boolean reachResult = true;
+    private float riddenHeading = 0.0f;
+    private boolean riddenAutoSteer = false;
 
     public IllagerElephantServant(EntityType<? extends Owned> type, Level level) {
         super(type, level);
@@ -210,6 +216,11 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
     }
 
     @Override
+    protected BodyRotationControl createBodyControl() {
+        return new SmoothBodyRotationControl(this);
+    }
+
+    @Override
     public boolean isBaby() {
         return false;
     }
@@ -258,6 +269,17 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
             return player.zza != 0.0f || player.xxa != 0.0f;
         }
         return false;
+    }
+
+    private boolean isChargingOrInCombat() {
+        if (this.isCharging() || this.getAnimation() == ANIMATION_CHARGE_PREPARE || this.getAnimation() == ANIMATION_FLING) {
+            return true;
+        }
+        if (this.getTarget() != null) {
+            return true;
+        }
+        Player rider = this.getControllingPassenger() instanceof Player player ? player : null;
+        return rider != null && rider.getLastHurtMob() != null && !this.isAlliedTo(rider.getLastHurtMob());
     }
 
     private boolean isTargetReachable(@Nullable LivingEntity target) {
@@ -362,13 +384,15 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
             }
             this.hasChestVarChanged = false;
         }
-        this.chargingTicks = this.isCharging() ? ++this.chargingTicks : 0;
         Player rider = this.getControllingPassenger() instanceof Player player ? player : null;
         boolean riderCombat = rider != null && rider.getLastHurtMob() != null && !this.isAlliedTo(rider.getLastHurtMob());
+        if (!this.isCharging() && this.getAnimation() != ANIMATION_CHARGE_PREPARE) {
+            this.riderInitiatedCharge = false;
+        }
         if (!this.level().isClientSide && this.getChargeCooldown() > 0) {
             this.setChargeCooldown(this.getChargeCooldown() - 1);
         }
-        if (!this.level().isClientSide && !riderCombat && this.getTarget() == null && !this.getMainHandItem().isEmpty() && this.canTargetItem(this.getMainHandItem()) && this.getHealth() < this.getMaxHealth()) {
+        if (!this.level().isClientSide && !this.isChargingOrInCombat() && !this.getMainHandItem().isEmpty() && this.canTargetItem(this.getMainHandItem()) && this.getHealth() < this.getMaxHealth()) {
             if (this.getAnimation() == NO_ANIMATION) {
                 this.setAnimation(ANIMATION_EAT);
             }
@@ -385,6 +409,9 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
             this.yBodyRot = this.getYRot();
             if (this.getAnimationTick() == 20 && !this.isStaying()) {
                 this.setCharging(true);
+                if (this.getTarget() == null && !riderCombat) {
+                    this.setAnimation(ANIMATION_FLING);
+                }
             }
         }
         LivingEntity target = this.getTarget();
@@ -393,16 +420,12 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
             target = rider.getLastHurtMob();
             maxAttackMod = 4.0;
         }
-        if (!this.level().isClientSide && this.isCharging() && this.chargingTicks > 400) {
-            this.setCharging(false);
-            this.setChargeCooldown(200);
-        }
         if (!this.level().isClientSide && target != null) {
             if (!this.isActivelySteering() && this.isTargetReachable(target) && this.hasLineOfSight(target) && this.getAnimation() == NO_ANIMATION && !this.isCharging() && this.getChargeCooldown() == 0 && !this.isStaying()) {
                 this.setAnimation(ANIMATION_CHARGE_PREPARE);
             }
             if (this.getAnimation() == ANIMATION_CHARGE_PREPARE && !this.isActivelySteering()) {
-                this.lookAt(target, 360.0f, 30.0f);
+                this.lookAt(target, (float) this.getMaxHeadYRot(), 30.0f);
                 this.yBodyRot = this.getYRot();
             }
             double dist = this.distanceTo(target);
@@ -412,7 +435,7 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
             if (dist < 10.0 && this.isCharging() && this.getAnimation() != ANIMATION_FLING) {
                 this.setAnimation(ANIMATION_FLING);
             }
-            if (dist < this.getBbWidth() * 0.5f + target.getBbWidth() * 0.5f && this.isCharging()) {
+            if (dist < 2.1 && this.isCharging()) {
                 target.knockback(1.0, target.getX() - this.getX(), target.getZ() - this.getZ());
                 target.hasImpulse = true;
                 target.setDeltaMovement(target.getDeltaMovement().add(0.0, 0.7, 0.0));
@@ -422,7 +445,7 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
                 this.setChargeCooldown(400);
             }
         }
-        if (!this.level().isClientSide && this.getTarget() == null && !riderCombat) {
+        if (!this.level().isClientSide && this.getTarget() == null && !riderCombat && !this.riderInitiatedCharge && this.isCharging()) {
             this.setCharging(false);
         }
         if (!this.level().isClientSide && this.isStaying() && this.isCharging()) {
@@ -471,6 +494,14 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
             float f = huge ? 2.0f : 0.5f;
             e.push(d0 / d2 * f, huge ? 0.5 : 0.2f, d1 / d2 * f);
         }
+    }
+
+    @Override
+    public void push(double x, double y, double z) {
+        if (this.isCharging()) {
+            return;
+        }
+        super.push(x * 0.25, y * 0.25, z * 0.25);
     }
 
     private void eatItemEffect(ItemStack heldItemMainhand) {
@@ -665,19 +696,21 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
         if (this.getControllingPassenger() == null) {
             return false;
         }
-        if (this.isCharging() || this.getChargeCooldown() > 0 || this.getAnimation() != NO_ANIMATION) {
+        if (this.isCharging()) {
+            this.setCharging(false);
+            this.setChargeCooldown(200);
+            return true;
+        }
+        if (this.getAnimation() == ANIMATION_CHARGE_PREPARE) {
+            this.setAnimation(NO_ANIMATION);
+            return true;
+        }
+        if (this.getChargeCooldown() > 0 || this.getAnimation() != NO_ANIMATION) {
             return false;
         }
-        if (this.getTarget() == null && !this.hasRiderCombatTarget()) {
-            return false;
-        }
+        this.riderInitiatedCharge = true;
         this.setAnimation(ANIMATION_CHARGE_PREPARE);
         return true;
-    }
-
-    private boolean hasRiderCombatTarget() {
-        Player rider = this.getControllingPassenger() instanceof Player player ? player : null;
-        return rider != null && rider.getLastHurtMob() != null && !this.isAlliedTo(rider.getLastHurtMob());
     }
 
     public Animation getAnimation() {
@@ -884,19 +917,66 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
     }
 
     @Override
+    protected void removePassenger(Entity passenger) {
+        super.removePassenger(passenger);
+        if (!this.level().isClientSide && this.getControllingPassenger() == null && (this.riderInitiatedCharge || this.getAnimation() == ANIMATION_CHARGE_PREPARE)) {
+            this.riderInitiatedCharge = false;
+            this.setCharging(false);
+            if (this.getAnimation() == ANIMATION_CHARGE_PREPARE) {
+                this.setAnimation(NO_ANIMATION);
+            }
+        }
+    }
+
+    @Nullable
+    private LivingEntity getRiddenTarget(Player player) {
+        LivingEntity target = this.getTarget();
+        if (target == null && player.getLastHurtMob() != null && !this.isAlliedTo(player.getLastHurtMob())) {
+            target = player.getLastHurtMob();
+        }
+        return target;
+    }
+
+    private void steerRidden(Player player) {
+        if (!this.isControlledByLocalInstance()) {
+            return;
+        }
+        LivingEntity target = this.getRiddenTarget(player);
+        float wanted;
+        if (target != null && target.isAlive() && !this.isStaying()) {
+            wanted = (float) (Mth.atan2(target.getZ() - this.getZ(), target.getX() - this.getX()) * (180.0 / Math.PI)) - 90.0f;
+        } else if (this.isCharging()) {
+            wanted = player.getYRot();
+        } else {
+            this.riddenAutoSteer = false;
+            return;
+        }
+        if (!this.riddenAutoSteer) {
+            this.riddenAutoSteer = true;
+            this.riddenHeading = this.getYRot();
+        }
+        this.riddenHeading = Mth.approachDegrees(this.riddenHeading, wanted, RIDDEN_TURN_SPEED);
+        this.setYRot(this.riddenHeading);
+        this.yHeadRot = this.riddenHeading;
+        this.yBodyRot = this.riddenHeading;
+        this.getNavigation().stop();
+    }
+
+    @Override
     protected Vec3 getRiddenInput(Player player, Vec3 deltaIn) {
-        if (player.zza != 0.0f || player.xxa != 0.0f) {
+        if (player.zza != 0.0f) {
             float f = player.zza < 0.0f ? 0.5f : 1.0f;
-            return new Vec3(player.xxa * 0.25f, 0.0, player.zza * 0.5f * f);
+            return new Vec3(0.0, 0.0, player.zza * 0.5f * f);
         }
 
-        LivingEntity target = this.getTarget();
-        if (target != null && target.isAlive() && !this.isStaying() && !this.isImmobile()) {
-            double dx = target.getX() - this.getX();
-            double dz = target.getZ() - this.getZ();
-            double dist = Math.sqrt(dx * dx + dz * dz);
-            if (dist > 1.5) {
-                return new Vec3(dx / dist * 0.5, 0.0, dz / dist * 0.5);
+        if (this.isCharging() && !this.isImmobile()) {
+            return new Vec3(0.0, 0.0, 0.5);
+        }
+
+        if (player.xxa == 0.0f) {
+            LivingEntity target = this.getRiddenTarget(player);
+            if (target != null && target.isAlive() && !this.isStaying() && !this.isImmobile() && this.distanceTo(target) > 1.5) {
+                return new Vec3(0.0, 0.0, 0.5);
             }
         }
         this.setSprinting(false);
@@ -907,12 +987,15 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
     protected void tickRidden(Player player, Vec3 vec3) {
         super.tickRidden(player, vec3);
         if (player.zza != 0.0f || player.xxa != 0.0f) {
+            this.riddenAutoSteer = false;
             this.setRot(player.getYRot(), player.getXRot() * 0.25f);
             this.yBodyRot = this.yHeadRot = this.getYRot();
             this.yRotO = this.yHeadRot;
             this.getNavigation().stop();
-            this.setSprinting(true);
+            this.setSprinting(player.zza > 0.0f || this.isCharging());
+            return;
         }
+        this.steerRidden(player);
     }
 
     @Override
@@ -948,7 +1031,8 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
         @Override
         public boolean canUse() {
             if (IllagerElephantServant.this.chestFeedCooldown > 0 || !IllagerElephantServant.this.isChested()
-                    || IllagerElephantServant.this.elephantInventory == null) {
+                    || IllagerElephantServant.this.elephantInventory == null
+                    || IllagerElephantServant.this.isChargingOrInCombat()) {
                 return false;
             }
             for (Entity passenger : IllagerElephantServant.this.getPassengers()) {
