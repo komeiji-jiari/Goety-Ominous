@@ -13,7 +13,8 @@
 // are the tooltip's own extent in that space — around 113 x 45 for a real three-line tooltip, not the
 // 522 x 138 a GUI-scale-3 reading would give. Anything measured in those units therefore changes
 // APPARENT size whenever the tooltip gets longer or shorter, which is how 拉莱耶's three lamp glows
-// came to cover half the panel and wash it out. Size things with `uv * uAspect` instead — the short
+// came to cover half the panel and wash it out — until they were themselves deleted on 10-10 for
+// exactly that. Size things with `uv * uAspect` instead — the short
 // side is 1.0, so a radius there is a fraction of the panel and survives every tooltip.
 
 uniform vec4 ColorModulator;
@@ -213,9 +214,9 @@ vec3 scenePillars(vec2 uv, float t, float intro) {
 // The same trap still applies elsewhere in this file: `fbm` is VALUE noise, so sampling it at a
 // multiple of an angle is NOT periodic in that angle — integer multiple or not. `ang` wraps at ±π and
 // floor(kπ + c) ≠ floor(−kπ + c), so there is a step down one side of the panel. Only sin/cos of
-// integer harmonics close properly (see the lamp loop in sceneAbyss). `turb` in sceneBlackHole is
-// sampled at `ang * 2.6` and still carries that seam; it is invisible because the fbm there only
-// nudges brightness rather than displacing a thin line.
+// integer harmonics close properly — the abyss lamp loop that was the standing example of this is
+// gone, the rule is not. `turb` in sceneBlackHole is sampled at `ang * 2.6` and still carries that
+// seam; it is invisible because the fbm there only nudges brightness rather than displacing a line.
 //
 // If lightning is ever wanted back, it has to be built the other way round: a band WIDER than its own
 // displacement, harmonics instead of fbm, and a gate that fades rather than re-rolls.
@@ -342,19 +343,21 @@ const float ABYSS_DIM = 0.80;
 // radii are written in. Multiplying `uAspect` by it turns a short-side-normalised vector back into
 // the space those numbers assume, on a panel of any shape.
 //
-// ⚠ This constant exists because of a real bug, so do not quietly delete it. The three lamp glows and
-// the bubble columns used to be measured in uPanelSize, which is GUI units — see the warning at the
-// top of the file. The scene was composed against a preview canvas 522 x 138 units wide, and the
-// panel that actually arrives is about 113 x 45, so on screen the glows came out 4.6x too large
-// relative to the panel: each one spanned roughly half the panel's height and all three together
-// roughly DOUBLED the settled brightness (mean luma 0.0804 -> 0.1668 at the real size). That is what
+// ⚠ This constant exists because of a real bug, so do not quietly delete it. The bubble columns used to
+// be measured in uPanelSize, which is GUI units — see the warning at the top of the file. (So were the
+// three lamp glows, until they were deleted on 10-10; see the tombstone in sceneAbyss.)
+//
+// The scene was composed against a preview canvas 522 x 138 units wide, and the panel that actually
+// arrives is about 113 x 45, so on screen the glows came out 4.6x too large relative to the panel:
+// each one spanned roughly half the panel's height and all three together roughly DOUBLED the settled
+// brightness (mean luma 0.0804 -> 0.1668 at the real size). That is what
 // "拉莱耶做了动画之后的太亮了" and the second screenshot were.
 const float ABYSS_REF_SHORT = 138.0;
 
 vec3 sceneAbyss(vec2 uv, float t, vec2 uv0, float intro) {
     // THE ENTRANCE. Nothing in this panel "arrives" — the water was always there and the panel just
-    // stops hiding it: the water fades in, a pressure wave crosses it, and the bioluminescence along
-    // the bottom notices one light at a time.
+    // stops hiding it: the water fades in and a pressure wave crosses it. (The bioluminescence along
+    // the bottom that used to notice one light at a time is gone — see the tombstone below.)
     //
     // ⚠ THE CREATURE IS GONE, by request: "这个下面的黑影和他的眼睛就不需要了，不要再弄这个了".
     // What was cut: a black silhouette drifting across the bottom of the panel (mass / ridge / fin),
@@ -362,9 +365,10 @@ vec3 sceneAbyss(vec2 uv, float t, vec2 uv0, float intro) {
     // out of the dark the instant they opened. With them went `surfaced` and `massY`, which existed
     // only to carry that silhouette up out of the bottom edge.
     //
-    // The pressure wave and the lamps STAY. The wave used to be the creature's wake; it is now just
-    // the water moving, which is a fine thing for a deep-sea panel to do on its own, and the request
-    // was for the creature and its eyes rather than for the depth to go quiet.
+    // The pressure wave STAYS. It used to be the creature's wake; it is now just the water moving,
+    // which is a fine thing for a deep-sea panel to do on its own, and the request was for the
+    // creature and its eyes rather than for the depth to go quiet. The lamps that stayed with it that
+    // day were themselves removed the next morning — see the tombstone further down this function.
     float envT     = stageUp(intro, 0.0, 0.55);   // the water and everything living in it
 
     // The water itself: deep blue, dying to a blue so dark it is nearly black with depth. It is
@@ -417,7 +421,7 @@ vec3 sceneAbyss(vec2 uv, float t, vec2 uv0, float intro) {
     }
 
     // Bubbles: three columns letting beads go, climbing and wobbling toward a surface they never
-    // reach. Distances are taken in the same short-side units as the lamps — true circles at any
+    // reach. Distances are taken in short-side units, as the lamps' were — true circles at any
     // panel shape, never stretched by the panel's aspect, and the same apparent size however long the
     // tooltip gets (they were in uPanelSize, which is GUI units and grows with the text; see
     // ABYSS_REF_SHORT) — and their phase runs on its own clock, so the sink-in never slides them.
@@ -446,28 +450,31 @@ vec3 sceneAbyss(vec2 uv, float t, vec2 uv0, float intro) {
     // colour that was already fully populated. One gate on the whole environment instead.
     col *= mix(0.05, 1.0, envT);
 
-    // Distant bioluminescence: cold points of living light hanging far below, each breathing on
-    // its own clock. Three of them, each a tight core inside a wide halo — a light seen THROUGH
-    // water, which is what separates it from a lamp in air. They are the only warm thing down
-    // here and they are what tells the eye the water goes on past the edge of the panel.
+    // ⚠ TOMBSTONE: the three "distant bioluminescence" lamps were DELETED here on 10-10, by request —
+    // "在比较下面位置的亮光你去掉吧", with the offending wash circled on a screenshot of the lower panel.
     //
-    // On the way in they wake one at a time, left to right, each a beat after the last. Three lights
-    // coming up together would read as one switch; three coming up in sequence read as a deep that is
-    // inhabited, which is the only thing this scene is about.
-    for (int gl = 0; gl < 3; gl++) {
-        float seed = float(gl) * 21.3 + 9.0;
-        vec2 gp = vec2(0.20 + 0.30 * float(gl) + 0.05 * sin(t * 0.07 + seed),
-                       0.62 + 0.16 * hash(vec2(seed, 3.0)) + 0.03 * sin(t * 0.11));
-        // The halo e-folds at sqrt(500) = 22.4 of these units and the core at sqrt(90) = 9.5, i.e.
-        // 16% and 6.9% of the panel's short side — the same proportions at any panel shape, which is
-        // the whole point of measuring them here instead of in uPanelSize. See ABYSS_REF_SHORT.
-        vec2 gd = (uv - gp) * ssu;
-        float breathe = 0.5 + 0.5 * sin(t * (0.35 + float(gl) * 0.12) + seed);
-        float woke = stageUp(intro, 0.42 + 0.13 * float(gl), 0.66 + 0.13 * float(gl));
-        float d2 = dot(gd, gd);
-        col += vec3(0.22, 0.52, 0.95) * exp(-d2 / 500.0) * (0.35 + 0.65 * breathe) * 0.85 * woke;
-        col += vec3(0.55, 0.85, 1.00) * exp(-d2 / 90.0) * (0.20 + 0.80 * breathe) * 0.45 * woke;
-    }
+    // What they were: three points of living light sitting at uv.y = 0.62 + 0.16 * hash, i.e. 62–81% of
+    // the panel's height — the lower half, which is where the tooltip's numbers live — each one a tight
+    // core inside a wide halo, breathing on its own clock, and waking one at a time during the entrance
+    // so the deep read as inhabited rather than switched on.
+    //
+    // WHY THEY HAD TO GO, in numbers rather than taste. The halo e-folds at sqrt(500) = 22.4 short-side
+    // units, which is 16% of the panel's SHORT side — and a tooltip panel is taller than it is wide only
+    // when it is short, so on the shipped ~113 x 45 panel the short side is the height and that 16% is
+    // 16% of the HEIGHT: a soft blob of radius 7.3 GUI units, i.e. about 15 units ACROSS, a full third
+    // of the panel's height, out of a light that was meant to be a distant point. Measured back off the
+    // two screenshots the request came with, the blob's centre sat at uv.y ~ 0.68 and its area worked
+    // out to a radius of 7.4 units against the formula's 7.3 — and it had moved between the two frames,
+    // because it drifts. On three separate breathing clocks (`0.35 + 0.65 * breathe` each) the three
+    // together swung the lower panel's own 90th-percentile luma between 0.20 and 0.36 over one cycle of
+    // the GIF that came with the report. A pulsing wash that size is not a light seen through water, it
+    // is glare — and it was eating the contrast of every line of text drawn over the bottom half.
+    //
+    // If lights are ever wanted down here again they have to be POINTS: keep the exp(-d2 / 90.0) core,
+    // which is 6.9% of the short side and is the part that reads as a bead of light seen through water,
+    // and DO NOT bring the exp(-d2 / 500.0) halo back "for depth". The depth this panel needs is carried
+    // by the water gradient, the thermoclines, the caustics, the sunken shafts, the marine snow and the
+    // three bubble columns — all of them still here, and none of them swells to a third of the panel.
 
     // The pressure wave. A front running outward from low in the frame, refracting the water as it
     // passes. Drawn as the DERIVATIVE of a Gaussian — bright on its leading edge, dark on its trailing
@@ -489,7 +496,7 @@ vec3 sceneAbyss(vec2 uv, float t, vec2 uv0, float intro) {
     //
     // The figure is not a guess: it was picked off a four-step comparison render of this exact panel
     // (x1.00 / x0.80 / x0.62 / x0.48), and 0.80 is the lightest of the three candidates — enough to
-    // take the glare off the mid-blues while the caustics and the three lamps stay legible.
+    // take the glare off the mid-blues while the caustics and the bubble columns stay legible.
     //
     // ⚠ It goes HERE, inside the scene, and not after main()'s readability guard. That guard only ever
     // scales DOWN and only above its knee, so a dim applied after it would do nothing to the bright
@@ -528,8 +535,8 @@ void main() {
     //   深空    the backlight goes up first, the columns climb into frame, the rims catch, the stars last
     //   虚无    the hole OPENS — one beat, a zoom, over the ORIGINAL concentric disk (both reverted;
     //           see sceneBlackHole. Nothing of the 10-09 edge-on rework survives.)
-    //   拉莱耶  the panel stops hiding the water, a pressure wave crosses it, and the deep lights up
-    //           one lamp at a time (the creature and its eyes that used to close the show are gone)
+    //   拉莱耶  the panel stops hiding the water and a pressure wave crosses it (the creature, its eyes
+    //           and the three lamps that used to close the show are all gone)
     // The three panel-wide beats live here; the per-scene staging lives in each scene function.
     bool voidFx = uTheme > 1.5 && uTheme < 2.5;
     bool abyssFx = uTheme > 2.5;
