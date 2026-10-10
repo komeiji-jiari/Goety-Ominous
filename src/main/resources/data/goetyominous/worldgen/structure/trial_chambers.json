@@ -52,6 +52,96 @@
             }
           ],
           "weight": 1
+        },
+        {
+          "data": [
+            {
+              "type": "minecraft:direct",
+              "alias": "goetyominous:trial_chambers/spawner/contents/ranged",
+              "target": "goetyominous:trial_chambers/spawner/ranged/dreden"
+            },
+            {
+              "type": "minecraft:direct",
+              "alias": "goetyominous:trial_chambers/spawner/contents/slow_ranged",
+              "target": "goetyominous:trial_chambers/spawner/slow_ranged/dreden"
+            }
+          ],
+          "weight": 1
+        },
+        {
+          "data": [
+            {
+              "type": "minecraft:direct",
+              "alias": "goetyominous:trial_chambers/spawner/contents/ranged",
+              "target": "goetyominous:trial_chambers/spawner/ranged/wraith"
+            },
+            {
+              "type": "minecraft:direct",
+              "alias": "goetyominous:trial_chambers/spawner/contents/slow_ranged",
+              "target": "goetyominous:trial_chambers/spawner/slow_ranged/wraith"
+            }
+          ],
+          "weight": 1
+        },
+        {
+          "data": [
+            {
+              "type": "minecraft:direct",
+              "alias": "goetyominous:trial_chambers/spawner/contents/ranged",
+              "target": "goetyominous:trial_chambers/spawner/ranged/border_wraith"
+            },
+            {
+              "type": "minecraft:direct",
+              "alias": "goetyominous:trial_chambers/spawner/contents/slow_ranged",
+              "target": "goetyominous:trial_chambers/spawner/slow_ranged/border_wraith"
+            }
+          ],
+          "weight": 1
+        },
+        {
+          "data": [
+            {
+              "type": "minecraft:direct",
+              "alias": "goetyominous:trial_chambers/spawner/contents/ranged",
+              "target": "goetyominous:trial_chambers/spawner/ranged/rattled"
+            },
+            {
+              "type": "minecraft:direct",
+              "alias": "goetyominous:trial_chambers/spawner/contents/slow_ranged",
+              "target": "goetyominous:trial_chambers/spawner/slow_ranged/rattled"
+            }
+          ],
+          "weight": 1
+        },
+        {
+          "data": [
+            {
+              "type": "minecraft:direct",
+              "alias": "goetyominous:trial_chambers/spawner/contents/ranged",
+              "target": "goetyominous:trial_chambers/spawner/ranged/muck_wraith"
+            },
+            {
+              "type": "minecraft:direct",
+              "alias": "goetyominous:trial_chambers/spawner/contents/slow_ranged",
+              "target": "goetyominous:trial_chambers/spawner/slow_ranged/muck_wraith"
+            }
+          ],
+          "weight": 1
+        },
+        {
+          "data": [
+            {
+              "type": "minecraft:direct",
+              "alias": "goetyominous:trial_chambers/spawner/contents/ranged",
+              "target": "goetyominous:trial_chambers/spawner/ranged/hostile_skeleton_pillager"
+            },
+            {
+              "type": "minecraft:direct",
+              "alias": "goetyominous:trial_chambers/spawner/contents/slow_ranged",
+              "target": "goetyominous:trial_chambers/spawner/slow_ranged/hostile_skeleton_pillager"
+            }
+          ],
+          "weight": 1
         }
       ]
     },
@@ -69,6 +159,34 @@
         },
         {
           "data": "goetyominous:trial_chambers/spawner/melee/spider",
+          "weight": 1
+        },
+        {
+          "data": "goetyominous:trial_chambers/spawner/melee/mired",
+          "weight": 1
+        },
+        {
+          "data": "goetyominous:trial_chambers/spawner/melee/frayed",
+          "weight": 1
+        },
+        {
+          "data": "goetyominous:trial_chambers/spawner/melee/reaper",
+          "weight": 1
+        },
+        {
+          "data": "goetyominous:trial_chambers/spawner/melee/web_spider",
+          "weight": 1
+        },
+        {
+          "data": "goetyominous:trial_chambers/spawner/melee/icy_spider",
+          "weight": 1
+        },
+        {
+          "data": "goetyominous:trial_chambers/spawner/melee/bone_spider",
+          "weight": 1
+        },
+        {
+          "data": "goetyominous:trial_chambers/spawner/melee/hostile_zombie_vindicator",
           "weight": 1
         }
       ]
@@ -91,6 +209,14 @@
         },
         {
           "data": "goetyominous:trial_chambers/spawner/small_melee/baby_zombie",
+          "weight": 1
+        },
+        {
+          "data": "goetyominous:trial_chambers/spawner/small_melee/crypt_slime",
+          "weight": 1
+        },
+        {
+          "data": "goetyominous:trial_chambers/spawner/small_melee/hostile_black_wolf",
           "weight": 1
         }
       ]

@@ -43,7 +43,7 @@
         "processors": "goetyominous:trial_chambers_copper_bulb_degradation",
         "projection": "rigid"
       },
-      "weight": 1
+      "weight": 4
     }
   ],
   "fallback": "goetyominous:trial_chambers/hallway/fallback"

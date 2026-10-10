@@ -20,20 +20,22 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class WhirlingCageBlock extends Block {
     private static final double CORE_HEIGHT = 0.25D;
+    private static final double BREAKER_RADIUS = 6.0D;
     private static final UUID OMINOUS_HEALTH_ID = UUID.fromString("6f2b1c3a-9e4d-4a7b-8c1e-2d3f4a5b6c7d");
+    private static final Map<BlockPos, Player> PENDING_BREAKER = new ConcurrentHashMap<>();
 
     public WhirlingCageBlock() {
         super(Properties.of()
@@ -49,27 +51,48 @@ public class WhirlingCageBlock extends Block {
     }
 
     @Override
-    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
-        if (!player.isCreative() && level instanceof ServerLevel serverLevel) {
-            Hurricane hurricane = new Hurricane(ModEntityTypes.HURRICANE.get(), level);
-            Vec3 ground = Vec3.atBottomCenterOf(pos);
-            hurricane.setPos(ground);
-            hurricane.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(pos), MobSpawnType.MOB_SUMMONED, null, null);
-            if (MobUtil.validEntity(player)) {
-                hurricane.setTarget(player);
-            }
-            hurricane.setPersistenceRequired();
-            if (player.hasEffect(MobEffects.BAD_OMEN) || player.hasEffect(ModEffects.TRIAL_OMEN.get())) {
-                AttributeInstance maxHealth = hurricane.getAttribute(Attributes.MAX_HEALTH);
-                if (maxHealth != null && maxHealth.getModifier(OMINOUS_HEALTH_ID) == null) {
-                    maxHealth.addPermanentModifier(new AttributeModifier(OMINOUS_HEALTH_ID, "goetyominous:ominous_health", 1.0D, AttributeModifier.Operation.MULTIPLY_BASE));
-                    hurricane.setHealth(hurricane.getMaxHealth());
-                }
-                hurricane.setOminousBuffed(true);
-            }
-            level.addFreshEntity(new HurricaneCoreSummon(level, ground.add(0.0D, CORE_HEIGHT, 0.0D), ground.y, hurricane));
+    public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+        if (player != null && level instanceof ServerLevel) {
+            PENDING_BREAKER.put(pos.immutable(), player);
         }
-        super.playerDestroy(level, player, pos, state, blockEntity, tool);
+        super.playerWillDestroy(level, pos, state, player);
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (!state.is(newState.getBlock()) && !isMoving && level instanceof ServerLevel serverLevel) {
+            Player breaker = PENDING_BREAKER.remove(pos);
+            if (breaker != null && breaker.level() != level) {
+                breaker = null;
+            }
+            if (breaker == null) {
+                breaker = serverLevel.getNearestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, BREAKER_RADIUS, true);
+            }
+            if (breaker == null || !breaker.isCreative()) {
+                this.spawnHurricane(serverLevel, pos, breaker);
+            }
+        }
+        super.onRemove(state, level, pos, newState, isMoving);
+    }
+
+    private void spawnHurricane(ServerLevel level, BlockPos pos, @Nullable Player player) {
+        Hurricane hurricane = new Hurricane(ModEntityTypes.HURRICANE.get(), level);
+        Vec3 ground = Vec3.atBottomCenterOf(pos);
+        hurricane.setPos(ground);
+        hurricane.finalizeSpawn(level, level.getCurrentDifficultyAt(pos), MobSpawnType.MOB_SUMMONED, null, null);
+        if (player != null && MobUtil.validEntity(player)) {
+            hurricane.setTarget(player);
+        }
+        hurricane.setPersistenceRequired();
+        if (player != null && (player.hasEffect(MobEffects.BAD_OMEN) || player.hasEffect(ModEffects.TRIAL_OMEN.get()))) {
+            AttributeInstance maxHealth = hurricane.getAttribute(Attributes.MAX_HEALTH);
+            if (maxHealth != null && maxHealth.getModifier(OMINOUS_HEALTH_ID) == null) {
+                maxHealth.addPermanentModifier(new AttributeModifier(OMINOUS_HEALTH_ID, "goetyominous:ominous_health", 1.0D, AttributeModifier.Operation.MULTIPLY_BASE));
+                hurricane.setHealth(hurricane.getMaxHealth());
+            }
+            hurricane.setOminousBuffed(true);
+        }
+        level.addFreshEntity(new HurricaneCoreSummon(level, ground.add(0.0D, CORE_HEIGHT, 0.0D), ground.y, hurricane));
     }
 
     @Override
