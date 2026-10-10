@@ -2,9 +2,7 @@
   "type": "goety:ritual",
   "ritual_type": "goety:summon_tamed",
   "activation_item": {
-    "type": "forge:nbt",
-    "item": "minecraft:potion",
-    "nbt": "{\"Potion\": \"upgrade_aquatic:insomnia\"}"
+    "item": "minecraft:cocoa_beans"
   },
   "craftType": "end",
   "entity_to_summon": "goetyominous:flare_servant",

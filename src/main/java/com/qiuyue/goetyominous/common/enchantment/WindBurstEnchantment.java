@@ -2,7 +2,6 @@ package com.qiuyue.goetyominous.common.enchantment;
 
 import com.qiuyue.goetyominous.common.init.ModEnchantments;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 public class WindBurstEnchantment extends Enchantment {
@@ -29,10 +28,5 @@ public class WindBurstEnchantment extends Enchantment {
     @Override
     public boolean isTreasureOnly() {
         return true;
-    }
-
-    @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack) {
-        return false;
     }
 }
