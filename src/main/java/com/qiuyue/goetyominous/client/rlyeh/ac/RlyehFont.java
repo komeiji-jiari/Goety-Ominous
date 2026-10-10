@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.client.rlyeh.ac;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceLocation;
 import com.qiuyue.goetyominous.GoetyOminous;
 
@@ -10,6 +11,8 @@ public final class RlyehFont {
 
     public static final ResourceLocation ABYSS =
             new ResourceLocation(GoetyOminous.MOD_ID, "rlyeh_abyss");
+
+    public static final int ABYSS_TEXT_COLOUR = 0x0000AA;
 
     private static final int[] PALETTE = {
             0x2E6E9E, 0x4F9AD6, 0x8FD0FF, 0xE6F5FF, 0x5AA0E0, 0x2E6E9E
@@ -41,6 +44,11 @@ public final class RlyehFont {
         return font != null
                 && GoetyOminous.MOD_ID.equals(font.getNamespace())
                 && font.getPath().startsWith("rlyeh_");
+    }
+
+    public static boolean isAbyssMark(Style style) {
+        TextColor colour = style.getColor();
+        return colour != null && colour.getValue() == ABYSS_TEXT_COLOUR;
     }
 
     private static int sample(int[] palette, double t) {

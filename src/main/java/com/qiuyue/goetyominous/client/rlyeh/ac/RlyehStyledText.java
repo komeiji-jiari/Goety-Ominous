@@ -19,6 +19,9 @@ import net.minecraft.network.chat.TextColor;
 import net.minecraft.util.FormattedCharSequence;
 import org.joml.Matrix4f;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public final class RlyehStyledText {
 
     private static final int FILL_DEFAULT = 0xFFFFFFFF;
@@ -31,66 +34,133 @@ public final class RlyehStyledText {
     private static final float SHADOW_OFFSET = 0.5F;
 
     private static final BufferBuilder GLYPH_BUILDER = new BufferBuilder(512);
+    private static final BufferBuilder PLAIN_BUILDER = new BufferBuilder(512);
 
     private RlyehStyledText() {
     }
 
     public static void draw(Font font, FormattedCharSequence seq, int x, int y, Matrix4f matrix) {
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-
-        emitOutline(font, seq, x, y, matrix);
-
-        MultiBufferSource.BufferSource shadow = MultiBufferSource.immediate(GLYPH_BUILDER);
-        emitRun(font, seq, x + SHADOW_OFFSET, y + SHADOW_OFFSET, matrix, shadow,
-                FILL_DEFAULT, false, false, true, 1.0F);
-        shadow.endBatch();
-
-        ShaderInstance material = RlyehShaders.textGlyph();
-        if (material == null) {
-            MultiBufferSource.BufferSource fill = MultiBufferSource.immediate(GLYPH_BUILDER);
-            emitRun(font, seq, x, y, matrix, fill, FILL_DEFAULT, false, false, false, 1.0F);
-            fill.endBatch();
-            return;
-        }
-        RenderSystem.disableDepthTest();
-        material.safeGetUniform("uTheme").set(RlyehShaders.RLYEH_THEME);
-        material.safeGetUniform("uModernUi").set(1.0F);
-        swapModernUiNormal(material, () -> swapVanillaText(material, () -> {
-            MultiBufferSource.BufferSource immediate = MultiBufferSource.immediate(GLYPH_BUILDER);
-            emitRun(font, seq, x, y, matrix, immediate, FILL_DEFAULT, false, true, false, 1.0F);
-            immediate.endBatch();
-        }));
-        RenderSystem.enableDepthTest();
+        drawLine(font, seq, x, y, matrix, true);
     }
 
     public static void drawNative(Font font, FormattedCharSequence seq, int x, int y, Matrix4f matrix) {
+        drawLine(font, seq, x, y, matrix, false);
+    }
+
+    private static void drawLine(Font font, FormattedCharSequence seq, int x, int y, Matrix4f matrix,
+                                 boolean modernUi) {
+        List<Piece> pieces = split(font, seq, x);
+        List<Piece> ours = onlyOurs(pieces);
+        if (ours.isEmpty()) {
+            return;
+        }
+
+        MultiBufferSource.BufferSource plain = MultiBufferSource.immediate(PLAIN_BUILDER);
+        for (Piece piece : pieces) {
+            if (!piece.ours()) {
+                font.drawInBatch(piece.seq(), piece.x(), (float) y, -1, true, matrix, plain,
+                        Font.DisplayMode.NORMAL, 0, FULL_BRIGHT);
+            }
+        }
+        plain.endBatch();
+
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
 
-        emitOutline(font, seq, x, y, matrix);
+        emitOutline(font, ours, (float) y, matrix);
 
         MultiBufferSource.BufferSource shadow = MultiBufferSource.immediate(GLYPH_BUILDER);
-        emitRun(font, seq, x + SHADOW_OFFSET, y + SHADOW_OFFSET, matrix, shadow,
-                FILL_DEFAULT, false, false, true, 1.0F);
+        for (Piece piece : ours) {
+            emitRun(font, piece.seq(), piece.x() + SHADOW_OFFSET, y + SHADOW_OFFSET, matrix, shadow,
+                    FILL_DEFAULT, false, false, true, 1.0F);
+        }
         shadow.endBatch();
 
         ShaderInstance material = RlyehShaders.textGlyph();
         if (material == null) {
             MultiBufferSource.BufferSource fill = MultiBufferSource.immediate(GLYPH_BUILDER);
-            emitRun(font, seq, x, y, matrix, fill, FILL_DEFAULT, false, false, false, 1.0F);
+            for (Piece piece : ours) {
+                emitRun(font, piece.seq(), piece.x(), (float) y, matrix, fill, FILL_DEFAULT, false, false,
+                        false, 1.0F);
+            }
             fill.endBatch();
             return;
         }
         RenderSystem.disableDepthTest();
         material.safeGetUniform("uTheme").set(RlyehShaders.RLYEH_THEME);
-        material.safeGetUniform("uModernUi").set(0.0F);
-        swapVanillaText(material, () -> {
+        material.safeGetUniform("uModernUi").set(modernUi ? 1.0F : 0.0F);
+        Runnable glyphs = () -> {
             MultiBufferSource.BufferSource immediate = MultiBufferSource.immediate(GLYPH_BUILDER);
-            emitRun(font, seq, x, y, matrix, immediate, FILL_DEFAULT, false, true, false, 1.0F);
+            for (Piece piece : ours) {
+                emitRun(font, piece.seq(), piece.x(), (float) y, matrix, immediate, FILL_DEFAULT, false,
+                        true, false, 1.0F);
+            }
             immediate.endBatch();
-        });
+        };
+        if (modernUi) {
+            swapModernUiNormal(material, () -> swapVanillaText(material, glyphs));
+        } else {
+            swapVanillaText(material, glyphs);
+        }
         RenderSystem.enableDepthTest();
+    }
+
+    private record Piece(FormattedCharSequence seq, float x, boolean ours) {
+    }
+
+    private record Cell(int position, Style style, int codePoint) {
+    }
+
+    private static List<Piece> split(Font font, FormattedCharSequence seq, float x) {
+        FontSet set = ((FontAccessor) font).rlyeh$getFontSet(Style.DEFAULT_FONT);
+        boolean filter = ((FontAccessor) font).rlyeh$getFilterFishyGlyphs();
+        List<Piece> pieces = new ArrayList<>();
+        List<Cell> cells = new ArrayList<>();
+        boolean[] ours = {false};
+        float[] pen = {x};
+        float[] start = {x};
+        seq.accept((position, style, codePoint) -> {
+            boolean mine = isOurs(style);
+            if (!cells.isEmpty() && mine != ours[0]) {
+                pieces.add(new Piece(run(cells), start[0], ours[0]));
+                cells.clear();
+                start[0] = pen[0];
+            }
+            ours[0] = mine;
+            cells.add(new Cell(position, style, codePoint));
+            pen[0] += set.getGlyphInfo(codePoint, filter).getAdvance(style.isBold());
+            return true;
+        });
+        if (!cells.isEmpty()) {
+            pieces.add(new Piece(run(cells), start[0], ours[0]));
+        }
+        return pieces;
+    }
+
+    private static List<Piece> onlyOurs(List<Piece> pieces) {
+        List<Piece> ours = new ArrayList<>(pieces.size());
+        for (Piece piece : pieces) {
+            if (piece.ours()) {
+                ours.add(piece);
+            }
+        }
+        return ours;
+    }
+
+    private static FormattedCharSequence run(List<Cell> cells) {
+        List<Cell> copy = List.copyOf(cells);
+        return sink -> {
+            for (Cell cell : copy) {
+                if (!sink.accept(cell.position(), cell.style(), cell.codePoint())) {
+                    return false;
+                }
+            }
+            return true;
+        };
+    }
+
+    private static boolean isOurs(Style style) {
+        return RlyehFont.isRlyehFont(style.getFont()) || RlyehFont.isAbyssMark(style);
     }
 
     private static void swapVanillaText(ShaderInstance replacement, Runnable draw) {
@@ -113,14 +183,16 @@ public final class RlyehStyledText {
         }
     }
 
-    private static void emitOutline(Font font, FormattedCharSequence seq, float x, float y, Matrix4f matrix) {
+    private static void emitOutline(Font font, List<Piece> ours, float y, Matrix4f matrix) {
         MultiBufferSource.BufferSource outline = MultiBufferSource.immediate(GLYPH_BUILDER);
-        for (int i = 0; i < 8; i++) {
-            float angle = (float) (i * Math.PI / 4.0);
-            float ox = (float) (Math.cos(angle) * OUTLINE_OFFSET);
-            float oy = (float) (Math.sin(angle) * OUTLINE_OFFSET);
-            emitRun(font, seq, x + ox, y + oy, matrix, outline, OUTLINE_ARGB, true, false, false,
-                    OUTLINE_ALPHA);
+        for (Piece piece : ours) {
+            for (int i = 0; i < 8; i++) {
+                float angle = (float) (i * Math.PI / 4.0);
+                float ox = (float) (Math.cos(angle) * OUTLINE_OFFSET);
+                float oy = (float) (Math.sin(angle) * OUTLINE_OFFSET);
+                emitRun(font, piece.seq(), piece.x() + ox, y + oy, matrix, outline, OUTLINE_ARGB, true,
+                        false, false, OUTLINE_ALPHA);
+            }
         }
         outline.endBatch();
     }

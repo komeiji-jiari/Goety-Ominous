@@ -14,7 +14,6 @@ import com.qiuyue.goetyominous.common.rlyeh.ac.RlyehStyled;
 import com.qiuyue.goetyominous.compat.mod.ModernUiTooltipCompat;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -24,9 +23,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextColor;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -71,12 +67,7 @@ public final class RlyehTooltipHandler {
                     RenderType.glint(), new BufferBuilder(RenderType.glint().bufferSize())),
             ITEM_BUILDER);
 
-    private static final int TOOLTIP_BLUE = 0x5555FF;
-    private static final float TEXT_MIN_LUMA = 0.22F;
-    private static final float TEXT_TARGET_LUMA =
-            0.2126F * ((TOOLTIP_BLUE >> 16) & 0xFF) / 255.0F
-                    + 0.7152F * ((TOOLTIP_BLUE >> 8) & 0xFF) / 255.0F
-                    + 0.0722F * (TOOLTIP_BLUE & 0xFF) / 255.0F;
+    private static boolean rlyehTooltip = false;
 
     private static long introStartMillis = 0L;
     private static long lastEventMillis = 0L;
@@ -101,6 +92,10 @@ public final class RlyehTooltipHandler {
         return currentIntro;
     }
 
+    public static boolean isRlyehTooltip() {
+        return rlyehTooltip;
+    }
+
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onTooltipPreSuppress(RenderTooltipEvent.Pre event) {
         if (!ModernUiTooltipCompat.active()) {
@@ -118,7 +113,8 @@ public final class RlyehTooltipHandler {
 
     @SubscribeEvent
     public static void onTooltipColor(RenderTooltipEvent.Color event) {
-        if (!(event.getItemStack().getItem() instanceof RlyehStyled)) {
+        rlyehTooltip = event.getItemStack().getItem() instanceof RlyehStyled;
+        if (!rlyehTooltip) {
             return;
         }
         ShaderInstance shader = RlyehShaders.tooltip();
@@ -356,48 +352,9 @@ public final class RlyehTooltipHandler {
             return;
         }
         List<Component> tooltip = event.getToolTip();
-        if (tooltip.isEmpty()) {
-            return;
-        }
-        if (!tooltip.get(0).getString().isBlank()) {
+        if (!tooltip.isEmpty() && !tooltip.get(0).getString().isBlank()) {
             tooltip.set(0, RlyehFont.abyss(tooltip.get(0).getString()));
         }
-        for (int i = 1; i < tooltip.size(); i++) {
-            tooltip.set(i, readable(tooltip.get(i)));
-        }
-    }
-
-    private static Component readable(Component component) {
-        MutableComponent rebuilt = Component.empty();
-        boolean[] changed = {false};
-        component.visit((style, text) -> {
-            TextColor colour = style.getColor();
-            if (colour != null) {
-                int lifted = liftLuma(colour.getValue());
-                if (lifted != colour.getValue()) {
-                    changed[0] = true;
-                    rebuilt.append(Component.literal(text).setStyle(style.withColor(lifted)));
-                    return Optional.empty();
-                }
-            }
-            rebuilt.append(Component.literal(text).setStyle(style));
-            return Optional.empty();
-        }, Style.EMPTY);
-        return changed[0] ? rebuilt : component;
-    }
-
-    private static int liftLuma(int rgb) {
-        float r = ((rgb >> 16) & 0xFF) / 255.0F;
-        float g = ((rgb >> 8) & 0xFF) / 255.0F;
-        float b = (rgb & 0xFF) / 255.0F;
-        float luma = 0.2126F * r + 0.7152F * g + 0.0722F * b;
-        if (luma >= TEXT_MIN_LUMA) {
-            return rgb;
-        }
-        float t = (TEXT_TARGET_LUMA - luma) / (1.0F - luma);
-        return (Math.round((r + (1.0F - r) * t) * 255.0F) << 16)
-                | (Math.round((g + (1.0F - g) * t) * 255.0F) << 8)
-                | Math.round((b + (1.0F - b) * t) * 255.0F);
     }
 
     private static int sample(int[] palette, float t) {
