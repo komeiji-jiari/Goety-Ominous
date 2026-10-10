@@ -24,7 +24,7 @@ public class RenderServantCentipedeTail extends MobRenderer<ServantCentipedeTail
     }
 
     protected void setupRotations(ServantCentipedeTail entity, PoseStack stack, float pitchIn, float yawIn, float partialTickTime) {
-        float newYaw = entity.yHeadRot;
+        float newYaw = Mth.rotLerp(partialTickTime, entity.yHeadRotO, entity.yHeadRot);
         if (this.isShaking(entity)) {
             newYaw += (float)(Math.cos((double)entity.tickCount * 3.25) * Math.PI * 0.4000000059604645);
         }
@@ -32,7 +32,7 @@ public class RenderServantCentipedeTail extends MobRenderer<ServantCentipedeTail
         Pose pose = entity.getPose();
         if (pose != Pose.SLEEPING) {
             stack.mulPose(Axis.YP.rotationDegrees(180.0F - newYaw));
-            stack.mulPose(Axis.XP.rotationDegrees(entity.getXRot()));
+            stack.mulPose(Axis.XP.rotationDegrees(entity.getBodyXRot(partialTickTime)));
         }
 
         if (entity.deathTime > 0) {

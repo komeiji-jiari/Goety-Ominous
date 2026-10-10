@@ -29,6 +29,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Explosion.BlockInteraction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
@@ -36,10 +37,13 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.HitResult.Type;
 import net.minecraft.world.phys.Vec3;
+import javax.annotation.Nullable;
 
 public class MutantShulkerServantBullet extends SpellThrowableProjectile {
     private static final EntityDataAccessor<Integer> HITS_LEFT =
             SynchedEntityData.defineId(MutantShulkerServantBullet.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Byte> COLOR_ID =
+            SynchedEntityData.defineId(MutantShulkerServantBullet.class, EntityDataSerializers.BYTE);
 
     public int immuneTicks = 0;
     public float damage = 0.0F;
@@ -61,6 +65,7 @@ public class MutantShulkerServantBullet extends SpellThrowableProjectile {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(HITS_LEFT, 0);
+        this.entityData.define(COLOR_ID, (byte) 16);
     }
 
     @Override
@@ -268,10 +273,25 @@ public class MutantShulkerServantBullet extends SpellThrowableProjectile {
         this.entityData.set(HITS_LEFT, remainingHits);
     }
 
+    public void setColor(@Nullable DyeColor color) {
+        if (color == null) {
+            this.entityData.set(COLOR_ID, (byte) 16);
+        } else {
+            this.entityData.set(COLOR_ID, (byte) color.getId());
+        }
+    }
+
+    @Nullable
+    public DyeColor getColor() {
+        byte b = this.entityData.get(COLOR_ID);
+        return b != 16 && b <= 15 ? DyeColor.byId(b) : null;
+    }
+
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putInt("RemainingHits", this.getRemainingHits());
+        tag.putByte("Color", this.entityData.get(COLOR_ID));
         tag.putFloat("Damage", this.damage);
         tag.putFloat("ExplosionSize", this.explosionSize);
         tag.putInt("LevitationLength", this.levitationLength);
@@ -285,6 +305,9 @@ public class MutantShulkerServantBullet extends SpellThrowableProjectile {
         super.readAdditionalSaveData(tag);
         if (tag.contains("RemainingHits")) {
             this.setRemainingHits(tag.getInt("RemainingHits"));
+        }
+        if (tag.contains("Color", 99)) {
+            this.entityData.set(COLOR_ID, tag.getByte("Color"));
         }
         if (tag.contains("Damage")) {
             this.damage = tag.getFloat("Damage");

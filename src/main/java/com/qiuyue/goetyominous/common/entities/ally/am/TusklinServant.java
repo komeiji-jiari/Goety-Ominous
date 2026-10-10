@@ -26,6 +26,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -63,6 +64,7 @@ public class TusklinServant extends AnimalSummon implements IAnimatedEntity {
     private int animationTick;
     private Animation currentAnimation;
     private int conversionTime = 0;
+    private Vec3 lastRidePos;
 
     public TusklinServant(EntityType<? extends Owned> type, Level level) {
         super(type, level);
@@ -144,7 +146,9 @@ public class TusklinServant extends AnimalSummon implements IAnimatedEntity {
         this.setMaxUpStep(1);
         this.getNavigation().stop();
         this.setTarget(null);
-        this.setSprinting(true);
+        boolean inWater = this.isInWater();
+        this.setSprinting(!inWater);
+        this.setJumping(inWater && this.getFluidHeight(FluidTags.WATER) > this.getFluidJumpThreshold());
     }
 
     @Override
@@ -371,7 +375,19 @@ public class TusklinServant extends AnimalSummon implements IAnimatedEntity {
             }
         }
         if (!this.level().isClientSide) {
-            if (this.isAlive() && this.isVehicle() && this.getDeltaMovement().horizontalDistanceSqr() > 0.1D) {
+            double riddenMove = 0.0D;
+            if (this.isVehicle()) {
+                Vec3 ridePos = this.position();
+                if (this.lastRidePos != null) {
+                    double dx = ridePos.x - this.lastRidePos.x;
+                    double dz = ridePos.z - this.lastRidePos.z;
+                    riddenMove = dx * dx + dz * dz;
+                }
+                this.lastRidePos = ridePos;
+            } else {
+                this.lastRidePos = null;
+            }
+            if (this.isAlive() && riddenMove > 0.1D) {
                 for (Entity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.0D))) {
                     if (!(entity instanceof TusklinServant) && !entity.isPassengerOfSameVehicle(this) && !this.isAlliedTo(entity)) {
                         entity.hurt(this.damageSources().mobAttack(this), 4F + random.nextFloat() * 3.0F);

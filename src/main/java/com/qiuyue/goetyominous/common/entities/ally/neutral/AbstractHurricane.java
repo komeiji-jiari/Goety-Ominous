@@ -32,6 +32,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -747,6 +748,7 @@ public abstract class AbstractHurricane extends Summoned implements ProjectileDe
         private Phase phase;
         private int timer;
         private int chain;
+        private boolean leftWater = true;
         @Nullable
         private BlockPos landing;
 
@@ -756,7 +758,7 @@ public abstract class AbstractHurricane extends Summoned implements ProjectileDe
 
         @Override
         public boolean canUse() {
-            if (!AbstractHurricane.this.onGround() || AbstractHurricane.this.getAnimationState() != ANIM_NONE || !this.canJumpFromCurrentPosition()) {
+            if (!(AbstractHurricane.this.onGround() || AbstractHurricane.this.isInWater()) || AbstractHurricane.this.getAnimationState() != ANIM_NONE || !this.canJumpFromCurrentPosition()) {
                 return false;
             }
             LivingEntity target = AbstractHurricane.this.getTarget();
@@ -845,7 +847,11 @@ public abstract class AbstractHurricane extends Summoned implements ProjectileDe
             }
             ClipContext up = new ClipContext(pos, pos.relative(Direction.UP, SNAP_RANGE), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, AbstractHurricane.this);
             HitResult hitUp = AbstractHurricane.this.level().clip(up);
-            return hitUp.getType() == HitResult.Type.BLOCK ? BlockPos.containing(hitUp.getLocation()).above() : null;
+            if (hitUp.getType() == HitResult.Type.BLOCK) {
+                return BlockPos.containing(hitUp.getLocation()).above();
+            }
+            BlockPos fluidPos = BlockPos.containing(pos);
+            return AbstractHurricane.this.level().getFluidState(fluidPos).is(FluidTags.WATER) ? fluidPos : null;
         }
 
         @Nullable
@@ -876,7 +882,9 @@ public abstract class AbstractHurricane extends Summoned implements ProjectileDe
             }
             int top = Mth.ceil(AbstractHurricane.this.getBbHeight());
             for (int i = top; i <= top + REQUIRED_AIR_BLOCKS_ABOVE; i++) {
-                if (!AbstractHurricane.this.level().getBlockState(pos.relative(Direction.UP, i)).isAir()) {
+                BlockPos above = pos.relative(Direction.UP, i);
+                if (!AbstractHurricane.this.level().getBlockState(above).isAir()
+                        && !AbstractHurricane.this.level().getFluidState(above).is(FluidTags.WATER)) {
                     return false;
                 }
             }
@@ -923,13 +931,17 @@ public abstract class AbstractHurricane extends Summoned implements ProjectileDe
                 AbstractHurricane.this.setDiscardFriction(true);
                 AbstractHurricane.this.setDeltaMovement(velocity);
                 AbstractHurricane.this.hasImpulse = true;
+                this.leftWater = !AbstractHurricane.this.isInWater();
                 this.phase = Phase.JUMPING;
                 this.timer = 0;
             } else if (this.phase == Phase.JUMPING) {
                 if (AbstractHurricane.this.level() instanceof ServerLevel serverLevel && this.timer % 2 == 0) {
                     serverLevel.sendParticles(ParticleTypes.CLOUD, AbstractHurricane.this.getX(), AbstractHurricane.this.getY(), AbstractHurricane.this.getZ(), 3, 0.3D, 0.1D, 0.3D, 0.0D);
                 }
-                boolean landed = this.timer > 3 && (AbstractHurricane.this.onGround() || AbstractHurricane.this.isInWater());
+                if (!AbstractHurricane.this.isInWater()) {
+                    this.leftWater = true;
+                }
+                boolean landed = this.timer > 3 && (AbstractHurricane.this.onGround() || (AbstractHurricane.this.isInWater() && this.leftWater));
                 if (landed || this.timer > MAX_AIR_TICKS) {
                     this.land();
                 }
@@ -951,6 +963,7 @@ public abstract class AbstractHurricane extends Summoned implements ProjectileDe
             AbstractHurricane.this.jumpActive = false;
             this.landing = null;
             this.phase = null;
+            this.leftWater = true;
             if (AbstractHurricane.this.jumpCooldown <= 0) {
                 AbstractHurricane.this.jumpCooldown = JUMP_COOLDOWN_TICKS;
             }

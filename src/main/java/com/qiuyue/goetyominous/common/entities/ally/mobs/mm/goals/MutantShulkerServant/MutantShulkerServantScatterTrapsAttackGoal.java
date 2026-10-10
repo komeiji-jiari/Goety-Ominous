@@ -65,6 +65,7 @@ public class MutantShulkerServantScatterTrapsAttackGoal extends Goal {
             trap.moveTo(this.mob.getX(), this.mob.getEyeY(), this.mob.getZ());
             trap.setDeltaMovement(this.mob.getRandom().nextGaussian() * 1.5, 0.6, this.mob.getRandom().nextGaussian() * 1.5);
             trap.setSpawnedByMutantShulker(true);
+            trap.setColor(this.mob.getColor());
             trap.setTarget(this.target);
             ((ServerLevel)this.mob.level()).addFreshEntityWithPassengers(trap);
         }

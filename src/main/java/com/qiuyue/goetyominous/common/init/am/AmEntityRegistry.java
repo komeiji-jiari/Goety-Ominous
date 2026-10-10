@@ -215,6 +215,7 @@ public class AmEntityRegistry {
             AM_ENTITIES.register("servant_centipede_head",
                     () -> EntityType.Builder.<ServantCentipedeHead>of((type, worldIn) -> new ServantCentipedeHead(type, worldIn), MobCategory.MONSTER)
                             .sized(0.9F, 0.9F)
+                            .setUpdateInterval(1)
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":servant_centipede_head"));
 

@@ -733,6 +733,7 @@ public class MutantShulkerServant extends AbstractMutantServant {
             projectile.moveDelay = 60;
             projectile.setPos(this.getX(), this.getEyeY(), this.getZ());
             projectile.setTarget(this.getTarget());
+            projectile.setColor(this.getColor());
             projectile.setOwner(this);
             this.shootMutantShulkerProjectile(this.getTarget().blockPosition(), projectile, angle);
             this.level().addFreshEntity(projectile);
@@ -749,6 +750,7 @@ public class MutantShulkerServant extends AbstractMutantServant {
             projectile.setRemainingHits(MutantShulkerCommonConfig.mutant_shulker_bullet_hits.get());
             projectile.moveDelay = 60;
             projectile.setPos(this.getX(), this.getEyeY(), this.getZ());
+            projectile.setColor(this.getColor());
             projectile.setOwner(this);
             this.shootMutantShulkerProjectile(shootToPos, projectile, angle);
             this.level().addFreshEntity(projectile);

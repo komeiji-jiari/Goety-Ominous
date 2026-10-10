@@ -311,32 +311,12 @@ public class ServantCentipedeHead extends Summoned {
                     }
                 }
             }
-            if (this.tickCount % 5 == 0) {
-                this.strongFollow();
-            }
         }
 
     }
 
     private boolean updateRingBuffer() {
         return this.getDeltaMovement().lengthSqr() >= 0.005;
-    }
-
-    private void strongFollow() {
-        if (this.isCommanded() || this.isStaying() || this.isWandering()) {
-            return;
-        }
-        LivingEntity owner = this.getTrueOwner();
-        if (owner == null || owner.isSpectator() || !owner.isAlive()) {
-            return;
-        }
-        if (this.getTarget() != null) {
-            return;
-        }
-        this.setWandering(false);
-        if (this.distanceToSqr(owner) >= 100.0D) {
-            this.getNavigation().moveTo(owner, 1.0D);
-        }
     }
 
     @Override

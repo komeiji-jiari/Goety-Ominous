@@ -46,7 +46,7 @@ public class ModCreativeTab {
 
     public static final RegistryObject<CreativeModeTab> MAIN_TAB = CREATIVE_MODE_TABS
             .register(GoetyOminous.MOD_ID, () -> CreativeModeTab.builder()
-                    .icon(() -> ModItems.FEL_CORE.get().getDefaultInstance())
+                    .icon(() -> com.Polarice3.Goety.common.items.ModItems.CRONE_HAT.get().getDefaultInstance())
                     .title(Component.translatable("itemGroup." + GoetyOminous.MOD_ID))
                     .withSearchBar()
                     .displayItems((parameters, output) -> {
@@ -67,9 +67,9 @@ public class ModCreativeTab {
                     .withSearchBar()
                     .displayItems((parameters, output) -> {
                         CompatBuckets buckets = CompatBuckets.collect();
-                        buckets.foci.forEach(output::accept);
                         buckets.staves.forEach(output::accept);
                         buckets.weapons.forEach(output::accept);
+                        buckets.foci.forEach(output::accept);
                         buckets.materials.forEach(output::accept);
                         buckets.revive.forEach(output::accept);
                         buckets.summons.forEach(output::accept);
