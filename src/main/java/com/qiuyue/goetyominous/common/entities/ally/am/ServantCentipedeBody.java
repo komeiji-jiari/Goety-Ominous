@@ -54,6 +54,8 @@ public class ServantCentipedeBody extends Summoned implements IHurtableMultipart
     protected float angleYaw;
     protected float damageMultiplier = 1.0F;
     private double prevHeight = 0.0;
+    private float prevBodyXRot;
+    private float bodyXRot;
 
     public ServantCentipedeBody(EntityType type, Level worldIn) {
         super(type, worldIn);
@@ -115,6 +117,8 @@ public class ServantCentipedeBody extends Summoned implements IHurtableMultipart
         super.tick();
         this.isInsidePortal = false;
         this.setDeltaMovement(Vec3.ZERO);
+        this.prevBodyXRot = this.bodyXRot;
+        this.bodyXRot = this.getXRot();
         if (this.tickCount > 1) {
             Entity parent = this.getParent();
             this.refreshDimensions();
@@ -298,6 +302,10 @@ public class ServantCentipedeBody extends Summoned implements IHurtableMultipart
 
     public float getXRot() {
         return (Float)this.entityData.get(BODY_XROT);
+    }
+
+    public float getBodyXRot(float partialTick) {
+        return Mth.lerp(partialTick, this.prevBodyXRot, this.bodyXRot);
     }
 
     public double getLowPartHeight(double x, double yIn, double z) {

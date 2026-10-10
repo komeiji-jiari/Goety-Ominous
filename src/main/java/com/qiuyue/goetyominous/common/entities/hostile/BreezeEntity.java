@@ -504,7 +504,6 @@ public class BreezeEntity extends Monster implements ICustomAttributes, Projecti
                 return;
             }
             boolean stuck = this.breeze.isPassenger()
-                    || this.breeze.isInWater()
                     || this.breeze.hasEffect(MobEffects.LEVITATION);
             if (stuck) {
                 this.shootWindow = STUCK_SHOOT_WINDOW;
@@ -579,7 +578,11 @@ public class BreezeEntity extends Monster implements ICustomAttributes, Projecti
             }
             ClipContext up = new ClipContext(pos, pos.relative(Direction.UP, 10.0D), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this.breeze);
             HitResult hitUp = this.breeze.level().clip(up);
-            return hitUp.getType() == HitResult.Type.BLOCK ? BlockPos.containing(hitUp.getLocation()).above() : null;
+            if (hitUp.getType() == HitResult.Type.BLOCK) {
+                return BlockPos.containing(hitUp.getLocation()).above();
+            }
+            BlockPos fluidPos = BlockPos.containing(pos);
+            return this.breeze.level().getFluidState(fluidPos).is(FluidTags.WATER) ? fluidPos : null;
         }
 
         private void tickInhaling() {

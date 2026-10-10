@@ -197,6 +197,7 @@ public class MutantShulkerServantTrap extends Summoned {
                     bullet.levitationLength = MutantShulkerRewardsCommonConfig.trap_shulker_bullet_levitation_length.get();
                     bullet.levitationLevel = MutantShulkerRewardsCommonConfig.trap_shulker_bullet_levitation_level.get();
                     bullet.moveTo(this.getX(), this.getY() + 0.25, this.getZ());
+                    bullet.setColor(this.getColor());
                     LivingEntity owner = this.getTrueOwner();
                     bullet.setOwner(owner != null ? owner : this);
                     bullet.setTarget(bulletTarget);
@@ -216,7 +217,14 @@ public class MutantShulkerServantTrap extends Summoned {
         ItemStack itemstack = player.getItemInHand(hand);
         if (!this.level().isClientSide && this.getOwner() == player && !this.isSpawnedByMutantShulker()
                 && player.getItemInHand(hand).isEmpty() && player.isCrouching()) {
-            this.spawnAtLocation(ItemInit.MUTANT_SHULKER_TRAP.get());
+            ItemStack trapStack = new ItemStack(ItemInit.MUTANT_SHULKER_TRAP.get());
+            DyeColor color = this.getColor();
+            if (color != null) {
+                CompoundTag entityTag = new CompoundTag();
+                entityTag.putByte("Color", (byte) color.getId());
+                trapStack.getOrCreateTag().put("EntityTag", entityTag);
+            }
+            this.spawnAtLocation(trapStack);
             this.discard();
             return InteractionResult.SUCCESS;
         }
@@ -281,7 +289,7 @@ public class MutantShulkerServantTrap extends Summoned {
         }
     }
 
-    private void setColor(@Nullable DyeColor color) {
+    public void setColor(@Nullable DyeColor color) {
         if (color == null) {
             this.entityData.set(COLOR_ID, (byte) 16);
         } else {

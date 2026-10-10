@@ -49,6 +49,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
@@ -68,6 +69,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.WoolCarpetBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.network.NetworkHooks;
@@ -118,6 +120,9 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
     private boolean hasChargedSpeed = false;
     private int chargingTicks = 0;
     private int chestFeedCooldown = 0;
+    private int reachCheckTick = -20;
+    private int reachTargetId = -1;
+    private boolean reachResult = true;
 
     public IllagerElephantServant(EntityType<? extends Owned> type, Level level) {
         super(type, level);
@@ -200,6 +205,7 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
         super.registerGoals();
         this.goalSelector.addGoal(1, new ElephantMeleeAttackGoal(this, 1.0, true));
         this.goalSelector.addGoal(2, new ElephantChestFeedGoal());
+        this.goalSelector.addGoal(7, new ElephantWanderGoal(this, 0.6));
         this.targetSelector.addGoal(6, new ElephantPickupItemsGoal(this));
     }
 
@@ -252,6 +258,21 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
             return player.zza != 0.0f || player.xxa != 0.0f;
         }
         return false;
+    }
+
+    private boolean isTargetReachable(@Nullable LivingEntity target) {
+        if (target == null) {
+            return true;
+        }
+        if (target.getId() != this.reachTargetId || this.tickCount - this.reachCheckTick >= 20) {
+            this.reachTargetId = target.getId();
+            this.reachCheckTick = this.tickCount;
+            Path path = this.getNavigation().createPath(target, 0);
+            double reach = this.getBbWidth() * 2.0;
+            this.reachResult = path != null && path.canReach()
+                    || this.distanceToSqr(target) <= reach * reach + target.getBbWidth();
+        }
+        return this.reachResult;
     }
 
     @Override
@@ -377,7 +398,7 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
             this.setChargeCooldown(200);
         }
         if (!this.level().isClientSide && target != null) {
-            if (!this.isActivelySteering() && this.hasLineOfSight(target) && this.getAnimation() == NO_ANIMATION && !this.isCharging() && this.getChargeCooldown() == 0 && !this.isStaying()) {
+            if (!this.isActivelySteering() && this.isTargetReachable(target) && this.hasLineOfSight(target) && this.getAnimation() == NO_ANIMATION && !this.isCharging() && this.getChargeCooldown() == 0 && !this.isStaying()) {
                 this.setAnimation(ANIMATION_CHARGE_PREPARE);
             }
             if (this.getAnimation() == ANIMATION_CHARGE_PREPARE && !this.isActivelySteering()) {
@@ -988,6 +1009,17 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
         }
 
         @Override
+        public boolean canUse() {
+            LivingEntity target = this.mob.getTarget();
+            return target != null && IllagerElephantServant.this.isTargetReachable(target) && super.canUse();
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return IllagerElephantServant.this.isTargetReachable(this.mob.getTarget()) && super.canContinueToUse();
+        }
+
+        @Override
         protected int getAttackInterval() {
             return 30;
         }
@@ -1005,6 +1037,77 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
                     this.mob.doHurtTarget(target);
                 }
             }
+        }
+    }
+
+    static class ElephantWanderGoal extends RaiderServant.RaiderWanderGoal<IllagerElephantServant> {
+        public ElephantWanderGoal(IllagerElephantServant e, double speedModifier) {
+            super(e, speedModifier);
+        }
+
+        @Override
+        @Nullable
+        protected Vec3 getPosition() {
+            if (this.summonedEntity.isGuardingArea()) {
+                Vec3 vec3 = this.stableBoundPos(this.summonedEntity.getBoundPos(), IServant.GUARDING_RANGE / 2);
+                if (vec3 != null) {
+                    return vec3;
+                }
+            }
+            return super.getPosition();
+        }
+
+        @Override
+        public boolean canUse() {
+            if (this.riddenWithoutDriver()) {
+                if (this.summonedEntity.isStaying() || this.summonedEntity.isCommanded()) {
+                    return false;
+                }
+                if (this.mob.getRandom().nextInt(reducedTickDelay(this.interval)) != 0) {
+                    return false;
+                }
+                Vec3 vec3 = this.getPosition();
+                if (vec3 == null) {
+                    return false;
+                }
+                this.wantedX = vec3.x;
+                this.wantedY = vec3.y;
+                this.wantedZ = vec3.z;
+                this.forceTrigger = false;
+                return true;
+            }
+            return super.canUse();
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            if (this.riddenWithoutDriver()) {
+                return !this.mob.getNavigation().isDone();
+            }
+            return super.canContinueToUse();
+        }
+
+        private boolean riddenWithoutDriver() {
+            return !this.mob.getPassengers().isEmpty() && this.mob.getControllingPassenger() == null;
+        }
+
+        @Nullable
+        private Vec3 stableBoundPos(@Nullable BlockPos center, int range) {
+            if (center == null) {
+                return null;
+            }
+            for (int i = 0; i < 10; ++i) {
+                BlockPos blockPos = center.offset(
+                        this.mob.getRandom().nextIntBetweenInclusive(-range, range),
+                        this.mob.getRandom().nextIntBetweenInclusive(-range, range),
+                        this.mob.getRandom().nextIntBetweenInclusive(-range, range));
+                BlockPos up = LandRandomPos.movePosUpOutOfSolid(this.mob, blockPos);
+                if (up == null || !this.mob.getNavigation().isStableDestination(up)) {
+                    continue;
+                }
+                return Vec3.atBottomCenterOf(up);
+            }
+            return null;
         }
     }
 }
