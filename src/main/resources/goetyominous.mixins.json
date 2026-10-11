@@ -93,7 +93,9 @@
     "VaultLevelRendererMixin",
     "WeavingLevelRendererMixin",
     "ModEffectParticleMixin",
-    "TrialSpawnerLevelRendererMixin"
+    "TrialSpawnerLevelRendererMixin",
+    "MixinPlayerModelSwing",
+    "MixinItemInHandRendererSwing"
   ],
   "server": [],
   "injectors": {
