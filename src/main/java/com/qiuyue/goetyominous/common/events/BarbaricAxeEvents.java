@@ -6,7 +6,6 @@ import com.qiuyue.goetyominous.config.WeaponConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -72,12 +71,6 @@ public class BarbaricAxeEvents {
                     continue;
                 }
                 broken++;
-                if (!player.isCreative()) {
-                    stack.hurtAndBreak(1, player, e -> e.broadcastBreakEvent(EquipmentSlot.MAINHAND));
-                    if (stack.isEmpty()) {
-                        return;
-                    }
-                }
                 if (broken >= remaining) {
                     return;
                 }

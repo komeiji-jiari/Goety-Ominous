@@ -1,18 +1,22 @@
 package com.qiuyue.goetyominous.common.items;
 
+import com.Polarice3.Goety.common.magic.spells.geomancy.QuakingSpell;
 import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.common.network.CBarbaricAxeShakePacket;
 import com.qiuyue.goetyominous.common.rlyeh.ac.ExtinctionStyled;
 import com.qiuyue.goetyominous.config.WeaponConfig;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.AxeItem;
@@ -25,19 +29,39 @@ import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
 
-    private static final int DURABILITY = 2031;
-    private static final int SLAM_COOLDOWN = 25;
-    private static final int SLAM_DURABILITY_COST = 2;
+    private static final int SLAM_COOLDOWN = 100;
+    private static final int FINISHER_COOLDOWN = 200;
     private static final float SWEEP_HALF_ANGLE = 75.0F;
     private static final int SWEEP_PARTICLE_DISTANCE = 2;
+    private static final float FINISHER_DAMAGE_MULTIPLIER = 2.0F;
+    private static final double FINISHER_KNOCKBACK = 1.6D;
+    private static final double FINISHER_LAUNCH = 0.6D;
+    private static final int FINISHER_PARTICLE_SCALE = 3;
+    private static final float SLAM_SHAKE_STRENGTH = 5.0F;
+    private static final float FINISHER_SHAKE_STRENGTH = 9.0F;
+    private static final int SLAM_SHAKE_TICKS = 14;
+    private static final int FINISHER_SHAKE_TICKS = 22;
+    private static final int COMBO_MAX = 10;
+    private static final int COMBO_WINDOW = 60;
+    private static final double FINISHER_RADIUS = 7.0D;
+    private static final int FINISHER_HEAVE_RINGS = 5;
+    private static final int COMBO_BAR_COLOR = 0x4CFF6E;
+    private static final int COMBO_BAR_COLOR_FULL = 0xFF4A16;
     private static final String SLAM_TICK_TAG = "BarbaricAxeSlam";
+    private static final String COMBO_COUNT_TAG = "BarbaricAxeCombo";
+    private static final String COMBO_TICK_TAG = "BarbaricAxeComboTick";
+    private static final ResourceLocation SLAM_FLAME = new ResourceLocation("alexscaves", "luxtructosaurus_spit");
+    private static final int HEAVE_RINGS = 3;
+    private static final double HEAVE_HEIGHT = 3.0D;
+    private static final float HEAVE_KNOCK_UP = 0.1F;
 
     public BarbaricAxeItem() {
         super(Tiers.NETHERITE, damageArgument(), speedArgument(),
-                new Properties().stacksTo(1).rarity(Rarity.RARE).durability(DURABILITY));
+                new Properties().stacksTo(1).rarity(Rarity.RARE));
     }
 
     private static float damageArgument() {
@@ -55,6 +79,7 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
         }
         if (entity instanceof LivingEntity && !player.level().isClientSide) {
             sweep(player, entity);
+            addCombo(stack, player.level().getGameTime());
             CBarbaricAxeShakePacket.send(player, 0.7F, 6);
         }
         return false;
@@ -73,16 +98,41 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean held) {
-        if (entity instanceof Player player && held
-                && player.getAttackStrengthScale(0.5F) < 0.95F && player.attackAnim > 0) {
+        if (!(entity instanceof Player player)) {
+            return;
+        }
+        if (held && player.getAttackStrengthScale(0.5F) < 0.95F && player.attackAnim > 0) {
             player.swingTime--;
         }
+        if (level.isClientSide) {
+            return;
+        }
+        int combo = combo(stack);
+        if (combo > 0 && level.getGameTime() - comboTick(stack) >= COMBO_WINDOW) {
+            stack.getOrCreateTag().putInt(COMBO_COUNT_TAG, combo - 1);
+            stack.getOrCreateTag().putLong(COMBO_TICK_TAG, level.getGameTime());
+        }
+    }
+
+    @Override
+    public boolean isBarVisible(ItemStack stack) {
+        return combo(stack) > 0;
+    }
+
+    @Override
+    public int getBarWidth(ItemStack stack) {
+        return Math.round(combo(stack) * 13.0F / COMBO_MAX);
+    }
+
+    @Override
+    public int getBarColor(ItemStack stack) {
+        return combo(stack) >= COMBO_MAX ? COMBO_BAR_COLOR_FULL : COMBO_BAR_COLOR;
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        slam(level, player, stack, player.blockPosition());
+        slam(level, player, stack, player.blockPosition(), finisherReady(stack, player));
         return InteractionResultHolder.success(stack);
     }
 
@@ -96,8 +146,30 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
         if (player == null) {
             return InteractionResult.PASS;
         }
-        return slam(context.getLevel(), player, context.getItemInHand(),
-                context.getClickedPos().relative(context.getClickedFace()));
+        ItemStack stack = context.getItemInHand();
+        return slam(context.getLevel(), player, stack,
+                context.getClickedPos().relative(context.getClickedFace()), finisherReady(stack, player));
+    }
+
+    private static boolean finisherReady(ItemStack stack, Player player) {
+        return combo(stack) >= COMBO_MAX && !player.onGround();
+    }
+
+    private static int combo(ItemStack stack) {
+        return stack.getTag() == null ? 0 : stack.getTag().getInt(COMBO_COUNT_TAG);
+    }
+
+    private static long comboTick(ItemStack stack) {
+        return stack.getTag() == null ? 0L : stack.getTag().getLong(COMBO_TICK_TAG);
+    }
+
+    private static void addCombo(ItemStack stack, long now) {
+        int combo = combo(stack);
+        if (combo < COMBO_MAX) {
+            combo++;
+        }
+        stack.getOrCreateTag().putInt(COMBO_COUNT_TAG, combo);
+        stack.getOrCreateTag().putLong(COMBO_TICK_TAG, now);
     }
 
     private static void sweep(Player player, Entity primary) {
@@ -139,19 +211,26 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
         }
     }
 
-    private static InteractionResult slam(Level level, Player player, ItemStack stack, BlockPos center) {
+    private static InteractionResult slam(Level level, Player player, ItemStack stack, BlockPos center,
+            boolean finisher) {
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         }
         long now = level.getGameTime();
-        if (stack.getTag() != null && now - stack.getTag().getLong(SLAM_TICK_TAG) < SLAM_COOLDOWN) {
+        int cooldown = finisher ? FINISHER_COOLDOWN : SLAM_COOLDOWN;
+        if (stack.getTag() != null && now - stack.getTag().getLong(SLAM_TICK_TAG) < cooldown) {
             return InteractionResult.SUCCESS;
         }
         stack.getOrCreateTag().putLong(SLAM_TICK_TAG, now);
+        if (finisher) {
+            stack.getOrCreateTag().putInt(COMBO_COUNT_TAG, 0);
+            stack.getOrCreateTag().putLong(COMBO_TICK_TAG, now);
+        }
 
-        double radius = WeaponConfig.BarbaricAxeSlamRadius.get();
-        double damage = WeaponConfig.BarbaricAxeSlamDamage.get();
+        double radius = finisher ? FINISHER_RADIUS : WeaponConfig.BarbaricAxeSlamRadius.get();
+        double damage = WeaponConfig.BarbaricAxeSlamDamage.get() * (finisher ? FINISHER_DAMAGE_MULTIPLIER : 1.0D);
         int fire = WeaponConfig.BarbaricAxeIgniteSeconds.get();
+        ParticleOptions flame = slamFlame();
 
         double centerX = center.getX() + 0.5D;
         double centerY = center.getY() + 0.5D;
@@ -167,39 +246,67 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
                 continue;
             }
             target.hurt(level.damageSources().playerAttack(player), (float) damage);
-            target.knockback(1.1D, target.getX() - centerX, target.getZ() - centerZ);
+            double offsetX = target.getX() - centerX;
+            double offsetZ = target.getZ() - centerZ;
+            if (finisher) {
+                target.knockback(FINISHER_KNOCKBACK, offsetX, offsetZ);
+                target.push(0.0D, FINISHER_LAUNCH, 0.0D);
+            } else {
+                target.knockback(1.1D, offsetX, offsetZ);
+            }
             if (fire > 0) {
                 target.setSecondsOnFire(fire);
             }
             if (level instanceof ServerLevel serverLevel) {
-                serverLevel.sendParticles(ParticleTypes.FLAME,
+                serverLevel.sendParticles(flame,
                         target.getX(), target.getY() + target.getBbHeight() * 0.5D, target.getZ(),
-                        14, 0.3D, 0.4D, 0.3D, 0.04D);
+                        finisher ? 14 * FINISHER_PARTICLE_SCALE : 14, 0.3D, 0.4D, 0.3D, 0.04D);
                 serverLevel.sendParticles(ParticleTypes.LAVA,
                         target.getX(), target.getY() + 0.2D, target.getZ(),
-                        3, 0.2D, 0.1D, 0.2D, 0.0D);
+                        finisher ? 3 * FINISHER_PARTICLE_SCALE : 3, 0.2D, 0.1D, 0.2D, 0.0D);
             }
         }
 
         if (level instanceof ServerLevel serverLevel) {
-            for (int i = 0; i < 32; i++) {
-                double angle = i * (Math.PI * 2.0D) / 32.0D;
+            int ringPoints = finisher ? 32 * FINISHER_PARTICLE_SCALE : 32;
+            for (int i = 0; i < ringPoints; i++) {
+                double angle = i * (Math.PI * 2.0D) / ringPoints;
                 serverLevel.sendParticles(ParticleTypes.CLOUD,
                         centerX + Math.cos(angle) * radius, ringY, centerZ + Math.sin(angle) * radius,
                         1, 0.0D, 0.03D, 0.0D, 0.02D);
             }
             serverLevel.sendParticles(ParticleTypes.EXPLOSION, centerX, ringY + 0.4D, centerZ,
-                    1, 0.0D, 0.0D, 0.0D, 0.0D);
-            serverLevel.sendParticles(ParticleTypes.FLAME, centerX, ringY + 0.4D, centerZ,
-                    40, radius * 0.5D, 0.3D, radius * 0.5D, 0.06D);
+                    finisher ? 4 : 1,
+                    finisher ? radius * 0.4D : 0.0D, finisher ? 0.3D : 0.0D, finisher ? radius * 0.4D : 0.0D, 0.0D);
+            serverLevel.sendParticles(flame, centerX, ringY + 0.4D, centerZ,
+                    finisher ? 40 * FINISHER_PARTICLE_SCALE : 40, radius * 0.5D, 0.3D, radius * 0.5D, 0.06D);
         }
 
+        heave(player, radius, finisher ? FINISHER_HEAVE_RINGS : HEAVE_RINGS);
+
         level.playSound(null, centerX, centerY, centerZ,
-                ModSounds.MACE_SMASH_GROUND_HEAVY.get(), SoundSource.PLAYERS, 1.2F, 0.85F);
-        stack.hurtAndBreak(SLAM_DURABILITY_COST, player,
-                e -> e.broadcastBreakEvent(EquipmentSlot.MAINHAND));
-        CBarbaricAxeShakePacket.send(player, 1.5F, 14);
+                ModSounds.MACE_SMASH_GROUND_HEAVY.get(), SoundSource.PLAYERS,
+                finisher ? 1.6F : 1.2F, finisher ? 0.65F : 0.85F);
+        CBarbaricAxeShakePacket.send(player,
+                finisher ? FINISHER_SHAKE_STRENGTH : SLAM_SHAKE_STRENGTH,
+                finisher ? FINISHER_SHAKE_TICKS : SLAM_SHAKE_TICKS);
         return InteractionResult.SUCCESS;
+    }
+
+    private static ParticleOptions slamFlame() {
+        ParticleType<?> type = ForgeRegistries.PARTICLE_TYPES.getValue(SLAM_FLAME);
+        return type instanceof SimpleParticleType simple ? simple : ParticleTypes.FLAME;
+    }
+
+    private static void heave(Player player, double radius, int rings) {
+        int outer = (int) Math.round(radius);
+        for (int ring = 0; ring < rings; ring++) {
+            int r = outer - ring;
+            if (r <= 0) {
+                break;
+            }
+            QuakingSpell.surroundTremor(player, r, HEAVE_HEIGHT, 0.0F, false, 0.0F, HEAVE_KNOCK_UP);
+        }
     }
 
     @Override
