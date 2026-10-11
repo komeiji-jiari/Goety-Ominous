@@ -18,6 +18,9 @@
 //   uTheme 1  深空 — the user-specified deep-space blue.
 //   uTheme 2  虚无 — amethyst violet.
 //   uTheme 3  拉莱耶 — deep-sea blue.
+//   uTheme 4  大灭绝 — 灰烬余烬: charcoal body, a dying ember vein, a warm ash core. The slowest
+//             loop of the five and the shallowest twinkle — extinction reads as heat going OUT,
+//             so it must never sparkle like the living themes do.
 //
 // Sampler0 is the glyph atlas; texCoord0 is the atlas UV of this fragment. The reference's
 // fragmentPosition is raw screen pixels (gl_FragCoord) — its facet/vein scales are absolute and
@@ -26,7 +29,7 @@
 uniform sampler2D Sampler0;
 uniform vec4 ColorModulator;
 uniform float GameTime; // vanilla fraction-of-day clock — the reference's time base (×1200 = seconds)
-uniform float uTheme;   // 0 天体, 1 深空, 2 虚无, 3 拉莱耶
+uniform float uTheme;   // 0 天体, 1 深空, 2 虚无, 3 拉莱耶, 4 大灭绝
 uniform float uModernUi;  // 1 when riding Modern UI's glyphs — its atlas stores an SDF, not raw coverage
 
 // ⚠ A hover entrance was bolted on here on 10-09 and REMOVED the same day. It did not work, and the
@@ -174,12 +177,21 @@ void main() {
         livingJade = vec3(0.927, 0.129, 1.000);
         jadeLight = vec3(1.000, 0.550, 1.000);
         spiritCore = vec3(1.000, 0.861, 1.000);
-    } else {                     // 拉莱耶: deep-sea blue
+    } else if (uTheme < 3.5) {   // 拉莱耶: deep-sea blue
         blackJade = vec3(0.012, 0.058, 0.131);
         deepJade = vec3(0.031, 0.196, 0.432);
         livingJade = vec3(0.066, 0.474, 0.926);
         jadeLight = vec3(0.408, 0.800, 1.000);
         spiritCore = vec3(0.772, 0.963, 1.000);
+    } else {                     // 大灭绝: 灰烬余烬 — charcoal, dying ember, warm ash
+        // Hue is ember red-orange throughout; the five slot luminances are the reference's own
+        // (0.053 / 0.178 / 0.420 / 0.762 / 0.930), so the material carries the same weight as the
+        // other four themes and stays legible on the charcoal panel underneath.
+        blackJade = vec3(0.104, 0.040, 0.029);
+        deepJade = vec3(0.420, 0.120, 0.040);
+        livingJade = vec3(0.806, 0.336, 0.112);
+        jadeLight = vec3(1.000, 0.735, 0.340);
+        spiritCore = vec3(0.983, 0.924, 0.835);
     }
 
     vec3 col = glRenderFontJade(gl_FragCoord.xy, seconds, ordinal, dist, hasSdf,

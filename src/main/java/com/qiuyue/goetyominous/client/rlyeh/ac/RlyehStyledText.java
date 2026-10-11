@@ -87,7 +87,7 @@ public final class RlyehStyledText {
             return;
         }
         RenderSystem.disableDepthTest();
-        material.safeGetUniform("uTheme").set(RlyehShaders.RLYEH_THEME);
+        material.safeGetUniform("uTheme").set(ours.get(0).theme());
         material.safeGetUniform("uModernUi").set(modernUi ? 1.0F : 0.0F);
         Runnable glyphs = () -> {
             MultiBufferSource.BufferSource immediate = MultiBufferSource.immediate(GLYPH_BUILDER);
@@ -105,7 +105,7 @@ public final class RlyehStyledText {
         RenderSystem.enableDepthTest();
     }
 
-    private record Piece(FormattedCharSequence seq, float x, boolean ours) {
+    private record Piece(FormattedCharSequence seq, float x, boolean ours, float theme) {
     }
 
     private record Cell(int position, Style style, int codePoint) {
@@ -117,14 +117,18 @@ public final class RlyehStyledText {
         List<Piece> pieces = new ArrayList<>();
         List<Cell> cells = new ArrayList<>();
         boolean[] ours = {false};
+        float[] theme = {TextThemes.NONE};
         float[] pen = {x};
         float[] start = {x};
         seq.accept((position, style, codePoint) -> {
             boolean mine = isOurs(style);
             if (!cells.isEmpty() && mine != ours[0]) {
-                pieces.add(new Piece(run(cells), start[0], ours[0]));
+                pieces.add(new Piece(run(cells), start[0], ours[0], theme[0]));
                 cells.clear();
                 start[0] = pen[0];
+            }
+            if (cells.isEmpty()) {
+                theme[0] = mine ? TextThemes.themeOf(style) : TextThemes.NONE;
             }
             ours[0] = mine;
             cells.add(new Cell(position, style, codePoint));
@@ -132,7 +136,7 @@ public final class RlyehStyledText {
             return true;
         });
         if (!cells.isEmpty()) {
-            pieces.add(new Piece(run(cells), start[0], ours[0]));
+            pieces.add(new Piece(run(cells), start[0], ours[0], theme[0]));
         }
         return pieces;
     }
@@ -160,7 +164,7 @@ public final class RlyehStyledText {
     }
 
     private static boolean isOurs(Style style) {
-        return RlyehFont.isRlyehFont(style.getFont()) || RlyehFont.isAbyssMark(style);
+        return TextThemes.themeOf(style) >= 0.0F;
     }
 
     private static void swapVanillaText(ShaderInstance replacement, Runnable draw) {

@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.mixin.ac;
 
+import com.qiuyue.goetyominous.client.rlyeh.ac.ExtinctionFont;
 import com.qiuyue.goetyominous.client.rlyeh.ac.RlyehFont;
 import com.qiuyue.goetyominous.client.rlyeh.ac.RlyehStyledText;
 import com.qiuyue.goetyominous.client.rlyeh.ac.RlyehTooltipHandler;
@@ -33,7 +34,7 @@ public class MixinClientTextTooltip {
         if (seq == null) {
             return;
         }
-        if (!usesRlyehFont(seq) && !(RlyehTooltipHandler.isRlyehTooltip() && usesAbyssMark(seq))) {
+        if (!usesThemedFont(seq) && !(RlyehTooltipHandler.isRlyehTooltip() && usesThemedMark(seq))) {
             return;
         }
         if (MODERN_UI) {
@@ -44,10 +45,10 @@ public class MixinClientTextTooltip {
         ci.cancel();
     }
 
-    private static boolean usesRlyehFont(FormattedCharSequence seq) {
+    private static boolean usesThemedFont(FormattedCharSequence seq) {
         boolean[] hit = {false};
         seq.accept((pos, style, codePoint) -> {
-            if (RlyehFont.isRlyehFont(style.getFont())) {
+            if (RlyehFont.isRlyehFont(style.getFont()) || ExtinctionFont.isExtinctionFont(style.getFont())) {
                 hit[0] = true;
             }
             return true;
@@ -55,10 +56,10 @@ public class MixinClientTextTooltip {
         return hit[0];
     }
 
-    private static boolean usesAbyssMark(FormattedCharSequence seq) {
+    private static boolean usesThemedMark(FormattedCharSequence seq) {
         boolean[] hit = {false};
         seq.accept((pos, style, codePoint) -> {
-            if (RlyehFont.isAbyssMark(style)) {
+            if (RlyehFont.isAbyssMark(style) || ExtinctionFont.isAshMark(style)) {
                 hit[0] = true;
             }
             return true;

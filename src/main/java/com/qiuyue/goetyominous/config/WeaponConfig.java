@@ -42,6 +42,15 @@ public class WeaponConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> FirebrandDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> FirebrandFireBonus;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> BarbaricAxeDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> BarbaricAxeAttackSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> BarbaricAxeSweepDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> BarbaricAxeSweepRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> BarbaricAxeSlamDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> BarbaricAxeSlamRadius;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BarbaricAxeIgniteSeconds;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BarbaricAxeChainLimit;
+
     static {
 
         BUILDER.push("Fel Staff");
@@ -74,6 +83,33 @@ public class WeaponConfig {
         FirebrandFireBonus = BUILDER
                 .comment("Firebrand bonus fire damage dealt to burning targets, Default: 3.0")
                 .defineInRange("firebrandFireBonus", 3.0, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Barbaric Axe");
+        BarbaricAxeDamage = BUILDER
+                .comment("Barbaric Axe total attack damage, as shown in the tooltip, Default: 12.0")
+                .defineInRange("barbaricAxeDamage", 12.0, 1.0, Double.MAX_VALUE);
+        BarbaricAxeAttackSpeed = BUILDER
+                .comment("Barbaric Axe total attack speed, as shown in the tooltip, Default: 1.0")
+                .defineInRange("barbaricAxeAttackSpeed", 1.0, 0.5, 4.0);
+        BarbaricAxeSweepDamage = BUILDER
+                .comment("Damage dealt by the left click sweep to extra targets, Default: 6.0")
+                .defineInRange("barbaricAxeSweepDamage", 6.0, 0.0, Double.MAX_VALUE);
+        BarbaricAxeSweepRange = BUILDER
+                .comment("Radius in blocks of the left click sweep, Default: 3.5")
+                .defineInRange("barbaricAxeSweepRange", 3.5, 0.0, 16.0);
+        BarbaricAxeSlamDamage = BUILDER
+                .comment("Damage dealt by the ground slam, Default: 10.0")
+                .defineInRange("barbaricAxeSlamDamage", 10.0, 0.0, Double.MAX_VALUE);
+        BarbaricAxeSlamRadius = BUILDER
+                .comment("Radius in blocks of the ground slam, Default: 5.0")
+                .defineInRange("barbaricAxeSlamRadius", 5.0, 0.0, 16.0);
+        BarbaricAxeIgniteSeconds = BUILDER
+                .comment("Seconds affected entities stay on fire after a ground slam, Default: 5")
+                .defineInRange("barbaricAxeIgniteSeconds", 5, 0, 60);
+        BarbaricAxeChainLimit = BUILDER
+                .comment("Maximum logs removed by one chain mining action, including the one that was broken, Default: 64")
+                .defineInRange("barbaricAxeChainLimit", 64, 1, 1024);
         BUILDER.pop();
 
         BUILDER.push("Wolf Armor");
