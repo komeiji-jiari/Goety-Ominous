@@ -48,6 +48,7 @@ public class TesseractTagHandler {
             addToTag(TESSERACT_SMALL, AmEntityRegistry.FARSEER_SERVANT);
             addToTag(TESSERACT_SMALL, AmEntityRegistry.ZOMBIE_CROCODILE_SERVANT);
             addToTag(TESSERACT_SMALL, AmEntityRegistry.TUSKLIN_SERVANT);
+            addToTag(TESSERACT_SMALL, AmEntityRegistry.TIGER_SERVANT);
             addToTag(TESSERACT_SMALL, AmEntityRegistry.BUNFUNGUS_SERVANT);
         }
         if (AlexCavesCompat.isAlexCavesLoaded()) {

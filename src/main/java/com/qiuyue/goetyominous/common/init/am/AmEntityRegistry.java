@@ -97,6 +97,13 @@ public class AmEntityRegistry {
                             .setTrackingRange(8)
                             .build(GoetyOminous.MOD_ID + ":tusklin_servant"));
 
+    public static final RegistryObject<EntityType<TigerServant>> TIGER_SERVANT =
+            AM_ENTITIES.register("tiger_servant",
+                    () -> EntityType.Builder.<TigerServant>of((type, worldIn) -> new TigerServant(type, worldIn), MobCategory.MISC)
+                            .sized(1.45F, 1.2F)
+                            .setTrackingRange(10)
+                            .build(GoetyOminous.MOD_ID + ":tiger_servant"));
+
     public static final RegistryObject<EntityType<FroststalkerServant>> FROSTSTALKER_SERVANT =
             AM_ENTITIES.register("froststalker_servant",
                     () -> EntityType.Builder.<FroststalkerServant>of((type, worldIn) -> new FroststalkerServant(type, worldIn), MobCategory.MISC)
