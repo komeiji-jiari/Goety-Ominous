@@ -1011,6 +1011,10 @@ public class ModModelLayers {
                     com.qiuyue.goetyominous.client.render.am.RenderTusklinServant::new);
 
             event.registerEntityRenderer(
+                    com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.TIGER_SERVANT.get(),
+                    com.qiuyue.goetyominous.client.render.am.RenderTigerServant::new);
+
+            event.registerEntityRenderer(
                     com.qiuyue.goetyominous.common.init.am.AmEntityRegistry.FROSTSTALKER_SERVANT.get(),
                     com.qiuyue.goetyominous.client.render.am.RenderFroststalkerServant::new);
 

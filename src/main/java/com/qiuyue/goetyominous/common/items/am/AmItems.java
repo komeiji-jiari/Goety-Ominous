@@ -40,6 +40,10 @@ public class AmItems {
             AM_ITEMS.register("tusklin_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AmEntityRegistry.TUSKLIN_SERVANT, 0x735841, 0xE8E2D5, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> TIGER_SERVANT_SPAWN_EGG =
+            AM_ITEMS.register("tiger_servant_spawn_egg",
+                    () -> new ServantSpawnEggItem(AmEntityRegistry.TIGER_SERVANT, 0xC7612E, 0x2A3233, egg()));
+
     public static final RegistryObject<ServantSpawnEggItem> FROSTSTALKER_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("froststalker_servant_spawn_egg",
                     () -> new ServantSpawnEggItem(AmEntityRegistry.FROSTSTALKER_SERVANT, 0x788AC1, 0xA1C3FF, egg()));

@@ -20,6 +20,7 @@ public class AmCompatManager {
         event.put(AmEntityRegistry.WARPED_MOSCO_SERVANT.get(), WarpedMoscoServant.setCustomAttributes().build());
         event.put(AmEntityRegistry.FARSEER_SERVANT.get(), FarseerServant.bakeAttributes().build());
         event.put(AmEntityRegistry.TUSKLIN_SERVANT.get(), TusklinServant.setCustomAttributes().build());
+        event.put(AmEntityRegistry.TIGER_SERVANT.get(), TigerServant.setCustomAttributes().build());
         event.put(AmEntityRegistry.FROSTSTALKER_SERVANT.get(), FroststalkerServant.setCustomAttributes().build());
         event.put(AmEntityRegistry.ROCKY_ROLLER_SERVANT.get(), RockyRollerServant.setCustomAttributes().build());
         event.put(AmEntityRegistry.ZOMBIE_CROCODILE_SERVANT.get(), ZombieCrocodileServant.setCustomAttributes().build());
