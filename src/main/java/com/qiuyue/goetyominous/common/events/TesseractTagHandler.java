@@ -2,14 +2,8 @@ package com.qiuyue.goetyominous.common.events;
 
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
-import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
-import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
-import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
-import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
-import com.qiuyue.goetyominous.common.init.of.OfEntityRegistry;
-import com.qiuyue.goetyominous.common.init.ua.UaEntityRegistry;
 import com.qiuyue.goetyominous.compat.ias.IasEntityRegistry;
-import com.qiuyue.goetyominous.compat.mod.*;
+import com.qiuyue.goetyominous.compat.mod.IllageAndSpillageCompat;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -27,11 +21,11 @@ import java.util.Set;
 @Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID)
 public class TesseractTagHandler {
 
-    private static final TagKey<EntityType<?>> TESSERACT_SMALL =
+    public static final TagKey<EntityType<?>> TESSERACT_SMALL =
             TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("goety", "tesseract_small"));
-    private static final TagKey<EntityType<?>> TESSERACT_MEDIUM =
+    public static final TagKey<EntityType<?>> TESSERACT_MEDIUM =
             TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("goety", "tesseract_medium"));
-    private static final TagKey<EntityType<?>> TESSERACT_LARGE =
+    public static final TagKey<EntityType<?>> TESSERACT_LARGE =
             TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("goety", "tesseract_large"));
 
     @SubscribeEvent
@@ -41,85 +35,16 @@ public class TesseractTagHandler {
         if (IllageAndSpillageCompat.isIllageAndSpillageLoaded()) {
             addToTag(TESSERACT_SMALL, IasEntityRegistry.ABSORBER_SERVANT);
         }
-        if (UpgradeAquaticCompat.isUpgradeAquaticLoaded()) {
-            addToTag(TESSERACT_SMALL, UaEntityRegistry.THRASHER_SERVANT);
-        }
-        if (AlexMobsCompat.isAlexMobsLoaded()) {
-            addToTag(TESSERACT_SMALL, AmEntityRegistry.FARSEER_SERVANT);
-            addToTag(TESSERACT_SMALL, AmEntityRegistry.ZOMBIE_CROCODILE_SERVANT);
-            addToTag(TESSERACT_SMALL, AmEntityRegistry.TUSKLIN_SERVANT);
-            addToTag(TESSERACT_SMALL, AmEntityRegistry.TIGER_SERVANT);
-            addToTag(TESSERACT_SMALL, AmEntityRegistry.BUNFUNGUS_SERVANT);
-        }
-        if (AlexCavesCompat.isAlexCavesLoaded()) {
-            addToTag(TESSERACT_SMALL, AcEntityRegistry.CORRODENT_SERVANT);
-            addToTag(TESSERACT_SMALL, AcEntityRegistry.CANDICORN_SERVANT);
-            addToTag(TESSERACT_SMALL, AcEntityRegistry.DEEP_ONE_SERVANT);
-            addToTag(TESSERACT_SMALL, AcEntityRegistry.DEEP_ONE_KNIGHT_SERVANT);
-            addToTag(TESSERACT_SMALL, AcEntityRegistry.DEEP_ONE_MAGE_SERVANT);
-        }
-        if (OpposingForceCompat.isOpposingForceLoaded()) {
-            addToTag(TESSERACT_SMALL, OfEntityRegistry.DICER_SERVANT);
-            addToTag(TESSERACT_SMALL, OfEntityRegistry.RAMBLER_SERVANT);
-        }
-        if (LegendaryMonstersCompat.isLegendaryMonstersLoaded()) {
-            addToTag(TESSERACT_SMALL, LmEntityRegistry.HOVERING_HURRICANE_SERVANT);
-        }
-
-
 
         addToTag(TESSERACT_MEDIUM, ModEntityTypes.HERESIARCH_SERVANT);
         addToTag(TESSERACT_MEDIUM, ModEntityTypes.STORM_NECROMANCER_SERVANT);
         if (IllageAndSpillageCompat.isIllageAndSpillageLoaded()) {
             addToTag(TESSERACT_MEDIUM, IasEntityRegistry.MAGISPELLER_SERVANT);
         }
-        if (UpgradeAquaticCompat.isUpgradeAquaticLoaded()) {
-            addToTag(TESSERACT_MEDIUM, UaEntityRegistry.GREAT_THRASHER_SERVANT);
-        }
-        if (OpposingForceCompat.isOpposingForceLoaded()) {
-            addToTag(TESSERACT_MEDIUM, OfEntityRegistry.SKYVERN_SERVANT);
-        }
-        if (LegendaryMonstersCompat.isLegendaryMonstersLoaded()) {
-            addToTag(TESSERACT_MEDIUM, LmEntityRegistry.OVERGROWN_COLOSSUS_SERVANT);
-            addToTag(TESSERACT_MEDIUM, LmEntityRegistry.ANNIHILATION_PURSUER_SERVANT);
-            addToTag(TESSERACT_MEDIUM, LmEntityRegistry.SHULKER_MIMIC_SERVANT);
-        }
-        if (AlexMobsCompat.isAlexMobsLoaded()) {
-            addToTag(TESSERACT_MEDIUM, AmEntityRegistry.WARPED_MOSCO_SERVANT);
-            addToTag(TESSERACT_MEDIUM, AmEntityRegistry.ILLAGER_ELEPHANT_SERVANT);
-        }
-        if (AlexCavesCompat.isAlexCavesLoaded()) {
-            addToTag(TESSERACT_MEDIUM, AcEntityRegistry.TREMORSAURUS_SERVANT);
-            addToTag(TESSERACT_MEDIUM, AcEntityRegistry.GROTTOCERATOPS_SERVANT);
-            addToTag(TESSERACT_MEDIUM, AcEntityRegistry.FORSAKEN_SERVANT);
-            addToTag(TESSERACT_MEDIUM, AcEntityRegistry.RELICHEIRUS_SERVANT);
-            addToTag(TESSERACT_MEDIUM, AcEntityRegistry.NUCLEEPER_SERVANT);
-        }
-
-
-
-        if (MutantMoreCompat.isMutantMoreLoaded()) {
-            addToTag(TESSERACT_LARGE, MmEntityRegistry.MUTANT_HOGLIN_SERVANT);
-            addToTag(TESSERACT_LARGE, MmEntityRegistry.MUTANT_WITHER_SKELETON_SERVANT);
-            addToTag(TESSERACT_LARGE, MmEntityRegistry.MUTANT_SHULKER_SERVANT);
-            addToTag(TESSERACT_LARGE, MmEntityRegistry.MUTANT_BLAZE_SERVANT);
-        }
-        if (AlexCavesCompat.isAlexCavesLoaded()) {
-            addToTag(TESSERACT_LARGE, AcEntityRegistry.HULLBREAKER_SERVANT);
-            addToTag(TESSERACT_LARGE, AcEntityRegistry.TREMORZILLA_SERVANT);
-            addToTag(TESSERACT_LARGE, AcEntityRegistry.ATLATITAN_SERVANT);
-            addToTag(TESSERACT_LARGE, AcEntityRegistry.LUXTRUCTOSAURUS_SERVANT);
-            addToTag(TESSERACT_LARGE, AcEntityRegistry.GUM_WORM_SERVANT);
-        }
-        if (LegendaryMonstersCompat.isLegendaryMonstersLoaded()) {
-            addToTag(TESSERACT_LARGE, LmEntityRegistry.CLOUD_GOLEM_SERVANT);
-            addToTag(TESSERACT_LARGE, LmEntityRegistry.THE_OBLITERATOR_SERVANT);
-            addToTag(TESSERACT_LARGE, LmEntityRegistry.POSSESSED_PALADIN_SERVANT);
-        }
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private static void addToTag(TagKey<EntityType<?>> tag, RegistryObject<?> reg) {
+    public static void addToTag(TagKey<EntityType<?>> tag, RegistryObject<?> reg) {
         if (!reg.isPresent()) return;
 
         ForgeRegistries.ENTITY_TYPES.getResourceKey((EntityType<?>) reg.get()).flatMap(

@@ -27,7 +27,6 @@ import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.config.SpellConfig;
 import com.qiuyue.goetyominous.common.entities.ally.illager.train.GoetyOminousType;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.*;
-import com.qiuyue.goetyominous.common.events.ac.NucleeperNukeProtectionHandler;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractStormNecromancer;
 import com.qiuyue.goetyominous.common.entities.hostile.SunkenNecromancer;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.ArchGeomancerEntity;
@@ -71,7 +70,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static net.minecraftforge.fml.loading.LogMarkers.CORE;
-import com.qiuyue.goetyominous.common.init.mm.ModSpellControllers;
 
 @Mod(GoetyOminous.MOD_ID)
 public class GoetyOminous {
@@ -90,7 +88,6 @@ public class GoetyOminous {
         modEventBus.addListener(this::onClientSetup);
         ModNetwork.init();
         ModEntityTypes.register(modEventBus);
-        ModSpellControllers.ENTITY_TYPES.register(modEventBus);
         ModContainerTypes.register(modEventBus);
         var biomeModifiers = DeferredRegister.create(
                 ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, GoetyOminous.MOD_ID);
@@ -120,10 +117,6 @@ public class GoetyOminous {
             }
         });
 
-        if (GoetyCataclysmCompat.isLoaded()) {
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.CataclysmKeySpellHandler.class);
-        }
-
         if (SavageRavageCompat.isSavageRavageLoaded()) {
             com.qiuyue.goetyominous.compat.sar.SarCompatManager.init(modEventBus);
         }
@@ -148,27 +141,12 @@ public class GoetyOminous {
             com.qiuyue.goetyominous.compat.of.OfCompatManager.init(modEventBus);
         }
 
-
         if (AlexMobsCompat.isAlexMobsLoaded()) {
             com.qiuyue.goetyominous.compat.am.AmCompatManager.init(modEventBus);
         }
 
         if (AlexCavesCompat.isAlexCavesLoaded()) {
             com.qiuyue.goetyominous.compat.ac.AcCompatManager.init(modEventBus);
-            MinecraftForge.EVENT_BUS.register(NucleeperNukeProtectionHandler.class);
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.NucleeperNukeKillHandler.class);
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.RaycatAmuletEvents.class);
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.RadiationAllyEvents.class);
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.MineGuardianExplosionProtectionHandler.class);
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.NucleeperSummonHandler.class);
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.AtomicBombCleanupHandler.class);
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.TremorzillaBreathHandler.class);
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.MineGuardianSummonHandler.class);
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.BubbledVisualCleanupHandler.class);
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.LuxtructosaurusTephraHandler.class);
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.ExtinctionCatalystHandler.class);
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.TremorsaurusSpiritHandler.class);
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.GrottoceratopsSpiritHandler.class);
         }
 
         getOrCreateDirectory(FMLPaths.CONFIGDIR.get().resolve("goetyominous"), "goetyominous");
@@ -199,9 +177,6 @@ public class GoetyOminous {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         new CuriosIntegration().setup(event);
-        if (AlexCavesCompat.isAlexCavesLoaded() && PatchouliCompat.isLoaded()) {
-            com.qiuyue.goetyominous.compat.ac.GoetyOminousPatchouliIntegration.setup(event);
-        }
 
         event.enqueueWork(() -> {
             net.minecraftforge.common.brewing.BrewingRecipeRegistry.addRecipe(
@@ -356,33 +331,6 @@ public class GoetyOminous {
                         + AttributesConfig.PiglinHunterServantEvolvedDamageBonus.get()
                         + AttributesConfig.PiglinHunterServantEvolved2DamageBonus.get()).build());
 
-        if (SavageRavageCompat.isSavageRavageLoaded()) {
-            com.qiuyue.goetyominous.compat.sar.SarCompatManager.setCustomAttributes(event);
-        }
-
-        if (UpgradeAquaticCompat.isUpgradeAquaticLoaded()) {
-            com.qiuyue.goetyominous.compat.ua.UaCompatManager.setCustomAttributes(event);
-        }
-
-        if (MutantMoreCompat.isMutantMoreLoaded()) {
-            com.qiuyue.goetyominous.compat.mm.MmCompatManager.setCustomAttributes(event);
-        }
-
-        if (LegendaryMonstersCompat.isLegendaryMonstersLoaded()) {
-            com.qiuyue.goetyominous.compat.lm.LmCompatManager.setCustomAttributes(event);
-        }
-
-        if (OpposingForceCompat.isOpposingForceLoaded()) {
-            com.qiuyue.goetyominous.compat.of.OfCompatManager.setCustomAttributes(event);
-        }
-
-        if (AlexMobsCompat.isAlexMobsLoaded()) {
-            com.qiuyue.goetyominous.compat.am.AmCompatManager.setCustomAttributes(event);
-        }
-
-        if (AlexCavesCompat.isAlexCavesLoaded()) {
-            com.qiuyue.goetyominous.compat.ac.AcCompatManager.setCustomAttributes(event);
-        }
     }
 
     private void loadComplete(final FMLLoadCompleteEvent event) {
@@ -392,26 +340,6 @@ public class GoetyOminous {
     }
 
     public void onClientSetup(final FMLClientSetupEvent event) {
-        if (LegendaryMonstersCompat.isLegendaryMonstersLoaded()) {
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.client.events.lm.PossessedPaladinGrabRenderEvents.class);
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.client.events.lm.BeheadedKnightGrabRenderEvents.class);
-        }
-        if (AlexCavesCompat.isAlexCavesLoaded()) {
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.TremorsaurusHudEvents.class);
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.TremorzillaHudEvents.class);
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.AtlatitanHudEvents.class);
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.LuxtructosaurusHudEvents.class);
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.ForsakenRiderHudEvents.class);
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.CandicornRiderHudEvents.class);
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.TremorzillaRenderEvents.class);
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.client.render.ac.TremorzillaBreathRenderer.class);
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.client.render.ac.XRayRenderer.class);
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.AtlatitanRenderEvents.class);
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.LuxtructosaurusRenderEvents.class);
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.CorrodentDigCrackRenderEvents.class);
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.ForsakenSpitParticleRenderEvents.class);
-            MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.ac.LicowitchTeleportRenderEvents.class);
-        }
         event.enqueueWork(() -> {
             ItemProperties.register(ModItems.WITCH_BOW.get(), new ResourceLocation("pull"),
                     (stack, level, entity, seed) -> {
