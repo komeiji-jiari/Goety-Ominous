@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.common.items;
 import com.Polarice3.Goety.common.magic.spells.geomancy.QuakingSpell;
 import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.common.network.CBarbaricAxeShakePacket;
+import com.qiuyue.goetyominous.common.network.CBarbaricAxeSwingPacket;
 import com.qiuyue.goetyominous.common.rlyeh.ac.ExtinctionStyled;
 import com.qiuyue.goetyominous.config.WeaponConfig;
 import net.minecraft.core.BlockPos;
@@ -45,14 +46,12 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
     private static final float FINISHER_SHAKE_STRENGTH = 9.0F;
     private static final int SLAM_SHAKE_TICKS = 14;
     private static final int FINISHER_SHAKE_TICKS = 22;
-    private static final int COMBO_MAX = 10;
-    private static final int COMBO_WINDOW = 60;
+    private static final int COMBO_MAX = 7;
     private static final double FINISHER_RADIUS = 7.0D;
     private static final int FINISHER_HEAVE_RINGS = 5;
     private static final int COMBO_BAR_COLOR = 0x4CFF6E;
     private static final int COMBO_BAR_COLOR_FULL = 0xFF4A16;
     private static final String COMBO_COUNT_TAG = "BarbaricAxeCombo";
-    private static final String COMBO_TICK_TAG = "BarbaricAxeComboTick";
     private static final ResourceLocation SLAM_FLAME = new ResourceLocation("alexscaves", "tephra_flame");
     private static final int HEAVE_RINGS = 3;
     private static final double HEAVE_HEIGHT = 3.0D;
@@ -78,8 +77,9 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
         }
         if (entity instanceof LivingEntity && !player.level().isClientSide) {
             sweep(player, entity);
-            addCombo(stack, player.level().getGameTime());
+            addCombo(stack);
             CBarbaricAxeShakePacket.send(player, 0.7F, 6);
+            CBarbaricAxeSwingPacket.send(player, CBarbaricAxeSwingPacket.TYPE_SWEEP);
         }
         return false;
     }
@@ -102,14 +102,6 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
         }
         if (held && player.getAttackStrengthScale(0.5F) < 0.95F && player.attackAnim > 0) {
             player.swingTime--;
-        }
-        if (level.isClientSide) {
-            return;
-        }
-        int combo = combo(stack);
-        if (combo > 0 && level.getGameTime() - comboTick(stack) >= COMBO_WINDOW) {
-            stack.getOrCreateTag().putInt(COMBO_COUNT_TAG, combo - 1);
-            stack.getOrCreateTag().putLong(COMBO_TICK_TAG, level.getGameTime());
         }
     }
 
@@ -158,17 +150,12 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
         return stack.getTag() == null ? 0 : stack.getTag().getInt(COMBO_COUNT_TAG);
     }
 
-    private static long comboTick(ItemStack stack) {
-        return stack.getTag() == null ? 0L : stack.getTag().getLong(COMBO_TICK_TAG);
-    }
-
-    private static void addCombo(ItemStack stack, long now) {
+    private static void addCombo(ItemStack stack) {
         int combo = combo(stack);
         if (combo < COMBO_MAX) {
             combo++;
         }
         stack.getOrCreateTag().putInt(COMBO_COUNT_TAG, combo);
-        stack.getOrCreateTag().putLong(COMBO_TICK_TAG, now);
     }
 
     private static void sweep(Player player, Entity primary) {
@@ -221,7 +208,6 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
         player.getCooldowns().addCooldown(stack.getItem(), finisher ? FINISHER_COOLDOWN : SLAM_COOLDOWN);
         if (finisher) {
             stack.getOrCreateTag().putInt(COMBO_COUNT_TAG, 0);
-            stack.getOrCreateTag().putLong(COMBO_TICK_TAG, level.getGameTime());
         }
 
         double radius = finisher ? FINISHER_RADIUS : WeaponConfig.BarbaricAxeSlamRadius.get();
@@ -287,6 +273,7 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
         CBarbaricAxeShakePacket.send(player,
                 finisher ? FINISHER_SHAKE_STRENGTH : SLAM_SHAKE_STRENGTH,
                 finisher ? FINISHER_SHAKE_TICKS : SLAM_SHAKE_TICKS);
+        CBarbaricAxeSwingPacket.send(player, CBarbaricAxeSwingPacket.TYPE_SLAM);
         return InteractionResult.SUCCESS;
     }
 
