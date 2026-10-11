@@ -34,6 +34,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> EmuServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> SoulVultureServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> TusklinServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> TigerServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> ThrasherServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> GreatThrasherServantLimit;
@@ -277,6 +278,10 @@ public class MobsConfig {
         TusklinServantLimit = BUILDER
                 .comment("Maximum number of Tusklin Servants that can be summoned (Default: 16)")
                 .defineInRange("tusklinServantLimit", 16, 1, 100);
+
+        TigerServantLimit = BUILDER
+                .comment("Maximum number of Tiger Servants that can be summoned (Default: 8)")
+                .defineInRange("tigerServantLimit", 8, 1, 100);
 
         RamblerServantLimit = BUILDER
                 .comment("Maximum number of Rambler Servants that can be summoned (Default: 8)")

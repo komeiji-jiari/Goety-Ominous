@@ -78,6 +78,12 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> TusklinServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> TusklinServantKnockbackResistance;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> TigerServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> TigerServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> TigerServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> TigerServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> TigerServantKnockbackResistance;
+
     public static final ForgeConfigSpec.ConfigValue<Double> GrottoceratopsServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> GrottoceratopsServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> GrottoceratopsServantMovementSpeed;
@@ -1295,6 +1301,16 @@ public class AttributesConfig {
                 .defineInRange("tusklinServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
         TusklinServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Tusklin Servants have, Default: 0.9")
                 .defineInRange("tusklinServantKnockbackResistance", 0.9, 0.0, Double.MAX_VALUE);
+        TigerServantHealth = BUILDER.comment("How much Max Health Tiger Servants have, Default: 40.0")
+                .defineInRange("tigerServantHealth", 40.0, 1.0, Double.MAX_VALUE);
+        TigerServantDamage = BUILDER.comment("How much damage Tiger Servants deal, Default: 9.0")
+                .defineInRange("tigerServantDamage", 9.0, 1.0, Double.MAX_VALUE);
+        TigerServantMovementSpeed = BUILDER.comment("How fast Tiger Servants move, Default: 0.25 (Alex's Mobs Tiger). Sprinting adds 0.15 on top of this.")
+                .defineInRange("tigerServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
+        TigerServantFollowRange = BUILDER.comment("How much following/detection range Tiger Servants have, Default: 32.0")
+                .defineInRange("tigerServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
+        TigerServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Tiger Servants have, Default: 0.0")
+                .defineInRange("tigerServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
         GrottoceratopsServantHealth = BUILDER.comment("How much Max Health Grottoceratops Servants have, Default: 50.0 (matches Alex's Caves Grottoceratops)")
                 .defineInRange("grottoceratopsServantHealth", 50.0, 1.0, Double.MAX_VALUE);
         GrottoceratopsServantDamage = BUILDER.comment("How much damage Grottoceratops Servants deal, Default: 10.0 (matches Alex's Caves Grottoceratops)")
