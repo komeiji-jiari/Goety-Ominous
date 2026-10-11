@@ -104,6 +104,14 @@ public class LmClientEvents {
                 com.qiuyue.goetyominous.client.render.lm.PossessedPaladinServantRenderer::new);
 
         event.registerEntityRenderer(
+                com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.FIRE_PILLAR.get(),
+                EmptyRenderer::new);
+
+        event.registerEntityRenderer(
+                com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.FIRE_BREATH.get(),
+                EmptyRenderer::new);
+
+        event.registerEntityRenderer(
                 com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.THE_OBLITERATOR_SERVANT.get(),
                 com.qiuyue.goetyominous.client.render.lm.TheObliteratorServantRenderer::new);
 
