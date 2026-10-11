@@ -51,10 +51,9 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
     private static final int FINISHER_HEAVE_RINGS = 5;
     private static final int COMBO_BAR_COLOR = 0x4CFF6E;
     private static final int COMBO_BAR_COLOR_FULL = 0xFF4A16;
-    private static final String SLAM_TICK_TAG = "BarbaricAxeSlam";
     private static final String COMBO_COUNT_TAG = "BarbaricAxeCombo";
     private static final String COMBO_TICK_TAG = "BarbaricAxeComboTick";
-    private static final ResourceLocation SLAM_FLAME = new ResourceLocation("alexscaves", "luxtructosaurus_spit");
+    private static final ResourceLocation SLAM_FLAME = new ResourceLocation("alexscaves", "tephra_flame");
     private static final int HEAVE_RINGS = 3;
     private static final double HEAVE_HEIGHT = 3.0D;
     private static final float HEAVE_KNOCK_UP = 0.1F;
@@ -216,15 +215,13 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         }
-        long now = level.getGameTime();
-        int cooldown = finisher ? FINISHER_COOLDOWN : SLAM_COOLDOWN;
-        if (stack.getTag() != null && now - stack.getTag().getLong(SLAM_TICK_TAG) < cooldown) {
+        if (player.getCooldowns().isOnCooldown(stack.getItem())) {
             return InteractionResult.SUCCESS;
         }
-        stack.getOrCreateTag().putLong(SLAM_TICK_TAG, now);
+        player.getCooldowns().addCooldown(stack.getItem(), finisher ? FINISHER_COOLDOWN : SLAM_COOLDOWN);
         if (finisher) {
             stack.getOrCreateTag().putInt(COMBO_COUNT_TAG, 0);
-            stack.getOrCreateTag().putLong(COMBO_TICK_TAG, now);
+            stack.getOrCreateTag().putLong(COMBO_TICK_TAG, level.getGameTime());
         }
 
         double radius = finisher ? FINISHER_RADIUS : WeaponConfig.BarbaricAxeSlamRadius.get();
