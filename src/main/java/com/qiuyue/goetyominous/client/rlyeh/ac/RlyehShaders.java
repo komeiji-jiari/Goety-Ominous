@@ -19,6 +19,8 @@ public final class RlyehShaders {
 
     public static final float RLYEH_THEME = 3.0F;
 
+    public static final float EXTINCTION_THEME = 4.0F;
+
     @Nullable private static ShaderInstance tooltip;
     @Nullable private static ShaderInstance frame;
     @Nullable private static ShaderInstance textGlyph;

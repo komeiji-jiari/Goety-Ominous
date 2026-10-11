@@ -10,8 +10,10 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Axis;
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.common.rlyeh.ac.ExtinctionStyled;
 import com.qiuyue.goetyominous.common.rlyeh.ac.RlyehStyled;
 import com.qiuyue.goetyominous.compat.mod.ModernUiTooltipCompat;
+import com.qiuyue.goetyominous.compat.mod.ObscureTooltipsCompat;
 import java.util.List;
 import java.util.Map;
 import net.minecraft.client.Minecraft;
@@ -69,6 +71,8 @@ public final class RlyehTooltipHandler {
 
     private static boolean rlyehTooltip = false;
 
+    private static float currentTheme = RlyehShaders.RLYEH_THEME;
+
     private static long introStartMillis = 0L;
     private static long lastEventMillis = 0L;
     private static Object lastItem = null;
@@ -96,24 +100,38 @@ public final class RlyehTooltipHandler {
         return rlyehTooltip;
     }
 
+    public static float themeFor(ItemStack stack) {
+        if (stack.getItem() instanceof ExtinctionStyled) {
+            return RlyehShaders.EXTINCTION_THEME;
+        }
+        if (stack.getItem() instanceof RlyehStyled) {
+            return RlyehShaders.RLYEH_THEME;
+        }
+        return TextThemes.NONE;
+    }
+
+    public static boolean isThemed(ItemStack stack) {
+        return themeFor(stack) > 0.0F;
+    }
+
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onTooltipPreSuppress(RenderTooltipEvent.Pre event) {
-        if (!ModernUiTooltipCompat.active()) {
-            return;
-        }
-        if (event.getItemStack().getItem() instanceof RlyehStyled) {
+        if (isThemed(event.getItemStack())) {
+            ObscureTooltipsCompat.suppress();
             ModernUiTooltipCompat.suppress();
         }
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)
     public static void onTooltipPreRestore(RenderTooltipEvent.Pre event) {
+        ObscureTooltipsCompat.restore();
         ModernUiTooltipCompat.restore();
     }
 
     @SubscribeEvent
     public static void onTooltipColor(RenderTooltipEvent.Color event) {
-        rlyehTooltip = event.getItemStack().getItem() instanceof RlyehStyled;
+        currentTheme = themeFor(event.getItemStack());
+        rlyehTooltip = currentTheme > 0.0F;
         if (!rlyehTooltip) {
             return;
         }
@@ -161,7 +179,7 @@ public final class RlyehTooltipHandler {
         float panelShort = Math.min(panelW, panelH);
         shader.safeGetUniform("uAspect").set(panelW / panelShort, panelH / panelShort);
         shader.safeGetUniform("uPanelSize").set(panelW, panelH);
-        shader.safeGetUniform("uTheme").set(RlyehShaders.RLYEH_THEME);
+        shader.safeGetUniform("uTheme").set(currentTheme);
         shader.safeGetUniform("uIntro").set(intro);
         BufferBuilder builder = Tesselator.getInstance().getBuilder();
         builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
@@ -282,7 +300,7 @@ public final class RlyehTooltipHandler {
         RenderSystem.disableCull();
         RenderSystem.setShader(RlyehShaders::frame);
         frame.safeGetUniform("uTime").set(time);
-        frame.safeGetUniform("uTheme").set(RlyehShaders.RLYEH_THEME);
+        frame.safeGetUniform("uTheme").set(currentTheme);
         frame.safeGetUniform("uSize").set((float) (fr - fl), (float) (fb - ft));
         frame.safeGetUniform("uBorder").set(2.5F);
         frame.safeGetUniform("uRadius").set(2.0F);
@@ -348,12 +366,15 @@ public final class RlyehTooltipHandler {
 
     @SubscribeEvent
     public static void onItemTooltip(ItemTooltipEvent event) {
-        if (!(event.getItemStack().getItem() instanceof RlyehStyled)) {
+        ItemStack stack = event.getItemStack();
+        boolean ash = stack.getItem() instanceof ExtinctionStyled;
+        if (!ash && !(stack.getItem() instanceof RlyehStyled)) {
             return;
         }
         List<Component> tooltip = event.getToolTip();
         if (!tooltip.isEmpty() && !tooltip.get(0).getString().isBlank()) {
-            tooltip.set(0, RlyehFont.abyss(tooltip.get(0).getString()));
+            tooltip.set(0, ash ? ExtinctionFont.ash(tooltip.get(0).getString())
+                    : RlyehFont.abyss(tooltip.get(0).getString()));
         }
     }
 
