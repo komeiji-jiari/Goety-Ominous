@@ -10,11 +10,12 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Axis;
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.common.rlyeh.ac.ExtinctionStyled;
 import com.qiuyue.goetyominous.common.rlyeh.ac.RlyehStyled;
 import com.qiuyue.goetyominous.compat.mod.ModernUiTooltipCompat;
+import com.qiuyue.goetyominous.compat.mod.ObscureTooltipsCompat;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -24,9 +25,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextColor;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -71,12 +69,9 @@ public final class RlyehTooltipHandler {
                     RenderType.glint(), new BufferBuilder(RenderType.glint().bufferSize())),
             ITEM_BUILDER);
 
-    private static final int TOOLTIP_BLUE = 0x5555FF;
-    private static final float TEXT_MIN_LUMA = 0.22F;
-    private static final float TEXT_TARGET_LUMA =
-            0.2126F * ((TOOLTIP_BLUE >> 16) & 0xFF) / 255.0F
-                    + 0.7152F * ((TOOLTIP_BLUE >> 8) & 0xFF) / 255.0F
-                    + 0.0722F * (TOOLTIP_BLUE & 0xFF) / 255.0F;
+    private static boolean rlyehTooltip = false;
+
+    private static float currentTheme = RlyehShaders.RLYEH_THEME;
 
     private static long introStartMillis = 0L;
     private static long lastEventMillis = 0L;
@@ -101,24 +96,43 @@ public final class RlyehTooltipHandler {
         return currentIntro;
     }
 
+    public static boolean isRlyehTooltip() {
+        return rlyehTooltip;
+    }
+
+    public static float themeFor(ItemStack stack) {
+        if (stack.getItem() instanceof ExtinctionStyled) {
+            return RlyehShaders.EXTINCTION_THEME;
+        }
+        if (stack.getItem() instanceof RlyehStyled) {
+            return RlyehShaders.RLYEH_THEME;
+        }
+        return TextThemes.NONE;
+    }
+
+    public static boolean isThemed(ItemStack stack) {
+        return themeFor(stack) > 0.0F;
+    }
+
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onTooltipPreSuppress(RenderTooltipEvent.Pre event) {
-        if (!ModernUiTooltipCompat.active()) {
-            return;
-        }
-        if (event.getItemStack().getItem() instanceof RlyehStyled) {
+        if (isThemed(event.getItemStack())) {
+            ObscureTooltipsCompat.suppress();
             ModernUiTooltipCompat.suppress();
         }
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)
     public static void onTooltipPreRestore(RenderTooltipEvent.Pre event) {
+        ObscureTooltipsCompat.restore();
         ModernUiTooltipCompat.restore();
     }
 
     @SubscribeEvent
     public static void onTooltipColor(RenderTooltipEvent.Color event) {
-        if (!(event.getItemStack().getItem() instanceof RlyehStyled)) {
+        currentTheme = themeFor(event.getItemStack());
+        rlyehTooltip = currentTheme > 0.0F;
+        if (!rlyehTooltip) {
             return;
         }
         ShaderInstance shader = RlyehShaders.tooltip();
@@ -165,7 +179,7 @@ public final class RlyehTooltipHandler {
         float panelShort = Math.min(panelW, panelH);
         shader.safeGetUniform("uAspect").set(panelW / panelShort, panelH / panelShort);
         shader.safeGetUniform("uPanelSize").set(panelW, panelH);
-        shader.safeGetUniform("uTheme").set(RlyehShaders.RLYEH_THEME);
+        shader.safeGetUniform("uTheme").set(currentTheme);
         shader.safeGetUniform("uIntro").set(intro);
         BufferBuilder builder = Tesselator.getInstance().getBuilder();
         builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
@@ -286,7 +300,7 @@ public final class RlyehTooltipHandler {
         RenderSystem.disableCull();
         RenderSystem.setShader(RlyehShaders::frame);
         frame.safeGetUniform("uTime").set(time);
-        frame.safeGetUniform("uTheme").set(RlyehShaders.RLYEH_THEME);
+        frame.safeGetUniform("uTheme").set(currentTheme);
         frame.safeGetUniform("uSize").set((float) (fr - fl), (float) (fb - ft));
         frame.safeGetUniform("uBorder").set(2.5F);
         frame.safeGetUniform("uRadius").set(2.0F);
@@ -352,52 +366,16 @@ public final class RlyehTooltipHandler {
 
     @SubscribeEvent
     public static void onItemTooltip(ItemTooltipEvent event) {
-        if (!(event.getItemStack().getItem() instanceof RlyehStyled)) {
+        ItemStack stack = event.getItemStack();
+        boolean ash = stack.getItem() instanceof ExtinctionStyled;
+        if (!ash && !(stack.getItem() instanceof RlyehStyled)) {
             return;
         }
         List<Component> tooltip = event.getToolTip();
-        if (tooltip.isEmpty()) {
-            return;
+        if (!tooltip.isEmpty() && !tooltip.get(0).getString().isBlank()) {
+            tooltip.set(0, ash ? ExtinctionFont.ash(tooltip.get(0).getString())
+                    : RlyehFont.abyss(tooltip.get(0).getString()));
         }
-        if (!tooltip.get(0).getString().isBlank()) {
-            tooltip.set(0, RlyehFont.abyss(tooltip.get(0).getString()));
-        }
-        for (int i = 1; i < tooltip.size(); i++) {
-            tooltip.set(i, readable(tooltip.get(i)));
-        }
-    }
-
-    private static Component readable(Component component) {
-        MutableComponent rebuilt = Component.empty();
-        boolean[] changed = {false};
-        component.visit((style, text) -> {
-            TextColor colour = style.getColor();
-            if (colour != null) {
-                int lifted = liftLuma(colour.getValue());
-                if (lifted != colour.getValue()) {
-                    changed[0] = true;
-                    rebuilt.append(Component.literal(text).setStyle(style.withColor(lifted)));
-                    return Optional.empty();
-                }
-            }
-            rebuilt.append(Component.literal(text).setStyle(style));
-            return Optional.empty();
-        }, Style.EMPTY);
-        return changed[0] ? rebuilt : component;
-    }
-
-    private static int liftLuma(int rgb) {
-        float r = ((rgb >> 16) & 0xFF) / 255.0F;
-        float g = ((rgb >> 8) & 0xFF) / 255.0F;
-        float b = (rgb & 0xFF) / 255.0F;
-        float luma = 0.2126F * r + 0.7152F * g + 0.0722F * b;
-        if (luma >= TEXT_MIN_LUMA) {
-            return rgb;
-        }
-        float t = (TEXT_TARGET_LUMA - luma) / (1.0F - luma);
-        return (Math.round((r + (1.0F - r) * t) * 255.0F) << 16)
-                | (Math.round((g + (1.0F - g) * t) * 255.0F) << 8)
-                | Math.round((b + (1.0F - b) * t) * 255.0F);
     }
 
     private static int sample(int[] palette, float t) {

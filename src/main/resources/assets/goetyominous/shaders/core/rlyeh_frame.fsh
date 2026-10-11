@@ -113,15 +113,22 @@ void main() {
         spirit = vec3(0.97, 0.80, 1.0);
         veinSpeed = 0.24;
         breathDepth = 0.42;
-    } else {                         // 拉莱耶: deep blue water with a cold breathing glow
+    } else if (uTheme < 3.5) {       // 拉莱耶: deep blue water with a cold breathing glow
         body = vec3(0.012, 0.055, 0.130);
         high = vec3(0.28, 0.58, 0.98);
         spirit = vec3(0.78, 0.93, 1.0);
         veinSpeed = 0.05;
         breathDepth = 0.36;
+    } else {                         // 大灭绝: charred edge with one dying ember line
+        body = vec3(0.030, 0.016, 0.012);
+        high = vec3(0.52, 0.145, 0.045);
+        spirit = vec3(0.86, 0.52, 0.22);
+        veinSpeed = 0.035;
+        breathDepth = 0.30;
     }
 
-    bool drowned = uTheme > 2.5;
+    bool drowned = uTheme > 2.5 && uTheme < 3.5;
+    bool ashFx = uTheme > 3.5;
     float pulse = breath(uTime);
     float ang = atan(P.y, P.x) / 6.2831853;
     vec3 col;
@@ -138,6 +145,18 @@ void main() {
         // A drowned surge breathing across the whole border, deep and slow.
         float surge = fbm(gl_FragCoord.xy / 46.0 + vec2(uTime * 0.04, -uTime * 0.026));
         col *= 0.66 + 0.5 * surge;
+    } else if (ashFx) {
+        // The extinction frame is charred wood and cooled slag: a near-black band with ONE ember line
+        // crawling round the perimeter and a faint heat at the inner lip. No facets, no glints and no
+        // carved bevel — the crystal vocabulary belongs to the living themes, and this one is burnt.
+        // The grit multiplier is what keeps it from reading as a clean strip of dark red.
+        float crawl = vein(ang * 2.0 - uTime * veinSpeed, 0.30);
+        col = body * 0.90;
+        col = mix(col, high, crawl * 0.55);                   // the ember line
+        col = mix(col, col * 0.22, smoothstep(0.22, 0.0, u)); // charred outer edge
+        col += spirit * smoothstep(0.62, 1.0, u) * 0.10;      // faint inner heat
+        float grit = fbm(gl_FragCoord.xy / 58.0 + vec2(uTime * 0.020, -uTime * 0.013));
+        col *= 0.70 + 0.42 * grit;
     } else {
         // Faceted crystal body (screen space so it flows across the whole frame).
         vec2 sp = gl_FragCoord.xy / 40.0;
