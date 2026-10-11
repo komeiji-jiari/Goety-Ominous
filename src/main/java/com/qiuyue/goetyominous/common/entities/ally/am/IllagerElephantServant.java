@@ -14,7 +14,7 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.google.common.collect.Maps;
-import com.qiuyue.goetyominous.common.entities.ai.SmoothBodyRotationControl;
+import com.qiuyue.goetyominous.common.entities.ai.am.SmoothBodyRotationControl;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.Util;

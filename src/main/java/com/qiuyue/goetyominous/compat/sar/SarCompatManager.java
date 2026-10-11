@@ -9,9 +9,15 @@ import net.minecraftforge.eventbus.api.IEventBus;
 public class SarCompatManager {
 
     public static void init(IEventBus modEventBus) {
+        com.qiuyue.goetyominous.common.entities.ally.illager.train.GoetyOminousType.registerExtension(new SarTrainIllager());
+
         SarEntityRegistry.register(modEventBus);
 
         SarItems.register(modEventBus);
+
+        com.qiuyue.goetyominous.common.init.ModCreativeTab.registerCompatItems(SarItems.SAR_ITEMS);
+
+        modEventBus.addListener(SarCompatManager::setCustomAttributes);
     }
 
     public static void setCustomAttributes(EntityAttributeCreationEvent event) {

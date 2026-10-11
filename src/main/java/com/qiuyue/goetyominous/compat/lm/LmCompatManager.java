@@ -30,9 +30,13 @@ public class LmCompatManager {
 
         if (ENABLE_LM_ITEMS) {
             LmItems.register(modEventBus);
+
+            com.qiuyue.goetyominous.common.init.ModCreativeTab.registerCompatItems(LmItems.LM_ITEMS);
         }
 
         LmParticles.register(modEventBus);
+
+        modEventBus.addListener(LmCompatManager::setCustomAttributes);
     }
 
     public static void setCustomAttributes(net.minecraftforge.event.entity.EntityAttributeCreationEvent event) {

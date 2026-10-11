@@ -19,6 +19,10 @@ public class OfCompatManager {
     public static void init(IEventBus modEventBus) {
         OfEntityRegistry.register(modEventBus);
         OfItems.register(modEventBus);
+
+        com.qiuyue.goetyominous.common.init.ModCreativeTab.registerCompatItems(OfItems.OF_ITEMS);
+
+        modEventBus.addListener(OfCompatManager::setCustomAttributes);
     }
 
     public static void setCustomAttributes(EntityAttributeCreationEvent event) {

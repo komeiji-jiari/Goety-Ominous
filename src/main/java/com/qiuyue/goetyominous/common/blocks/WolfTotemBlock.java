@@ -124,12 +124,14 @@ public class WolfTotemBlock extends BaseEntityBlock implements SimpleWaterlogged
 
     @Override
     public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-        DoubleBlockHalf half = state.getValue(HALF);
-        BlockPos otherPos = half == DoubleBlockHalf.LOWER ? pos.above() : pos.below();
-        BlockState otherState = level.getBlockState(otherPos);
-        if (otherState.is(this) && otherState.getValue(HALF) != half) {
-            level.setBlock(otherPos, Blocks.AIR.defaultBlockState(), 35);
-            level.levelEvent(player, 2001, otherPos, Block.getId(otherState));
+        if (!level.isClientSide && player.isCreative()) {
+            DoubleBlockHalf half = state.getValue(HALF);
+            BlockPos otherPos = half == DoubleBlockHalf.LOWER ? pos.above() : pos.below();
+            BlockState otherState = level.getBlockState(otherPos);
+            if (otherState.is(this) && otherState.getValue(HALF) != half) {
+                level.setBlock(otherPos, Blocks.AIR.defaultBlockState(), 35);
+                level.levelEvent(player, 2001, otherPos, Block.getId(otherState));
+            }
         }
         super.playerWillDestroy(level, pos, state, player);
     }

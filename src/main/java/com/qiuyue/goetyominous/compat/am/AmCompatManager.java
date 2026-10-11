@@ -9,8 +9,13 @@ import net.minecraftforge.eventbus.api.IEventBus;
 public class AmCompatManager {
 
     public static void init(IEventBus modEventBus) {
+                com.qiuyue.goetyominous.common.network.am.AmPackets.register();
                 AmEntityRegistry.register(modEventBus);
                 AmItems.register(modEventBus);
+
+                com.qiuyue.goetyominous.common.init.ModCreativeTab.registerCompatItems(new com.qiuyue.goetyominous.compat.am.AmCompatItems());
+
+                modEventBus.addListener(AmCompatManager::setCustomAttributes);
     }
 
     public static void setCustomAttributes(EntityAttributeCreationEvent event) {

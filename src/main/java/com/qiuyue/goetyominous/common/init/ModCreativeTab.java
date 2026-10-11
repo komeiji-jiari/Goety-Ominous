@@ -1,12 +1,8 @@
 package com.qiuyue.goetyominous.common.init;
 
-import com.Polarice3.Goety.common.blocks.TrainingBlock;
 import com.Polarice3.Goety.common.items.magic.DarkStaff;
 import com.Polarice3.Goety.common.items.magic.MagicFocus;
-import com.Polarice3.Goety.common.items.revive.ReviveServantItem;
 import com.qiuyue.goetyominous.GoetyOminous;
-import com.qiuyue.goetyominous.common.blocks.ac.MineGuardianBlock;
-import com.qiuyue.goetyominous.common.blocks.ac.ServantEggBlock;
 import com.qiuyue.goetyominous.common.blocks.trial.TrialBlocks;
 import com.qiuyue.goetyominous.common.items.CursedBlackBeastArmorItem;
 import com.qiuyue.goetyominous.common.items.CursedMetalWolfArmorItem;
@@ -14,19 +10,8 @@ import com.qiuyue.goetyominous.common.items.CursedWargArmorItem;
 import com.qiuyue.goetyominous.common.items.ModItems;
 import com.qiuyue.goetyominous.common.items.OminousIconItem;
 import com.qiuyue.goetyominous.common.items.PlushieBlockItem;
-import com.qiuyue.goetyominous.common.items.ac.AcItems;
-import com.qiuyue.goetyominous.common.items.ac.RaycatAmuletItem;
-import com.qiuyue.goetyominous.common.items.revive.MysteriousContract;
-import com.qiuyue.goetyominous.common.items.am.AmItems;
-import com.qiuyue.goetyominous.common.items.am.WarpedSteroidsItem;
-import com.qiuyue.goetyominous.common.items.lm.LmItems;
-import com.qiuyue.goetyominous.common.items.mm.MmItems;
-import com.qiuyue.goetyominous.common.items.of.OfItems;
-import com.qiuyue.goetyominous.common.items.sar.SarItems;
-import com.qiuyue.goetyominous.common.items.ua.UaItems;
 import com.qiuyue.goetyominous.compat.ias.IasItems;
-import com.qiuyue.goetyominous.compat.lm.LmCompatManager;
-import com.qiuyue.goetyominous.compat.mod.*;
+import com.qiuyue.goetyominous.compat.mod.IllageAndSpillageCompat;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
@@ -40,6 +25,16 @@ import java.util.List;
 import java.util.Set;
 
 public class ModCreativeTab {
+
+    private static final List<CompatItemSource> COMPAT_ITEM_SOURCES = new ArrayList<>();
+
+    public static void registerCompatItems(DeferredRegister<Item> registry) {
+        registerCompatItems(CompatItemSource.of(registry));
+    }
+
+    public static void registerCompatItems(CompatItemSource source) {
+        COMPAT_ITEM_SOURCES.add(source);
+    }
 
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister
             .create(Registries.CREATIVE_MODE_TAB, GoetyOminous.MOD_ID);
@@ -109,6 +104,7 @@ public class ModCreativeTab {
         final List<Item> foci = new ArrayList<>();
         final List<Item> materials = new ArrayList<>();
         final List<Item> revive = new ArrayList<>();
+        final List<Item> reviveLast = new ArrayList<>();
         final List<Item> summons = new ArrayList<>();
         final List<Item> blocks = new ArrayList<>();
         final List<Item> dinoEggs = new ArrayList<>();
@@ -118,42 +114,16 @@ public class ModCreativeTab {
             CompatBuckets buckets = new CompatBuckets();
 
             if (IllageAndSpillageCompat.isIllageAndSpillageLoaded()) {
-                collectFrom(IasItems.IAS_ITEMS, buckets);
+                collectFrom(IasItems.IAS_ITEMS, CompatItemSource.of(IasItems.IAS_ITEMS), buckets);
             }
 
-            if (SavageRavageCompat.isSavageRavageLoaded()) {
-                collectFrom(SarItems.SAR_ITEMS, buckets);
-            }
+            COMPAT_ITEM_SOURCES.forEach(source -> collectFrom(source.registry(), source, buckets));
 
-            if (UpgradeAquaticCompat.isUpgradeAquaticLoaded()) {
-                collectFrom(UaItems.UA_ITEMS, buckets);
-            }
-
-            if (MutantMoreCompat.isMutantMoreLoaded()) {
-                collectFrom(MmItems.MM_ITEMS, buckets);
-            }
-
-            if (LmCompatManager.ENABLE_LM_ITEMS) {
-                collectFrom(LmItems.LM_ITEMS, buckets);
-            }
-
-            if (OpposingForceCompat.isOpposingForceLoaded()) {
-                collectFrom(OfItems.OF_ITEMS, buckets);
-            }
-
-            if (AlexMobsCompat.isAlexMobsLoaded()) {
-                collectFrom(AmItems.AM_ITEMS, buckets);
-            }
-
-            if (AlexCavesCompat.isAlexCavesLoaded()) {
-                collectFrom(AcItems.AC_ITEMS, buckets);
-            }
-
-            sortRevive(buckets.revive);
+            buckets.revive.addAll(buckets.reviveLast);
             return buckets;
         }
 
-        private static void collectFrom(DeferredRegister<Item> registry, CompatBuckets buckets) {
+        private static void collectFrom(DeferredRegister<Item> registry, CompatItemSource source, CompatBuckets buckets) {
             registry.getEntries().forEach(entry -> {
                 if (entry.isPresent()) {
                     Item item = entry.get();
@@ -165,11 +135,15 @@ public class ModCreativeTab {
                         buckets.weapons.add(item);
                     } else if (item instanceof MagicFocus) {
                         buckets.foci.add(item);
-                    } else if (isRevive(item)) {
-                        buckets.revive.add(item);
-                    } else if (isSummon(item)) {
+                    } else if (source.isRevive(item)) {
+                        if (source.reviveLast(item)) {
+                            buckets.reviveLast.add(item);
+                        } else {
+                            buckets.revive.add(item);
+                        }
+                    } else if (item instanceof BlockItem blockItem && source.isSummon(blockItem.getBlock())) {
                         buckets.summons.add(item);
-                    } else if (isDinosaurEgg(item)) {
+                    } else if (item instanceof BlockItem blockItem && source.isDinosaurEgg(blockItem.getBlock())) {
                         buckets.dinoEggs.add(item);
                     } else if (item instanceof BlockItem) {
                         buckets.blocks.add(item);
@@ -266,30 +240,6 @@ public class ModCreativeTab {
                 || item instanceof CursedMetalWolfArmorItem
                 || item instanceof CursedWargArmorItem
                 || item instanceof CursedBlackBeastArmorItem;
-    }
-
-    private static boolean isRevive(Item item) {
-        return item instanceof ReviveServantItem
-                || item instanceof MysteriousContract
-                || item instanceof WarpedSteroidsItem
-                || item instanceof RaycatAmuletItem;
-    }
-
-    private static void sortRevive(List<Item> items) {
-        items.sort(Comparator.comparingInt(item -> item instanceof RaycatAmuletItem ? 1 : 0));
-    }
-
-    private static boolean isSummon(Item item) {
-        if (item instanceof BlockItem blockItem) {
-            return blockItem.getBlock() instanceof TrainingBlock
-                    || blockItem.getBlock() instanceof MineGuardianBlock;
-        }
-        return false;
-    }
-
-    private static boolean isDinosaurEgg(Item item) {
-        return item instanceof BlockItem blockItem
-                && blockItem.getBlock() instanceof ServantEggBlock;
     }
 
     private static Set<Item> vanillaTabbedItems;

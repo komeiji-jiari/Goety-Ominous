@@ -1,4 +1,4 @@
-package com.qiuyue.goetyominous.client.render.model.mm;
+package com.qiuyue.goetyominous.client.render.model;
 
 import com.qiuyue.goetyominous.common.entities.projectile.AbstractWindCharge;
 import net.minecraft.client.model.HierarchicalModel;

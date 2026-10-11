@@ -69,6 +69,7 @@ _ac_classes.txt
 /_mcdec/
 /.disasm/
 build_gradle.log
+compile_check.log
 cfr_init.gradle
 
 # 猩红蚊原版反编译参考（CFR 产物，不入库）
