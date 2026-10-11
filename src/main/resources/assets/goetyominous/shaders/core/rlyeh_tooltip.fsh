@@ -4,6 +4,10 @@
 //   uTheme 0  天体 celestial — a domain-warped violet/cyan/gold nebula.
 //   uTheme 1  深空 deep space — the Pillars of Creation: dark columns, ionized rims, star-cluster backlight.
 //   uTheme 2  虚无 void — a Gargantua-style black hole: shadow, Doppler-beamed disk, lensed halo arc.
+//   uTheme 3  拉莱耶 abyss — drowned water: a pressure wave crossing a panel that has stopped hiding it.
+//   uTheme 4  大灭绝 extinction — 灰烬余烬: a charcoal bed, a web of dark-red ember veins breathing
+//             underneath it, and a handful of sparks that are almost never there. No flash, no
+//             ignition, nothing arrives fast: of the five scenes this is the one that reads as weight.
 // UV0 is 0..1 across the panel; uAspect keeps circles round and noise unstretched.
 //
 // ⚠ uPanelSize is in GUI UNITS, not physical pixels, and NOTHING in this file should be sized with
@@ -505,6 +509,77 @@ vec3 sceneAbyss(vec2 uv, float t, vec2 uv0, float intro) {
     return col;
 }
 
+// ---- 大灭绝, 灰烬余烬 ---------------------------------------------------------------------------
+// Charcoal bed, an ember web breathing under it, and 极稀疏火星. Two rules from the top of this file
+// govern everything below: sizes are measured in `uv * uAspect` (the short side is 1.0, so nothing
+// rescales when the tooltip grows), and the emitter brightness stays LOW — this panel sits underneath
+// near-white text, and readable() only ever scales down, so a hot background is unreadable text.
+const float ASH_DIM = 0.72;
+
+// A crack NETWORK, not a cloud: ridged fbm gives seams where the ash has parted, and a second,
+// finer ridged layer splits those seams again. Cubic on the ridge so the seam has a hard core and
+// falls off fast instead of glowing as a soft band.
+float ashVeinWeb(vec2 p, float t) {
+    float coarse = fbm(p * 1.9 + vec2(t * 0.021, -t * 0.014));
+    float ridge = 1.0 - abs(coarse * 2.0 - 1.0);
+    ridge = ridge * ridge * ridge;
+    float fine = fbm(p * 3.7 + vec2(11.3, 4.1) - vec2(t * 0.013, t * 0.017));
+    float split = 1.0 - abs(fine * 2.0 - 1.0);
+    split = split * split;
+    return clamp(ridge * 0.72 + split * 0.28, 0.0, 1.0);
+}
+
+vec3 sceneExtinction(vec2 uv, float t, float intro) {
+    vec2 p = uv * uAspect;
+
+    // The bed. Two fbm layers at different frequencies so the charcoal drifts unevenly instead of
+    // reading as a flat plate, and the whole thing is warm-dark rather than neutral grey.
+    float bed = fbm(p * 1.35 + vec2(t * 0.006, t * 0.004));
+    float grain = fbm(p * 5.2 - vec2(t * 0.030, t * 0.020));
+    vec3 col = mix(vec3(0.013, 0.010, 0.009), vec3(0.058, 0.030, 0.021), bed * 0.72);
+    col *= 0.80 + grain * 0.34;
+
+    // The ember web. It breathes on a slow clock (0.55 rad/s) and the pulse is itself warped by a
+    // low-frequency fbm, so the seams do not all light up together the way a plain sine would.
+    float web = ashVeinWeb(p, t);
+    float pulse = 0.5 + 0.5 * sin(t * 0.55 + fbm(p * 0.90) * 3.4);
+    col = mix(col, vec3(0.255, 0.052, 0.020), smoothstep(0.62, 0.94, web) * (0.46 + pulse * 0.34));
+    // Only the hottest core of each seam gets the brighter ember, so most of the web stays dark red
+    // and the panel never lifts into an orange wash.
+    col += vec3(0.360, 0.105, 0.028) * smoothstep(0.90, 0.995, web) * (0.30 + pulse * 0.40);
+    // Heat UNDER the ash: a wide, slow swell with no hard edges, squared so it stays a wash.
+    float swell = fbm(p * 0.85 + vec2(t * 0.017, t * 0.009));
+    col += vec3(0.100, 0.026, 0.010) * swell * swell * 0.85;
+
+    // 极稀疏火星. The thresholds are deliberately brutal — 0.5% of cells on the near layer and 0.15%
+    // on the far one — because a field of dots is a starfield, and this theme is the absence of one.
+    // What survives is small and dim. (Descending edges are written as 1 - smoothstep(ascending):
+    // the reversed form is undefined per the GLSL spec.)
+    for (int layer = 0; layer < 2; layer++) {
+        float scale = layer == 0 ? 74.0 : 132.0;
+        vec2 g = p * scale;
+        vec2 cell = floor(g);
+        float h = hash(cell + float(layer) * 53.0);
+        if (h > (layer == 0 ? 0.995 : 0.9985)) {
+            float d = length(fract(g) - 0.5);
+            float tw = 0.5 + 0.5 * sin(t * (0.7 + h * 1.4) + h * 61.0);
+            float spark = 1.0 - smoothstep(0.0, 0.30, d);
+            col += vec3(0.720, 0.300, 0.090) * spark * tw * (layer == 0 ? 0.30 : 0.18);
+        }
+    }
+
+    // Entrance: the ash SETTLES. There is no ignition and no flash here on purpose — the bed comes
+    // up first and the ember web lights after it, so the panel reads as heavy rather than as lit.
+    float settle = stageUp(intro, 0.00, 0.62);
+    float emberUp = stageUp(intro, 0.30, 0.95);
+    col *= mix(0.30, 1.0, settle);
+    col *= mix(0.55, 1.0, emberUp);
+    col *= 1.0 - (1.0 - settle) * 0.12;
+
+    col *= ASH_DIM;
+    return col;
+}
+
 // ---- Readability guard ------------------------------------------------------------------------
 // These panels are a BACKGROUND. The tooltip's own text is drawn over them afterwards, in near-
 // white, and vanilla gives it no shadow — so anywhere the scene outshines the text, the text is
@@ -539,7 +614,8 @@ void main() {
     //           and the three lamps that used to close the show are all gone)
     // The three panel-wide beats live here; the per-scene staging lives in each scene function.
     bool voidFx = uTheme > 1.5 && uTheme < 2.5;
-    bool abyssFx = uTheme > 2.5;
+    bool abyssFx = uTheme > 2.5 && uTheme < 3.5;
+    bool ashFx = uTheme > 3.5;
     float intro = clamp(uIntro, 0.0, 1.0);
     float e = 1.0 - pow(1.0 - intro, 3.0);
     // The void's camera pushes IN — a lens, not an interpolation. Back to the plain ease: the
@@ -564,8 +640,10 @@ void main() {
         col = scenePillars(uv, t, intro);
     } else if (uTheme < 2.5) {
         col = sceneBlackHole(uv, t, intro);
-    } else {
+    } else if (uTheme < 3.5) {
         col = sceneAbyss(uv, t, texCoord0, intro);
+    } else {
+        col = sceneExtinction(uv, t, intro);
     }
 
     // Twinkling foreground stars for the nebula and the pillars (the black hole and the abyss draw
@@ -619,7 +697,9 @@ void main() {
     // the SCENE arriving rather than a rectangle fading in — except on the void, where the black gap
     // before the flash is part of the beat. The void's span is back at 0.20: its flash has no
     // half-second runway any more, it is brightest at t = 0, so the panel has to be up to catch it.
-    float introSpan = voidFx ? 0.20 : (abyssFx ? 0.20 : 0.15);
+    // 大灭绝 is the slowest of the five, so its span is the longest — the scene is meant to be seen
+    // settling, not caught mid-arrival.
+    float introSpan = voidFx ? 0.20 : (abyssFx ? 0.20 : (ashFx ? 0.26 : 0.15));
     float alpha = 0.96 * smoothstep(0.0, introSpan, intro);
     fragColor = vec4(readable(col), alpha) * ColorModulator * vertexColor;
 }

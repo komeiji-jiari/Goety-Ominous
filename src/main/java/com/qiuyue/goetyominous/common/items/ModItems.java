@@ -124,6 +124,9 @@ public class ModItems {
     public static final RegistryObject<PitchforkItem> PITCHFORK = ITEMS.register("pitchfork",
             () -> new PitchforkItem());
 
+    public static final RegistryObject<BarbaricAxeItem> BARBARIC_AXE = ITEMS.register("barbaric_axe",
+            () -> new BarbaricAxeItem());
+
     public static final RegistryObject<Item> BONE_CUDGEL = ITEMS.register("bone_cudgel",
             () -> new BoneCudgelItem() {
                 @Override
