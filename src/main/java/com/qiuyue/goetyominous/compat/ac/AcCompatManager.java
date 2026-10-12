@@ -28,22 +28,54 @@ import com.qiuyue.goetyominous.common.entities.ally.ac.TremorzillaServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.VallumraptorServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.VesperServant;
 import com.Polarice3.Goety.api.ritual.RitualType;
+import com.qiuyue.goetyominous.common.events.ac.*;
 import com.qiuyue.goetyominous.common.init.ac.*;
 import com.qiuyue.goetyominous.common.items.ac.AcItems;
 import com.qiuyue.goetyominous.common.ritual.ac.PureDarkRitualType;
+import com.qiuyue.goetyominous.compat.mod.PatchouliCompat;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 public class AcCompatManager {
 
     public static void init(IEventBus modEventBus) {
+                com.qiuyue.goetyominous.common.network.ac.AcPackets.register();
                 AcBlockRegistry.register(modEventBus);
                 AcBlockEntityRegistry.register(modEventBus);
                 AcEntityRegistry.register(modEventBus);
                 AcItems.register(modEventBus);
+
+                com.qiuyue.goetyominous.common.init.ModCreativeTab.registerCompatItems(new com.qiuyue.goetyominous.compat.ac.AcCompatItems());
                 AcParticles.register(modEventBus);
                 AcEffects.register(modEventBus);
                 RitualType.addRitualType("dim", new PureDarkRitualType("dim"));
+
+                MinecraftForge.EVENT_BUS.register(CataclysmKeySpellHandler.class);
+                MinecraftForge.EVENT_BUS.register(NucleeperNukeProtectionHandler.class);
+                MinecraftForge.EVENT_BUS.register(NucleeperNukeKillHandler.class);
+                MinecraftForge.EVENT_BUS.register(RaycatAmuletEvents.class);
+                MinecraftForge.EVENT_BUS.register(RadiationAllyEvents.class);
+                MinecraftForge.EVENT_BUS.register(MineGuardianExplosionProtectionHandler.class);
+                MinecraftForge.EVENT_BUS.register(NucleeperSummonHandler.class);
+                MinecraftForge.EVENT_BUS.register(AtomicBombCleanupHandler.class);
+                MinecraftForge.EVENT_BUS.register(TremorzillaBreathHandler.class);
+                MinecraftForge.EVENT_BUS.register(MineGuardianSummonHandler.class);
+                MinecraftForge.EVENT_BUS.register(BubbledVisualCleanupHandler.class);
+                MinecraftForge.EVENT_BUS.register(LuxtructosaurusTephraHandler.class);
+                MinecraftForge.EVENT_BUS.register(ExtinctionCatalystHandler.class);
+                MinecraftForge.EVENT_BUS.register(TremorsaurusSpiritHandler.class);
+                MinecraftForge.EVENT_BUS.register(GrottoceratopsSpiritHandler.class);
+
+                modEventBus.addListener(AcCompatManager::setCustomAttributes);
+                modEventBus.addListener(AcCompatManager::commonSetup);
+    }
+
+    public static void commonSetup(FMLCommonSetupEvent event) {
+        if (PatchouliCompat.isLoaded()) {
+            GoetyOminousPatchouliIntegration.setup(event);
+        }
     }
 
     public static void setCustomAttributes(EntityAttributeCreationEvent event) {

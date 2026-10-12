@@ -13,6 +13,10 @@ public class UaCompatManager {
         UaEntityRegistry.register(modEventBus);
 
         UaItems.register(modEventBus);
+
+        com.qiuyue.goetyominous.common.init.ModCreativeTab.registerCompatItems(UaItems.UA_ITEMS);
+
+        modEventBus.addListener(UaCompatManager::setCustomAttributes);
     }
 
     public static void setCustomAttributes(net.minecraftforge.event.entity.EntityAttributeCreationEvent event) {

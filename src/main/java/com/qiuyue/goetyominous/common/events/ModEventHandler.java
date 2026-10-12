@@ -6,7 +6,6 @@ import com.Polarice3.Goety.common.entities.hostile.HostileBlackWolf;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.blocks.HimPlushieRitual;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.HeresiarchServant;
-import com.qiuyue.goetyominous.common.entities.ally.sar.ExecutionerServant;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.common.items.ModItems;
 import com.qiuyue.goetyominous.common.items.curios.ScreamingSkullJar;
@@ -18,14 +17,11 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -187,61 +183,6 @@ public class ModEventHandler {
                 }
             }
             drops.clear();
-            return;
-        }
-
-        //
-        if (com.qiuyue.goetyominous.compat.mod.AlexCavesCompat.isAlexCavesLoaded()) {
-            com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant hullbreaker = null;
-            if (sourceEntity instanceof com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant direct) {
-                hullbreaker = direct;
-            } else if (killedEntity.getLastHurtByMob() instanceof com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant lastHurt) {
-                hullbreaker = lastHurt;
-            }
-            if (hullbreaker != null && hullbreaker.getTrueOwner() != null
-                    && com.qiuyue.goetyominous.config.MobsConfig.HullbreakerServantPickUpDrops.get()) {
-                hullbreaker.addDrops(event.getDrops());
-                event.getDrops().clear();
-                return;
-            }
-        }
-
-        if (!(sourceEntity instanceof ExecutionerServant executionerServant)) {
-            return;
-        }
-
-        if (!killedEntity.level().getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_DOMOBLOOT)) {
-            return;
-        }
-
-        EntityType<?> entityType = killedEntity.getType();
-        ItemStack headStack = null;
-        float dropChance = 0.5F;
-
-        if (entityType == EntityType.SKELETON) {
-            headStack = new ItemStack(Items.SKELETON_SKULL);
-        } else if (entityType == EntityType.ZOMBIE) {
-            headStack = new ItemStack(Items.ZOMBIE_HEAD);
-        } else if (entityType == EntityType.CREEPER) {
-            headStack = new ItemStack(Items.CREEPER_HEAD);
-        } else if (entityType == EntityType.WITHER_SKELETON) {
-            headStack = new ItemStack(Items.WITHER_SKELETON_SKULL);
-        } else if (entityType == EntityType.PIGLIN) {
-            headStack = new ItemStack(Items.PIGLIN_HEAD);
-        } else if (entityType.is(EntityTypeTags.RAIDERS)) {
-            headStack = new ItemStack(ModBlocks.TALL_SKULL_ITEM.get());
-            dropChance = 0.75F;
-        } else if (killedEntity instanceof Villager) {
-            headStack = new ItemStack(ModBlocks.TALL_SKULL_ITEM.get());
-            dropChance = 1.0F;
-        } else if (entityType == EntityType.GOAT) {
-            headStack = new ItemStack(Items.GOAT_HORN);
-            dropChance = 1.0F;
-        }
-
-        if (headStack != null && killedEntity.getRandom().nextFloat() < dropChance) {
-            ItemEntity itemEntity = new ItemEntity(killedEntity.level(), killedEntity.getX(), killedEntity.getY(), killedEntity.getZ(), headStack);
-            event.getDrops().add(itemEntity);
         }
     }
 
