@@ -1,4 +1,4 @@
-package com.qiuyue.goetyominous.client;
+package com.qiuyue.goetyominous.client.ac;
 
 import com.qiuyue.goetyominous.GoetyOminous;
 import net.minecraft.Util;

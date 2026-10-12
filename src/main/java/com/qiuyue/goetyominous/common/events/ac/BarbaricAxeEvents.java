@@ -1,7 +1,7 @@
-package com.qiuyue.goetyominous.common.events;
+package com.qiuyue.goetyominous.common.events.ac;
 
 import com.qiuyue.goetyominous.GoetyOminous;
-import com.qiuyue.goetyominous.common.items.BarbaricAxeItem;
+import com.qiuyue.goetyominous.common.items.ac.BarbaricAxeItem;
 import com.qiuyue.goetyominous.config.WeaponConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

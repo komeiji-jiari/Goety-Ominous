@@ -1,6 +1,7 @@
-package com.qiuyue.goetyominous.common.network;
+package com.qiuyue.goetyominous.common.network.ac;
 
-import com.qiuyue.goetyominous.client.BarbaricAxeSwingClient;
+import com.qiuyue.goetyominous.client.ac.BarbaricAxeSwingClient;
+import com.qiuyue.goetyominous.common.network.ModNetwork;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
@@ -25,6 +26,11 @@ public class CBarbaricAxeSwingPacket {
 
     public static void send(Player player, int type) {
         ModNetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player),
+                new CBarbaricAxeSwingPacket(player.getId(), type));
+    }
+
+    public static void sendToTrackers(Player player, int type) {
+        ModNetwork.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> player),
                 new CBarbaricAxeSwingPacket(player.getId(), type));
     }
 

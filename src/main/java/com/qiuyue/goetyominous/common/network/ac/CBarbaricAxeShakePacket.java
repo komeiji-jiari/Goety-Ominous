@@ -1,6 +1,7 @@
-package com.qiuyue.goetyominous.common.network;
+package com.qiuyue.goetyominous.common.network.ac;
 
-import com.qiuyue.goetyominous.client.BarbaricAxeClientEffects;
+import com.qiuyue.goetyominous.client.ac.BarbaricAxeClientEffects;
+import com.qiuyue.goetyominous.common.network.ModNetwork;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;

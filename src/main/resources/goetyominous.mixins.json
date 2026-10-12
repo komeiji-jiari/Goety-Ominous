@@ -86,7 +86,8 @@
     "ModEffectParticleMixin",
     "TrialSpawnerLevelRendererMixin",
     "MixinPlayerModelSwing",
-    "MixinItemInHandRendererSwing"
+    "MixinItemInHandRendererSwing",
+    "MixinMinecraftBarbaricAxe"
   ],
   "server": [],
   "injectors": {
