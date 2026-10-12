@@ -6,12 +6,8 @@ import com.Polarice3.Goety.common.entities.ally.illager.Neollager;
 import com.Polarice3.Goety.common.ritual.RitualChecker;
 import com.Polarice3.Goety.init.ModTags;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
-import com.qiuyue.goetyominous.common.init.sar.SarBlocks;
 import com.qiuyue.goetyominous.compat.ias.IasEntityRegistry;
 import com.qiuyue.goetyominous.compat.mod.IllageAndSpillageCompat;
-import com.qiuyue.goetyominous.common.init.sar.SarEntityRegistry;
-import com.qiuyue.goetyominous.compat.mod.SavageRavageCompat;
-import com.qiuyue.goetyominous.utils.AdvancedBlockFinder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -23,7 +19,16 @@ import net.minecraft.world.level.block.BrewingStandBlock;
 import net.minecraft.world.level.block.EnchantmentTableBlock;
 import com.Polarice3.Goety.common.entities.ModEntityType;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GoetyOminousType implements ITrainIllager {
+
+    private static final List<TrainIllagerExtension> EXTENSIONS = new ArrayList<>();
+
+    public static void registerExtension(TrainIllagerExtension extension) {
+        EXTENSIONS.add(extension);
+    }
 
     @Override
     public boolean canSpawn(Level level, BlockPos blockPos, int range) {
@@ -39,19 +44,36 @@ public class GoetyOminousType implements ITrainIllager {
             return mob.getType() == ModEntityType.PILLAGER_SERVANT.get();
         } else if (IllageAndSpillageCompat.isIllageAndSpillageLoaded() && entityType == IasEntityRegistry.ABSORBER_SERVANT.get()) {
             return mob.getType() == ModEntityType.CRUSHER_SERVANT.get();
-        } else if (SavageRavageCompat.isSavageRavageLoaded() && entityType == SarEntityRegistry.GRIEFER_SERVANT.get()) {
-            return mob instanceof Neollager;
-        } else if (SavageRavageCompat.isSavageRavageLoaded() && entityType == SarEntityRegistry.EXECUTIONER_SERVANT.get()) {
-            return mob instanceof Neollager;
-        } else if (SavageRavageCompat.isSavageRavageLoaded() && entityType == SarEntityRegistry.TRICKSTER_SERVANT.get()) {
-            return mob instanceof Neollager neollager && neollager.isMagic();
-        } else {
-            return mob instanceof Neollager;
         }
+
+        for (TrainIllagerExtension extension : EXTENSIONS) {
+            Boolean result = extension.mobCanTrainTo(entityType, mob);
+            if (result != null) {
+                return result;
+            }
+        }
+
+        return mob instanceof Neollager;
     }
 
     @Override
     public EntityType<? extends Mob> getIllager(Level level, BlockPos blockPos, int range) {
+        EntityType<? extends Mob> coreType = getCoreIllager(level, blockPos, range);
+        if (coreType != null) {
+            return coreType;
+        }
+
+        for (TrainIllagerExtension extension : EXTENSIONS) {
+            EntityType<? extends Mob> type = extension.getIllager(level, blockPos, range);
+            if (type != null) {
+                return type;
+            }
+        }
+
+        return null;
+    }
+
+    private static EntityType<? extends Mob> getCoreIllager(Level level, BlockPos blockPos, int range) {
         RitualChecker checker = new RitualChecker(level, blockPos, blockState -> true, range, 0);
 
         if (checker.hasBlocks(blockState -> blockState.is(ModTags.Blocks.INDENTED_GOLD_BLOCKS), 2)
@@ -91,48 +113,6 @@ public class GoetyOminousType implements ITrainIllager {
                 && checker.hasBlocks(blockState -> blockState.is(ModBlocks.DARK_ALLOY_BLOCK.get()), 2)
                 && checker.hasBlocks(blockState -> blockState.is(ModBlocks.PALE_STEEL_BLOCK.get()), 2)) {
             return IasEntityRegistry.ABSORBER_SERVANT.get();
-
-        } else if (SavageRavageCompat.isSavageRavageLoaded()) {
-            Block sporeBombBlock = SarBlocks.getSPORE_BOMB();
-            Block blastProofPlateBlock = SarBlocks.getBLAST_PROOF_PLATE();
-            Block creeperTotemBlock = ModBlocks.CREEPER_TOTEM.get();
-            Block gloomyTilesBlock = SarBlocks.getGLOOMY_TILES();
-            Block chiseledGloomyTilesBlock = SarBlocks.getCHISELED_GLOOMY_TILES();
-
-            if (sporeBombBlock != null && blastProofPlateBlock != null
-                    && checker.hasBlocks(blockState -> blockState.getBlock() == blastProofPlateBlock, 32)
-                    && checker.hasBlocks(blockState -> blockState.getBlock() == sporeBombBlock, 4)
-                    && checker.hasBlocks(blockState -> blockState.getBlock() == creeperTotemBlock, 8)) {
-                return SarEntityRegistry.GRIEFER_SERVANT.get();
-            }
-
-            Block shadeStone = ModBlocks.SHADE_STONE_BRICK_BLOCK.get();
-            Block ironDungeonTorch = ModBlocks.IRON_DUNGEON_TORCH.get();
-            Block tallSkull = ModBlocks.TALL_SKULL_BLOCK.get();
-            Block wallTallSkull = ModBlocks.WALL_TALL_SKULL_BLOCK.get();
-
-            if (AdvancedBlockFinder.getNearbyBlocks(level, blockPos,
-                    blockState -> blockState.is(shadeStone), range, 32)
-                    && AdvancedBlockFinder.getNearbyBlocks(level, blockPos,
-                    blockState -> blockState.getBlock() == ironDungeonTorch, range, 4)
-                    && checker.hasBlocks(blockState -> blockState.is(Blocks.IRON_BARS), 16)
-                    && checker.hasBlocks(blockState -> blockState.getBlock() instanceof AnvilBlock, 1)
-                    && AdvancedBlockFinder.getNearbyBlocks(level, blockPos,
-                    blockState -> blockState.is(Blocks.SKELETON_SKULL) || blockState.is(Blocks.SKELETON_WALL_SKULL), range, 2)
-                    && AdvancedBlockFinder.getNearbyBlocks(level, blockPos,
-                    blockState -> blockState.getBlock() == tallSkull || blockState.getBlock() == wallTallSkull, range, 2)) {
-                return SarEntityRegistry.EXECUTIONER_SERVANT.get();
-            }
-
-            if (gloomyTilesBlock != null && chiseledGloomyTilesBlock != null
-                    && checker.hasBlocks(blockState -> blockState.is(Blocks.CARVED_PUMPKIN), 2)
-                    && checker.hasBlocks(blockState -> blockState.is(Blocks.HAY_BLOCK), 2)
-                    && checker.hasBlocks(blockState -> blockState.is(Blocks.GLASS), 32)
-                    && checker.hasBlocks(blockState -> blockState.getBlock() == gloomyTilesBlock, 16)
-                    && checker.hasBlocks(blockState -> blockState.is(Blocks.BOOKSHELF), 4)
-                    && checker.hasBlocks(blockState -> blockState.getBlock() == chiseledGloomyTilesBlock, 2)) {
-                return SarEntityRegistry.TRICKSTER_SERVANT.get();
-            }
         }
 
         return null;

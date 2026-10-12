@@ -1,10 +1,10 @@
-package com.qiuyue.goetyominous.client.render.projectile.mm;
+package com.qiuyue.goetyominous.client.render.projectile;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.render.ModModelLayers;
-import com.qiuyue.goetyominous.client.render.model.mm.WindChargeModel;
+import com.qiuyue.goetyominous.client.render.model.WindChargeModel;
 import com.qiuyue.goetyominous.common.entities.projectile.AbstractWindCharge;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import com.qiuyue.goetyominous.client.render.projectile.WindChargeRenderTypes;
 
 public class ServantWindChargeRenderer extends EntityRenderer<AbstractWindCharge> {
     private static final float MAX_RENDER_DISTANCE = Mth.square(3.5F);

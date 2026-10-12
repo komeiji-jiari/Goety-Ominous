@@ -21,6 +21,8 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.AnnihilationEx
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.AnnihilationFlameStrike;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.BigShulkerBullet;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.FallingSoulBlade;
+import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.FireBreath;
+import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.FireColumnEntity;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulBlade;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulPillar;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulPillarExplosionEntity;
@@ -259,6 +261,18 @@ public class LmEntityRegistry {
                     () -> EntityType.Builder.of(FlamebornGuardServant::new, MobCategory.MONSTER)
                             .sized(1.0F, 3.0F).fireImmune()
                             .build(GoetyOminous.MOD_ID + ":flameborn_guard_servant"));
+
+    public static final RegistryObject<EntityType<FireColumnEntity>> FIRE_PILLAR =
+            LM_ENTITIES.register("fire_pillar",
+                    () -> EntityType.Builder.<FireColumnEntity>of(FireColumnEntity::new, MobCategory.MISC)
+                            .sized(0.75F, 0.5F).clientTrackingRange(6).updateInterval(2).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":fire_pillar"));
+
+    public static final RegistryObject<EntityType<FireBreath>> FIRE_BREATH =
+            LM_ENTITIES.register("fire_breath",
+                    () -> EntityType.Builder.<FireBreath>of(FireBreath::new, MobCategory.MISC)
+                            .sized(0.75F, 0.5F).clientTrackingRange(6).updateInterval(2).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":fire_breath"));
 
     public static final RegistryObject<EntityType<SmallAnnihilationBomb>> SMALL_ANNIHILATION_BOMB =
             LM_ENTITIES.register("small_annihilation_bomb",
