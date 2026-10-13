@@ -12,8 +12,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class RenderEmuServant extends MobRenderer<EmuServant, ModelEmuServant> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/emu.png");
-    private static final ResourceLocation TEXTURE_BABY = new ResourceLocation("alexsmobs:textures/entity/emu_baby.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation("goetyominous:textures/entity/emu_servant.png");
+    private static final ResourceLocation TEXTURE_BABY = new ResourceLocation("goetyominous:textures/entity/emu_servant_baby.png");
+    private static final ResourceLocation TEXTURE_BLUE_BABY = new ResourceLocation("alexsmobs:textures/entity/emu_baby.png");
     private static final ResourceLocation TEXTURE_BLONDE = new ResourceLocation("alexsmobs:textures/entity/emu_blonde.png");
     private static final ResourceLocation TEXTURE_BLONDE_BABY = new ResourceLocation("alexsmobs:textures/entity/emu_baby_blonde.png");
     private static final ResourceLocation TEXTURE_BLUE = new ResourceLocation("alexsmobs:textures/entity/emu_blue.png");
@@ -32,8 +33,8 @@ public class RenderEmuServant extends MobRenderer<EmuServant, ModelEmuServant> {
         if (entity.getVariant() == 2) {
             return entity.isBaby() ? TEXTURE_BLONDE_BABY : TEXTURE_BLONDE;
         }
-        if (entity.getVariant() == 1 && !entity.isBaby()) {
-            return TEXTURE_BLUE;
+        if (entity.getVariant() == 1) {
+            return entity.isBaby() ? TEXTURE_BLUE_BABY : TEXTURE_BLUE;
         }
         return entity.isBaby() ? TEXTURE_BABY : TEXTURE;
     }
