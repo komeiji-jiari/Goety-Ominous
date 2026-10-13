@@ -1,7 +1,0 @@
-{
-  "name": "Void",
-  "description": "The power over the voids.",
-  "icon": "goetyominous:voidshot_focus",
-  "parent": "goety:amcompat/focuses",
-  "sortnum": 7
-}

@@ -2,7 +2,7 @@
   "name": "追猎聚晶",
   "icon": "goetyominous:umber_focus",
   "category": "goety:ofcompat/focuses",
-  "sortnum": 110,
+  "sortnum": 130,
   "pages": [
     {
       "type": "patchouli:text",

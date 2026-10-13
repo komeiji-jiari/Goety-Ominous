@@ -1,7 +1,0 @@
-{
-  "name": "荒野",
-  "description": "支配于自然的力量...",
-  "icon": "goetyominous:centipede_focus",
-  "parent": "goety:amcompat/focuses",
-  "sortnum": 8
-}

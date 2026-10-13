@@ -1,7 +1,0 @@
-{
-  "name": "大地",
-  "description": "隐含于地心深处的力量...",
-  "icon": "goetyominous:roller_focus",
-  "parent": "goety:amcompat/focuses",
-  "sortnum": 3
-}

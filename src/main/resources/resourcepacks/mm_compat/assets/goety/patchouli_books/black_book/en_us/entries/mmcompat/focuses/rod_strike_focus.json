@@ -3,6 +3,8 @@
   "icon": "goetyominous:rod_strike_focus",
   "category": "goety:mmcompat/focuses",
   "sortnum": 540,
+  "advancement": "goety:goety/read_bygone_scroll",
+  "secret": true,
   "pages": [
     {
       "type": "text",
