@@ -159,7 +159,7 @@ public class GuzzlerServantAttackGoal extends Goal {
                 this.guzzler.playSound(OPSoundEvents.GUZZLER_SPEW.get(), 2.0F,
                         1.0F / (this.guzzler.getRandom().nextFloat() * 0.4F + 0.8F));
                 float speed = 0.1F + 0.005F * (float) this.guzzler.distanceToSqr(target.getX(), target.getY(), target.getZ());
-                slime.shootFromOwner(d1, d2 + (double) f3, d3, Mth.clamp(speed, 0.1F, 1.25F));
+                slime.shootFromOwner(d1, d2 + (double) f3, d3, Mth.clamp(speed, 0.1F, 1.25F), 0.5F);
                 slime.setYRot(this.guzzler.getYRot() % 360.0F);
                 slime.setXRot(Mth.clamp(this.guzzler.getYRot(), -90.0F, 90.0F) % 360.0F);
                 if (target.isAlive() && !target.isPassengerOfSameVehicle(this.guzzler) && !target.isPassengerOfSameVehicle(slime)) {

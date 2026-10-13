@@ -24,5 +24,6 @@ public class OfTesseractTags {
         addToTag(TESSERACT_SMALL, OfEntityRegistry.RAMBLER_SERVANT);
 
         addToTag(TESSERACT_MEDIUM, OfEntityRegistry.SKYVERN_SERVANT);
+        addToTag(TESSERACT_MEDIUM, OfEntityRegistry.GUZZLER_SERVANT);
     }
 }

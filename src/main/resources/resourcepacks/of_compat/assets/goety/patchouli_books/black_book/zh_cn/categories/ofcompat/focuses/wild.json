@@ -1,0 +1,7 @@
+{
+  "name": "荒野",
+  "description": "支配于自然的力量...",
+  "icon": "goetyominous:umber_focus",
+  "parent": "goety:ofcompat/focuses",
+  "sortnum": 8
+}

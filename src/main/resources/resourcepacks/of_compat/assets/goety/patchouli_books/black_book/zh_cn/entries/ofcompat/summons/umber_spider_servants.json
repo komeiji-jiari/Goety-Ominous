@@ -1,0 +1,25 @@
+{
+  "name": "阴影蜘蛛",
+  "icon": "opposing_force:umber_fang",
+  "category": "goety:ofcompat/summons",
+  "sortnum": 90,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "比起他们那些只是厌恶光亮的表亲，这些节肢动物对光更为敏感，日光甚至会让它们着火。然而在阴影之中，这些出色的猎手将能够高效地猎杀它们的目标。很少见的情况下，可能会出现比其他阴影蜘蛛仆从更强大的精英个体。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:umber_spider_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:umber_spider_servant",
+      "text": "我从阴影中降临"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "手持肉喂食或穿着荒野长袍即可治愈你的阴影蜘蛛。"
+    }
+  ]
+}

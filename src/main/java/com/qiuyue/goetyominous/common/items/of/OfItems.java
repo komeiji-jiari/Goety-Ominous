@@ -5,13 +5,7 @@ import com.Polarice3.Goety.common.items.magic.MagicFocus;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.of.OfEntityRegistry;
 import com.qiuyue.goetyominous.common.magic.spells.ac.ExtinctionBreathSpell;
-import com.qiuyue.goetyominous.common.magic.spells.of.DicerLaserSpell;
-import com.qiuyue.goetyominous.common.magic.spells.of.DicerSpell;
-import com.qiuyue.goetyominous.common.magic.spells.of.SkyvernSpell;
-import com.qiuyue.goetyominous.common.magic.spells.of.TerrorSpell;
-import com.qiuyue.goetyominous.common.magic.spells.of.TremblerSpell;
-import com.qiuyue.goetyominous.common.magic.spells.of.VoltBoltSpell;
-import com.qiuyue.goetyominous.common.magic.spells.of.VoltSpell;
+import com.qiuyue.goetyominous.common.magic.spells.of.*;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -81,7 +75,11 @@ public class OfItems {
     public static final RegistryObject<Item> TREMBLER_FOCUS = OF_ITEMS.register("trembler_focus",
             () -> new MagicFocus(new TremblerSpell()));
 
+    public static final RegistryObject<Item> UMBER_FOCUS = OF_ITEMS.register("umber_focus",
+            () -> new MagicFocus(new UmberSpell()));
 
+    public static final RegistryObject<Item> INFERNO_FOCUS = OF_ITEMS.register("inferno_focus",
+            () -> new MagicFocus(new InfernoSpell()));
 
     public static Item.Properties egg() {
         return new Item.Properties();

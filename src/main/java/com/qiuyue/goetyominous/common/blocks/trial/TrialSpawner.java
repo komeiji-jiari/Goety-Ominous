@@ -1,8 +1,11 @@
 package com.qiuyue.goetyominous.common.blocks.trial;
 
+import com.Polarice3.Goety.common.effects.GoetyEffects;
+import com.Polarice3.Goety.common.entities.ModEntityType;
 import com.google.common.annotations.VisibleForTesting;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.common.init.ModParticleTypes;
 import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.config.PlayerDetector;
@@ -28,6 +31,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EntityType;
@@ -236,6 +240,9 @@ public class TrialSpawner {
             }
             mob.setPersistenceRequired();
             this.data.getNextSpawnEquipment().ifPresent(table -> equipMob(mob, table, level));
+            if (this.isOminous) {
+                applyOminousEffects(mob);
+            }
         }
         if (!level.addFreshEntity(entity)) {
             return Optional.empty();
@@ -245,6 +252,27 @@ public class TrialSpawner {
         level.levelEvent(3012, spawnBlockPos, flameParticle.getId());
         level.gameEvent(entity, GameEvent.ENTITY_PLACE, spawnBlockPos);
         return Optional.of(entity.getUUID());
+    }
+
+    private static void applyOminousEffects(Mob mob) {
+        if (mob.getType() == ModEntityTypes.BREEZE.get()) {
+            return;
+        }
+        if (!hasArmorEquipped(mob)) {
+            mob.addEffect(new MobEffectInstance(GoetyEffects.IRON_HIDE.get(), -1, 1, false, false, true));
+        }
+        if (mob.getType() != ModEntityType.MUCK_WRAITH.get()) {
+            mob.addEffect(new MobEffectInstance(GoetyEffects.BUFF.get(), -1, 1, false, false, true));
+        }
+    }
+
+    private static boolean hasArmorEquipped(Mob mob) {
+        for (EquipmentSlot slot : new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET}) {
+            if (!mob.getItemBySlot(slot).isEmpty()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static boolean checkSpawnRulesForTrialSpawner(EntityType<?> type, ServerLevel level, BlockPos pos, RandomSource random) {

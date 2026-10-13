@@ -1,0 +1,25 @@
+{
+  "name": "贪食怪",
+  "icon": "opposing_force:guzzler_scales",
+  "category": "goety:ofcompat/summons",
+  "sortnum": 70,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "贪食怪是一种体内充满炙热粘液的大型生物，它们会从口中吐出滚烫的火焰史莱姆来攻击敌人。在下界举行仪式，你可以召唤一只永久寿命的贪食怪到你麾下。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:guzzler_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:guzzler_servant",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "穿戴下界长袍，或者用火焰凝胶右键你的贪食怪即可治愈它们。"
+    }
+  ]
+}

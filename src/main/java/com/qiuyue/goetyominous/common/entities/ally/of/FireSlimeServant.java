@@ -23,6 +23,7 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -131,23 +132,6 @@ public class FireSlimeServant extends SlimeServant {
         return this.isEffectiveAi();
     }
 
-    public void shootFromOwner(double x, double y, double z, float scale) {
-        Vec3 vec3 = new Vec3(x, y, z).normalize()
-                .add(this.random.nextGaussian() * 0.008D,
-                        this.random.nextGaussian() * 0.008D,
-                        this.random.nextGaussian() * 0.008D)
-                .scale((double) scale);
-        this.setDeltaMovement(vec3);
-        float horizontalDistanceSqr = (float) vec3.horizontalDistanceSqr();
-        this.setYRot((float) (Mth.atan2(vec3.x, vec3.z) * 55.0D));
-        this.setXRot((float) (Mth.atan2(vec3.y, (double) horizontalDistanceSqr) * 55.0D));
-        this.xRotO = this.getXRot();
-        this.yBodyRot = this.getYRot();
-        this.yHeadRot = this.getYRot();
-        this.yHeadRotO = this.getYRot();
-        this.yRotO = this.getYRot();
-    }
-
     @Override
     public void dismiss() {
         this.playSound(OPSoundEvents.FIRE_SLIME_POP.get(), this.getSoundVolume(),
@@ -233,12 +217,31 @@ public class FireSlimeServant extends SlimeServant {
     }
 
     @Override
+    public Item getHealItem() {
+        return com.unusualmodding.opposing_force.registry.OPItems.FIRE_GEL.get();
+    }
+
+    public void shootFromOwner(double x, double y, double z, float scale, float inaccuracy) {
+        Vec3 vec3 = new Vec3(x, y, z).normalize()
+                .add(this.random.triangle(0.0D, 0.0172275D * (double) inaccuracy),
+                        this.random.triangle(0.0D, 0.0172275D * (double) inaccuracy),
+                        this.random.triangle(0.0D, 0.0172275D * (double) inaccuracy))
+                .scale((double) scale);
+        this.setDeltaMovement(vec3);
+        double horizontalDistance = vec3.horizontalDistance();
+        this.setYRot((float) (Mth.atan2(vec3.x, vec3.z) * 57.2957763671875D));
+        this.setXRot((float) (Mth.atan2(vec3.y, horizontalDistance) * 57.2957763671875D));
+        this.xRotO = this.getXRot();
+        this.yRotO = this.getYRot();
+    }
+
+    @Override
     public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (stack.is(Items.SLIME_BLOCK)) {
             return InteractionResult.PASS;
         }
-        if (stack.is(Items.SLIME_BALL) && this.getHealth() < this.getMaxHealth()) {
+        if (stack.is(com.unusualmodding.opposing_force.registry.OPItems.FIRE_GEL.get()) && this.getHealth() < this.getMaxHealth()) {
             if (!this.level().isClientSide && !player.getAbilities().instabuild) {
                 stack.shrink(1);
             }

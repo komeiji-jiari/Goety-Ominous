@@ -126,6 +126,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> VoltServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> FireSlimeServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> GuzzlerServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> UmberSpiderServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> SkyvernServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Boolean> SkyvernServantGhost;
     public static final ForgeConfigSpec.ConfigValue<Boolean> LeapkelpMoistness;
@@ -310,6 +311,10 @@ public class MobsConfig {
         GuzzlerServantLimit = BUILDER
                 .comment("Maximum number of Guzzler Servants that can be summoned (Default: 2)")
                 .defineInRange("guzzlerServantLimit", 2, 1, 100);
+
+        UmberSpiderServantLimit = BUILDER
+                .comment("Maximum number of Umber Spider Servants that can be summoned (Default: 32)")
+                .defineInRange("umberSpiderServantLimit", 32, 1, 100);
 
         SkyvernServantLimit = BUILDER
                 .comment("Maximum number of Skyvern Servants that can be summoned (Default: 3)")

@@ -15,7 +15,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Your war elephant can accommodate two passenger seats. Right-clicking with an empty hand puts your elephant into a charging state. Right-clicking with a Chest places a chest on its back. If food is placed inside the chest, the elephant will consume it to heal itself when its health is low, and will also attempt to heal passengers when they are low on health."
+      "text": "Your war elephant can accommodate two passenger seats. Pressing the charge key (default: G) puts your war elephant into a charging state. Right-clicking with a Chest places a chest on its back. If food is placed inside the chest, the elephant will consume it to heal itself when its health is low, and will also attempt to heal passengers when they are low on health."
     },
     {
       "type": "goety:ritual",

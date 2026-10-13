@@ -1,0 +1,24 @@
+{
+  "name": "Soul Vulture",
+  "icon": "alexsmobs:soul_heart",
+  "category": "goety:amcompat/summons",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "These charred undead vultures excel at stealing the souls of creatures, and each successful theft replenishes Soul Energy for their summoner. Through dark magic, you can summon these ravenous undead that circle above the Soul Sand Valley."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:soul_vulture_servant",
+      "text": "Soul Catcher"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Wearing Nether Robe or Necro Cape grants Soul Vultures passive healing."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:soul_vulture"
+    }
+  ]
+}
