@@ -1,0 +1,7 @@
+{
+  "name": "Crafts",
+  "description": "More items to craft.",
+  "icon": "minecraft:crafting_table",
+  "parent": "goety:amcompat",
+  "sortnum": 5
+}
