@@ -2,7 +2,7 @@
   "name": "Stalker Focus",
   "icon": "goetyominous:umber_focus",
   "category": "goety:ofcompat/focuses",
-  "sortnum": 110,
+  "sortnum": 130,
   "pages": [
     {
       "type": "patchouli:text",
