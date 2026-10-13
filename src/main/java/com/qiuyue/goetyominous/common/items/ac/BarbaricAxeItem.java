@@ -1,9 +1,9 @@
-package com.qiuyue.goetyominous.common.items;
+package com.qiuyue.goetyominous.common.items.ac;
 
 import com.Polarice3.Goety.common.magic.spells.geomancy.QuakingSpell;
 import com.qiuyue.goetyominous.common.init.ModSounds;
-import com.qiuyue.goetyominous.common.network.CBarbaricAxeShakePacket;
-import com.qiuyue.goetyominous.common.network.CBarbaricAxeSwingPacket;
+import com.qiuyue.goetyominous.common.network.ac.CBarbaricAxeShakePacket;
+import com.qiuyue.goetyominous.common.network.ac.CBarbaricAxeSwingPacket;
 import com.qiuyue.goetyominous.common.rlyeh.ac.ExtinctionStyled;
 import com.qiuyue.goetyominous.config.WeaponConfig;
 import net.minecraft.core.BlockPos;
@@ -35,7 +35,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
 
     private static final int SLAM_COOLDOWN = 100;
-    private static final int FINISHER_COOLDOWN = 200;
     private static final float SWEEP_HALF_ANGLE = 75.0F;
     private static final int SWEEP_PARTICLE_DISTANCE = 2;
     private static final float FINISHER_DAMAGE_MULTIPLIER = 2.0F;
@@ -79,30 +78,18 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
             sweep(player, entity);
             addCombo(stack);
             CBarbaricAxeShakePacket.send(player, 0.7F, 6);
-            CBarbaricAxeSwingPacket.send(player, CBarbaricAxeSwingPacket.TYPE_SWEEP);
+            if (WeaponConfig.AnimSwingOnEveryClick.get()) {
+                CBarbaricAxeSwingPacket.sendToTrackers(player, CBarbaricAxeSwingPacket.TYPE_SWEEP);
+            } else {
+                CBarbaricAxeSwingPacket.send(player, CBarbaricAxeSwingPacket.TYPE_SWEEP);
+            }
         }
         return false;
     }
 
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
-        if (entity instanceof Player player) {
-            if (player.getAttackStrengthScale(0.5F) < 1.0F && player.attackAnim > 0) {
-                return true;
-            }
-            player.swingTime = -1;
-        }
-        return false;
-    }
-
-    @Override
-    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean held) {
-        if (!(entity instanceof Player player)) {
-            return;
-        }
-        if (held && player.getAttackStrengthScale(0.5F) < 0.95F && player.attackAnim > 0) {
-            player.swingTime--;
-        }
+        return entity instanceof Player && !BarbaricAxeSwingGate.isBlockSwing();
     }
 
     @Override
@@ -123,12 +110,14 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
+        BarbaricAxeSwingGate.setBlockSwing(false);
         slam(level, player, stack, player.blockPosition(), finisherReady(stack, player));
         return InteractionResultHolder.success(stack);
     }
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
+        BarbaricAxeSwingGate.setBlockSwing(false);
         InteractionResult result = super.useOn(context);
         if (result != InteractionResult.PASS) {
             return result;
@@ -202,12 +191,13 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         }
-        if (player.getCooldowns().isOnCooldown(stack.getItem())) {
-            return InteractionResult.SUCCESS;
-        }
-        player.getCooldowns().addCooldown(stack.getItem(), finisher ? FINISHER_COOLDOWN : SLAM_COOLDOWN);
         if (finisher) {
             stack.getOrCreateTag().putInt(COMBO_COUNT_TAG, 0);
+        } else {
+            if (player.getCooldowns().isOnCooldown(stack.getItem())) {
+                return InteractionResult.SUCCESS;
+            }
+            player.getCooldowns().addCooldown(stack.getItem(), SLAM_COOLDOWN);
         }
 
         double radius = finisher ? FINISHER_RADIUS : WeaponConfig.BarbaricAxeSlamRadius.get();
