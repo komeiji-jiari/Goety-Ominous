@@ -9,6 +9,7 @@ import com.qiuyue.goetyominous.common.entities.ally.mobs.Warg;
 import com.qiuyue.goetyominous.common.init.ModBlocks;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.common.init.ModSounds;
+import com.qiuyue.goetyominous.common.items.ac.BarbaricAxeItem;
 import com.qiuyue.goetyominous.common.items.curios.*;
 import com.qiuyue.goetyominous.common.items.revive.BrokenStormCrown;
 import com.qiuyue.goetyominous.common.items.revive.StormSoulJar;

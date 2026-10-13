@@ -1,6 +1,8 @@
 package com.qiuyue.goetyominous.common.network;
 
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.common.network.ac.CBarbaricAxeShakePacket;
+import com.qiuyue.goetyominous.common.network.ac.CBarbaricAxeSwingPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkEvent;
