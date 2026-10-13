@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.entities.hostile;
 
 import com.Polarice3.Goety.common.network.ModServerBossInfo;
 import com.Polarice3.Goety.config.MainConfig;
+import com.Polarice3.Goety.utils.MiscCapHelper;
 import com.google.common.collect.Maps;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractStormNecromancer;
@@ -129,6 +130,7 @@ public class StormNecromancer extends AbstractStormNecromancer implements Enemy 
             this.bossInfo.update();
         }
         this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
+        MiscCapHelper.updateMobTarget(this);
     }
 
     @Override
@@ -171,6 +173,10 @@ public class StormNecromancer extends AbstractStormNecromancer implements Enemy 
             double forbiddenChance = 0.25D + pLooting * 0.1D;
             if (this.random.nextDouble() < forbiddenChance) {
                 this.spawnAtLocation(new ItemStack(com.Polarice3.Goety.common.items.ModItems.FORBIDDEN_FRAGMENT.get()));
+            }
+
+            if (pSource.getEntity() instanceof Player && this.random.nextDouble() < 0.1D + pLooting * 0.1D) {
+                this.spawnAtLocation(new ItemStack(com.Polarice3.Goety.common.items.ModItems.MUSIC_DISC_WITHER_NECROMANCER.get()));
             }
         }
     }

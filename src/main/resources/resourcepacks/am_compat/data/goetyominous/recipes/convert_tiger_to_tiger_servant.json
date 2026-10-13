@@ -1,0 +1,29 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:convert_tamed",
+  "activation_item": {
+    "item": "alexsmobs:acacia_blossom"
+  },
+  "craftType": "overgrown",
+  "entity_to_convert": {
+    "tag": "goety:tiger_convert",
+    "display_name": "entity.alexsmobs.tiger"
+  },
+  "entity_to_convert_into": "goetyominous:tiger_servant",
+  "soulCost": 1,
+  "duration": 5,
+  "ingredients": [
+    {
+      "tag": "goety:meat"
+    },
+    {
+      "tag": "goety:meat"
+    },
+    {
+      "item": "goety:savage_tooth"
+    }
+  ],
+  "result": {
+    "item": "goety:jei_dummy/none"
+  }
+}

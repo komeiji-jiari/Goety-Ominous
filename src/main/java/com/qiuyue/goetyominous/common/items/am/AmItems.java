@@ -143,6 +143,10 @@ public class AmItems {
             "centipede_focus",
             () -> new MagicFocus(new CentipedeSpell()));
 
+    public static final RegistryObject<MagicFocus> VULTURE_FOCUS = AM_ITEMS.register(
+            "vulture_focus",
+            () -> new MagicFocus(new VultureSpell()));
+
     public static final RegistryObject<MagicFocus> FART_FOCUS = AM_ITEMS.register(
             "fart_focus",
             () -> new MagicFocus(new FartSpell()));

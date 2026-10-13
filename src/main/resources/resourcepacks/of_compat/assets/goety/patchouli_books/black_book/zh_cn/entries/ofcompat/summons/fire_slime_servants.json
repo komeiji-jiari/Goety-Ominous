@@ -1,0 +1,25 @@
+{
+  "name": "火焰史莱姆",
+  "icon": "opposing_force:fire_gel",
+  "category": "goety:ofcompat/summons",
+  "sortnum": 71,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "这些炙热的粘液块和它们那生活在下界的表亲不同，它们无法长大，但更强壮一些，而且可以通过仪式快速生产。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:fire_slime_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:fire_slime_servant",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "要治疗你的火焰史莱姆，需要用火焰凝胶右键它们或者它们的主人穿着一件下界长袍。"
+    }
+  ]
+}

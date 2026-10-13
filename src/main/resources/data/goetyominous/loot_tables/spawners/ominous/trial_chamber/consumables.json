@@ -81,6 +81,94 @@
             }
           ],
           "name": "minecraft:potion"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{CustomBrewEffects:[{BrewId:\"effect.goety.corpse_eater\",Amplifier:0b,Duration:3600}]}"
+            }
+          ],
+          "name": "goety:brew",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{CustomBrewEffects:[{BrewId:\"effect.goety.swirling\",Amplifier:0b,Duration:1800}]}"
+            }
+          ],
+          "name": "goety:brew",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            },
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{CustomPotionEffects:[{Id:10,\"forge:id\":\"minecraft:regeneration\",Amplifier:0b,Duration:900}]}"
+            }
+          ],
+          "name": "minecraft:apple",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            },
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{CustomPotionEffects:[{Id:6,\"forge:id\":\"minecraft:instant_health\",Amplifier:0b,Duration:1}]}"
+            }
+          ],
+          "name": "minecraft:apple",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 3.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "goety:blast_fungus",
+          "weight": 2
         }
       ],
       "rolls": 1.0

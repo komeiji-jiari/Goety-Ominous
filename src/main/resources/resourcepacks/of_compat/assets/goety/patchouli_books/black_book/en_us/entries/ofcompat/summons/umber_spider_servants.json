@@ -1,0 +1,25 @@
+{
+  "name": "Umber Spiders",
+  "icon": "opposing_force:umber_fang",
+  "category": "goety:ofcompat/summons",
+  "sortnum": 90,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Unlike their cousins, who merely dislike the light, these arthropods are far more sensitive to it—sunlight will even set them ablaze. Yet in the shadows, these exceptional hunters can efficiently hunt down their targets. On rare occasions, elite individuals stronger than other Umber Spider servants may appear."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:umber_spider_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:umber_spider_servant",
+      "text": "I am the one with the darkness..."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Feed it meat or wear Wild Robes to heal your Umber Spider."
+    }
+  ]
+}

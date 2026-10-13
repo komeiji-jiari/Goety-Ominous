@@ -1,0 +1,19 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:summon_tamed",
+  "activation_item": {
+    "item": "opposing_force:fire_gel"
+  },
+  "craftType": "adept_nether",
+  "entity_to_summon": "goetyominous:fire_slime_servant",
+  "soulCost": 1,
+  "duration": 2,
+  "ingredients": [
+    {
+      "item": "opposing_force:fire_gel"
+    }
+  ],
+  "result": {
+    "item": "goety:jei_dummy/none"
+  }
+}

@@ -27,6 +27,32 @@
         {
           "type": "minecraft:item",
           "name": "minecraft:trident"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "goety:rampaging_axe",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "goety:eerie_pickaxe",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 6.0,
+                "min": 5.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "goety:forbidden_piece",
+          "weight": 1
         }
       ],
       "rolls": 1.0

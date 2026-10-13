@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class TremblerSpell extends SummonSpell {
+
     public TremblerSpell() {
     }
 

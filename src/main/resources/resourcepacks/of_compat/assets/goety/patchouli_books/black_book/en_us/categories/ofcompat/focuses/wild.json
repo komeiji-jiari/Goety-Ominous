@@ -1,0 +1,7 @@
+{
+  "name": "Wild",
+  "description": "The power over the wild.",
+  "icon": "goetyominous:umber_focus",
+  "parent": "goety:ofcompat/focuses",
+  "sortnum": 8
+}

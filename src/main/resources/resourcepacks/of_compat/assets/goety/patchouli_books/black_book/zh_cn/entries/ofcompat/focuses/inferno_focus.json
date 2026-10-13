@@ -1,0 +1,20 @@
+{
+  "name": "熔火聚晶",
+  "icon": "goetyominous:inferno_focus",
+  "category": "goety:ofcompat/focuses",
+  "sortnum": 230,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "通过这个法术，你可以像贪食怪那样发射忠诚的火焰史莱姆。这些史莱姆比起常见的史莱姆稍微更强一些，还能让受害者陷入灼烧。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:inferno_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "使用下界魔杖承载此聚晶施法时可以一次发射两个火焰史莱姆。"
+    }
+  ]
+}

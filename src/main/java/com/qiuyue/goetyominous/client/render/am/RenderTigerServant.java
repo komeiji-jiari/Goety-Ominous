@@ -16,10 +16,10 @@ import javax.annotation.Nullable;
 @OnlyIn(Dist.CLIENT)
 public class RenderTigerServant extends MobRenderer<TigerServant, ModelTigerServant> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/tiger/tiger.png");
-    private static final ResourceLocation TEXTURE_ANGRY = new ResourceLocation("alexsmobs:textures/entity/tiger/tiger_angry.png");
-    private static final ResourceLocation TEXTURE_WHITE = new ResourceLocation("alexsmobs:textures/entity/tiger/tiger_white.png");
-    private static final ResourceLocation TEXTURE_ANGRY_WHITE = new ResourceLocation("alexsmobs:textures/entity/tiger/tiger_white_angry.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation("goetyominous:textures/entity/tiger.png");
+    private static final ResourceLocation TEXTURE_ANGRY = new ResourceLocation("goetyominous:textures/entity/tiger_angry.png");
+    private static final ResourceLocation TEXTURE_WHITE = new ResourceLocation("goetyominous:textures/entity/tiger_white.png");
+    private static final ResourceLocation TEXTURE_ANGRY_WHITE = new ResourceLocation("goetyominous:textures/entity/tiger_white_angry.png");
 
     public RenderTigerServant(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelTigerServant(), 0.6F);

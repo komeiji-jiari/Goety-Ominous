@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.of;
 
+import com.Polarice3.Goety.client.particles.ModParticleTypes;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.init.ModMobType;
@@ -9,6 +10,7 @@ import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
 import com.unusualmodding.opposing_force.entity.utils.AttackState;
+import com.unusualmodding.opposing_force.registry.OPItems;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import com.unusualmodding.opposing_force.utils.OPMath;
 import net.minecraft.core.BlockPos;
@@ -40,7 +42,6 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -105,24 +106,20 @@ public class GuzzlerServant extends Summoned implements AttackState {
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         if (this.getTrueOwner() != null && player == this.getTrueOwner()
-                && itemstack.is(Items.LAVA_BUCKET) && this.getHealth() < this.getMaxHealth()) {
+                && itemstack.is(OPItems.FIRE_GEL.get()) && this.getHealth() < this.getMaxHealth()) {
             if (!this.level().isClientSide) {
                 this.heal(10.0F);
-                this.playSound(SoundEvents.BUCKET_EMPTY_LAVA, 1.0F, 1.0F);
                 this.gameEvent(GameEvent.EAT, this);
                 if (this.level() instanceof ServerLevel serverLevel) {
                     for (int i = 0; i < 8; ++i) {
                         double d0 = this.random.nextGaussian() * 0.02D;
                         double d1 = this.random.nextGaussian() * 0.02D + 0.1D;
                         double d2 = this.random.nextGaussian() * 0.02D;
-                        serverLevel.sendParticles(ParticleTypes.HEART,
+                        serverLevel.sendParticles(ModParticleTypes.HEAL_EFFECT.get(),
                                 this.getRandomX(1.0F),
                                 this.getY() + this.getBbHeight() + 0.3F + this.random.nextDouble() * 0.5F,
                                 this.getRandomZ(1.0F), 0, d0, d1, d2, 0.5D);
                     }
-                }
-                if (!player.getAbilities().instabuild) {
-                    player.setItemInHand(hand, Items.BUCKET.getDefaultInstance());
                 }
             }
             player.swing(hand);

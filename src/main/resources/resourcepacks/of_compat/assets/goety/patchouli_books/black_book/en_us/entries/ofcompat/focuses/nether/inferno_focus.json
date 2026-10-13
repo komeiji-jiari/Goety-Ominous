@@ -1,0 +1,20 @@
+{
+  "name": "Fiery Focus",
+  "icon": "goetyominous:inferno_focus",
+  "category": "goety:ofcompat/focuses/nether",
+  "sortnum": 10,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "With this spell, you can launch loyal Fire Slimes just like a Guzzler. These Slimes are slightly stronger than common Slimes and can set their victims ablaze."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:inferno_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "When cast using a Nether Staff to channel this focus, you can fire two Fire Slimes at once."
+    }
+  ]
+}

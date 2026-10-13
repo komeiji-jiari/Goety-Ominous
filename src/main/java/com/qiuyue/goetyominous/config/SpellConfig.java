@@ -15,6 +15,15 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> VoltSummonDown;
     public static final ForgeConfigSpec.ConfigValue<Integer> VoltCoolDown;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> UmberSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> UmberCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> UmberSummonDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> UmberCoolDown;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> InfernoSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> InfernoCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> InfernoCoolDown;
+
     public static final ForgeConfigSpec.ConfigValue<Integer> VoltBoltCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> VoltBoltCastDuration;
     public static final ForgeConfigSpec.ConfigValue<Integer> VoltBoltCoolDown;
@@ -242,6 +251,11 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> FarseerSummonDown;
     public static final ForgeConfigSpec.ConfigValue<Integer> FarseerCoolDown;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> VultureSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> VultureCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> VultureCoolDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> VultureSummonDown;
+
     public static final ForgeConfigSpec.ConfigValue<Integer> RollerCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> RollerDuration;
     public static final ForgeConfigSpec.ConfigValue<Integer> RollerSummonDown;
@@ -303,6 +317,26 @@ public class SpellConfig {
                 .defineInRange("voltBoltCastDuration", 40, 0, 2000);
         VoltBoltCoolDown = BUILDER.comment("Cooldown of Volt Bolt spell in ticks (Default: 60)")
                 .defineInRange("voltBoltCoolDown", 60, 0, 2000);
+        BUILDER.pop();
+
+        BUILDER.push("Umber");
+        UmberSoulCost = BUILDER.comment("Soul cost of Umber Servant spell (Default: 16)")
+                .defineInRange("umberSoulCost", 16, 1, 128);
+        UmberCastDuration = BUILDER.comment("Cast duration of Umber Servant spell in ticks (Default: 60)")
+                .defineInRange("umberCastDuration", 60, 0, 500);
+        UmberSummonDown = BUILDER.comment("Summon down duration of Umber Servant spell in ticks (Default: 120)")
+                .defineInRange("umberSummonDown", 120, 0, 5000);
+        UmberCoolDown = BUILDER.comment("Cooldown of Umber Servant spell in ticks (Default: 200)")
+                .defineInRange("umberCoolDown", 200, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("Inferno");
+        InfernoSoulCost = BUILDER.comment("Soul cost of Inferno spell (Default: 8)")
+                .defineInRange("infernoSoulCost", 8, 1, 128);
+        InfernoCastDuration = BUILDER.comment("Cast duration of Inferno spell in ticks (Default: 20)")
+                .defineInRange("infernoCastDuration", 20, 0, 500);
+        InfernoCoolDown = BUILDER.comment("Cooldown of Inferno spell in ticks (Default: 40)")
+                .defineInRange("infernoCoolDown", 40, 0, 5000);
         BUILDER.pop();
 
         BUILDER.push("DicerLaser");
@@ -646,6 +680,17 @@ public class SpellConfig {
                 .defineInRange("fartCastDuration", 60, 0, 500);
         FartCoolDown = BUILDER.comment("Cooldown of Fart spell in ticks (Default: 100)")
                 .defineInRange("fartCoolDown", 100, 0, 5000);
+        BUILDER.pop();
+
+        BUILDER.push("Soul Vulture");
+        VultureSoulCost = BUILDER.comment("Soul cost of Soul Vulture Servant spell (Default: 24)")
+                .defineInRange("vultureSoulCost", 24, 1, 100);
+        VultureCastDuration = BUILDER.comment("Cast duration of Soul Vulture Servant spell in ticks (Default: 100)")
+                .defineInRange("vultureCastDuration", 100, 0, 500);
+        VultureCoolDown = BUILDER.comment("Cooldown of Soul Vulture Servant spell in ticks (Default: 100)")
+                .defineInRange("vultureCoolDown", 100, 0, 5000);
+        VultureSummonDown = BUILDER.comment("Summon down duration of Soul Vulture Servant spell in ticks (Default: 300)")
+                .defineInRange("vultureSummonDown", 300, 0, 5000);
         BUILDER.pop();
 
         BUILDER.push("Farseer");

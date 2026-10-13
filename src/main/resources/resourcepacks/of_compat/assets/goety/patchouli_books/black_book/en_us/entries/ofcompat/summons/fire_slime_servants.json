@@ -1,0 +1,25 @@
+{
+  "name": "Fire Slimes",
+  "icon": "opposing_force:fire_gel",
+  "category": "goety:ofcompat/summons",
+  "sortnum": 71,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Unlike their Nether-dwelling cousins, these searing blobs of slime cannot grow larger, but they are somewhat stronger and can be rapidly produced through rituals."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:fire_slime_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:fire_slime_servant",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "To heal your Fire Slime, right-click it with Fire Gel, or have its owner wear Nether Robe."
+    }
+  ]
+}

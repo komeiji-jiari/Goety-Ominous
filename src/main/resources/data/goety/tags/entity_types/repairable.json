@@ -15,6 +15,10 @@
       "required": false
     },
     {
+      "id": "goetyominous:nuclear_guardian_servant",
+      "required": false
+    },
+    {
       "id": "goetyominous:teletor_servant",
       "required": false
     },

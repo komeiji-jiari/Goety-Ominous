@@ -1,0 +1,25 @@
+{
+  "name": "Guzzlers",
+  "icon": "opposing_force:guzzler_scales",
+  "category": "goety:ofcompat/summons",
+  "sortnum": 70,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Guzzler is a large creature whose body is filled with searing slime. It spits scalding flame slimes from its mouth to attack enemies. By performing a ritual in the Nether, you can summon a Guzzler with a permanent lifespan to serve under your command."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:guzzler_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:guzzler_servant",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Wearing Nether Robes, or right-clicking your Guzzler with Fire Gel, will heal it."
+    }
+  ]
+}

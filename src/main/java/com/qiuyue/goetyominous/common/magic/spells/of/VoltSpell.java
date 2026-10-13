@@ -29,6 +29,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 public class VoltSpell extends SummonSpell {
+
     public VoltSpell() {
     }
 
