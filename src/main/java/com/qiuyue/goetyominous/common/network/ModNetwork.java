@@ -2,7 +2,6 @@ package com.qiuyue.goetyominous.common.network;
 
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.network.ac.CBarbaricAxeShakePacket;
-import com.qiuyue.goetyominous.common.network.ac.CBarbaricAxeSwingPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkEvent;
@@ -14,7 +13,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class ModNetwork {
-    private static final String PROTOCOL_VERSION = "3";
+    private static final String PROTOCOL_VERSION = "4";
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(GoetyOminous.MOD_ID, "main"),
             () -> PROTOCOL_VERSION,
@@ -45,10 +44,6 @@ public class ModNetwork {
                 CBarbaricAxeShakePacket::encode,
                 CBarbaricAxeShakePacket::decode,
                 CBarbaricAxeShakePacket::handle);
-        register(CBarbaricAxeSwingPacket.class,
-                CBarbaricAxeSwingPacket::encode,
-                CBarbaricAxeSwingPacket::decode,
-                CBarbaricAxeSwingPacket::handle);
     }
 
     public static <T> void register(Class<T> messageType,
