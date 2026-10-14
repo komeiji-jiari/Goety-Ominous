@@ -84,10 +84,7 @@
     "VaultLevelRendererMixin",
     "WeavingLevelRendererMixin",
     "ModEffectParticleMixin",
-    "TrialSpawnerLevelRendererMixin",
-    "MixinPlayerModelSwing",
-    "MixinItemInHandRendererSwing",
-    "MixinMinecraftBarbaricAxe"
+    "TrialSpawnerLevelRendererMixin"
   ],
   "server": [],
   "injectors": {

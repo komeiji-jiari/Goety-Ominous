@@ -3,7 +3,6 @@ package com.qiuyue.goetyominous.common.items.ac;
 import com.Polarice3.Goety.common.magic.spells.geomancy.QuakingSpell;
 import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.common.network.ac.CBarbaricAxeShakePacket;
-import com.qiuyue.goetyominous.common.network.ac.CBarbaricAxeSwingPacket;
 import com.qiuyue.goetyominous.common.rlyeh.ac.ExtinctionStyled;
 import com.qiuyue.goetyominous.config.WeaponConfig;
 import net.minecraft.core.BlockPos;
@@ -78,18 +77,8 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
             sweep(player, entity);
             addCombo(stack);
             CBarbaricAxeShakePacket.send(player, 0.7F, 6);
-            if (WeaponConfig.AnimSwingOnEveryClick.get()) {
-                CBarbaricAxeSwingPacket.sendToTrackers(player, CBarbaricAxeSwingPacket.TYPE_SWEEP);
-            } else {
-                CBarbaricAxeSwingPacket.send(player, CBarbaricAxeSwingPacket.TYPE_SWEEP);
-            }
         }
         return false;
-    }
-
-    @Override
-    public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
-        return entity instanceof Player && !BarbaricAxeSwingGate.isBlockSwing();
     }
 
     @Override
@@ -110,14 +99,12 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        BarbaricAxeSwingGate.setBlockSwing(false);
         slam(level, player, stack, player.blockPosition(), finisherReady(stack, player));
         return InteractionResultHolder.success(stack);
     }
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
-        BarbaricAxeSwingGate.setBlockSwing(false);
         InteractionResult result = super.useOn(context);
         if (result != InteractionResult.PASS) {
             return result;
@@ -263,7 +250,6 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
         CBarbaricAxeShakePacket.send(player,
                 finisher ? FINISHER_SHAKE_STRENGTH : SLAM_SHAKE_STRENGTH,
                 finisher ? FINISHER_SHAKE_TICKS : SLAM_SHAKE_TICKS);
-        CBarbaricAxeSwingPacket.send(player, CBarbaricAxeSwingPacket.TYPE_SLAM);
         return InteractionResult.SUCCESS;
     }
 

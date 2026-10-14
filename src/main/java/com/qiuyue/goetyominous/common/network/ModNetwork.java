@@ -14,10 +14,9 @@ import com.qiuyue.goetyominous.common.network.ac.ServantAbilityKeyPacket;
 import com.qiuyue.goetyominous.common.network.ac.TremorzillaBreathPacket;
 import com.qiuyue.goetyominous.common.network.ac.XRayPacket;
 import com.qiuyue.goetyominous.common.network.ac.CBarbaricAxeShakePacket;
-import com.qiuyue.goetyominous.common.network.ac.CBarbaricAxeSwingPacket;
 
 public class ModNetwork {
-    private static final String PROTOCOL_VERSION = "3";
+    private static final String PROTOCOL_VERSION = "4";
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(GoetyOminous.MOD_ID, "main"),
             () -> PROTOCOL_VERSION,
@@ -84,9 +83,5 @@ public class ModNetwork {
                 CBarbaricAxeShakePacket::encode,
                 CBarbaricAxeShakePacket::decode,
                 CBarbaricAxeShakePacket::handle);
-        CHANNEL.registerMessage(id++, CBarbaricAxeSwingPacket.class,
-                CBarbaricAxeSwingPacket::encode,
-                CBarbaricAxeSwingPacket::decode,
-                CBarbaricAxeSwingPacket::handle);
     }
 }
