@@ -67,7 +67,10 @@ public class FelRitualType implements IRitualType {
                 || state.is(ModBlocks.PALE_CRYSTAL_BALL.get()), 1)) {
             if (player != null) {
                 player.displayClientMessage(Component.translatable(
-                        "info.goety.ritual.structure.noBlocks", ModBlocks.CRYSTAL_BALL.get().getName()), true);
+                        "info.goety.ritual.structure.noBlocks", Component.empty()
+                                .append(ModBlocks.CRYSTAL_BALL.get().getName())
+                                .append(Component.literal(" / "))
+                                .append(ModBlocks.PALE_CRYSTAL_BALL.get().getName())), true);
             }
             return false;
         }
