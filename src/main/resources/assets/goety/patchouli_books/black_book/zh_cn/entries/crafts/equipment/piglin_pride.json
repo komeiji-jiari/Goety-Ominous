@@ -1,7 +1,8 @@
 {
   "name": "猪灵之傲",
   "icon": "goetyominous:piglin_pride",
-  "category": "goety:crafts/equipment",
+  "category": "goety:ominous_crafts/equipment",
+  "sortnum": 5,
   "advancement": "goetyominous:goetyominous/read_bastion_scroll",
   "secret": true,
   "pages": [

@@ -1,7 +1,8 @@
 {
   "name": "Heresiarch Servant",
   "icon": "goety:malefic_helm",
-  "category": "goety:mutations",
+  "category": "goety:ominous_mutations",
+  "sortnum": 3,
   "advancement": "goety:goety/read_bygone_scroll",
   "pages": [
     {

@@ -1,7 +1,8 @@
 {
   "name": "Hurricane",
   "icon": "goetyominous:heavy_core",
-  "category": "goety:world/bestiary",
+  "category": "goety:ominous_world/bestiary",
+  "sortnum": 5,
   "advancement": "goetyominous:goetyominous/kill_a_hurricane",
   "pages": [
     {

@@ -1,7 +1,7 @@
 {
   "name": "Necromante Submerso",
   "icon": "goety:bouncy_bubble_focus",
-  "category": "goety:mutations",
+  "category": "goety:ominous_mutations",
   "advancement": "goety:goety/unlock_necromancer",
   "pages": [
     {

@@ -1,7 +1,8 @@
 {
   "name": "真菌背囊",
   "icon": "goetyominous:fungus_pack",
-  "category": "goety:crafts/equipment",
+  "category": "goety:ominous_crafts/garment",
+  "sortnum": 4,
   "advancement": "goetyominous:goetyominous/read_bastion_scroll",
   "secret": true,
   "pages": [

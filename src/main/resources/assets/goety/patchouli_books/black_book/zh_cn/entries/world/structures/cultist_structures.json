@@ -1,7 +1,8 @@
 {
   "name": "令人不安的结构",
   "icon": "goety:infernal_tome",
-  "category": "goety:world",
+  "category": "goety:ominous_world",
+  "sortnum": 1,
   "pages": [
     {
       "type": "patchouli:text",

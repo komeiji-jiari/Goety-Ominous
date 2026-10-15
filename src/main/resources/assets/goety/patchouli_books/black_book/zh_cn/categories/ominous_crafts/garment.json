@@ -1,0 +1,7 @@
+{
+  "name": "制服",
+  "description": "黑暗巫师的饰品和服装。",
+  "icon": "goetyominous:crone_robe",
+  "parent": "goety:ominous_crafts",
+  "sortnum": 2
+}

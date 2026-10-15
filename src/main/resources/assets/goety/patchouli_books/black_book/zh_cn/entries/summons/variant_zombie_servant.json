@@ -1,7 +1,8 @@
 {
   "name": "僵尸们的变种",
   "icon": "minecraft:zombie_head",
-  "category": "goety:summons",
+  "category": "goety:ominous_summons",
+  "sortnum": 1,
   "pages": [
     {
       "type": "patchouli:text",

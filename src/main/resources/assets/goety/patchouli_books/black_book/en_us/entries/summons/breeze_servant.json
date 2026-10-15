@@ -1,7 +1,8 @@
 {
   "name": "Breeze Servant",
   "icon": "goetyominous:breeze_rod",
-  "category": "goety:summons",
+  "category": "goety:ominous_summons",
+  "sortnum": 8,
   "advancement": "goety:goety/read_mistral_scroll",
   "secret": true,
   "pages": [

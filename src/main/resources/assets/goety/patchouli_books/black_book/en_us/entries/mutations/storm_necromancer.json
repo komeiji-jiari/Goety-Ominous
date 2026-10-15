@@ -1,7 +1,8 @@
 {
   "name": "Storm Necromancer",
   "icon": "goety:thunderstorm_focus",
-  "category": "goety:mutations",
+  "category": "goety:ominous_mutations",
+  "sortnum": 4,
   "advancement": "goety:goety/unlock_necromancer",
   "pages": [
     {

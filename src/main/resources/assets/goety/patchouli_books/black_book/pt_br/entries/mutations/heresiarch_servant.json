@@ -1,7 +1,7 @@
 {
   "name": "Servo Heresiarca",
   "icon": "goety:malefic_helm",
-  "category": "goety:mutations",
+  "category": "goety:ominous_mutations",
   "advancement": "goety:goety/read_bygone_scroll",
   "pages": [
     {

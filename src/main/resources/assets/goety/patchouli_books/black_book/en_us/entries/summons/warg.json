@@ -1,7 +1,8 @@
 {
   "name": "Warg",
-  "icon": "minecraft:bone",
-  "category": "goety:summons",
+  "icon": "minecraft:saddle",
+  "category": "goety:ominous_summons",
+  "sortnum": 4,
   "pages": [
     {
       "type": "patchouli:text",

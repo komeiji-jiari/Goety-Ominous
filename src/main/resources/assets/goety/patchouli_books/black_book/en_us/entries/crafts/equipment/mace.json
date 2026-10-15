@@ -1,7 +1,8 @@
 {
   "name": "Mace",
   "icon": "goetyominous:mace",
-  "category": "goety:crafts/equipment",
+  "category": "goety:ominous_crafts/equipment",
+  "sortnum": 4,
   "pages": [
     {
       "type": "patchouli:text",

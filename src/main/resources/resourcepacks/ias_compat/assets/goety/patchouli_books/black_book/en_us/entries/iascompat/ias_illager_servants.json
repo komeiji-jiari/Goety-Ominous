@@ -1,7 +1,7 @@
 {
   "name": "Stranger Illager Servants",
   "icon": "goety:magic_emerald",
-  "category": "goety:iascompat",
+  "category": "goety:iascompat/summons",
   "flag": "!mod:goety_spillage",
   "sortnum": 20,
   "pages": [

@@ -3,7 +3,8 @@
   "icon": "goetyominous:fel_staff",
   "advancement": "goetyominous:goetyominous/witch_lesson",
   "secret": true,
-  "category": "goety:crafts/staff",
+  "category": "goety:ominous_crafts/staff",
+  "sortnum": 1,
   "pages": [
     {
       "type": "patchouli:text",

@@ -1,10 +1,10 @@
 {
   "name": "Fel Materials",
   "icon": "goetyominous:fel_core",
-  "category": "goety:intro",
+  "category": "goety:ominous_crafts",
   "advancement": "goetyominous:goetyominous/witch_lesson",
   "secret": true,
-  "sortnum": 11,
+  "sortnum": 1,
   "priority": true,
   "pages": [
     {

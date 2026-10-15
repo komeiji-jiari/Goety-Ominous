@@ -1,7 +1,7 @@
 {
   "name": "Jarro da Caveira Gritante",
   "icon": "goetyominous:screaming_skull_jar",
-  "category": "goety:crafts/garment",
+  "category": "goety:ominous_crafts/garment",
   "pages": [
     {
       "type": "patchouli:text",

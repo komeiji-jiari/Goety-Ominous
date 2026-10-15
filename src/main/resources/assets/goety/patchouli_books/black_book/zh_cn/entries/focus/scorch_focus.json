@@ -1,7 +1,8 @@
 {
   "name": "怨鬼聚晶",
   "icon": "goetyominous:scorch_focus",
-  "category": "goety:focuses/nether",
+  "category": "goety:ominous_focuses",
+  "sortnum": 5,
   "pages": [
     {
       "type": "patchouli:text",

@@ -1,7 +1,8 @@
 {
   "name": "尖啸颅骨罐",
   "icon": "goetyominous:screaming_skull_jar",
-  "category": "goety:crafts/garment",
+  "category": "goety:ominous_crafts/garment",
+  "sortnum": 2,
   "pages": [
     {
       "type": "patchouli:text",

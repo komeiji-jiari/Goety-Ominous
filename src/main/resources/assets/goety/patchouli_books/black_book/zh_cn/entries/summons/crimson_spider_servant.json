@@ -1,7 +1,8 @@
 {
   "name": "绯红蜘蛛仆从",
   "icon": "minecraft:spider_eye",
-  "category": "goety:summons",
+  "category": "goety:ominous_summons",
+  "sortnum": 10,
   "pages": [
     {
       "type": "patchouli:text",

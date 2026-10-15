@@ -1,7 +1,8 @@
 {
   "name": "Axolotl",
-  "icon": "minecraft:tropical_fish",
-  "category": "goety:mutations",
+  "icon": "minecraft:axolotl_bucket",
+  "category": "goety:ominous_summons",
+  "sortnum": 13,
   "pages": [
     {
       "type": "patchouli:text",

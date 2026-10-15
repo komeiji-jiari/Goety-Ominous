@@ -1,7 +1,8 @@
 {
   "name": "微风聚晶",
   "icon": "goetyominous:breeze_focus",
-  "category": "goety:focuses/wind",
+  "category": "goety:ominous_focuses",
+  "sortnum": 8,
   "advancement": "goety:goety/read_mistral_scroll",
   "secret": true,
   "pages": [

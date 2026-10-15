@@ -1,7 +1,7 @@
 {
   "name": "Acólito",
   "icon": "goety:unholy_fabric",
-  "category": "goety:world/bestiary",
+  "category": "goety:ominous_world/bestiary",
   "advancement": "goety:goety/kill_a_heretic",
   "pages": [
     {

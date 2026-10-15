@@ -1,7 +1,8 @@
 {
   "name": "告死聚晶",
   "icon": "goetyominous:rigid_focus",
-  "category": "goety:focuses/necromancy",
+  "category": "goety:ominous_focuses",
+  "sortnum": 3,
   "advancement": "goety:goety/read_haunting_scroll",
   "secret": true,
   "pages": [
