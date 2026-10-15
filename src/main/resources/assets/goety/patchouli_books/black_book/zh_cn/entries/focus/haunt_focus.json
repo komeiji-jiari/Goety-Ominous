@@ -1,7 +1,8 @@
 {
   "name": "墓魂聚晶",
   "icon": "goetyominous:haunt_focus",
-  "category": "goety:focuses/necromancy",
+  "category": "goety:ominous_focuses",
+  "sortnum": 2,
   "pages": [
     {
       "type": "patchouli:text",

@@ -1,7 +1,8 @@
 {
   "name": "Cog Crossbow",
   "icon": "goetyominous:cog_crossbow",
-  "category": "goety:crafts/equipment",
+  "category": "goety:ominous_crafts/equipment",
+  "sortnum": 2,
   "advancement": "goetyominous:goetyominous/read_bastion_scroll",
   "secret": true,
   "pages": [

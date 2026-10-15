@@ -1,7 +1,8 @@
 {
   "name": "试炼密室",
   "icon": "minecraft:copper_block",
-  "category": "goety:world",
+  "category": "goety:ominous_world",
+  "sortnum": 3,
   "pages": [
     {
       "type": "patchouli:text",

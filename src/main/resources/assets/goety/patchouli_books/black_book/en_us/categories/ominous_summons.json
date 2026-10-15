@@ -1,0 +1,7 @@
+{
+  "name": "Summons",
+  "description": "Dark Servants for a Dark Wizard.",
+  "icon": "goetyominous:cold_heart",
+  "parent": "goety:ominous",
+  "sortnum": 3
+}

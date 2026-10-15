@@ -1,7 +1,8 @@
 {
   "name": "Piglin Servants",
   "icon": "goetyominous:firebrand",
-  "category": "goety:mutations",
+  "category": "goety:ominous_mutations",
+  "sortnum": 1,
   "advancement": "goetyominous:goetyominous/read_bastion_scroll",
   "secret": true,
   "pages": [

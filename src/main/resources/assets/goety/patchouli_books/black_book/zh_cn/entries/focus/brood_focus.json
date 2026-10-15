@@ -1,7 +1,8 @@
 {
   "name": "育母聚晶",
   "icon": "goetyominous:brood_focus",
-  "category": "goety:focuses/wild",
+  "category": "goety:ominous_focuses",
+  "sortnum": 6,
   "pages": [
     {
       "type": "patchouli:text",

@@ -1,7 +1,8 @@
 {
   "name": "门徒",
   "icon": "goety:unholy_fabric",
-  "category": "goety:world/bestiary",
+  "category": "goety:ominous_world/bestiary",
+  "sortnum": 2,
   "advancement": "goety:goety/kill_a_heretic",
   "pages": [
     {

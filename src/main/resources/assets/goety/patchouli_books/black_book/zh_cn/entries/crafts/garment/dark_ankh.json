@@ -1,7 +1,8 @@
 {
   "name": "黑暗安卡",
   "icon": "goetyominous:dark_ankh",
-  "category": "goety:crafts/garment",
+  "category": "goety:ominous_crafts/garment",
+  "sortnum": 1,
   "pages": [
     {
       "type": "patchouli:text",

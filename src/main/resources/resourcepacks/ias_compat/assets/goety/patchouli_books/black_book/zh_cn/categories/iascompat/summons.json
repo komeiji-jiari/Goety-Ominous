@@ -1,0 +1,8 @@
+{
+  "name": "仆从",
+  "description": "更多黑暗巫师的仆从。",
+  "icon": "illageandspillage:spellbound_book",
+  "parent": "goety:iascompat",
+  "sortnum": 3,
+  "flag": "!mod:goety_spillage"
+}

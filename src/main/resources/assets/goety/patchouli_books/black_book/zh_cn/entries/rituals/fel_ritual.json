@@ -1,13 +1,13 @@
 {
   "name": "邪能仪式",
-  "icon": "goety:witch_cauldron",
+  "icon": "goety:rotten_bookshelf",
   "advancement": "goetyominous:goetyominous/witch_lesson",
   "secret": true,
-  "category": "goety:rituals",
+  "category": "goety:ominous_rituals",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "需求：$(li)祭坛位于沼泽生物群系 $(br)$(l)或是$()$() $(li)1 个女巫坩埚 $(li)1 个水晶球 $(li)6 个朽木书架"
+      "text": "需求：$(li)祭坛位于沼泽生物群系 $(br)$(l)或是$()$() $(li)1 个女巫坩埚 $(li)1 个水晶球或苍白水晶球 $(li)6 个朽木书架"
     },
     {
       "type": "patchouli:image",

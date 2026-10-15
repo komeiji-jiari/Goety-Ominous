@@ -1,7 +1,8 @@
 {
   "name": "黑狼们的变种",
   "icon": "minecraft:bone",
-  "category": "goety:summons",
+  "category": "goety:ominous_summons",
+  "sortnum": 3,
   "pages": [
     {
       "type": "patchouli:text",

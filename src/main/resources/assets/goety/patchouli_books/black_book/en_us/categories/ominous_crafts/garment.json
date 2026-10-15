@@ -1,0 +1,7 @@
+{
+  "name": "Garments",
+  "description": "Curios and Clothing of Dark Wizards.",
+  "icon": "goetyominous:crone_robe",
+  "parent": "goety:ominous_crafts",
+  "sortnum": 2
+}

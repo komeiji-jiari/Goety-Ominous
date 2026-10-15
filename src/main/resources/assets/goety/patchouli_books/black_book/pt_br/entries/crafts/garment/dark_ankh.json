@@ -1,7 +1,7 @@
 {
   "name": "Ankh das Trevas",
   "icon": "goetyominous:dark_ankh",
-  "category": "goety:crafts/garment",
+  "category": "goety:ominous_crafts/garment",
   "pages": [
     {
       "type": "patchouli:text",

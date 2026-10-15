@@ -1,7 +1,8 @@
 {
   "name": "骷髅们的变种",
   "icon": "minecraft:skeleton_skull",
-  "category": "goety:summons",
+  "category": "goety:ominous_summons",
+  "sortnum": 2,
   "pages": [
     {
       "type": "patchouli:text",

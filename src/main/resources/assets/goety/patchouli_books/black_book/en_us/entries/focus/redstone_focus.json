@@ -1,7 +1,8 @@
 {
   "name": "Redstone Focus",
   "icon": "goetyominous:redstone_focus",
-  "category": "goety:focuses/geomancy",
+  "category": "goety:ominous_focuses",
+  "sortnum": 1,
   "pages": [
     {
       "type": "patchouli:text",

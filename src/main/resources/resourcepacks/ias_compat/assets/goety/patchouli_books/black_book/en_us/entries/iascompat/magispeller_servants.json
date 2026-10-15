@@ -1,7 +1,7 @@
 {
   "name": "Ally Magispeller",
   "icon": "goetyominous:mysterious_contract",
-  "category": "goety:iascompat",
+  "category": "goety:iascompat/summons",
   "flag": "!mod:goety_spillage",
   "sortnum": 30,
   "advancement": "goety:goety/read_ravaging_scroll",

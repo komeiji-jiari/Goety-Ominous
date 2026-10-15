@@ -3,7 +3,8 @@
   "icon": "goetyominous:poison_ball_focus",
   "advancement": "goetyominous:goetyominous/witch_lesson",
   "secret": true,
-  "category": "goety:focuses/fel",
+  "category": "goety:ominous_focuses",
+  "sortnum": 10,
   "pages": [
     {
       "type": "patchouli:text",

@@ -1,7 +1,8 @@
 {
   "name": "酸液池聚晶",
   "icon": "goetyominous:acid_pool_focus",
-  "category": "goety:focuses/fel",
+  "category": "goety:ominous_focuses",
+  "sortnum": 11,
   "advancement": "goetyominous:goetyominous/witch_lesson",
   "secret": true,
   "pages": [

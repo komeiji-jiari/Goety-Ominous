@@ -1,7 +1,8 @@
 {
   "name": "Wandering Trader",
   "icon": "minecraft:emerald",
-  "category": "goety:summons",
+  "category": "goety:ominous_summons",
+  "sortnum": 12,
   "pages": [
     {
       "type": "patchouli:text",

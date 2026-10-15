@@ -3,7 +3,8 @@
   "icon": "goetyominous:crone_robe",
   "advancement": "goetyominous:goetyominous/witch_lesson",
   "secret": true,
-  "category": "goety:crafts/garment",
+  "category": "goety:ominous_crafts/garment",
+  "sortnum": 3,
   "pages": [
     {
       "type": "patchouli:text",

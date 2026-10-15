@@ -1,7 +1,8 @@
 {
   "name": "霜狩聚晶",
   "icon": "goetyominous:urbhadhach_focus",
-  "category": "goety:focuses/necromancy",
+  "category": "goety:ominous_focuses",
+  "sortnum": 4,
   "pages": [
     {
       "type": "patchouli:text",

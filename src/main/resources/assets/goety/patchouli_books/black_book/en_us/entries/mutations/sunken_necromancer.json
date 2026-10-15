@@ -1,7 +1,8 @@
 {
   "name": "Sunken Necromancer",
   "icon": "goety:bouncy_bubble_focus",
-  "category": "goety:mutations",
+  "category": "goety:ominous_mutations",
+  "sortnum": 5,
   "advancement": "goety:goety/unlock_necromancer",
   "pages": [
     {

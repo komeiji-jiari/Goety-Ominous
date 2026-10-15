@@ -1,7 +1,8 @@
 {
   "name": "座狼铠",
   "icon": "goetyominous:warg_cursed_armor",
-  "category": "goety:crafts",
+  "category": "goety:ominous_crafts",
+  "sortnum": 5,
   "pages": [
     {
       "type": "patchouli:text",

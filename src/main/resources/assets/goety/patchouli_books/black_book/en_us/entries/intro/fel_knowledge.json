@@ -1,7 +1,7 @@
 {
   "name": "Fel Knowledge",
   "icon": "goety:witch_hat",
-  "category": "goety:intro",
+  "category": "goety:ominous_intro",
   "sortnum": 10,
   "priority": true,
   "pages": [

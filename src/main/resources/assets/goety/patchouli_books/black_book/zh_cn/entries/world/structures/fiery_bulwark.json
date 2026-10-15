@@ -1,7 +1,8 @@
 {
   "name": "淬焰堡垒",
-  "icon": "goetyominous:firebrand",
-  "category": "goety:world",
+  "icon": "minecraft:polished_blackstone_bricks",
+  "category": "goety:ominous_world",
+  "sortnum": 2,
   "pages": [
     {
       "type": "patchouli:text",

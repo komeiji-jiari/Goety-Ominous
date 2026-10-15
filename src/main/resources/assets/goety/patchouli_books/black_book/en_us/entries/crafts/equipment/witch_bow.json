@@ -3,7 +3,8 @@
   "icon": "goetyominous:witch_bow",
   "advancement": "goetyominous:goetyominous/witch_lesson",
   "secret": true,
-  "category": "goety:crafts/equipment",
+  "category": "goety:ominous_crafts/equipment",
+  "sortnum": 6,
   "pages": [
     {
       "type": "patchouli:text",

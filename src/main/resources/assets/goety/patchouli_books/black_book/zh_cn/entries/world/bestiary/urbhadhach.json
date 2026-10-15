@@ -1,7 +1,8 @@
 {
   "name": "霜猎兽",
   "icon": "goetyominous:cold_heart",
-  "category": "goety:world/bestiary",
+  "category": "goety:ominous_world/bestiary",
+  "sortnum": 6,
   "pages": [
     {
       "type": "patchouli:text",

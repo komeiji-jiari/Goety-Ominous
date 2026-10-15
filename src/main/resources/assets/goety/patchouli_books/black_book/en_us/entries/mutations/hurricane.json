@@ -1,7 +1,8 @@
 {
   "name": "Hurricane",
   "icon": "goetyominous:heavy_core",
-  "category": "goety:mutations",
+  "category": "goety:ominous_mutations",
+  "sortnum": 6,
   "advancement": "goety:goety/read_mistral_scroll",
   "secret": true,
   "pages": [

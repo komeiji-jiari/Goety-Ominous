@@ -1,7 +1,7 @@
 {
   "name": "Mais Servos Illager",
   "icon": "goety:magic_emerald",
-  "category": "goety:mutations",
+  "category": "goety:ominous_mutations",
   "pages": [
     {
       "type": "patchouli:text",

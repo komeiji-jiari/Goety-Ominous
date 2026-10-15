@@ -1,0 +1,7 @@
+{
+  "name": "Focuses",
+  "description": "Focuses are used to cast spells when inserted in a Wand or Staff.",
+  "icon": "goetyominous:fel_staff",
+  "parent": "goety:ominous",
+  "sortnum": 2
+}

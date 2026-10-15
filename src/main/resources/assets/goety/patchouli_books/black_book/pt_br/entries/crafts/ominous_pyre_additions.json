@@ -1,7 +1,7 @@
 {
   "name": "Adições da Pira Sinistra",
   "icon": "goety:ominous_pyre",
-  "category": "goety:crafts/artifice",
+  "category": "goety:ominous_crafts/artifice",
   "pages": [
     {
       "type": "patchouli:text",
