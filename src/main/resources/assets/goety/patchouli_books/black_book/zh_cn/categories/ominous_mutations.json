@@ -1,7 +1,7 @@
 {
   "name": "变异",
   "description": "将一种生物转变为另一种生物。",
-  "icon": "goetyominous:acid_fungus",
+  "icon": "minecraft:red_mushroom",
   "parent": "goety:ominous",
   "sortnum": 4
 }

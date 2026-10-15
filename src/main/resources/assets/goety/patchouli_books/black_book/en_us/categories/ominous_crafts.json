@@ -1,7 +1,7 @@
 {
   "name": "Crafts",
   "description": "Your craftsmanship should not go to waste when it comes to the arcane.",
-  "icon": "goetyominous:crone_robe",
+  "icon": "goety:focus_bag",
   "parent": "goety:ominous",
   "sortnum": 5
 }
