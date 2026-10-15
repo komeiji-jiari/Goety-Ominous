@@ -1,0 +1,25 @@
+{
+  "name": "Nuclear Guardian",
+  "icon": "alexscaves:block_of_uranium",
+  "category": "goety:toxiccaves",
+  "sortnum": 71,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "After studying the technology of the Toxic Caves, you had a flash of inspiration and devised a way to turn a Mine Guardian into a nuclear bomb. To create such a Nuclear Guardian, you need to build a dedicated multiblock structure rather than a single block."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:nuclear_guardian_servant"
+    },
+    {
+      "type": "multiblock",
+      "multiblock_id": "goetyominous:nuclear_guardian",
+      "text": "Sneak-right click the central Dispenser with an Animation Core."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "These Nuclear Guardians not only produce nuclear explosions, but can also fire laser beams to attack nearby creatures. Like Nucleepers, their explosions do not harm you or your allies, nor do they destroy blocks."
+    }
+  ]
+}

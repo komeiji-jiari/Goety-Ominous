@@ -21,6 +21,8 @@ import java.util.List;
 
 public class GOCultistPatrolSpawner {
     private int ticksUntilSpawn;
+    private static long lastGlobalPatrolTime = -48000L;
+    private static final int GLOBAL_PATROL_COOLDOWN = 48000;
 
     private static final List<EntityType<? extends PatrollingMonster>> MELEE_TYPES = List.of(
             ModEntityTypes.FANATIC.get(),
@@ -38,6 +40,8 @@ public class GOCultistPatrolSpawner {
         RandomSource random = level.random;
         if (!MobsConfig.CultistPatrol.get()) return 0;
 
+        long gameTime = level.getGameTime();
+        if (gameTime - lastGlobalPatrolTime < GLOBAL_PATROL_COOLDOWN) return 0;
         --this.ticksUntilSpawn;
         if (this.ticksUntilSpawn > 0) return 0;
         this.ticksUntilSpawn += MobsConfig.CultistPatrolInterval.get() + random.nextInt(1200);
@@ -61,7 +65,11 @@ public class GOCultistPatrolSpawner {
         Holder<Biome> biome = level.getBiome(pos);
         if (biome.is(BiomeTags.WITHOUT_PATROL_SPAWNS)) return 0;
 
-        return this.spawnPatrolAt(level, pos, false);
+        int spawned = this.spawnPatrolAt(level, pos, false);
+        if (spawned > 0) {
+            lastGlobalPatrolTime = gameTime;
+        }
+        return spawned;
     }
 
     public int spawnPatrolAt(ServerLevel level, BlockPos center, boolean forced) {
@@ -70,12 +78,14 @@ public class GOCultistPatrolSpawner {
         int spawned = 0;
         int size = (int) Math.ceil(level.getCurrentDifficultyAt(pos).getEffectiveDifficulty()) + 1;
         for (int i = 0; i < size; ++i) {
-            ++spawned;
             pos.setY(level.getHeightmapPos(Types.MOTION_BLOCKING_NO_LEAVES, pos).getY());
-            if (i == 0) {
-                if (!this.spawnPatrolMember(level, pos, random, true, MELEE_TYPES, forced)) break;
-            } else {
-                this.spawnPatrolMember(level, pos, random, false, MELEE_TYPES, forced);
+            boolean ok = i == 0
+                    ? this.spawnPatrolMember(level, pos, random, true, MELEE_TYPES, forced)
+                    : this.spawnPatrolMember(level, pos, random, false, MELEE_TYPES, forced);
+            if (ok) {
+                ++spawned;
+            } else if (i == 0) {
+                break;
             }
             pos.setX(pos.getX() + random.nextInt(5) - random.nextInt(5));
             pos.setZ(pos.getZ() + random.nextInt(5) - random.nextInt(5));

@@ -9,7 +9,6 @@ import com.qiuyue.goetyominous.common.entities.ally.mobs.Warg;
 import com.qiuyue.goetyominous.common.init.ModBlocks;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.common.init.ModSounds;
-import com.qiuyue.goetyominous.common.items.ac.BarbaricAxeItem;
 import com.qiuyue.goetyominous.common.items.curios.*;
 import com.qiuyue.goetyominous.common.items.revive.BrokenStormCrown;
 import com.qiuyue.goetyominous.common.items.revive.StormSoulJar;
@@ -124,9 +123,6 @@ public class ModItems {
 
     public static final RegistryObject<PitchforkItem> PITCHFORK = ITEMS.register("pitchfork",
             () -> new PitchforkItem());
-
-    public static final RegistryObject<BarbaricAxeItem> BARBARIC_AXE = ITEMS.register("barbaric_axe",
-            () -> new BarbaricAxeItem());
 
     public static final RegistryObject<Item> BONE_CUDGEL = ITEMS.register("bone_cudgel",
             () -> new BoneCudgelItem() {
