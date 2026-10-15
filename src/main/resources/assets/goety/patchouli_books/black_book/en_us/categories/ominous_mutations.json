@@ -1,7 +1,7 @@
 {
   "name": "Mutations",
   "description": "Transforming one creature into another.",
-  "icon": "goetyominous:acid_fungus",
+  "icon": "minecraft:red_mushroom",
   "parent": "goety:ominous",
   "sortnum": 4
 }
