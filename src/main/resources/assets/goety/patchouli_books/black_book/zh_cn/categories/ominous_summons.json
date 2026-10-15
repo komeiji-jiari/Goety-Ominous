@@ -1,7 +1,7 @@
 {
   "name": "召唤",
   "description": "黑暗巫师的仆从也是黑暗的。",
-  "icon": "goetyominous:cold_heart",
+  "icon": "minecraft:zombie_head",
   "parent": "goety:ominous",
   "sortnum": 3
 }
