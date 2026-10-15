@@ -1,0 +1,25 @@
+{
+  "name": "核水雷",
+  "icon": "alexscaves:block_of_uranium",
+  "category": "goety:toxiccaves",
+  "sortnum": 71,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "研究了毒化洞穴的科技之后，你灵光一现想到一种将水雷守卫者制作成核弹的方法。要创建这样的核水雷，你需要专门制作一个多方块结构而不是单个方块。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:nuclear_guardian_servant"
+    },
+    {
+      "type": "multiblock",
+      "multiblock_id": "goetyominous:nuclear_guardian",
+      "text": "持有活力核心的时候对中心发射器蹲下单击鼠标右键."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "这些核水雷不仅会产生核爆炸，还能发射镭射激光攻击周围的生物。和核能苦力怕一样，它们的爆炸不会伤害到你和你的盟友，也不会破坏方块。"
+    }
+  ]
+}

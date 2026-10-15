@@ -5,8 +5,6 @@ import com.Polarice3.Goety.common.items.magic.MagicFocus;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
-import com.qiuyue.goetyominous.common.items.ac.KeyOfRlyehItem;
-import com.qiuyue.goetyominous.common.items.ac.KeyOfRlyehStaffItem;
 import com.qiuyue.goetyominous.common.magic.spells.ac.*;
 import com.qiuyue.goetyominous.compat.mod.GoetyRevelationCompat;
 import net.minecraft.world.item.BlockItem;
@@ -46,6 +44,9 @@ public class AcItems {
             }
         };
     }
+
+    public static final RegistryObject<BarbaricAxeItem> BARBARIC_AXE =
+            AC_ITEMS.register("barbaric_axe", BarbaricAxeItem::new);
 
     public static final RegistryObject<ServantSpawnEggItem> ATLATITAN_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("atlatitan_servant_spawn_egg",

@@ -102,6 +102,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> VallumraptorServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> VallumraptorElderChance;
     public static final ForgeConfigSpec.ConfigValue<Integer> NucleeperServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> NuclearGuardianServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> BrainiacServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> CaniacServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> GummyBearServantLimit;
@@ -640,6 +641,10 @@ public class MobsConfig {
 
         MineGuardianServantLimit = BUILDER
                 .defineInRange("mineGuardianServantLimit", 16, 1, 100);
+
+        NuclearGuardianServantLimit = BUILDER
+                .comment("Maximum number of Nuclear Guardian Servants that can be summoned (Default: 2)")
+                .defineInRange("nuclearGuardianServantLimit", 2, 1, 100);
 
         MineGuardianServantExplosionGriefing = BUILDER.comment("Whether Mine Guardian Servant explosions destroy blocks, Default: false (set to true to allow block destruction, which also respects the mobGriefing game rule)")
                 .define("mineGuardianServantExplosionGriefing", false);

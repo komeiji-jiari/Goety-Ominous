@@ -57,6 +57,7 @@ public class AcCompatManager {
                 MinecraftForge.EVENT_BUS.register(NucleeperNukeKillHandler.class);
                 MinecraftForge.EVENT_BUS.register(RaycatAmuletEvents.class);
                 MinecraftForge.EVENT_BUS.register(RadiationAllyEvents.class);
+                MinecraftForge.EVENT_BUS.register(NuclearGuardianSummonHandler.class);
                 MinecraftForge.EVENT_BUS.register(MineGuardianExplosionProtectionHandler.class);
                 MinecraftForge.EVENT_BUS.register(NucleeperSummonHandler.class);
                 MinecraftForge.EVENT_BUS.register(AtomicBombCleanupHandler.class);
