@@ -89,7 +89,7 @@ public class GiantHellBlast extends HellBlast {
             MiscUtils.customExplosion(this.level(), owner != null ? owner : this,
                     this.damageSources().explosion(this, owner instanceof LivingEntity ? owner : null),
                     null, pos.x, pos.y, pos.z,
-                    Mth.clamp(this.explosionRadius, 1.0F, Float.MAX_VALUE), false,
+                    Mth.clamp(this.explosionRadius, 1.0F, Float.MAX_VALUE), this.explosionFire,
                     BlockInteraction.KEEP, SoundEvents.GENERIC_EXPLODE, this.getSoundSource(),
                     ParticleTypes.EXPLOSION, ParticleTypeInit.FIRE_TRAIL.get(), this.explosionDamage, true, false);
 
