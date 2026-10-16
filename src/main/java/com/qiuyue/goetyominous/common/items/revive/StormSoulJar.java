@@ -2,7 +2,7 @@ package com.qiuyue.goetyominous.common.items.revive;
 
 import com.Polarice3.Goety.api.entities.IOwned;
 import com.Polarice3.Goety.common.entities.ally.undead.skeleton.RattledServant;
-import com.Polarice3.Goety.common.items.ModItems;
+import com.Polarice3.Goety.common.entities.hostile.Rattled;
 import com.Polarice3.Goety.common.items.revive.SoulJar;
 import com.Polarice3.Goety.common.ritual.RitualRequirements;
 import com.Polarice3.Goety.init.ModSounds;
@@ -11,9 +11,9 @@ import com.Polarice3.Goety.utils.SEHelper;
 import com.Polarice3.Goety.utils.ServerParticleUtil;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.StormNecromancerServant;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
+import com.qiuyue.goetyominous.common.init.ModTags;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
@@ -25,7 +25,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class StormSoulJar extends SoulJar {
-    public static final String TAG_STORM = "Storm";
 
     public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
         Level level = player.getCommandSenderWorld();
@@ -39,7 +38,8 @@ public class StormSoulJar extends SoulJar {
             owned.setTrueOwner(player);
         }
         if (entity instanceof StormNecromancerServant necromancer) {
-            if (target instanceof RattledServant) {
+            if (target instanceof RattledServant || target instanceof Rattled
+                    || target.getType().is(ModTags.EntityTypes.STORM_CONVERT)) {
                 if (necromancer.getTrueOwner() == player) {
                     if (RitualRequirements.canSummon(level, player, ModEntityTypes.STORM_NECROMANCER_SERVANT.get())) {
                         necromancer.setHealth(necromancer.getMaxHealth());
@@ -57,8 +57,7 @@ public class StormSoulJar extends SoulJar {
                             necromancer.playSound(ModSounds.NECROMANCER_LAUGH.get(), 2.0F, 0.5F);
                             target.discard();
                             player.swing(hand);
-                            SEHelper.addCooldown(player, this, MathHelper.secondsToTicks(30));
-                            SEHelper.addCooldown(player, ModItems.SOUL_JAR.get(), MathHelper.secondsToTicks(30));
+                            SEHelper.addCooldown(player, this, MathHelper.secondsToTicks(5));
                             stack.shrink(1);
                         }
                     }
@@ -67,15 +66,5 @@ public class StormSoulJar extends SoulJar {
         }
 
         return super.interactLivingEntity(stack, player, target, hand);
-    }
-
-    public static boolean isStorm(ItemStack stack) {
-        CompoundTag compoundtag = stack.getTag();
-        return stack.getItem() instanceof StormSoulJar && compoundtag != null && compoundtag.contains(TAG_STORM);
-    }
-
-    public static void setStorm(ItemStack stack){
-        CompoundTag compoundTag = stack.getOrCreateTag();
-        compoundTag.putBoolean(TAG_STORM, true);
     }
 }

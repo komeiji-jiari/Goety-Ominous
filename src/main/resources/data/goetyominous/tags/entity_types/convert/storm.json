@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "__comment": "mobs that can be converted to Storm Necromancer servants by a Storm Soul Jar.",
+  "values": [
+    {
+      "id": "goety:rattled",
+      "required": false
+    },
+    {
+      "id": "goety:rattled_servant",
+      "required": false
+    }
+  ]
+}

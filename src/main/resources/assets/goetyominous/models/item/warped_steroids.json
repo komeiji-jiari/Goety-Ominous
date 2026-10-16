@@ -2,5 +2,8 @@
   "parent": "item/generated",
   "textures": {
     "layer0": "goetyominous:item/warped_steroids"
-  }
+  },
+  "overrides": [
+    { "predicate": { "goetyominous:unholy_steroids": 1 }, "model": "goetyominous:item/unholy_steroids" }
+  ]
 }

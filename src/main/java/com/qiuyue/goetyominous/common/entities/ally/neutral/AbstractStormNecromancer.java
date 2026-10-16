@@ -16,6 +16,7 @@ import com.Polarice3.Goety.common.entities.neutral.AbstractNecromancer;
 import com.Polarice3.Goety.common.entities.projectiles.SurgingOrb;
 import com.Polarice3.Goety.common.entities.util.MagicLightningTrap;
 import com.Polarice3.Goety.common.items.ModItems;
+import com.Polarice3.Goety.config.ItemConfig;
 import com.Polarice3.Goety.config.MobsConfig;
 import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.*;
@@ -369,9 +370,7 @@ public class AbstractStormNecromancer extends AbstractNecromancer {
                     ItemStack itemStack = new ItemStack(com.qiuyue.goetyominous.common.items.ModItems.STORM_SOUL_JAR.get());
                     StormSoulJar.setOwnerName(this.getTrueOwner(), itemStack);
                     StormSoulJar.setSummon(this, itemStack);
-                    StormSoulJar.setStorm(itemStack);
-                    SEHelper.addCooldown(player, com.Polarice3.Goety.common.items.ModItems.SOUL_JAR.get(), MathHelper.secondsToTicks(30));
-                    SEHelper.addCooldown(player, itemStack.getItem(), MathHelper.secondsToTicks(30));
+                    SEHelper.addSpecificCooldown(player, itemStack, MathHelper.secondsToTicks(ItemConfig.ReviveSecondsCool.get()));
                     if (!player.getInventory().add(itemStack)) {
                         player.drop(itemStack, false, true);
                     }

@@ -12,6 +12,7 @@ import com.Polarice3.Goety.common.entities.ally.undead.zombie.DrownedServant;
 import com.Polarice3.Goety.common.entities.neutral.AbstractNecromancer;
 import com.Polarice3.Goety.common.entities.projectiles.BouncyBubble;
 import com.Polarice3.Goety.common.items.ModItems;
+import com.Polarice3.Goety.config.ItemConfig;
 import com.Polarice3.Goety.config.MobsConfig;
 import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.*;
@@ -140,9 +141,7 @@ public class AbstractSunkenNecromancer extends AbstractNecromancer {
                     ItemStack itemStack = new ItemStack(com.qiuyue.goetyominous.common.items.ModItems.SUNKEN_SOUL_JAR.get());
                     SunkenSoulJar.setOwnerName(this.getTrueOwner(), itemStack);
                     SunkenSoulJar.setSummon(this, itemStack);
-                    SunkenSoulJar.setSunken(itemStack);
-                    SEHelper.addCooldown(player, com.Polarice3.Goety.common.items.ModItems.SOUL_JAR.get(), MathHelper.secondsToTicks(30));
-                    SEHelper.addCooldown(player, itemStack.getItem(), MathHelper.secondsToTicks(30));
+                    SEHelper.addSpecificCooldown(player, itemStack, MathHelper.secondsToTicks(ItemConfig.ReviveSecondsCool.get()));
                     if (!player.getInventory().add(itemStack)) {
                         player.drop(itemStack, false, true);
                     }

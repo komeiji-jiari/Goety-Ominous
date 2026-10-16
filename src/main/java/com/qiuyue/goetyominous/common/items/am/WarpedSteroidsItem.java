@@ -30,6 +30,15 @@ public class WarpedSteroidsItem extends Item {
                 .stacksTo(1));
     }
 
+    public static boolean isUnholyBlood(ItemStack stack) {
+        return stack.hasTag() && stack.getTag().getBoolean(UNHOLY_BLOOD_TAG);
+    }
+
+    @Override
+    public String getDescriptionId(ItemStack stack) {
+        return isUnholyBlood(stack) ? "item.goetyominous.unholy_steroids" : super.getDescriptionId(stack);
+    }
+
     @Override
     public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
         if (SEHelper.isOnCooldown(player, stack)) {
@@ -49,7 +58,7 @@ public class WarpedSteroidsItem extends Item {
         }
 
         mosquito.startSteroidConversion();
-        mosquito.setInheritUnholyBlood(stack.hasTag() && stack.getTag().getBoolean(UNHOLY_BLOOD_TAG));
+        mosquito.setInheritUnholyBlood(isUnholyBlood(stack));
 
         if (!player.getAbilities().instabuild) {
             stack.shrink(1);

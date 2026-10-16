@@ -1,23 +1,32 @@
 package com.qiuyue.goetyominous.common.entities.ally.mobs.mm;
 
+import com.Polarice3.Goety.common.entities.ModEntityType;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
+import com.Polarice3.Goety.common.entities.projectiles.FlyingItem;
+import com.Polarice3.Goety.common.items.revive.ReviveServantItem;
+import com.Polarice3.Goety.config.ItemConfig;
 import com.alexander.mutantmore.config.MutantMoreGroupedOptionsCommonConfig;
 import com.alexander.mutantmore.interfaces.IMutatable;
 import javax.annotation.Nullable;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.PathNavigationRegion;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
@@ -45,6 +54,31 @@ public abstract class AbstractMutantServant extends Summoned implements IMutatab
     public abstract NodeEvaluatorDimensions getNodeEvaluatorDimensions();
 
     public abstract ForgeConfigSpec.ConfigValue<Boolean> despawnsConfig();
+
+    protected void returnReviveItem(Item item) {
+        LivingEntity owner = this.getTrueOwner();
+        if (owner == null) {
+            return;
+        }
+        ItemStack stack = new ItemStack(item);
+        ReviveServantItem.setOwnerName(owner, stack);
+        ReviveServantItem.setSummon(this, stack);
+        FlyingItem flyingItem = new FlyingItem(ModEntityType.FLYING_ITEM.get(), this.level(), this.getX(), this.getY(), this.getZ());
+        flyingItem.setOwner(owner);
+        flyingItem.setItem(stack);
+        flyingItem.setParticle(ParticleTypes.SOUL);
+        flyingItem.setSecondsCool(ItemConfig.ReviveSecondsCool.get());
+        this.level().addFreshEntity(flyingItem);
+    }
+
+    public void prepareRevived() {
+        this.deathTime = 0;
+    }
+
+    @Nullable
+    public SoundEvent getReviveSound() {
+        return null;
+    }
 
     public void readAdditionalSaveData(CompoundTag p_21450_) {
         super.readAdditionalSaveData(p_21450_);
