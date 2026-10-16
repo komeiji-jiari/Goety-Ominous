@@ -11,14 +11,11 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseFireBlock;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraftforge.network.NetworkHooks;
 
 public class RodlingServantFireball extends Fireball {
     public float damage = 0.0F;
-    public boolean griefing = true;
     public int fireLength = 0;
     public boolean ignoresInvulTime = true;
 
@@ -34,7 +31,6 @@ public class RodlingServantFireball extends Fireball {
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putFloat("Damage", this.damage);
-        tag.putBoolean("Griefing", this.griefing);
         tag.putInt("FireLength", this.fireLength);
         tag.putBoolean("IgnoresInvulTime", this.ignoresInvulTime);
     }
@@ -43,7 +39,6 @@ public class RodlingServantFireball extends Fireball {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.contains("Damage")) this.damage = tag.getFloat("Damage");
-        if (tag.contains("Griefing")) this.griefing = tag.getBoolean("Griefing");
         if (tag.contains("FireLength")) this.fireLength = tag.getInt("FireLength");
         if (tag.contains("IgnoresInvulTime")) this.ignoresInvulTime = tag.getBoolean("IgnoresInvulTime");
     }
@@ -84,17 +79,6 @@ public class RodlingServantFireball extends Fireball {
                 entity.hurt(MMDamageTypes.fireResBypassingFireball(this.damageSources(), this, owner instanceof LivingEntity ? owner : null),
                         fireImmune ? this.damage * 0.5F : this.damage);
                 entity.setSecondsOnFire(this.fireLength);
-            }
-        }
-    }
-
-    @Override
-    protected void onHitBlock(BlockHitResult hitResult) {
-        super.onHitBlock(hitResult);
-        if (!this.level().isClientSide && this.griefing) {
-            net.minecraft.core.BlockPos firePos = hitResult.getBlockPos().relative(hitResult.getDirection());
-            if (this.level().isEmptyBlock(firePos)) {
-                this.level().setBlockAndUpdate(firePos, BaseFireBlock.getState(this.level(), firePos));
             }
         }
     }

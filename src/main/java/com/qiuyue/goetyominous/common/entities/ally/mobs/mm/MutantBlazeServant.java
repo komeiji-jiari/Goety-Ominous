@@ -7,10 +7,9 @@ import com.alexander.mutantmore.ai.goals.GroundPullAntiCheeseGoal;
 import com.alexander.mutantmore.ai.goals.LookAtTargetGoal;
 import com.alexander.mutantmore.config.MutantMoreGroupedOptionsCommonConfig;
 import com.alexander.mutantmore.config.mutant_blaze.MutantBlazeCommonConfig;
-import com.alexander.mutantmore.events.ShakeCameraEvent;
+import com.qiuyue.goetyominous.compat.mm.MmScreenShake;
 import com.alexander.mutantmore.init.ParticleTypeInit;
 import com.alexander.mutantmore.init.SoundEventInit;
-import com.alexander.mutantmore.init.TagInit.Blocks;
 import com.alexander.mutantmore.init.TagInit.EntityTypes;
 import com.alexander.mutantmore.interfaces.IHasCustomExplosion;
 import com.alexander.mutantmore.interfaces.IHeatSource;
@@ -38,7 +37,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -379,7 +377,6 @@ public class MutantBlazeServant extends AbstractMutantServant implements IHeatSo
         fireball.explosionRadius = MutantBlazeCommonConfig.fireball_explosion_radius.get().floatValue();
         fireball.fireLength = MutantBlazeCommonConfig.fireball_fire_length.get();
         fireball.ignoresInvulTime = MutantBlazeCommonConfig.ignores_invulnerability_time.get();
-        fireball.griefing = false;
         fireball.explosionFire = MutantBlazeCommonConfig.fireball_explosion_fire.get();
         fireball.setPos(fireball.getX(), this.getY(0.5), fireball.getZ());
         if (fromDeath) {
@@ -461,7 +458,7 @@ public class MutantBlazeServant extends AbstractMutantServant implements IHeatSo
 
             int i;
             if (this.deathTime == 200) {
-                ShakeCameraEvent.shake(this.level(), 33, 0.025F, this.blockPosition(), 25);
+                MmScreenShake.shake(this.level(), 33, 0.025F, this.blockPosition(), 25);
                 this.playSound((SoundEvent)SoundEventInit.MUTANT_BLAZE_DEATH.get(), 3.0F, 1.0F);
 
                 for(i = 0; i < 1000; ++i) {
@@ -707,7 +704,7 @@ public class MutantBlazeServant extends AbstractMutantServant implements IHeatSo
             MutantBlazeServantShieldPart part = var1[var3];
             if (!this.level().isClientSide && !this.shieldsInactive()) {
                 if (this.shieldRegenerateTicks[part.partNumber] > 0) {
-                    int var10002 = this.shieldRegenerateTicks[part.partNumber]--;
+                    this.shieldRegenerateTicks[part.partNumber]--;
                 }
 
                 if (this.shieldRegenerateTicks[part.partNumber] == 20) {
@@ -793,10 +790,6 @@ public class MutantBlazeServant extends AbstractMutantServant implements IHeatSo
         }
 
         super.aiStep();
-    }
-
-    public static boolean canBurnBlock(BlockGetter level, Block block, BlockState blockstate, BlockPos blockpos) {
-        return !(block instanceof AirBlock) && block.getExplosionResistance(blockstate, level, blockpos, (Explosion)null) <= 6.0F;
     }
 
     public EntityDimensions getDimensions(Pose p_19975_) {
@@ -1078,41 +1071,8 @@ public class MutantBlazeServant extends AbstractMutantServant implements IHeatSo
 
     }
 
-    public TagKey<Block> walksThroughTag() {
-        return Blocks.MUTANT_BLAZE_WALKS_THROUGH;
-    }
-
-    @Override
-    public ForgeConfigSpec.ConfigValue<Boolean> walkGriefingConfig() {
-        return DISABLED;
-    }
-
-    @Override
-    public ForgeConfigSpec.ConfigValue<Boolean> walkGriefingDropsBlocksConfig() {
-        return DISABLED;
-    }
-
-    @Override
-    public ForgeConfigSpec.ConfigValue<Boolean> hurtGriefingConfig() {
-        return DISABLED;
-    }
-
-    @Override
-    public ForgeConfigSpec.ConfigValue<Boolean> hurtGriefingDropsBlocksConfig() {
-        return DISABLED;
-    }
-
-    @Override
-    public ForgeConfigSpec.ConfigValue<Boolean> showHealthBarConfig() {
-        return DISABLED;
-    }
-
     @Override
     public ForgeConfigSpec.ConfigValue<Boolean> despawnsConfig() {
-        return DISABLED;
-    }
-
-    public ForgeConfigSpec.ConfigValue<Boolean> playBattleMusicConfig() {
         return DISABLED;
     }
 
@@ -1167,10 +1127,6 @@ public class MutantBlazeServant extends AbstractMutantServant implements IHeatSo
             this.entityWidth = Mth.floor(p_77621_.getBbWidth() + 1.0F);
             this.entityHeight = Mth.floor(MutantBlazeServant.crouchingDimensions.height);
             this.entityDepth = Mth.floor(p_77621_.getBbWidth() + 1.0F);
-        }
-
-        public BlockPathTypes getBlockPathType(BlockGetter p_77576_, int p_77577_, int p_77578_, int p_77579_) {
-            return p_77576_.getBlockState(new BlockPos(p_77577_, p_77578_, p_77579_)).is(Blocks.MUTANT_BLAZE_WALKS_THROUGH) && (Boolean)MutantBlazeCommonConfig.walk_griefing.get() && !(Boolean)MutantMoreGroupedOptionsCommonConfig.mob_griefing_off.get() ? BlockPathTypes.OPEN : getBlockPathTypeStatic(p_77576_, new BlockPos.MutableBlockPos(p_77577_, p_77578_, p_77579_));
         }
     }
 }

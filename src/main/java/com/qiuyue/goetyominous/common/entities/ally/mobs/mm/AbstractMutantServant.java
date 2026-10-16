@@ -3,20 +3,14 @@ package com.qiuyue.goetyominous.common.entities.ally.mobs.mm;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.alexander.mutantmore.config.MutantMoreGroupedOptionsCommonConfig;
-import com.alexander.mutantmore.init.TagInit.Blocks;
 import com.alexander.mutantmore.interfaces.IMutatable;
-import java.util.Iterator;
-import java.util.List;
 import javax.annotation.Nullable;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.TagKey;
-import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -24,20 +18,17 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.PathNavigationRegion;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
-import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public abstract class AbstractMutantServant extends Summoned implements IMutatable {
-    private int destroyBlocksTick;
     private static final EntityDataAccessor<Integer> TARGETED_ENTITY_ID;
+    public float walkPhase;
+    public float walkPhaseAge = -1.0F;
 
     protected AbstractMutantServant(EntityType<? extends Owned> p_33002_, Level p_33003_) {
         super(p_33002_, p_33003_);
@@ -53,18 +44,6 @@ public abstract class AbstractMutantServant extends Summoned implements IMutatab
 
     public abstract NodeEvaluatorDimensions getNodeEvaluatorDimensions();
 
-    public abstract TagKey<Block> walksThroughTag();
-
-    public abstract ForgeConfigSpec.ConfigValue<Boolean> walkGriefingConfig();
-
-    public abstract ForgeConfigSpec.ConfigValue<Boolean> walkGriefingDropsBlocksConfig();
-
-    public abstract ForgeConfigSpec.ConfigValue<Boolean> hurtGriefingConfig();
-
-    public abstract ForgeConfigSpec.ConfigValue<Boolean> hurtGriefingDropsBlocksConfig();
-
-    public abstract ForgeConfigSpec.ConfigValue<Boolean> showHealthBarConfig();
-
     public abstract ForgeConfigSpec.ConfigValue<Boolean> despawnsConfig();
 
     public void readAdditionalSaveData(CompoundTag p_21450_) {
@@ -75,81 +54,8 @@ public abstract class AbstractMutantServant extends Summoned implements IMutatab
         super.setCustomName(p_31476_);
     }
 
-    protected void customServerAiStep() {
-        if (this.destroyBlocksTick > 0 && (Boolean)this.hurtGriefingConfig().get() && !(Boolean)MutantMoreGroupedOptionsCommonConfig.mob_griefing_off.get()) {
-            --this.destroyBlocksTick;
-            if (this.destroyBlocksTick == 0) {
-                int j1 = Mth.floor(this.getY());
-                int i2 = Mth.floor(this.getX());
-                int j2 = Mth.floor(this.getZ());
-                boolean flag = false;
-                AABB aabb = this.getBoundingBox().inflate(1.0, 0.0, 1.0).move(0.0, 0.1, 0.0);
-                Iterator var6 = BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(aabb.minY), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ)).iterator();
-
-                label48:
-                while(true) {
-                    BlockPos blockpos;
-                    BlockState blockstate;
-                    Block block;
-                    do {
-                        do {
-                            if (!var6.hasNext()) {
-                                break label48;
-                            }
-
-                            blockpos = (BlockPos)var6.next();
-                            blockstate = this.level().getBlockState(blockpos);
-                            block = blockstate.getBlock();
-                        } while(blockstate.is(Blocks.UNBREAKABLE));
-                    } while(this.cantBreakWithHurtGriefing() != null && this.cantBreakWithHurtGriefing().contains(block));
-
-                    flag = this.level().destroyBlock(blockpos, (Boolean)this.hurtGriefingDropsBlocksConfig().get() || (Boolean)MutantMoreGroupedOptionsCommonConfig.griefing_drops_blocks_on.get(), this) || flag;
-                }
-            }
-        }
-
-        super.customServerAiStep();
-    }
-
-    public List<Block> cantBreakWithHurtGriefing() {
-        return null;
-    }
-
     public void stopSeenByPlayer(ServerPlayer p_31488_) {
         super.stopSeenByPlayer(p_31488_);
-    }
-
-    public void aiStep() {
-        super.aiStep();
-        if (this.horizontalCollision && (Boolean)this.walkGriefingConfig().get() && !(Boolean)MutantMoreGroupedOptionsCommonConfig.mob_griefing_off.get()) {
-            boolean flag = false;
-            AABB aabb = this.getBoundingBox().inflate(0.2);
-            Iterator var3 = BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(aabb.minY), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ)).iterator();
-
-            while(true) {
-                BlockPos blockpos;
-                BlockState blockstate;
-                do {
-                    if (!var3.hasNext()) {
-                        return;
-                    }
-
-                    blockpos = (BlockPos)var3.next();
-                    blockstate = this.level().getBlockState(blockpos);
-                    Block block = blockstate.getBlock();
-                } while(!blockstate.is(this.walksThroughTag()));
-
-                flag = this.level().destroyBlock(blockpos, (Boolean)this.walkGriefingDropsBlocksConfig().get() || (Boolean)MutantMoreGroupedOptionsCommonConfig.griefing_drops_blocks_on.get(), this) || flag;
-            }
-        }
-    }
-
-    public boolean hurt(DamageSource p_21016_, float p_21017_) {
-        if (!this.isInvulnerableTo(p_21016_) && this.destroyBlocksTick <= 0) {
-            this.destroyBlocksTick = 20;
-        }
-
-        return super.hurt(p_21016_, p_21017_);
     }
 
     public float getStepHeight() {
@@ -256,10 +162,6 @@ public abstract class AbstractMutantServant extends Summoned implements IMutatab
                 this.entityDepth = ((AbstractMutantServant)p_77621_).getNodeEvaluatorDimensions().entityDepth;
             }
 
-        }
-
-        public BlockPathTypes getBlockPathType(BlockGetter p_77576_, int p_77577_, int p_77578_, int p_77579_) {
-            return p_77576_.getBlockState(new BlockPos(p_77577_, p_77578_, p_77579_)).is(this.mutant.walksThroughTag()) && (Boolean)this.mutant.walkGriefingConfig().get() && !(Boolean)MutantMoreGroupedOptionsCommonConfig.mob_griefing_off.get() ? BlockPathTypes.OPEN : getBlockPathTypeStatic(p_77576_, new BlockPos.MutableBlockPos(p_77577_, p_77578_, p_77579_));
         }
     }
 }

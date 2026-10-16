@@ -35,14 +35,6 @@ public class MutantHoglinServantModel<T extends MutantHoglinServant> extends Hie
     public final ModelPart leftFrontLegLower;
     public final ModelPart rightFrontLeg;
     public final ModelPart rightFrontLegLower;
-    private float chargeAnimationAmount;
-    private float walkAnimationAmount;
-    private float trotAnimationAmount;
-    private float idleAnimationAmount = 1.0F;
-    private boolean trotting;
-    private float keyframeAnimationAmount;
-    private float lastAgeInTicks = -1.0F;
-    private float[][] heldPose;
 
     public MutantHoglinServantModel(ModelPart root) {
         this.root = root;
@@ -87,24 +79,28 @@ public class MutantHoglinServantModel<T extends MutantHoglinServant> extends Hie
         this.root().getAllParts().forEach(ModelPart::resetPose);
 
         float deltaTicks;
-        if (this.lastAgeInTicks < 0.0F) {
+        if (entity.walkPhaseAge < 0.0F) {
             deltaTicks = 1.0F;
         } else {
-            deltaTicks = Mth.clamp(ageInTicks - this.lastAgeInTicks, 0.0F, 2.0F);
+            deltaTicks = Mth.clamp(ageInTicks - entity.walkPhaseAge, 0.0F, 2.0F);
         }
-        this.lastAgeInTicks = ageInTicks;
+        entity.walkPhaseAge = ageInTicks;
+
+        float walkSpeedFactor = Math.min((float) entity.getDeltaMovement().horizontalDistance() * 8.5F, 6.0F);
+        entity.walkPhase += walkSpeedFactor * deltaTicks;
+        float walkTick = entity.walkPhase * ((float) Math.PI / 180.0F) / 20.0F;
 
         boolean movingOnLand = entity.onGround() && !entity.isInWaterOrBubble() && limbSwingAmount > 0.005F;
 
-        if (this.trotting) {
+        if (entity.trotting) {
             if (limbSwingAmount < 0.06F) {
-                this.trotting = false;
+                entity.trotting = false;
             }
         } else if (limbSwingAmount > 0.12F) {
-            this.trotting = true;
+            entity.trotting = true;
         }
         boolean shouldPlayChargingAnimation = entity.charging && entity.notCurrentlyPlayingKeyframeAnimation();
-        boolean shouldPlayTrotAnimation = this.trotting && movingOnLand && !shouldPlayChargingAnimation && entity.notCurrentlyPlayingKeyframeAnimation();
+        boolean shouldPlayTrotAnimation = entity.trotting && movingOnLand && !shouldPlayChargingAnimation && entity.notCurrentlyPlayingKeyframeAnimation();
         boolean shouldPlayWalkAnimation = movingOnLand && !shouldPlayTrotAnimation && !shouldPlayChargingAnimation && entity.notCurrentlyPlayingKeyframeAnimation();
         boolean shouldPlayIdleAnimation = !shouldPlayWalkAnimation && !shouldPlayTrotAnimation && !shouldPlayChargingAnimation && entity.notCurrentlyPlayingKeyframeAnimation();
         boolean keyframeActive = entity.deathTime > 0
@@ -115,26 +111,26 @@ public class MutantHoglinServantModel<T extends MutantHoglinServant> extends Hie
                 || entity.introAnimationTick > 0
                 || entity.noveltyAnimationTick > 0;
         float blendSpeed = 0.12F;
-        this.chargeAnimationAmount = SineWaveAnimationUtils.tickAmountMultiplierChange(this.chargeAnimationAmount, shouldPlayChargingAnimation, deltaTicks * blendSpeed);
-        this.walkAnimationAmount = SineWaveAnimationUtils.tickAmountMultiplierChange(this.walkAnimationAmount, shouldPlayWalkAnimation, deltaTicks * blendSpeed);
-        this.trotAnimationAmount = SineWaveAnimationUtils.tickAmountMultiplierChange(this.trotAnimationAmount, shouldPlayTrotAnimation, deltaTicks * blendSpeed);
-        this.idleAnimationAmount = SineWaveAnimationUtils.tickAmountMultiplierChange(this.idleAnimationAmount, shouldPlayIdleAnimation, deltaTicks * blendSpeed);
-        this.keyframeAnimationAmount = SineWaveAnimationUtils.tickAmountMultiplierChange(this.keyframeAnimationAmount, keyframeActive, deltaTicks * 0.2F);
+        entity.chargeAnimationAmount = SineWaveAnimationUtils.tickAmountMultiplierChange(entity.chargeAnimationAmount, shouldPlayChargingAnimation, deltaTicks * blendSpeed);
+        entity.walkAnimationAmount = SineWaveAnimationUtils.tickAmountMultiplierChange(entity.walkAnimationAmount, shouldPlayWalkAnimation, deltaTicks * blendSpeed);
+        entity.trotAnimationAmount = SineWaveAnimationUtils.tickAmountMultiplierChange(entity.trotAnimationAmount, shouldPlayTrotAnimation, deltaTicks * blendSpeed);
+        entity.idleAnimationAmount = SineWaveAnimationUtils.tickAmountMultiplierChange(entity.idleAnimationAmount, shouldPlayIdleAnimation, deltaTicks * blendSpeed);
+        entity.keyframeAnimationAmount = SineWaveAnimationUtils.tickAmountMultiplierChange(entity.keyframeAnimationAmount, keyframeActive, deltaTicks * 0.2F);
         this.animateHeadLookTarget(netHeadYaw, headPitch);
 
         float sineTick = SineWaveAnimationUtils.getTick(entity.tickCount, true);
-        MutantHoglinSineWaveAnimations.mutantHoglinChargingAnimation(this, sineTick, 3.2F, this.chargeAnimationAmount);
-        MutantHoglinSineWaveAnimations.mutantHoglinWalkAnimation(this, sineTick, 1.2F, this.walkAnimationAmount);
-        MutantHoglinSineWaveAnimations.mutantHoglinTrotAnimation(this, sineTick, 2.0F, this.trotAnimationAmount);
-        MutantHoglinSineWaveAnimations.mutantHoglinIdleAnimation(this, sineTick, 1.0F, this.idleAnimationAmount);
+        MutantHoglinSineWaveAnimations.mutantHoglinChargingAnimation(this, sineTick, 3.2F, entity.chargeAnimationAmount);
+        MutantHoglinSineWaveAnimations.mutantHoglinWalkAnimation(this, walkTick, 1.2F, entity.walkAnimationAmount);
+        MutantHoglinSineWaveAnimations.mutantHoglinTrotAnimation(this, walkTick, 2.0F, entity.trotAnimationAmount);
+        MutantHoglinSineWaveAnimations.mutantHoglinIdleAnimation(this, sineTick, 1.0F, entity.idleAnimationAmount);
 
         List<ModelPart> parts = this.root().getAllParts().collect(Collectors.toList());
-        float k = this.keyframeAnimationAmount;
+        float k = entity.keyframeAnimationAmount;
         boolean needBlend = k > 0.0F || keyframeActive;
         float[][] pre = null;
         if (needBlend) {
-            if (this.heldPose == null || this.heldPose.length != parts.size()) {
-                this.heldPose = new float[parts.size()][6];
+            if (entity.heldPose == null || entity.heldPose.length != parts.size()) {
+                entity.heldPose = new float[parts.size()][6];
             }
             pre = new float[parts.size()][6];
             for (int i = 0; i < parts.size(); i++) {
@@ -167,23 +163,23 @@ public class MutantHoglinServantModel<T extends MutantHoglinServant> extends Hie
 
             for (int i = 0; i < parts.size(); i++) {
                 ModelPart p = parts.get(i);
-                this.heldPose[i][0] = p.xRot;
-                this.heldPose[i][1] = p.yRot;
-                this.heldPose[i][2] = p.zRot;
-                this.heldPose[i][3] = p.x;
-                this.heldPose[i][4] = p.y;
-                this.heldPose[i][5] = p.z;
+                entity.heldPose[i][0] = p.xRot;
+                entity.heldPose[i][1] = p.yRot;
+                entity.heldPose[i][2] = p.zRot;
+                entity.heldPose[i][3] = p.x;
+                entity.heldPose[i][4] = p.y;
+                entity.heldPose[i][5] = p.z;
             }
         }
         if (needBlend) {
             for (int i = 0; i < parts.size(); i++) {
                 ModelPart p = parts.get(i);
-                p.xRot = pre[i][0] + k * (this.heldPose[i][0] - pre[i][0]);
-                p.yRot = pre[i][1] + k * (this.heldPose[i][1] - pre[i][1]);
-                p.zRot = pre[i][2] + k * (this.heldPose[i][2] - pre[i][2]);
-                p.x = pre[i][3] + k * (this.heldPose[i][3] - pre[i][3]);
-                p.y = pre[i][4] + k * (this.heldPose[i][4] - pre[i][4]);
-                p.z = pre[i][5] + k * (this.heldPose[i][5] - pre[i][5]);
+                p.xRot = pre[i][0] + k * (entity.heldPose[i][0] - pre[i][0]);
+                p.yRot = pre[i][1] + k * (entity.heldPose[i][1] - pre[i][1]);
+                p.zRot = pre[i][2] + k * (entity.heldPose[i][2] - pre[i][2]);
+                p.x = pre[i][3] + k * (entity.heldPose[i][3] - pre[i][3]);
+                p.y = pre[i][4] + k * (entity.heldPose[i][4] - pre[i][4]);
+                p.z = pre[i][5] + k * (entity.heldPose[i][5] - pre[i][5]);
             }
         }
     }

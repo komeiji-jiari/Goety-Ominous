@@ -37,8 +37,7 @@ public class MutantWitherSkeletonServantRenderer extends MobRenderer<MutantWithe
 
     protected void setupRotations(MutantWitherSkeletonServant p_115685_, PoseStack p_115686_, float p_115687_, float p_115688_, float p_115689_) {
         super.setupRotations(p_115685_, p_115686_, p_115687_, p_115688_, p_115689_);
-        p_115685_.lungingXRot = (float)Mth.lerp((double)p_115689_, (double)p_115685_.lungingXRot, p_115685_.getAnimation("lunging").isPlaying() ? Mth.clamp(p_115685_.getDeltaMovement().y * 30.0, -90.0, 90.0) : 0.0);
-        p_115686_.mulPose(Axis.XP.rotationDegrees(p_115685_.lungingXRot));
+        p_115686_.mulPose(Axis.XP.rotationDegrees(Mth.lerp(p_115689_, p_115685_.lungingXRotO, p_115685_.lungingXRot)));
     }
 
     protected float getFlipDegrees(MutantWitherSkeletonServant p_115337_) {

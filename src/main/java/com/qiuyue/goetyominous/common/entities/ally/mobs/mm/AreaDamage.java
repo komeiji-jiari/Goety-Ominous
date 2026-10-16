@@ -7,7 +7,6 @@ import com.alexander.mutantmore.config.MutantMoreGroupedOptionsCommonConfig;
 import com.alexander.mutantmore.config.mutant_husk.MutantHuskCommonConfig;
 import com.alexander.mutantmore.config.mutant_jungle_zombie.MutantJungleZombieRewardsCommonConfig;
 import com.alexander.mutantmore.config.mutant_wither_skeleton.MutantWitherSkeletonCommonConfig;
-import com.alexander.mutantmore.entities.MutantHusk;
 import com.alexander.mutantmore.entities.SentryVine;
 import com.alexander.mutantmore.init.EffectInit;
 import com.alexander.mutantmore.init.ParticleTypeInit;
@@ -72,7 +71,7 @@ public class AreaDamage extends Entity {
     public int extraTimeTick;
     public boolean ignoresInvulTime;
     public TagKey<EntityType<?>> cantHurtTag;
-    public List<com.alexander.mutantmore.entities.AreaDamage> connectedAreaDamages = Lists.newArrayList();
+    public List<AreaDamage> connectedAreaDamages = Lists.newArrayList();
 
     public int witherBreathBuffLevelBonus = 0;
     public boolean witherBreathUsingNetherStaff = false;
@@ -136,14 +135,14 @@ public class AreaDamage extends Entity {
         } else {
             boolean canConnectedAreaDamagesHarm;
             Iterator var3;
-            com.alexander.mutantmore.entities.AreaDamage areaDamage;
+            AreaDamage areaDamage;
             if (this.cantHurtTag != null) {
                 canConnectedAreaDamagesHarm = true;
                 if (!this.connectedAreaDamages.isEmpty()) {
                     var3 = this.connectedAreaDamages.iterator();
 
                     while(var3.hasNext()) {
-                        areaDamage = (com.alexander.mutantmore.entities.AreaDamage)var3.next();
+                        areaDamage = (AreaDamage)var3.next();
                         if (!areaDamage.damagedEntities.isEmpty() && !areaDamage.constantDamage && areaDamage.damagedEntities.contains(entity)) {
                             canConnectedAreaDamagesHarm = false;
                         }
@@ -165,7 +164,7 @@ public class AreaDamage extends Entity {
                     var3 = this.connectedAreaDamages.iterator();
 
                     while(var3.hasNext()) {
-                        areaDamage = (com.alexander.mutantmore.entities.AreaDamage)var3.next();
+                        areaDamage = (AreaDamage)var3.next();
                         if (!areaDamage.damagedEntities.isEmpty() && !areaDamage.constantDamage && areaDamage.damagedEntities.contains(entity)) {
                             canConnectedAreaDamagesHarm = false;
                         }
@@ -243,17 +242,14 @@ public class AreaDamage extends Entity {
                 }
 
                 this.level().addParticle(new AdvancedParticleOption(ParticleTypeInit.SAND_GEYSER, List.of((float)MiscUtils.sandColourForSandType(this.getSandType()))), this.getX() + this.random.nextGaussian() * 0.1, this.getY(), this.getZ() + this.random.nextGaussian() * 0.1, 0.0, (double)this.getYKnockback() * 1.5, 0.0);
+
                 if (!this.level().isClientSide) {
                     AABB aabb = this.getBoundingBox().inflate(2.0);
-                    if (this.owner != null && this.owner instanceof MutantHusk && (Boolean)MutantHuskCommonConfig.geyser_attack_griefing.get() && !(Boolean)MutantMoreGroupedOptionsCommonConfig.quicksand_griefing_off.get()) {
-                        var11 = BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(aabb.minY), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ)).iterator();
-
-                        while(var11.hasNext()) {
-                            BlockPos blockpos = (BlockPos)var11.next();
+                    if (this.owner instanceof MutantHuskServant && MutantHuskCommonConfig.geyser_attack_griefing.get() && !MutantMoreGroupedOptionsCommonConfig.quicksand_griefing_off.get()) {
+                        for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(aabb.minY), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
                             BlockState blockstate = this.level().getBlockState(blockpos);
-                            if (blockstate.isAir() && QuicksandBlock.survivable(MiscUtils.quicksandBlockForSandType(this.getSandType()).defaultBlockState(), this.level(), blockpos) && this.random.nextInt(40) == 0) {
-                                this.level().setBlockAndUpdate(blockpos, MiscUtils.quicksandBlockForSandType(this.getSandType()).defaultBlockState());
-                            }
+                            if (!blockstate.isAir() || !QuicksandBlock.survivable(MiscUtils.quicksandBlockForSandType(this.getSandType()).defaultBlockState(), this.level(), blockpos) || this.random.nextInt(40) != 0) continue;
+                            this.level().setBlockAndUpdate(blockpos, MiscUtils.quicksandBlockForSandType(this.getSandType()).defaultBlockState());
                         }
                     }
                 }
@@ -573,17 +569,17 @@ public class AreaDamage extends Entity {
     }
 
     static {
-        SIZE = SynchedEntityData.defineId(com.alexander.mutantmore.entities.AreaDamage.class, EntityDataSerializers.FLOAT);
-        SIZE_TO_REACH = SynchedEntityData.defineId(com.alexander.mutantmore.entities.AreaDamage.class, EntityDataSerializers.FLOAT);
-        GROW_SPEED = SynchedEntityData.defineId(com.alexander.mutantmore.entities.AreaDamage.class, EntityDataSerializers.FLOAT);
-        Y_SIZE = SynchedEntityData.defineId(com.alexander.mutantmore.entities.AreaDamage.class, EntityDataSerializers.FLOAT);
-        Y_KNOCKBACK = SynchedEntityData.defineId(com.alexander.mutantmore.entities.AreaDamage.class, EntityDataSerializers.FLOAT);
-        TYPE = SynchedEntityData.defineId(com.alexander.mutantmore.entities.AreaDamage.class, EntityDataSerializers.INT);
-        ACTIVE_TYPE = SynchedEntityData.defineId(com.alexander.mutantmore.entities.AreaDamage.class, EntityDataSerializers.INT);
-        EXTRA_TIME = SynchedEntityData.defineId(com.alexander.mutantmore.entities.AreaDamage.class, EntityDataSerializers.INT);
-        START_DELAY = SynchedEntityData.defineId(com.alexander.mutantmore.entities.AreaDamage.class, EntityDataSerializers.INT);
-        DIRECTIONAL_MOTION = SynchedEntityData.defineId(com.alexander.mutantmore.entities.AreaDamage.class, EntityDataSerializers.BOOLEAN);
-        SAND_TYPE = SynchedEntityData.defineId(com.alexander.mutantmore.entities.AreaDamage.class, EntityDataSerializers.STRING);
-        SENT_FROM = SynchedEntityData.defineId(com.alexander.mutantmore.entities.AreaDamage.class, EntityDataSerializers.BLOCK_POS);
+        SIZE = SynchedEntityData.defineId(AreaDamage.class, EntityDataSerializers.FLOAT);
+        SIZE_TO_REACH = SynchedEntityData.defineId(AreaDamage.class, EntityDataSerializers.FLOAT);
+        GROW_SPEED = SynchedEntityData.defineId(AreaDamage.class, EntityDataSerializers.FLOAT);
+        Y_SIZE = SynchedEntityData.defineId(AreaDamage.class, EntityDataSerializers.FLOAT);
+        Y_KNOCKBACK = SynchedEntityData.defineId(AreaDamage.class, EntityDataSerializers.FLOAT);
+        TYPE = SynchedEntityData.defineId(AreaDamage.class, EntityDataSerializers.INT);
+        ACTIVE_TYPE = SynchedEntityData.defineId(AreaDamage.class, EntityDataSerializers.INT);
+        EXTRA_TIME = SynchedEntityData.defineId(AreaDamage.class, EntityDataSerializers.INT);
+        START_DELAY = SynchedEntityData.defineId(AreaDamage.class, EntityDataSerializers.INT);
+        DIRECTIONAL_MOTION = SynchedEntityData.defineId(AreaDamage.class, EntityDataSerializers.BOOLEAN);
+        SAND_TYPE = SynchedEntityData.defineId(AreaDamage.class, EntityDataSerializers.STRING);
+        SENT_FROM = SynchedEntityData.defineId(AreaDamage.class, EntityDataSerializers.BLOCK_POS);
     }
 }

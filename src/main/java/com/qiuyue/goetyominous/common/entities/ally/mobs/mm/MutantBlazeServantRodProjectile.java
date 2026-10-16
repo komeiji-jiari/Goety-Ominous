@@ -4,7 +4,6 @@ import com.Polarice3.Goety.common.entities.projectiles.SpellThrowableProjectile;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.alexander.mutantmore.init.MMDamageTypes;
 import com.alexander.mutantmore.init.SoundEventInit;
-import com.alexander.mutantmore.init.TagInit.Blocks;
 import com.alexander.mutantmore.util.MiscUtils;
 import javax.annotation.Nullable;
 
@@ -22,8 +21,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseFireBlock;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -48,9 +45,6 @@ public class MutantBlazeServantRodProjectile extends SpellThrowableProjectile {
     public boolean ignoresInvulTime = true;
     public int despawnTime = 1200;
     public boolean glows = false;
-    public boolean griefing = true;
-    public boolean griefingDropsBlocks = false;
-    public boolean fireGriefing = false;
     public int spellLifespanMultiplier = 0;
 
     public MutantBlazeServantRodProjectile(EntityType<? extends MutantBlazeServantRodProjectile> type, Level level) {
@@ -83,7 +77,7 @@ public class MutantBlazeServantRodProjectile extends SpellThrowableProjectile {
         }
         if (!this.level().isClientSide) {
             ++this.despawnTimer;
-            if (this.tickCount >= 100 || this.despawnTimer >= (this.isCollectable() ? 6000 : this.despawnTime)) {
+            if (this.despawnTimer >= (this.isCollectable() ? 6000 : this.despawnTime)) {
                 this.discard();
             }
         }
@@ -128,12 +122,6 @@ public class MutantBlazeServantRodProjectile extends SpellThrowableProjectile {
         if (!this.hasBrokenBlock()) {
             this.setHasBrokenBlock(true);
             this.setDeltaMovement(this.getDeltaMovement().multiply(-0.25D, 0.5D, -0.25D));
-            if (!this.level().isClientSide && this.griefing && !this.isCollectable()) {
-                BlockState state = this.level().getBlockState(pos);
-                if (!state.is(Blocks.UNBREAKABLE)) {
-                    this.level().destroyBlock(pos, this.griefingDropsBlocks);
-                }
-            }
         } else {
             if (this.isRodling() && !this.isCollectable() && !this.summonedRodling) {
                 this.becomeRodling(null);
@@ -141,10 +129,6 @@ public class MutantBlazeServantRodProjectile extends SpellThrowableProjectile {
             this.level().getBlockState(pos).entityInside(this.level(), pos, this);
             this.landed = true;
             this.setDeltaMovement(0.0D, 0.0D, 0.0D);
-            if (this.level().getBlockState(this.blockPosition()).isAir() && this.fireGriefing
-                    && !this.level().isClientSide && !this.isCollectable()) {
-                this.level().setBlockAndUpdate(this.blockPosition(), BaseFireBlock.getState(this.level(), this.blockPosition()));
-            }
             if (!this.level().isClientSide && !this.isCollectable() && !this.isRodling()) {
                 this.discard();
             }
@@ -266,9 +250,6 @@ public class MutantBlazeServantRodProjectile extends SpellThrowableProjectile {
         tag.putBoolean("IgnoresInvulTime", this.ignoresInvulTime);
         tag.putInt("DespawnTime", this.despawnTime);
         tag.putBoolean("Glows", this.glows);
-        tag.putBoolean("Griefing", this.griefing);
-        tag.putBoolean("GriefingDropsBlocks", this.griefingDropsBlocks);
-        tag.putBoolean("FireGriefing", this.fireGriefing);
     }
 
     @Override
@@ -284,8 +265,5 @@ public class MutantBlazeServantRodProjectile extends SpellThrowableProjectile {
         if (tag.contains("IgnoresInvulTime")) this.ignoresInvulTime = tag.getBoolean("IgnoresInvulTime");
         if (tag.contains("DespawnTime")) this.despawnTime = tag.getInt("DespawnTime");
         if (tag.contains("Glows")) this.glows = tag.getBoolean("Glows");
-        if (tag.contains("Griefing")) this.griefing = tag.getBoolean("Griefing");
-        if (tag.contains("GriefingDropsBlocks")) this.griefingDropsBlocks = tag.getBoolean("GriefingDropsBlocks");
-        if (tag.contains("FireGriefing")) this.fireGriefing = tag.getBoolean("FireGriefing");
     }
 }
