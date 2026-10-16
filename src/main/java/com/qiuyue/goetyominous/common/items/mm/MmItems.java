@@ -35,6 +35,18 @@ public class MmItems {
             "rodling_servant_spawn_egg",
             () -> new ServantSpawnEggItem(MmEntityRegistry.RODLING_SERVANT, 0xFFB347, 0x8B5A2B, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> MUTANT_JUNGLE_ZOMBIE_SERVANT_SPAWN_EGG = MM_ITEMS.register(
+            "mutant_jungle_zombie_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(MmEntityRegistry.MUTANT_JUNGLE_ZOMBIE_SERVANT, 0x205656, 0x419244, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> MUTANT_HUSK_SERVANT_SPAWN_EGG = MM_ITEMS.register(
+            "mutant_husk_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(MmEntityRegistry.MUTANT_HUSK_SERVANT, 0xD3B87D, 0x5D5543, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> MUTANT_FROZEN_ZOMBIE_SERVANT_SPAWN_EGG = MM_ITEMS.register(
+            "mutant_frozen_zombie_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(MmEntityRegistry.MUTANT_FROZEN_ZOMBIE_SERVANT, 0x8FC7E8, 0x2B4C6F, egg()));
+
     public static final RegistryObject<MagicFocus> WITHER_BREATH_FOCUS = MM_ITEMS.register(
             "wither_breath_focus",
             () -> new MagicFocus(new WitherBreathSpell()));
@@ -65,8 +77,6 @@ public class MmItems {
     public static final RegistryObject<Item> SHULKER_EMBRYO = MM_ITEMS.register(
             "shulker_embryo",
             () -> new Item(new Item.Properties().rarity(Rarity.RARE).stacksTo(64)));
-
-
 
     public static Item.Properties egg() {
         return new Item.Properties();

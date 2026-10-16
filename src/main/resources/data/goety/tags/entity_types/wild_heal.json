@@ -17,6 +17,10 @@
     {
       "id": "goetyominous:emu_servant",
       "required": false
+    },
+    {
+      "id": "goetyominous:mutant_jungle_zombie_servant",
+      "required": false
     }
   ]
 }

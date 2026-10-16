@@ -29,5 +29,8 @@ public class MmCompatManager {
         event.put(MmEntityRegistry.MUTANT_SHULKER_SERVANT_TRAP.get(), MutantShulkerServantTrap.createConfiguredAttributes().build());
         event.put(MmEntityRegistry.MUTANT_BLAZE_SERVANT.get(), MutantBlazeServant.createConfiguredAttributes().build());
         event.put(MmEntityRegistry.RODLING_SERVANT.get(), RodlingServant.createConfiguredAttributes().build());
+        event.put(MmEntityRegistry.MUTANT_JUNGLE_ZOMBIE_SERVANT.get(), MutantJungleZombieServant.createConfiguredAttributes().build());
+        event.put(MmEntityRegistry.MUTANT_HUSK_SERVANT.get(), MutantHuskServant.createConfiguredAttributes().build());
+        event.put(MmEntityRegistry.MUTANT_FROZEN_ZOMBIE_SERVANT.get(), MutantFrozenZombieServant.createConfiguredAttributes().build());
     }
 }

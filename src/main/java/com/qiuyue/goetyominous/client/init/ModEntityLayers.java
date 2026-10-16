@@ -129,6 +129,30 @@ public class ModEntityLayers {
     public static final ModelLayerLocation MUTANT_SHULKER_SERVANT_TRAP_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "mutant_shulker_servant_trap"), "main");
 
+    public static final ModelLayerLocation MUTANT_JUNGLE_ZOMBIE_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "mutant_jungle_zombie_servant"), "main");
+
+    public static final ModelLayerLocation MUTANT_HUSK_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "mutant_husk_servant"), "main");
+
+    public static final ModelLayerLocation SAND_BOULDER_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "sand_boulder_servant"), "main");
+
+    public static final ModelLayerLocation ZOMBIE_RESURRECTION_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "zombie_resurrection_servant"), "main");
+
+    public static final ModelLayerLocation MUTANT_FROZEN_ZOMBIE_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "mutant_frozen_zombie_servant"), "main");
+
+    public static final ModelLayerLocation ICICLE_SPIKE_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "icicle_spike_servant"), "main");
+
+    public static final ModelLayerLocation THROWN_ICICLE_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "thrown_icicle_servant"), "main");
+
+    public static final ModelLayerLocation GIANT_SNOWBALL_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "giant_snowball_servant"), "main");
+
     public static final ModelLayerLocation STORM_NECROMANCER_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "storm_necromancer"), "main");
 

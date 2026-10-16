@@ -458,6 +458,28 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> RodlingServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> RodlingServantMovementSpeed;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantJungleZombieServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantJungleZombieServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantJungleZombieServantArmorToughness;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantJungleZombieServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantJungleZombieServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantJungleZombieServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantJungleZombieServantAttackDamage;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantHuskServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantHuskServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantHuskServantArmorToughness;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantHuskServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantHuskServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantHuskServantMovementSpeed;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantFrozenZombieServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantFrozenZombieServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantFrozenZombieServantArmorToughness;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantFrozenZombieServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantFrozenZombieServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> MutantFrozenZombieServantMovementSpeed;
+
     public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantDamage;
@@ -1232,6 +1254,53 @@ public class AttributesConfig {
                 .defineInRange("rodlingServantFollowRange", 20.0, 1.0, Double.MAX_VALUE);
         RodlingServantMovementSpeed = BUILDER.comment("How fast Rodling Servants move, Default: 0.125")
                 .defineInRange("rodlingServantMovementSpeed", 0.125, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Mutant Jungle Zombie Servant");
+        MutantJungleZombieServantHealth = BUILDER.comment("How much Max Health Mutant Jungle Zombie Servants have, Default: 60.0")
+                .defineInRange("mutantJungleZombieServantHealth", 60.0, 1.0, Double.MAX_VALUE);
+        MutantJungleZombieServantArmor = BUILDER.comment("How much natural Armor Mutant Jungle Zombie Servants have, Default: 2.0")
+                .defineInRange("mutantJungleZombieServantArmor", 2.0, 0.0, Double.MAX_VALUE);
+        MutantJungleZombieServantArmorToughness = BUILDER.comment("How much natural Armor Toughness Mutant Jungle Zombie Servants have, Default: 0.0")
+                .defineInRange("mutantJungleZombieServantArmorToughness", 0.0, 0.0, Double.MAX_VALUE);
+        MutantJungleZombieServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Mutant Jungle Zombie Servants have, Default: 1.0")
+                .defineInRange("mutantJungleZombieServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
+        MutantJungleZombieServantFollowRange = BUILDER.comment("How much following/detection range Mutant Jungle Zombie Servants have, Default: 64.0")
+                .defineInRange("mutantJungleZombieServantFollowRange", 64.0, 1.0, Double.MAX_VALUE);
+        MutantJungleZombieServantMovementSpeed = BUILDER.comment("How fast Mutant Jungle Zombie Servants move, Default: 0.24")
+                .defineInRange("mutantJungleZombieServantMovementSpeed", 0.24, 0.0, Double.MAX_VALUE);
+        MutantJungleZombieServantAttackDamage = BUILDER.comment("How much damage Mutant Jungle Zombie Servants deal, Default: 10.0")
+                .defineInRange("mutantJungleZombieServantAttackDamage", 10.0, 1.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Mutant Husk Servant");
+        MutantHuskServantHealth = BUILDER.comment("How much Max Health Mutant Husk Servants have, Default: 180.0")
+                .defineInRange("mutantHuskServantHealth", 180.0, 1.0, Double.MAX_VALUE);
+        MutantHuskServantArmor = BUILDER.comment("How much natural Armor Mutant Husk Servants have, Default: 4.0")
+                .defineInRange("mutantHuskServantArmor", 4.0, 0.0, Double.MAX_VALUE);
+        MutantHuskServantArmorToughness = BUILDER.comment("How much natural Armor Toughness Mutant Husk Servants have, Default: 0.0")
+                .defineInRange("mutantHuskServantArmorToughness", 0.0, 0.0, Double.MAX_VALUE);
+        MutantHuskServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Mutant Husk Servants have, Default: 1.0")
+                .defineInRange("mutantHuskServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
+        MutantHuskServantFollowRange = BUILDER.comment("How much following/detection range Mutant Husk Servants have, Default: 64.0")
+                .defineInRange("mutantHuskServantFollowRange", 64.0, 1.0, Double.MAX_VALUE);
+        MutantHuskServantMovementSpeed = BUILDER.comment("How fast Mutant Husk Servants move, Default: 0.24")
+                .defineInRange("mutantHuskServantMovementSpeed", 0.24, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Mutant Frozen Zombie Servant");
+        MutantFrozenZombieServantHealth = BUILDER.comment("How much Max Health Mutant Frozen Zombie Servants have, Default: 100.0")
+                .defineInRange("mutantFrozenZombieServantHealth", 100.0, 1.0, Double.MAX_VALUE);
+        MutantFrozenZombieServantArmor = BUILDER.comment("How much natural Armor Mutant Frozen Zombie Servants have, Default: 2.0")
+                .defineInRange("mutantFrozenZombieServantArmor", 2.0, 0.0, Double.MAX_VALUE);
+        MutantFrozenZombieServantArmorToughness = BUILDER.comment("How much natural Armor Toughness Mutant Frozen Zombie Servants have, Default: 0.0")
+                .defineInRange("mutantFrozenZombieServantArmorToughness", 0.0, 0.0, Double.MAX_VALUE);
+        MutantFrozenZombieServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Mutant Frozen Zombie Servants have, Default: 1.0")
+                .defineInRange("mutantFrozenZombieServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
+        MutantFrozenZombieServantFollowRange = BUILDER.comment("How much following/detection range Mutant Frozen Zombie Servants have, Default: 64.0")
+                .defineInRange("mutantFrozenZombieServantFollowRange", 64.0, 1.0, Double.MAX_VALUE);
+        MutantFrozenZombieServantMovementSpeed = BUILDER.comment("How fast Mutant Frozen Zombie Servants move, Default: 0.22")
+                .defineInRange("mutantFrozenZombieServantMovementSpeed", 0.22, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.push("AM Servants (Optional)");

@@ -53,6 +53,7 @@ public class MmEntityRegistry {
             MM_ENTITIES.register("mutant_shulker_servant_bullet",
                     () -> EntityType.Builder.of(MutantShulkerServantBullet::new, MobCategory.MISC)
                             .sized(0.85F, 0.85F)
+                            .updateInterval(1)
                             .build(GoetyOminous.MOD_ID + ":mutant_shulker_servant_bullet"));
 
     public static final RegistryObject<EntityType<MutantShulkerServantTrap>> MUTANT_SHULKER_SERVANT_TRAP =
@@ -93,6 +94,57 @@ public class MmEntityRegistry {
                             .sized(1.9F, 4.5F).fireImmune()
                             .clientTrackingRange(10)
                             .build(GoetyOminous.MOD_ID + ":mutant_blaze_servant"));
+
+    public static final RegistryObject<EntityType<MutantJungleZombieServant>> MUTANT_JUNGLE_ZOMBIE_SERVANT =
+            MM_ENTITIES.register("mutant_jungle_zombie_servant",
+                    () -> EntityType.Builder.of(MutantJungleZombieServant::new, MobCategory.MISC)
+                            .sized(1.8F, 3.2F)
+                            .clientTrackingRange(10)
+                            .build(GoetyOminous.MOD_ID + ":mutant_jungle_zombie_servant"));
+
+    public static final RegistryObject<EntityType<MutantHuskServant>> MUTANT_HUSK_SERVANT =
+            MM_ENTITIES.register("mutant_husk_servant",
+                    () -> EntityType.Builder.of(MutantHuskServant::new, MobCategory.MISC)
+                            .sized(1.9F, 3.4F)
+                            .clientTrackingRange(10)
+                            .build(GoetyOminous.MOD_ID + ":mutant_husk_servant"));
+
+    public static final RegistryObject<EntityType<SandBoulderServant>> SAND_BOULDER_SERVANT =
+            MM_ENTITIES.register("sand_boulder_servant",
+                    () -> EntityType.Builder.<SandBoulderServant>of(SandBoulderServant::new, MobCategory.MISC)
+                            .sized(1.5F, 1.5F)
+                            .build(GoetyOminous.MOD_ID + ":sand_boulder_servant"));
+
+    public static final RegistryObject<EntityType<ZombieResurrectionServant>> ZOMBIE_RESURRECTION_SERVANT =
+            MM_ENTITIES.register("zombie_resurrection_servant",
+                    () -> EntityType.Builder.<ZombieResurrectionServant>of(ZombieResurrectionServant::new, MobCategory.MISC)
+                            .sized(0.6F, 1.95F)
+                            .build(GoetyOminous.MOD_ID + ":zombie_resurrection_servant"));
+
+    public static final RegistryObject<EntityType<MutantFrozenZombieServant>> MUTANT_FROZEN_ZOMBIE_SERVANT =
+            MM_ENTITIES.register("mutant_frozen_zombie_servant",
+                    () -> EntityType.Builder.of(MutantFrozenZombieServant::new, MobCategory.MISC)
+                            .sized(1.8F, 3.2F)
+                            .clientTrackingRange(10)
+                            .build(GoetyOminous.MOD_ID + ":mutant_frozen_zombie_servant"));
+
+    public static final RegistryObject<EntityType<IcicleSpikeServant>> ICICLE_SPIKE_SERVANT =
+            MM_ENTITIES.register("icicle_spike_servant",
+                    () -> EntityType.Builder.<IcicleSpikeServant>of(IcicleSpikeServant::new, MobCategory.MISC)
+                            .sized(1.6F, 2.0F)
+                            .build(GoetyOminous.MOD_ID + ":icicle_spike_servant"));
+
+    public static final RegistryObject<EntityType<ThrownIcicleServant>> THROWN_ICICLE_SERVANT =
+            MM_ENTITIES.register("thrown_icicle_servant",
+                    () -> EntityType.Builder.<ThrownIcicleServant>of(ThrownIcicleServant::new, MobCategory.MISC)
+                            .sized(1.0F, 1.0F)
+                            .build(GoetyOminous.MOD_ID + ":thrown_icicle_servant"));
+
+    public static final RegistryObject<EntityType<GiantSnowballServant>> GIANT_SNOWBALL_SERVANT =
+            MM_ENTITIES.register("giant_snowball_servant",
+                    () -> EntityType.Builder.<GiantSnowballServant>of(GiantSnowballServant::new, MobCategory.MISC)
+                            .sized(1.8F, 1.8F)
+                            .build(GoetyOminous.MOD_ID + ":giant_snowball_servant"));
 
     public static final RegistryObject<EntityType<GiantHellBlast>> GIANT_HELL_BLAST =
             MM_ENTITIES.register("giant_hell_blast",

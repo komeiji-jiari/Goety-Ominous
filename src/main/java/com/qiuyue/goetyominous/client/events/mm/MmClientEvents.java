@@ -49,6 +49,30 @@ public class MmClientEvents {
         event.registerLayerDefinition(ModEntityLayers.MUTANT_SHULKER_SERVANT_TRAP_LAYER,
                 MutantShulkerServantTrapModel::createBodyLayer);
 
+        event.registerLayerDefinition(ModEntityLayers.MUTANT_JUNGLE_ZOMBIE_SERVANT_LAYER,
+                com.qiuyue.goetyominous.client.render.model.mm.MutantJungleZombieServantModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.MUTANT_HUSK_SERVANT_LAYER,
+                com.qiuyue.goetyominous.client.render.model.mm.MutantHuskServantModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.SAND_BOULDER_SERVANT_LAYER,
+                com.qiuyue.goetyominous.client.render.model.mm.SandBoulderServantModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.ZOMBIE_RESURRECTION_SERVANT_LAYER,
+                com.qiuyue.goetyominous.client.render.model.mm.ZombieResurrectionServantModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.MUTANT_FROZEN_ZOMBIE_SERVANT_LAYER,
+                com.qiuyue.goetyominous.client.render.model.mm.MutantFrozenZombieServantModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.ICICLE_SPIKE_SERVANT_LAYER,
+                com.qiuyue.goetyominous.client.render.model.mm.IcicleSpikeServantModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.THROWN_ICICLE_SERVANT_LAYER,
+                com.qiuyue.goetyominous.client.render.model.mm.ThrownIcicleServantModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.GIANT_SNOWBALL_SERVANT_LAYER,
+                com.qiuyue.goetyominous.client.render.model.mm.GiantSnowballServantModel::createBodyLayer);
+
         event.registerLayerDefinition(MutantShulkerServantBulletModel.LAYER_LOCATION,
                 MutantShulkerServantBulletModel::createBodyLayer);
     }
@@ -80,6 +104,38 @@ public class MmClientEvents {
         event.registerEntityRenderer(
                 com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.MUTANT_SHULKER_SERVANT_TRAP.get(),
                 MutantShulkerServantTrapRenderer::new);
+
+        event.registerEntityRenderer(
+                com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.MUTANT_JUNGLE_ZOMBIE_SERVANT.get(),
+                com.qiuyue.goetyominous.client.render.mm.MutantJungleZombieServantRenderer::new);
+
+        event.registerEntityRenderer(
+                com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.MUTANT_HUSK_SERVANT.get(),
+                com.qiuyue.goetyominous.client.render.mm.MutantHuskServantRenderer::new);
+
+        event.registerEntityRenderer(
+                com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.SAND_BOULDER_SERVANT.get(),
+                com.qiuyue.goetyominous.client.render.mm.SandBoulderServantRenderer::new);
+
+        event.registerEntityRenderer(
+                com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.ZOMBIE_RESURRECTION_SERVANT.get(),
+                com.qiuyue.goetyominous.client.render.mm.ZombieResurrectionServantRenderer::new);
+
+        event.registerEntityRenderer(
+                com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.MUTANT_FROZEN_ZOMBIE_SERVANT.get(),
+                com.qiuyue.goetyominous.client.render.mm.MutantFrozenZombieServantRenderer::new);
+
+        event.registerEntityRenderer(
+                com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.ICICLE_SPIKE_SERVANT.get(),
+                com.qiuyue.goetyominous.client.render.mm.IcicleSpikeServantRenderer::new);
+
+        event.registerEntityRenderer(
+                com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.THROWN_ICICLE_SERVANT.get(),
+                com.qiuyue.goetyominous.client.render.mm.ThrownIcicleServantRenderer::new);
+
+        event.registerEntityRenderer(
+                com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.GIANT_SNOWBALL_SERVANT.get(),
+                com.qiuyue.goetyominous.client.render.mm.GiantSnowballServantRenderer::new);
 
         event.registerEntityRenderer(
                 com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.MUTANT_SHULKER_SERVANT_BULLET.get(),
