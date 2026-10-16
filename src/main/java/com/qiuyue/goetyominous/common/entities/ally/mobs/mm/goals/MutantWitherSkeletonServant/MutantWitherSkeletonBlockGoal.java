@@ -1,7 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantWitherSkeletonServant;
 
 import com.alexander.mutantmore.config.mutant_wither_skeleton.MutantWitherSkeletonCommonConfig;
-import com.alexander.mutantmore.events.ShakeCameraEvent;
+import com.qiuyue.goetyominous.compat.mm.MmScreenShake;
 import com.alexander.mutantmore.init.EffectInit;
 import com.alexander.mutantmore.init.SoundEventInit;
 import com.alexander.mutantmore.util.MiscUtils;
@@ -51,7 +51,7 @@ public class MutantWitherSkeletonBlockGoal extends Goal {
     public void start() {
         super.start();
         this.mob.playSound((SoundEvent)SoundEventInit.MUTANT_WITHER_SKELETON_LAND_HIT.get());
-        ShakeCameraEvent.shake(this.mob.level(), 20, 0.05F, this.mob.blockPosition(), 5);
+        MmScreenShake.shake(this.mob.level(), 20, 0.05F, this.mob.blockPosition(), 5);
     }
 
     public void tick() {
@@ -63,7 +63,7 @@ public class MutantWitherSkeletonBlockGoal extends Goal {
 
         if (this.mob.getAnimation("block").isProgressAt(1.0F)) {
             this.mob.playSound((SoundEvent)SoundEventInit.MUTANT_WITHER_SKELETON_DOUBLESWORD.get());
-            ShakeCameraEvent.shake(this.mob.level(), 10, 0.15F, this.mob.blockPosition(), 20);
+            MmScreenShake.shake(this.mob.level(), 10, 0.15F, this.mob.blockPosition(), 20);
             float width = this.mob.getBbWidth() * 1.25F;
             Vec3 bbOffset = PositionUtils.getOffsetPos(this.mob, 0.0, 0.0, (double)(width * 2.0F), 0.0F, this.mob.yBodyRot);
             AABB bb = (new AABB(bbOffset.add((double)width, (double)width, (double)width), bbOffset.subtract((double)width, (double)width, (double)width))).move(0.0, (double)(this.mob.getBbHeight() / 2.0F), 0.0);

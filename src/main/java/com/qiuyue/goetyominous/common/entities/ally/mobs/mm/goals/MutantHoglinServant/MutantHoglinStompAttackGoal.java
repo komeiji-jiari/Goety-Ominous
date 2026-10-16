@@ -1,7 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantHoglinServant;
 
 import com.alexander.mutantmore.config.mutant_hoglin.MutantHoglinCommonConfig;
-import com.alexander.mutantmore.events.ShakeCameraEvent;
+import com.qiuyue.goetyominous.compat.mm.MmScreenShake;
 import com.alexander.mutantmore.init.MMDamageTypes;
 import com.alexander.mutantmore.init.ParticleTypeInit;
 import com.alexander.mutantmore.util.MiscUtils;
@@ -84,7 +84,7 @@ public class MutantHoglinStompAttackGoal extends Goal {
         Vec3 particlePos = PositionUtils.getOffsetPos(this.mob, 1.375, 0.0, 1.1, 0.0F, this.mob.yBodyRot);
         ((ServerLevel)this.mob.level()).sendParticles((SimpleParticleType)ParticleTypeInit.SHOCKWAVE.get(), particlePos.x, particlePos.y, particlePos.z, 1, 0.0, 0.0, 0.0, 0.0);
         this.mob.level().broadcastEntityEvent(this.mob, (byte)15);
-        ShakeCameraEvent.shake(this.mob.level(), 6, 0.15F, this.mob.blockPosition(), ((Double)MutantHoglinCommonConfig.stomp_attack_range.get()).intValue());
+        MmScreenShake.shake(this.mob.level(), 6, 0.15F, this.mob.blockPosition(), ((Double)MutantHoglinCommonConfig.stomp_attack_range.get()).intValue());
         Iterator var2 = this.mob.level().getEntitiesOfClass(LivingEntity.class, this.mob.getBoundingBox().inflate((Double)MutantHoglinCommonConfig.stomp_attack_range.get(), (Double)MutantHoglinCommonConfig.stomp_attack_range.get(), (Double)MutantHoglinCommonConfig.stomp_attack_range.get()), MiscUtils.ALIVE).iterator();
 
         while(true) {

@@ -1,7 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantHoglinServant;
 
 import com.alexander.mutantmore.config.mutant_hoglin.MutantHoglinCommonConfig;
-import com.alexander.mutantmore.events.ShakeCameraEvent;
+import com.qiuyue.goetyominous.compat.mm.MmScreenShake;
 import com.alexander.mutantmore.init.EffectInit;
 import com.alexander.mutantmore.util.MiscUtils;
 import com.alexander.mutantmore.util.PositionUtils;
@@ -76,7 +76,7 @@ public class MutantHoglinKickAttackGoal extends Goal {
         if (var10000 == 24) {
             Vec3 kickAttackBoundingBoxOffset = PositionUtils.getOffsetPos(this.mob, 0.0, 0.0, 3.25, 0.0F, this.mob.yBodyRot);
             AABB kickAttackBoundingBox = this.mob.getBoundingBox().deflate(0.0, 1.0, 0.0).move(0.0, -1.0, 0.0).inflate(1.0, 0.0, 1.0).move(kickAttackBoundingBoxOffset.x - this.mob.getX(), kickAttackBoundingBoxOffset.y - this.mob.getY(), kickAttackBoundingBoxOffset.z - this.mob.getZ());
-            ShakeCameraEvent.shake(this.mob.level(), 13, 0.15F, this.mob.blockPosition(), 10);
+            MmScreenShake.shake(this.mob.level(), 13, 0.15F, this.mob.blockPosition(), 10);
             Iterator var3 = this.mob.level().getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), this.mob, kickAttackBoundingBox).iterator();
 
             while(var3.hasNext()) {

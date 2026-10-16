@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm;
 
+import com.qiuyue.goetyominous.compat.lm.LmScreenShake;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
@@ -14,7 +15,6 @@ import net.miauczel.legendary_monsters.Particle.custom.BigAnnihilationSweepParti
 import net.miauczel.legendary_monsters.Particle.custom.Circle;
 import net.miauczel.legendary_monsters.Particle.custom.LightningParticle;
 import net.miauczel.legendary_monsters.Particle.custom.MovingTrailParticle;
-import net.miauczel.legendary_monsters.entity.AnimatedMonster.Effect.CameraShakeEntity;
 import net.miauczel.legendary_monsters.sound.ModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -418,7 +418,7 @@ public class FlameDrifterServant extends AbstractFlamebornServant {
         if (this.teleportBoolean(event.getTargetX(), event.getTargetY(), event.getTargetZ(), true)) {
             this.level().gameEvent(GameEvent.TELEPORT, oldPos, GameEvent.Context.of(this));
             if (!this.isSilent()) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 10.0F, 0.1F, 5, 5);
+                LmScreenShake.shake(this.level(), this.position(), 10.0F, 0.1F, 5, 5);
                 this.playSound(SoundEvents.SHULKER_TELEPORT, 4.0F, 1.0F);
             }
             return true;

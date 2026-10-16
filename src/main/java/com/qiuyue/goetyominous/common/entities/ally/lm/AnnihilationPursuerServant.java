@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm;
 
+import com.qiuyue.goetyominous.compat.lm.LmScreenShake;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
@@ -19,7 +20,6 @@ import net.miauczel.legendary_monsters.Particle.custom.GiantAnnihilationSweepPar
 import net.miauczel.legendary_monsters.Particle.custom.MovingTrailParticle;
 import net.miauczel.legendary_monsters.damagetype.ModDamageTypes;
 import net.miauczel.legendary_monsters.effect.ModEffects;
-import net.miauczel.legendary_monsters.entity.AnimatedMonster.Effect.CameraShakeEntity;
 import net.miauczel.legendary_monsters.sound.ModSounds;
 import net.miauczel.legendary_monsters.util.EntityUtil;
 import net.miauczel.legendary_monsters.util.MathUtils;
@@ -533,7 +533,7 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
         float slashRange = 5.0F;
 
         if (this.getAttackState() == 7 && this.attackTicks == 1) {
-            CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.075F, 0, 20);
+            LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.075F, 0, 20);
         }
         if (this.getAttackState() == 2) {
             for (int i = 20; i <= 26; i += 2) {
@@ -546,7 +546,7 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
                 if (this.level().isClientSide) {
                     this.spawnCircleParticle(1.5F, -1.0F, 30.0F, true, 1.0F, 0.0F, 1.0F, 0.0F, 1.0F, Circle.EnumRingBehavior.GROW, 35);
                 }
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.15F, 0, 10);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.15F, 0, 10);
                 this.playSound(ModSounds.HUGE_ENERGY_EXPLOSION.get(), 1.0F, 1.0F);
                 this.SideAreaAttack(3.5F, 3.0F, 180.0F, -90.0F, 0.0F, 18.0F, 70, false, false, SoundEvents.EMPTY, 1.0F);
             }
@@ -563,7 +563,7 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
                 this.calculatedDash(0.25F);
             }
             if (this.attackTicks == 36) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.1F, 0, 20);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.1F, 0, 20);
                 this.playSound(ModSounds.HEAVY_SWING.get(), 2.0F, 0.8F);
                 this.SideAreaAttack(5.0F, 5.0F, 220.0F, -90.0F, 0.0F, 18.0F, 120, false, false, SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, 0.75F);
             }
@@ -578,7 +578,7 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
                 this.playSound(ModSounds.HEAVY_SWING.get(), 2.0F, 0.8F);
             }
             if (this.attackTicks == 26) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.1F, 0, 20);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.1F, 0, 20);
                 this.nextSideAreaAttack(slashRange, 5.0F, 220.0F, 0.0F, 18.0F - dmgred, 120, SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, 0.75F);
             }
         }
@@ -599,7 +599,7 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
                 this.playSound(ModSounds.HEAVY_SWING.get(), 2.0F, 0.8F);
             }
             if (this.attackTicks == 26) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.1F, 0, 20);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.1F, 0, 20);
                 this.nextSideAreaAttack(slashRange, 5.0F, 220.0F, 0.0F, 18.0F - dmgred, 120, SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, 0.75F);
             }
         }
@@ -1092,7 +1092,7 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
             this.level().gameEvent(GameEvent.TELEPORT, vec3, GameEvent.Context.of(this));
             if (!this.isSilent()) {
                 if (!this.suppressTeleportShake) {
-                    CameraShakeEntity.cameraShake(this.level(), this.position(), 10.0F, 0.1F, 5, 5);
+                    LmScreenShake.shake(this.level(), this.position(), 10.0F, 0.1F, 5, 5);
                 }
                 this.playSound(SoundEvents.SHULKER_TELEPORT, 4.0F, 1.0F);
             }

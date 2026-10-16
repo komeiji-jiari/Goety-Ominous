@@ -1,10 +1,10 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm.projectile;
 
+import com.qiuyue.goetyominous.compat.lm.LmScreenShake;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import net.miauczel.legendary_monsters.Particle.custom.Circle;
 import net.miauczel.legendary_monsters.damagetype.ModDamageTypes;
-import net.miauczel.legendary_monsters.entity.AnimatedMonster.Effect.CameraShakeEntity;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
@@ -177,7 +177,7 @@ public class EntityThrown extends SpellThrowableProjectile {
         }
         super.onHit(result);
         this.AreaAttack(3.0F, 3.0F, 360.0F, 5.0F);
-        CameraShakeEntity.cameraShake(this.level(), this.position(), 5.0F, 0.09F, 5, 5);
+        LmScreenShake.shake(this.level(), this.position(), 5.0F, 0.09F, 5, 5);
         this.playSound(SoundEvents.DRAGON_FIREBALL_EXPLODE, 1.0F, 1.0F);
         this.level().addParticle(new Circle.RingData(0.0F, 1.5707964F, 30, 1.0F, 1.0F, 1.0F, 1.0F, 100.0F,
                 false, Circle.EnumRingBehavior.GROW), this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);

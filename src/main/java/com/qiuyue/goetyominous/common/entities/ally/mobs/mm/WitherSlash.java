@@ -1,7 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.ally.mobs.mm;
 
 import com.Polarice3.Goety.utils.MobUtil;
-import com.alexander.mutantmore.events.ShakeCameraEvent;
+import com.qiuyue.goetyominous.compat.mm.MmScreenShake;
 import com.alexander.mutantmore.init.MMDamageTypes;
 import com.alexander.mutantmore.util.MiscUtils;
 import com.google.common.collect.Lists;
@@ -195,7 +195,7 @@ public class WitherSlash extends ThrowableProjectile {
         }
 
         if (this.level().isClientSide) {
-            ShakeCameraEvent.shake(this.level(), 3, 0.0075F, this.blockPosition(), 5);
+            MmScreenShake.shake(this.level(), 3, 0.0075F, this.blockPosition(), 5);
         }
 
         int particleColour = 5254710;
