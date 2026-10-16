@@ -10,7 +10,6 @@ import com.alexander.mutantmore.ai.goals.LookAtTargetGoal;
 import com.alexander.mutantmore.blocks.QuicksandBlock;
 import com.alexander.mutantmore.config.MutantMoreGroupedOptionsCommonConfig;
 import com.alexander.mutantmore.config.mutant_husk.MutantHuskCommonConfig;
-import com.alexander.mutantmore.init.ItemInit;
 import com.alexander.mutantmore.init.ParticleTypeInit;
 import com.alexander.mutantmore.init.SoundEventInit;
 import com.alexander.mutantmore.init.TagInit.EntityTypes;
@@ -23,6 +22,7 @@ import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantHuskServ
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantHuskServant.MutantHuskPunchAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantHuskServant.MutantHuskRoarGoal;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantHuskServant.MutantHuskThrowSandAttackGoal;
+import com.qiuyue.goetyominous.common.items.mm.MmItems;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 
@@ -259,6 +259,7 @@ public class MutantHuskServant extends AbstractMutantServant {
                     if (this.killedBy != null) {
                         this.dropAllTickDeathLoot(this.killedBy);
                     }
+                    this.returnReviveItem(MmItems.MUTANT_HUSK_REVIVE.get());
                     this.playSound(SoundEventInit.MUTANT_HUSK_DEATH.get(), 2.5F, MiscUtils.randomSoundPitch());
                     this.remove(RemovalReason.KILLED);
                 }
@@ -351,11 +352,6 @@ public class MutantHuskServant extends AbstractMutantServant {
     protected void dropAllDeathLoot(DamageSource source) {
     }
 
-    protected void dropCustomDeathLoot(DamageSource source, int looting, boolean recentlyHit) {
-        super.dropCustomDeathLoot(source, looting, recentlyHit);
-        this.spawnAtLocation(new ItemStack(ItemInit.MUTANT_HUSK_VOCAL_CORDS.get()));
-    }
-
     public void dropAllTickDeathLoot(DamageSource source) {
         Entity entity = source.getEntity();
         int i = ForgeHooks.getLootingLevel(this, entity, source);
@@ -440,6 +436,18 @@ public class MutantHuskServant extends AbstractMutantServant {
 
     public void setRemainingLives(int value) {
         this.entityData.set(REMAINING_LIVES, value);
+    }
+
+    @Override
+    public void prepareRevived() {
+        super.prepareRevived();
+        this.downAnimationTick = 0;
+        this.setRemainingLives(MutantHuskCommonConfig.get_up_times.get());
+    }
+
+    @Override
+    public SoundEvent getReviveSound() {
+        return SoundEventInit.MUTANT_HUSK_REVIVE.get();
     }
 
     public String getSandType() {

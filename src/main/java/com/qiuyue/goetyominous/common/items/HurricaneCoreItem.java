@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.items;
 
 import com.Polarice3.Goety.common.items.revive.ReviveServantItem;
 import com.Polarice3.Goety.common.ritual.RitualRequirements;
+import com.Polarice3.Goety.config.ItemConfig;
 import com.Polarice3.Goety.utils.MathHelper;
 import com.Polarice3.Goety.utils.SEHelper;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.BreezeServant;
@@ -65,7 +66,7 @@ public class HurricaneCoreItem extends ReviveServantItem {
                 level.playSound(null, servant.getX(), servant.getY(), servant.getZ(), ModSounds.BREEZE_IDLE_GROUND.get(), SoundSource.PLAYERS, 2.0F, 0.45F);
                 breeze.discard();
                 player.swing(hand);
-                SEHelper.addCooldown(player, this, MathHelper.secondsToTicks(5));
+                SEHelper.addCooldown(player, this, MathHelper.secondsToTicks(ItemConfig.ReviveSecondsCool.get()));
                 stack.shrink(1);
                 return InteractionResult.CONSUME;
             }

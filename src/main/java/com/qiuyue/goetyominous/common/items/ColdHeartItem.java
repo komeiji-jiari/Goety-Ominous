@@ -8,6 +8,9 @@ import com.Polarice3.Goety.common.entities.ally.undead.bound.BoundCryologer;
 import com.Polarice3.Goety.common.entities.ally.undead.bound.BoundIceologer;
 import com.Polarice3.Goety.common.capabilities.soulenergy.SEProvider;
 import com.Polarice3.Goety.common.effects.GoetyEffects;
+import com.Polarice3.Goety.config.ItemConfig;
+import com.Polarice3.Goety.utils.MathHelper;
+import com.Polarice3.Goety.utils.SEHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -56,6 +59,9 @@ public class ColdHeartItem extends Item {
 
     @Override
     public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
+        if (SEHelper.isOnCooldown(player, stack)) {
+            return InteractionResult.FAIL;
+        }
         if (!player.level().isClientSide) {
             if (target instanceof IceologerServant iceologer) {
                 return convertServant(player, stack, iceologer, iceologer.getOwnerId(),
@@ -130,6 +136,7 @@ public class ColdHeartItem extends Item {
             if (!player.getAbilities().instabuild) {
                 stack.shrink(1);
             }
+            SEHelper.addCooldown(player, this, MathHelper.secondsToTicks(ItemConfig.ReviveSecondsCool.get()));
 
             return InteractionResult.SUCCESS;
 

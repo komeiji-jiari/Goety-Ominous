@@ -16,6 +16,14 @@ public class ModTags {
         public static final TagKey<EntityType<?>> FEL_HEAL = TagKey.create(
                 net.minecraft.core.registries.Registries.ENTITY_TYPE,
                 new ResourceLocation(com.qiuyue.goetyominous.GoetyOminous.MOD_ID, "fel_heal"));
+
+        public static final TagKey<EntityType<?>> STORM_CONVERT = TagKey.create(
+                net.minecraft.core.registries.Registries.ENTITY_TYPE,
+                new ResourceLocation(com.qiuyue.goetyominous.GoetyOminous.MOD_ID, "convert/storm"));
+
+        public static final TagKey<EntityType<?>> SUNKEN_CONVERT = TagKey.create(
+                net.minecraft.core.registries.Registries.ENTITY_TYPE,
+                new ResourceLocation(com.qiuyue.goetyominous.GoetyOminous.MOD_ID, "convert/sunken"));
     }
 
     public static final TagKey<EntityType<?>> DEFLECTS_PROJECTILES = TagKey.create(

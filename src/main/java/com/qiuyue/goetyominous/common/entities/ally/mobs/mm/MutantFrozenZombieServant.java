@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.entities.ally.mobs.mm;
 
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.common.items.equipment.PhilosophersMaceItem;
+import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.ModDamageSource;
 import com.alexander.mutantmore.ai.goals.AllDirectionsTargetGoal;
@@ -11,7 +12,6 @@ import com.alexander.mutantmore.ai.goals.LookAtTargetGoal;
 import com.alexander.mutantmore.config.MutantMoreGroupedOptionsCommonConfig;
 import com.alexander.mutantmore.config.mutant_frozen_zombie.MutantFrozenZombieCommonConfig;
 import com.alexander.mutantmore.init.EffectInit;
-import com.alexander.mutantmore.init.ItemInit;
 import com.alexander.mutantmore.init.TagInit.EntityTypes;
 import com.alexander.mutantmore.interfaces.ISnowstormSource;
 import com.alexander.mutantmore.util.HeatUtils;
@@ -23,6 +23,7 @@ import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantFrozenZo
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantFrozenZombieServant.MutantFrozenZombieMeleeAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantFrozenZombieServant.MutantFrozenZombieRoarGoal;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantFrozenZombieServant.MutantFrozenZombieSnowThrowAttackGoal;
+import com.qiuyue.goetyominous.common.items.mm.MmItems;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 
@@ -37,6 +38,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
@@ -270,6 +272,7 @@ public class MutantFrozenZombieServant extends AbstractMutantServant implements 
                 if (this.killedBy != null) {
                     this.dropAllTickDeathLoot(this.killedBy);
                 }
+                this.returnReviveItem(MmItems.MUTANT_FROZEN_ZOMBIE_REVIVE.get());
                 this.remove(RemovalReason.KILLED);
             }
         } else {
@@ -356,11 +359,6 @@ public class MutantFrozenZombieServant extends AbstractMutantServant implements 
     }
 
     protected void dropAllDeathLoot(DamageSource source) {
-    }
-
-    protected void dropCustomDeathLoot(DamageSource source, int looting, boolean recentlyHit) {
-        super.dropCustomDeathLoot(source, looting, recentlyHit);
-        this.spawnAtLocation(new ItemStack(ItemInit.MUTANT_FROZEN_ZOMBIE_SPIKES.get()));
     }
 
     public void dropAllTickDeathLoot(DamageSource source) {
@@ -492,6 +490,19 @@ public class MutantFrozenZombieServant extends AbstractMutantServant implements 
 
     public void setLivesLost(int value) {
         this.entityData.set(LIVES_LOST, value);
+    }
+
+    @Override
+    public void prepareRevived() {
+        super.prepareRevived();
+        this.downAnimationTick = 0;
+        this.setRemainingLives(MutantFrozenZombieCommonConfig.get_up_times.get());
+        this.setLivesLost(0);
+    }
+
+    @Override
+    public SoundEvent getReviveSound() {
+        return ModSounds.FROZEN_ZOMBIE_AMBIENT.get();
     }
 
     public MobType getMobType() {

@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.client.render.mm;
 
 import com.alexander.mutantmore.advanced_animation_utils.armour_utils.AdvancedArmourLayer;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.init.ModEntityLayers;
 import com.qiuyue.goetyominous.client.render.model.mm.MutantJungleZombieServantModel;
 import com.qiuyue.goetyominous.client.render.model.mm.MutantWitherSkeletonServantModel;
@@ -15,7 +16,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class MutantJungleZombieServantRenderer extends MobRenderer<MutantJungleZombieServant, MutantJungleZombieServantModel<MutantJungleZombieServant>> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("mutantmore", "textures/entities/mutant_jungle_zombie.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(GoetyOminous.MOD_ID, "textures/entity/mutant_jungle_zombie_servant.png");
 
     public MutantJungleZombieServantRenderer(EntityRendererProvider.Context context) {
         super(context, new MutantJungleZombieServantModel(context.bakeLayer(ModEntityLayers.MUTANT_JUNGLE_ZOMBIE_SERVANT_LAYER)), 1.25F);

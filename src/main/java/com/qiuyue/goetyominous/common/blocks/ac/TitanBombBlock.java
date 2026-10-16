@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.blocks.ac;
 
+import com.Polarice3.Goety.utils.MathHelper;
 import com.Polarice3.Goety.utils.SEHelper;
 import com.qiuyue.goetyominous.common.blocks.entities.ac.TitanBombBlockEntity;
 import com.qiuyue.goetyominous.common.entities.projectile.ac.TitanBombEntity;
@@ -41,7 +42,7 @@ import java.util.List;
 
 public class TitanBombBlock extends Block implements EntityBlock {
 
-    public static final int COOLDOWN_TICKS = 24000;
+    public static final int COOLDOWN_TICKS = MathHelper.minutesToTicks(10);
     private static final VoxelShape SHAPE = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 16.0D, 13.0D);
 
     public TitanBombBlock(Properties properties) {

@@ -9,7 +9,6 @@ import com.alexander.mutantmore.ai.goals.GroundPullAntiCheeseGoal;
 import com.alexander.mutantmore.ai.goals.LookAtTargetGoal;
 import com.alexander.mutantmore.config.MutantMoreGroupedOptionsCommonConfig;
 import com.alexander.mutantmore.config.mutant_jungle_zombie.MutantJungleZombieCommonConfig;
-import com.alexander.mutantmore.init.ItemInit;
 import com.alexander.mutantmore.init.MMDamageTypes;
 import com.alexander.mutantmore.init.SoundEventInit;
 import com.alexander.mutantmore.init.TagInit.EntityTypes;
@@ -19,6 +18,7 @@ import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantJungleZo
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantJungleZombieServant.MutantJungleZombiePunchAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantJungleZombieServant.MutantJungleZombieSlamAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantJungleZombieServant.MutantJungleZombieVineAttackGoal;
+import com.qiuyue.goetyominous.common.items.mm.MmItems;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 
@@ -190,6 +190,19 @@ public class MutantJungleZombieServant extends AbstractMutantServant {
         this.entityData.set(LIVES_LOST, value);
     }
 
+    @Override
+    public void prepareRevived() {
+        super.prepareRevived();
+        this.downAnimationTick = 0;
+        this.setRemainingLives(MutantJungleZombieCommonConfig.get_up_times.get());
+        this.setLivesLost(0);
+    }
+
+    @Override
+    public SoundEvent getReviveSound() {
+        return SoundEventInit.MUTANT_JUNGLE_ZOMBIE_IDLE.get();
+    }
+
     public float getGrabArmXRot() {
         return this.entityData.get(GRAB_ARM_X_ROT);
     }
@@ -338,6 +351,7 @@ public class MutantJungleZombieServant extends AbstractMutantServant {
                 if (this.killedBy != null) {
                     this.dropAllTickDeathLoot(this.killedBy);
                 }
+                this.returnReviveItem(MmItems.MUTANT_JUNGLE_ZOMBIE_REVIVE.get());
                 this.remove(RemovalReason.KILLED);
             }
         } else if (this.deathTime >= this.downAnimationLength) {
@@ -422,11 +436,6 @@ public class MutantJungleZombieServant extends AbstractMutantServant {
     }
 
     protected void dropAllDeathLoot(DamageSource source) {
-    }
-
-    protected void dropCustomDeathLoot(DamageSource source, int looting, boolean recentlyHit) {
-        super.dropCustomDeathLoot(source, looting, recentlyHit);
-        this.spawnAtLocation(new ItemStack(ItemInit.MUTANT_JUNGLE_ZOMBIE_VINE.get()));
     }
 
     public void dropAllTickDeathLoot(DamageSource source) {

@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "__comment": "mobs that can be converted to Sunken Necromancer servants by a Sunken Soul Jar.",
+  "values": [
+    {
+      "id": "goety:sunken_skeleton_servant",
+      "required": false
+    }
+  ]
+}

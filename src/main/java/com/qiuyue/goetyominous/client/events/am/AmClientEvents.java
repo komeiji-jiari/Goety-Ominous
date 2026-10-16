@@ -3,13 +3,29 @@ package com.qiuyue.goetyominous.client.events.am;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.render.projectile.am.RenderIceShard;
 import com.qiuyue.goetyominous.compat.mod.AlexMobsCompat;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AmClientEvents {
+
+    @SubscribeEvent
+    public static void clientSetup(FMLClientSetupEvent event) {
+        if (!AlexMobsCompat.isAlexMobsLoaded()) {
+            return;
+        }
+
+        event.enqueueWork(() -> ItemProperties.register(
+                com.qiuyue.goetyominous.common.items.am.AmItems.WARPED_STEROIDS.get(),
+                new ResourceLocation(GoetyOminous.MOD_ID, "unholy_steroids"),
+                (stack, level, entity, seed) ->
+                        com.qiuyue.goetyominous.common.items.am.WarpedSteroidsItem.isUnholyBlood(stack) ? 1.0F : 0.0F));
+    }
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {

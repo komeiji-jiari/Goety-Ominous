@@ -1,5 +1,8 @@
 package com.qiuyue.goetyominous.common.items.mm;
 
+import com.Polarice3.Goety.common.entities.ally.undead.zombie.FrozenZombieServant;
+import com.Polarice3.Goety.common.entities.ally.undead.zombie.HuskServant;
+import com.Polarice3.Goety.common.entities.ally.undead.zombie.JungleZombieServant;
 import com.Polarice3.Goety.common.items.ServantSpawnEggItem;
 import com.Polarice3.Goety.common.items.magic.MagicFocus;
 import com.qiuyue.goetyominous.GoetyOminous;
@@ -46,6 +49,18 @@ public class MmItems {
     public static final RegistryObject<ServantSpawnEggItem> MUTANT_FROZEN_ZOMBIE_SERVANT_SPAWN_EGG = MM_ITEMS.register(
             "mutant_frozen_zombie_servant_spawn_egg",
             () -> new ServantSpawnEggItem(MmEntityRegistry.MUTANT_FROZEN_ZOMBIE_SERVANT, 0x8FC7E8, 0x2B4C6F, egg()));
+
+    public static final RegistryObject<MutantZombieReviveItem> MUTANT_JUNGLE_ZOMBIE_REVIVE = MM_ITEMS.register(
+            "mutant_jungle_zombie_revive",
+            () -> new MutantZombieReviveItem(MmEntityRegistry.MUTANT_JUNGLE_ZOMBIE_SERVANT, JungleZombieServant.class));
+
+    public static final RegistryObject<MutantZombieReviveItem> MUTANT_HUSK_REVIVE = MM_ITEMS.register(
+            "mutant_husk_revive",
+            () -> new MutantZombieReviveItem(MmEntityRegistry.MUTANT_HUSK_SERVANT, HuskServant.class));
+
+    public static final RegistryObject<MutantZombieReviveItem> MUTANT_FROZEN_ZOMBIE_REVIVE = MM_ITEMS.register(
+            "mutant_frozen_zombie_revive",
+            () -> new MutantZombieReviveItem(MmEntityRegistry.MUTANT_FROZEN_ZOMBIE_SERVANT, FrozenZombieServant.class));
 
     public static final RegistryObject<MagicFocus> WITHER_BREATH_FOCUS = MM_ITEMS.register(
             "wither_breath_focus",
