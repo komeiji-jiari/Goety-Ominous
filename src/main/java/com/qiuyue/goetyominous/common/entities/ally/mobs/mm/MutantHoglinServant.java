@@ -14,14 +14,12 @@ import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantHoglinSe
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import com.alexander.mutantmore.config.MutantMoreGroupedOptionsCommonConfig;
-import com.alexander.mutantmore.config.mutant_hoglin.MutantHoglinClientConfig;
 import com.alexander.mutantmore.config.mutant_hoglin.MutantHoglinCommonConfig;
 
-import com.alexander.mutantmore.events.ShakeCameraEvent;
+import com.qiuyue.goetyominous.compat.mm.MmScreenShake;
 import com.alexander.mutantmore.init.MMDamageTypes;
 import com.alexander.mutantmore.init.ParticleTypeInit;
 import com.alexander.mutantmore.init.SoundEventInit;
-import com.alexander.mutantmore.init.TagInit.Blocks;
 import com.alexander.mutantmore.init.TagInit.EntityTypes;
 import com.alexander.mutantmore.util.MiscUtils;
 import com.alexander.mutantmore.util.PositionUtils;
@@ -37,9 +35,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -65,7 +61,6 @@ import net.minecraft.world.entity.monster.hoglin.HoglinBase;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -74,38 +69,27 @@ import net.minecraftforge.common.ForgeHooks;
 import java.util.function.Predicate;
 
 public class MutantHoglinServant extends AbstractMutantServant implements PlayerRideable {
-    private static final ForgeConfigSpec.BooleanValue DISABLED;
-    static {
-        ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
-        DISABLED = builder.define("no_grief", false);
-        builder.build();
-    }
+    public float chargeAnimationAmount;
+    public float walkAnimationAmount;
+    public float trotAnimationAmount;
+    public float idleAnimationAmount = 1.0F;
+    public float keyframeAnimationAmount;
+    public boolean trotting;
+    public float[][] heldPose;
     public AnimationState noveltyAnimationState = new AnimationState();
     public int noveltyAnimationTick;
-    public final int noveltyAnimationLength = 30;
     public AnimationState attackAnimationState = new AnimationState();
     public int attackAnimationTick;
-    public final int attackAnimationLength = 22;
-    public final int attackAnimationActionPoint = 13;
     public AnimationState stompAnimationState = new AnimationState();
     public int stompAnimationTick;
-    public final int stompAnimationLength = 50;
-    public final int stompAnimationActionPoint1 = 39;
-    public final int stompAnimationActionPoint2 = 24;
-    public final int stompAnimationActionPoint3 = 13;
     public AnimationState kickAnimationState = new AnimationState();
     public int kickAnimationTick;
-    public final int kickAnimationLength = 45;
-    public final int kickAnimationActionPoint = 24;
     public AnimationState prepareChargeAnimationState = new AnimationState();
     public int prepareChargeAnimationTick;
-    public final int prepareChargeAnimationLength = 24;
     public AnimationState introAnimationState = new AnimationState();
     public int introAnimationTick;
-    public final int introAnimationLength = 28;
     public AnimationState deathAnimationState = new AnimationState();
     public AnimationState danceAnimationState = new AnimationState();
-    public final int deathAnimationActionPoint = 65;
     private static final EntityDataAccessor<Boolean> CHARGING = SynchedEntityData.defineId(MutantHoglinServant.class, EntityDataSerializers.BOOLEAN);
     public boolean charging;
     public boolean dancing;
@@ -329,10 +313,6 @@ public class MutantHoglinServant extends AbstractMutantServant implements Player
         return super.causeFallDamage(pFallDistance, pMultiplier, pSource);
     }
 
-    public Component getDismountMessage() {
-        return Component.translatable("mount.onboard", this.getDisplayName());
-    }
-
     @Override
     public double getPassengersRidingOffset() {
         return super.getPassengersRidingOffset() + 0.6D;
@@ -523,7 +503,7 @@ public class MutantHoglinServant extends AbstractMutantServant implements Player
         }
 
         if (this.level().isClientSide && this.charging) {
-            ShakeCameraEvent.shake(this.level(), 6, 0.015F, this.blockPosition(), 10);
+            MmScreenShake.shake(this.level(), 6, 0.015F, this.blockPosition(), 10);
         }
 
     }
@@ -818,7 +798,7 @@ public class MutantHoglinServant extends AbstractMutantServant implements Player
                         entity.push(this.getRandom().nextGaussian() * 0.75, 1.0, this.getRandom().nextGaussian() * 0.75);
                     }
                 } else {
-                    ShakeCameraEvent.shake(this.level(), 6, 0.15F, this.blockPosition(), ((Double)MutantHoglinCommonConfig.death_range.get()).intValue());
+                    MmScreenShake.shake(this.level(), 6, 0.15F, this.blockPosition(), ((Double)MutantHoglinCommonConfig.death_range.get()).intValue());
                     AABB griefingBoundingBox = this.getBoundingBox().inflate((Double)MutantHoglinCommonConfig.death_range.get(), (Double)MutantHoglinCommonConfig.death_range.get() * 3.0, (Double)MutantHoglinCommonConfig.death_range.get());
                     var2 = BlockPos.betweenClosed(Mth.floor(griefingBoundingBox.minX), Mth.floor(griefingBoundingBox.minY), Mth.floor(griefingBoundingBox.minZ), Mth.floor(griefingBoundingBox.maxX), Mth.floor(griefingBoundingBox.maxY), Mth.floor(griefingBoundingBox.maxZ)).iterator();
 
@@ -887,30 +867,6 @@ public class MutantHoglinServant extends AbstractMutantServant implements Player
 
     public NodeEvaluatorDimensions getNodeEvaluatorDimensions() {
         return null;
-    }
-
-    public TagKey<Block> walksThroughTag() {
-        return Blocks.MUTANT_HOGLIN_WALKS_THROUGH;
-    }
-
-    public ForgeConfigSpec.ConfigValue<Boolean> walkGriefingConfig() {
-        return DISABLED;
-    }
-
-    public ForgeConfigSpec.ConfigValue<Boolean> walkGriefingDropsBlocksConfig() {
-        return DISABLED;
-    }
-
-    public ForgeConfigSpec.ConfigValue<Boolean> hurtGriefingConfig() {
-        return DISABLED;
-    }
-
-    public ForgeConfigSpec.ConfigValue<Boolean> hurtGriefingDropsBlocksConfig() {
-        return DISABLED;
-    }
-
-    public ForgeConfigSpec.ConfigValue<Boolean> showHealthBarConfig() {
-        return MutantHoglinClientConfig.show_health_bar;
     }
 
     public ForgeConfigSpec.ConfigValue<Boolean> despawnsConfig() {

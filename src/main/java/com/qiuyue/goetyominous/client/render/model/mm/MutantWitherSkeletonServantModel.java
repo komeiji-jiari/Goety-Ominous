@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.client.render.model.mm;
 
 import com.alexander.mutantmore.advanced_animation_utils.animation_utils.AdvancedAnimationUtils;
+import com.alexander.mutantmore.advanced_animation_utils.animation_utils.animation_trackers.EntityAdvancedAnimation;
 import com.alexander.mutantmore.advanced_animation_utils.animation_utils.model_animations.AdvancedAnimator;
 import com.alexander.mutantmore.advanced_animation_utils.armour_utils.AdvancedArmourLayer;
 import com.alexander.mutantmore.advanced_animation_utils.armour_utils.AdvancedArmourWearingModel;
@@ -25,7 +26,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -93,9 +96,18 @@ public class MutantWitherSkeletonServantModel<T extends MutantWitherSkeletonServ
             this.root().getAllParts().forEach(ModelPart::resetPose);
             this.animateHeadLookTarget(netHeadYaw, headPitch);
             List<ModelPart> parts = this.root().getAllParts().toList();
-            AdvancedAnimationUtils.addWalkModifiers(entity.getAnimation("walk"), entity, 3.0F, 1.0F);
-            AdvancedAnimationUtils.addLegHeightOffsetModifier(entity, PositionUtils.getOffsetPos(entity, -0.75, 0.0, 0.0, 0.0F, entity.yBodyRot), 2, "offset_legs", "left_leg_y", 0.2F, -0.75F, 1.5F, 1.2F);
-            AdvancedAnimationUtils.addLegHeightOffsetModifier(entity, PositionUtils.getOffsetPos(entity, 0.75, 0.0, 0.0, 0.0F, entity.yBodyRot), 2, "offset_legs", "right_leg_y", 0.2F, -0.75F, 1.5F, 1.2F);
+
+            float deltaTicks;
+            if (entity.walkPhaseAge < 0.0F) {
+                deltaTicks = 1.0F;
+            } else {
+                deltaTicks = Mth.clamp(ageInTicks - entity.walkPhaseAge, 0.0F, 2.0F);
+            }
+            entity.walkPhaseAge = ageInTicks;
+
+            addWalkModifiers(entity, entity.getAnimation("walk"), deltaTicks, 3.0F, 1.0F);
+            addLegHeightOffsetModifier(entity, PositionUtils.getOffsetPos(entity, -0.75, 0.0, 0.0, 0.0F, entity.yBodyRot), 2, "offset_legs", "left_leg_y", deltaTicks, 0.2F, -0.75F, 1.5F, 1.2F);
+            addLegHeightOffsetModifier(entity, PositionUtils.getOffsetPos(entity, 0.75, 0.0, 0.0, 0.0F, entity.yBodyRot), 2, "offset_legs", "right_leg_y", deltaTicks, 0.2F, -0.75F, 1.5F, 1.2F);
             AdvancedAnimator.animate(parts, entity.getAnimation("attack_left"), MutantWitherSkeletonAggressiveAdvancedAnimations.MUTANT_WITHER_SKELETON_ATTACK_LEFT);
             AdvancedAnimator.animate(parts, entity.getAnimation("attack_right"), MutantWitherSkeletonAggressiveAdvancedAnimations.MUTANT_WITHER_SKELETON_ATTACK_RIGHT);
             AdvancedAnimator.animate(parts, entity.getAnimation("block"), MutantWitherSkeletonAggressiveAdvancedAnimations.MUTANT_WITHER_SKELETON_BLOCK);
@@ -115,6 +127,21 @@ public class MutantWitherSkeletonServantModel<T extends MutantWitherSkeletonServ
             AdvancedAnimator.animate(parts, entity.getAnimation("stunned"), MutantWitherSkeletonLungeAdvancedAnimations.MUTANT_WITHER_SKELETON_STUNNED);
         }
 
+    }
+
+    private static void addWalkModifiers(MutantWitherSkeletonServant entity, EntityAdvancedAnimation animation, float deltaTicks, float groundSpeedMultiplier, float walkProgressMultiplier) {
+        double xDiff = entity.getX() - entity.xo;
+        double zDiff = entity.getZ() - entity.zo;
+        float distanceTravelled = (float)Math.sqrt(xDiff * xDiff + zDiff * zDiff);
+        entity.walkPhase += distanceTravelled / 300.0F * walkProgressMultiplier * deltaTicks;
+        animation.getModifiers().put("walk_progress", entity.walkPhase);
+        animation.getModifiers().put("ground_speed", distanceTravelled * groundSpeedMultiplier);
+    }
+
+    private static void addLegHeightOffsetModifier(MutantWitherSkeletonServant entity, Vec3 footPos, int maxSearchRange, String animationName, String modifierName, float deltaTicks, float lerpSpeed, float minLegHeight, float maxLegHeight, float modelScale) {
+        EntityAdvancedAnimation animation = entity.getAnimation(animationName);
+        float target = Mth.clamp(AdvancedAnimationUtils.getLegHeightOffset(entity, footPos, maxSearchRange), minLegHeight, maxLegHeight) / modelScale;
+        animation.getModifiers().put(modifierName, Mth.lerp(Math.min(deltaTicks * lerpSpeed, 1.0F), AdvancedAnimationUtils.modifierIfPresent(animation, modifierName), target));
     }
 
     public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {

@@ -3,7 +3,7 @@ package com.qiuyue.goetyominous.common.entities.ally.mobs.mm;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.alexander.mutantmore.audio.soundinstances.EntityLoopingSoundInstance;
 import com.alexander.mutantmore.config.mutant_blaze.MutantBlazeCommonConfig;
-import com.alexander.mutantmore.events.ShakeCameraEvent;
+import com.qiuyue.goetyominous.compat.mm.MmScreenShake;
 import com.alexander.mutantmore.init.MMDamageTypes;
 import com.alexander.mutantmore.init.ParticleTypeInit;
 import com.alexander.mutantmore.init.SoundEventInit;
@@ -38,8 +38,6 @@ public class MutantBlazeServantFireball extends Fireball {
     public float explosionRadius = 1.0F;
     public int fireLength = 0;
     public boolean ignoresInvulTime = true;
-    public boolean griefing = true;
-    public boolean griefingDropsBlocks = false;
     public boolean explosionFire = true;
 
     public MutantBlazeServantFireball(EntityType<? extends MutantBlazeServantFireball> type, Level level) {
@@ -58,8 +56,6 @@ public class MutantBlazeServantFireball extends Fireball {
         if (tag.contains("ExplosionRadius")) this.explosionRadius = tag.getFloat("ExplosionRadius");
         if (tag.contains("FireLength")) this.fireLength = tag.getInt("FireLength");
         if (tag.contains("IgnoresInvulTime")) this.ignoresInvulTime = tag.getBoolean("IgnoresInvulTime");
-        if (tag.contains("Griefing")) this.griefing = tag.getBoolean("Griefing");
-        if (tag.contains("GriefingDropsBlocks")) this.griefingDropsBlocks = tag.getBoolean("GriefingDropsBlocks");
         if (tag.contains("ExplosionFire")) this.explosionFire = tag.getBoolean("ExplosionFire");
     }
 
@@ -71,8 +67,6 @@ public class MutantBlazeServantFireball extends Fireball {
         tag.putFloat("ExplosionRadius", this.explosionRadius);
         tag.putInt("FireLength", this.fireLength);
         tag.putBoolean("IgnoresInvulTime", this.ignoresInvulTime);
-        tag.putBoolean("Griefing", this.griefing);
-        tag.putBoolean("GriefingDropsBlocks", this.griefingDropsBlocks);
         tag.putBoolean("ExplosionFire", this.explosionFire);
     }
 
@@ -88,7 +82,7 @@ public class MutantBlazeServantFireball extends Fireball {
             this.discard();
         }
         if (this.level().isClientSide) {
-            ShakeCameraEvent.shake(this.level(), 4, 0.0075F, this.blockPosition(), 7);
+            MmScreenShake.shake(this.level(), 4, 0.0075F, this.blockPosition(), 7);
             for (int i = 0; i < 2; ++i) {
                 double d0 = this.random.nextGaussian() * 0.02D;
                 double d1 = this.random.nextGaussian() * 0.02D;

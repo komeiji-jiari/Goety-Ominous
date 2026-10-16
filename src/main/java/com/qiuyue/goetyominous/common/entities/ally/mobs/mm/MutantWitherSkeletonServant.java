@@ -5,6 +5,7 @@ import com.Polarice3.Goety.common.items.equipment.PhilosophersMaceItem;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.ServantUtil;
 import com.alexander.mutantmore.advanced_animation_utils.animation_utils.animation_trackers.AbstractAdvancedAnimation;
+import com.alexander.mutantmore.advanced_animation_utils.animation_utils.animation_trackers.AdvancedAnimation;
 import com.alexander.mutantmore.advanced_animation_utils.animation_utils.animation_trackers.AdvancedAnimatable;
 import com.alexander.mutantmore.advanced_animation_utils.animation_utils.animation_trackers.AdvancedAnimationTracker;
 import com.alexander.mutantmore.advanced_animation_utils.animation_utils.animation_trackers.EntityAdvancedAnimation;
@@ -13,20 +14,19 @@ import com.alexander.mutantmore.ai.goals.ApproachTargetGoal;
 import com.alexander.mutantmore.ai.goals.GroundPullAntiCheeseGoal;
 import com.alexander.mutantmore.ai.goals.LookAtTargetGoal;
 import com.alexander.mutantmore.config.MutantMoreGroupedOptionsCommonConfig;
-import com.alexander.mutantmore.config.mutant_wither_skeleton.MutantWitherSkeletonClientConfig;
 import com.alexander.mutantmore.config.mutant_wither_skeleton.MutantWitherSkeletonCommonConfig;
 import com.alexander.mutantmore.entities.MutantWitherSkeletonBodyPart;
-import com.alexander.mutantmore.events.ShakeCameraEvent;
+import com.qiuyue.goetyominous.compat.mm.MmScreenShake;
 import com.alexander.mutantmore.init.ItemInit;
 import com.alexander.mutantmore.init.ParticleTypeInit;
 import com.alexander.mutantmore.init.SoundEventInit;
-import com.alexander.mutantmore.init.TagInit.Blocks;
 import com.alexander.mutantmore.init.TagInit.EntityTypes;
 import com.alexander.mutantmore.util.MiscUtils;
 import com.alexander.mutantmore.util.PositionUtils;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantWitherSkeletonServant.*;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.function.Predicate;
 
@@ -42,11 +42,11 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -90,7 +90,6 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -106,12 +105,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public class MutantWitherSkeletonServant extends AbstractMutantServant implements AdvancedAnimatable {
-    private static final ForgeConfigSpec.BooleanValue DISABLED;
-    static {
-        ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
-        DISABLED = builder.define("no_grief", false);
-        builder.build();
-    }
     private static final UUID SPEED_MODIFIER_CROUCHING_UUID = UUID.fromString("adfdf75b-53d7-45c4-bee6-81bcc4a1632b");
     private AttributeModifier SPEED_MODIFIER_CROUCHING;
     public static EntityDimensions crouchingDimensions = EntityDimensions.scalable(1.25F, 2.4F);
@@ -120,6 +113,7 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
     public Vec3 oldPos;
     public int repeatedHits;
     public float lungingXRot;
+    public float lungingXRotO;
     private int lastHurtTick;
     private static final EntityDataAccessor<Boolean> DATA_SOUL_SHIELD =
             SynchedEntityData.defineId(MutantWitherSkeletonServant.class, EntityDataSerializers.BOOLEAN);
@@ -128,6 +122,7 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
     private static final EntityDataAccessor<Boolean> DATA_UNHOLY_BLOOD =
             SynchedEntityData.defineId(MutantWitherSkeletonServant.class, EntityDataSerializers.BOOLEAN);
     private int unholyBloodInvulnTime = 0;
+    private boolean resyncAnimations;
     private static final UUID SOUL_SHIELD_HEALTH_UUID = UUID.fromString("a1111111-0000-4000-8000-000000000001");
     private static final UUID SOUL_SHIELD_ATTACK_UUID = UUID.fromString("a1111111-0000-4000-8000-000000000002");
     private static final UUID HOWLING_SOUL_HEALTH_UUID = UUID.fromString("b2222222-0000-4000-8000-000000000001");
@@ -403,7 +398,8 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
             if (!this.level().isClientSide) {
                 this.lastHurtTick = this.tickCount;
 
-                if ((Boolean) MutantWitherSkeletonCommonConfig.uses_block.get()
+                if (!this.isDeadOrDying()
+                        && (Boolean) MutantWitherSkeletonCommonConfig.uses_block.get()
                         && p_21017_ > 0
                         && !this.shouldBeStationary()
                         && !this.getAnimation("lunging").isPlaying()
@@ -441,7 +437,7 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
 
     public void die(DamageSource source) {
         if (!this.level().isClientSide) {
-            this.dropAllDeathLoot(source);
+            super.die(source);
 
             if (!source.is(DamageTypes.GENERIC_KILL) && !source.is(DamageTypes.FELL_OUT_OF_WORLD)) {
                 this.playSound((SoundEvent)SoundEventInit.MUTANT_WITHER_SKELETON_DEATH.get(), this.getSoundVolume(), 1.0F);
@@ -449,7 +445,7 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
                 this.getAnimation("death").start(0.25F, 2, () -> {
                     if ((Boolean)MutantWitherSkeletonCommonConfig.explode_into_parts.get() && !(Boolean)MutantMoreGroupedOptionsCommonConfig.mutants_explode_into_parts_off.get()) {
                         this.level().broadcastEntityEvent(this, (byte)4);
-                        ShakeCameraEvent.shake(this.level(), 20, 0.035F, this.blockPosition(), 25);
+                        MmScreenShake.shake(this.level(), 20, 0.035F, this.blockPosition(), 25);
                         this.createBodyPart(0, 0.0F, 2.0F, 0.0F);
                         this.createBodyPart(2, 0.0F, 3.5F, 1.0F);
                         this.createBodyPart(1, 0.25F, 2.5F, 0.0F);
@@ -469,7 +465,7 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
                         this.createBodyPart(4, 0.5F, 3.25F, 0.5F);
                         this.createBodyPart(4, -0.5F, 3.25F, 0.5F);
                     } else {
-                        ResourceLocation resourcelocation = new ResourceLocation("mutantmore", "loot_tables/entities/mutant_wither_skeleton_parts.json");
+                        ResourceLocation resourcelocation = new ResourceLocation("mutantmore", "entities/mutant_wither_skeleton_parts");
                         LootTable loottable = this.level().getServer().getLootData().getLootTable(resourcelocation);
                         LootParams.Builder builder = (new LootParams.Builder((ServerLevel)this.level())).withParameter(LootContextParams.THIS_ENTITY, this).withParameter(LootContextParams.ORIGIN, this.position()).withOptionalParameter(LootContextParams.DAMAGE_SOURCE, this.getLastDamageSource());
                         LootParams ctx = builder.create(LootContextParamSets.ENTITY);
@@ -647,9 +643,6 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
         }
     }
 
-    protected void dropAllDieLoot(DamageSource source) {
-    }
-
     public ItemEntity spawnAtLocation(ItemStack p_19985_, float p_19986_) {
         if (p_19985_.isEmpty()) {
             return null;
@@ -786,7 +779,27 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
             this.getAnimation("offset_legs").startLooping(0);
         }
 
+        if (!this.level().isClientSide) {
+            if (this.resyncAnimations) {
+                this.resyncAnimations = false;
+                this.getAnimationTracker().animations.forEach((name, anim) -> anim.syncToClient());
+            }
+            if (!this.isDeadOrDying() && this.isRestPose()) {
+                this.unlockAllAnimations();
+                if (distanceTravelled > 0.0F) {
+                    this.getAnimation("walk").startLooping(0);
+                } else {
+                    this.getAnimation("idle").startLooping(0);
+                }
+            }
+        }
+
         this.oldPos = this.position();
+    }
+
+    protected void updateAnimations() {
+        this.lungingXRotO = this.lungingXRot;
+        this.lungingXRot = this.getAnimation("lunging").isPlaying() ? (float)Mth.clamp(this.getDeltaMovement().y * 30.0, -90.0, 90.0) : 0.0F;
     }
 
     public MobType getMobType() {
@@ -922,6 +935,22 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
         });
     }
 
+    @Override
+    public void startSeenByPlayer(ServerPlayer player) {
+        super.startSeenByPlayer(player);
+        this.resyncAnimations = true;
+    }
+
+    private boolean isRestPose() {
+        for (Map.Entry<String, AdvancedAnimation> entry : this.getAnimationTracker().animations.entrySet()) {
+            if (!entry.getKey().equals("offset_legs") && entry.getValue() instanceof AbstractAdvancedAnimation animation && animation.isPlaying()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public void onMutated() {
         this.setPose(Pose.CROUCHING);
         this.stopAndLockIdleAnimations(0, true);
@@ -947,30 +976,6 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
         MiscUtils.spawnWithPumpkinOnHalloween(this, p_21434_.getRandom());
         return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
     }
-    public TagKey<Block> walksThroughTag() {
-        return Blocks.MUTANT_WITHER_SKELETON_WALKS_THROUGH;
-    }
-
-    public ForgeConfigSpec.ConfigValue<Boolean> walkGriefingConfig() {
-        return DISABLED;
-    }
-
-    public ForgeConfigSpec.ConfigValue<Boolean> walkGriefingDropsBlocksConfig() {
-        return DISABLED;
-    }
-
-    public ForgeConfigSpec.ConfigValue<Boolean> hurtGriefingConfig() {
-        return DISABLED;
-    }
-
-    public ForgeConfigSpec.ConfigValue<Boolean> hurtGriefingDropsBlocksConfig() {
-        return DISABLED;
-    }
-
-    public ForgeConfigSpec.ConfigValue<Boolean> showHealthBarConfig() {
-        return MutantWitherSkeletonClientConfig.show_health_bar;
-    }
-
     public ForgeConfigSpec.ConfigValue<Boolean> despawnsConfig() {
         return MutantWitherSkeletonCommonConfig.despawns;
     }

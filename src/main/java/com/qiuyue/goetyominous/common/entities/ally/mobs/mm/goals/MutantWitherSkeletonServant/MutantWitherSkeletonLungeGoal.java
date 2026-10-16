@@ -1,8 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantWitherSkeletonServant;
 
-import com.alexander.mutantmore.config.MutantMoreGroupedOptionsCommonConfig;
 import com.alexander.mutantmore.config.mutant_wither_skeleton.MutantWitherSkeletonCommonConfig;
-import com.alexander.mutantmore.events.ShakeCameraEvent;
+import com.qiuyue.goetyominous.compat.mm.MmScreenShake;
 import com.alexander.mutantmore.init.ParticleTypeInit;
 import com.alexander.mutantmore.init.SoundEventInit;
 import com.alexander.mutantmore.init.TagInit.Blocks;
@@ -73,7 +72,7 @@ public class MutantWitherSkeletonLungeGoal extends Goal {
         this.mob.getAnimation("lunge").start(0.75F, 4, () -> {
             if (MiscUtils.isEntityValid(this.target)) {
                 this.mob.playSound((SoundEvent)SoundEventInit.MUTANT_WITHER_SKELETON_BIGJUMP.get(), 5.0F, 1.0F);
-                ShakeCameraEvent.shake(this.mob.level(), 10, 0.1F, this.mob.blockPosition(), 10);
+                MmScreenShake.shake(this.mob.level(), 10, 0.1F, this.mob.blockPosition(), 10);
                 this.mob.getAnimation("lunging").startLooping(4);
                 double x = this.target.getX() - this.mob.getX();
                 double y = this.target.getY() - this.mob.getY();
@@ -118,33 +117,6 @@ public class MutantWitherSkeletonLungeGoal extends Goal {
         AABB aabb;
         if (this.mob.getAnimation("lunging").isPlaying() && (double)this.mob.getAnimation("lunging").progress() > 0.1) {
             if (this.mob.getDeltaMovement().y > 0.0 && this.lungeMotion.y > Math.max(Math.abs(this.lungeMotion.x), Math.abs(this.lungeMotion.z))) {
-                if (false) {
-                    boolean flag = false;
-                    var12 = boundingBoxes.iterator();
-
-                    label242:
-                    while(var12.hasNext()) {
-                        aabb = (AABB)var12.next();
-                        AABB inflated = aabb.inflate(-0.1, 2.0, -0.1);
-                        Iterator var8 = BlockPos.betweenClosed(Mth.floor(inflated.minX), Mth.floor(aabb.minY + 1.0), Mth.floor(inflated.minZ), Mth.floor(inflated.maxX), Mth.floor(inflated.maxY), Mth.floor(inflated.maxZ)).iterator();
-
-                        while(true) {
-                            BlockPos blockpos;
-                            BlockState blockstate;
-                            do {
-                                if (!var8.hasNext()) {
-                                    continue label242;
-                                }
-
-                                blockpos = (BlockPos)var8.next();
-                                blockstate = this.mob.level().getBlockState(blockpos);
-                            } while(blockstate.is(Blocks.UNBREAKABLE));
-
-                            flag = this.mob.level().destroyBlock(blockpos, (Boolean)MutantWitherSkeletonCommonConfig.lunge_griefing_drops_blocks.get() || (Boolean)MutantMoreGroupedOptionsCommonConfig.griefing_drops_blocks_on.get(), this.mob) || flag;
-                        }
-                    }
-                }
-
                 if (MiscUtils.isEntityValid(this.target) && this.mob.getY() > this.target.getY() + 2.0) {
                     this.mob.setDeltaMovement(this.mob.getDeltaMovement().x, 0.0, this.mob.getDeltaMovement().z);
                 }
@@ -168,7 +140,7 @@ public class MutantWitherSkeletonLungeGoal extends Goal {
                     this.mob.unlockIdleAnimations();
                     this.mob.getAnimation("idle").startLooping(0);
                 });
-                ShakeCameraEvent.shake(this.mob.level(), 20, 0.15F, this.mob.blockPosition(), 15);
+                MmScreenShake.shake(this.mob.level(), 20, 0.15F, this.mob.blockPosition(), 15);
                 this.mob.playSound((SoundEvent)SoundEventInit.MUTANT_WITHER_SKELETON_BIGLAND.get(), 5.0F, 1.0F);
             }
         }
@@ -260,7 +232,7 @@ public class MutantWitherSkeletonLungeGoal extends Goal {
                             do {
                                 if (!var26.hasNext()) {
                                     if (breakableBlocks >= 4) {
-                                        ShakeCameraEvent.shake(this.mob.level(), 10, 0.5F, this.mob.blockPosition(), 15);
+                                        MmScreenShake.shake(this.mob.level(), 10, 0.5F, this.mob.blockPosition(), 15);
                                         this.slowDownSpeed = this.initialSlowDownSpeed;
                                         this.mob.getAnimation("lunging").stop(0);
                                         this.mob.getAnimation("lunge_land").stop(0);

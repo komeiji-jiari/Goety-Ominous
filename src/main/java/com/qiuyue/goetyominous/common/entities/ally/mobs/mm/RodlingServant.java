@@ -253,7 +253,6 @@ public class RodlingServant extends Summoned {
         this.entityData.define(COALS, 0);
         this.entityData.define(AMOUNT_TO_HEAL, 0.0F);
         this.entityData.define(FLAGS, (byte) 0);
-        this.setFlag(32, true);
         this.setFlag(128, true);
         this.entityData.define(SUMMONED_BY_MUTANT_BLAZE, false);
         this.entityData.define(FIRE_BALL_DAMAGE, 0.0F);
@@ -262,7 +261,6 @@ public class RodlingServant extends Summoned {
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putBoolean("Griefing", this.griefing());
         tag.putBoolean("AlwaysShowsName", this.alwaysShowsName());
         tag.putBoolean("SmokeParticles", this.smokeParticles());
         tag.putInt("Shields", this.getShields());
@@ -276,7 +274,6 @@ public class RodlingServant extends Summoned {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        this.setFlag(32, tag.getBoolean("Griefing"));
         this.setFlag(64, tag.getBoolean("AlwaysShowsName"));
         this.setFlag(128, tag.getBoolean("SmokeParticles"));
         this.setSummonedByMutantBlaze(tag.getBoolean("SummonedByMutantBlaze"));
@@ -301,7 +298,6 @@ public class RodlingServant extends Summoned {
     public boolean hasArmour() { return this.hasHelmet(); }
     public boolean hasShields() { return this.getShields() > 0; }
     public boolean hasFood() { return this.getCoals() > 0; }
-    public boolean griefing() { return this.getFlag(32); }
     public boolean alwaysShowsName() { return this.getFlag(64); }
     public boolean smokeParticles() { return this.getFlag(128); }
 
@@ -544,7 +540,6 @@ public class RodlingServant extends Summoned {
                                 RodlingServant.this, d1, d2, d3);
                         fireball.damage = RodlingServant.this.getFireBallDamage();
                         fireball.fireLength = RodlingCommonConfig.tamed_fireball_fire_length.get();
-                        fireball.griefing = RodlingServant.this.griefing();
                         fireball.ignoresInvulTime = RodlingCommonConfig.tamed_ignores_invulnerability_time.get();
                         fireball.setPos(fireball.getX(), RodlingServant.this.getY(0.5), fireball.getZ());
                         RodlingServant.this.level().addFreshEntity(fireball);

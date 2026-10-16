@@ -1,6 +1,5 @@
 package com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantBlazeServant;
 
-import com.alexander.mutantmore.config.MutantMoreGroupedOptionsCommonConfig;
 import com.alexander.mutantmore.config.mutant_blaze.MutantBlazeCommonConfig;
 import com.alexander.mutantmore.entities.Rodling;
 import com.alexander.mutantmore.init.SoundEventInit;
@@ -103,9 +102,6 @@ public class MutantBlazeServantRodShotAttackGoal extends Goal {
                 rod.damage = ((Double)MutantBlazeCommonConfig.rod_damage.get()).floatValue();
                 rod.fireLength = (Integer)MutantBlazeCommonConfig.rod_fire_length.get();
                 rod.ignoresInvulTime = (Boolean)MutantBlazeCommonConfig.ignores_invulnerability_time.get();
-                rod.griefing = false;
-                rod.griefingDropsBlocks = false;
-                rod.fireGriefing = (Boolean)MutantBlazeCommonConfig.rod_fire.get() && !(Boolean)MutantMoreGroupedOptionsCommonConfig.mob_griefing_off.get();
                 rod.moveTo(pos);
                 rod.shoot(d1, d2, d3, 1.8F, 5.0F);
                 this.mob.level().addFreshEntity(rod);
