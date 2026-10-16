@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantShulkerServant;
 
+import com.Polarice3.Goety.utils.MobUtil;
 import com.alexander.mutantmore.config.mutant_shulker.MutantShulkerCommonConfig;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantShulkerServantTrap;
 import com.alexander.mutantmore.init.SoundEventInit;
@@ -65,6 +66,7 @@ public class MutantShulkerServantScatterTrapsAttackInShellGoal extends Goal {
             trap.moveTo(this.mob.getX(), this.mob.getEyeY(), this.mob.getZ());
             trap.setDeltaMovement(this.mob.getRandom().nextGaussian() * 1.5, 0.6, this.mob.getRandom().nextGaussian() * 1.5);
             trap.setSpawnedByMutantShulker(true);
+            trap.setLimitedLife(MobUtil.getSummonLifespan(this.mob.level()));
             trap.setColor(this.mob.getColor());
             trap.setTarget(this.target);
             ((ServerLevel)this.mob.level()).addFreshEntityWithPassengers(trap);

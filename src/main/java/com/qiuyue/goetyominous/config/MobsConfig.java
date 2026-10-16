@@ -691,8 +691,8 @@ public class MobsConfig {
         MutantShulkerVoidShardHealth = BUILDER.comment("Bonus max health of Void Shard Mutant Shulker (Default: 15)")
                 .defineInRange("mutantShulkerVoidShardHealth", 15.0, 1.0, 1000.0);
         MutantShulkerBulletLevitationMaxHealth = BUILDER
-                .comment("Maximum max-health for entities that Mutant Shulker Servant bullets can apply Levitation to (Default: 200)")
-                .defineInRange("mutantShulkerBulletLevitationMaxHealth", 200.0, 1.0, 1000.0);
+                .comment("Maximum max-health for entities that Mutant Shulker Servant bullets can apply Levitation to (Default: 100)")
+                .defineInRange("mutantShulkerBulletLevitationMaxHealth", 100.0, 1.0, 1000.0);
         BUILDER.pop();
 
         BUILDER.push("Mutant Blaze Enhancements");

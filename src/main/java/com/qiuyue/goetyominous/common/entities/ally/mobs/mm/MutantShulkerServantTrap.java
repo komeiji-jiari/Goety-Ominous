@@ -3,7 +3,7 @@ package com.qiuyue.goetyominous.common.entities.ally.mobs.mm;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.alexander.mutantmore.config.mutant_shulker.MutantShulkerRewardsCommonConfig;
-import com.alexander.mutantmore.events.ShakeCameraEvent;
+import com.qiuyue.goetyominous.compat.mm.MmScreenShake;
 import com.alexander.mutantmore.init.EffectInit;
 import com.alexander.mutantmore.init.ItemInit;
 import com.alexander.mutantmore.init.MMDamageTypes;
@@ -53,7 +53,6 @@ public class MutantShulkerServantTrap extends Summoned {
     public int lifeTime;
     public int snapCooldownTick;
     public int snapCooldownLength = 40;
-    private static final int MAX_LIFETIME_TICKS = 600;
     public int bonusDamage = 0;
     public boolean voidTouchedHit = false;
     public int bulletTurnTimeReduction = 0;
@@ -103,7 +102,12 @@ public class MutantShulkerServantTrap extends Summoned {
 
     @Override
     public void ownedTick() {
-
+        if (!this.level().isClientSide && this.hasLifespan()) {
+            this.setLifespan(this.getLifespan() - 1);
+            if (this.getLifespan() <= 1) {
+                this.lifeSpanDamage();
+            }
+        }
     }
 
     @Override
@@ -135,7 +139,7 @@ public class MutantShulkerServantTrap extends Summoned {
         this.tickDownAnimTimers();
         if (!this.level().isClientSide && !this.onGround() && this.isSpawnedByMutantShulker()
                 && this.tickCount % 5 == 0) {
-            ShakeCameraEvent.shake(this.level(), 3, 0.005f, this.blockPosition(), 3);
+            MmScreenShake.shake(this.level(), 3, 0.005f, this.blockPosition(), 3);
         }
         if (!this.level().isClientSide && this.tickCount >= 20 && this.activateAnimationTick <= 0
                 && this.snapCooldownTick <= 0 && this.tickCount % 2 == 0
@@ -146,7 +150,7 @@ public class MutantShulkerServantTrap extends Summoned {
             this.level().broadcastEntityEvent(this, (byte) 4);
         }
         if (this.activateAnimationTick == this.activateActionPoint) {
-            ShakeCameraEvent.shake(this.level(), 6, 0.075f, this.blockPosition(), 5);
+            MmScreenShake.shake(this.level(), 6, 0.075f, this.blockPosition(), 5);
             float damage = (this.isSpawnedByMutantShulker()
                     ? MutantShulkerRewardsCommonConfig.trap_mutant_shulker_damage.get().floatValue()
                     : MutantShulkerRewardsCommonConfig.trap_player_damage.get().floatValue()) + this.bonusDamage;
@@ -171,9 +175,8 @@ public class MutantShulkerServantTrap extends Summoned {
             --this.snapCooldownTick;
         }
         if (!this.level().isClientSide && this.vanishAnimationTick <= 0
-                && ((MutantShulkerRewardsCommonConfig.trap_turns_to_bullet.get()
-                && this.lifeTime == Math.max(1, MutantShulkerRewardsCommonConfig.trap_turn_to_bullet_time.get() - this.bulletTurnTimeReduction))
-                    || this.lifeTime >= MAX_LIFETIME_TICKS)) {
+                && MutantShulkerRewardsCommonConfig.trap_turns_to_bullet.get()
+                && this.lifeTime == Math.max(1, MutantShulkerRewardsCommonConfig.trap_turn_to_bullet_time.get() - this.bulletTurnTimeReduction)) {
             this.playSound(SoundEventInit.MUTANT_SHULKER_TRAP_VANISH.get());
             this.vanishAnimationTick = this.vanishAnimationLength;
             this.level().broadcastEntityEvent(this, (byte) 11);
@@ -286,6 +289,9 @@ public class MutantShulkerServantTrap extends Summoned {
         this.setSpawnedByMutantShulker(tag.getBoolean("SpawnedByMutantShulker"));
         if (tag.contains("LifeTime", 3)) {
             this.lifeTime = tag.getInt("LifeTime");
+        }
+        if (this.isSpawnedByMutantShulker() && !this.hasLifespan()) {
+            this.setLimitedLife(MobUtil.getSummonLifespan(this.level()));
         }
     }
 
