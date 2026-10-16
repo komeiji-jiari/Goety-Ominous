@@ -21,6 +21,8 @@ import net.minecraft.world.level.Level;
 
 public class WarpedSteroidsItem extends Item {
 
+    public static final String UNHOLY_BLOOD_TAG = "UnholyBloodEnhancement";
+
     public WarpedSteroidsItem() {
         super(new Item.Properties()
                 .rarity(Rarity.UNCOMMON)
@@ -47,6 +49,7 @@ public class WarpedSteroidsItem extends Item {
         }
 
         mosquito.startSteroidConversion();
+        mosquito.setInheritUnholyBlood(stack.hasTag() && stack.getTag().getBoolean(UNHOLY_BLOOD_TAG));
 
         if (!player.getAbilities().instabuild) {
             stack.shrink(1);

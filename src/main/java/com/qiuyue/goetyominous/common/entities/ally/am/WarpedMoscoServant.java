@@ -26,6 +26,7 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.common.entities.projectile.am.EntityServantHemolymph;
 import com.qiuyue.goetyominous.common.items.am.AmItems;
+import com.qiuyue.goetyominous.common.items.am.WarpedSteroidsItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -133,6 +134,15 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
         }
     }
 
+    public void applyUnholyBloodEnhancement() {
+        if (this.hasUnholyBlood()) {
+            return;
+        }
+        this.setUnholyBlood(true);
+        this.applyEnhancementModifiers();
+        this.setHealth(this.getMaxHealth());
+    }
+
     private void applyEnhancementModifiers() {
         AttributeInstance health = this.getAttribute(Attributes.MAX_HEALTH);
         AttributeInstance attack = this.getAttribute(Attributes.ATTACK_DAMAGE);
@@ -205,6 +215,9 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
         super.tickDeath();
         if (this.deathTime == 20 && !this.level().isClientSide() && this.getTrueOwner() != null) {
             ItemStack itemStack = new ItemStack(AmItems.WARPED_STEROIDS.get());
+            if (this.hasUnholyBlood()) {
+                itemStack.getOrCreateTag().putBoolean(WarpedSteroidsItem.UNHOLY_BLOOD_TAG, true);
+            }
             FlyingItem flyingItem = new FlyingItem(ModEntityType.FLYING_ITEM.get(), this.level(), this.getX(), this.getY(), this.getZ());
             flyingItem.setOwner(this.getTrueOwner());
             flyingItem.setItem(itemStack);

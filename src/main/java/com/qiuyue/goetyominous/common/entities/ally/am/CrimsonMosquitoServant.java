@@ -83,6 +83,7 @@ public class CrimsonMosquitoServant extends Summoned {
     public int randomWingFlapTick = 0;
     private int flightTicks = 0;
     private int sickTicks = 0;
+    private boolean inheritUnholyBlood = false;
     private boolean prevFlying = false;
     private int spitCooldown = 0;
     private int loopSoundTick = 0;
@@ -145,6 +146,7 @@ public class CrimsonMosquitoServant extends Summoned {
         compound.putBoolean("Shrinking", this.isShrinking());
         compound.putBoolean("Sick", this.isSick());
         compound.putBoolean("SteroidConversion", this.isSteroidConversion());
+        compound.putBoolean("InheritUnholyBlood", this.inheritUnholyBlood);
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
@@ -156,6 +158,7 @@ public class CrimsonMosquitoServant extends Summoned {
         this.setShrink(compound.getBoolean("Shrinking"));
         this.setSick(compound.getBoolean("Sick"));
         this.setSteroidConversion(compound.getBoolean("SteroidConversion"));
+        this.inheritUnholyBlood = compound.getBoolean("InheritUnholyBlood");
     }
 
     private int countWarpedMoscoServants(Player owner) {
@@ -355,6 +358,10 @@ public class CrimsonMosquitoServant extends Summoned {
         this.entityData.set(STEROID_CONVERSION, steroid);
     }
 
+    public void setInheritUnholyBlood(boolean value) {
+        this.inheritUnholyBlood = value;
+    }
+
     public void startSteroidConversion() {
         this.setSick(true);
         this.setSteroidConversion(true);
@@ -528,6 +535,9 @@ public class CrimsonMosquitoServant extends Summoned {
                             servant.setTrueOwner(this.getTrueOwner());
                         }
                         mosco.finalizeSpawn((ServerLevelAccessor) level(), level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null, null);
+                        if (this.inheritUnholyBlood && mosco instanceof WarpedMoscoServant servant) {
+                            servant.applyUnholyBloodEnhancement();
+                        }
                         this.level().broadcastEntityEvent(this, (byte) 79);
                         level().addFreshEntity(mosco);
                     }
