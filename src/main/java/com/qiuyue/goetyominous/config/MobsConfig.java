@@ -43,6 +43,9 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> MutantShulkerServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> MutantBlazeServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> RodlingServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MutantJungleZombieServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MutantHuskServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MutantFrozenZombieServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> OvergrownColossusServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Boolean> OvergrownColossusServantProjectileImmunity;
     public static final ForgeConfigSpec.ConfigValue<Integer> PossessedPaladinServantLimit;
@@ -365,6 +368,18 @@ public class MobsConfig {
         RodlingServantLimit = BUILDER
                 .comment("Maximum number of Rodling Servants that can be summoned (Default: 16)")
                 .defineInRange("rodlingServantLimit", 16, 1, 100);
+
+        MutantJungleZombieServantLimit = BUILDER
+                .comment("Maximum number of Mutant Jungle Zombie Servants that can be summoned (Default: 2)")
+                .defineInRange("mutantJungleZombieServantLimit", 2, 1, 100);
+
+        MutantHuskServantLimit = BUILDER
+                .comment("Maximum number of Mutant Husk Servants that can be summoned (Default: 2)")
+                .defineInRange("mutantHuskServantLimit", 2, 1, 100);
+
+        MutantFrozenZombieServantLimit = BUILDER
+                .comment("Maximum number of Mutant Frozen Zombie Servants that can be summoned (Default: 2)")
+                .defineInRange("mutantFrozenZombieServantLimit", 2, 1, 100);
 
         OvergrownColossusServantLimit = BUILDER
                 .comment("Maximum number of Overgrown Colossus Servants that can be summoned (Default: 2)")
