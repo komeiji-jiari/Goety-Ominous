@@ -4,7 +4,7 @@ import com.Polarice3.Goety.common.entities.projectiles.SpellThrowableProjectile;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.alexander.mutantmore.audio.soundinstances.EntityLoopingSoundInstance;
 import com.alexander.mutantmore.entities.MutantShulker;
-import com.alexander.mutantmore.events.ShakeCameraEvent;
+import com.qiuyue.goetyominous.compat.mm.MmScreenShake;
 import com.alexander.mutantmore.init.MMDamageTypes;
 import com.alexander.mutantmore.init.ParticleTypeInit;
 import com.alexander.mutantmore.init.SoundEventInit;
@@ -54,6 +54,7 @@ public class MutantShulkerServantBullet extends SpellThrowableProjectile {
     public float trackSpeed = 1.25F;
     public int moveDelay = 0;
     private Vec3 targetMovement = null;
+    private Vec3 syncedPosition = null;
 
     public MutantShulkerServantBullet(EntityType<? extends MutantShulkerServantBullet> type, Level level) {
         super(type, level);
@@ -72,7 +73,7 @@ public class MutantShulkerServantBullet extends SpellThrowableProjectile {
     public void tick() {
         this.baseTick();
         if (this.level().isClientSide) {
-            ShakeCameraEvent.shake(this.level(), 3, 0.0075F, this.blockPosition(), 5);
+            MmScreenShake.shake(this.level(), 3, 0.0075F, this.blockPosition(), 5);
         }
         if (this.immuneTicks > 0) {
             --this.immuneTicks;
@@ -85,6 +86,20 @@ public class MutantShulkerServantBullet extends SpellThrowableProjectile {
         }
         this.checkInsideBlocks();
 
+        if (this.level().isClientSide) {
+            this.tickClientMovement();
+        } else {
+            this.tickServerMovement();
+        }
+
+        if (this.level().isClientSide && this.immuneTicks <= 0) {
+            Vec3 motion = this.getDeltaMovement();
+            this.level().addParticle(ParticleTypeInit.MUTANT_SHULKER_BULLET.get(),
+                    this.getX() - motion.x, this.getY() - motion.y + 0.425D, this.getZ() - motion.z, 0.0D, 0.0D, 0.0D);
+        }
+    }
+
+    private void tickServerMovement() {
         LivingEntity target = this.getTarget();
         if (this.getOwner() != null && this.tickCount > 20 && this.immuneTicks <= 0 && this.distanceTo(this.getOwner()) <= this.getOwner().getBbWidth() * 2.0F) {
             double dx = this.getOwner().getX() - this.getX();
@@ -93,7 +108,7 @@ public class MutantShulkerServantBullet extends SpellThrowableProjectile {
             this.setDeltaMovement(this.getDeltaMovement().add((new Vec3(dx / dist, 0.0D, dz / dist)).scale(-0.3D)));
         }
         if (target != null) {
-            if (this.moveDelay > 0 && this.distanceTo(target) >= 7.5) {
+            if (this.moveDelay > 0) {
                 --this.moveDelay;
             }
             if (!this.level().getBlockState(this.blockPosition().below()).isAir()
@@ -104,28 +119,44 @@ public class MutantShulkerServantBullet extends SpellThrowableProjectile {
             this.yOld = this.getY();
             this.zOld = this.getZ();
             if (this.moveDelay <= 0) {
-                this.moveDelay = 20;
                 double dx = target.getX() - this.getX();
                 double dy = target.getY(0.5) - this.getY();
                 double dz = target.getZ() - this.getZ();
-                double distance = this.distanceTo(target);
+                double distance = Math.max(this.distanceTo(target), 0.001D);
                 this.targetMovement = new Vec3(dx / distance * this.trackSpeed, dy / distance * this.trackSpeed, dz / distance * this.trackSpeed);
             }
             if (this.targetMovement != null) {
-                this.setDeltaMovement(Mth.lerp(0.1D, this.getDeltaMovement().x, this.targetMovement.x),
-                        Mth.lerp(0.1D, this.getDeltaMovement().y, this.targetMovement.y),
-                        Mth.lerp(0.1D, this.getDeltaMovement().z, this.targetMovement.z));
+                this.setDeltaMovement(Mth.lerp(0.35D, this.getDeltaMovement().x, this.targetMovement.x),
+                        Mth.lerp(0.35D, this.getDeltaMovement().y, this.targetMovement.y),
+                        Mth.lerp(0.35D, this.getDeltaMovement().z, this.targetMovement.z));
             }
             this.move(MoverType.SELF, this.getDeltaMovement());
         } else if (!this.isNoGravity()) {
             this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.05D, 0.0D));
             this.move(MoverType.SELF, this.getDeltaMovement());
         }
+    }
 
-        if (this.level().isClientSide && this.immuneTicks <= 0) {
-            Vec3 motion = this.getDeltaMovement();
-            this.level().addParticle(ParticleTypeInit.MUTANT_SHULKER_BULLET.get(),
-                    this.getX() - motion.x, this.getY() - motion.y + 0.425D, this.getZ() - motion.z, 0.0D, 0.0D, 0.0D);
+    private void tickClientMovement() {
+        this.xOld = this.getX();
+        this.yOld = this.getY();
+        this.zOld = this.getZ();
+        this.move(MoverType.SELF, this.getDeltaMovement());
+        if (this.syncedPosition != null) {
+            this.setPos(this.getX() + (this.syncedPosition.x - this.getX()) * 0.5D,
+                    this.getY() + (this.syncedPosition.y - this.getY()) * 0.5D,
+                    this.getZ() + (this.syncedPosition.z - this.getZ()) * 0.5D);
+        }
+    }
+
+    @Override
+    public void lerpTo(double x, double y, double z, float yRot, float xRot, int steps, boolean teleport) {
+        if (teleport) {
+            this.syncedPosition = null;
+            super.lerpTo(x, y, z, yRot, xRot, steps, teleport);
+        } else {
+            this.syncedPosition = new Vec3(x, y, z);
+            this.setRot(yRot, xRot);
         }
     }
 
@@ -167,7 +198,8 @@ public class MutantShulkerServantBullet extends SpellThrowableProjectile {
                 this.explode();
                 if (flag) {
                     this.doEnchantDamageEffects(owner, entity);
-                    if (entity instanceof LivingEntity living && living.getMaxHealth() <= MobsConfig.MutantShulkerBulletLevitationMaxHealth.get().floatValue()) {
+                    if (entity instanceof LivingEntity living && living.getMaxHealth() <= MobsConfig.MutantShulkerBulletLevitationMaxHealth.get().floatValue()
+                            && !living.hasEffect(MobEffects.LEVITATION)) {
                         living.addEffect(new MobEffectInstance(MobEffects.LEVITATION, this.levitationLength, this.levitationLevel), owner != null ? owner : this);
                     }
                 }
@@ -232,7 +264,7 @@ public class MutantShulkerServantBullet extends SpellThrowableProjectile {
                 this.shootFromRotation(damageSource.getDirectEntity(), damageSource.getDirectEntity().getXRot(),
                         damageSource.getDirectEntity().getYRot(), 0.0F, 0.5F, 1.0F);
                 this.targetMovement = null;
-                this.moveDelay = 60;
+                this.moveDelay = 20;
             }
             this.setRemainingHits(this.getRemainingHits() - 1);
             this.immuneTicks = 60;

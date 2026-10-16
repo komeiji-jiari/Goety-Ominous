@@ -5,6 +5,7 @@ import com.Polarice3.Goety.common.enchantments.ModEnchantments;
 import com.Polarice3.Goety.common.magic.Spell;
 import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.init.ModSounds;
+import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.alexander.mutantmore.init.SoundEventInit;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantShulkerServantTrap;
@@ -78,6 +79,7 @@ public class ShulkerScatterSpell extends Spell {
                 trap.moveTo(caster.getX(), caster.getEyeY(), caster.getZ());
                 trap.setDeltaMovement(caster.getRandom().nextGaussian() * 0.8, 0.6, caster.getRandom().nextGaussian() * 0.8);
                 trap.setSpawnedByMutantShulker(true);
+                trap.setLimitedLife(MobUtil.getSummonLifespan(worldIn));
                 trap.bonusDamage = potency;
                 trap.voidTouchedHit = usingRightStaff;
                 trap.bulletTurnTimeReduction = Math.min((int) velocity * 20, 100);

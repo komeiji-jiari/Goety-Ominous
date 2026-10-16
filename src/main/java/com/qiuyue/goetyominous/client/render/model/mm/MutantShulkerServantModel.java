@@ -18,11 +18,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class MutantShulkerServantModel<T extends MutantShulkerServant> extends MMBaseEntityModel<T> {
     private final ModelPart head;
-    private float walkAmount;
-    private boolean wasWalking;
-    private float walkScale;
-    private float walkPhaseSeconds;
-    private float lastAgeInTicks = -1.0F;
     private List<ModelPart> parts;
     private float[][] basePose;
     private float[][] walkPose;
@@ -41,12 +36,12 @@ public class MutantShulkerServantModel<T extends MutantShulkerServant> extends M
         super.setupAnim(pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
 
         float deltaTicks;
-        if (this.lastAgeInTicks < 0.0F) {
+        if (pEntity.walkPhaseAge < 0.0F) {
             deltaTicks = 1.0F;
         } else {
-            deltaTicks = Mth.clamp(pAgeInTicks - this.lastAgeInTicks, 0.0F, 2.0F);
+            deltaTicks = Mth.clamp(pAgeInTicks - pEntity.walkPhaseAge, 0.0F, 2.0F);
         }
-        this.lastAgeInTicks = pAgeInTicks;
+        pEntity.walkPhaseAge = pAgeInTicks;
 
         this.mathAnimateState(pEntity, pEntity.deathAnimation, MutantShulkerMathAnimations3.DEATH, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
         if (pEntity.introAnimationTick > 0) {
@@ -59,8 +54,6 @@ public class MutantShulkerServantModel<T extends MutantShulkerServant> extends M
         this.mathAnimateState(pEntity, pEntity.idleInShellAnimation, MutantShulkerMathAnimations3.IDLE_IN_SHELL, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
         this.mathAnimateState(pEntity, pEntity.summonTrapsAnimation, MutantShulkerMathAnimations3.SUMMON_TRAPS, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
         this.mathAnimateState(pEntity, pEntity.biteAnimation, MutantShulkerMathAnimations2.BITE, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-        this.mathAnimateState(pEntity, pEntity.spinningAnimation, MutantShulkerMathAnimations1.SPINNING, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-        this.mathAnimateState(pEntity, pEntity.enterSpinAnimation, MutantShulkerMathAnimations2.ENTER_SPIN, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
         this.mathAnimateState(pEntity, pEntity.shootAnimation, MutantShulkerMathAnimations2.SHOOT, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
         boolean priorityActive = pEntity.isInBox()
                 || pEntity.deathAnimation.isStarted()
@@ -73,33 +66,33 @@ public class MutantShulkerServantModel<T extends MutantShulkerServant> extends M
                 || pEntity.biteAnimation.isStarted()
                 || pEntity.shootAnimation.isStarted()
                 || (pEntity.idleRareAnimation.isStarted() && pEntity.introAnimationTick > 0);
-        if (!priorityActive) {
-
-            float wSpeed = Math.abs(pEntity.walkAnimation.speed());
-            if (this.wasWalking) {
-                if (wSpeed < 0.03F) {
-                    this.wasWalking = false;
-                }
-            } else if (wSpeed > 0.075F) {
-                this.wasWalking = true;
+        float wSpeed = Math.abs(pEntity.walkAnimation.speed());
+        boolean walking = pEntity.onGround();
+        if (pEntity.wasWalking) {
+            if (!walking || wSpeed < 0.03F) {
+                pEntity.wasWalking = false;
             }
-            this.walkAmount = Mth.clamp(SineWaveAnimationUtils.tickAmountMultiplierChange(this.walkAmount, this.wasWalking, deltaTicks * 0.18F), 0.0F, 1.0F);
-            if (this.walkAmount > 0.001F) {
+        } else if (walking && wSpeed > 0.075F) {
+            pEntity.wasWalking = true;
+        }
+        pEntity.walkAmount = Mth.clamp(SineWaveAnimationUtils.tickAmountMultiplierChange(pEntity.walkAmount, pEntity.wasWalking, deltaTicks * 0.18F), 0.0F, 1.0F);
+        if (!priorityActive) {
+            if (pEntity.walkAmount > 0.001F) {
 
                 float targetScale = Mth.clamp(wSpeed * 2.8F, 0.0F, 5.0F);
-                this.walkScale += (targetScale - this.walkScale) * Math.min(1.0F, deltaTicks * 0.4F);
-                this.walkPhaseSeconds += this.walkScale * (deltaTicks / 20.0F);
+                pEntity.walkScale += (targetScale - pEntity.walkScale) * Math.min(1.0F, deltaTicks * 0.4F);
+                pEntity.walkPhaseSeconds += pEntity.walkScale * (deltaTicks / 20.0F);
                 this.ensurePoseBuffers();
 
                 this.resetAll();
                 this.applyIdleBase(pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
                 this.capturePose(this.basePose);
                 this.resetAll();
-                this.mathAnimate(pEntity, MutantShulkerMathAnimations1.WALK, (long)(this.walkPhaseSeconds * 1000.0F), 1.0F, pLimbSwing, pLimbSwingAmount, this.walkPhaseSeconds * 20.0F, pNetHeadYaw, pHeadPitch);
+                this.mathAnimate(pEntity, MutantShulkerMathAnimations1.WALK, (long)(pEntity.walkPhaseSeconds * 1000.0F), 1.0F, pLimbSwing, pLimbSwingAmount, pEntity.walkPhaseSeconds * 20.0F, pNetHeadYaw, pHeadPitch);
                 this.capturePose(this.walkPose);
                 this.resetAll();
                 this.applyIdleBase(pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-                this.lerpTo(this.basePose, this.walkPose, this.walkAmount);
+                this.lerpTo(this.basePose, this.walkPose, pEntity.walkAmount);
             } else {
                 this.applyIdleBase(pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
             }
@@ -110,7 +103,7 @@ public class MutantShulkerServantModel<T extends MutantShulkerServant> extends M
 
     private void applyIdleBase(T pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
         this.mathAnimateState(pEntity, pEntity.idleAnimation, MutantShulkerMathAnimations1.IDLE, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-        if (!this.wasWalking) {
+        if (!pEntity.wasWalking) {
             this.mathAnimateState(pEntity, pEntity.idleRareAnimation, MutantShulkerMathAnimations1.IDLE_RARE, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
         }
     }

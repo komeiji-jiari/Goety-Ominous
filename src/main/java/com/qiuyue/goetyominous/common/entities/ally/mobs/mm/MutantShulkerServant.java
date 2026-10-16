@@ -7,15 +7,15 @@ import com.alexander.mutantmore.ai.goals.ApproachTargetGoal;
 import com.alexander.mutantmore.ai.goals.GroundPullAntiCheeseGoal;
 import com.alexander.mutantmore.ai.goals.LookAtTargetGoal;
 import com.alexander.mutantmore.config.MutantMoreGroupedOptionsCommonConfig;
-import com.alexander.mutantmore.config.mutant_shulker.MutantShulkerClientConfig;
 import com.alexander.mutantmore.config.mutant_shulker.MutantShulkerCommonConfig;
 import com.alexander.mutantmore.entities.MutantShulkerBullet;
-import com.alexander.mutantmore.events.ShakeCameraEvent;
+import com.qiuyue.goetyominous.compat.mm.MmScreenShake;
 import com.alexander.mutantmore.init.ItemInit;
 import com.alexander.mutantmore.init.MMDamageTypes;
 import com.alexander.mutantmore.init.ParticleTypeInit;
 import com.alexander.mutantmore.init.SoundEventInit;
 import com.alexander.mutantmore.init.TagInit;
+import com.alexander.mutantmore.interfaces.IHasCustomExplosion;
 import com.alexander.mutantmore.util.MiscUtils;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantShulkerServant.*;
 import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
@@ -39,7 +39,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -75,7 +74,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
@@ -87,20 +85,16 @@ import org.joml.Quaternionf;
 import org.joml.Quaternionfc;
 import org.joml.Vector3f;
 
-public class MutantShulkerServant extends AbstractMutantServant {
-    private static final ForgeConfigSpec.BooleanValue DISABLED;
-    static {
-        ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
-        DISABLED = builder.define("no_grief", false);
-        builder.build();
-    }
-
+public class MutantShulkerServant extends AbstractMutantServant implements IHasCustomExplosion {
+    public float walkAmount;
+    public boolean wasWalking;
+    public float walkScale;
+    public float walkPhaseSeconds;
     private static final EntityDataAccessor<Boolean> IN_BOX = SynchedEntityData.defineId(MutantShulkerServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> ANVIL_ATTACKING = SynchedEntityData.defineId(MutantShulkerServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Byte> COLOR_ID = SynchedEntityData.defineId(MutantShulkerServant.class, EntityDataSerializers.BYTE);
     public final AnimationState idleAnimation = new AnimationState();
     public final AnimationState idleRareAnimation = new AnimationState();
-    public final AnimationState shulkerWalkAnimation = new AnimationState();
     public final AnimationState shootAnimation = new AnimationState();
     public final AnimationState biteAnimation = new AnimationState();
     public final AnimationState deathAnimation = new AnimationState();
@@ -110,14 +104,8 @@ public class MutantShulkerServant extends AbstractMutantServant {
     public final AnimationState anvilCrushAnimation = new AnimationState();
     public final AnimationState summonTrapsAnimation = new AnimationState();
     public final AnimationState summonTrapsInShellAnimation = new AnimationState();
-    public final AnimationState spinningAnimation = new AnimationState();
-    public final AnimationState enterSpinAnimation = new AnimationState();
-    public float currentSpeed;
-    public float currentSpeedChangeSpeed = 0.01f;
     public int specialAnimationTick;
-    public final int specialAnimationLength = 45;
     public int introAnimationTick;
-    public final int introAnimationLength = 45;
     public int shootAnimationTick;
     public int shootAnimationLength = 45;
     public int shootAnimationActionPoint1 = 25;
@@ -141,10 +129,6 @@ public class MutantShulkerServant extends AbstractMutantServant {
     public float healthHealedInShell = 0.0f;
     public int anvilCrushSoundCooldown = 0;
     public int nextEnterShellTime;
-    public int prepareFlyAnimationTick;
-    public int prepareFlyAnimationLength = 21;
-    public int prepareFlyActionPoint = 8;
-    public boolean flying = false;
     public DamageSource killedBy = this.damageSources().cramming();
     public List<LivingEntity> alreadyCrushed = Lists.newArrayList();
     public static EntityDimensions inBoxDimensions = EntityDimensions.scalable(1.9F, 1.9F);
@@ -186,9 +170,6 @@ public class MutantShulkerServant extends AbstractMutantServant {
         }
         if (MutantShulkerCommonConfig.leaves_shell.get()) {
             this.goalSelector.addGoal(1, new LeaveShellGoal());
-        }
-        if (MutantShulkerCommonConfig.uses_fly.get()) {
-            this.goalSelector.addGoal(2, new MutantShulkerServantFlyGoal(this));
         }
         if (MutantShulkerCommonConfig.uses_anvil_crush.get()) {
             this.goalSelector.addGoal(2, new MutantShulkerServantAnvilCrushAttackGoal(this));
@@ -375,13 +356,13 @@ public class MutantShulkerServant extends AbstractMutantServant {
                 }
             }
             if (this.deathTime == 113) {
-                ShakeCameraEvent.shake(this.level(), 26, 0.03F, this.blockPosition(), 25);
+                MmScreenShake.shake(this.level(), 26, 0.03F, this.blockPosition(), 25);
                 if (!this.level().isClientSide) {
                     MiscUtils.customExplosion(this.level(), this, this.damageSources().explosion(this, this),
                             null, this.getX(), this.getY(), this.getZ(), 15.0F, false,
                             this.deathExplosionBlockInteraction(), null, this.getSoundSource(),
                             ParticleTypes.EXPLOSION, ParticleTypes.EXPLOSION_EMITTER,
-                            MutantShulkerCommonConfig.death_explosion_damage.get().floatValue(), true, true);
+                            MutantShulkerCommonConfig.death_explosion_damage.get().floatValue(), true, false);
                 }
             }
             if (this.deathTime == 123) {
@@ -401,6 +382,22 @@ public class MutantShulkerServant extends AbstractMutantServant {
 
     public Explosion.BlockInteraction deathExplosionBlockInteraction() {
         return Explosion.BlockInteraction.KEEP;
+    }
+
+    @Override
+    public boolean canHarmWithExplosion(Entity target) {
+        return this.explosionCanHarm(target);
+    }
+
+    boolean explosionCanHarm(Entity target) {
+        if (target instanceof MutantShulkerServant) {
+            return false;
+        }
+        LivingEntity trueOwner = this.getTrueOwner();
+        if (trueOwner != null && (target == trueOwner || MobUtil.areAllies(trueOwner, target))) {
+            return false;
+        }
+        return !MobUtil.areAllies(this, target);
     }
 
     @Override
@@ -451,12 +448,6 @@ public class MutantShulkerServant extends AbstractMutantServant {
         if (!this.level().isClientSide && MutantShulkerCommonConfig.teleports_when_hit.get() && !this.isStaying() && this.random.nextInt(MutantShulkerCommonConfig.teleport_when_hit_chance.get()) == 0 && !p_21016_.is(DamageTypes.GENERIC_KILL) && !p_21016_.is(DamageTypes.FELL_OUT_OF_WORLD) && !this.isDeadOrDying()) {
             this.teleport();
             return false;
-        }
-        if (this.flying && MutantShulkerCommonConfig.getting_hit_cancels_flying.get() && this.tickCount >= this.nextEnterShellTime) {
-            this.flying = false;
-            this.setInBox(true);
-            this.level().broadcastEntityEvent(this, (byte) 6);
-            return super.hurt(p_21016_, p_21017_);
         }
         return super.hurt(p_21016_, p_21017_);
     }
@@ -644,7 +635,7 @@ public class MutantShulkerServant extends AbstractMutantServant {
                     entity.invulnerableTime = 0;
                 }
             }
-            ShakeCameraEvent.shake(this.level(), 10, 0.015F, this.blockPosition(), 5);
+            MmScreenShake.shake(this.level(), 10, 0.015F, this.blockPosition(), 5);
             if (this.anvilCrushSoundCooldown <= 0) {
                 this.playSound(SoundEventInit.MUTANT_SHULKER_ANVIL_CRUSH.get(), 1.0F, 1.0F);
                 this.anvilCrushSoundCooldown = 40;
@@ -660,7 +651,7 @@ public class MutantShulkerServant extends AbstractMutantServant {
                 this.sinkInWater();
             }
         }
-        if (!this.level().isClientSide && this.getTarget() != null && this.distanceTo(this.getTarget()) > 5.0F && this.random.nextInt(MutantShulkerCommonConfig.basic_teleport_chance.get()) == 0 && !this.isDeadOrDying() && !this.isAnvilAttacking() && !this.isStaying() && !(this.flying && !MutantShulkerCommonConfig.teleports_while_flying.get())) {
+        if (!this.level().isClientSide && this.getTarget() != null && this.distanceTo(this.getTarget()) > 5.0F && this.random.nextInt(MutantShulkerCommonConfig.basic_teleport_chance.get()) == 0 && !this.isDeadOrDying() && !this.isAnvilAttacking() && !this.isStaying()) {
             if (this.isInBox() && MutantShulkerCommonConfig.teleports_while_in_shell.get()) {
                 this.teleport(this.getTarget().getX() - 15.0 + this.random.nextInt(30), this.getY(), this.getTarget().getZ() - 15.0 + this.random.nextInt(30));
             } else if (MutantShulkerCommonConfig.teleports_to_follow_target.get()) {
@@ -682,7 +673,7 @@ public class MutantShulkerServant extends AbstractMutantServant {
     public void baseTick() {
         super.baseTick();
         if (!this.level().isClientSide && this.verticalCollisionBelow && this.isAnvilAttacking()) {
-            ShakeCameraEvent.shake(this.level(), 6, 0.01F, this.blockPosition(), 10);
+            MmScreenShake.shake(this.level(), 6, 0.01F, this.blockPosition(), 10);
             this.playSound(SoundEventInit.MUTANT_SHULKER_ANVIL_CRUSH.get(), 1.0F, 1.0F);
             this.alreadyCrushed.clear();
             this.setAnvilAttacking(false);
@@ -730,7 +721,7 @@ public class MutantShulkerServant extends AbstractMutantServant {
             projectile.levitationLevel = MutantShulkerCommonConfig.mutant_shulker_bullet_levitation_level.get();
             projectile.ignoresInvulTime = MutantShulkerCommonConfig.ignores_invulnerability_time.get();
             projectile.setRemainingHits(MutantShulkerCommonConfig.mutant_shulker_bullet_hits.get());
-            projectile.moveDelay = 60;
+            projectile.moveDelay = 8;
             projectile.setPos(this.getX(), this.getEyeY(), this.getZ());
             projectile.setTarget(this.getTarget());
             projectile.setColor(this.getColor());
@@ -748,7 +739,7 @@ public class MutantShulkerServant extends AbstractMutantServant {
             projectile.levitationLevel = MutantShulkerCommonConfig.mutant_shulker_bullet_levitation_level.get();
             projectile.ignoresInvulTime = MutantShulkerCommonConfig.ignores_invulnerability_time.get();
             projectile.setRemainingHits(MutantShulkerCommonConfig.mutant_shulker_bullet_hits.get());
-            projectile.moveDelay = 60;
+            projectile.moveDelay = 8;
             projectile.setPos(this.getX(), this.getEyeY(), this.getZ());
             projectile.setColor(this.getColor());
             projectile.setOwner(this);
@@ -805,12 +796,6 @@ public class MutantShulkerServant extends AbstractMutantServant {
             this.summonTrapsAnimationTickInShell = this.summonTrapsAnimationLengthInShell;
         } else if (p_28844_ == 37) {
             this.anvilCrushAnimationTick = this.anvilCrushAnimationLength;
-        } else if (p_28844_ == 5) {
-            this.flying = true;
-        } else if (p_28844_ == 6) {
-            this.flying = false;
-        } else if (p_28844_ == 7) {
-            this.prepareFlyAnimationTick = this.prepareFlyAnimationLength;
         } else {
             super.handleEntityEvent(p_28844_);
         }
@@ -831,8 +816,6 @@ public class MutantShulkerServant extends AbstractMutantServant {
         somethingAnimating = this.deathAnimation.isStarted();
         this.idleRareAnimation.animateWhen(this.introAnimationTick > 0 && !somethingAnimating, this.tickCount);
         somethingAnimating = somethingAnimating || this.idleRareAnimation.isStarted();
-        this.spinningAnimation.animateWhen(this.flying && !somethingAnimating, this.tickCount);
-        somethingAnimating = somethingAnimating || this.spinningAnimation.isStarted();
         this.anvilCrushAnimation.animateWhen(this.isInBox() && this.anvilCrushAnimationTick > 0 && !somethingAnimating, this.tickCount);
         somethingAnimating = somethingAnimating || this.anvilCrushAnimation.isStarted();
         this.summonTrapsInShellAnimation.animateWhen(this.isInBox() && this.summonTrapsAnimationTickInShell > 0 && !somethingAnimating, this.tickCount);
@@ -843,8 +826,6 @@ public class MutantShulkerServant extends AbstractMutantServant {
         somethingAnimating = somethingAnimating || this.idleRareInShellAnimation.isStarted();
         this.idleInShellAnimation.animateWhen(this.isInBox() && !somethingAnimating, this.tickCount);
         somethingAnimating = somethingAnimating || this.idleInShellAnimation.isStarted();
-        this.enterSpinAnimation.animateWhen(!this.isInBox() && this.prepareFlyAnimationTick > 0 && !somethingAnimating, this.tickCount);
-        somethingAnimating = somethingAnimating || this.enterSpinAnimation.isStarted();
         this.summonTrapsAnimation.animateWhen(!this.isInBox() && this.summonTrapsAnimationTick > 0 && !somethingAnimating, this.tickCount);
         somethingAnimating = somethingAnimating || this.summonTrapsAnimation.isStarted();
         this.biteAnimation.animateWhen(!this.isInBox() && this.biteAnimationTick > 0 && !somethingAnimating, this.tickCount);
@@ -883,9 +864,6 @@ public class MutantShulkerServant extends AbstractMutantServant {
         }
         if (this.anvilCrushAnimationTick > 0) {
             --this.anvilCrushAnimationTick;
-        }
-        if (this.prepareFlyAnimationTick > 0) {
-            --this.prepareFlyAnimationTick;
         }
         if (this.stunnedTicks > 0) {
             this.stunEffect();
@@ -984,36 +962,6 @@ public class MutantShulkerServant extends AbstractMutantServant {
             return flag2;
         }
         return false;
-    }
-
-    @Override
-    public TagKey<Block> walksThroughTag() {
-        return TagInit.Blocks.MUTANT_SHULKER_WALKS_THROUGH;
-    }
-
-    @Override
-    public ForgeConfigSpec.ConfigValue<Boolean> walkGriefingConfig() {
-        return DISABLED;
-    }
-
-    @Override
-    public ForgeConfigSpec.ConfigValue<Boolean> walkGriefingDropsBlocksConfig() {
-        return DISABLED;
-    }
-
-    @Override
-    public ForgeConfigSpec.ConfigValue<Boolean> hurtGriefingConfig() {
-        return DISABLED;
-    }
-
-    @Override
-    public ForgeConfigSpec.ConfigValue<Boolean> hurtGriefingDropsBlocksConfig() {
-        return DISABLED;
-    }
-
-    @Override
-    public ForgeConfigSpec.ConfigValue<Boolean> showHealthBarConfig() {
-        return MutantShulkerClientConfig.show_health_bar;
     }
 
     @Override

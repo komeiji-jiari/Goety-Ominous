@@ -124,7 +124,7 @@ public class ShulkerBulletSpell extends EverChargeSpell {
         bullet.levitationLength = MutantShulkerCommonConfig.mutant_shulker_bullet_levitation_length.get();
         bullet.levitationLevel = MutantShulkerCommonConfig.mutant_shulker_bullet_levitation_level.get();
         bullet.setRemainingHits(MutantShulkerCommonConfig.mutant_shulker_bullet_hits.get());
-        bullet.moveDelay = 60;
+        bullet.moveDelay = 8;
         bullet.trackSpeed = 1.25F + velocity * 0.2F;
         bullet.setPos(caster.getX(), caster.getEyeY(), caster.getZ());
         bullet.setTarget(target);
