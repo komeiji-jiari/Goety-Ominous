@@ -3,9 +3,9 @@ package com.qiuyue.goetyominous.common.entities.ally.lm.projectile;
 import com.qiuyue.goetyominous.common.entities.ally.lm.BeheadedKnightServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.ResurrectedKnightServant;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
+import com.qiuyue.goetyominous.compat.lm.LmScreenShake;
 import net.miauczel.legendary_monsters.Particle.custom.Circle;
 import net.miauczel.legendary_monsters.damagetype.ModDamageTypes;
-import net.miauczel.legendary_monsters.entity.AnimatedMonster.Effect.CameraShakeEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
@@ -211,7 +211,7 @@ public class ThrownKnight extends SpellThrowableProjectile {
         super.onHit(result);
         this.xPillars(6, 3.0D, 5.0F);
         this.AreaAttack(4.0F, 4.0F, 360.0F, this.getDamage());
-        CameraShakeEntity.cameraShake(this.level(), this.position(), 5.0F, 0.1F, 5, 5);
+        LmScreenShake.shake(this.level(), this.position(), 5.0F, 0.1F, 5, 5);
         this.playSound(SoundEvents.DRAGON_FIREBALL_EXPLODE, 1.0F, 1.0F);
         this.level().addParticle(new Circle.RingData(0.0F, 1.5707964F, 30, this.ringRed(), this.ringGreen(), this.ringBlue(), 1.0F, 100.0F,
                 false, Circle.EnumRingBehavior.GROW), this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);

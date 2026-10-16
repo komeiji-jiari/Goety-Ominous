@@ -1,10 +1,10 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm.projectile;
 
 import com.Polarice3.Goety.common.entities.projectiles.SpellEntity;
+import com.qiuyue.goetyominous.compat.lm.LmScreenShake;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
 import net.miauczel.legendary_monsters.damagetype.ModDamageTypes;
-import net.miauczel.legendary_monsters.entity.AnimatedMonster.Effect.CameraShakeEntity;
 import net.miauczel.legendary_monsters.entity.client.ControlledAnim;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -214,7 +214,7 @@ public class EnergyBeamEntity extends SpellEntity {
         }
         if (this.tickCount > 20) {
             Vec3 entityPosition = this.position();
-            CameraShakeEntity.cameraShake(this.level(), entityPosition, 20.0F, 0.2F, 0, 2);
+            LmScreenShake.shake(this.level(), entityPosition, 20.0F, 0.2F, 0, 2);
             Vec3 start = new Vec3(this.getX(), this.getY(), this.getZ());
             Vec3 end = new Vec3(this.endPosX, this.endPosY, this.endPosZ);
             this.spawnSpiralParticlesAlongLine(this.level(), start, end, 0.2, 0.7, 20.0);

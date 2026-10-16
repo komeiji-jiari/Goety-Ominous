@@ -1,7 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantShulkerServant;
 
 import com.alexander.mutantmore.config.mutant_shulker.MutantShulkerCommonConfig;
-import com.alexander.mutantmore.events.ShakeCameraEvent;
+import com.qiuyue.goetyominous.compat.mm.MmScreenShake;
 import com.alexander.mutantmore.init.MMDamageTypes;
 import com.alexander.mutantmore.init.SoundEventInit;
 import com.alexander.mutantmore.util.MiscUtils;
@@ -63,7 +63,7 @@ public class MutantShulkerServantBiteAttackGoal extends Goal {
             double d1 = this.target.getZ() - this.mob.getZ();
             double d2 = Math.max(d0 * d0 + d1 * d1, 0.001);
             this.target.knockback(d0 / d2 * 2.5, 0.2, d1 / d2 * 2.5);
-            ShakeCameraEvent.shake(this.mob.level(), 20, 0.15F, this.mob.blockPosition(), 10);
+            MmScreenShake.shake(this.mob.level(), 20, 0.15F, this.mob.blockPosition(), 10);
         }
     }
 

@@ -33,6 +33,7 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.AnnihilationFl
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.EntityThrown;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SmallAnnihilationBomb;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
+import com.qiuyue.goetyominous.compat.lm.LmScreenShake;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.ChatFormatting;
@@ -85,7 +86,6 @@ import net.miauczel.legendary_monsters.damagetype.ModDamageTypes;
 import net.miauczel.legendary_monsters.effect.DynamicCameraZoomEntity;
 import net.miauczel.legendary_monsters.effect.ModEffects;
 import net.miauczel.legendary_monsters.entity.AnimatedMonster.Chorusling.TheWarpedOne.TheWarpedOneOld;
-import net.miauczel.legendary_monsters.entity.AnimatedMonster.Effect.CameraShakeEntity;
 import net.miauczel.legendary_monsters.entity.AnimatedMonster.IAnimatedBoss.TheObliterator.TheObliteratorUtils;
 import net.miauczel.legendary_monsters.entity.AnimatedMonster.Projectile.AnnihilationBeamEntity;
 import net.miauczel.legendary_monsters.entity.AnimatedMonster.Projectile.AnnihilationGeyserEntity;
@@ -1299,7 +1299,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
             level.gameEvent(GameEvent.TELEPORT, oldPos, GameEvent.Context.of(this));
             if (!this.isSilent()) {
                 if (!this.suppressTeleportShake) {
-                    CameraShakeEntity.cameraShake(level, this.position(), 10.0F, 0.1F, 5, 5);
+                    LmScreenShake.shake(level, this.position(), 10.0F, 0.1F, 5, 5);
                 }
                 this.playSound(SoundEvents.SHULKER_TELEPORT, 4.0F, 1.0F);
             }
@@ -2079,7 +2079,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
                 this.playSound(ModSounds.ENERGY_EXPLOSION.get(), 1.0f, 1.0f);
                 this.SideAreaAttack(5.0f, 4.0f, spinSmashArc, -90.0f, spinSmashSlamDamage - removeMeleeDamage, 3.0f, 100, false, false, spinSmashImpactSound, 0.5f);
                 Vec3 entityPosition = this.position();
-                CameraShakeEntity.cameraShake(this.level(), entityPosition, 20.0f, 0.15f, 0, 20);
+                LmScreenShake.shake(this.level(), entityPosition, 20.0f, 0.15f, 0, 20);
             }
         }
         if (this.getAttackState() == 26) {
@@ -2134,7 +2134,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
                 this.playSound(ModSounds.ENERGY_EXPLOSION.get(), 1.0f, 1.0f);
                 this.SideAreaAttack(5.0f, 4.0f, spinSmashArc, -90.0f, spinSmashSlamDamage - removeMeleeDamage, 3.0f, 100, false, false, spinSmashImpactSound, 0.5f);
                 Vec3 entityPosition = this.position();
-                CameraShakeEntity.cameraShake(this.level(), entityPosition, 20.0f, 0.15f, 0, 20);
+                LmScreenShake.shake(this.level(), entityPosition, 20.0f, 0.15f, 0, 20);
             }
         }
         if (this.getAttackState() == 5) {
@@ -2180,7 +2180,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
                 this.playSound(ModSounds.ENERGY_EXPLOSION.get(), 1.0f, 1.0f);
                 this.SideAreaAttack(5.0f, 4.0f, spinSmashArc, 90.0f, spinSmashSlamDamage - removeMeleeDamage, 3.0f, 100, false, false, spinSmashImpactSound, 0.5f);
                 Vec3 entityPosition = this.position();
-                CameraShakeEntity.cameraShake(this.level(), entityPosition, 20.0f, 0.15f, 0, 20);
+                LmScreenShake.shake(this.level(), entityPosition, 20.0f, 0.15f, 0, 20);
             }
         }
         float bombVel = 1.0f;
@@ -2380,7 +2380,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
             if (this.attackTicks == 20) {
                 this.playSound(ModSounds.THE_WARPED_ONE_ROAR.get(), 2.0F, 1.0F);
                 Vec3 entityPosition = this.position();
-                CameraShakeEntity.cameraShake(this.level(), entityPosition, 20.0F, 0.15F, 30, 0);
+                LmScreenShake.shake(this.level(), entityPosition, 20.0F, 0.15F, 30, 0);
             }
             if (this.attackTicks > 20 && this.attackTicks < 30) {
                 List<LivingEntity> entities = this.getEntityLivingBaseNearby(10.0, 3.0, 10.0, 10.0);
@@ -2445,7 +2445,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
                 this.AreaAttack(4.0F, 3.0F, 180.0F, 16.0F, 5.0F, 100, false, true);
                 ParticleUtils.controlledSmashParticles(this, 0.0F, -1.0F, 0.0F, 7.5F, 3.0F);
                 Vec3 entityPosition = this.position();
-                CameraShakeEntity.cameraShake(this.level(), entityPosition, 20.0F, 0.15F, 0, 20);
+                LmScreenShake.shake(this.level(), entityPosition, 20.0F, 0.15F, 0, 20);
             }
         }
         if (this.getAttackState() == 12) {
@@ -2475,7 +2475,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
                 this.AreaAttack(4.0F, 3.0F, 180.0F, 16.0F, 5.0F, 100, false, true);
                 ParticleUtils.controlledSmashParticles(this, 0.0F, 1.0F, 0.0F, 7.5F, 3.0F);
                 Vec3 entityPosition = this.position();
-                CameraShakeEntity.cameraShake(this.level(), entityPosition, 20.0F, 0.15F, 0, 20);
+                LmScreenShake.shake(this.level(), entityPosition, 20.0F, 0.15F, 0, 20);
             }
             if (this.attackTicks == 21) {
                 if (this.level() instanceof ServerLevel serverLevel) {
@@ -2580,7 +2580,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
         if (this.getAttackState() == 20 && this.attackTicks == 3) {
             this.playSound(ModSounds.ENERGY_EXPLOSION.get(), 1.0F, 1.0F);
             Vec3 entityPosition = this.position();
-            CameraShakeEntity.cameraShake(this.level(), entityPosition, 20.0F, 0.15F, 0, 20);
+            LmScreenShake.shake(this.level(), entityPosition, 20.0F, 0.15F, 0, 20);
             this.spawnCircleParticle(2.0F, 0.0F, 80.0F, true, 7.0F, 0.0F, 1.0F, 0.0F, 1.0F);
             this.AreaAttack(4.0F, 5.0F, 360.0F, 12.0F, 10.0F, 100, false, false);
             double multiplier = 8.0D;
@@ -2607,7 +2607,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
             }
             if (this.attackTicks == 56) {
                 Vec3 entityPosition = this.position();
-                CameraShakeEntity.cameraShake(this.level(), entityPosition, 20.0F, 0.15F, 0, 20);
+                LmScreenShake.shake(this.level(), entityPosition, 20.0F, 0.15F, 0, 20);
                 this.doSmashEffects(4.5F, 0.0F, ModSounds.HUGE_ENERGY_EXPLOSION.get());
                 this.AreaAttack(5.0F, 4.0F, 180.0F, 23.0F - removeMeleeDamage, 5.0F, 160, false, true);
                 ParticleUtils.controlledSmashParticles(this, 0.0F, 0.0F, 0.0F, 7.5F, 4.0F);
@@ -2635,7 +2635,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
                 this.doTeleportEffects(this.getIsSecondPhase());
             }
             if (this.attackTicks == 83) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 10.0F, 0.1F, 5, 5);
+                LmScreenShake.shake(this.level(), this.position(), 10.0F, 0.1F, 5, 5);
             }
             if (this.attackTicks == 88 && this.level() instanceof ServerLevel serverLevel) {
                 serverLevel.sendParticles(new Circle.RingData(0.0F, 1.5707964F, 20, 0.0F, 1.0F, 0.0F, 1.0F, 100.0F, false, Circle.EnumRingBehavior.GROW), this.getX(), this.getY() + (double) 0.1F, this.getZ(), 1, 0.0D, 0.0D, 0.0D, 0.0D);
@@ -2806,7 +2806,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
                 this.spawnCircleParticle(0.0f, 0.0f, 100.0f, false, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f);
                 this.playSound(SoundEvents.END_PORTAL_SPAWN, 1.0f, 1.0f);
                 this.AreaAttack(8.0f, 6.0f, 360.0f, 10.0f, 8.0f, 100, false, false);
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0f, 0.15f, 0, 20);
+                LmScreenShake.shake(this.level(), this.position(), 20.0f, 0.15f, 0, 20);
                 if (this.targetIsNotNull()) {
                     this.spawnArmedClones(this.getX() + (double)vec1 * vecX2 + (double)(f20 * offset1), this.getZ() + (double)vec1 * vecZ2 + (double)(f1 * offset1), floor, this.getY() + 2.0, 0.0f, 0, this.target().getX(), this.getY(), this.target().getZ(), 1, 45);
                 }
@@ -2861,7 +2861,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
             if (this.attackTicks == 38) {
                 this.createCircularLightningParticle(2.0f, 0.0f, 10, 2.0f);
                 this.doFlamesEffect(3.0, 2.0f, 7, false, ModParticles.ANNIHILATION_FLAME_STRIKE.get(), 2.0);
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0f, 0.25f, 0, 20);
+                LmScreenShake.shake(this.level(), this.position(), 20.0f, 0.25f, 0, 20);
                 this.spawnCircleParticle(0.0f, 0.0f, 100.0f, false, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f);
                 this.playSound(ModSounds.HUGE_ENERGY_EXPLOSION.get(), 3.0f, 1.0f);
                 this.AreaAttack(3.8f, 5.0f, 180.0f, 22.0f, 4.0f, 150, false, false);
@@ -2893,7 +2893,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
             if (this.attackTicks == 38) {
                 ParticleUtils.controlledSmashParticles(this, 1.0F, 0.0F, 0.0F, 2.5F, 1.5F);
                 this.doFlamesEffect(3.0, 2.0F, 7, false, ModParticles.ANNIHILATION_FLAME_STRIKE.get(), 2.0);
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.25F, 0, 20);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.25F, 0, 20);
                 this.spawnCircleParticle(0.0F, 0.0F, 100.0F, false, 0.0F, 0.0F, 1.0F, 0.0F, 1.0F);
                 this.playSound(ModSounds.HUGE_ENERGY_EXPLOSION.get(), 3.0F, 1.0F);
                 this.AreaAttack(3.8F, 5.0F, 180.0F, 21.0F - removeMeleeDamage, 4.0F, 150, false, false);
@@ -3149,7 +3149,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
                 ParticleUtils.controlledSmashParticles(this, 1.0F, 1.75F, 0.0F, 2.5F, 1.5F);
                 this.createCircularLightningParticle(2.0F, 2.0F, 10, 2.0F);
                 this.doFlamesEffect(3.0, 2.0F, 7, false, ModParticles.ANNIHILATION_FLAME_STRIKE.get(), 2.0);
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.25F, 0, 20);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.25F, 0, 20);
                 this.spawnCircleParticle(0.0F, 0.0F, 100.0F, false, 0.0F, 0.0F, 1.0F, 0.0F, 1.0F);
                 this.playSound(ModSounds.HUGE_ENERGY_EXPLOSION.get(), 3.0F, 1.0F);
                 this.SideAreaAttack(4.0F, 5.0F, 210.0F, -90.0F, 22.0F - removeMeleeDamage, 4.0F, 150, false, false, SoundEvents.EMPTY, 1.0F);
@@ -3185,7 +3185,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
                 ParticleUtils.controlledSmashParticles(this, 1.0F, -1.75F, 0.0F, 2.5F, 1.5F);
                 this.createCircularLightningParticle(2.0F, -2.0F, 10, 2.0F);
                 this.doFlamesEffect(3.0, 2.0F, 7, false, ModParticles.ANNIHILATION_FLAME_STRIKE.get(), 2.0);
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.25F, 0, 20);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.25F, 0, 20);
                 this.spawnCircleParticle(0.0F, 0.0F, 100.0F, false, 0.0F, 0.0F, 1.0F, 0.0F, 1.0F);
                 this.playSound(ModSounds.HUGE_ENERGY_EXPLOSION.get(), 3.0F, 1.0F);
                 this.SideAreaAttack(4.0F, 5.0F, 210.0F, 90.0F, 22.0F - removeMeleeDamage, 4.0F, 150, false, false, SoundEvents.EMPTY, 1.0F);
@@ -3197,7 +3197,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
                 this.calculatedDash(0.25F);
             }
             if (this.attackTicks == 18) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 10.0F, 0.1F, 0, 10);
+                LmScreenShake.shake(this.level(), this.position(), 10.0F, 0.1F, 0, 10);
                 this.createSweep(3.0F, -2.0F, -5.0F, false, 1.0F);
                 this.createSweep(3.0F, 2.0F, -5.0F, true, 1.0F);
                 this.SideAreaAttack(4.0F, 4.0F, 160.0F, 90.0F, stunAttackDamage - removeMeleeDamage, 6.0F, 120, true, true, ModSounds.THE_OBLITERATOR_STUN.get(), 1.0F);
@@ -3210,7 +3210,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
                 ParticleUtils.controlledSmashParticles(this, 3.0F, 0.0F, 0.0F, 2.5F, 1.5F);
                 this.createCircularLightningParticle(2.0F, 0.0F, 10, 2.0F);
                 this.doFlamesEffect(3.0, 2.0F, 7, false, ModParticles.ANNIHILATION_FLAME_STRIKE.get(), 2.0);
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.25F, 0, 20);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.25F, 0, 20);
                 this.spawnCircleParticle(0.0F, 0.0F, 100.0F, false, 0.0F, 0.0F, 1.0F, 0.0F, 1.0F);
                 this.playSound(ModSounds.HUGE_ENERGY_EXPLOSION.get(), 3.0F, 1.0F);
                 this.SideAreaAttack(5.0F, 4.0F, 180.0F, 0.0F, 19.0F, 4.0F, 100, false, false, SoundEvents.EMPTY, 1.0F);
@@ -3234,7 +3234,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
                 this.calculatedDash(0.25F);
             }
             if (this.attackTicks == 38) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 10.0F, 0.1F, 0, 10);
+                LmScreenShake.shake(this.level(), this.position(), 10.0F, 0.1F, 0, 10);
                 this.createSweep(3.0F, -2.0F, -5.0F, false, 1.0F);
                 this.createSweep(3.0F, 2.0F, -5.0F, true, 1.0F);
                 this.SideAreaAttack(3.75F, 4.0F, 160.0F, 90.0F, stunAttackDamage - removeMeleeDamage, 6.0F, 120, true, true, ModSounds.THE_OBLITERATOR_STUN.get(), 1.0F);
@@ -3305,7 +3305,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
                     this.level().addFreshEntity(projectile);
                 }
                 this.SideAreaAttack(5.0F, 5.0F, 360.0F, 0.0F, 0.0F, 20.0F, 7.0F, 0, false, false, SoundEvents.EMPTY, 1.0F);
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.15F, 20, 10);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.15F, 20, 10);
                 this.playSound(SoundEvents.TOTEM_USE, 2.0F, 1.0F);
                 this.setPhase(2);
             }
@@ -3332,7 +3332,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
                 spawnZ = this.getZ() + (double) vec16 * vecZ + (double) (f123 * offset);
                 TheObliteratorServant entity = this;
                 Vec3 entityPosition = this.position();
-                CameraShakeEntity.cameraShake(this.level(), entityPosition, 30.0F, 0.25F, 10, 5);
+                LmScreenShake.shake(this.level(), entityPosition, 30.0F, 0.25F, 10, 5);
                 AnnihilationBeamEntity energyBeamEntity = new AnnihilationBeamEntity(ModEntities.ANNIHILATION_BEAM.get(),
                         entity.level(), entity, spawnX, this.getY() + 2.0D, spawnZ,
                         (float) ((entity.yHeadRot + 90.0F) * Math.PI / 180),
@@ -3359,7 +3359,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
                 spawnZ = this.getZ() + (double) vec17 * vecZ + (double) (f124 * offset);
                 TheObliteratorServant entity = this;
                 Vec3 entityPosition = this.position();
-                CameraShakeEntity.cameraShake(this.level(), entityPosition, 30.0F, 0.25F, 10, 5);
+                LmScreenShake.shake(this.level(), entityPosition, 30.0F, 0.25F, 10, 5);
                 AnnihilationBeamEntity energyBeamEntity = new AnnihilationBeamEntity(ModEntities.ANNIHILATION_BEAM.get(),
                         entity.level(), entity, spawnX, this.getY() + 2.0D, spawnZ,
                         (float) ((entity.yHeadRot + 90.0F) * Math.PI / 180),
@@ -3402,7 +3402,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
                 spawnZ = this.getZ() + (double) vec19 * vecZ + (double) (f126 * offset);
                 TheObliteratorServant entity = this;
                 Vec3 entityPosition = this.position();
-                CameraShakeEntity.cameraShake(this.level(), entityPosition, 30.0F, 0.25F, 10, 5);
+                LmScreenShake.shake(this.level(), entityPosition, 30.0F, 0.25F, 10, 5);
                 AnnihilationBeamEntity energyBeamEntity = new AnnihilationBeamEntity(ModEntities.ANNIHILATION_BEAM.get(),
                         entity.level(), entity, spawnX, this.getY() + 2.0D, spawnZ,
                         (float) ((entity.yHeadRot + 90.0F) * Math.PI / 180),
@@ -3484,7 +3484,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
                 float uniformDamage = 7.5F;
                 this.playSound(ModSounds.QUAD_ANNIHILATION_LASER_SHOOT.get(), 3.0F, 1.0F);
                 Vec3 entityPosition = this.position();
-                CameraShakeEntity.cameraShake(this.level(), entityPosition, 30.0F, 0.15F, 40, 10);
+                LmScreenShake.shake(this.level(), entityPosition, 30.0F, 0.15F, 40, 10);
                 AnnihilationBeamEntity energyBeamEntity1 = new AnnihilationBeamEntity(ModEntities.ANNIHILATION_BEAM.get(),
                         entity2.level(), entity2, this.getX(), this.getY() + 2.0D, this.getZ(),
                         (float) ((entity2.yHeadRot + 90.0F) * Math.PI / 180),
@@ -3563,7 +3563,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
                 this.playSound(ModSounds.FLAME_BURST.get(), 3.0F, 1.0F);
             }
             if (this.attackTicks == 96) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 10.0F, 0.1F, 0, 10);
+                LmScreenShake.shake(this.level(), this.position(), 10.0F, 0.1F, 0, 10);
                 this.createSweep(3.0F, -2.0F, -5.0F, false, 1.0F);
                 this.createSweep(3.0F, 2.0F, -5.0F, true, 1.0F);
                 this.SideAreaAttack(4.0F, 4.0F, 160.0F, 90.0F, stunAttackDamage - removeMeleeDamage, 6.0F, 120, true, true, ModSounds.THE_OBLITERATOR_STUN.get(), 1.0F);
@@ -3596,7 +3596,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
                 this.level().addParticle(new Circle.RingData(0.0F, 1.5707964F, 20, 0.0F, 1.0F, 0.0F, 1.0F, 150.0F, false, Circle.EnumRingBehavior.SHRINK), this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
             }
             if (this.attackTicks == 2) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.15F, 20, 6);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.15F, 20, 6);
             }
             if (this.attackTicks == 15) {
                 AnnihilationPortalEntity annihilationPortalEntity = new AnnihilationPortalEntity(this.level(), this.getX(), this.getY(), this.getZ(), 0.0F, 12, this, 50, 20.0F, true, 6.0F);
@@ -3620,7 +3620,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
                 this.doFlamesEffect(5.0, 2.0F, 6, true, ModParticles.ANNIHILATION_NUKE.get(), 4.0);
                 this.Sphereparticle(ModParticles.SMALL_ANNIHILATION_FLAME.get(), 3.0F, 2.0F, 3.0F);
                 this.SideAreaAttack(6.0F, 4.0F, 380.0F, 0.0F, 0.0F, 12.0F, 8.0F, 120, false, false, ModSounds.FLAME_BURST.get(), 1.0F);
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 30.0F, 0.2F, 10, 5);
+                LmScreenShake.shake(this.level(), this.position(), 30.0F, 0.2F, 10, 5);
                 this.createCircularLightningParticle(3.5F, 0.0F, 5, 2.5F);
                 this.playSound(ModSounds.ULTIMATE_FLAME_IMPACT.get(), 3.0F, 1.0F);
                 for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(25.0))) {
@@ -3641,7 +3641,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
             }
             if (this.attackTicks == 80) {
                 this.SideAreaAttack(6.0F, 4.0F, 380.0F, 0.0F, 0.0F, 12.0F, 8.0F, 120, false, false, ModSounds.FLAME_BURST.get(), 1.0F);
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 30.0F, 0.15F, 20, 5);
+                LmScreenShake.shake(this.level(), this.position(), 30.0F, 0.15F, 20, 5);
                 this.playSound(ModSounds.OMINOUS_EXPLOSION.get(), 3.0F, 1.0F);
                 this.createCircularLightningParticle(3.5F, 0.0F, 5, 2.5F);
             }
@@ -3684,7 +3684,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
                 this.teleportRandomly(this, 7.0F, 10.0F);
             }
             if (this.attackTicks > MathUtils.toTicks(2.17F) && this.tickCount % 10 == 0) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 10.0F, 0.1F, 0, 5);
+                LmScreenShake.shake(this.level(), this.position(), 10.0F, 0.1F, 0, 5);
                 if (this.level() instanceof ServerLevel serverLevel) {
                     serverLevel.sendParticles(ModParticles.TELEPORT_EFFECT.get(), this.getX(), this.getY() + 3.0, this.getZ(), 1, 0.0D, 0.0D, 0.0D, 0.0D);
                 }
@@ -3852,7 +3852,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
             float entityHitDistance = (float) Math.sqrt((entityHit.getZ() - this.getZ()) * (entityHit.getZ() - this.getZ()) + (entityHit.getX() - this.getX()) * (entityHit.getX() - this.getX()));
             if (!(entityHitDistance <= range && entityRelativeAngle <= arc / 2.0F && entityRelativeAngle >= -arc / 2.0F || entityRelativeAngle >= 360.0F - arc / 2.0F) && !(entityRelativeAngle <= -360.0F + arc / 2.0F) || this.isAlliedTo(entityHit) || entityHit instanceof TheWarpedOneOld || entityHit == this) continue;
             if (this.targetIsNotNull() && entityHit == this.target() && canStun) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.15F, 0, 20);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.15F, 0, 20);
             }
             boolean canPlaySound = this.getAttackState() != 22;
             boolean flag = entityHit.hurt(this.getAttackState() == 14 || this.getAttackState() == 20 || this.getAttackState() == 24 ? ModDamageTypes.causeAnnihilationDamage(this, this) : this.damageSources().mobAttack(this), (float) (((double) damage * ServantMath.opArmorNerf(entityHit, this.getAttackState()) + (double) ServantMath.entityBasedHpDamage(entityHit, precentage))));
@@ -4284,14 +4284,14 @@ public class TheObliteratorServant extends IAnimatedBossServant {
                     serverLevel.sendParticles(ModParticles.GROUND_ANNIHILATION_NUKE.get(), sx, sy + 4.0D, sz, 1, 0.0D, 0.0D, 0.0D, 0.0D);
                 }
                 AnnihilationBomb projectile = new AnnihilationBomb(LmEntityRegistry.ANNIHILATION_BOMB.get(), this.level(), this, 10.0F, 16, false);
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 10.0F, 0.15F, 10, 5);
+                LmScreenShake.shake(this.level(), this.position(), 10.0F, 0.15F, 10, 5);
                 projectile.moveTo(sx, sy, sz, (float) i * 11.25F, this.getXRot());
                 projectile.shoot(vx, vy + v3 * 0.2D, vz, 0.7F, 1.0F);
                 this.level().addFreshEntity(projectile);
                 continue;
             }
             this.playSound(ModSounds.DIMENSIONAL_BOMB_EXPLODE_SMALL.get(), 1.0F, 1.0F);
-            CameraShakeEntity.cameraShake(this.level(), this.position(), 10.0F, 0.1F, 5, 5);
+            LmScreenShake.shake(this.level(), this.position(), 10.0F, 0.1F, 5, 5);
             SmallAnnihilationBomb projectile = new SmallAnnihilationBomb(this.level(), this, 8.0F);
             if (this.level() instanceof ServerLevel serverLevel) {
                 serverLevel.sendParticles(ModParticles.ANNIHILATION_EXPLOSION.get(), sx, sy, sz, 1, 0.0D, 0.0D, 0.0D, 0.0D);

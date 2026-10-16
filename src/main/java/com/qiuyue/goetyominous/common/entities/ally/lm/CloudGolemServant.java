@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm;
 
+import com.qiuyue.goetyominous.compat.lm.LmScreenShake;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.projectiles.FlyingItem;
@@ -22,7 +23,6 @@ import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
 import net.miauczel.legendary_monsters.Particle.custom.Circle;
 import net.miauczel.legendary_monsters.effect.ModEffects;
-import net.miauczel.legendary_monsters.entity.AnimatedMonster.Effect.CameraShakeEntity;
 import net.miauczel.legendary_monsters.item.ModItems;
 import net.miauczel.legendary_monsters.sound.ModSounds;
 import net.miauczel.legendary_monsters.util.EntityUtil;
@@ -1543,7 +1543,7 @@ public class CloudGolemServant extends IAnimatedBossServant {
             }
         }
         if (this.getAttackState() == 18 && this.attackTicks == 19) {
-            CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.1F, 0, 20);
+            LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.1F, 0, 20);
             ParticleUtils.controlledSmashParticles(this, 2.0F, 0.0F, 0.0F, 1.5F, 1.0F);
             this.playSound(SoundEvents.DRAGON_FIREBALL_EXPLODE, 3.0F, 1.0F);
             LivingEntity target = this.getTarget();
@@ -1568,7 +1568,7 @@ public class CloudGolemServant extends IAnimatedBossServant {
         }
         if (this.getAttackState() == 19) {
             if (this.attackTicks == 19) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.1F, 0, 20);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.1F, 0, 20);
                 ParticleUtils.controlledSmashParticles(this, 2.0F, 0.0F, 0.0F, 1.5F, 1.0F);
                 this.playSound(SoundEvents.DRAGON_FIREBALL_EXPLODE, 3.0F, 1.0F);
                 LivingEntity target = this.getTarget();
@@ -1593,7 +1593,7 @@ public class CloudGolemServant extends IAnimatedBossServant {
                 }
             }
             if (this.attackTicks == 40) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.1F, 0, 20);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.1F, 0, 20);
                 this.playSound(ModSounds.ENDERSENT_ATTACK.get(), 1.0F, 1.0F);
                 LivingEntity target = this.getTarget();
                 int a = target != null ? (int) (target.getMaxHealth() * 0.05D) : 0;
@@ -1689,7 +1689,7 @@ public class CloudGolemServant extends IAnimatedBossServant {
             }
         }
         if (this.getAttackState() == 16 && this.attackTicks == 3) {
-            CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.1F, 0, 20);
+            LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.1F, 0, 20);
             this.playSound(SoundEvents.DRAGON_FIREBALL_EXPLODE, 3.0F, 1.0F);
             LivingEntity target = this.getTarget();
             int a = target != null ? (int) (target.getMaxHealth() * 0.08D) : 0;

@@ -7,7 +7,7 @@ import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.SEHelper;
 import com.Polarice3.Goety.utils.WandUtil;
-import com.alexander.mutantmore.events.ShakeCameraEvent;
+import com.qiuyue.goetyominous.compat.mm.MmScreenShake;
 import com.alexander.mutantmore.init.EffectInit;
 import com.alexander.mutantmore.init.ParticleTypeInit;
 import com.alexander.mutantmore.init.SoundEventInit;
@@ -217,7 +217,7 @@ public class WitherBreathSpell extends ContinuousControllerSpell<WitherBreathSpe
                 level.playSound(null, caster.getX(), caster.getY(), caster.getZ(),
                         SoundEventInit.MUTANT_WITHER_SKELETON_ROAR.get(),
                         caster.getSoundSource(), 3.0F, 1.0F);
-                ShakeCameraEvent.shake(level, 100, 0.1F, caster.blockPosition(), 30);
+                MmScreenShake.shake(level, 100, 0.1F, caster.blockPosition(), 30);
             }
 
             if (progress > 1.0F) {

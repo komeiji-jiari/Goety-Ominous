@@ -156,6 +156,8 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoUnholyBloodHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoUnholyBloodDamageBouns;
     public static final ForgeConfigSpec.ConfigValue<Boolean> WarpedMoscoUnholyBloodTexture;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> MutantMoreServantScreenShake;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> LmServantScreenShake;
 
     public static final ForgeConfigSpec.ConfigValue<Integer> DredenSpawnWeight;
     public static final ForgeConfigSpec.ConfigValue<Integer> DredenSpawnMinCount;
@@ -713,6 +715,16 @@ public class MobsConfig {
                 .defineInRange("warpedMoscoUnholyBloodDamageBonus", 3, 0, Integer.MAX_VALUE);
         WarpedMoscoUnholyBloodTexture = BUILDER.comment("Use the alternate texture when Warped Mosco has Unholy Blood (Default: true)")
                 .define("warpedMoscoUnholyBloodTexture", true);
+        BUILDER.pop();
+
+        BUILDER.push("Legendary Monsters Servants");
+        LmServantScreenShake = BUILDER.comment("Whether Legendary Monsters Servants' attacks and abilities shake nearby players' cameras (Default: false)")
+                .define("lmServantScreenShake", false);
+        BUILDER.pop();
+
+        BUILDER.push("Mutant More Servants");
+        MutantMoreServantScreenShake = BUILDER.comment("Whether Mutant More Servants' attacks and abilities shake nearby players' cameras (Default: false)")
+                .define("mutantMoreServantScreenShake", false);
         BUILDER.pop();
 
         BUILDER.push("Mechanics");

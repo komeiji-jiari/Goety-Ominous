@@ -11,6 +11,7 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.goals.knight.KnightAttack
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.knight.KnightStateGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulPillar;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.ThrownKnight;
+import com.qiuyue.goetyominous.compat.lm.LmScreenShake;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
@@ -20,7 +21,6 @@ import net.miauczel.legendary_monsters.Particle.custom.Circle;
 import net.miauczel.legendary_monsters.Particle.custom.SoulSweepParticle;
 import net.miauczel.legendary_monsters.Particle.custom.SoulSweepRedParticle;
 import net.miauczel.legendary_monsters.effect.ModEffects;
-import net.miauczel.legendary_monsters.entity.AnimatedMonster.Effect.CameraShakeEntity;
 import net.miauczel.legendary_monsters.entity.client.ControlledAnim;
 import net.miauczel.legendary_monsters.sound.ModSounds;
 import net.miauczel.legendary_monsters.util.EntityUtil;
@@ -775,7 +775,7 @@ public class BeheadedKnightServant extends IAnimatedMiniBossServant {
                 this.calculatedDash(0.25F);
             }
             if (this.attackTicks == upperCut) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, sweepShakeAmount, 0, duration);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, sweepShakeAmount, 0, duration);
                 this.SideAreaAttack(3.5F, 5.0F, 220.0F, -90.0F, 0.0F, 17.0F, 100, false, true, 0.5F, 0.75F, SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, 0.75F);
             }
         }
@@ -804,7 +804,7 @@ public class BeheadedKnightServant extends IAnimatedMiniBossServant {
                 this.calculatedDash(0.25F);
             }
             if (this.attackTicks == upperCut) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, sweepShakeAmount, 0, duration);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, sweepShakeAmount, 0, duration);
                 this.SideAreaAttack(3.5F, 5.0F, 220.0F, -90.0F, 0.0F, 15.0F, 100, false, true, 0.5F, 0.75F, SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, 0.75F);
             }
             if (this.attackTicks == slash1 - 3) {
@@ -813,7 +813,7 @@ public class BeheadedKnightServant extends IAnimatedMiniBossServant {
                 this.basicDash(2.0F, 2.0F, true);
             }
             if (this.attackTicks == slash1) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, sweepShakeAmount, 0, duration);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, sweepShakeAmount, 0, duration);
                 this.SideAreaAttack(3.5F, 5.0F, ARC, 0.0F, 0.0F, 17.0F, 100, false, true, 0.5F, 0.0F, SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, 0.75F);
             }
             if (this.attackTicks == slash2 - 3) {
@@ -822,7 +822,7 @@ public class BeheadedKnightServant extends IAnimatedMiniBossServant {
                 this.basicDash(2.0F, 2.0F, true);
             }
             if (this.attackTicks == slash2) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, sweepShakeAmount, 0, duration);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, sweepShakeAmount, 0, duration);
                 this.SideAreaAttack(3.5F, 5.0F, ARC, 0.0F, 0.0F, 15.0F, 100, false, true, 0.5F, 0.0F, SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, 0.75F);
             }
             if (this.attackTicks >= slash1 - 3 && this.attackTicks < slash2 && this.tickCount % 3 == 0) {
@@ -854,7 +854,7 @@ public class BeheadedKnightServant extends IAnimatedMiniBossServant {
                 this.calculatedDash(0.25F);
             }
             if (this.attackTicks == headSlash1) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, sweepShakeAmount, 0, duration);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, sweepShakeAmount, 0, duration);
                 this.SideAreaAttack(3.5F, 5.0F, 180.0F, 0.0F, 0.0F, 15.0F, 100, false, true, 0.5F, 0.0F, SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, 0.75F);
             }
             if (this.attackTicks == headSlash2 - 3) {
@@ -863,7 +863,7 @@ public class BeheadedKnightServant extends IAnimatedMiniBossServant {
                 this.calculatedDash(0.25F);
             }
             if (this.attackTicks == headSlash2) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, sweepShakeAmount, 0, duration);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, sweepShakeAmount, 0, duration);
                 this.SideAreaAttack(3.5F, 5.0F, 180.0F, 0.0F, 0.0F, 15.0F, 100, false, true, 0.5F, 0.0F, SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, 0.75F);
             }
             if (this.attackTicks == swordSlash - 3) {
@@ -872,7 +872,7 @@ public class BeheadedKnightServant extends IAnimatedMiniBossServant {
                 this.calculatedDash(0.15F);
             }
             if (this.attackTicks == swordSlash) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, sweepShakeAmount, 0, duration);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, sweepShakeAmount, 0, duration);
                 this.SideAreaAttack(3.25F, 5.0F, 180.0F, 0.0F, 0.0F, 17.0F, 100, false, true, 0.5F, 0.0F, SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, 0.75F);
             }
             if (this.attackTicks == 67 && this.targetIsNotNull()) {
@@ -904,11 +904,11 @@ public class BeheadedKnightServant extends IAnimatedMiniBossServant {
                 this.basicDash(1.0F, 3.0F, true);
             }
             if (this.attackTicks == swordSlam) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 10.0F, 0.15F, 5, 5);
+                LmScreenShake.shake(this.level(), this.position(), 10.0F, 0.15F, 5, 5);
                 this.StraightLineAreaAttack(swordWidth, 2.0F, 5.5F, 120, 17.0F, true, 0.5F, 0.4F);
             }
             if (this.attackTicks == headSlam) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 10.0F, 0.15F, 5, 5);
+                LmScreenShake.shake(this.level(), this.position(), 10.0F, 0.15F, 5, 5);
                 this.StraightLineAreaAttack(swordWidth, 2.0F, 5.5F, 120, 15.0F, true, 0.5F, 0.4F);
             }
         }
@@ -976,7 +976,7 @@ public class BeheadedKnightServant extends IAnimatedMiniBossServant {
                 this.basicDash(2.0F, 2.0F, true);
             }
             if (this.attackTicks == slash1 || this.attackTicks == slash4) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, sweepShakeAmount, 0, duration);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, sweepShakeAmount, 0, duration);
                 this.SideAreaAttack(3.5F, 5.0F, ARC, 0.0F, 0.0F, 17.0F, 100, false, true, 0.5F, 0.0F, SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, 0.75F);
             }
             if (this.attackTicks == slash2 - 3 || this.attackTicks == slash3 - 3) {
@@ -985,7 +985,7 @@ public class BeheadedKnightServant extends IAnimatedMiniBossServant {
                 this.basicDash(2.0F, 2.0F, true);
             }
             if (this.attackTicks == slash2 || this.attackTicks == slash3) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, sweepShakeAmount, 0, duration);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, sweepShakeAmount, 0, duration);
                 this.SideAreaAttack(3.5F, 5.0F, ARC, 0.0F, 0.0F, 15.0F, 100, false, true, 0.5F, 0.0F, SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, 0.75F);
             }
             if ((this.attackTicks >= slash1 - 3 && this.attackTicks < slash2
@@ -1017,7 +1017,7 @@ public class BeheadedKnightServant extends IAnimatedMiniBossServant {
                 }
             }
             if (this.attackTicks == 145) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 10.0F, 0.15F, 10, 10);
+                LmScreenShake.shake(this.level(), this.position(), 10.0F, 0.15F, 10, 10);
                 this.playSound(ModSounds.STAB_HIT.get(), 1.0F, 1.0F);
                 this.SideAreaAttack(2.75F, 3.0F, 360.0F, 0.0F, 2.0F, 18.0F, 150, false, true, 1.0F, 0.5F, SoundEvents.EMPTY, 0.0F);
                 this.xPillars(6, 3.0D, 8.0F);
@@ -1053,7 +1053,7 @@ public class BeheadedKnightServant extends IAnimatedMiniBossServant {
                 this.calculatedDash(0.25F);
             }
             if (this.attackTicks == Rattack) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, sweepShakeAmount, 0, duration);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, sweepShakeAmount, 0, duration);
                 this.SideAreaAttack(3.5F, 5.0F, 180.0F, 0.0F, 0.0F, 17.0F, 100, false, true, 0.5F, 0.0F, SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, 0.75F);
             }
             if (this.attackTicks == attack - 3) {
@@ -1064,7 +1064,7 @@ public class BeheadedKnightServant extends IAnimatedMiniBossServant {
                 this.advancedDash(this, -3.0F, 2.5F, 1.0F);
             }
             if (this.attackTicks == attack) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, sweepShakeAmount, 0, duration);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, sweepShakeAmount, 0, duration);
                 this.SideAreaAttack(3.5F, 5.0F, 180.0F, 0.0F, 0.0F, 17.0F, 100, false, true, 0.5F, 0.0F, SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, 0.75F);
             }
             if (this.attackTicks == 57 && this.targetIsNotNull()

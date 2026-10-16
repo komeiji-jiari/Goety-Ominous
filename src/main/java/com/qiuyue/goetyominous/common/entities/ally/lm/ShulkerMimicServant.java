@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm;
 
+import com.qiuyue.goetyominous.compat.lm.LmScreenShake;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.utils.MobUtil;
@@ -14,7 +15,6 @@ import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
 import net.miauczel.legendary_monsters.Particle.custom.Circle;
 import net.miauczel.legendary_monsters.effect.ModEffects;
-import net.miauczel.legendary_monsters.entity.AnimatedMonster.Effect.CameraShakeEntity;
 import net.miauczel.legendary_monsters.entity.AnimatedMonster.Projectile.LMFallingBlockEntity;
 import net.miauczel.legendary_monsters.sound.ModSounds;
 import net.minecraft.core.BlockPos;
@@ -950,7 +950,7 @@ public class ShulkerMimicServant extends IAnimatedMiniBossServant {
                     }
                 }
                 if (this.attackTicks == 24) {
-                    CameraShakeEntity.cameraShake(this.level(), this.position(), 10.0F, 0.1F, 10, 5);
+                    LmScreenShake.shake(this.level(), this.position(), 10.0F, 0.1F, 10, 5);
                     this.playSound(SoundEvents.DRAGON_FIREBALL_EXPLODE, 1.0F, 1.0F);
                     this.AreaAttack(5.0F, 4.0F, 180.0F, 20.0F, 140, true, false);
                 }
@@ -985,7 +985,7 @@ public class ShulkerMimicServant extends IAnimatedMiniBossServant {
                 this.calculatedDash(0.25F);
             }
             if (this.attackTicks == 17) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 10.0F, 0.05F, 5, 5);
+                LmScreenShake.shake(this.level(), this.position(), 10.0F, 0.05F, 5, 5);
                 this.AreaAttack(4.5F, 1.1F, 180.0F, 18.0F, 100, false, false);
             }
             if (this.attackTicks == 27) {
@@ -993,7 +993,7 @@ public class ShulkerMimicServant extends IAnimatedMiniBossServant {
                 this.calculatedDash(0.25F);
             }
             if (this.attackTicks == 30) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 10.0F, 0.05F, 5, 5);
+                LmScreenShake.shake(this.level(), this.position(), 10.0F, 0.05F, 5, 5);
                 this.AreaAttack(4.5F, 1.1F, 180.0F, 18.0F, 100, false, false);
             }
         }
@@ -1243,7 +1243,7 @@ public class ShulkerMimicServant extends IAnimatedMiniBossServant {
         if (this.teleportBoolean(event.getTargetX(), event.getTargetY(), event.getTargetZ(), true)) {
             this.level().gameEvent(GameEvent.TELEPORT, oldPos, GameEvent.Context.of(this));
             if (!this.isSilent()) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 10.0F, 0.1F, 5, 5);
+                LmScreenShake.shake(this.level(), this.position(), 10.0F, 0.1F, 5, 5);
                 this.playSound(SoundEvents.SHULKER_TELEPORT, 4.0F, 1.0F);
             }
             return true;

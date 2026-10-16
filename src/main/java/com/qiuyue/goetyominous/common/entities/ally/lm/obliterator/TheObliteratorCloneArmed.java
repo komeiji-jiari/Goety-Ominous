@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm.obliterator;
 
+import com.qiuyue.goetyominous.compat.lm.LmScreenShake;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import net.miauczel.legendary_monsters.entity.client.ControlledAnim;
 import com.qiuyue.goetyominous.common.entities.ally.lm.TheObliteratorServant;
@@ -10,7 +11,6 @@ import net.miauczel.legendary_monsters.Particle.custom.AnnihilationBombTrail;
 import net.miauczel.legendary_monsters.Particle.custom.Circle;
 import net.miauczel.legendary_monsters.damagetype.ModDamageTypes;
 import net.miauczel.legendary_monsters.effect.ModEffects;
-import net.miauczel.legendary_monsters.entity.AnimatedMonster.Effect.CameraShakeEntity;
 import net.miauczel.legendary_monsters.entity.AnimatedMonster.IAnimatedBoss.TheObliterator.TheObliteratorUtils;
 import net.miauczel.legendary_monsters.sound.ModSounds;
 import net.miauczel.legendary_monsters.util.MathUtils;
@@ -286,7 +286,7 @@ public class TheObliteratorCloneArmed extends LmAnimatedProjectile {
                     this.setDestinationY((float) this.target().getY());
                     this.setDestinationZ((float) this.target().getZ());
                 }
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 10.0F, this.shakeStrenght, 0, 20);
+                LmScreenShake.shake(this.level(), this.position(), 10.0F, this.shakeStrenght, 0, 20);
                 this.SideAreaAttack(4.0F, 4.0F, this.attackArc, -90.0F, this.damage(), 120, false, true, impactSound);
             }
             if (this.AnimationTicks >= 25) {
@@ -311,7 +311,7 @@ public class TheObliteratorCloneArmed extends LmAnimatedProjectile {
                 this.playSound(swingSound, 1.0F, 1.0F);
             }
             if (this.AnimationTicks == 28) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 10.0F, this.shakeStrenght, 0, 20);
+                LmScreenShake.shake(this.level(), this.position(), 10.0F, this.shakeStrenght, 0, 20);
                 this.SideAreaAttack(5.0F, 4.0F, this.attackArc, -90.0F, this.damage(), 120, false, true, impactSound);
             }
         }
@@ -347,7 +347,7 @@ public class TheObliteratorCloneArmed extends LmAnimatedProjectile {
                 this.playSound(swingSound, 1.0F, 1.0F);
             }
             if (this.AnimationTicks == 18) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 10.0F, this.shakeStrenght, 0, 20);
+                LmScreenShake.shake(this.level(), this.position(), 10.0F, this.shakeStrenght, 0, 20);
                 this.SideAreaAttack(5.0F, 4.0F, this.attackArc, 90.0F, this.damage(), 120, false, true, impactSound);
             }
         }
@@ -383,7 +383,7 @@ public class TheObliteratorCloneArmed extends LmAnimatedProjectile {
                 this.playSound(swingSound, 1.0F, 1.0F);
             }
             if (this.AnimationTicks == 18) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 10.0F, this.shakeStrenght, 0, 20);
+                LmScreenShake.shake(this.level(), this.position(), 10.0F, this.shakeStrenght, 0, 20);
                 this.SideAreaAttack(5.0F, 4.0F, this.attackArc, -90.0F, this.damage(), 120, false, true, impactSound);
             }
         }

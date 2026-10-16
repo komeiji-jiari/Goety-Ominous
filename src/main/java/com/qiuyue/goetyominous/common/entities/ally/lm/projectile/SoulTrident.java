@@ -1,12 +1,12 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm.projectile;
 
+import com.qiuyue.goetyominous.compat.lm.LmScreenShake;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.common.entities.ally.lm.ServantMath;
 import com.qiuyue.goetyominous.common.init.lm.LmDamageTypes;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import com.qiuyue.goetyominous.common.init.lm.LmParticles;
 import net.miauczel.legendary_monsters.effect.ModEffects;
-import net.miauczel.legendary_monsters.entity.AnimatedMonster.Effect.CameraShakeEntity;
 import net.miauczel.legendary_monsters.util.EntityUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -246,7 +246,7 @@ public class SoulTrident extends AbstractArrow {
         super.onHit(result);
 
         this.spawnSpiralStrike(18.0D, 0.3D, 0.65F, 3, 1.0D);
-        CameraShakeEntity.cameraShake(this.level(), this.position(), 10.0F, 0.15F, 10, 5);
+        LmScreenShake.shake(this.level(), this.position(), 10.0F, 0.15F, 10, 5);
 
         float f9 = (this.random.nextFloat() - 0.5F) * 8.0F;
         float f10 = (this.random.nextFloat() - 0.5F) * 4.0F;

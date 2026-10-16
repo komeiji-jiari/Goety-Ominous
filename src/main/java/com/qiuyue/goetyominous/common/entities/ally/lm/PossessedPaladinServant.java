@@ -29,6 +29,7 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulStrike;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulTrident;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.ThrownPhantomDagger;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
+import com.qiuyue.goetyominous.compat.lm.LmScreenShake;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.nbt.CompoundTag;
@@ -82,7 +83,6 @@ import net.miauczel.legendary_monsters.Particle.custom.SoulSweepRedParticle;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
 import net.miauczel.legendary_monsters.effect.ModEffects;
 import net.miauczel.legendary_monsters.effect.DynamicCameraZoomEntity;
-import net.miauczel.legendary_monsters.entity.AnimatedMonster.Effect.CameraShakeEntity;
 import net.miauczel.legendary_monsters.entity.client.ControlledAnim;
 import net.miauczel.legendary_monsters.item.ModItems;
 import net.miauczel.legendary_monsters.sound.ModSounds;
@@ -1506,7 +1506,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             }
 
             if (this.attackTicks == slamAttackTick) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.15F, 5, 10);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.15F, 5, 10);
                 this.spawnSoulPillar(3.0F, 0.0F, 5);
                 this.playSound(ModSounds.POWERFUL_SWORD_IMPACT2.get(), 1.0F, 1.0F);
                 this.StraightLineAreaAttack(-0.35F, 2.5F, smashRange, 100, 18.0F, true, 1.5F);
@@ -1547,7 +1547,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             }
 
             if (this.attackTicks == counterTick) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.15F, 5, 10);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.15F, 5, 10);
                 this.spawnCircleParticle(1.5F, 0.0F, 30.0F, true, 1.0F,
                         this.getPhase() >= 2 ? this.uR : 0.0F,
                         this.getPhase() >= 2 ? this.uG : 0.9F,
@@ -1596,7 +1596,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             }
 
             if (this.attackTicks == counterTick) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.15F, 5, 10);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.15F, 5, 10);
                 this.spawnCircleParticle(1.5F, 0.0F, 30.0F, true, 1.0F,
                         this.getPhase() >= 2 ? this.uR : 0.0F,
                         this.getPhase() >= 2 ? this.uG : 0.9F,
@@ -1620,7 +1620,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             }
 
             if (this.attackTicks == 53) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.1F, 5, 5);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.1F, 5, 5);
                 this.playSound(SoundEvents.WITHER_SHOOT, 1.0F, 1.0F);
                 this.soulStrikeRing(1.0F, 15, 0.0F);
             }
@@ -1660,7 +1660,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                         this.getPhase() >= 2 ? this.uG : 0.9F,
                         this.getPhase() >= 2 ? this.uB : 0.8F,
                         0.8F, Circle.EnumRingBehavior.SHRINK, 30);
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.15F, 5, 5);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.15F, 5, 5);
                 this.spawnSoulShieldRing(0, 2, points, totalRadius, false, false);
             }
 
@@ -1672,7 +1672,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             }
             if (this.attackTicks == smashTick2) {
                 this.playSound(ModSounds.STAB_HIT.get(), 1.0F, 1.0F);
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.15F, 5, 5);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.15F, 5, 5);
                 this.spawnCircleParticle(0.0F, 0.0F, 100.0F, true, 2.0F,
                         this.getPhase() >= 2 ? this.uR : 0.0F,
                         this.getPhase() >= 2 ? this.uG : 0.9F,
@@ -1684,7 +1684,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
 
         if (this.getAttackState() == 26) {
             if (this.attackTicks == 49) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.15F, 5, 5);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.15F, 5, 5);
                 this.SideAreaAttack(3.0F, 4.0F, 360.0F, 0.0F, 0.0F, 15.0F, 0,
                         SoundEvents.EMPTY, 0.0F, false, 0.0F);
                 this.playSound(SoundEvents.TOTEM_USE, 1.0F, 0.75F);
@@ -1725,7 +1725,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             }
 
             if (this.attackTicks == MathUtils.toTicks(4.13F)) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.1F, 5, 5);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.1F, 5, 5);
                 this.playSound(SoundEvents.WITHER_SHOOT, 1.0F, 1.0F);
                 this.soulStrikeRing(1.0F, 15, 0.0F);
             }
@@ -1740,7 +1740,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             }
 
             if ((float) this.attackTicks == doubleSlashAttack1) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
                 this.SideAreaAttack(doubleSlashRange, 3.0F, 180.0F, 0.0F, 0.0F, 15.0F, 100,
                         SoundEvents.EMPTY, 1.0F, false, 0.0F);
             }
@@ -1753,7 +1753,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             }
 
             if ((float) this.attackTicks == doubleSlashAttack2) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
                 this.SideAreaAttack(doubleSlashRange, 3.0F, 180.0F, 0.0F, 0.0F, 17.0F, 100,
                         SoundEvents.EMPTY, 1.0F, false, 0.0F);
             }
@@ -1768,7 +1768,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             }
 
             if ((float) this.attackTicks == doubleSlashAttack1) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
                 this.SideAreaAttack(doubleSlashRange, 3.0F, 180.0F, 0.0F, 0.0F, 15.0F, 100,
                         SoundEvents.EMPTY, 1.0F, false, 0.0F);
             }
@@ -1781,7 +1781,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             }
 
             if ((float) this.attackTicks == doubleSlashAttack2) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
                 this.SideAreaAttack(doubleSlashRange, 3.0F, 180.0F, 0.0F, 0.0F, 17.0F, 100,
                         SoundEvents.EMPTY, 1.0F, false, 0.0F);
             }
@@ -1810,7 +1810,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             }
 
             if ((float) this.attackTicks == doubleSlashAttack3) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.15F, 5, 10);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.15F, 5, 10);
                 this.spawnSoulPillar(3.0F, 0.0F, 5);
                 this.playSound(ModSounds.POWERFUL_SWORD_IMPACT2.get(), 1.0F, 1.0F);
                 this.StraightLineAreaAttack(-0.35F, 2.5F, smashRange, 100, 18.0F, true, 1.5F);
@@ -1896,7 +1896,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             }
 
             if (this.attackTicks == 19) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.15F, 5, 10);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.15F, 5, 10);
                 this.spawnSoulPillar(3.0F, 0.0F, 5);
                 this.playSound(ModSounds.POWERFUL_SWORD_IMPACT2.get(), 1.0F, 1.0F);
                 this.SideAreaAttack(1.0F, 3.0F, 70.0F, -180.0F, -0.5F, 18.0F, 100,
@@ -1928,7 +1928,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             }
 
             if (this.attackTicks == 14) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.15F, 5, 10);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.15F, 5, 10);
                 this.spawnSoulPillar(3.0F, 0.0F, 5);
                 this.playSound(ModSounds.POWERFUL_SWORD_IMPACT2.get(), 1.0F, 1.0F);
                 this.SideAreaAttack(1.0F, 3.0F, 70.0F, -180.0F, -0.5F, 18.0F, 100,
@@ -1949,7 +1949,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             }
 
             if (this.attackTicks == slashFromAttack) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
                 this.GambitedSideAreaAttack(doubleSlashRange, 3.0F, 180.0F, 0.0F, 0.0F, 17.0F, 100,
                         SoundEvents.EMPTY, 1.0F, false, 0.0F);
             }
@@ -2025,7 +2025,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             }
 
             if (this.attackTicks == 20 || this.attackTicks == 30 || this.attackTicks == 40) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 10.0F, 0.1F, 0, 10);
+                LmScreenShake.shake(this.level(), this.position(), 10.0F, 0.1F, 0, 10);
 
                 for (Entity entity : this.getPassengers()) {
                     if (!(entity instanceof LivingEntity livingPassenger)) {
@@ -2077,7 +2077,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                 }
                 this.playSound(SoundEvents.TOTEM_USE, 1.0F, 1.0F);
                 Vec3 pos = new Vec3(this.getX(), this.getY(), this.getZ());
-                CameraShakeEntity.cameraShake(this.level(), pos, 20.0F, 0.25F, 0, 20);
+                LmScreenShake.shake(this.level(), pos, 20.0F, 0.25F, 0, 20);
                 this.spawnCircleParticle(1.5F, -0.25F, 50.0F, true, 5.0F,
                         this.getPhase() >= 2 ? this.uR : 0.25F,
                         this.getPhase() >= 2 ? this.uG : 1.0F,
@@ -2148,7 +2148,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                         this.getPhase() >= 2 ? this.uR : 0.25F,
                         this.getPhase() >= 2 ? this.uG : 1.0F,
                         this.getPhase() >= 2 ? this.uB : 0.75F, 1.0F);
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.25F, 0, 20);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.25F, 0, 20);
                 ParticleUtils.controlledSmashParticles(this, 1.0F, 0.0F, 0.0F, 7.5F, 3.0F);
             }
 
@@ -2167,7 +2167,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                         this.getPhase() >= 2 ? this.uR : 0.25F,
                         this.getPhase() >= 2 ? this.uG : 1.0F,
                         this.getPhase() >= 2 ? this.uB : 0.75F, 1.0F);
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.25F, 0, 20);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.25F, 0, 20);
                 ParticleUtils.controlledSmashParticles(this, 1.0F, 0.0F, 0.0F, 7.5F, 3.0F);
             }
 
@@ -2219,7 +2219,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                         this.getPhase() >= 2 ? this.uR : 0.25F,
                         this.getPhase() >= 2 ? this.uG : 1.0F,
                         this.getPhase() >= 2 ? this.uB : 0.75F, 1.0F);
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.25F, 0, 20);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.25F, 0, 20);
                 ParticleUtils.controlledSmashParticles(this, 1.0F, 0.0F, 0.0F, 7.5F, 3.0F);
             }
 
@@ -2264,7 +2264,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             }
 
             if ((float) this.attackTicks == attackTick1) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
                 this.SideAreaAttack(doubleSlashRange, 3.0F, (float) arc, 0.0F, 0.0F, 17.0F, 100,
                         SoundEvents.EMPTY, 1.0F, false, 0.0F);
             }
@@ -2276,7 +2276,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             }
 
             if ((float) this.attackTicks == attackTick2) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
                 this.SideAreaAttack(doubleSlashRange, 3.0F, (float) arc, 0.0F, 0.0F, 17.0F, 100,
                         SoundEvents.EMPTY, 1.0F, false, 0.0F);
             }
@@ -2318,7 +2318,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             }
 
             if ((float) this.attackTicks == attackTick1) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
                 this.SideAreaAttack(doubleSlashRange, 3.0F, (float) arc, 0.0F, 0.0F, 18.0F, 100,
                         SoundEvents.EMPTY, 1.0F, false, 0.0F);
             }
@@ -2330,7 +2330,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             }
 
             if ((float) this.attackTicks == attackTick2) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
                 this.SideAreaAttack(doubleSlashRange, 3.0F, (float) arc, 0.0F, 0.0F, 18.0F, 100,
                         SoundEvents.EMPTY, 1.0F, false, 0.0F);
             }
@@ -2338,7 +2338,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
 
         if (this.getAttackState() == 35) {
             if (this.attackTicks == 1) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.075F, 0, 20);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.075F, 0, 20);
             }
 
             if (this.attackTicks == 143) {
@@ -2418,7 +2418,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             if (this.attackTicks == 180) {
                 ++this.rayAmount;
                 this.playSound(SoundEvents.RESPAWN_ANCHOR_CHARGE, 1.0F, 0.75F);
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.1F, 5, 5);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.1F, 5, 5);
             }
 
             if (this.attackTicks == 240) {
@@ -2430,13 +2430,13 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                         0.0D, 0.0D, 0.0D);
                 ++this.rayAmount;
                 this.playSound(SoundEvents.RESPAWN_ANCHOR_CHARGE, 1.0F, 0.75F);
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.1F, 5, 5);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.1F, 5, 5);
             }
 
             if (this.attackTicks == 250) {
                 ++this.rayAmount;
                 this.playSound(SoundEvents.RESPAWN_ANCHOR_CHARGE, 1.0F, 1.0F);
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.1F, 5, 5);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.1F, 5, 5);
             }
 
             if (this.attackTicks == 260) {
@@ -2448,7 +2448,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                         0.0D, 0.0D, 0.0D);
                 ++this.rayAmount;
                 this.playSound(SoundEvents.RESPAWN_ANCHOR_CHARGE, 1.0F, 1.25F);
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.1F, 5, 5);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.1F, 5, 5);
             }
 
             if (this.attackTicks == 270) {
@@ -2458,7 +2458,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                         this.getY() + 2.0D + (double) f4,
                         this.getZ() + (double) vec * vecZ + (double) (f1 * offset) + (double) f5,
                         0.0D, 0.0D, 0.0D);
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.25F, 5, 10);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.25F, 5, 10);
                 this.playSound(SoundEvents.DRAGON_FIREBALL_EXPLODE, 1.0F, 0.5F);
             }
 
@@ -2528,7 +2528,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                         this.getPhase() >= 2 ? this.uG : 0.9F,
                         this.getPhase() >= 2 ? this.uB : 0.8F,
                         0.8F, Circle.EnumRingBehavior.CONSTANT, 30);
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
                 this.SideAreaAttack(3.5F, 3.5F, 180.0F, 0.0F, 0.0F, 17.0F, 100,
                         ModSounds.EMPTY, 1.0F, false, 1.0F);
             }
@@ -2540,7 +2540,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                         sweepSize + 0.5F, sweepRot, false);
             }
             if (this.attackTicks == tridentSwing1) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
                 this.SideAreaAttack(tridentRange, tridentRange, 180.0F, 0.0F, 0.0F, 15.0F, 100,
                         ModSounds.EMPTY, 1.0F, false, 1.0F);
             }
@@ -2552,7 +2552,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                         sweepSize, sweepRot, false);
             }
             if (this.attackTicks == swordSwing1) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
                 this.SideAreaAttack(3.5F, 3.5F, 180.0F, 0.0F, 0.0F, 17.0F, 100,
                         ModSounds.EMPTY, 1.0F, false, 1.0F);
             }
@@ -2568,7 +2568,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                         sweepSize + 0.5F, sweepRot, false);
             }
             if (this.attackTicks == tridentSwing2) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
                 this.SideAreaAttack(tridentRange, tridentRange, 180.0F, 0.0F, 0.0F, 15.0F, 100,
                         ModSounds.EMPTY, 1.0F, false, 1.0F);
             }
@@ -2580,7 +2580,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                         sweepSize, sweepRot, false);
             }
             if (this.attackTicks == swordSwing2) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
                 this.SideAreaAttack(3.5F, 3.5F, 180.0F, 0.0F, 0.0F, 19.0F, 100,
                         ModSounds.EMPTY, 1.0F, false, 1.0F);
             }
@@ -2592,7 +2592,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                         sweepSize, sweepRot, false);
             }
             if (this.attackTicks == swordSwing3) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
                 this.SideAreaAttack(3.0F, 3.5F, 180.0F, 0.0F, 0.0F, 17.0F, 100,
                         ModSounds.EMPTY, 1.0F, false, 1.0F);
             }
@@ -2618,7 +2618,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                 this.playSound(ModSounds.GENERIC_ARM_SWING.get(), 1.0F, 1.0F);
             }
             if (this.attackTicks == tridentUppercut) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
                 this.StraightLineAreaAttack(-0.6F, 2.5F, 5.0F, 100, 15.0F, true, 1.35F);
             }
 
@@ -2630,7 +2630,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                 this.createSweep(0.0F, 0.0F, bigSweepHeight, bigSweepAdditionalY, false, sweepSize, sweepRot, false);
             }
             if (this.attackTicks == crossSlash2) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
                 this.SideAreaAttack(3.5F, 3.5F, 180.0F, 0.0F, 0.0F, 18.0F, 100,
                         ModSounds.EMPTY, 1.0F, false, 1.0F);
             }
@@ -2676,7 +2676,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                 this.spawnChainedStrike(-4.0F, 0.0F, 1, 5, 10, true);
                 this.spawnChainedStrike(0.0F, -4.0F, 1, 5, 10, true);
                 this.spawnChainedStrike(0.0F, 4.0F, 1, 5, 10, true);
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 10.0F, 0.15F, 10, 10);
+                LmScreenShake.shake(this.level(), this.position(), 10.0F, 0.15F, 10, 10);
                 this.playSound(ModSounds.STAB_HIT.get(), 1.0F, 1.0F);
                 this.SideAreaAttack(3.0F, 3.0F, 360.0F, 0.0F, 0.0F, 25.0F, 150,
                         ModSounds.EMPTY, 0.0F, false, 0.0F);
@@ -2693,7 +2693,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             }
             if (this.attackTicks == doubleUppercut) {
                 this.spawnChainedStrike(3.0F, 0.0F, 3, 4, 10, true);
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
                 this.StraightLineAreaAttack(-0.6F, 2.5F, 5.0F, 100, 17.0F, true, 1.35F);
             }
         }
@@ -2722,7 +2722,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             }
 
             if (this.attackTicks == slash1) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
                 this.SideAreaAttack(doubleSlashRange, 3.0F, 90.0F, 0.0F, 0.0F, 18.0F, 100,
                         SoundEvents.EMPTY, 1.0F, false, 0.0F);
             }
@@ -2739,7 +2739,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             }
 
             if (this.attackTicks == slash2) {
-                CameraShakeEntity.cameraShake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
+                LmScreenShake.shake(this.level(), this.position(), 20.0F, 0.05F, 0, 10);
                 this.SideAreaAttack(doubleSlashRange, 3.0F, 90.0F, 0.0F, 0.0F, 18.0F, 100,
                         SoundEvents.EMPTY, 1.0F, false, 0.0F);
             }
@@ -3528,7 +3528,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
 
         if (this.isBlockin()) {
             this.playSound(ModSounds.BLOCK.get(), 1.0F, 1.0F);
-            CameraShakeEntity.cameraShake(this.level(), this.position(), 10.0F, 0.15F, 5, 5);
+            LmScreenShake.shake(this.level(), this.position(), 10.0F, 0.15F, 5, 5);
             return false;
         }
 
@@ -3537,7 +3537,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
             this.setAttackState(5);
             this.stopAllAnimationStates();
             this.playSound(ModSounds.BLOCK.get(), 1.0F, 1.0F);
-            CameraShakeEntity.cameraShake(this.level(), this.position(), 10.0F, 0.15F, 5, 5);
+            LmScreenShake.shake(this.level(), this.position(), 10.0F, 0.15F, 5, 5);
 
             return false;
         }

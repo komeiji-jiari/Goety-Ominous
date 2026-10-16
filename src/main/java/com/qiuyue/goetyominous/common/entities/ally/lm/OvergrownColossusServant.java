@@ -2,13 +2,13 @@ package com.qiuyue.goetyominous.common.entities.ally.lm;
 
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.projectiles.FlyingItem;
+import com.qiuyue.goetyominous.compat.lm.LmScreenShake;
 import net.minecraft.core.particles.ParticleTypes;
 import com.Polarice3.Goety.config.ItemConfig;
 import com.Polarice3.Goety.utils.CuriosFinder;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.qiuyue.goetyominous.config.MobsConfig;
-import net.miauczel.legendary_monsters.entity.AnimatedMonster.Effect.CameraShakeEntity;
 import net.miauczel.legendary_monsters.item.ModItems;
 import net.miauczel.legendary_monsters.entity.ai.navigation.EntityRotationPatcher;
 import net.miauczel.legendary_monsters.sound.ModSounds;
@@ -672,7 +672,7 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
             if (tickCount % 5 ==0){
 
                 Vec3 entityPosition = this.position();
-                CameraShakeEntity.cameraShake(this.level(), entityPosition, 20.0F, 0.075F, 0, 20);
+                LmScreenShake.shake(this.level(), entityPosition, 20.0F, 0.075F, 0, 20);
                 playSound(ModSounds.STEP_SOUND.get());
                 PoisonousShockwave entity2 = new PoisonousShockwave(LmEntityRegistry.POISONOUS_SHOCKWAVE.get(),this.level());
                 entity2.setCaster(this);
@@ -701,7 +701,7 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
         if(this.getAttackState() == 8){
             if(this.attackTicks == 32){
                 Vec3 entityPosition = this.position();
-                CameraShakeEntity.cameraShake(this.level(), entityPosition, 20.0F, 0.1F, 0, 20);
+                LmScreenShake.shake(this.level(), entityPosition, 20.0F, 0.1F, 0, 20);
 
             }
         }
@@ -713,7 +713,7 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
                 if (this.attackTicks == 14) {
                     this.playSound(SoundEvents.DRAGON_FIREBALL_EXPLODE,2,1);
                     Vec3 entityPoesition = this.position();
-                    CameraShakeEntity.cameraShake(this.level(), entityPoesition, 20.0F, 0.05F, 0, 20);
+                    LmScreenShake.shake(this.level(), entityPoesition, 20.0F, 0.05F, 0, 20);
                     if (this.getTarget() != null) {
 
                         int standingOnY = Mth.floor(this.getY());
@@ -761,7 +761,7 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
                 if (this.attackTicks == 42) {
                     this.playSound(SoundEvents.DRAGON_FIREBALL_EXPLODE,2,1);
                     Vec3 entityPoesition = this.position();
-                    CameraShakeEntity.cameraShake(this.level(), entityPoesition, 20.0F, 0.05F, 0, 20);
+                    LmScreenShake.shake(this.level(), entityPoesition, 20.0F, 0.05F, 0, 20);
                     if (this.getTarget() != null) {
 
                         int standingOnY = Mth.floor(this.getY());
@@ -808,7 +808,7 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
                 if (this.attackTicks == 70) {
                     this.playSound(SoundEvents.DRAGON_FIREBALL_EXPLODE,2,1);
                     Vec3 entityPoesition = this.position();
-                    CameraShakeEntity.cameraShake(this.level(), entityPoesition, 20.0F, 0.05F, 0, 20);
+                    LmScreenShake.shake(this.level(), entityPoesition, 20.0F, 0.05F, 0, 20);
                     if (this.getTarget() != null) {
 
                         int standingOnY = Mth.floor(this.getY());
@@ -868,7 +868,7 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
                         }
                     }
                     Vec3 entityPosition = this.position();
-                    CameraShakeEntity.cameraShake(this.level(), entityPosition, 20.0F, 0.15F, 0, 20);
+                    LmScreenShake.shake(this.level(), entityPosition, 20.0F, 0.15F, 0, 20);
 
                     this.playSound(SoundEvents.DRAGON_FIREBALL_EXPLODE, 1, 1);
 
@@ -936,7 +936,7 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
 
         if(this.colossusDeathTime == 25){
             Vec3 entityPosition = this.position();
-            CameraShakeEntity.cameraShake(this.level(), entityPosition, 40.0F, 0.1F, 0, 20);
+            LmScreenShake.shake(this.level(), entityPosition, 40.0F, 0.1F, 0, 20);
         }
         if (this.colossusDeathTime == 60 && this.level() instanceof ServerLevel) {
             this.remove(Entity.RemovalReason.KILLED);

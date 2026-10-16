@@ -1,7 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm;
 
+import com.qiuyue.goetyominous.compat.lm.LmScreenShake;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
-import net.miauczel.legendary_monsters.entity.AnimatedMonster.Effect.CameraShakeEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -68,7 +68,7 @@ public class AbstractFlamebornServant extends IAnimatedMobServant {
         if (teleported) {
             level.gameEvent(GameEvent.TELEPORT, oldPos, GameEvent.Context.of(this));
             if (!this.isSilent()) {
-                CameraShakeEntity.cameraShake(level, this.position(), 10.0F, 0.1F, 5, 5);
+                LmScreenShake.shake(level, this.position(), 10.0F, 0.1F, 5, 5);
                 this.playSound(SoundEvents.SHULKER_TELEPORT, 4.0F, 1.0F);
             }
         }
