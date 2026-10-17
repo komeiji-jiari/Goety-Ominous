@@ -1,8 +1,0 @@
-{
-  "name": "Summons",
-  "description": "More Servants for a Darker Wizard.",
-  "icon": "illageandspillage:spellbound_book",
-  "parent": "goety:iascompat",
-  "sortnum": 3,
-  "flag": "!mod:goety_spillage"
-}

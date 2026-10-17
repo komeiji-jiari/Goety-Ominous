@@ -1,7 +1,7 @@
 package com.qiuyue.goetyominous.common.events.lm;
 
 import com.qiuyue.goetyominous.GoetyOminous;
-import com.qiuyue.goetyominous.common.entities.ally.lm.IAnimatedMonsterServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.LmServantDamageMultiplier;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -14,7 +14,7 @@ public class LmServantDamageEvents {
         if (event.getEntity().level().isClientSide) {
             return;
         }
-        if (!(event.getSource().getEntity() instanceof IAnimatedMonsterServant servant)) {
+        if (!(event.getSource().getEntity() instanceof LmServantDamageMultiplier servant)) {
             return;
         }
         double multiplier = servant.damageMultiplier();

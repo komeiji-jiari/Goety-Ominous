@@ -2,18 +2,6 @@
   "replace": false,
   "values": [
     {
-      "id": "goetyominous:twittollager_servant",
-      "required": false
-    },
-    {
-      "id": "goetyominous:absorber_servant",
-      "required": false
-    },
-    {
-      "id": "goetyominous:magispeller_servant",
-      "required": false
-    },
-    {
       "id": "goetyominous:illager_elephant_servant",
       "required": false
     },

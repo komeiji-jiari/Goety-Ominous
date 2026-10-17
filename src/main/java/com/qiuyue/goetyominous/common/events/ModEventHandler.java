@@ -9,10 +9,7 @@ import com.qiuyue.goetyominous.common.entities.ally.mobs.HeresiarchServant;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.common.items.ModItems;
 import com.qiuyue.goetyominous.common.items.curios.ScreamingSkullJar;
-import com.qiuyue.goetyominous.compat.ias.IasItems;
 import com.qiuyue.goetyominous.compat.mod.GoetyAwakenCompat;
-import com.qiuyue.goetyominous.compat.mod.IllageAndSpillageCompat;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -24,12 +21,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
 
@@ -112,34 +107,6 @@ public class ModEventHandler {
         } catch (Exception e) {
             System.err.println("[GoetyOminous] Failed to convert GoetyAwaken HeresiarchServant: " + e.getMessage());
             e.printStackTrace();
-        }
-    }
-
-    @SubscribeEvent
-    public static void onEntityDeath(LivingDeathEvent event) {
-        if (event.getEntity().level().isClientSide) {
-            return;
-        }
-
-        if (!IllageAndSpillageCompat.isIllageAndSpillageLoaded()) {
-            return;
-        }
-
-        LivingEntity entity = event.getEntity();
-
-        if (entity.getPersistentData().getBoolean("GoetyOminousBetrayed")) {
-            return;
-        }
-
-        ResourceLocation entityId = ForgeRegistries.ENTITY_TYPES.getKey(entity.getType());
-        if (entityId == null || !entityId.getPath().equals("magispeller")) {
-            return;
-        }
-
-        ItemStack contractStack = new ItemStack(IasItems.MYSTERIOUS_CONTRACT.get());
-        ItemEntity itemEntity = entity.spawnAtLocation(contractStack);
-        if (itemEntity != null) {
-            itemEntity.setExtendedLifetime();
         }
     }
 

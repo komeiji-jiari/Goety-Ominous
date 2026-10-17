@@ -76,6 +76,14 @@ public class LmItems {
             "resurrected_knight_servant_spawn_egg",
             () -> new ServantSpawnEggItem(LmEntityRegistry.RESURRECTED_KNIGHT_SERVANT, 0x8A8F99, 0x3B4A5C, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> ENDERSENT_SPAWN_EGG = LM_ITEMS.register(
+            "endersent_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(LmEntityRegistry.ENDERSENT_SERVANT, 0x1B1226, 0x7D5AA8, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> CHORUSLING_SPAWN_EGG = LM_ITEMS.register(
+            "chorusling_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(LmEntityRegistry.CHORUSLING_SERVANT, 0x2E2133, 0x9A6FB5, egg()));
+
     public static void register(IEventBus modEventBus) {
         LM_ITEMS.register(modEventBus);
     }

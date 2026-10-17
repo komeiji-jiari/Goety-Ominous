@@ -3,7 +3,6 @@ package com.qiuyue.goetyominous.client;
 import com.qiuyue.goetyominous.common.items.ModItems;
 import com.qiuyue.goetyominous.compat.mod.AlexCavesCompat;
 import com.qiuyue.goetyominous.compat.mod.AlexMobsCompat;
-import com.qiuyue.goetyominous.compat.mod.IllageAndSpillageCompat;
 import com.qiuyue.goetyominous.compat.mod.MutantMoreCompat;
 import com.qiuyue.goetyominous.compat.mod.OpposingForceCompat;
 import com.qiuyue.goetyominous.compat.mod.PatchouliCompat;
@@ -27,7 +26,6 @@ public class OminousIconRotation {
             new Entry("savageandravagecompat", SavageRavageCompat::isSavageRavageLoaded, 0),
             new Entry("uacompat", UpgradeAquaticCompat::isUpgradeAquaticLoaded, 1),
             new Entry("mmcompat", MutantMoreCompat::isMutantMoreLoaded, 2),
-            new Entry("iascompat", IllageAndSpillageCompat::isIllageAndSpillageLoaded, 3),
             new Entry("amcompat", AlexMobsCompat::isAlexMobsLoaded, 4),
             new Entry("accompat", AlexCavesCompat::isAlexCavesLoaded, 5),
             new Entry("ofcompat", OpposingForceCompat::isOpposingForceLoaded, 6)

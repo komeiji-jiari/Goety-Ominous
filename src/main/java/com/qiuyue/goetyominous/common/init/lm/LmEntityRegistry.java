@@ -3,7 +3,9 @@ package com.qiuyue.goetyominous.common.init.lm;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.lm.AnnihilationPursuerServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.BeheadedKnightServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.ChoruslingServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.CloudGolemServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.EndersentServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.FlameDrifterServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.FlamebornGuardServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.FlamebornWarriorServant;
@@ -243,6 +245,18 @@ public class LmEntityRegistry {
                     () -> EntityType.Builder.of(ResurrectedKnightServant::new, MobCategory.MONSTER)
                             .sized(1.25F, 3.0F).fireImmune()
                             .build(GoetyOminous.MOD_ID + ":resurrected_knight_servant"));
+
+    public static final RegistryObject<EntityType<EndersentServant>> ENDERSENT_SERVANT =
+            LM_ENTITIES.register("endersent_servant",
+                    () -> EntityType.Builder.of(EndersentServant::new, MobCategory.MONSTER)
+                            .sized(1.0F, 6.0F)
+                            .build(GoetyOminous.MOD_ID + ":endersent_servant"));
+
+    public static final RegistryObject<EntityType<ChoruslingServant>> CHORUSLING_SERVANT =
+            LM_ENTITIES.register("chorusling_servant",
+                    () -> EntityType.Builder.of(ChoruslingServant::new, MobCategory.MONSTER)
+                            .sized(1.0F, 2.5F)
+                            .build(GoetyOminous.MOD_ID + ":chorusling_servant"));
 
     public static final RegistryObject<EntityType<ThrownKnight>> THROWN_KNIGHT =
             LM_ENTITIES.register("thrown_knight",

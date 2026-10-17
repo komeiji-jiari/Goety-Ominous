@@ -138,26 +138,6 @@ public class BuiltinPacksRegistry {
             }
         }
 
-        if (event.getPackType() == PackType.CLIENT_RESOURCES && IllageAndSpillageCompat.isIllageAndSpillageLoaded()) {
-            Path packPath = modFile.findResource("resourcepacks/ias_compat");
-            if (packPath != null) {
-                event.addRepositorySource(consumer -> {
-                    Pack pack = Pack.readMetaAndCreate(
-                            "goetyominous/ias_compat",
-                            Component.literal("IAS Compatibility Pack"),
-                            true,
-                            id -> new PathPackResources(id, packPath, true),
-                            PackType.CLIENT_RESOURCES,
-                            Pack.Position.TOP,
-                            PackSource.BUILT_IN
-                    );
-                    if (pack != null) {
-                        consumer.accept(pack);
-                    }
-                });
-            }
-        }
-
         if (event.getPackType() == PackType.CLIENT_RESOURCES && AlexMobsCompat.isAlexMobsLoaded()) {
             Path packPath = modFile.findResource("resourcepacks/am_compat");
             if (packPath != null) {

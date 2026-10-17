@@ -6,8 +6,6 @@ import com.Polarice3.Goety.common.entities.ally.illager.Neollager;
 import com.Polarice3.Goety.common.ritual.RitualChecker;
 import com.Polarice3.Goety.init.ModTags;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
-import com.qiuyue.goetyominous.compat.ias.IasEntityRegistry;
-import com.qiuyue.goetyominous.compat.mod.IllageAndSpillageCompat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -42,8 +40,6 @@ public class GoetyOminousType implements ITrainIllager {
             return mob instanceof Neollager neollager && neollager.isMagic();
         } else if (entityType == ModEntityTypes.CONQUILLAGER_SERVANT.get()) {
             return mob.getType() == ModEntityType.PILLAGER_SERVANT.get();
-        } else if (IllageAndSpillageCompat.isIllageAndSpillageLoaded() && entityType == IasEntityRegistry.ABSORBER_SERVANT.get()) {
-            return mob.getType() == ModEntityType.CRUSHER_SERVANT.get();
         }
 
         for (TrainIllagerExtension extension : EXTENSIONS) {
@@ -92,27 +88,6 @@ public class GoetyOminousType implements ITrainIllager {
                 && checker.hasBlocks(blockState -> blockState.getBlock() instanceof BrewingStandBlock, 1)
                 && checker.hasBlocks(blockState -> blockState.getBlock() instanceof EnchantmentTableBlock, 1)) {
             return ModEntityTypes.INQUILLAGER_SERVANT.get();
-
-        } else if (IllageAndSpillageCompat.isIllageAndSpillageLoaded()
-                && checker.hasBlocks(blockState -> blockState.is(Blocks.COBBLESTONE), 32)
-                && checker.hasBlocks(blockState -> blockState.getBlock() instanceof AnvilBlock, 1)
-                && checker.hasBlocks(blockState -> blockState.is(Tags.Blocks.STORAGE_BLOCKS_IRON), 2)
-                && checker.hasBlocks(blockState -> blockState.is(Tags.Blocks.STORAGE_BLOCKS_REDSTONE), 2)
-                && checker.hasBlocks(blockState -> blockState.is(Blocks.GLASS), 8)
-                && checker.hasBlocks(blockState -> blockState.is(Blocks.OBSERVER), 4)
-                && checker.hasBlocks(blockState -> blockState.is(Blocks.TNT), 8)) {
-            return IasEntityRegistry.TWITTOLLAGER_SERVANT.get();
-
-        } else if (IllageAndSpillageCompat.isIllageAndSpillageLoaded()
-                && checker.hasBlocks(blockState -> blockState.is(Blocks.CHAIN), 8)
-                && checker.hasBlocks(blockState -> blockState.is(Tags.Blocks.STORAGE_BLOCKS_GOLD), 2)
-                && checker.hasBlocks(blockState -> blockState.is(Tags.Blocks.STORAGE_BLOCKS_IRON), 4)
-                && checker.hasBlocks(blockState -> blockState.is(Tags.Blocks.STORAGE_BLOCKS_EMERALD), 2)
-                && checker.hasBlocks(blockState -> blockState.getBlock() instanceof AnvilBlock, 2)
-                && checker.hasBlocks(blockState -> blockState.is(ModBlocks.CURSED_METAL_BLOCK.get()), 2)
-                && checker.hasBlocks(blockState -> blockState.is(ModBlocks.DARK_ALLOY_BLOCK.get()), 2)
-                && checker.hasBlocks(blockState -> blockState.is(ModBlocks.PALE_STEEL_BLOCK.get()), 2)) {
-            return IasEntityRegistry.ABSORBER_SERVANT.get();
         }
 
         return null;
