@@ -422,6 +422,15 @@ public class GoetyOminous {
                     (stack, level, entity, seed) ->
                             entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
 
+            ItemProperties.register(ModItems.WINDBOW.get(), new ResourceLocation("pull"),
+                    (stack, level, entity, seed) -> {
+                        if (entity == null || entity.getUseItem() != stack) return 0.0F;
+                        return (float) (stack.getUseDuration() - entity.getUseItemRemainingTicks()) / 20.0F;
+                    });
+            ItemProperties.register(ModItems.WINDBOW.get(), new ResourceLocation("pulling"),
+                    (stack, level, entity, seed) ->
+                            entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
+
             ItemProperties.register(ModItems.COG_CROSSBOW.get(), new ResourceLocation("pull"),
                     (stack, level, entity, seed) -> {
                         if (entity == null || !entity.isUsingItem() || entity.getUseItem() != stack) return 0.0F;

@@ -133,6 +133,9 @@ public class ModItems {
     public static final RegistryObject<WitchBowItem> WITCH_BOW = ITEMS.register("witch_bow",
             () -> new WitchBowItem());
 
+    public static final RegistryObject<WindBowItem> WINDBOW = ITEMS.register("windbow",
+            () -> new WindBowItem());
+
     public static final RegistryObject<Item> COG_CROSSBOW = ITEMS.register("cog_crossbow",
             () -> new CogCrossbowItem());
 

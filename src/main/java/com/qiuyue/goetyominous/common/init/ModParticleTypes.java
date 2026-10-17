@@ -32,6 +32,9 @@ public class ModParticleTypes {
 
     public static final RegistryObject<SimpleParticleType> VAULT_CONNECTION = PARTICLE_TYPES.register("vault_connection", () -> new SimpleParticleType(false));
 
+    /** 台风粒子 —— 绕中心旋转上升的环形风迹（风弓的飞行尾迹 + 风场环绕）。 */
+    public static final RegistryObject<SimpleParticleType> WIND_TYPHOON = PARTICLE_TYPES.register("wind_typhoon", () -> new SimpleParticleType(false));
+
     public static final RegistryObject<ParticleType<BlockParticleOption>> DUST_PILLAR = PARTICLE_TYPES.register("dust_pillar",
             () -> new ParticleType<BlockParticleOption>(true, BlockParticleOption.DESERIALIZER) {
                 @Override
