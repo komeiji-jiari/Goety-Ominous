@@ -55,6 +55,7 @@
     "ac.abyss.TridentStormSpellKeyOfRlyehMixin",
     "ac.abyss.GulfTentacleSpellKeyOfRlyehMixin",
     "ac.abyss.WaterJetSpellKeyOfRlyehMixin",
+    "ac.abyss.PrismaBeamSpellCurseMixin",
     "ExplosionAccessor",
     "PlayerImpulseMixin",
     "AbstractHurtingProjectileMixin",

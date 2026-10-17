@@ -64,6 +64,7 @@ public class AcCompatManager {
                 MinecraftForge.EVENT_BUS.register(TremorzillaBreathHandler.class);
                 MinecraftForge.EVENT_BUS.register(MineGuardianSummonHandler.class);
                 MinecraftForge.EVENT_BUS.register(BubbledVisualCleanupHandler.class);
+                MinecraftForge.EVENT_BUS.register(CurseOfRlyehEvents.class);
                 MinecraftForge.EVENT_BUS.register(LuxtructosaurusTephraHandler.class);
                 MinecraftForge.EVENT_BUS.register(ExtinctionCatalystHandler.class);
                 MinecraftForge.EVENT_BUS.register(TremorsaurusSpiritHandler.class);

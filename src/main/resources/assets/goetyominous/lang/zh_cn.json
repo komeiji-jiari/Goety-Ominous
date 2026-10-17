@@ -859,6 +859,8 @@
   "effect.goetyominous.wind_charged.description": "死亡后产生风爆。",
   "effect.goetyominous.infested": "虫蚀",
   "effect.goetyominous.infested.description": "受到伤害时，有10%概率生成1到2只蠹虫。",
+  "effect.goetyominous.curse_of_rlyeh": "拉莱耶之咒",
+  "effect.goetyominous.curse_of_rlyeh.description": "被深渊注视。移动速度与攻击伤害每层降低15%（最多3层）；来自拉莱耶之钥的深渊法术伤害每层提高15%；受到的火焰、冰冻、闪电伤害提高30%，且每受到一次这类伤害，本效果剩余时长减少2秒。重复命中会叠加层数，最多3层。",
 
   "message.goetyominous.urbhadhach.spawn": "不知何处传来了孩童的啼哭。",
   "advancements.goetyominous.bastion_scroll.title": "已然破碎",

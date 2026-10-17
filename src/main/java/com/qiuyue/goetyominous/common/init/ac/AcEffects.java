@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.common.init.ac;
 
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.common.effects.ac.CurseOfRlyehEffect;
 import com.qiuyue.goetyominous.common.effects.ac.TremorsaurusSpiritEffect;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -15,6 +16,9 @@ public class AcEffects {
 
     public static final RegistryObject<MobEffect> TREMORSAURUS_SPIRIT =
             AC_EFFECTS.register("tremorsaurus_spirit", TremorsaurusSpiritEffect::new);
+
+    public static final RegistryObject<MobEffect> CURSE_OF_RLYEH =
+            AC_EFFECTS.register("curse_of_rlyeh", CurseOfRlyehEffect::new);
 
     public static void register(IEventBus modEventBus) {
         AC_EFFECTS.register(modEventBus);

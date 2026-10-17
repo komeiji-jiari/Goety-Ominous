@@ -4,8 +4,10 @@ import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.common.magic.spells.abyss.WaterJetSpell;
 import com.Polarice3.Goety.utils.MathHelper;
+import com.qiuyue.goetyominous.utils.ac.CurseOfRlyehHelper;
 import com.qiuyue.goetyominous.utils.ac.KeyOfRlyehMixinHelper;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -14,6 +16,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(WaterJetSpell.class)
@@ -38,5 +41,16 @@ public class WaterJetSpellKeyOfRlyehMixin {
         }
         return new MobEffectInstance(GoetyEffects.SAPPED.get(),
                 MathHelper.secondsToTicks(5), 1);
+    }
+
+    @Redirect(method = "SpellResult", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/world/entity/LivingEntity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"))
+    private boolean goetyominous$curseOnWaterJetHit(LivingEntity target, DamageSource source, float amount) {
+        float modified = CurseOfRlyehHelper.amplifyKeySpellDamage(target, amount);
+        boolean hurt = target.hurt(source, modified);
+        if (hurt) {
+            CurseOfRlyehHelper.applyCurseOnHit(target, this.goetyominous$waterJetStaff);
+        }
+        return hurt;
     }
 }
