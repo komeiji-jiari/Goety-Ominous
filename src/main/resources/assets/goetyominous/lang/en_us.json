@@ -859,6 +859,8 @@
   "effect.goetyominous.wind_charged.description": "Makes affected entities emit a burst of wind on death.",
   "effect.goetyominous.infested": "Infested",
   "effect.goetyominous.infested.description": "Gives affected entities a 10% chance to spawn between 1 and 2 silverfish when hurt.",
+  "effect.goetyominous.curse_of_rlyeh": "Curse of Rlyeh",
+  "effect.goetyominous.curse_of_rlyeh.description": "Marked by the deep. Movement speed and attack damage are reduced by 15% per level (max 3 levels); abyss spells cast with the Key of Rlyeh deal 15% more damage per level; fire, freezing and lightning damage taken is increased by 30%, and each such hit cuts 2 seconds off this effect's remaining duration. Repeated hits stack its level, up to 3.",
 
   "message.goetyominous.urbhadhach.spawn": "A child crying somewhere...",
   "advancements.goetyominous.bastion_scroll.title": "Already Broken",

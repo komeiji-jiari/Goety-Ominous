@@ -60,6 +60,18 @@
     {
       "id":"goetyominous:mutant_shulker_servant",
       "required": false
+    },
+    {
+      "id":"goetyominous:mutant_husk_servant",
+      "required": false
+    },
+    {
+      "id":"goetyominous:mutant_frozen_zombie_servant",
+      "required": false
+    },
+    {
+      "id":"goetyominous:mutant_jungle_zombie_servant",
+      "required": false
     }
   ]
 }
