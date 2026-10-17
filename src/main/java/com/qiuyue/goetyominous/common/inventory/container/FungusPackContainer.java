@@ -1,4 +1,4 @@
-package com.qiuyue.goetyominous.client.inventory.container;
+package com.qiuyue.goetyominous.common.inventory.container;
 
 import com.qiuyue.goetyominous.common.init.ModContainerTypes;
 import com.qiuyue.goetyominous.common.items.handler.FungusPackItemHandler;

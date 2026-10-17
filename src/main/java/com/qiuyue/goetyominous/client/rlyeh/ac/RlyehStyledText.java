@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.qiuyue.goetyominous.common.mixin.FontAccessor;
 import com.qiuyue.goetyominous.common.mixin.ac.GameRendererAccessor;
-import com.qiuyue.goetyominous.compat.mod.ModernUiTextCompat;
+import com.qiuyue.goetyominous.client.compat.mod.ModernUiTextCompat;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.font.FontSet;
 import net.minecraft.client.gui.font.glyphs.BakedGlyph;

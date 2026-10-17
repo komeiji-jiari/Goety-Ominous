@@ -1,4 +1,4 @@
-package com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantBlazeServant;
+package com.qiuyue.goetyominous.client.sound.mm;
 
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantBlazeServant;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;

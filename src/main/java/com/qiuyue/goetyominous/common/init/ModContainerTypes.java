@@ -1,7 +1,7 @@
 package com.qiuyue.goetyominous.common.init;
 
 import com.qiuyue.goetyominous.GoetyOminous;
-import com.qiuyue.goetyominous.client.inventory.container.FungusPackContainer;
+import com.qiuyue.goetyominous.common.inventory.container.FungusPackContainer;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.eventbus.api.IEventBus;

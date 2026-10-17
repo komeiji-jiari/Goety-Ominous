@@ -1,7 +1,7 @@
 package com.qiuyue.goetyominous.client.gui.screen.inventory;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.qiuyue.goetyominous.client.inventory.container.FungusPackContainer;
+import com.qiuyue.goetyominous.common.inventory.container.FungusPackContainer;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;

@@ -1,19 +1,22 @@
-package com.qiuyue.goetyominous.common.events.ac;
+package com.qiuyue.goetyominous.client.events.ac;
 
 import com.github.alexmodguy.alexscaves.AlexsCaves;
 import com.github.alexmodguy.alexscaves.client.config.ACClientConfig;
-import com.qiuyue.goetyominous.common.entities.ally.ac.AtlatitanServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.LuxtructosaurusServant;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-public class AtlatitanHudEvents {
+@OnlyIn(Dist.CLIENT)
+public class LuxtructosaurusHudEvents {
 
     private static final ResourceLocation DINOSAUR_HUD_OVERLAYS =
             new ResourceLocation("alexscaves", "textures/misc/dinosaur_hud_overlays.png");
@@ -29,7 +32,7 @@ public class AtlatitanHudEvents {
             return;
         }
         Player player = Minecraft.getInstance().player;
-        if (player != null && player.getVehicle() instanceof AtlatitanServant) {
+        if (player != null && player.getVehicle() instanceof LuxtructosaurusServant) {
             event.setCanceled(true);
         }
     }
@@ -40,7 +43,7 @@ public class AtlatitanHudEvents {
             return;
         }
         Player player = AlexsCaves.PROXY.getClientSidePlayer();
-        if (player == null || !(player.getVehicle() instanceof AtlatitanServant servant)) {
+        if (player == null || !(player.getVehicle() instanceof LuxtructosaurusServant servant)) {
             return;
         }
         if (!servant.hasRidingMeter()) {
