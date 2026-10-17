@@ -17,23 +17,6 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.ForgeEventFactory;
 
-/**
- * 狂风之弓 —— 一把**不消耗箭**的弓。它射出的是"风箭"：一支普通箭，命中后由
- * {@link WindBowEvents} 给它套上风场（拉拽/牵引）。箭本身不消耗、不捡回
- * （{@link AbstractArrow.Pickup#CREATIVE_ONLY}），所以从背包到落地都是零成本。
- *
- * <p>实现就两条 override，都在 {@link WitchBowItem}（复刻 vanilla 的释放逻辑）之外另写一层：
- * <ol>
- *   <li>{@link #use} —— vanilla 的 {@code BowItem.use} 在"没箭"时直接返回 {@code fail}，
- *       连弓都拉不开。这里恒报"有箭"，所以空手也能拉满。</li>
- *   <li>{@link #releaseUsing} —— 不调 super（super 会 {@code itemstack.shrink(1)}），
- *       而是复刻释放逻辑，但用一根**虚拟箭**（{@code new ItemStack(Items.ARROW)}，
- *       不进背包）造 {@code AbstractArrow}，且 {@code pickup = CREATIVE_ONLY}。
- *       弓的耐久照常消耗。</li>
- * </ol>
- *
- * <p>风场逻辑（粒子、拉拽、落地爆发）全在 {@link WindBowEvents}，本类只管"射"。
- */
 public class WindBowItem extends WitchBowItem {
 
     @Override
@@ -42,10 +25,6 @@ public class WindBowItem extends WitchBowItem {
         return arrow;
     }
 
-    /**
-     * 没箭也拉得开。vanilla 的 {@code BowItem.use} 在 {@code !hasAmmo && !instabuild} 时返回
-     * {@code fail}，于是空手右键什么也不发生 —— 风弓要的就是"空手也能射"，所以恒报有箭。
-     */
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
@@ -58,17 +37,6 @@ public class WindBowItem extends WitchBowItem {
         return InteractionResultHolder.consume(stack);
     }
 
-    /**
-     * 射出一根风箭，不消耗背包里的箭。复刻 {@link WitchBowItem#releaseUsing} 的形状（附魔、
-     * 暴击、音效都在），但：
-     * <ul>
-     *   <li>不调 super —— super 的 {@code itemstack.shrink(1)} 是消耗的源头；</li>
-     *   <li>用一根**虚拟** {@link ItemStack Items.ARROW} 造实体，它从来不是背包里那一摞的引用，
-     *       所以即使 shrink 也缩的是这根临时的；</li>
-     *   <li>{@code pickup = CREATIVE_ONLY} —— 落地的箭不捡回，真正零消耗；</li>
-     *   <li>弓的耐久照常掉。</li>
-     * </ul>
-     */
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
         if (!(entity instanceof Player player)) {
