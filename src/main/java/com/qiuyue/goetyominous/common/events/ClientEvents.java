@@ -80,6 +80,7 @@ public class ClientEvents {
         event.registerSpriteSet(ModParticleTypes.TRIAL_SPAWNER_DETECTION.get(), TrialSpawnerDetectionParticle.Provider::new);
         event.registerSpriteSet(ModParticleTypes.TRIAL_SPAWNER_DETECTION_OMINOUS.get(), TrialSpawnerDetectionParticle.Provider::new);
         event.registerSpriteSet(ModParticleTypes.OMINOUS_SPAWNING.get(), FlyStraightTowardsParticle.OminousSpawnerProvider::new);
+        event.registerSpriteSet(ModParticleTypes.WIND_TYPHOON.get(), WindTyphoonParticle.Provider::new);
 
         if (!AlexCavesCompat.isAlexCavesLoaded()) {
             return;
