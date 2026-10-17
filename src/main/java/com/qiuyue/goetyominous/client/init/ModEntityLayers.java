@@ -15,39 +15,6 @@ public class ModEntityLayers {
     public static final ModelLayerLocation INQUILLAGER_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "inquillager_servant"), "main");
 
-    public static final ModelLayerLocation TWITTOLLAGER_SERVANT_LAYER = new ModelLayerLocation(
-            new ResourceLocation(GoetyOminous.MOD_ID, "twittollager_servant"), "main");
-
-    public static final ModelLayerLocation ABSORBER_SERVANT_LAYER = new ModelLayerLocation(
-            new ResourceLocation(GoetyOminous.MOD_ID, "absorber_servant"), "main");
-
-    public static final ModelLayerLocation MAGISPELLER_SERVANT_LAYER = new ModelLayerLocation(
-            new ResourceLocation(GoetyOminous.MOD_ID, "magispeller_servant"), "main");
-
-    public static final ModelLayerLocation CRASHAGER_SERVANT_LAYER = new ModelLayerLocation(
-            new ResourceLocation(GoetyOminous.MOD_ID, "crashager_servant"), "main");
-
-    public static final ModelLayerLocation KABOOMER_SERVANT_LAYER = new ModelLayerLocation(
-            new ResourceLocation(GoetyOminous.MOD_ID, "kaboomer_servant"), "main");
-
-    public static final ModelLayerLocation FAKEMAGISPELLER_LAYER = new ModelLayerLocation(
-            new ResourceLocation(GoetyOminous.MOD_ID, "fakemagispeller"), "main");
-
-    public static final ModelLayerLocation MAGIARROW_LAYER = new ModelLayerLocation(
-            new ResourceLocation(GoetyOminous.MOD_ID, "magiarrow"), "main");
-
-    public static final ModelLayerLocation MAGIFIREBALL_LAYER = new ModelLayerLocation(
-            new ResourceLocation(GoetyOminous.MOD_ID, "magifireball"), "main");
-
-    public static final ModelLayerLocation MAGIHEAL_LAYER = new ModelLayerLocation(
-            new ResourceLocation(GoetyOminous.MOD_ID, "magiheal_servant"), "main");
-
-    public static final ModelLayerLocation ILLASHOOTER_SERVANT_LAYER = new ModelLayerLocation(
-            new ResourceLocation(GoetyOminous.MOD_ID, "illashooter_servant"), "main");
-
-    public static final ModelLayerLocation DISPENSER_SERVANT_LAYER = new ModelLayerLocation(
-            new ResourceLocation(GoetyOminous.MOD_ID, "dispenser_servant"), "main");
-
     public static final ModelLayerLocation BOGGED_LAYER = new ModelLayerLocation(
             new ResourceLocation("goetyominous", "bogged"), "main");
 
@@ -326,4 +293,10 @@ public class ModEntityLayers {
 
     public static final ModelLayerLocation RESURRECTED_KNIGHT_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "resurrected_knight_servant"), "main");
+
+    public static final ModelLayerLocation ENDERSENT_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "endersent_servant"), "main");
+
+    public static final ModelLayerLocation CHORUSLING_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "chorusling_servant"), "main");
 }

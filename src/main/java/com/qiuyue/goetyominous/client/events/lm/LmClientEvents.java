@@ -55,6 +55,12 @@ public class LmClientEvents {
         event.registerLayerDefinition(ModEntityLayers.RESURRECTED_KNIGHT_SERVANT_LAYER,
                 com.qiuyue.goetyominous.client.render.model.lm.ResurrectedKnightServantModel::createBodyLayer);
 
+        event.registerLayerDefinition(ModEntityLayers.ENDERSENT_SERVANT_LAYER,
+                com.qiuyue.goetyominous.client.render.model.lm.EndersentServantModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.CHORUSLING_SERVANT_LAYER,
+                com.qiuyue.goetyominous.client.render.model.lm.ChoruslingServantModel::createBodyLayer);
+
         event.registerLayerDefinition(ModEntityLayers.FLAMEBORN_WARRIOR_SERVANT_LAYER,
                 com.qiuyue.goetyominous.client.render.model.lm.FlamebornWarriorServantModel::createBodyLayer);
 
@@ -260,6 +266,14 @@ public class LmClientEvents {
         event.registerEntityRenderer(
                 com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.THROWN_KNIGHT.get(),
                 EmptyRenderer::new);
+
+        event.registerEntityRenderer(
+                com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.ENDERSENT_SERVANT.get(),
+                com.qiuyue.goetyominous.client.render.lm.EndersentServantRenderer::new);
+
+        event.registerEntityRenderer(
+                com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.CHORUSLING_SERVANT.get(),
+                com.qiuyue.goetyominous.client.render.lm.ChoruslingServantRenderer::new);
     }
 
     @SubscribeEvent

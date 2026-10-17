@@ -57,6 +57,10 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> ResurrectedKnightServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Double> BeheadedKnightServantDamageMultiplier;
     public static final ForgeConfigSpec.ConfigValue<Double> ResurrectedKnightServantDamageMultiplier;
+    public static final ForgeConfigSpec.ConfigValue<Integer> EndersentServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Double> EndersentServantDamageMultiplier;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ChoruslingServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Double> ChoruslingServantDamageMultiplier;
     public static final ForgeConfigSpec.ConfigValue<Boolean> SoulFractureOnServantHit;
     public static final ForgeConfigSpec.ConfigValue<Integer> TheObliteratorServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Double> TheObliteratorServantDamageMultiplier;
@@ -468,6 +472,22 @@ public class MobsConfig {
         ResurrectedKnightServantDamageMultiplier = BUILDER
                 .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
                 .defineInRange("resurrectedKnightServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
+
+        EndersentServantLimit = BUILDER
+                .comment("Maximum number of Endersent Servants that can be summoned (Default: 2)")
+                .defineInRange("endersentServantLimit", 2, 1, 100);
+
+        EndersentServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("endersentServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
+
+        ChoruslingServantLimit = BUILDER
+                .comment("Maximum number of Chorusling Servants that can be summoned (Default: 4)")
+                .defineInRange("choruslingServantLimit", 4, 1, 100);
+
+        ChoruslingServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("choruslingServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
 
         SoulFractureOnServantHit = BUILDER
                 .comment("Whether Beheaded Knight, Resurrected Knight and Possessed Paladin Servants apply Soul Fracture to the enemies they hit (Default: false)",

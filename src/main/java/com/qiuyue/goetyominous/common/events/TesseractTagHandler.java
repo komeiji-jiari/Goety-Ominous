@@ -2,8 +2,6 @@ package com.qiuyue.goetyominous.common.events;
 
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
-import com.qiuyue.goetyominous.compat.ias.IasEntityRegistry;
-import com.qiuyue.goetyominous.compat.mod.IllageAndSpillageCompat;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -32,15 +30,9 @@ public class TesseractTagHandler {
     public static void onTagsUpdated(TagsUpdatedEvent event) {
         addToTag(TESSERACT_SMALL, ModEntityTypes.URBHADHACH_SERVANT);
         addToTag(TESSERACT_SMALL, ModEntityTypes.HURRICANE_SERVANT);
-        if (IllageAndSpillageCompat.isIllageAndSpillageLoaded()) {
-            addToTag(TESSERACT_SMALL, IasEntityRegistry.ABSORBER_SERVANT);
-        }
 
         addToTag(TESSERACT_MEDIUM, ModEntityTypes.HERESIARCH_SERVANT);
         addToTag(TESSERACT_MEDIUM, ModEntityTypes.STORM_NECROMANCER_SERVANT);
-        if (IllageAndSpillageCompat.isIllageAndSpillageLoaded()) {
-            addToTag(TESSERACT_MEDIUM, IasEntityRegistry.MAGISPELLER_SERVANT);
-        }
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})

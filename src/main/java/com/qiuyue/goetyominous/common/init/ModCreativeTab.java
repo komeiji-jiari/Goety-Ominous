@@ -10,8 +10,6 @@ import com.qiuyue.goetyominous.common.items.CursedWargArmorItem;
 import com.qiuyue.goetyominous.common.items.ModItems;
 import com.qiuyue.goetyominous.common.items.OminousIconItem;
 import com.qiuyue.goetyominous.common.items.PlushieBlockItem;
-import com.qiuyue.goetyominous.compat.ias.IasItems;
-import com.qiuyue.goetyominous.compat.mod.IllageAndSpillageCompat;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
@@ -112,10 +110,6 @@ public class ModCreativeTab {
 
         static CompatBuckets collect() {
             CompatBuckets buckets = new CompatBuckets();
-
-            if (IllageAndSpillageCompat.isIllageAndSpillageLoaded()) {
-                collectFrom(IasItems.IAS_ITEMS, CompatItemSource.of(IasItems.IAS_ITEMS), buckets);
-            }
 
             COMPAT_ITEM_SOURCES.forEach(source -> collectFrom(source.registry(), source, buckets));
 

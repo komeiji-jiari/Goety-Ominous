@@ -2,7 +2,9 @@ package com.qiuyue.goetyominous.compat.lm;
 
 import com.qiuyue.goetyominous.common.entities.ally.lm.AnnihilationPursuerServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.BeheadedKnightServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.ChoruslingServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.CloudGolemServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.EndersentServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.FlameDrifterServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.FlamebornGuardServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.FlamebornWarriorServant;
@@ -77,5 +79,11 @@ public class LmCompatManager {
 
         event.put(LmEntityRegistry.RESURRECTED_KNIGHT_SERVANT.get(),
                 ResurrectedKnightServant.createAttributes().build());
+
+        event.put(LmEntityRegistry.ENDERSENT_SERVANT.get(),
+                EndersentServant.createAttributes().build());
+
+        event.put(LmEntityRegistry.CHORUSLING_SERVANT.get(),
+                ChoruslingServant.createAttributes().build());
     }
 }

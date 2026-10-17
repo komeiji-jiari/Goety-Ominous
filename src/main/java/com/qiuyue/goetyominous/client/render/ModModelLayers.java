@@ -81,35 +81,6 @@ public class ModModelLayers {
 
         event.registerLayerDefinition(BoneCudgelModel.LAYER_LOCATION, BoneCudgelModel::createBodyLayer);
 
-        if (IllageAndSpillageCompat.isIllageAndSpillageLoaded()) {
-            event.registerLayerDefinition(ModEntityLayers.TWITTOLLAGER_SERVANT_LAYER,
-                    TwittollagerServantModel::createBodyLayer);
-
-            event.registerLayerDefinition(ModEntityLayers.ABSORBER_SERVANT_LAYER,
-                    AbsorberServantModel::createBodyLayer);
-
-            event.registerLayerDefinition(ModEntityLayers.CRASHAGER_SERVANT_LAYER,
-                    CrashagerServantModel::createBodyLayer);
-
-            event.registerLayerDefinition(ModEntityLayers.KABOOMER_SERVANT_LAYER,
-                    KaboomerServantModel::createBodyLayer);
-
-            event.registerLayerDefinition(ModEntityLayers.ILLASHOOTER_SERVANT_LAYER,
-                    CrashagerServantModel::createBodyLayer);
-
-            event.registerLayerDefinition(ModEntityLayers.DISPENSER_SERVANT_LAYER,
-                    KaboomerServantModel::createBodyLayer);
-
-            event.registerLayerDefinition(ModEntityLayers.FAKEMAGISPELLER_LAYER,
-                    FakeMagispellerModel::createBodyLayer);
-
-            event.registerLayerDefinition(ModEntityLayers.MAGIHEAL_LAYER,
-                    MagiHealModel::createBodyLayer);
-
-            event.registerLayerDefinition(ModEntityLayers.MAGISPELLER_SERVANT_LAYER,
-                    MagispellerServantModel::createBodyLayer);
-        }
-
         event.registerLayerDefinition(ModEntityLayers.ACID_FUNGUS_LAYER,
                 AcidFungus::createBodyLayer);
 
@@ -310,52 +281,6 @@ public class ModModelLayers {
                         super.scale(entity, poseStack, partialTicks);
                     }
                 });
-
-        if (IllageAndSpillageCompat.isIllageAndSpillageLoaded()) {
-            event.registerEntityRenderer(
-                    com.qiuyue.goetyominous.compat.ias.IasEntityRegistry.TWITTOLLAGER_SERVANT.get(),
-                    TwittollagerServantRenderer::new);
-
-            event.registerEntityRenderer(
-                    com.qiuyue.goetyominous.compat.ias.IasEntityRegistry.ABSORBER_SERVANT.get(),
-                    AbsorberServantRenderer::new);
-
-            event.registerEntityRenderer(
-                    com.qiuyue.goetyominous.compat.ias.IasEntityRegistry.CRASHAGER_SERVANT.get(),
-                    CrashagerServantRenderer::new);
-
-            event.registerEntityRenderer(
-                    com.qiuyue.goetyominous.compat.ias.IasEntityRegistry.KABOOMER_SERVANT.get(),
-                    KaboomerServantRenderer::new);
-
-            event.registerEntityRenderer(
-                    com.qiuyue.goetyominous.compat.ias.IasEntityRegistry.ILLASHOOTER_SERVANT.get(),
-                    IllashooterServantRenderer::new);
-
-            event.registerEntityRenderer(
-                    com.qiuyue.goetyominous.compat.ias.IasEntityRegistry.DISPENSER_SERVANT.get(),
-                    DispenserServantRenderer::new);
-
-            event.registerEntityRenderer(
-                    com.qiuyue.goetyominous.compat.ias.IasEntityRegistry.FAKEMAGISPELLER.get(),
-                    FakeMagispellerRenderer::new);
-
-            event.registerEntityRenderer(
-                    com.qiuyue.goetyominous.compat.ias.IasEntityRegistry.MAGIHEAL.get(),
-                    MagiHealRenderer::new);
-
-            event.registerEntityRenderer(
-                    com.qiuyue.goetyominous.compat.ias.IasEntityRegistry.MAGIARROW.get(),
-                    MagiArrowRenderer::new);
-
-            event.registerEntityRenderer(
-                    com.qiuyue.goetyominous.compat.ias.IasEntityRegistry.MAGIFIREBALL.get(),
-                    MagiFireballRenderer::new);
-
-            event.registerEntityRenderer(
-                    com.qiuyue.goetyominous.compat.ias.IasEntityRegistry.MAGISPELLER_SERVANT.get(),
-                    MagispellerServantRenderer::new);
-        }
 
         event.registerEntityRenderer(ModEntityTypes.MIRED_SERVANT.get(), MiredRenderer::new);
 

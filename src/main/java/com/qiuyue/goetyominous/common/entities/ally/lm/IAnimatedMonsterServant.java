@@ -28,7 +28,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
-public class IAnimatedMonsterServant extends Summoned {
+public class IAnimatedMonsterServant extends Summoned implements LmServantDamageMultiplier {
     @Override
     protected boolean canRide(Entity pVehicle) {
         return false;
@@ -48,6 +48,7 @@ public class IAnimatedMonsterServant extends Summoned {
         return attackDelayTicks;
     }
 
+    @Override
     public double damageMultiplier() {
         return 1.0D;
     }

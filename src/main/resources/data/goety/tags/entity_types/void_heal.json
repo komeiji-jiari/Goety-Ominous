@@ -5,6 +5,14 @@
     {
       "id": "goetyominous:flare_servant",
       "required": false
+    },
+    {
+      "id": "goetyominous:endersent_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:chorusling_servant",
+      "required": false
     }
   ]
 }

@@ -125,10 +125,6 @@ public class GoetyOminous {
             com.qiuyue.goetyominous.compat.ua.UaCompatManager.init(modEventBus);
         }
 
-        if (IllageAndSpillageCompat.isIllageAndSpillageLoaded()) {
-            com.qiuyue.goetyominous.compat.ias.IasCompatManager.init(modEventBus);
-        }
-
         if (MutantMoreCompat.isMutantMoreLoaded()) {
             com.qiuyue.goetyominous.compat.mm.MmCompatManager.init(modEventBus);
         }
@@ -246,9 +242,6 @@ public class GoetyOminous {
     private void addAttributes(final EntityAttributeCreationEvent event) {
         event.put(ModEntityTypes.CONQUILLAGER_SERVANT.get(), ConquillagerServant.setCustomAttributes().build());
         event.put(ModEntityTypes.INQUILLAGER_SERVANT.get(), InquillagerServant.setCustomAttributes().build());
-        if (IllageAndSpillageCompat.isIllageAndSpillageLoaded()) {
-            com.qiuyue.goetyominous.compat.ias.IasCompatManager.setCustomAttributes(event);
-        }
         event.put(ModEntityTypes.BREEZE_SERVANT.get(), BreezeServant.setCustomAttributes().build());
         event.put(ModEntityTypes.BREEZE.get(), BreezeEntity.setCustomAttributes().build());
         event.put(ModEntityTypes.HURRICANE.get(), AbstractHurricane.setCustomAttributes().build());
