@@ -55,7 +55,7 @@ public class OpenFungusPackPacket {
         net.minecraftforge.network.NetworkHooks.openScreen(
                 player,
                 new net.minecraft.world.SimpleMenuProvider(
-                        (id, inv, p) -> new com.qiuyue.goetyominous.client.inventory.container.FungusPackContainer(
+                        (id, inv, p) -> new com.qiuyue.goetyominous.common.inventory.container.FungusPackContainer(
                                 id, inv,
                                 handler,
                                 stack),

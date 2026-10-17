@@ -1,27 +1,30 @@
-package com.qiuyue.goetyominous.common.events.ac;
+package com.qiuyue.goetyominous.client.events.ac;
 
 import com.github.alexmodguy.alexscaves.AlexsCaves;
 import com.github.alexmodguy.alexscaves.client.config.ACClientConfig;
-import com.qiuyue.goetyominous.common.entities.ally.ac.CandicornServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.AtlatitanServant;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-public class CandicornRiderHudEvents {
+@OnlyIn(Dist.CLIENT)
+public class AtlatitanHudEvents {
 
     private static final ResourceLocation DINOSAUR_HUD_OVERLAYS =
             new ResourceLocation("alexscaves", "textures/misc/dinosaur_hud_overlays.png");
 
     private static final int DINO_U_OFFSET = 0;
-    private static final int DINO_V_OFFSET = 280;
-    private static final int DINO_BAR_HEIGHT = 25;
-    private static final int DINO_Y_EXTRA = 4;
+    private static final int DINO_V_OFFSET = 126;
+    private static final int DINO_BAR_HEIGHT = 32;
+    private static final int DINO_Y_EXTRA = 3;
 
     @SubscribeEvent
     public static void onPreRenderGuiOverlay(RenderGuiOverlayEvent.Pre event) {
@@ -29,7 +32,7 @@ public class CandicornRiderHudEvents {
             return;
         }
         Player player = Minecraft.getInstance().player;
-        if (player != null && player.getVehicle() instanceof CandicornServant) {
+        if (player != null && player.getVehicle() instanceof AtlatitanServant) {
             event.setCanceled(true);
         }
     }
@@ -40,7 +43,10 @@ public class CandicornRiderHudEvents {
             return;
         }
         Player player = AlexsCaves.PROXY.getClientSidePlayer();
-        if (player == null || !(player.getVehicle() instanceof CandicornServant servant)) {
+        if (player == null || !(player.getVehicle() instanceof AtlatitanServant servant)) {
+            return;
+        }
+        if (!servant.hasRidingMeter()) {
             return;
         }
 
@@ -62,10 +68,10 @@ public class CandicornRiderHudEvents {
 
         GuiGraphics guiGraphics = event.getGuiGraphics();
         guiGraphics.pose().pushPose();
-        guiGraphics.blit(DINOSAUR_HUD_OVERLAYS, x, y, 50, (float) DINO_U_OFFSET,
-                (float) (DINO_V_OFFSET + DINO_BAR_HEIGHT), 43, DINO_BAR_HEIGHT, 128, 512);
-        guiGraphics.blit(DINOSAUR_HUD_OVERLAYS, x, y, 50, (float) DINO_U_OFFSET,
-                (float) DINO_V_OFFSET, 43, (int) Math.floor(DINO_BAR_HEIGHT * invProgress), 128, 512);
+        guiGraphics.blit(DINOSAUR_HUD_OVERLAYS, x, y, 50, DINO_U_OFFSET,
+                DINO_V_OFFSET + DINO_BAR_HEIGHT, 43, DINO_BAR_HEIGHT, 128, 512);
+        guiGraphics.blit(DINOSAUR_HUD_OVERLAYS, x, y, 50, DINO_U_OFFSET,
+                DINO_V_OFFSET, 43, (int) Math.floor(DINO_BAR_HEIGHT * invProgress), 128, 512);
         guiGraphics.pose().popPose();
     }
 

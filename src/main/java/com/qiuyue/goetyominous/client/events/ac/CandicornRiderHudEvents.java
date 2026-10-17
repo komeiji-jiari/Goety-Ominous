@@ -1,28 +1,30 @@
-package com.qiuyue.goetyominous.common.events.ac;
+package com.qiuyue.goetyominous.client.events.ac;
 
 import com.github.alexmodguy.alexscaves.AlexsCaves;
 import com.github.alexmodguy.alexscaves.client.config.ACClientConfig;
-import com.qiuyue.goetyominous.common.entities.ally.ac.TremorzillaServant;
+import com.qiuyue.goetyominous.common.entities.ally.ac.CandicornServant;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-public class TremorzillaHudEvents {
+@OnlyIn(Dist.CLIENT)
+public class CandicornRiderHudEvents {
 
     private static final ResourceLocation DINOSAUR_HUD_OVERLAYS =
             new ResourceLocation("alexscaves", "textures/misc/dinosaur_hud_overlays.png");
 
     private static final int DINO_U_OFFSET = 0;
-    private static final int DINO_V_OFFSET = 193;
-    private static final int DINO_V_OFFSET_FLASH = 251;
-    private static final int DINO_BAR_HEIGHT = 29;
-    private static final int DINO_Y_EXTRA = 5;
+    private static final int DINO_V_OFFSET = 280;
+    private static final int DINO_BAR_HEIGHT = 25;
+    private static final int DINO_Y_EXTRA = 4;
 
     @SubscribeEvent
     public static void onPreRenderGuiOverlay(RenderGuiOverlayEvent.Pre event) {
@@ -30,7 +32,7 @@ public class TremorzillaHudEvents {
             return;
         }
         Player player = Minecraft.getInstance().player;
-        if (player != null && player.getVehicle() instanceof TremorzillaServant) {
+        if (player != null && player.getVehicle() instanceof CandicornServant) {
             event.setCanceled(true);
         }
     }
@@ -41,10 +43,7 @@ public class TremorzillaHudEvents {
             return;
         }
         Player player = AlexsCaves.PROXY.getClientSidePlayer();
-        if (player == null || !(player.getVehicle() instanceof TremorzillaServant servant)) {
-            return;
-        }
-        if (!servant.hasRidingMeter()) {
+        if (player == null || !(player.getVehicle() instanceof CandicornServant servant)) {
             return;
         }
 
@@ -63,20 +62,13 @@ public class TremorzillaHudEvents {
         int y = guiScaledHeight - yOffset - config.subterranodonIndicatorY.get() + DINO_Y_EXTRA;
 
         float invProgress = 1.0F - servant.getMeterAmount();
-        int vOffset = DINO_V_OFFSET;
-        if (servant.isPowered() && !servant.isFiring() && servant.getSpikesDownAmount() > 0.0F) {
-            if (servant.tickCount / 2 % 2 == 1) {
-                vOffset = DINO_V_OFFSET_FLASH;
-            }
-            invProgress = 1.0F;
-        }
 
         GuiGraphics guiGraphics = event.getGuiGraphics();
         guiGraphics.pose().pushPose();
-        guiGraphics.blit(DINOSAUR_HUD_OVERLAYS, x, y, 50, DINO_U_OFFSET,
-                vOffset + DINO_BAR_HEIGHT, 43, DINO_BAR_HEIGHT, 128, 512);
-        guiGraphics.blit(DINOSAUR_HUD_OVERLAYS, x, y, 50, DINO_U_OFFSET,
-                vOffset, 43, (int) Math.floor(DINO_BAR_HEIGHT * invProgress), 128, 512);
+        guiGraphics.blit(DINOSAUR_HUD_OVERLAYS, x, y, 50, (float) DINO_U_OFFSET,
+                (float) (DINO_V_OFFSET + DINO_BAR_HEIGHT), 43, DINO_BAR_HEIGHT, 128, 512);
+        guiGraphics.blit(DINOSAUR_HUD_OVERLAYS, x, y, 50, (float) DINO_U_OFFSET,
+                (float) DINO_V_OFFSET, 43, (int) Math.floor(DINO_BAR_HEIGHT * invProgress), 128, 512);
         guiGraphics.pose().popPose();
     }
 

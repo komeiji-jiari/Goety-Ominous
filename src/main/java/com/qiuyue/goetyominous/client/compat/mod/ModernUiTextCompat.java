@@ -1,10 +1,13 @@
-package com.qiuyue.goetyominous.compat.mod;
+package com.qiuyue.goetyominous.client.compat.mod;
 
 import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.ModList;
 
 import java.lang.reflect.Field;
 
+@OnlyIn(Dist.CLIENT)
 public final class ModernUiTextCompat {
 
     private static final boolean LOADED =

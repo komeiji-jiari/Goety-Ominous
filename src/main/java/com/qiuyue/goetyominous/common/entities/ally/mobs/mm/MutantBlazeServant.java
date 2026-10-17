@@ -22,7 +22,7 @@ import com.google.common.collect.Lists;
 import java.util.*;
 
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantBlazeServant.MutantBlazeServantFlyStrafeMovementGoal;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantBlazeServant.MutantBlazeServantSoundInstance;
+import com.qiuyue.goetyominous.client.sound.mm.MutantBlazeServantSoundInstance;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.utils.CreateBlazeBurnerCompat;
 import net.minecraft.client.Minecraft;
