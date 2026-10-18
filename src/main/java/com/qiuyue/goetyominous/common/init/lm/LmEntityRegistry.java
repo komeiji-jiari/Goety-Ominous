@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.common.init.lm;
 
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.common.entities.ally.lm.AncientGuardianServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.AnnihilationPursuerServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.BeheadedKnightServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.ChoruslingServant;
@@ -9,6 +10,7 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.EndersentServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.FlameDrifterServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.FlamebornGuardServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.FlamebornWarriorServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.FrostbittenGolemServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.HoveringHurricaneServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.OvergrownColossusServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.PossessedPaladinServant;
@@ -25,6 +27,9 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.BigShulkerBull
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.FallingSoulBlade;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.FireBreath;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.FireColumnEntity;
+import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.IceShockwaveEntity;
+import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.IceShockwaveSpawner;
+import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.IceSpikeEntity;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulBlade;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulPillar;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulPillarExplosionEntity;
@@ -60,6 +65,36 @@ public class LmEntityRegistry {
                     () -> EntityType.Builder.of(OvergrownColossusServant::new, MobCategory.MONSTER)
                             .sized(2.0F, 2.6F)
                             .build(GoetyOminous.MOD_ID + ":overgrown_colossus_servant"));
+
+    public static final RegistryObject<EntityType<FrostbittenGolemServant>> FROSTBITTEN_GOLEM_SERVANT =
+            LM_ENTITIES.register("frostbitten_golem_servant",
+                    () -> EntityType.Builder.of(FrostbittenGolemServant::new, MobCategory.MONSTER)
+                            .sized(1.5F, 2.5F)
+                            .build(GoetyOminous.MOD_ID + ":frostbitten_golem_servant"));
+
+    public static final RegistryObject<EntityType<AncientGuardianServant>> ANCIENT_GUARDIAN_SERVANT =
+            LM_ENTITIES.register("ancient_guardian_servant",
+                    () -> EntityType.Builder.of(AncientGuardianServant::new, MobCategory.MONSTER)
+                            .sized(1.5F, 2.25F)
+                            .build(GoetyOminous.MOD_ID + ":ancient_guardian_servant"));
+
+    public static final RegistryObject<EntityType<IceShockwaveSpawner>> ICE_SHOCKWAVE_SPAWNER =
+            LM_ENTITIES.register("ice_shockwave_spawner",
+                    () -> EntityType.Builder.<IceShockwaveSpawner>of(IceShockwaveSpawner::new, MobCategory.MISC)
+                            .sized(1.0F, 1.0F).clientTrackingRange(6).updateInterval(2).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":ice_shockwave_spawner"));
+
+    public static final RegistryObject<EntityType<IceShockwaveEntity>> ICE_SHOCKWAVE =
+            LM_ENTITIES.register("ice_shockwave",
+                    () -> EntityType.Builder.<IceShockwaveEntity>of(IceShockwaveEntity::new, MobCategory.MISC)
+                            .sized(1.0F, 1.0F).clientTrackingRange(6).updateInterval(2).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":ice_shockwave"));
+
+    public static final RegistryObject<EntityType<IceSpikeEntity>> ICE_SPIKE =
+            LM_ENTITIES.register("ice_spike",
+                    () -> EntityType.Builder.<IceSpikeEntity>of(IceSpikeEntity::new, MobCategory.MISC)
+                            .sized(0.6F, 1.95F).clientTrackingRange(6).updateInterval(2).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":ice_spike"));
 
     public static final RegistryObject<EntityType<TheObliteratorServant>> THE_OBLITERATOR_SERVANT =
             LM_ENTITIES.register("the_obliterator_servant",

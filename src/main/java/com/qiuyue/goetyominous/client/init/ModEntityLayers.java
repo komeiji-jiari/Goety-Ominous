@@ -129,6 +129,15 @@ public class ModEntityLayers {
     public static final ModelLayerLocation POSSESSED_PALADIN_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "possessed_paladin_servant"), "main");
 
+    public static final ModelLayerLocation FROSTBITTEN_GOLEM_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "frostbitten_golem_servant"), "main");
+
+    public static final ModelLayerLocation ANCIENT_GUARDIAN_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "ancient_guardian_servant"), "main");
+
+    public static final ModelLayerLocation ICE_SPIKE_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "ice_spike"), "main");
+
     public static final ModelLayerLocation PHANTOM_DAGGER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "phantom_dagger"), "main");
 
@@ -245,6 +254,9 @@ public class ModEntityLayers {
 
     public static final ModelLayerLocation TERROR_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "terror_servant"), "main");
+
+    public static final ModelLayerLocation FROWZY_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "frowzy_servant"), "main");
 
     public static final ModelLayerLocation FIRE_SLIME_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "fire_slime_servant"), "main");

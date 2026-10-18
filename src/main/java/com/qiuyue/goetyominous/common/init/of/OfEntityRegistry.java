@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.common.init.of;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.of.DicerServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.FireSlimeServant;
+import com.qiuyue.goetyominous.common.entities.ally.of.FrowzyServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.GuzzlerServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.RamblerServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.SkyvernSegmentServant;
@@ -82,6 +83,13 @@ public class OfEntityRegistry {
                             .sized(1.3F, 1.1F)
                             .setTrackingRange(10)
                             .build(GoetyOminous.MOD_ID + ":terror_servant"));
+
+    public static final RegistryObject<EntityType<FrowzyServant>> FROWZY_SERVANT =
+            OF_ENTITIES.register("frowzy_servant",
+                    () -> EntityType.Builder.<FrowzyServant>of(FrowzyServant::new, MobCategory.MISC)
+                            .sized(0.6F, 1.9F)
+                            .setTrackingRange(10)
+                            .build(GoetyOminous.MOD_ID + ":frowzy_servant"));
 
     public static final RegistryObject<EntityType<FireSlimeServant>> FIRE_SLIME_SERVANT =
             OF_ENTITIES.register("fire_slime_servant",

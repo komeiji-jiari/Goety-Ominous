@@ -35,6 +35,15 @@ public class LmClientEvents {
         event.registerLayerDefinition(ModEntityLayers.POSSESSED_PALADIN_SERVANT_LAYER,
                 com.qiuyue.goetyominous.client.render.model.lm.PossessedPaladinServantModel::createBodyLayer);
 
+        event.registerLayerDefinition(ModEntityLayers.FROSTBITTEN_GOLEM_SERVANT_LAYER,
+                com.qiuyue.goetyominous.client.render.model.lm.FrostbittenGolemServantModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.ANCIENT_GUARDIAN_SERVANT_LAYER,
+                com.qiuyue.goetyominous.client.render.model.lm.AncientGuardianServantModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.ICE_SPIKE_LAYER,
+                com.qiuyue.goetyominous.client.render.model.lm.IceSpikeModel::createLayerDefinition);
+
         event.registerLayerDefinition(ModEntityLayers.PHANTOM_DAGGER,
                 com.qiuyue.goetyominous.client.render.model.lm.ThrownPhantomDaggerModel::createBodyLayer);
         event.registerLayerDefinition(ModEntityLayers.HOVERING_HURRICANE_SERVANT_LAYER,
@@ -108,6 +117,26 @@ public class LmClientEvents {
         event.registerEntityRenderer(
                 com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.POSSESSED_PALADIN_SERVANT.get(),
                 com.qiuyue.goetyominous.client.render.lm.PossessedPaladinServantRenderer::new);
+
+        event.registerEntityRenderer(
+                com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.FROSTBITTEN_GOLEM_SERVANT.get(),
+                com.qiuyue.goetyominous.client.render.lm.FrostbittenGolemServantRenderer::new);
+
+        event.registerEntityRenderer(
+                com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.ANCIENT_GUARDIAN_SERVANT.get(),
+                com.qiuyue.goetyominous.client.render.lm.AncientGuardianServantRenderer::new);
+
+        event.registerEntityRenderer(
+                com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.ICE_SHOCKWAVE_SPAWNER.get(),
+                EmptyRenderer::new);
+
+        event.registerEntityRenderer(
+                com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.ICE_SHOCKWAVE.get(),
+                EmptyRenderer::new);
+
+        event.registerEntityRenderer(
+                com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.ICE_SPIKE.get(),
+                com.qiuyue.goetyominous.client.render.lm.IceSpikeRenderer::new);
 
         event.registerEntityRenderer(
                 com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.FIRE_PILLAR.get(),

@@ -48,6 +48,12 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> MutantFrozenZombieServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> OvergrownColossusServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Boolean> OvergrownColossusServantProjectileImmunity;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FrostbittenGolemServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> FrostbittenGolemServantProjectileImmunity;
+    public static final ForgeConfigSpec.ConfigValue<Double> FrostbittenGolemServantDamageMultiplier;
+    public static final ForgeConfigSpec.ConfigValue<Integer> AncientGuardianServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> AncientGuardianServantProjectileImmunity;
+    public static final ForgeConfigSpec.ConfigValue<Double> AncientGuardianServantDamageMultiplier;
     public static final ForgeConfigSpec.ConfigValue<Integer> PossessedPaladinServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> HoveringHurricaneServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> CloudGolemServantLimit;
@@ -133,6 +139,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> TerrorServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> VoltServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> FireSlimeServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FrowzyServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> GuzzlerServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> UmberSpiderServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> SkyvernServantLimit;
@@ -318,6 +325,10 @@ public class MobsConfig {
                 .comment("Maximum number of Fire Slime Servants that can be summoned (Default: 2147483647 = no limit)")
                 .defineInRange("fireSlimeServantLimit", Integer.MAX_VALUE, 1, Integer.MAX_VALUE);
 
+        FrowzyServantLimit = BUILDER
+                .comment("Maximum number of Frowzy Servants that can be summoned (Default: 16)")
+                .defineInRange("frowzyServantLimit", 16, 1, 100);
+
         GuzzlerServantLimit = BUILDER
                 .comment("Maximum number of Guzzler Servants that can be summoned (Default: 2)")
                 .defineInRange("guzzlerServantLimit", 2, 1, 100);
@@ -392,6 +403,30 @@ public class MobsConfig {
         OvergrownColossusServantProjectileImmunity = BUILDER
                 .comment("Whether Overgrown Colossus Servants are immune to arrows (Default: true")
                 .define("overgrownColossusServantProjectileImmunity", true);
+
+        FrostbittenGolemServantLimit = BUILDER
+                .comment("Maximum number of Frostbitten Golem Servants that can be summoned (Default: 2)")
+                .defineInRange("frostbittenGolemServantLimit", 2, 1, 100);
+
+        FrostbittenGolemServantProjectileImmunity = BUILDER
+                .comment("Whether Frostbitten Golem Servants are immune to arrows (Default: true)")
+                .define("frostbittenGolemServantProjectileImmunity", true);
+
+        FrostbittenGolemServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("frostbittenGolemServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
+
+        AncientGuardianServantLimit = BUILDER
+                .comment("Maximum number of Ancient Guardian Servants that can be summoned (Default: 2)")
+                .defineInRange("ancientGuardianServantLimit", 2, 1, 100);
+
+        AncientGuardianServantProjectileImmunity = BUILDER
+                .comment("Whether Ancient Guardian Servants are immune to arrows (Default: true)")
+                .define("ancientGuardianServantProjectileImmunity", true);
+
+        AncientGuardianServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("ancientGuardianServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
 
         PossessedPaladinServantLimit = BUILDER
                 .comment("Maximum number of Possessed Paladin Servants that can be summoned (Default: 1)")

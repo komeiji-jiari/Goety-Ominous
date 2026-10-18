@@ -28,6 +28,14 @@ public class LmItems {
             "overgrown_colossus_servant_spawn_egg",
             () -> new ServantSpawnEggItem(LmEntityRegistry.OVERGROWN_COLOSSUS_SERVANT, 0x999999, 0x669900, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> FROSTBITTEN_GOLEM_SPAWN_EGG = LM_ITEMS.register(
+            "frostbitten_golem_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(LmEntityRegistry.FROSTBITTEN_GOLEM_SERVANT, 0x678191, 0x33CCFF, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> ANCIENT_GUARDIAN_SPAWN_EGG = LM_ITEMS.register(
+            "ancient_guardian_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(LmEntityRegistry.ANCIENT_GUARDIAN_SERVANT, 0x52473E, 0x7A675F, egg()));
+
     public static final RegistryObject<ServantSpawnEggItem> POSSESSED_PALADIN_SPAWN_EGG = LM_ITEMS.register(
             "possessed_paladin_servant_spawn_egg",
             () -> new ServantSpawnEggItem(LmEntityRegistry.POSSESSED_PALADIN_SERVANT, 0x8B0000, 0xD3D3D3, egg()));

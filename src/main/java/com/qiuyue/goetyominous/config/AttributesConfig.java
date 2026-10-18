@@ -448,6 +448,20 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantAttackKnockback;
+    public static final ForgeConfigSpec.ConfigValue<Double> FrostbittenGolemServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> FrostbittenGolemServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> FrostbittenGolemServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> FrostbittenGolemServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> FrostbittenGolemServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> FrostbittenGolemServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> FrostbittenGolemServantAttackKnockback;
+    public static final ForgeConfigSpec.ConfigValue<Double> AncientGuardianServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> AncientGuardianServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> AncientGuardianServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> AncientGuardianServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> AncientGuardianServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> AncientGuardianServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> AncientGuardianServantAttackKnockback;
 
     public static final ForgeConfigSpec.ConfigValue<Double> PossessedPaladinServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> PossessedPaladinServantArmor;
@@ -687,6 +701,10 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> TerrorServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> TerrorServantMovementSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> TerrorServantAttackDamage;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> FrowzyServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> FrowzyServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> FrowzyServantAttackDamage;
 
     public static final ForgeConfigSpec.ConfigValue<Double> NuclearGuardianServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> NuclearGuardianServantBeamDamage;
@@ -1723,6 +1741,40 @@ public class AttributesConfig {
                 .defineInRange("overgrownColossusServantAttackKnockback", 1.5, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
 
+        BUILDER.push("Frostbitten Golem Servant (Optional - LM)");
+        FrostbittenGolemServantHealth = BUILDER.comment("How much Max Health Frostbitten Golem Servants have, Default: 220.0 (Legendary Monsters' value)")
+                .defineInRange("frostbittenGolemServantHealth", 220.0, 1.0, Double.MAX_VALUE);
+        FrostbittenGolemServantArmor = BUILDER.comment("How much natural Armor Frostbitten Golem Servants have, Default: 10.0 (Legendary Monsters' value)")
+                .defineInRange("frostbittenGolemServantArmor", 10.0, 0.0, Double.MAX_VALUE);
+        FrostbittenGolemServantDamage = BUILDER.comment("How much damage Frostbitten Golem Servants deal, Default: 16.0 (Legendary Monsters' value)")
+                .defineInRange("frostbittenGolemServantDamage", 16.0, 1.0, Double.MAX_VALUE);
+        FrostbittenGolemServantMovementSpeed = BUILDER.comment("How fast Frostbitten Golem Servants move, Default: 0.3 (Legendary Monsters' boss uses 0.1 with a x3.0 navigation modifier, giving the same 0.30 chase speed)")
+                .defineInRange("frostbittenGolemServantMovementSpeed", 0.3, 0.0, Double.MAX_VALUE);
+        FrostbittenGolemServantFollowRange = BUILDER.comment("How much following/detection range Frostbitten Golem Servants have, Default: 30.0 (Legendary Monsters' value)")
+                .defineInRange("frostbittenGolemServantFollowRange", 30.0, 1.0, Double.MAX_VALUE);
+        FrostbittenGolemServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Frostbitten Golem Servants have, Default: 1.0 (Legendary Monsters' value)")
+                .defineInRange("frostbittenGolemServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
+        FrostbittenGolemServantAttackKnockback = BUILDER.comment("How much Attack Knockback Frostbitten Golem Servants have, Default: 1.0 (Legendary Monsters' value)")
+                .defineInRange("frostbittenGolemServantAttackKnockback", 1.0, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Ancient Guardian Servant (Optional - LM)");
+        AncientGuardianServantHealth = BUILDER.comment("How much Max Health Ancient Guardian Servants have, Default: 170.0 (Legendary Monsters' value)")
+                .defineInRange("ancientGuardianServantHealth", 170.0, 1.0, Double.MAX_VALUE);
+        AncientGuardianServantArmor = BUILDER.comment("How much natural Armor Ancient Guardian Servants have, Default: 13.0 (Legendary Monsters' value, raised to 20 when cracked)")
+                .defineInRange("ancientGuardianServantArmor", 13.0, 0.0, Double.MAX_VALUE);
+        AncientGuardianServantDamage = BUILDER.comment("How much damage Ancient Guardian Servants deal, Default: 20.0 (Legendary Monsters' value)")
+                .defineInRange("ancientGuardianServantDamage", 20.0, 1.0, Double.MAX_VALUE);
+        AncientGuardianServantMovementSpeed = BUILDER.comment("How fast Ancient Guardian Servants move, Default: 0.3 (Legendary Monsters' boss uses 0.1 with a x3.0 navigation modifier, giving the same 0.30 chase speed)")
+                .defineInRange("ancientGuardianServantMovementSpeed", 0.3, 0.0, Double.MAX_VALUE);
+        AncientGuardianServantFollowRange = BUILDER.comment("How much following/detection range Ancient Guardian Servants have, Default: 30.0 (Legendary Monsters' value)")
+                .defineInRange("ancientGuardianServantFollowRange", 30.0, 1.0, Double.MAX_VALUE);
+        AncientGuardianServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Ancient Guardian Servants have, Default: 1.0 (Legendary Monsters' value)")
+                .defineInRange("ancientGuardianServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
+        AncientGuardianServantAttackKnockback = BUILDER.comment("How much Attack Knockback Ancient Guardian Servants have, Default: 1.0 (Legendary Monsters' value)")
+                .defineInRange("ancientGuardianServantAttackKnockback", 1.0, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
         BUILDER.push("Possessed Paladin Servant (Optional - LM)");
         PossessedPaladinServantHealth = BUILDER.comment("How much Max Health Possessed Paladin Servants have, Default: 400.0 (Legendary Monsters' value)")
                 .defineInRange("possessedPaladinServantHealth", 400.0, 1.0, Double.MAX_VALUE);
@@ -2075,6 +2127,15 @@ public class AttributesConfig {
                 .defineInRange("terrorServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
         TerrorServantAttackDamage = BUILDER.comment("How much Attack Damage Terror Servants have, Default: 4.0")
                 .defineInRange("terrorServantAttackDamage", 4.0, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("Frowzy Servant");
+        FrowzyServantHealth = BUILDER.comment("How much Max Health Frowzy Servants have, Default: 16.0")
+                .defineInRange("frowzyServantHealth", 16.0, 1.0, Double.MAX_VALUE);
+        FrowzyServantMovementSpeed = BUILDER.comment("How much Movement Speed Frowzy Servants have, Default: 0.3")
+                .defineInRange("frowzyServantMovementSpeed", 0.3, 0.0, Double.MAX_VALUE);
+        FrowzyServantAttackDamage = BUILDER.comment("How much Attack Damage Frowzy Servants have, Default: 2.0")
+                .defineInRange("frowzyServantAttackDamage", 2.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.pop();

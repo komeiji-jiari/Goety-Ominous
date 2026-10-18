@@ -40,6 +40,9 @@ public class OfClientEvents {
         event.registerLayerDefinition(ModEntityLayers.TERROR_SERVANT_LAYER,
                 com.qiuyue.goetyominous.client.render.model.of.TerrorServantModel::createBodyLayer);
 
+        event.registerLayerDefinition(ModEntityLayers.FROWZY_SERVANT_LAYER,
+                com.qiuyue.goetyominous.client.render.model.of.FrowzyServantModel::createBodyLayer);
+
         event.registerLayerDefinition(ModEntityLayers.FIRE_SLIME_SERVANT_LAYER,
                 com.qiuyue.goetyominous.client.render.model.of.FireSlimeServantModel::createBodyLayer);
 
@@ -93,6 +96,10 @@ public class OfClientEvents {
         event.registerEntityRenderer(
                 com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.TERROR_SERVANT.get(),
                 com.qiuyue.goetyominous.client.render.of.TerrorServantRenderer::new);
+
+        event.registerEntityRenderer(
+                com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.FROWZY_SERVANT.get(),
+                com.qiuyue.goetyominous.client.render.of.FrowzyServantRenderer::new);
 
         event.registerEntityRenderer(
                 com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.FIRE_SLIME_SERVANT.get(),

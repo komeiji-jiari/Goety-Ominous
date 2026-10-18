@@ -42,6 +42,10 @@ public class OfItems {
             () -> new ServantSpawnEggItem(OfEntityRegistry.TERROR_SERVANT, 0x074230, 0xFF0000, egg()));
 
 
+    public static final RegistryObject<ServantSpawnEggItem> FROWZY_SERVANT_SPAWN_EGG = OF_ITEMS.register(
+            "frowzy_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(OfEntityRegistry.FROWZY_SERVANT, 0x35313B, 0x3F759F, egg()));
+
     public static final RegistryObject<ServantSpawnEggItem> FIRE_SLIME_SERVANT_SPAWN_EGG = OF_ITEMS.register(
             "fire_slime_servant_spawn_egg",
             () -> new ServantSpawnEggItem(OfEntityRegistry.FIRE_SLIME_SERVANT, 0xFB921B, 0xDB3709, egg()));
