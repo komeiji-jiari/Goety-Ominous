@@ -75,7 +75,8 @@
     "trial.JigsawStructureAccessor",
     "trial.BeardifierMixin",
     "trial.JigsawPlacementPlacerMixin",
-    "trial.LightningBoltCopperMixin"
+    "trial.LightningBoltCopperMixin",
+    "trial.LivingEntityTrialOmenMixin"
   ],
   "client": [
     "MixinBlackWolfRenderer",

@@ -117,6 +117,10 @@ public class GoetyOminous {
             }
         });
 
+        if (com.qiuyue.goetyominous.compat.mod.IronsSpellbooksCompat.isLoaded()) {
+            com.qiuyue.goetyominous.compat.iss.IssCompatManager.init(modEventBus);
+        }
+
         if (SavageRavageCompat.isSavageRavageLoaded()) {
             com.qiuyue.goetyominous.compat.sar.SarCompatManager.init(modEventBus);
         }

@@ -9,6 +9,7 @@ import com.qiuyue.goetyominous.utils.ac.KeyOfRlyehMixinHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -44,12 +45,14 @@ public class WaterJetSpellKeyOfRlyehMixin {
     }
 
     @Redirect(method = "SpellResult", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/world/entity/LivingEntity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"))
-    private boolean goetyominous$curseOnWaterJetHit(LivingEntity target, DamageSource source, float amount) {
-        float modified = CurseOfRlyehHelper.amplifyKeySpellDamage(target, amount);
+            target = "Lnet/minecraft/world/entity/Entity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"))
+    private boolean goetyominous$curseOnWaterJetHit(Entity target, DamageSource source, float amount) {
+        float modified = target instanceof LivingEntity living
+                ? CurseOfRlyehHelper.amplifyKeySpellDamage(living, amount)
+                : amount;
         boolean hurt = target.hurt(source, modified);
-        if (hurt) {
-            CurseOfRlyehHelper.applyCurseOnHit(target, this.goetyominous$waterJetStaff);
+        if (hurt && target instanceof LivingEntity living) {
+            CurseOfRlyehHelper.applyCurseOnHit(living, this.goetyominous$waterJetStaff);
         }
         return hurt;
     }

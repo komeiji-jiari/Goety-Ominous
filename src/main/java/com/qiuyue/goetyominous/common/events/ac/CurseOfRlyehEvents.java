@@ -26,6 +26,7 @@ import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -194,6 +195,11 @@ public class CurseOfRlyehEvents {
         try {
             return entity.getClass().getMethod("getCaster").invoke(entity) instanceof LivingEntity owner
                     ? owner : null;
+        } catch (Throwable ignored) {
+        }
+        try {
+            Field field = entity.getClass().getField("caster");
+            return field.get(entity) instanceof LivingEntity owner ? owner : null;
         } catch (Throwable ignored) {
             return null;
         }
