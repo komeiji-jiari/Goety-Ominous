@@ -24,6 +24,8 @@ public class LmTesseractTags {
         addToTag(TESSERACT_SMALL, LmEntityRegistry.HOVERING_HURRICANE_SERVANT);
 
         addToTag(TESSERACT_MEDIUM, LmEntityRegistry.OVERGROWN_COLOSSUS_SERVANT);
+        addToTag(TESSERACT_MEDIUM, LmEntityRegistry.FROSTBITTEN_GOLEM_SERVANT);
+        addToTag(TESSERACT_MEDIUM, LmEntityRegistry.ANCIENT_GUARDIAN_SERVANT);
         addToTag(TESSERACT_MEDIUM, LmEntityRegistry.ANNIHILATION_PURSUER_SERVANT);
         addToTag(TESSERACT_MEDIUM, LmEntityRegistry.SHULKER_MIMIC_SERVANT);
 

@@ -8,6 +8,8 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.EndersentServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.FlameDrifterServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.FlamebornGuardServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.FlamebornWarriorServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.AncientGuardianServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.FrostbittenGolemServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.HoveringHurricaneServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.OvergrownColossusServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.PossessedPaladinServant;
@@ -23,18 +25,14 @@ import net.minecraftforge.eventbus.api.IEventBus;
 
 public class LmCompatManager {
 
-    public static final boolean ENABLE_LM_ITEMS = false;
-
     public static void init(IEventBus modEventBus) {
         LmEntityRegistry.register(modEventBus);
 
         LmSounds.register(modEventBus);
 
-        if (ENABLE_LM_ITEMS) {
-            LmItems.register(modEventBus);
+        LmItems.register(modEventBus);
 
-            com.qiuyue.goetyominous.common.init.ModCreativeTab.registerCompatItems(LmItems.LM_ITEMS);
-        }
+        com.qiuyue.goetyominous.common.init.ModCreativeTab.registerCompatItems(LmItems.LM_ITEMS);
 
         LmParticles.register(modEventBus);
 
@@ -46,6 +44,12 @@ public class LmCompatManager {
                 OvergrownColossusServant.createAttributes().build());
         event.put(LmEntityRegistry.POSSESSED_PALADIN_SERVANT.get(),
                 PossessedPaladinServant.createAttributes().build());
+
+        event.put(LmEntityRegistry.FROSTBITTEN_GOLEM_SERVANT.get(),
+                FrostbittenGolemServant.createAttributes().build());
+
+        event.put(LmEntityRegistry.ANCIENT_GUARDIAN_SERVANT.get(),
+                AncientGuardianServant.createAttributes().build());
 
         event.put(LmEntityRegistry.THE_OBLITERATOR_SERVANT.get(),
                 TheObliteratorServant.createAttributes().build());

@@ -16,6 +16,10 @@
     {
       "id": "goetyominous:trembler_servant",
       "required": false
+    },
+    {
+      "id": "goetyominous:ancient_guardian_servant",
+      "required": false
     }
   ]
 }

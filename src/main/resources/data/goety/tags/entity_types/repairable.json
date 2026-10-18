@@ -7,6 +7,14 @@
       "required": false
     },
     {
+      "id": "goetyominous:frostbitten_golem_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:ancient_guardian_servant",
+      "required": false
+    },
+    {
       "id": "goetyominous:nucleeper_servant",
       "required": false
     },
