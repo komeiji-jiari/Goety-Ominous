@@ -1,0 +1,31 @@
+{
+  "name": "Mutant Jungle Zombie Servant",
+  "icon": "mutantmore:mutant_jungle_zombie_vine_seed",
+  "category": "goety:mmcompat/summons",
+  "sortnum": 2,
+  "advancement": "goety:goety/read_floral_scroll",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "From the scroll that records the whispers of plants, you learned the secrets of rapid growth. Inspired by this, and with the power of the mutation compound, you have created a Mutant Jungle Zombie deeply fused with plant life."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_jungle_zombie_to_mutant_jungle_zombie"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:mutant_jungle_zombie_servant",
+      "text": "Then let me ask you"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goetyominous:mutant_jungle_zombie_revive",
+      "text": "If your Mutant Jungle Zombie is completely slain, it will return a Heart of Jungle. Right-click a loyal Jungle Zombie Servant with this heart to revive your Mutant Jungle Zombie."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Right-click your Mutant Jungle Zombie servant with Rotten Flesh to heal it. If its owner wears Necro Cape or Wild Robe, the Mutant Jungle Zombie can also use its owner's Soul Energy to heal itself. Right-click your Mutant Jungle Zombie with any weapon or armor to equip it on your servant."
+    }
+  ]
+}

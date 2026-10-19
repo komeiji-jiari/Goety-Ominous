@@ -1,0 +1,31 @@
+{
+  "name": "突变丛林僵尸仆从",
+  "icon": "mutantmore:mutant_jungle_zombie_vine_seed",
+  "category": "goety:mmcompat/summons",
+  "sortnum": 2,
+  "advancement": "goety:goety/read_floral_scroll",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你从记录了植物窃窃私语的卷轴上了解到了催生的秘密。借此你灵光一现，借助突变化合物的力量，你创造出一种与植物深度结合的突变丛林僵尸。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_jungle_zombie_to_mutant_jungle_zombie"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:mutant_jungle_zombie_servant",
+      "text": "那我问你"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goetyominous:mutant_jungle_zombie_revive",
+      "text": "如果你的突变丛林僵尸彻底死亡，将会返还丛林之心。用这颗心脏右键忠诚的其他丛林僵尸仆从，即可让你的突变丛林僵尸复活。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "使用腐肉右键来治愈突变丛林僵尸仆从。如果主人穿着死灵长袍或者荒野长袍，突变丛林僵尸也能利用主人的灵魂能量治愈自己。用任意武器或者盔甲右击突变丛林僵尸即可为你的仆从提供装备。"
+    }
+  ]
+}

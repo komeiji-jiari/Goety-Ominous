@@ -1,0 +1,30 @@
+{
+  "name": "突变霜冻僵尸仆从",
+  "icon": "mutantmore:mutant_frozen_zombie_spikes",
+  "category": "goety:mmcompat/summons",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "这些更强壮更刺骨的僵尸突变体蕴含着强大的冰霜力量，要创造这么一个可怕的生物需要更多的寒冷物品以及，必备的突变化合物。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_frozen_zombie_to_mutant_frozen_zombie"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:mutant_frozen_zombie_servant",
+      "text": "如果你不是僵尸那我问你"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goetyominous:mutant_frozen_zombie_revive",
+      "text": "如果你的突变霜冻僵尸彻底死亡，将会返还霜冻之心。用这颗心脏右键忠诚的其他霜冻僵尸仆从，即可让你的突变霜冻僵尸复活。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "使用腐肉右键来治愈突变霜冻僵尸仆从。如果主人穿着死灵长袍或者冰霜长袍，突变霜冻僵尸也能利用主人的灵魂能量治愈自己。用任意武器或者盔甲右击突变霜冻僵尸即可为你的仆从提供装备。"
+    }
+  ]
+}

@@ -217,6 +217,7 @@ public class MutantHuskServant extends AbstractMutantServant {
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
+        this.resetLifeRecovery();
         if (this.isDeadOrDying() && (pSource.is(ModDamageSource.DISMISSED) || pSource.is(DamageTypes.STARVE))) {
             this.deathDamageSource = pSource;
             this.killedBy = pSource;
@@ -436,6 +437,26 @@ public class MutantHuskServant extends AbstractMutantServant {
 
     public void setRemainingLives(int value) {
         this.entityData.set(REMAINING_LIVES, value);
+    }
+
+    @Override
+    protected int getRestorableLives() {
+        return Math.max(0, MutantHuskCommonConfig.get_up_times.get() - this.getRemainingLives());
+    }
+
+    @Override
+    protected void restoreOneLife() {
+        this.setRemainingLives(this.getRemainingLives() + 1);
+        this.playSound(this.getReviveSound(), 1.0F, 1.0F);
+        if (this.level() instanceof ServerLevel serverLevel) {
+            for (int i = 0; i < 7; ++i) {
+                double d0 = this.random.nextGaussian() * 0.02D;
+                double d1 = this.random.nextGaussian() * 0.02D;
+                double d2 = this.random.nextGaussian() * 0.02D;
+                serverLevel.sendParticles(ParticleTypes.HEART, this.getRandomX(1.0D), this.getY() + 0.5D,
+                        this.getRandomZ(1.0D), 0, d0, d1, d2, 1.0D);
+            }
+        }
     }
 
     @Override

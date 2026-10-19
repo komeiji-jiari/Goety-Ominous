@@ -1,0 +1,31 @@
+{
+  "name": "突变尸壳仆从",
+  "icon": "mutantmore:mutant_husk_vocal_cords",
+  "category": "goety:mmcompat/summons",
+  "sortnum": 1,
+  "advancement": "goety:goety/unlock_necromancer",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "埋葬卷轴上除了创造死灵法师的技艺以外还记载了一些沙漠的秘密。经过解读之后你对那些沙漠居民的亡灵有了更深入的了解，允许你将一个普通弱小的尸壳仆从转化为忠诚强大的突变尸壳。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_husk_to_mutant_husk"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:mutant_husk_servant",
+      "text": "尸壳头顶怎么尖尖的"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goetyominous:mutant_husk_revive",
+      "text": "如果你的突变尸壳彻底死亡，将会返还沙漠之心。用这颗心脏右键忠诚的其他尸壳仆从，即可让你的突变尸壳复活。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "使用腐肉右键来治愈突变尸壳仆从。如果主人穿着死灵长袍，突变尸壳也能利用主人的灵魂能量治愈自己。用任意武器或者盔甲右击突变尸壳即可为你的仆从提供装备。"
+    }
+  ]
+}
