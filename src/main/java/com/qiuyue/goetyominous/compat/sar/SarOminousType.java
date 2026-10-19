@@ -1,9 +1,9 @@
 package com.qiuyue.goetyominous.compat.sar;
 
+import com.Polarice3.Goety.api.entities.ally.illager.ITrainIllager;
 import com.Polarice3.Goety.common.blocks.ModBlocks;
 import com.Polarice3.Goety.common.entities.ally.illager.Neollager;
 import com.Polarice3.Goety.common.ritual.RitualChecker;
-import com.qiuyue.goetyominous.common.entities.ally.illager.train.TrainIllagerExtension;
 import com.qiuyue.goetyominous.common.init.sar.SarBlocks;
 import com.qiuyue.goetyominous.common.init.sar.SarEntityRegistry;
 import com.qiuyue.goetyominous.compat.mod.SavageRavageCompat;
@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.AnvilBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
-public class SarTrainIllager implements TrainIllagerExtension {
+public class SarOminousType implements ITrainIllager {
 
     @Override
     public EntityType<? extends Mob> getIllager(Level level, BlockPos blockPos, int range) {
@@ -71,21 +71,20 @@ public class SarTrainIllager implements TrainIllagerExtension {
     }
 
     @Override
-    public Boolean mobCanTrainTo(EntityType<?> resolvedType, Mob mob) {
+    public boolean mobCanTrainTo(Mob mob, Level level, BlockPos blockPos, int range) {
         if (!SavageRavageCompat.isSavageRavageLoaded()) {
-            return null;
+            return false;
         }
 
-        if (resolvedType == SarEntityRegistry.GRIEFER_SERVANT.get()) {
-            return mob instanceof Neollager;
-        }
-        if (resolvedType == SarEntityRegistry.EXECUTIONER_SERVANT.get()) {
+        EntityType<?> resolvedType = this.getIllager(level, blockPos, range);
+        if (resolvedType == SarEntityRegistry.GRIEFER_SERVANT.get()
+                || resolvedType == SarEntityRegistry.EXECUTIONER_SERVANT.get()) {
             return mob instanceof Neollager;
         }
         if (resolvedType == SarEntityRegistry.TRICKSTER_SERVANT.get()) {
             return mob instanceof Neollager neollager && neollager.isMagic();
         }
 
-        return null;
+        return false;
     }
 }

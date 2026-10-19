@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.compat.sar;
 
+import com.Polarice3.Goety.api.entities.ally.illager.IllagerType;
 import com.qiuyue.goetyominous.common.entities.ally.sar.*;
 import com.qiuyue.goetyominous.common.init.sar.SarEntityRegistry;
 import com.qiuyue.goetyominous.common.items.sar.SarItems;
@@ -9,7 +10,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 public class SarCompatManager {
 
     public static void init(IEventBus modEventBus) {
-        com.qiuyue.goetyominous.common.entities.ally.illager.train.GoetyOminousType.registerExtension(new SarTrainIllager());
+        IllagerType.create("SarOminous", new SarOminousType());
 
         SarEntityRegistry.register(modEventBus);
 

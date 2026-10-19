@@ -17,16 +17,7 @@ import net.minecraft.world.level.block.BrewingStandBlock;
 import net.minecraft.world.level.block.EnchantmentTableBlock;
 import com.Polarice3.Goety.common.entities.ModEntityType;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class GoetyOminousType implements ITrainIllager {
-
-    private static final List<TrainIllagerExtension> EXTENSIONS = new ArrayList<>();
-
-    public static void registerExtension(TrainIllagerExtension extension) {
-        EXTENSIONS.add(extension);
-    }
 
     @Override
     public boolean canSpawn(Level level, BlockPos blockPos, int range) {
@@ -42,34 +33,11 @@ public class GoetyOminousType implements ITrainIllager {
             return mob.getType() == ModEntityType.PILLAGER_SERVANT.get();
         }
 
-        for (TrainIllagerExtension extension : EXTENSIONS) {
-            Boolean result = extension.mobCanTrainTo(entityType, mob);
-            if (result != null) {
-                return result;
-            }
-        }
-
-        return mob instanceof Neollager;
+        return false;
     }
 
     @Override
     public EntityType<? extends Mob> getIllager(Level level, BlockPos blockPos, int range) {
-        EntityType<? extends Mob> coreType = getCoreIllager(level, blockPos, range);
-        if (coreType != null) {
-            return coreType;
-        }
-
-        for (TrainIllagerExtension extension : EXTENSIONS) {
-            EntityType<? extends Mob> type = extension.getIllager(level, blockPos, range);
-            if (type != null) {
-                return type;
-            }
-        }
-
-        return null;
-    }
-
-    private static EntityType<? extends Mob> getCoreIllager(Level level, BlockPos blockPos, int range) {
         RitualChecker checker = new RitualChecker(level, blockPos, blockState -> true, range, 0);
 
         if (checker.hasBlocks(blockState -> blockState.is(ModTags.Blocks.INDENTED_GOLD_BLOCKS), 2)
