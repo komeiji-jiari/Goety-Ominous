@@ -1,0 +1,30 @@
+{
+  "name": "Mutant Frozen Zombie Servant",
+  "icon": "mutantmore:mutant_frozen_zombie_spikes",
+  "category": "goety:mmcompat/summons",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "These stronger, more bone-chilling zombie mutants contain immense frost power. Creating such a fearsome creature requires additional cold-related items and, of course, the essential mutation compound."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_frozen_zombie_to_mutant_frozen_zombie"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:mutant_frozen_zombie_servant",
+      "text": "If you're not a zombie, then let me ask you"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goetyominous:mutant_frozen_zombie_revive",
+      "text": "If your Mutant Frozen Zombie is completely slain, it will return a Heart of Frost. Right-click a loyal Frozen Zombie Servant with this heart to revive your Mutant Frozen Zombie."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Right-click your Mutant Frozen Zombie servant with Rotten Flesh to heal it. If its owner wears Necro Cape or Frost Robe, the Mutant Frozen Zombie can also use its owner's Soul Energy to heal itself. Right-click your Mutant Frozen Zombie with any weapon or armor to equip it on your servant."
+    }
+  ]
+}

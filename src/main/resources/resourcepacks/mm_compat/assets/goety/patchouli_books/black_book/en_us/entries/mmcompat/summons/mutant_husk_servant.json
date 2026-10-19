@@ -1,0 +1,31 @@
+{
+  "name": "Mutant Husk Servant",
+  "icon": "mutantmore:mutant_husk_vocal_cords",
+  "category": "goety:mmcompat/summons",
+  "sortnum": 1,
+  "advancement": "goety:goety/unlock_necromancer",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Beyond the art of creating Necromancers, the Buried Scroll also records certain secrets of the desert. After deciphering it, you have gained a deeper understanding of the undead that inhabit those desert lands, allowing you to transform an ordinary, feeble Husk Servant into a loyal and powerful Mutant Husk."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_husk_to_mutant_husk"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:mutant_husk_servant",
+      "text": "Why is the Husk's head so pointy?"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goetyominous:mutant_husk_revive",
+      "text": "If your Mutant Husk is completely slain, it will return a Heart of Desert. Right-click a loyal Husk Servant with this heart to revive your Mutant Husk."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Right-click your Mutant Husk servant with Rotten Flesh to heal it. If its owner wears Necro Robes, the Mutant Husk can also use its owner's Soul Energy to heal itself. Right-click your Mutant Husk with any weapon or armor to equip it on your servant."
+    }
+  ]
+}

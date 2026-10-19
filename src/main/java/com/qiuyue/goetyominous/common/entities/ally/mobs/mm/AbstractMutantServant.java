@@ -38,6 +38,10 @@ public abstract class AbstractMutantServant extends Summoned implements IMutatab
     private static final EntityDataAccessor<Integer> TARGETED_ENTITY_ID;
     public float walkPhase;
     public float walkPhaseAge = -1.0F;
+    private static final int LIFE_RECOVERY_FIRST_DELAY = 3600;
+    private static final int LIFE_RECOVERY_REPEAT_DELAY = 1200;
+    private int calmTicks;
+    private int nextLifeRecoveryAt = LIFE_RECOVERY_FIRST_DELAY;
 
     protected AbstractMutantServant(EntityType<? extends Owned> p_33002_, Level p_33003_) {
         super(p_33002_, p_33003_);
@@ -100,8 +104,37 @@ public abstract class AbstractMutantServant extends Summoned implements IMutatab
         super.tick();
         if (this.level().isClientSide) {
             this.updateAnimations();
+        } else {
+            this.tickLifeRecovery();
         }
+    }
 
+    protected int getRestorableLives() {
+        return 0;
+    }
+
+    protected void restoreOneLife() {
+    }
+
+    protected void resetLifeRecovery() {
+        this.calmTicks = 0;
+        this.nextLifeRecoveryAt = LIFE_RECOVERY_FIRST_DELAY;
+    }
+
+    private void tickLifeRecovery() {
+        if (this.getRestorableLives() <= 0) {
+            this.resetLifeRecovery();
+            return;
+        }
+        if (this.getTarget() == null && this.getHealth() >= this.getMaxHealth()) {
+            ++this.calmTicks;
+            if (this.calmTicks >= this.nextLifeRecoveryAt) {
+                this.restoreOneLife();
+                this.nextLifeRecoveryAt += LIFE_RECOVERY_REPEAT_DELAY;
+            }
+        } else {
+            this.resetLifeRecovery();
+        }
     }
 
     protected void updateAnimations() {
