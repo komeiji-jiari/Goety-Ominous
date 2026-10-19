@@ -18,8 +18,6 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.qiuyue.goetyominous.common.entities.projectile.ac.LicowitchServantHex;
 import com.qiuyue.goetyominous.common.entities.projectile.ac.LicowitchServantPeppermint;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.utils.ModMobType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -77,6 +75,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class LicowitchServant extends Summoned implements IAnimatedEntity {
 
@@ -112,12 +111,12 @@ public class LicowitchServant extends Summoned implements IAnimatedEntity {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.LicowitchServantMovementSpeed.get())
-                .add(Attributes.MAX_HEALTH, AttributesConfig.LicowitchServantHealth.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.LicowitchServantDamage.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.LicowitchServantFollowRange.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.LicowitchServantKnockbackResistance.get())
-                .add(Attributes.ARMOR, AttributesConfig.LicowitchServantArmor.get());
+                .add(Attributes.MOVEMENT_SPEED, AcConfig.LicowitchServantMovementSpeed.get())
+                .add(Attributes.MAX_HEALTH, AcConfig.LicowitchServantHealth.get())
+                .add(Attributes.ATTACK_DAMAGE, AcConfig.LicowitchServantDamage.get())
+                .add(Attributes.FOLLOW_RANGE, AcConfig.LicowitchServantFollowRange.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.LicowitchServantKnockbackResistance.get())
+                .add(Attributes.ARMOR, AcConfig.LicowitchServantArmor.get());
     }
 
     @Override
@@ -283,7 +282,7 @@ public class LicowitchServant extends Summoned implements IAnimatedEntity {
 
     public boolean canCastSummon() {
         return this.getAnimation() == IAnimatedEntity.NO_ANIMATION && this.summonCooldown <= 0
-                && this.candyServantCount() < MobsConfig.LicowitchSummonLimit.get();
+                && this.candyServantCount() < AcConfig.LicowitchSummonLimit.get();
     }
 
     public boolean startSummonCast() {
@@ -300,7 +299,7 @@ public class LicowitchServant extends Summoned implements IAnimatedEntity {
     public int summonCandyGuards(int maxCount) {
         int summoned = 0;
         for (int i = 0; i < maxCount; i++) {
-            if (this.candyServantCount() >= MobsConfig.LicowitchSummonLimit.get()) {
+            if (this.candyServantCount() >= AcConfig.LicowitchSummonLimit.get()) {
                 break;
             }
             EntityType<?> type = this.candyTypeForRoll(this.random.nextFloat());
@@ -324,7 +323,7 @@ public class LicowitchServant extends Summoned implements IAnimatedEntity {
         }
         if (mob instanceof Owned owned) {
             owned.setTrueOwner(this);
-            if (MobsConfig.LicowitchSummonsLife.get()) {
+            if (AcConfig.LicowitchSummonsLife.get()) {
                 owned.setLifespan(20 * (45 + this.random.nextInt(75)));
                 owned.setHasLifespan(true);
             }
@@ -733,7 +732,7 @@ public class LicowitchServant extends Summoned implements IAnimatedEntity {
 
         private void hexAttack(LivingEntity target) {
             LicowitchServant.this.lookAt(target, 180.0F, 30.0F);
-            boolean summonSpace = LicowitchServant.this.candyServantCount() < MobsConfig.LicowitchSummonLimit.get();
+            boolean summonSpace = LicowitchServant.this.candyServantCount() < AcConfig.LicowitchSummonLimit.get();
             boolean summoned = false;
             if (summonSpace && LicowitchServant.this.getRandom().nextBoolean()) {
                 Vec3 summonSpot = LicowitchServant.this.findSummonSpotNear(target, 10);

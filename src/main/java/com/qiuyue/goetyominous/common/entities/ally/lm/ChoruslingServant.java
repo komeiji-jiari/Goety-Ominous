@@ -1,8 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm;
 
 import com.Polarice3.Goety.common.entities.ally.Summoned;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.miauczel.legendary_monsters.effect.ModEffects;
 import net.miauczel.legendary_monsters.sound.ModSounds;
 import net.minecraft.nbt.CompoundTag;
@@ -32,6 +30,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
 
 import javax.annotation.Nullable;
+import com.qiuyue.goetyominous.config.lm.LmConfig;
 
 public class ChoruslingServant extends IAnimatedMobServant {
 
@@ -49,18 +48,18 @@ public class ChoruslingServant extends IAnimatedMobServant {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.ChoruslingServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.ChoruslingServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.ChoruslingServantFollowRange.get())
-                .add(Attributes.ARMOR, AttributesConfig.ChoruslingServantArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.ChoruslingServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, AttributesConfig.ChoruslingServantAttackKnockback.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.ChoruslingServantDamage.get());
+                .add(Attributes.MAX_HEALTH, LmConfig.ChoruslingServantHealth.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.ChoruslingServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, LmConfig.ChoruslingServantFollowRange.get())
+                .add(Attributes.ARMOR, LmConfig.ChoruslingServantArmor.get())
+                .add(Attributes.MOVEMENT_SPEED, LmConfig.ChoruslingServantMovementSpeed.get())
+                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.ChoruslingServantAttackKnockback.get())
+                .add(Attributes.ATTACK_DAMAGE, LmConfig.ChoruslingServantDamage.get());
     }
 
     @Override
     public double damageMultiplier() {
-        return MobsConfig.ChoruslingServantDamageMultiplier.get();
+        return LmConfig.ChoruslingServantDamageMultiplier.get();
     }
 
     @Override
@@ -78,7 +77,7 @@ public class ChoruslingServant extends IAnimatedMobServant {
                                         MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData,
                                         @Nullable CompoundTag pDataTag) {
         if (pReason == MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player) {
-            if (countServants(player) >= MobsConfig.ChoruslingServantLimit.get()) {
+            if (countServants(player) >= LmConfig.ChoruslingServantLimit.get()) {
                 return null;
             }
         }

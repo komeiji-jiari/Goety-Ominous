@@ -6,7 +6,6 @@ import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.init.ModSounds;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.qiuyue.goetyominous.common.entities.projectile.am.FartServantEntity;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.HumanoidArm;
@@ -17,17 +16,18 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class FartSpell extends Spell {
 
     @Override
     public int defaultSoulCost() {
-        return SpellConfig.FartSoulCost.get();
+        return AmConfig.FartSoulCost.get();
     }
 
     @Override
     public int defaultCastDuration() {
-        return SpellConfig.FartCastDuration.get();
+        return AmConfig.FartCastDuration.get();
     }
 
     @Override
@@ -37,7 +37,7 @@ public class FartSpell extends Spell {
 
     @Override
     public int defaultSpellCooldown() {
-        return SpellConfig.FartCoolDown.get();
+        return AmConfig.FartCoolDown.get();
     }
 
     @Override

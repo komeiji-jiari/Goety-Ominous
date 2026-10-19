@@ -6,8 +6,6 @@ import com.github.alexmodguy.alexscaves.client.particle.ACParticleRegistry;
 import com.github.alexmodguy.alexscaves.server.misc.ACMath;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.utils.ModMobType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -43,6 +41,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class CaramelCubeServant extends Summoned {
 
@@ -72,17 +71,17 @@ public class CaramelCubeServant extends Summoned {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.CaramelCubeServantMovementSpeed.get())
-                .add(Attributes.MAX_HEALTH, AttributesConfig.CaramelCubeServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.CaramelCubeServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.CaramelCubeServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.CaramelCubeServantKnockbackResistance.get())
-                .add(Attributes.ARMOR, AttributesConfig.CaramelCubeServantArmor.get());
+                .add(Attributes.MOVEMENT_SPEED, AcConfig.CaramelCubeServantMovementSpeed.get())
+                .add(Attributes.MAX_HEALTH, AcConfig.CaramelCubeServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AcConfig.CaramelCubeServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AcConfig.CaramelCubeServantDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.CaramelCubeServantKnockbackResistance.get())
+                .add(Attributes.ARMOR, AcConfig.CaramelCubeServantArmor.get());
     }
 
     @Override
     public int getSummonLimit(LivingEntity player) {
-        return MobsConfig.CaramelCubeServantLimit.get();
+        return AcConfig.CaramelCubeServantLimit.get();
     }
 
     @Override
@@ -158,9 +157,9 @@ public class CaramelCubeServant extends Summoned {
         this.entityData.set(SIZE, size);
         this.reapplyPosition();
         this.refreshDimensions();
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(AttributesConfig.CaramelCubeServantHealth.get() + 6.0F * size);
-        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AttributesConfig.CaramelCubeServantMovementSpeed.get() + 0.1F * size);
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AttributesConfig.CaramelCubeServantDamage.get() + (double) (2.0F * size));
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(AcConfig.CaramelCubeServantHealth.get() + 6.0F * size);
+        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AcConfig.CaramelCubeServantMovementSpeed.get() + 0.1F * size);
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AcConfig.CaramelCubeServantDamage.get() + (double) (2.0F * size));
         if (heal) {
             this.setHealth(this.getMaxHealth());
         }

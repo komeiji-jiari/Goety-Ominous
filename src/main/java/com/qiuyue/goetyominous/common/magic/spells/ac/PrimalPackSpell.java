@@ -14,8 +14,6 @@ import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.ally.ac.GrottoceratopsServant;
 import com.qiuyue.goetyominous.common.entities.ally.ac.VallumraptorServant;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
-import com.qiuyue.goetyominous.config.MobsConfig;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -33,6 +31,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class PrimalPackSpell extends SummonSpell {
 
@@ -42,11 +41,11 @@ public class PrimalPackSpell extends SummonSpell {
     }
 
     public int defaultSoulCost() {
-        return SpellConfig.PrimalPackCost.get();
+        return AcConfig.PrimalPackCost.get();
     }
 
     public int defaultCastDuration() {
-        return SpellConfig.PrimalPackDuration.get();
+        return AcConfig.PrimalPackDuration.get();
     }
 
     public @Nullable SoundEvent CastingSound() {
@@ -54,11 +53,11 @@ public class PrimalPackSpell extends SummonSpell {
     }
 
     public int defaultSpellCooldown() {
-        return SpellConfig.PrimalPackCoolDown.get();
+        return AcConfig.PrimalPackCoolDown.get();
     }
 
     public int SummonDownDuration() {
-        return SpellConfig.PrimalPackSummonDown.get();
+        return AcConfig.PrimalPackSummonDown.get();
     }
 
     public SpellType getSpellType() {
@@ -92,8 +91,8 @@ public class PrimalPackSpell extends SummonSpell {
             }
         }
         if (!this.isShifting(caster)
-                && (raptors >= MobsConfig.VallumraptorServantLimit.get()
-                || ceratops >= MobsConfig.GrottoceratopsServantLimit.get())) {
+                && (raptors >= AcConfig.VallumraptorServantLimit.get()
+                || ceratops >= AcConfig.GrottoceratopsServantLimit.get())) {
             if (caster instanceof Player player) {
                 player.displayClientMessage(
                         Component.translatable("info.goety.summon.limit"), true);

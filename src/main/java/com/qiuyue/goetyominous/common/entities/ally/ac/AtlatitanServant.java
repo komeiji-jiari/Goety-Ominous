@@ -39,8 +39,6 @@ import com.qiuyue.goetyominous.common.entities.ai.ac.ServantTemptGoal;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
 import com.qiuyue.goetyominous.common.items.ac.AcItems;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -95,6 +93,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.Optional;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class AtlatitanServant extends AnimalSummon
         implements LaysEggs, KeybindUsingMount, IAnimatedEntity, ShakesScreen, KaijuMob,
@@ -191,11 +190,11 @@ public class AtlatitanServant extends AnimalSummon
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.AtlatitanServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.AtlatitanServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.AtlatitanServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.AtlatitanServantKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.AtlatitanServantMovementSpeed.get());
+                .add(Attributes.MAX_HEALTH, AcConfig.AtlatitanServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AcConfig.AtlatitanServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AcConfig.AtlatitanServantDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.AtlatitanServantKnockbackResistance.get())
+                .add(Attributes.MOVEMENT_SPEED, AcConfig.AtlatitanServantMovementSpeed.get());
     }
     @Override
     protected void defineSynchedData() {
@@ -219,7 +218,7 @@ public class AtlatitanServant extends AnimalSummon
     }
     @Override
     public int getSummonLimit(LivingEntity player) {
-        return MobsConfig.AtlatitanServantLimit.get();
+        return AcConfig.AtlatitanServantLimit.get();
     }
 
     @Override
@@ -533,7 +532,7 @@ public class AtlatitanServant extends AnimalSummon
 
     protected void crushBlocksInRing(int width, int ringStartX, int ringStartZ, float dropChance) {
         if (!ForgeEventFactory.getMobGriefingEvent(this.level(), this)
-                || !MobsConfig.AtlatitanServantBreakBlocks.get()) {
+                || !AcConfig.AtlatitanServantBreakBlocks.get()) {
             return;
         }
         BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();

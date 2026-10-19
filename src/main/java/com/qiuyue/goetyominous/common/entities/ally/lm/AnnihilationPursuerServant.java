@@ -1,9 +1,9 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm;
 
 import com.qiuyue.goetyominous.compat.lm.LmScreenShake;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
+import com.qiuyue.goetyominous.common.entities.ally.lm.goals.FarTeleportFollowGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IAttackGoalMin;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IMoveGoal;
@@ -12,7 +12,6 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.AnnihilationEx
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.AnnihilationFlameStrike;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.EntityThrown;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SmallAnnihilationBomb;
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
 import net.miauczel.legendary_monsters.Particle.custom.BigAnnihilationSweepParticle;
 import net.miauczel.legendary_monsters.Particle.custom.Circle;
@@ -56,6 +55,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
 
 import javax.annotation.Nullable;
+import com.qiuyue.goetyominous.config.lm.LmConfig;
 
 public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
 
@@ -109,24 +109,24 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.AnnihilationPursuerServantLimit.get();
+        return LmConfig.AnnihilationPursuerServantLimit.get();
     }
 
     @Override
     public double damageMultiplier() {
-        return MobsConfig.AnnihilationPursuerServantDamageMultiplier.get();
+        return LmConfig.AnnihilationPursuerServantDamageMultiplier.get();
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.AnnihilationPursuerServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.AnnihilationPursuerServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.AnnihilationPursuerServantFollowRange.get())
-                .add(Attributes.ARMOR, AttributesConfig.AnnihilationPursuerServantArmor.get())
+                .add(Attributes.MAX_HEALTH, LmConfig.AnnihilationPursuerServantHealth.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.AnnihilationPursuerServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, LmConfig.AnnihilationPursuerServantFollowRange.get())
+                .add(Attributes.ARMOR, LmConfig.AnnihilationPursuerServantArmor.get())
                 .add(Attributes.ARMOR_TOUGHNESS, 4.0D)
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.AnnihilationPursuerServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, AttributesConfig.AnnihilationPursuerServantAttackKnockback.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.AnnihilationPursuerServantDamage.get());
+                .add(Attributes.MOVEMENT_SPEED, LmConfig.AnnihilationPursuerServantMovementSpeed.get())
+                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.AnnihilationPursuerServantAttackKnockback.get())
+                .add(Attributes.ATTACK_DAMAGE, LmConfig.AnnihilationPursuerServantDamage.get());
     }
 
     @Override
@@ -137,6 +137,26 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
     @Override
     public double getCommandSpeed() {
         return 3.0D;
+    }
+
+    @Override
+    public void followGoal() {
+        this.goalSelector.addGoal(5, new FarTeleportFollowGoal<AnnihilationPursuerServant>(this, this.getFollowSpeed(), 10.0F, 2.0F) {
+            @Override
+            protected int teleportState() {
+                return 18;
+            }
+
+            @Override
+            protected int teleportDuration() {
+                return 21;
+            }
+
+            @Override
+            protected void saveTeleportPosition(double x, double y, double z) {
+                AnnihilationPursuerServant.this.saveTeleportPositions(x, y, z);
+            }
+        });
     }
 
     @Override

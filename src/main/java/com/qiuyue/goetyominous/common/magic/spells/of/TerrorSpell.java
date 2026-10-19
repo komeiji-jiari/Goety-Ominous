@@ -10,8 +10,6 @@ import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.ally.of.TerrorServant;
 import com.qiuyue.goetyominous.common.init.of.OfEntityRegistry;
-import com.qiuyue.goetyominous.config.MobsConfig;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -25,6 +23,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.of.OfConfig;
 
 public class TerrorSpell extends SummonSpell {
 
@@ -32,19 +31,19 @@ public class TerrorSpell extends SummonSpell {
     }
 
     public int defaultSoulCost() {
-        return SpellConfig.TerrorSoulCost.get();
+        return OfConfig.TerrorSoulCost.get();
     }
 
     public int defaultCastDuration() {
-        return SpellConfig.TerrorCastDuration.get();
+        return OfConfig.TerrorCastDuration.get();
     }
 
     public int SummonDownDuration() {
-        return SpellConfig.TerrorSummonDown.get();
+        return OfConfig.TerrorSummonDown.get();
     }
 
     public int defaultSpellCooldown() {
-        return SpellConfig.TerrorCoolDown.get();
+        return OfConfig.TerrorCoolDown.get();
     }
 
     public SoundEvent CastingSound() {
@@ -60,7 +59,7 @@ public class TerrorSpell extends SummonSpell {
     }
 
     public int summonLimit() {
-        return MobsConfig.TerrorServantLimit.get();
+        return OfConfig.TerrorServantLimit.get();
     }
 
     public List<Enchantment> acceptedEnchantments() {

@@ -10,7 +10,6 @@ import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.ally.ac.BrainiacServant;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,21 +20,22 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class BrainiacSpell extends SummonSpell {
     public BrainiacSpell() {
     }
 
     public int defaultSoulCost() {
-        return SpellConfig.BrainiacCost.get();
+        return AcConfig.BrainiacCost.get();
     }
 
     public int defaultCastDuration() {
-        return SpellConfig.BrainiacDuration.get();
+        return AcConfig.BrainiacDuration.get();
     }
 
     public int SummonDownDuration() {
-        return SpellConfig.BrainiacSummonDown.get();
+        return AcConfig.BrainiacSummonDown.get();
     }
 
     public SoundEvent CastingSound() {
@@ -43,7 +43,7 @@ public class BrainiacSpell extends SummonSpell {
     }
 
     public int defaultSpellCooldown() {
-        return SpellConfig.BrainiacCoolDown.get();
+        return AcConfig.BrainiacCoolDown.get();
     }
 
     public SpellType getSpellType() {
@@ -63,7 +63,7 @@ public class BrainiacSpell extends SummonSpell {
 
     public int summonLimit() {
         return net.minecraftforge.fml.ModList.get().isLoaded("goetyominous")
-                ? com.qiuyue.goetyominous.config.MobsConfig.BrainiacServantLimit.get()
+                ? AcConfig.BrainiacServantLimit.get()
                 : 8;
     }
 

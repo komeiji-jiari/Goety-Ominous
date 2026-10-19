@@ -11,8 +11,6 @@ import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.ally.ac.DeepOneKnightServant;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
-import com.qiuyue.goetyominous.config.MobsConfig;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -28,6 +26,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class DeepKnightSpell extends SummonSpell {
 
@@ -35,15 +34,15 @@ public class DeepKnightSpell extends SummonSpell {
     }
 
     public int defaultSoulCost() {
-        return (Integer)SpellConfig.DeepKnightSoulCost.get();
+        return (Integer)AcConfig.DeepKnightSoulCost.get();
     }
 
     public int defaultCastDuration() {
-        return (Integer)SpellConfig.DeepKnightCastDuration.get();
+        return (Integer)AcConfig.DeepKnightCastDuration.get();
     }
 
     public int SummonDownDuration() {
-        return (Integer) SpellConfig.DeepKnightSummonDown.get();
+        return (Integer) AcConfig.DeepKnightSummonDown.get();
     }
 
     public SoundEvent CastingSound() {
@@ -51,7 +50,7 @@ public class DeepKnightSpell extends SummonSpell {
     }
 
     public int defaultSpellCooldown() {
-        return (Integer)SpellConfig.DeepKnightCoolDown.get();
+        return (Integer)AcConfig.DeepKnightCoolDown.get();
     }
 
     public SpellType getSpellType() {
@@ -70,7 +69,7 @@ public class DeepKnightSpell extends SummonSpell {
     }
 
     public int summonLimit() {
-        return MobsConfig.DeepOneKnightServantLimit.get();
+        return AcConfig.DeepOneKnightServantLimit.get();
     }
 
     public void commonResult(ServerLevel worldIn, LivingEntity caster) {

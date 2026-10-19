@@ -13,6 +13,8 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
@@ -23,8 +25,8 @@ public class OminousIconRotation {
     private static final ResourceLocation INDEX = new ResourceLocation("goetyominous", "ominous_icon_index");
 
     private static final Entry[] ENTRIES = new Entry[]{
-            new Entry("savageandravagecompat", SavageRavageCompat::isSavageRavageLoaded, 0),
-            new Entry("uacompat", UpgradeAquaticCompat::isUpgradeAquaticLoaded, 1),
+            new Entry("goetyabnormal", SavageRavageCompat::isSavageRavageLoaded, 0),
+            new Entry("goetyabnormal", UpgradeAquaticCompat::isUpgradeAquaticLoaded, 1),
             new Entry("mmcompat", MutantMoreCompat::isMutantMoreLoaded, 2),
             new Entry("amcompat", AlexMobsCompat::isAlexMobsLoaded, 4),
             new Entry("accompat", AlexCavesCompat::isAlexCavesLoaded, 5),
@@ -61,8 +63,9 @@ public class OminousIconRotation {
     private static int[] installedOrder() {
         int[] buffer = new int[ENTRIES.length];
         int count = 0;
+        Set<String> seen = new HashSet<>();
         for (Entry entry : ENTRIES) {
-            if (entry.loaded().getAsBoolean()) {
+            if (entry.loaded().getAsBoolean() && seen.add(entry.categoryPath())) {
                 buffer[count++] = entry.index();
             }
         }

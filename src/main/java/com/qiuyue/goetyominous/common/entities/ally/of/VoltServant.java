@@ -9,8 +9,6 @@ import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.VoltServantLeapGoal;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.VoltServantShootGoal;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.VoltServantShootInWaterGoal;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
 import com.unusualmodding.opposing_force.entity.utils.AttackState;
 import com.unusualmodding.opposing_force.entity.utils.EliteVariant;
@@ -61,6 +59,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import com.qiuyue.goetyominous.config.of.OfConfig;
 
 public class VoltServant extends Summoned implements AttackState, EliteVariant, PowerableMob {
     private static final EntityDataAccessor<Integer> ATTACK_STATE;
@@ -103,9 +102,9 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant, 
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.VoltServantHealth.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.VoltServantMovementSpeed.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.VoltServantFollowRange.get())
+                .add(Attributes.MAX_HEALTH, OfConfig.VoltServantHealth.get())
+                .add(Attributes.MOVEMENT_SPEED, OfConfig.VoltServantMovementSpeed.get())
+                .add(Attributes.FOLLOW_RANGE, OfConfig.VoltServantFollowRange.get())
                 .add(Attributes.ATTACK_DAMAGE, 5.0D)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.5D);
     }
@@ -492,7 +491,7 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant, 
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.VoltServantLimit.get();
+        return OfConfig.VoltServantLimit.get();
     }
 
     public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {

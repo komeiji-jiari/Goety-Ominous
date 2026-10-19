@@ -6,8 +6,6 @@ import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.init.ModMobType;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.GuzzlerServantAttackGoal;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
 import com.unusualmodding.opposing_force.entity.utils.AttackState;
 import com.unusualmodding.opposing_force.registry.OPItems;
@@ -49,6 +47,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import com.qiuyue.goetyominous.config.of.OfConfig;
 
 public class GuzzlerServant extends Summoned implements AttackState {
     private static final EntityDataAccessor<Integer> ATTACK_STATE;
@@ -63,11 +62,11 @@ public class GuzzlerServant extends Summoned implements AttackState {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.GuzzlerServantHealth.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.GuzzlerServantMovementSpeed.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.GuzzlerServantAttackDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.GuzzlerServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.GuzzlerServantFollowRange.get());
+                .add(Attributes.MAX_HEALTH, OfConfig.GuzzlerServantHealth.get())
+                .add(Attributes.MOVEMENT_SPEED, OfConfig.GuzzlerServantMovementSpeed.get())
+                .add(Attributes.ATTACK_DAMAGE, OfConfig.GuzzlerServantAttackDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, OfConfig.GuzzlerServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, OfConfig.GuzzlerServantFollowRange.get());
     }
 
     @Override
@@ -130,7 +129,7 @@ public class GuzzlerServant extends Summoned implements AttackState {
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.GuzzlerServantLimit.get();
+        return OfConfig.GuzzlerServantLimit.get();
     }
 
     @Override

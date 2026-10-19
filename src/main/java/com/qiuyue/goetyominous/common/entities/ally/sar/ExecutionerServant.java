@@ -3,7 +3,6 @@ package com.qiuyue.goetyominous.common.entities.ally.sar;
 import com.Polarice3.Goety.common.entities.ally.illager.AbstractIllagerServant;
 import com.Polarice3.Goety.common.entities.ai.ModMeleeAttackGoal;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.teamabnormals.savage_and_ravage.common.item.CleaverOfBeheadingItem;
 import com.teamabnormals.savage_and_ravage.core.registry.SRItems;
 import com.teamabnormals.savage_and_ravage.core.registry.SRSoundEvents;
@@ -35,6 +34,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.HitResult;
 
 import javax.annotation.Nullable;
+import com.qiuyue.goetyominous.config.uasr.UasrConfig;
 
 public class ExecutionerServant extends AbstractIllagerServant {
 
@@ -64,11 +64,11 @@ public class ExecutionerServant extends AbstractIllagerServant {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.ExecutionerServantMovementSpeed.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.ExecutionerServantFollowRange.get())
-                .add(Attributes.MAX_HEALTH, AttributesConfig.ExecutionerServantHealth.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.ExecutionerServantDamage.get())
-                .add(Attributes.ARMOR, AttributesConfig.ExecutionerServantArmor.get());
+                .add(Attributes.MOVEMENT_SPEED, UasrConfig.ExecutionerServantMovementSpeed.get())
+                .add(Attributes.FOLLOW_RANGE, UasrConfig.ExecutionerServantFollowRange.get())
+                .add(Attributes.MAX_HEALTH, UasrConfig.ExecutionerServantHealth.get())
+                .add(Attributes.ATTACK_DAMAGE, UasrConfig.ExecutionerServantDamage.get())
+                .add(Attributes.ARMOR, UasrConfig.ExecutionerServantArmor.get());
     }
 
     @Override

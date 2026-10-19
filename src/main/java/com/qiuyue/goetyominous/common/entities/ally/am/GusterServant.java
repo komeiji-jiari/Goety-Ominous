@@ -6,8 +6,6 @@ import com.qiuyue.goetyominous.common.entities.projectile.am.EntityServentSandSh
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.utils.CuriosFinder;
 import com.Polarice3.Goety.utils.MobUtil;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.entity.ai.GroundPathNavigatorWide;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
@@ -57,6 +55,7 @@ import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class GusterServant extends Summoned {
 
@@ -74,32 +73,32 @@ public class GusterServant extends Summoned {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.GusterServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.GusterServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.GusterServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.GusterServantKnockbackResistance.get())
+                .add(Attributes.MAX_HEALTH, AmConfig.GusterServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AmConfig.GusterServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AmConfig.GusterServantDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AmConfig.GusterServantKnockbackResistance.get())
                 .add(Attributes.MOVEMENT_SPEED, 0.2D);
     }
 
     @Override
     public void setConfigurableAttributes() {
         if (this.getAttribute(Attributes.MAX_HEALTH) != null) {
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(AttributesConfig.GusterServantHealth.get());
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(AmConfig.GusterServantHealth.get());
         }
         if (this.getAttribute(Attributes.ATTACK_DAMAGE) != null) {
-            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AttributesConfig.GusterServantDamage.get());
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AmConfig.GusterServantDamage.get());
         }
         if (this.getAttribute(Attributes.FOLLOW_RANGE) != null) {
-            this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(AttributesConfig.GusterServantFollowRange.get());
+            this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(AmConfig.GusterServantFollowRange.get());
         }
         if (this.getAttribute(Attributes.KNOCKBACK_RESISTANCE) != null) {
-            this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(AttributesConfig.GusterServantKnockbackResistance.get());
+            this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(AmConfig.GusterServantKnockbackResistance.get());
         }
     }
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.GusterServantLimit.get();
+        return AmConfig.GusterServantLimit.get();
     }
 
     public int getAmbientSoundInterval() {

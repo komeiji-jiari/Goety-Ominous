@@ -12,8 +12,6 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.goals.knight.KnightStateG
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulPillar;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.ThrownKnight;
 import com.qiuyue.goetyominous.compat.lm.LmScreenShake;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
 import net.miauczel.legendary_monsters.Particle.custom.BeheadedKnightSweepParticle;
@@ -70,6 +68,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
+import com.qiuyue.goetyominous.config.lm.LmConfig;
 
 public class BeheadedKnightServant extends IAnimatedMiniBossServant {
 
@@ -129,19 +128,19 @@ public class BeheadedKnightServant extends IAnimatedMiniBossServant {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.BeheadedKnightServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.BeheadedKnightServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.BeheadedKnightServantFollowRange.get())
-                .add(Attributes.ARMOR, AttributesConfig.BeheadedKnightServantArmor.get())
-                .add(Attributes.ARMOR_TOUGHNESS, AttributesConfig.BeheadedKnightServantArmorToughness.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.BeheadedKnightServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, AttributesConfig.BeheadedKnightServantAttackKnockback.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.BeheadedKnightServantDamage.get());
+                .add(Attributes.MAX_HEALTH, LmConfig.BeheadedKnightServantHealth.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.BeheadedKnightServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, LmConfig.BeheadedKnightServantFollowRange.get())
+                .add(Attributes.ARMOR, LmConfig.BeheadedKnightServantArmor.get())
+                .add(Attributes.ARMOR_TOUGHNESS, LmConfig.BeheadedKnightServantArmorToughness.get())
+                .add(Attributes.MOVEMENT_SPEED, LmConfig.BeheadedKnightServantMovementSpeed.get())
+                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.BeheadedKnightServantAttackKnockback.get())
+                .add(Attributes.ATTACK_DAMAGE, LmConfig.BeheadedKnightServantDamage.get());
     }
 
     @Override
     public double damageMultiplier() {
-        return MobsConfig.BeheadedKnightServantDamageMultiplier.get();
+        return LmConfig.BeheadedKnightServantDamageMultiplier.get();
     }
 
     @Override
@@ -169,7 +168,7 @@ public class BeheadedKnightServant extends IAnimatedMiniBossServant {
                                         MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData,
                                         @Nullable CompoundTag pDataTag) {
         if (pReason == MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player) {
-            if (countServants(player) >= MobsConfig.BeheadedKnightServantLimit.get()) {
+            if (countServants(player) >= LmConfig.BeheadedKnightServantLimit.get()) {
                 return null;
             }
         }

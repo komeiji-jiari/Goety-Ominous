@@ -2,7 +2,6 @@ package com.qiuyue.goetyominous.common.entities.ally.sar;
 
 import com.Polarice3.Goety.common.entities.ally.illager.AbstractIllagerServant;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.teamabnormals.savage_and_ravage.common.item.CreeperSporesItem;
 import com.teamabnormals.savage_and_ravage.core.registry.SRItems;
 import com.teamabnormals.savage_and_ravage.core.registry.SRSoundEvents;
@@ -37,6 +36,7 @@ import net.minecraft.world.phys.HitResult;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
+import com.qiuyue.goetyominous.config.uasr.UasrConfig;
 
 public class GrieferServant extends AbstractIllagerServant implements RangedAttackMob {
     private static final EntityDataAccessor<Boolean> KICKING = SynchedEntityData.defineId(GrieferServant.class, EntityDataSerializers.BOOLEAN);
@@ -75,10 +75,10 @@ public class GrieferServant extends AbstractIllagerServant implements RangedAtta
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.GrieferServantMovementSpeed.get())
-                .add(Attributes.MAX_HEALTH, AttributesConfig.GrieferServantHealth.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.GrieferServantDamage.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.GrieferServantFollowRange.get());
+                .add(Attributes.MOVEMENT_SPEED, UasrConfig.GrieferServantMovementSpeed.get())
+                .add(Attributes.MAX_HEALTH, UasrConfig.GrieferServantHealth.get())
+                .add(Attributes.ATTACK_DAMAGE, UasrConfig.GrieferServantDamage.get())
+                .add(Attributes.FOLLOW_RANGE, UasrConfig.GrieferServantFollowRange.get());
     }
 
     @Override

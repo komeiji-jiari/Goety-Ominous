@@ -8,7 +8,6 @@ import com.Polarice3.Goety.utils.CuriosFinder;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.projectile.am.EntityMosquitoServantSpit;
 import com.qiuyue.goetyominous.common.entities.projectile.am.EntityServantHemolymph;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -20,19 +19,20 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class BloodSpraySpell extends Spell {
 
     public int defaultSoulCost() {
-        return (Integer) SpellConfig.BloodSpraySoulCost.get();
+        return (Integer) AmConfig.BloodSpraySoulCost.get();
     }
 
     public int defaultCastDuration() {
-        return (Integer) SpellConfig.BloodSprayCastDuration.get();
+        return (Integer) AmConfig.BloodSprayCastDuration.get();
     }
 
     public int defaultSpellCooldown() {
-        return (Integer) SpellConfig.BloodSprayCoolDown.get();
+        return (Integer) AmConfig.BloodSprayCoolDown.get();
     }
 
     @Override

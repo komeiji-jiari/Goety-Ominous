@@ -10,6 +10,7 @@ import com.alexander.mutantmore.particles.AdvancedParticleOption;
 import com.alexander.mutantmore.util.MiscUtils;
 import com.alexander.mutantmore.util.PositionUtils;
 import com.google.common.collect.Lists;
+import com.qiuyue.goetyominous.common.blocks.mm.ServantQuicksandBlock;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.AreaDamage;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantHuskServant;
 import java.util.EnumSet;
@@ -79,8 +80,8 @@ public class MutantHuskPunchAttackGoal extends Goal {
             if (MutantHuskCommonConfig.punch_attack_griefing.get() && !MutantMoreGroupedOptionsCommonConfig.quicksand_griefing_off.get()) {
                 for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(slamAttackBoundingBox.minX), Mth.floor(slamAttackBoundingBox.minY), Mth.floor(slamAttackBoundingBox.minZ), Mth.floor(slamAttackBoundingBox.maxX), Mth.floor(slamAttackBoundingBox.maxY), Mth.floor(slamAttackBoundingBox.maxZ))) {
                     BlockState blockstate = this.mob.level().getBlockState(blockpos);
-                    if (!blockstate.isAir() || !QuicksandBlock.survivable(MiscUtils.quicksandBlockForSandType(sandType).defaultBlockState(), this.mob.level(), blockpos)) continue;
-                    this.mob.level().setBlockAndUpdate(blockpos, MiscUtils.quicksandBlockForSandType(sandType).defaultBlockState());
+                    if (!blockstate.isAir() || !QuicksandBlock.survivable(ServantQuicksandBlock.forSandType(sandType).defaultBlockState(), this.mob.level(), blockpos)) continue;
+                    this.mob.level().setBlockAndUpdate(blockpos, ServantQuicksandBlock.forSandType(sandType).defaultBlockState());
                 }
             }
             ((ServerLevel) this.mob.level()).sendParticles(new AdvancedParticleOption(ParticleTypeInit.SAND, List.of((float) MiscUtils.sandColourForSandType(sandType))), slamAttackBoundingBoxOffset.x, slamAttackBoundingBoxOffset.y, slamAttackBoundingBoxOffset.z, 30, 1.0, 0.0, 1.0, 0.0);

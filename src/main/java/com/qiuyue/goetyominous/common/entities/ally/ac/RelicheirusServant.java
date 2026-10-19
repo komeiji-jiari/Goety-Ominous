@@ -22,8 +22,6 @@ import com.qiuyue.goetyominous.common.entities.ai.ac.ServantLayEggGoal;
 import com.qiuyue.goetyominous.common.entities.ai.ac.ServantTemptGoal;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -62,6 +60,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 
 public class RelicheirusServant extends AnimalSummon implements LaysEggs, IAnimatedEntity {
@@ -104,12 +103,12 @@ public class RelicheirusServant extends AnimalSummon implements LaysEggs, IAnima
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.RelicheirusServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.RelicheirusServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.RelicheirusServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.RelicheirusServantKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.RelicheirusServantMovementSpeed.get())
-                .add(Attributes.ARMOR, AttributesConfig.RelicheirusServantArmor.get());
+                .add(Attributes.MAX_HEALTH, AcConfig.RelicheirusServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AcConfig.RelicheirusServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AcConfig.RelicheirusServantDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.RelicheirusServantKnockbackResistance.get())
+                .add(Attributes.MOVEMENT_SPEED, AcConfig.RelicheirusServantMovementSpeed.get())
+                .add(Attributes.ARMOR, AcConfig.RelicheirusServantArmor.get());
     }
     @Override
     protected void defineSynchedData() {
@@ -122,7 +121,7 @@ public class RelicheirusServant extends AnimalSummon implements LaysEggs, IAnima
     }
     @Override
     public int getSummonLimit(LivingEntity player) {
-        return MobsConfig.RelicheirusServantLimit.get();
+        return AcConfig.RelicheirusServantLimit.get();
     }
 
     @Override

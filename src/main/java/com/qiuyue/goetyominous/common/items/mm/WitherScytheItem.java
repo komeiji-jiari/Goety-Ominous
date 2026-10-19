@@ -7,7 +7,6 @@ import com.alexander.mutantmore.init.SoundEventInit;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.WitherSlash;
-import com.qiuyue.goetyominous.config.WeaponConfig;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,6 +21,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.UUID;
 import java.util.function.Consumer;
+import com.qiuyue.goetyominous.config.mm.MmConfig;
 
 public class WitherScytheItem extends DarkScytheItem implements ISoulRepair, IPersist {
 
@@ -32,11 +32,11 @@ public class WitherScytheItem extends DarkScytheItem implements ISoulRepair, IPe
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(
                 BASE_ATTACK_DAMAGE_UUID, "Weapon modifier",
-                com.qiuyue.goetyominous.config.WeaponConfig.WitherScytheDamage.get() - 1.0,
+                MmConfig.WitherScytheDamage.get() - 1.0,
                 AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(
                 BASE_ATTACK_SPEED_UUID, "Weapon modifier",
-                WeaponConfig.WitherScytheAttackSpeed.get(),
+                MmConfig.WitherScytheAttackSpeed.get(),
                 AttributeModifier.Operation.ADDITION));
         builder.put(net.minecraftforge.common.ForgeMod.ENTITY_REACH.get(), new AttributeModifier(
                 UUID.fromString("90f5c2f4-6f0d-4c5e-8b3a-1a2b3c4d5e6f"), "Entity reach modifier", 1.0, AttributeModifier.Operation.ADDITION));

@@ -1,8 +1,8 @@
 {
   "name": "猛袭聚晶",
   "icon": "goetyominous:thrasher_focus",
-  "category": "goety:uacompat",
-  "sortnum": 40,
+  "category": "goety:goetyabnormal/focuses",
+  "sortnum": 130,
   "pages": [
     {
       "type": "text",

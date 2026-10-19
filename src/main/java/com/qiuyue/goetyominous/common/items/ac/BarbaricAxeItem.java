@@ -4,7 +4,6 @@ import com.Polarice3.Goety.common.magic.spells.geomancy.QuakingSpell;
 import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.common.network.ac.CBarbaricAxeShakePacket;
 import com.qiuyue.goetyominous.common.rlyeh.ac.ExtinctionStyled;
-import com.qiuyue.goetyominous.config.WeaponConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
@@ -30,6 +29,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
 
@@ -61,11 +61,11 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
     }
 
     private static float damageArgument() {
-        return WeaponConfig.BarbaricAxeDamage.get().floatValue() - 1.0F - Tiers.NETHERITE.getAttackDamageBonus();
+        return AcConfig.BarbaricAxeDamage.get().floatValue() - 1.0F - Tiers.NETHERITE.getAttackDamageBonus();
     }
 
     private static float speedArgument() {
-        return WeaponConfig.BarbaricAxeAttackSpeed.get().floatValue() - 4.0F;
+        return AcConfig.BarbaricAxeAttackSpeed.get().floatValue() - 4.0F;
     }
 
     @Override
@@ -136,8 +136,8 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
 
     private static void sweep(Player player, Entity primary) {
         Level level = player.level();
-        double range = WeaponConfig.BarbaricAxeSweepRange.get();
-        float damage = WeaponConfig.BarbaricAxeSweepDamage.get().floatValue();
+        double range = AcConfig.BarbaricAxeSweepRange.get();
+        float damage = AcConfig.BarbaricAxeSweepDamage.get().floatValue();
 
         Vec3 look = player.getLookAngle();
         Vec3 forward = new Vec3(look.x, 0.0D, look.z);
@@ -187,9 +187,9 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
             player.getCooldowns().addCooldown(stack.getItem(), SLAM_COOLDOWN);
         }
 
-        double radius = finisher ? FINISHER_RADIUS : WeaponConfig.BarbaricAxeSlamRadius.get();
-        double damage = WeaponConfig.BarbaricAxeSlamDamage.get() * (finisher ? FINISHER_DAMAGE_MULTIPLIER : 1.0D);
-        int fire = WeaponConfig.BarbaricAxeIgniteSeconds.get();
+        double radius = finisher ? FINISHER_RADIUS : AcConfig.BarbaricAxeSlamRadius.get();
+        double damage = AcConfig.BarbaricAxeSlamDamage.get() * (finisher ? FINISHER_DAMAGE_MULTIPLIER : 1.0D);
+        int fire = AcConfig.BarbaricAxeIgniteSeconds.get();
         ParticleOptions flame = slamFlame();
 
         double centerX = center.getX() + 0.5D;

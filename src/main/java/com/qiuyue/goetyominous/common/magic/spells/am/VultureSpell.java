@@ -16,8 +16,6 @@ import java.util.function.Predicate;
 
 import com.qiuyue.goetyominous.common.entities.ally.am.SoulVultureServant;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
-import com.qiuyue.goetyominous.config.MobsConfig;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -34,17 +32,18 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import org.jetbrains.annotations.Nullable;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class VultureSpell extends SummonSpell {
     public VultureSpell() {
     }
 
     public int defaultSoulCost() {
-        return (Integer) SpellConfig.VultureSoulCost.get();
+        return (Integer) AmConfig.VultureSoulCost.get();
     }
 
     public int defaultCastDuration() {
-        return (Integer) SpellConfig.VultureCastDuration.get();
+        return (Integer) AmConfig.VultureCastDuration.get();
     }
 
     public @Nullable SoundEvent CastingSound() {
@@ -52,11 +51,11 @@ public class VultureSpell extends SummonSpell {
     }
 
     public int defaultSpellCooldown() {
-        return (Integer) SpellConfig.VultureCoolDown.get();
+        return (Integer) AmConfig.VultureCoolDown.get();
     }
 
     public int SummonDownDuration() {
-        return (Integer) SpellConfig.VultureSummonDown.get();
+        return (Integer) AmConfig.VultureSummonDown.get();
     }
 
     public SpellType getSpellType() {
@@ -77,7 +76,7 @@ public class VultureSpell extends SummonSpell {
     }
 
     public int summonLimit() {
-        return (Integer) MobsConfig.SoulVultureServantLimit.get();
+        return (Integer) AmConfig.SoulVultureServantLimit.get();
     }
 
     public void commonResultHit(ServerLevel worldIn, LivingEntity caster) {

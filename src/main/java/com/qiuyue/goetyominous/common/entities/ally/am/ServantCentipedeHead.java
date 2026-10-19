@@ -6,8 +6,6 @@ import com.Polarice3.Goety.utils.CuriosFinder;
 import com.github.alexthe666.alexsmobs.entity.EntityCockroach;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -46,6 +44,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class ServantCentipedeHead extends Summoned {
     private static final EntityDataAccessor<Optional<UUID>> CHILD_UUID;
@@ -63,17 +62,17 @@ public class ServantCentipedeHead extends Summoned {
 
     public static AttributeSupplier.Builder bakeAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.ServantCentipedeHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.ServantCentipedeFollowRange.get())
-                .add(Attributes.ARMOR, AttributesConfig.ServantCentipedeArmor.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.ServantCentipedeAttackDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.ServantCentipedeKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.ServantCentipedeMovementSpeed.get());
+                .add(Attributes.MAX_HEALTH, AmConfig.ServantCentipedeHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AmConfig.ServantCentipedeFollowRange.get())
+                .add(Attributes.ARMOR, AmConfig.ServantCentipedeArmor.get())
+                .add(Attributes.ATTACK_DAMAGE, AmConfig.ServantCentipedeAttackDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AmConfig.ServantCentipedeKnockbackResistance.get())
+                .add(Attributes.MOVEMENT_SPEED, AmConfig.ServantCentipedeMovementSpeed.get());
     }
 
     @Override
     public int getSummonLimit(LivingEntity player) {
-        return MobsConfig.CentipedeLimit.get();
+        return AmConfig.CentipedeLimit.get();
     }
 
     @Override

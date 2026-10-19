@@ -8,8 +8,6 @@ import com.qiuyue.goetyominous.common.entities.ally.of.goals.TerrorServantAttack
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.TerrorServantFollowGoal;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.TerrorServantStrollGoal;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.TerrorServantSwimGoal;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
 import com.unusualmodding.opposing_force.entity.utils.EliteVariant;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
@@ -61,6 +59,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import com.qiuyue.goetyominous.config.of.OfConfig;
 
 public class TerrorServant extends Summoned implements EliteVariant {
     private static final EntityDataAccessor<Boolean> SAWING;
@@ -98,9 +97,9 @@ public class TerrorServant extends Summoned implements EliteVariant {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.TerrorServantHealth.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.TerrorServantMovementSpeed.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.TerrorServantAttackDamage.get());
+                .add(Attributes.MAX_HEALTH, OfConfig.TerrorServantHealth.get())
+                .add(Attributes.MOVEMENT_SPEED, OfConfig.TerrorServantMovementSpeed.get())
+                .add(Attributes.ATTACK_DAMAGE, OfConfig.TerrorServantAttackDamage.get());
     }
 
     @Override
@@ -436,7 +435,7 @@ public class TerrorServant extends Summoned implements EliteVariant {
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.TerrorServantLimit.get();
+        return OfConfig.TerrorServantLimit.get();
     }
 
     @Override

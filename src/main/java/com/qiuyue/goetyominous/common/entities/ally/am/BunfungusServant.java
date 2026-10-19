@@ -3,7 +3,6 @@ package com.qiuyue.goetyominous.common.entities.ally.am;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.init.ModMobType;
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.entity.*;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAILeapRandomly;
@@ -15,7 +14,6 @@ import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import java.util.EnumSet;
 
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -49,6 +47,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class BunfungusServant extends Summoned implements IAnimatedEntity {
 
@@ -78,11 +77,11 @@ public class BunfungusServant extends Summoned implements IAnimatedEntity {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.BunfungusServantHealth.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.BunfungusServantDamage.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.BunfungusServantFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.BunfungusServantMovementSpeed.get())
-                .add(Attributes.ARMOR, AttributesConfig.BunfungusServantArmor.get());
+                .add(Attributes.MAX_HEALTH, AmConfig.BunfungusServantHealth.get())
+                .add(Attributes.ATTACK_DAMAGE, AmConfig.BunfungusServantDamage.get())
+                .add(Attributes.FOLLOW_RANGE, AmConfig.BunfungusServantFollowRange.get())
+                .add(Attributes.MOVEMENT_SPEED, AmConfig.BunfungusServantMovementSpeed.get())
+                .add(Attributes.ARMOR, AmConfig.BunfungusServantArmor.get());
     }
 
     public MobType getMobType() {
@@ -129,7 +128,7 @@ public class BunfungusServant extends Summoned implements IAnimatedEntity {
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.BunfungusLimit.get();
+        return AmConfig.BunfungusLimit.get();
     }
 
     @Override
@@ -476,7 +475,7 @@ public class BunfungusServant extends Summoned implements IAnimatedEntity {
                 if (this.hasJumped) {
                     if (!this.chungus.onGround()) {
 
-                        this.chungus.getTarget().hurt(this.chungus.damageSources().mobAttack(this.chungus), AttributesConfig.BunfungusServantContactDamage.get().floatValue());
+                        this.chungus.getTarget().hurt(this.chungus.damageSources().mobAttack(this.chungus), AmConfig.BunfungusServantContactDamage.get().floatValue());
                     }
                     this.hasJumped = false;
                 } else {

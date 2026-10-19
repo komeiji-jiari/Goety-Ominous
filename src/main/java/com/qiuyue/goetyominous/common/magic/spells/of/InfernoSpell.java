@@ -9,8 +9,6 @@ import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.ally.of.FireSlimeServant;
 import com.qiuyue.goetyominous.common.init.of.OfEntityRegistry;
-import com.qiuyue.goetyominous.config.MobsConfig;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -25,6 +23,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.of.OfConfig;
 
 public class InfernoSpell extends SummonSpell {
 
@@ -32,11 +31,11 @@ public class InfernoSpell extends SummonSpell {
     }
 
     public int defaultSoulCost() {
-        return SpellConfig.InfernoSoulCost.get();
+        return OfConfig.InfernoSoulCost.get();
     }
 
     public int defaultCastDuration() {
-        return SpellConfig.InfernoCastDuration.get();
+        return OfConfig.InfernoCastDuration.get();
     }
 
     public int SummonDownDuration() {
@@ -44,7 +43,7 @@ public class InfernoSpell extends SummonSpell {
     }
 
     public int defaultSpellCooldown() {
-        return SpellConfig.InfernoCoolDown.get();
+        return OfConfig.InfernoCoolDown.get();
     }
 
     public SoundEvent CastingSound() {
@@ -60,7 +59,7 @@ public class InfernoSpell extends SummonSpell {
     }
 
     public int summonLimit() {
-        return MobsConfig.FireSlimeServantLimit.get();
+        return OfConfig.FireSlimeServantLimit.get();
     }
 
     public List<Enchantment> acceptedEnchantments() {

@@ -10,7 +10,6 @@ import com.Polarice3.Goety.utils.ModDamageSource;
 import com.Polarice3.Goety.utils.ServerParticleUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.github.alexmodguy.alexscaves.client.particle.ACParticleRegistry;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -24,13 +23,14 @@ import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class ExtinctionBreathSpell extends BreathingSpell {
 
     public float damage;
 
     public ExtinctionBreathSpell() {
-        this.damage = SpellConfig.ExtinctionBreathDamage.get().floatValue() * WandUtil.damageMultiply();
+        this.damage = AcConfig.ExtinctionBreathDamage.get().floatValue() * WandUtil.damageMultiply();
     }
 
     @Override
@@ -40,22 +40,22 @@ public class ExtinctionBreathSpell extends BreathingSpell {
 
     @Override
     public int defaultSoulCost() {
-        return SpellConfig.ExtinctionBreathSoulCost.get();
+        return AcConfig.ExtinctionBreathSoulCost.get();
     }
 
     @Override
     public int defaultCastUp() {
-        return SpellConfig.ExtinctionBreathChargeUp.get();
+        return AcConfig.ExtinctionBreathChargeUp.get();
     }
 
     @Override
     public int shotsNumber() {
-        return SpellConfig.ExtinctionBreathDuration.get();
+        return AcConfig.ExtinctionBreathDuration.get();
     }
 
     @Override
     public int defaultSpellCooldown() {
-        return SpellConfig.ExtinctionBreathCoolDown.get();
+        return AcConfig.ExtinctionBreathCoolDown.get();
     }
 
     @Override

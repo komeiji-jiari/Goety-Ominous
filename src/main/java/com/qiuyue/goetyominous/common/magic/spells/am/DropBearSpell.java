@@ -11,8 +11,6 @@ import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.ally.am.DropBearServant;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
-import com.qiuyue.goetyominous.config.MobsConfig;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -26,21 +24,22 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class DropBearSpell extends SummonSpell {
     public DropBearSpell() {
     }
 
     public int defaultSoulCost() {
-        return (Integer) SpellConfig.DropBearSoulCost.get();
+        return (Integer) AmConfig.DropBearSoulCost.get();
     }
 
     public int defaultCastDuration() {
-        return (Integer) SpellConfig.DropBearCastDuration.get();
+        return (Integer) AmConfig.DropBearCastDuration.get();
     }
 
     public int SummonDownDuration() {
-        return (Integer) SpellConfig.DropBearSummonDown.get();
+        return (Integer) AmConfig.DropBearSummonDown.get();
     }
 
     public SoundEvent CastingSound() {
@@ -48,7 +47,7 @@ public class DropBearSpell extends SummonSpell {
     }
 
     public int defaultSpellCooldown() {
-        return (Integer) SpellConfig.DropBearCoolDown.get();
+        return (Integer) AmConfig.DropBearCoolDown.get();
     }
 
     public SpellType getSpellType() {
@@ -69,7 +68,7 @@ public class DropBearSpell extends SummonSpell {
     }
 
     public int summonLimit() {
-        return (Integer) MobsConfig.DropBearServantLimit.get();
+        return (Integer) AmConfig.DropBearServantLimit.get();
     }
 
     public void SpellResult(ServerLevel worldIn, LivingEntity caster, ItemStack staff, SpellStat spellStat) {

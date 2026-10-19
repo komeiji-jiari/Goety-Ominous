@@ -11,7 +11,6 @@ import com.github.alexthe666.alexsmobs.message.MessageSendVisualFlagFromServer;
 import com.github.alexthe666.alexsmobs.misc.AMDamageTypes;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 
@@ -51,6 +50,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class FarseerServant extends Summoned implements IAnimatedEntity {
 
@@ -90,12 +90,12 @@ public class FarseerServant extends Summoned implements IAnimatedEntity {
 
     public static AttributeSupplier.Builder bakeAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.FarseerServantHealth.get())
-                .add(Attributes.ARMOR, AttributesConfig.FarseerServantArmor.get())
-                .add(Attributes.FLYING_SPEED, AttributesConfig.FarseerServantFlyingSpeed.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.FarseerServantDamage.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.FarseerServantMovementSpeed.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.FarseerServantFollowRange.get());
+                .add(Attributes.MAX_HEALTH, AmConfig.FarseerServantHealth.get())
+                .add(Attributes.ARMOR, AmConfig.FarseerServantArmor.get())
+                .add(Attributes.FLYING_SPEED, AmConfig.FarseerServantFlyingSpeed.get())
+                .add(Attributes.ATTACK_DAMAGE, AmConfig.FarseerServantDamage.get())
+                .add(Attributes.MOVEMENT_SPEED, AmConfig.FarseerServantMovementSpeed.get())
+                .add(Attributes.FOLLOW_RANGE, AmConfig.FarseerServantFollowRange.get());
     }
 
     public boolean isNoGravity() {

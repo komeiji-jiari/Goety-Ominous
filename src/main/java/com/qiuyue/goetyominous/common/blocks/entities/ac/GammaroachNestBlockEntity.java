@@ -8,7 +8,6 @@ import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.qiuyue.goetyominous.common.entities.ally.ac.GammaroachServant;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockEntityRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -19,6 +18,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class GammaroachNestBlockEntity extends TrainingBlockEntity {
 
@@ -91,7 +91,7 @@ public class GammaroachNestBlockEntity extends TrainingBlockEntity {
                 ++count;
             }
         }
-        return count >= MobsConfig.GammaroachServantLimit.get();
+        return count >= AcConfig.GammaroachServantLimit.get();
     }
 
     @Override

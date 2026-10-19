@@ -3,7 +3,6 @@ package com.qiuyue.goetyominous.common.events.ac;
 import com.qiuyue.goetyominous.common.entities.ally.ac.MineGuardianServant;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -27,6 +26,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.registries.ForgeRegistries;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class MineGuardianSummonHandler {
 
@@ -73,7 +73,7 @@ public class MineGuardianSummonHandler {
                 count++;
             }
         }
-        return count < MobsConfig.MineGuardianServantLimit.get();
+        return count < AcConfig.MineGuardianServantLimit.get();
     }
 
     private static void summon(ServerLevel serverLevel, ItemStack stack, BlockPos pos, Player player,

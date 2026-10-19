@@ -1,7 +1,7 @@
 {
   "name": "Griefer Servant",
   "icon": "savage_and_ravage:spore_bomb",
-  "category": "goety:savageandravagecompat",
+  "category": "goety:goetyabnormal/summons",
   "sortnum": 40,
   "pages": [
     {

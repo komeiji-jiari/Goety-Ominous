@@ -9,7 +9,6 @@ import com.Polarice3.Goety.utils.MathHelper;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEffects;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import com.qiuyue.goetyominous.common.events.ac.TremorsaurusSpiritHandler;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -20,6 +19,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class TremorSpiritSpell extends Spell {
 
@@ -30,17 +30,17 @@ public class TremorSpiritSpell extends Spell {
 
     @Override
     public int defaultSoulCost() {
-        return SpellConfig.TremorSpiritCost.get();
+        return AcConfig.TremorSpiritCost.get();
     }
 
     @Override
     public int defaultCastDuration() {
-        return SpellConfig.TremorSpiritTime.get();
+        return AcConfig.TremorSpiritTime.get();
     }
 
     @Override
     public int defaultSpellCooldown() {
-        return SpellConfig.TremorSpiritCoolDown.get();
+        return AcConfig.TremorSpiritCoolDown.get();
     }
 
     @Override
@@ -72,7 +72,7 @@ public class TremorSpiritSpell extends Spell {
 
         TremorsaurusSpiritHandler.setStaffBonus(caster, this.rightStaff(staff));
         caster.addEffect(new MobEffectInstance(AcEffects.TREMORSAURUS_SPIRIT.get(),
-                MathHelper.secondsToTicks(SpellConfig.TremorSpiritBuffSeconds.get() * duration),
+                MathHelper.secondsToTicks(AcConfig.TremorSpiritBuffSeconds.get() * duration),
                 potency, false, false, true));
 
         this.playSound(worldIn, caster, ACSoundRegistry.TREMORSAURUS_ROAR.get());

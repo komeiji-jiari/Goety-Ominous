@@ -8,7 +8,6 @@ import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.qiuyue.goetyominous.common.entities.projectile.ac.DeepOneServantWave;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import com.qiuyue.goetyominous.utils.ac.CurseOfRlyehHelper;
 import com.qiuyue.goetyominous.utils.ac.KeyOfRlyehMixinHelper;
 import net.minecraft.server.level.ServerLevel;
@@ -24,6 +23,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class WaveBashSpell extends Spell {
 
@@ -37,7 +37,7 @@ public class WaveBashSpell extends Spell {
 
     @Override
     public int defaultSoulCost() {
-        return SpellConfig.TideBashCost.get();
+        return AcConfig.TideBashCost.get();
     }
 
     @Override
@@ -52,7 +52,7 @@ public class WaveBashSpell extends Spell {
 
     @Override
     public int defaultSpellCooldown() {
-        return SpellConfig.TideBashCoolDown.get();
+        return AcConfig.TideBashCoolDown.get();
     }
 
     @Override

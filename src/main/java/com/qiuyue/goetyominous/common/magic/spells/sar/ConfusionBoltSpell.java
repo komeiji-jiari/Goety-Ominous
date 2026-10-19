@@ -15,12 +15,13 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.qiuyue.goetyominous.config.uasr.UasrConfig;
 
 public class ConfusionBoltSpell extends Spell {
 
     @Override
     public int defaultSoulCost() {
-        return com.qiuyue.goetyominous.config.SpellConfig.ConfusionBoltSoulCost.get();
+        return com.qiuyue.goetyominous.config.uasr.UasrConfig.ConfusionBoltSoulCost.get();
     }
 
     @Override
@@ -35,7 +36,7 @@ public class ConfusionBoltSpell extends Spell {
 
     @Override
     public int defaultSpellCooldown() {
-        return com.qiuyue.goetyominous.config.SpellConfig.ConfusionBoltCooldown.get();
+        return com.qiuyue.goetyominous.config.uasr.UasrConfig.ConfusionBoltCooldown.get();
     }
 
     @Override

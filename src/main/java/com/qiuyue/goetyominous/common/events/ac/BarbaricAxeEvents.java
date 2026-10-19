@@ -2,7 +2,6 @@ package com.qiuyue.goetyominous.common.events.ac;
 
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.items.ac.BarbaricAxeItem;
-import com.qiuyue.goetyominous.config.WeaponConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
@@ -19,6 +18,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 @Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID)
 public class BarbaricAxeEvents {
@@ -45,7 +45,7 @@ public class BarbaricAxeEvents {
         }
 
         Block block = origin.getBlock();
-        int remaining = WeaponConfig.BarbaricAxeChainLimit.get() - 1;
+        int remaining = AcConfig.BarbaricAxeChainLimit.get() - 1;
         if (remaining <= 0) {
             return;
         }

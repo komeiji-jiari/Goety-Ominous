@@ -12,8 +12,6 @@ import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.qiuyue.goetyominous.common.entities.ai.ac.GumWormServantAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ai.ac.GumWormServantLeapRandomlyGoal;
 import com.qiuyue.goetyominous.common.entities.ai.ac.GumWormServantRidingGoal;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.utils.ModMobType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -62,6 +60,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class GumWormServant extends Summoned implements KaijuMob {
 
@@ -117,12 +116,12 @@ public class GumWormServant extends Summoned implements KaijuMob {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.GumWormServantMovementSpeed.get())
-                .add(Attributes.MAX_HEALTH, AttributesConfig.GumWormServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.GumWormServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.GumWormServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.GumWormServantKnockbackResistance.get())
-                .add(Attributes.ARMOR, AttributesConfig.GumWormServantArmor.get());
+                .add(Attributes.MOVEMENT_SPEED, AcConfig.GumWormServantMovementSpeed.get())
+                .add(Attributes.MAX_HEALTH, AcConfig.GumWormServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AcConfig.GumWormServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AcConfig.GumWormServantDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.GumWormServantKnockbackResistance.get())
+                .add(Attributes.ARMOR, AcConfig.GumWormServantArmor.get());
     }
 
     @Override
@@ -166,7 +165,7 @@ public class GumWormServant extends Summoned implements KaijuMob {
 
     @Override
     public int getSummonLimit(LivingEntity player) {
-        return MobsConfig.GumWormServantLimit.get();
+        return AcConfig.GumWormServantLimit.get();
     }
 
     @Override

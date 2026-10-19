@@ -3,7 +3,6 @@ package com.qiuyue.goetyominous.common.entities.ally.am;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.utils.CuriosFinder;
 import com.Polarice3.Goety.utils.MobUtil;
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -16,6 +15,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class WitherSkelewagServant extends SkelewagServant {
 
@@ -26,11 +26,11 @@ public class WitherSkelewagServant extends SkelewagServant {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.SkelewagServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.SkelewagServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.SkelewagServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.SkelewagServantKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.SkelewagServantMovementSpeed.get());
+                .add(Attributes.MAX_HEALTH, AmConfig.SkelewagServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AmConfig.SkelewagServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AmConfig.SkelewagServantDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AmConfig.SkelewagServantKnockbackResistance.get())
+                .add(Attributes.MOVEMENT_SPEED, AmConfig.SkelewagServantMovementSpeed.get());
     }
 
     @Override

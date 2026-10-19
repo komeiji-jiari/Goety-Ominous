@@ -28,8 +28,6 @@ import com.qiuyue.goetyominous.common.entities.ai.ac.ServantBreedGoal;
 import com.qiuyue.goetyominous.common.entities.ai.ac.ServantLayEggGoal;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -85,6 +83,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class TremorsaurusServant extends AnimalSummon implements LaysEggs, KeybindUsingMount, IAnimatedEntity, ShakesScreen, PlayerRideable {
 
@@ -127,12 +126,12 @@ public class TremorsaurusServant extends AnimalSummon implements LaysEggs, Keybi
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.TremorsaurusServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.TremorsaurusServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.TremorsaurusServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.TremorsaurusServantKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.TremorsaurusServantMovementSpeed.get())
-                .add(Attributes.ARMOR, AttributesConfig.TremorsaurusServantArmor.get());
+                .add(Attributes.MAX_HEALTH, AcConfig.TremorsaurusServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AcConfig.TremorsaurusServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AcConfig.TremorsaurusServantDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.TremorsaurusServantKnockbackResistance.get())
+                .add(Attributes.MOVEMENT_SPEED, AcConfig.TremorsaurusServantMovementSpeed.get())
+                .add(Attributes.ARMOR, AcConfig.TremorsaurusServantArmor.get());
     }
     @Override
     protected void defineSynchedData() {
@@ -145,7 +144,7 @@ public class TremorsaurusServant extends AnimalSummon implements LaysEggs, Keybi
     }
     @Override
     public int getSummonLimit(LivingEntity player) {
-        return MobsConfig.TremorsaurusServantLimit.get();
+        return AcConfig.TremorsaurusServantLimit.get();
     }
 
     @Override
@@ -226,7 +225,7 @@ public class TremorsaurusServant extends AnimalSummon implements LaysEggs, Keybi
         }
         if (!isRunning() && hasRunningAttributes) {
             hasRunningAttributes = false;
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AttributesConfig.TremorsaurusServantMovementSpeed.get());
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AcConfig.TremorsaurusServantMovementSpeed.get());
         }
         if (this.getAnimation() == ANIMATION_ROAR && this.getAnimationTick() == 5 && !this.level().isClientSide) {
             this.playRoarSound();
@@ -318,7 +317,7 @@ public class TremorsaurusServant extends AnimalSummon implements LaysEggs, Keybi
     }
 
     public double getRunningSpeed() {
-        return AttributesConfig.TremorsaurusServantMovementSpeed.get() * 1.75D;
+        return AcConfig.TremorsaurusServantMovementSpeed.get() * 1.75D;
     }
 
     private void playRoarSound() {

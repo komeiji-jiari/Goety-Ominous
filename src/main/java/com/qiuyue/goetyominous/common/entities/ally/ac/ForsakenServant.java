@@ -16,8 +16,6 @@ import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.animation.LegSolverQuadruped;
 import com.qiuyue.goetyominous.common.init.ac.AcParticles;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.common.network.ac.ForsakenRiderJumpPacket;
 import com.qiuyue.goetyominous.common.network.ModNetwork;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
@@ -76,6 +74,7 @@ import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class ForsakenServant extends Summoned implements IAnimatedEntity, ShakesScreen, PlayerRideable {
     private static final EntityDataAccessor<Boolean> RUNNING = SynchedEntityData.defineId(ForsakenServant.class, EntityDataSerializers.BOOLEAN);
@@ -151,11 +150,11 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.ForsakenServantMovementSpeed.get())
-                .add(Attributes.MAX_HEALTH, AttributesConfig.ForsakenServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.ForsakenServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.ForsakenServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.ForsakenServantKnockbackResistance.get());
+                .add(Attributes.MOVEMENT_SPEED, AcConfig.ForsakenServantMovementSpeed.get())
+                .add(Attributes.MAX_HEALTH, AcConfig.ForsakenServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AcConfig.ForsakenServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AcConfig.ForsakenServantDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.ForsakenServantKnockbackResistance.get());
     }
 
     @Override
@@ -172,7 +171,7 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
 
     @Override
     public int getSummonLimit(LivingEntity player) {
-        return MobsConfig.ForsakenServantLimit.get();
+        return AcConfig.ForsakenServantLimit.get();
     }
 
     @Override

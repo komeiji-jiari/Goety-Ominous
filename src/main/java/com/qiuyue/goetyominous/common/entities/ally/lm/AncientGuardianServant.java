@@ -10,8 +10,6 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IMoveGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IStateGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.IceShockwaveSpawner;
 import com.qiuyue.goetyominous.compat.lm.LmScreenShake;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.miauczel.legendary_monsters.Particle.custom.Circle;
 import net.miauczel.legendary_monsters.effect.ModEffects;
@@ -56,12 +54,17 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
+import com.qiuyue.goetyominous.config.lm.LmConfig;
 
 public class AncientGuardianServant extends IAnimatedMiniBossServant {
     private static final int AWAKE_TICKS = 20;
     private static final int SMASH_COOLDOWN = 100;
     private static final int SMASH_ANCHOR_COOLDOWN = 60;
     private static final int STUN_COOLDOWN = 200;
+    private static final float WALK_ANIMATION_LENGTH = 1.5417F;
+    private static final float WALK_ANIMATION_TIME_PER_POSITION = 0.075F;
+    private static final float LEFT_STEP_PHASE = 0.0F;
+    private static final float RIGHT_STEP_PHASE = 0.875F;
     private static final int[][] GRAB_PLAYER_RANGES = {
             {3, 6, 1}, {6, 9, 2}, {9, 12, 3}, {12, 13, 2}, {13, 14, 1}, {14, 20, -1},
             {20, 23, 1}, {23, 26, 2}, {26, 33, 3}, {33, 36, 2}, {36, 39, 1},
@@ -76,6 +79,7 @@ public class AncientGuardianServant extends IAnimatedMiniBossServant {
     private int stunCooldown;
     private int smashCooldown;
     private int smashAnchorCooldown;
+    private float lastStepPhase = -1.0F;
     public int guardianDeathTime;
 
     public AnimationState idleAnimationState = new AnimationState();
@@ -99,12 +103,12 @@ public class AncientGuardianServant extends IAnimatedMiniBossServant {
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.AncientGuardianServantLimit.get();
+        return LmConfig.AncientGuardianServantLimit.get();
     }
 
     @Override
     public double damageMultiplier() {
-        return MobsConfig.AncientGuardianServantDamageMultiplier.get();
+        return LmConfig.AncientGuardianServantDamageMultiplier.get();
     }
 
     @Override
@@ -152,6 +156,7 @@ public class AncientGuardianServant extends IAnimatedMiniBossServant {
                 this.setSleep(false);
             }
             this.updateWithAttack();
+            this.updateStepSounds();
         }
         if (this.smashCooldown > 0) {
             --this.smashCooldown;
@@ -171,7 +176,7 @@ public class AncientGuardianServant extends IAnimatedMiniBossServant {
         if (this.horizontalCollision && this.isInWall()) {
             this.setDeltaMovement(this.getDeltaMovement().add(0.1D, 0.0D, 0.1D));
         }
-        if (!this.level().isClientSide && this.getTarget() != null) {
+        if (!this.level().isClientSide && !this.isDeadOrDying() && this.getTarget() != null) {
             this.updateFacing();
         }
         if (!this.level().isClientSide) {
@@ -179,7 +184,7 @@ public class AncientGuardianServant extends IAnimatedMiniBossServant {
             Crackiness crackiness = this.getCrackiness();
             if (armor != null
                     && (crackiness == Crackiness.MEDIUM || crackiness == Crackiness.HIGH)
-                    && armor.getBaseValue() == AttributesConfig.AncientGuardianServantArmor.get()) {
+                    && armor.getBaseValue() == LmConfig.AncientGuardianServantArmor.get()) {
                 armor.setBaseValue(20.0D);
             }
         }
@@ -323,19 +328,19 @@ public class AncientGuardianServant extends IAnimatedMiniBossServant {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.AncientGuardianServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.AncientGuardianServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.AncientGuardianServantFollowRange.get())
-                .add(Attributes.ARMOR, AttributesConfig.AncientGuardianServantArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.AncientGuardianServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, AttributesConfig.AncientGuardianServantAttackKnockback.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.AncientGuardianServantDamage.get());
+                .add(Attributes.MAX_HEALTH, LmConfig.AncientGuardianServantHealth.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.AncientGuardianServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, LmConfig.AncientGuardianServantFollowRange.get())
+                .add(Attributes.ARMOR, LmConfig.AncientGuardianServantArmor.get())
+                .add(Attributes.MOVEMENT_SPEED, LmConfig.AncientGuardianServantMovementSpeed.get())
+                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.AncientGuardianServantAttackKnockback.get())
+                .add(Attributes.ATTACK_DAMAGE, LmConfig.AncientGuardianServantDamage.get());
     }
 
     public void setConfigurableAttributes() {
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), AttributesConfig.AncientGuardianServantHealth.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), AttributesConfig.AncientGuardianServantArmor.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), AttributesConfig.AncientGuardianServantDamage.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), LmConfig.AncientGuardianServantHealth.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), LmConfig.AncientGuardianServantArmor.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), LmConfig.AncientGuardianServantDamage.get());
     }
 
     @Nullable
@@ -351,7 +356,35 @@ public class AncientGuardianServant extends IAnimatedMiniBossServant {
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState block) {
-        this.playSound(ModSounds.STEP_SOUND.get(), 1.0F, 1.0F);
+    }
+
+    private void updateStepSounds() {
+        float phase = this.walkAnimation.position() * WALK_ANIMATION_TIME_PER_POSITION % WALK_ANIMATION_LENGTH;
+        float previousPhase = this.lastStepPhase;
+        this.lastStepPhase = phase;
+        if (previousPhase < 0.0F
+                || !this.walkAnimation.isMoving()
+                || !this.onGround()
+                || this.isSleep()
+                || this.getAttackState() == 6) {
+            return;
+        }
+        double moveX = this.getX() - this.xo;
+        double moveZ = this.getZ() - this.zo;
+        if (moveX * moveX + moveZ * moveZ < 1.0E-6D) {
+            return;
+        }
+        if (crossedStepPhase(previousPhase, phase, LEFT_STEP_PHASE)
+                || crossedStepPhase(previousPhase, phase, RIGHT_STEP_PHASE)) {
+            this.playSound(ModSounds.STEP_SOUND.get(), 1.0F, 1.0F);
+        }
+    }
+
+    private static boolean crossedStepPhase(float previous, float current, float target) {
+        if (previous <= current) {
+            return previous <= target && target < current;
+        }
+        return target >= previous || target < current;
     }
 
     @Override
@@ -410,7 +443,7 @@ public class AncientGuardianServant extends IAnimatedMiniBossServant {
         if (source.is(DamageTypeTags.IS_FALL)) {
             return false;
         }
-        if (MobsConfig.AncientGuardianServantProjectileImmunity.get()
+        if (LmConfig.AncientGuardianServantProjectileImmunity.get()
                 && source.getDirectEntity() instanceof AbstractArrow) {
             return false;
         }

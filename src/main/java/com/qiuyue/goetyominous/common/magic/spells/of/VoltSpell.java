@@ -15,8 +15,6 @@ import java.util.function.Predicate;
 
 import com.qiuyue.goetyominous.common.entities.ally.of.VoltServant;
 import com.qiuyue.goetyominous.common.init.of.OfEntityRegistry;
-import com.qiuyue.goetyominous.config.MobsConfig;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -27,6 +25,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
+import com.qiuyue.goetyominous.config.of.OfConfig;
 
 public class VoltSpell extends SummonSpell {
 
@@ -34,19 +33,19 @@ public class VoltSpell extends SummonSpell {
     }
 
     public int defaultSoulCost() {
-        return (Integer) SpellConfig.VoltSoulCost.get();
+        return (Integer) OfConfig.VoltSoulCost.get();
     }
 
     public int defaultCastDuration() {
-        return (Integer)SpellConfig.VoltCastDuration.get();
+        return (Integer)OfConfig.VoltCastDuration.get();
     }
 
     public int SummonDownDuration() {
-        return (Integer)SpellConfig.VoltSummonDown.get();
+        return (Integer)OfConfig.VoltSummonDown.get();
     }
 
     public int defaultSpellCooldown() {
-        return (Integer)SpellConfig.VoltCoolDown.get();
+        return (Integer)OfConfig.VoltCoolDown.get();
     }
 
     public SoundEvent CastingSound() {
@@ -64,7 +63,7 @@ public class VoltSpell extends SummonSpell {
     }
 
     public int summonLimit() {
-        return (Integer) MobsConfig.VoltServantLimit.get();
+        return (Integer) OfConfig.VoltServantLimit.get();
     }
 
     public List<Enchantment> acceptedEnchantments() {

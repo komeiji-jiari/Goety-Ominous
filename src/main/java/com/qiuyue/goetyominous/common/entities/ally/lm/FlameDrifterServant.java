@@ -1,14 +1,12 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm;
 
 import com.qiuyue.goetyominous.compat.lm.LmScreenShake;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IAttackGoalMin;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IMoveGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SmallAnnihilationBomb;
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
 import net.miauczel.legendary_monsters.Particle.custom.AnnihilationBombTrail;
 import net.miauczel.legendary_monsters.Particle.custom.BigAnnihilationSweepParticle;
@@ -40,6 +38,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
+import com.qiuyue.goetyominous.config.lm.LmConfig;
 
 public class FlameDrifterServant extends AbstractFlamebornServant {
 
@@ -69,18 +68,18 @@ public class FlameDrifterServant extends AbstractFlamebornServant {
 
     @Override
     public double damageMultiplier() {
-        return MobsConfig.FlameDrifterServantDamageMultiplier.get();
+        return LmConfig.FlameDrifterServantDamageMultiplier.get();
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.FlameDrifterServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.FlameDrifterServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.FlameDrifterServantFollowRange.get())
-                .add(Attributes.ARMOR, AttributesConfig.FlameDrifterServantArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.FlameDrifterServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, AttributesConfig.FlameDrifterServantAttackKnockback.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.FlameDrifterServantDamage.get());
+                .add(Attributes.MAX_HEALTH, LmConfig.FlameDrifterServantHealth.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.FlameDrifterServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, LmConfig.FlameDrifterServantFollowRange.get())
+                .add(Attributes.ARMOR, LmConfig.FlameDrifterServantArmor.get())
+                .add(Attributes.MOVEMENT_SPEED, LmConfig.FlameDrifterServantMovementSpeed.get())
+                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.FlameDrifterServantAttackKnockback.get())
+                .add(Attributes.ATTACK_DAMAGE, LmConfig.FlameDrifterServantDamage.get());
     }
 
     @Override

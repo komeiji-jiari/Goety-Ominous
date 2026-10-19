@@ -1,0 +1,7 @@
+{
+  "name": "Summons",
+  "description": "More servants for a darker wizard.",
+  "icon": "upgrade_aquatic:thrasher_tooth",
+  "parent": "goety:goetyabnormal",
+  "sortnum": 3
+}

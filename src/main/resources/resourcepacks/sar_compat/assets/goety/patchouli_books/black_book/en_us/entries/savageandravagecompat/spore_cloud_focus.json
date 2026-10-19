@@ -1,7 +1,7 @@
 {
   "name": "Spore Cloud Focus",
   "icon": "goetyominous:spore_cloud_focus",
-  "category": "goety:savageandravagecompat",
+  "category": "goety:goetyabnormal/focuses",
   "sortnum": 30,
   "pages": [
     {

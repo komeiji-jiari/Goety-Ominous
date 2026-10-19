@@ -30,8 +30,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -103,6 +101,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraftforge.common.ForgeConfigSpec;
+import com.qiuyue.goetyominous.config.mm.MmConfig;
 
 public class MutantWitherSkeletonServant extends AbstractMutantServant implements AdvancedAnimatable {
     private static final UUID SPEED_MODIFIER_CROUCHING_UUID = UUID.fromString("adfdf75b-53d7-45c4-bee6-81bcc4a1632b");
@@ -176,16 +175,16 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
         AttributeInstance health = this.getAttribute(Attributes.MAX_HEALTH);
         AttributeInstance attack = this.getAttribute(Attributes.ATTACK_DAMAGE);
         if (this.hasSoulShield()) {
-            this.addModIfMissing(health, SOUL_SHIELD_HEALTH_UUID, "Soul Shield Health", MobsConfig.MWSSoulShieldHealthBouns.get());
-            this.addModIfMissing(attack, SOUL_SHIELD_ATTACK_UUID, "Soul Shield Attack", MobsConfig.MWSSoulShieldDamageBouns.get());
+            this.addModIfMissing(health, SOUL_SHIELD_HEALTH_UUID, "Soul Shield Health", MmConfig.MWSSoulShieldHealthBouns.get());
+            this.addModIfMissing(attack, SOUL_SHIELD_ATTACK_UUID, "Soul Shield Attack", MmConfig.MWSSoulShieldDamageBouns.get());
         }
         if (this.hasHowlingSoul()) {
-            this.addModIfMissing(health, HOWLING_SOUL_HEALTH_UUID, "Howling Soul Health", MobsConfig.MWSHowlingSoulHealthBouns.get());
-            this.addModIfMissing(attack, HOWLING_SOUL_ATTACK_UUID, "Howling Soul Attack", MobsConfig.MWSHowlingSoulDamageBouns.get());
+            this.addModIfMissing(health, HOWLING_SOUL_HEALTH_UUID, "Howling Soul Health", MmConfig.MWSHowlingSoulHealthBouns.get());
+            this.addModIfMissing(attack, HOWLING_SOUL_ATTACK_UUID, "Howling Soul Attack", MmConfig.MWSHowlingSoulDamageBouns.get());
         }
         if (this.hasUnholyBlood()) {
-            this.addModIfMissing(health, UNHOLY_BLOOD_HEALTH_UUID, "Unholy Blood Health", MobsConfig.MWSUnholyBloodHealthBouns.get());
-            this.addModIfMissing(attack, UNHOLY_BLOOD_ATTACK_UUID, "Unholy Blood Attack", MobsConfig.MWSUnholyBloodDamageBouns.get());
+            this.addModIfMissing(health, UNHOLY_BLOOD_HEALTH_UUID, "Unholy Blood Health", MmConfig.MWSUnholyBloodHealthBouns.get());
+            this.addModIfMissing(attack, UNHOLY_BLOOD_ATTACK_UUID, "Unholy Blood Attack", MmConfig.MWSUnholyBloodDamageBouns.get());
         }
     }
 
@@ -228,19 +227,19 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.MutantWitherSkeletonServantLimit.get();
+        return MmConfig.MutantWitherSkeletonServantLimit.get();
     }
 
     public static AttributeSupplier.Builder createConfiguredAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.MutantWitherSkeletonServantHealth.get())
-                .add(Attributes.ARMOR, AttributesConfig.MutantWitherSkeletonServantArmor.get())
-                .add(Attributes.ARMOR_TOUGHNESS, AttributesConfig.MutantWitherSkeletonServantArmorToughness.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.MutantWitherSkeletonServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.MutantWitherSkeletonServantFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.MutantWitherSkeletonServantMovementSpeed.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.MutantWitherSkeletonServantAttackDamage.get())
-                .add(Attributes.ATTACK_KNOCKBACK, AttributesConfig.MutantWitherSkeletonServantAttackKnockback.get());
+                .add(Attributes.MAX_HEALTH, MmConfig.MutantWitherSkeletonServantHealth.get())
+                .add(Attributes.ARMOR, MmConfig.MutantWitherSkeletonServantArmor.get())
+                .add(Attributes.ARMOR_TOUGHNESS, MmConfig.MutantWitherSkeletonServantArmorToughness.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, MmConfig.MutantWitherSkeletonServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, MmConfig.MutantWitherSkeletonServantFollowRange.get())
+                .add(Attributes.MOVEMENT_SPEED, MmConfig.MutantWitherSkeletonServantMovementSpeed.get())
+                .add(Attributes.ATTACK_DAMAGE, MmConfig.MutantWitherSkeletonServantAttackDamage.get())
+                .add(Attributes.ATTACK_KNOCKBACK, MmConfig.MutantWitherSkeletonServantAttackKnockback.get());
     }
 
     protected void registerGoals() {
@@ -302,7 +301,7 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
     }
 
     public AbstractMutantServant.NodeEvaluatorDimensions getNodeEvaluatorDimensions() {
-        return new AbstractMutantServant.NodeEvaluatorDimensions(Mth.floor(this.getBbWidth() + 1.0F), Mth.floor(crouchingDimensions.height), Mth.floor(this.getBbWidth() + 1.0F));
+        return new AbstractMutantServant.NodeEvaluatorDimensions(Mth.floor(this.getBbWidth() + 1.0F), Mth.floor(crouchingDimensions.height + 1.0F), Mth.floor(this.getBbWidth() + 1.0F));
     }
 
     public boolean canAttack(LivingEntity target) {
@@ -402,6 +401,7 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
                         && (Boolean) MutantWitherSkeletonCommonConfig.uses_block.get()
                         && p_21017_ > 0
                         && !this.shouldBeStationary()
+                        && !this.getAnimation("lunge").isPlaying()
                         && !this.getAnimation("lunging").isPlaying()
                         && !this.getAnimation("lunge_land").isPlaying()
                         && !this.getAnimation("stunned").isPlaying()) {
@@ -581,7 +581,7 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
                         item instanceof PhilosophersMaceItem ||
                         item instanceof TieredItem ||
                         item instanceof ShieldItem ||
-                        item instanceof com.github.L_Ender.cataclysm.items.Cataclysm_Weapon_Item;
+                        isCataclysmWeapon(item);
             } else if (item instanceof ArmorItem) {
                 canEquip = true;
             } else if (item instanceof BlockItem blockItem && blockItem.getBlock() instanceof SkullBlock) {

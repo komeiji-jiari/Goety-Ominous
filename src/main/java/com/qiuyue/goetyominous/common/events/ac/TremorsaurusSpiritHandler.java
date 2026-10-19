@@ -5,7 +5,6 @@ import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TremorsaurusSpiritEntity;
 import com.qiuyue.goetyominous.common.init.ac.AcEffects;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -19,6 +18,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class TremorsaurusSpiritHandler {
 
@@ -56,7 +56,7 @@ public class TremorsaurusSpiritHandler {
             return;
         }
         long now = serverLevel.getGameTime();
-        int cooldown = SpellConfig.TremorSpiritSpiritCooldown.get();
+        int cooldown = AcConfig.TremorSpiritSpiritCooldown.get();
         if (cooldown > 0) {
             Long last = SPIRIT_COOLDOWN.get(attacker.getUUID());
             if (last != null && now - last < cooldown) {

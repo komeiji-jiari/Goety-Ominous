@@ -6,7 +6,6 @@ import com.qiuyue.goetyominous.common.blocks.entities.ac.VallumraptorServantEggB
 import com.qiuyue.goetyominous.common.entities.ally.ac.VallumraptorServant;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockEntityRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -21,6 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 
 import java.util.UUID;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class VallumraptorServantEggBlock extends ServantEggBlock {
 
@@ -71,7 +71,7 @@ public class VallumraptorServantEggBlock extends ServantEggBlock {
         }
         baby.setAge(-24000);
         baby.setOwnerId(owner);
-        baby.setElder(baby.getRandom().nextInt(100) < MobsConfig.VallumraptorElderChance.get());
+        baby.setElder(baby.getRandom().nextInt(100) < AcConfig.VallumraptorElderChance.get());
         baby.setPersistenceRequired();
         baby.moveTo(pos.getX() + 0.3D + index * 0.2D, pos.getY(), pos.getZ() + 0.3D, 0.0F, 0.0F);
         level.addFreshEntity(baby);

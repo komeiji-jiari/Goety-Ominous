@@ -1,7 +1,7 @@
 {
   "name": "Confusion Bolt Focus",
   "icon": "goetyominous:confusion_bolt_focus",
-  "category": "goety:savageandravagecompat",
+  "category": "goety:goetyabnormal/focuses",
   "sortnum": 80,
   "pages": [
     {

@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 @OnlyIn(Dist.CLIENT)
 public class RenderWarpedMoscoServant extends MobRenderer<WarpedMoscoServant, ModelWarpedMoscoServant> {
@@ -29,7 +30,7 @@ public class RenderWarpedMoscoServant extends MobRenderer<WarpedMoscoServant, Mo
 
     @Override
     public ResourceLocation getTextureLocation(WarpedMoscoServant entity) {
-        if (com.qiuyue.goetyominous.config.MobsConfig.WarpedMoscoUnholyBloodTexture.get() && entity.hasUnholyBlood()) {
+        if (AmConfig.WarpedMoscoUnholyBloodTexture.get() && entity.hasUnholyBlood()) {
             return TEXTURE_UNHOLY_BLOOD;
         }
         return TEXTURE;
@@ -43,7 +44,7 @@ public class RenderWarpedMoscoServant extends MobRenderer<WarpedMoscoServant, Mo
         }
 
         public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, WarpedMoscoServant entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-            boolean unholyVariant = com.qiuyue.goetyominous.config.MobsConfig.WarpedMoscoUnholyBloodTexture.get() && entitylivingbaseIn.hasUnholyBlood();
+            boolean unholyVariant = AmConfig.WarpedMoscoUnholyBloodTexture.get() && entitylivingbaseIn.hasUnholyBlood();
             ResourceLocation glowTexture = unholyVariant ? TEXTURE_EYES_UNHOLY_BLOOD : TEXTURE_EYES;
             VertexConsumer ivertexbuilder = bufferIn.getBuffer(AMRenderTypes.getEyesFlickering(glowTexture, 0));
             float alpha = 0.5F + (Mth.cos(ageInTicks * 0.2F) + 1F) * 0.2F;

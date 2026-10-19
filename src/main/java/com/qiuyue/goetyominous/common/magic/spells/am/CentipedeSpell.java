@@ -10,8 +10,6 @@ import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.ally.am.ServantCentipedeHead;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
-import com.qiuyue.goetyominous.config.MobsConfig;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -24,19 +22,20 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class CentipedeSpell extends SummonSpell {
 
     public int defaultSoulCost() {
-        return (Integer) SpellConfig.CentipedeCost.get();
+        return (Integer) AmConfig.CentipedeCost.get();
     }
 
     public int defaultCastDuration() {
-        return (Integer) SpellConfig.CentipedeDuration.get();
+        return (Integer) AmConfig.CentipedeDuration.get();
     }
 
     public int SummonDownDuration() {
-        return (Integer) SpellConfig.CentipedeSummonDown.get();
+        return (Integer) AmConfig.CentipedeSummonDown.get();
     }
 
     public SoundEvent CastingSound() {
@@ -44,7 +43,7 @@ public class CentipedeSpell extends SummonSpell {
     }
 
     public int defaultSpellCooldown() {
-        return (Integer) SpellConfig.CentipedeCoolDown.get();
+        return (Integer) AmConfig.CentipedeCoolDown.get();
     }
 
     public SpellType getSpellType() {
@@ -63,7 +62,7 @@ public class CentipedeSpell extends SummonSpell {
     }
 
     public int summonLimit() {
-        return (Integer) MobsConfig.CentipedeLimit.get();
+        return (Integer) AmConfig.CentipedeLimit.get();
     }
 
     @Override

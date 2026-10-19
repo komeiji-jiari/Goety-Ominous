@@ -7,7 +7,6 @@ import com.qiuyue.goetyominous.common.magic.spells.ac.XRaySpell;
 import com.qiuyue.goetyominous.common.network.ModNetwork;
 import com.qiuyue.goetyominous.common.network.ac.NuclearExplosionEffectPacket;
 import com.qiuyue.goetyominous.common.network.ac.XRayPacket;
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.utils.IRayMuzzle;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -43,6 +42,7 @@ import net.minecraftforge.network.PacketDistributor;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.UUID;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class NuclearGuardianServant extends MineGuardianServant implements IRayMuzzle {
 
@@ -76,7 +76,7 @@ public class NuclearGuardianServant extends MineGuardianServant implements IRayM
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MOVEMENT_SPEED, 0.25D)
-                .add(Attributes.MAX_HEALTH, AttributesConfig.NuclearGuardianServantHealth.get())
+                .add(Attributes.MAX_HEALTH, AcConfig.NuclearGuardianServantHealth.get())
                 .add(Attributes.ATTACK_DAMAGE, 1.0D);
     }
 
@@ -155,7 +155,7 @@ public class NuclearGuardianServant extends MineGuardianServant implements IRayM
     @Override
     protected boolean isDesperate() {
         return this.manuallyIgnited
-                || this.getHealth() <= this.getMaxHealth() * AttributesConfig.NuclearGuardianServantSelfDestructHealth.get().floatValue();
+                || this.getHealth() <= this.getMaxHealth() * AcConfig.NuclearGuardianServantSelfDestructHealth.get().floatValue();
     }
 
     @Override
@@ -311,7 +311,7 @@ public class NuclearGuardianServant extends MineGuardianServant implements IRayM
             }
             if (active >= 0 && aligned && active % HIT_INTERVAL == 0) {
                 XRaySpell.hurtAround(serverLevel, servant, end, BEAM_RADIUS, false,
-                        AttributesConfig.NuclearGuardianServantBeamDamage.get().floatValue());
+                        AcConfig.NuclearGuardianServantBeamDamage.get().floatValue());
             }
         }
     }

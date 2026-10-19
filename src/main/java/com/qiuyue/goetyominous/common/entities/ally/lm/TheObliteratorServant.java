@@ -9,6 +9,7 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.goals.obliterator.AmbushS
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.obliterator.ArmBlockGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.obliterator.BombShootGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.obliterator.CloseTeleportGrabGoal;
+import com.qiuyue.goetyominous.common.entities.ally.lm.goals.FarTeleportFollowGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IStateGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.obliterator.ITwoHitAttackGoal;
@@ -34,8 +35,6 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.EntityThrown;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SmallAnnihilationBomb;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import com.qiuyue.goetyominous.compat.lm.LmScreenShake;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -106,6 +105,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Random;
+import com.qiuyue.goetyominous.config.lm.LmConfig;
 
 public class TheObliteratorServant extends IAnimatedBossServant {
 
@@ -307,25 +307,25 @@ public class TheObliteratorServant extends IAnimatedBossServant {
 
     @Override
     public double damageMultiplier() {
-        return MobsConfig.TheObliteratorServantDamageMultiplier.get();
+        return LmConfig.TheObliteratorServantDamageMultiplier.get();
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.TheObliteratorServantHealth.get())
-                .add(Attributes.ARMOR, AttributesConfig.TheObliteratorServantArmor.get())
-                .add(Attributes.ARMOR_TOUGHNESS, AttributesConfig.TheObliteratorServantArmorToughness.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.TheObliteratorServantDamage.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.TheObliteratorServantMovementSpeed.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.TheObliteratorServantFollowRange.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.TheObliteratorServantKnockbackResistance.get())
-                .add(Attributes.ATTACK_KNOCKBACK, AttributesConfig.TheObliteratorServantAttackKnockback.get());
+                .add(Attributes.MAX_HEALTH, LmConfig.TheObliteratorServantHealth.get())
+                .add(Attributes.ARMOR, LmConfig.TheObliteratorServantArmor.get())
+                .add(Attributes.ARMOR_TOUGHNESS, LmConfig.TheObliteratorServantArmorToughness.get())
+                .add(Attributes.ATTACK_DAMAGE, LmConfig.TheObliteratorServantDamage.get())
+                .add(Attributes.MOVEMENT_SPEED, LmConfig.TheObliteratorServantMovementSpeed.get())
+                .add(Attributes.FOLLOW_RANGE, LmConfig.TheObliteratorServantFollowRange.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.TheObliteratorServantKnockbackResistance.get())
+                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.TheObliteratorServantAttackKnockback.get());
     }
 
     public void setConfigurableAttributes() {
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), AttributesConfig.TheObliteratorServantHealth.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), AttributesConfig.TheObliteratorServantArmor.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), AttributesConfig.TheObliteratorServantDamage.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), LmConfig.TheObliteratorServantHealth.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), LmConfig.TheObliteratorServantArmor.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), LmConfig.TheObliteratorServantDamage.get());
     }
 
     @Override
@@ -369,6 +369,26 @@ public class TheObliteratorServant extends IAnimatedBossServant {
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.setPhase(compound.contains("phase") ? compound.getInt("phase") : 1);
+    }
+
+    @Override
+    public void followGoal() {
+        this.goalSelector.addGoal(5, new FarTeleportFollowGoal<TheObliteratorServant>(this, this.getFollowSpeed(), 10.0F, 2.0F) {
+            @Override
+            protected int teleportState() {
+                return 21;
+            }
+
+            @Override
+            protected int teleportDuration() {
+                return 13;
+            }
+
+            @Override
+            protected void saveTeleportPosition(double x, double y, double z) {
+                TheObliteratorServant.this.saveTeleportPositions(x, y, z);
+            }
+        });
     }
 
     @Override
@@ -1065,8 +1085,8 @@ public class TheObliteratorServant extends IAnimatedBossServant {
         AttributeInstance armorToughness = this.getAttribute(Attributes.ARMOR_TOUGHNESS);
         if (armorToughness != null) {
             armorToughness.setBaseValue(this.getPhase() >= SECOND_PHASE
-                    ? AttributesConfig.TheObliteratorServantArmorToughness.get() * 0.5D
-                    : AttributesConfig.TheObliteratorServantArmorToughness.get());
+                    ? LmConfig.TheObliteratorServantArmorToughness.get() * 0.5D
+                    : LmConfig.TheObliteratorServantArmorToughness.get());
         }
 
         if (this.isVehicle() && this.getFirstPassenger() != null) {
@@ -1137,9 +1157,17 @@ public class TheObliteratorServant extends IAnimatedBossServant {
             this.idleAnimationState.animateWhen(this.getAttackState() == 0, this.tickCount);
         }
 
-        if (!this.level().isClientSide && (this.getAttackState() == 1 || this.getAttackState() == 60)) {
+        if (!this.level().isClientSide && this.getAttackState() == 1) {
             this.facePlayerDuringAnimation();
         }
+    }
+
+    @Override
+    public void stayingMode() {
+        if (this.isDeadOrDying()) {
+            return;
+        }
+        super.stayingMode();
     }
 
     private void facePlayerDuringAnimation() {
@@ -1572,12 +1600,12 @@ public class TheObliteratorServant extends IAnimatedBossServant {
 
     @Override
     public double damageCap() {
-        return AttributesConfig.TheObliteratorServantDamageCap.get();
+        return LmConfig.TheObliteratorServantDamageCap.get();
     }
 
     @Override
     public int adaptationFactor() {
-        return 20 * AttributesConfig.TheObliteratorServantAdaptationFactorMultiplier.get();
+        return 20 * LmConfig.TheObliteratorServantAdaptationFactorMultiplier.get();
     }
 
     @Override
@@ -1614,7 +1642,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
 
         if ((source.is(DamageTypes.ARROW) || source.is(DamageTypes.MOB_PROJECTILE))
                 && this.getPhase() == 1
-                && MobsConfig.TheObliteratorServantFirstPhaseProjectileImmunity.get()) {
+                && LmConfig.TheObliteratorServantFirstPhaseProjectileImmunity.get()) {
             return false;
         }
 
@@ -1871,7 +1899,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
                                         MobSpawnType reason, @Nullable SpawnGroupData spawnData,
                                         @Nullable CompoundTag dataTag) {
         if (reason == MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player) {
-            if (countServants(player) >= MobsConfig.TheObliteratorServantLimit.get()) {
+            if (countServants(player) >= LmConfig.TheObliteratorServantLimit.get()) {
                 return null;
             }
         }
@@ -3382,7 +3410,7 @@ public class TheObliteratorServant extends IAnimatedBossServant {
             }
         }
         if (this.getAttackState() == 21) {
-            if (this.attackTicks == 11) {
+            if (this.attackTicks == 11 && this.targetIsNotNull()) {
                 this.playSound(ModSounds.ANNIHILATION_LASER_CHARGE.get(), 3.0F, 1.5F);
             }
             if (this.attackTicks >= 21 && this.attackTicks <= 39) {

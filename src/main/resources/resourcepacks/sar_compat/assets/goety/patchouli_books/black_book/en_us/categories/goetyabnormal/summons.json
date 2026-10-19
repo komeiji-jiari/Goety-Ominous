@@ -1,0 +1,7 @@
+{
+  "name": "Summons",
+  "description": "More servants for a darker wizard.",
+  "icon": "savage_and_ravage:creeper_spores",
+  "parent": "goety:goetyabnormal",
+  "sortnum": 3
+}

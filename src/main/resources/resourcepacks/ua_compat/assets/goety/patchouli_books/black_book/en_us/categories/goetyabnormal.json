@@ -1,0 +1,7 @@
+{
+  "name": "Goety Blueprint",
+  "description": "With unimaginable savagery, plunder the rare treasures of this world, and unearth the darkness beneath the azure waves.",
+  "icon": "upgrade_aquatic:thrasher_tooth",
+  "sortnum": 1,
+  "parent": "goety:goetyominous"
+}

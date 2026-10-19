@@ -5,11 +5,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.qiuyue.goetyominous.client.render.layer.mm.MutantBlazeServantGlowLayer;
 import com.qiuyue.goetyominous.client.render.model.mm.MutantBlazeServantModel;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantBlazeServant;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import com.qiuyue.goetyominous.config.mm.MmConfig;
 
 public class MutantBlazeServantRenderer<T extends MutantBlazeServant> extends MobRenderer<T, MutantBlazeServantModel<T>> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("mutantmore", "textures/entities/mutant_blaze.png");
@@ -37,8 +37,8 @@ public class MutantBlazeServantRenderer<T extends MutantBlazeServant> extends Mo
     }
 
     public ResourceLocation getTextureLocation(T pEntity) {
-        if (pEntity.hasUnholyBlood() && MobsConfig.MBUnholyBloodTexture.get()) {
-            if (MobsConfig.MBUnholyBloodLowHealthTexture.get() && pEntity.getHealth() <= pEntity.getMaxHealth() / 2.0F) {
+        if (pEntity.hasUnholyBlood() && MmConfig.MBUnholyBloodTexture.get()) {
+            if (MmConfig.MBUnholyBloodLowHealthTexture.get() && pEntity.getHealth() <= pEntity.getMaxHealth() / 2.0F) {
                 return ENRAGED;
             }
             return INFERNO;

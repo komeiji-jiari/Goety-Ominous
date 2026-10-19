@@ -1,0 +1,7 @@
+{
+  "name": "召唤",
+  "description": "为更黑暗的巫师带来更多仆从。",
+  "icon": "upgrade_aquatic:thrasher_tooth",
+  "parent": "goety:goetyabnormal",
+  "sortnum": 3
+}

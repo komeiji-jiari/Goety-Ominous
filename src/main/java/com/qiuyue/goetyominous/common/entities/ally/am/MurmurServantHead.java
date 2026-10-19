@@ -7,7 +7,6 @@ import java.util.Optional;
 import java.util.UUID;
 import javax.annotation.Nullable;
 
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -47,6 +46,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class MurmurServantHead extends Summoned implements FlyingAnimal {
     private static final EntityDataAccessor<Optional<UUID>> BODY_UUID;
@@ -130,10 +130,10 @@ public class MurmurServantHead extends Summoned implements FlyingAnimal {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.MurmurServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.MurmurServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.MurmurServantDamage.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.MurmurServantMovementSpeed.get());
+                .add(Attributes.MAX_HEALTH, AmConfig.MurmurServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AmConfig.MurmurServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AmConfig.MurmurServantDamage.get())
+                .add(Attributes.MOVEMENT_SPEED, AmConfig.MurmurServantMovementSpeed.get());
     }
 
     public boolean causeFallDamage(float distance, float damageMultiplier) {
@@ -254,7 +254,7 @@ public class MurmurServantHead extends Summoned implements FlyingAnimal {
             if (body instanceof MurmurServant) {
                 murmur = (MurmurServant)body;
                 this.entityData.set(BODY_ID, body.getId());
-                if (this.isPulledIn() && murmur.isAlive()) {
+                if (this.isPulledIn() && murmur.isAlive() && !this.isDeadOrDying()) {
                     Vec3 base = murmur.getNeckBottom(1.0F).add(0.0, 0.550000011920929, 0.0);
                     Vec3 vec3 = base.subtract(this.position());
                     if (vec3.length() < 1.0) {

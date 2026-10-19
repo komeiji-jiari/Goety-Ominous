@@ -11,7 +11,6 @@ import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.qiuyue.goetyominous.common.entities.ally.ac.GrottoceratopsSpiritEntity;
 import com.qiuyue.goetyominous.common.events.ac.GrottoceratopsSpiritHandler;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,19 +19,20 @@ import net.minecraft.world.item.enchantment.Enchantment;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class GrottoceratopsSpiritSpell extends Spell {
 
     private static final int BASE_SPIRITS = 3;
 
     @Override public int defaultSoulCost() {
-        return SpellConfig.GrottoSpiritCost.get(); }
+        return AcConfig.GrottoSpiritCost.get(); }
 
     @Override public int defaultCastDuration()  {
-        return SpellConfig.GrottoSpiritCastTime.get(); }
+        return AcConfig.GrottoSpiritCastTime.get(); }
 
     @Override public int defaultSpellCooldown() {
-        return SpellConfig.GrottoSpiritCoolDown.get(); }
+        return AcConfig.GrottoSpiritCoolDown.get(); }
 
     @Override public SoundEvent CastingSound()  {
         return ACSoundRegistry.GROTTOCERATOPS_CALL.get(); }
@@ -62,7 +62,7 @@ public class GrottoceratopsSpiritSpell extends Spell {
     @Override
     public void SpellResult(ServerLevel worldIn, LivingEntity caster, ItemStack staff, SpellStat spellStat) {
         int count = BASE_SPIRITS + spellStat.getPotency();
-        int lifetime = SpellConfig.GrottoSpiritTime.get();
+        int lifetime = AcConfig.GrottoSpiritTime.get();
         if (WandUtil.enchantedFocus(caster)) {
             count += WandUtil.getPotencyLevel(caster);
             lifetime *= Math.min(4, WandUtil.getLevels(ModEnchantments.DURATION.get(), caster) + 1);

@@ -24,8 +24,6 @@ import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantFrozenZo
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantFrozenZombieServant.MutantFrozenZombieRoarGoal;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantFrozenZombieServant.MutantFrozenZombieSnowThrowAttackGoal;
 import com.qiuyue.goetyominous.common.items.mm.MmItems;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -85,6 +83,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.ForgeRegistries;
+import com.qiuyue.goetyominous.config.mm.MmConfig;
 
 public class MutantFrozenZombieServant extends AbstractMutantServant implements ISnowstormSource {
     private static final EntityDataAccessor<Integer> REMAINING_LIVES = SynchedEntityData.defineId(MutantFrozenZombieServant.class, EntityDataSerializers.INT);
@@ -149,7 +148,7 @@ public class MutantFrozenZombieServant extends AbstractMutantServant implements 
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.MutantFrozenZombieServantLimit.get();
+        return MmConfig.MutantFrozenZombieServantLimit.get();
     }
 
     protected void registerGoals() {
@@ -222,12 +221,12 @@ public class MutantFrozenZombieServant extends AbstractMutantServant implements 
 
     public static AttributeSupplier.Builder createConfiguredAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.MutantFrozenZombieServantHealth.get())
-                .add(Attributes.ARMOR, AttributesConfig.MutantFrozenZombieServantArmor.get())
-                .add(Attributes.ARMOR_TOUGHNESS, AttributesConfig.MutantFrozenZombieServantArmorToughness.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.MutantFrozenZombieServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.MutantFrozenZombieServantFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.MutantFrozenZombieServantMovementSpeed.get());
+                .add(Attributes.MAX_HEALTH, MmConfig.MutantFrozenZombieServantHealth.get())
+                .add(Attributes.ARMOR, MmConfig.MutantFrozenZombieServantArmor.get())
+                .add(Attributes.ARMOR_TOUGHNESS, MmConfig.MutantFrozenZombieServantArmorToughness.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, MmConfig.MutantFrozenZombieServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, MmConfig.MutantFrozenZombieServantFollowRange.get())
+                .add(Attributes.MOVEMENT_SPEED, MmConfig.MutantFrozenZombieServantMovementSpeed.get());
     }
 
     private boolean isRealDeath(DamageSource source) {

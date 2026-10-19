@@ -1,7 +1,7 @@
 {
   "name": "Executioner Servant",
   "icon": "savage_and_ravage:cleaver_of_beheading",
-  "category": "goety:savageandravagecompat",
+  "category": "goety:goetyabnormal/summons",
   "sortnum": 50,
   "pages": [
     {

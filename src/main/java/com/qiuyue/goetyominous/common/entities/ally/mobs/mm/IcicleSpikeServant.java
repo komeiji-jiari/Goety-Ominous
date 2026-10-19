@@ -139,10 +139,6 @@ public class IcicleSpikeServant extends Entity {
         }
     }
 
-    public boolean canBeCollidedWith() {
-        return !this.isRemoved() && this.spikeAnimationTick > 10;
-    }
-
     boolean canHarm(Entity target) {
         if (MiscUtils.canHarmBasedOnTeamAndTag(TagInit.EntityTypes.MUTANT_FROZEN_ZOMBIE_CANT_HURT, this, target, this.owner, entity -> entity instanceof MutantFrozenZombieServant)) {
             return true;

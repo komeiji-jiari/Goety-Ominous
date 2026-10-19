@@ -10,7 +10,6 @@ import com.Polarice3.Goety.utils.WandUtil;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.qiuyue.goetyominous.common.entities.projectile.ac.ServantTephraEntity;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -22,6 +21,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class ExtinctionMeteorSpell extends EverChargeSpell {
 
@@ -35,17 +35,17 @@ public class ExtinctionMeteorSpell extends EverChargeSpell {
 
     @Override
     public int defaultSoulCost() {
-        return SpellConfig.ExtinctionMeteorCost.get();
+        return AcConfig.ExtinctionMeteorCost.get();
     }
 
     @Override
     public int defaultCastUp() {
-        return SpellConfig.ExtinctionMeteorChargeUp.get();
+        return AcConfig.ExtinctionMeteorChargeUp.get();
     }
 
     @Override
     public int Cooldown() {
-        return SpellConfig.ExtinctionMeteorInterval.get();
+        return AcConfig.ExtinctionMeteorInterval.get();
     }
 
     @Override
@@ -54,12 +54,12 @@ public class ExtinctionMeteorSpell extends EverChargeSpell {
         if (WandUtil.enchantedFocus(caster)) {
             extra = WandUtil.getLevels(ModEnchantments.DURATION.get(), caster) * 2;
         }
-        return SpellConfig.ExtinctionMeteorShots.get() + extra;
+        return AcConfig.ExtinctionMeteorShots.get() + extra;
     }
 
     @Override
     public int defaultSpellCooldown() {
-        return SpellConfig.ExtinctionMeteorCoolDown.get();
+        return AcConfig.ExtinctionMeteorCoolDown.get();
     }
 
     @Override

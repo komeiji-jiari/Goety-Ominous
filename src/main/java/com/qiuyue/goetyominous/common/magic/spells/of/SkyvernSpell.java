@@ -10,8 +10,6 @@ import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.ally.of.SkyvernServant;
 import com.qiuyue.goetyominous.common.init.of.OfEntityRegistry;
-import com.qiuyue.goetyominous.config.MobsConfig;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -26,6 +24,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.of.OfConfig;
 
 public class SkyvernSpell extends SummonSpell {
 
@@ -33,19 +32,19 @@ public class SkyvernSpell extends SummonSpell {
     }
 
     public int defaultSoulCost() {
-        return SpellConfig.SkyvernSoulCost.get();
+        return OfConfig.SkyvernSoulCost.get();
     }
 
     public int defaultCastDuration() {
-        return SpellConfig.SkyvernCastDuration.get();
+        return OfConfig.SkyvernCastDuration.get();
     }
 
     public int SummonDownDuration() {
-        return SpellConfig.SkyvernSummonDown.get();
+        return OfConfig.SkyvernSummonDown.get();
     }
 
     public int defaultSpellCooldown() {
-        return SpellConfig.SkyvernCoolDown.get();
+        return OfConfig.SkyvernCoolDown.get();
     }
 
     public SoundEvent CastingSound() {
@@ -61,7 +60,7 @@ public class SkyvernSpell extends SummonSpell {
     }
 
     public int summonLimit() {
-        return MobsConfig.SkyvernServantLimit.get();
+        return OfConfig.SkyvernServantLimit.get();
     }
 
     public List<Enchantment> acceptedEnchantments() {

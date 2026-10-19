@@ -34,8 +34,6 @@ import com.qiuyue.goetyominous.common.entities.projectile.ac.ServantTephraEntity
 import com.qiuyue.goetyominous.common.entities.util.ac.ServantMagmaLink;
 import com.qiuyue.goetyominous.common.init.ac.AcParticles;
 import com.qiuyue.goetyominous.common.items.ac.AcItems;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -99,6 +97,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class LuxtructosaurusServant extends Summoned
         implements IAnimatedEntity, ShakesScreen, KaijuMob, ITallWalker, IAdvancedPathingMob,
@@ -208,12 +207,12 @@ public class LuxtructosaurusServant extends Summoned
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.LuxtructosaurusServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.LuxtructosaurusServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.LuxtructosaurusServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.LuxtructosaurusServantKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.LuxtructosaurusServantMovementSpeed.get())
-                .add(Attributes.ARMOR, AttributesConfig.LuxtructosaurusServantArmor.get());
+                .add(Attributes.MAX_HEALTH, AcConfig.LuxtructosaurusServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AcConfig.LuxtructosaurusServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AcConfig.LuxtructosaurusServantDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.LuxtructosaurusServantKnockbackResistance.get())
+                .add(Attributes.MOVEMENT_SPEED, AcConfig.LuxtructosaurusServantMovementSpeed.get())
+                .add(Attributes.ARMOR, AcConfig.LuxtructosaurusServantArmor.get());
     }
     @Override
     protected void defineSynchedData() {
@@ -233,7 +232,7 @@ public class LuxtructosaurusServant extends Summoned
     }
     @Override
     public int getSummonLimit(LivingEntity player) {
-        return MobsConfig.LuxtructosaurusServantLimit.get();
+        return AcConfig.LuxtructosaurusServantLimit.get();
     }
 
     @Override
@@ -488,7 +487,7 @@ public class LuxtructosaurusServant extends Summoned
         if (this.level().isClientSide || !this.isAlive()) {
             return;
         }
-        int interval = MobsConfig.LuxtructosaurusServantRoarInterval.get();
+        int interval = AcConfig.LuxtructosaurusServantRoarInterval.get();
         if (interval <= 0 || !this.isEnraged() || this.isRiddenByPlayer()) {
             this.roarFallbackTicks = 0;
             return;
@@ -571,7 +570,7 @@ public class LuxtructosaurusServant extends Summoned
         this.tickRoarFallback();
         super.aiStep();
         if (!this.level().isClientSide) {
-            if (MobsConfig.LuxtructosaurusServantBreakTrees.get()) {
+            if (AcConfig.LuxtructosaurusServantBreakTrees.get()) {
                 FoliageSmash.smash(this);
             }
             if (this.reducedDamageTicks > 0) {
@@ -806,7 +805,7 @@ public class LuxtructosaurusServant extends Summoned
             this.playSound(ACSoundRegistry.LUXTRUCTOSAURUS_ROAR.get(), 5.0F, this.getVoicePitch());
         }
         if (this.getAnimation() == ANIMATION_ROAR && this.getAnimationTick() >= 10 && this.getAnimationTick() < 55
-                && this.getAnimationTick() % 5 == 0 && this.isAlive() && MobsConfig.LuxtructosaurusServantTephra.get()) {
+                && this.getAnimationTick() % 5 == 0 && this.isAlive() && AcConfig.LuxtructosaurusServantTephra.get()) {
             this.summonTephra();
         }
         if (this.getAnimation() == ANIMATION_SPEW_FLAMES && this.getAnimationTick() == 10) {
@@ -815,7 +814,7 @@ public class LuxtructosaurusServant extends Summoned
     }
 
     private void solidifyWater() {
-        if (!MobsConfig.LuxtructosaurusServantWaterToStone.get()
+        if (!AcConfig.LuxtructosaurusServantWaterToStone.get()
                 || !this.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
             return;
         }
@@ -1168,7 +1167,7 @@ public class LuxtructosaurusServant extends Summoned
     }
 
     private void explodeOnLanding() {
-        if (!MobsConfig.LuxtructosaurusServantJumpExplosion.get()) {
+        if (!AcConfig.LuxtructosaurusServantJumpExplosion.get()) {
             return;
         }
         float radius = this.isEnraged() ? 3.0F : 2.0F;
@@ -1216,7 +1215,7 @@ public class LuxtructosaurusServant extends Summoned
         float burnWidth = 1.0F;
         Vec3 headPos = this.headPart.centeredPosition();
         float burnAngle = this.yBodyRot + this.neckYRot;
-        boolean canIgnite = MobsConfig.LuxtructosaurusServantFire.get()
+        boolean canIgnite = AcConfig.LuxtructosaurusServantFire.get()
                 && this.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
         for (float distanceBurned = 0.0F; distanceBurned < maxDistance; distanceBurned += burnWidth) {
             burnWidth += 1.0F;
@@ -1440,7 +1439,7 @@ public class LuxtructosaurusServant extends Summoned
                 }
             }
             if (this.getAnimationTick() > 110 && !this.level().isClientSide && !this.isRemoved()) {
-                if (this.getTrueOwner() != null && MobsConfig.LuxtructosaurusServantExtinctionCatalyst.get()) {
+                if (this.getTrueOwner() != null && AcConfig.LuxtructosaurusServantExtinctionCatalyst.get()) {
                     ItemStack itemStack = new ItemStack(AcItems.EXTINCTION_CATALYST.get());
                     ReviveServantItem.setOwnerName(this.getTrueOwner(), itemStack);
                     ReviveServantItem.setSummon(this, itemStack);
@@ -1519,7 +1518,7 @@ public class LuxtructosaurusServant extends Summoned
 
         @Override
         protected double getFollowDistance() {
-            return AttributesConfig.LuxtructosaurusServantTargetRange.get();
+            return AcConfig.LuxtructosaurusServantTargetRange.get();
         }
     }
 

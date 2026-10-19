@@ -10,8 +10,6 @@ import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -43,6 +41,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class BrainiacServant extends Summoned implements IAnimatedEntity {
 
@@ -80,7 +79,7 @@ public class BrainiacServant extends Summoned implements IAnimatedEntity {
 
     @Override
     public int getSummonLimit(LivingEntity player) {
-        return MobsConfig.BrainiacServantLimit.get();
+        return AcConfig.BrainiacServantLimit.get();
     }
 
     @Override
@@ -100,12 +99,12 @@ public class BrainiacServant extends Summoned implements IAnimatedEntity {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.BrainiacServantMovementSpeed.get())
-                .add(Attributes.MAX_HEALTH, AttributesConfig.BrainiacServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.BrainiacServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.BrainiacServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.BrainiacServantKnockbackResistance.get())
-                .add(Attributes.ARMOR, AttributesConfig.BrainiacServantArmor.get());
+                .add(Attributes.MOVEMENT_SPEED, AcConfig.BrainiacServantMovementSpeed.get())
+                .add(Attributes.MAX_HEALTH, AcConfig.BrainiacServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AcConfig.BrainiacServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AcConfig.BrainiacServantDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.BrainiacServantKnockbackResistance.get())
+                .add(Attributes.ARMOR, AcConfig.BrainiacServantArmor.get());
     }
     protected PathNavigation createNavigation(Level level) {
         return new GroundPathNavigatorNoSpin(this, level);

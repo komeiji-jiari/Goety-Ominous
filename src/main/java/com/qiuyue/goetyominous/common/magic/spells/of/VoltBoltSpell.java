@@ -9,7 +9,6 @@ import com.Polarice3.Goety.utils.ColorUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.projectile.of.VoltServantElectricCharge;
 import com.qiuyue.goetyominous.common.init.of.OfEntityRegistry;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,6 +18,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.qiuyue.goetyominous.config.of.OfConfig;
 
 public class VoltBoltSpell extends Spell {
 
@@ -27,17 +27,17 @@ public class VoltBoltSpell extends Spell {
 
     @Override
     public int defaultSoulCost() {
-        return SpellConfig.VoltBoltCost.get();
+        return OfConfig.VoltBoltCost.get();
     }
 
     @Override
     public int defaultCastDuration() {
-        return SpellConfig.VoltBoltCastDuration.get();
+        return OfConfig.VoltBoltCastDuration.get();
     }
 
     @Override
     public int defaultSpellCooldown() {
-        return SpellConfig.VoltBoltCoolDown.get();
+        return OfConfig.VoltBoltCoolDown.get();
     }
 
     @Override

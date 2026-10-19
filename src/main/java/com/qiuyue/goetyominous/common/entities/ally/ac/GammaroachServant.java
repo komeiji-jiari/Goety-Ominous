@@ -11,8 +11,6 @@ import com.github.alexmodguy.alexscaves.server.potion.ACEffectRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -40,6 +38,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class GammaroachServant extends Summoned implements IAnimatedEntity, PlayerRideable {
 
@@ -55,7 +54,7 @@ public class GammaroachServant extends Summoned implements IAnimatedEntity, Play
 
     @Override
     public int getSummonLimit(LivingEntity player) {
-        return MobsConfig.GammaroachServantLimit.get();
+        return AcConfig.GammaroachServantLimit.get();
     }
 
     @Override
@@ -75,12 +74,12 @@ public class GammaroachServant extends Summoned implements IAnimatedEntity, Play
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.GammaroachServantMovementSpeed.get())
-                .add(Attributes.MAX_HEALTH, AttributesConfig.GammaroachServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.GammaroachServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.GammaroachServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.GammaroachServantKnockbackResistance.get())
-                .add(Attributes.ARMOR, AttributesConfig.GammaroachServantArmor.get());
+                .add(Attributes.MOVEMENT_SPEED, AcConfig.GammaroachServantMovementSpeed.get())
+                .add(Attributes.MAX_HEALTH, AcConfig.GammaroachServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AcConfig.GammaroachServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AcConfig.GammaroachServantDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.GammaroachServantKnockbackResistance.get())
+                .add(Attributes.ARMOR, AcConfig.GammaroachServantArmor.get());
     }
 
     protected PathNavigation createNavigation(Level level) {

@@ -13,8 +13,6 @@ import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -58,6 +56,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class DropBearServant extends Summoned implements IAnimatedEntity {
 
@@ -113,32 +112,32 @@ public class DropBearServant extends Summoned implements IAnimatedEntity {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.DropBearServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.DropBearServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.DropBearServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.DropBearServantKnockbackResistance.get())
+                .add(Attributes.MAX_HEALTH, AmConfig.DropBearServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AmConfig.DropBearServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AmConfig.DropBearServantDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AmConfig.DropBearServantKnockbackResistance.get())
                 .add(Attributes.MOVEMENT_SPEED, 0.25D);
     }
 
     @Override
     public void setConfigurableAttributes() {
         if (this.getAttribute(Attributes.MAX_HEALTH) != null) {
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(AttributesConfig.DropBearServantHealth.get());
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(AmConfig.DropBearServantHealth.get());
         }
         if (this.getAttribute(Attributes.ATTACK_DAMAGE) != null) {
-            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AttributesConfig.DropBearServantDamage.get());
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AmConfig.DropBearServantDamage.get());
         }
         if (this.getAttribute(Attributes.FOLLOW_RANGE) != null) {
-            this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(AttributesConfig.DropBearServantFollowRange.get());
+            this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(AmConfig.DropBearServantFollowRange.get());
         }
         if (this.getAttribute(Attributes.KNOCKBACK_RESISTANCE) != null) {
-            this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(AttributesConfig.DropBearServantKnockbackResistance.get());
+            this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(AmConfig.DropBearServantKnockbackResistance.get());
         }
     }
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.DropBearServantLimit.get();
+        return AmConfig.DropBearServantLimit.get();
     }
 
     public static BlockPos getLowestPos(LevelAccessor world, BlockPos pos) {
@@ -176,14 +175,14 @@ public class DropBearServant extends Summoned implements IAnimatedEntity {
         AttributeInstance knockback = this.getAttribute(Attributes.KNOCKBACK_RESISTANCE);
         if (health != null && attack != null && armor != null && knockback != null) {
             if (upgraded) {
-                health.setBaseValue((Double) AttributesConfig.DropBearServantHealth.get() * 1.5);
-                armor.setBaseValue((Double) AttributesConfig.DropBearServantArmor.get() + 2.0);
-                attack.setBaseValue((Double) AttributesConfig.DropBearServantDamage.get() + 1.0);
+                health.setBaseValue((Double) AmConfig.DropBearServantHealth.get() * 1.5);
+                armor.setBaseValue((Double) AmConfig.DropBearServantArmor.get() + 2.0);
+                attack.setBaseValue((Double) AmConfig.DropBearServantDamage.get() + 1.0);
                 knockback.setBaseValue(1.0);
             } else {
-                health.setBaseValue((Double) AttributesConfig.DropBearServantHealth.get());
-                armor.setBaseValue((Double) AttributesConfig.DropBearServantArmor.get());
-                attack.setBaseValue((Double) AttributesConfig.DropBearServantDamage.get());
+                health.setBaseValue((Double) AmConfig.DropBearServantHealth.get());
+                armor.setBaseValue((Double) AmConfig.DropBearServantArmor.get());
+                attack.setBaseValue((Double) AmConfig.DropBearServantDamage.get());
                 knockback.setBaseValue(0.0);
             }
         }

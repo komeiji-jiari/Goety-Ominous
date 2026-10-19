@@ -1,7 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm;
 
 import com.qiuyue.goetyominous.compat.lm.LmScreenShake;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.projectiles.FlyingItem;
 import com.Polarice3.Goety.config.ItemConfig;
@@ -19,7 +18,6 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.EnergyBeamEnti
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.LightningBoltEntity;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.Tornado;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
 import net.miauczel.legendary_monsters.Particle.custom.Circle;
 import net.miauczel.legendary_monsters.effect.ModEffects;
@@ -73,6 +71,7 @@ import javax.annotation.Nullable;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
+import com.qiuyue.goetyominous.config.lm.LmConfig;
 
 public class CloudGolemServant extends IAnimatedBossServant {
 
@@ -160,12 +159,12 @@ public class CloudGolemServant extends IAnimatedBossServant {
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.CloudGolemServantLimit.get();
+        return LmConfig.CloudGolemServantLimit.get();
     }
 
     @Override
     public double damageMultiplier() {
-        return MobsConfig.CloudGolemServantDamageMultiplier.get();
+        return LmConfig.CloudGolemServantDamageMultiplier.get();
     }
 
     @Override
@@ -254,12 +253,12 @@ public class CloudGolemServant extends IAnimatedBossServant {
     }
 
     public boolean shouldGiveHitChance() {
-        return this.getTarget() != null && MobsConfig.CloudGolemServantLosesConsciousness.get();
+        return this.getTarget() != null && LmConfig.CloudGolemServantLosesConsciousness.get();
     }
 
     public boolean shouldChargeOnceMore() {
         return this.shouldDoExtraDashes && this.getCrackiness() == Crackiness.HIGH
-                && MobsConfig.CloudGolemServantCanCharge2Times.get();
+                && LmConfig.CloudGolemServantCanCharge2Times.get();
     }
 
     public boolean setInLaserMode(boolean isLaserMode) {
@@ -277,19 +276,19 @@ public class CloudGolemServant extends IAnimatedBossServant {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.CloudGolemServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.CloudGolemServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.CloudGolemServantFollowRange.get())
-                .add(Attributes.ARMOR, AttributesConfig.CloudGolemServantArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.CloudGolemServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, AttributesConfig.CloudGolemServantAttackKnockback.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.CloudGolemServantDamage.get());
+                .add(Attributes.MAX_HEALTH, LmConfig.CloudGolemServantHealth.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.CloudGolemServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, LmConfig.CloudGolemServantFollowRange.get())
+                .add(Attributes.ARMOR, LmConfig.CloudGolemServantArmor.get())
+                .add(Attributes.MOVEMENT_SPEED, LmConfig.CloudGolemServantMovementSpeed.get())
+                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.CloudGolemServantAttackKnockback.get())
+                .add(Attributes.ATTACK_DAMAGE, LmConfig.CloudGolemServantDamage.get());
     }
 
     public void setConfigurableAttributes() {
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), AttributesConfig.CloudGolemServantHealth.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), AttributesConfig.CloudGolemServantArmor.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), AttributesConfig.CloudGolemServantDamage.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), LmConfig.CloudGolemServantHealth.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), LmConfig.CloudGolemServantArmor.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), LmConfig.CloudGolemServantDamage.get());
     }
 
     @Nullable
@@ -325,7 +324,7 @@ public class CloudGolemServant extends IAnimatedBossServant {
 
     @Override
     public double damageCap() {
-        return AttributesConfig.CloudGolemServantDamageCap.get();
+        return LmConfig.CloudGolemServantDamageCap.get();
     }
 
     @Override
@@ -723,7 +722,7 @@ public class CloudGolemServant extends IAnimatedBossServant {
             }
         }
         super.tick();
-        if (this.weatherCastTicks > 0) {
+        if (this.weatherCastTicks > 0 && !this.isDeadOrDying()) {
             float delta = Mth.wrapDegrees(this.getWeatherCastYaw() - this.getYRot());
             this.setYRot(this.getYRot() + Mth.clamp(delta, -WEATHER_TURN_SPEED, WEATHER_TURN_SPEED));
             this.yBodyRot = this.getYRot();
@@ -931,7 +930,7 @@ public class CloudGolemServant extends IAnimatedBossServant {
         if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             return super.hurt(source, amount);
         }
-        if (this.GolemInvulnerabilityTime > 0 && MobsConfig.CloudGolemServantInvulnerabilityTime.get()) {
+        if (this.GolemInvulnerabilityTime > 0 && LmConfig.CloudGolemServantInvulnerabilityTime.get()) {
             return false;
         }
         if (source.is(DamageTypes.IN_FIRE) || source.is(DamageTypes.ON_FIRE) || source.is(DamageTypes.LAVA)
@@ -966,7 +965,7 @@ public class CloudGolemServant extends IAnimatedBossServant {
             if (this.ArrowDamageCooldown > 0) {
                 return false;
             }
-            if (MobsConfig.CloudGolemServantProjectileImmunityTimer.get()) {
+            if (LmConfig.CloudGolemServantProjectileImmunityTimer.get()) {
                 this.ArrowDamageCooldown = 30;
             }
         }

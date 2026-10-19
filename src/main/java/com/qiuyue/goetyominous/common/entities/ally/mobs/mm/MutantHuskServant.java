@@ -17,14 +17,13 @@ import com.alexander.mutantmore.particles.AdvancedParticleOption;
 import com.alexander.mutantmore.util.MiscUtils;
 import com.alexander.mutantmore.util.PositionUtils;
 import com.google.common.collect.Lists;
+import com.qiuyue.goetyominous.common.blocks.mm.ServantQuicksandBlock;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantHuskServant.MutantHuskGeyserAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantHuskServant.MutantHuskMeleeAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantHuskServant.MutantHuskPunchAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantHuskServant.MutantHuskRoarGoal;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantHuskServant.MutantHuskThrowSandAttackGoal;
 import com.qiuyue.goetyominous.common.items.mm.MmItems;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -81,6 +80,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeHooks;
+import com.qiuyue.goetyominous.config.mm.MmConfig;
 
 public class MutantHuskServant extends AbstractMutantServant {
     private static final EntityDataAccessor<Integer> REMAINING_LIVES = SynchedEntityData.defineId(MutantHuskServant.class, EntityDataSerializers.INT);
@@ -144,7 +144,7 @@ public class MutantHuskServant extends AbstractMutantServant {
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.MutantHuskServantLimit.get();
+        return MmConfig.MutantHuskServantLimit.get();
     }
 
     protected void registerGoals() {
@@ -203,12 +203,12 @@ public class MutantHuskServant extends AbstractMutantServant {
 
     public static AttributeSupplier.Builder createConfiguredAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.MutantHuskServantHealth.get())
-                .add(Attributes.ARMOR, AttributesConfig.MutantHuskServantArmor.get())
-                .add(Attributes.ARMOR_TOUGHNESS, AttributesConfig.MutantHuskServantArmorToughness.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.MutantHuskServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.MutantHuskServantFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.MutantHuskServantMovementSpeed.get());
+                .add(Attributes.MAX_HEALTH, MmConfig.MutantHuskServantHealth.get())
+                .add(Attributes.ARMOR, MmConfig.MutantHuskServantArmor.get())
+                .add(Attributes.ARMOR_TOUGHNESS, MmConfig.MutantHuskServantArmorToughness.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, MmConfig.MutantHuskServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, MmConfig.MutantHuskServantFollowRange.get())
+                .add(Attributes.MOVEMENT_SPEED, MmConfig.MutantHuskServantMovementSpeed.get());
     }
 
     private boolean isRealDeath(DamageSource source) {
@@ -496,8 +496,8 @@ public class MutantHuskServant extends AbstractMutantServant {
                 if (MutantHuskCommonConfig.roar_attack_griefing.get() && !MutantMoreGroupedOptionsCommonConfig.quicksand_griefing_off.get()) {
                     for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(aabb.minY), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
                         BlockState blockstate = this.level().getBlockState(blockpos);
-                        if (!blockstate.isAir() || !QuicksandBlock.survivable(MiscUtils.quicksandBlockForSandType(sandType).defaultBlockState(), this.level(), blockpos) || this.random.nextInt(200) != 0) continue;
-                        this.level().setBlockAndUpdate(blockpos, MiscUtils.quicksandBlockForSandType(sandType).defaultBlockState());
+                        if (!blockstate.isAir() || !QuicksandBlock.survivable(ServantQuicksandBlock.forSandType(sandType).defaultBlockState(), this.level(), blockpos) || this.random.nextInt(200) != 0) continue;
+                        this.level().setBlockAndUpdate(blockpos, ServantQuicksandBlock.forSandType(sandType).defaultBlockState());
                     }
                 }
             }

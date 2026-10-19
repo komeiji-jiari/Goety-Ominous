@@ -18,11 +18,9 @@ import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.ModDamageSource;
 import com.Polarice3.Goety.utils.ServerParticleUtil;
 import com.qiuyue.goetyominous.compat.mod.LegendaryMonstersCompat;
-import com.qiuyue.goetyominous.config.AttributesConfig;
+import com.qiuyue.goetyominous.common.entities.ai.MovementBodyRotationControl;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.miauczel.legendary_monsters.effect.ModEffects;
-import net.miauczel.legendary_monsters.entity.ai.navigation.EntityRotationPatcher;
 import net.miauczel.legendary_monsters.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -73,6 +71,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import com.qiuyue.goetyominous.config.lm.LmConfig;
 
 public class EndersentServant extends AbstractEnderling implements LmServantDamageMultiplier {
 
@@ -86,6 +85,8 @@ public class EndersentServant extends AbstractEnderling implements LmServantDama
     private static final UUID DE_ATTACK_MODIFIER_UUID = UUID.fromString("b9788c05-ee1b-4c1d-9701-f681c5d89fd1");
     private static final AttributeModifier DE_ATTACK_MODIFIER =
             new AttributeModifier(DE_ATTACK_MODIFIER_UUID, "Deadly Escape Attack Bonus", 1.85D, AttributeModifier.Operation.MULTIPLY_TOTAL);
+
+    private static final long TELEPORT_ANIMATION_MILLIS = 1920L;
 
     public static final String IDLE = "idle";
     public static final String ATTACK = "attack";
@@ -122,25 +123,25 @@ public class EndersentServant extends AbstractEnderling implements LmServantDama
 
     @Override
     protected BodyRotationControl createBodyControl() {
-        return new EntityRotationPatcher(this);
+        return new MovementBodyRotationControl(this);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.EndersentServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.EndersentServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.EndersentServantFollowRange.get())
-                .add(Attributes.ARMOR, AttributesConfig.EndersentServantArmor.get())
-                .add(Attributes.ARMOR_TOUGHNESS, AttributesConfig.EndersentServantArmorToughness.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.EndersentServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, AttributesConfig.EndersentServantAttackKnockback.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.EndersentServantDamage.get())
+                .add(Attributes.MAX_HEALTH, LmConfig.EndersentServantHealth.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.EndersentServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, LmConfig.EndersentServantFollowRange.get())
+                .add(Attributes.ARMOR, LmConfig.EndersentServantArmor.get())
+                .add(Attributes.ARMOR_TOUGHNESS, LmConfig.EndersentServantArmorToughness.get())
+                .add(Attributes.MOVEMENT_SPEED, LmConfig.EndersentServantMovementSpeed.get())
+                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.EndersentServantAttackKnockback.get())
+                .add(Attributes.ATTACK_DAMAGE, LmConfig.EndersentServantDamage.get())
                 .add(ForgeMod.STEP_HEIGHT_ADDITION.get(), 1.0D);
     }
 
     @Override
     public double damageMultiplier() {
-        return MobsConfig.EndersentServantDamageMultiplier.get();
+        return LmConfig.EndersentServantDamageMultiplier.get();
     }
 
     @Override
@@ -155,7 +156,7 @@ public class EndersentServant extends AbstractEnderling implements LmServantDama
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.EndersentServantLimit.get();
+        return LmConfig.EndersentServantLimit.get();
     }
 
     @Override
@@ -168,7 +169,7 @@ public class EndersentServant extends AbstractEnderling implements LmServantDama
                                         MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData,
                                         @Nullable CompoundTag pDataTag) {
         if (pReason == MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player) {
-            if (countServants(player) >= MobsConfig.EndersentServantLimit.get()) {
+            if (countServants(player) >= LmConfig.EndersentServantLimit.get()) {
                 return null;
             }
         }
@@ -545,7 +546,7 @@ public class EndersentServant extends AbstractEnderling implements LmServantDama
 
     public int choruslingNumber() {
         return this.level().getEntitiesOfClass(ChoruslingServant.class, this.getBoundingBox().inflate(64.0D),
-                chorusling -> chorusling.getTrueOwner() == this).size();
+                chorusling -> chorusling.getTrueOwner() == this && chorusling.isAlive()).size();
     }
 
     public boolean noChoruslings() {
@@ -553,17 +554,15 @@ public class EndersentServant extends AbstractEnderling implements LmServantDama
     }
 
     public void summonChoruslings() {
-        if (this.level() instanceof ServerLevel serverLevel) {
-            for (int i = 0; i < 3; ++i) {
-                ChoruslingServant servant = new ChoruslingServant(LmEntityRegistry.CHORUSLING_SERVANT.get(), serverLevel);
-                BlockPos blockPos = BlockFinder.SummonRadius(this.blockPosition(), servant, serverLevel);
-                servant.setTrueOwner(this);
-                servant.moveTo(blockPos, 0.0F, 0.0F);
-                servant.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()),
-                        MobSpawnType.MOB_SUMMONED, null, null);
-                if (!serverLevel.addFreshEntity(servant)) {
-                    continue;
-                }
+        if (this.noChoruslings() && this.level() instanceof ServerLevel serverLevel) {
+            ChoruslingServant servant = new ChoruslingServant(LmEntityRegistry.CHORUSLING_SERVANT.get(), serverLevel);
+            BlockPos blockPos = BlockFinder.SummonRadius(this.blockPosition(), servant, serverLevel);
+            servant.setTrueOwner(this);
+            servant.moveTo(blockPos, 0.0F, 0.0F);
+            servant.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()),
+                    MobSpawnType.MOB_SUMMONED, null, null);
+            servant.setLimitedLife(MobUtil.getSummonLifespan(serverLevel));
+            if (serverLevel.addFreshEntity(servant)) {
                 ServerParticleUtil.summonedParticles(serverLevel, servant, ColorUtil.WHITE, 0xFFFFFF, 0xFFFFFF);
             }
         }
@@ -909,8 +908,18 @@ public class EndersentServant extends AbstractEnderling implements LmServantDama
     @Override
     public void tick() {
         super.tick();
-        if (this.level().isClientSide && this.isCurrentAnimation(DEADLY_ESCAPE)) {
-            this.stopMostAnimation(this.deadlyEscapeAnimationState);
+        if (this.level().isClientSide) {
+            if (this.isCurrentAnimation(DEADLY_ESCAPE)) {
+                this.stopMostAnimation(this.deadlyEscapeAnimationState);
+            }
+            this.stopFinishedAnimation(this.teleportInAnimationState);
+            this.stopFinishedAnimation(this.teleportOutAnimationState);
+        }
+    }
+
+    private void stopFinishedAnimation(AnimationState state) {
+        if (state.isStarted() && state.getAccumulatedTime() >= TELEPORT_ANIMATION_MILLIS) {
+            state.stop();
         }
     }
 
@@ -971,7 +980,7 @@ public class EndersentServant extends AbstractEnderling implements LmServantDama
             if (!this.isHiding()) {
                 if (this.getTarget() != null && !this.isTeleporting() && !this.isDeadlyEscape() && this.postTeleportTick <= 0) {
                     if (this.getTarget().distanceTo(this) <= 8.0F
-                            && this.level().getRandom().nextFloat() <= 0.3F
+                            && this.level().getRandom().nextBoolean()
                             && this.recentHitTime > 0
                             && this.deadlyEscapeCool <= 0
                             && this.choruslingNumber() < 2) {
@@ -1015,7 +1024,7 @@ public class EndersentServant extends AbstractEnderling implements LmServantDama
 
     private void smashTarget(LivingEntity target) {
         if (this.isCurrentAnimation(TELEPORT_IN)) {
-            this.smashTarget(target, AttributesConfig.EndersentServantTeleportSmashDamage.get().floatValue());
+            this.smashTarget(target, LmConfig.EndersentServantTeleportSmashDamage.get().floatValue());
         } else {
             this.doHurtTarget(target);
         }
@@ -1107,8 +1116,10 @@ public class EndersentServant extends AbstractEnderling implements LmServantDama
                 this.stop();
                 return;
             }
-            this.endersent.getLookControl().setLookAt(target,
-                    this.endersent.getMaxHeadYRot(), this.endersent.getMaxHeadXRot());
+            if (!this.endersent.isMeleeAttacking()) {
+                this.endersent.getLookControl().setLookAt(target,
+                        this.endersent.getMaxHeadYRot(), this.endersent.getMaxHeadXRot());
+            }
             if (--this.delayCounter <= 0) {
                 this.delayCounter = 10;
                 if (!this.endersent.isMeleeAttacking()) {
@@ -1140,14 +1151,11 @@ public class EndersentServant extends AbstractEnderling implements LmServantDama
                 float seconds = this.endersent.isCurrentAnimation(ATTACK) ? 2.44F : 2.84F;
                 if (this.endersent.attackTick < MathHelper.secondsToTicks(seconds)) {
                     if (this.endersent.attackTick == MathHelper.secondsToTicks(1)) {
-                        this.endersent.aimAt(enemy, 360.0F);
                         if (this.endersent.isCurrentAnimation(SWIPE)) {
                             this.massiveSweep(this.endersent, 4.5D, 200.0D);
                         } else if (this.endersent.isCurrentAnimation(ATTACK)) {
                             this.endersent.attackFrontSmash();
                         }
-                    } else {
-                        this.endersent.aimAt(enemy, 25.0F);
                     }
                 } else {
                     if (!this.endersent.isHiding() && !this.endersent.isDeadlyEscape()

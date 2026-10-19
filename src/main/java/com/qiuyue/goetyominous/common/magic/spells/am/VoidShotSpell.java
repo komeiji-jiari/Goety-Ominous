@@ -10,7 +10,6 @@ import com.Polarice3.Goety.utils.EntityFinder;
 import com.Polarice3.Goety.utils.SEHelper;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.projectile.am.EntityServantVoidWormShot;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -23,23 +22,24 @@ import net.minecraft.world.phys.Vec3;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class VoidShotSpell extends EverChargeSpell {
 
     public int defaultSoulCost() {
-        return (Integer) SpellConfig.VoidShotSoulCost.get();
+        return (Integer) AmConfig.VoidShotSoulCost.get();
     }
 
     public int defaultCastUp() {
-        return (Integer) SpellConfig.VoidShotCastUp.get();
+        return (Integer) AmConfig.VoidShotCastUp.get();
     }
 
     public int Cooldown() {
-        return (Integer) SpellConfig.VoidShotDuration.get();
+        return (Integer) AmConfig.VoidShotDuration.get();
     }
 
     public int defaultSpellCooldown() {
-        return (Integer) SpellConfig.VoidShotCoolDown.get();
+        return (Integer) AmConfig.VoidShotCoolDown.get();
     }
 
     @Override
@@ -71,7 +71,7 @@ public class VoidShotSpell extends EverChargeSpell {
         if (useTicks < castUp) {
             return;
         }
-        if (useTicks >= castUp + (Integer) SpellConfig.VoidShotDuration.get()) {
+        if (useTicks >= castUp + (Integer) AmConfig.VoidShotDuration.get()) {
             caster.stopUsingItem();
             if (caster instanceof Player player) {
                 ItemStack focus = IWand.getFocus(staff);

@@ -33,6 +33,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.network.PlayMessages;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class EntityServantVoidWormShot extends SpellThrowableProjectile {
     private static final EntityDataAccessor<Float> STOP_HOMING_PROGRESS =
@@ -211,7 +212,7 @@ public class EntityServantVoidWormShot extends SpellThrowableProjectile {
         LivingEntity shooter = this.getOwner();
         if (shooter != null && !(result.getEntity() instanceof EntityVoidWorm) && !(result.getEntity() instanceof EntityVoidWormPart)) {
             boolean b = this.wormAttack(result.getEntity(), this.damageSources().mobProjectile(this, shooter),
-                    com.qiuyue.goetyominous.config.SpellConfig.VoidShotDamage.get().floatValue() + this.getExtraDamage());
+                    AmConfig.VoidShotDamage.get().floatValue() + this.getExtraDamage());
             if (this.voidStaff && result.getEntity() instanceof LivingEntity living
                     && !shooter.isAlliedTo(living)) {
                 living.addEffect(new MobEffectInstance(GoetyEffects.VOID_TOUCHED.get(), 80, 0, false, true));

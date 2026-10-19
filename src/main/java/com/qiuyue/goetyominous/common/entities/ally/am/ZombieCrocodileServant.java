@@ -14,7 +14,6 @@ import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
-import com.qiuyue.goetyominous.config.AttributesConfig;
 
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
@@ -58,6 +57,7 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.event.ForgeEventFactory;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class ZombieCrocodileServant extends Summoned implements IAnimatedEntity, ISemiAquatic {
 
@@ -93,12 +93,12 @@ public class ZombieCrocodileServant extends Summoned implements IAnimatedEntity,
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.ZombieCrocodileServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.ZombieCrocodileServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.ZombieCrocodileServantDamage.get())
-                .add(Attributes.ARMOR, AttributesConfig.ZombieCrocodileServantArmor.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.ZombieCrocodileServantKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.ZombieCrocodileServantMovementSpeed.get());
+                .add(Attributes.MAX_HEALTH, AmConfig.ZombieCrocodileServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AmConfig.ZombieCrocodileServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AmConfig.ZombieCrocodileServantDamage.get())
+                .add(Attributes.ARMOR, AmConfig.ZombieCrocodileServantArmor.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AmConfig.ZombieCrocodileServantKnockbackResistance.get())
+                .add(Attributes.MOVEMENT_SPEED, AmConfig.ZombieCrocodileServantMovementSpeed.get());
     }
 
     @Override
@@ -332,7 +332,7 @@ public class ZombieCrocodileServant extends Summoned implements IAnimatedEntity,
     }
 
     private double getBaseSpeed() {
-        return AttributesConfig.ZombieCrocodileServantMovementSpeed.get();
+        return AmConfig.ZombieCrocodileServantMovementSpeed.get();
     }
 
     protected void damageShieldFor(Player holder, float damage) {

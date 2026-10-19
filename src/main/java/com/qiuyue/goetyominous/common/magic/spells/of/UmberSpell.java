@@ -11,8 +11,6 @@ import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.ally.of.UmberSpiderServant;
 import com.qiuyue.goetyominous.common.init.of.OfEntityRegistry;
-import com.qiuyue.goetyominous.config.MobsConfig;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -27,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.of.OfConfig;
 
 public class UmberSpell extends SummonSpell {
 
@@ -34,19 +33,19 @@ public class UmberSpell extends SummonSpell {
     }
 
     public int defaultSoulCost() {
-        return SpellConfig.UmberSoulCost.get();
+        return OfConfig.UmberSoulCost.get();
     }
 
     public int defaultCastDuration() {
-        return SpellConfig.UmberCastDuration.get();
+        return OfConfig.UmberCastDuration.get();
     }
 
     public int SummonDownDuration() {
-        return SpellConfig.UmberSummonDown.get();
+        return OfConfig.UmberSummonDown.get();
     }
 
     public int defaultSpellCooldown() {
-        return SpellConfig.UmberCoolDown.get();
+        return OfConfig.UmberCoolDown.get();
     }
 
     public @Nullable SoundEvent CastingSound() {
@@ -62,7 +61,7 @@ public class UmberSpell extends SummonSpell {
     }
 
     public int summonLimit() {
-        return MobsConfig.UmberSpiderServantLimit.get();
+        return OfConfig.UmberSpiderServantLimit.get();
     }
 
     public List<Enchantment> acceptedEnchantments() {

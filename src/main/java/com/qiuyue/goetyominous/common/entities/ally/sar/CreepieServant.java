@@ -2,7 +2,6 @@ package com.qiuyue.goetyominous.common.entities.ally.sar;
 
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.init.ModMobType;
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.teamabnormals.savage_and_ravage.core.registry.SRSoundEvents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -35,6 +34,7 @@ import net.minecraft.world.phys.HitResult;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.EnumSet;
+import com.qiuyue.goetyominous.config.uasr.UasrConfig;
 
 public class CreepieServant extends Summoned implements PowerableMob {
     private static final EntityDataAccessor<Integer> DATA_SWELL_DIR = SynchedEntityData.defineId(CreepieServant.class, EntityDataSerializers.INT);
@@ -112,9 +112,9 @@ public class CreepieServant extends Summoned implements PowerableMob {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.CreepieServantHealth.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.CreepieServantDamage.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.CreepieServantMovementSpeed.get());
+                .add(Attributes.MAX_HEALTH, UasrConfig.CreepieServantHealth.get())
+                .add(Attributes.ATTACK_DAMAGE, UasrConfig.CreepieServantDamage.get())
+                .add(Attributes.MOVEMENT_SPEED, UasrConfig.CreepieServantMovementSpeed.get());
     }
 
     @Override

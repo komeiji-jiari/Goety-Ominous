@@ -41,6 +41,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
+import com.qiuyue.goetyominous.config.mm.MmConfig;
 
 public class RodlingServant extends Summoned {
     private static final EntityDataAccessor<Integer> SHIELDS;
@@ -103,13 +104,13 @@ public class RodlingServant extends Summoned {
 
     public static AttributeSupplier.Builder createConfiguredAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, com.qiuyue.goetyominous.config.AttributesConfig.RodlingServantHealth.get())
-                .add(Attributes.ARMOR, com.qiuyue.goetyominous.config.AttributesConfig.RodlingServantArmor.get())
-                .add(Attributes.ARMOR_TOUGHNESS, com.qiuyue.goetyominous.config.AttributesConfig.RodlingServantArmorToughness.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, com.qiuyue.goetyominous.config.AttributesConfig.RodlingServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, com.qiuyue.goetyominous.config.AttributesConfig.RodlingServantFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, com.qiuyue.goetyominous.config.AttributesConfig.RodlingServantMovementSpeed.get())
-                .add(Attributes.FLYING_SPEED, com.qiuyue.goetyominous.config.AttributesConfig.RodlingServantMovementSpeed.get());
+                .add(Attributes.MAX_HEALTH, MmConfig.RodlingServantHealth.get())
+                .add(Attributes.ARMOR, MmConfig.RodlingServantArmor.get())
+                .add(Attributes.ARMOR_TOUGHNESS, MmConfig.RodlingServantArmorToughness.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, MmConfig.RodlingServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, MmConfig.RodlingServantFollowRange.get())
+                .add(Attributes.MOVEMENT_SPEED, MmConfig.RodlingServantMovementSpeed.get())
+                .add(Attributes.FLYING_SPEED, MmConfig.RodlingServantMovementSpeed.get());
     }
 
     @Override

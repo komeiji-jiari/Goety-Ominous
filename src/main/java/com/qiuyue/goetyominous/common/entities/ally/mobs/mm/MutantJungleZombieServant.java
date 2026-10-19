@@ -19,8 +19,6 @@ import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantJungleZo
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantJungleZombieServant.MutantJungleZombieSlamAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantJungleZombieServant.MutantJungleZombieVineAttackGoal;
 import com.qiuyue.goetyominous.common.items.mm.MmItems;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -83,6 +81,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.ForgeRegistries;
+import com.qiuyue.goetyominous.config.mm.MmConfig;
 
 public class MutantJungleZombieServant extends AbstractMutantServant {
     private static final EntityDataAccessor<Integer> REMAINING_LIVES = SynchedEntityData.defineId(MutantJungleZombieServant.class, EntityDataSerializers.INT);
@@ -149,7 +148,7 @@ public class MutantJungleZombieServant extends AbstractMutantServant {
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.MutantJungleZombieServantLimit.get();
+        return MmConfig.MutantJungleZombieServantLimit.get();
     }
 
     @Override
@@ -287,13 +286,13 @@ public class MutantJungleZombieServant extends AbstractMutantServant {
 
     public static AttributeSupplier.Builder createConfiguredAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.MutantJungleZombieServantHealth.get())
-                .add(Attributes.ARMOR, AttributesConfig.MutantJungleZombieServantArmor.get())
-                .add(Attributes.ARMOR_TOUGHNESS, AttributesConfig.MutantJungleZombieServantArmorToughness.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.MutantJungleZombieServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.MutantJungleZombieServantFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.MutantJungleZombieServantMovementSpeed.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.MutantJungleZombieServantAttackDamage.get());
+                .add(Attributes.MAX_HEALTH, MmConfig.MutantJungleZombieServantHealth.get())
+                .add(Attributes.ARMOR, MmConfig.MutantJungleZombieServantArmor.get())
+                .add(Attributes.ARMOR_TOUGHNESS, MmConfig.MutantJungleZombieServantArmorToughness.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, MmConfig.MutantJungleZombieServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, MmConfig.MutantJungleZombieServantFollowRange.get())
+                .add(Attributes.MOVEMENT_SPEED, MmConfig.MutantJungleZombieServantMovementSpeed.get())
+                .add(Attributes.ATTACK_DAMAGE, MmConfig.MutantJungleZombieServantAttackDamage.get());
     }
 
     protected SoundEvent getAmbientSound() {

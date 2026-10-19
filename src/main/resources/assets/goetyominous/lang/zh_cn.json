@@ -346,7 +346,11 @@
   "entity.goetyominous.zombie_resurrection_servant": "僵尸复生",
   "entity.goetyominous.leapkelp": "潮涌之叶",
   "entity.goetyominous.fel_bolt": "邪能束",
-  "entity.goetyominous.area_damage": "凋零烟雾",
+  "entity.goetyominous.mutant_jungle_zombie_vine_sweep": "藤蔓横扫",
+  "entity.goetyominous.mutant_husk_sand_burst": "沙暴",
+  "entity.goetyominous.mutant_husk_sand_geyser": "沙涌",
+  "entity.goetyominous.mutant_jungle_zombie_poison_cloud": "毒雾",
+  "entity.goetyominous.mutant_wither_breath": "凋灵吐息",
   "entity.goetyominous.wither_slash": "凋零斩击",
   "entity.goetyominous.rambler_servant": "无章骨",
   "entity.goetyominous.dicer_servant": "切削者仆从",
@@ -902,6 +906,9 @@
   "item.goety.focus.info": "当用法杖施放时：",
   "jade.goetyominous.melee_progress": "蛮兵升级进度 %s/%s",
   "jade.goetyominous.ranged_progress": "猎手升级进度 %s/%s",
+  "jade.goetyominous.remaining_lives": "复活次数 %s/%s",
+  "jade.goetyominous.life_recovery": "复活恢复 %s 秒",
   "config.jade.plugin_goetyominous.piglin_evolution": "猪灵进化进度",
+  "config.jade.plugin_goetyominous.mutant_servant_life": "突变僵尸复活",
   "message.goetyominous.teletor_switched_tool": "磁流灵已握持:%s"
 }

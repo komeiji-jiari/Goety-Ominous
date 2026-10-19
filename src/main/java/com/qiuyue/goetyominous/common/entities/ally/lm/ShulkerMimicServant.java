@@ -1,7 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm;
 
 import com.qiuyue.goetyominous.compat.lm.LmScreenShake;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
@@ -11,7 +10,6 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IStateGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.BigShulkerBullet;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.GravityBigShulkerBullet;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
 import net.miauczel.legendary_monsters.Particle.custom.Circle;
 import net.miauczel.legendary_monsters.effect.ModEffects;
@@ -62,6 +60,7 @@ import javax.annotation.Nullable;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
+import com.qiuyue.goetyominous.config.lm.LmConfig;
 
 public class ShulkerMimicServant extends IAnimatedMiniBossServant {
 
@@ -122,12 +121,12 @@ public class ShulkerMimicServant extends IAnimatedMiniBossServant {
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.ShulkerMimicServantLimit.get();
+        return LmConfig.ShulkerMimicServantLimit.get();
     }
 
     @Override
     public double damageMultiplier() {
-        return MobsConfig.ShulkerMimicServantDamageMultiplier.get();
+        return LmConfig.ShulkerMimicServantDamageMultiplier.get();
     }
 
     @Override
@@ -138,19 +137,19 @@ public class ShulkerMimicServant extends IAnimatedMiniBossServant {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.ShulkerMimicServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.ShulkerMimicServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.ShulkerMimicServantFollowRange.get())
-                .add(Attributes.ARMOR, AttributesConfig.ShulkerMimicServantArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.ShulkerMimicServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, AttributesConfig.ShulkerMimicServantAttackKnockback.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.ShulkerMimicServantDamage.get());
+                .add(Attributes.MAX_HEALTH, LmConfig.ShulkerMimicServantHealth.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.ShulkerMimicServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, LmConfig.ShulkerMimicServantFollowRange.get())
+                .add(Attributes.ARMOR, LmConfig.ShulkerMimicServantArmor.get())
+                .add(Attributes.MOVEMENT_SPEED, LmConfig.ShulkerMimicServantMovementSpeed.get())
+                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.ShulkerMimicServantAttackKnockback.get())
+                .add(Attributes.ATTACK_DAMAGE, LmConfig.ShulkerMimicServantDamage.get());
     }
 
     public void setConfigurableAttributes() {
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), AttributesConfig.ShulkerMimicServantHealth.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), AttributesConfig.ShulkerMimicServantArmor.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), AttributesConfig.ShulkerMimicServantDamage.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), LmConfig.ShulkerMimicServantHealth.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), LmConfig.ShulkerMimicServantArmor.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), LmConfig.ShulkerMimicServantDamage.get());
     }
 
     @Override

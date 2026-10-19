@@ -11,8 +11,6 @@ import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantHoglinSe
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantHoglinServant.MutantHoglinKickAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantHoglinServant.MutantHoglinMeleeAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantHoglinServant.MutantHoglinStompAttackGoal;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.alexander.mutantmore.config.MutantMoreGroupedOptionsCommonConfig;
 import com.alexander.mutantmore.config.mutant_hoglin.MutantHoglinCommonConfig;
 
@@ -67,6 +65,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeHooks;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.mm.MmConfig;
 
 public class MutantHoglinServant extends AbstractMutantServant implements PlayerRideable {
     public float chargeAnimationAmount;
@@ -115,7 +114,7 @@ public class MutantHoglinServant extends AbstractMutantServant implements Player
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.MutantHoglinServantLimit.get();
+        return MmConfig.MutantHoglinServantLimit.get();
     }
 
     @Override
@@ -390,14 +389,14 @@ public class MutantHoglinServant extends AbstractMutantServant implements Player
 
     public static AttributeSupplier.Builder createConfiguredAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.MutantHoglinServantHealth.get())
-                .add(Attributes.ARMOR, AttributesConfig.MutantHoglinServantArmor.get())
-                .add(Attributes.ARMOR_TOUGHNESS, AttributesConfig.MutantHoglinServantArmorToughness.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.MutantHoglinServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.MutantHoglinServantFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.MutantHoglinServantMovementSpeed.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.MutantHoglinServantAttackDamage.get())
-                .add(Attributes.ATTACK_KNOCKBACK, AttributesConfig.MutantHoglinServantAttackKnockback.get());
+                .add(Attributes.MAX_HEALTH, MmConfig.MutantHoglinServantHealth.get())
+                .add(Attributes.ARMOR, MmConfig.MutantHoglinServantArmor.get())
+                .add(Attributes.ARMOR_TOUGHNESS, MmConfig.MutantHoglinServantArmorToughness.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, MmConfig.MutantHoglinServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, MmConfig.MutantHoglinServantFollowRange.get())
+                .add(Attributes.MOVEMENT_SPEED, MmConfig.MutantHoglinServantMovementSpeed.get())
+                .add(Attributes.ATTACK_DAMAGE, MmConfig.MutantHoglinServantAttackDamage.get())
+                .add(Attributes.ATTACK_KNOCKBACK, MmConfig.MutantHoglinServantAttackKnockback.get());
     }
 
     protected SoundEvent getAmbientSound() {
@@ -473,9 +472,9 @@ public class MutantHoglinServant extends AbstractMutantServant implements Player
         if (this.unholyBloodInvulnTime > 0) {
             --this.unholyBloodInvulnTime;
         }
-        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AttributesConfig.MutantHoglinServantMovementSpeed.get() * (double)this.enragedSpeedMultiplier());
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AttributesConfig.MutantHoglinServantAttackDamage.get() * (double)this.enragedDamageMultiplier());
-        this.getAttribute(Attributes.ATTACK_KNOCKBACK).setBaseValue(AttributesConfig.MutantHoglinServantAttackKnockback.get() * (double)this.enragedKnockbackMultiplier());
+        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(MmConfig.MutantHoglinServantMovementSpeed.get() * (double)this.enragedSpeedMultiplier());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(MmConfig.MutantHoglinServantAttackDamage.get() * (double)this.enragedDamageMultiplier());
+        this.getAttribute(Attributes.ATTACK_KNOCKBACK).setBaseValue(MmConfig.MutantHoglinServantAttackKnockback.get() * (double)this.enragedKnockbackMultiplier());
         if (this.enrageDuration > 0) {
             --this.enrageDuration;
         }
@@ -674,16 +673,16 @@ public class MutantHoglinServant extends AbstractMutantServant implements Player
         AttributeInstance health = this.getAttribute(Attributes.MAX_HEALTH);
         AttributeInstance attack = this.getAttribute(Attributes.ATTACK_DAMAGE);
         if (this.hasSoulJar()) {
-            this.addModIfMissing(health, SOUL_JAR_HEALTH_UUID, "Soul Jar Health", MobsConfig.MHSoulJarHealthBouns.get());
-            this.addModIfMissing(attack, SOUL_JAR_ATTACK_UUID, "Soul Jar Attack", MobsConfig.MHSoulJarDamageBouns.get());
+            this.addModIfMissing(health, SOUL_JAR_HEALTH_UUID, "Soul Jar Health", MmConfig.MHSoulJarHealthBouns.get());
+            this.addModIfMissing(attack, SOUL_JAR_ATTACK_UUID, "Soul Jar Attack", MmConfig.MHSoulJarDamageBouns.get());
         }
         if (this.hasBlazingHelm()) {
-            this.addModIfMissing(health, BLAZING_HELM_HEALTH_UUID, "Blazing Helm Health", MobsConfig.MHBlazingHelmHealthBouns.get());
-            this.addModIfMissing(attack, BLAZING_HELM_ATTACK_UUID, "Blazing Helm Attack", MobsConfig.MHBlazingHelmDamageBouns.get());
+            this.addModIfMissing(health, BLAZING_HELM_HEALTH_UUID, "Blazing Helm Health", MmConfig.MHBlazingHelmHealthBouns.get());
+            this.addModIfMissing(attack, BLAZING_HELM_ATTACK_UUID, "Blazing Helm Attack", MmConfig.MHBlazingHelmDamageBouns.get());
         }
         if (this.hasUnholyBlood()) {
-            this.addModIfMissing(health, UNHOLY_BLOOD_HEALTH_UUID, "Unholy Blood Health", MobsConfig.MHUnholyBloodHealthBouns.get());
-            this.addModIfMissing(attack, UNHOLY_BLOOD_ATTACK_UUID, "Unholy Blood Attack", MobsConfig.MHUnholyBloodDamageBouns.get());
+            this.addModIfMissing(health, UNHOLY_BLOOD_HEALTH_UUID, "Unholy Blood Health", MmConfig.MHUnholyBloodHealthBouns.get());
+            this.addModIfMissing(attack, UNHOLY_BLOOD_ATTACK_UUID, "Unholy Blood Attack", MmConfig.MHUnholyBloodDamageBouns.get());
         }
     }
 

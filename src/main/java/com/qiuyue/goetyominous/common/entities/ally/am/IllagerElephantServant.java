@@ -15,8 +15,6 @@ import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.google.common.collect.Maps;
 import com.qiuyue.goetyominous.common.entities.ai.am.SmoothBodyRotationControl;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -79,6 +77,7 @@ import net.minecraftforge.network.NetworkHooks;
 import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class IllagerElephantServant extends RaiderServant implements ITargetsDroppedItems, IAnimatedEntity, PlayerRideable {
     public static final Animation ANIMATION_TRUMPET_0 = Animation.create(20);
@@ -138,24 +137,24 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.IllagerElephantServantLimit.get();
+        return AmConfig.IllagerElephantServantLimit.get();
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.IllagerElephantServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.IllagerElephantServantFollowRange.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.IllagerElephantServantKnockbackResistance.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.IllagerElephantServantDamage.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.IllagerElephantServantMovementSpeed.get());
+                .add(Attributes.MAX_HEALTH, AmConfig.IllagerElephantServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AmConfig.IllagerElephantServantFollowRange.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AmConfig.IllagerElephantServantKnockbackResistance.get())
+                .add(Attributes.ATTACK_DAMAGE, AmConfig.IllagerElephantServantDamage.get())
+                .add(Attributes.MOVEMENT_SPEED, AmConfig.IllagerElephantServantMovementSpeed.get());
     }
 
     public void setConfigurableAttributes() {
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(AttributesConfig.IllagerElephantServantHealth.get());
-        this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(AttributesConfig.IllagerElephantServantFollowRange.get());
-        this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(AttributesConfig.IllagerElephantServantKnockbackResistance.get());
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AttributesConfig.IllagerElephantServantDamage.get());
-        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AttributesConfig.IllagerElephantServantMovementSpeed.get());
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(AmConfig.IllagerElephantServantHealth.get());
+        this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(AmConfig.IllagerElephantServantFollowRange.get());
+        this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(AmConfig.IllagerElephantServantKnockbackResistance.get());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AmConfig.IllagerElephantServantDamage.get());
+        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AmConfig.IllagerElephantServantMovementSpeed.get());
     }
     @Nullable
     public static DyeColor getCarpetColor(ItemStack stack) {
@@ -424,7 +423,7 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
             if (!this.isActivelySteering() && this.isTargetReachable(target) && this.hasLineOfSight(target) && this.getAnimation() == NO_ANIMATION && !this.isCharging() && this.getChargeCooldown() == 0 && !this.isStaying()) {
                 this.setAnimation(ANIMATION_CHARGE_PREPARE);
             }
-            if (this.getAnimation() == ANIMATION_CHARGE_PREPARE && !this.isActivelySteering()) {
+            if (this.getAnimation() == ANIMATION_CHARGE_PREPARE && !this.isActivelySteering() && !this.isDeadOrDying()) {
                 this.lookAt(target, (float) this.getMaxHeadYRot(), 30.0f);
                 this.yBodyRot = this.getYRot();
             }
@@ -456,11 +455,11 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
             }
         }
         if (this.isCharging() && !this.hasChargedSpeed) {
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AttributesConfig.IllagerElephantServantMovementSpeed.get() + 0.3);
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AmConfig.IllagerElephantServantMovementSpeed.get() + 0.3);
             this.hasChargedSpeed = true;
         }
         if (!this.isCharging() && this.hasChargedSpeed) {
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AttributesConfig.IllagerElephantServantMovementSpeed.get());
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AmConfig.IllagerElephantServantMovementSpeed.get());
             this.hasChargedSpeed = false;
         }
         if (!this.level().isClientSide && this.getRandom().nextInt(400) == 0 && this.getAnimation() == NO_ANIMATION) {

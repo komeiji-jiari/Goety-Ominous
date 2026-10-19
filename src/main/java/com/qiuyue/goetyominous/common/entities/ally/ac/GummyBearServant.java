@@ -14,8 +14,6 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.server.entity.IDancesToJukebox;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.utils.ModMobType;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
@@ -68,6 +66,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoField;
 import java.util.EnumSet;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class GummyBearServant extends AnimalSummon implements IAnimatedEntity, IDancesToJukebox {
 
@@ -134,17 +133,17 @@ public class GummyBearServant extends AnimalSummon implements IAnimatedEntity, I
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.GummyBearServantMovementSpeed.get())
-                .add(Attributes.MAX_HEALTH, AttributesConfig.GummyBearServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.GummyBearServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.GummyBearServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.GummyBearServantKnockbackResistance.get())
-                .add(Attributes.ARMOR, AttributesConfig.GummyBearServantArmor.get());
+                .add(Attributes.MOVEMENT_SPEED, AcConfig.GummyBearServantMovementSpeed.get())
+                .add(Attributes.MAX_HEALTH, AcConfig.GummyBearServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AcConfig.GummyBearServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AcConfig.GummyBearServantDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.GummyBearServantKnockbackResistance.get())
+                .add(Attributes.ARMOR, AcConfig.GummyBearServantArmor.get());
     }
 
     @Override
     public int getSummonLimit(LivingEntity player) {
-        return MobsConfig.GummyBearServantLimit.get();
+        return AcConfig.GummyBearServantLimit.get();
     }
 
     @Override
@@ -292,7 +291,7 @@ public class GummyBearServant extends AnimalSummon implements IAnimatedEntity, I
             return false;
         }
         return !(owner instanceof Player player
-                && countServants(player) >= MobsConfig.GummyBearServantLimit.get());
+                && countServants(player) >= AcConfig.GummyBearServantLimit.get());
     }
 
     @Override
@@ -300,7 +299,7 @@ public class GummyBearServant extends AnimalSummon implements IAnimatedEntity, I
     public AnimalSummon getBreedOffspring(ServerLevel level, AnimalSummon otherParent) {
         LivingEntity owner = this.getTrueOwner();
         if (owner instanceof Player player
-                && countServants(player) >= MobsConfig.GummyBearServantLimit.get()) {
+                && countServants(player) >= AcConfig.GummyBearServantLimit.get()) {
             return null;
         }
         AnimalSummon offspring = super.getBreedOffspring(level, otherParent);

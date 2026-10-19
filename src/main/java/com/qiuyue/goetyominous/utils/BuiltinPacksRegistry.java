@@ -23,7 +23,7 @@ public class BuiltinPacksRegistry {
             if (packPath != null) {
                 event.addRepositorySource(consumer -> {
                     Pack pack = Pack.readMetaAndCreate(
-                            "goetyominous/sar_compat",
+                            "goetyominous/uasr_sar_compat",
                             Component.literal("SAR Compatibility Pack"),
                             true,
                             id -> new PathPackResources(id, packPath, true),
@@ -43,12 +43,12 @@ public class BuiltinPacksRegistry {
             if (packPath != null) {
                 event.addRepositorySource(consumer -> {
                     Pack pack = Pack.readMetaAndCreate(
-                            "goetyominous/ua_compat",
+                            "goetyominous/uasr_ua_compat",
                             Component.literal("UA Compatibility Pack"),
                             true,
                             id -> new PathPackResources(id, packPath, true),
                             PackType.CLIENT_RESOURCES,
-                            Pack.Position.TOP,
+                            Pack.Position.BOTTOM,
                             PackSource.BUILT_IN
                     );
                     if (pack != null) {
@@ -63,8 +63,8 @@ public class BuiltinPacksRegistry {
             if (packPath != null) {
                 event.addRepositorySource(consumer -> {
                     Pack pack = Pack.readMetaAndCreate(
-                            "goetyominous/ac_compat",
-                            Component.literal("AC Compatibility Pack"),
+                            "goetyominous/acam_ac_compat",
+                            Component.literal("Goety Caves Compatibility Pack"),
                             true,
                             id -> new PathPackResources(id, packPath, true),
                             PackType.CLIENT_RESOURCES,
@@ -84,7 +84,7 @@ public class BuiltinPacksRegistry {
                 event.addRepositorySource(consumer -> {
                     Pack pack = Pack.readMetaAndCreate(
                             "goetyominous/ac_compat_data",
-                            Component.literal("AC Compatibility Data"),
+                            Component.literal("Goety Caves Compatibility Data"),
                             true,
                             id -> new PathPackResources(id, packPath, true),
                             PackType.SERVER_DATA,
@@ -143,12 +143,12 @@ public class BuiltinPacksRegistry {
             if (packPath != null) {
                 event.addRepositorySource(consumer -> {
                     Pack pack = Pack.readMetaAndCreate(
-                            "goetyominous/am_compat",
-                            Component.literal("AlexMobs Compatibility Pack"),
+                            "goetyominous/acam_am_compat",
+                            Component.literal("Goety Mobs Compatibility Pack"),
                             true,
                             id -> new PathPackResources(id, packPath, true),
                             PackType.CLIENT_RESOURCES,
-                            Pack.Position.TOP,
+                            Pack.Position.BOTTOM,
                             PackSource.BUILT_IN
                     );
                     if (pack != null) {
@@ -244,7 +244,7 @@ public class BuiltinPacksRegistry {
                 event.addRepositorySource(consumer -> {
                     Pack pack = Pack.readMetaAndCreate(
                             "goetyominous/am_compat_data",
-                            Component.literal("AlexMobs Compatibility Data"),
+                            Component.literal("Goety Mobs Compatibility Data"),
                             true,
                             id -> new PathPackResources(id, packPath, true),
                             PackType.SERVER_DATA,

@@ -71,6 +71,9 @@ public class MutantWitherSkeletonBlockGoal extends Goal {
 
             while(var4.hasNext()) {
                 LivingEntity entity = (LivingEntity)var4.next();
+                if (entity == this.mob || !this.mob.canHarm(entity)) {
+                    continue;
+                }
                 Vec3 knockback = PositionUtils.getOffsetMotion(entity, 0.0, 0.5, entity instanceof Player ? 10.0 : 4.0, 0.0F, this.mob.yBodyRot);
                 entity.hurtMarked = true;
                 entity.moveTo(entity.position().add(0.0, 0.1, 0.0));

@@ -5,7 +5,6 @@ import com.Polarice3.Goety.utils.WandUtil;
 import com.github.alexmodguy.alexscaves.server.misc.ACDamageTypes;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -27,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.UUID;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class TremorsaurusSpiritEntity extends Entity {
 
@@ -182,10 +182,10 @@ public class TremorsaurusSpiritEntity extends Entity {
     }
 
     private float spiritDamage() {
-        float damage = SpellConfig.TremorSpiritDamage.get().floatValue() * WandUtil.damageMultiply();
-        damage += SpellConfig.TremorSpiritDamagePerPotency.get().floatValue() * this.getPotency();
+        float damage = AcConfig.TremorSpiritDamage.get().floatValue() * WandUtil.damageMultiply();
+        damage += AcConfig.TremorSpiritDamagePerPotency.get().floatValue() * this.getPotency();
         if (this.getBonusDamage() > 0) {
-            damage += SpellConfig.TremorSpiritStaffBonus.get().floatValue();
+            damage += AcConfig.TremorSpiritStaffBonus.get().floatValue();
         }
         return damage;
     }

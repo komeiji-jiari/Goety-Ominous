@@ -3,7 +3,6 @@ package com.qiuyue.goetyominous.common.items.mm;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.common.items.revive.ReviveServantItem;
 import com.Polarice3.Goety.common.ritual.RitualRequirements;
-import com.Polarice3.Goety.config.ItemConfig;
 import com.Polarice3.Goety.utils.MathHelper;
 import com.Polarice3.Goety.utils.SEHelper;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.AbstractMutantServant;
@@ -74,7 +73,7 @@ public class MutantZombieReviveItem extends ReviveServantItem {
                 }
                 target.discard();
                 player.swing(hand);
-                SEHelper.addCooldown(player, this, MathHelper.secondsToTicks(ItemConfig.ReviveSecondsCool.get()));
+                SEHelper.addCooldown(player, this, MathHelper.secondsToTicks(AbstractMutantServant.REVIVE_COOLDOWN_SECONDS));
                 stack.shrink(1);
             }
         }

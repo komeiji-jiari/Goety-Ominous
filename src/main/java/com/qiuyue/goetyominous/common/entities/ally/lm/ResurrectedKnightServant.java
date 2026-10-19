@@ -12,8 +12,6 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.goals.knight.RSStabGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.knight.RSStateGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.knight.RSSynergyGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulJavelin;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -65,6 +63,7 @@ import net.minecraft.world.phys.Vec3;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
+import com.qiuyue.goetyominous.config.lm.LmConfig;
 
 public class ResurrectedKnightServant extends IAnimatedMiniBossServant {
 
@@ -118,19 +117,19 @@ public class ResurrectedKnightServant extends IAnimatedMiniBossServant {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.ResurrectedKnightServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.ResurrectedKnightServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.ResurrectedKnightServantFollowRange.get())
-                .add(Attributes.ARMOR, AttributesConfig.ResurrectedKnightServantArmor.get())
-                .add(Attributes.ARMOR_TOUGHNESS, AttributesConfig.ResurrectedKnightServantArmorToughness.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.ResurrectedKnightServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, AttributesConfig.ResurrectedKnightServantAttackKnockback.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.ResurrectedKnightServantDamage.get());
+                .add(Attributes.MAX_HEALTH, LmConfig.ResurrectedKnightServantHealth.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.ResurrectedKnightServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, LmConfig.ResurrectedKnightServantFollowRange.get())
+                .add(Attributes.ARMOR, LmConfig.ResurrectedKnightServantArmor.get())
+                .add(Attributes.ARMOR_TOUGHNESS, LmConfig.ResurrectedKnightServantArmorToughness.get())
+                .add(Attributes.MOVEMENT_SPEED, LmConfig.ResurrectedKnightServantMovementSpeed.get())
+                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.ResurrectedKnightServantAttackKnockback.get())
+                .add(Attributes.ATTACK_DAMAGE, LmConfig.ResurrectedKnightServantDamage.get());
     }
 
     @Override
     public double damageMultiplier() {
-        return MobsConfig.ResurrectedKnightServantDamageMultiplier.get();
+        return LmConfig.ResurrectedKnightServantDamageMultiplier.get();
     }
 
     @Override
@@ -163,7 +162,7 @@ public class ResurrectedKnightServant extends IAnimatedMiniBossServant {
                                         MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData,
                                         @Nullable CompoundTag pDataTag) {
         if (pReason == MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player) {
-            if (countServants(player) >= MobsConfig.ResurrectedKnightServantLimit.get()) {
+            if (countServants(player) >= LmConfig.ResurrectedKnightServantLimit.get()) {
                 return null;
             }
         }

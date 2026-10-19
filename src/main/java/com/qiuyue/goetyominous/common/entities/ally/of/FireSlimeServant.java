@@ -3,8 +3,6 @@ package com.qiuyue.goetyominous.common.entities.ally.of;
 import com.Polarice3.Goety.common.entities.ally.SlimeServant;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.init.ModMobType;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
@@ -32,6 +30,7 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import com.qiuyue.goetyominous.config.of.OfConfig;
 
 public class FireSlimeServant extends SlimeServant {
     private static final int FIXED_SIZE = 1;
@@ -44,9 +43,9 @@ public class FireSlimeServant extends SlimeServant {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.FireSlimeServantHealth.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.FireSlimeServantMovementSpeed.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.FireSlimeServantAttackDamage.get());
+                .add(Attributes.MAX_HEALTH, OfConfig.FireSlimeServantHealth.get())
+                .add(Attributes.MOVEMENT_SPEED, OfConfig.FireSlimeServantMovementSpeed.get())
+                .add(Attributes.ATTACK_DAMAGE, OfConfig.FireSlimeServantAttackDamage.get());
     }
 
     @Override
@@ -75,7 +74,7 @@ public class FireSlimeServant extends SlimeServant {
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.FireSlimeServantLimit.get();
+        return OfConfig.FireSlimeServantLimit.get();
     }
 
     @Override

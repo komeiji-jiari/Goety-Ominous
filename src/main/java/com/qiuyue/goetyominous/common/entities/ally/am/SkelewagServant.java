@@ -15,7 +15,6 @@ import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
-import com.qiuyue.goetyominous.config.AttributesConfig;
 
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
@@ -58,6 +57,7 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class SkelewagServant extends Summoned implements IAnimatedEntity, ISemiAquatic, PlayerRideable, IAutoRideable {
 
@@ -78,16 +78,16 @@ public class SkelewagServant extends Summoned implements IAnimatedEntity, ISemiA
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.SkelewagServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.SkelewagServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.SkelewagServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.SkelewagServantKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.SkelewagServantMovementSpeed.get());
+                .add(Attributes.MAX_HEALTH, AmConfig.SkelewagServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AmConfig.SkelewagServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AmConfig.SkelewagServantDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AmConfig.SkelewagServantKnockbackResistance.get())
+                .add(Attributes.MOVEMENT_SPEED, AmConfig.SkelewagServantMovementSpeed.get());
     }
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return com.qiuyue.goetyominous.config.MobsConfig.SkelewagLimit.get();
+        return AmConfig.SkelewagLimit.get();
     }
 
     @Override
@@ -163,7 +163,7 @@ public class SkelewagServant extends Summoned implements IAnimatedEntity, ISemiA
         }
         this.setXRot(targetXRot);
 
-        if (!this.level().isClientSide && this.getTarget() != null && this.distanceTo(this.getTarget()) < 2.0F + this.getTarget().getBbWidth()) {
+        if (!this.level().isClientSide && !this.isDeadOrDying() && this.getTarget() != null && this.distanceTo(this.getTarget()) < 2.0F + this.getTarget().getBbWidth()) {
             this.lookAt(this.getTarget(), 350, 200);
             if (this.getAnimation() == ANIMATION_STAB && this.getAnimationTick() == 7 && this.hasLineOfSight(this.getTarget())) {
                 float f1 = this.getYRot() * Mth.DEG_TO_RAD;
@@ -182,7 +182,7 @@ public class SkelewagServant extends Summoned implements IAnimatedEntity, ISemiA
         if (onLandProgress >= 5.0F && this.isVehicle()) {
             this.ejectPassengers();
         }
-        if (!this.level().isClientSide && !this.isInWaterOrBubble()) {
+        if (!this.level().isClientSide && !this.isInWaterOrBubble() && !this.isDeadOrDying()) {
             if (this.onGround() && random.nextFloat() < 0.2F) {
                 this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.2F, 0.5D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F));
                 this.setYRot(this.random.nextFloat() * 360.0F);

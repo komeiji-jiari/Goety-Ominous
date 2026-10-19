@@ -11,6 +11,7 @@ import com.alexander.mutantmore.init.TagInit.EntityTypes;
 import com.alexander.mutantmore.particles.AdvancedParticleOption;
 import com.alexander.mutantmore.util.MiscUtils;
 import com.google.common.collect.Lists;
+import com.qiuyue.goetyominous.common.blocks.mm.ServantQuicksandBlock;
 import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
 import java.util.List;
 import net.minecraft.client.Minecraft;
@@ -131,8 +132,8 @@ public class SandBoulderServant extends ThrowableProjectile {
             if (this.griefing) {
                 for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(aabb.minY), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
                     BlockState blockstate = this.level().getBlockState(blockpos);
-                    if (!blockstate.isAir() || !QuicksandBlock.survivable(MiscUtils.quicksandBlockForSandType(this.getSandType()).defaultBlockState(), this.level(), blockpos) || !this.random.nextBoolean()) continue;
-                    this.level().setBlockAndUpdate(blockpos, MiscUtils.quicksandBlockForSandType(this.getSandType()).defaultBlockState());
+                    if (!blockstate.isAir() || !QuicksandBlock.survivable(ServantQuicksandBlock.forSandType(this.getSandType()).defaultBlockState(), this.level(), blockpos) || !this.random.nextBoolean()) continue;
+                    this.level().setBlockAndUpdate(blockpos, ServantQuicksandBlock.forSandType(this.getSandType()).defaultBlockState());
                 }
             }
         }

@@ -4,60 +4,29 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import java.io.File;
 
 public class WeaponConfig {
-
-    public static void loadConfig(ForgeConfigSpec spec, String path) {
-        final com.electronwill.nightconfig.core.file.CommentedFileConfig configData =
-                com.electronwill.nightconfig.core.file.CommentedFileConfig.builder(new File(path))
-                        .sync()
-                        .autoreload()
-                        .writingMode(com.electronwill.nightconfig.core.io.WritingMode.REPLACE)
-                        .build();
-        configData.load();
-        spec.setConfig(configData);
-    }
-
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
     public static final ForgeConfigSpec.ConfigValue<Double> FelStaffDamage;
-
+    public static final ForgeConfigSpec.ConfigValue<Double> BoneCudgelDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> BoneCudgelAttackSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> FirebrandDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> FirebrandFireBonus;
     public static final ForgeConfigSpec.ConfigValue<Integer> WolfArmorDurability;
     public static final ForgeConfigSpec.ConfigValue<Double> WolfArmorIngotRepair;
     public static final ForgeConfigSpec.ConfigValue<Integer> WolfArmorSoulRepairInterval;
-
     public static final ForgeConfigSpec.ConfigValue<Integer> WargArmorDurability;
     public static final ForgeConfigSpec.ConfigValue<Double> WargArmorIngotRepair;
     public static final ForgeConfigSpec.ConfigValue<Integer> WargArmorSoulRepairInterval;
-
     public static final ForgeConfigSpec.ConfigValue<Integer> BlackBeastArmorDurability;
     public static final ForgeConfigSpec.ConfigValue<Double> BlackBeastArmorIngotRepair;
     public static final ForgeConfigSpec.ConfigValue<Integer> BlackBeastArmorSoulRepairInterval;
 
-    public static final ForgeConfigSpec.ConfigValue<Double> BoneCudgelDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> BoneCudgelAttackSpeed;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> WitherScytheDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> WitherScytheAttackSpeed;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> FirebrandDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> FirebrandFireBonus;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> BarbaricAxeDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> BarbaricAxeAttackSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> BarbaricAxeSweepDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> BarbaricAxeSweepRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> BarbaricAxeSlamDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> BarbaricAxeSlamRadius;
-    public static final ForgeConfigSpec.ConfigValue<Integer> BarbaricAxeIgniteSeconds;
-    public static final ForgeConfigSpec.ConfigValue<Integer> BarbaricAxeChainLimit;
-
     static {
-
         BUILDER.push("Fel Staff");
         FelStaffDamage = BUILDER.comment("Melee damage of Fel Staff (Default: 4.0)")
                 .defineInRange("felStaffDamage", 4.0, 1.0, 100.0);
         BUILDER.pop();
-
         BUILDER.push("Bone Cudgel");
         BoneCudgelDamage = BUILDER
                 .comment("Bone Cudgel base damage, Default: 13.0")
@@ -66,16 +35,6 @@ public class WeaponConfig {
                 .comment("Bone Cudgel attack speed modifier, Default: -3.75")
                 .defineInRange("boneCudgelAttackSpeed", -3.75, -4.0, 0.0);
         BUILDER.pop();
-
-        BUILDER.push("Wither Scythe");
-        WitherScytheDamage = BUILDER
-                .comment("Wither Scythe total attack damage, Default: 9.5")
-                .defineInRange("witherScytheDamage", 9.5, 0.0, Double.MAX_VALUE);
-        WitherScytheAttackSpeed = BUILDER
-                .comment("Wither Scythe attack speed modifier, Default: -3.3")
-                .defineInRange("witherScytheAttackSpeed", -3.3, -4.0, 10.0);
-        BUILDER.pop();
-
         BUILDER.push("Firebrand");
         FirebrandDamage = BUILDER
                 .comment("Firebrand total attack damage, Default: 9.0")
@@ -84,34 +43,6 @@ public class WeaponConfig {
                 .comment("Firebrand bonus fire damage dealt to burning targets, Default: 3.0")
                 .defineInRange("firebrandFireBonus", 3.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
-
-        BUILDER.push("Barbaric Axe");
-        BarbaricAxeDamage = BUILDER
-                .comment("Barbaric Axe total attack damage, as shown in the tooltip, Default: 12.0")
-                .defineInRange("barbaricAxeDamage", 12.0, 1.0, Double.MAX_VALUE);
-        BarbaricAxeAttackSpeed = BUILDER
-                .comment("Barbaric Axe total attack speed, as shown in the tooltip, Default: 1.0")
-                .defineInRange("barbaricAxeAttackSpeed", 1.0, 0.5, 4.0);
-        BarbaricAxeSweepDamage = BUILDER
-                .comment("Damage dealt by the left click sweep to extra targets, Default: 6.0")
-                .defineInRange("barbaricAxeSweepDamage", 6.0, 0.0, Double.MAX_VALUE);
-        BarbaricAxeSweepRange = BUILDER
-                .comment("Radius in blocks of the left click sweep, Default: 3.5")
-                .defineInRange("barbaricAxeSweepRange", 3.5, 0.0, 16.0);
-        BarbaricAxeSlamDamage = BUILDER
-                .comment("Damage dealt by the ground slam, Default: 10.0")
-                .defineInRange("barbaricAxeSlamDamage", 10.0, 0.0, Double.MAX_VALUE);
-        BarbaricAxeSlamRadius = BUILDER
-                .comment("Radius in blocks of the ground slam, Default: 5.0")
-                .defineInRange("barbaricAxeSlamRadius", 5.0, 0.0, 16.0);
-        BarbaricAxeIgniteSeconds = BUILDER
-                .comment("Seconds affected entities stay on fire after a ground slam, Default: 5")
-                .defineInRange("barbaricAxeIgniteSeconds", 5, 0, 60);
-        BarbaricAxeChainLimit = BUILDER
-                .comment("Maximum logs removed by one chain mining action, including the one that was broken, Default: 64")
-                .defineInRange("barbaricAxeChainLimit", 64, 1, 1024);
-        BUILDER.pop();
-
         BUILDER.push("Wolf Armor");
         WolfArmorDurability = BUILDER
                 .comment("Cursed Metal Wolf Armor durability, Default: 78")
@@ -123,7 +54,6 @@ public class WeaponConfig {
                 .comment("Dark Wolf Armor soul repair interval in ticks (1 durability per N ticks), Default: 20")
                 .defineInRange("wolfArmorSoulRepairInterval", 20, 1, 10000);
         BUILDER.pop();
-
         BUILDER.push("Warg Armor");
         WargArmorDurability = BUILDER
                 .comment("Cursed Warg Armor durability, Default: 78")
@@ -135,7 +65,6 @@ public class WeaponConfig {
                 .comment("Dark Warg Armor soul repair interval in ticks (1 durability per N ticks), Default: 20")
                 .defineInRange("wargArmorSoulRepairInterval", 20, 1, 10000);
         BUILDER.pop();
-
         BUILDER.push("Black Beast Armor");
         BlackBeastArmorDurability = BUILDER
                 .comment("Cursed Black Beast Armor durability, Default: 78")
@@ -147,7 +76,16 @@ public class WeaponConfig {
                 .comment("Dark Black Beast Armor soul repair interval in ticks (1 durability per N ticks), Default: 20")
                 .defineInRange("blackBeastArmorSoulRepairInterval", 20, 1, 10000);
         BUILDER.pop();
-
         SPEC = BUILDER.build();
+    }
+    public static void loadConfig(ForgeConfigSpec spec, String path) {
+        final com.electronwill.nightconfig.core.file.CommentedFileConfig configData =
+                com.electronwill.nightconfig.core.file.CommentedFileConfig.builder(new File(path))
+                        .sync()
+                        .autoreload()
+                        .writingMode(com.electronwill.nightconfig.core.io.WritingMode.REPLACE)
+                        .build();
+        configData.load();
+        spec.setConfig(configData);
     }
 }

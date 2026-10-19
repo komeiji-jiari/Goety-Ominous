@@ -4,7 +4,6 @@ import com.Polarice3.Goety.api.entities.IOwned;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.utils.CuriosFinder;
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.AdvancedPathNavigateNoTeleport;
 import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
@@ -16,7 +15,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -59,6 +57,7 @@ import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class RockyRollerServant extends Summoned implements ICustomCollisions {
 
@@ -80,7 +79,7 @@ public class RockyRollerServant extends Summoned implements ICustomCollisions {
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.RockyRollerLimit.get();
+        return AmConfig.RockyRollerLimit.get();
     }
 
     @Nullable
@@ -94,33 +93,33 @@ public class RockyRollerServant extends Summoned implements ICustomCollisions {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.RockyRollerServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.RockyRollerServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.RockyRollerServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.RockyRollerServantKnockbackResistance.get())
-                .add(Attributes.ARMOR, AttributesConfig.RockyRollerServantArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.RockyRollerServantMovementSpeed.get());
+                .add(Attributes.MAX_HEALTH, AmConfig.RockyRollerServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AmConfig.RockyRollerServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AmConfig.RockyRollerServantDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AmConfig.RockyRollerServantKnockbackResistance.get())
+                .add(Attributes.ARMOR, AmConfig.RockyRollerServantArmor.get())
+                .add(Attributes.MOVEMENT_SPEED, AmConfig.RockyRollerServantMovementSpeed.get());
     }
 
     @Override
     public void setConfigurableAttributes() {
         if (this.getAttribute(Attributes.MAX_HEALTH) != null) {
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(AttributesConfig.RockyRollerServantHealth.get());
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(AmConfig.RockyRollerServantHealth.get());
         }
         if (this.getAttribute(Attributes.FOLLOW_RANGE) != null) {
-            this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(AttributesConfig.RockyRollerServantFollowRange.get());
+            this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(AmConfig.RockyRollerServantFollowRange.get());
         }
         if (this.getAttribute(Attributes.ATTACK_DAMAGE) != null) {
-            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AttributesConfig.RockyRollerServantDamage.get());
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AmConfig.RockyRollerServantDamage.get());
         }
         if (this.getAttribute(Attributes.KNOCKBACK_RESISTANCE) != null) {
-            this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(AttributesConfig.RockyRollerServantKnockbackResistance.get());
+            this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(AmConfig.RockyRollerServantKnockbackResistance.get());
         }
         if (this.getAttribute(Attributes.ARMOR) != null) {
-            this.getAttribute(Attributes.ARMOR).setBaseValue(AttributesConfig.RockyRollerServantArmor.get());
+            this.getAttribute(Attributes.ARMOR).setBaseValue(AmConfig.RockyRollerServantArmor.get());
         }
         if (this.getAttribute(Attributes.MOVEMENT_SPEED) != null) {
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AttributesConfig.RockyRollerServantMovementSpeed.get());
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AmConfig.RockyRollerServantMovementSpeed.get());
         }
     }
 

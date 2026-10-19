@@ -11,8 +11,6 @@ import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.ally.am.FarseerServant;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
-import com.qiuyue.goetyominous.config.MobsConfig;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -27,21 +25,22 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class FarseerSpell extends SummonSpell {
     public FarseerSpell() {
     }
 
     public int defaultSoulCost() {
-        return (Integer) SpellConfig.FarseerSoulCost.get();
+        return (Integer) AmConfig.FarseerSoulCost.get();
     }
 
     public int defaultCastDuration() {
-        return (Integer) SpellConfig.FarseerCastDuration.get();
+        return (Integer) AmConfig.FarseerCastDuration.get();
     }
 
     public int SummonDownDuration() {
-        return (Integer) SpellConfig.FarseerSummonDown.get();
+        return (Integer) AmConfig.FarseerSummonDown.get();
     }
 
     public SoundEvent CastingSound() {
@@ -49,7 +48,7 @@ public class FarseerSpell extends SummonSpell {
     }
 
     public int defaultSpellCooldown() {
-        return (Integer) SpellConfig.FarseerCoolDown.get();
+        return (Integer) AmConfig.FarseerCoolDown.get();
     }
 
     public SpellType getSpellType() {
@@ -70,7 +69,7 @@ public class FarseerSpell extends SummonSpell {
     }
 
     public int summonLimit() {
-        return (Integer) MobsConfig.FarseerServantLimit.get();
+        return (Integer) AmConfig.FarseerServantLimit.get();
     }
 
     public void SpellResult(ServerLevel worldIn, LivingEntity caster, ItemStack staff, SpellStat spellStat) {

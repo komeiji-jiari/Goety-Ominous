@@ -9,8 +9,6 @@ import com.teamabnormals.blueprint.core.endimator.Endimatable;
 import com.teamabnormals.blueprint.core.endimator.PlayableEndimation;
 import com.teamabnormals.blueprint.core.endimator.TimedEndimation;
 import com.teamabnormals.blueprint.core.util.NetworkUtil;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.teamabnormals.upgrade_aquatic.core.other.UADataSerializers;
 import com.teamabnormals.upgrade_aquatic.core.other.tags.UAEntityTypeTags;
 import com.teamabnormals.upgrade_aquatic.core.registry.UAPlayableEndimations;
@@ -59,6 +57,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import com.qiuyue.goetyominous.config.uasr.UasrConfig;
 
 public class ThrasherServant extends Summoned implements Endimatable {
     public static final double BITE_RANGE = 8.0D;
@@ -93,17 +92,17 @@ public class ThrasherServant extends Summoned implements Endimatable {
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.ThrasherServantLimit.get();
+        return UasrConfig.ThrasherServantLimit.get();
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.ThrasherServantDamage.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.ThrasherServantMovementSpeed.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.ThrasherServantFollowRange.get())
-                .add(Attributes.MAX_HEALTH, AttributesConfig.ThrasherServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.ThrasherServantKnockbackResistance.get())
-                .add(Attributes.ARMOR, AttributesConfig.ThrasherServantArmor.get());
+                .add(Attributes.ATTACK_DAMAGE, UasrConfig.ThrasherServantDamage.get())
+                .add(Attributes.MOVEMENT_SPEED, UasrConfig.ThrasherServantMovementSpeed.get())
+                .add(Attributes.FOLLOW_RANGE, UasrConfig.ThrasherServantFollowRange.get())
+                .add(Attributes.MAX_HEALTH, UasrConfig.ThrasherServantHealth.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, UasrConfig.ThrasherServantKnockbackResistance.get())
+                .add(Attributes.ARMOR, UasrConfig.ThrasherServantArmor.get());
     }
 
     @Override
@@ -563,7 +562,7 @@ public class ThrasherServant extends Summoned implements Endimatable {
                     this.hurt(this.damageSources().dryOut(), 1.0F);
                 }
 
-                if (!this.isInWater() && !this.isStunned() && this.onGround() && this.getControllingPassenger() == null) {
+                if (!this.isInWater() && !this.isStunned() && this.onGround() && this.getControllingPassenger() == null && !this.isDeadOrDying()) {
                     this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.2F, 0.5D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F));
                     this.setYRot(this.random.nextFloat() * 360.0F);
                     this.setXRot(this.random.nextFloat() * -50.0F);

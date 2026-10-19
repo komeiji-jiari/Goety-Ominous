@@ -11,7 +11,6 @@ import java.util.UUID;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
 
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -43,6 +42,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class ServantCentipedeBody extends Summoned implements IHurtableMultipart {
     private static final EntityDataAccessor<Integer> BODYINDEX;
@@ -262,12 +262,12 @@ public class ServantCentipedeBody extends Summoned implements IHurtableMultipart
 
     public static AttributeSupplier.Builder bakeAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.ServantCentipedeBodyHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.ServantCentipedeFollowRange.get())
-                .add(Attributes.ARMOR, AttributesConfig.ServantCentipedeArmor.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.ServantCentipedeAttackDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.ServantCentipedeKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.ServantCentipedeBodyMovementSpeed.get());
+                .add(Attributes.MAX_HEALTH, AmConfig.ServantCentipedeBodyHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AmConfig.ServantCentipedeFollowRange.get())
+                .add(Attributes.ARMOR, AmConfig.ServantCentipedeArmor.get())
+                .add(Attributes.ATTACK_DAMAGE, AmConfig.ServantCentipedeAttackDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AmConfig.ServantCentipedeKnockbackResistance.get())
+                .add(Attributes.MOVEMENT_SPEED, AmConfig.ServantCentipedeBodyMovementSpeed.get());
     }
 
     public Vec3 tickMultipartPosition(int headId, float parentOffset, Vec3 parentPosition, float parentXRot, float ourYRot, boolean doHeight) {

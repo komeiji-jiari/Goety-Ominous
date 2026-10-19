@@ -10,7 +10,6 @@ import com.alexander.mutantmore.init.ParticleTypeInit;
 import com.alexander.mutantmore.init.SoundEventInit;
 import com.alexander.mutantmore.init.TagInit.Blocks;
 import com.alexander.mutantmore.util.MiscUtils;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -38,6 +37,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.HitResult.Type;
 import net.minecraft.world.phys.Vec3;
 import javax.annotation.Nullable;
+import com.qiuyue.goetyominous.config.mm.MmConfig;
 
 public class MutantShulkerServantBullet extends SpellThrowableProjectile {
     private static final EntityDataAccessor<Integer> HITS_LEFT =
@@ -198,7 +198,7 @@ public class MutantShulkerServantBullet extends SpellThrowableProjectile {
                 this.explode();
                 if (flag) {
                     this.doEnchantDamageEffects(owner, entity);
-                    if (entity instanceof LivingEntity living && living.getMaxHealth() <= MobsConfig.MutantShulkerBulletLevitationMaxHealth.get().floatValue()
+                    if (entity instanceof LivingEntity living && living.getMaxHealth() <= MmConfig.MutantShulkerBulletLevitationMaxHealth.get().floatValue()
                             && !living.hasEffect(MobEffects.LEVITATION)) {
                         living.addEffect(new MobEffectInstance(MobEffects.LEVITATION, this.levitationLength, this.levitationLevel), owner != null ? owner : this);
                     }
