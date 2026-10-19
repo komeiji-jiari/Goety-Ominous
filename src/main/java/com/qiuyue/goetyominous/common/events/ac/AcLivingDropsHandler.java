@@ -3,11 +3,11 @@ package com.qiuyue.goetyominous.common.events.ac;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.ac.HullbreakerServant;
 import com.qiuyue.goetyominous.compat.mod.AlexCavesCompat;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 @Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID)
 public class AcLivingDropsHandler {
@@ -31,7 +31,7 @@ public class AcLivingDropsHandler {
         }
 
         if (hullbreaker == null || hullbreaker.getTrueOwner() == null
-                || !MobsConfig.HullbreakerServantPickUpDrops.get()) {
+                || !AcConfig.HullbreakerServantPickUpDrops.get()) {
             return;
         }
 

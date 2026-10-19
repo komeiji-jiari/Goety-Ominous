@@ -19,8 +19,6 @@ import com.qiuyue.goetyominous.common.entities.ai.ac.DeepOneWanderGoal;
 import com.qiuyue.goetyominous.common.entities.ai.ac.IDeepOneBarterer;
 import com.qiuyue.goetyominous.common.entities.ai.ac.IDeepOneWanderer;
 import com.qiuyue.goetyominous.common.entities.projectile.ac.DeepOneServantWave;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -82,6 +80,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class DeepOneKnightServant extends Summoned implements IDeepOneBarterer, IDeepOneWanderer, IAnimatedEntity {
 
@@ -124,12 +123,12 @@ public class DeepOneKnightServant extends Summoned implements IDeepOneBarterer, 
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.DeepOneKnightServantMovementSpeed.get())
-                .add(Attributes.MAX_HEALTH, AttributesConfig.DeepOneKnightServantHealth.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.DeepOneKnightServantDamage.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.DeepOneKnightServantFollowRange.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.DeepOneKnightServantKnockbackResistance.get())
-                .add(Attributes.ARMOR, AttributesConfig.DeepOneKnightServantArmor.get());
+                .add(Attributes.MOVEMENT_SPEED, AcConfig.DeepOneKnightServantMovementSpeed.get())
+                .add(Attributes.MAX_HEALTH, AcConfig.DeepOneKnightServantHealth.get())
+                .add(Attributes.ATTACK_DAMAGE, AcConfig.DeepOneKnightServantDamage.get())
+                .add(Attributes.FOLLOW_RANGE, AcConfig.DeepOneKnightServantFollowRange.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.DeepOneKnightServantKnockbackResistance.get())
+                .add(Attributes.ARMOR, AcConfig.DeepOneKnightServantArmor.get());
     }
 
     @Override
@@ -147,7 +146,7 @@ public class DeepOneKnightServant extends Summoned implements IDeepOneBarterer, 
                                         MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData,
                                         @Nullable CompoundTag tag) {
         SpawnGroupData data = super.finalizeSpawn(levelAccessor, difficulty, spawnType, spawnGroupData, tag);
-        this.setItemSlot(EquipmentSlot.MAINHAND, this.random.nextFloat() < AttributesConfig.DeepOneKnightServantOrtholanceChance.get().floatValue() ? new ItemStack(ACItemRegistry.ORTHOLANCE.get()) : new ItemStack(Items.TRIDENT));
+        this.setItemSlot(EquipmentSlot.MAINHAND, this.random.nextFloat() < AcConfig.DeepOneKnightServantOrtholanceChance.get().floatValue() ? new ItemStack(ACItemRegistry.ORTHOLANCE.get()) : new ItemStack(Items.TRIDENT));
         this.weaponIsInitialSpawn = !this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty();
         return data;
     }
@@ -254,7 +253,7 @@ public class DeepOneKnightServant extends Summoned implements IDeepOneBarterer, 
 
     @Override
     public int getSummonLimit(LivingEntity player) {
-        return MobsConfig.DeepOneKnightServantLimit.get();
+        return AcConfig.DeepOneKnightServantLimit.get();
     }
 
     @Override
@@ -266,7 +265,7 @@ public class DeepOneKnightServant extends Summoned implements IDeepOneBarterer, 
     public void tick() {
         if (this.dashTicks > 0) {
             this.dashTicks--;
-            double dashSpeed = AttributesConfig.DeepOneKnightServantOrtholanceDashSpeed.get();
+            double dashSpeed = AcConfig.DeepOneKnightServantOrtholanceDashSpeed.get();
             this.setDeltaMovement(this.dashDirection.x * dashSpeed, this.getDeltaMovement().y, this.dashDirection.z * dashSpeed);
         }
         super.tick();
@@ -430,11 +429,11 @@ public class DeepOneKnightServant extends Summoned implements IDeepOneBarterer, 
                 this.dashPending = false;
                 this.getNavigation().stop();
                 this.performOrtholanceDash(target);
-            } else if (this.hasLineOfSight(target) && distance < AttributesConfig.DeepOneKnightServantOrtholanceWaveRange.get()
+            } else if (this.hasLineOfSight(target) && distance < AcConfig.DeepOneKnightServantOrtholanceWaveRange.get()
                     && this.comboCooldown <= 0) {
                 this.getNavigation().stop();
                 this.performOrtholanceWaveAttack(target);
-                this.comboCooldown = AttributesConfig.DeepOneKnightServantOrtholanceWaveCooldown.get();
+                this.comboCooldown = AcConfig.DeepOneKnightServantOrtholanceWaveCooldown.get();
                 this.dashPending = true;
             } else if (!inMeleeRange) {
                 this.getNavigation().moveTo(target, 1.2);
@@ -487,7 +486,7 @@ public class DeepOneKnightServant extends Summoned implements IDeepOneBarterer, 
         }
         Vec3 direction = toTarget.normalize();
         this.dashDirection = direction;
-        double dashSpeed = AttributesConfig.DeepOneKnightServantOrtholanceDashSpeed.get();
+        double dashSpeed = AcConfig.DeepOneKnightServantOrtholanceDashSpeed.get();
         double dist = toTarget.horizontalDistance();
         this.dashTicks = Mth.clamp((int) Math.ceil(dist / dashSpeed), 5, 20);
         this.getNavigation().stop();
@@ -498,7 +497,7 @@ public class DeepOneKnightServant extends Summoned implements IDeepOneBarterer, 
     protected void dealOrtholanceDashDamage(double dashDistance) {
         AABB aabb = new AABB(this.position(), this.position().add(this.dashDirection.scale(dashDistance))).inflate(1.0D);
         DamageSource source = this.damageSources().mobAttack(this);
-        float dashDamage = AttributesConfig.DeepOneKnightServantOrtholanceDashDamage.get().floatValue();
+        float dashDamage = AcConfig.DeepOneKnightServantOrtholanceDashDamage.get().floatValue();
         for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, aabb)) {
             if (!entity.equals(this) && !this.isAlliedTo(entity) && !entity.isAlliedTo(this)
                     && !MobUtil.areAllies(entity, this) && this.hasLineOfSight(entity)) {
@@ -523,8 +522,8 @@ public class DeepOneKnightServant extends Summoned implements IDeepOneBarterer, 
     }
 
     protected void spawnOrtholanceWaves(Vec3 direction) {
-        int maxWaves = AttributesConfig.DeepOneKnightServantOrtholanceWaveCount.get();
-        float waveScale = AttributesConfig.DeepOneKnightServantOrtholanceWaveScale.get().floatValue();
+        int maxWaves = AcConfig.DeepOneKnightServantOrtholanceWaveCount.get();
+        float waveScale = AcConfig.DeepOneKnightServantOrtholanceWaveScale.get().floatValue();
         float baseYaw = -(float) (Mth.atan2(direction.x, direction.z) * (180.0D / Math.PI));
         for (int wave = 0; wave < maxWaves; wave++) {
             float f1 = (float) wave / (float) maxWaves;

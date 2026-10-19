@@ -17,8 +17,6 @@ import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.qiuyue.goetyominous.client.sound.ac.CandicornServantChargeSoundHandler;
 import com.qiuyue.goetyominous.common.init.ac.AcParticles;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.utils.ModMobType;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
@@ -71,6 +69,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class CandicornServant extends AnimalSummon implements IAnimatedEntity, PlayerRideableJumping, KeybindUsingMount {
 
@@ -125,11 +124,11 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.CandicornServantMovementSpeed.get())
-                .add(Attributes.MAX_HEALTH, AttributesConfig.CandicornServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.CandicornServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.CandicornServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.CandicornServantKnockbackResistance.get());
+                .add(Attributes.MOVEMENT_SPEED, AcConfig.CandicornServantMovementSpeed.get())
+                .add(Attributes.MAX_HEALTH, AcConfig.CandicornServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AcConfig.CandicornServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AcConfig.CandicornServantDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.CandicornServantKnockbackResistance.get());
     }
 
     @Override
@@ -146,7 +145,7 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
 
     @Override
     public int getSummonLimit(LivingEntity player) {
-        return MobsConfig.CandicornServantLimit.get();
+        return AcConfig.CandicornServantLimit.get();
     }
 
     @Override
@@ -376,7 +375,7 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
         if (leapImpulse) {
             leapImpulse = false;
         }
-        if (this.isCharging() && !this.level().isClientSide) {
+        if (this.isCharging() && !this.level().isClientSide && !this.isDeadOrDying()) {
             Vec3 chargeFocalPoint = this.position().add(new Vec3(0.0F, 0.0F, 1.0F).yRot((float) Math.toRadians(-this.getChargeYaw())));
             for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(3.5D))) {
                 float dist = (float) entity.distanceToSqr(chargeFocalPoint);
@@ -775,7 +774,7 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
             return false;
         }
         if (this.getTrueOwner() instanceof Player player) {
-            return countServants(player) + 1 < MobsConfig.CandicornServantLimit.get();
+            return countServants(player) + 1 < AcConfig.CandicornServantLimit.get();
         }
         return true;
     }

@@ -2,7 +2,6 @@ package com.qiuyue.goetyominous.common.entities.ally.sar;
 
 import com.Polarice3.Goety.common.entities.ally.illager.SpellcasterIllagerServant;
 import com.qiuyue.goetyominous.common.items.sar.SarItems;
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.teamabnormals.blueprint.common.world.storage.tracking.IDataManager;
 import com.teamabnormals.blueprint.core.util.NetworkUtil;
 import com.teamabnormals.savage_and_ravage.core.other.SRDataProcessors;
@@ -44,6 +43,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
+import com.qiuyue.goetyominous.config.uasr.UasrConfig;
 
 public class TricksterServant extends SpellcasterIllagerServant {
     private static final EntityDataAccessor<Integer> PRISON_CHARGING_TIME = SynchedEntityData.defineId(TricksterServant.class, EntityDataSerializers.INT);
@@ -249,9 +249,9 @@ public class TricksterServant extends SpellcasterIllagerServant {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.TricksterServantMovementSpeed.get())
-                .add(Attributes.MAX_HEALTH, AttributesConfig.TricksterServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.TricksterServantFollowRange.get());
+                .add(Attributes.MOVEMENT_SPEED, UasrConfig.TricksterServantMovementSpeed.get())
+                .add(Attributes.MAX_HEALTH, UasrConfig.TricksterServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, UasrConfig.TricksterServantFollowRange.get());
     }
 
     class CreatePrisonGoal extends SpellcasterUseSpellGoal {

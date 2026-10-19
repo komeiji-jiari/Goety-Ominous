@@ -16,6 +16,8 @@ import com.alexander.mutantmore.particles.AdvancedParticleOption;
 import com.alexander.mutantmore.util.MiscUtils;
 import com.alexander.mutantmore.util.PositionUtils;
 import com.google.common.collect.Lists;
+import com.qiuyue.goetyominous.common.blocks.mm.ServantQuicksandBlock;
+import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
@@ -81,7 +83,14 @@ public class AreaDamage extends Entity {
     }
 
     public static AreaDamage spawnAreaDamage(Level level, Vec3 pos, LivingEntity owner, float damage, net.minecraft.world.damagesource.DamageSource damageSource, float size, float sizeToReach, float growSpeed, float ySize, int extraTime, int startDelay, boolean constantDamage, boolean friendlyFire, double knockbackAmount, double knockbackAmountY, boolean directionalMotion, boolean disableShields, int disableShieldTime, boolean ignoresInvulTime, net.minecraft.tags.TagKey<net.minecraft.world.entity.EntityType<?>> cantHurtTag, int type) {
-        AreaDamage areaDamage = new AreaDamage(com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.AREA_DAMAGE.get(), level);
+        EntityType<AreaDamage> entityType = switch (type) {
+            case 1 -> MmEntityRegistry.MUTANT_HUSK_SAND_BURST.get();
+            case 2 -> MmEntityRegistry.MUTANT_HUSK_SAND_GEYSER.get();
+            case 3 -> MmEntityRegistry.MUTANT_JUNGLE_ZOMBIE_POISON_CLOUD.get();
+            case 4 -> MmEntityRegistry.MUTANT_WITHER_BREATH.get();
+            default -> MmEntityRegistry.MUTANT_JUNGLE_ZOMBIE_VINE_SWEEP.get();
+        };
+        AreaDamage areaDamage = new AreaDamage(entityType, level);
         areaDamage.moveTo(pos.x, pos.y, pos.z);
         areaDamage.owner = owner;
         areaDamage.damage = damage;
@@ -248,8 +257,8 @@ public class AreaDamage extends Entity {
                     if (this.owner instanceof MutantHuskServant && MutantHuskCommonConfig.geyser_attack_griefing.get() && !MutantMoreGroupedOptionsCommonConfig.quicksand_griefing_off.get()) {
                         for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(aabb.minY), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
                             BlockState blockstate = this.level().getBlockState(blockpos);
-                            if (!blockstate.isAir() || !QuicksandBlock.survivable(MiscUtils.quicksandBlockForSandType(this.getSandType()).defaultBlockState(), this.level(), blockpos) || this.random.nextInt(40) != 0) continue;
-                            this.level().setBlockAndUpdate(blockpos, MiscUtils.quicksandBlockForSandType(this.getSandType()).defaultBlockState());
+                            if (!blockstate.isAir() || !QuicksandBlock.survivable(ServantQuicksandBlock.forSandType(this.getSandType()).defaultBlockState(), this.level(), blockpos) || this.random.nextInt(40) != 0) continue;
+                            this.level().setBlockAndUpdate(blockpos, ServantQuicksandBlock.forSandType(this.getSandType()).defaultBlockState());
                         }
                     }
                 }

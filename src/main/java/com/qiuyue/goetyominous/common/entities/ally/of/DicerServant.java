@@ -5,8 +5,6 @@ import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.DicerServantAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.DicerServantLaserGoal;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
 import com.unusualmodding.opposing_force.entity.utils.AttackState;
 import com.unusualmodding.opposing_force.entity.utils.EliteVariant;
@@ -47,6 +45,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import com.qiuyue.goetyominous.config.of.OfConfig;
 
 public class DicerServant extends Summoned implements AttackState, EliteVariant {
     private static final EntityDataAccessor<Integer> ATTACK_STATE;
@@ -75,11 +74,11 @@ public class DicerServant extends Summoned implements AttackState, EliteVariant 
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.DicerServantHealth.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.DicerServantMovementSpeed.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.DicerServantAttackDamage.get())
-                .add(Attributes.ATTACK_KNOCKBACK, AttributesConfig.DicerServantAttackKnockback.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.DicerServantFollowRange.get());
+                .add(Attributes.MAX_HEALTH, OfConfig.DicerServantHealth.get())
+                .add(Attributes.MOVEMENT_SPEED, OfConfig.DicerServantMovementSpeed.get())
+                .add(Attributes.ATTACK_DAMAGE, OfConfig.DicerServantAttackDamage.get())
+                .add(Attributes.ATTACK_KNOCKBACK, OfConfig.DicerServantAttackKnockback.get())
+                .add(Attributes.FOLLOW_RANGE, OfConfig.DicerServantFollowRange.get());
     }
 
     protected void registerGoals() {
@@ -129,7 +128,7 @@ public class DicerServant extends Summoned implements AttackState, EliteVariant 
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.DicerServantLimit.get();
+        return OfConfig.DicerServantLimit.get();
     }
 
     @Override

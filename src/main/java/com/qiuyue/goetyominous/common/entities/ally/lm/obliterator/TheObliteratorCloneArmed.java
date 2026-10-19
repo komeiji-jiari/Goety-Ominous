@@ -1,7 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm.obliterator;
 
 import com.qiuyue.goetyominous.compat.lm.LmScreenShake;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.miauczel.legendary_monsters.entity.client.ControlledAnim;
 import com.qiuyue.goetyominous.common.entities.ally.lm.TheObliteratorServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.LmAnimatedProjectile;
@@ -39,6 +38,7 @@ import net.minecraftforge.network.NetworkHooks;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
+import com.qiuyue.goetyominous.config.lm.LmConfig;
 
 public class TheObliteratorCloneArmed extends LmAnimatedProjectile {
 
@@ -499,7 +499,7 @@ public class TheObliteratorCloneArmed extends LmAnimatedProjectile {
                 continue;
             }
             boolean flag = entityHit.hurt(ModDamageTypes.causeAnnihilationDamage(this.getCaster(), this.getCaster()),
-                    damage + MathUtils.entityBasedHpDamage(entityHit, MobsConfig.TheObliteratorCloneBurstHpDamage.get()));
+                    damage + MathUtils.entityBasedHpDamage(entityHit, LmConfig.TheObliteratorCloneBurstHpDamage.get()));
             if (flag) {
                 TheObliteratorUtils.applyAnnihilationEffect(entityHit, ModEffects.ANNIHILATION.get(), 1, false);
                 if (canlaunch) {

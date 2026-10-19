@@ -9,7 +9,6 @@ import com.github.alexmodguy.alexscaves.server.misc.ACTagRegistry;
 import com.github.alexmodguy.alexscaves.server.potion.ACEffectRegistry;
 import com.qiuyue.goetyominous.common.network.ModNetwork;
 import com.qiuyue.goetyominous.common.network.ac.TremorzillaBreathPacket;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -38,6 +37,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class TremorzillaBreathHandler {
 
@@ -177,7 +177,7 @@ public class TremorzillaBreathHandler {
     }
 
     private static boolean breakBlocksAround(Beam beam, LivingEntity caster, Vec3 center, float radius) {
-        if (!SpellConfig.TremorzillaBreathBreakBlocks.get() || !caster.isShiftKeyDown()) {
+        if (!AcConfig.TremorzillaBreathBreakBlocks.get() || !caster.isShiftKeyDown()) {
             return false;
         }
         if (!(caster instanceof Player) && !ForgeEventFactory.getMobGriefingEvent(beam.level, caster)) {

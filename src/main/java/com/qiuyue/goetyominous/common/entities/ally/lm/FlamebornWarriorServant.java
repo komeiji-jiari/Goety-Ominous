@@ -1,12 +1,10 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm;
 
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IMoveGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IStateGoal;
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.miauczel.legendary_monsters.sound.ModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -30,6 +28,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 
 import java.util.List;
+import com.qiuyue.goetyominous.config.lm.LmConfig;
 
 public class FlamebornWarriorServant extends AbstractFlamebornServant {
 
@@ -51,18 +50,18 @@ public class FlamebornWarriorServant extends AbstractFlamebornServant {
 
     @Override
     public double damageMultiplier() {
-        return MobsConfig.FlamebornWarriorServantDamageMultiplier.get();
+        return LmConfig.FlamebornWarriorServantDamageMultiplier.get();
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.FlamebornWarriorServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.FlamebornWarriorServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.FlamebornWarriorServantFollowRange.get())
-                .add(Attributes.ARMOR, AttributesConfig.FlamebornWarriorServantArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.FlamebornWarriorServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, AttributesConfig.FlamebornWarriorServantAttackKnockback.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.FlamebornWarriorServantDamage.get());
+                .add(Attributes.MAX_HEALTH, LmConfig.FlamebornWarriorServantHealth.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.FlamebornWarriorServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, LmConfig.FlamebornWarriorServantFollowRange.get())
+                .add(Attributes.ARMOR, LmConfig.FlamebornWarriorServantArmor.get())
+                .add(Attributes.MOVEMENT_SPEED, LmConfig.FlamebornWarriorServantMovementSpeed.get())
+                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.FlamebornWarriorServantAttackKnockback.get())
+                .add(Attributes.ATTACK_DAMAGE, LmConfig.FlamebornWarriorServantDamage.get());
     }
 
     @Override
@@ -300,7 +299,7 @@ public class FlamebornWarriorServant extends AbstractFlamebornServant {
                 continue;
             }
             boolean flag = entityHit.hurt(this.damageSources().mobAttack(this),
-                    (float) ((double) damage * AttributesConfig.FlamebornWarriorServantDamage.get() / 12.0D));
+                    (float) ((double) damage * LmConfig.FlamebornWarriorServantDamage.get() / 12.0D));
             if (flag) {
                 this.playSound(soundEvent, 1.0F, pitch);
             }

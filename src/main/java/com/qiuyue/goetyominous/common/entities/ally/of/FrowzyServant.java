@@ -7,8 +7,6 @@ import com.Polarice3.Goety.utils.ServantUtil;
 import com.qiuyue.goetyominous.client.sound.of.FrowzyServantPantingSoundHandler;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.FrowzyServantAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.FrowzyServantLeapGoal;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.unusualmodding.opposing_force.entity.Frowzy;
 import com.unusualmodding.opposing_force.entity.utils.AttackState;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
@@ -56,6 +54,7 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import com.qiuyue.goetyominous.config.of.OfConfig;
 
 public class FrowzyServant extends Summoned implements AttackState, VariantHolder<Frowzy.FrowzyVariant> {
     private static final EntityDataAccessor<Integer> ATTACK_STATE;
@@ -79,10 +78,10 @@ public class FrowzyServant extends Summoned implements AttackState, VariantHolde
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.FrowzyServantHealth.get())
+                .add(Attributes.MAX_HEALTH, OfConfig.FrowzyServantHealth.get())
                 .add(Attributes.FOLLOW_RANGE, 16.0D)
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.FrowzyServantMovementSpeed.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.FrowzyServantAttackDamage.get());
+                .add(Attributes.MOVEMENT_SPEED, OfConfig.FrowzyServantMovementSpeed.get())
+                .add(Attributes.ATTACK_DAMAGE, OfConfig.FrowzyServantAttackDamage.get());
     }
 
     @Override
@@ -181,13 +180,13 @@ public class FrowzyServant extends Summoned implements AttackState, VariantHolde
     @Override
     public void setConfigurableAttributes() {
         if (this.getAttribute(Attributes.MAX_HEALTH) != null) {
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(AttributesConfig.FrowzyServantHealth.get());
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(OfConfig.FrowzyServantHealth.get());
         }
         if (this.getAttribute(Attributes.MOVEMENT_SPEED) != null) {
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AttributesConfig.FrowzyServantMovementSpeed.get());
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(OfConfig.FrowzyServantMovementSpeed.get());
         }
         if (this.getAttribute(Attributes.ATTACK_DAMAGE) != null) {
-            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AttributesConfig.FrowzyServantAttackDamage.get());
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(OfConfig.FrowzyServantAttackDamage.get());
         }
     }
 
@@ -321,7 +320,7 @@ public class FrowzyServant extends Summoned implements AttackState, VariantHolde
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.FrowzyServantLimit.get();
+        return OfConfig.FrowzyServantLimit.get();
     }
 
     static {

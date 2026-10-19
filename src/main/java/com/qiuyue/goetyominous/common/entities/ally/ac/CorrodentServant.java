@@ -16,8 +16,6 @@ import com.github.alexthe666.citadel.server.entity.collision.ICustomCollisions;
 import com.qiuyue.goetyominous.client.sound.ac.CorrodentServantDigSoundHandler;
 import com.qiuyue.goetyominous.common.network.ModNetwork;
 import com.qiuyue.goetyominous.common.network.ac.ServantAbilityKeyPacket;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -66,6 +64,7 @@ import net.minecraftforge.entity.PartEntity;
 
 import java.util.EnumSet;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class CorrodentServant extends Summoned implements IAnimatedEntity, ICustomCollisions {
 
@@ -122,12 +121,12 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.CorrodentServantMovementSpeed.get())
-                .add(Attributes.MAX_HEALTH, AttributesConfig.CorrodentServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.CorrodentServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.CorrodentServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.CorrodentServantKnockbackResistance.get())
-                .add(Attributes.ARMOR, AttributesConfig.CorrodentServantArmor.get());
+                .add(Attributes.MOVEMENT_SPEED, AcConfig.CorrodentServantMovementSpeed.get())
+                .add(Attributes.MAX_HEALTH, AcConfig.CorrodentServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AcConfig.CorrodentServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AcConfig.CorrodentServantDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.CorrodentServantKnockbackResistance.get())
+                .add(Attributes.ARMOR, AcConfig.CorrodentServantArmor.get());
     }
 
     @Override
@@ -733,7 +732,7 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
     }
     @Override
     public int getSummonLimit(LivingEntity player) {
-        return MobsConfig.CorrodentServantLimit.get();
+        return AcConfig.CorrodentServantLimit.get();
     }
 
     @Override

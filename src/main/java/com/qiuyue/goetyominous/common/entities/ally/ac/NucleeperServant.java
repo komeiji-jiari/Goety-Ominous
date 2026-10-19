@@ -19,8 +19,6 @@ import com.qiuyue.goetyominous.common.events.ac.NucleeperNukeKillHandler;
 import com.qiuyue.goetyominous.common.events.ac.NucleeperNukeProtectionHandler;
 import com.qiuyue.goetyominous.common.items.ac.RaycatAmuletItem;
 import com.qiuyue.goetyominous.common.init.ac.AcParticles;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -56,6 +54,7 @@ import net.minecraft.world.phys.AABB;
 import java.util.EnumSet;
 import java.util.stream.Stream;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class NucleeperServant extends Summoned implements ActivatesSirens, PowerableMob {
 
@@ -80,7 +79,7 @@ public class NucleeperServant extends Summoned implements ActivatesSirens, Power
 
     @Override
     public int getSummonLimit(LivingEntity player) {
-        return MobsConfig.NucleeperServantLimit.get();
+        return AcConfig.NucleeperServantLimit.get();
     }
 
     @Override
@@ -114,12 +113,12 @@ public class NucleeperServant extends Summoned implements ActivatesSirens, Power
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.NucleeperServantMovementSpeed.get())
-                .add(Attributes.MAX_HEALTH, AttributesConfig.NucleeperServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.NucleeperServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.NucleeperServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.NucleeperServantKnockbackResistance.get())
-                .add(Attributes.ARMOR, AttributesConfig.NucleeperServantArmor.get());
+                .add(Attributes.MOVEMENT_SPEED, AcConfig.NucleeperServantMovementSpeed.get())
+                .add(Attributes.MAX_HEALTH, AcConfig.NucleeperServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AcConfig.NucleeperServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AcConfig.NucleeperServantDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.NucleeperServantKnockbackResistance.get())
+                .add(Attributes.ARMOR, AcConfig.NucleeperServantArmor.get());
     }
     protected PathNavigation createNavigation(Level level) {
         return new GroundPathNavigatorNoSpin(this, level);
@@ -309,7 +308,7 @@ public class NucleeperServant extends Summoned implements ActivatesSirens, Power
             return;
         }
         LivingEntity owner = this.getTrueOwner();
-        double tauntRange = AttributesConfig.NucleeperServantTauntRange.get();
+        double tauntRange = AcConfig.NucleeperServantTauntRange.get();
         if (owner == null || tauntRange <= 0.0) {
             return;
         }

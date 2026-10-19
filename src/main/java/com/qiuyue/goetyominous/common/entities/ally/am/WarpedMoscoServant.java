@@ -23,7 +23,6 @@ import javax.annotation.Nullable;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.common.entities.projectile.am.EntityServantHemolymph;
 import com.qiuyue.goetyominous.common.items.am.AmItems;
 import com.qiuyue.goetyominous.common.items.am.WarpedSteroidsItem;
@@ -70,6 +69,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
 
@@ -102,13 +102,13 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.WarpedMoscoServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.WarpedMoscoServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.WarpedMoscoServantDamage.get())
-                .add(Attributes.ARMOR, AttributesConfig.WarpedMoscoServantArmor.get())
-                .add(Attributes.ARMOR_TOUGHNESS, AttributesConfig.WarpedMoscoServantArmorToughness.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.WarpedMoscoServantKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.WarpedMoscoServantMovementSpeed.get());
+                .add(Attributes.MAX_HEALTH, AmConfig.WarpedMoscoServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AmConfig.WarpedMoscoServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AmConfig.WarpedMoscoServantDamage.get())
+                .add(Attributes.ARMOR, AmConfig.WarpedMoscoServantArmor.get())
+                .add(Attributes.ARMOR_TOUGHNESS, AmConfig.WarpedMoscoServantArmorToughness.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AmConfig.WarpedMoscoServantKnockbackResistance.get())
+                .add(Attributes.MOVEMENT_SPEED, AmConfig.WarpedMoscoServantMovementSpeed.get());
     }
 
     public MobType getMobType() {
@@ -147,8 +147,8 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
         AttributeInstance health = this.getAttribute(Attributes.MAX_HEALTH);
         AttributeInstance attack = this.getAttribute(Attributes.ATTACK_DAMAGE);
         if (this.hasUnholyBlood()) {
-            this.addModIfMissing(health, UNHOLY_BLOOD_HEALTH_UUID, "Unholy Blood Health", com.qiuyue.goetyominous.config.MobsConfig.WarpedMoscoUnholyBloodHealthBouns.get());
-            this.addModIfMissing(attack, UNHOLY_BLOOD_ATTACK_UUID, "Unholy Blood Attack", com.qiuyue.goetyominous.config.MobsConfig.WarpedMoscoUnholyBloodDamageBouns.get());
+            this.addModIfMissing(health, UNHOLY_BLOOD_HEALTH_UUID, "Unholy Blood Health", AmConfig.WarpedMoscoUnholyBloodHealthBouns.get());
+            this.addModIfMissing(attack, UNHOLY_BLOOD_ATTACK_UUID, "Unholy Blood Attack", AmConfig.WarpedMoscoUnholyBloodDamageBouns.get());
         }
     }
 

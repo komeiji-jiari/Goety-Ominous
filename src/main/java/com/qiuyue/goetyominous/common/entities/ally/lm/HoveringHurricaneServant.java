@@ -1,6 +1,5 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm;
 
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
@@ -8,7 +7,6 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IMoveGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.StratlingAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.Tornado;
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.miauczel.legendary_monsters.item.ModItems;
 import net.miauczel.legendary_monsters.sound.ModSounds;
 import net.minecraft.core.particles.ParticleTypes;
@@ -36,6 +34,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import com.qiuyue.goetyominous.config.lm.LmConfig;
 
 public class HoveringHurricaneServant extends IAnimatedMonsterServant {
 
@@ -54,12 +53,12 @@ public class HoveringHurricaneServant extends IAnimatedMonsterServant {
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.HoveringHurricaneServantLimit.get();
+        return LmConfig.HoveringHurricaneServantLimit.get();
     }
 
     @Override
     public double damageMultiplier() {
-        return MobsConfig.HoveringHurricaneServantDamageMultiplier.get();
+        return LmConfig.HoveringHurricaneServantDamageMultiplier.get();
     }
 
     @Override
@@ -162,19 +161,19 @@ public class HoveringHurricaneServant extends IAnimatedMonsterServant {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.HoveringHurricaneServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.HoveringHurricaneServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.HoveringHurricaneServantFollowRange.get())
-                .add(Attributes.ARMOR, AttributesConfig.HoveringHurricaneServantArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.HoveringHurricaneServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, AttributesConfig.HoveringHurricaneServantAttackKnockback.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.HoveringHurricaneServantDamage.get());
+                .add(Attributes.MAX_HEALTH, LmConfig.HoveringHurricaneServantHealth.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.HoveringHurricaneServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, LmConfig.HoveringHurricaneServantFollowRange.get())
+                .add(Attributes.ARMOR, LmConfig.HoveringHurricaneServantArmor.get())
+                .add(Attributes.MOVEMENT_SPEED, LmConfig.HoveringHurricaneServantMovementSpeed.get())
+                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.HoveringHurricaneServantAttackKnockback.get())
+                .add(Attributes.ATTACK_DAMAGE, LmConfig.HoveringHurricaneServantDamage.get());
     }
 
     public void setConfigurableAttributes() {
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), AttributesConfig.HoveringHurricaneServantHealth.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), AttributesConfig.HoveringHurricaneServantArmor.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), AttributesConfig.HoveringHurricaneServantDamage.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), LmConfig.HoveringHurricaneServantHealth.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), LmConfig.HoveringHurricaneServantArmor.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), LmConfig.HoveringHurricaneServantDamage.get());
     }
 
     @Override

@@ -21,12 +21,28 @@ public class MmEntityRegistry {
                             .clientTrackingRange(10)
                             .build(GoetyOminous.MOD_ID + ":mutant_wither_skeleton_servant"));
 
-    public static final RegistryObject<EntityType<AreaDamage>> AREA_DAMAGE =
-            MM_ENTITIES.register("area_damage",
-                    () -> EntityType.Builder.of(AreaDamage::new, MobCategory.MISC)
-                            .sized(1.0F, 1.0F).fireImmune()
-                            .clientTrackingRange(10)
-                            .build(GoetyOminous.MOD_ID + ":area_damage"));
+    public static final RegistryObject<EntityType<AreaDamage>> MUTANT_JUNGLE_ZOMBIE_VINE_SWEEP =
+            areaDamage("mutant_jungle_zombie_vine_sweep");
+
+    public static final RegistryObject<EntityType<AreaDamage>> MUTANT_HUSK_SAND_BURST =
+            areaDamage("mutant_husk_sand_burst");
+
+    public static final RegistryObject<EntityType<AreaDamage>> MUTANT_HUSK_SAND_GEYSER =
+            areaDamage("mutant_husk_sand_geyser");
+
+    public static final RegistryObject<EntityType<AreaDamage>> MUTANT_JUNGLE_ZOMBIE_POISON_CLOUD =
+            areaDamage("mutant_jungle_zombie_poison_cloud");
+
+    public static final RegistryObject<EntityType<AreaDamage>> MUTANT_WITHER_BREATH =
+            areaDamage("mutant_wither_breath");
+
+    private static RegistryObject<EntityType<AreaDamage>> areaDamage(String name) {
+        return MM_ENTITIES.register(name,
+                () -> EntityType.Builder.of(AreaDamage::new, MobCategory.MISC)
+                        .sized(1.0F, 1.0F).fireImmune()
+                        .clientTrackingRange(10)
+                        .build(GoetyOminous.MOD_ID + ":" + name));
+    }
 
     public static final RegistryObject<EntityType<WitherSlash>> WITHER_SLASH =
             MM_ENTITIES.register("wither_slash",

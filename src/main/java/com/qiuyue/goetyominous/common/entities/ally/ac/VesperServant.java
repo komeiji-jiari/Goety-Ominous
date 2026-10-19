@@ -10,8 +10,6 @@ import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -53,6 +51,7 @@ import net.minecraft.world.phys.Vec3;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class VesperServant extends Summoned implements IAnimatedEntity {
 
@@ -96,12 +95,12 @@ public class VesperServant extends Summoned implements IAnimatedEntity {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.VesperServantMovementSpeed.get())
-                .add(Attributes.MAX_HEALTH, AttributesConfig.VesperServantHealth.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.VesperServantDamage.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.VesperServantFollowRange.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.VesperServantKnockbackResistance.get())
-                .add(Attributes.ARMOR, AttributesConfig.VesperServantArmor.get());
+                .add(Attributes.MOVEMENT_SPEED, AcConfig.VesperServantMovementSpeed.get())
+                .add(Attributes.MAX_HEALTH, AcConfig.VesperServantHealth.get())
+                .add(Attributes.ATTACK_DAMAGE, AcConfig.VesperServantDamage.get())
+                .add(Attributes.FOLLOW_RANGE, AcConfig.VesperServantFollowRange.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.VesperServantKnockbackResistance.get())
+                .add(Attributes.ARMOR, AcConfig.VesperServantArmor.get());
     }
 
     private void switchNavigator(boolean onLand) {
@@ -118,7 +117,7 @@ public class VesperServant extends Summoned implements IAnimatedEntity {
 
     @Override
     public int getSummonLimit(LivingEntity player) {
-        return MobsConfig.VesperServantLimit.get();
+        return AcConfig.VesperServantLimit.get();
     }
 
     @Override

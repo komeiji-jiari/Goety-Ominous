@@ -8,14 +8,12 @@ import com.Polarice3.Goety.config.ItemConfig;
 import com.Polarice3.Goety.utils.CuriosFinder;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.miauczel.legendary_monsters.item.ModItems;
 import net.miauczel.legendary_monsters.entity.ai.navigation.EntityRotationPatcher;
 import net.miauczel.legendary_monsters.sound.ModSounds;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IMoveGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IStateGoal;
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.PoisonousShockwave;
 import net.minecraft.core.BlockPos;
@@ -58,6 +56,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import com.qiuyue.goetyominous.config.lm.LmConfig;
 
 public class OvergrownColossusServant extends IAnimatedMiniBossServant {
     private static final EntityDataAccessor<Integer> TEXTURE_VARIANT =
@@ -85,7 +84,7 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
     }
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.OvergrownColossusServantLimit.get();
+        return LmConfig.OvergrownColossusServantLimit.get();
     }
     @Override
     public ItemEntity spawnAtLocation(ItemStack stack) {
@@ -345,19 +344,19 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.OvergrownColossusServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.OvergrownColossusServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.OvergrownColossusServantFollowRange.get())
-                .add(Attributes.ARMOR, AttributesConfig.OvergrownColossusServantArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.OvergrownColossusServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, AttributesConfig.OvergrownColossusServantAttackKnockback.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.OvergrownColossusServantDamage.get());
+                .add(Attributes.MAX_HEALTH, LmConfig.OvergrownColossusServantHealth.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.OvergrownColossusServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, LmConfig.OvergrownColossusServantFollowRange.get())
+                .add(Attributes.ARMOR, LmConfig.OvergrownColossusServantArmor.get())
+                .add(Attributes.MOVEMENT_SPEED, LmConfig.OvergrownColossusServantMovementSpeed.get())
+                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.OvergrownColossusServantAttackKnockback.get())
+                .add(Attributes.ATTACK_DAMAGE, LmConfig.OvergrownColossusServantDamage.get());
     }
 
     public void setConfigurableAttributes() {
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), AttributesConfig.OvergrownColossusServantHealth.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), AttributesConfig.OvergrownColossusServantArmor.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), AttributesConfig.OvergrownColossusServantDamage.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), LmConfig.OvergrownColossusServantHealth.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), LmConfig.OvergrownColossusServantArmor.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), LmConfig.OvergrownColossusServantDamage.get());
     }
 
     @Nullable
@@ -404,7 +403,7 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
             return false;
         if (source.is(DamageTypes.MAGIC))
             return false;
-        if (MobsConfig.OvergrownColossusServantProjectileImmunity.get()) {
+        if (LmConfig.OvergrownColossusServantProjectileImmunity.get()) {
             if (source.getDirectEntity() instanceof AbstractArrow) {
                 return false;
             }

@@ -23,7 +23,6 @@ import java.util.*;
 
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantBlazeServant.MutantBlazeServantFlyStrafeMovementGoal;
 import com.qiuyue.goetyominous.client.sound.mm.MutantBlazeServantSoundInstance;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.utils.CreateBlazeBurnerCompat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -79,6 +78,7 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.entity.PartEntity;
 import org.joml.Vector3d;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.mm.MmConfig;
 
 
 public class MutantBlazeServant extends AbstractMutantServant implements IHeatSource, IHasCustomExplosion {
@@ -155,7 +155,7 @@ public class MutantBlazeServant extends AbstractMutantServant implements IHeatSo
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.MutantBlazeServantLimit.get();
+        return MmConfig.MutantBlazeServantLimit.get();
     }
 
     protected void registerGoals() {
@@ -282,12 +282,12 @@ public class MutantBlazeServant extends AbstractMutantServant implements IHeatSo
 
     public static AttributeSupplier.Builder createConfiguredAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, com.qiuyue.goetyominous.config.AttributesConfig.MutantBlazeServantHealth.get())
-                .add(Attributes.ARMOR, com.qiuyue.goetyominous.config.AttributesConfig.MutantBlazeServantArmor.get())
-                .add(Attributes.ARMOR_TOUGHNESS, com.qiuyue.goetyominous.config.AttributesConfig.MutantBlazeServantArmorToughness.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, com.qiuyue.goetyominous.config.AttributesConfig.MutantBlazeServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, com.qiuyue.goetyominous.config.AttributesConfig.MutantBlazeServantFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, com.qiuyue.goetyominous.config.AttributesConfig.MutantBlazeServantMovementSpeed.get());
+                .add(Attributes.MAX_HEALTH, MmConfig.MutantBlazeServantHealth.get())
+                .add(Attributes.ARMOR, MmConfig.MutantBlazeServantArmor.get())
+                .add(Attributes.ARMOR_TOUGHNESS, MmConfig.MutantBlazeServantArmorToughness.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, MmConfig.MutantBlazeServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, MmConfig.MutantBlazeServantFollowRange.get())
+                .add(Attributes.MOVEMENT_SPEED, MmConfig.MutantBlazeServantMovementSpeed.get());
     }
 
     public void onMutated() {
@@ -656,13 +656,13 @@ public class MutantBlazeServant extends AbstractMutantServant implements IHeatSo
     private void applyEnhancementModifiers() {
         AttributeInstance health = this.getAttribute(Attributes.MAX_HEALTH);
         if (this.hasBulwarkFocus()) {
-            this.addModIfMissing(health, BULWARK_HEALTH_UUID, "Bulwark Focus Health", MobsConfig.MBBulwarkFocusHealthBouns.get());
+            this.addModIfMissing(health, BULWARK_HEALTH_UUID, "Bulwark Focus Health", MmConfig.MBBulwarkFocusHealthBouns.get());
         }
         if (this.hasBlazingHelm()) {
-            this.addModIfMissing(health, BLAZING_HELM_HEALTH_UUID, "Blazing Helm Health", MobsConfig.MBBlazingHelmHealthBouns.get());
+            this.addModIfMissing(health, BLAZING_HELM_HEALTH_UUID, "Blazing Helm Health", MmConfig.MBBlazingHelmHealthBouns.get());
         }
         if (this.hasUnholyBlood()) {
-            this.addModIfMissing(health, UNHOLY_BLOOD_HEALTH_UUID, "Unholy Blood Health", MobsConfig.MBUnholyBloodHealthBouns.get());
+            this.addModIfMissing(health, UNHOLY_BLOOD_HEALTH_UUID, "Unholy Blood Health", MmConfig.MBUnholyBloodHealthBouns.get());
         }
     }
 

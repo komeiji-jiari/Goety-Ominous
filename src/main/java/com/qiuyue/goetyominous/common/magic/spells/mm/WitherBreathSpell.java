@@ -15,7 +15,6 @@ import com.alexander.mutantmore.util.PositionUtils;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.AreaDamage;
 import com.qiuyue.goetyominous.common.init.mm.ModSpellControllers;
 import com.qiuyue.goetyominous.common.magic.utils.ContinuousControllerSpell;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -39,6 +38,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import com.qiuyue.goetyominous.config.mm.MmConfig;
 
 public class WitherBreathSpell extends ContinuousControllerSpell<WitherBreathSpell.WitherBreathController> {
 
@@ -60,7 +60,7 @@ public class WitherBreathSpell extends ContinuousControllerSpell<WitherBreathSpe
 
     @Override
     public int defaultSoulCost() {
-        return SpellConfig.WitherBreathSoulCost.get();
+        return MmConfig.WitherBreathSoulCost.get();
     }
 
     @Override
@@ -75,7 +75,7 @@ public class WitherBreathSpell extends ContinuousControllerSpell<WitherBreathSpe
 
     @Override
     public int defaultSpellCooldown() {
-        return SpellConfig.WitherBreathCooldown.get();
+        return MmConfig.WitherBreathCooldown.get();
     }
 
     @Override
@@ -122,7 +122,7 @@ public class WitherBreathSpell extends ContinuousControllerSpell<WitherBreathSpe
             duration += WandUtil.getLevels(ModEnchantments.DURATION.get(), caster);
         }
         boolean usingNetherStaff = this.rightStaff(staff);
-        int soulPerSecond = SpellConfig.WitherBreathSoulCost.get();
+        int soulPerSecond = MmConfig.WitherBreathSoulCost.get();
 
         return new WitherBreathController(
                 world, caster.getUUID(),

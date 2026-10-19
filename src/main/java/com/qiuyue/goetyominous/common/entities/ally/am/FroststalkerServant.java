@@ -5,7 +5,6 @@ import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.init.ModMobType;
 import com.Polarice3.Goety.utils.CuriosFinder;
 import com.qiuyue.goetyominous.common.entities.projectile.am.IceShard;
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.github.alexthe666.alexsmobs.entity.ISemiAquatic;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIFindWater;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAILeaveWater;
@@ -62,6 +61,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity, ISemiAquatic {
 
@@ -122,32 +122,32 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.FroststalkerServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.FroststalkerServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.FroststalkerServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.FroststalkerServantKnockbackResistance.get())
-                .add(Attributes.ARMOR, AttributesConfig.FroststalkerServantArmor.get())
+                .add(Attributes.MAX_HEALTH, AmConfig.FroststalkerServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AmConfig.FroststalkerServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AmConfig.FroststalkerServantDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AmConfig.FroststalkerServantKnockbackResistance.get())
+                .add(Attributes.ARMOR, AmConfig.FroststalkerServantArmor.get())
                 .add(Attributes.MOVEMENT_SPEED, 0.3D);
     }
 
     @Override
     public void setConfigurableAttributes() {
         if (this.getAttribute(Attributes.MAX_HEALTH) != null) {
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(AttributesConfig.FroststalkerServantHealth.get());
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(AmConfig.FroststalkerServantHealth.get());
         }
         if (this.getAttribute(Attributes.ATTACK_DAMAGE) != null) {
-            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AttributesConfig.FroststalkerServantDamage.get());
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AmConfig.FroststalkerServantDamage.get());
         }
         if (this.getAttribute(Attributes.FOLLOW_RANGE) != null) {
             this.getAttribute(Attributes.FOLLOW_RANGE)
-                    .setBaseValue(AttributesConfig.FroststalkerServantFollowRange.get());
+                    .setBaseValue(AmConfig.FroststalkerServantFollowRange.get());
         }
         if (this.getAttribute(Attributes.KNOCKBACK_RESISTANCE) != null) {
             this.getAttribute(Attributes.KNOCKBACK_RESISTANCE)
-                    .setBaseValue(AttributesConfig.FroststalkerServantKnockbackResistance.get());
+                    .setBaseValue(AmConfig.FroststalkerServantKnockbackResistance.get());
         }
         if (this.getAttribute(Attributes.ARMOR) != null) {
-            this.getAttribute(Attributes.ARMOR).setBaseValue(AttributesConfig.FroststalkerServantArmor.get());
+            this.getAttribute(Attributes.ARMOR).setBaseValue(AmConfig.FroststalkerServantArmor.get());
         }
     }
 
@@ -346,7 +346,7 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
             if (!hasSpikedArmor) {
                 hasSpikedArmor = true;
                 this.getAttribute(Attributes.ARMOR)
-                        .setBaseValue(12.0F + AttributesConfig.FroststalkerServantArmor.get());
+                        .setBaseValue(12.0F + AmConfig.FroststalkerServantArmor.get());
             }
         } else {
             if (hasSpikedArmor) {

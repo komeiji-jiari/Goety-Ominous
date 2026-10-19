@@ -1,8 +1,8 @@
 {
   "name": "长尾鲨仆从",
   "icon": "upgrade_aquatic:thrasher_tooth",
-  "category": "goety:uacompat",
-  "sortnum": 30,
+  "category": "goety:goetyabnormal/summons",
+  "sortnum": 120,
   "pages": [
     {
       "type": "patchouli:text",

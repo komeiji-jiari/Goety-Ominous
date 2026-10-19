@@ -44,8 +44,6 @@ import com.qiuyue.goetyominous.common.blocks.ac.TitanBombBlock;
 import com.qiuyue.goetyominous.common.blocks.entities.ac.TitanBombBlockEntity;
 import com.qiuyue.goetyominous.common.entities.ai.ac.ServantTemptGoal;
 import com.qiuyue.goetyominous.common.items.ac.AcItems;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -118,6 +116,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class TremorzillaServant extends AnimalSummon
         implements KeybindUsingMount, IAnimatedEntity, ShakesScreen, KaijuMob, ActivatesSirens, ITallWalker, IAdvancedPathingMob {
@@ -236,12 +235,12 @@ public class TremorzillaServant extends AnimalSummon
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.TremorzillaServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.TremorzillaServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.TremorzillaServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.TremorzillaServantKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.TremorzillaServantMovementSpeed.get())
-                .add(Attributes.ARMOR, AttributesConfig.TremorzillaServantArmor.get());
+                .add(Attributes.MAX_HEALTH, AcConfig.TremorzillaServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AcConfig.TremorzillaServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AcConfig.TremorzillaServantDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.TremorzillaServantKnockbackResistance.get())
+                .add(Attributes.MOVEMENT_SPEED, AcConfig.TremorzillaServantMovementSpeed.get())
+                .add(Attributes.ARMOR, AcConfig.TremorzillaServantArmor.get());
     }
 
     @Override
@@ -800,7 +799,7 @@ public class TremorzillaServant extends AnimalSummon
     }
 
     private float getBeamDamage() {
-        return AttributesConfig.TremorzillaServantBeamDamage.get().floatValue();
+        return AcConfig.TremorzillaServantBeamDamage.get().floatValue();
     }
 
     private void tickBeamTargeting() {
@@ -875,7 +874,7 @@ public class TremorzillaServant extends AnimalSummon
     public void aiStep() {
         super.aiStep();
         if (!this.level().isClientSide) {
-            if (MobsConfig.TremorzillaServantBreakTrees.get() && !this.isBaby()) {
+            if (AcConfig.TremorzillaServantBreakTrees.get() && !this.isBaby()) {
                 FoliageSmash.smash(this);
             }
             if (ForgeEventFactory.getMobGriefingEvent(this.level(), this) && this.blockBreakCounter <= 0) {
@@ -1169,7 +1168,7 @@ public class TremorzillaServant extends AnimalSummon
     }
 
     public boolean breakBlocksAround(Vec3 center, float radius, boolean square, boolean triggerExplosions, float dropChance) {
-        if (!MobsConfig.TremorzillaServantBreakBlocks.get() || this.isBaby() || !ForgeEventFactory.getMobGriefingEvent(this.level(), this) || this.level().isClientSide) {
+        if (!AcConfig.TremorzillaServantBreakBlocks.get() || this.isBaby() || !ForgeEventFactory.getMobGriefingEvent(this.level(), this) || this.level().isClientSide) {
             return false;
         }
         boolean flag = false;
@@ -1194,7 +1193,7 @@ public class TremorzillaServant extends AnimalSummon
     }
 
     public boolean breakBlocksInBoundingBox(float dropChance) {
-        if (!MobsConfig.TremorzillaServantBreakBlocks.get() || this.isBaby() || !ForgeEventFactory.getMobGriefingEvent(this.level(), this) || this.level().isClientSide) {
+        if (!AcConfig.TremorzillaServantBreakBlocks.get() || this.isBaby() || !ForgeEventFactory.getMobGriefingEvent(this.level(), this) || this.level().isClientSide) {
             return false;
         }
         boolean flag = false;
@@ -1848,7 +1847,7 @@ public class TremorzillaServant extends AnimalSummon
     }
     @Override
     public int getSummonLimit(LivingEntity player) {
-        return MobsConfig.TremorzillaServantLimit.get();
+        return AcConfig.TremorzillaServantLimit.get();
     }
 
     @Override

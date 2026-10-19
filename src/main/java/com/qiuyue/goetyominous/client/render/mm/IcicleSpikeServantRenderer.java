@@ -14,9 +14,13 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import com.qiuyue.goetyominous.config.mm.MmConfig;
 
 @OnlyIn(Dist.CLIENT)
 public class IcicleSpikeServantRenderer extends EntityRenderer<IcicleSpikeServant> {
+    private static final ResourceLocation SERVANT_TEXTURE = new ResourceLocation(GoetyOminous.MOD_ID, "textures/entity/mutant_frozen_zombie_servant.png");
+    private static final ResourceLocation ORIGINAL_TEXTURE = new ResourceLocation("mutantmore", "textures/entities/mutant_frozen_zombie.png");
+
     private final IcicleSpikeServantModel<IcicleSpikeServant> model;
 
     public IcicleSpikeServantRenderer(EntityRendererProvider.Context p_174420_) {
@@ -40,6 +44,6 @@ public class IcicleSpikeServantRenderer extends EntityRenderer<IcicleSpikeServan
     }
 
     public ResourceLocation getTextureLocation(IcicleSpikeServant entity) {
-        return new ResourceLocation(GoetyOminous.MOD_ID, "textures/entity/mutant_frozen_zombie_servant.png");
+        return MmConfig.MutantFrozenZombieServantOriginalTexture.get() ? ORIGINAL_TEXTURE : SERVANT_TEXTURE;
     }
 }

@@ -15,8 +15,6 @@ import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.server.entity.collision.ICustomCollisions;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -63,6 +61,7 @@ import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class TigerServant extends AnimalSummon implements IAnimatedEntity, ICustomCollisions {
 
@@ -102,11 +101,11 @@ public class TigerServant extends AnimalSummon implements IAnimatedEntity, ICust
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.TigerServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.TigerServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.TigerServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.TigerServantKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.TigerServantMovementSpeed.get());
+                .add(Attributes.MAX_HEALTH, AmConfig.TigerServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AmConfig.TigerServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AmConfig.TigerServantDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AmConfig.TigerServantKnockbackResistance.get())
+                .add(Attributes.MOVEMENT_SPEED, AmConfig.TigerServantMovementSpeed.get());
     }
 
     @Override
@@ -139,7 +138,7 @@ public class TigerServant extends AnimalSummon implements IAnimatedEntity, ICust
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.TigerServantLimit.get();
+        return AmConfig.TigerServantLimit.get();
     }
 
     protected SoundEvent getAmbientSound() {
@@ -427,13 +426,13 @@ public class TigerServant extends AnimalSummon implements IAnimatedEntity, ICust
                 this.hasSpedUp = true;
                 this.setMaxUpStep(1.0F);
                 this.setSprinting(true);
-                this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AttributesConfig.TigerServantMovementSpeed.get() + 0.15D);
+                this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AmConfig.TigerServantMovementSpeed.get() + 0.15D);
             }
             if (!this.isRunning() && this.hasSpedUp) {
                 this.hasSpedUp = false;
                 this.setMaxUpStep(0.6F);
                 this.setSprinting(false);
-                this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AttributesConfig.TigerServantMovementSpeed.get());
+                this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AmConfig.TigerServantMovementSpeed.get());
             }
             if (this.getDeltaMovement().lengthSqr() < 0.03D && this.getAnimation() == NO_ANIMATION && !this.isHolding() && this.getTarget() == null && this.random.nextInt(100) == 0) {
                 this.setAnimation(ANIMATION_TAIL_FLICK);

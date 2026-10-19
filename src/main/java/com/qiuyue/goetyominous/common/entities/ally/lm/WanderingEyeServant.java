@@ -1,13 +1,11 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm;
 
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IMoveGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IStateGoal;
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.miauczel.legendary_monsters.sound.ModSounds;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.sounds.SoundEvent;
@@ -28,6 +26,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 
 import java.util.List;
+import com.qiuyue.goetyominous.config.lm.LmConfig;
 
 public class WanderingEyeServant extends AbstractFlamebornServant {
 
@@ -43,7 +42,7 @@ public class WanderingEyeServant extends AbstractFlamebornServant {
 
     @Override
     public double damageMultiplier() {
-        return MobsConfig.WanderingEyeServantDamageMultiplier.get();
+        return LmConfig.WanderingEyeServantDamageMultiplier.get();
     }
 
     @Override
@@ -126,19 +125,19 @@ public class WanderingEyeServant extends AbstractFlamebornServant {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.WanderingEyeServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.WanderingEyeServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.WanderingEyeServantFollowRange.get())
-                .add(Attributes.ARMOR, AttributesConfig.WanderingEyeServantArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.WanderingEyeServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, AttributesConfig.WanderingEyeServantAttackKnockback.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.WanderingEyeServantDamage.get());
+                .add(Attributes.MAX_HEALTH, LmConfig.WanderingEyeServantHealth.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.WanderingEyeServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, LmConfig.WanderingEyeServantFollowRange.get())
+                .add(Attributes.ARMOR, LmConfig.WanderingEyeServantArmor.get())
+                .add(Attributes.MOVEMENT_SPEED, LmConfig.WanderingEyeServantMovementSpeed.get())
+                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.WanderingEyeServantAttackKnockback.get())
+                .add(Attributes.ATTACK_DAMAGE, LmConfig.WanderingEyeServantDamage.get());
     }
 
     public void setConfigurableAttributes() {
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), AttributesConfig.WanderingEyeServantHealth.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), AttributesConfig.WanderingEyeServantArmor.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), AttributesConfig.WanderingEyeServantDamage.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), LmConfig.WanderingEyeServantHealth.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), LmConfig.WanderingEyeServantArmor.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), LmConfig.WanderingEyeServantDamage.get());
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.qiuyue.goetyominous.common.entities.ally.ac;
 
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.utils.MobUtil;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.common.events.ac.MineGuardianExplosionProtectionHandler;
 import com.github.alexmodguy.alexscaves.server.entity.ai.VerticalSwimmingMoveControl;
 import com.github.alexmodguy.alexscaves.server.entity.util.MineExplosion;
@@ -45,6 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class MineGuardianServant extends Summoned {
 
@@ -86,7 +86,7 @@ public class MineGuardianServant extends Summoned {
 
     @Override
     public int getSummonLimit(LivingEntity player) {
-        return MobsConfig.MineGuardianServantLimit.get();
+        return AcConfig.MineGuardianServantLimit.get();
     }
 
     @Override
@@ -259,7 +259,7 @@ public class MineGuardianServant extends Summoned {
     }
 
     protected void explode() {
-        boolean noGriefing = !MobsConfig.MineGuardianServantExplosionGriefing.get()
+        boolean noGriefing = !AcConfig.MineGuardianServantExplosionGriefing.get()
                 || !level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
         Explosion.BlockInteraction blockinteraction = noGriefing ? Explosion.BlockInteraction.KEEP
                 : level().getGameRules().getBoolean(GameRules.RULE_MOB_EXPLOSION_DROP_DECAY) ? Explosion.BlockInteraction.DESTROY_WITH_DECAY : Explosion.BlockInteraction.DESTROY;
@@ -313,7 +313,7 @@ public class MineGuardianServant extends Summoned {
             }
             if (this.isInWaterOrBubble()) {
                 this.setAirSupply(300);
-            } else if (this.onGround()) {
+            } else if (!this.isDeadOrDying() && this.onGround()) {
                 this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.6F, 0.6D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.6F));
                 this.setYRot(this.random.nextFloat() * 360.0F);
                 this.setOnGround(false);

@@ -12,8 +12,6 @@ import com.Polarice3.Goety.utils.SoundUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.ally.am.MurmurServant;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
-import com.qiuyue.goetyominous.config.SpellConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -26,21 +24,22 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class MurmurSpell extends SummonSpell {
     public MurmurSpell() {
     }
 
     public int defaultSoulCost() {
-        return (Integer) SpellConfig.MurmurSoulCost.get();
+        return (Integer) AmConfig.MurmurSoulCost.get();
     }
 
     public int defaultCastDuration() {
-        return (Integer) SpellConfig.MurmurCastDuration.get();
+        return (Integer) AmConfig.MurmurCastDuration.get();
     }
 
     public int SummonDownDuration() {
-        return (Integer) SpellConfig.MurmurSummonDown.get();
+        return (Integer) AmConfig.MurmurSummonDown.get();
     }
 
     public SoundEvent CastingSound() {
@@ -48,7 +47,7 @@ public class MurmurSpell extends SummonSpell {
     }
 
     public int defaultSpellCooldown() {
-        return (Integer) SpellConfig.MurmurCoolDown.get();
+        return (Integer) AmConfig.MurmurCoolDown.get();
     }
 
     public SpellType getSpellType() {
@@ -69,7 +68,7 @@ public class MurmurSpell extends SummonSpell {
     }
 
     public int summonLimit() {
-        return (Integer) MobsConfig.MurmurServantLimit.get();
+        return (Integer) AmConfig.MurmurServantLimit.get();
     }
 
     public void SpellResult(ServerLevel worldIn, LivingEntity caster, ItemStack staff, SpellStat spellStat) {

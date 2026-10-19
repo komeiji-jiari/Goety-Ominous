@@ -11,8 +11,6 @@ import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.ally.am.GusterServant;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
-import com.qiuyue.goetyominous.config.MobsConfig;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -25,17 +23,18 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class GusterSpell extends SummonSpell {
     public GusterSpell() {
     }
 
     public int defaultSoulCost() {
-        return (Integer)SpellConfig.GusterCost.get();
+        return (Integer)AmConfig.GusterCost.get();
     }
 
     public int defaultCastDuration() {
-        return (Integer) SpellConfig.GusterDuration.get();
+        return (Integer) AmConfig.GusterDuration.get();
     }
 
     public @Nullable SoundEvent CastingSound() {
@@ -43,11 +42,11 @@ public class GusterSpell extends SummonSpell {
     }
 
     public int defaultSpellCooldown() {
-        return (Integer)SpellConfig.GusterCoolDown.get();
+        return (Integer)AmConfig.GusterCoolDown.get();
     }
 
     public int SummonDownDuration() {
-        return (Integer)SpellConfig.GusterSummonDown.get();
+        return (Integer)AmConfig.GusterSummonDown.get();
     }
 
     public SpellType getSpellType() {
@@ -68,7 +67,7 @@ public class GusterSpell extends SummonSpell {
     }
 
     public int summonLimit() {
-        return (Integer) MobsConfig.GusterServantLimit.get();
+        return (Integer) AmConfig.GusterServantLimit.get();
     }
 
     public void SpellResult(ServerLevel worldIn, LivingEntity caster, ItemStack staff, SpellStat spellStat) {

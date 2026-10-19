@@ -25,6 +25,12 @@ import com.qiuyue.goetyominous.common.world.ModMobSpawnBiomeModifier;
 import com.qiuyue.goetyominous.compat.mod.*;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.config.SpellConfig;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
+import com.qiuyue.goetyominous.config.am.AmConfig;
+import com.qiuyue.goetyominous.config.lm.LmConfig;
+import com.qiuyue.goetyominous.config.mm.MmConfig;
+import com.qiuyue.goetyominous.config.of.OfConfig;
+import com.qiuyue.goetyominous.config.uasr.UasrConfig;
 import com.qiuyue.goetyominous.common.entities.ally.illager.train.GoetyOminousType;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.*;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractStormNecromancer;
@@ -150,6 +156,7 @@ public class GoetyOminous {
         }
 
         getOrCreateDirectory(FMLPaths.CONFIGDIR.get().resolve("goetyominous"), "goetyominous");
+        getOrCreateDirectory(FMLPaths.CONFIGDIR.get().resolve("goetyominous/mm"), "goetyominous/mm");
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, AttributesConfig.SPEC,
                 "goetyominous/goetyominous-attributes.toml");
         AttributesConfig.loadConfig(AttributesConfig.SPEC,
@@ -169,6 +176,36 @@ public class GoetyOminous {
                 "goetyominous/goetyominous-weapons.toml");
         WeaponConfig.loadConfig(WeaponConfig.SPEC,
                 FMLPaths.CONFIGDIR.get().resolve("goetyominous/goetyominous-weapons.toml").toString());
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, AcConfig.SPEC,
+                "goetyominous/goetyominous-goety_caves.toml");
+        AcConfig.loadConfig(AcConfig.SPEC,
+                FMLPaths.CONFIGDIR.get().resolve("goetyominous/goetyominous-goety_caves.toml").toString());
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, AmConfig.SPEC,
+                "goetyominous/goetyominous-goety_mobs.toml");
+        AmConfig.loadConfig(AmConfig.SPEC,
+                FMLPaths.CONFIGDIR.get().resolve("goetyominous/goetyominous-goety_mobs.toml").toString());
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, UasrConfig.SPEC,
+                "goetyominous/goetyominous-goety_blueprint.toml");
+        UasrConfig.loadConfig(UasrConfig.SPEC,
+                FMLPaths.CONFIGDIR.get().resolve("goetyominous/goetyominous-goety_blueprint.toml").toString());
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, LmConfig.SPEC,
+                "goetyominous/goetyominous-goety_legends.toml");
+        LmConfig.loadConfig(LmConfig.SPEC,
+                FMLPaths.CONFIGDIR.get().resolve("goetyominous/goetyominous-goety_legends.toml").toString());
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, MmConfig.SPEC,
+                "goetyominous/mm/goetyominous-goety_mutant.toml");
+        MmConfig.loadConfig(MmConfig.SPEC,
+                FMLPaths.CONFIGDIR.get().resolve("goetyominous/mm/goetyominous-goety_mutant.toml").toString());
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, OfConfig.SPEC,
+                "goetyominous/goetyominous-goety_opposing.toml");
+        OfConfig.loadConfig(OfConfig.SPEC,
+                FMLPaths.CONFIGDIR.get().resolve("goetyominous/goetyominous-goety_opposing.toml").toString());
 
         com.qiuyue.goetyominous.common.init.ModAttributes.init();
         FEL = com.Polarice3.Goety.api.magic.SpellType.create("FEL", "fel");

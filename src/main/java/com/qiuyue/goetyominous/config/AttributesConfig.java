@@ -7,712 +7,111 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import java.io.File;
 
 public class AttributesConfig {
-
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
     public static final ForgeConfigSpec.ConfigValue<Double> BreezeHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> BreezeArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> BreezeRangeDamage;
-
     public static final ForgeConfigSpec.ConfigValue<Double> HurricaneHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> HurricaneArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> HurricanePunchDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> HurricaneSmashDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> HurricaneCycloneDamage;
-
     public static final ForgeConfigSpec.ConfigValue<Double> MiredHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> MiredDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> MiredArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> MiredFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> MiredMovementSpeed;
-
     public static final ForgeConfigSpec.ConfigValue<Double> BoggedHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> BoggedArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> BoggedDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> BoggedRangeDamage;
-
+    public static final ForgeConfigSpec.ConfigValue<Double> WargHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> WargArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> WargDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> CerberusHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> CerberusArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> CerberusDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> DredenHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> DredenDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> DredenFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> DredenMovementSpeed;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> WargHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> WargArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> WargDamage;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> CerberusHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> CerberusArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> CerberusDamage;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> MurmurServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> MurmurServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> MurmurServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> MurmurServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> MurmurServantKnockbackResistance;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> FarseerServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> FarseerServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> FarseerServantFlyingSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> FarseerServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> FarseerServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> FarseerServantFollowRange;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonMosquitoServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonMosquitoServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonMosquitoServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonMosquitoServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonMosquitoServantKnockbackResistance;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> WarpedMoscoServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> WarpedMoscoServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> WarpedMoscoServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> WarpedMoscoServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> WarpedMoscoServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> WarpedMoscoServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> WarpedMoscoServantArmorToughness;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> TusklinServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> TusklinServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> TusklinServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> TusklinServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> TusklinServantKnockbackResistance;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> TigerServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> TigerServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> TigerServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> TigerServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> TigerServantKnockbackResistance;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> GrottoceratopsServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> GrottoceratopsServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> GrottoceratopsServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> GrottoceratopsServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> GrottoceratopsServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> GrottoceratopsServantArmor;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> RelicheirusServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> RelicheirusServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> RelicheirusServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> RelicheirusServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> RelicheirusServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> RelicheirusServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> TremorsaurusServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> TremorsaurusServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> TremorsaurusServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> TremorsaurusServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> TremorsaurusServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> TremorsaurusServantArmor;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> TremorzillaServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> TremorzillaServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> TremorzillaServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> TremorzillaServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> TremorzillaServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> TremorzillaServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> TremorzillaServantBeamDamage;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> AtlatitanServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> AtlatitanServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> AtlatitanServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> AtlatitanServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> AtlatitanServantKnockbackResistance;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> LuxtructosaurusServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> LuxtructosaurusServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> LuxtructosaurusServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> LuxtructosaurusServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> LuxtructosaurusServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> LuxtructosaurusServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> LuxtructosaurusServantTargetRange;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> GumWormServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> GumWormServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> GumWormServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> GumWormServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> GumWormServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> GumWormServantArmor;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantElderHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> VallumraptorServantElderArmor;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> NucleeperServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> NucleeperServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> NucleeperServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> NucleeperServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> NucleeperServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> NucleeperServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> NucleeperServantTauntRange;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> HullbreakerServantGlowTargetRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> HullbreakerServantGlowChaseSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> HullbreakerServantProximityTargetRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> BrainiacServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> BrainiacServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> BrainiacServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> BrainiacServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> BrainiacServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> BrainiacServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> CaniacServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> CaniacServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> CaniacServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> CaniacServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> CaniacServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> CaniacServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> GummyBearServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> GummyBearServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> GummyBearServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> GummyBearServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> GummyBearServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> GummyBearServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> CaramelCubeServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> CaramelCubeServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> CaramelCubeServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> CaramelCubeServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> CaramelCubeServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> CaramelCubeServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> GumbeeperServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> GumbeeperServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> GumbeeperServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> GumbeeperServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> GumbeeperServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> GumbeeperServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> VesperServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> VesperServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> VesperServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> VesperServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> VesperServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> VesperServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> TeletorServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> TeletorServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> TeletorServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> TeletorServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> TeletorServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> TeletorServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> ForsakenServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> ForsakenServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> ForsakenServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> ForsakenServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> ForsakenServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> CandicornServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> CandicornServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> CandicornServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> CandicornServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> CandicornServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> GammaroachServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> CorrodentServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> CorrodentServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> CorrodentServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> CorrodentServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> CorrodentServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> CorrodentServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneKnightServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneKnightServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneKnightServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneKnightServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneKnightServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneKnightServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Integer> DeepOneKnightServantOrtholanceWaveCooldown;
-    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneKnightServantOrtholanceWaveRange;
-    public static final ForgeConfigSpec.ConfigValue<Integer> DeepOneKnightServantOrtholanceWaveCount;
-    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneKnightServantOrtholanceWaveScale;
-    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneKnightServantOrtholanceDashDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneKnightServantOrtholanceDashSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneKnightServantOrtholanceChance;
-    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneMageServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneMageServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneMageServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneMageServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneMageServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> DeepOneMageServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> LicowitchServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> LicowitchServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> LicowitchServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> LicowitchServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> LicowitchServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> LicowitchServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> HullbreakerServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> HullbreakerServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> HullbreakerServantMovementSpeed;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> FroststalkerServantArmor;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> DropBearServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> DropBearServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> DropBearServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> DropBearServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> DropBearServantKnockbackResistance;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> GusterServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> GusterServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> GusterServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> GusterServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> EmuServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> EmuServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> EmuServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> EmuServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> SoulVultureServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> SoulVultureServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> SoulVultureServantFollowRange;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> RockyRollerServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> RockyRollerServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> RockyRollerServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> RockyRollerServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> RockyRollerServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> RockyRollerServantArmor;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> ZombieCrocodileServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> ZombieCrocodileServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> ZombieCrocodileServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> ZombieCrocodileServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> ZombieCrocodileServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> ZombieCrocodileServantArmor;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> SkelewagServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> SkelewagServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> SkelewagServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> SkelewagServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> SkelewagServantKnockbackResistance;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> BunfungusServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> BunfungusServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> BunfungusServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> BunfungusServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> BunfungusServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> BunfungusServantContactDamage;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> IllagerElephantServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> IllagerElephantServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> IllagerElephantServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> IllagerElephantServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> IllagerElephantServantKnockbackResistance;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> ServantCentipedeHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> ServantCentipedeFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> ServantCentipedeArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> ServantCentipedeAttackDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> ServantCentipedeKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> ServantCentipedeMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> ServantCentipedeBodyHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> ServantCentipedeBodyMovementSpeed;
-
     public static final ForgeConfigSpec.ConfigValue<Double> SunkenNecromancerHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> SunkenNecromancerDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> SunkenNecromancerArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> SunkenNecromancerFollowRange;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> AxolotlServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> AxolotlServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> AxolotlServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> AxolotlServantFollowRange;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> CreepieServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> CreepieServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> CreepieServantMovementSpeed;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> GrieferServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> GrieferServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> GrieferServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> GrieferServantFollowRange;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> ExecutionerServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> ExecutionerServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> ExecutionerServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> ExecutionerServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> ExecutionerServantArmor;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> SkeletonVillagerServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> SkeletonVillagerServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> SkeletonVillagerServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> SkeletonVillagerServantFollowRange;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> TricksterServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> TricksterServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> TricksterServantFollowRange;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> ThrasherServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> ThrasherServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> ThrasherServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> ThrasherServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> ThrasherServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> ThrasherServantArmor;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> GreatThrasherServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> GreatThrasherServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> GreatThrasherServantArmor;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> FlareServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> FlareServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> FlareServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> FlareServantFlyingSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> FlareServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> FlareServantFollowRange;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> HeresiarchServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> HeresiarchServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> HeresiarchServantDamage;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> DiscipleHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> DiscipleArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> DiscipleDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> DiscipleMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> DiscipleFollowRange;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantWitherSkeletonServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantWitherSkeletonServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantWitherSkeletonServantArmorToughness;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantWitherSkeletonServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantWitherSkeletonServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantWitherSkeletonServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantWitherSkeletonServantAttackDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantWitherSkeletonServantAttackKnockback;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantHoglinServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantHoglinServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantHoglinServantArmorToughness;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantHoglinServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantHoglinServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantHoglinServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantHoglinServantAttackDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantHoglinServantAttackKnockback;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantShulkerServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantShulkerServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantShulkerServantArmorToughness;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantShulkerServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantShulkerServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantShulkerServantMovementSpeed;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantBlazeServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantBlazeServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantBlazeServantArmorToughness;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantBlazeServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantBlazeServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantBlazeServantMovementSpeed;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> RodlingServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> RodlingServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> RodlingServantArmorToughness;
-    public static final ForgeConfigSpec.ConfigValue<Double> RodlingServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> RodlingServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> RodlingServantMovementSpeed;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantJungleZombieServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantJungleZombieServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantJungleZombieServantArmorToughness;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantJungleZombieServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantJungleZombieServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantJungleZombieServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantJungleZombieServantAttackDamage;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantHuskServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantHuskServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantHuskServantArmorToughness;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantHuskServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantHuskServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantHuskServantMovementSpeed;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantFrozenZombieServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantFrozenZombieServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantFrozenZombieServantArmorToughness;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantFrozenZombieServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantFrozenZombieServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantFrozenZombieServantMovementSpeed;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> OvergrownColossusServantAttackKnockback;
-    public static final ForgeConfigSpec.ConfigValue<Double> FrostbittenGolemServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> FrostbittenGolemServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> FrostbittenGolemServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> FrostbittenGolemServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> FrostbittenGolemServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> FrostbittenGolemServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> FrostbittenGolemServantAttackKnockback;
-    public static final ForgeConfigSpec.ConfigValue<Double> AncientGuardianServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> AncientGuardianServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> AncientGuardianServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> AncientGuardianServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> AncientGuardianServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> AncientGuardianServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> AncientGuardianServantAttackKnockback;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> PossessedPaladinServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> PossessedPaladinServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> PossessedPaladinServantArmorToughness;
-    public static final ForgeConfigSpec.ConfigValue<Double> PossessedPaladinServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> PossessedPaladinServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> PossessedPaladinServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> PossessedPaladinServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> PossessedPaladinServantAttackKnockback;
-    public static final ForgeConfigSpec.ConfigValue<Double> PossessedPaladinServantDamageCap;
-    public static final ForgeConfigSpec.ConfigValue<Double> HoveringHurricaneServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> HoveringHurricaneServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> HoveringHurricaneServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> HoveringHurricaneServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> HoveringHurricaneServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> HoveringHurricaneServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> HoveringHurricaneServantAttackKnockback;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> CloudGolemServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> CloudGolemServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> CloudGolemServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> CloudGolemServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> CloudGolemServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> CloudGolemServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> CloudGolemServantAttackKnockback;
-    public static final ForgeConfigSpec.ConfigValue<Double> CloudGolemServantDamageCap;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> WanderingEyeServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> WanderingEyeServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> WanderingEyeServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> WanderingEyeServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> WanderingEyeServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> WanderingEyeServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> WanderingEyeServantAttackKnockback;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> ShulkerMimicServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> ShulkerMimicServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> ShulkerMimicServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> ShulkerMimicServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> ShulkerMimicServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> ShulkerMimicServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> ShulkerMimicServantAttackKnockback;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> AnnihilationPursuerServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> AnnihilationPursuerServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> AnnihilationPursuerServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> AnnihilationPursuerServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> AnnihilationPursuerServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> AnnihilationPursuerServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> AnnihilationPursuerServantAttackKnockback;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> TheObliteratorServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> TheObliteratorServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> TheObliteratorServantArmorToughness;
-    public static final ForgeConfigSpec.ConfigValue<Double> TheObliteratorServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> TheObliteratorServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> TheObliteratorServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> TheObliteratorServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> TheObliteratorServantAttackKnockback;
-    public static final ForgeConfigSpec.ConfigValue<Double> TheObliteratorServantDamageCap;
-    public static final ForgeConfigSpec.ConfigValue<Integer> TheObliteratorServantAdaptationFactorMultiplier;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> BeheadedKnightServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> BeheadedKnightServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> BeheadedKnightServantArmorToughness;
-    public static final ForgeConfigSpec.ConfigValue<Double> BeheadedKnightServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> BeheadedKnightServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> BeheadedKnightServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> BeheadedKnightServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> BeheadedKnightServantAttackKnockback;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> ResurrectedKnightServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> ResurrectedKnightServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> ResurrectedKnightServantArmorToughness;
-    public static final ForgeConfigSpec.ConfigValue<Double> ResurrectedKnightServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> ResurrectedKnightServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> ResurrectedKnightServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> ResurrectedKnightServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> ResurrectedKnightServantAttackKnockback;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> EndersentServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> EndersentServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> EndersentServantArmorToughness;
-    public static final ForgeConfigSpec.ConfigValue<Double> EndersentServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> EndersentServantTeleportSmashDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> EndersentServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> EndersentServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> EndersentServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> EndersentServantAttackKnockback;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> ChoruslingServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> ChoruslingServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> ChoruslingServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> ChoruslingServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> ChoruslingServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> ChoruslingServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> ChoruslingServantAttackKnockback;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> FlameDrifterServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> FlameDrifterServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> FlameDrifterServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> FlameDrifterServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> FlameDrifterServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> FlameDrifterServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> FlameDrifterServantAttackKnockback;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornWarriorServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornWarriorServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornWarriorServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornWarriorServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornWarriorServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornWarriorServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornWarriorServantAttackKnockback;
-    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornGuardServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornGuardServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornGuardServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornGuardServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornGuardServantFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornGuardServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornGuardServantAttackKnockback;
-
+    public static final ForgeConfigSpec.ConfigValue<Double> SunkenNecromancerDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> StormNecromancerHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> StormNecromancerArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> StormNecromancerDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> StormNecromancerFollowRange;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinServantFollowRange;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantFollowRange;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantEvolvedHealthBonus;
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantEvolvedDamageBonus;
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantEvolved2HealthBonus;
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantEvolved2DamageBonus;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantFollowRange;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantEvolvedHealthBonus;
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantEvolvedDamageBonus;
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantEvolved2HealthBonus;
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantEvolved2DamageBonus;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> FungusThrowerServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> FungusThrowerServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> FungusThrowerServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> FungusThrowerServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> FungusThrowerServantFollowRange;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonSpiderServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonSpiderServantDamage;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> ScorchHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> ScorchDamage;
-
+    public static final ForgeConfigSpec.ConfigValue<Double> StormNecromancerDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> ReturnedHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> ReturnedArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> ReturnedFollowRange;
-
     public static final ForgeConfigSpec.ConfigValue<Double> AgonyHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> AgonyDamage;
-
     public static final ForgeConfigSpec.ConfigValue<Double> BeldamHealth;
-
     public static final ForgeConfigSpec.ConfigValue<Double> ZealotHealth;
-
     public static final ForgeConfigSpec.ConfigValue<Double> FanaticHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> FanaticDamage;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> ChannellerHealth;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> MartyrHealth;
-
     public static final ForgeConfigSpec.ConfigValue<Double> ThugHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> ThugDamage;
-
+    public static final ForgeConfigSpec.ConfigValue<Double> MartyrHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> ChannellerHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> ScorchHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> ScorchDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> UrbhadhachHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> UrbhadhachDamage;
-
     public static final ForgeConfigSpec.ConfigValue<Double> ArchGeomancerHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> ArchGeomancerArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> ArchGeomancerArmorToughness;
     public static final ForgeConfigSpec.ConfigValue<Double> ArchGeomancerMovementSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> ArchGeomancerAttackDamage;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> RamblerServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> RamblerServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> RamblerServantAttackDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> RamblerServantAttackKnockback;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> DicerServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> DicerServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> DicerServantAttackDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> DicerServantAttackKnockback;
-    public static final ForgeConfigSpec.ConfigValue<Double> DicerServantFollowRange;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> VoltServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> VoltServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> VoltServantFollowRange;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> TremblerServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> TremblerServantArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> TremblerServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> TremblerServantAttackDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> TremblerServantAttackKnockback;
-    public static final ForgeConfigSpec.ConfigValue<Double> TremblerServantKnockbackResistance;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> FireSlimeServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> FireSlimeServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> FireSlimeServantAttackDamage;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> GuzzlerServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> GuzzlerServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> GuzzlerServantAttackDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> GuzzlerServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> GuzzlerServantFollowRange;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> SkyvernServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> SkyvernServantHealthPerSegment;
-    public static final ForgeConfigSpec.ConfigValue<Double> SkyvernServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> SkyvernServantFlyingSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> SkyvernServantAttackDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> SkyvernServantKnockbackResistance;
-    public static final ForgeConfigSpec.ConfigValue<Double> SkyvernServantFollowRange;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> TerrorServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> TerrorServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> TerrorServantAttackDamage;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> FrowzyServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> FrowzyServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> FrowzyServantAttackDamage;
-
-    public static final ForgeConfigSpec.ConfigValue<Double> NuclearGuardianServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> NuclearGuardianServantBeamDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> NuclearGuardianServantSelfDestructHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantEvolvedHealthBonus;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantEvolvedDamageBonus;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantEvolved2HealthBonus;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantEvolved2DamageBonus;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantEvolvedHealthBonus;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantEvolvedDamageBonus;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantEvolved2HealthBonus;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantEvolved2DamageBonus;
+    public static final ForgeConfigSpec.ConfigValue<Double> FungusThrowerServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> FungusThrowerServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> FungusThrowerServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> FungusThrowerServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> FungusThrowerServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonSpiderServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonSpiderServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> AxolotlServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> AxolotlServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> AxolotlServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> AxolotlServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> DiscipleHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> DiscipleArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> DiscipleDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> DiscipleMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> DiscipleFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> HeresiarchServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> HeresiarchServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> HeresiarchServantDamage;
 
     static {
         BUILDER.push("Servants Attributes");
-
         BUILDER.push("Breeze");
         BreezeHealth = BUILDER.comment("How much Max Health Breezes have, Default: 30.0")
                 .defineInRange("breezeHealth", 30.0, 1.0, Double.MAX_VALUE);
@@ -721,7 +120,6 @@ public class AttributesConfig {
         BreezeRangeDamage = BUILDER.comment("How much damage a direct hit from a Breeze Servant's wind charge deals, Default: 3.0. Hostile Breezes keep vanilla's flat 1.0 direct hit; this value only feeds their ATTACK_DAMAGE attribute.")
                 .defineInRange("breezeRangeDamage", 3.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-
         BUILDER.push("Hurricane");
         HurricaneHealth = BUILDER.comment("How much Max Health Hurricanes have, Default: 110.0")
                 .defineInRange("hurricaneHealth", 110.0, 1.0, Double.MAX_VALUE);
@@ -734,7 +132,6 @@ public class AttributesConfig {
         HurricaneCycloneDamage = BUILDER.comment("How much damage the Hurricane's cyclone deals each time it strikes, Default: 2.0")
                 .defineInRange("hurricaneCycloneDamage", 2.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
-
         BUILDER.push("Mired");
         MiredHealth = BUILDER.comment("How much Max Health Mired and Mired Servants have, Default: 24.0")
                 .defineInRange("miredHealth", 24.0, 1.0, Double.MAX_VALUE);
@@ -747,7 +144,6 @@ public class AttributesConfig {
         MiredMovementSpeed = BUILDER.comment("Mired and Mired Servants movement speed, Default: 0.20")
                 .defineInRange("miredMovementSpeed", 0.20, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
-
         BUILDER.push("Bogged");
         BoggedHealth = BUILDER.comment("How much Max Health Bogged and Bogged Servants have, Default: 16.0")
                 .defineInRange("boggedHealth", 16.0, 1.0, Double.MAX_VALUE);
@@ -758,7 +154,6 @@ public class AttributesConfig {
         BoggedRangeDamage = BUILDER.comment("How much damage Bogged and Bogged Servant arrows deal, Default: 2.0")
                 .defineInRange("boggedRangeDamage", 2.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
-
         BUILDER.push("Warg");
         WargHealth = BUILDER.comment("How much Max Health Wargs have, Default: 50.0")
                 .defineInRange("wargHealth", 50.0, 1.0, Double.MAX_VALUE);
@@ -767,14 +162,14 @@ public class AttributesConfig {
         WargDamage = BUILDER.comment("How much damage Wargs deal, Default: 8.0")
                 .defineInRange("wargDamage", 8.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-
+        BUILDER.push("Cerberus");
         CerberusHealth = BUILDER.comment("How much Max Health Cerberuses have, Default: 100.0")
                 .defineInRange("cerberusHealth", 100.0, 1.0, Double.MAX_VALUE);
         CerberusArmor = BUILDER.comment("How much natural Armor Cerberuses have, Default: 0.0")
                 .defineInRange("cerberusArmor", 0.0, 0.0, Double.MAX_VALUE);
         CerberusDamage = BUILDER.comment("How much damage Cerberus melee attacks deal, Default: 8.0")
                 .defineInRange("cerberusDamage", 8.0, 1.0, Double.MAX_VALUE);
-
+        BUILDER.pop();
         BUILDER.push("Dreden");
         DredenHealth = BUILDER.comment("How much Max Health Dredens have, Default: 30.0")
                 .defineInRange("dredenHealth", 30.0, 1.0, Double.MAX_VALUE);
@@ -785,7 +180,6 @@ public class AttributesConfig {
         DredenMovementSpeed = BUILDER.comment("Dreden movement speed, Default: 0.25")
                 .defineInRange("dredenMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
-
         BUILDER.push("Necromancer");
         SunkenNecromancerHealth = BUILDER.comment("How much Max Health Sunken Necromancers have, Default: 50.0")
                 .defineInRange("SunkenNecromancerHealth", 50.0, 1.0, Double.MAX_VALUE);
@@ -796,7 +190,6 @@ public class AttributesConfig {
         SunkenNecromancerDamage = BUILDER.comment("How much damage Sunken Necromancers deals, Default: 5.0")
                 .defineInRange("SunkenNecromancerDamage", 5.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-
         BUILDER.push("Storm Necromancer");
         StormNecromancerHealth = BUILDER.comment("How much Max Health Storm Necromancers have, Default: 220.0")
                 .defineInRange("stormNecromancerHealth", 220.0, 1.0, Double.MAX_VALUE);
@@ -807,7 +200,6 @@ public class AttributesConfig {
         StormNecromancerDamage = BUILDER.comment("How much damage Storm Necromancers deals, Default: 3.0")
                 .defineInRange("stormNecromancerDamage", 3.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-
         BUILDER.push("Returned");
         ReturnedHealth = BUILDER.comment("How much Max Health Returned have, Default: 10.0")
                 .defineInRange("returnedHealth", 40.0, 1.0, Double.MAX_VALUE);
@@ -816,26 +208,22 @@ public class AttributesConfig {
         ReturnedFollowRange = BUILDER.comment("How much following/detection range Returned have, Default: 32.0")
                 .defineInRange("returnedFollowRange", 32.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-
         BUILDER.push("Agony");
         AgonyHealth = BUILDER.comment("How much Max Health Agony have, Default: 50.0")
                 .defineInRange("agonyHealth", 50.0, 1.0, Double.MAX_VALUE);
         AgonyDamage = BUILDER.comment("How much damage Agony deals, Default: 9.0")
                 .defineInRange("agonyDamage", 9.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-
         BUILDER.push("Beldam");
         BeldamHealth = BUILDER
                 .comment("How much Max Health Beldam have, Default: 26.0")
                 .defineInRange("beldamHealth", 26.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-
         BUILDER.push("Zealot");
         ZealotHealth = BUILDER
                 .comment("How much Max Health Zealot have, Default: 24.0")
                 .defineInRange("zealotHealth", 24.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-
         BUILDER.push("Fanatic");
         FanaticHealth = BUILDER
                 .comment("How much Max Health Fanatic have, Default: 24.0")
@@ -844,39 +232,33 @@ public class AttributesConfig {
                 .comment("How much damage Fanatic deals, Default: 2.0")
                 .defineInRange("fanaticDamage", 2.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-
         BUILDER.push("Thug");
         ThugHealth = BUILDER.comment("How much Max Health Thug have, Default: 50.0")
                 .defineInRange("thugHealth", 50.0, 1.0, Double.MAX_VALUE);
         ThugDamage = BUILDER.comment("How much damage Thug deals, Default: 7.0")
                 .defineInRange("thugDamage", 7.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-
         BUILDER.push("Martyr");
         MartyrHealth = BUILDER
                 .comment("How much Max Health Martyr have, Default: 32.0")
                 .defineInRange("martyrHealth", 32.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-
         BUILDER.push("Channeller");
         ChannellerHealth = BUILDER.comment("How much Max Health Channeller have, Default: 32.0")
                 .defineInRange("channellerHealth", 32.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-
         BUILDER.push("Scorch");
         ScorchHealth = BUILDER.comment("How much Max Health Scorch have, Default: 14.0")
                 .defineInRange("scorchHealth", 14.0, 1.0, Double.MAX_VALUE);
         ScorchDamage = BUILDER.comment("How much damage Scorch deals, Default: 6.0")
                 .defineInRange("scorchDamage", 6.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-
         BUILDER.push("Urbhadhach");
         UrbhadhachHealth = BUILDER.comment("How much Max Health Urbhadhach have, Default: 50.0")
                 .defineInRange("urbhadhachHealth", 50.0, 1.0, Double.MAX_VALUE);
         UrbhadhachDamage = BUILDER.comment("How much damage Urbhadhach deals, Default: 12.0")
                 .defineInRange("urbhadhachDamage", 12.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-
         BUILDER.push("Arch Geomancer");
         ArchGeomancerHealth = BUILDER.comment("How much Max Health Arch Geomancers have, Default: 160.0")
                 .defineInRange("archGeomancerHealth", 160.0, 1.0, Double.MAX_VALUE);
@@ -889,7 +271,6 @@ public class AttributesConfig {
         ArchGeomancerAttackDamage = BUILDER.comment("How much damage Arch Geomancers deal, Default: 7.0")
                 .defineInRange("archGeomancerAttackDamage", 7.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-
         BUILDER.push("Piglin Servant");
         PiglinServantHealth = BUILDER.comment("How much Max Health Piglin Servants have, Default: 16.0")
                 .defineInRange("piglinServantHealth", 16.0, 1.0, Double.MAX_VALUE);
@@ -902,7 +283,6 @@ public class AttributesConfig {
         PiglinServantFollowRange = BUILDER.comment("How much following/detection range Piglin Servants have, Default: 16.0")
                 .defineInRange("piglinServantFollowRange", 16.0, 1.0, 2048.0);
         BUILDER.pop();
-
         BUILDER.push("Piglin Brute Servant");
         PiglinBruteServantHealth = BUILDER.comment("How much Max Health Piglin Brute Servants have, Default: 50.0")
                 .defineInRange("piglinBruteServantHealth", 50.0, 1.0, Double.MAX_VALUE);
@@ -927,7 +307,6 @@ public class AttributesConfig {
                 .comment("How much bonus damage Stage 2 Evolved Piglin Brute Servants deal, Default: 3.0")
                 .defineInRange("piglinBruteServantEvolved2DamageBonus", 3.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
-
         BUILDER.push("Piglin Hunter Servant");
         PiglinHunterServantHealth = BUILDER.comment("How much Max Health Piglin Hunter Servants have, Default: 50.0")
                 .defineInRange("piglinHunterServantHealth", 50.0, 1.0, Double.MAX_VALUE);
@@ -952,7 +331,6 @@ public class AttributesConfig {
                 .comment("How much bonus damage Stage 2 Evolved Piglin Hunter Servants deal, Default: 3.0")
                 .defineInRange("piglinHunterServantEvolved2DamageBonus", 3.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
-
         BUILDER.push("Fungus Thrower");
         FungusThrowerServantHealth = BUILDER.comment("How much Max Health Fungus Thrower have, Default: 20.0")
                 .defineInRange("fungusThrowerHealth", 16.0, 1.0, Double.MAX_VALUE);
@@ -965,7 +343,6 @@ public class AttributesConfig {
         FungusThrowerServantFollowRange = BUILDER.comment("How much following/detection range Fungus Thrower have, Default: 32.0")
                 .defineInRange("fungusThrowerFollowRange", 32.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-
         BUILDER.push("Crimson Spider Servant");
         CrimsonSpiderServantHealth = BUILDER
                 .comment("How much Max Health Crimson Spider Servants have, Default: 24.0")
@@ -974,7 +351,6 @@ public class AttributesConfig {
                 .comment("How much damage Crimson Spider Servants deal, Default: 5.0")
                 .defineInRange("crimsonSpiderServantDamage", 5.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-
         BUILDER.push("Axolotl Servant");
         AxolotlServantHealth = BUILDER.comment("How much Max Health Axolotl Servants have, Default: 15.0")
                 .defineInRange("AxolotlServantHealth", 14.0, 1.0, Double.MAX_VALUE);
@@ -1006,1138 +382,6 @@ public class AttributesConfig {
         HeresiarchServantDamage = BUILDER.comment("How much damage Heresiarch Servants deals, Default: 8.0")
                 .defineInRange("heresiarchServantDamage", 2.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-
-        BUILDER.push("SAR Servants (Optional)");
-        CreepieServantHealth = BUILDER.comment("How much Max Health Creepie Servants have, Default: 5.0")
-                .defineInRange("creepieServantHealth", 5.0, 1.0, Double.MAX_VALUE);
-        CreepieServantDamage = BUILDER.comment("How much damage Creepie Servants deals, Default: 2.0")
-                .defineInRange("creepieServantDamage", 2.0, 0.0, Double.MAX_VALUE);
-        CreepieServantMovementSpeed = BUILDER.comment("How fast Creepie Servants move, Default: 0.35")
-                .defineInRange("creepieServantMovementSpeed", 0.35, 0.0, Double.MAX_VALUE);
-        GrieferServantHealth = BUILDER.comment("How much Max Health Griefer Servants have, Default: 24.0")
-                .defineInRange("grieferServantHealth", 24.0, 1.0, Double.MAX_VALUE);
-        GrieferServantDamage = BUILDER.comment("How much damage Griefer Servants deals, Default: 5.0")
-                .defineInRange("grieferServantDamage", 5.0, 0.0, Double.MAX_VALUE);
-        GrieferServantMovementSpeed = BUILDER.comment("How fast Griefer Servants move, Default: 0.35")
-                .defineInRange("grieferServantMovementSpeed", 0.35, 0.0, Double.MAX_VALUE);
-        GrieferServantFollowRange = BUILDER.comment("How much following/detection range Griefer Servants have, Default: 32.0")
-                .defineInRange("grieferServantFollowRange", 32.0, 1.0, Double.MAX_VALUE);
-        ExecutionerServantHealth = BUILDER.comment("How much Max Health Executioner Servants have, Default: 35.0")
-                .defineInRange("executionerServantHealth", 35.0, 1.0, Double.MAX_VALUE);
-        ExecutionerServantDamage = BUILDER.comment("How much damage Executioner Servants deals, Default: 8.0")
-                .defineInRange("executionerServantDamage", 8.0, 0.0, Double.MAX_VALUE);
-        ExecutionerServantMovementSpeed = BUILDER.comment("How fast Executioner Servants move, Default: 0.30")
-                .defineInRange("executionerServantMovementSpeed", 0.30, 0.0, Double.MAX_VALUE);
-        ExecutionerServantFollowRange = BUILDER.comment("How much following/detection range Executioner Servants have, Default: 14.0")
-                .defineInRange("executionerServantFollowRange", 14.0, 1.0, Double.MAX_VALUE);
-        ExecutionerServantArmor = BUILDER.comment("How much natural Armor Executioner Servants have, Default: 3.0")
-                .defineInRange("executionerServantArmor", 3.0, 0.0, Double.MAX_VALUE);
-        SkeletonVillagerServantHealth = BUILDER.comment("How much Max Health Skeleton Villager Servants have, Default: 20.0")
-                .defineInRange("skeletonVillagerServantHealth", 20.0, 1.0, Double.MAX_VALUE);
-        SkeletonVillagerServantDamage = BUILDER.comment("How much damage Skeleton Villager Servants deals, Default: 3.0")
-                .defineInRange("skeletonVillagerServantDamage", 3.0, 0.0, Double.MAX_VALUE);
-        SkeletonVillagerServantMovementSpeed = BUILDER.comment("How fast Skeleton Villager Servants move, Default: 0.25")
-                .defineInRange("skeletonVillagerServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
-        SkeletonVillagerServantFollowRange = BUILDER.comment("How much following/detection range Skeleton Villager Servants have, Default: 16.0")
-                .defineInRange("skeletonVillagerServantFollowRange", 16.0, 1.0, Double.MAX_VALUE);
-        TricksterServantHealth = BUILDER.comment("How much Max Health Trickster Servants have, Default: 24.0")
-                .defineInRange("tricksterServantHealth", 24.0, 1.0, Double.MAX_VALUE);
-        TricksterServantMovementSpeed = BUILDER.comment("How fast Trickster Servants move, Default: 0.5")
-                .defineInRange("tricksterServantMovementSpeed", 0.5, 0.0, Double.MAX_VALUE);
-        TricksterServantFollowRange = BUILDER.comment("How much following/detection range Trickster Servants have, Default: 16.0")
-                .defineInRange("tricksterServantFollowRange", 16.0, 1.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("UA Servants (Optional)");
-        ThrasherServantHealth = BUILDER.comment("How much Max Health Thrasher Servants have, Default: 50.0")
-                .defineInRange("thrasherServantHealth", 50.0, 1.0, Double.MAX_VALUE);
-        ThrasherServantDamage = BUILDER.comment("How much damage Thrasher Servants deals, Default: 5.0")
-                .defineInRange("thrasherServantDamage", 5.0, 0.0, Double.MAX_VALUE);
-        ThrasherServantMovementSpeed = BUILDER.comment("How fast Thrasher Servants move, Default: 0.55")
-                .defineInRange("thrasherServantMovementSpeed", 0.55, 0.0, Double.MAX_VALUE);
-        ThrasherServantFollowRange = BUILDER.comment("How much following/detection range Thrasher Servants have, Default: 32.0")
-                .defineInRange("thrasherServantFollowRange", 32.0, 1.0, Double.MAX_VALUE);
-        ThrasherServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Thrasher Servants have, Default: 1.25")
-                .defineInRange("thrasherServantKnockbackResistance", 1.25, 0.0, Double.MAX_VALUE);
-        ThrasherServantArmor = BUILDER.comment("How much natural Armor Thrasher Servants have, Default: 8.0")
-                .defineInRange("thrasherServantArmor", 8.0, 0.0, Double.MAX_VALUE);
-
-        GreatThrasherServantHealth = BUILDER.comment("How much Max Health Great Thrasher Servants have, Default: 125.0")
-                .defineInRange("greatThrasherServantHealth", 125.0, 1.0, Double.MAX_VALUE);
-        GreatThrasherServantDamage = BUILDER.comment("How much damage Great Thrasher Servants deals, Default: 8.0")
-                .defineInRange("greatThrasherServantDamage", 8.0, 0.0, Double.MAX_VALUE);
-        GreatThrasherServantArmor = BUILDER.comment("How much natural Armor Great Thrasher Servants have, Default: 16.0")
-                .defineInRange("greatThrasherServantArmor", 16.0, 0.0, Double.MAX_VALUE);
-
-        FlareServantHealth = BUILDER.comment("How much Max Health Flare Servants have, Default: 20.0")
-                .defineInRange("flareServantHealth", 20.0, 1.0, Double.MAX_VALUE);
-        FlareServantDamage = BUILDER.comment("How much damage Flare Servants deals, Default: 8.0")
-                .defineInRange("flareServantDamage", 8.0, 0.0, Double.MAX_VALUE);
-        FlareServantArmor = BUILDER.comment("How much natural Armor Flare Servants have, Default: 2.0")
-                .defineInRange("flareServantArmor", 2.0, 0.0, Double.MAX_VALUE);
-        FlareServantFlyingSpeed = BUILDER.comment("How fast Flare Servants fly, Default: 0.6")
-                .defineInRange("flareServantFlyingSpeed", 0.6, 0.0, Double.MAX_VALUE);
-        FlareServantMovementSpeed = BUILDER.comment("How fast Flare Servants move, Default: 0.3")
-                .defineInRange("flareServantMovementSpeed", 0.3, 0.0, Double.MAX_VALUE);
-        FlareServantFollowRange = BUILDER.comment("How much following/detection range Flare Servants have, Default: 64.0")
-                .defineInRange("flareServantFollowRange", 64.0, 1.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Mutant Wither Skeleton Servant");
-        MutantWitherSkeletonServantHealth = BUILDER.comment("How much Max Health Mutant Wither Skeleton Servants have, Default: 200.0")
-                .defineInRange("mutantWitherSkeletonServantHealth", 200.0, 1.0, Double.MAX_VALUE);
-        MutantWitherSkeletonServantArmor = BUILDER.comment("How much natural Armor Mutant Wither Skeleton Servants have, Default: 6.0")
-                .defineInRange("mutantWitherSkeletonServantArmor", 6.0, 0.0, Double.MAX_VALUE);
-        MutantWitherSkeletonServantArmorToughness = BUILDER.comment("How much natural Armor Toughness Mutant Wither Skeleton Servants have, Default: 0")
-                .defineInRange("mutantWitherSkeletonServantArmorToughness", 0.0, 0.0, Double.MAX_VALUE);
-        MutantWitherSkeletonServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Mutant Wither Skeleton Servants have, Default: 1.0")
-                .defineInRange("mutantWitherSkeletonServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
-        MutantWitherSkeletonServantFollowRange = BUILDER.comment("How much following/detection range Mutant Wither Skeleton Servants have, Default: 64.0")
-                .defineInRange("mutantWitherSkeletonServantFollowRange", 64.0, 1.0, Double.MAX_VALUE);
-        MutantWitherSkeletonServantMovementSpeed = BUILDER.comment("How fast Mutant Wither Skeleton Servants move, Default: 0.27")
-                .defineInRange("mutantWitherSkeletonServantMovementSpeed", 0.27, 0.0, Double.MAX_VALUE);
-        MutantWitherSkeletonServantAttackDamage = BUILDER.comment("How much damage Mutant Wither Skeleton Servants deal, Default: 8.0")
-                .defineInRange("mutantWitherSkeletonServantAttackDamage", 8.0, 1.0, Double.MAX_VALUE);
-        MutantWitherSkeletonServantAttackKnockback = BUILDER.comment("How much Attack Knockback Mutant Wither Skeleton Servants have, Default: 0.2")
-                .defineInRange("mutantWitherSkeletonServantAttackKnockback", 0.2, 0.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Mutant Hoglin Servant");
-        MutantHoglinServantHealth = BUILDER.comment("How much Max Health Mutant Hoglin Servants have, Default: 250.0")
-                .defineInRange("mutantHoglinServantHealth", 250.0, 1.0, Double.MAX_VALUE);
-        MutantHoglinServantArmor = BUILDER.comment("How much natural Armor Mutant Hoglin Servants have, Default: 12.0")
-                .defineInRange("mutantHoglinServantArmor", 12.0, 0.0, Double.MAX_VALUE);
-        MutantHoglinServantArmorToughness = BUILDER.comment("How much natural Armor Toughness Mutant Hoglin Servants have, Default: 0.0")
-                .defineInRange("mutantHoglinServantArmorToughness", 0.0, 0.0, Double.MAX_VALUE);
-        MutantHoglinServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Mutant Hoglin Servants have, Default: 1.0")
-                .defineInRange("mutantHoglinServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
-        MutantHoglinServantFollowRange = BUILDER.comment("How much following/detection range Mutant Hoglin Servants have, Default: 64.0")
-                .defineInRange("mutantHoglinServantFollowRange", 64.0, 1.0, Double.MAX_VALUE);
-        MutantHoglinServantMovementSpeed = BUILDER.comment("How fast Mutant Hoglin Servants move, Default: 0.28")
-                .defineInRange("mutantHoglinServantMovementSpeed", 0.28, 0.0, Double.MAX_VALUE);
-        MutantHoglinServantAttackDamage = BUILDER.comment("How much damage Mutant Hoglin Servants deal, Default: 8.0")
-                .defineInRange("mutantHoglinServantAttackDamage", 8.0, 1.0, Double.MAX_VALUE);
-        MutantHoglinServantAttackKnockback = BUILDER.comment("How much Attack Knockback Mutant Hoglin Servants have, Default: 1.75")
-                .defineInRange("mutantHoglinServantAttackKnockback", 1.75, 0.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Mutant Shulker Servant");
-        MutantShulkerServantHealth = BUILDER.comment("How much Max Health Mutant Shulker Servants have, Default: 300.0")
-                .defineInRange("mutantShulkerServantHealth", 300.0, 1.0, Double.MAX_VALUE);
-        MutantShulkerServantArmor = BUILDER.comment("How much natural Armor Mutant Shulker Servants have, Default: 10.0")
-                .defineInRange("mutantShulkerServantArmor", 10.0, 0.0, Double.MAX_VALUE);
-        MutantShulkerServantArmorToughness = BUILDER.comment("How much natural Armor Toughness Mutant Shulker Servants have, Default: 0.0")
-                .defineInRange("mutantShulkerServantArmorToughness", 0.0, 0.0, Double.MAX_VALUE);
-        MutantShulkerServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Mutant Shulker Servants have, Default: 1.0")
-                .defineInRange("mutantShulkerServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
-        MutantShulkerServantFollowRange = BUILDER.comment("How much following/detection range Mutant Shulker Servants have, Default: 64.0")
-                .defineInRange("mutantShulkerServantFollowRange", 64.0, 1.0, Double.MAX_VALUE);
-        MutantShulkerServantMovementSpeed = BUILDER.comment("How fast Mutant Shulker Servants move, Default: 0.275")
-                .defineInRange("mutantShulkerServantMovementSpeed", 0.275, 0.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Mutant Blaze Servant");
-        MutantBlazeServantHealth = BUILDER.comment("How much Max Health Mutant Blaze Servants have, Default: 250.0")
-                .defineInRange("mutantBlazeServantHealth", 250.0, 1.0, Double.MAX_VALUE);
-        MutantBlazeServantArmor = BUILDER.comment("How much natural Armor Mutant Blaze Servants have, Default: 5.0")
-                .defineInRange("mutantBlazeServantArmor", 5.0, 0.0, Double.MAX_VALUE);
-        MutantBlazeServantArmorToughness = BUILDER.comment("How much natural Armor Toughness Mutant Blaze Servants have, Default: 0.0")
-                .defineInRange("mutantBlazeServantArmorToughness", 0.0, 0.0, Double.MAX_VALUE);
-        MutantBlazeServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Mutant Blaze Servants have, Default: 1.0")
-                .defineInRange("mutantBlazeServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
-        MutantBlazeServantFollowRange = BUILDER.comment("How much following/detection range Mutant Blaze Servants have, Default: 64.0")
-                .defineInRange("mutantBlazeServantFollowRange", 64.0, 1.0, Double.MAX_VALUE);
-        MutantBlazeServantMovementSpeed = BUILDER.comment("How fast Mutant Blaze Servants move, Default: 0.25")
-                .defineInRange("mutantBlazeServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Rodling Servant");
-        RodlingServantHealth = BUILDER.comment("How much Max Health Rodling Servants have, Default: 10.0")
-                .defineInRange("rodlingServantHealth", 10.0, 1.0, Double.MAX_VALUE);
-        RodlingServantArmor = BUILDER.comment("How much natural Armor Rodling Servants have, Default: 0.0")
-                .defineInRange("rodlingServantArmor", 0.0, 0.0, Double.MAX_VALUE);
-        RodlingServantArmorToughness = BUILDER.comment("How much natural Armor Toughness Rodling Servants have, Default: 0.0")
-                .defineInRange("rodlingServantArmorToughness", 0.0, 0.0, Double.MAX_VALUE);
-        RodlingServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Rodling Servants have, Default: 0.0")
-                .defineInRange("rodlingServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
-        RodlingServantFollowRange = BUILDER.comment("How much following/detection range Rodling Servants have, Default: 20.0")
-                .defineInRange("rodlingServantFollowRange", 20.0, 1.0, Double.MAX_VALUE);
-        RodlingServantMovementSpeed = BUILDER.comment("How fast Rodling Servants move, Default: 0.125")
-                .defineInRange("rodlingServantMovementSpeed", 0.125, 0.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Mutant Jungle Zombie Servant");
-        MutantJungleZombieServantHealth = BUILDER.comment("How much Max Health Mutant Jungle Zombie Servants have, Default: 60.0")
-                .defineInRange("mutantJungleZombieServantHealth", 60.0, 1.0, Double.MAX_VALUE);
-        MutantJungleZombieServantArmor = BUILDER.comment("How much natural Armor Mutant Jungle Zombie Servants have, Default: 2.0")
-                .defineInRange("mutantJungleZombieServantArmor", 2.0, 0.0, Double.MAX_VALUE);
-        MutantJungleZombieServantArmorToughness = BUILDER.comment("How much natural Armor Toughness Mutant Jungle Zombie Servants have, Default: 0.0")
-                .defineInRange("mutantJungleZombieServantArmorToughness", 0.0, 0.0, Double.MAX_VALUE);
-        MutantJungleZombieServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Mutant Jungle Zombie Servants have, Default: 1.0")
-                .defineInRange("mutantJungleZombieServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
-        MutantJungleZombieServantFollowRange = BUILDER.comment("How much following/detection range Mutant Jungle Zombie Servants have, Default: 64.0")
-                .defineInRange("mutantJungleZombieServantFollowRange", 64.0, 1.0, Double.MAX_VALUE);
-        MutantJungleZombieServantMovementSpeed = BUILDER.comment("How fast Mutant Jungle Zombie Servants move, Default: 0.24")
-                .defineInRange("mutantJungleZombieServantMovementSpeed", 0.24, 0.0, Double.MAX_VALUE);
-        MutantJungleZombieServantAttackDamage = BUILDER.comment("How much damage Mutant Jungle Zombie Servants deal, Default: 10.0")
-                .defineInRange("mutantJungleZombieServantAttackDamage", 10.0, 1.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Mutant Husk Servant");
-        MutantHuskServantHealth = BUILDER.comment("How much Max Health Mutant Husk Servants have, Default: 180.0")
-                .defineInRange("mutantHuskServantHealth", 180.0, 1.0, Double.MAX_VALUE);
-        MutantHuskServantArmor = BUILDER.comment("How much natural Armor Mutant Husk Servants have, Default: 4.0")
-                .defineInRange("mutantHuskServantArmor", 4.0, 0.0, Double.MAX_VALUE);
-        MutantHuskServantArmorToughness = BUILDER.comment("How much natural Armor Toughness Mutant Husk Servants have, Default: 0.0")
-                .defineInRange("mutantHuskServantArmorToughness", 0.0, 0.0, Double.MAX_VALUE);
-        MutantHuskServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Mutant Husk Servants have, Default: 1.0")
-                .defineInRange("mutantHuskServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
-        MutantHuskServantFollowRange = BUILDER.comment("How much following/detection range Mutant Husk Servants have, Default: 64.0")
-                .defineInRange("mutantHuskServantFollowRange", 64.0, 1.0, Double.MAX_VALUE);
-        MutantHuskServantMovementSpeed = BUILDER.comment("How fast Mutant Husk Servants move, Default: 0.24")
-                .defineInRange("mutantHuskServantMovementSpeed", 0.24, 0.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Mutant Frozen Zombie Servant");
-        MutantFrozenZombieServantHealth = BUILDER.comment("How much Max Health Mutant Frozen Zombie Servants have, Default: 100.0")
-                .defineInRange("mutantFrozenZombieServantHealth", 100.0, 1.0, Double.MAX_VALUE);
-        MutantFrozenZombieServantArmor = BUILDER.comment("How much natural Armor Mutant Frozen Zombie Servants have, Default: 2.0")
-                .defineInRange("mutantFrozenZombieServantArmor", 2.0, 0.0, Double.MAX_VALUE);
-        MutantFrozenZombieServantArmorToughness = BUILDER.comment("How much natural Armor Toughness Mutant Frozen Zombie Servants have, Default: 0.0")
-                .defineInRange("mutantFrozenZombieServantArmorToughness", 0.0, 0.0, Double.MAX_VALUE);
-        MutantFrozenZombieServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Mutant Frozen Zombie Servants have, Default: 1.0")
-                .defineInRange("mutantFrozenZombieServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
-        MutantFrozenZombieServantFollowRange = BUILDER.comment("How much following/detection range Mutant Frozen Zombie Servants have, Default: 64.0")
-                .defineInRange("mutantFrozenZombieServantFollowRange", 64.0, 1.0, Double.MAX_VALUE);
-        MutantFrozenZombieServantMovementSpeed = BUILDER.comment("How fast Mutant Frozen Zombie Servants move, Default: 0.22")
-                .defineInRange("mutantFrozenZombieServantMovementSpeed", 0.22, 0.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("AM Servants (Optional)");
-
-        BUILDER.push("Nuclear Guardian Servant");
-        NuclearGuardianServantHealth = BUILDER.comment("How much Max Health Nuclear Guardian Servants have, Default: 100.0")
-                .defineInRange("nuclearGuardianServantHealth", 100.0, 1.0, Double.MAX_VALUE);
-        NuclearGuardianServantBeamDamage = BUILDER.comment("How much damage the Nuclear Guardian Servant beam deals per hit, Default: 1.5")
-                .defineInRange("nuclearGuardianServantBeamDamage", 1.5, 0.0, Double.MAX_VALUE);
-        NuclearGuardianServantSelfDestructHealth = BUILDER.comment("Health ratio at or below which Nuclear Guardian Servants stop beaming and charge to self destruct, Default: 0.2")
-                .defineInRange("nuclearGuardianServantSelfDestructHealth", 0.2, 0.0, 1.0);
-        BUILDER.pop();
-
-        MurmurServantHealth = BUILDER.comment("How much Max Health Murmur Servants have, Default: 30.0")
-                .defineInRange("murmurServantHealth", 30.0, 1.0, Double.MAX_VALUE);
-        MurmurServantDamage = BUILDER.comment("How much damage Murmur Servants deal, Default: 3.0")
-                .defineInRange("murmurServantDamage", 3.0, 1.0, Double.MAX_VALUE);
-        MurmurServantMovementSpeed = BUILDER.comment("How fast Murmur Servants move, Default: 0.2")
-                .defineInRange("murmurServantMovementSpeed", 0.2, 0.0, Double.MAX_VALUE);
-        MurmurServantFollowRange = BUILDER.comment("How much following/detection range Murmur Servants have, Default: 48.0")
-                .defineInRange("murmurServantFollowRange", 48.0, 0.0, Double.MAX_VALUE);
-        MurmurServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Murmur Servants have, Default: 0.3")
-                .defineInRange("murmurServantKnockbackResistance", 0.3, 0.0, Double.MAX_VALUE);
-        FarseerServantHealth = BUILDER.comment("How much Max Health Farseer Servants have, Default: 70.0")
-                .defineInRange("farseerServantHealth", 70.0, 1.0, Double.MAX_VALUE);
-        FarseerServantArmor = BUILDER.comment("How much natural Armor Farseer Servants have, Default: 6.0")
-                .defineInRange("farseerServantArmor", 6.0, 0.0, Double.MAX_VALUE);
-        FarseerServantFlyingSpeed = BUILDER.comment("How fast Farseer Servants fly, Default: 0.5")
-                .defineInRange("farseerServantFlyingSpeed", 0.5, 0.0, Double.MAX_VALUE);
-        FarseerServantDamage = BUILDER.comment("How much damage Farseer Servants deal, Default: 4.5")
-                .defineInRange("farseerServantDamage", 4.5, 1.0, Double.MAX_VALUE);
-        FarseerServantMovementSpeed = BUILDER.comment("How fast Farseer Servants move, Default: 0.35")
-                .defineInRange("farseerServantMovementSpeed", 0.35, 0.0, Double.MAX_VALUE);
-        FarseerServantFollowRange = BUILDER.comment("How much following/detection range Farseer Servants have, Default: 16.0")
-                .defineInRange("farseerServantFollowRange", 16.0, 0.0, Double.MAX_VALUE);
-        CrimsonMosquitoServantHealth = BUILDER.comment("How much Max Health Crimson Mosquito Servants have, Default: 10.0")
-                .defineInRange("crimsonMosquitoServantHealth", 10.0, 1.0, Double.MAX_VALUE);
-        CrimsonMosquitoServantDamage = BUILDER.comment("How much damage Crimson Mosquito Servants deal, Default: 5.0")
-                .defineInRange("crimsonMosquitoServantDamage", 5.0, 1.0, Double.MAX_VALUE);
-        CrimsonMosquitoServantMovementSpeed = BUILDER.comment("How fast Crimson Mosquito Servants move, Default: 0.25")
-                .defineInRange("crimsonMosquitoServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
-        CrimsonMosquitoServantFollowRange = BUILDER.comment("How much following/detection range Crimson Mosquito Servants have, Default: 32.0")
-                .defineInRange("crimsonMosquitoServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
-        CrimsonMosquitoServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Crimson Mosquito Servants have, Default: 0.0")
-                .defineInRange("crimsonMosquitoServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
-        WarpedMoscoServantHealth = BUILDER.comment("How much Max Health Warped Mosco Servants have, Default: 100.0")
-                .defineInRange("warpedMoscoServantHealth", 100.0, 1.0, Double.MAX_VALUE);
-        WarpedMoscoServantDamage = BUILDER.comment("How much damage Warped Mosco Servants deal, Default: 10.0")
-                .defineInRange("warpedMoscoServantDamage", 10.0, 1.0, Double.MAX_VALUE);
-        WarpedMoscoServantMovementSpeed = BUILDER.comment("How fast Warped Mosco Servants move, Default: 0.3")
-                .defineInRange("warpedMoscoServantMovementSpeed", 0.3, 0.0, Double.MAX_VALUE);
-        WarpedMoscoServantFollowRange = BUILDER.comment("How much following/detection range Warped Mosco Servants have, Default: 64.0")
-                .defineInRange("warpedMoscoServantFollowRange", 64.0, 0.0, Double.MAX_VALUE);
-        WarpedMoscoServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Warped Mosco Servants have, Default: 1.0")
-                .defineInRange("warpedMoscoServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
-        WarpedMoscoServantArmor = BUILDER.comment("How much natural Armor Warped Mosco Servants have, Default: 10.0")
-                .defineInRange("warpedMoscoServantArmor", 10.0, 0.0, Double.MAX_VALUE);
-        WarpedMoscoServantArmorToughness = BUILDER.comment("How much natural Armor Toughness Warped Mosco Servants have, Default: 2.0")
-                .defineInRange("warpedMoscoServantArmorToughness", 2.0, 0.0, Double.MAX_VALUE);
-        TusklinServantHealth = BUILDER.comment("How much Max Health Tusklin Servants have, Default: 40.0")
-                .defineInRange("tusklinServantHealth", 40.0, 1.0, Double.MAX_VALUE);
-        TusklinServantDamage = BUILDER.comment("How much damage Tusklin Servants deal, Default: 9.0")
-                .defineInRange("tusklinServantDamage", 9.0, 1.0, Double.MAX_VALUE);
-        TusklinServantMovementSpeed = BUILDER.comment("How fast Tusklin Servants move, Default: 0.3")
-                .defineInRange("tusklinServantMovementSpeed", 0.3, 0.0, Double.MAX_VALUE);
-        TusklinServantFollowRange = BUILDER.comment("How much following/detection range Tusklin Servants have, Default: 32.0")
-                .defineInRange("tusklinServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
-        TusklinServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Tusklin Servants have, Default: 0.9")
-                .defineInRange("tusklinServantKnockbackResistance", 0.9, 0.0, Double.MAX_VALUE);
-        TigerServantHealth = BUILDER.comment("How much Max Health Tiger Servants have, Default: 40.0")
-                .defineInRange("tigerServantHealth", 40.0, 1.0, Double.MAX_VALUE);
-        TigerServantDamage = BUILDER.comment("How much damage Tiger Servants deal, Default: 9.0")
-                .defineInRange("tigerServantDamage", 9.0, 1.0, Double.MAX_VALUE);
-        TigerServantMovementSpeed = BUILDER.comment("How fast Tiger Servants move, Default: 0.25 (Alex's Mobs Tiger). Sprinting adds 0.15 on top of this.")
-                .defineInRange("tigerServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
-        TigerServantFollowRange = BUILDER.comment("How much following/detection range Tiger Servants have, Default: 32.0")
-                .defineInRange("tigerServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
-        TigerServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Tiger Servants have, Default: 0.0")
-                .defineInRange("tigerServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
-        GrottoceratopsServantHealth = BUILDER.comment("How much Max Health Grottoceratops Servants have, Default: 50.0 (matches Alex's Caves Grottoceratops)")
-                .defineInRange("grottoceratopsServantHealth", 50.0, 1.0, Double.MAX_VALUE);
-        GrottoceratopsServantDamage = BUILDER.comment("How much damage Grottoceratops Servants deal, Default: 10.0 (matches Alex's Caves Grottoceratops)")
-                .defineInRange("grottoceratopsServantDamage", 10.0, 1.0, Double.MAX_VALUE);
-        GrottoceratopsServantMovementSpeed = BUILDER.comment("How fast Grottoceratops Servants move, Default: 0.2")
-                .defineInRange("grottoceratopsServantMovementSpeed", 0.2, 0.0, Double.MAX_VALUE);
-        GrottoceratopsServantFollowRange = BUILDER.comment("How much following/detection range Grottoceratops Servants have, Default: 32.0")
-                .defineInRange("grottoceratopsServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
-        GrottoceratopsServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Grottoceratops Servants have, Default: 0.9 (matches Alex's Caves Grottoceratops)")
-                .defineInRange("grottoceratopsServantKnockbackResistance", 0.9, 0.0, Double.MAX_VALUE);
-        GrottoceratopsServantArmor = BUILDER.comment("How much natural Armor Grottoceratops Servants have, Default: 8.0 (matches Alex's Caves Grottoceratops)")
-                .defineInRange("grottoceratopsServantArmor", 8.0, 0.0, Double.MAX_VALUE);
-        RelicheirusServantHealth = BUILDER.comment("How much Max Health Relicheirus Servants have, Default: 120.0 (matches Alex's Caves Relicheirus)")
-                .defineInRange("relicheirusServantHealth", 120.0, 1.0, Double.MAX_VALUE);
-        RelicheirusServantDamage = BUILDER.comment("How much damage Relicheirus Servants deal, Default: 12.0 (matches Alex's Caves Relicheirus)")
-                .defineInRange("relicheirusServantDamage", 12.0, 1.0, Double.MAX_VALUE);
-        RelicheirusServantMovementSpeed = BUILDER.comment("How fast Relicheirus Servants move, Default: 0.2 (matches Alex's Caves Relicheirus)")
-                .defineInRange("relicheirusServantMovementSpeed", 0.2, 0.0, Double.MAX_VALUE);
-        RelicheirusServantFollowRange = BUILDER.comment("How much following/detection range Relicheirus Servants have, Default: 32.0")
-                .defineInRange("relicheirusServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
-        RelicheirusServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Relicheirus Servants have, Default: 0.9")
-                .defineInRange("relicheirusServantKnockbackResistance", 0.9, 0.0, Double.MAX_VALUE);
-        RelicheirusServantArmor = BUILDER.comment("How much natural Armor Relicheirus Servants have, Default: 0.0 (matches Alex's Caves Relicheirus)")
-                .defineInRange("relicheirusServantArmor", 0.0, 0.0, Double.MAX_VALUE);
-        TremorsaurusServantHealth = BUILDER.comment("How much Max Health Tremorsaurus Servants have, Default: 150.0 (matches Alex's Caves Tremorsaurus)")
-                .defineInRange("tremorsaurusServantHealth", 150.0, 1.0, Double.MAX_VALUE);
-        TremorsaurusServantDamage = BUILDER.comment("How much damage Tremorsaurus Servants deal, Default: 14.0 (matches Alex's Caves Tremorsaurus)")
-                .defineInRange("tremorsaurusServantDamage", 14.0, 1.0, Double.MAX_VALUE);
-        TremorsaurusServantMovementSpeed = BUILDER.comment("How fast Tremorsaurus Servants move, Default: 0.2")
-                .defineInRange("tremorsaurusServantMovementSpeed", 0.2, 0.0, Double.MAX_VALUE);
-        TremorsaurusServantFollowRange = BUILDER.comment("How much following/detection range Tremorsaurus Servants have, Default: 32.0")
-                .defineInRange("tremorsaurusServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
-        TremorsaurusServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Tremorsaurus Servants have, Default: 0.9 (matches Alex's Caves Tremorsaurus)")
-                .defineInRange("tremorsaurusServantKnockbackResistance", 0.9, 0.0, Double.MAX_VALUE);
-        TremorsaurusServantArmor = BUILDER.comment("How much natural Armor Tremorsaurus Servants have, Default: 8.0 (matches Alex's Caves Tremorsaurus)")
-                .defineInRange("tremorsaurusServantArmor", 8.0, 0.0, Double.MAX_VALUE);
-        TremorzillaServantHealth = BUILDER.comment("How much Max Health Tremorzilla Servants have, Default: 500.0 (matches Alex's Caves Tremorzilla)")
-                .defineInRange("tremorzillaServantHealth", 500.0, 1.0, Double.MAX_VALUE);
-        TremorzillaServantDamage = BUILDER.comment("How much damage Tremorzilla Servants' scratch, bite, stomp and tail whip deal, Default: 10.0 (matches Alex's Caves Tremorzilla)")
-                .defineInRange("tremorzillaServantDamage", 10.0, 1.0, Double.MAX_VALUE);
-        TremorzillaServantMovementSpeed = BUILDER.comment("How fast Tremorzilla Servants move, Default: 0.3")
-                .defineInRange("tremorzillaServantMovementSpeed", 0.3, 0.0, Double.MAX_VALUE);
-        TremorzillaServantFollowRange = BUILDER.comment("How much following/detection range Tremorzilla Servants have, Default: 32.0 (32 block radius)")
-                .defineInRange("tremorzillaServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
-        TremorzillaServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Tremorzilla Servants have, Default: 1.0 (matches Alex's Caves Tremorzilla)")
-                .defineInRange("tremorzillaServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
-        TremorzillaServantArmor = BUILDER.comment("How much natural Armor Tremorzilla Servants have, Default: 10.0 (matches Alex's Caves Tremorzilla)")
-                .defineInRange("tremorzillaServantArmor", 10.0, 0.0, Double.MAX_VALUE);
-        TremorzillaServantBeamDamage = BUILDER.comment("How much damage each hit of a Tremorzilla Servant's nuclear beam deals, Default: 20.0 (matches Alex's Caves Tremorzilla)")
-                .defineInRange("tremorzillaServantBeamDamage", 20.0, 1.0, Double.MAX_VALUE);
-        AtlatitanServantHealth = BUILDER.comment("How much Max Health Atlatitan Servants have, Default: 400.0 (matches Alex's Caves Atlatitan)")
-                .defineInRange("atlatitanServantHealth", 400.0, 1.0, Double.MAX_VALUE);
-        AtlatitanServantDamage = BUILDER.comment("How much damage Atlatitan Servants' kick and tail whip deal, Default: 8.0 (matches Alex's Caves Atlatitan)")
-                .defineInRange("atlatitanServantDamage", 8.0, 1.0, Double.MAX_VALUE);
-        AtlatitanServantMovementSpeed = BUILDER.comment("How fast Atlatitan Servants move, Default: 0.325 (matches Alex's Caves Atlatitan)")
-                .defineInRange("atlatitanServantMovementSpeed", 0.325, 0.0, Double.MAX_VALUE);
-        AtlatitanServantFollowRange = BUILDER.comment("How much following/detection range Atlatitan Servants have, Default: 32.0 (32 block radius)")
-                .defineInRange("atlatitanServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
-        AtlatitanServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Atlatitan Servants have, Default: 1.0 (matches Alex's Caves Atlatitan)")
-                .defineInRange("atlatitanServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
-        LuxtructosaurusServantHealth = BUILDER.comment("How much Max Health Luxtructosaurus Servants have, Default: 600.0 (matches Alex's Caves Luxtructosaurus)")
-                .defineInRange("luxtructosaurusServantHealth", 600.0, 1.0, Double.MAX_VALUE);
-        LuxtructosaurusServantDamage = BUILDER.comment("How much damage Luxtructosaurus Servants' stomp, kick, tail whip and flames deal, Default: 12.0 (matches Alex's Caves Luxtructosaurus)")
-                .defineInRange("luxtructosaurusServantDamage", 12.0, 1.0, Double.MAX_VALUE);
-        LuxtructosaurusServantMovementSpeed = BUILDER.comment("How fast Luxtructosaurus Servants move, Default: 0.325 (matches Alex's Caves Luxtructosaurus)")
-                .defineInRange("luxtructosaurusServantMovementSpeed", 0.325, 0.0, Double.MAX_VALUE);
-        LuxtructosaurusServantFollowRange = BUILDER.comment("How much following/detection range Luxtructosaurus Servants have, Default: 256.0 (matches Alex's Caves Luxtructosaurus)")
-                .defineInRange("luxtructosaurusServantFollowRange", 256.0, 0.0, Double.MAX_VALUE);
-        LuxtructosaurusServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Luxtructosaurus Servants have, Default: 1.0 (matches Alex's Caves Luxtructosaurus)")
-                .defineInRange("luxtructosaurusServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
-        LuxtructosaurusServantArmor = BUILDER.comment("How much natural Armor Luxtructosaurus Servants have, Default: 20.0 (matches Alex's Caves Luxtructosaurus)")
-                .defineInRange("luxtructosaurusServantArmor", 20.0, 0.0, Double.MAX_VALUE);
-        LuxtructosaurusServantTargetRange = BUILDER.comment("How far (in blocks) Luxtructosaurus Servants look for their own targets, Default: 32.0 (their follow range of 256 is only used for following)")
-                .defineInRange("luxtructosaurusServantTargetRange", 32.0, 0.0, Double.MAX_VALUE);
-        GumWormServantHealth = BUILDER.comment("How much Max Health Gum Worm Servants have, Default: 150.0 (matches Alex's Caves Gum Worm)")
-                .defineInRange("gumWormServantHealth", 150.0, 1.0, Double.MAX_VALUE);
-        GumWormServantDamage = BUILDER.comment("How much damage Gum Worm Servants' bite deals, Default: 9.0 (matches Alex's Caves Gum Worm)")
-                .defineInRange("gumWormServantDamage", 9.0, 1.0, Double.MAX_VALUE);
-        GumWormServantMovementSpeed = BUILDER.comment("How fast Gum Worm Servants move, Default: 0.25 (matches Alex's Caves Gum Worm)")
-                .defineInRange("gumWormServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
-        GumWormServantFollowRange = BUILDER.comment("How much following/detection range Gum Worm Servants have, Default: 128.0 (matches Alex's Caves Gum Worm)")
-                .defineInRange("gumWormServantFollowRange", 128.0, 0.0, Double.MAX_VALUE);
-        GumWormServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Gum Worm Servants have, Default: 0.0 (Alex's Caves Gum Worm has none)")
-                .defineInRange("gumWormServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
-        GumWormServantArmor = BUILDER.comment("How much natural Armor Gum Worm Servants have, Default: 10.0 (matches Alex's Caves Gum Worm)")
-                .defineInRange("gumWormServantArmor", 10.0, 0.0, Double.MAX_VALUE);
-        VallumraptorServantHealth = BUILDER.comment("How much Max Health Vallumraptor Servants have, Default: 28.0 (matches Alex's Caves Vallumraptor)")
-                .defineInRange("vallumraptorServantHealth", 28.0, 1.0, Double.MAX_VALUE);
-        VallumraptorServantDamage = BUILDER.comment("How much damage Vallumraptor Servants deal, Default: 3.0 (matches Alex's Caves Vallumraptor)")
-                .defineInRange("vallumraptorServantDamage", 3.0, 1.0, Double.MAX_VALUE);
-        VallumraptorServantMovementSpeed = BUILDER.comment("How fast Vallumraptor Servants move, Default: 0.2")
-                .defineInRange("vallumraptorServantMovementSpeed", 0.2, 0.0, Double.MAX_VALUE);
-        VallumraptorServantFollowRange = BUILDER.comment("How much following/detection range Vallumraptor Servants have, Default: 32.0")
-                .defineInRange("vallumraptorServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
-        VallumraptorServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Vallumraptor Servants have, Default: 0.0 (matches Alex's Caves Vallumraptor)")
-                .defineInRange("vallumraptorServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
-        VallumraptorServantArmor = BUILDER.comment("How much natural Armor Vallumraptor Servants have, Default: 0.0 (matches Alex's Caves Vallumraptor)")
-                .defineInRange("vallumraptorServantArmor", 0.0, 0.0, Double.MAX_VALUE);
-        VallumraptorServantElderHealth = BUILDER.comment("How much Max Health Vallumraptor Servant Elders have, Default: 32.0 (matches Alex's Caves Vallumraptor elder)")
-                .defineInRange("vallumraptorServantElderHealth", 32.0, 1.0, Double.MAX_VALUE);
-        VallumraptorServantElderArmor = BUILDER.comment("How much natural Armor Vallumraptor Servant Elders have, Default: 5.0 (matches Alex's Caves Vallumraptor elder)")
-                .defineInRange("vallumraptorServantElderArmor", 5.0, 0.0, Double.MAX_VALUE);
-        NucleeperServantHealth = BUILDER.comment("How much Max Health Nucleeper Servants have, Default: 40.0 (matches Alex's Caves Nucleeper)")
-                .defineInRange("nucleeperServantHealth", 40.0, 1.0, Double.MAX_VALUE);
-        NucleeperServantDamage = BUILDER.comment("How much damage Nucleeper Servants deal, Default: 2.0 (vanilla monster default; Nucleeper's real threat is its explosion)")
-                .defineInRange("nucleeperServantDamage", 2.0, 1.0, Double.MAX_VALUE);
-        NucleeperServantMovementSpeed = BUILDER.comment("How fast Nucleeper Servants move, Default: 0.2 (matches Alex's Caves Nucleeper)")
-                .defineInRange("nucleeperServantMovementSpeed", 0.2, 0.0, Double.MAX_VALUE);
-        NucleeperServantFollowRange = BUILDER.comment("How much following/detection range Nucleeper Servants have, Default: 32.0")
-                .defineInRange("nucleeperServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
-        NucleeperServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Nucleeper Servants have, Default: 0.0 (Alex's Caves Nucleeper has none)")
-                .defineInRange("nucleeperServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
-        NucleeperServantArmor = BUILDER.comment("How much natural Armor Nucleeper Servants have, Default: 4.0 (matches Alex's Caves Nucleeper)")
-                .defineInRange("nucleeperServantArmor", 4.0, 0.0, Double.MAX_VALUE);
-        NucleeperServantTauntRange = BUILDER.comment("How far (in blocks) Nucleeper Servants taunt mobs that are attacking their owner, pulling the mob's aggro onto the servant. Default: 12.0 (set to 0.0 to disable taunting)")
-                .defineInRange("nucleeperServantTauntRange", 12.0, 0.0, Double.MAX_VALUE);
-        HullbreakerServantGlowTargetRange = BUILDER.comment("How far (in blocks) Hullbreaker Servants search for glowing targets, Default: 48.0 (normal follow range is 16)")
-                .defineInRange("hullbreakerServantGlowTargetRange", 48.0, 8.0, Double.MAX_VALUE);
-        HullbreakerServantGlowChaseSpeed = BUILDER.comment("Swim speed Hullbreaker Servants use when chasing a glowing target, Default: 2.0 (normal approach speed is 1.6)")
-                .defineInRange("hullbreakerServantGlowChaseSpeed", 2.0, 0.1, Double.MAX_VALUE);
-        HullbreakerServantProximityTargetRange = BUILDER.comment("How close (in blocks) a non-glowing enemy must be for Hullbreaker Servants to sense and attack it, Default: 6.0")
-                .defineInRange("hullbreakerServantProximityTargetRange", 6.0, 2.0, 64.0);
-        BrainiacServantHealth = BUILDER.comment("How much Max Health Brainiac Servants have, Default: 40.0 (matches Alex's Caves Brainiac)")
-                .defineInRange("brainiacServantHealth", 40.0, 1.0, Double.MAX_VALUE);
-        BrainiacServantDamage = BUILDER.comment("How much damage Brainiac Servants deal, Default: 5.0 (matches Alex's Caves Brainiac)")
-                .defineInRange("brainiacServantDamage", 5.0, 1.0, Double.MAX_VALUE);
-        BrainiacServantMovementSpeed = BUILDER.comment("How fast Brainiac Servants move, Default: 0.25 (matches Alex's Caves Brainiac)")
-                .defineInRange("brainiacServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
-        BrainiacServantFollowRange = BUILDER.comment("How much following/detection range Brainiac Servants have, Default: 32.0")
-                .defineInRange("brainiacServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
-        BrainiacServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Brainiac Servants have, Default: 0.0 (Alex's Caves Brainiac has none)")
-                .defineInRange("brainiacServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
-        BrainiacServantArmor = BUILDER.comment("How much natural Armor Brainiac Servants have, Default: 8.0 (matches Alex's Caves Brainiac)")
-                .defineInRange("brainiacServantArmor", 8.0, 0.0, Double.MAX_VALUE);
-        CaniacServantHealth = BUILDER.comment("How much Max Health Caniac Servants have, Default: 38.0 (matches Alex's Caves Caniac)")
-                .defineInRange("caniacServantHealth", 38.0, 1.0, Double.MAX_VALUE);
-        CaniacServantDamage = BUILDER.comment("How much damage Caniac Servants deal, Default: 2.0 (matches Alex's Caves Caniac)")
-                .defineInRange("caniacServantDamage", 2.0, 1.0, Double.MAX_VALUE);
-        CaniacServantMovementSpeed = BUILDER.comment("How fast Caniac Servants move, Default: 0.25 (matches Alex's Caves Caniac; chased running speed boosts to 0.4)")
-                .defineInRange("caniacServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
-        CaniacServantFollowRange = BUILDER.comment("How much following/detection range Caniac Servants have, Default: 32.0")
-                .defineInRange("caniacServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
-        CaniacServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Caniac Servants have, Default: 0.0 (Alex's Caves Caniac has none)")
-                .defineInRange("caniacServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
-        CaniacServantArmor = BUILDER.comment("How much natural Armor Caniac Servants have, Default: 0.0 (matches Alex's Caves Caniac)")
-                .defineInRange("caniacServantArmor", 0.0, 0.0, Double.MAX_VALUE);
-        GummyBearServantHealth = BUILDER.comment("How much Max Health Gummy Bear Servants have, Default: 36.0 (matches Alex's Caves Gummy Bear)")
-                .defineInRange("gummyBearServantHealth", 36.0, 1.0, Double.MAX_VALUE);
-        GummyBearServantDamage = BUILDER.comment("How much damage Gummy Bear Servants deal, Default: 4.0 (matches Alex's Caves Gummy Bear)")
-                .defineInRange("gummyBearServantDamage", 4.0, 1.0, Double.MAX_VALUE);
-        GummyBearServantMovementSpeed = BUILDER.comment("How fast Gummy Bear Servants move, Default: 0.25 (matches Alex's Caves Gummy Bear)")
-                .defineInRange("gummyBearServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
-        GummyBearServantFollowRange = BUILDER.comment("How much following/detection range Gummy Bear Servants have, Default: 32.0")
-                .defineInRange("gummyBearServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
-        GummyBearServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Gummy Bear Servants have, Default: 0.0 (Alex's Caves Gummy Bear has none)")
-                .defineInRange("gummyBearServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
-        GummyBearServantArmor = BUILDER.comment("How much natural Armor Gummy Bear Servants have, Default: 0.0 (matches Alex's Caves Gummy Bear)")
-                .defineInRange("gummyBearServantArmor", 0.0, 0.0, Double.MAX_VALUE);
-        CaramelCubeServantHealth = BUILDER.comment("Base Max Health of Caramel Cube Servants (size 0), Default: 4.0 (matches Alex's Caves Caramel Cube); larger sizes add +6 per size")
-                .defineInRange("caramelCubeServantHealth", 4.0, 1.0, Double.MAX_VALUE);
-        CaramelCubeServantDamage = BUILDER.comment("Base attack damage of Caramel Cube Servants (size 0), Default: 2.0 (matches Alex's Caves Caramel Cube); larger sizes add +2 per size")
-                .defineInRange("caramelCubeServantDamage", 2.0, 1.0, Double.MAX_VALUE);
-        CaramelCubeServantMovementSpeed = BUILDER.comment("Base movement speed of Caramel Cube Servants (size 0), Default: 0.25 (matches Alex's Caves Caramel Cube); larger sizes add +0.1 per size")
-                .defineInRange("caramelCubeServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
-        CaramelCubeServantFollowRange = BUILDER.comment("How much following/detection range Caramel Cube Servants have, Default: 32.0")
-                .defineInRange("caramelCubeServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
-        CaramelCubeServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Caramel Cube Servants have, Default: 0.0 (Alex's Caves Caramel Cube has none)")
-                .defineInRange("caramelCubeServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
-        CaramelCubeServantArmor = BUILDER.comment("How much natural Armor Caramel Cube Servants have, Default: 0.0 (matches Alex's Caves Caramel Cube)")
-                .defineInRange("caramelCubeServantArmor", 0.0, 0.0, Double.MAX_VALUE);
-        GumbeeperServantHealth = BUILDER.comment("How much Max Health Gumbeeper Servants have, Default: 14.0 (matches Alex's Caves Gumbeeper)")
-                .defineInRange("gumbeeperServantHealth", 14.0, 1.0, Double.MAX_VALUE);
-        GumbeeperServantDamage = BUILDER.comment("How much damage Gumbeeper Servants' gumballs deal, Default: 4.0 (matches Alex's Caves Gumbeeper)")
-                .defineInRange("gumbeeperServantDamage", 4.0, 1.0, Double.MAX_VALUE);
-        GumbeeperServantMovementSpeed = BUILDER.comment("How fast Gumbeeper Servants move, Default: 0.2 (matches Alex's Caves Gumbeeper)")
-                .defineInRange("gumbeeperServantMovementSpeed", 0.2, 0.0, Double.MAX_VALUE);
-        GumbeeperServantFollowRange = BUILDER.comment("How much following/detection range Gumbeeper Servants have, Default: 32.0")
-                .defineInRange("gumbeeperServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
-        GumbeeperServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Gumbeeper Servants have, Default: 0.0 (Alex's Caves Gumbeeper has none)")
-                .defineInRange("gumbeeperServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
-        GumbeeperServantArmor = BUILDER.comment("How much natural Armor Gumbeeper Servants have, Default: 4.0 (matches Alex's Caves Gumbeeper)")
-                .defineInRange("gumbeeperServantArmor", 4.0, 0.0, Double.MAX_VALUE);
-        VesperServantHealth = BUILDER.comment("How much Max Health Vesper Servants have, Default: 16.0 (matches Alex's Caves Vesper)")
-                .defineInRange("vesperServantHealth", 16.0, 1.0, Double.MAX_VALUE);
-        VesperServantDamage = BUILDER.comment("How much damage Vesper Servants deal, Default: 3.0 (matches Alex's Caves Vesper)")
-                .defineInRange("vesperServantDamage", 3.0, 1.0, Double.MAX_VALUE);
-        VesperServantMovementSpeed = BUILDER.comment("How fast Vesper Servants fly, Default: 0.25 (matches Alex's Caves Vesper; flight is driven by the custom flight move controller)")
-                .defineInRange("vesperServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
-        VesperServantFollowRange = BUILDER.comment("How much following/detection range Vesper Servants have, Default: 32.0 (Alex's Caves Vesper natural mob uses 52; a summon uses a tighter 32 so it does not dart after far-away mobs)")
-                .defineInRange("vesperServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
-        VesperServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Vesper Servants have, Default: 0.0 (Alex's Caves Vesper has none)")
-                .defineInRange("vesperServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
-        VesperServantArmor = BUILDER.comment("How much natural Armor Vesper Servants have, Default: 0.0 (matches Alex's Caves Vesper)")
-                .defineInRange("vesperServantArmor", 0.0, 0.0, Double.MAX_VALUE);
-        TeletorServantHealth = BUILDER.comment("How much Max Health Teletor Servants have, Default: 18.0 (matches Alex's Caves Teletor)")
-                .defineInRange("teletorServantHealth", 18.0, 1.0, Double.MAX_VALUE);
-        TeletorServantDamage = BUILDER.comment("How much damage Teletor Servants deal, Default: 2.0 (matches Alex's Caves Teletor)")
-                .defineInRange("teletorServantDamage", 2.0, 1.0, Double.MAX_VALUE);
-        TeletorServantMovementSpeed = BUILDER.comment("How fast Teletor Servants move, Default: 0.2 (matches Alex's Caves Teletor; flight is driven by the custom hover move controller)")
-                .defineInRange("teletorServantMovementSpeed", 0.2, 0.0, Double.MAX_VALUE);
-        TeletorServantFollowRange = BUILDER.comment("How much following/detection range Teletor Servants have, Default: 32.0 (matches Alex's Caves Teletor)")
-                .defineInRange("teletorServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
-        TeletorServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Teletor Servants have, Default: 0.0 (Alex's Caves Teletor has none)")
-                .defineInRange("teletorServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
-        TeletorServantArmor = BUILDER.comment("How much natural Armor Teletor Servants have, Default: 0.0 (matches Alex's Caves Teletor)")
-                .defineInRange("teletorServantArmor", 0.0, 0.0, Double.MAX_VALUE);
-        ForsakenServantHealth = BUILDER.comment("How much Max Health Forsaken Servants have, Default: 250.0 (matches Alex's Caves Forsaken)")
-                .defineInRange("forsakenServantHealth", 250.0, 1.0, Double.MAX_VALUE);
-        ForsakenServantDamage = BUILDER.comment("How much damage Forsaken Servants deal, Default: 10.0 (matches Alex's Caves Forsaken)")
-                .defineInRange("forsakenServantDamage", 10.0, 1.0, Double.MAX_VALUE);
-        ForsakenServantMovementSpeed = BUILDER.comment("How fast Forsaken Servants move when walking, Default: 0.25 (matches Alex's Caves Forsaken; sprint/chase momentarily boosts this ~1.8x)")
-                .defineInRange("forsakenServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
-        ForsakenServantFollowRange = BUILDER.comment("How much following/detection range Forsaken Servants have, Default: 64.0 (matches Alex's Caves Forsaken)")
-                .defineInRange("forsakenServantFollowRange", 64.0, 0.0, Double.MAX_VALUE);
-        ForsakenServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Forsaken Servants have, Default: 0.6 (matches Alex's Caves Forsaken)")
-                .defineInRange("forsakenServantKnockbackResistance", 0.6, 0.0, Double.MAX_VALUE);
-        CandicornServantHealth = BUILDER.comment("How much Max Health Candicorn Servants have, Default: 30.0 (matches Alex's Caves Candicorn)")
-                .defineInRange("candicornServantHealth", 30.0, 1.0, Double.MAX_VALUE);
-        CandicornServantDamage = BUILDER.comment("How much damage Candicorn Servants deal, Default: 6.0 (matches Alex's Caves Candicorn)")
-                .defineInRange("candicornServantDamage", 6.0, 1.0, Double.MAX_VALUE);
-        CandicornServantMovementSpeed = BUILDER.comment("How fast Candicorn Servants move when walking, Default: 0.25 (matches Alex's Caves Candicorn; running/charging momentarily doubles this)")
-                .defineInRange("candicornServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
-        CandicornServantFollowRange = BUILDER.comment("How much following/detection range Candicorn Servants have, Default: 64.0 (matches Alex's Caves Candicorn)")
-                .defineInRange("candicornServantFollowRange", 64.0, 0.0, Double.MAX_VALUE);
-        CandicornServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Candicorn Servants have, Default: 0.0 (Alex's Caves Candicorn has none)")
-                .defineInRange("candicornServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
-        GammaroachServantHealth = BUILDER.comment("How much Max Health Gammaroach Servants have, Default: 14.0 (matches Alex's Caves Gammaroach)")
-                .defineInRange("gammaroachServantHealth", 14.0, 1.0, Double.MAX_VALUE);
-        GammaroachServantDamage = BUILDER.comment("How much damage Gammaroach Servants deal, Default: 2.0 (matches Alex's Caves Gammaroach)")
-                .defineInRange("gammaroachServantDamage", 2.0, 1.0, Double.MAX_VALUE);
-        GammaroachServantMovementSpeed = BUILDER.comment("How fast Gammaroach Servants move, Default: 0.4 (matches Alex's Caves Gammaroach)")
-                .defineInRange("gammaroachServantMovementSpeed", 0.4, 0.0, Double.MAX_VALUE);
-        GammaroachServantFollowRange = BUILDER.comment("How much following/detection range Gammaroach Servants have, Default: 32.0")
-                .defineInRange("gammaroachServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
-        GammaroachServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Gammaroach Servants have, Default: 0.0 (Alex's Caves Gammaroach has none)")
-                .defineInRange("gammaroachServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
-        GammaroachServantArmor = BUILDER.comment("How much natural Armor Gammaroach Servants have, Default: 0.0 (matches Alex's Caves Gammaroach)")
-                .defineInRange("gammaroachServantArmor", 0.0, 0.0, Double.MAX_VALUE);
-        CorrodentServantHealth = BUILDER.comment("How much Max Health Corrodent Servants have, Default: 16.0 (matches Alex's Caves Corrodent)")
-                .defineInRange("corrodentServantHealth", 16.0, 1.0, Double.MAX_VALUE);
-        CorrodentServantDamage = BUILDER.comment("How much damage Corrodent Servants deal, Default: 3.0 (matches Alex's Caves Corrodent)")
-                .defineInRange("corrodentServantDamage", 3.0, 1.0, Double.MAX_VALUE);
-        CorrodentServantMovementSpeed = BUILDER.comment("How fast Corrodent Servants move, Default: 0.25 (matches Alex's Caves Corrodent)")
-                .defineInRange("corrodentServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
-        CorrodentServantFollowRange = BUILDER.comment("How much following/detection range Corrodent Servants have, Default: 32.0")
-                .defineInRange("corrodentServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
-        CorrodentServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Corrodent Servants have, Default: 0.0 (Alex's Caves Corrodent has none)")
-                .defineInRange("corrodentServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
-        CorrodentServantArmor = BUILDER.comment("How much natural Armor Corrodent Servants have, Default: 2.0 (matches Alex's Caves Corrodent)")
-                .defineInRange("corrodentServantArmor", 2.0, 0.0, Double.MAX_VALUE);
-        DeepOneServantHealth = BUILDER.comment("How much Max Health Deep One Servants have, Default: 30.0 (matches Alex's Caves Deep One)")
-                .defineInRange("deepOneServantHealth", 30.0, 1.0, Double.MAX_VALUE);
-        DeepOneServantDamage = BUILDER.comment("How much damage Deep One Servants deal, Default: 3.0 (matches Alex's Caves Deep One)")
-                .defineInRange("deepOneServantDamage", 3.0, 1.0, Double.MAX_VALUE);
-        DeepOneServantMovementSpeed = BUILDER.comment("How fast Deep One Servants move, Default: 0.25 (matches Alex's Caves Deep One)")
-                .defineInRange("deepOneServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
-        DeepOneServantFollowRange = BUILDER.comment("How much following/detection range Deep One Servants have, Default: 32.0")
-                .defineInRange("deepOneServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
-        DeepOneServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Deep One Servants have, Default: 0.0 (Alex's Caves Deep One has none)")
-                .defineInRange("deepOneServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
-        DeepOneServantArmor = BUILDER.comment("How much natural Armor Deep One Servants have, Default: 0.0 (Alex's Caves Deep One has none)")
-                .defineInRange("deepOneServantArmor", 0.0, 0.0, Double.MAX_VALUE);
-        DeepOneKnightServantHealth = BUILDER.comment("How much Max Health Deep One Knight Servants have, Default: 60.0 (matches Alex's Caves Deep One Knight)")
-                .defineInRange("deepOneKnightServantHealth", 60.0, 1.0, Double.MAX_VALUE);
-        DeepOneKnightServantDamage = BUILDER.comment("How much damage Deep One Knight Servants deal, Default: 5.0 (matches Alex's Caves Deep One Knight)")
-                .defineInRange("deepOneKnightServantDamage", 5.0, 1.0, Double.MAX_VALUE);
-        DeepOneKnightServantMovementSpeed = BUILDER.comment("How fast Deep One Knight Servants move, Default: 0.25 (matches Alex's Caves Deep One Knight)")
-                .defineInRange("deepOneKnightServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
-        DeepOneKnightServantFollowRange = BUILDER.comment("How much following/detection range Deep One Knight Servants have, Default: 32.0")
-                .defineInRange("deepOneKnightServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
-        DeepOneKnightServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Deep One Knight Servants have, Default: 0.0 (Alex's Caves Deep One Knight has none)")
-                .defineInRange("deepOneKnightServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
-        DeepOneKnightServantArmor = BUILDER.comment("How much natural Armor Deep One Knight Servants have, Default: 0.0 (Alex's Caves Deep One Knight has none)")
-                .defineInRange("deepOneKnightServantArmor", 0.0, 0.0, Double.MAX_VALUE);
-        DeepOneKnightServantOrtholanceDashDamage = BUILDER.comment("How much damage Deep One Knight Servants deal on Ortholance dash path hits, Default: 5.0")
-                .defineInRange("deepOneKnightServantOrtholanceDashDamage", 5.0, 0.0, Double.MAX_VALUE);
-        DeepOneKnightServantOrtholanceDashSpeed = BUILDER.comment("How fast (blocks/tick) Deep One Knight Servants dash toward the target, Default: 0.8")
-                .defineInRange("deepOneKnightServantOrtholanceDashSpeed", 0.8, 0.0, Double.MAX_VALUE);
-        DeepOneKnightServantOrtholanceChance = BUILDER.comment("Chance (0.0-1.0) for Deep One Knight Servants to spawn as the Ortholance variant (holding an Ortholance), Default: 0.7 (70%)")
-                .defineInRange("deepOneKnightServantOrtholanceChance", 0.7, 0.0, 1.0);
-        DeepOneKnightServantOrtholanceWaveCooldown = BUILDER.comment("Shared cooldown in ticks for the Ortholance wave+dash combo, Default: 60 (3 seconds; 0 = fire every tick)")
-                .defineInRange("deepOneKnightServantOrtholanceWaveCooldown", 60, 0, Integer.MAX_VALUE);
-        DeepOneKnightServantOrtholanceWaveRange = BUILDER.comment("Max distance (blocks) from the target at which Ortholance knights fire waves; beyond this they close in and fight with melee, Default: 8.0 (waves travel ~0.9 blocks/tick for 3-6 ticks, so ~5-7 blocks of reach)")
-                .defineInRange("deepOneKnightServantOrtholanceWaveRange", 8.0, 1.0, 64.0);
-        DeepOneKnightServantOrtholanceWaveCount = BUILDER.comment("How many fan wave indexes Deep One Knight Servants fire per Ortholance attack (each index spawns a left + right wave), Default: 4 (=8 waves), Ortholance maxes at 12 (=24 waves)")
-                .defineInRange("deepOneKnightServantOrtholanceWaveCount", 4, 1, 12);
-        DeepOneKnightServantOrtholanceWaveScale = BUILDER.comment("Wave scale of Ortholance waves, Default: 1.0 (matches Ortholance normal waves; contact damage ramps from waveScale+2 while travelling to waveScale+4 on impact, so 3.0 to 5.0 at default)")
-                .defineInRange("deepOneKnightServantOrtholanceWaveScale", 1.0, 0.5, 10.0);
-        DeepOneMageServantHealth = BUILDER.comment("How much Max Health Deep One Mage Servants have, Default: 80.0 (matches Alex's Caves Deep One Mage)")
-                .defineInRange("deepOneMageServantHealth", 80.0, 1.0, Double.MAX_VALUE);
-        DeepOneMageServantDamage = BUILDER.comment("How much damage Deep One Mage Servants deal, Default: 4.0 (matches Alex's Caves Deep One Mage)")
-                .defineInRange("deepOneMageServantDamage", 4.0, 1.0, Double.MAX_VALUE);
-        DeepOneMageServantMovementSpeed = BUILDER.comment("How fast Deep One Mage Servants move, Default: 0.25 (matches Alex's Caves Deep One Mage)")
-                .defineInRange("deepOneMageServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
-        DeepOneMageServantFollowRange = BUILDER.comment("How much following/detection range Deep One Mage Servants have, Default: 32.0")
-                .defineInRange("deepOneMageServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
-        DeepOneMageServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Deep One Mage Servants have, Default: 0.0 (Alex's Caves Deep One Mage has none)")
-                .defineInRange("deepOneMageServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
-        DeepOneMageServantArmor = BUILDER.comment("How much natural Armor Deep One Mage Servants have, Default: 0.0 (Alex's Caves Deep One Mage has none)")
-                .defineInRange("deepOneMageServantArmor", 0.0, 0.0, Double.MAX_VALUE);
-        LicowitchServantHealth = BUILDER.comment("How much Max Health Licowitch Servants have, Default: 40.0 (matches Alex's Caves Licowitch)")
-                .defineInRange("licowitchServantHealth", 40.0, 1.0, Double.MAX_VALUE);
-        LicowitchServantDamage = BUILDER.comment("How much damage Licowitch Servants deal, Default: 3.0 (matches Alex's Caves Licowitch)")
-                .defineInRange("licowitchServantDamage", 3.0, 1.0, Double.MAX_VALUE);
-        LicowitchServantMovementSpeed = BUILDER.comment("How fast Licowitch Servants move, Default: 0.25 (matches Alex's Caves Licowitch)")
-                .defineInRange("licowitchServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
-        LicowitchServantFollowRange = BUILDER.comment("How much following/detection range Licowitch Servants have, Default: 48.0")
-                .defineInRange("licowitchServantFollowRange", 48.0, 0.0, Double.MAX_VALUE);
-        LicowitchServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Licowitch Servants have, Default: 0.0 (Alex's Caves Licowitch has none)")
-                .defineInRange("licowitchServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
-        LicowitchServantArmor = BUILDER.comment("How much natural Armor Licowitch Servants have, Default: 0.0 (Alex's Caves Licowitch has none)")
-                .defineInRange("licowitchServantArmor", 0.0, 0.0, Double.MAX_VALUE);
-        HullbreakerServantHealth = BUILDER.comment("How much Max Health Hullbreaker Servants have, Default: 400.0 (matches Alex's Caves Hullbreaker)")
-                .defineInRange("hullbreakerServantHealth", 400.0, 1.0, Double.MAX_VALUE);
-        HullbreakerServantDamage = BUILDER.comment("How much damage Hullbreaker Servants deal, Default: 16.0 (matches Alex's Caves Hullbreaker)")
-                .defineInRange("hullbreakerServantDamage", 16.0, 1.0, Double.MAX_VALUE);
-        HullbreakerServantMovementSpeed = BUILDER.comment("How fast Hullbreaker Servants move, Default: 0.3 (matches Alex's Caves Hullbreaker)")
-                .defineInRange("hullbreakerServantMovementSpeed", 0.3, 0.0, Double.MAX_VALUE);
-        FroststalkerServantHealth = BUILDER.comment("How much Max Health Froststalker Servants have, Default: 24.0 (matches Alex's Mobs Froststalker)")
-                .defineInRange("froststalkerServantHealth", 24.0, 1.0, Double.MAX_VALUE);
-        FroststalkerServantDamage = BUILDER.comment("How much damage Froststalker Servants deal, Default: 4.5 (matches Alex's Mobs Froststalker)")
-                .defineInRange("froststalkerServantDamage", 4.5, 1.0, Double.MAX_VALUE);
-        FroststalkerServantFollowRange = BUILDER.comment("How much following/detection range Froststalker Servants have, Default: 16.0 (Alex's Mobs vanilla monster default)")
-                .defineInRange("froststalkerServantFollowRange", 16.0, 0.0, Double.MAX_VALUE);
-        FroststalkerServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Froststalker Servants have, Default: 0.0 (Alex's Mobs Froststalker has none)")
-                .defineInRange("froststalkerServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
-        FroststalkerServantArmor = BUILDER.comment("How much natural Armor Froststalker Servants have, Default: 2.0 (matches Alex's Mobs Froststalker)")
-                .defineInRange("froststalkerServantArmor", 2.0, 0.0, Double.MAX_VALUE);
-        DropBearServantHealth = BUILDER.comment("How much Max Health Drop Bear Servants have, Default: 22.0 (matches Alex's Mobs drop bear)")
-                .defineInRange("dropBearServantHealth", 22.0, 1.0, Double.MAX_VALUE);
-        DropBearServantDamage = BUILDER.comment("How much damage Drop Bear Servants deal, Default: 2.0 (matches Alex's Mobs drop bear)")
-                .defineInRange("dropBearServantDamage", 2.0, 1.0, Double.MAX_VALUE);
-        DropBearServantFollowRange = BUILDER.comment("How much following/detection range Drop Bear Servants have, Default: 20.0 (matches Alex's Mobs drop bear)")
-                .defineInRange("dropBearServantFollowRange", 20.0, 0.0, Double.MAX_VALUE);
-        DropBearServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Drop Bear Servants have, Default: 0.7 (matches Alex's Mobs drop bear)")
-                .defineInRange("dropBearServantKnockbackResistance", 0.7, 0.0, Double.MAX_VALUE);
-        DropBearServantArmor = BUILDER.comment("How much Armor Drop Bear Servants have, Default: 0 (matches Alex's Mobs drop bear)")
-                .defineInRange("dropBearServantKnockbackResistance", 0, 0.0, Double.MAX_VALUE);
-        GusterServantHealth = BUILDER.comment("How much Max Health Guster Servants have, Default: 16.0 (matches Alex's Mobs guster)")
-                .defineInRange("gusterServantHealth", 16.0, 1.0, Double.MAX_VALUE);
-        GusterServantDamage = BUILDER.comment("How much damage Guster Servants deal, Default: 1.0 (matches Alex's Mobs guster)")
-                .defineInRange("gusterServantDamage", 1.0, 1.0, Double.MAX_VALUE);
-        GusterServantFollowRange = BUILDER.comment("How much following/detection range Guster Servants have, Default: 32.0 (matches Alex's Mobs guster)")
-                .defineInRange("gusterServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
-        GusterServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Guster Servants have, Default: 0.0 (matches Alex's Mobs guster)")
-                .defineInRange("gusterServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
-        EmuServantHealth = BUILDER.comment("How much Max Health Emu Servants have, Default: 20.0 (matches Alex's Mobs emu)")
-                .defineInRange("emuServantHealth", 20.0, 1.0, Double.MAX_VALUE);
-        EmuServantDamage = BUILDER.comment("How much damage Emu Servants deal, Default: 3.0 (matches Alex's Mobs emu)")
-                .defineInRange("emuServantDamage", 3.0, 1.0, Double.MAX_VALUE);
-        EmuServantMovementSpeed = BUILDER.comment("How fast Emu Servants move, Default: 0.35 (matches Alex's Mobs emu)")
-                .defineInRange("emuServantMovementSpeed", 0.35, 0.0, Double.MAX_VALUE);
-        EmuServantFollowRange = BUILDER.comment("How much following/detection range Emu Servants have, Default: 32.0")
-                .defineInRange("emuServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
-        SoulVultureServantHealth = BUILDER.comment("How much Max Health Soul Vulture Servants have, Default: 12.0 (matches Alex's Mobs soul vulture)")
-                .defineInRange("soulVultureServantHealth", 12.0, 1.0, Double.MAX_VALUE);
-        SoulVultureServantDamage = BUILDER.comment("How much damage Soul Vulture Servants deal, Default: 4.0 (matches Alex's Mobs soul vulture)")
-                .defineInRange("soulVultureServantDamage", 4.0, 1.0, Double.MAX_VALUE);
-        SoulVultureServantFollowRange = BUILDER.comment("How much following/detection range Soul Vulture Servants have, Default: 32.0 (they circle 6-10 blocks above the owner, so 18 was too short to reach the owner's enemies)")
-                .defineInRange("soulVultureServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
-        RockyRollerServantHealth = BUILDER.comment("How much Max Health Rocky Roller Servants have, Default: 10.0 (matches Alex's Mobs rocky roller)")
-                .defineInRange("rockyRollerServantHealth", 10.0, 1.0, Double.MAX_VALUE);
-        RockyRollerServantDamage = BUILDER.comment("How much damage Rocky Roller Servants deal, Default: 2.0 (matches Alex's Mobs rocky roller)")
-                .defineInRange("rockyRollerServantDamage", 2.0, 1.0, Double.MAX_VALUE);
-        RockyRollerServantMovementSpeed = BUILDER.comment("How fast Rocky Roller Servants move, Default: 0.25 (matches Alex's Mobs rocky roller)")
-                .defineInRange("rockyRollerServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
-        RockyRollerServantFollowRange = BUILDER.comment("How much following/detection range Rocky Roller Servants have, Default: 20.0 (Alex's Mobs rocky roller)")
-                .defineInRange("rockyRollerServantFollowRange", 20.0, 0.0, Double.MAX_VALUE);
-        RockyRollerServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Rocky Roller Servants have, Default: 0.7 (matches Alex's Mobs rocky roller)")
-                .defineInRange("rockyRollerServantKnockbackResistance", 0.7, 0.0, Double.MAX_VALUE);
-        RockyRollerServantArmor = BUILDER.comment("How much natural Armor Rocky Roller Servants have, Default: 20.0 (matches Alex's Mobs rocky roller)")
-                .defineInRange("rockyRollerServantArmor", 20.0, 0.0, Double.MAX_VALUE);
-        ZombieCrocodileServantHealth = BUILDER.comment("How much Max Health Zombie Crocodile Servants have, Default: 30.0")
-                .defineInRange("zombieCrocodileServantHealth", 30.0, 1.0, Double.MAX_VALUE);
-        ZombieCrocodileServantDamage = BUILDER.comment("How much damage Zombie Crocodile Servants deal, Default: 10.0")
-                .defineInRange("zombieCrocodileServantDamage", 10.0, 1.0, Double.MAX_VALUE);
-        ZombieCrocodileServantMovementSpeed = BUILDER.comment("How fast Zombie Crocodile Servants move, Default: 0.25")
-                .defineInRange("zombieCrocodileServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
-        ZombieCrocodileServantFollowRange = BUILDER.comment("How much following/detection range Zombie Crocodile Servants have, Default: 15.0")
-                .defineInRange("zombieCrocodileServantFollowRange", 15.0, 0.0, Double.MAX_VALUE);
-        ZombieCrocodileServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Zombie Crocodile Servants have, Default: 0.4")
-                .defineInRange("zombieCrocodileServantKnockbackResistance", 0.4, 0.0, Double.MAX_VALUE);
-        ZombieCrocodileServantArmor = BUILDER.comment("How much natural Armor Zombie Crocodile Servants have, Default: 8.0")
-                .defineInRange("zombieCrocodileServantArmor", 8.0, 0.0, Double.MAX_VALUE);
-        SkelewagServantHealth = BUILDER.comment("How much Max Health Skelewag Servants have, Default: 20.0 (matches Alex's Mobs Skelewag)")
-                .defineInRange("skelewagServantHealth", 20.0, 1.0, Double.MAX_VALUE);
-        SkelewagServantDamage = BUILDER.comment("How much damage Skelewag Servants deal, Default: 3.0 (matches Alex's Mobs Skelewag)")
-                .defineInRange("skelewagServantDamage", 3.0, 1.0, Double.MAX_VALUE);
-        SkelewagServantMovementSpeed = BUILDER.comment("How fast Skelewag Servants move, Default: 0.45 (matches Alex's Mobs Skelewag)")
-                .defineInRange("skelewagServantMovementSpeed", 0.45, 0.0, Double.MAX_VALUE);
-        SkelewagServantFollowRange = BUILDER.comment("How much following/detection range Skelewag Servants have, Default: 16.0 (Alex's Mobs vanilla monster default)")
-                .defineInRange("skelewagServantFollowRange", 16.0, 0.0, Double.MAX_VALUE);
-        SkelewagServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Skelewag Servants have, Default: 0.0 (Alex's Mobs Skelewag has none)")
-                .defineInRange("skelewagServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
-        BunfungusServantHealth = BUILDER.comment("How much Max Health Bunfungus Servants have, Default: 80.0 (matches Alex's Mobs bunfungus)")
-                .defineInRange("bunfungusServantHealth", 80.0, 1.0, Double.MAX_VALUE);
-        BunfungusServantDamage = BUILDER.comment("How much damage Bunfungus Servants deal, Default: 8.0 (matches Alex's Mobs bunfungus)")
-                .defineInRange("bunfungusServantDamage", 8.0, 1.0, Double.MAX_VALUE);
-        BunfungusServantMovementSpeed = BUILDER.comment("How fast Bunfungus Servants move, Default: 0.32 (matches Alex's Mobs bunfungus)")
-                .defineInRange("bunfungusServantMovementSpeed", 0.32, 0.0, Double.MAX_VALUE);
-        BunfungusServantArmor = BUILDER.comment("How much Armor Bunfungus Servants have, Default: 0.21 (matches Alex's Mobs bunfungus)")
-                .defineInRange("bunfungusServantArmor", 0.21, 0.0, Double.MAX_VALUE);
-        BunfungusServantFollowRange = BUILDER.comment("How much following/detection range Bunfungus Servants have, Default: 16.0 (Alex's Mobs bunfungus uses the vanilla Mob default of 16)")
-                .defineInRange("bunfungusServantFollowRange", 16.0, 0.0, Double.MAX_VALUE);
-        BunfungusServantContactDamage = BUILDER.comment("Mid-air contact damage Bunfungus Servants deal when landing on a target, Default: 10.0 (matches Alex's Mobs hardcoded value)")
-                .defineInRange("bunfungusServantContactDamage", 10.0, 1.0, Double.MAX_VALUE);
-        IllagerElephantServantHealth = BUILDER.comment("How much Max Health Illager Elephant Servants have, Default: 150.0 (matches Alex's Mobs tusked elephant spawn health)")
-                .defineInRange("illagerElephantServantHealth", 150.0, 1.0, Double.MAX_VALUE);
-        IllagerElephantServantDamage = BUILDER.comment("How much damage Illager Elephant Servants deal, Default: 15.0 (matches Alex's Mobs tusked elephant)")
-                .defineInRange("illagerElephantServantDamage", 15.0, 1.0, Double.MAX_VALUE);
-        IllagerElephantServantMovementSpeed = BUILDER.comment("How fast Illager Elephant Servants move, Default: 0.35 (matches Alex's Mobs tusked elephant)")
-                .defineInRange("illagerElephantServantMovementSpeed", 0.35, 0.0, Double.MAX_VALUE);
-        IllagerElephantServantFollowRange = BUILDER.comment("How much following/detection range Illager Elephant Servants have, Default: 32.0")
-                .defineInRange("illagerElephantServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
-        IllagerElephantServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Illager Elephant Servants have, Default: 0.9")
-                .defineInRange("illagerElephantServantKnockbackResistance", 0.9, 0.0, Double.MAX_VALUE);
-        ServantCentipedeHealth = BUILDER.comment("Max health of Servant Centipede Head (Default: 35)")
-                .defineInRange("servantCentipedeHealth", 35.0, 1.0, 1000.0);
-        ServantCentipedeFollowRange = BUILDER.comment("Follow range of Servant Centipede (Default: 32)")
-                .defineInRange("servantCentipedeFollowRange", 32.0, 1.0, 1000.0);
-        ServantCentipedeArmor = BUILDER.comment("Armor of Servant Centipede (Default: 6)")
-                .defineInRange("servantCentipedeArmor", 6.0, 0.0, 100.0);
-        ServantCentipedeAttackDamage = BUILDER.comment("Attack damage of Servant Centipede (Default: 8)")
-                .defineInRange("servantCentipedeAttackDamage", 8.0, 1.0, 1000.0);
-        ServantCentipedeKnockbackResistance = BUILDER.comment("Knockback resistance of Servant Centipede (Default: 0.5)")
-                .defineInRange("servantCentipedeKnockbackResistance", 0.5, 0.0, 1.0);
-        ServantCentipedeMovementSpeed = BUILDER.comment("Movement speed of Servant Centipede Head (Default: 0.22)")
-                .defineInRange("servantCentipedeMovementSpeed", 0.22, 0.0, 1.0);
-        ServantCentipedeBodyHealth = BUILDER.comment("Max health of Servant Centipede Body segments (Default: 10)")
-                .defineInRange("servantCentipedeBodyHealth", 10.0, 1.0, 1000.0);
-        ServantCentipedeBodyMovementSpeed = BUILDER.comment("Movement speed of Servant Centipede Body (Default: 0.25)")
-                .defineInRange("servantCentipedeBodyMovementSpeed", 0.25, 0.0, 1.0);
-        BUILDER.pop();
-
-        BUILDER.push("Overgrown Colossus Servant (Optional - LM)");
-        OvergrownColossusServantHealth = BUILDER.comment("How much Max Health Overgrown Colossus Servants have, Default: 170.0")
-                .defineInRange("overgrownColossusServantHealth", 170.0, 1.0, Double.MAX_VALUE);
-        OvergrownColossusServantArmor = BUILDER.comment("How much natural Armor Overgrown Colossus Servants have, Default: 10.0")
-                .defineInRange("overgrownColossusServantArmor", 10.0, 0.0, Double.MAX_VALUE);
-        OvergrownColossusServantDamage = BUILDER.comment("How much damage Overgrown Colossus Servants deal, Default: 14.0")
-                .defineInRange("overgrownColossusServantDamage", 14.0, 1.0, Double.MAX_VALUE);
-        OvergrownColossusServantMovementSpeed = BUILDER.comment("How fast Overgrown Colossus Servants move, Default: 0.3")
-                .defineInRange("overgrownColossusServantMovementSpeed", 0.3, 0.0, Double.MAX_VALUE);
-        OvergrownColossusServantFollowRange = BUILDER.comment("How much following/detection range Overgrown Colossus Servants have, Default: 30.0")
-                .defineInRange("overgrownColossusServantFollowRange", 30.0, 1.0, Double.MAX_VALUE);
-        OvergrownColossusServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Overgrown Colossus Servants have, Default: 1.0")
-                .defineInRange("overgrownColossusServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
-        OvergrownColossusServantAttackKnockback = BUILDER.comment("How much Attack Knockback Overgrown Colossus Servants have, Default: 1.5")
-                .defineInRange("overgrownColossusServantAttackKnockback", 1.5, 0.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Frostbitten Golem Servant (Optional - LM)");
-        FrostbittenGolemServantHealth = BUILDER.comment("How much Max Health Frostbitten Golem Servants have, Default: 220.0 (Legendary Monsters' value)")
-                .defineInRange("frostbittenGolemServantHealth", 220.0, 1.0, Double.MAX_VALUE);
-        FrostbittenGolemServantArmor = BUILDER.comment("How much natural Armor Frostbitten Golem Servants have, Default: 10.0 (Legendary Monsters' value)")
-                .defineInRange("frostbittenGolemServantArmor", 10.0, 0.0, Double.MAX_VALUE);
-        FrostbittenGolemServantDamage = BUILDER.comment("How much damage Frostbitten Golem Servants deal, Default: 16.0 (Legendary Monsters' value)")
-                .defineInRange("frostbittenGolemServantDamage", 16.0, 1.0, Double.MAX_VALUE);
-        FrostbittenGolemServantMovementSpeed = BUILDER.comment("How fast Frostbitten Golem Servants move, Default: 0.3 (Legendary Monsters' boss uses 0.1 with a x3.0 navigation modifier, giving the same 0.30 chase speed)")
-                .defineInRange("frostbittenGolemServantMovementSpeed", 0.3, 0.0, Double.MAX_VALUE);
-        FrostbittenGolemServantFollowRange = BUILDER.comment("How much following/detection range Frostbitten Golem Servants have, Default: 30.0 (Legendary Monsters' value)")
-                .defineInRange("frostbittenGolemServantFollowRange", 30.0, 1.0, Double.MAX_VALUE);
-        FrostbittenGolemServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Frostbitten Golem Servants have, Default: 1.0 (Legendary Monsters' value)")
-                .defineInRange("frostbittenGolemServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
-        FrostbittenGolemServantAttackKnockback = BUILDER.comment("How much Attack Knockback Frostbitten Golem Servants have, Default: 1.0 (Legendary Monsters' value)")
-                .defineInRange("frostbittenGolemServantAttackKnockback", 1.0, 0.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Ancient Guardian Servant (Optional - LM)");
-        AncientGuardianServantHealth = BUILDER.comment("How much Max Health Ancient Guardian Servants have, Default: 170.0 (Legendary Monsters' value)")
-                .defineInRange("ancientGuardianServantHealth", 170.0, 1.0, Double.MAX_VALUE);
-        AncientGuardianServantArmor = BUILDER.comment("How much natural Armor Ancient Guardian Servants have, Default: 13.0 (Legendary Monsters' value, raised to 20 when cracked)")
-                .defineInRange("ancientGuardianServantArmor", 13.0, 0.0, Double.MAX_VALUE);
-        AncientGuardianServantDamage = BUILDER.comment("How much damage Ancient Guardian Servants deal, Default: 20.0 (Legendary Monsters' value)")
-                .defineInRange("ancientGuardianServantDamage", 20.0, 1.0, Double.MAX_VALUE);
-        AncientGuardianServantMovementSpeed = BUILDER.comment("How fast Ancient Guardian Servants move, Default: 0.3 (Legendary Monsters' boss uses 0.1 with a x3.0 navigation modifier, giving the same 0.30 chase speed)")
-                .defineInRange("ancientGuardianServantMovementSpeed", 0.3, 0.0, Double.MAX_VALUE);
-        AncientGuardianServantFollowRange = BUILDER.comment("How much following/detection range Ancient Guardian Servants have, Default: 30.0 (Legendary Monsters' value)")
-                .defineInRange("ancientGuardianServantFollowRange", 30.0, 1.0, Double.MAX_VALUE);
-        AncientGuardianServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Ancient Guardian Servants have, Default: 1.0 (Legendary Monsters' value)")
-                .defineInRange("ancientGuardianServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
-        AncientGuardianServantAttackKnockback = BUILDER.comment("How much Attack Knockback Ancient Guardian Servants have, Default: 1.0 (Legendary Monsters' value)")
-                .defineInRange("ancientGuardianServantAttackKnockback", 1.0, 0.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Possessed Paladin Servant (Optional - LM)");
-        PossessedPaladinServantHealth = BUILDER.comment("How much Max Health Possessed Paladin Servants have, Default: 400.0 (Legendary Monsters' value)")
-                .defineInRange("possessedPaladinServantHealth", 400.0, 1.0, Double.MAX_VALUE);
-        PossessedPaladinServantArmor = BUILDER.comment("How much natural Armor Possessed Paladin Servants have, Default: 12.0 (Legendary Monsters' value)")
-                .defineInRange("possessedPaladinServantArmor", 12.0, 0.0, Double.MAX_VALUE);
-        PossessedPaladinServantArmorToughness = BUILDER.comment("How much Armor Toughness Possessed Paladin Servants have, Default: 3.0 (Legendary Monsters' value)")
-                .defineInRange("possessedPaladinServantArmorToughness", 3.0, 0.0, Double.MAX_VALUE);
-        PossessedPaladinServantDamage = BUILDER.comment("How much damage Possessed Paladin Servants deal, Default: 15.0 (Legendary Monsters' value)")
-                .defineInRange("possessedPaladinServantDamage", 15.0, 1.0, Double.MAX_VALUE);
-        PossessedPaladinServantMovementSpeed = BUILDER.comment("How fast Possessed Paladin Servants move, Default: 0.3 (Legendary Monsters' boss uses 0.1 with a x3.0 navigation modifier, giving the same 0.30 chase speed; chase/follow/wander all use this value, same as Overgrown Colossus Servant)")
-                .defineInRange("possessedPaladinServantMovementSpeed", 0.3, 0.0, Double.MAX_VALUE);
-        PossessedPaladinServantFollowRange = BUILDER.comment("How much following/detection range Possessed Paladin Servants have, Default: 30.0 (same as Overgrown Colossus Servant; Legendary Monsters' boss value is 80.0)")
-                .defineInRange("possessedPaladinServantFollowRange", 30.0, 1.0, Double.MAX_VALUE);
-        PossessedPaladinServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Possessed Paladin Servants have, Default: 1.0 (Legendary Monsters' value)")
-                .defineInRange("possessedPaladinServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
-        PossessedPaladinServantAttackKnockback = BUILDER.comment("How much Attack Knockback Possessed Paladin Servants have, Default: 1.0 (Legendary Monsters' value)")
-                .defineInRange("possessedPaladinServantAttackKnockback", 1.0, 0.0, Double.MAX_VALUE);
-        PossessedPaladinServantDamageCap = BUILDER.comment("Maximum damage a single hit can deal to Possessed Paladin Servants, Default: 21.0 (Legendary Monsters' own Possessed Paladin Damage Cap; bypassed by damage that ignores invulnerability)")
-                .defineInRange("possessedPaladinServantDamageCap", 21.0, 1.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Hovering Hurricane Servant (Optional - LM)");
-        HoveringHurricaneServantHealth = BUILDER.comment("How much Max Health Hovering Hurricane Servants have, Default: 30.0")
-                .defineInRange("hoveringHurricaneServantHealth", 30.0, 1.0, Double.MAX_VALUE);
-        HoveringHurricaneServantArmor = BUILDER.comment("How much natural Armor Hovering Hurricane Servants have, Default: 5.0")
-                .defineInRange("hoveringHurricaneServantArmor", 5.0, 0.0, Double.MAX_VALUE);
-        HoveringHurricaneServantDamage = BUILDER.comment("How much damage Hovering Hurricane Servants deal, Default: 6.0")
-                .defineInRange("hoveringHurricaneServantDamage", 6.0, 1.0, Double.MAX_VALUE);
-        HoveringHurricaneServantMovementSpeed = BUILDER.comment("How fast Hovering Hurricane Servants move, Default: 0.1")
-                .defineInRange("hoveringHurricaneServantMovementSpeed", 0.1, 0.0, Double.MAX_VALUE);
-        HoveringHurricaneServantFollowRange = BUILDER.comment("How much following/detection range Hovering Hurricane Servants have, Default: 20.0")
-                .defineInRange("hoveringHurricaneServantFollowRange", 20.0, 1.0, Double.MAX_VALUE);
-        HoveringHurricaneServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Hovering Hurricane Servants have, Default: 1.0")
-                .defineInRange("hoveringHurricaneServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
-        HoveringHurricaneServantAttackKnockback = BUILDER.comment("How much Attack Knockback Hovering Hurricane Servants have, Default: 0.5")
-                .defineInRange("hoveringHurricaneServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Cloud Golem Servant (Optional - LM)");
-        CloudGolemServantHealth = BUILDER.comment("How much Max Health Cloud Golem Servants have, Default: 350.0")
-                .defineInRange("cloudGolemServantHealth", 350.0, 1.0, Double.MAX_VALUE);
-        CloudGolemServantArmor = BUILDER.comment("How much natural Armor Cloud Golem Servants have, Default: 10.0")
-                .defineInRange("cloudGolemServantArmor", 10.0, 0.0, Double.MAX_VALUE);
-        CloudGolemServantDamage = BUILDER.comment("How much damage Cloud Golem Servants deal, Default: 0.0")
-                .defineInRange("cloudGolemServantDamage", 0.0, 0.0, Double.MAX_VALUE);
-        CloudGolemServantMovementSpeed = BUILDER.comment("How fast Cloud Golem Servants move, Default: 0.1")
-                .defineInRange("cloudGolemServantMovementSpeed", 0.1, 0.0, Double.MAX_VALUE);
-        CloudGolemServantFollowRange = BUILDER.comment("How much following/detection range Cloud Golem Servants have, Default: 90.0")
-                .defineInRange("cloudGolemServantFollowRange", 90.0, 1.0, Double.MAX_VALUE);
-        CloudGolemServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Cloud Golem Servants have, Default: 1.0")
-                .defineInRange("cloudGolemServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
-        CloudGolemServantAttackKnockback = BUILDER.comment("How much Attack Knockback Cloud Golem Servants have, Default: 1.0")
-                .defineInRange("cloudGolemServantAttackKnockback", 1.0, 0.0, Double.MAX_VALUE);
-        CloudGolemServantDamageCap = BUILDER.comment("Maximum damage a single hit can deal to Cloud Golem Servants, Default: 18.0 (Legendary Monsters' own Cloud Golem Damage Cap; bypassed by damage that ignores invulnerability)")
-                .defineInRange("cloudGolemServantDamageCap", 18.0, 0.0, 1000.0);
-        BUILDER.pop();
-
-        BUILDER.push("Wandering Eye Servant (Optional - LM)");
-        WanderingEyeServantHealth = BUILDER.comment("How much Max Health Wandering Eye Servants have, Default: 30.0")
-                .defineInRange("wanderingEyeServantHealth", 30.0, 1.0, Double.MAX_VALUE);
-        WanderingEyeServantArmor = BUILDER.comment("How much natural Armor Wandering Eye Servants have, Default: 7.0")
-                .defineInRange("wanderingEyeServantArmor", 7.0, 0.0, Double.MAX_VALUE);
-        WanderingEyeServantDamage = BUILDER.comment("How much damage Wandering Eye Servants deal, Default: 10.0")
-                .defineInRange("wanderingEyeServantDamage", 10.0, 1.0, Double.MAX_VALUE);
-        WanderingEyeServantMovementSpeed = BUILDER.comment("How fast Wandering Eye Servants move, Default: 0.1")
-                .defineInRange("wanderingEyeServantMovementSpeed", 0.1, 0.0, Double.MAX_VALUE);
-        WanderingEyeServantFollowRange = BUILDER.comment("How much following/detection range Wandering Eye Servants have, Default: 20.0")
-                .defineInRange("wanderingEyeServantFollowRange", 20.0, 1.0, Double.MAX_VALUE);
-        WanderingEyeServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Wandering Eye Servants have, Default: 0.34754")
-                .defineInRange("wanderingEyeServantKnockbackResistance", 0.34754D, 0.0, Double.MAX_VALUE);
-        WanderingEyeServantAttackKnockback = BUILDER.comment("How much Attack Knockback Wandering Eye Servants have, Default: 0.5")
-                .defineInRange("wanderingEyeServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Shulker Mimic Servant (Optional - LM)");
-        ShulkerMimicServantHealth = BUILDER.comment("How much Max Health Shulker Mimic Servants have, Default: 200.0")
-                .defineInRange("shulkerMimicServantHealth", 200.0, 1.0, Double.MAX_VALUE);
-        ShulkerMimicServantArmor = BUILDER.comment("How much natural Armor Shulker Mimic Servants have, Default: 15.0")
-                .defineInRange("shulkerMimicServantArmor", 15.0, 0.0, Double.MAX_VALUE);
-        ShulkerMimicServantDamage = BUILDER.comment("How much damage Shulker Mimic Servants deal, Default: 12.0")
-                .defineInRange("shulkerMimicServantDamage", 12.0, 0.0, Double.MAX_VALUE);
-        ShulkerMimicServantMovementSpeed = BUILDER.comment("How fast Shulker Mimic Servants move, Default: 0.1")
-                .defineInRange("shulkerMimicServantMovementSpeed", 0.1, 0.0, Double.MAX_VALUE);
-        ShulkerMimicServantFollowRange = BUILDER.comment("How much following/detection range Shulker Mimic Servants have, Default: 30.0")
-                .defineInRange("shulkerMimicServantFollowRange", 30.0, 1.0, Double.MAX_VALUE);
-        ShulkerMimicServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Shulker Mimic Servants have, Default: 1.0")
-                .defineInRange("shulkerMimicServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
-        ShulkerMimicServantAttackKnockback = BUILDER.comment("How much Attack Knockback Shulker Mimic Servants have, Default: 0.5")
-                .defineInRange("shulkerMimicServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Annihilation Pursuer Servant (Optional - LM)");
-        AnnihilationPursuerServantHealth = BUILDER.comment("How much Max Health Annihilation Pursuer Servants have, Default: 210.0")
-                .defineInRange("annihilationPursuerServantHealth", 210.0, 1.0, Double.MAX_VALUE);
-        AnnihilationPursuerServantArmor = BUILDER.comment("How much natural Armor Annihilation Pursuer Servants have, Default: 13.0")
-                .defineInRange("annihilationPursuerServantArmor", 13.0, 0.0, Double.MAX_VALUE);
-        AnnihilationPursuerServantDamage = BUILDER.comment("How much damage Annihilation Pursuer Servants deal, Default: 10.0")
-                .defineInRange("annihilationPursuerServantDamage", 10.0, 0.0, Double.MAX_VALUE);
-        AnnihilationPursuerServantMovementSpeed = BUILDER.comment("How fast Annihilation Pursuer Servants move, Default: 0.1")
-                .defineInRange("annihilationPursuerServantMovementSpeed", 0.1, 0.0, Double.MAX_VALUE);
-        AnnihilationPursuerServantFollowRange = BUILDER.comment("How much following/detection range Annihilation Pursuer Servants have, Default: 30.0")
-                .defineInRange("annihilationPursuerServantFollowRange", 30.0, 1.0, Double.MAX_VALUE);
-        AnnihilationPursuerServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Annihilation Pursuer Servants have, Default: 1.0")
-                .defineInRange("annihilationPursuerServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
-        AnnihilationPursuerServantAttackKnockback = BUILDER.comment("How much Attack Knockback Annihilation Pursuer Servants have, Default: 0.5")
-                .defineInRange("annihilationPursuerServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("The Obliterator Servant (Optional - LM)");
-        TheObliteratorServantHealth = BUILDER.comment("How much Max Health The Obliterator Servants have, Default: 450.0 (Legendary Monsters' value)")
-                .defineInRange("theObliteratorServantHealth", 450.0, 1.0, Double.MAX_VALUE);
-        TheObliteratorServantArmor = BUILDER.comment("How much natural Armor The Obliterator Servants have, Default: 14.0 (Legendary Monsters' value)")
-                .defineInRange("theObliteratorServantArmor", 14.0, 0.0, Double.MAX_VALUE);
-        TheObliteratorServantArmorToughness = BUILDER.comment("How much Armor Toughness The Obliterator Servants have, Default: 4.0 (Legendary Monsters' value). Halved from phase 2 on, same as the boss")
-                .defineInRange("theObliteratorServantArmorToughness", 4.0, 0.0, Double.MAX_VALUE);
-        TheObliteratorServantDamage = BUILDER.comment("How much damage The Obliterator Servants deal, Default: 6.0 (Legendary Monsters' value). Most of its moves carry their own hardcoded damage")
-                .defineInRange("theObliteratorServantDamage", 6.0, 0.0, Double.MAX_VALUE);
-        TheObliteratorServantMovementSpeed = BUILDER.comment("How fast The Obliterator Servants move, Default: 0.36 (Legendary Monsters' boss uses 0.12 with a x3.0 navigation modifier, giving the same 0.36 chase speed)")
-                .defineInRange("theObliteratorServantMovementSpeed", 0.36, 0.0, Double.MAX_VALUE);
-        TheObliteratorServantFollowRange = BUILDER.comment("How much following/detection range The Obliterator Servants have, Default: 30.0 (Legendary Monsters' boss value is 60.0)")
-                .defineInRange("theObliteratorServantFollowRange", 30.0, 1.0, Double.MAX_VALUE);
-        TheObliteratorServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance The Obliterator Servants have, Default: 1.0 (Legendary Monsters' value)")
-                .defineInRange("theObliteratorServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
-        TheObliteratorServantAttackKnockback = BUILDER.comment("How much Attack Knockback The Obliterator Servants have, Default: 0.5 (Legendary Monsters' value)")
-                .defineInRange("theObliteratorServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
-        TheObliteratorServantDamageCap = BUILDER.comment("Maximum damage a single hit can deal to The Obliterator Servants, Default: 20.0 (Legendary Monsters' own The Obliterator Damage Cap; bypassed by damage that ignores invulnerability)")
-                .defineInRange("theObliteratorServantDamageCap", 20.0, 1.0, Double.MAX_VALUE);
-        TheObliteratorServantAdaptationFactorMultiplier = BUILDER.comment("The bigger it is the stronger The Obliterator Servants' damage adaptation becomes, Default: 1 (Legendary Monsters' own The Obliterator Damage Adaptation Multiplier)")
-                .defineInRange("theObliteratorServantAdaptationFactorMultiplier", 1, 0, 1000);
-        BUILDER.pop();
-
-        BUILDER.push("Flame Drifter Servant (Optional - LM)");
-        FlameDrifterServantHealth = BUILDER.comment("How much Max Health Flame Drifter Servants have, Default: 60.0")
-                .defineInRange("flameDrifterServantHealth", 60.0, 1.0, Double.MAX_VALUE);
-        FlameDrifterServantArmor = BUILDER.comment("How much natural Armor Flame Drifter Servants have, Default: 8.0")
-                .defineInRange("flameDrifterServantArmor", 8.0, 0.0, Double.MAX_VALUE);
-        FlameDrifterServantDamage = BUILDER.comment("How much damage Flame Drifter Servants deal, Default: 10.0")
-                .defineInRange("flameDrifterServantDamage", 10.0, 0.0, Double.MAX_VALUE);
-        FlameDrifterServantMovementSpeed = BUILDER.comment("How fast Flame Drifter Servants move, Default: 0.1")
-                .defineInRange("flameDrifterServantMovementSpeed", 0.1, 0.0, Double.MAX_VALUE);
-        FlameDrifterServantFollowRange = BUILDER.comment("How much following/detection range Flame Drifter Servants have, Default: 20.0")
-                .defineInRange("flameDrifterServantFollowRange", 20.0, 1.0, Double.MAX_VALUE);
-        FlameDrifterServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Flame Drifter Servants have, Default: 1.0")
-                .defineInRange("flameDrifterServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
-        FlameDrifterServantAttackKnockback = BUILDER.comment("How much Attack Knockback Flame Drifter Servants have, Default: 0.5")
-                .defineInRange("flameDrifterServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Flameborn Warrior Servant (Optional - LM)");
-        FlamebornWarriorServantHealth = BUILDER.comment("How much Max Health Flameborn Warrior Servants have, Default: 50.0")
-                .defineInRange("flamebornWarriorServantHealth", 50.0, 1.0, Double.MAX_VALUE);
-        FlamebornWarriorServantArmor = BUILDER.comment("How much natural Armor Flameborn Warrior Servants have, Default: 4.0")
-                .defineInRange("flamebornWarriorServantArmor", 4.0, 0.0, Double.MAX_VALUE);
-        FlamebornWarriorServantDamage = BUILDER.comment("How much damage Flameborn Warrior Servants deal, Default: 12.0")
-                .defineInRange("flamebornWarriorServantDamage", 12.0, 0.0, Double.MAX_VALUE);
-        FlamebornWarriorServantMovementSpeed = BUILDER.comment("How fast Flameborn Warrior Servants move, Default: 0.1")
-                .defineInRange("flamebornWarriorServantMovementSpeed", 0.1, 0.0, Double.MAX_VALUE);
-        FlamebornWarriorServantFollowRange = BUILDER.comment("How much following/detection range Flameborn Warrior Servants have, Default: 20.0")
-                .defineInRange("flamebornWarriorServantFollowRange", 20.0, 1.0, Double.MAX_VALUE);
-        FlamebornWarriorServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Flameborn Warrior Servants have, Default: 0.3")
-                .defineInRange("flamebornWarriorServantKnockbackResistance", 0.3, 0.0, Double.MAX_VALUE);
-        FlamebornWarriorServantAttackKnockback = BUILDER.comment("How much Attack Knockback Flameborn Warrior Servants have, Default: 0.5")
-                .defineInRange("flamebornWarriorServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Flameborn Guard Servant (Optional - LM)");
-        FlamebornGuardServantHealth = BUILDER.comment("How much Max Health Flameborn Guard Servants have, Default: 60.0")
-                .defineInRange("flamebornGuardServantHealth", 60.0, 1.0, Double.MAX_VALUE);
-        FlamebornGuardServantArmor = BUILDER.comment("How much natural Armor Flameborn Guard Servants have, Default: 8.0")
-                .defineInRange("flamebornGuardServantArmor", 8.0, 0.0, Double.MAX_VALUE);
-        FlamebornGuardServantDamage = BUILDER.comment("How much damage Flameborn Guard Servants deal, Default: 12.0")
-                .defineInRange("flamebornGuardServantDamage", 12.0, 0.0, Double.MAX_VALUE);
-        FlamebornGuardServantMovementSpeed = BUILDER.comment("How fast Flameborn Guard Servants move, Default: 0.1")
-                .defineInRange("flamebornGuardServantMovementSpeed", 0.1, 0.0, Double.MAX_VALUE);
-        FlamebornGuardServantFollowRange = BUILDER.comment("How much following/detection range Flameborn Guard Servants have, Default: 20.0")
-                .defineInRange("flamebornGuardServantFollowRange", 20.0, 1.0, Double.MAX_VALUE);
-        FlamebornGuardServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Flameborn Guard Servants have, Default: 1.0")
-                .defineInRange("flamebornGuardServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
-        FlamebornGuardServantAttackKnockback = BUILDER.comment("How much Attack Knockback Flameborn Guard Servants have, Default: 0.5")
-                .defineInRange("flamebornGuardServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Beheaded Knight Servant (Optional - LM)");
-        BeheadedKnightServantHealth = BUILDER.comment("How much Max Health Beheaded Knight Servants have, Default: 195.0 (Legendary Monsters' value)")
-                .defineInRange("beheadedKnightServantHealth", 195.0, 1.0, Double.MAX_VALUE);
-        BeheadedKnightServantArmor = BUILDER.comment("How much natural Armor Beheaded Knight Servants have, Default: 14.0 (Legendary Monsters' value)")
-                .defineInRange("beheadedKnightServantArmor", 14.0, 0.0, Double.MAX_VALUE);
-        BeheadedKnightServantArmorToughness = BUILDER.comment("How much Armor Toughness Beheaded Knight Servants have, Default: 4.0 (Legendary Monsters' value)")
-                .defineInRange("beheadedKnightServantArmorToughness", 4.0, 0.0, Double.MAX_VALUE);
-        BeheadedKnightServantDamage = BUILDER.comment("How much damage Beheaded Knight Servants deal, Default: 10.0 (Legendary Monsters' value)")
-                .defineInRange("beheadedKnightServantDamage", 10.0, 0.0, Double.MAX_VALUE);
-        BeheadedKnightServantMovementSpeed = BUILDER.comment("How fast Beheaded Knight Servants move, Default: 0.1 (Legendary Monsters' value)")
-                .defineInRange("beheadedKnightServantMovementSpeed", 0.1, 0.0, Double.MAX_VALUE);
-        BeheadedKnightServantFollowRange = BUILDER.comment("How much following/detection range Beheaded Knight Servants have, Default: 30.0 (Legendary Monsters' value)")
-                .defineInRange("beheadedKnightServantFollowRange", 30.0, 1.0, Double.MAX_VALUE);
-        BeheadedKnightServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Beheaded Knight Servants have, Default: 1.0 (Legendary Monsters' value)")
-                .defineInRange("beheadedKnightServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
-        BeheadedKnightServantAttackKnockback = BUILDER.comment("How much Attack Knockback Beheaded Knight Servants have, Default: 0.5 (Legendary Monsters' value)")
-                .defineInRange("beheadedKnightServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Resurrected Knight Servant (Optional - LM)");
-        ResurrectedKnightServantHealth = BUILDER.comment("How much Max Health Resurrected Knight Servants have, Default: 190.0 (Legendary Monsters' value)")
-                .defineInRange("resurrectedKnightServantHealth", 190.0, 1.0, Double.MAX_VALUE);
-        ResurrectedKnightServantArmor = BUILDER.comment("How much natural Armor Resurrected Knight Servants have, Default: 12.0 (Legendary Monsters' value)")
-                .defineInRange("resurrectedKnightServantArmor", 12.0, 0.0, Double.MAX_VALUE);
-        ResurrectedKnightServantArmorToughness = BUILDER.comment("How much Armor Toughness Resurrected Knight Servants have, Default: 2.0 (Legendary Monsters' value)")
-                .defineInRange("resurrectedKnightServantArmorToughness", 2.0, 0.0, Double.MAX_VALUE);
-        ResurrectedKnightServantDamage = BUILDER.comment("How much damage Resurrected Knight Servants deal, Default: 10.0 (Legendary Monsters' value)")
-                .defineInRange("resurrectedKnightServantDamage", 10.0, 0.0, Double.MAX_VALUE);
-        ResurrectedKnightServantMovementSpeed = BUILDER.comment("How fast Resurrected Knight Servants move, Default: 0.1 (Legendary Monsters' value)")
-                .defineInRange("resurrectedKnightServantMovementSpeed", 0.1, 0.0, Double.MAX_VALUE);
-        ResurrectedKnightServantFollowRange = BUILDER.comment("How much following/detection range Resurrected Knight Servants have, Default: 30.0 (Legendary Monsters' value)")
-                .defineInRange("resurrectedKnightServantFollowRange", 30.0, 1.0, Double.MAX_VALUE);
-        ResurrectedKnightServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Resurrected Knight Servants have, Default: 1.0 (Legendary Monsters' value)")
-                .defineInRange("resurrectedKnightServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
-        ResurrectedKnightServantAttackKnockback = BUILDER.comment("How much Attack Knockback Resurrected Knight Servants have, Default: 0.5 (Legendary Monsters' value)")
-                .defineInRange("resurrectedKnightServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Endersent Servant (Optional - LM)");
-        EndersentServantHealth = BUILDER.comment("How much Max Health Endersent Servants have, Default: 200.0 (Goety's value)")
-                .defineInRange("endersentServantHealth", 200.0, 1.0, Double.MAX_VALUE);
-        EndersentServantArmor = BUILDER.comment("How much natural Armor Endersent Servants have, Default: 0.0 (Goety's value)")
-                .defineInRange("endersentServantArmor", 0.0, 0.0, Double.MAX_VALUE);
-        EndersentServantArmorToughness = BUILDER.comment("How much Armor Toughness Endersent Servants have, Default: 0.0")
-                .defineInRange("endersentServantArmorToughness", 0.0, 0.0, Double.MAX_VALUE);
-        EndersentServantDamage = BUILDER.comment("How much damage Endersent Servants deal, Default: 14.0 (Goety's value)")
-                .defineInRange("endersentServantDamage", 14.0, 0.0, Double.MAX_VALUE);
-        EndersentServantTeleportSmashDamage = BUILDER.comment("How much damage the Endersent Servant's teleport smash deals, Default: 39.9")
-                .defineInRange("endersentServantTeleportSmashDamage", 39.9, 0.0, Double.MAX_VALUE);
-        EndersentServantMovementSpeed = BUILDER.comment("How fast Endersent Servants move, Default: 0.25 (Goety's value)")
-                .defineInRange("endersentServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
-        EndersentServantFollowRange = BUILDER.comment("How much following/detection range Endersent Servants have, Default: 32.0 (Goety's value)")
-                .defineInRange("endersentServantFollowRange", 32.0, 1.0, Double.MAX_VALUE);
-        EndersentServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Endersent Servants have, Default: 1.0 (Goety's value)")
-                .defineInRange("endersentServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
-        EndersentServantAttackKnockback = BUILDER.comment("How much Attack Knockback Endersent Servants have, Default: 2.0 (Goety's value)")
-                .defineInRange("endersentServantAttackKnockback", 2.0, 0.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Chorusling Servant (Optional - LM)");
-        ChoruslingServantHealth = BUILDER.comment("How much Max Health Chorusling Servants have, Default: 70.0 (Legendary Monsters' value)")
-                .defineInRange("choruslingServantHealth", 70.0, 1.0, Double.MAX_VALUE);
-        ChoruslingServantArmor = BUILDER.comment("How much natural Armor Chorusling Servants have, Default: 6.0 (Legendary Monsters' value)")
-                .defineInRange("choruslingServantArmor", 6.0, 0.0, Double.MAX_VALUE);
-        ChoruslingServantDamage = BUILDER.comment("How much damage Chorusling Servants deal, Default: 5.0 (Legendary Monsters' value)")
-                .defineInRange("choruslingServantDamage", 5.0, 0.0, Double.MAX_VALUE);
-        ChoruslingServantMovementSpeed = BUILDER.comment("How fast Chorusling Servants move, Default: 0.1 (Legendary Monsters' value)")
-                .defineInRange("choruslingServantMovementSpeed", 0.1, 0.0, Double.MAX_VALUE);
-        ChoruslingServantFollowRange = BUILDER.comment("How much following/detection range Chorusling Servants have, Default: 14.0 (Legendary Monsters' value)")
-                .defineInRange("choruslingServantFollowRange", 14.0, 1.0, Double.MAX_VALUE);
-        ChoruslingServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Chorusling Servants have, Default: 0.5 (Legendary Monsters' value)")
-                .defineInRange("choruslingServantKnockbackResistance", 0.5, 0.0, Double.MAX_VALUE);
-        ChoruslingServantAttackKnockback = BUILDER.comment("How much Attack Knockback Chorusling Servants have, Default: 0.5 (Legendary Monsters' value)")
-                .defineInRange("choruslingServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Rambler Servant");
-        RamblerServantHealth = BUILDER.comment("How much Max Health Rambler Servants have, Default: 60.0")
-                .defineInRange("ramblerServantHealth", 60.0, 1.0, Double.MAX_VALUE);
-        RamblerServantMovementSpeed = BUILDER.comment("How much Movement Speed Rambler Servants have, Default: 0.15")
-                .defineInRange("ramblerServantMovementSpeed", 0.15, 0.0, Double.MAX_VALUE);
-        RamblerServantAttackDamage = BUILDER.comment("How much Attack Damage Rambler Servants have, Default: 5.0")
-                .defineInRange("ramblerServantAttackDamage", 5.0, 0.0, Double.MAX_VALUE);
-        RamblerServantAttackKnockback = BUILDER.comment("How much Attack Knockback Rambler Servants have, Default: 0.3")
-                .defineInRange("ramblerServantAttackKnockback", 0.3, 0.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Volt Servant");
-        VoltServantHealth = BUILDER.comment("How much Max Health Volt Servants have, Default: 16.0 (matches Opposing Force Volt)")
-                .defineInRange("voltServantHealth", 16.0, 1.0, Double.MAX_VALUE);
-        VoltServantMovementSpeed = BUILDER.comment("How much Movement Speed Volt Servants have, Default: 0.21 (matches Opposing Force Volt)")
-                .defineInRange("voltServantMovementSpeed", 0.21, 0.0, Double.MAX_VALUE);
-        VoltServantFollowRange = BUILDER.comment("How much Follow Range Volt Servants have, Default: 32.0 (matches Opposing Force Volt)")
-                .defineInRange("voltServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Dicer Servant");
-        DicerServantHealth = BUILDER.comment("How much Max Health Dicer Servants have, Default: 36.0")
-                .defineInRange("dicerServantHealth", 36.0, 1.0, Double.MAX_VALUE);
-        DicerServantMovementSpeed = BUILDER.comment("How much Movement Speed Dicer Servants have, Default: 0.2")
-                .defineInRange("dicerServantMovementSpeed", 0.2, 0.0, Double.MAX_VALUE);
-        DicerServantAttackDamage = BUILDER.comment("How much Attack Damage Dicer Servants have, Default: 8.0")
-                .defineInRange("dicerServantAttackDamage", 8.0, 0.0, Double.MAX_VALUE);
-        DicerServantAttackKnockback = BUILDER.comment("How much Attack Knockback Dicer Servants have, Default: 0.3")
-                .defineInRange("dicerServantAttackKnockback", 0.3, 0.0, Double.MAX_VALUE);
-        DicerServantFollowRange = BUILDER.comment("How much Follow Range Dicer Servants have, Default: 24.0")
-                .defineInRange("dicerServantFollowRange", 24.0, 0.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Trembler Servant");
-        TremblerServantHealth = BUILDER.comment("How much Max Health Trembler Servants have, Default: 16.0")
-                .defineInRange("tremblerServantHealth", 16.0, 1.0, Double.MAX_VALUE);
-        TremblerServantArmor = BUILDER.comment("How much Armor Trembler Servants have, Default: 20.0")
-                .defineInRange("tremblerServantArmor", 20.0, 0.0, Double.MAX_VALUE);
-        TremblerServantMovementSpeed = BUILDER.comment("How much Movement Speed Trembler Servants have, Default: 0.15")
-                .defineInRange("tremblerServantMovementSpeed", 0.15, 0.0, Double.MAX_VALUE);
-        TremblerServantAttackDamage = BUILDER.comment("How much Attack Damage Trembler Servants have, Default: 5.0")
-                .defineInRange("tremblerServantAttackDamage", 5.0, 0.0, Double.MAX_VALUE);
-        TremblerServantAttackKnockback = BUILDER.comment("How much Attack Knockback Trembler Servants have, Default: 1.0")
-                .defineInRange("tremblerServantAttackKnockback", 1.0, 0.0, Double.MAX_VALUE);
-        TremblerServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Trembler Servants have, Default: 0.5")
-                .defineInRange("tremblerServantKnockbackResistance", 0.5, 0.0, 1.0);
-        BUILDER.pop();
-
-        BUILDER.push("Fire Slime Servant");
-        FireSlimeServantHealth = BUILDER.comment("How much Max Health Fire Slime Servants have, Default: 8.0")
-                .defineInRange("fireSlimeServantHealth", 8.0, 1.0, Double.MAX_VALUE);
-        FireSlimeServantMovementSpeed = BUILDER.comment("How much Movement Speed Fire Slime Servants have, Default: 0.6")
-                .defineInRange("fireSlimeServantMovementSpeed", 0.6, 0.0, Double.MAX_VALUE);
-        FireSlimeServantAttackDamage = BUILDER.comment("How much Attack Damage Fire Slime Servants have, Default: 3.0")
-                .defineInRange("fireSlimeServantAttackDamage", 3.0, 0.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Guzzler Servant");
-        GuzzlerServantHealth = BUILDER.comment("How much Max Health Guzzler Servants have, Default: 100.0")
-                .defineInRange("guzzlerServantHealth", 100.0, 1.0, Double.MAX_VALUE);
-        GuzzlerServantMovementSpeed = BUILDER.comment("How much Movement Speed Guzzler Servants have, Default: 0.13")
-                .defineInRange("guzzlerServantMovementSpeed", 0.13, 0.0, Double.MAX_VALUE);
-        GuzzlerServantAttackDamage = BUILDER.comment("How much Attack Damage Guzzler Servants have, Default: 5.0")
-                .defineInRange("guzzlerServantAttackDamage", 5.0, 0.0, Double.MAX_VALUE);
-        GuzzlerServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Guzzler Servants have, Default: 0.5")
-                .defineInRange("guzzlerServantKnockbackResistance", 0.5, 0.0, 1.0);
-        GuzzlerServantFollowRange = BUILDER.comment("How much Follow Range Guzzler Servants have, Default: 32.0")
-                .defineInRange("guzzlerServantFollowRange", 32.0, 1.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Skyvern Servant");
-        SkyvernServantHealth = BUILDER.comment("Base Max Health of Skyvern Servants before the segment bonus, Default: 10.0")
-                .defineInRange("skyvernServantHealth", 10.0, 1.0, Double.MAX_VALUE);
-        SkyvernServantHealthPerSegment = BUILDER.comment("Extra Max Health per body segment. Total = base + this x segment count, Default: 6.0")
-                .defineInRange("skyvernServantHealthPerSegment", 6.0, 0.0, Double.MAX_VALUE);
-        SkyvernServantMovementSpeed = BUILDER.comment("How much Movement Speed Skyvern Servants have, Default: 0.9")
-                .defineInRange("skyvernServantMovementSpeed", 0.9, 0.0, Double.MAX_VALUE);
-        SkyvernServantFlyingSpeed = BUILDER.comment("How much Flying Speed Skyvern Servants have, Default: 0.9")
-                .defineInRange("skyvernServantFlyingSpeed", 0.9, 0.0, Double.MAX_VALUE);
-        SkyvernServantAttackDamage = BUILDER.comment("How much Attack Damage Skyvern Servants have, Default: 9.0")
-                .defineInRange("skyvernServantAttackDamage", 9.0, 0.0, Double.MAX_VALUE);
-        SkyvernServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Skyvern Servants have, Default: 1.0")
-                .defineInRange("skyvernServantKnockbackResistance", 1.0, 0.0, 1.0);
-        SkyvernServantFollowRange = BUILDER.comment("How much Follow Range Skyvern Servants have, Default: 80.0")
-                .defineInRange("skyvernServantFollowRange", 80.0, 1.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Terror Servant");
-        TerrorServantHealth = BUILDER.comment("How much Max Health Terror Servants have, Default: 36.0")
-                .defineInRange("terrorServantHealth", 36.0, 1.0, Double.MAX_VALUE);
-        TerrorServantMovementSpeed = BUILDER.comment("How much Movement Speed Terror Servants have, Default: 0.25")
-                .defineInRange("terrorServantMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
-        TerrorServantAttackDamage = BUILDER.comment("How much Attack Damage Terror Servants have, Default: 4.0")
-                .defineInRange("terrorServantAttackDamage", 4.0, 0.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Frowzy Servant");
-        FrowzyServantHealth = BUILDER.comment("How much Max Health Frowzy Servants have, Default: 16.0")
-                .defineInRange("frowzyServantHealth", 16.0, 1.0, Double.MAX_VALUE);
-        FrowzyServantMovementSpeed = BUILDER.comment("How much Movement Speed Frowzy Servants have, Default: 0.3")
-                .defineInRange("frowzyServantMovementSpeed", 0.3, 0.0, Double.MAX_VALUE);
-        FrowzyServantAttackDamage = BUILDER.comment("How much Attack Damage Frowzy Servants have, Default: 2.0")
-                .defineInRange("frowzyServantAttackDamage", 2.0, 0.0, Double.MAX_VALUE);
-        BUILDER.pop();
-
         BUILDER.pop();
         SPEC = BUILDER.build();
     }

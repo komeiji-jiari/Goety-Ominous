@@ -153,6 +153,9 @@ public class MutantHuskGeyserAttackGoal extends Goal {
             if (this.jumped && this.mob.wasOnFire && this.mob.jumpingFor > 10) {
                 this.readyToStop = true;
             }
+            if (this.jumped && !this.slammed && !this.mob.jumping && this.mob.onGround()) {
+                this.readyToStop = true;
+            }
         }
         if (this.mob.geyserAnimationTick <= 0 && !this.jumped && !this.slammed) {
             boolean noAreaDamages = false;

@@ -6,7 +6,6 @@ import com.Polarice3.Goety.common.magic.Spell;
 import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.projectile.am.EntityServentSandShot;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -16,6 +15,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class SandSpell extends Spell {
     public SandSpell() {
@@ -26,11 +26,11 @@ public class SandSpell extends Spell {
     }
 
     public int defaultSoulCost() {
-        return (Integer) SpellConfig.SandSoulCost.get();
+        return (Integer) AmConfig.SandSoulCost.get();
     }
 
     public int defaultCastDuration() {
-        return (Integer) SpellConfig.SandCastDuration.get();
+        return (Integer) AmConfig.SandCastDuration.get();
     }
 
     public SoundEvent CastingSound() {
@@ -38,7 +38,7 @@ public class SandSpell extends Spell {
     }
 
     public int defaultSpellCooldown() {
-        return (Integer) SpellConfig.SandCoolDown.get();
+        return (Integer) AmConfig.SandCoolDown.get();
     }
 
     public SpellType getSpellType() {
@@ -65,7 +65,7 @@ public class SandSpell extends Spell {
 
         boolean right = this.rightStaff(staff);
         EntityServentSandShot sandShot = new EntityServentSandShot(worldIn, caster, right);
-        float damage = SpellConfig.SandExtraDamage.get().floatValue() + potency;
+        float damage = AmConfig.SandExtraDamage.get().floatValue() + potency;
         if (right) {
             damage *= 2.0F;
             sandShot.setKnockback(1.5F);

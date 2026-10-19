@@ -8,7 +8,6 @@ import com.Polarice3.Goety.utils.WandUtil;
 import com.github.alexmodguy.alexscaves.server.item.SeaStaffItem;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.qiuyue.goetyominous.common.entities.projectile.ac.WaterBoltProjectile;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import com.qiuyue.goetyominous.utils.ac.KeyOfRlyehMixinHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -20,6 +19,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class WaterBoltSpell extends Spell {
 
@@ -32,7 +32,7 @@ public class WaterBoltSpell extends Spell {
 
     @Override
     public int defaultSoulCost() {
-        return SpellConfig.WaterBoltCost.get();
+        return AcConfig.WaterBoltCost.get();
     }
 
     @Override
@@ -42,7 +42,7 @@ public class WaterBoltSpell extends Spell {
 
     @Override
     public int defaultSpellCooldown() {
-        return SpellConfig.WaterBoltCoolDown.get();
+        return AcConfig.WaterBoltCoolDown.get();
     }
 
     @Override

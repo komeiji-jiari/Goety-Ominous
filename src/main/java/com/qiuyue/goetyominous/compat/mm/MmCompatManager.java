@@ -1,6 +1,8 @@
 package com.qiuyue.goetyominous.compat.mm;
 
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.*;
+import com.qiuyue.goetyominous.common.init.mm.MmBlockEntities;
+import com.qiuyue.goetyominous.common.init.mm.MmBlocks;
 import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
 import com.qiuyue.goetyominous.common.init.mm.ModSpellControllers;
 import com.qiuyue.goetyominous.common.items.mm.MmItems;
@@ -12,6 +14,9 @@ public class MmCompatManager {
         com.qiuyue.goetyominous.common.network.mm.MmPackets.register();
 
         MmEntityRegistry.register(modEventBus);
+
+        MmBlocks.register(modEventBus);
+        MmBlockEntities.register(modEventBus);
 
         ModSpellControllers.ENTITY_TYPES.register(modEventBus);
 

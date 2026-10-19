@@ -3,7 +3,6 @@ package com.qiuyue.goetyominous.common.events.ac;
 import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
 import com.qiuyue.goetyominous.common.entities.ally.ac.NuclearGuardianServant;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -28,6 +27,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.registries.ForgeRegistries;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class NuclearGuardianSummonHandler {
 
@@ -126,7 +126,7 @@ public class NuclearGuardianSummonHandler {
                 count++;
             }
         }
-        return count < MobsConfig.NuclearGuardianServantLimit.get();
+        return count < AcConfig.NuclearGuardianServantLimit.get();
     }
 
     private static void summon(ServerLevel serverLevel, Level level, BlockPos center, ItemStack stack,

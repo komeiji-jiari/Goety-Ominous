@@ -92,7 +92,7 @@ public class MutantShulkerServantFollowOwnerGoal extends Goal {
         }
 
         double range = this.owner instanceof Mob ? 32.0D : 16.0D;
-        if (this.mob.distanceToSqr(this.owner) >= Mth.square(range)) {
+        if (this.mob.followTeleportCooldown <= 0 && this.mob.distanceToSqr(this.owner) >= Mth.square(range)) {
             this.tryToTeleportNearEntity();
         } else {
             this.navigation.moveTo(this.owner, this.followSpeed);
@@ -123,6 +123,7 @@ public class MutantShulkerServantFollowOwnerGoal extends Goal {
                 BlockPos blockpos = pos.subtract(this.mob.blockPosition());
                 if (this.mob.level().noCollision(this.mob, this.mob.getBoundingBox().move(blockpos))) {
                     this.mob.moveTo(x + 0.5D, y, z + 0.5D, this.mob.getYRot(), this.mob.getXRot());
+                    this.mob.followTeleportCooldown = 200;
                     this.navigation.stop();
                     return true;
                 }

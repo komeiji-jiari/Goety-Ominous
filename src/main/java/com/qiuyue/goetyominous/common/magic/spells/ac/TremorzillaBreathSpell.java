@@ -7,7 +7,6 @@ import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.qiuyue.goetyominous.common.events.ac.TremorzillaBreathHandler;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -18,6 +17,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class TremorzillaBreathSpell extends Spell {
 
@@ -31,17 +31,17 @@ public class TremorzillaBreathSpell extends Spell {
 
     @Override
     public int defaultSoulCost() {
-        return SpellConfig.TremorzillaBreathCost.get();
+        return AcConfig.TremorzillaBreathCost.get();
     }
 
     @Override
     public int defaultCastDuration() {
-        return SpellConfig.TremorzillaBreathCastDuration.get();
+        return AcConfig.TremorzillaBreathCastDuration.get();
     }
 
     @Override
     public int defaultSpellCooldown() {
-        return SpellConfig.TremorzillaBreathCoolDown.get();
+        return AcConfig.TremorzillaBreathCoolDown.get();
     }
 
     @Override
@@ -104,9 +104,9 @@ public class TremorzillaBreathSpell extends Spell {
             durationLevel = WandUtil.getLevels(ModEnchantments.DURATION.get(), caster);
         }
 
-        float damage = SpellConfig.TremorzillaBreathDamage.get().floatValue() + (float) potency;
-        double range = SpellConfig.TremorzillaBreathRange.get();
-        int maxBeamTime = SpellConfig.TremorzillaBreathDuration.get()
+        float damage = AcConfig.TremorzillaBreathDamage.get().floatValue() + (float) potency;
+        double range = AcConfig.TremorzillaBreathRange.get();
+        int maxBeamTime = AcConfig.TremorzillaBreathDuration.get()
                 + caster.getRandom().nextInt(MAX_RANDOM_EXTRA)
                 + durationLevel * DURATION_TICKS_PER_LEVEL;
 

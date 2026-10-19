@@ -7,7 +7,6 @@ import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.projectile.ac.DeepOneMageServantWave;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import com.qiuyue.goetyominous.utils.ac.KeyOfRlyehMixinHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -25,17 +24,18 @@ import net.minecraft.world.phys.Vec3;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class DeepWaveSpell extends Spell {
 
     @Override
     public int defaultSoulCost() {
-        return SpellConfig.DeepWaveCost.get();
+        return AcConfig.DeepWaveCost.get();
     }
 
     @Override
     public int defaultCastDuration() {
-        return SpellConfig.DeepWaveCastDuration.get();
+        return AcConfig.DeepWaveCastDuration.get();
     }
 
     @Override
@@ -45,7 +45,7 @@ public class DeepWaveSpell extends Spell {
 
     @Override
     public int defaultSpellCooldown() {
-        return SpellConfig.DeepWaveCoolDown.get();
+        return AcConfig.DeepWaveCoolDown.get();
     }
 
     @Override

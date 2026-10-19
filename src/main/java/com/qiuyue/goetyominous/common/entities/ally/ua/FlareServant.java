@@ -5,7 +5,6 @@ import com.Polarice3.Goety.common.entities.neutral.SummonedFlying;
 import com.Polarice3.Goety.utils.CuriosFinder;
 import com.Polarice3.Goety.utils.MathHelper;
 import com.Polarice3.Goety.utils.MobUtil;
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.teamabnormals.upgrade_aquatic.core.registry.UAMobEffects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -41,6 +40,7 @@ import net.minecraft.world.phys.Vec3;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
+import com.qiuyue.goetyominous.config.uasr.UasrConfig;
 
 public class FlareServant extends SummonedFlying {
     private static final EntityDataAccessor<Integer> SIZE = SynchedEntityData.defineId(FlareServant.class, EntityDataSerializers.INT);
@@ -80,12 +80,12 @@ public class FlareServant extends SummonedFlying {
 
     public static AttributeSupplier.Builder registerAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.FlareServantHealth.get())
-                .add(Attributes.ARMOR, AttributesConfig.FlareServantArmor.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.FlareServantDamage.get())
-                .add(Attributes.FLYING_SPEED, AttributesConfig.FlareServantFlyingSpeed.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.FlareServantMovementSpeed.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.FlareServantFollowRange.get());
+                .add(Attributes.MAX_HEALTH, UasrConfig.FlareServantHealth.get())
+                .add(Attributes.ARMOR, UasrConfig.FlareServantArmor.get())
+                .add(Attributes.ATTACK_DAMAGE, UasrConfig.FlareServantDamage.get())
+                .add(Attributes.FLYING_SPEED, UasrConfig.FlareServantFlyingSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, UasrConfig.FlareServantMovementSpeed.get())
+                .add(Attributes.FOLLOW_RANGE, UasrConfig.FlareServantFollowRange.get());
     }
 
     protected void defineSynchedData() {

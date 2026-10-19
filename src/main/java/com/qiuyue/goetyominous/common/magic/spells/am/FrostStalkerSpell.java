@@ -2,8 +2,6 @@ package com.qiuyue.goetyominous.common.magic.spells.am;
 
 import com.qiuyue.goetyominous.common.entities.ally.am.FroststalkerServant;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
-import com.qiuyue.goetyominous.config.MobsConfig;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import com.Polarice3.Goety.api.magic.SpellType;
 import com.Polarice3.Goety.common.enchantments.ModEnchantments;
 import com.Polarice3.Goety.common.magic.SpellStat;
@@ -23,21 +21,22 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class FrostStalkerSpell extends SummonSpell {
     public FrostStalkerSpell() {
     }
 
     public int defaultSoulCost() {
-        return (Integer)SpellConfig.FrostStalkerSoulCost.get();
+        return (Integer)AmConfig.FrostStalkerSoulCost.get();
     }
 
     public int defaultCastDuration() {
-        return (Integer)SpellConfig.FrostStalkerCastDuration.get();
+        return (Integer)AmConfig.FrostStalkerCastDuration.get();
     }
 
     public int SummonDownDuration() {
-        return (Integer)SpellConfig.FrostStalkerSummonDown.get();
+        return (Integer)AmConfig.FrostStalkerSummonDown.get();
     }
 
     public SoundEvent CastingSound() {
@@ -45,7 +44,7 @@ public class FrostStalkerSpell extends SummonSpell {
     }
 
     public int defaultSpellCooldown() {
-        return (Integer)SpellConfig.FrostStalkerCoolDown.get();
+        return (Integer)AmConfig.FrostStalkerCoolDown.get();
     }
 
     public SpellType getSpellType() {
@@ -66,7 +65,7 @@ public class FrostStalkerSpell extends SummonSpell {
     }
 
     public int summonLimit() {
-        return (Integer) MobsConfig.FrostStalkerLimit.get();
+        return (Integer) AmConfig.FrostStalkerLimit.get();
     }
 
     public void SpellResult(ServerLevel worldIn, LivingEntity caster, ItemStack staff, SpellStat spellStat) {

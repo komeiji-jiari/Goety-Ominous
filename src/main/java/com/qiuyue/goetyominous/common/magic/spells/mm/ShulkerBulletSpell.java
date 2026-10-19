@@ -11,7 +11,6 @@ import com.alexander.mutantmore.config.mutant_shulker.MutantShulkerCommonConfig;
 import com.alexander.mutantmore.init.SoundEventInit;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantShulkerServantBullet;
 import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
@@ -22,6 +21,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.phys.Vec3;
+import com.qiuyue.goetyominous.config.mm.MmConfig;
 
 public class ShulkerBulletSpell extends EverChargeSpell {
     private static final int SHOT_INTERVAL = 30;
@@ -29,12 +29,12 @@ public class ShulkerBulletSpell extends EverChargeSpell {
 
     @Override
     public int defaultSoulCost() {
-        return SpellConfig.ShulkerBulletSoulCost.get();
+        return MmConfig.ShulkerBulletSoulCost.get();
     }
 
     @Override
     public int defaultCastUp() {
-        return SpellConfig.ShulkerBulletCastDuration.get();
+        return MmConfig.ShulkerBulletCastDuration.get();
     }
 
     @Override
@@ -49,7 +49,7 @@ public class ShulkerBulletSpell extends EverChargeSpell {
 
     @Override
     public int defaultSpellCooldown() {
-        return SpellConfig.ShulkerBulletCooldown.get();
+        return MmConfig.ShulkerBulletCooldown.get();
     }
 
     @Nullable
@@ -118,7 +118,7 @@ public class ShulkerBulletSpell extends EverChargeSpell {
         }
 
         MutantShulkerServantBullet bullet = new MutantShulkerServantBullet(MmEntityRegistry.MUTANT_SHULKER_SERVANT_BULLET.get(), worldIn);
-        bullet.damage = SpellConfig.ShulkerBulletDamage.get().floatValue() + potency * 2;
+        bullet.damage = MmConfig.ShulkerBulletDamage.get().floatValue() + potency * 2;
         bullet.explosionSize = MutantShulkerCommonConfig.mutant_shulker_bullet_explosion_size.get().floatValue()
                 + (usingVoidStaff ? 2.0F : 0.0F);
         bullet.levitationLength = MutantShulkerCommonConfig.mutant_shulker_bullet_levitation_length.get();

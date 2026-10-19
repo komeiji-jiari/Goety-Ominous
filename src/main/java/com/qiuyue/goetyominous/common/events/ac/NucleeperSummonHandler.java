@@ -3,7 +3,6 @@ package com.qiuyue.goetyominous.common.events.ac;
 import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
 import com.qiuyue.goetyominous.common.entities.ally.ac.NucleeperServant;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -27,6 +26,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.registries.ForgeRegistries;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 
 public class NucleeperSummonHandler {
@@ -87,7 +87,7 @@ public class NucleeperSummonHandler {
                 count++;
             }
         }
-        return count < MobsConfig.NucleeperServantLimit.get();
+        return count < AcConfig.NucleeperServantLimit.get();
     }
 
     private static void summon(ServerLevel serverLevel, Level level, BlockPos pos, ItemStack stack,

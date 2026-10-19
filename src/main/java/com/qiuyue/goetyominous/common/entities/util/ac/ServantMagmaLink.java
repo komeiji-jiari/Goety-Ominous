@@ -2,7 +2,6 @@ package com.qiuyue.goetyominous.common.entities.util.ac;
 
 import com.github.alexmodguy.alexscaves.server.block.PrimalMagmaBlock;
 import com.qiuyue.goetyominous.common.entities.ally.ac.LuxtructosaurusServant;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
@@ -18,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 import com.qiuyue.goetyominous.common.entities.util.ac.ServantMagmaData;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public final class ServantMagmaLink {
 
@@ -34,7 +34,7 @@ public final class ServantMagmaLink {
     }
 
     public static void tick(ServerLevel level, LuxtructosaurusServant servant) {
-        if (!MobsConfig.LuxtructosaurusServantPrimalMagma.get()) {
+        if (!AcConfig.LuxtructosaurusServantPrimalMagma.get()) {
             release(level, servant);
             return;
         }

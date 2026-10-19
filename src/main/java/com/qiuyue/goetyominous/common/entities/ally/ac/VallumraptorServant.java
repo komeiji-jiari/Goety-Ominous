@@ -17,8 +17,6 @@ import com.qiuyue.goetyominous.common.entities.ai.ac.ServantBreedGoal;
 import com.qiuyue.goetyominous.common.entities.ai.ac.ServantLayEggGoal;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -62,6 +60,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class VallumraptorServant extends AnimalSummon implements LaysEggs, IAnimatedEntity {
 
@@ -117,19 +116,19 @@ public class VallumraptorServant extends AnimalSummon implements LaysEggs, IAnim
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.VallumraptorServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.VallumraptorServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.VallumraptorServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.VallumraptorServantKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.VallumraptorServantMovementSpeed.get())
-                .add(Attributes.ARMOR, AttributesConfig.VallumraptorServantArmor.get());
+                .add(Attributes.MAX_HEALTH, AcConfig.VallumraptorServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AcConfig.VallumraptorServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AcConfig.VallumraptorServantDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.VallumraptorServantKnockbackResistance.get())
+                .add(Attributes.MOVEMENT_SPEED, AcConfig.VallumraptorServantMovementSpeed.get())
+                .add(Attributes.ARMOR, AcConfig.VallumraptorServantArmor.get());
     }
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor levelAccessor, DifficultyInstance difficulty,
                                         MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData,
                                         @Nullable CompoundTag tag) {
-        this.setElder(this.getRandom().nextInt(100) < MobsConfig.VallumraptorElderChance.get());
+        this.setElder(this.getRandom().nextInt(100) < AcConfig.VallumraptorElderChance.get());
         return super.finalizeSpawn(levelAccessor, difficulty, spawnType, spawnGroupData, tag);
     }
 
@@ -153,7 +152,7 @@ public class VallumraptorServant extends AnimalSummon implements LaysEggs, IAnim
     }
     @Override
     public int getSummonLimit(LivingEntity player) {
-        return MobsConfig.VallumraptorServantLimit.get();
+        return AcConfig.VallumraptorServantLimit.get();
     }
 
     @Override
@@ -228,18 +227,18 @@ public class VallumraptorServant extends AnimalSummon implements LaysEggs, IAnim
         }
         if (!isRunning() && hasRunningAttributes) {
             hasRunningAttributes = false;
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AttributesConfig.VallumraptorServantMovementSpeed.get());
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AcConfig.VallumraptorServantMovementSpeed.get());
         }
         if (isElder() && !hasElderAttributes) {
             hasElderAttributes = true;
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(AttributesConfig.VallumraptorServantElderHealth.get());
-            this.getAttribute(Attributes.ARMOR).setBaseValue(AttributesConfig.VallumraptorServantElderArmor.get());
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(AcConfig.VallumraptorServantElderHealth.get());
+            this.getAttribute(Attributes.ARMOR).setBaseValue(AcConfig.VallumraptorServantElderArmor.get());
             this.heal(36.0F);
         }
         if (!isElder() && hasElderAttributes) {
             hasElderAttributes = false;
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(AttributesConfig.VallumraptorServantHealth.get());
-            this.getAttribute(Attributes.ARMOR).setBaseValue(AttributesConfig.VallumraptorServantArmor.get());
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(AcConfig.VallumraptorServantHealth.get());
+            this.getAttribute(Attributes.ARMOR).setBaseValue(AcConfig.VallumraptorServantArmor.get());
             this.heal(28.0F);
         }
         if (this.tickCount % (this.getHideFor() > 0 ? 15 : 100) == 0 && this.getHealth() < this.getMaxHealth()) {
@@ -313,7 +312,7 @@ public class VallumraptorServant extends AnimalSummon implements LaysEggs, IAnim
     }
 
     public double getRunningSpeed() {
-        return AttributesConfig.VallumraptorServantMovementSpeed.get() * 1.75D;
+        return AcConfig.VallumraptorServantMovementSpeed.get() * 1.75D;
     }
 
     private void puzzledTick(float current) {

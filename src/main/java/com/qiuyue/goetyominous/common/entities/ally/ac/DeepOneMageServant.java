@@ -20,8 +20,6 @@ import com.qiuyue.goetyominous.common.entities.ai.ac.DeepOneBarterGoal;
 import com.qiuyue.goetyominous.common.entities.ai.ac.IDeepOneBarterer;
 import com.qiuyue.goetyominous.common.entities.projectile.ac.DeepOneMageServantWaterBolt;
 import com.qiuyue.goetyominous.common.entities.projectile.ac.DeepOneMageServantWave;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -82,6 +80,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class DeepOneMageServant extends Summoned implements IDeepOneBarterer, IAnimatedEntity {
 
@@ -122,12 +121,12 @@ public class DeepOneMageServant extends Summoned implements IDeepOneBarterer, IA
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.DeepOneMageServantMovementSpeed.get())
-                .add(Attributes.MAX_HEALTH, AttributesConfig.DeepOneMageServantHealth.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.DeepOneMageServantDamage.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.DeepOneMageServantFollowRange.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.DeepOneMageServantKnockbackResistance.get())
-                .add(Attributes.ARMOR, AttributesConfig.DeepOneMageServantArmor.get());
+                .add(Attributes.MOVEMENT_SPEED, AcConfig.DeepOneMageServantMovementSpeed.get())
+                .add(Attributes.MAX_HEALTH, AcConfig.DeepOneMageServantHealth.get())
+                .add(Attributes.ATTACK_DAMAGE, AcConfig.DeepOneMageServantDamage.get())
+                .add(Attributes.FOLLOW_RANGE, AcConfig.DeepOneMageServantFollowRange.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.DeepOneMageServantKnockbackResistance.get())
+                .add(Attributes.ARMOR, AcConfig.DeepOneMageServantArmor.get());
     }
 
     @Override
@@ -289,7 +288,7 @@ public class DeepOneMageServant extends Summoned implements IDeepOneBarterer, IA
 
     @Override
     public int getSummonLimit(LivingEntity player) {
-        return MobsConfig.DeepOneMageServantLimit.get();
+        return AcConfig.DeepOneMageServantLimit.get();
     }
 
     @Override

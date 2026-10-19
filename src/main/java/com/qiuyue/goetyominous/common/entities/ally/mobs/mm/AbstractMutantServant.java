@@ -5,7 +5,7 @@ import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.common.entities.projectiles.FlyingItem;
 import com.Polarice3.Goety.common.items.revive.ReviveServantItem;
-import com.Polarice3.Goety.config.ItemConfig;
+import com.Polarice3.Goety.utils.CuriosFinder;
 import com.alexander.mutantmore.config.MutantMoreGroupedOptionsCommonConfig;
 import com.alexander.mutantmore.interfaces.IMutatable;
 import javax.annotation.Nullable;
@@ -35,13 +35,12 @@ import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public abstract class AbstractMutantServant extends Summoned implements IMutatable {
+    public static final int REVIVE_COOLDOWN_SECONDS = 300;
     private static final EntityDataAccessor<Integer> TARGETED_ENTITY_ID;
     public float walkPhase;
     public float walkPhaseAge = -1.0F;
-    private static final int LIFE_RECOVERY_FIRST_DELAY = 3600;
-    private static final int LIFE_RECOVERY_REPEAT_DELAY = 1200;
-    private int calmTicks;
-    private int nextLifeRecoveryAt = LIFE_RECOVERY_FIRST_DELAY;
+    private static final int LIFE_RECOVERY_TICKS_PER_HEALTH = 20;
+    private int lifeRecoveryTicks;
 
     protected AbstractMutantServant(EntityType<? extends Owned> p_33002_, Level p_33003_) {
         super(p_33002_, p_33003_);
@@ -71,7 +70,7 @@ public abstract class AbstractMutantServant extends Summoned implements IMutatab
         flyingItem.setOwner(owner);
         flyingItem.setItem(stack);
         flyingItem.setParticle(ParticleTypes.SOUL);
-        flyingItem.setSecondsCool(ItemConfig.ReviveSecondsCool.get());
+        flyingItem.setSecondsCool(REVIVE_COOLDOWN_SECONDS);
         this.level().addFreshEntity(flyingItem);
     }
 
@@ -103,10 +102,29 @@ public abstract class AbstractMutantServant extends Summoned implements IMutatab
     public void tick() {
         super.tick();
         if (this.level().isClientSide) {
+            if (!this.isDeadOrDying()) {
+                this.deathTime = 0;
+            }
             this.updateAnimations();
         } else {
             this.tickLifeRecovery();
         }
+    }
+
+    public int getRemainingLives() {
+        return 0;
+    }
+
+    public int getMaxLives() {
+        return this.getRestorableLives() + this.getRemainingLives();
+    }
+
+    public int getLifeRecoveryProgress() {
+        return this.lifeRecoveryTicks;
+    }
+
+    public int getLifeRecoveryTicks() {
+        return (int)Math.ceil(this.getMaxHealth()) * LIFE_RECOVERY_TICKS_PER_HEALTH;
     }
 
     protected int getRestorableLives() {
@@ -117,22 +135,25 @@ public abstract class AbstractMutantServant extends Summoned implements IMutatab
     }
 
     protected void resetLifeRecovery() {
-        this.calmTicks = 0;
-        this.nextLifeRecoveryAt = LIFE_RECOVERY_FIRST_DELAY;
+        this.lifeRecoveryTicks = 0;
+    }
+
+    private boolean hasLifeRecoveryRobe() {
+        LivingEntity owner = this.getTrueOwner();
+        return owner != null
+                && (CuriosFinder.hasNecroCape(owner) || CuriosFinder.hasNamelessCape(owner));
     }
 
     private void tickLifeRecovery() {
-        if (this.getRestorableLives() <= 0) {
+        if (this.getRestorableLives() <= 0
+                || this.getHealth() < this.getMaxHealth()
+                || !this.hasLifeRecoveryRobe()) {
             this.resetLifeRecovery();
             return;
         }
-        if (this.getTarget() == null && this.getHealth() >= this.getMaxHealth()) {
-            ++this.calmTicks;
-            if (this.calmTicks >= this.nextLifeRecoveryAt) {
-                this.restoreOneLife();
-                this.nextLifeRecoveryAt += LIFE_RECOVERY_REPEAT_DELAY;
-            }
-        } else {
+        ++this.lifeRecoveryTicks;
+        if (this.lifeRecoveryTicks >= this.getLifeRecoveryTicks()) {
+            this.restoreOneLife();
             this.resetLifeRecovery();
         }
     }

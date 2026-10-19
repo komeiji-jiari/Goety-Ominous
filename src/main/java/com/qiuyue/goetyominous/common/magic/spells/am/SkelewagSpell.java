@@ -10,7 +10,6 @@ import com.qiuyue.goetyominous.common.entities.ally.am.SkelewagServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.StraySkelewagServant;
 import com.qiuyue.goetyominous.common.entities.ally.am.WitherSkelewagServant;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -24,17 +23,18 @@ import net.minecraftforge.common.Tags;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class SkelewagSpell extends SummonSpell {
     public SkelewagSpell() {
     }
 
     public int defaultSoulCost() {
-        return com.qiuyue.goetyominous.config.SpellConfig.SkelewagCost.get();
+        return AmConfig.SkelewagCost.get();
     }
 
     public int defaultCastDuration() {
-        return com.qiuyue.goetyominous.config.SpellConfig.SkelewagDuration.get();
+        return AmConfig.SkelewagDuration.get();
     }
 
     public SoundEvent CastingSound() {
@@ -42,11 +42,11 @@ public class SkelewagSpell extends SummonSpell {
     }
 
     public int defaultSpellCooldown() {
-        return com.qiuyue.goetyominous.config.SpellConfig.SkelewagCoolDown.get();
+        return AmConfig.SkelewagCoolDown.get();
     }
 
     public int SummonDownDuration() {
-        return com.qiuyue.goetyominous.config.SpellConfig.SkelewagSummonDown.get();
+        return AmConfig.SkelewagSummonDown.get();
     }
 
     public SpellType getSpellType() {
@@ -67,7 +67,7 @@ public class SkelewagSpell extends SummonSpell {
     }
 
     public int summonLimit() {
-        return (Integer) MobsConfig.SkelewagLimit.get();
+        return (Integer) AmConfig.SkelewagLimit.get();
     }
 
     public boolean specialStaffs(ItemStack stack) {

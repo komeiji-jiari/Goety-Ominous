@@ -5,7 +5,6 @@ import com.Polarice3.Goety.config.MobsConfig;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.qiuyue.goetyominous.common.entities.projectile.am.EntityMosquitoServantSpit;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.*;
@@ -62,6 +61,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class CrimsonMosquitoServant extends Summoned {
 
@@ -110,12 +110,12 @@ public class CrimsonMosquitoServant extends Summoned {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.CrimsonMosquitoServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.CrimsonMosquitoServantFollowRange.get())
+                .add(Attributes.MAX_HEALTH, AmConfig.CrimsonMosquitoServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AmConfig.CrimsonMosquitoServantFollowRange.get())
                 .add(Attributes.ARMOR, 0.0D)
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.CrimsonMosquitoServantDamage.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.CrimsonMosquitoServantMovementSpeed.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.CrimsonMosquitoServantKnockbackResistance.get());
+                .add(Attributes.ATTACK_DAMAGE, AmConfig.CrimsonMosquitoServantDamage.get())
+                .add(Attributes.MOVEMENT_SPEED, AmConfig.CrimsonMosquitoServantMovementSpeed.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AmConfig.CrimsonMosquitoServantKnockbackResistance.get());
     }
 
     @Override
@@ -227,10 +227,12 @@ public class CrimsonMosquitoServant extends Summoned {
                     mobMount.goalSelector.setControlFlag(Goal.Flag.JUMP, !(mobMount.getVehicle() instanceof Boat));
                 }
                 if (mount instanceof final LivingEntity livingEntity) {
-                    this.yBodyRot = livingEntity.yBodyRot;
-                    this.setYRot(livingEntity.getYRot());
-                    this.yHeadRot = livingEntity.yHeadRot;
-                    this.yRotO = livingEntity.yHeadRot;
+                    if (!this.isDeadOrDying()) {
+                        this.yBodyRot = livingEntity.yBodyRot;
+                        this.setYRot(livingEntity.getYRot());
+                        this.yHeadRot = livingEntity.yHeadRot;
+                        this.yRotO = livingEntity.yHeadRot;
+                    }
                     final float radius = 1F;
                     final float angle = (Maths.STARTING_ANGLE * livingEntity.yBodyRot);
                     final double extraX = radius * Mth.sin(Mth.PI + angle);
@@ -242,7 +244,7 @@ public class CrimsonMosquitoServant extends Summoned {
                     if (!this.level().isClientSide) {
                         if (drinkTime % 20 == 0 && this.isAlive()) {
                             final boolean mungus = AMConfig.warpedMoscoTransformation && mount instanceof EntityMungus && ((EntityMungus) mount).isWarpedMoscoReady();
-                            if (mount.hurt(this.getServantAttack(), mungus ? 7F : AttributesConfig.CrimsonMosquitoServantDamage.get().floatValue())) {
+                            if (mount.hurt(this.getServantAttack(), mungus ? 7F : AmConfig.CrimsonMosquitoServantDamage.get().floatValue())) {
                                 if (mungus) {
                                     ((EntityMungus) mount).disableExplosion();
                                 }
@@ -525,7 +527,7 @@ public class CrimsonMosquitoServant extends Summoned {
                     final boolean steroid = this.isSteroidConversion();
                     boolean overLimit = steroid && this.getTrueOwner() instanceof Player owner
                             && countWarpedMoscoServants(owner)
-                            >= com.qiuyue.goetyominous.config.MobsConfig.WarpedMoscoServantLimit.get();
+                            >= AmConfig.WarpedMoscoServantLimit.get();
                     Mob mosco = (steroid && !overLimit)
                             ? AmEntityRegistry.WARPED_MOSCO_SERVANT.get().create(level())
                             : AMEntityRegistry.WARPED_MOSCO.get().create(level());

@@ -28,6 +28,7 @@ import net.minecraftforge.common.Tags;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.qiuyue.goetyominous.config.mm.MmConfig;
 
 public class HogChargeSpell extends EverChargeSpell {
 
@@ -40,12 +41,12 @@ public class HogChargeSpell extends EverChargeSpell {
 
     @Override
     public int defaultSoulCost() {
-        return com.qiuyue.goetyominous.config.SpellConfig.HogChargeSoulCost.get();
+        return MmConfig.HogChargeSoulCost.get();
     }
 
     @Override
     public int defaultSpellCooldown() {
-        return com.qiuyue.goetyominous.config.SpellConfig.HogChargeCooldown.get();
+        return MmConfig.HogChargeCooldown.get();
     }
 
     @Override
@@ -126,7 +127,7 @@ public class HogChargeSpell extends EverChargeSpell {
                 if (target instanceof Player player && (player.isCreative() || player.isSpectator())) continue;
                 if (!caster.canAttack(target)) continue;
 
-                float dmg = com.qiuyue.goetyominous.config.SpellConfig.HogChargeDamage.get().floatValue();
+                float dmg = MmConfig.HogChargeDamage.get().floatValue();
                 target.hurt(worldIn.damageSources().mobAttack(caster), dmg);
                 target.setSecondsOnFire(5);
                 target.setDeltaMovement(target.getDeltaMovement().add(lookVec.scale(1.5)));

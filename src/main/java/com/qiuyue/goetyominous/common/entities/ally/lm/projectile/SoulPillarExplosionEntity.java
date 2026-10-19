@@ -1,6 +1,5 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm.projectile;
 
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.client.particle.lm.Circle;
 import com.qiuyue.goetyominous.client.particle.lm.Circle.EnumRingBehavior;
 import com.qiuyue.goetyominous.common.entities.ally.lm.ServantMath;
@@ -27,6 +26,7 @@ import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
+import com.qiuyue.goetyominous.config.lm.LmConfig;
 
 public class SoulPillarExplosionEntity extends Entity {
 
@@ -214,7 +214,7 @@ public class SoulPillarExplosionEntity extends Entity {
         }
 
         if (impactEntity.hurt(LmDamageTypes.ghostly(caster), this.getDamage())) {
-            if (MobsConfig.SoulFractureOnServantHit.get()) {
+            if (LmConfig.SoulFractureOnServantHit.get()) {
                 EntityUtil.applyStackingEffect(impactEntity, ModEffects.SOUL_FRACTURE.get(),
                         1, 4, ServantMath.toTicks(10.0F));
             }

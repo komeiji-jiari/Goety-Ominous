@@ -11,8 +11,6 @@ import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.GroundPathNavigatorWide;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -50,6 +48,7 @@ import net.minecraft.world.phys.Vec3;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Optional;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class SoulVultureServant extends Summoned implements FlyingAnimal {
 
@@ -79,22 +78,22 @@ public class SoulVultureServant extends Summoned implements FlyingAnimal {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.SoulVultureServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.SoulVultureServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.SoulVultureServantDamage.get())
+                .add(Attributes.MAX_HEALTH, AmConfig.SoulVultureServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AmConfig.SoulVultureServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AmConfig.SoulVultureServantDamage.get())
                 .add(Attributes.MOVEMENT_SPEED, 0.25D);
     }
 
     @Override
     public void setConfigurableAttributes() {
         if (this.getAttribute(Attributes.MAX_HEALTH) != null) {
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(AttributesConfig.SoulVultureServantHealth.get() * this.soulScale);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(AmConfig.SoulVultureServantHealth.get() * this.soulScale);
         }
         if (this.getAttribute(Attributes.ATTACK_DAMAGE) != null) {
-            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AttributesConfig.SoulVultureServantDamage.get() * this.soulScale);
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AmConfig.SoulVultureServantDamage.get() * this.soulScale);
         }
         if (this.getAttribute(Attributes.FOLLOW_RANGE) != null) {
-            this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(AttributesConfig.SoulVultureServantFollowRange.get());
+            this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(AmConfig.SoulVultureServantFollowRange.get());
         }
     }
 
@@ -113,7 +112,7 @@ public class SoulVultureServant extends Summoned implements FlyingAnimal {
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.SoulVultureServantLimit.get();
+        return AmConfig.SoulVultureServantLimit.get();
     }
 
     @Override

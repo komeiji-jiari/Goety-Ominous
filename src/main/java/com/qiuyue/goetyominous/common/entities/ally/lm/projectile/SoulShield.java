@@ -1,6 +1,5 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm.projectile;
 
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.common.entities.ally.lm.ServantMath;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.qiuyue.goetyominous.common.init.lm.LmDamageTypes;
@@ -27,6 +26,7 @@ import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
+import com.qiuyue.goetyominous.config.lm.LmConfig;
 
 public class SoulShield extends LmAnimatedProjectile {
 
@@ -270,7 +270,7 @@ public class SoulShield extends LmAnimatedProjectile {
 
         if (caster == null) {
             if (impactEntity.hurt(LmDamageTypes.ghostlyOrAttackerless(this.level(), null), amount)) {
-                if (MobsConfig.SoulFractureOnServantHit.get()) {
+                if (LmConfig.SoulFractureOnServantHit.get()) {
                     EntityUtil.applyStackingEffect(impactEntity, ModEffects.SOUL_FRACTURE.get(),
                             1, 4, ServantMath.toTicks(10.0F));
                 }
@@ -283,7 +283,7 @@ public class SoulShield extends LmAnimatedProjectile {
         }
 
         if (impactEntity.hurt(LmDamageTypes.ghostly(caster), amount)) {
-            if (MobsConfig.SoulFractureOnServantHit.get()) {
+            if (LmConfig.SoulFractureOnServantHit.get()) {
                 EntityUtil.applyStackingEffect(impactEntity, ModEffects.SOUL_FRACTURE.get(),
                         1, 4, ServantMath.toTicks(10.0F));
             }

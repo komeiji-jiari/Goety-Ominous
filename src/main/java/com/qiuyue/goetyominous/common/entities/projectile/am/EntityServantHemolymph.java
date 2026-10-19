@@ -4,7 +4,6 @@ import com.Polarice3.Goety.common.entities.projectiles.SpellThrowableProjectile;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.qiuyue.goetyominous.common.entities.ally.am.WarpedMoscoServant;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -16,6 +15,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.PlayMessages;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class EntityServantHemolymph extends SpellThrowableProjectile {
     private boolean leftOwner;
@@ -28,14 +28,14 @@ public class EntityServantHemolymph extends SpellThrowableProjectile {
     public EntityServantHemolymph(Level worldIn, WarpedMoscoServant shooter) {
         this(AmEntityRegistry.SERVANT_HEMOLYMPH.get(), worldIn);
         this.setOwner(shooter);
-        this.setExtraDamage(AttributesConfig.WarpedMoscoServantDamage.get().floatValue());
+        this.setExtraDamage(AmConfig.WarpedMoscoServantDamage.get().floatValue());
         this.setPos(shooter.getX() - (double) (shooter.getBbWidth() + 1.0F) * 0.35D * (double) Mth.sin(shooter.yBodyRot * Mth.DEG_TO_RAD), shooter.getEyeY() + (double) 0.2F, shooter.getZ() + (double) (shooter.getBbWidth() + 1.0F) * 0.35D * (double) Mth.cos(shooter.yBodyRot * Mth.DEG_TO_RAD));
     }
 
     public EntityServantHemolymph(Level worldIn, LivingEntity shooter, boolean right) {
         this(AmEntityRegistry.SERVANT_HEMOLYMPH.get(), worldIn);
         this.setOwner(shooter);
-        this.setExtraDamage(AttributesConfig.WarpedMoscoServantDamage.get().floatValue());
+        this.setExtraDamage(AmConfig.WarpedMoscoServantDamage.get().floatValue());
         float rot = shooter.yHeadRot + (right ? 60 : -60);
         this.setPos(shooter.getX() - (double) (shooter.getBbWidth()) * 0.5D * (double) Mth.sin(rot * Mth.DEG_TO_RAD), shooter.getEyeY() - (double) 0.2F, shooter.getZ() + (double) (shooter.getBbWidth()) * 0.5D * (double) Mth.cos(rot * Mth.DEG_TO_RAD));
     }

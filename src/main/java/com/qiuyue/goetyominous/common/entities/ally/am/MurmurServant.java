@@ -9,7 +9,6 @@ import java.util.Optional;
 import java.util.UUID;
 import javax.annotation.Nullable;
 
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -35,6 +34,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class MurmurServant extends Summoned implements ISemiAquatic {
     private static final EntityDataAccessor<Optional<UUID>> HEAD_UUID;
@@ -47,11 +47,11 @@ public class MurmurServant extends Summoned implements ISemiAquatic {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.MurmurServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.MurmurServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.MurmurServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.MurmurServantKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.MurmurServantMovementSpeed.get());
+                .add(Attributes.MAX_HEALTH, AmConfig.MurmurServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AmConfig.MurmurServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AmConfig.MurmurServantDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AmConfig.MurmurServantKnockbackResistance.get())
+                .add(Attributes.MOVEMENT_SPEED, AmConfig.MurmurServantMovementSpeed.get());
     }
 
     protected void registerGoals() {

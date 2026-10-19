@@ -28,6 +28,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class MutantWitherSkeletonLungeGoal extends Goal {
     public MutantWitherSkeletonServant mob;
@@ -223,39 +224,31 @@ public class MutantWitherSkeletonLungeGoal extends Goal {
         if (this.lungeMotion != null && (!(this.mob.getDeltaMovement().y > 0.0) || !(this.lungeMotion.y > Math.max(Math.abs(this.lungeMotion.x), Math.abs(this.lungeMotion.z)))) && (this.mob.getAnimation("lunging").isPlaying() || this.mob.getAnimation("lunge_land").isPlaying() && (double)this.mob.getAnimation("lunge_land").progress() <= 0.5) && this.lungeMotion.y < Math.max(this.lungeMotion.x, this.lungeMotion.z)) {
             breakableBlocks = 0;
             aabb = this.mob.getBoundingBox().deflate(0.1).move(PositionUtils.getOffsetPos(Vec3.ZERO, 0.0, 0.0, (double)(this.mob.getBbWidth() / 2.0F), 0.0F, this.mob.yBodyRot));
-            Iterator var26 = BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(aabb.minY), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ)).iterator();
 
-            while(true) {
-                do {
-                    do {
-                        do {
-                            do {
-                                if (!var26.hasNext()) {
-                                    if (breakableBlocks >= 4) {
-                                        MmScreenShake.shake(this.mob.level(), 10, 0.5F, this.mob.blockPosition(), 15);
-                                        this.slowDownSpeed = this.initialSlowDownSpeed;
-                                        this.mob.getAnimation("lunging").stop(0);
-                                        this.mob.getAnimation("lunge_land").stop(0);
-                                        this.mob.getAnimation("stunned").start(5.5F, 0, () -> {
-                                            this.mob.getAnimation("stunned").setTransitionTicks(4);
-                                            this.mob.unlockIdleAnimations();
-                                        });
-                                        this.mob.setDeltaMovement(0.0, 0.0, 0.0);
-                                        this.mob.playSound((SoundEvent)SoundEventInit.MUTANT_WITHER_SKELETON_BIGLAND.get(), 5.0F, 1.0F);
-                                    }
+            for (BlockPos pos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(aabb.minY), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
+                BlockState state = this.mob.level().getBlockState(pos);
+                if (state.is(Blocks.UNBREAKABLE) || state.isAir() || !state.getFluidState().isEmpty()) {
+                    continue;
+                }
+                VoxelShape shape = state.getCollisionShape(this.mob.level(), pos);
+                if (shape.isEmpty() || !shape.bounds().move(pos).intersects(aabb)) {
+                    continue;
+                }
+                ++breakableBlocks;
+            }
 
-                                    return;
-                                }
-
-                                blockpos = (BlockPos)var26.next();
-                                blockstate = this.mob.level().getBlockState(blockpos);
-                            } while(blockstate.is(Blocks.UNBREAKABLE));
-                        } while(blockstate.isAir());
-                    } while(!blockstate.getFluidState().isEmpty());
-
-                    ++breakableBlocks;
-                } while(!(Boolean)MutantWitherSkeletonCommonConfig.lunge_griefing.get());
-
+            if (breakableBlocks >= 4) {
+                MmScreenShake.shake(this.mob.level(), 10, 0.5F, this.mob.blockPosition(), 15);
+                this.slowDownSpeed = this.initialSlowDownSpeed;
+                this.mob.getAnimation("lunging").stop(0);
+                this.mob.getAnimation("lunge_land").stop(0);
+                this.mob.getAnimation("stunned").start(5.5F, 0, () -> {
+                    this.mob.getAnimation("stunned").setTransitionTicks(4);
+                    this.mob.unlockIdleAnimations();
+                });
+                this.mob.setDeltaMovement(0.0, 0.0, 0.0);
+                this.mob.noPhysics = false;
+                this.mob.playSound((SoundEvent)SoundEventInit.MUTANT_WITHER_SKELETON_BIGLAND.get(), 5.0F, 1.0F);
             }
         }
     }
@@ -281,6 +274,7 @@ public class MutantWitherSkeletonLungeGoal extends Goal {
 
     public void stop() {
         super.stop();
+        this.mob.noPhysics = false;
         this.nextUseTime = this.mob.tickCount + (Integer)MutantWitherSkeletonCommonConfig.lunge_cooldown.get();
     }
 }

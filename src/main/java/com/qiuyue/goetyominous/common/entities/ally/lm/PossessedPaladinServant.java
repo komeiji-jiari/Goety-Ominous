@@ -30,8 +30,6 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.SoulTrident;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.ThrownPhantomDagger;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import com.qiuyue.goetyominous.compat.lm.LmScreenShake;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -90,6 +88,7 @@ import net.miauczel.legendary_monsters.util.EntityUtil;
 import net.miauczel.legendary_monsters.util.MathUtils;
 import net.miauczel.legendary_monsters.util.ParticleUtils;
 import org.jetbrains.annotations.Nullable;
+import com.qiuyue.goetyominous.config.lm.LmConfig;
 
 public class PossessedPaladinServant extends IAnimatedBossServant {
 
@@ -323,7 +322,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
 
     @Override
     public double damageMultiplier() {
-        return MobsConfig.PossessedPaladinServantDamageMultiplier.get();
+        return LmConfig.PossessedPaladinServantDamageMultiplier.get();
     }
 
     private static int toTicks(float seconds) {
@@ -332,20 +331,20 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.PossessedPaladinServantHealth.get())
-                .add(Attributes.ARMOR, AttributesConfig.PossessedPaladinServantArmor.get())
-                .add(Attributes.ARMOR_TOUGHNESS, AttributesConfig.PossessedPaladinServantArmorToughness.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.PossessedPaladinServantDamage.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.PossessedPaladinServantMovementSpeed.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.PossessedPaladinServantFollowRange.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.PossessedPaladinServantKnockbackResistance.get())
-                .add(Attributes.ATTACK_KNOCKBACK, AttributesConfig.PossessedPaladinServantAttackKnockback.get());
+                .add(Attributes.MAX_HEALTH, LmConfig.PossessedPaladinServantHealth.get())
+                .add(Attributes.ARMOR, LmConfig.PossessedPaladinServantArmor.get())
+                .add(Attributes.ARMOR_TOUGHNESS, LmConfig.PossessedPaladinServantArmorToughness.get())
+                .add(Attributes.ATTACK_DAMAGE, LmConfig.PossessedPaladinServantDamage.get())
+                .add(Attributes.MOVEMENT_SPEED, LmConfig.PossessedPaladinServantMovementSpeed.get())
+                .add(Attributes.FOLLOW_RANGE, LmConfig.PossessedPaladinServantFollowRange.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.PossessedPaladinServantKnockbackResistance.get())
+                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.PossessedPaladinServantAttackKnockback.get());
     }
 
     public void setConfigurableAttributes() {
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), AttributesConfig.PossessedPaladinServantHealth.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), AttributesConfig.PossessedPaladinServantArmor.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), AttributesConfig.PossessedPaladinServantDamage.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), LmConfig.PossessedPaladinServantHealth.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), LmConfig.PossessedPaladinServantArmor.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), LmConfig.PossessedPaladinServantDamage.get());
     }
 
     @Override
@@ -1205,7 +1204,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                                         MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData,
                                         @Nullable CompoundTag pDataTag) {
         if (pReason == MobSpawnType.MOB_SUMMONED && this.getTrueOwner() instanceof Player player) {
-            if (countServants(player) >= MobsConfig.PossessedPaladinServantLimit.get()) {
+            if (countServants(player) >= LmConfig.PossessedPaladinServantLimit.get()) {
                 return null;
             }
         }
@@ -2770,7 +2769,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                     EntityUtil.cancelBuffs(entityHit);
                     entityHit.invulnerableTime = 0;
                     this.shouldAttackMore = true;
-                    if (MobsConfig.SoulFractureOnServantHit.get()) {
+                    if (LmConfig.SoulFractureOnServantHit.get()) {
                         this.applyStackingEffect(entityHit, ModEffects.SOUL_FRACTURE.get(), 1, 4,
                                 MathUtils.toTicks(10.0F));
                     }
@@ -3104,7 +3103,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                 boolean flag = entityHit.hurt(this.damageSources().mobAttack(this),
                         (float) ((double) damage + (double) MathUtils.entityBasedHpDamage(entityHit, 3.0F)));
                 if (flag) {
-                    if (MobsConfig.SoulFractureOnServantHit.get()) {
+                    if (LmConfig.SoulFractureOnServantHit.get()) {
                         this.applyStackingEffect(entityHit, ModEffects.SOUL_FRACTURE.get(), 1, 4,
                                 MathUtils.toTicks(10.0F));
                     }
@@ -3326,7 +3325,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                         entityHit.addEffect(new MobEffectInstance(ModEffects.STUN.get(),
                                 this.getStunDuration(), 0));
                     }
-                    if (MobsConfig.SoulFractureOnServantHit.get()) {
+                    if (LmConfig.SoulFractureOnServantHit.get()) {
                         this.applyStackingEffect(entityHit, ModEffects.SOUL_FRACTURE.get(), 1, 4,
                                 MathUtils.toTicks(10.0F));
                     }
@@ -3490,7 +3489,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
 
     @Override
     public double damageCap() {
-        return AttributesConfig.PossessedPaladinServantDamageCap.get();
+        return LmConfig.PossessedPaladinServantDamageCap.get();
     }
 
     @Override
@@ -3522,7 +3521,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         }
 
         if (this.BossInvulnerabilityTime > 0
-                && MobsConfig.PossessedPaladinServantInvulnerabilityTime.get()) {
+                && LmConfig.PossessedPaladinServantInvulnerabilityTime.get()) {
             return false;
         }
 
@@ -3544,7 +3543,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
 
         boolean hurt1 = super.hurt(source, amount);
         if (hurt1 && !this.level().isClientSide
-                && MobsConfig.PossessedPaladinServantInvulnerabilityTime.get()
+                && LmConfig.PossessedPaladinServantInvulnerabilityTime.get()
                 && this.BossInvulnerabilityTime <= 0) {
             this.BossInvulnerabilityTime = BOSS_INVULNERABILITY_TICKS;
         }

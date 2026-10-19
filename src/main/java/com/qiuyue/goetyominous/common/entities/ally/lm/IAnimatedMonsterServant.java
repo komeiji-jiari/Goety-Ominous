@@ -38,6 +38,7 @@ public class IAnimatedMonsterServant extends Summoned implements LmServantDamage
     public int attackTicks;
     public int attackDelayTicks;
     public int attackCooldown;
+    public int followTeleportCooldown;
     public int customDeathTime;
 
     public int attackDelayTicksValue() {
@@ -347,6 +348,9 @@ public class IAnimatedMonsterServant extends Summoned implements LmServantDamage
         }
         if (this.attackDelayTicks > 0) {
             --this.attackDelayTicks;
+        }
+        if (this.followTeleportCooldown > 0) {
+            --this.followTeleportCooldown;
         }
 
     }

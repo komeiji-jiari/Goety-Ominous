@@ -11,8 +11,6 @@ import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.ally.am.RockyRollerServant;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
-import com.qiuyue.goetyominous.config.MobsConfig;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -25,17 +23,18 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class RollerSpell extends SummonSpell {
     public RollerSpell() {
     }
 
     public int defaultSoulCost() {
-        return (Integer)SpellConfig.RollerCost.get();
+        return (Integer)AmConfig.RollerCost.get();
     }
 
     public int defaultCastDuration() {
-        return (Integer) SpellConfig.RollerDuration.get();
+        return (Integer) AmConfig.RollerDuration.get();
     }
 
     public @Nullable SoundEvent CastingSound() {
@@ -43,11 +42,11 @@ public class RollerSpell extends SummonSpell {
     }
 
     public int defaultSpellCooldown() {
-        return (Integer)SpellConfig.RollerCoolDown.get();
+        return (Integer)AmConfig.RollerCoolDown.get();
     }
 
     public int SummonDownDuration() {
-        return (Integer)SpellConfig.RollerSummonDown.get();
+        return (Integer)AmConfig.RollerSummonDown.get();
     }
 
     public SpellType getSpellType() {
@@ -68,7 +67,7 @@ public class RollerSpell extends SummonSpell {
     }
 
     public int summonLimit() {
-        return (Integer) MobsConfig.RockyRollerLimit.get();
+        return (Integer) AmConfig.RockyRollerLimit.get();
     }
 
     public void SpellResult(ServerLevel worldIn, LivingEntity caster, ItemStack staff, SpellStat spellStat) {

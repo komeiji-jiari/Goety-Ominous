@@ -1,13 +1,11 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm;
 
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.FlamebornGuardBlockGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IMoveGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IStateGoal;
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
 import net.miauczel.legendary_monsters.Particle.custom.BigAnnihilationSweepParticle;
 import net.miauczel.legendary_monsters.sound.ModSounds;
@@ -39,6 +37,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
 
 import java.util.List;
+import com.qiuyue.goetyominous.config.lm.LmConfig;
 
 public class FlamebornGuardServant extends AbstractFlamebornServant {
 
@@ -59,18 +58,18 @@ public class FlamebornGuardServant extends AbstractFlamebornServant {
 
     @Override
     public double damageMultiplier() {
-        return MobsConfig.FlamebornGuardServantDamageMultiplier.get();
+        return LmConfig.FlamebornGuardServantDamageMultiplier.get();
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.FlamebornGuardServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.FlamebornGuardServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.FlamebornGuardServantFollowRange.get())
-                .add(Attributes.ARMOR, AttributesConfig.FlamebornGuardServantArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.FlamebornGuardServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, AttributesConfig.FlamebornGuardServantAttackKnockback.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.FlamebornGuardServantDamage.get());
+                .add(Attributes.MAX_HEALTH, LmConfig.FlamebornGuardServantHealth.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.FlamebornGuardServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, LmConfig.FlamebornGuardServantFollowRange.get())
+                .add(Attributes.ARMOR, LmConfig.FlamebornGuardServantArmor.get())
+                .add(Attributes.MOVEMENT_SPEED, LmConfig.FlamebornGuardServantMovementSpeed.get())
+                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.FlamebornGuardServantAttackKnockback.get())
+                .add(Attributes.ATTACK_DAMAGE, LmConfig.FlamebornGuardServantDamage.get());
     }
 
     @Override
@@ -275,7 +274,7 @@ public class FlamebornGuardServant extends AbstractFlamebornServant {
                 continue;
             }
             boolean flag = entityHit.hurt(this.damageSources().mobAttack(this),
-                    (float) ((double) damage * AttributesConfig.FlamebornGuardServantDamage.get() / 12.0D));
+                    (float) ((double) damage * LmConfig.FlamebornGuardServantDamage.get() / 12.0D));
             if (flag) {
                 this.playSound(soundEvent, 1.0F, pitch);
             }

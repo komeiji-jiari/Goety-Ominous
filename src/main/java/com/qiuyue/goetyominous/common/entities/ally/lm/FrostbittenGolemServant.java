@@ -10,8 +10,6 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IStateGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.projectile.IceSpikeEntity;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import com.qiuyue.goetyominous.compat.lm.LmScreenShake;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.miauczel.legendary_monsters.effect.ModEffects;
 import net.miauczel.legendary_monsters.item.ModItems;
@@ -55,6 +53,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
+import com.qiuyue.goetyominous.config.lm.LmConfig;
 
 public class FrostbittenGolemServant extends IAnimatedMiniBossServant {
     private static final EntityDataAccessor<Boolean> DROPPED_ICE_1 =
@@ -91,12 +90,12 @@ public class FrostbittenGolemServant extends IAnimatedMiniBossServant {
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.FrostbittenGolemServantLimit.get();
+        return LmConfig.FrostbittenGolemServantLimit.get();
     }
 
     @Override
     public double damageMultiplier() {
-        return MobsConfig.FrostbittenGolemServantDamageMultiplier.get();
+        return LmConfig.FrostbittenGolemServantDamageMultiplier.get();
     }
 
     @Override
@@ -304,34 +303,36 @@ public class FrostbittenGolemServant extends IAnimatedMiniBossServant {
             this.yBodyRot = 90.0F;
             this.yHeadRot = 0.0F;
         }
-        LivingEntity target = this.getTarget();
-        if (target != null) {
-            double targetX = target.getX() - this.getX();
-            double targetY = target.getEyeY() - this.getEyeY();
-            double targetZ = target.getZ() - this.getZ();
-            double horizontalDistance = Math.sqrt(targetX * targetX + targetZ * targetZ);
-            float yaw = (float) (Math.atan2(targetZ, targetX) * 57.29577951308232) - 90.0F;
-            float pitch = (float) (-(Math.atan2(targetY, horizontalDistance) * 57.29577951308232));
-            this.yHeadRot = this.yBodyRot = yaw;
-            this.yBodyRot = pitch;
+        if (!this.isDeadOrDying()) {
+            LivingEntity target = this.getTarget();
+            if (target != null) {
+                double targetX = target.getX() - this.getX();
+                double targetY = target.getEyeY() - this.getEyeY();
+                double targetZ = target.getZ() - this.getZ();
+                double horizontalDistance = Math.sqrt(targetX * targetX + targetZ * targetZ);
+                float yaw = (float) (Math.atan2(targetZ, targetX) * 57.29577951308232) - 90.0F;
+                float pitch = (float) (-(Math.atan2(targetY, horizontalDistance) * 57.29577951308232));
+                this.yHeadRot = this.yBodyRot = yaw;
+                this.yBodyRot = pitch;
+            }
         }
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.FrostbittenGolemServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.FrostbittenGolemServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.FrostbittenGolemServantFollowRange.get())
-                .add(Attributes.ARMOR, AttributesConfig.FrostbittenGolemServantArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.FrostbittenGolemServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, AttributesConfig.FrostbittenGolemServantAttackKnockback.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.FrostbittenGolemServantDamage.get());
+                .add(Attributes.MAX_HEALTH, LmConfig.FrostbittenGolemServantHealth.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.FrostbittenGolemServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, LmConfig.FrostbittenGolemServantFollowRange.get())
+                .add(Attributes.ARMOR, LmConfig.FrostbittenGolemServantArmor.get())
+                .add(Attributes.MOVEMENT_SPEED, LmConfig.FrostbittenGolemServantMovementSpeed.get())
+                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.FrostbittenGolemServantAttackKnockback.get())
+                .add(Attributes.ATTACK_DAMAGE, LmConfig.FrostbittenGolemServantDamage.get());
     }
 
     public void setConfigurableAttributes() {
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), AttributesConfig.FrostbittenGolemServantHealth.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), AttributesConfig.FrostbittenGolemServantArmor.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), AttributesConfig.FrostbittenGolemServantDamage.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), LmConfig.FrostbittenGolemServantHealth.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), LmConfig.FrostbittenGolemServantArmor.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), LmConfig.FrostbittenGolemServantDamage.get());
     }
 
     @Nullable
@@ -385,7 +386,7 @@ public class FrostbittenGolemServant extends IAnimatedMiniBossServant {
             }
             return false;
         }
-        if (MobsConfig.FrostbittenGolemServantProjectileImmunity.get()) {
+        if (LmConfig.FrostbittenGolemServantProjectileImmunity.get()) {
             if (source.getDirectEntity() instanceof AbstractArrow) {
                 return false;
             }

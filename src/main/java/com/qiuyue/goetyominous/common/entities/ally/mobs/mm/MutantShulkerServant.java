@@ -19,8 +19,6 @@ import com.alexander.mutantmore.interfaces.IHasCustomExplosion;
 import com.alexander.mutantmore.util.MiscUtils;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.goals.MutantShulkerServant.*;
 import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.google.common.collect.Lists;
 import java.util.EnumSet;
 import java.util.List;
@@ -84,6 +82,7 @@ import net.minecraftforge.event.entity.EntityTeleportEvent;
 import org.joml.Quaternionf;
 import org.joml.Quaternionfc;
 import org.joml.Vector3f;
+import com.qiuyue.goetyominous.config.mm.MmConfig;
 
 public class MutantShulkerServant extends AbstractMutantServant implements IHasCustomExplosion {
     public float walkAmount;
@@ -104,6 +103,7 @@ public class MutantShulkerServant extends AbstractMutantServant implements IHasC
     public final AnimationState anvilCrushAnimation = new AnimationState();
     public final AnimationState summonTrapsAnimation = new AnimationState();
     public final AnimationState summonTrapsInShellAnimation = new AnimationState();
+    public int followTeleportCooldown;
     public int specialAnimationTick;
     public int introAnimationTick;
     public int shootAnimationTick;
@@ -157,7 +157,7 @@ public class MutantShulkerServant extends AbstractMutantServant implements IHasC
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.MutantShulkerServantLimit.get();
+        return MmConfig.MutantShulkerServantLimit.get();
     }
 
     protected void registerGoals() {
@@ -283,12 +283,12 @@ public class MutantShulkerServant extends AbstractMutantServant implements IHasC
 
     public static AttributeSupplier.Builder createConfiguredAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.MutantShulkerServantHealth.get())
-                .add(Attributes.ARMOR, AttributesConfig.MutantShulkerServantArmor.get())
-                .add(Attributes.ARMOR_TOUGHNESS, AttributesConfig.MutantShulkerServantArmorToughness.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.MutantShulkerServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.MutantShulkerServantFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.MutantShulkerServantMovementSpeed.get());
+                .add(Attributes.MAX_HEALTH, MmConfig.MutantShulkerServantHealth.get())
+                .add(Attributes.ARMOR, MmConfig.MutantShulkerServantArmor.get())
+                .add(Attributes.ARMOR_TOUGHNESS, MmConfig.MutantShulkerServantArmorToughness.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, MmConfig.MutantShulkerServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, MmConfig.MutantShulkerServantFollowRange.get())
+                .add(Attributes.MOVEMENT_SPEED, MmConfig.MutantShulkerServantMovementSpeed.get());
     }
 
     protected SoundEvent getAmbientSound() {
@@ -515,13 +515,13 @@ public class MutantShulkerServant extends AbstractMutantServant implements IHasC
     private void applyEnhancementModifiers() {
         AttributeInstance health = this.getAttribute(Attributes.MAX_HEALTH);
         if (this.hasVoidEcho()) {
-            this.addModIfMissing(health, VOID_ECHO_HEALTH_UUID, "Void Echo Health", MobsConfig.MutantShulkerVoidEchoHealth.get());
+            this.addModIfMissing(health, VOID_ECHO_HEALTH_UUID, "Void Echo Health", MmConfig.MutantShulkerVoidEchoHealth.get());
         }
         if (this.hasVoidEye()) {
-            this.addModIfMissing(health, VOID_EYE_HEALTH_UUID, "Void Eye Health", MobsConfig.MutantShulkerVoidEyeHealth.get());
+            this.addModIfMissing(health, VOID_EYE_HEALTH_UUID, "Void Eye Health", MmConfig.MutantShulkerVoidEyeHealth.get());
         }
         if (this.hasVoidShard()) {
-            this.addModIfMissing(health, VOID_SHARD_HEALTH_UUID, "Void Shard Health", MobsConfig.MutantShulkerVoidShardHealth.get());
+            this.addModIfMissing(health, VOID_SHARD_HEALTH_UUID, "Void Shard Health", MmConfig.MutantShulkerVoidShardHealth.get());
         }
     }
 
@@ -626,6 +626,9 @@ public class MutantShulkerServant extends AbstractMutantServant implements IHasC
     @Override
     public void aiStep() {
         super.aiStep();
+        if (this.followTeleportCooldown > 0) {
+            --this.followTeleportCooldown;
+        }
         for (Entity entity : this.level().getEntities(this, this.getBoundingBox())) {
             if (!this.canHarm(entity)) continue;
             if (!this.isAnvilAttacking() || this.alreadyCrushed.contains(entity)) continue;

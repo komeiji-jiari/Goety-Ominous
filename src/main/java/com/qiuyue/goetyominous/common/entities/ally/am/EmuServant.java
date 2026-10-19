@@ -14,8 +14,6 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 
 import javax.annotation.Nullable;
 
@@ -58,6 +56,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class EmuServant extends AnimalSummon implements IAnimatedEntity {
 
@@ -82,10 +81,10 @@ public class EmuServant extends AnimalSummon implements IAnimatedEntity {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.EmuServantHealth.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.EmuServantDamage.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.EmuServantMovementSpeed.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.EmuServantFollowRange.get());
+                .add(Attributes.MAX_HEALTH, AmConfig.EmuServantHealth.get())
+                .add(Attributes.ATTACK_DAMAGE, AmConfig.EmuServantDamage.get())
+                .add(Attributes.MOVEMENT_SPEED, AmConfig.EmuServantMovementSpeed.get())
+                .add(Attributes.FOLLOW_RANGE, AmConfig.EmuServantFollowRange.get());
     }
 
     public MobType getMobType() {
@@ -106,7 +105,7 @@ public class EmuServant extends AnimalSummon implements IAnimatedEntity {
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.EmuServantLimit.get();
+        return AmConfig.EmuServantLimit.get();
     }
 
     @Override

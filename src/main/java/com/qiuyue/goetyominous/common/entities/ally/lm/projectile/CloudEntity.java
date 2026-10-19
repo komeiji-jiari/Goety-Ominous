@@ -1,7 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm.projectile;
 
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.miauczel.legendary_monsters.damagetype.ModDamageTypes;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -18,6 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
+import com.qiuyue.goetyominous.config.lm.LmConfig;
 
 public class CloudEntity extends SpellThrowableProjectile {
     public boolean particleOptimalization = false;
@@ -39,7 +39,7 @@ public class CloudEntity extends SpellThrowableProjectile {
     }
 
     public void Particle() {
-        if (!MobsConfig.CloudGolemServantFallingCloudParticles.get()) {
+        if (!LmConfig.CloudGolemServantFallingCloudParticles.get()) {
             return;
         }
         for (int i = 0; i < 360; ++i) {
@@ -108,7 +108,7 @@ public class CloudEntity extends SpellThrowableProjectile {
     @Override
     public void tick() {
         super.tick();
-        if (!MobsConfig.CloudGolemServantFallingCloudParticles.get() && this.level().isClientSide) {
+        if (!LmConfig.CloudGolemServantFallingCloudParticles.get() && this.level().isClientSide) {
             Vec3 vec3 = this.getDeltaMovement();
             if (this.level().isClientSide()) {
                 this.level().addParticle(ParticleTypes.CLOUD, this.getX() - vec3.x, this.getY() - vec3.y, this.getZ() - vec3.z, 0.0, 0.0, 0.0);

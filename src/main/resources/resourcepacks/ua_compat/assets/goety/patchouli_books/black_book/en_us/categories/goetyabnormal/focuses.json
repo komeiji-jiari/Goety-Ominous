@@ -1,0 +1,7 @@
+{
+  "name": "Focuses",
+  "description": "More spells to cast.",
+  "icon": "goetyominous:flare_focus",
+  "parent": "goety:goetyabnormal",
+  "sortnum": 2
+}

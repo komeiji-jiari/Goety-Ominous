@@ -18,23 +18,24 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
+import com.qiuyue.goetyominous.config.mm.MmConfig;
 
 public class ShulkerScatterSpell extends Spell {
     private static final int SCATTER_WINDOW = 20;
 
     @Override
     public int defaultSoulCost() {
-        return com.qiuyue.goetyominous.config.SpellConfig.ShulkerScatterSoulCost.get();
+        return MmConfig.ShulkerScatterSoulCost.get();
     }
 
     @Override
     public int defaultCastDuration() {
-        return com.qiuyue.goetyominous.config.SpellConfig.ShulkerScatterCastDuration.get();
+        return MmConfig.ShulkerScatterCastDuration.get();
     }
 
     @Override
     public int defaultSpellCooldown() {
-        return com.qiuyue.goetyominous.config.SpellConfig.ShulkerScatterCooldown.get();
+        return MmConfig.ShulkerScatterCooldown.get();
     }
 
     @Nullable

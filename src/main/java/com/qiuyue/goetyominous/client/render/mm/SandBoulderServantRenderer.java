@@ -19,9 +19,13 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import com.qiuyue.goetyominous.config.mm.MmConfig;
 
 @OnlyIn(Dist.CLIENT)
 public class SandBoulderServantRenderer extends EntityRenderer<SandBoulderServant> {
+    private static final String SERVANT_TEXTURE = "textures/entity/mutant_husk_servant";
+    private static final String ORIGINAL_TEXTURE = "textures/entities/mutant_husk";
+
     private final SandBoulderServantModel model;
 
     public SandBoulderServantRenderer(EntityRendererProvider.Context context) {
@@ -48,6 +52,9 @@ public class SandBoulderServantRenderer extends EntityRenderer<SandBoulderServan
 
     @Override
     public ResourceLocation getTextureLocation(SandBoulderServant entity) {
-        return new ResourceLocation(GoetyOminous.MOD_ID, "textures/entity/mutant_husk_servant" + entity.getSandType() + ".png");
+        if (MmConfig.MutantHuskServantOriginalTexture.get()) {
+            return new ResourceLocation("mutantmore", ORIGINAL_TEXTURE + entity.getSandType() + ".png");
+        }
+        return new ResourceLocation(GoetyOminous.MOD_ID, SERVANT_TEXTURE + entity.getSandType() + ".png");
     }
 }

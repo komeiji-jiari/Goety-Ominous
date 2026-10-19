@@ -18,7 +18,6 @@ import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.events.ac.NucleeperNukeKillHandler;
 import com.qiuyue.goetyominous.common.events.ac.NucleeperNukeProtectionHandler;
 import com.qiuyue.goetyominous.common.init.ac.AcParticles;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.server.level.ServerLevel;
@@ -43,6 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class AtomicBombSpell extends Spell {
 
@@ -65,17 +65,17 @@ public class AtomicBombSpell extends Spell {
 
     @Override
     public int defaultSoulCost() {
-        return SpellConfig.AtomicBombCost.get();
+        return AcConfig.AtomicBombCost.get();
     }
 
     @Override
     public int defaultCastDuration() {
-        return SpellConfig.AtomicBombCastDuration.get();
+        return AcConfig.AtomicBombCastDuration.get();
     }
 
     @Override
     public int defaultSpellCooldown() {
-        return SpellConfig.AtomicBombCoolDown.get();
+        return AcConfig.AtomicBombCoolDown.get();
     }
 
     @Override
@@ -90,7 +90,7 @@ public class AtomicBombSpell extends Spell {
 
     @Override
     public SpellStat defaultStats() {
-        return super.defaultStats().setRange(SpellConfig.AtomicBombRange.get());
+        return super.defaultStats().setRange(AcConfig.AtomicBombRange.get());
     }
 
     @Override

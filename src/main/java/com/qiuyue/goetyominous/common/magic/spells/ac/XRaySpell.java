@@ -11,7 +11,6 @@ import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.github.alexmodguy.alexscaves.server.potion.ACEffectRegistry;
 import com.qiuyue.goetyominous.common.network.ModNetwork;
 import com.qiuyue.goetyominous.common.network.ac.XRayPacket;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -29,6 +28,7 @@ import net.minecraftforge.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class XRaySpell extends ChargingSpell {
 
@@ -44,12 +44,12 @@ public class XRaySpell extends ChargingSpell {
 
     @Override
     public int defaultSoulCost() {
-        return SpellConfig.XRaySoulCost.get();
+        return AcConfig.XRaySoulCost.get();
     }
 
     @Override
     public int defaultSpellCooldown() {
-        return SpellConfig.XRayCoolDown.get();
+        return AcConfig.XRayCoolDown.get();
     }
 
     @Override
@@ -59,7 +59,7 @@ public class XRaySpell extends ChargingSpell {
 
     @Override
     public int shotsNumber() {
-        return SpellConfig.XRayCastDuration.get();
+        return AcConfig.XRayCastDuration.get();
     }
 
     @Override
@@ -74,7 +74,7 @@ public class XRaySpell extends ChargingSpell {
 
     @Override
     public SpellStat defaultStats() {
-        return super.defaultStats().setRange(SpellConfig.XRayRange.get());
+        return super.defaultStats().setRange(AcConfig.XRayRange.get());
     }
 
     @Override

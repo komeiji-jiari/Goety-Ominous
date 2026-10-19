@@ -11,8 +11,6 @@ import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.ally.of.DicerServant;
 import com.qiuyue.goetyominous.common.init.of.OfEntityRegistry;
-import com.qiuyue.goetyominous.config.MobsConfig;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -26,6 +24,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.of.OfConfig;
 
 public class DicerSpell extends SummonSpell {
 
@@ -33,19 +32,19 @@ public class DicerSpell extends SummonSpell {
     }
 
     public int defaultSoulCost() {
-        return SpellConfig.DicerSoulCost.get();
+        return OfConfig.DicerSoulCost.get();
     }
 
     public int defaultCastDuration() {
-        return SpellConfig.DicerCastDuration.get();
+        return OfConfig.DicerCastDuration.get();
     }
 
     public int SummonDownDuration() {
-        return SpellConfig.DicerSummonDown.get();
+        return OfConfig.DicerSummonDown.get();
     }
 
     public int defaultSpellCooldown() {
-        return SpellConfig.DicerCoolDown.get();
+        return OfConfig.DicerCoolDown.get();
     }
 
     public SoundEvent CastingSound() {
@@ -61,7 +60,7 @@ public class DicerSpell extends SummonSpell {
     }
 
     public int summonLimit() {
-        return MobsConfig.DicerServantLimit.get();
+        return OfConfig.DicerServantLimit.get();
     }
 
     public List<Enchantment> acceptedEnchantments() {

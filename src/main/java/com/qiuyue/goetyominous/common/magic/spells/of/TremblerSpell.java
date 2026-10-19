@@ -11,8 +11,6 @@ import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.ally.of.TremblerServant;
 import com.qiuyue.goetyominous.common.init.of.OfEntityRegistry;
-import com.qiuyue.goetyominous.config.MobsConfig;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -26,6 +24,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.of.OfConfig;
 
 public class TremblerSpell extends SummonSpell {
 
@@ -33,19 +32,19 @@ public class TremblerSpell extends SummonSpell {
     }
 
     public int defaultSoulCost() {
-        return SpellConfig.TremblerSoulCost.get();
+        return OfConfig.TremblerSoulCost.get();
     }
 
     public int defaultCastDuration() {
-        return SpellConfig.TremblerCastDuration.get();
+        return OfConfig.TremblerCastDuration.get();
     }
 
     public int SummonDownDuration() {
-        return SpellConfig.TremblerSummonDown.get();
+        return OfConfig.TremblerSummonDown.get();
     }
 
     public int defaultSpellCooldown() {
-        return SpellConfig.TremblerCoolDown.get();
+        return OfConfig.TremblerCoolDown.get();
     }
 
     public SoundEvent CastingSound() {
@@ -61,7 +60,7 @@ public class TremblerSpell extends SummonSpell {
     }
 
     public int summonLimit() {
-        return MobsConfig.TremblerServantLimit.get();
+        return OfConfig.TremblerServantLimit.get();
     }
 
     public List<Enchantment> acceptedEnchantments() {

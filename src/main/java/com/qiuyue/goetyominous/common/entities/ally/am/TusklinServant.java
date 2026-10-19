@@ -36,8 +36,6 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -53,6 +51,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class TusklinServant extends AnimalSummon implements IAnimatedEntity {
 
@@ -73,11 +72,11 @@ public class TusklinServant extends AnimalSummon implements IAnimatedEntity {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.TusklinServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.TusklinServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.TusklinServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.TusklinServantKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.TusklinServantMovementSpeed.get());
+                .add(Attributes.MAX_HEALTH, AmConfig.TusklinServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AmConfig.TusklinServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AmConfig.TusklinServantDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AmConfig.TusklinServantKnockbackResistance.get())
+                .add(Attributes.MOVEMENT_SPEED, AmConfig.TusklinServantMovementSpeed.get());
     }
 
     protected SoundEvent getAmbientSound() {
@@ -107,7 +106,7 @@ public class TusklinServant extends AnimalSummon implements IAnimatedEntity {
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.TusklinServantLimit.get();
+        return AmConfig.TusklinServantLimit.get();
     }
 
     @Override

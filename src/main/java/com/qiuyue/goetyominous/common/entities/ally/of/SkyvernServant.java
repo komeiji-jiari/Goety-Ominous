@@ -6,8 +6,6 @@ import com.qiuyue.goetyominous.common.entities.ally.of.goals.SkyvernServantCharg
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.SkyvernServantFlightGoal;
 import com.qiuyue.goetyominous.client.sound.of.SkyvernServantLoopSoundHandler;
 import com.qiuyue.goetyominous.common.init.of.OfEntityRegistry;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.unusualmodding.opposing_force.entity.Skyvern.SkyvernVariant;
 import com.unusualmodding.opposing_force.entity.ai.control.SkyvernLookControl;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothFlyingPathNavigation;
@@ -58,6 +56,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import com.qiuyue.goetyominous.config.of.OfConfig;
 
 public class SkyvernServant extends Summoned implements FlyingAnimal, AttackState {
 
@@ -107,12 +106,12 @@ public class SkyvernServant extends Summoned implements FlyingAnimal, AttackStat
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.SkyvernServantHealth.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.SkyvernServantMovementSpeed.get())
-                .add(Attributes.FLYING_SPEED, AttributesConfig.SkyvernServantFlyingSpeed.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.SkyvernServantAttackDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.SkyvernServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.SkyvernServantFollowRange.get());
+                .add(Attributes.MAX_HEALTH, OfConfig.SkyvernServantHealth.get())
+                .add(Attributes.MOVEMENT_SPEED, OfConfig.SkyvernServantMovementSpeed.get())
+                .add(Attributes.FLYING_SPEED, OfConfig.SkyvernServantFlyingSpeed.get())
+                .add(Attributes.ATTACK_DAMAGE, OfConfig.SkyvernServantAttackDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, OfConfig.SkyvernServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, OfConfig.SkyvernServantFollowRange.get());
     }
 
     @Override
@@ -138,7 +137,7 @@ public class SkyvernServant extends Summoned implements FlyingAnimal, AttackStat
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.SkyvernServantLimit.get();
+        return OfConfig.SkyvernServantLimit.get();
     }
 
     @Override
@@ -493,8 +492,8 @@ public class SkyvernServant extends Summoned implements FlyingAnimal, AttackStat
     }
 
     private void applySegmentHealth() {
-        double health = AttributesConfig.SkyvernServantHealth.get()
-                + AttributesConfig.SkyvernServantHealthPerSegment.get() * (double) this.getSegments();
+        double health = OfConfig.SkyvernServantHealth.get()
+                + OfConfig.SkyvernServantHealthPerSegment.get() * (double) this.getSegments();
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(health);
         if (this.getHealth() > this.getMaxHealth()) {
             this.setHealth(this.getMaxHealth());
@@ -588,7 +587,7 @@ public class SkyvernServant extends Summoned implements FlyingAnimal, AttackStat
     }
 
     public boolean isGhost() {
-        return this.isUpgraded() && MobsConfig.SkyvernServantGhost.get();
+        return this.isUpgraded() && OfConfig.SkyvernServantGhost.get();
     }
 
     @Override

@@ -5,8 +5,6 @@ import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.ModDamageSource;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.TremblerServantRollGoal;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
 import com.unusualmodding.opposing_force.entity.utils.EliteVariant;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
@@ -53,6 +51,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.time.LocalDate;
 import java.time.Month;
+import com.qiuyue.goetyominous.config.of.OfConfig;
 
 public class TremblerServant extends Summoned implements EliteVariant {
     private static final EntityDataAccessor<Boolean> ROLLING;
@@ -72,12 +71,12 @@ public class TremblerServant extends Summoned implements EliteVariant {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.TremblerServantHealth.get())
-                .add(Attributes.ARMOR, AttributesConfig.TremblerServantArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.TremblerServantMovementSpeed.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.TremblerServantAttackDamage.get())
-                .add(Attributes.ATTACK_KNOCKBACK, AttributesConfig.TremblerServantAttackKnockback.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.TremblerServantKnockbackResistance.get());
+                .add(Attributes.MAX_HEALTH, OfConfig.TremblerServantHealth.get())
+                .add(Attributes.ARMOR, OfConfig.TremblerServantArmor.get())
+                .add(Attributes.MOVEMENT_SPEED, OfConfig.TremblerServantMovementSpeed.get())
+                .add(Attributes.ATTACK_DAMAGE, OfConfig.TremblerServantAttackDamage.get())
+                .add(Attributes.ATTACK_KNOCKBACK, OfConfig.TremblerServantAttackKnockback.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, OfConfig.TremblerServantKnockbackResistance.get());
     }
 
     @Override
@@ -117,7 +116,7 @@ public class TremblerServant extends Summoned implements EliteVariant {
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.TremblerServantLimit.get();
+        return OfConfig.TremblerServantLimit.get();
     }
 
     @Override

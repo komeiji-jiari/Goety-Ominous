@@ -6,7 +6,6 @@ import com.Polarice3.Goety.common.magic.Spell;
 import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.projectile.of.DicerServantLaser;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import com.unusualmodding.opposing_force.registry.OPSoundEvents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -16,6 +15,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.qiuyue.goetyominous.config.of.OfConfig;
 
 public class DicerLaserSpell extends Spell {
 
@@ -25,17 +25,17 @@ public class DicerLaserSpell extends Spell {
 
     @Override
     public int defaultSoulCost() {
-        return SpellConfig.DicerLaserCost.get();
+        return OfConfig.DicerLaserCost.get();
     }
 
     @Override
     public int defaultCastDuration() {
-        return SpellConfig.DicerLaserCastDuration.get();
+        return OfConfig.DicerLaserCastDuration.get();
     }
 
     @Override
     public int defaultSpellCooldown() {
-        return SpellConfig.DicerLaserCoolDown.get();
+        return OfConfig.DicerLaserCoolDown.get();
     }
 
     @Override

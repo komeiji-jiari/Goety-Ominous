@@ -83,7 +83,11 @@ public class MmClientEvents {
             return;
         }
 
-        event.registerEntityRenderer(MmEntityRegistry.AREA_DAMAGE.get(), EmptyRenderer::new);
+        event.registerEntityRenderer(MmEntityRegistry.MUTANT_JUNGLE_ZOMBIE_VINE_SWEEP.get(), EmptyRenderer::new);
+        event.registerEntityRenderer(MmEntityRegistry.MUTANT_HUSK_SAND_BURST.get(), EmptyRenderer::new);
+        event.registerEntityRenderer(MmEntityRegistry.MUTANT_HUSK_SAND_GEYSER.get(), EmptyRenderer::new);
+        event.registerEntityRenderer(MmEntityRegistry.MUTANT_JUNGLE_ZOMBIE_POISON_CLOUD.get(), EmptyRenderer::new);
+        event.registerEntityRenderer(MmEntityRegistry.MUTANT_WITHER_BREATH.get(), EmptyRenderer::new);
 
         event.registerEntityRenderer(
                 com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.MUTANT_WITHER_SKELETON_SERVANT.get(),

@@ -1,7 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.lm.projectile;
 
 import com.qiuyue.goetyominous.compat.lm.LmScreenShake;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.common.entities.ally.lm.ServantMath;
 import com.qiuyue.goetyominous.common.init.lm.LmDamageTypes;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
@@ -39,6 +38,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
+import com.qiuyue.goetyominous.config.lm.LmConfig;
 
 public class SoulTrident extends AbstractArrow {
 
@@ -160,7 +160,7 @@ public class SoulTrident extends AbstractArrow {
                     livingOwner.heal(8.0F);
                 }
 
-                if (MobsConfig.SoulFractureOnServantHit.get()) {
+                if (LmConfig.SoulFractureOnServantHit.get()) {
                     EntityUtil.applyStackingEffect(livingEntity, ModEffects.SOUL_FRACTURE.get(),
                             1, 5, ServantMath.toTicks(10.0F));
                 }

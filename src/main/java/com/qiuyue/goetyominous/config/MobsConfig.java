@@ -7,180 +7,25 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import java.io.File;
 
 public class MobsConfig {
-    private static final String[] LM_DAMAGE_MULTIPLIER_COMMENT = {
-            "Damage multiplier for every single attack of this servant, including the ones fired by its projectiles (Default: 1.0)",
-            "Every move keeps its own ratio from Legendary Monsters; this single value scales all of them at once",
-            "Unlike Legendary Monsters' own *DamageMutliplier options, this one does not touch the original boss"
-    };
-
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
-    public static final ForgeConfigSpec.ConfigValue<Integer> CentipedeLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> SkelewagLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> RockyRollerLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> BunfungusLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> FrostStalkerLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> MurmurServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> FarseerServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> HullbreakerServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> HullbreakerServantReturnEmbryo;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> HullbreakerServantPickUpDrops;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> HullbreakerServantBlockBreakGriefing;
-    public static final ForgeConfigSpec.ConfigValue<Integer> IllagerElephantServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> DropBearServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> GusterServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> EmuServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> SoulVultureServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> TusklinServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> TigerServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> ThrasherServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> GreatThrasherServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> MutantWitherSkeletonServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> MutantHoglinServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> MutantShulkerServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> MutantBlazeServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> RodlingServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> MutantJungleZombieServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> MutantHuskServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> MutantFrozenZombieServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> OvergrownColossusServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> OvergrownColossusServantProjectileImmunity;
-    public static final ForgeConfigSpec.ConfigValue<Integer> FrostbittenGolemServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> FrostbittenGolemServantProjectileImmunity;
-    public static final ForgeConfigSpec.ConfigValue<Double> FrostbittenGolemServantDamageMultiplier;
-    public static final ForgeConfigSpec.ConfigValue<Integer> AncientGuardianServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> AncientGuardianServantProjectileImmunity;
-    public static final ForgeConfigSpec.ConfigValue<Double> AncientGuardianServantDamageMultiplier;
-    public static final ForgeConfigSpec.ConfigValue<Integer> PossessedPaladinServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> HoveringHurricaneServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> CloudGolemServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerMimicServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> AnnihilationPursuerServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> BeheadedKnightServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> ResurrectedKnightServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Double> BeheadedKnightServantDamageMultiplier;
-    public static final ForgeConfigSpec.ConfigValue<Double> ResurrectedKnightServantDamageMultiplier;
-    public static final ForgeConfigSpec.ConfigValue<Integer> EndersentServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Double> EndersentServantDamageMultiplier;
-    public static final ForgeConfigSpec.ConfigValue<Integer> ChoruslingServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Double> ChoruslingServantDamageMultiplier;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> SoulFractureOnServantHit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> TheObliteratorServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Double> TheObliteratorServantDamageMultiplier;
-    public static final ForgeConfigSpec.ConfigValue<Double> PossessedPaladinServantDamageMultiplier;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> PossessedPaladinServantInvulnerabilityTime;
-    public static final ForgeConfigSpec.ConfigValue<Double> HoveringHurricaneServantDamageMultiplier;
-    public static final ForgeConfigSpec.ConfigValue<Double> CloudGolemServantDamageMultiplier;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> CloudGolemServantLosesConsciousness;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> CloudGolemServantCanCharge2Times;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> CloudGolemServantInvulnerabilityTime;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> CloudGolemServantProjectileImmunityTimer;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> CloudGolemServantFallingCloudParticles;
-    public static final ForgeConfigSpec.ConfigValue<Double> ShulkerMimicServantDamageMultiplier;
-    public static final ForgeConfigSpec.ConfigValue<Double> AnnihilationPursuerServantDamageMultiplier;
-    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornGuardServantDamageMultiplier;
-    public static final ForgeConfigSpec.ConfigValue<Double> FlamebornWarriorServantDamageMultiplier;
-    public static final ForgeConfigSpec.ConfigValue<Double> FlameDrifterServantDamageMultiplier;
-    public static final ForgeConfigSpec.ConfigValue<Double> WanderingEyeServantDamageMultiplier;
-    public static final ForgeConfigSpec.ConfigValue<Integer> TheObliteratorCloneBurstHpDamage;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> TheObliteratorServantFirstPhaseProjectileImmunity;
-    public static final ForgeConfigSpec.ConfigValue<Integer> HeresiarchServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> WargLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> BreezeServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> HurricaneServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Boolean> HurricaneServantCore;
-    public static final ForgeConfigSpec.ConfigValue<Integer> WargLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> CerberusLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> RamblerServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> GrottoceratopsServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> RelicheirusServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> TremorsaurusServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> TremorzillaServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> TremorzillaServantBreakBlocks;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> TremorzillaServantBreakTrees;
-    public static final ForgeConfigSpec.ConfigValue<Integer> AtlatitanServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> AtlatitanServantBreakBlocks;
-    public static final ForgeConfigSpec.ConfigValue<Integer> LuxtructosaurusServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> GumWormServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantBreakTrees;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantFire;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantWaterToStone;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantTephra;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantJumpExplosion;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantPrimalMagma;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> LuxtructosaurusServantExtinctionCatalyst;
-    public static final ForgeConfigSpec.ConfigValue<Integer> LuxtructosaurusServantRoarInterval;
-    public static final ForgeConfigSpec.ConfigValue<Integer> VallumraptorServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> VallumraptorElderChance;
-    public static final ForgeConfigSpec.ConfigValue<Integer> NucleeperServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> NuclearGuardianServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> BrainiacServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> CaniacServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> GummyBearServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> CaramelCubeServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> GumbeeperServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> VesperServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> TeletorServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> ForsakenServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> CandicornServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> GammaroachServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> CorrodentServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> DeepOneServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> DeepOneKnightServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> DeepOneMageServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> LicowitchSummonsLife;
-    public static final ForgeConfigSpec.ConfigValue<Integer> LicowitchSummonLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> MineGuardianServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> MineGuardianServantExplosionGriefing;
-    public static final ForgeConfigSpec.ConfigValue<Integer> DicerServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> TremblerServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> TerrorServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> VoltServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> FireSlimeServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> FrowzyServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> GuzzlerServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> UmberSpiderServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Integer> SkyvernServantLimit;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> SkyvernServantGhost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> HeresiarchServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Boolean> LeapkelpMoistness;
-
-    public static final ForgeConfigSpec.ConfigValue<Integer> MWSSoulShieldHealthBouns;
-    public static final ForgeConfigSpec.ConfigValue<Integer> MWSSoulShieldDamageBouns;
-    public static final ForgeConfigSpec.ConfigValue<Integer> MWSHowlingSoulHealthBouns;
-    public static final ForgeConfigSpec.ConfigValue<Integer> MWSHowlingSoulDamageBouns;
-    public static final ForgeConfigSpec.ConfigValue<Integer> MWSUnholyBloodHealthBouns;
-    public static final ForgeConfigSpec.ConfigValue<Integer> MWSUnholyBloodDamageBouns;
-    public static final ForgeConfigSpec.ConfigValue<Integer> MHSoulJarHealthBouns;
-    public static final ForgeConfigSpec.ConfigValue<Integer> MHSoulJarDamageBouns;
-    public static final ForgeConfigSpec.ConfigValue<Integer> MHBlazingHelmHealthBouns;
-    public static final ForgeConfigSpec.ConfigValue<Integer> MHBlazingHelmDamageBouns;
-    public static final ForgeConfigSpec.ConfigValue<Integer> MHUnholyBloodHealthBouns;
-    public static final ForgeConfigSpec.ConfigValue<Integer> MHUnholyBloodDamageBouns;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantShulkerVoidEchoHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantShulkerVoidEyeHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantShulkerVoidShardHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantShulkerBulletLevitationMaxHealth;
-    public static final ForgeConfigSpec.ConfigValue<Integer> MBBulwarkFocusHealthBouns;
-    public static final ForgeConfigSpec.ConfigValue<Integer> MBBlazingHelmHealthBouns;
-    public static final ForgeConfigSpec.ConfigValue<Integer> MBUnholyBloodHealthBouns;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> MBUnholyBloodTexture;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> MBUnholyBloodLowHealthTexture;
-    public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoUnholyBloodHealthBouns;
-    public static final ForgeConfigSpec.ConfigValue<Integer> WarpedMoscoUnholyBloodDamageBouns;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> WarpedMoscoUnholyBloodTexture;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> MutantMoreServantScreenShake;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> LmServantScreenShake;
-
-    public static final ForgeConfigSpec.ConfigValue<Integer> DredenSpawnWeight;
-    public static final ForgeConfigSpec.ConfigValue<Integer> DredenSpawnMinCount;
-    public static final ForgeConfigSpec.ConfigValue<Integer> DredenSpawnMaxCount;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> ApostleSpawnDisciple;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> HeresiarchHysteriaEnabled;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> CultistSpread;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ChannellerMaxStealHealth;
     public static final ForgeConfigSpec.ConfigValue<Boolean> CultistPatrol;
     public static final ForgeConfigSpec.ConfigValue<Integer> CultistPatrolInterval;
-    public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachSpawnWeight;
-    public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachSpawnMinCount;
-    public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachSpawnMaxCount;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> MonolithConversionEnabled;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MonolithConversionTime;
     public static final ForgeConfigSpec.ConfigValue<Integer> BeldamSpawnWeight;
     public static final ForgeConfigSpec.ConfigValue<Integer> BeldamSpawnMinCount;
     public static final ForgeConfigSpec.ConfigValue<Integer> BeldamSpawnMaxCount;
@@ -190,12 +35,12 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> ZealotSpawnWeight;
     public static final ForgeConfigSpec.ConfigValue<Integer> ZealotSpawnMinCount;
     public static final ForgeConfigSpec.ConfigValue<Integer> ZealotSpawnMaxCount;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> ApostleSpawnDisciple;
-    public static final ForgeConfigSpec.ConfigValue<Integer> ChannellerMaxStealHealth;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> HeresiarchHysteriaEnabled;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> CultistSpread;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> MonolithConversionEnabled;
-    public static final ForgeConfigSpec.ConfigValue<Integer> MonolithConversionTime;
+    public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachSpawnWeight;
+    public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachSpawnMinCount;
+    public static final ForgeConfigSpec.ConfigValue<Integer> UrbhadhachSpawnMaxCount;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DredenSpawnWeight;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DredenSpawnMinCount;
+    public static final ForgeConfigSpec.ConfigValue<Integer> DredenSpawnMaxCount;
     public static final ForgeConfigSpec.ConfigValue<Integer> PiglinServantBabyGrowthTime;
     public static final ForgeConfigSpec.ConfigValue<Integer> PiglinServantEvolutionDamage;
     public static final ForgeConfigSpec.ConfigValue<Integer> PiglinBruteServantEvolutionDamage;
@@ -206,630 +51,55 @@ public class MobsConfig {
 
     static {
         BUILDER.push("Servant Limits");
-
-        CentipedeLimit = BUILDER.comment("Maximum number of Centipede Servants that can exist at once (Default: 12)")
-                .defineInRange("centipedeLimit", 12, 1, 100);
-
-        SkelewagLimit = BUILDER
-                .comment("Maximum number of Skelewag Servants that can be summoned (Default: 32)")
-                .defineInRange("skelewagServantLimit", 32, 1, 100);
-
-        RockyRollerLimit = BUILDER
-                .comment("Maximum number of Rocky Roller Servants that can be summoned (Default: 16)")
-                .defineInRange("rockyRollerServantLimit", 16, 1, 100);
-
-        BunfungusLimit = BUILDER
-                .comment("Maximum number of Bunfungus Servants that can be summoned (Default: 6)")
-                .defineInRange("BunfungusServantLimit", 6, 1, 100);
-
-        MurmurServantLimit = BUILDER
-                .comment("Maximum number of Murmur Servants that can be summoned (Default: 16)")
-                .defineInRange("murmurServantLimit", 16, 1, 100);
-
-        FrostStalkerLimit = BUILDER
-                .comment("Maximum number of FrostStalker Servants that can be summoned (Default: 32)")
-                .defineInRange("frostStalkerServantLimit", 32, 1, 100);
-
         WargLimit = BUILDER
                 .comment("Maximum number of Wargs that can be summoned (Default: 3)")
                 .defineInRange("wargLimit", 3, 1, 100);
-
         BreezeServantLimit = BUILDER
                 .comment("Maximum number of Breeze Servants that can be summoned (Default: 16)")
                 .defineInRange("breezeServantLimit", 16, 1, 100);
-
         HurricaneServantLimit = BUILDER
                 .comment("Number of Hurricane Servants that an individual player can have in total (Default: 3)")
                 .defineInRange("hurricaneServantLimit", 3, 1, 100);
-
         HurricaneServantCore = BUILDER
                 .comment("Whether owned Hurricane Servants drop Hurricane Cores, Default: true")
                 .define("hurricaneServantCore", true);
-
         CerberusLimit = BUILDER
                 .comment("The maximum number of living Cerberuses owned by one player (Default: 1)")
                 .defineInRange("cerberusLimit", 1, 0, 100);
-
-        FarseerServantLimit = BUILDER
-                .comment("Maximum number of Farseer Servants that can be summoned (Default: 2)")
-                .defineInRange("farseerServantLimit", 2, 1, 100);
-
-        WarpedMoscoServantLimit = BUILDER
-                .comment("Maximum number of Warped Mosco Servants that can be summoned (Default: 2)")
-                .defineInRange("warpedMoscoServantLimit", 2, 1, 100);
-
-        HullbreakerServantLimit = BUILDER
-                .comment("Maximum number of Hullbreaker Servants that can be summoned (Default: 1)")
-                .defineInRange("hullbreakerServantLimit", 1, 1, 100);
-
-        HullbreakerServantReturnEmbryo = BUILDER
-                .comment("Whether Hullbreaker Servants drop an immortal embryo when they die while owned (Default: true)")
-                .define("hullbreakerServantReturnEmbryo", true);
-
-        HullbreakerServantPickUpDrops = BUILDER
-                .comment("Whether Hullbreaker Servants collect the drops of the mobs they kill (Default: true)")
-                .define("hullbreakerServantPickUpDrops", true);
-
-        HullbreakerServantBlockBreakGriefing = BUILDER.comment("Whether Hullbreaker Servants break blocks when bashing, Default: false (set to true to allow block destruction, which also respects the mobGriefing game rule)")
-                .define("hullbreakerServantBlockBreakGriefing", false);
-
-        IllagerElephantServantLimit = BUILDER
-                .comment("Maximum number of Illager Elephant Servants that can be summoned (Default: 2)")
-                .defineInRange("illagerElephantServantLimit", 2, 1, 100);
-
-        DropBearServantLimit = BUILDER
-                .comment("Maximum number of Drop Bear Servants that can be summoned (Default: 16)")
-                .defineInRange("dropBearServantLimit", 16, 1, 100);
-
-        GusterServantLimit = BUILDER
-                .comment("Maximum number of Guster Servants that can be summoned (Default: 32)")
-                .defineInRange("gusterServantLimit", 32, 1, 100);
-
-        EmuServantLimit = BUILDER
-                .comment("Maximum number of Emu Servants that can be summoned (Default: 16)")
-                .defineInRange("emuServantLimit", 16, 1, 100);
-
-        SoulVultureServantLimit = BUILDER
-                .comment("Maximum number of Soul Vulture Servants that can be summoned (Default: 64)")
-                .defineInRange("soulVultureServantLimit", 64, 1, 100);
-
-        TusklinServantLimit = BUILDER
-                .comment("Maximum number of Tusklin Servants that can be summoned (Default: 16)")
-                .defineInRange("tusklinServantLimit", 16, 1, 100);
-
-        TigerServantLimit = BUILDER
-                .comment("Maximum number of Tiger Servants that can be summoned (Default: 8)")
-                .defineInRange("tigerServantLimit", 8, 1, 100);
-
-        RamblerServantLimit = BUILDER
-                .comment("Maximum number of Rambler Servants that can be summoned (Default: 8)")
-                .defineInRange("ramblerServantLimit", 8, 1, 100);
-
-        DicerServantLimit = BUILDER
-                .comment("Maximum number of Dicer Servants that can be summoned (Default: 16)")
-                .defineInRange("dicerServantLimit", 16, 1, 100);
-
-        TremblerServantLimit = BUILDER
-                .comment("Maximum number of Trembler Servants that can be summoned (Default: 16)")
-                .defineInRange("tremblerServantLimit", 16, 1, 100);
-
-        TerrorServantLimit = BUILDER
-                .comment("Maximum number of Terror Servants that can be summoned (Default: 16)")
-                .defineInRange("terrorServantLimit", 16, 1, 100);
-
-        VoltServantLimit = BUILDER
-                .comment("Maximum number of Volt Servants that can be summoned (Default: 16)")
-                .defineInRange("voltServantLimit", 16, 1, 100);
-
-        FireSlimeServantLimit = BUILDER
-                .comment("Maximum number of Fire Slime Servants that can be summoned (Default: 2147483647 = no limit)")
-                .defineInRange("fireSlimeServantLimit", Integer.MAX_VALUE, 1, Integer.MAX_VALUE);
-
-        FrowzyServantLimit = BUILDER
-                .comment("Maximum number of Frowzy Servants that can be summoned (Default: 16)")
-                .defineInRange("frowzyServantLimit", 16, 1, 100);
-
-        GuzzlerServantLimit = BUILDER
-                .comment("Maximum number of Guzzler Servants that can be summoned (Default: 2)")
-                .defineInRange("guzzlerServantLimit", 2, 1, 100);
-
-        UmberSpiderServantLimit = BUILDER
-                .comment("Maximum number of Umber Spider Servants that can be summoned (Default: 32)")
-                .defineInRange("umberSpiderServantLimit", 32, 1, 100);
-
-        SkyvernServantLimit = BUILDER
-                .comment("Maximum number of Skyvern Servants that can be summoned (Default: 3)")
-                .defineInRange("skyvernServantLimit", 3, 1, 100);
-
-        SkyvernServantGhost = BUILDER
-                .comment("Whether Skyvern Servants summoned while the owner wears a Wind Robe become translucent and lose collision (Default: true)")
-                .define("skyvernServantGhost", true);
-
-        LeapkelpMoistness = BUILDER.comment("Whether Leapkelp Servants have a moistness meter; when false they never dry out (Default: true)")
-                .define("leapkelpMoistness", true);
-
         UrbhadhachServantLimit = BUILDER
                 .comment("Maximum number of Urbhadhach Servants that can be summoned (Default: 8)")
                 .defineInRange("urbhadhachServantLimit", 8, 1, 100);
-
         HeresiarchServantLimit = BUILDER
                 .comment("Maximum number of Heresiarch Servants that can be summoned (Default: 3)")
                 .defineInRange("heresiarchServantLimit", 3, 1, 100);
-
-        ThrasherServantLimit = BUILDER
-                .comment("Maximum number of Thrasher Servants that can be summoned (Default: 10)")
-                .defineInRange("thrasherServantLimit", 10, 1, 100);
-
-        GreatThrasherServantLimit = BUILDER
-                .comment("Maximum number of Great Thrasher Servants that can be summoned (Default: 3)")
-                .defineInRange("greatThrasherServantLimit", 3, 1, 100);
-
-        MutantWitherSkeletonServantLimit = BUILDER
-                .comment("Maximum number of Mutant Wither Skeleton Servants that can be summoned (Default: 2)")
-                .defineInRange("mutantWitherSkeletonServantLimit", 2, 1, 100);
-
-        MutantHoglinServantLimit = BUILDER
-                .comment("Maximum number of Mutant Hoglin Servants that can be summoned (Default: 2)")
-                .defineInRange("mutantHoglinServantLimit", 2, 1, 100);
-
-        MutantShulkerServantLimit = BUILDER
-                .comment("Maximum number of Mutant Shulker Servants that can be summoned (Default: 2)")
-                .defineInRange("mutantShulkerServantLimit", 2, 1, 100);
-
-        MutantBlazeServantLimit = BUILDER
-                .comment("Maximum number of Mutant Blaze Servants that can be summoned (Default: 2)")
-                .defineInRange("mutantBlazeServantLimit", 2, 1, 100);
-
-        RodlingServantLimit = BUILDER
-                .comment("Maximum number of Rodling Servants that can be summoned (Default: 16)")
-                .defineInRange("rodlingServantLimit", 16, 1, 100);
-
-        MutantJungleZombieServantLimit = BUILDER
-                .comment("Maximum number of Mutant Jungle Zombie Servants that can be summoned (Default: 2)")
-                .defineInRange("mutantJungleZombieServantLimit", 2, 1, 100);
-
-        MutantHuskServantLimit = BUILDER
-                .comment("Maximum number of Mutant Husk Servants that can be summoned (Default: 2)")
-                .defineInRange("mutantHuskServantLimit", 2, 1, 100);
-
-        MutantFrozenZombieServantLimit = BUILDER
-                .comment("Maximum number of Mutant Frozen Zombie Servants that can be summoned (Default: 2)")
-                .defineInRange("mutantFrozenZombieServantLimit", 2, 1, 100);
-
-        OvergrownColossusServantLimit = BUILDER
-                .comment("Maximum number of Overgrown Colossus Servants that can be summoned (Default: 2)")
-                .defineInRange("overgrownColossusServantLimit", 2, 1, 100);
-
-        OvergrownColossusServantProjectileImmunity = BUILDER
-                .comment("Whether Overgrown Colossus Servants are immune to arrows (Default: true")
-                .define("overgrownColossusServantProjectileImmunity", true);
-
-        FrostbittenGolemServantLimit = BUILDER
-                .comment("Maximum number of Frostbitten Golem Servants that can be summoned (Default: 2)")
-                .defineInRange("frostbittenGolemServantLimit", 2, 1, 100);
-
-        FrostbittenGolemServantProjectileImmunity = BUILDER
-                .comment("Whether Frostbitten Golem Servants are immune to arrows (Default: true)")
-                .define("frostbittenGolemServantProjectileImmunity", true);
-
-        FrostbittenGolemServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("frostbittenGolemServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-
-        AncientGuardianServantLimit = BUILDER
-                .comment("Maximum number of Ancient Guardian Servants that can be summoned (Default: 2)")
-                .defineInRange("ancientGuardianServantLimit", 2, 1, 100);
-
-        AncientGuardianServantProjectileImmunity = BUILDER
-                .comment("Whether Ancient Guardian Servants are immune to arrows (Default: true)")
-                .define("ancientGuardianServantProjectileImmunity", true);
-
-        AncientGuardianServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("ancientGuardianServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-
-        PossessedPaladinServantLimit = BUILDER
-                .comment("Maximum number of Possessed Paladin Servants that can be summoned (Default: 1)")
-                .defineInRange("possessedPaladinServantLimit", 1, 1, 100);
-
-        PossessedPaladinServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("possessedPaladinServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-
-        PossessedPaladinServantInvulnerabilityTime = BUILDER
-                .comment("Whether Possessed Paladin Servants get 10 ticks of invulnerability after being hit (Default: true)")
-                .define("possessedPaladinServantInvulnerabilityTime", true);
-
-        HoveringHurricaneServantLimit = BUILDER
-                .comment("Maximum number of Hovering Hurricane Servants that can be summoned (Default: 8)")
-                .defineInRange("hoveringHurricaneServantLimit", 8, 1, 100);
-
-        HoveringHurricaneServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("hoveringHurricaneServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-
-        CloudGolemServantLimit = BUILDER
-                .comment("Maximum number of Cloud Golem Servants that can be summoned (Default: 1)")
-                .defineInRange("cloudGolemServantLimit", 1, 1, 100);
-
-        CloudGolemServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("cloudGolemServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-
-        CloudGolemServantLosesConsciousness = BUILDER
-                .comment("Whether Cloud Golem Servants go dormant after their laser attack (Default: true)")
-                .define("cloudGolemServantLosesConsciousness", true);
-
-        CloudGolemServantCanCharge2Times = BUILDER
-                .comment("Whether Cloud Golem Servants charge one more time after missing while low on health (Default: true)")
-                .define("cloudGolemServantCanCharge2Times", true);
-
-        CloudGolemServantInvulnerabilityTime = BUILDER
-                .comment("Whether Cloud Golem Servants get a short window of invulnerability after every hit they take (Default: true)")
-                .define("cloudGolemServantInvulnerabilityTime", true);
-
-        CloudGolemServantProjectileImmunityTimer = BUILDER
-                .comment("Whether the arrows a Cloud Golem Servant shrugs off share a cooldown, so it cannot ignore an entire volley (Default: true)")
-                .define("cloudGolemServantProjectileImmunityTimer", true);
-
-        CloudGolemServantFallingCloudParticles = BUILDER
-                .comment("Whether the clouds a Cloud Golem Servant drops keep their falling particles (Default: true)")
-                .define("cloudGolemServantFallingCloudParticles", true);
-
-        ShulkerMimicServantLimit = BUILDER
-                .comment("Maximum number of Shulker Mimic Servants that can be summoned (Default: 1)")
-                .defineInRange("shulkerMimicServantLimit", 1, 1, 100);
-
-        ShulkerMimicServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("shulkerMimicServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-
-        AnnihilationPursuerServantLimit = BUILDER
-                .comment("Maximum number of Annihilation Pursuer Servants that can be summoned (Default: 1)")
-                .defineInRange("annihilationPursuerServantLimit", 1, 1, 100);
-
-        AnnihilationPursuerServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("annihilationPursuerServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-
-        BeheadedKnightServantLimit = BUILDER
-                .comment("Maximum number of Beheaded Knight Servants that can be summoned (Default: 2)")
-                .defineInRange("beheadedKnightServantLimit", 2, 1, 100);
-
-        BeheadedKnightServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("beheadedKnightServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-
-        ResurrectedKnightServantLimit = BUILDER
-                .comment("Maximum number of Resurrected Knight Servants that can be summoned (Default: 2)")
-                .defineInRange("resurrectedKnightServantLimit", 2, 1, 100);
-
-        ResurrectedKnightServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("resurrectedKnightServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-
-        EndersentServantLimit = BUILDER
-                .comment("Maximum number of Endersent Servants that can be summoned (Default: 2)")
-                .defineInRange("endersentServantLimit", 2, 1, 100);
-
-        EndersentServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("endersentServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-
-        ChoruslingServantLimit = BUILDER
-                .comment("Maximum number of Chorusling Servants that can be summoned (Default: 4)")
-                .defineInRange("choruslingServantLimit", 4, 1, 100);
-
-        ChoruslingServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("choruslingServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-
-        SoulFractureOnServantHit = BUILDER
-                .comment("Whether Beheaded Knight, Resurrected Knight and Possessed Paladin Servants apply Soul Fracture to the enemies they hit (Default: false)",
-                        "Soul Fracture is Legendary Monsters' stacking -20% max health debuff; only the attacks of these three servants ever apply it",
-                        "This never touches the original Legendary Monsters bosses")
-                .define("soulFractureOnServantHit", false);
-
-        TheObliteratorServantLimit = BUILDER
-                .comment("Maximum number of The Obliterator Servants that can be summoned (Default: 1)")
-                .defineInRange("theObliteratorServantLimit", 1, 1, 100);
-
-        TheObliteratorServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("theObliteratorServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-
-        FlamebornGuardServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("flamebornGuardServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-
-        FlamebornWarriorServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("flamebornWarriorServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-
-        FlameDrifterServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("flameDrifterServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-
-        WanderingEyeServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("wanderingEyeServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-
-        TheObliteratorCloneBurstHpDamage = BUILDER
-                .comment("Percentage of the victim's max health added on top of an armed clone's burst (Default: 7)",
-                        "Matches Legendary Monsters' own theObliteratorCloneBurstHPDamage, but only affects the servant's clones")
-                .defineInRange("theObliteratorCloneBurstHpDamage", 7, 0, 1000);
-
-        TheObliteratorServantFirstPhaseProjectileImmunity = BUILDER
-                .comment("Whether The Obliterator Servants are immune to arrows and other projectiles while in their first phase (Default: true; Legendary Monsters' ON/OFF The Obliterator Projectile immunity in first Phase)")
-                .define("theObliteratorServantFirstPhaseProjectileImmunity", true);
-
-        GrottoceratopsServantLimit = BUILDER
-                .comment("Maximum number of Grottoceratops Servants that can be summoned (Default: 16)")
-                .defineInRange("grottoceratopsServantLimit", 16, 1, 100);
-
-        RelicheirusServantLimit = BUILDER
-                .comment("Maximum number of Relicheirus Servants that can be summoned (Default: 4)")
-                .defineInRange("relicheirusServantLimit", 4, 1, 100);
-
-        TremorsaurusServantLimit = BUILDER
-                .comment("Maximum number of Tremorsaurus Servants that can be summoned (Default: 4)")
-                .defineInRange("tremorsaurusServantLimit", 4, 1, 100);
-
-        TremorzillaServantLimit = BUILDER
-                .comment("Maximum number of Tremorzilla Servants that can be summoned (Default: 1)")
-                .defineInRange("tremorzillaServantLimit", 1, 1, 100);
-
-        TremorzillaServantBreakBlocks = BUILDER
-                .comment("Whether Tremorzilla Servants can break blocks (melee attacks, beam, tail sweep and stomping through terrain while walking) (Default: false)")
-                .define("tremorzillaServantBreakBlocks", false);
-
-        TremorzillaServantBreakTrees = BUILDER
-                .comment("Whether Tremorzilla Servants smash the leaves, logs and wool they walk through, like a Redstone Monstrosity (Default: true; also requires the mobGriefing game rule)")
-                .define("tremorzillaServantBreakTrees", true);
-
-        AtlatitanServantLimit = BUILDER
-                .comment("Maximum number of Atlatitan Servants that can be summoned (Default: 3)")
-                .defineInRange("atlatitanServantLimit", 3, 1, 100);
-
-        AtlatitanServantBreakBlocks = BUILDER
-                .comment("Whether Atlatitan Servants can crush blocks with their stomp (Default: true; also requires the mobGriefing game rule)")
-                .define("atlatitanServantBreakBlocks", true);
-
-        LuxtructosaurusServantLimit = BUILDER
-                .comment("Maximum number of Luxtructosaurus Servants that can be summoned (Default: 1)")
-                .defineInRange("luxtructosaurusServantLimit", 1, 1, 100);
-
-        GumWormServantLimit = BUILDER
-                .comment("Maximum number of Gum Worm Servants that can be summoned (Default: 1; each one is a head plus 15-19 body segment entities)")
-                .defineInRange("gumWormServantLimit", 1, 1, 100);
-
-        LuxtructosaurusServantBreakTrees = BUILDER
-                .comment("Whether Luxtructosaurus Servants smash the leaves, logs and wool they walk through, like a Redstone Monstrosity (Default: true; also requires the mobGriefing game rule)")
-                .define("luxtructosaurusServantBreakTrees", true);
-
-        LuxtructosaurusServantFire = BUILDER
-                .comment("Whether Luxtructosaurus Servants set fire to the ground with their flame breath (Default: true; also requires the mobGriefing game rule)")
-                .define("luxtructosaurusServantFire", true);
-
-        LuxtructosaurusServantWaterToStone = BUILDER
-                .comment("Whether Luxtructosaurus Servants turn the water they wade through into stone (Default: true; also requires the mobGriefing game rule)")
-                .define("luxtructosaurusServantWaterToStone", true);
-
-        LuxtructosaurusServantTephra = BUILDER
-                .comment("Whether Luxtructosaurus Servants call down a tephra bombardment while roaring. The meteors never break blocks (Default: true)")
-                .define("luxtructosaurusServantTephra", true);
-
-        LuxtructosaurusServantJumpExplosion = BUILDER
-                .comment("Whether Luxtructosaurus Servants blast the ground alight where they land after a leap, like one of their falling tephra bombs. The blast damages and knocks back everything nearby and lights fires, but never breaks blocks (Default: true)")
-                .define("luxtructosaurusServantJumpExplosion", true);
-
-        LuxtructosaurusServantPrimalMagma = BUILDER
-                .comment("Whether a Luxtructosaurus Servant keeps the primal magma around it molten the way the primordial boss does, and walks over it instead of sinking in (Default: true)")
-                .define("luxtructosaurusServantPrimalMagma", true);
-
-        LuxtructosaurusServantExtinctionCatalyst = BUILDER
-                .comment("Whether owned Luxtructosaurus Servants return an Extinction Catalyst when they die (Default: true)")
-                .define("luxtructosaurusServantExtinctionCatalyst", true);
-
-        LuxtructosaurusServantRoarInterval = BUILDER
-                .comment("How many seconds an enraged Luxtructosaurus Servant may go at most without roaring and calling down another tephra bombardment. The timer only runs while enraged, and never while a player is riding it. Set to 0 to disable (Default: 30)")
-                .defineInRange("luxtructosaurusServantRoarInterval", 30, 0, 3600);
-
-        VallumraptorServantLimit = BUILDER
-                .comment("Maximum number of Vallumraptor Servants that can be summoned (Default: 32)")
-                .defineInRange("vallumraptorServantLimit", 32, 1, 100);
-
-        VallumraptorElderChance = BUILDER
-                .comment("Chance (percent) for a Vallumraptor Servant to spawn as an Elder/leader variant with boosted health and armor (Default: 15)")
-                .defineInRange("vallumraptorElderChance", 15, 0, 100);
-
-        NucleeperServantLimit = BUILDER
-                .comment("Maximum number of Nucleeper Servants that can be summoned (Default: 8)")
-                .defineInRange("nucleeperServantLimit", 8, 1, 100);
-
-        BrainiacServantLimit = BUILDER
-                .comment("Maximum number of Brainiac Servants that can be summoned (Default: 16)")
-                .defineInRange("brainiacServantLimit", 16, 1, 100);
-
-        CaniacServantLimit = BUILDER
-                .comment("Maximum number of Caniac Servants that can be summoned (Default: 16)")
-                .defineInRange("caniacServantLimit", 16, 1, 100);
-
-        GummyBearServantLimit = BUILDER
-                .comment("Maximum number of Gummy Bear Servants that can be summoned (Default: 16)")
-                .defineInRange("gummyBearServantLimit", 16, 1, 100);
-
-        CaramelCubeServantLimit = BUILDER
-                .comment("Maximum number of Caramel Cube Servants that can be summoned (Default: 16)")
-                .defineInRange("caramelCubeServantLimit", 16, 1, 100);
-
-        GumbeeperServantLimit = BUILDER
-                .comment("Maximum number of Gumbeeper Servants that can be summoned (Default: 16)")
-                .defineInRange("gumbeeperServantLimit", 16, 1, 100);
-
-        VesperServantLimit = BUILDER
-                .comment("Maximum number of Vesper Servants that can be summoned (Default: 16)")
-                .defineInRange("vesperServantLimit", 16, 1, 100);
-
-        TeletorServantLimit = BUILDER
-                .comment("Maximum number of Teletor Servants that can be summoned (Default: 16)")
-                .defineInRange("teletorServantLimit", 16, 1, 100);
-
-        ForsakenServantLimit = BUILDER
-                .comment("Maximum number of Forsaken Servants that can be summoned (Default: 2)")
-                .defineInRange("forsakenServantLimit", 2, 1, 100);
-
-        CandicornServantLimit = BUILDER
-                .comment("Maximum number of Candicorn Servants that can be summoned (Default: 4)")
-                .defineInRange("candicornServantLimit", 4, 1, 100);
-
-        GammaroachServantLimit = BUILDER
-                .comment("Maximum number of Gammaroach Servants that can be summoned (Default: 64)")
-                .defineInRange("gammaroachServantLimit", 64, 1, 100);
-
-        CorrodentServantLimit = BUILDER
-                .comment("Maximum number of Corrodent Servants that can be summoned (Default: 16)")
-                .defineInRange("corrodentServantLimit", 16, 1, 100);
-
-        DeepOneServantLimit = BUILDER
-                .comment("Maximum number of Deep One Servants that can be summoned (Default: 16)")
-                .defineInRange("deepOneServantLimit", 16, 1, 100);
-
-        DeepOneKnightServantLimit = BUILDER
-                .comment("Maximum number of Deep One Knight Servants that can be summoned (Default: 8, same as Goety Cataclysm's Deepling Brute Servant)")
-                .defineInRange("deepOneKnightServantLimit", 8, 1, 100);
-
-        DeepOneMageServantLimit = BUILDER
-                .comment("Maximum number of Deep One Mage Servants that can be summoned (Default: 6)")
-                .defineInRange("deepOneMageServantLimit", 6, 1, 100);
-
-        LicowitchSummonsLife = BUILDER
-                .comment("Whether candy servants a Licowitch Servant summons have a limited lifespan (45~120s); when false they persist until killed, like Goety Necromancer summons with NecromancerSummonsLife off (Default: true)")
-                .define("licowitchSummonsLife", true);
-
-        LicowitchSummonLimit = BUILDER
-                .comment("Maximum number of candy servants one Licowitch Servant can keep summoned at once, Default: 6)")
-                .defineInRange("licowitchSummonLimit", 6, 1, 100);
-
-        MineGuardianServantLimit = BUILDER
-                .defineInRange("mineGuardianServantLimit", 16, 1, 100);
-
-        NuclearGuardianServantLimit = BUILDER
-                .comment("Maximum number of Nuclear Guardian Servants that can be summoned (Default: 2)")
-                .defineInRange("nuclearGuardianServantLimit", 2, 1, 100);
-
-        MineGuardianServantExplosionGriefing = BUILDER.comment("Whether Mine Guardian Servant explosions destroy blocks, Default: false (set to true to allow block destruction, which also respects the mobGriefing game rule)")
-                .define("mineGuardianServantExplosionGriefing", false);
-
+        LeapkelpMoistness = BUILDER.comment("Whether Leapkelp Servants have a moistness meter; when false they never dry out (Default: true)")
+                .define("leapkelpMoistness", true);
         BUILDER.pop();
-
-        BUILDER.push("Mutant Wither Skeleton Enhancements");
-        MWSSoulShieldHealthBouns = BUILDER.comment("Extra health bonus when Mutant Wither Skeleton has Soul Shield, Default: 30")
-                .defineInRange("mwsSoulShieldHealthBonus", 30, 0, Integer.MAX_VALUE);
-        MWSSoulShieldDamageBouns = BUILDER.comment("Extra attack damage bonus when Mutant Wither Skeleton has Soul Shield, Default: 2")
-                .defineInRange("mwsSoulShieldDamageBonus", 2, 0, Integer.MAX_VALUE);
-        MWSHowlingSoulHealthBouns = BUILDER.comment("Extra health bonus when Mutant Wither Skeleton has Howling Soul, Default: 20")
-                .defineInRange("mwsHowlingSoulHealthBonus", 20, 0, Integer.MAX_VALUE);
-        MWSHowlingSoulDamageBouns = BUILDER.comment("Extra attack damage bonus when Mutant Wither Skeleton has Howling Soul, Default: 1")
-                .defineInRange("mwsHowlingSoulDamageBonus", 1, 0, Integer.MAX_VALUE);
-        MWSUnholyBloodHealthBouns = BUILDER.comment("Extra health bonus when Mutant Wither Skeleton has Unholy Blood, Default: 50")
-                .defineInRange("mwsUnholyBloodHealthBonus", 50, 0, Integer.MAX_VALUE);
-        MWSUnholyBloodDamageBouns = BUILDER.comment("Extra attack damage bonus when Mutant Wither Skeleton has Unholy Blood, Default: 3")
-                .defineInRange("mwsUnholyBloodDamageBonus", 3, 0, Integer.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Mutant Hoglin Enhancements");
-        MHSoulJarHealthBouns = BUILDER.comment("Extra health bonus when Mutant Hoglin has Soul Jar, Default: 30")
-                .defineInRange("mhSoulJarHealthBonus", 30, 0, Integer.MAX_VALUE);
-        MHSoulJarDamageBouns = BUILDER.comment("Extra attack damage bonus when Mutant Hoglin has Soul Jar, Default: 2")
-                .defineInRange("mhSoulJarDamageBonus", 2, 0, Integer.MAX_VALUE);
-        MHBlazingHelmHealthBouns = BUILDER.comment("Extra health bonus when Mutant Hoglin has Blazing Helm, Default: 20")
-                .defineInRange("mhBlazingHelmHealthBonus", 20, 0, Integer.MAX_VALUE);
-        MHBlazingHelmDamageBouns = BUILDER.comment("Extra attack damage bonus when Mutant Hoglin has Blazing Helm, Default: 2")
-                .defineInRange("mhBlazingHelmDamageBonus", 2, 0, Integer.MAX_VALUE);
-        MHUnholyBloodHealthBouns = BUILDER.comment("Extra health bonus when Mutant Hoglin has Unholy Blood, Default: 50")
-                .defineInRange("mhUnholyBloodHealthBonus", 50, 0, Integer.MAX_VALUE);
-        MHUnholyBloodDamageBouns = BUILDER.comment("Extra attack damage bonus when Mutant Hoglin has Unholy Blood, Default: 3")
-                .defineInRange("mhUnholyBloodDamageBonus", 3, 0, Integer.MAX_VALUE);
-        BUILDER.pop();
-
-        BUILDER.push("Mutant Shulker Enhancements");
-        MutantShulkerVoidEchoHealth = BUILDER.comment("Bonus max health of Void Echo Mutant Shulker (Default: 25)")
-                .defineInRange("mutantShulkerVoidEchoHealth", 25.0, 1.0, 1000.0);
-        MutantShulkerVoidEyeHealth = BUILDER.comment("Bonus max health of Void Eye Mutant Shulker (Default: 10)")
-                .defineInRange("mutantShulkerVoidEyeHealth", 10.0, 1.0, 1000.0);
-        MutantShulkerVoidShardHealth = BUILDER.comment("Bonus max health of Void Shard Mutant Shulker (Default: 15)")
-                .defineInRange("mutantShulkerVoidShardHealth", 15.0, 1.0, 1000.0);
-        MutantShulkerBulletLevitationMaxHealth = BUILDER
-                .comment("Maximum max-health for entities that Mutant Shulker Servant bullets can apply Levitation to (Default: 100)")
-                .defineInRange("mutantShulkerBulletLevitationMaxHealth", 100.0, 1.0, 1000.0);
-        BUILDER.pop();
-
-        BUILDER.push("Mutant Blaze Enhancements");
-        MBBulwarkFocusHealthBouns = BUILDER.comment("Extra health bonus when Mutant Blaze has Bulwark Focus, Default: 15")
-                .defineInRange("mbBulwarkFocusHealthBouns", 15, 0, Integer.MAX_VALUE);
-        MBBlazingHelmHealthBouns = BUILDER.comment("Extra health bonus when Mutant Blaze has Blazing Helm, Default: 15")
-                .defineInRange("mbBlazingHelmHealthBouns", 15, 0, Integer.MAX_VALUE);
-        MBUnholyBloodHealthBouns = BUILDER.comment("Extra health bonus when Mutant Blaze has Unholy Blood, Default: 20")
-                .defineInRange("mbUnholyBloodHealthBouns", 20, 0, Integer.MAX_VALUE);
-        MBUnholyBloodTexture = BUILDER.comment("Use the alternate texture when Mutant Blaze Servant has Unholy Blood (Default: true)")
-                .define("mbUnholyBloodTexture", true);
-        MBUnholyBloodLowHealthTexture = BUILDER.comment("Switch the Unholy Blood Mutant Blaze Servant to the enraged texture while at or below half health, and back when healed above it (Default: true)")
-                .define("mbUnholyBloodLowHealthTexture", true);
-        BUILDER.pop();
-
-        BUILDER.push("Warped Mosco Enhancements");
-        WarpedMoscoUnholyBloodHealthBouns = BUILDER.comment("Extra health bonus when Warped Mosco has Unholy Blood, Default: 50")
-                .defineInRange("warpedMoscoUnholyBloodHealthBonus", 50, 0, Integer.MAX_VALUE);
-        WarpedMoscoUnholyBloodDamageBouns = BUILDER.comment("Extra attack damage bonus when Warped Mosco has Unholy Blood, Default: 3")
-                .defineInRange("warpedMoscoUnholyBloodDamageBonus", 3, 0, Integer.MAX_VALUE);
-        WarpedMoscoUnholyBloodTexture = BUILDER.comment("Use the alternate texture when Warped Mosco has Unholy Blood (Default: true)")
-                .define("warpedMoscoUnholyBloodTexture", true);
-        BUILDER.pop();
-
-        BUILDER.push("Legendary Monsters Servants");
-        LmServantScreenShake = BUILDER.comment("Whether Legendary Monsters Servants' attacks and abilities shake nearby players' cameras (Default: false)")
-                .define("lmServantScreenShake", false);
-        BUILDER.pop();
-
-        BUILDER.push("Mutant More Servants");
-        MutantMoreServantScreenShake = BUILDER.comment("Whether Mutant More Servants' attacks and abilities shake nearby players' cameras (Default: false)")
-                .define("mutantMoreServantScreenShake", false);
-        BUILDER.pop();
-
         BUILDER.push("Mechanics");
         ApostleSpawnDisciple = BUILDER
                 .comment("Whether Apostles spawn with Disciple servants in the Nether Sabbath Ritual (Default: false)")
                 .define("apostleSpawnDisciple", false);
-
         HeresiarchHysteriaEnabled = BUILDER
                 .comment("Whether Heresiarch Servants can apply Hysteria effect to nearby cultist servants (Default: true)")
                 .define("heresiarchHysteriaEnabled", true);
-
         CultistSpread = BUILDER
                 .comment("Whether Villagers are able to become secret Cultists (Default: true)")
                 .define("cultistSpread", true);
-
         ChannellerMaxStealHealth = BUILDER
                 .comment("Maximum health for mobs that Channeller can steal/control (Default: 40)")
                 .defineInRange("channellerMaxStealHealth", 40, 1, 1000);
-
         CultistPatrol = BUILDER
                 .comment("Whether AbstractGOCultists can spawn in night patrols near players (Default: true)")
                 .define("cultistPatrol", true);
-
         CultistPatrolInterval = BUILDER
                 .comment("Ticks between cultist patrol spawn attempts (Default: 18000)")
                 .defineInRange("cultistPatrolInterval", 18000, 1200, 72000);
-
         MonolithConversionEnabled = BUILDER
                 .comment("Whether Obsidian Monolith can convert nearby villagers/witches/wandering traders into cultists (Default: true)")
                 .define("monolithConversionEnabled", true);
-
         MonolithConversionTime = BUILDER
                 .comment("How many seconds it takes for a villager to be converted near an Obsidian Monolith (Default: 300)")
                 .defineInRange("monolithConversionTime", 300, 10, 3600);
-
         BeldamSpawnWeight = BUILDER
                 .comment("Natural spawn weight for Beldam (0 to disable, Default: 5)")
                 .defineInRange("beldamSpawnWeight", 5, 0, 100);
@@ -839,7 +109,6 @@ public class MobsConfig {
         BeldamSpawnMaxCount = BUILDER
                 .comment("Maximum group size for Beldam natural spawn (Default: 1)")
                 .defineInRange("beldamSpawnMaxCount", 1, 1, 10);
-
         FanaticSpawnWeight = BUILDER
                 .comment("Natural spawn weight for Fanatic (0 to disable, Default: 10)")
                 .defineInRange("fanaticSpawnWeight", 10, 0, 100);
@@ -849,7 +118,6 @@ public class MobsConfig {
         FanaticSpawnMaxCount = BUILDER
                 .comment("Maximum group size for Fanatic natural spawn (Default: 4)")
                 .defineInRange("fanaticSpawnMaxCount", 4, 1, 10);
-
         ZealotSpawnWeight = BUILDER
                 .comment("Natural spawn weight for Zealot (0 to disable, Default: 7)")
                 .defineInRange("zealotSpawnWeight", 7, 0, 100);
@@ -859,7 +127,6 @@ public class MobsConfig {
         ZealotSpawnMaxCount = BUILDER
                 .comment("Maximum group size for Zealot natural spawn (Default: 2)")
                 .defineInRange("zealotSpawnMaxCount", 2, 1, 10);
-
         UrbhadhachSpawnWeight = BUILDER
                 .comment("Natural spawn weight for Urbhadhach (0 to disable, Default: 12)")
                 .defineInRange("urbhadhachSpawnWeight", 12, 0, 100);
@@ -869,39 +136,29 @@ public class MobsConfig {
         UrbhadhachSpawnMaxCount = BUILDER
                 .comment("Maximum group size for Urbhadhach natural spawn (Default: 1)")
                 .defineInRange("urbhadhachSpawnMaxCount", 1, 1, 10);
-
         DredenSpawnWeight = BUILDER.comment("Spawn weight of Dreden in snowy biomes (Default: 16)")
                 .defineInRange("dredenSpawnWeight", 16, 0, Integer.MAX_VALUE);
-
         DredenSpawnMinCount = BUILDER.comment("Dreden spawn pack min (Default: 1)")
                 .defineInRange("dredenSpawnMinCount", 1, 1, 10);
-
         DredenSpawnMaxCount = BUILDER.comment("Dreden spawn pack max (Default: 2)")
                 .defineInRange("dredenSpawnMaxCount", 2, 1, 10);
-
         PiglinServantBabyGrowthTime = BUILDER.comment("How many ticks it takes for a baby Piglin Servant to grow up, Default: 12000 (10 minutes)")
                 .defineInRange("piglinServantBabyGrowthTime", 12000, 1, Integer.MAX_VALUE);
-
         PiglinServantEvolutionDamage = BUILDER
                 .comment("How much melee damage a Piglin Servant needs to evolve into a Brute, Default: 100")
                 .defineInRange("piglinServantEvolutionDamage", 100, 1, Integer.MAX_VALUE);
-
         PiglinBruteServantEvolutionDamage = BUILDER
                 .comment("How much melee damage a Brute needs to evolve into Strong, Default: 180")
                 .defineInRange("piglinBruteServantEvolutionDamage", 180, 1, Integer.MAX_VALUE);
         StrongPiglinBruteServantEvolutionDamage = BUILDER
-
                 .comment("How much melee damage a Strong Brute needs to evolve into Elite, Default: 260")
                 .defineInRange("strongPiglinBruteServantEvolutionDamage", 260, 1, Integer.MAX_VALUE);
         PiglinServantRangedEvolutionDamage = BUILDER
-
                 .comment("How much ranged damage a Piglin Servant needs to evolve into a Hunter, Default: 60")
                 .defineInRange("piglinServantRangedEvolutionDamage", 60, 1, Integer.MAX_VALUE);
-
         PiglinHunterServantEvolutionDamage = BUILDER
                 .comment("How much ranged damage a Hunter needs to evolve into Strong, Default: 80")
                 .defineInRange("piglinHunterServantEvolutionDamage", 80, 1, Integer.MAX_VALUE);
-
         StrongPiglinHunterServantEvolutionDamage = BUILDER
                 .comment("How much ranged damage a Strong Hunter needs to evolve into Elite, Default: 160")
                 .defineInRange("strongPiglinHunterServantEvolutionDamage", 160, 1, Integer.MAX_VALUE);

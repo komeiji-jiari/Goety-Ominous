@@ -24,7 +24,6 @@ import com.qiuyue.goetyominous.common.entities.ai.ac.ServantBreedGoal;
 import com.qiuyue.goetyominous.common.entities.ai.ac.ServantLayEggGoal;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -63,6 +62,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class GrottoceratopsServant extends AnimalSummon implements LaysEggs, IAnimatedEntity, PlayerRideable, IAutoRideable {
 
@@ -93,12 +93,12 @@ public class GrottoceratopsServant extends AnimalSummon implements LaysEggs, IAn
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.GrottoceratopsServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.GrottoceratopsServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.GrottoceratopsServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.GrottoceratopsServantKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.GrottoceratopsServantMovementSpeed.get())
-                .add(Attributes.ARMOR, AttributesConfig.GrottoceratopsServantArmor.get());
+                .add(Attributes.MAX_HEALTH, AcConfig.GrottoceratopsServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AcConfig.GrottoceratopsServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AcConfig.GrottoceratopsServantDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.GrottoceratopsServantKnockbackResistance.get())
+                .add(Attributes.MOVEMENT_SPEED, AcConfig.GrottoceratopsServantMovementSpeed.get())
+                .add(Attributes.ARMOR, AcConfig.GrottoceratopsServantArmor.get());
     }
     @Override
     protected void defineSynchedData() {
@@ -110,7 +110,7 @@ public class GrottoceratopsServant extends AnimalSummon implements LaysEggs, IAn
     }
     @Override
     public int getSummonLimit(LivingEntity player) {
-        return com.qiuyue.goetyominous.config.MobsConfig.GrottoceratopsServantLimit.get();
+        return AcConfig.GrottoceratopsServantLimit.get();
     }
 
     @Override

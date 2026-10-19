@@ -16,17 +16,18 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.qiuyue.goetyominous.config.mm.MmConfig;
 
 public class WitherSlashSpell extends Spell {
 
     @Override
     public int defaultSoulCost() {
-        return com.qiuyue.goetyominous.config.SpellConfig.WitherSlashSoulCost.get();
+        return MmConfig.WitherSlashSoulCost.get();
     }
 
     @Override
     public int defaultSpellCooldown() {
-        return com.qiuyue.goetyominous.config.SpellConfig.WitherSlashCooldown.get();
+        return MmConfig.WitherSlashCooldown.get();
     }
 
     @Override
@@ -63,7 +64,7 @@ public class WitherSlashSpell extends Spell {
             velocity += WandUtil.getLevels(ModEnchantments.VELOCITY.get(), caster);
         }
 
-        float baseDamage = com.qiuyue.goetyominous.config.SpellConfig.WitherSlashDamage.get().floatValue();
+        float baseDamage = MmConfig.WitherSlashDamage.get().floatValue();
         float damage = (usingNetherStaff ? baseDamage * 2.5F : baseDamage) + potency;
         float leech = usingNetherStaff ? 8.0F : 4.0F;
         int witherLength = 300;

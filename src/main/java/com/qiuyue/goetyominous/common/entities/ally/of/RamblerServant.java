@@ -5,8 +5,6 @@ import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.RamblerServantFlailGoal;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.RamblerServantJabGoal;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.unusualmodding.opposing_force.entity.ai.navigation.SmoothGroundPathNavigation;
 import com.unusualmodding.opposing_force.entity.utils.AttackState;
 import com.unusualmodding.opposing_force.entity.utils.OPPoses;
@@ -50,6 +48,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import com.qiuyue.goetyominous.config.of.OfConfig;
 
 public class RamblerServant extends Summoned implements AttackState {
     private static final EntityDataAccessor<Boolean> FLAILING;
@@ -85,10 +84,10 @@ public class RamblerServant extends Summoned implements AttackState {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.RamblerServantHealth.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.RamblerServantMovementSpeed.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.RamblerServantAttackDamage.get())
-                .add(Attributes.ATTACK_KNOCKBACK, AttributesConfig.RamblerServantAttackKnockback.get());
+                .add(Attributes.MAX_HEALTH, OfConfig.RamblerServantHealth.get())
+                .add(Attributes.MOVEMENT_SPEED, OfConfig.RamblerServantMovementSpeed.get())
+                .add(Attributes.ATTACK_DAMAGE, OfConfig.RamblerServantAttackDamage.get())
+                .add(Attributes.ATTACK_KNOCKBACK, OfConfig.RamblerServantAttackKnockback.get());
     }
 
     protected void registerGoals() {
@@ -155,7 +154,7 @@ public class RamblerServant extends Summoned implements AttackState {
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return MobsConfig.RamblerServantLimit.get();
+        return OfConfig.RamblerServantLimit.get();
     }
 
     @Override

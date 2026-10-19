@@ -2,7 +2,6 @@ package com.qiuyue.goetyominous.common.entities.ally.sar;
 
 import com.Polarice3.Goety.common.entities.ally.undead.skeleton.AbstractSkeletonServant;
 import com.google.common.collect.Maps;
-import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.teamabnormals.savage_and_ravage.common.entity.ai.goal.ImprovedCrossbowGoal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -35,6 +34,7 @@ import net.minecraft.world.phys.HitResult;
 
 import javax.annotation.Nullable;
 import java.util.Map;
+import com.qiuyue.goetyominous.config.uasr.UasrConfig;
 
 public class SkeletonVillagerServant extends AbstractSkeletonServant implements CrossbowAttackMob {
     private static final EntityDataAccessor<Boolean> DATA_CHARGING_STATE = SynchedEntityData.defineId(SkeletonVillagerServant.class, EntityDataSerializers.BOOLEAN);
@@ -59,10 +59,10 @@ public class SkeletonVillagerServant extends AbstractSkeletonServant implements 
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.SkeletonVillagerServantMovementSpeed.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.SkeletonVillagerServantFollowRange.get())
-                .add(Attributes.MAX_HEALTH, AttributesConfig.SkeletonVillagerServantHealth.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.SkeletonVillagerServantDamage.get());
+                .add(Attributes.MOVEMENT_SPEED, UasrConfig.SkeletonVillagerServantMovementSpeed.get())
+                .add(Attributes.FOLLOW_RANGE, UasrConfig.SkeletonVillagerServantFollowRange.get())
+                .add(Attributes.MAX_HEALTH, UasrConfig.SkeletonVillagerServantHealth.get())
+                .add(Attributes.ATTACK_DAMAGE, UasrConfig.SkeletonVillagerServantDamage.get());
     }
 
     @Override

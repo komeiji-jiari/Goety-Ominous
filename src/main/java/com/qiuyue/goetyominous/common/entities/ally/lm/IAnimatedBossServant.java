@@ -19,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
+import com.qiuyue.goetyominous.config.lm.LmConfig;
 
 /**
  * 大 Boss 级仆从的基类，对应传奇怪物（Legendary Monsters）原版的 IAnimatedBoss。
@@ -270,7 +271,7 @@ public class IAnimatedBossServant extends IAnimatedMonsterServant {
      *
      * <p>圣骑用它给被砍中的敌人叠「灵魂碎裂」（{@code ModEffects.SOUL_FRACTURE}）：
      * 砍得越多层数越高，最高 {@code maxLevel} 层。
-     * 受 {@code MobsConfig.SoulFractureOnServantHit} 门控，默认关闭，此时这里不再被调用。
+     * 受 {@code LmConfig.SoulFractureOnServantHit} 门控，默认关闭，此时这里不再被调用。
      * 幻影匕首（{@code ThrownPhantomDagger}）命中也叠同一个效果 ——
      * 那边调的是 LM 的 {@code EntityUtil.applyStackingEffect}，逻辑和这里这份一模一样。
      *

@@ -10,8 +10,6 @@ import com.Polarice3.Goety.utils.*;
 import com.alexander.mutantmore.config.mutant_blaze.RodlingCommonConfig;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.RodlingServant;
 import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
-import com.qiuyue.goetyominous.config.MobsConfig;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -27,21 +25,22 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.mm.MmConfig;
 
 public class RodStrikeSpell extends SummonSpell {
     public RodStrikeSpell() {
     }
 
     public int defaultSoulCost() {
-        return (Integer) SpellConfig.RodStrikeSoulCost.get();
+        return (Integer) MmConfig.RodStrikeSoulCost.get();
     }
 
     public int defaultCastDuration() {
-        return (Integer) SpellConfig.RodStrikeCastDuration.get();
+        return (Integer) MmConfig.RodStrikeCastDuration.get();
     }
 
     public int SummonDownDuration() {
-        return (Integer) SpellConfig.RodStrikeSummonDown.get();
+        return (Integer) MmConfig.RodStrikeSummonDown.get();
     }
 
     public SoundEvent CastingSound(LivingEntity caster) {
@@ -49,7 +48,7 @@ public class RodStrikeSpell extends SummonSpell {
     }
 
     public int defaultSpellCooldown() {
-        return (Integer) SpellConfig.RodStrikeCooldown.get();
+        return (Integer) MmConfig.RodStrikeCooldown.get();
     }
 
     public SpellType getSpellType() {
@@ -70,7 +69,7 @@ public class RodStrikeSpell extends SummonSpell {
     }
 
     public int summonLimit() {
-        return (Integer) MobsConfig.RodlingServantLimit.get();
+        return (Integer) MmConfig.RodlingServantLimit.get();
     }
 
     public void SpellResult(ServerLevel worldIn, LivingEntity caster, ItemStack staff, SpellStat spellStat) {

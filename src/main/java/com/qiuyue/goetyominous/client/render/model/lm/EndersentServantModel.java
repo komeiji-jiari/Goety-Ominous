@@ -134,10 +134,10 @@ public class EndersentServantModel extends HierarchicalModel<EndersentServant> {
             this.head.yRot = netHeadYaw * ((float) Math.PI / 180.0F);
             this.head.xRot = headPitch * ((float) Math.PI / 180.0F);
         }
-        if (!(entity.isDeadlyEscape()
+        if (!(entity.isCurrentAnimation(EndersentServant.DEADLY_ESCAPE)
                 || entity.teleportInAnimationState.isStarted()
                 || entity.teleportOutAnimationState.isStarted())) {
-            this.animateWalk(EndersentAnimations.WALK, limbSwing, limbSwingAmount, 2.5F, 20.0F);
+            this.animateWalk(EndersentServantAnimations.WALK, limbSwing, limbSwingAmount, 1.5F, 4.0F);
         }
         this.animate(entity.attackAnimationState, EndersentAnimations.ATTACK, ageInTicks);
         this.animate(entity.swipeAnimationState, EndersentAnimations.SWING, ageInTicks);

@@ -2,8 +2,6 @@ package com.qiuyue.goetyominous.common.entities.ally.ac;
 
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.qiuyue.goetyominous.common.entities.projectile.ac.GumballServantEntity;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.utils.ModMobType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -43,6 +41,7 @@ import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 
 import java.util.EnumSet;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class GumbeeperServant extends Summoned implements PowerableMob {
 
@@ -75,17 +74,17 @@ public class GumbeeperServant extends Summoned implements PowerableMob {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.GumbeeperServantMovementSpeed.get())
-                .add(Attributes.MAX_HEALTH, AttributesConfig.GumbeeperServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.GumbeeperServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.GumbeeperServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.GumbeeperServantKnockbackResistance.get())
-                .add(Attributes.ARMOR, AttributesConfig.GumbeeperServantArmor.get());
+                .add(Attributes.MOVEMENT_SPEED, AcConfig.GumbeeperServantMovementSpeed.get())
+                .add(Attributes.MAX_HEALTH, AcConfig.GumbeeperServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AcConfig.GumbeeperServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AcConfig.GumbeeperServantDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.GumbeeperServantKnockbackResistance.get())
+                .add(Attributes.ARMOR, AcConfig.GumbeeperServantArmor.get());
     }
 
     @Override
     public int getSummonLimit(LivingEntity player) {
-        return MobsConfig.GumbeeperServantLimit.get();
+        return AcConfig.GumbeeperServantLimit.get();
     }
 
     @Override

@@ -11,7 +11,6 @@ import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.ally.am.CrimsonMosquitoServant;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
-import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -25,21 +24,22 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 
 public class CrimsonSpell extends SummonSpell {
     public CrimsonSpell() {
     }
 
     public int defaultSoulCost() {
-        return (Integer) SpellConfig.CrimsonMosquitoSoulCost.get();
+        return (Integer) AmConfig.CrimsonMosquitoSoulCost.get();
     }
 
     public int defaultCastDuration() {
-        return (Integer) SpellConfig.CrimsonMosquitoCastDuration.get();
+        return (Integer) AmConfig.CrimsonMosquitoCastDuration.get();
     }
 
     public int SummonDownDuration() {
-        return (Integer) SpellConfig.CrimsonMosquitoSummonDown.get();
+        return (Integer) AmConfig.CrimsonMosquitoSummonDown.get();
     }
 
     public SoundEvent CastingSound() {
@@ -47,7 +47,7 @@ public class CrimsonSpell extends SummonSpell {
     }
 
     public int defaultSpellCooldown() {
-        return (Integer) SpellConfig.CrimsonMosquitoCoolDown.get();
+        return (Integer) AmConfig.CrimsonMosquitoCoolDown.get();
     }
 
     public SpellType getSpellType() {

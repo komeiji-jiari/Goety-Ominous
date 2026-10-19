@@ -19,8 +19,6 @@ import com.github.alexmodguy.alexscaves.server.misc.ACTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -75,6 +73,7 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class HullbreakerServant extends Summoned implements IAnimatedEntity, KaijuMob, InventoryCarrier {
 
@@ -123,9 +122,9 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AttributesConfig.HullbreakerServantHealth.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.HullbreakerServantDamage.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.HullbreakerServantMovementSpeed.get());
+                .add(Attributes.MAX_HEALTH, AcConfig.HullbreakerServantHealth.get())
+                .add(Attributes.ATTACK_DAMAGE, AcConfig.HullbreakerServantDamage.get())
+                .add(Attributes.MOVEMENT_SPEED, AcConfig.HullbreakerServantMovementSpeed.get());
     }
 
     @Override
@@ -135,7 +134,7 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
     }
     @Override
     public int getSummonLimit(LivingEntity player) {
-        return MobsConfig.HullbreakerServantLimit.get();
+        return AcConfig.HullbreakerServantLimit.get();
     }
 
     @Override
@@ -275,7 +274,7 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
         }
         if (this.getAnimation() == ANIMATION_DIE && this.getAnimationTick() > 45 && !this.level().isClientSide() && !this.isRemoved()) {
             
-            if (this.getTrueOwner() != null && MobsConfig.HullbreakerServantReturnEmbryo.get()) {
+            if (this.getTrueOwner() != null && AcConfig.HullbreakerServantReturnEmbryo.get()) {
                 FlyingItem flyingItem = new FlyingItem(ModEntityType.FLYING_ITEM.get(), this.level(), this.getX(), this.getY(), this.getZ());
                 flyingItem.setOwner(this.getTrueOwner());
                 flyingItem.setItem(new ItemStack(ACItemRegistry.IMMORTAL_EMBRYO.get()));
@@ -491,7 +490,7 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
         }
         boolean flag = false;
         AABB damageBox = this.headPart.getBoundingBox().inflate(1.2F).move(this.calculateViewVector(this.getXRot(), this.getYRot()));
-        boolean noGriefing = !MobsConfig.HullbreakerServantBlockBreakGriefing.get()
+        boolean noGriefing = !AcConfig.HullbreakerServantBlockBreakGriefing.get()
                 || !level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
         
         if (!level().isClientSide && this.getTarget() != null) {
@@ -705,7 +704,7 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
 
         @Override
         protected double getFollowDistance() {
-            return AttributesConfig.HullbreakerServantGlowTargetRange.get();
+            return AcConfig.HullbreakerServantGlowTargetRange.get();
         }
     }
 
@@ -718,7 +717,7 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
 
         @Override
         protected double getFollowDistance() {
-            return AttributesConfig.HullbreakerServantProximityTargetRange.get();
+            return AcConfig.HullbreakerServantProximityTargetRange.get();
         }
 
         @Override
@@ -760,7 +759,7 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
             }
             if (dist > (double) (f + 2.0F)) {
                 double chaseSpeed = isGlowingPrey(target)
-                        ? AttributesConfig.HullbreakerServantGlowChaseSpeed.get()
+                        ? AcConfig.HullbreakerServantGlowChaseSpeed.get()
                         : 1.6D;
                 HullbreakerServant.this.getNavigation().moveTo(target, chaseSpeed);
             }

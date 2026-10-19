@@ -7,8 +7,6 @@ import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.github.alexmodguy.alexscaves.server.potion.ACEffectRegistry;
 import com.google.common.collect.ImmutableList;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
-import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -64,6 +62,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class TeletorServant extends Summoned {
     private static final TagKey<Item> MAGNETIC_TOOLS = TagKey.create(Registries.ITEM,
@@ -99,12 +98,12 @@ public class TeletorServant extends Summoned {
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.FLYING_SPEED, 1.0D)
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.TeletorServantMovementSpeed.get())
-                .add(Attributes.MAX_HEALTH, AttributesConfig.TeletorServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.TeletorServantFollowRange.get())
-                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.TeletorServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.TeletorServantKnockbackResistance.get())
-                .add(Attributes.ARMOR, AttributesConfig.TeletorServantArmor.get());
+                .add(Attributes.MOVEMENT_SPEED, AcConfig.TeletorServantMovementSpeed.get())
+                .add(Attributes.MAX_HEALTH, AcConfig.TeletorServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, AcConfig.TeletorServantFollowRange.get())
+                .add(Attributes.ATTACK_DAMAGE, AcConfig.TeletorServantDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.TeletorServantKnockbackResistance.get())
+                .add(Attributes.ARMOR, AcConfig.TeletorServantArmor.get());
     }
 
     @Override
@@ -116,7 +115,7 @@ public class TeletorServant extends Summoned {
 
     @Override
     public int getSummonLimit(LivingEntity player) {
-        return MobsConfig.TeletorServantLimit.get();
+        return AcConfig.TeletorServantLimit.get();
     }
 
     @Override
