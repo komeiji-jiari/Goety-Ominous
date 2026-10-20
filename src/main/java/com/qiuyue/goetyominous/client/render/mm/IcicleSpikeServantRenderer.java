@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.init.ModEntityLayers;
 import com.qiuyue.goetyominous.client.render.model.mm.IcicleSpikeServantModel;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.IcicleSpikeServant;
+import com.qiuyue.goetyominous.common.entities.ally.mm.IcicleSpikeServant;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

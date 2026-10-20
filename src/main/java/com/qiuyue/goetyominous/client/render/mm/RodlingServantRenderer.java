@@ -2,7 +2,7 @@ package com.qiuyue.goetyominous.client.render.mm;
 
 import com.qiuyue.goetyominous.client.render.layer.mm.RodlingServantGlowLayer;
 import com.qiuyue.goetyominous.client.render.model.mm.RodlingServantModel;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.RodlingServant;
+import com.qiuyue.goetyominous.common.entities.ally.mm.RodlingServant;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.core.BlockPos;

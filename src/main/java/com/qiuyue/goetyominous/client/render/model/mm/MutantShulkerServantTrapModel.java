@@ -5,7 +5,7 @@ import com.alexander.mutantmore.animation.math_animation.definition.MutantShulke
 import com.alexander.mutantmore.config.mutant_shulker.MutantShulkerRewardsCommonConfig;
 import com.alexander.mutantmore.models.entities.MMBaseEntityModel;
 import com.qiuyue.goetyominous.GoetyOminous;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantShulkerServantTrap;
+import com.qiuyue.goetyominous.common.entities.ally.mm.MutantShulkerServantTrap;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;

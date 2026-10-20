@@ -9,7 +9,7 @@ import com.qiuyue.goetyominous.common.entities.ally.ias.*;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractDredenEntity;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractHurricane;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractMiredEntity;
-import com.qiuyue.goetyominous.common.entities.ally.spider.CrimsonSpiderServant;
+import com.qiuyue.goetyominous.common.entities.ally.mobs.CrimsonSpiderServant;
 import com.qiuyue.goetyominous.common.entities.hostile.Scorch;
 import com.qiuyue.goetyominous.common.entities.hostile.cultists.Disciple;
 import com.qiuyue.goetyominous.common.entities.hostile.BoggedEntity;

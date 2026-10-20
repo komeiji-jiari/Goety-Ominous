@@ -1,6 +1,6 @@
 package com.qiuyue.goetyominous.compat.jade;
 
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.AbstractMutantServant;
+import com.qiuyue.goetyominous.common.entities.ally.mm.AbstractMutantServant;
 import snownee.jade.api.IWailaClientRegistration;
 import snownee.jade.api.IWailaCommonRegistration;
 import snownee.jade.api.IWailaPlugin;

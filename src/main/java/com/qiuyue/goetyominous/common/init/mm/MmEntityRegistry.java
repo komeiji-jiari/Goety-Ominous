@@ -1,7 +1,7 @@
 package com.qiuyue.goetyominous.common.init.mm;
 
 import com.qiuyue.goetyominous.GoetyOminous;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.*;
+import com.qiuyue.goetyominous.common.entities.ally.mm.*;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -71,6 +71,14 @@ public class MmEntityRegistry {
                             .sized(0.85F, 0.85F)
                             .updateInterval(1)
                             .build(GoetyOminous.MOD_ID + ":mutant_shulker_servant_bullet"));
+
+    public static final RegistryObject<EntityType<MutantShulkerServantTrapBullet>> MUTANT_SHULKER_SERVANT_TRAP_BULLET =
+            MM_ENTITIES.register("mutant_shulker_servant_trap_bullet",
+                    () -> EntityType.Builder.<MutantShulkerServantTrapBullet>of(MutantShulkerServantTrapBullet::new, MobCategory.MISC)
+                            .sized(0.85F, 0.85F)
+                            .updateInterval(1)
+                            .clientTrackingRange(8)
+                            .build(GoetyOminous.MOD_ID + ":mutant_shulker_servant_trap_bullet"));
 
     public static final RegistryObject<EntityType<MutantShulkerServantTrap>> MUTANT_SHULKER_SERVANT_TRAP =
             MM_ENTITIES.register("mutant_shulker_servant_trap",

@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.init.ModEntityLayers;
 import com.qiuyue.goetyominous.client.render.model.mm.MutantShulkerServantModel;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantShulkerServant;
+import com.qiuyue.goetyominous.common.entities.ally.mm.MutantShulkerServant;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;

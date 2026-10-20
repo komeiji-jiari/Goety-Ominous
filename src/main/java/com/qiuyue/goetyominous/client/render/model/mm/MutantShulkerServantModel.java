@@ -6,7 +6,7 @@ import com.alexander.mutantmore.animation.math_animation.definition.MutantShulke
 import com.alexander.mutantmore.animation.sine_wave_animations.SineWaveAnimationUtils;
 import com.alexander.mutantmore.models.entities.MMBaseEntityModel;
 import com.alexander.mutantmore.models.entities.MutantShulkerModel;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantShulkerServant;
+import com.qiuyue.goetyominous.common.entities.ally.mm.MutantShulkerServant;
 import java.util.List;
 import java.util.stream.Collectors;
 import net.minecraft.client.model.geom.ModelPart;

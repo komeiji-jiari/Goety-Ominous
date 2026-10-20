@@ -146,6 +146,10 @@ public class MmClientEvents {
                 com.qiuyue.goetyominous.client.render.projectile.mm.MutantShulkerServantBulletRenderer::new);
 
         event.registerEntityRenderer(
+                com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.MUTANT_SHULKER_SERVANT_TRAP_BULLET.get(),
+                com.qiuyue.goetyominous.client.render.projectile.mm.MutantShulkerServantTrapBulletRenderer::new);
+
+        event.registerEntityRenderer(
                 com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry.MUTANT_BLAZE_SERVANT_FIREBALL.get(),
                 context -> new ThrownItemRenderer<>(context, 3.0F, true));
 

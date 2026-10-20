@@ -6,7 +6,7 @@ import com.Polarice3.Goety.common.items.equipment.DarkScytheItem;
 import com.alexander.mutantmore.init.SoundEventInit;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.WitherSlash;
+import com.qiuyue.goetyominous.common.entities.ally.mm.WitherSlash;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;

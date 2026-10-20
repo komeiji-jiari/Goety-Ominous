@@ -6,7 +6,7 @@ import com.Polarice3.Goety.common.magic.Spell;
 import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.alexander.mutantmore.init.SoundEventInit;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.WitherSlash;
+import com.qiuyue.goetyominous.common.entities.ally.mm.WitherSlash;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;

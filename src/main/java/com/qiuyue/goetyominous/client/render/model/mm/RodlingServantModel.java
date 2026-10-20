@@ -4,8 +4,8 @@ import com.alexander.mutantmore.animation.keyframe_animations.definition.Rodling
 import com.alexander.mutantmore.animation.math_animation.MathAnim;
 import com.alexander.mutantmore.animation.math_animation.definition.RodlingMathAnimations;
 import com.alexander.mutantmore.models.entities.MMBaseEntityModel;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantBlazeServantRodProjectile;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.RodlingServant;
+import com.qiuyue.goetyominous.common.entities.ally.mm.MutantBlazeServantRodProjectile;
+import com.qiuyue.goetyominous.common.entities.ally.mm.RodlingServant;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;

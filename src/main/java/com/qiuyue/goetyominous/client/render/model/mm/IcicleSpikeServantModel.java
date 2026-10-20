@@ -1,7 +1,7 @@
 package com.qiuyue.goetyominous.client.render.model.mm;
 
 import com.alexander.mutantmore.animation.keyframe_animations.definition.IcicleSpikeKeyframeAnimations;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.IcicleSpikeServant;
+import com.qiuyue.goetyominous.common.entities.ally.mm.IcicleSpikeServant;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
