@@ -1,0 +1,6 @@
+{
+  "parent": "goetyominous:item/windbow",
+  "textures": {
+    "layer0": "goetyominous:item/windbow_pulling_1"
+  }
+}
