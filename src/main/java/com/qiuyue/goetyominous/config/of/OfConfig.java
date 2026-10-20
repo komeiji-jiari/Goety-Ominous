@@ -60,6 +60,10 @@ public class OfConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> UmberSpiderServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> SkyvernServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Boolean> SkyvernServantGhost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FrowzySoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FrowzyCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FrowzySummonDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FrowzyCoolDown;
     public static final ForgeConfigSpec.ConfigValue<Integer> VoltSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> VoltCastDuration;
     public static final ForgeConfigSpec.ConfigValue<Integer> VoltSummonDown;
@@ -312,6 +316,16 @@ public class OfConfig {
                 .defineInRange("tremblerSummonDown", 300, 0, 5000);
         TremblerCoolDown = BUILDER.comment("Cooldown of Trembler Servant spell in ticks (Default: 600)")
                 .defineInRange("tremblerCoolDown", 600, 0, 5000);
+        BUILDER.pop();
+        BUILDER.push("Frowzy");
+        FrowzySoulCost = BUILDER.comment("Soul cost of Frowzy Servant spell (Default: 5)")
+                .defineInRange("frowzySoulCost", 5, 1, 128);
+        FrowzyCastDuration = BUILDER.comment("Cast duration of Frowzy Servant spell in ticks (Default: 20)")
+                .defineInRange("frowzyCastDuration", 20, 0, 500);
+        FrowzySummonDown = BUILDER.comment("Summon down duration of Frowzy Servant spell in ticks (Default: 120)")
+                .defineInRange("frowzySummonDown", 120, 0, 5000);
+        FrowzyCoolDown = BUILDER.comment("Cooldown of Frowzy Servant spell in ticks (Default: 120)")
+                .defineInRange("frowzyCoolDown", 120, 0, 5000);
         BUILDER.pop();
         BUILDER.pop();
         SPEC = BUILDER.build();

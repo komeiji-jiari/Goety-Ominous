@@ -1,7 +1,7 @@
 package com.qiuyue.goetyominous.common.blocks.trial;
 
 import com.qiuyue.goetyominous.common.init.ModSounds;
-import com.qiuyue.goetyominous.config.TrialSpawnerConfig;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;

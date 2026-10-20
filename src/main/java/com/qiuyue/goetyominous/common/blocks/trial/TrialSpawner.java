@@ -8,8 +8,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.common.init.ModParticleTypes;
 import com.qiuyue.goetyominous.common.init.ModSounds;
-import com.qiuyue.goetyominous.config.PlayerDetector;
-import com.qiuyue.goetyominous.config.TrialSpawnerConfig;
+
 import java.util.ArrayList;
 import java.util.List;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;

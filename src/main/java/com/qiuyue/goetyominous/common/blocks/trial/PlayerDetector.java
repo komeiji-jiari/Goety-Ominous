@@ -1,4 +1,4 @@
-package com.qiuyue.goetyominous.config;
+package com.qiuyue.goetyominous.common.blocks.trial;
 
 import java.util.List;
 import java.util.Objects;

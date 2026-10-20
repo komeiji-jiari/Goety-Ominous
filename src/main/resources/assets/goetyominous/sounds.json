@@ -120,6 +120,10 @@
     "subtitle": "subtitles.goetyominous.apply_effect_trial_omen",
     "sounds": [ "goetyominous:event/mob_effects/trial_omen" ]
   },
+  "apply_effect_raid_omen": {
+    "subtitle": "subtitles.goetyominous.apply_effect_raid_omen",
+    "sounds": [ "goetyominous:event/mob_effects/trial_omen" ]
+  },
   "trial_spawner_ominous_activate": {
     "subtitle": "subtitles.goetyominous.trial_spawner.ominous_activate",
     "sounds": [ "goetyominous:trial_spawner/ominous_activate" ]

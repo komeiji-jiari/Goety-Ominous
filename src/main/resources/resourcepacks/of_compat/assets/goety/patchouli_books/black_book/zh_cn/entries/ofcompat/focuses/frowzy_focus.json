@@ -1,0 +1,20 @@
+{
+  "name": "肮脏聚晶",
+  "icon": "goetyominous:frowzy_focus",
+  "category": "goety:ofcompat/focuses",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "对于死灵法师来说这个初级咒语非常简单，该法术可以让你召唤出脏尸仆从，它们会敏捷地跑过去杀死你的敌人。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:frowzy_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "死灵魔杖可以大幅增加召唤的脏尸的数量。"
+    }
+  ]
+}

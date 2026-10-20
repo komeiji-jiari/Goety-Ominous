@@ -31,6 +31,7 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> OMINOUS_BOTTLE_DISPOSE = create("ominous_bottle_dispose");
     public static final RegistryObject<SoundEvent> APPLY_EFFECT_BAD_OMEN = create("apply_effect_bad_omen");
     public static final RegistryObject<SoundEvent> APPLY_EFFECT_TRIAL_OMEN = create("apply_effect_trial_omen");
+    public static final RegistryObject<SoundEvent> APPLY_EFFECT_RAID_OMEN = create("apply_effect_raid_omen");
     public static final RegistryObject<SoundEvent> TRIAL_SPAWNER_OMINOUS_ACTIVATE = create("trial_spawner_ominous_activate");
 
     public static final RegistryObject<SoundEvent> TRIAL_SPAWNER_BREAK = create("trial_spawner_break");

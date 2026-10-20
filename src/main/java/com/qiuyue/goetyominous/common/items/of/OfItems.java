@@ -4,7 +4,6 @@ import com.Polarice3.Goety.common.items.ServantSpawnEggItem;
 import com.Polarice3.Goety.common.items.magic.MagicFocus;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.of.OfEntityRegistry;
-import com.qiuyue.goetyominous.common.magic.spells.ac.ExtinctionBreathSpell;
 import com.qiuyue.goetyominous.common.magic.spells.of.*;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -84,6 +83,9 @@ public class OfItems {
 
     public static final RegistryObject<Item> INFERNO_FOCUS = OF_ITEMS.register("inferno_focus",
             () -> new MagicFocus(new InfernoSpell()));
+
+    public static final RegistryObject<Item> FROWZY_FOCUS = OF_ITEMS.register("frowzy_focus",
+            () -> new MagicFocus(new FrowzySpell()));
 
     public static Item.Properties egg() {
         return new Item.Properties();

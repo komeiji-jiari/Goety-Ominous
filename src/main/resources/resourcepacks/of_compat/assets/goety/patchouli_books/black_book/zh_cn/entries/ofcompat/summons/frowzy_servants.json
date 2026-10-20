@@ -1,0 +1,25 @@
+{
+  "name": "脏尸",
+  "icon": "minecraft:rotten_flesh",
+  "category": "goety:ofcompat/summons",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "比起那些腐烂的绿色亲戚们，这些脏尸更加敏捷，但仍然是入门级的死灵术召唤者的耗材。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:frowzy_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:frowzy_servant",
+      "text": "伊已逝，吾亦逝"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "脏尸只能接受头盔，且只会接受剑或斧头作为自己的武器。用腐肉右键或者穿着一件死灵长袍即可治愈他们。"
+    }
+  ]
+}

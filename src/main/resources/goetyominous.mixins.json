@@ -76,7 +76,11 @@
     "trial.BeardifierMixin",
     "trial.JigsawPlacementPlacerMixin",
     "trial.LightningBoltCopperMixin",
-    "trial.LivingEntityTrialOmenMixin"
+    "trial.LivingEntityTrialOmenMixin",
+    "trial.RaiderOminousBottleMixin",
+    "trial.RaidsRaidOmenMixin",
+    "trial.BadOmenRaidTriggerMixin",
+    "trial.RaidOmenAbsorbMixin"
   ],
   "client": [
     "MixinBlackWolfRenderer",

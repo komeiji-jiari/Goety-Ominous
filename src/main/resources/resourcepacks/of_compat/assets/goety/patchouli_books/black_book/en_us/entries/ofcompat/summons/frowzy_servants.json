@@ -1,0 +1,25 @@
+{
+  "name": "Frowzy Servants",
+  "icon": "minecraft:rotten_flesh",
+  "category": "goety:ofcompat/summons",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "These Frowzy are more agile than their rotting green cousins, but are still expendable fodder for novice necromancers."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:frowzy_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:frowzy_servant",
+      "text": "TADOKORO KŌJI"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Frowzy can only wear helmets, and will only accept swords or axes as their weapons. Right-click them with Rotten Flesh or wear Necro Cape to heal them."
+    }
+  ]
+}

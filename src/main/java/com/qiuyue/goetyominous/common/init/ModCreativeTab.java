@@ -181,27 +181,27 @@ public class ModCreativeTab {
         order.add(ModItems.HARMONIOUS_DIAMOND.get());
         order.add(ModItems.WOLF_TONGUE.get());
         order.add(ModItems.BAT_WING.get());
+        order.add(ModItems.WORMY_APPLE.get());
         order.add(ModItems.COLD_HEART.get());
         order.add(ModItems.ACID_FUNGUS.get());
         order.add(ModItems.BREEZE_ROD.get());
+        order.add(ModItems.WIND_CHARGE.get());
         order.add(ModItems.HURRICANE_CORE.get());
 
         order.add(ModItems.TRIAL_KEY.get());
         order.add(ModItems.OMINOUS_TRIAL_KEY.get());
-        order.add(ModItems.WIND_CHARGE.get());
         order.add(ModItems.OMINOUS_BOTTLE.get());
 
-        order.add(ModItems.WORMY_APPLE.get());
         order.add(ModItems.BURNING_POTION.get());
         order.add(ModItems.NETHER_WART_POTION.get());
         order.add(ModItems.WITCH_BOMB.get());
 
-        order.add(ModItems.DARK_ANKH.get());
         order.add(ModItems.BASTION_SCROLL.get());
         order.add(ModItems.SUNKEN_SOUL_JAR.get());
         order.add(ModItems.STORM_SOUL_JAR.get());
         order.add(ModItems.THUNDER_HORN.get());
         order.add(ModItems.BROKEN_STORM_CROWN.get());
+        order.add(ModItems.DARK_ANKH.get());
         order.add(ModItems.SCREAMING_SKULL_JAR.get());
         order.add(ModItems.FUNGUS_PACK.get());
         order.add(ModItems.RAGGED_FUNGUS_PACK.get());
