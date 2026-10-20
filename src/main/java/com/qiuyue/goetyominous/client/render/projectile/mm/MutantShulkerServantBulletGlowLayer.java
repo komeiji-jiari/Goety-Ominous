@@ -2,7 +2,7 @@ package com.qiuyue.goetyominous.client.render.projectile.mm;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.qiuyue.goetyominous.client.render.model.mm.MutantShulkerServantBulletModel;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantShulkerServantBullet;
+import com.qiuyue.goetyominous.common.entities.ally.mm.MutantShulkerServantBullet;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
@@ -20,8 +20,7 @@ public class MutantShulkerServantBulletGlowLayer<T extends MutantShulkerServantB
     @Override
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (!entity.isInvisible()) {
-            float[] tint = MutantShulkerServantBulletRenderer.tint(entity.getColor());
-            this.getParentModel().renderToBuffer(poseStack, buffer.getBuffer(TYPE), packedLight, OverlayTexture.NO_OVERLAY, tint[0], tint[1], tint[2], 1.0F);
+            this.getParentModel().renderToBuffer(poseStack, buffer.getBuffer(TYPE), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         }
     }
 }

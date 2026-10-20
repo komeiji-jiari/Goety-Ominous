@@ -1,6 +1,6 @@
 package com.qiuyue.goetyominous.compat.mm;
 
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.*;
+import com.qiuyue.goetyominous.common.entities.ally.mm.*;
 import com.qiuyue.goetyominous.common.init.mm.MmBlockEntities;
 import com.qiuyue.goetyominous.common.init.mm.MmBlocks;
 import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;

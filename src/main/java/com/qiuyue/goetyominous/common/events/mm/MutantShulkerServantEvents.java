@@ -7,9 +7,10 @@ import com.alexander.mutantmore.entities.MutantShulker;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.items.mm.MmItems;
 import com.qiuyue.goetyominous.compat.mod.MutantMoreCompat;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantShulkerServant;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantShulkerServantBullet;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantShulkerServantTrap;
+import com.qiuyue.goetyominous.common.entities.ally.mm.MutantShulkerServant;
+import com.qiuyue.goetyominous.common.entities.ally.mm.MutantShulkerServantBullet;
+import com.qiuyue.goetyominous.common.entities.ally.mm.MutantShulkerServantTrap;
+import com.qiuyue.goetyominous.common.entities.ally.mm.MutantShulkerServantTrapBullet;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ExperienceOrb;
@@ -49,7 +50,8 @@ public class MutantShulkerServantEvents {
     public static void onLivingDeath(LivingDeathEvent event) {
         if (!MutantMoreCompat.isMutantMoreLoaded()) return;
         if (event.getEntity().level().isClientSide) return;
-        if (event.getSource().getDirectEntity() instanceof MutantShulkerServantBullet) {
+        if (event.getSource().getDirectEntity() instanceof MutantShulkerServantBullet
+                || event.getSource().getDirectEntity() instanceof MutantShulkerServantTrapBullet) {
             LivingEntity master = getMasterOwner(event.getSource());
             if (master instanceof Player player) {
                 event.getEntity().setLastHurtByPlayer(player);
@@ -98,6 +100,13 @@ public class MutantShulkerServantEvents {
                 return owned.getTrueOwner();
             }
             return shooter;
+        }
+        if (attacker instanceof MutantShulkerServantTrapBullet bullet) {
+            Entity shooter = bullet.getOwner();
+            if (shooter instanceof IOwned owned) {
+                return owned.getTrueOwner();
+            }
+            return shooter instanceof LivingEntity living ? living : null;
         }
         if (attacker instanceof MutantShulkerServant servant) {
             return servant.getTrueOwner();

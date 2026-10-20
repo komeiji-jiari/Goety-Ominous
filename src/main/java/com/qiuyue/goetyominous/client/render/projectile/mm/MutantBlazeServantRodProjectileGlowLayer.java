@@ -1,7 +1,7 @@
 package com.qiuyue.goetyominous.client.render.projectile.mm;
 
 import com.qiuyue.goetyominous.client.render.model.mm.RodlingServantModel;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantBlazeServantRodProjectile;
+import com.qiuyue.goetyominous.common.entities.ally.mm.MutantBlazeServantRodProjectile;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;

@@ -22,7 +22,7 @@ public class RiderChargeInputHandler {
             return;
         }
         if (!player.getVehicle().getClass().getName().equals(
-                "com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantHoglinServant")) {
+                "com.qiuyue.goetyominous.common.entities.ally.mm.MutantHoglinServant")) {
             return;
         }
         if (ModKeyBindings.RIDER_CHARGE_KEY.consumeClick()) {

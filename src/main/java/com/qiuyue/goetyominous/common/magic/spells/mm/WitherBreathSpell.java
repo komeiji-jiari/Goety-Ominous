@@ -12,7 +12,7 @@ import com.alexander.mutantmore.init.EffectInit;
 import com.alexander.mutantmore.init.ParticleTypeInit;
 import com.alexander.mutantmore.init.SoundEventInit;
 import com.alexander.mutantmore.util.PositionUtils;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.AreaDamage;
+import com.qiuyue.goetyominous.common.entities.ally.mm.AreaDamage;
 import com.qiuyue.goetyominous.common.init.mm.ModSpellControllers;
 import com.qiuyue.goetyominous.common.magic.utils.ContinuousControllerSpell;
 import net.minecraft.core.BlockPos;

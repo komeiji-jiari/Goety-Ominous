@@ -1,7 +1,7 @@
 package com.qiuyue.goetyominous.client.render.model.animation.mm;
 
 import com.alexander.mutantmore.animation.sine_wave_animations.SineWaveAnimationUtils;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantFrozenZombieServant;
+import com.qiuyue.goetyominous.common.entities.ally.mm.MutantFrozenZombieServant;
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.Keyframe;

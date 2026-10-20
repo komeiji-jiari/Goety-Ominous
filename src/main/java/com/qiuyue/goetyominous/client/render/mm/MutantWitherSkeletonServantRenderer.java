@@ -7,7 +7,7 @@ import com.mojang.math.Axis;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.render.layer.mm.WitherShieldLayer;
 import com.qiuyue.goetyominous.client.render.model.mm.MutantWitherSkeletonServantModel;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantWitherSkeletonServant;
+import com.qiuyue.goetyominous.common.entities.ally.mm.MutantWitherSkeletonServant;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;

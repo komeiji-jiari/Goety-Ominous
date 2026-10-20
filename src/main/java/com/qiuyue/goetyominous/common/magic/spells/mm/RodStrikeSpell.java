@@ -8,7 +8,7 @@ import com.Polarice3.Goety.common.magic.SummonSpell;
 import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.*;
 import com.alexander.mutantmore.config.mutant_blaze.RodlingCommonConfig;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.RodlingServant;
+import com.qiuyue.goetyominous.common.entities.ally.mm.RodlingServant;
 import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;

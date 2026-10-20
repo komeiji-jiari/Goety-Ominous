@@ -6,7 +6,7 @@ import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.init.ModEntityLayers;
 import com.qiuyue.goetyominous.client.render.model.mm.MutantHuskServantModel;
 import com.qiuyue.goetyominous.client.render.model.mm.MutantWitherSkeletonServantModel;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantHuskServant;
+import com.qiuyue.goetyominous.common.entities.ally.mm.MutantHuskServant;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;

@@ -1,6 +1,6 @@
 package com.qiuyue.goetyominous.common.network.mm;
 
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantHoglinServant;
+import com.qiuyue.goetyominous.common.entities.ally.mm.MutantHoglinServant;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;

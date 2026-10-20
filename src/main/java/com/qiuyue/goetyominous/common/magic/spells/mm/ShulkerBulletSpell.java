@@ -9,7 +9,7 @@ import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.alexander.mutantmore.config.mutant_shulker.MutantShulkerCommonConfig;
 import com.alexander.mutantmore.init.SoundEventInit;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantShulkerServantBullet;
+import com.qiuyue.goetyominous.common.entities.ally.mm.MutantShulkerServantBullet;
 import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
 import java.util.ArrayList;
 import java.util.List;
