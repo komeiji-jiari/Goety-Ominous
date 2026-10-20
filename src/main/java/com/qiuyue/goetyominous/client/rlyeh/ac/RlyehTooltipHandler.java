@@ -116,7 +116,9 @@ public final class RlyehTooltipHandler {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onTooltipPreSuppress(RenderTooltipEvent.Pre event) {
-        if (isThemed(event.getItemStack())) {
+        currentTheme = themeFor(event.getItemStack());
+        rlyehTooltip = currentTheme > 0.0F;
+        if (rlyehTooltip) {
             ObscureTooltipsCompat.suppress();
             ModernUiTooltipCompat.suppress();
         }
