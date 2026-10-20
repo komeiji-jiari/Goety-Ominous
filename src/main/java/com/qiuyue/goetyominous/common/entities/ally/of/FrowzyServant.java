@@ -315,6 +315,21 @@ public class FrowzyServant extends Summoned implements AttackState, VariantHolde
                                         @Nullable CompoundTag compoundTag) {
         spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData, compoundTag);
         this.setVariant(Frowzy.FrowzyVariant.byId(level.getRandom().nextInt(Frowzy.FrowzyVariant.values().length)));
+        if (this.canSpawnArmor()) {
+            this.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
+            this.setItemSlot(EquipmentSlot.LEGS, ItemStack.EMPTY);
+            this.setItemSlot(EquipmentSlot.FEET, ItemStack.EMPTY);
+            this.setItemSlot(EquipmentSlot.MAINHAND,
+                    new ItemStack(this.random.nextInt(3) == 0 ? Items.IRON_SWORD : Items.IRON_AXE));
+            this.setDropChance(EquipmentSlot.MAINHAND, 0.0F);
+            if (this.getItemBySlot(EquipmentSlot.HEAD).isEmpty()) {
+                Item helmet = getEquipmentForSlot(EquipmentSlot.HEAD, this.random.nextInt(3));
+                if (helmet != null) {
+                    this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(helmet));
+                }
+            }
+            this.setDropChance(EquipmentSlot.HEAD, 0.0F);
+        }
         return spawnData;
     }
 

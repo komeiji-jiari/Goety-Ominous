@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.common.init;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.effects.InfestedEffect;
 import com.qiuyue.goetyominous.common.effects.OozingEffect;
+import com.qiuyue.goetyominous.common.effects.RaidOmenEffect;
 import com.qiuyue.goetyominous.common.effects.TrialOmenEffect;
 import com.qiuyue.goetyominous.common.effects.WeavingEffect;
 import com.qiuyue.goetyominous.common.effects.WindChargedEffect;
@@ -22,6 +23,7 @@ public class ModEffects {
     public static final DeferredRegister<MobEffect> EFFECTS =
             DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, GoetyOminous.MOD_ID);
 
+    public static final RegistryObject<MobEffect> RAID_OMEN = EFFECTS.register("raid_omen", RaidOmenEffect::new);
     public static final RegistryObject<MobEffect> TRIAL_OMEN = EFFECTS.register("trial_omen", TrialOmenEffect::new);
     public static final RegistryObject<MobEffect> OOZING = EFFECTS.register("oozing", OozingEffect::new);
     public static final RegistryObject<MobEffect> WEAVING = EFFECTS.register("weaving", WeavingEffect::new);

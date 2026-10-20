@@ -27,19 +27,28 @@ public class MutantZombieReviveItem extends ReviveServantItem {
 
     private final Supplier<? extends EntityType<? extends Owned>> servantType;
     private final Class<? extends Owned> hostType;
+    private final EntityType<? extends LivingEntity> vanillaHost;
 
     public MutantZombieReviveItem(Supplier<? extends EntityType<? extends Owned>> servantType, Class<? extends Owned> hostType) {
+        this(servantType, hostType, null);
+    }
+
+    public MutantZombieReviveItem(Supplier<? extends EntityType<? extends Owned>> servantType, Class<? extends Owned> hostType,
+                                  EntityType<? extends LivingEntity> vanillaHost) {
         super(new Properties()
                 .rarity(Rarity.UNCOMMON)
                 .setNoRepair()
                 .stacksTo(1));
         this.servantType = servantType;
         this.hostType = hostType;
+        this.vanillaHost = vanillaHost;
     }
 
     @Override
     public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
-        if (!this.hostType.isInstance(target) || ((Owned) target).getTrueOwner() != player) {
+        boolean ownedServant = this.hostType.isInstance(target) && ((Owned) target).getTrueOwner() == player;
+        boolean vanillaHost = this.vanillaHost != null && target.getType() == this.vanillaHost;
+        if (!ownedServant && !vanillaHost) {
             return super.interactLivingEntity(stack, player, target, hand);
         }
         Level level = player.level();

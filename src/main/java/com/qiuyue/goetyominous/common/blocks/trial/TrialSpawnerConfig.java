@@ -1,10 +1,7 @@
-package com.qiuyue.goetyominous.config;
+package com.qiuyue.goetyominous.common.blocks.trial;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.qiuyue.goetyominous.common.blocks.trial.SpawnDataWithEquipment;
-import com.qiuyue.goetyominous.common.blocks.trial.TrialLootTables;
-import com.qiuyue.goetyominous.common.blocks.trial.VaultServerData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.random.SimpleWeightedRandomList;

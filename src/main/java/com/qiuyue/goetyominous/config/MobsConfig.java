@@ -48,6 +48,8 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> PiglinServantRangedEvolutionDamage;
     public static final ForgeConfigSpec.ConfigValue<Integer> PiglinHunterServantEvolutionDamage;
     public static final ForgeConfigSpec.ConfigValue<Integer> StrongPiglinHunterServantEvolutionDamage;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> RaidCaptainDropsOminousBottle;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> RaidOmen;
 
     static {
         BUILDER.push("Servant Limits");
@@ -162,6 +164,12 @@ public class MobsConfig {
         StrongPiglinHunterServantEvolutionDamage = BUILDER
                 .comment("How much ranged damage a Strong Hunter needs to evolve into Elite, Default: 160")
                 .defineInRange("strongPiglinHunterServantEvolutionDamage", 160, 1, Integer.MAX_VALUE);
+        RaidCaptainDropsOminousBottle = BUILDER
+                .comment("Whether raid captains not in a raid drop an Ominous Bottle (I-V, equal chance) on death instead of giving Bad Omen (Default: false)")
+                .define("trialCaptainDropsOminousBottle", false);
+        RaidOmen = BUILDER
+                .comment("Whether Bad Omen becomes a 30-second Raid Omen in a village and starts the raid when it expires, as in 1.21. When false, the 1.20 behavior is kept (Default: false)")
+                .define("raidOmen", false);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }

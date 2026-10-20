@@ -4,12 +4,18 @@
   "activation_item": {
     "item": "minecraft:bow"
   },
-  "craftType": "wind",
+  "craftType": "sky",
   "soulCost": 1,
   "duration": 10,
   "ingredients": [
     {
       "item": "goetyominous:wind_charge"
+    },
+    {
+      "item": "goetyominous:wind_charge"
+    },
+    {
+      "item": "minecraft:feather"
     },
     {
       "item": "minecraft:feather"

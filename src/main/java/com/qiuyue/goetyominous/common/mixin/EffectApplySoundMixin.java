@@ -41,6 +41,8 @@ public class EffectApplySoundMixin {
             sound = ModSounds.APPLY_EFFECT_BAD_OMEN.get();
         } else if (instance.getEffect() == ModEffects.TRIAL_OMEN.get()) {
             sound = ModSounds.APPLY_EFFECT_TRIAL_OMEN.get();
+        } else if (instance.getEffect() == ModEffects.RAID_OMEN.get()) {
+            sound = ModSounds.APPLY_EFFECT_RAID_OMEN.get();
         }
         if (sound != null) {
             self.level().playSound(null, self.getX(), self.getY(), self.getZ(), sound, self.getSoundSource(), 1.0F, 1.0F);

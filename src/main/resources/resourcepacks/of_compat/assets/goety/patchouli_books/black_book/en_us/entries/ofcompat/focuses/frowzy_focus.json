@@ -1,0 +1,20 @@
+{
+  "name": "Frowzy Focus",
+  "icon": "goetyominous:frowzy_focus",
+  "category": "goety:ofcompat/focuses",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "This elementary spell is very simple for a necromancer. It allows you to summon Frowzy servants, which nimbly run forth to slay your enemies."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:frowzy_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "A Necro Staff greatly increases the number of Frowzy summoned."
+    }
+  ]
+}

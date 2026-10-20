@@ -2,7 +2,7 @@ package com.qiuyue.goetyominous.common.blocks.trial;
 
 import com.mojang.logging.LogUtils;
 import com.qiuyue.goetyominous.common.init.ModBlockEntities;
-import com.qiuyue.goetyominous.config.PlayerDetector;
+
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

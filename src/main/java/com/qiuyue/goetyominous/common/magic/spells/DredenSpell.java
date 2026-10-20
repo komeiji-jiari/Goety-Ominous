@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class DredenSpell extends SummonSpell {
+
     public DredenSpell() {
     }
 

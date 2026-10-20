@@ -6,7 +6,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.qiuyue.goetyominous.common.items.ModItems;
 import java.util.Optional;
 
-import com.qiuyue.goetyominous.config.PlayerDetector;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;

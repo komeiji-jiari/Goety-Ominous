@@ -8,6 +8,7 @@ import com.Polarice3.Goety.common.items.magic.MagicFocus;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
 import com.qiuyue.goetyominous.common.magic.spells.mm.*;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.DeferredRegister;
@@ -56,7 +57,7 @@ public class MmItems {
 
     public static final RegistryObject<MutantZombieReviveItem> MUTANT_HUSK_REVIVE = MM_ITEMS.register(
             "mutant_husk_revive",
-            () -> new MutantZombieReviveItem(MmEntityRegistry.MUTANT_HUSK_SERVANT, HuskServant.class));
+            () -> new MutantZombieReviveItem(MmEntityRegistry.MUTANT_HUSK_SERVANT, HuskServant.class, EntityType.HUSK));
 
     public static final RegistryObject<MutantZombieReviveItem> MUTANT_FROZEN_ZOMBIE_REVIVE = MM_ITEMS.register(
             "mutant_frozen_zombie_revive",
