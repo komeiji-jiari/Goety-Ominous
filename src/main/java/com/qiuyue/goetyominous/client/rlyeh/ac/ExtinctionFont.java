@@ -4,15 +4,12 @@ import com.qiuyue.goetyominous.GoetyOminous;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceLocation;
 
 public final class ExtinctionFont {
 
     public static final ResourceLocation ASH =
             new ResourceLocation(GoetyOminous.MOD_ID, "extinction_ash");
-
-    public static final int ASH_TEXT_COLOUR = 0x2B0E06;
 
     private static final int[] PALETTE = {
             0x3A1A10, 0x6B2A12, 0x9C4318, 0xC96A22, 0xE8A54B, 0x6B2A12
@@ -45,11 +42,6 @@ public final class ExtinctionFont {
         return font != null
                 && GoetyOminous.MOD_ID.equals(font.getNamespace())
                 && font.getPath().startsWith("extinction_");
-    }
-
-    public static boolean isAshMark(Style style) {
-        TextColor colour = style.getColor();
-        return colour != null && colour.getValue() == ASH_TEXT_COLOUR;
     }
 
     private static int sample(int[] palette, double t) {

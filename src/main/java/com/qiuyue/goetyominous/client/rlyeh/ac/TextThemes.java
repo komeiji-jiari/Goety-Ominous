@@ -10,10 +10,10 @@ public final class TextThemes {
     }
 
     public static float themeOf(Style style) {
-        if (ExtinctionFont.isExtinctionFont(style.getFont()) || ExtinctionFont.isAshMark(style)) {
+        if (ExtinctionFont.isExtinctionFont(style.getFont())) {
             return RlyehShaders.EXTINCTION_THEME;
         }
-        if (RlyehFont.isRlyehFont(style.getFont()) || RlyehFont.isAbyssMark(style)) {
+        if (RlyehFont.isRlyehFont(style.getFont())) {
             return RlyehShaders.RLYEH_THEME;
         }
         return NONE;
