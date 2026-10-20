@@ -3,7 +3,6 @@ package com.qiuyue.goetyominous.common.mixin.ac;
 import com.qiuyue.goetyominous.client.rlyeh.ac.ExtinctionFont;
 import com.qiuyue.goetyominous.client.rlyeh.ac.RlyehFont;
 import com.qiuyue.goetyominous.client.rlyeh.ac.RlyehStyledText;
-import com.qiuyue.goetyominous.client.rlyeh.ac.RlyehTooltipHandler;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTextTooltip;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -34,7 +33,7 @@ public class MixinClientTextTooltip {
         if (seq == null) {
             return;
         }
-        if (!usesThemedFont(seq) && !(RlyehTooltipHandler.isRlyehTooltip() && usesThemedMark(seq))) {
+        if (!usesThemedFont(seq)) {
             return;
         }
         if (MODERN_UI) {
@@ -49,17 +48,6 @@ public class MixinClientTextTooltip {
         boolean[] hit = {false};
         seq.accept((pos, style, codePoint) -> {
             if (RlyehFont.isRlyehFont(style.getFont()) || ExtinctionFont.isExtinctionFont(style.getFont())) {
-                hit[0] = true;
-            }
-            return true;
-        });
-        return hit[0];
-    }
-
-    private static boolean usesThemedMark(FormattedCharSequence seq) {
-        boolean[] hit = {false};
-        seq.accept((pos, style, codePoint) -> {
-            if (RlyehFont.isAbyssMark(style) || ExtinctionFont.isAshMark(style)) {
                 hit[0] = true;
             }
             return true;
