@@ -15,6 +15,8 @@ public class MmCompatManager {
 
         MmEntityRegistry.register(modEventBus);
 
+        MmBossIceCubeController.register();
+
         MmBlocks.register(modEventBus);
         MmBlockEntities.register(modEventBus);
 
