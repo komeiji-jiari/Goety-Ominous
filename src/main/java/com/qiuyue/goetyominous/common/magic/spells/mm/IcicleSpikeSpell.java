@@ -7,7 +7,7 @@ import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.alexander.mutantmore.config.mutant_frozen_zombie.MutantFrozenZombieCommonConfig;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.ThrownIcicleServant;
+import com.qiuyue.goetyominous.common.entities.ally.mm.ThrownIcicleServant;
 import com.qiuyue.goetyominous.config.mm.MmConfig;
 import java.util.ArrayList;
 import java.util.List;
