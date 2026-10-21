@@ -30,6 +30,7 @@ import com.qiuyue.goetyominous.config.am.AmConfig;
 import com.qiuyue.goetyominous.config.lm.LmConfig;
 import com.qiuyue.goetyominous.config.mm.MmConfig;
 import com.qiuyue.goetyominous.config.of.OfConfig;
+import com.qiuyue.goetyominous.config.pp.PpConfig;
 import com.qiuyue.goetyominous.config.uasr.UasrConfig;
 import com.qiuyue.goetyominous.common.entities.ally.illager.train.GoetyOminousType;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.*;
@@ -155,6 +156,10 @@ public class GoetyOminous {
             com.qiuyue.goetyominous.compat.ac.AcCompatManager.init(modEventBus);
         }
 
+        if (PiglinProliferationCompat.isLoaded()) {
+            com.qiuyue.goetyominous.compat.pp.PpCompatManager.init(modEventBus);
+        }
+
         getOrCreateDirectory(FMLPaths.CONFIGDIR.get().resolve("goetyominous"), "goetyominous");
         getOrCreateDirectory(FMLPaths.CONFIGDIR.get().resolve("goetyominous/mm"), "goetyominous/mm");
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, AttributesConfig.SPEC,
@@ -196,6 +201,11 @@ public class GoetyOminous {
                 "goetyominous/goetyominous-goety_legends.toml");
         LmConfig.loadConfig(LmConfig.SPEC,
                 FMLPaths.CONFIGDIR.get().resolve("goetyominous/goetyominous-goety_legends.toml").toString());
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, PpConfig.SPEC,
+                "goetyominous/goetyominous-piglin_proliferation.toml");
+        PpConfig.loadConfig(PpConfig.SPEC,
+                FMLPaths.CONFIGDIR.get().resolve("goetyominous/goetyominous-piglin_proliferation.toml").toString());
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, MmConfig.SPEC,
                 "goetyominous/mm/goetyominous-goety_mutant.toml");
