@@ -5,7 +5,7 @@ import com.qiuyue.goetyominous.client.init.ModEntityLayers;
 import com.qiuyue.goetyominous.client.render.layer.mm.MutantHoglinEnragedLayer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.qiuyue.goetyominous.client.render.model.mm.MutantHoglinServantModel;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantHoglinServant;
+import com.qiuyue.goetyominous.common.entities.ally.mm.MutantHoglinServant;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;

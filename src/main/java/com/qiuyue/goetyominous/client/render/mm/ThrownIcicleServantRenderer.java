@@ -6,7 +6,7 @@ import com.mojang.math.Axis;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.init.ModEntityLayers;
 import com.qiuyue.goetyominous.client.render.model.mm.ThrownIcicleServantModel;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.ThrownIcicleServant;
+import com.qiuyue.goetyominous.common.entities.ally.mm.ThrownIcicleServant;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;

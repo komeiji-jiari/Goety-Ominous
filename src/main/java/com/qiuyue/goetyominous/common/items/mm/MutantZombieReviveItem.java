@@ -5,7 +5,7 @@ import com.Polarice3.Goety.common.items.revive.ReviveServantItem;
 import com.Polarice3.Goety.common.ritual.RitualRequirements;
 import com.Polarice3.Goety.utils.MathHelper;
 import com.Polarice3.Goety.utils.SEHelper;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.AbstractMutantServant;
+import com.qiuyue.goetyominous.common.entities.ally.mm.AbstractMutantServant;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;

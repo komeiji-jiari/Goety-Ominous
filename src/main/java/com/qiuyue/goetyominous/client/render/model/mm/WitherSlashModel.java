@@ -2,7 +2,7 @@ package com.qiuyue.goetyominous.client.render.model.mm;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.WitherSlash;
+import com.qiuyue.goetyominous.common.entities.ally.mm.WitherSlash;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;

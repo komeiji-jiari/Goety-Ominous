@@ -2,7 +2,7 @@ package com.qiuyue.goetyominous.client.render.model.mm;
 
 import com.alexander.mutantmore.animation.math_animation.definition.MutantShulkerBulletMathAnimations;
 import com.alexander.mutantmore.models.entities.MMBaseEntityModel;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantShulkerServantBullet;
+import com.qiuyue.goetyominous.common.entities.ally.mm.MutantShulkerServantBullet;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;

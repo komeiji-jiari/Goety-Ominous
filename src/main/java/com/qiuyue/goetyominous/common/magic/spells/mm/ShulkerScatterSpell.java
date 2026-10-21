@@ -8,7 +8,7 @@ import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.alexander.mutantmore.init.SoundEventInit;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantShulkerServantTrap;
+import com.qiuyue.goetyominous.common.entities.ally.mm.MutantShulkerServantTrap;
 import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +84,6 @@ public class ShulkerScatterSpell extends Spell {
                 trap.bonusDamage = potency;
                 trap.voidTouchedHit = usingRightStaff;
                 trap.bulletTurnTimeReduction = Math.min((int) velocity * 20, 100);
-                trap.bulletTrackSpeed = 1.25F + velocity * 0.2F;
                 worldIn.addFreshEntity(trap);
             }
         }

@@ -3,7 +3,7 @@ package com.qiuyue.goetyominous.client.render.model.mm;
 import com.alexander.mutantmore.animation.keyframe_animations.definition.MutantBlazeKeyframeAnimations;
 import com.alexander.mutantmore.animation.math_animation.definition.MutantBlazeMathAnimations;
 import com.alexander.mutantmore.models.entities.MMBaseEntityModel;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantBlazeServant;
+import com.qiuyue.goetyominous.common.entities.ally.mm.MutantBlazeServant;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;

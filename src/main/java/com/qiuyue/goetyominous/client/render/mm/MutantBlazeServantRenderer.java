@@ -4,7 +4,7 @@ import com.alexander.mutantmore.config.mutant_blaze.MutantBlazeClientConfig;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.qiuyue.goetyominous.client.render.layer.mm.MutantBlazeServantGlowLayer;
 import com.qiuyue.goetyominous.client.render.model.mm.MutantBlazeServantModel;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantBlazeServant;
+import com.qiuyue.goetyominous.common.entities.ally.mm.MutantBlazeServant;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.core.BlockPos;

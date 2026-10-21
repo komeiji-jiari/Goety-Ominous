@@ -9,7 +9,7 @@ import com.alexander.mutantmore.config.mutant_husk.MutantHuskClientConfig;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.qiuyue.goetyominous.client.render.model.animation.mm.MutantHuskServantKeyframeAnimations;
 import com.qiuyue.goetyominous.client.render.model.animation.mm.MutantHuskSineWaveAnimations;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantHuskServant;
+import com.qiuyue.goetyominous.common.entities.ally.mm.MutantHuskServant;
 import java.util.List;
 import java.util.stream.Collectors;
 import net.minecraft.client.model.ArmedModel;

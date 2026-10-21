@@ -1,7 +1,7 @@
 package com.qiuyue.goetyominous.compat.jade;
 
 import com.qiuyue.goetyominous.GoetyOminous;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.AbstractMutantServant;
+import com.qiuyue.goetyominous.common.entities.ally.mm.AbstractMutantServant;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import snownee.jade.api.EntityAccessor;

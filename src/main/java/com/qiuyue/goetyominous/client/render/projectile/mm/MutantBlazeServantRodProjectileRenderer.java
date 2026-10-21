@@ -4,7 +4,7 @@ import com.alexander.mutantmore.renderers.entities.ModeledNonLivingEntityRendere
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.qiuyue.goetyominous.client.render.model.mm.RodlingServantModel;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantBlazeServantRodProjectile;
+import com.qiuyue.goetyominous.common.entities.ally.mm.MutantBlazeServantRodProjectile;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.BlockPos;

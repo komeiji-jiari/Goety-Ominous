@@ -1,7 +1,7 @@
 package com.qiuyue.goetyominous.client.render.model.mm;
 
 import com.alexander.mutantmore.animation.keyframe_animations.definition.ZombieResurrectionAnimations;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.ZombieResurrectionServant;
+import com.qiuyue.goetyominous.common.entities.ally.mm.ZombieResurrectionServant;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;

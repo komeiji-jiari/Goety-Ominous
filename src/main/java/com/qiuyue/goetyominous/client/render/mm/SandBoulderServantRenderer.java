@@ -9,7 +9,7 @@ import com.mojang.math.Axis;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.init.ModEntityLayers;
 import com.qiuyue.goetyominous.client.render.model.mm.SandBoulderServantModel;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.SandBoulderServant;
+import com.qiuyue.goetyominous.common.entities.ally.mm.SandBoulderServant;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

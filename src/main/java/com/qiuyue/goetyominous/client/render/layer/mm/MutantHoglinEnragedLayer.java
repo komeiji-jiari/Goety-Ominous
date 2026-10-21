@@ -3,7 +3,7 @@ package com.qiuyue.goetyominous.client.render.layer.mm;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.qiuyue.goetyominous.client.render.model.mm.MutantHoglinServantModel;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantHoglinServant;
+import com.qiuyue.goetyominous.common.entities.ally.mm.MutantHoglinServant;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;

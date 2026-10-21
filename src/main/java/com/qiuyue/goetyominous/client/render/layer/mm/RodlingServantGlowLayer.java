@@ -1,7 +1,7 @@
 package com.qiuyue.goetyominous.client.render.layer.mm;
 
 import com.qiuyue.goetyominous.client.render.model.mm.RodlingServantModel;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.RodlingServant;
+import com.qiuyue.goetyominous.common.entities.ally.mm.RodlingServant;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;

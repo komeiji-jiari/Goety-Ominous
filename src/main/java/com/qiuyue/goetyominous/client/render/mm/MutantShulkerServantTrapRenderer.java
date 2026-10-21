@@ -3,7 +3,7 @@ package com.qiuyue.goetyominous.client.render.mm;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.init.ModEntityLayers;
 import com.qiuyue.goetyominous.client.render.model.mm.MutantShulkerServantTrapModel;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantShulkerServantTrap;
+import com.qiuyue.goetyominous.common.entities.ally.mm.MutantShulkerServantTrap;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;

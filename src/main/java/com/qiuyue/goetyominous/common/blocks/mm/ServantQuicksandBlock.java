@@ -5,7 +5,7 @@ import com.alexander.mutantmore.blocks.QuicksandBlock;
 import com.alexander.mutantmore.config.QuicksandCommonConfig;
 import com.alexander.mutantmore.init.TagInit;
 import com.qiuyue.goetyominous.common.blocks.entities.mm.ServantQuicksandBlockEntity;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.AreaDamage;
+import com.qiuyue.goetyominous.common.entities.ally.mm.AreaDamage;
 import com.qiuyue.goetyominous.common.init.mm.MmBlockEntities;
 import com.qiuyue.goetyominous.common.init.mm.MmBlocks;
 import net.minecraft.core.BlockPos;

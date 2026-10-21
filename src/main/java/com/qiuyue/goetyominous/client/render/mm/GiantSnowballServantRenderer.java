@@ -9,7 +9,7 @@ import com.mojang.math.Axis;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.init.ModEntityLayers;
 import com.qiuyue.goetyominous.client.render.model.mm.GiantSnowballServantModel;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.GiantSnowballServant;
+import com.qiuyue.goetyominous.common.entities.ally.mm.GiantSnowballServant;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

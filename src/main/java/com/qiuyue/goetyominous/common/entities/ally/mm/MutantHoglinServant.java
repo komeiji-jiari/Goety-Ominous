@@ -1,0 +1,884 @@
+package com.qiuyue.goetyominous.common.entities.ally.mm;
+
+import com.Polarice3.Goety.common.entities.neutral.Owned;
+import com.Polarice3.Goety.init.ModMobType;
+import com.alexander.mutantmore.ai.goals.AllDirectionsTargetGoal;
+import com.alexander.mutantmore.ai.goals.ApproachTargetGoal;
+import com.alexander.mutantmore.ai.goals.GroundPullAntiCheeseGoal;
+import com.alexander.mutantmore.ai.goals.LookAtTargetGoal;
+import com.alexander.mutantmore.init.ItemInit;
+import com.qiuyue.goetyominous.common.entities.ally.mm.goals.MutantHoglinServant.MutantHoglinChargeAttackGoal;
+import com.qiuyue.goetyominous.common.entities.ally.mm.goals.MutantHoglinServant.MutantHoglinKickAttackGoal;
+import com.qiuyue.goetyominous.common.entities.ally.mm.goals.MutantHoglinServant.MutantHoglinMeleeAttackGoal;
+import com.qiuyue.goetyominous.common.entities.ally.mm.goals.MutantHoglinServant.MutantHoglinStompAttackGoal;
+import com.alexander.mutantmore.config.MutantMoreGroupedOptionsCommonConfig;
+import com.alexander.mutantmore.config.mutant_hoglin.MutantHoglinCommonConfig;
+
+import com.qiuyue.goetyominous.compat.mm.MmScreenShake;
+import com.alexander.mutantmore.init.MMDamageTypes;
+import com.alexander.mutantmore.init.ParticleTypeInit;
+import com.alexander.mutantmore.init.SoundEventInit;
+import com.alexander.mutantmore.init.TagInit.EntityTypes;
+import com.alexander.mutantmore.util.MiscUtils;
+import com.alexander.mutantmore.util.PositionUtils;
+
+import java.util.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.hoglin.HoglinBase;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.ForgeHooks;
+import java.util.function.Predicate;
+import com.qiuyue.goetyominous.config.mm.MmConfig;
+
+public class MutantHoglinServant extends AbstractMutantServant implements PlayerRideable {
+    public float chargeAnimationAmount;
+    public float walkAnimationAmount;
+    public float trotAnimationAmount;
+    public float idleAnimationAmount = 1.0F;
+    public float keyframeAnimationAmount;
+    public boolean trotting;
+    public float[][] heldPose;
+    public AnimationState noveltyAnimationState = new AnimationState();
+    public int noveltyAnimationTick;
+    public AnimationState attackAnimationState = new AnimationState();
+    public int attackAnimationTick;
+    public AnimationState stompAnimationState = new AnimationState();
+    public int stompAnimationTick;
+    public AnimationState kickAnimationState = new AnimationState();
+    public int kickAnimationTick;
+    public AnimationState prepareChargeAnimationState = new AnimationState();
+    public int prepareChargeAnimationTick;
+    public AnimationState introAnimationState = new AnimationState();
+    public int introAnimationTick;
+    public AnimationState deathAnimationState = new AnimationState();
+    public AnimationState danceAnimationState = new AnimationState();
+    private static final EntityDataAccessor<Boolean> CHARGING = SynchedEntityData.defineId(MutantHoglinServant.class, EntityDataSerializers.BOOLEAN);
+    public boolean charging;
+    public boolean dancing;
+    public float enragedAmount;
+    public int enrageDuration;
+    public boolean wantsToCharge;
+    public boolean riderChargeRequested;
+    private boolean soulJarEnhancement;
+    private boolean blazingHelmEnhancement;
+    private boolean unholyBloodEnhancement;
+    private int unholyBloodInvulnTime;
+    private static final UUID SOUL_JAR_HEALTH_UUID = UUID.fromString("f0d8f8f0-0000-0000-0000-000000000201");
+    private static final UUID SOUL_JAR_ATTACK_UUID = UUID.fromString("f0d8f8f0-0000-0000-0000-000000000202");
+    private static final UUID BLAZING_HELM_HEALTH_UUID = UUID.fromString("f0d8f8f0-0000-0000-0000-000000000203");
+    private static final UUID BLAZING_HELM_ATTACK_UUID = UUID.fromString("f0d8f8f0-0000-0000-0000-000000000204");
+    private static final UUID UNHOLY_BLOOD_HEALTH_UUID = UUID.fromString("f0d8f8f0-0000-0000-0000-000000000101");
+    private static final UUID UNHOLY_BLOOD_ATTACK_UUID = UUID.fromString("f0d8f8f0-0000-0000-0000-000000000102");
+    public DamageSource killedBy = this.damageSources().cramming();
+
+    public MutantHoglinServant(EntityType<? extends Owned> p_i50189_1_, Level p_i50189_2_) {
+        super(p_i50189_1_, p_i50189_2_);
+    }
+
+    @Override
+    public int getSummonLimit(LivingEntity owner) {
+        return MmConfig.MutantHoglinServantLimit.get();
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(CHARGING, false);
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+        super.onSyncedDataUpdated(key);
+        if (CHARGING.equals(key)) {
+            this.charging = this.entityData.get(CHARGING);
+        }
+    }
+
+    public void setCharging(boolean charging) {
+        this.charging = charging;
+        this.entityData.set(CHARGING, charging);
+    }
+
+    public boolean hasSoulJar() { return this.soulJarEnhancement; }
+    public void setSoulJar(boolean value) { this.soulJarEnhancement = value; }
+    public boolean hasBlazingHelm() { return this.blazingHelmEnhancement; }
+    public void setBlazingHelm(boolean value) { this.blazingHelmEnhancement = value; }
+    public boolean hasUnholyBlood() { return this.unholyBloodEnhancement; }
+    public void setUnholyBlood(boolean value) { this.unholyBloodEnhancement = value; }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putBoolean("SoulJarEnhancement", this.soulJarEnhancement);
+        compound.putBoolean("BlazingHelmEnhancement", this.blazingHelmEnhancement);
+        compound.putBoolean("UnholyBloodEnhancement", this.unholyBloodEnhancement);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.soulJarEnhancement = compound.getBoolean("SoulJarEnhancement");
+        this.blazingHelmEnhancement = compound.getBoolean("BlazingHelmEnhancement");
+        this.unholyBloodEnhancement = compound.getBoolean("UnholyBloodEnhancement");
+        this.applyEnhancementModifiers();
+    }
+
+    @Override
+    public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
+        ItemStack itemstack = pPlayer.getItemInHand(pHand);
+        Item item = itemstack.getItem();
+
+        if (this.getTrueOwner() == null || pPlayer != this.getTrueOwner()) {
+            return InteractionResult.SUCCESS;
+        }
+
+        if (pPlayer.isShiftKeyDown() && item == Items.CRIMSON_FUNGUS && this.getHealth() < this.getMaxHealth()) {
+            if (!pPlayer.getAbilities().instabuild) {
+                itemstack.shrink(1);
+            }
+            this.playSound(SoundEvents.HOGLIN_AMBIENT, 1.0F, 1.0F);
+            this.heal(2.0F);
+            if (this.level() instanceof ServerLevel serverLevel) {
+                for (int i = 0; i < 7; ++i) {
+                    double d0 = this.random.nextGaussian() * 0.02D;
+                    double d1 = this.random.nextGaussian() * 0.02D;
+                    double d2 = this.random.nextGaussian() * 0.02D;
+                    serverLevel.sendParticles(ParticleTypes.HEART, this.getRandomX(1.0D), this.getY() + this.getBbHeight() + 0.3D + this.random.nextDouble() * 0.5D, this.getRandomZ(1.0D), 0, d0, d1, d2, 0.5F);
+                }
+            }
+            return InteractionResult.SUCCESS;
+        }
+
+        if (isWitherNecromancerSoulJar(itemstack) && !this.hasSoulJar()) {
+            if (!pPlayer.getAbilities().instabuild) {
+                itemstack.shrink(1);
+            }
+            this.setSoulJar(true);
+            this.applyEnhancementModifiers();
+            this.heal(30.0F);
+            this.playSound(SoundEventInit.MUTANT_HOGLIN_IDLE.get(), 1.0F, 1.0F);
+            return InteractionResult.SUCCESS;
+        }
+        if (item == com.Polarice3.Goety.common.items.ModItems.BLAZING_HELM.get() && !this.hasBlazingHelm()) {
+            if (!pPlayer.getAbilities().instabuild) {
+                itemstack.shrink(1);
+            }
+            this.setBlazingHelm(true);
+            this.applyEnhancementModifiers();
+            this.heal(20.0F);
+            this.playSound(SoundEventInit.MUTANT_HOGLIN_IDLE.get(), 1.0F, 1.0F);
+            return InteractionResult.SUCCESS;
+        }
+        if (item == com.Polarice3.Goety.common.items.ModItems.UNHOLY_BLOOD.get() && !this.hasUnholyBlood()) {
+            if (!pPlayer.getAbilities().instabuild) {
+                itemstack.shrink(1);
+            }
+            this.setUnholyBlood(true);
+            this.applyEnhancementModifiers();
+            this.heal(50.0F);
+            this.playSound(SoundEventInit.MUTANT_HOGLIN_IDLE.get(), 1.0F, 1.0F);
+            return InteractionResult.SUCCESS;
+        }
+
+        if (!this.isVehicle()) {
+            pPlayer.startRiding(this);
+            return InteractionResult.SUCCESS;
+        }
+        return InteractionResult.PASS;
+    }
+
+    private static boolean isWitherNecromancerSoulJar(ItemStack stack) {
+        if (stack.getItem() != com.Polarice3.Goety.common.items.ModItems.SOUL_JAR.get()) {
+            return false;
+        }
+        CompoundTag tag = stack.getOrCreateTag();
+        if (tag.contains("entity", net.minecraft.nbt.Tag.TAG_COMPOUND)) {
+            String entityType = tag.getCompound("entity").getString("entity");
+            ResourceLocation entityLoc = ResourceLocation.tryParse(entityType);
+            return entityLoc != null && entityLoc.equals(
+                    net.minecraftforge.registries.ForgeRegistries.ENTITY_TYPES.getKey(
+                            com.Polarice3.Goety.common.entities.ModEntityType.WITHER_NECROMANCER_SERVANT.get()));
+        }
+        return false;
+    }
+
+    @Override
+    public void travel(Vec3 pTravelVector) {
+        if (this.isAlive() && this.isVehicle() && this.getControllingPassenger() instanceof Player player) {
+            if (this.charging) {
+                this.setSpeed((float) this.getAttributeValue(Attributes.MOVEMENT_SPEED) * 1.25F);
+                super.travel(new Vec3(0, 0, 1));
+                return;
+            }
+            if (this.prepareChargeAnimationTick > 0) {
+                super.travel(Vec3.ZERO);
+                return;
+            }
+
+            this.setYRot(player.getYRot());
+            this.yRotO = this.getYRot();
+            this.setXRot(player.getXRot() * 0.5F);
+            this.setRot(this.getYRot(), this.getXRot());
+            this.yBodyRot = this.getYRot();
+            this.yHeadRot = this.yBodyRot;
+
+            float strafe = player.xxa * 0.5F;
+            float forward = player.zza * 0.5F;
+            if (forward <= 0.0F) {
+                forward *= 0.25F;
+            }
+
+            this.setSpeed((float) this.getAttributeValue(Attributes.MOVEMENT_SPEED));
+            super.travel(new Vec3(strafe, 0.0, forward));
+            return;
+        }
+        super.travel(pTravelVector);
+    }
+
+    public boolean isAutonomous() {
+        return false;
+    }
+
+    @Override
+    public void tryKill(Player player) {
+        if (this.killChance <= 0) {
+            this.warnKill(player);
+        } else {
+            super.tryKill(player);
+        }
+    }
+
+    @Override
+    public MobType getMobType() {
+        return ModMobType.NETHER;
+    }
+
+    @Override
+    public LivingEntity getControllingPassenger() {
+        Entity entity = this.getFirstPassenger();
+        if (entity instanceof Player) {
+            return (Player) entity;
+        }
+        return super.getControllingPassenger();
+    }
+
+    @Override
+    protected float getJumpPower() {
+        return this.isVehicle() ? 0.0F : super.getJumpPower();
+    }
+
+    @Override
+    public boolean causeFallDamage(float pFallDistance, float pMultiplier, DamageSource pSource) {
+        if (this.isVehicle()) {
+            return false;
+        }
+        return super.causeFallDamage(pFallDistance, pMultiplier, pSource);
+    }
+
+    @Override
+    public double getPassengersRidingOffset() {
+        return super.getPassengersRidingOffset() + 0.6D;
+    }
+
+    @Override
+    protected void positionRider(Entity pPassenger, Entity.MoveFunction pCallback) {
+        super.positionRider(pPassenger, pCallback);
+        if (this.isVehicle()) {
+            Vec3 forward = PositionUtils.getOffsetMotion(this, 0.0, 0.0, 1.35, 0.0F, this.yBodyRot);
+            pPassenger.setPos(pPassenger.getX() + forward.x, pPassenger.getY() + forward.y, pPassenger.getZ() + forward.z);
+        }
+    }
+
+    public void triggerRiderCharge() {
+        this.wantsToCharge = true;
+        this.riderChargeRequested = true;
+    }
+
+    protected void registerGoals() {
+        super.registerGoals();
+        this.goalSelector.addGoal(0, new RemainStationaryGoal());
+        this.goalSelector.addGoal(1, new GroundPullAntiCheeseGoal(this));
+        if ((Boolean)MutantHoglinCommonConfig.uses_charge.get()) {
+            this.goalSelector.addGoal(2, new MutantHoglinChargeAttackGoal(this));
+        }
+
+        if ((Boolean)MutantHoglinCommonConfig.uses_stomp_attack.get()) {
+            this.goalSelector.addGoal(3, new MutantHoglinStompAttackGoal(this));
+        }
+
+        if ((Boolean)MutantHoglinCommonConfig.uses_basic_attack.get()) {
+            this.goalSelector.addGoal(4, new MutantHoglinMeleeAttackGoal(this));
+        }
+
+        if ((Boolean)MutantHoglinCommonConfig.uses_kick_attack.get()) {
+            this.goalSelector.addGoal(5, new MutantHoglinKickAttackGoal(this));
+        }
+
+        this.goalSelector.addGoal(6, new ApproachTargetGoal(this, (Double)MutantHoglinCommonConfig.follow_target_wanted_distance.get(), (Double)MutantHoglinCommonConfig.following_movement_speed_multiplier.get(), true));
+        this.goalSelector.addGoal(7, new LookAtTargetGoal(this));
+        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 20.0F));
+        this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 1.0));
+        this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Mob.class, 10.0F));
+        this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
+        this.targetSelector.addGoal(0, (new HurtByTargetGoal(this, new Class[0])).setUnseenMemoryTicks(6000));
+        if ((Boolean)MutantHoglinCommonConfig.attacks_players.get() && !(Boolean)MutantMoreGroupedOptionsCommonConfig.mutants_attack_players_off.get()) {
+            this.targetSelector.addGoal(1, (new AllDirectionsTargetGoal(this, Player.class, true)).setUnseenMemoryTicks(6000));
+        }
+
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<LivingEntity>(this, LivingEntity.class, 20, false, false, (entity) -> {
+            return entity.getType().is(EntityTypes.MUTANT_HOGLIN_TARGETS);
+        }) {
+            protected AABB getTargetSearchArea(double p_26069_) {
+                return this.mob.getBoundingBox().inflate((Double)MutantHoglinCommonConfig.follow_non_player_distance.get(), (Double)MutantHoglinCommonConfig.follow_non_player_distance.get(), (Double)MutantHoglinCommonConfig.follow_non_player_distance.get());
+            }
+        });
+    }
+
+    public boolean shouldBeStationary() {
+        return this.introAnimationTick > 0;
+    }
+
+    public boolean canAttack(LivingEntity target) {
+        return this.canTarget(target) && super.canAttack(target);
+    }
+
+    boolean canTarget(Entity target) {
+        return MiscUtils.canHarmBasedOnTeamAndTag(EntityTypes.MUTANT_HOGLIN_CANT_TARGET, this, target, this, (Predicate)null);
+    }
+
+    public boolean canHarm(Entity target) {
+        return MiscUtils.canHarmBasedOnTeamAndTag(EntityTypes.MUTANT_HOGLIN_CANT_HURT, this, target, this, (Predicate)null);
+    }
+
+    public static AttributeSupplier.Builder createConfiguredAttributes() {
+        return Mob.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, MmConfig.MutantHoglinServantHealth.get())
+                .add(Attributes.ARMOR, MmConfig.MutantHoglinServantArmor.get())
+                .add(Attributes.ARMOR_TOUGHNESS, MmConfig.MutantHoglinServantArmorToughness.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, MmConfig.MutantHoglinServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, MmConfig.MutantHoglinServantFollowRange.get())
+                .add(Attributes.MOVEMENT_SPEED, MmConfig.MutantHoglinServantMovementSpeed.get())
+                .add(Attributes.ATTACK_DAMAGE, MmConfig.MutantHoglinServantAttackDamage.get())
+                .add(Attributes.ATTACK_KNOCKBACK, MmConfig.MutantHoglinServantAttackKnockback.get());
+    }
+
+    protected SoundEvent getAmbientSound() {
+        return (SoundEvent)SoundEventInit.MUTANT_HOGLIN_IDLE.get();
+    }
+
+    protected SoundEvent getHurtSound(DamageSource p_33034_) {
+        return (SoundEvent)SoundEventInit.MUTANT_HOGLIN_HURT.get();
+    }
+
+    protected void playStepSound(BlockPos p_20135_, BlockState p_20136_) {
+        this.playSound((SoundEvent)SoundEventInit.MUTANT_HOGLIN_STEP.get(), 0.75F, 1.0F);
+    }
+
+    protected float getSoundVolume() {
+        return 1.5F;
+    }
+
+    protected float getStandingEyeHeight(Pose p_21131_, EntityDimensions p_21132_) {
+        return 2.0F;
+    }
+
+    public float getEnragedAmount() {
+        return Mth.clamp(this.enragedAmount, 0.0F, 1.0F);
+    }
+
+    public boolean doHurtTarget(Entity p_34207_) {
+        return !(p_34207_ instanceof LivingEntity) ? false : HoglinBase.hurtAndThrowTarget(this, (LivingEntity)p_34207_);
+    }
+
+    public boolean notCurrentlyPlayingKeyframeAnimation() {
+        return this.noveltyAnimationTick <= 0 && this.introAnimationTick <= 0 && this.kickAnimationTick <= 0 && this.attackAnimationTick <= 0 && this.prepareChargeAnimationTick <= 0 && this.stompAnimationTick <= 0;
+    }
+
+    public void aiStep() {
+        super.aiStep();
+        if (this.charging) {
+            Iterator var1 = this.level().getEntities(this, this.getBoundingBox()).iterator();
+
+            while(var1.hasNext()) {
+                Entity entity = (Entity)var1.next();
+                if (this.canHarm(entity)) {
+                    double d0 = entity.getX() - this.getX();
+                    double d1 = entity.getZ() - this.getZ();
+                    double d2 = Math.max(d0 * d0 + d1 * d1, 0.001);
+                    entity.push(d0 / d2 * 4.0, 0.2, d1 / d2 * 4.0);
+                    entity.hurt(MMDamageTypes.cantAvoidMobAttack(this.damageSources(), this), ((Double)MutantHoglinCommonConfig.charge_attack_damage.get()).floatValue() * this.enragedDamageMultiplier());
+                    if (entity instanceof LivingEntity) {
+                        MiscUtils.disableShield((LivingEntity)entity, (Integer)MutantHoglinCommonConfig.charge_disable_shield_length.get());
+                    }
+                }
+            }
+
+        }
+
+    }
+
+    public float enragedSpeedMultiplier() {
+        return 1.0F + this.enragedAmount * (Float)MutantHoglinCommonConfig.enraged_speed_multiplier.get();
+    }
+
+    public float enragedDamageMultiplier() {
+        return 1.0F + this.enragedAmount * (Float)MutantHoglinCommonConfig.enraged_damage_multiplier.get();
+    }
+
+    public float enragedKnockbackMultiplier() {
+        return 1.0F + this.enragedAmount * (Float)MutantHoglinCommonConfig.enraged_knockback_multiplier.get();
+    }
+
+    public void baseTick() {
+        super.baseTick();
+        this.tickDownAnimTimers();
+        if (this.unholyBloodInvulnTime > 0) {
+            --this.unholyBloodInvulnTime;
+        }
+        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(MmConfig.MutantHoglinServantMovementSpeed.get() * (double)this.enragedSpeedMultiplier());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(MmConfig.MutantHoglinServantAttackDamage.get() * (double)this.enragedDamageMultiplier());
+        this.getAttribute(Attributes.ATTACK_KNOCKBACK).setBaseValue(MmConfig.MutantHoglinServantAttackKnockback.get() * (double)this.enragedKnockbackMultiplier());
+        if (this.enrageDuration > 0) {
+            --this.enrageDuration;
+        }
+
+        if (this.enrageDuration <= 0 && this.getEnragedAmount() > 0.0F) {
+            float amount = this.enragedAmount = this.getEnragedAmount() - (Float)MutantHoglinCommonConfig.enrage_lower_speed.get();
+            if (amount <= 0.0F) {
+                this.enragedAmount = 0.0F;
+            } else {
+                this.enragedAmount = amount;
+            }
+        }
+
+        Vec3 velocity = this.getDeltaMovement();
+        float groundSpeed = Mth.sqrt((float)(velocity.x * velocity.x + velocity.z * velocity.z));
+        if (!this.level().isClientSide && groundSpeed <= 0.01F && this.noveltyAnimationTick <= 0 && this.random.nextInt(400) == 0 && this.notCurrentlyPlayingKeyframeAnimation() && (this.getTarget() == null || this.getTarget().isDeadOrDying() || this.getTarget().isRemoved())) {
+            Objects.requireNonNull(this);
+            this.noveltyAnimationTick = 30;
+            this.level().broadcastEntityEvent(this, (byte)4);
+        }
+
+        if (!this.level().isClientSide && this.noveltyAnimationTick > 0 && groundSpeed > 0.01F) {
+            this.noveltyAnimationTick = 0;
+            this.level().broadcastEntityEvent(this, (byte)5);
+        }
+
+        if (this.level().isClientSide && this.charging) {
+            MmScreenShake.shake(this.level(), 6, 0.015F, this.blockPosition(), 10);
+        }
+
+    }
+
+    public void enrage() {
+        if (!this.level().isClientSide) {
+            this.level().broadcastEntityEvent(this, (byte)16);
+        }
+        float amount = this.hasBlazingHelm() ? 0.25F : (Float)MutantHoglinCommonConfig.enrage_amount.get();
+        this.enragedAmount = Mth.clamp(this.getEnragedAmount() + amount, 0.0F, 1.0F);
+        this.enrageDuration = Mth.clamp(this.enrageDuration + (Integer)MutantHoglinCommonConfig.enrage_duration.get(), 0, (Integer)MutantHoglinCommonConfig.max_enrage_duration.get());
+    }
+
+    public void tickDownAnimTimers() {
+        if (this.noveltyAnimationTick > 0) {
+            --this.noveltyAnimationTick;
+        }
+
+        if (this.level().isClientSide && this.noveltyAnimationTick <= 0) {
+            this.noveltyAnimationState.stop();
+        }
+
+        if (this.attackAnimationTick > 0) {
+            --this.attackAnimationTick;
+        }
+
+        if (this.level().isClientSide && this.attackAnimationTick <= 0) {
+            this.attackAnimationState.stop();
+        }
+
+        if (this.kickAnimationTick > 0) {
+            --this.kickAnimationTick;
+        }
+
+        if (this.level().isClientSide && this.kickAnimationTick <= 0) {
+            this.kickAnimationState.stop();
+        }
+
+        if (this.prepareChargeAnimationTick > 0) {
+            --this.prepareChargeAnimationTick;
+        }
+
+        if (this.level().isClientSide && this.prepareChargeAnimationTick <= 0) {
+            this.prepareChargeAnimationState.stop();
+        }
+
+        if (this.stompAnimationTick > 0) {
+            --this.stompAnimationTick;
+        }
+
+        if (this.level().isClientSide && this.stompAnimationTick <= 0) {
+            this.stompAnimationState.stop();
+        }
+
+        if (this.introAnimationTick > 0) {
+            --this.introAnimationTick;
+        }
+
+        if (this.level().isClientSide && this.introAnimationTick <= 0) {
+            this.introAnimationState.stop();
+        }
+
+    }
+
+    public void handleEntityEvent(byte p_21375_) {
+        if (p_21375_ == 4) {
+            Objects.requireNonNull(this);
+            this.noveltyAnimationTick = 30;
+            this.noveltyAnimationState.start(this.tickCount);
+        } else if (p_21375_ == 5) {
+            this.noveltyAnimationTick = 0;
+            this.noveltyAnimationState.stop();
+        } else if (p_21375_ == 6) {
+            Objects.requireNonNull(this);
+            this.attackAnimationTick = 22;
+            this.attackAnimationState.start(this.tickCount);
+            this.noveltyAnimationTick = 0;
+            this.noveltyAnimationState.stop();
+        } else if (p_21375_ == 7) {
+            this.deathAnimationState.start(this.tickCount);
+        } else if (p_21375_ == 8) {
+            this.danceAnimationState.start(this.tickCount);
+            this.dancing = true;
+        } else if (p_21375_ == 9) {
+            Objects.requireNonNull(this);
+            this.kickAnimationTick = 45;
+            this.kickAnimationState.start(this.tickCount);
+            this.noveltyAnimationTick = 0;
+            this.noveltyAnimationState.stop();
+        } else if (p_21375_ == 10) {
+            Objects.requireNonNull(this);
+            this.prepareChargeAnimationTick = 24;
+            this.prepareChargeAnimationState.start(this.tickCount);
+            this.noveltyAnimationTick = 0;
+            this.noveltyAnimationState.stop();
+        } else if (p_21375_ == 11) {
+            Objects.requireNonNull(this);
+            this.stompAnimationTick = 50;
+            this.stompAnimationState.start(this.tickCount);
+            this.noveltyAnimationTick = 0;
+            this.noveltyAnimationState.stop();
+        } else if (p_21375_ == 12) {
+            this.setCharging(true);
+            this.noveltyAnimationTick = 0;
+            this.noveltyAnimationState.stop();
+        } else if (p_21375_ == 13) {
+            this.setCharging(false);
+            this.noveltyAnimationTick = 0;
+            this.noveltyAnimationState.stop();
+        } else if (p_21375_ == 14) {
+            Objects.requireNonNull(this);
+            this.introAnimationTick = 28;
+            this.introAnimationState.start(this.tickCount);
+            this.noveltyAnimationTick = 0;
+            this.noveltyAnimationState.stop();
+        } else if (p_21375_ == 15) {
+            AABB griefingBoundingBox = this.getBoundingBox().inflate((Double)MutantHoglinCommonConfig.stomp_attack_range.get(), (Double)MutantHoglinCommonConfig.stomp_attack_range.get() * 3.0, (Double)MutantHoglinCommonConfig.stomp_attack_range.get());
+            Iterator var3 = BlockPos.betweenClosed(Mth.floor(griefingBoundingBox.minX), Mth.floor(griefingBoundingBox.minY), Mth.floor(griefingBoundingBox.minZ), Mth.floor(griefingBoundingBox.maxX), Mth.floor(griefingBoundingBox.maxY), Mth.floor(griefingBoundingBox.maxZ)).iterator();
+
+            while(var3.hasNext()) {
+                BlockPos blockpos = (BlockPos)var3.next();
+                BlockState blockstate = this.level().getBlockState(blockpos);
+                if (!blockstate.isAir() && this.level().getBlockState(blockpos.above()).isAir() && this.random.nextBoolean()) {
+                    this.level().addParticle((new BlockParticleOption(ParticleTypes.BLOCK, blockstate)).setPos(blockpos), (double)blockpos.getX() + this.random.nextGaussian() * 0.5, (double)blockpos.above().getY() + 0.1, (double)blockpos.getZ() + this.random.nextGaussian() * 0.5, this.random.nextGaussian(), 0.0, this.random.nextGaussian());
+                }
+            }
+        } else if (p_21375_ == 16) {
+            this.enrage();
+        } else {
+            super.handleEntityEvent(p_21375_);
+        }
+
+    }
+
+    public boolean hurt(DamageSource p_21016_, float p_21017_) {
+        if (this.hasUnholyBlood()) {
+            if (this.unholyBloodInvulnTime > 0) {
+                return false;
+            }
+            boolean inNether = this.level().dimension() == Level.NETHER;
+            p_21017_ = inNether ? p_21017_ * 0.5F : p_21017_ * 0.85F;
+            if (p_21017_ <= 0.0F) {
+                return false;
+            }
+        }
+        boolean flag = super.hurt(p_21016_, p_21017_);
+        if (flag) {
+            if (this.hasUnholyBlood()) {
+                this.unholyBloodInvulnTime = 10;
+            }
+            if (!this.level().isClientSide) {
+                this.enrage();
+                if (p_21016_.getEntity() != null && p_21016_.getEntity() instanceof ServerPlayer && this.getEnragedAmount() >= 1.0F) {
+                    MiscUtils.awardMutantMoreAdvancement((ServerPlayer)p_21016_.getEntity(), "mutantmore/enrage_mutant_hoglin", "enraged");
+                }
+            }
+        }
+        return flag;
+    }
+
+    private void addModIfMissing(AttributeInstance instance, UUID uuid, String name, double value) {
+        if (instance != null && instance.getModifier(uuid) == null) {
+            instance.addPermanentModifier(new AttributeModifier(uuid, name, value, AttributeModifier.Operation.ADDITION));
+        }
+    }
+
+    private void applyEnhancementModifiers() {
+        AttributeInstance health = this.getAttribute(Attributes.MAX_HEALTH);
+        AttributeInstance attack = this.getAttribute(Attributes.ATTACK_DAMAGE);
+        if (this.hasSoulJar()) {
+            this.addModIfMissing(health, SOUL_JAR_HEALTH_UUID, "Soul Jar Health", MmConfig.MHSoulJarHealthBouns.get());
+            this.addModIfMissing(attack, SOUL_JAR_ATTACK_UUID, "Soul Jar Attack", MmConfig.MHSoulJarDamageBouns.get());
+        }
+        if (this.hasBlazingHelm()) {
+            this.addModIfMissing(health, BLAZING_HELM_HEALTH_UUID, "Blazing Helm Health", MmConfig.MHBlazingHelmHealthBouns.get());
+            this.addModIfMissing(attack, BLAZING_HELM_ATTACK_UUID, "Blazing Helm Attack", MmConfig.MHBlazingHelmDamageBouns.get());
+        }
+        if (this.hasUnholyBlood()) {
+            this.addModIfMissing(health, UNHOLY_BLOOD_HEALTH_UUID, "Unholy Blood Health", MmConfig.MHUnholyBloodHealthBouns.get());
+            this.addModIfMissing(attack, UNHOLY_BLOOD_ATTACK_UUID, "Unholy Blood Attack", MmConfig.MHUnholyBloodDamageBouns.get());
+        }
+    }
+
+    public void summonFlameRings() {
+        if (this.level() instanceof ServerLevel serverLevel) {
+            int duration = 180;
+            int warmUp = 10;
+            double r1 = 3.0D;
+            double r2 = 6.0D;
+            float yaw = this.getYRot() * ((float)Math.PI / 180.0F);
+            int innerCount = 16;
+            int outerCount = 8;
+            for (int i = 0; i < innerCount; i++) {
+                float angle = yaw + (float)i * (float)(Math.PI * 2.0 / innerCount);
+                Vec3 pos = new Vec3(this.getX() + (double)(Mth.cos(angle) * (float)r1),
+                        this.getY(), this.getZ() + (double)(Mth.sin(angle) * (float)r1));
+                this.spawnFlame(serverLevel, pos, duration, warmUp);
+            }
+            float outerOffset = (float)(Math.PI / outerCount);
+            for (int i = 0; i < outerCount; i++) {
+                float angle = yaw + outerOffset + (float)i * (float)(Math.PI * 2.0 / outerCount);
+                Vec3 pos = new Vec3(this.getX() + (double)(Mth.cos(angle) * (float)r2),
+                        this.getY(), this.getZ() + (double)(Mth.sin(angle) * (float)r2));
+                this.spawnFlame(serverLevel, pos, duration, warmUp);
+            }
+        }
+    }
+
+    public void spawnChargeFlame() {
+        if (this.level() instanceof ServerLevel serverLevel) {
+            this.spawnFlame(serverLevel, this.position(), 180, 10);
+        }
+    }
+
+    private void spawnFlame(ServerLevel level, Vec3 vec3, int duration, int warmUp) {
+        com.Polarice3.Goety.common.entities.util.FirePillar flames = new com.Polarice3.Goety.common.entities.util.FirePillar(level, vec3.x, vec3.y, vec3.z);
+        flames.setOwner(this);
+        flames.setDuration(duration);
+        flames.setWarmUp(warmUp);
+        com.Polarice3.Goety.utils.MobUtil.moveDownToGround(flames);
+        level.addFreshEntity(flames);
+    }
+
+    public boolean isInvulnerableTo(DamageSource p_20122_) {
+        return p_20122_.is(DamageTypes.FALLING_BLOCK) ? true : super.isInvulnerableTo(p_20122_);
+    }
+
+    public void die(DamageSource p_21014_) {
+        super.die(p_21014_);
+        if (this.random.nextInt(100) == 0) {
+            this.level().broadcastEntityEvent(this, (byte)8);
+            this.dancing = true;
+        } else {
+            this.level().broadcastEntityEvent(this, (byte)7);
+        }
+
+        this.killedBy = p_21014_;
+    }
+
+    protected void tickDeath() {
+        ++this.deathTime;
+        if (this.getLastDamageSource() == null || !this.getLastDamageSource().is(DamageTypes.GENERIC_KILL) && !this.getLastDamageSource().is(DamageTypes.FELL_OUT_OF_WORLD)) {
+            if (!this.level().isClientSide) {
+                if (this.dancing) {
+                    if (this.deathTime == 140) {
+                        this.level().broadcastEntityEvent(this, (byte)60);
+                        if (this.killedBy != null) {
+                            this.dropAllTickDeathLoot(this.killedBy);
+                        }
+
+                        this.remove(RemovalReason.KILLED);
+                    }
+                } else if (this.deathTime == 100) {
+                    this.level().broadcastEntityEvent(this, (byte)60);
+                    if (this.killedBy != null) {
+                        this.dropAllTickDeathLoot(this.killedBy);
+                    }
+
+                    this.remove(RemovalReason.KILLED);
+                }
+            }
+
+            int var10000 = this.deathTime;
+            Objects.requireNonNull(this);
+            if (var10000 == 65) {
+                Iterator var2;
+                if (!this.level().isClientSide) {
+                    Vec3 particlePos = PositionUtils.getOffsetPos(this, 0.0, 0.0, 2.25, 0.0F, this.yBodyRot);
+                    ((ServerLevel)this.level()).sendParticles((SimpleParticleType)ParticleTypeInit.SHOCKWAVE.get(), particlePos.x, particlePos.y, particlePos.z, 1, 0.0, 0.0, 0.0, 0.0);
+                    var2 = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate((Double)MutantHoglinCommonConfig.death_range.get(), (Double)MutantHoglinCommonConfig.death_range.get(), (Double)MutantHoglinCommonConfig.death_range.get()), MiscUtils.ALIVE).iterator();
+
+                    while(true) {
+                        Entity entity;
+                        do {
+                            do {
+                                if (!var2.hasNext()) {
+                                    return;
+                                }
+
+                                entity = (Entity)var2.next();
+                            } while(entity == this);
+                        } while(!entity.onGround() && (!entity.isPassenger() || !entity.getRootVehicle().onGround()));
+
+                        if (this.canHarm(entity)) {
+                            if ((Boolean)MutantHoglinCommonConfig.ignores_invulnerability_time.get()) {
+                                entity.invulnerableTime = 0;
+                            }
+
+                            entity.hurt(MMDamageTypes.earthquakeAttack(this.damageSources(), this), ((Double)MutantHoglinCommonConfig.death_damage.get()).floatValue());
+                        }
+
+                        entity.push(this.getRandom().nextGaussian() * 0.75, 1.0, this.getRandom().nextGaussian() * 0.75);
+                    }
+                } else {
+                    MmScreenShake.shake(this.level(), 6, 0.15F, this.blockPosition(), ((Double)MutantHoglinCommonConfig.death_range.get()).intValue());
+                    AABB griefingBoundingBox = this.getBoundingBox().inflate((Double)MutantHoglinCommonConfig.death_range.get(), (Double)MutantHoglinCommonConfig.death_range.get() * 3.0, (Double)MutantHoglinCommonConfig.death_range.get());
+                    var2 = BlockPos.betweenClosed(Mth.floor(griefingBoundingBox.minX), Mth.floor(griefingBoundingBox.minY), Mth.floor(griefingBoundingBox.minZ), Mth.floor(griefingBoundingBox.maxX), Mth.floor(griefingBoundingBox.maxY), Mth.floor(griefingBoundingBox.maxZ)).iterator();
+
+                    while(var2.hasNext()) {
+                        BlockPos blockpos = (BlockPos)var2.next();
+                        BlockState blockstate = this.level().getBlockState(blockpos);
+                        if (!blockstate.isAir() && this.level().getBlockState(blockpos.above()).isAir() && this.random.nextBoolean()) {
+                            this.level().addParticle((new BlockParticleOption(ParticleTypes.BLOCK, blockstate)).setPos(blockpos), (double)blockpos.getX() + this.random.nextGaussian() * 0.5, (double)blockpos.above().getY() + 0.1, (double)blockpos.getZ() + this.random.nextGaussian() * 0.5, this.random.nextGaussian(), 0.0, this.random.nextGaussian());
+                        }
+                    }
+                }
+            }
+        } else if (this.deathTime == 20 && !this.level().isClientSide()) {
+            this.level().broadcastEntityEvent(this, (byte)60);
+            this.remove(RemovalReason.KILLED);
+        }
+
+    }
+
+    protected void dropAllDeathLoot(DamageSource source) {
+    }
+
+    public void dropAllTickDeathLoot(DamageSource source) {
+        Entity entity = source.getEntity();
+        int i = ForgeHooks.getLootingLevel(this, entity, source);
+        this.captureDrops(new ArrayList());
+        boolean flag = this.lastHurtByPlayerTime > 0;
+        this.dropFromLootTable(source, flag);
+        this.dropCustomDeathLoot(source, i, flag);
+        this.dropEquipment();
+        Collection<ItemEntity> drops = this.captureDrops((Collection)null);
+        if (!ForgeHooks.onLivingDrops(this, source, drops, i, this.lastHurtByPlayerTime > 0)) {
+            drops.forEach((e) -> {
+                this.level().addFreshEntity(e);
+            });
+        }
+
+        ItemEntity tuskDrop = new ItemEntity(this.level(), this.getX(), this.getY(), this.getZ(),
+                new ItemStack(ItemInit.MUTANT_HOGLIN_TUSK.get(), 2));
+        this.level().addFreshEntity(tuskDrop);
+    }
+
+    public ItemEntity spawnAtLocation(ItemStack p_19985_, float p_19986_) {
+        if (p_19985_.isEmpty()) {
+            return null;
+        } else if (this.level().isClientSide) {
+            return null;
+        } else {
+            ItemEntity itementity = new ItemEntity(this.level(), this.getX(), this.getY() + (double)p_19986_, this.getZ(), p_19985_);
+            itementity.setDefaultPickUpDelay();
+            itementity.setExtendedLifetime();
+            if (this.captureDrops() != null) {
+                this.captureDrops().add(itementity);
+            } else {
+                this.level().addFreshEntity(itementity);
+            }
+
+            return itementity;
+        }
+    }
+    public void onMutated() {
+        this.introAnimationTick = 28;
+        this.noveltyAnimationTick = 0;
+        this.level().broadcastEntityEvent(this, (byte)14);
+    }
+
+    public NodeEvaluatorDimensions getNodeEvaluatorDimensions() {
+        return null;
+    }
+
+    public ForgeConfigSpec.ConfigValue<Boolean> despawnsConfig() {
+        return MutantHoglinCommonConfig.despawns;
+    }
+
+    class RemainStationaryGoal extends Goal {
+        public RemainStationaryGoal() {
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.TARGET, Flag.JUMP));
+        }
+
+        public boolean canUse() {
+            return MutantHoglinServant.this.shouldBeStationary();
+        }
+    }
+}

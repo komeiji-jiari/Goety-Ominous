@@ -8,7 +8,7 @@ import com.alexander.mutantmore.animation.sine_wave_animations.SineWaveAnimation
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.qiuyue.goetyominous.client.render.model.animation.mm.MutantFrozenZombieServantKeyframeAnimations;
 import com.qiuyue.goetyominous.client.render.model.animation.mm.MutantFrozenZombieSineWaveAnimations;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantFrozenZombieServant;
+import com.qiuyue.goetyominous.common.entities.ally.mm.MutantFrozenZombieServant;
 import java.util.List;
 import java.util.stream.Collectors;
 import net.minecraft.client.model.ArmedModel;

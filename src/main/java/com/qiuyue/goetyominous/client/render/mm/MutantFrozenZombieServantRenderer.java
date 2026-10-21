@@ -6,7 +6,7 @@ import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.init.ModEntityLayers;
 import com.qiuyue.goetyominous.client.render.model.mm.MutantFrozenZombieServantModel;
 import com.qiuyue.goetyominous.client.render.model.mm.MutantWitherSkeletonServantModel;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantFrozenZombieServant;
+import com.qiuyue.goetyominous.common.entities.ally.mm.MutantFrozenZombieServant;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
