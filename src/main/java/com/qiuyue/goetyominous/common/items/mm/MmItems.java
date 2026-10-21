@@ -63,6 +63,18 @@ public class MmItems {
             "mutant_frozen_zombie_revive",
             () -> new MutantZombieReviveItem(MmEntityRegistry.MUTANT_FROZEN_ZOMBIE_SERVANT, FrozenZombieServant.class));
 
+    public static final RegistryObject<MagicFocus> GIANT_SNOWBALL_FOCUS = MM_ITEMS.register(
+            "giant_snowball_focus",
+            () -> new MagicFocus(new GiantSnowBallSpell()));
+
+    public static final RegistryObject<MagicFocus> ICICLE_SLAM_FOCUS = MM_ITEMS.register(
+            "icicle_slam_focus",
+            () -> new MagicFocus(new IcicleSlamSpell()));
+
+    public static final RegistryObject<MagicFocus> ICICLE_SPIKE_FOCUS = MM_ITEMS.register(
+            "icicle_spike_focus",
+            () -> new MagicFocus(new IcicleSpikeSpell()));
+
     public static final RegistryObject<MagicFocus> WITHER_BREATH_FOCUS = MM_ITEMS.register(
             "wither_breath_focus",
             () -> new MagicFocus(new WitherBreathSpell()));

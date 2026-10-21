@@ -1,5 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.ally.mobs.mm;
 
+import com.Polarice3.Goety.api.entities.IOwned;
+import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.compat.mm.MmScreenShake;
 import com.alexander.mutantmore.init.EffectInit;
 import com.alexander.mutantmore.init.MMDamageTypes;
@@ -17,6 +19,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
@@ -32,6 +35,7 @@ public class ThrownIcicleServant extends ThrowableProjectile {
     public int disableShieldLength = 0;
     public boolean ignoresInvulTime = true;
     public List<Entity> alreadyHit = Lists.newArrayList();
+    public boolean spellOwned;
 
     public ThrownIcicleServant(EntityType<? extends ThrownIcicleServant> p_37391_, Level p_37392_) {
         super(p_37391_, p_37392_);
@@ -39,6 +43,24 @@ public class ThrownIcicleServant extends ThrowableProjectile {
 
     public ThrownIcicleServant(Level p_37399_, LivingEntity p_37400_) {
         super(MmEntityRegistry.THROWN_ICICLE_SERVANT.get(), p_37400_, p_37399_);
+    }
+
+    private boolean isSpellFriendly(Entity target) {
+        if (!this.spellOwned || this.getOwner() == null) {
+            return false;
+        }
+        if (target == this.getOwner()) {
+            return true;
+        }
+        LivingEntity root = this.getOwner() instanceof IOwned owned
+                ? owned.getMasterOwner()
+                : (LivingEntity) this.getOwner();
+        if (target instanceof Player player && (player.isCreative() || player.isSpectator())) {
+            return true;
+        }
+        return target instanceof IOwned owned && owned.getMasterOwner() == root
+                || target instanceof OwnableEntity ownable && ownable.getOwner() == root
+                || MobUtil.areAllies(root, target);
     }
 
     protected void onHitEntity(EntityHitResult p_37386_) {
@@ -95,6 +117,9 @@ public class ThrownIcicleServant extends ThrowableProjectile {
     }
 
     boolean canHarm(Entity target) {
+        if (this.isSpellFriendly(target)) {
+            return false;
+        }
         if (MiscUtils.canHarmBasedOnTeamAndTag(TagInit.EntityTypes.MUTANT_FROZEN_ZOMBIE_THROWN_ICICLE_CANT_HURT, this, target, this.getOwner(), entity -> entity instanceof MutantFrozenZombieServant)) {
             return true;
         }
@@ -105,6 +130,9 @@ public class ThrownIcicleServant extends ThrowableProjectile {
     }
 
     boolean canHit(Entity target) {
+        if (this.isSpellFriendly(target)) {
+            return false;
+        }
         if (MiscUtils.canHarmBasedOnTeamAndTag(TagInit.EntityTypes.MUTANT_FROZEN_ZOMBIE_THROWN_ICICLE_CANT_HIT, this, target, this.getOwner(), entity -> entity instanceof MutantFrozenZombieServant)) {
             return true;
         }
@@ -128,6 +156,7 @@ public class ThrownIcicleServant extends ThrowableProjectile {
         tag.putInt("FreezingLength", this.freezingLength);
         tag.putInt("DisableShieldTime", this.disableShieldLength);
         tag.putBoolean("IgnoresInvulTime", this.ignoresInvulTime);
+        tag.putBoolean("SpellOwned", this.spellOwned);
     }
 
     public void readAdditionalSaveData(CompoundTag tag) {
@@ -147,6 +176,7 @@ public class ThrownIcicleServant extends ThrowableProjectile {
         if (tag.contains("IgnoresInvulTime")) {
             this.ignoresInvulTime = tag.getBoolean("IgnoresInvulTime");
         }
+        this.spellOwned = tag.getBoolean("SpellOwned");
     }
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {

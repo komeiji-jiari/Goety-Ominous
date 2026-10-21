@@ -1,0 +1,21 @@
+{
+  "name": "雪团聚晶",
+  "icon": "goetyominous:giant_snowball_focus",
+  "category": "goety:mmcompat/focuses",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "text",
+      "text": "通过这个法术，你可以向你的对手开始一场致命的雪仗！被大雪球击中的生物还会暂时被冻结，无法有效移动。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:giant_snowball_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "用冰霜魔杖施法，可以增加大雪球的体积。"
+    }
+  ]
+}

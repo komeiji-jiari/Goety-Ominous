@@ -1,0 +1,21 @@
+{
+  "name": "刺骨聚晶",
+  "icon": "goetyominous:icicle_spike_focus",
+  "category": "goety:mmcompat/focuses",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "text",
+      "text": "这个改进的冰刺法术将会发射更强大的大型冰刺，能穿透生物的同时对他们造成冻伤。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goetyominous:icicle_spike_focus",
+      "text": "冰冰冰！"
+    },
+    {
+      "type": "text",
+      "text": "冰霜魔杖能够让你一次发射3个密集的冰刺。"
+    }
+  ]
+}

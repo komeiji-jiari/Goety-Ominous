@@ -1,0 +1,21 @@
+{
+  "name": "Giant Snowball Focus",
+  "icon": "goetyominous:giant_snowball_focus",
+  "category": "goety:mmcompat/focuses",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "text",
+      "text": "With this spell, you can start a deadly snowball fight with your opponents! Creatures struck by the giant snowball are temporarily frozen and unable to move effectively."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:giant_snowball_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "Casting with a Frost Staff increases the size of the Giant Snowball."
+    }
+  ]
+}

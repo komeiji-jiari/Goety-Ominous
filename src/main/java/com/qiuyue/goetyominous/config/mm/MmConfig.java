@@ -104,6 +104,20 @@ public class MmConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> WitherSlashSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> WitherSlashCooldown;
     public static final ForgeConfigSpec.ConfigValue<Double> WitherSlashDamage;
+    public static final ForgeConfigSpec.ConfigValue<Integer> GiantSnowballSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> GiantSnowballCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Double> GiantSnowballDamage;
+    public static final ForgeConfigSpec.ConfigValue<Integer> GiantSnowballCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> IcicleSlamSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> IcicleSlamCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> IcicleSlamCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Double> IcicleSlamDamage;
+    public static final ForgeConfigSpec.ConfigValue<Integer> IcicleSlamFreezingLength;
+    public static final ForgeConfigSpec.ConfigValue<Integer> IcicleSlamFreezingLevel;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> IcicleSlamIgnoresInvulnerability;
+    public static final ForgeConfigSpec.ConfigValue<Integer> IcicleSpikeSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> IcicleSpikeCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> IcicleSpikeCastDuration;
     public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerScatterSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerScatterCooldown;
     public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerScatterCastDuration;
@@ -352,6 +366,40 @@ public class MmConfig {
                 .defineInRange("witherSlashCooldown", 60, 0, 2000);
         WitherSlashDamage = BUILDER.comment("Base damage of Wither Slash (Default: 6.0)")
                 .defineInRange("witherSlashDamage", 6.0, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+        BUILDER.push("GiantSnowball");
+        GiantSnowballSoulCost = BUILDER.comment("Soul cost of Giant Snowball spell (Default: 12)")
+                .defineInRange("giantSnowballSoulCost", 12, 1, 100);
+        GiantSnowballCooldown = BUILDER.comment("Cooldown of Giant Snowball spell in ticks (Default: 120)")
+                .defineInRange("giantSnowballCooldown", 120, 0, 2000);
+        GiantSnowballDamage = BUILDER.comment("Base damage of Giant Snowball (Default: 12.0)")
+                .defineInRange("giantSnowballDamage", 12.0, 0.0, Double.MAX_VALUE);
+        GiantSnowballCastDuration = BUILDER.comment("Cast duration of Giant Snowball spell in ticks (Default: 40)")
+                .defineInRange("giantSnowballCastDuration", 40, 0, 500);
+        BUILDER.pop();
+        BUILDER.push("IcicleSlam");
+        IcicleSlamSoulCost = BUILDER.comment("Soul cost of Icicle Slam spell (Default: 24)")
+                .defineInRange("icicleSlamSoulCost", 24, 1, 100);
+        IcicleSlamCooldown = BUILDER.comment("Cooldown of Icicle Slam spell in ticks (Default: 160)")
+                .defineInRange("icicleSlamCooldown", 160, 0, 2000);
+        IcicleSlamCastDuration = BUILDER.comment("Cast duration of Icicle Slam spell in ticks (Default: 100)")
+                .defineInRange("icicleSlamCastDuration", 100, 0, 500);
+        IcicleSlamDamage = BUILDER.comment("Base damage of each icicle (Default: 16.0)")
+                .defineInRange("icicleSlamDamage", 16.0, 0.0, Double.MAX_VALUE);
+        IcicleSlamFreezingLength = BUILDER.comment("Freezing effect duration of each icicle (Default: 100)")
+                .defineInRange("icicleSlamFreezingLength", 100, 0, 2000);
+        IcicleSlamFreezingLevel = BUILDER.comment("Freezing effect level of each icicle (Default: 1)")
+                .defineInRange("icicleSlamFreezingLevel", 1, 0, 10);
+        IcicleSlamIgnoresInvulnerability = BUILDER.comment("Whether icicles ignore hurt invulnerability (Default: true)")
+                .define("icicleSlamIgnoresInvulnerability", true);
+        BUILDER.pop();
+        BUILDER.push("IcicleSpike");
+        IcicleSpikeSoulCost = BUILDER.comment("Soul cost of Icicle Spike spell (Default: 20)")
+                .defineInRange("icicleSpikeSoulCost", 20, 1, 100);
+        IcicleSpikeCooldown = BUILDER.comment("Cooldown of Icicle Spike spell in ticks (Default: 120)")
+                .defineInRange("icicleSpikeCooldown", 120, 0, 2000);
+        IcicleSpikeCastDuration = BUILDER.comment("Cast duration of Icicle Spike spell in ticks (Default: 60)")
+                .defineInRange("icicleSpikeCastDuration", 60, 0, 500);
         BUILDER.pop();
         BUILDER.push("Shulker Scatter");
         ShulkerScatterSoulCost = BUILDER.comment("Soul cost of Shulker Scatter spell (Default: 32)")
