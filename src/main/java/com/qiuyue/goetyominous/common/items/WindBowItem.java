@@ -38,6 +38,12 @@ public class WindBowItem extends WitchBowItem {
     }
 
     @Override
+    public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair) {
+        return repair.getItem() instanceof WindBowItem
+                || repair.is(com.Polarice3.Goety.common.items.ModItems.JADE.get());
+    }
+
+    @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
         if (!(entity instanceof Player player)) {
             return;

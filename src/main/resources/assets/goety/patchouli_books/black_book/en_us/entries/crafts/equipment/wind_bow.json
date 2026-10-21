@@ -1,0 +1,20 @@
+{
+  "name": "Wind Bow",
+  "icon": "goetyominous:windbow",
+  "category": "goety:ominous_crafts/equipment",
+  "sortnum": 7,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "It is said that someone once used the wind as a bowstring and jade as the bow's body to craft an item imbued with gale magic. Arrows fired from this weapon carry the power of the wind, capable of pulling creatures along with them, and upon landing they create a wind field that draws nearby creatures toward its center."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The Windbow can only be repaired on an Anvil using Jade, or by using another bow of the same type."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "It is said that some of these bows are still preserved in certain chambers buried deep underground, and only brave warriors have what it takes to claim them."
+    }
+  ]
+}

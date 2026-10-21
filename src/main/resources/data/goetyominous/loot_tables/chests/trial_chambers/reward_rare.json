@@ -315,6 +315,22 @@
           ],
           "name": "goety:animation_core",
           "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "goetyominous:enchant_with_levels",
+              "levels": {
+                "type": "minecraft:uniform",
+                "max": 15.0,
+                "min": 5.0
+              },
+              "options": "#goetyominous:on_random_loot"
+            }
+          ],
+          "name": "goetyominous:windbow",
+          "weight": 1
         }
       ],
       "rolls": 1.0

@@ -3,11 +3,13 @@ package com.qiuyue.goetyominous.common.entities.ally.mm;
 import com.Polarice3.Goety.api.entities.IOwned;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.alexander.mutantmore.entities.IceCube;
+import com.qiuyue.goetyominous.compat.mm.MmBossIceCubeController;
 import com.qiuyue.goetyominous.compat.mm.MmScreenShake;
 import com.alexander.mutantmore.init.EntityTypeInit;
 import com.alexander.mutantmore.init.TagInit;
 import com.alexander.mutantmore.util.MiscUtils;
 import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
+import com.qiuyue.goetyominous.utils.BossUtil;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -15,6 +17,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
@@ -68,6 +71,9 @@ public class GiantSnowballServant extends ThrowableProjectile {
                 iceCube.moveTo(entity.position());
                 iceCube.setTarget(entity);
                 this.level().addFreshEntity(iceCube);
+                if (BossUtil.isBoss(entity)) {
+                    MmBossIceCubeController.track((ServerLevel) this.level(), iceCube);
+                }
                 this.level().broadcastEntityEvent(this, (byte) 4);
                 this.discard();
                 if (this.getOwner() == null || !(this.getOwner() instanceof MutantFrozenZombieServant zombie) || zombie.getTarget() == null || entity != zombie.getTarget()) continue;

@@ -1,0 +1,20 @@
+{
+  "name": "狂风之弓",
+  "icon": "goetyominous:windbow",
+  "category": "goety:ominous_crafts/equipment",
+  "sortnum": 7,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "据说有人将风作为弓弦，以玉作为弓身，制作出了蕴含着烈风魔力的物品。这种武器射出的箭矢带有风的力量，能够牵引生物，落地后还会形成风场将周围的生物拉向中心。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "狂风之弓只能在铁砧上通过玉来修复，或者用一把同类武器来修复。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "据说在某些深埋在地下的密室里还保存着一些这样的弓，只有勇敢的战士才有将其据为己有的能力。"
+    }
+  ]
+}
