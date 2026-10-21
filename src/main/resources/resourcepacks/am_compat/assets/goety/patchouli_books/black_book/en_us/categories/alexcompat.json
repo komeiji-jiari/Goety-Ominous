@@ -1,0 +1,7 @@
+{
+  "name": "Goety Alex",
+  "description": "Harness darkness from Alex's creatures and caves.",
+  "icon": "alexsmobs:blood_sac",
+  "sortnum": 5,
+  "parent": "goety:goetyominous"
+}

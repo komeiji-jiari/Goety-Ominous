@@ -57,7 +57,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import com.qiuyue.goetyominous.config.uasr.UasrConfig;
+import com.qiuyue.goetyominous.config.ua.UaConfig;
 
 public class ThrasherServant extends Summoned implements Endimatable {
     public static final double BITE_RANGE = 8.0D;
@@ -92,17 +92,17 @@ public class ThrasherServant extends Summoned implements Endimatable {
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return UasrConfig.ThrasherServantLimit.get();
+        return UaConfig.ThrasherServantLimit.get();
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.ATTACK_DAMAGE, UasrConfig.ThrasherServantDamage.get())
-                .add(Attributes.MOVEMENT_SPEED, UasrConfig.ThrasherServantMovementSpeed.get())
-                .add(Attributes.FOLLOW_RANGE, UasrConfig.ThrasherServantFollowRange.get())
-                .add(Attributes.MAX_HEALTH, UasrConfig.ThrasherServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, UasrConfig.ThrasherServantKnockbackResistance.get())
-                .add(Attributes.ARMOR, UasrConfig.ThrasherServantArmor.get());
+                .add(Attributes.ATTACK_DAMAGE, UaConfig.ThrasherServantDamage.get())
+                .add(Attributes.MOVEMENT_SPEED, UaConfig.ThrasherServantMovementSpeed.get())
+                .add(Attributes.FOLLOW_RANGE, UaConfig.ThrasherServantFollowRange.get())
+                .add(Attributes.MAX_HEALTH, UaConfig.ThrasherServantHealth.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, UaConfig.ThrasherServantKnockbackResistance.get())
+                .add(Attributes.ARMOR, UaConfig.ThrasherServantArmor.get());
     }
 
     @Override
@@ -334,7 +334,7 @@ public class ThrasherServant extends Summoned implements Endimatable {
                             serverLevel.sendParticles(
                                     net.minecraft.core.particles.ParticleTypes.HEART,
                                     this.getRandomX(1.0D),
-                                    this.getRandomY() + 0.5D,
+                                    this.getRandomY() + 1.0D,
                                     this.getRandomZ(1.0D),
                                     1,
                                     d0, d1, d2,

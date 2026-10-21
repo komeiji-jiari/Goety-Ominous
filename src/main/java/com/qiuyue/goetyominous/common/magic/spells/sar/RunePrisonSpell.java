@@ -18,7 +18,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.qiuyue.goetyominous.config.uasr.UasrConfig;
+import com.qiuyue.goetyominous.config.sar.SarConfig;
 
 public class RunePrisonSpell extends Spell {
 
@@ -29,7 +29,7 @@ public class RunePrisonSpell extends Spell {
 
     @Override
     public int defaultSoulCost() {
-        return com.qiuyue.goetyominous.config.uasr.UasrConfig.RunePrisonSoulCost.get();
+        return com.qiuyue.goetyominous.config.sar.SarConfig.RunePrisonSoulCost.get();
     }
 
     @Override
@@ -39,7 +39,7 @@ public class RunePrisonSpell extends Spell {
 
     @Override
     public int defaultSpellCooldown() {
-        return com.qiuyue.goetyominous.config.uasr.UasrConfig.RunePrisonCooldown.get();
+        return com.qiuyue.goetyominous.config.sar.SarConfig.RunePrisonCooldown.get();
     }
 
     @Override
@@ -104,7 +104,7 @@ public class RunePrisonSpell extends Spell {
         this.playSound(worldIn, caster, 1.0F, 1.0F);
 
         if (staff.is(ModItems.OMINOUS_STAFF.get())) {
-            float damage = com.qiuyue.goetyominous.config.uasr.UasrConfig.RunePrisonDamage.get().floatValue() + potency;
+            float damage = com.qiuyue.goetyominous.config.sar.SarConfig.RunePrisonDamage.get().floatValue() + potency;
             for (LivingEntity entity : worldIn.getEntitiesOfClass(LivingEntity.class, runePrison.getBoundingBox())) {
                 if (entity == caster) {
                     continue;

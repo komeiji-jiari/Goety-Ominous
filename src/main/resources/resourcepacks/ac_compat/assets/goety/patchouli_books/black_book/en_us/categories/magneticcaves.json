@@ -3,5 +3,5 @@
   "description": "Dark magnetism draws you in.",
   "icon": "alexscaves:telecore",
   "sortnum": 5,
-  "parent": "goety:accompat"
+  "parent": "goety:alexcompat"
 }

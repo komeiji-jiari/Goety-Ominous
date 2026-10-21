@@ -34,7 +34,7 @@ import net.minecraft.world.phys.HitResult;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.EnumSet;
-import com.qiuyue.goetyominous.config.uasr.UasrConfig;
+import com.qiuyue.goetyominous.config.sar.SarConfig;
 
 public class CreepieServant extends Summoned implements PowerableMob {
     private static final EntityDataAccessor<Integer> DATA_SWELL_DIR = SynchedEntityData.defineId(CreepieServant.class, EntityDataSerializers.INT);
@@ -112,9 +112,9 @@ public class CreepieServant extends Summoned implements PowerableMob {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, UasrConfig.CreepieServantHealth.get())
-                .add(Attributes.ATTACK_DAMAGE, UasrConfig.CreepieServantDamage.get())
-                .add(Attributes.MOVEMENT_SPEED, UasrConfig.CreepieServantMovementSpeed.get());
+                .add(Attributes.MAX_HEALTH, SarConfig.CreepieServantHealth.get())
+                .add(Attributes.ATTACK_DAMAGE, SarConfig.CreepieServantDamage.get())
+                .add(Attributes.MOVEMENT_SPEED, SarConfig.CreepieServantMovementSpeed.get());
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.qiuyue.goetyominous.common.entities.ally.lm;
 import com.qiuyue.goetyominous.compat.lm.LmScreenShake;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.projectiles.FlyingItem;
-import com.Polarice3.Goety.config.ItemConfig;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IAttackGoal;
@@ -1014,7 +1013,6 @@ public class CloudGolemServant extends IAnimatedBossServant {
             flyingItem.setOwner(this.getTrueOwner());
             flyingItem.setItem(itemStack);
             flyingItem.setParticle(ParticleTypes.HAPPY_VILLAGER);
-            flyingItem.setSecondsCool(ItemConfig.ReviveSecondsCool.get());
             this.level().addFreshEntity(flyingItem);
         }
         this.setAttackState(8);

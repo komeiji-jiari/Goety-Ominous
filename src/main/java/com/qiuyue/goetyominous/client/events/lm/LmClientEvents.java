@@ -70,6 +70,18 @@ public class LmClientEvents {
         event.registerLayerDefinition(ModEntityLayers.CHORUSLING_SERVANT_LAYER,
                 com.qiuyue.goetyominous.client.render.model.lm.ChoruslingServantModel::createBodyLayer);
 
+        event.registerLayerDefinition(ModEntityLayers.FRACTURED_SERVANT_LAYER,
+                com.qiuyue.goetyominous.client.render.model.lm.FracturedServantModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.FRACTURED_APOSTLE_SERVANT_LAYER,
+                com.qiuyue.goetyominous.client.render.model.lm.FracturedApostleServantModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.HAUNTED_KNIGHT_SERVANT_LAYER,
+                com.qiuyue.goetyominous.client.render.model.lm.HauntedKnightServantModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.HAUNTED_GUARD_SERVANT_LAYER,
+                com.qiuyue.goetyominous.client.render.model.lm.HauntedGuardServantModel::createBodyLayer);
+
         event.registerLayerDefinition(ModEntityLayers.FLAMEBORN_WARRIOR_SERVANT_LAYER,
                 com.qiuyue.goetyominous.client.render.model.lm.FlamebornWarriorServantModel::createBodyLayer);
 
@@ -303,6 +315,22 @@ public class LmClientEvents {
         event.registerEntityRenderer(
                 com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.CHORUSLING_SERVANT.get(),
                 com.qiuyue.goetyominous.client.render.lm.ChoruslingServantRenderer::new);
+
+        event.registerEntityRenderer(
+                com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.FRACTURED_SERVANT.get(),
+                com.qiuyue.goetyominous.client.render.lm.FracturedServantRenderer::new);
+
+        event.registerEntityRenderer(
+                com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.FRACTURED_APOSTLE_SERVANT.get(),
+                com.qiuyue.goetyominous.client.render.lm.FracturedApostleServantRenderer::new);
+
+        event.registerEntityRenderer(
+                com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.HAUNTED_KNIGHT_SERVANT.get(),
+                com.qiuyue.goetyominous.client.render.lm.HauntedKnightServantRenderer::new);
+
+        event.registerEntityRenderer(
+                com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry.HAUNTED_GUARD_SERVANT.get(),
+                com.qiuyue.goetyominous.client.render.lm.HauntedGuardServantRenderer::new);
     }
 
     @SubscribeEvent

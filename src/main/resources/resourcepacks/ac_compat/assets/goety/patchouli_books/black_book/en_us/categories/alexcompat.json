@@ -1,0 +1,7 @@
+{
+  "name": "Goety Alex",
+  "description": "Harness darkness from Alex's creatures and caves.",
+  "icon": "alexscaves:tectonic_shard",
+  "sortnum": 5,
+  "parent": "goety:goetyominous"
+}

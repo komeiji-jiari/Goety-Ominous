@@ -19,8 +19,6 @@ public class ResurrectedKnightServantBodyLayer
 
     private static final ResourceLocation GHOST_BODY = new ResourceLocation(
             "legendary_monsters", "textures/entity/resurrected_knight/ghost_body.png");
-    private static final ResourceLocation GHOST_BODY_RED = new ResourceLocation(
-            "goetyominous", "textures/entity/lm_knight/resurrected_knight_ghost_body_red.png");
 
     public ResurrectedKnightServantBodyLayer(
             RenderLayerParent<ResurrectedKnightServant, ResurrectedKnightServantModel<ResurrectedKnightServant>> parent) {
@@ -36,8 +34,7 @@ public class ResurrectedKnightServantBodyLayer
             return;
         }
 
-        VertexConsumer consumer = buffer.getBuffer(
-                RenderType.entityTranslucentEmissive(entity.isEnhanced() ? GHOST_BODY_RED : GHOST_BODY));
+        VertexConsumer consumer = buffer.getBuffer(RenderType.entityTranslucentEmissive(GHOST_BODY));
         this.getParentModel().renderToBuffer(poseStack, consumer, 0xF00000, OverlayTexture.NO_OVERLAY,
                 1.0F, 1.0F, 1.0F, alpha);
     }

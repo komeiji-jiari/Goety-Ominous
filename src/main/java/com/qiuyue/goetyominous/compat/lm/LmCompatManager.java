@@ -7,6 +7,10 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.CloudGolemServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.EndersentServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.FlameDrifterServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.FlamebornGuardServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.FracturedApostleServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.FracturedServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.HauntedGuardServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.HauntedKnightServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.FlamebornWarriorServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.AncientGuardianServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.FrostbittenGolemServant;
@@ -89,5 +93,17 @@ public class LmCompatManager {
 
         event.put(LmEntityRegistry.CHORUSLING_SERVANT.get(),
                 ChoruslingServant.createAttributes().build());
+
+        event.put(LmEntityRegistry.FRACTURED_SERVANT.get(),
+                FracturedServant.createAttributes().build());
+
+        event.put(LmEntityRegistry.FRACTURED_APOSTLE_SERVANT.get(),
+                FracturedApostleServant.createAttributes().build());
+
+        event.put(LmEntityRegistry.HAUNTED_KNIGHT_SERVANT.get(),
+                HauntedKnightServant.createAttributes().build());
+
+        event.put(LmEntityRegistry.HAUNTED_GUARD_SERVANT.get(),
+                HauntedGuardServant.createAttributes().build());
     }
 }

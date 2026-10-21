@@ -22,9 +22,6 @@ public class SoulJavelinServantRenderer extends EntityRenderer<SoulJavelin> {
     private static final ResourceLocation SOUL_JAVELIN = new ResourceLocation(
             "legendary_monsters",
             "textures/entity/resurrected_knight/javelin.png");
-    private static final ResourceLocation SOUL_JAVELIN_RED = new ResourceLocation(
-            "goetyominous",
-            "textures/entity/lm_knight/resurrected_knight_javelin_red.png");
 
     private final SoulJavelinModel model;
 
@@ -54,6 +51,6 @@ public class SoulJavelinServantRenderer extends EntityRenderer<SoulJavelin> {
 
     @Override
     public ResourceLocation getTextureLocation(SoulJavelin entity) {
-        return entity.isEnhanced() ? SOUL_JAVELIN_RED : SOUL_JAVELIN;
+        return SOUL_JAVELIN;
     }
 }

@@ -3,5 +3,5 @@
   "description": "黑暗的磁力吸引着你。",
   "icon": "alexscaves:telecore",
   "sortnum": 5,
-  "parent": "goety:accompat"
+  "parent": "goety:alexcompat"
 }

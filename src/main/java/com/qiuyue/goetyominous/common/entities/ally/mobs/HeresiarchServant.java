@@ -257,7 +257,6 @@ public class HeresiarchServant extends CultistServant {
             flyingItem.setOwner(this.getTrueOwner());
             flyingItem.setItem(itemStack);
             flyingItem.setParticle(com.Polarice3.Goety.client.particles.ModParticleTypes.TOTEM_EFFECT.get());
-            flyingItem.setSecondsCool(com.Polarice3.Goety.config.ItemConfig.ReviveSecondsCool.get());
             this.level().addFreshEntity(flyingItem);
         }
 

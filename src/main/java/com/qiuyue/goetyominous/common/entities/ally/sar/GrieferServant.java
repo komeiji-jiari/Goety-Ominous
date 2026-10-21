@@ -36,7 +36,7 @@ import net.minecraft.world.phys.HitResult;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
-import com.qiuyue.goetyominous.config.uasr.UasrConfig;
+import com.qiuyue.goetyominous.config.sar.SarConfig;
 
 public class GrieferServant extends AbstractIllagerServant implements RangedAttackMob {
     private static final EntityDataAccessor<Boolean> KICKING = SynchedEntityData.defineId(GrieferServant.class, EntityDataSerializers.BOOLEAN);
@@ -75,10 +75,10 @@ public class GrieferServant extends AbstractIllagerServant implements RangedAtta
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, UasrConfig.GrieferServantMovementSpeed.get())
-                .add(Attributes.MAX_HEALTH, UasrConfig.GrieferServantHealth.get())
-                .add(Attributes.ATTACK_DAMAGE, UasrConfig.GrieferServantDamage.get())
-                .add(Attributes.FOLLOW_RANGE, UasrConfig.GrieferServantFollowRange.get());
+                .add(Attributes.MOVEMENT_SPEED, SarConfig.GrieferServantMovementSpeed.get())
+                .add(Attributes.MAX_HEALTH, SarConfig.GrieferServantHealth.get())
+                .add(Attributes.ATTACK_DAMAGE, SarConfig.GrieferServantDamage.get())
+                .add(Attributes.FOLLOW_RANGE, SarConfig.GrieferServantFollowRange.get());
     }
 
     @Override

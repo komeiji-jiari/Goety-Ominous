@@ -230,7 +230,7 @@ public class MutantShulkerServantBullet extends SpellThrowableProjectile {
                 if (flag) {
                     this.doEnchantDamageEffects(owner, entity);
                     if (entity instanceof LivingEntity living && !(owner instanceof MutantShulkerServant)
-                            && !BossUtil.isBoss(living)) {
+                            && !BossUtil.isBoss(living) && this.levitationLength > 0) {
                         living.addEffect(new MobEffectInstance(MobEffects.LEVITATION, this.levitationLength, this.levitationLevel), owner != null ? owner : this);
                     }
                 }

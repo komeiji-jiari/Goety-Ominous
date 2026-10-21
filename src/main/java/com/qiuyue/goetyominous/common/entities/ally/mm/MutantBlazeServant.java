@@ -208,7 +208,7 @@ public class MutantBlazeServant extends AbstractMutantServant implements IHeatSo
                     if (this.level() instanceof ServerLevel serverLevel) {
                         for (int i = 0; i < 7; ++i) {
                             serverLevel.sendParticles(ParticleTypes.HEART,
-                                    this.getRandomX(1.0D), this.getY() + 0.5D, this.getRandomZ(1.0D),
+                                    this.getRandomX(1.0D), this.getY() + this.getBbHeight() + 0.3D, this.getRandomZ(1.0D),
                                     0, 0.0D, 0.0D, 0.0D, 0.5F);
                         }
                     }

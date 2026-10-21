@@ -3,5 +3,5 @@
   "description": "Oh, sweet darkness!",
   "icon": "alexscaves:candy_cane",
   "sortnum": 3,
-  "parent": "goety:accompat"
+  "parent": "goety:alexcompat"
 }

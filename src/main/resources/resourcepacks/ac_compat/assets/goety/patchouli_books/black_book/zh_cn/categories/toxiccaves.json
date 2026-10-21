@@ -3,5 +3,5 @@
   "description": "黑暗的切尔诺贝利。",
   "icon": "alexscaves:fissile_core",
   "sortnum": 7,
-  "parent": "goety:accompat"
+  "parent": "goety:alexcompat"
 }

@@ -2,7 +2,7 @@
   "name": "刺骨聚晶",
   "icon": "goetyominous:icicle_spike_focus",
   "category": "goety:mmcompat/focuses",
-  "sortnum": 3,
+  "sortnum": 2,
   "pages": [
     {
       "type": "text",

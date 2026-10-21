@@ -3,5 +3,5 @@
   "description": "The dark Chernobyl.",
   "icon": "alexscaves:fissile_core",
   "sortnum": 7,
-  "parent": "goety:accompat"
+  "parent": "goety:alexcompat"
 }

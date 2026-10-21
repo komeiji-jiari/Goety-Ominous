@@ -3,5 +3,5 @@
   "description": "原始的黑暗在呼唤。",
   "icon": "alexscaves:heavy_bone",
   "sortnum": 6,
-  "parent": "goety:accompat"
+  "parent": "goety:alexcompat"
 }

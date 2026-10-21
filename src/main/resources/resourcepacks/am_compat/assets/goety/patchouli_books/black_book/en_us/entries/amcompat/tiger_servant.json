@@ -1,0 +1,25 @@
+{
+  "name": "Tiger Servant",
+  "icon": "minecraft:beef",
+  "category": "goety:alexcompat",
+  "sortnum": 260,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Through meat and a bit of magic, you have managed to forge a bond with wild tigers. Now you can count the king of beasts among your allies. These agile and powerful hunters excel at stalking, striking such momentary fear into their prey in the instant before they attack."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:tiger_servant",
+      "text": "Three bowls and you can't cross the ridge"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Feeding them meat or wearing Wild Robe will heal your Tiger Servant, and killing creatures also grants them healing. To breed Tiger Servants, right-click them with Acacia Blossoms."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_tiger_to_tiger_servant"
+    }
+  ]
+}

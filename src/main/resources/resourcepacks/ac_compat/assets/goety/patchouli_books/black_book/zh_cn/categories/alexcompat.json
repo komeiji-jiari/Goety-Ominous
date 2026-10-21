@@ -1,0 +1,7 @@
+{
+  "name": "诡厄Alex",
+  "description": "从亚历克斯的生物与洞穴中攫取黑暗。",
+  "icon": "alexscaves:tectonic_shard",
+  "sortnum": 5,
+  "parent": "goety:goetyominous"
+}

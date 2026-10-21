@@ -1,7 +1,7 @@
 {
   "name": "Tablet Divination",
   "icon": "alexscaves:cave_tablet",
-  "category": "goety:accompat",
+  "category": "goety:alexcompat/misc",
   "sortnum": 1,
   "pages": [
     {

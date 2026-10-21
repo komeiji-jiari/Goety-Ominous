@@ -19,8 +19,6 @@ public class BeheadedKnightServantGhostArmLayer
 
     private static final ResourceLocation GHOST_ARM = new ResourceLocation(
             "legendary_monsters", "textures/entity/beheaded_knight/ghost_arm.png");
-    private static final ResourceLocation GHOST_ARM_RED = new ResourceLocation(
-            "goetyominous", "textures/entity/lm_knight/beheaded_knight_ghost_arm_red.png");
 
     public BeheadedKnightServantGhostArmLayer(
             RenderLayerParent<BeheadedKnightServant, BeheadedKnightServantModel<BeheadedKnightServant>> parent) {
@@ -36,8 +34,7 @@ public class BeheadedKnightServantGhostArmLayer
             return;
         }
 
-        VertexConsumer consumer = buffer.getBuffer(
-                RenderType.entityTranslucentEmissive(entity.isEnhanced() ? GHOST_ARM_RED : GHOST_ARM));
+        VertexConsumer consumer = buffer.getBuffer(RenderType.entityTranslucentEmissive(GHOST_ARM));
         this.getParentModel().renderToBuffer(poseStack, consumer, 0xF00000, OverlayTexture.NO_OVERLAY,
                 1.0F, 1.0F, 1.0F, alpha);
     }

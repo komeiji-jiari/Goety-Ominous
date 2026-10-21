@@ -312,6 +312,18 @@ public class ModEntityLayers {
     public static final ModelLayerLocation CHORUSLING_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "chorusling_servant"), "main");
 
+    public static final ModelLayerLocation FRACTURED_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "fractured_servant"), "main");
+
+    public static final ModelLayerLocation FRACTURED_APOSTLE_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "fractured_apostle_servant"), "main");
+
+    public static final ModelLayerLocation HAUNTED_KNIGHT_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "haunted_knight_servant"), "main");
+
+    public static final ModelLayerLocation HAUNTED_GUARD_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "haunted_guard_servant"), "main");
+
     public static final ModelLayerLocation PIGLIN_ALCHEMIST_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "piglin_alchemist_servant"), "main");
 

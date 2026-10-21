@@ -258,9 +258,9 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
         }
         float healAmount = 0.0F;
         if (stack.is(AMItemRegistry.BLOOD_SAC.get())) {
-            healAmount = 20.0F;
+            healAmount = 10.0F;
         } else if (stack.is(AMItemRegistry.HEMOLYMPH_SAC.get())) {
-            healAmount = 50.0F;
+            healAmount = 20.0F;
         }
         if (healAmount > 0.0F
                 && this.getMasterOwner() == player
@@ -277,7 +277,7 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
                     double d1 = this.random.nextGaussian() * 0.02D;
                     double d2 = this.random.nextGaussian() * 0.02D;
                     ((ServerLevel) this.level()).sendParticles(ParticleTypes.HEART,
-                            this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D),
+                            this.getRandomX(1.0D), this.getY() + this.getBbHeight() + 0.3D, this.getRandomZ(1.0D),
                             1, d0, d1, d2, 0.5F);
                 }
             }

@@ -4,14 +4,18 @@ import com.alexander.mutantmore.entities.IceCube;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public final class MmBossIceCubeController {
-    private static final int BOSS_CONTROL_TICKS = 30;
+    private static final int CRACK_INTERVAL = 7;
     private static final List<TrackedCube> TRACKED = new ArrayList<>();
 
     private MmBossIceCubeController() {
@@ -22,7 +26,7 @@ public final class MmBossIceCubeController {
     }
 
     public static void track(ServerLevel level, IceCube cube) {
-        TRACKED.add(new TrackedCube(level, cube, level.getGameTime() + BOSS_CONTROL_TICKS));
+        TRACKED.add(new TrackedCube(level, cube, level.getGameTime() + CRACK_INTERVAL));
     }
 
     @SubscribeEvent
@@ -40,13 +44,31 @@ public final class MmBossIceCubeController {
                 iterator.remove();
                 continue;
             }
-            if (level.getGameTime() < tracked.shatterAt) {
+            if (level.getGameTime() < tracked.nextCrackAt) {
                 continue;
             }
-            iterator.remove();
-            for (int i = 0; i < 4 && !tracked.cube.isRemoved(); i++) {
+            if (tracked.cube.getCrackStage() >= 3) {
+                iterator.remove();
+                shatter(level, tracked.cube);
+            } else {
                 tracked.cube.crack();
+                tracked.nextCrackAt += CRACK_INTERVAL;
             }
+        }
+    }
+
+    private static void shatter(ServerLevel level, IceCube cube) {
+        AABB box = cube.getBoundingBox();
+        double x = (box.minX + box.maxX) / 2.0D;
+        double y = (box.minY + box.maxY) / 2.0D;
+        double z = (box.minZ + box.maxZ) / 2.0D;
+        double radius = Math.max(box.getXsize(), box.getZsize()) / 2.0D + 0.5D;
+        level.sendParticles(
+                new BlockParticleOption(ParticleTypes.BLOCK, Blocks.PACKED_ICE.defaultBlockState())
+                        .setPos(cube.blockPosition()),
+                x, y, z, 80, radius, box.getYsize() / 2.0D, radius, 0.05D);
+        for (int i = 0; i < 4 && !cube.isRemoved(); i++) {
+            cube.crack();
         }
     }
 
@@ -60,12 +82,12 @@ public final class MmBossIceCubeController {
     private static final class TrackedCube {
         private final ServerLevel level;
         private final IceCube cube;
-        private final long shatterAt;
+        private long nextCrackAt;
 
-        private TrackedCube(ServerLevel level, IceCube cube, long shatterAt) {
+        private TrackedCube(ServerLevel level, IceCube cube, long nextCrackAt) {
             this.level = level;
             this.cube = cube;
-            this.shatterAt = shatterAt;
+            this.nextCrackAt = nextCrackAt;
         }
     }
 }

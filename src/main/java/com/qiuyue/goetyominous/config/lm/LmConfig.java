@@ -187,6 +187,47 @@ public class LmConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> TheObliteratorServantFirstPhaseProjectileImmunity;
     public static final ForgeConfigSpec.ConfigValue<Boolean> SoulFractureOnServantHit;
     public static final ForgeConfigSpec.ConfigValue<Boolean> LmServantScreenShake;
+    public static final ForgeConfigSpec.ConfigValue<Double> FracturedServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> FracturedServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> FracturedServantArmorToughness;
+    public static final ForgeConfigSpec.ConfigValue<Double> FracturedServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> FracturedServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> FracturedServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> FracturedServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> FracturedServantAttackKnockback;
+    public static final ForgeConfigSpec.ConfigValue<Double> FracturedApostleServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> FracturedApostleServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> FracturedApostleServantArmorToughness;
+    public static final ForgeConfigSpec.ConfigValue<Double> FracturedApostleServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> FracturedApostleServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> FracturedApostleServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> FracturedApostleServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> FracturedApostleServantAttackKnockback;
+    public static final ForgeConfigSpec.ConfigValue<Double> HauntedKnightServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> HauntedKnightServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> HauntedKnightServantArmorToughness;
+    public static final ForgeConfigSpec.ConfigValue<Double> HauntedKnightServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> HauntedKnightServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> HauntedKnightServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> HauntedKnightServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> HauntedKnightServantAttackKnockback;
+    public static final ForgeConfigSpec.ConfigValue<Double> HauntedGuardServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> HauntedGuardServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> HauntedGuardServantArmorToughness;
+    public static final ForgeConfigSpec.ConfigValue<Double> HauntedGuardServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> HauntedGuardServantMovementSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> HauntedGuardServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> HauntedGuardServantKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> HauntedGuardServantAttackKnockback;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FracturedServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Double> FracturedServantDamageMultiplier;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FracturedApostleServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Double> FracturedApostleServantDamageMultiplier;
+    public static final ForgeConfigSpec.ConfigValue<Integer> HauntedKnightServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Double> HauntedKnightServantDamageMultiplier;
+    public static final ForgeConfigSpec.ConfigValue<Integer> HauntedGuardServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Double> HauntedGuardServantDamageMultiplier;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> HauntedGuardServantProjectileImmunity;
 
     static {
         BUILDER.push("Servants Attributes");
@@ -482,6 +523,78 @@ public class LmConfig {
         ChoruslingServantAttackKnockback = BUILDER.comment("How much Attack Knockback Chorusling Servants have, Default: 0.5 (Legendary Monsters' value)")
                 .defineInRange("choruslingServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
+        BUILDER.push("Fractured Servant");
+        FracturedServantHealth = BUILDER.comment("How much Max Health Fractured Servants have, Default: 40.0 (Legendary Monsters' value)")
+                .defineInRange("fracturedServantHealth", 40.0, 1.0, Double.MAX_VALUE);
+        FracturedServantArmor = BUILDER.comment("How much natural Armor Fractured Servants have, Default: 18.0 (Legendary Monsters' value)")
+                .defineInRange("fracturedServantArmor", 18.0, 0.0, Double.MAX_VALUE);
+        FracturedServantArmorToughness = BUILDER.comment("How much Armor Toughness Fractured Servants have, Default: 10.0 (Legendary Monsters' value)")
+                .defineInRange("fracturedServantArmorToughness", 10.0, 0.0, Double.MAX_VALUE);
+        FracturedServantDamage = BUILDER.comment("How much damage Fractured Servants deal, Default: 11.0 (Legendary Monsters' value)")
+                .defineInRange("fracturedServantDamage", 11.0, 0.0, Double.MAX_VALUE);
+        FracturedServantMovementSpeed = BUILDER.comment("How fast Fractured Servants move, Default: 0.3 (Legendary Monsters' boss uses 0.1 with a x3.0 navigation modifier, giving the same 0.30 chase speed)")
+                .defineInRange("fracturedServantMovementSpeed", 0.3, 0.0, Double.MAX_VALUE);
+        FracturedServantFollowRange = BUILDER.comment("How much following/detection range Fractured Servants have, Default: 30.0 (Legendary Monsters' value)")
+                .defineInRange("fracturedServantFollowRange", 30.0, 1.0, Double.MAX_VALUE);
+        FracturedServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Fractured Servants have, Default: 0.7 (Legendary Monsters' value)")
+                .defineInRange("fracturedServantKnockbackResistance", 0.7, 0.0, Double.MAX_VALUE);
+        FracturedServantAttackKnockback = BUILDER.comment("How much Attack Knockback Fractured Servants have, Default: 1.3 (Legendary Monsters' value)")
+                .defineInRange("fracturedServantAttackKnockback", 1.3, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+        BUILDER.push("Fractured Apostle Servant");
+        FracturedApostleServantHealth = BUILDER.comment("How much Max Health Fractured Apostle Servants have, Default: 50.0 (Legendary Monsters' value)")
+                .defineInRange("fracturedApostleServantHealth", 50.0, 1.0, Double.MAX_VALUE);
+        FracturedApostleServantArmor = BUILDER.comment("How much natural Armor Fractured Apostle Servants have, Default: 18.0 (Legendary Monsters' value)")
+                .defineInRange("fracturedApostleServantArmor", 18.0, 0.0, Double.MAX_VALUE);
+        FracturedApostleServantArmorToughness = BUILDER.comment("How much Armor Toughness Fractured Apostle Servants have, Default: 10.0 (Legendary Monsters' value)")
+                .defineInRange("fracturedApostleServantArmorToughness", 10.0, 0.0, Double.MAX_VALUE);
+        FracturedApostleServantDamage = BUILDER.comment("How much damage Fractured Apostle Servants deal, Default: 11.0 (Legendary Monsters' value)")
+                .defineInRange("fracturedApostleServantDamage", 11.0, 0.0, Double.MAX_VALUE);
+        FracturedApostleServantMovementSpeed = BUILDER.comment("How fast Fractured Apostle Servants move, Default: 0.3 (Legendary Monsters' boss uses 0.1 with a x3.0 navigation modifier, giving the same 0.30 chase speed)")
+                .defineInRange("fracturedApostleServantMovementSpeed", 0.3, 0.0, Double.MAX_VALUE);
+        FracturedApostleServantFollowRange = BUILDER.comment("How much following/detection range Fractured Apostle Servants have, Default: 30.0 (Legendary Monsters' value)")
+                .defineInRange("fracturedApostleServantFollowRange", 30.0, 1.0, Double.MAX_VALUE);
+        FracturedApostleServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Fractured Apostle Servants have, Default: 0.7 (Legendary Monsters' value)")
+                .defineInRange("fracturedApostleServantKnockbackResistance", 0.7, 0.0, Double.MAX_VALUE);
+        FracturedApostleServantAttackKnockback = BUILDER.comment("How much Attack Knockback Fractured Apostle Servants have, Default: 1.3 (Legendary Monsters' value)")
+                .defineInRange("fracturedApostleServantAttackKnockback", 1.3, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+        BUILDER.push("Haunted Knight Servant");
+        HauntedKnightServantHealth = BUILDER.comment("How much Max Health Haunted Knight Servants have, Default: 50.0 (Legendary Monsters' value)")
+                .defineInRange("hauntedKnightServantHealth", 50.0, 1.0, Double.MAX_VALUE);
+        HauntedKnightServantArmor = BUILDER.comment("How much natural Armor Haunted Knight Servants have, Default: 18.0 (Legendary Monsters' value)")
+                .defineInRange("hauntedKnightServantArmor", 18.0, 0.0, Double.MAX_VALUE);
+        HauntedKnightServantArmorToughness = BUILDER.comment("How much Armor Toughness Haunted Knight Servants have, Default: 5.0 (Legendary Monsters' value)")
+                .defineInRange("hauntedKnightServantArmorToughness", 5.0, 0.0, Double.MAX_VALUE);
+        HauntedKnightServantDamage = BUILDER.comment("How much damage Haunted Knight Servants deal, Default: 11.0 (Legendary Monsters' value)")
+                .defineInRange("hauntedKnightServantDamage", 11.0, 0.0, Double.MAX_VALUE);
+        HauntedKnightServantMovementSpeed = BUILDER.comment("How fast Haunted Knight Servants move, Default: 0.3 (Legendary Monsters' boss uses 0.1 with a x3.0 navigation modifier, giving the same 0.30 chase speed)")
+                .defineInRange("hauntedKnightServantMovementSpeed", 0.3, 0.0, Double.MAX_VALUE);
+        HauntedKnightServantFollowRange = BUILDER.comment("How much following/detection range Haunted Knight Servants have, Default: 30.0 (Legendary Monsters' value)")
+                .defineInRange("hauntedKnightServantFollowRange", 30.0, 1.0, Double.MAX_VALUE);
+        HauntedKnightServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Haunted Knight Servants have, Default: 0.7 (Legendary Monsters' value)")
+                .defineInRange("hauntedKnightServantKnockbackResistance", 0.7, 0.0, Double.MAX_VALUE);
+        HauntedKnightServantAttackKnockback = BUILDER.comment("How much Attack Knockback Haunted Knight Servants have, Default: 0.7 (Legendary Monsters' value)")
+                .defineInRange("hauntedKnightServantAttackKnockback", 0.7, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+        BUILDER.push("Haunted Guard Servant");
+        HauntedGuardServantHealth = BUILDER.comment("How much Max Health Haunted Guard Servants have, Default: 50.0 (Legendary Monsters' value)")
+                .defineInRange("hauntedGuardServantHealth", 50.0, 1.0, Double.MAX_VALUE);
+        HauntedGuardServantArmor = BUILDER.comment("How much natural Armor Haunted Guard Servants have, Default: 18.0 (Legendary Monsters' value)")
+                .defineInRange("hauntedGuardServantArmor", 18.0, 0.0, Double.MAX_VALUE);
+        HauntedGuardServantArmorToughness = BUILDER.comment("How much Armor Toughness Haunted Guard Servants have, Default: 10.0 (Legendary Monsters' value)")
+                .defineInRange("hauntedGuardServantArmorToughness", 10.0, 0.0, Double.MAX_VALUE);
+        HauntedGuardServantDamage = BUILDER.comment("How much damage Haunted Guard Servants deal, Default: 11.0 (Legendary Monsters' value)")
+                .defineInRange("hauntedGuardServantDamage", 11.0, 0.0, Double.MAX_VALUE);
+        HauntedGuardServantMovementSpeed = BUILDER.comment("How fast Haunted Guard Servants move, Default: 0.3 (Legendary Monsters' boss uses 0.1 with a x3.0 navigation modifier, giving the same 0.30 chase speed)")
+                .defineInRange("hauntedGuardServantMovementSpeed", 0.3, 0.0, Double.MAX_VALUE);
+        HauntedGuardServantFollowRange = BUILDER.comment("How much following/detection range Haunted Guard Servants have, Default: 30.0 (Legendary Monsters' value)")
+                .defineInRange("hauntedGuardServantFollowRange", 30.0, 1.0, Double.MAX_VALUE);
+        HauntedGuardServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Haunted Guard Servants have, Default: 0.7 (Legendary Monsters' value)")
+                .defineInRange("hauntedGuardServantKnockbackResistance", 0.7, 0.0, Double.MAX_VALUE);
+        HauntedGuardServantAttackKnockback = BUILDER.comment("How much Attack Knockback Haunted Guard Servants have, Default: 1.3 (Legendary Monsters' value)")
+                .defineInRange("hauntedGuardServantAttackKnockback", 1.3, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
         BUILDER.pop();
         BUILDER.push("Servant Limits");
         OvergrownColossusServantLimit = BUILDER
@@ -610,6 +723,33 @@ public class LmConfig {
                 "Soul Fracture is Legendary Monsters' stacking -20% max health debuff; only the attacks of these three servants ever apply it",
                 "This never touches the original Legendary Monsters bosses")
                 .define("soulFractureOnServantHit", false);
+        FracturedServantLimit = BUILDER
+                .comment("Maximum number of Fractured Servants that can be summoned (Default: 4)")
+                .defineInRange("fracturedServantLimit", 4, 1, 100);
+        FracturedServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("fracturedServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
+        FracturedApostleServantLimit = BUILDER
+                .comment("Maximum number of Fractured Apostle Servants that can be summoned (Default: 2)")
+                .defineInRange("fracturedApostleServantLimit", 2, 1, 100);
+        FracturedApostleServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("fracturedApostleServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
+        HauntedKnightServantLimit = BUILDER
+                .comment("Maximum number of Haunted Knight Servants that can be summoned (Default: 2)")
+                .defineInRange("hauntedKnightServantLimit", 2, 1, 100);
+        HauntedKnightServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("hauntedKnightServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
+        HauntedGuardServantLimit = BUILDER
+                .comment("Maximum number of Haunted Guard Servants that can be summoned (Default: 2)")
+                .defineInRange("hauntedGuardServantLimit", 2, 1, 100);
+        HauntedGuardServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("hauntedGuardServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
+        HauntedGuardServantProjectileImmunity = BUILDER
+                .comment("Whether Haunted Guard Servants are immune to arrows (Default: true; Legendary Monsters' Guardprojectile)")
+                .define("hauntedGuardServantProjectileImmunity", true);
         BUILDER.pop();
         BUILDER.push("Legendary Monsters Servants");
         LmServantScreenShake = BUILDER.comment("Whether Legendary Monsters Servants' attacks and abilities shake nearby players' cameras (Default: false)")

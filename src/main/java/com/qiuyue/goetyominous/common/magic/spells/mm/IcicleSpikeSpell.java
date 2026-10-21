@@ -74,9 +74,6 @@ public class IcicleSpikeSpell extends Spell {
         } else {
             this.fire(worldIn, caster, damage, velocity, 0.0F);
         }
-
-        this.playSound(worldIn, caster, ModSounds.ICE_SPIKE_CAST.get(), 1.0F,
-                this.projPitch(worldIn.getRandom()));
     }
 
     private void fire(ServerLevel worldIn, LivingEntity caster, float damage, float velocity, float yawOffset) {

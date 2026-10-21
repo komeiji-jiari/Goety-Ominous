@@ -3,5 +3,5 @@
   "description": "深海中潜伏着的黑暗。",
   "icon": "alexscaves:diving_helmet",
   "sortnum": 2,
-  "parent": "goety:accompat"
+  "parent": "goety:alexcompat"
 }

@@ -2,7 +2,6 @@ package com.qiuyue.goetyominous.common.entities.ally.lm;
 
 import com.Polarice3.Goety.api.entities.ally.IServant;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
-import com.Polarice3.Goety.common.items.ModItems;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.knight.BHGrabAndThrowGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.knight.BHSynergyStateGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.knight.GhostUppercutGoal;
@@ -17,7 +16,6 @@ import net.miauczel.legendary_monsters.Particle.ModParticles;
 import net.miauczel.legendary_monsters.Particle.custom.BeheadedKnightSweepParticle;
 import net.miauczel.legendary_monsters.Particle.custom.Circle;
 import net.miauczel.legendary_monsters.Particle.custom.SoulSweepParticle;
-import net.miauczel.legendary_monsters.Particle.custom.SoulSweepRedParticle;
 import net.miauczel.legendary_monsters.effect.ModEffects;
 import net.miauczel.legendary_monsters.entity.client.ControlledAnim;
 import net.miauczel.legendary_monsters.sound.ModSounds;
@@ -74,8 +72,6 @@ public class BeheadedKnightServant extends IAnimatedMiniBossServant {
 
     private static final EntityDataAccessor<Integer> TEXTURE_VARIANT =
             SynchedEntityData.defineId(BeheadedKnightServant.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> ENHANCED =
-            SynchedEntityData.defineId(BeheadedKnightServant.class, EntityDataSerializers.BOOLEAN);
 
     public static final int DEFAULT_VARIANT = 1;
     public static final int GOLDEN_VARIANT = 2;
@@ -426,50 +422,6 @@ public class BeheadedKnightServant extends IAnimatedMiniBossServant {
     @Override
     public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
         ItemStack itemstack = pPlayer.getItemInHand(pHand);
-        if (this.getTrueOwner() == pPlayer && !this.isEnhanced() && itemstack.is(Items.RED_DYE)) {
-            if (!this.level().isClientSide) {
-                if (!pPlayer.getAbilities().instabuild) {
-                    itemstack.shrink(1);
-                }
-                this.setEnhanced(true);
-                this.playSound(SoundEvents.SOUL_ESCAPE, 1.0F, 0.75F);
-                this.gameEvent(GameEvent.ENTITY_INTERACT, pPlayer);
-                if (this.level() instanceof ServerLevel serverLevel) {
-                    for (int i = 0; i < 12; ++i) {
-                        double d0 = this.random.nextGaussian() * 0.02D;
-                        double d1 = this.random.nextGaussian() * 0.02D;
-                        double d2 = this.random.nextGaussian() * 0.02D;
-                        serverLevel.sendParticles(ModParticles.GHOSTLY_SOUL_RED.get(),
-                                this.getRandomX(1.0D), this.getY() + this.getBbHeight() + 0.3F, this.getRandomZ(1.0D),
-                                0, d0, d1, d2, 0.5F);
-                    }
-                }
-            }
-            pPlayer.swing(pHand);
-            return InteractionResult.sidedSuccess(this.level().isClientSide);
-        }
-        if (this.getTrueOwner() == pPlayer && this.isEnhanced() && itemstack.is(ModItems.ECTOPLASM.get())) {
-            if (!this.level().isClientSide) {
-                if (!pPlayer.getAbilities().instabuild) {
-                    itemstack.shrink(1);
-                }
-                this.setEnhanced(false);
-                this.playSound(SoundEvents.SOUL_ESCAPE, 1.0F, 1.3F);
-                this.gameEvent(GameEvent.ENTITY_INTERACT, pPlayer);
-                if (this.level() instanceof ServerLevel serverLevel) {
-                    for (int i = 0; i < 12; ++i) {
-                        double d0 = this.random.nextGaussian() * 0.02D;
-                        double d1 = this.random.nextGaussian() * 0.02D;
-                        double d2 = this.random.nextGaussian() * 0.02D;
-                        serverLevel.sendParticles(this.soulParticle(),
-                                this.getRandomX(1.0D), this.getY() + this.getBbHeight() + 0.3F, this.getRandomZ(1.0D),
-                                0, d0, d1, d2, 0.5F);
-                    }
-                }
-            }
-            pPlayer.swing(pHand);
-            return InteractionResult.sidedSuccess(this.level().isClientSide);
-        }
         if (this.getTrueOwner() == pPlayer && this.tryRestyle(pPlayer, pHand, itemstack)) {
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
@@ -568,7 +520,6 @@ public class BeheadedKnightServant extends IAnimatedMiniBossServant {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(TEXTURE_VARIANT, 1);
-        this.entityData.define(ENHANCED, false);
     }
 
     public int getTextureVariant() {
@@ -579,23 +530,14 @@ public class BeheadedKnightServant extends IAnimatedMiniBossServant {
         this.entityData.set(TEXTURE_VARIANT, textureVariant);
     }
 
-    public boolean isEnhanced() {
-        return this.entityData.get(ENHANCED);
-    }
-
-    public void setEnhanced(boolean enhanced) {
-        this.entityData.set(ENHANCED, enhanced);
-    }
-
     public ParticleOptions soulParticle() {
-        return this.isEnhanced() ? ModParticles.GHOSTLY_SOUL_RED.get() : ModParticles.GHOSTLY_SOUL.get();
+        return ModParticles.GHOSTLY_SOUL.get();
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag pCompound) {
         pCompound.putBoolean("is_Sleep", this.isSleep());
         pCompound.putInt("texture_variant", this.getTextureVariant());
-        pCompound.putBoolean("enhanced", this.isEnhanced());
         super.addAdditionalSaveData(pCompound);
     }
 
@@ -603,7 +545,6 @@ public class BeheadedKnightServant extends IAnimatedMiniBossServant {
     public void readAdditionalSaveData(CompoundTag compound) {
         this.setSleep(compound.getBoolean("is_Sleep"));
         this.setTextureVariant(compound.getInt("texture_variant"));
-        this.setEnhanced(compound.getBoolean("enhanced"));
         super.readAdditionalSaveData(compound);
     }
 
@@ -738,18 +679,10 @@ public class BeheadedKnightServant extends IAnimatedMiniBossServant {
         int stab1;
         int ARC;
         int upperCut;
-        if (this.isEnhanced()) {
-            switch (this.getTextureVariant()) {
-                case 2 -> this.setRGB(238.0F, 60.0F, 60.0F);
-                case 3 -> this.setRGB(251.0F, 63.0F, 63.0F);
-                default -> this.setRGB(214.0F, 54.0F, 54.0F);
-            }
-        } else {
-            switch (this.getTextureVariant()) {
-                case 2 -> this.setRGB(234.0F, 238.0F, 87.0F);
-                case 3 -> this.setRGB(161.0F, 251.0F, 232.0F);
-                default -> this.setRGB(203.0F, 212.0F, 214.0F);
-            }
+        switch (this.getTextureVariant()) {
+            case 2 -> this.setRGB(234.0F, 238.0F, 87.0F);
+            case 3 -> this.setRGB(161.0F, 251.0F, 232.0F);
+            default -> this.setRGB(203.0F, 212.0F, 214.0F);
         }
 
         float sweepSize = 2.0F;
@@ -891,13 +824,8 @@ public class BeheadedKnightServant extends IAnimatedMiniBossServant {
                 if (this.level().isClientSide) {
                     float yaw = (float) Math.toRadians(-this.yBodyRot + 90.0F);
                     float pitch = (float) Math.toRadians(-this.getXRot() + 180.0F);
-                    if (this.isEnhanced()) {
-                        this.level().addParticle(new SoulSweepRedParticle.SweepData(this.getScale() * 2.0F, yaw, pitch),
-                                this.getX(), this.getY() + bigSweepAdditionalY, this.getZ(), 0.0D, 0.0D, 0.0D);
-                    } else {
-                        this.level().addParticle(new SoulSweepParticle.SweepData(this.getScale() * 2.0F, yaw, pitch),
-                                this.getX(), this.getY() + bigSweepAdditionalY, this.getZ(), 0.0D, 0.0D, 0.0D);
-                    }
+                    this.level().addParticle(new SoulSweepParticle.SweepData(this.getScale() * 2.0F, yaw, pitch),
+                            this.getX(), this.getY() + bigSweepAdditionalY, this.getZ(), 0.0D, 0.0D, 0.0D);
                 }
                 this.playSound(ModSounds.HEAVY_SWING.get(), 1.0F, 1.25F);
                 this.basicDash(1.0F, 3.0F, true);
@@ -1021,8 +949,7 @@ public class BeheadedKnightServant extends IAnimatedMiniBossServant {
                 this.SideAreaAttack(2.75F, 3.0F, 360.0F, 0.0F, 2.0F, 18.0F, 150, false, true, 1.0F, 0.5F, SoundEvents.EMPTY, 0.0F);
                 this.xPillars(6, 3.0D, 8.0F);
                 this.spawnCircleParticle(0.0F, 0.0F, 100.0F, true, 2.0F,
-                        this.isEnhanced() ? 1.0F : 0.25F, this.isEnhanced() ? 0.25F : 1.0F,
-                        this.isEnhanced() ? 0.25F : 0.75F, 0.8F, Circle.EnumRingBehavior.GROW, 30);
+                        0.25F, 1.0F, 0.75F, 0.8F, Circle.EnumRingBehavior.GROW, 30);
             }
         }
 
@@ -1143,9 +1070,6 @@ public class BeheadedKnightServant extends IAnimatedMiniBossServant {
             float pitch = (float) (reverse ? -1 : 1) * (float) Math.atan2(yHeight, Math.sqrt(lookX * lookX + lookZ * lookZ));
             if (!soul) {
                 this.level().addParticle(new BeheadedKnightSweepParticle.SweepData(this.getScale() * scale, yaw, pitch, this.getR, this.getG, this.getB),
-                        x, d1, z, 0.0D, 0.0D, 0.0D);
-            } else if (this.isEnhanced()) {
-                this.level().addParticle(new SoulSweepRedParticle.SweepData(this.getScale() * scale, yaw, pitch),
                         x, d1, z, 0.0D, 0.0D, 0.0D);
             } else {
                 this.level().addParticle(new SoulSweepParticle.SweepData(this.getScale() * scale, yaw, pitch),
@@ -1276,7 +1200,7 @@ public class BeheadedKnightServant extends IAnimatedMiniBossServant {
         } while ((double) blockpos.getY() >= lowestYCheck);
         if (flag) {
             world.addFreshEntity(new SoulPillar(world, x, (double) blockpos.getY() + d0, z, yRot,
-                    warmupDelayTicks, this, 20, 8.0F, this.isEnhanced()));
+                    warmupDelayTicks, this, 20, 8.0F, false));
             return true;
         }
         return false;
@@ -1315,7 +1239,7 @@ public class BeheadedKnightServant extends IAnimatedMiniBossServant {
         if (passenger == null) {
             return;
         }
-        ThrownKnight thrownEntity = new ThrownKnight(this.level(), this, x, y, z, damage, passenger, this.isEnhanced());
+        ThrownKnight thrownEntity = new ThrownKnight(this.level(), this, x, y, z, damage, passenger);
         double d0 = destX - x;
         double d1 = destY + 0.5D - thrownEntity.getY();
         double d2 = destZ - z;
