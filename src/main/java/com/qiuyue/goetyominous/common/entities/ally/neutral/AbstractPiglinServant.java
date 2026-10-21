@@ -45,6 +45,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 
 import java.util.*;
@@ -54,8 +59,12 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
     protected static final EntityDataAccessor<Boolean> DATA_IMMUNE_TO_ZOMBIFICATION;
     protected static final int CONVERSION_TIME = 300;
     protected static final float PIGLIN_EYE_HEIGHT = 1.79F;
+    protected static final int ADMIRE_TICKS = 120;
+    protected static final int ADMIRE_DISABLED_TICKS = 400;
     protected int timeInOverworld;
     protected int rangedDamageDealt;
+    private int admireTicks;
+    private int admireDisabledTicks;
     public @Nullable AbstractPiglinServant breedingPartner;
     public void setImmune(boolean immune) { this.setImmuneToZombification(immune); }
     private int breedCool;
@@ -131,6 +140,8 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
         this.writeInventoryToTag(p_34661_);
         p_34661_.putInt("MeleeDamageDealt", this.meleeDamageDealt);
         p_34661_.putInt("RangedDamageDealt", this.rangedDamageDealt);
+        p_34661_.putInt("AdmireTicks", this.admireTicks);
+        p_34661_.putInt("AdmireDisabledTicks", this.admireDisabledTicks);
         p_34661_.putBoolean("UpgradesLocked", this.upgradesLocked());
         super.addAdditionalSaveData(p_34661_);
 
@@ -155,6 +166,8 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
         this.readInventoryFromTag(p_34659_);
         this.meleeDamageDealt = p_34659_.getInt("MeleeDamageDealt");
         this.rangedDamageDealt = p_34659_.getInt("RangedDamageDealt");
+        this.admireTicks = p_34659_.getInt("AdmireTicks");
+        this.admireDisabledTicks = p_34659_.getInt("AdmireDisabledTicks");
         super.readAdditionalSaveData(p_34659_);
         this.setImmuneToZombification(p_34659_.getBoolean("IsImmuneToZombification"));
         this.timeInOverworld = p_34659_.getInt("TimeInOverworld");
@@ -180,13 +193,27 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
             this.timeInOverworld = 0;
         }
 
-        if (this.timeInOverworld > 300 && ForgeEventFactory.canLivingConvert(this, com.Polarice3.Goety.common.entities.ModEntityType.ZPIGLIN_SERVANT.get(), (timer) -> {
+        if (this.timeInOverworld > 300 && ForgeEventFactory.canLivingConvert(this, this.getConversionTarget(), (timer) -> {
             this.timeInOverworld = timer;
         })) {
             this.playConvertedSound();
             this.finishConversion((ServerLevel)this.level());
         }
 
+        if (this.admireDisabledTicks > 0) {
+            --this.admireDisabledTicks;
+        }
+        if (this.admireTicks > 0) {
+            if (--this.admireTicks == 0) {
+                this.finishBarter();
+            } else {
+                this.getNavigation().stop();
+                LivingEntity owner = this.getTrueOwner();
+                if (owner != null) {
+                    this.getLookControl().setLookAt(owner, 30.0F, 30.0F);
+                }
+            }
+        }
     }
 
     public boolean upgradesLocked() {
@@ -519,6 +546,10 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
                 && !(this.getTrueOwner() != null && CuriosFinder.hasNetherRobe(this.getTrueOwner()));
     }
 
+    protected EntityType<? extends Mob> getConversionTarget() {
+        return com.Polarice3.Goety.common.entities.ModEntityType.ZPIGLIN_SERVANT.get();
+    }
+
     protected void finishConversion(ServerLevel serverLevel) {
         com.Polarice3.Goety.common.entities.neutral.ZPiglinServant zombifiedpiglin =
                 new com.Polarice3.Goety.common.entities.neutral.ZPiglinServant(
@@ -547,6 +578,7 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
                 if (zombie instanceof Owned owned) {
                     owned.copyTrueOwner(this);
                 }
+                this.afterZombieConversion(zombie);
                 ForgeEventFactory.onLivingConvert(this, zombie);
                 return;
             }
@@ -554,8 +586,11 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
         super.die(source);
     }
 
+    protected void afterZombieConversion(Mob zombie) {
+    }
+
     @Nullable
-    private EntityType<? extends Mob> getZombieVariantType() {
+    protected EntityType<? extends Mob> getZombieVariantType() {
         if (this instanceof ElitePiglinHunterServant) return ModEntityTypes.ELITE_ZPIGLIN_HUNTER_SERVANT.get();
         if (this instanceof StrongPiglinHunterServant) return ModEntityTypes.STRONG_ZPIGLIN_HUNTER_SERVANT.get();
         if (this instanceof PiglinHunterServant) return ModEntityTypes.ZPIGLIN_HUNTER_SERVANT.get();
@@ -720,6 +755,15 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
         Item item = itemstack.getItem();
         ItemStack itemstack2 = this.getMainHandItem();
         if (this.getTrueOwner() != null && pPlayer.getUUID().equals(this.getTrueOwner().getUUID())) {
+            if (itemstack.is(Items.GOLD_INGOT) && this.canBarter()
+                    && this.admireTicks <= 0 && this.admireDisabledTicks <= 0) {
+                if (!pPlayer.getAbilities().instabuild) {
+                    itemstack.shrink(1);
+                }
+                this.startAdmiring();
+                return InteractionResult.SUCCESS;
+            }
+
             net.minecraft.world.item.Item snapWarts =
                     net.minecraftforge.registries.ForgeRegistries.ITEMS.getValue(
                             new net.minecraft.resources.ResourceLocation("goety", "snap_warts"));
@@ -844,6 +888,75 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
         }
 
         return super.mobInteract(pPlayer, pHand);
+    }
+
+    protected boolean canBarter() {
+        return !this.isBaby();
+    }
+
+    public boolean isAdmiring() {
+        return this.admireTicks > 0;
+    }
+
+    protected void startAdmiring() {
+        if (!this.getOffhandItem().isEmpty()) {
+            this.spawnAtLocation(this.getOffhandItem());
+        }
+        this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.GOLD_INGOT));
+        this.admireTicks = ADMIRE_TICKS;
+        this.setTarget(null);
+        this.getNavigation().stop();
+        this.playAdmireSound();
+    }
+
+    protected void playAdmireSound() {
+        this.playSound(SoundEvents.PIGLIN_ADMIRING_ITEM, 1.0F, 1.0F);
+    }
+
+    protected void cancelAdmiring(boolean byPlayer) {
+        this.admireTicks = 0;
+        if (this.getOffhandItem().is(Items.GOLD_INGOT)) {
+            this.setItemSlot(EquipmentSlot.OFFHAND, ItemStack.EMPTY);
+        }
+        if (byPlayer) {
+            this.admireDisabledTicks = ADMIRE_DISABLED_TICKS;
+        }
+    }
+
+    protected void finishBarter() {
+        if (!this.getOffhandItem().is(Items.GOLD_INGOT)) {
+            return;
+        }
+        this.setItemSlot(EquipmentSlot.OFFHAND, ItemStack.EMPTY);
+        this.swing(InteractionHand.OFF_HAND);
+        if (!(this.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+        LivingEntity owner = this.getTrueOwner();
+        Vec3 target = owner != null ? owner.position() : this.position();
+        for (ItemStack drop : this.rollBarterLoot(serverLevel)) {
+            this.onBarterLoot(drop);
+            BehaviorUtils.throwItem(this, drop, target);
+        }
+    }
+
+    protected List<ItemStack> rollBarterLoot(ServerLevel serverLevel) {
+        LootTable lootTable = serverLevel.getServer().getLootData().getLootTable(BuiltInLootTables.PIGLIN_BARTERING);
+        LootParams lootParams = new LootParams.Builder(serverLevel)
+                .create(LootContextParamSets.EMPTY);
+        return lootTable.getRandomItems(lootParams);
+    }
+
+    protected void onBarterLoot(ItemStack drop) {
+    }
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        boolean flag = super.hurt(source, amount);
+        if (flag && this.admireTicks > 0 && source.getEntity() instanceof LivingEntity) {
+            this.cancelAdmiring(source.getEntity() instanceof Player);
+        }
+        return flag;
     }
 
     protected boolean isAcceptedWeapon(Item item) {

@@ -311,4 +311,16 @@ public class ModEntityLayers {
 
     public static final ModelLayerLocation CHORUSLING_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "chorusling_servant"), "main");
+
+    public static final ModelLayerLocation PIGLIN_ALCHEMIST_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "piglin_alchemist_servant"), "main");
+
+    public static final ModelLayerLocation PIGLIN_TRAVELER_SERVANT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "piglin_traveler_servant"), "main");
+
+    public static final ModelLayerLocation PIGLIN_ALCHEMIST_SERVANT_BELT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "piglin_alchemist_servant"), "belt");
+
+    public static final ModelLayerLocation PIGLIN_SERVANT_PP_OUTER_ARMOR_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "piglin_servant_pp_outer_armor"), "main");
 }

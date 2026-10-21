@@ -18,8 +18,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -58,7 +56,6 @@ public class PiglinServant extends AbstractPiglinServant implements CrossbowAtta
     private static final AttributeModifier SPEED_MODIFIER_BABY;
     private static final float CROSSBOW_POWER = 1.6F;
     private boolean cannotHunt;
-    private int admireTicks;
     private int piglinAge;
     private int danceTicks;
     private LivingEntity lastTarget;
@@ -231,22 +228,6 @@ public class PiglinServant extends AbstractPiglinServant implements CrossbowAtta
 
     }
 
-    public InteractionResult mobInteract(Player p_34745_, InteractionHand p_34746_) {
-        ItemStack itemstack = p_34745_.getItemInHand(p_34746_);
-        if (this.getTrueOwner() != null && p_34745_ == this.getTrueOwner()
-                && itemstack.is(Items.GOLD_INGOT) && !this.isBaby()
-                && this.admireTicks <= 0) {
-            if (!p_34745_.getAbilities().instabuild) {
-                itemstack.shrink(1);
-            }
-            this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.GOLD_INGOT));
-            this.admireTicks = 120;
-            this.playSound(SoundEvents.PIGLIN_ADMIRING_ITEM, 1.0F, 1.0F);
-            return InteractionResult.SUCCESS;
-        }
-        return super.mobInteract(p_34745_, p_34746_);
-    }
-
     protected float getStandingEyeHeight(Pose p_34740_, EntityDimensions p_34741_) {
         float f = super.getStandingEyeHeight(p_34740_, p_34741_);
         return this.isBaby() ? f - 0.82F : f;
@@ -295,23 +276,6 @@ public class PiglinServant extends AbstractPiglinServant implements CrossbowAtta
     protected void customServerAiStep() {
         if (this.isConverting() && this.timeInOverworld == 0) {
             this.playSound(SoundEvents.PIGLIN_RETREAT, 1.0F, 1.0F);
-        }
-        if (this.admireTicks > 0) {
-            this.admireTicks--;
-            if (this.admireTicks == 0) {
-                if (this.getOffhandItem().is(Items.GOLD_INGOT)) {
-                    this.setItemSlot(EquipmentSlot.OFFHAND, ItemStack.EMPTY);
-                }
-                this.swing(InteractionHand.OFF_HAND);
-                if (this.level() instanceof ServerLevel serverLevel && this.getTrueOwner() != null) {
-                    net.minecraft.world.level.storage.loot.LootTable loottable = serverLevel.getServer().getLootData().getLootTable(net.minecraft.world.level.storage.loot.BuiltInLootTables.PIGLIN_BARTERING);
-                    net.minecraft.world.level.storage.loot.LootParams lootparams = new net.minecraft.world.level.storage.loot.LootParams.Builder(serverLevel)
-                            .create(net.minecraft.world.level.storage.loot.parameters.LootContextParamSets.EMPTY);
-                    for (net.minecraft.world.item.ItemStack drop : loottable.getRandomItems(lootparams)) {
-                        net.minecraft.world.entity.ai.behavior.BehaviorUtils.throwItem(this, drop, this.getTrueOwner().position());
-                    }
-                }
-            }
         }
         if (this.isNearJukebox()) {
             this.setDancing(true);
@@ -422,16 +386,6 @@ public class PiglinServant extends AbstractPiglinServant implements CrossbowAtta
 
     public void setDancing(boolean p_34790_) {
         this.entityData.set(DATA_IS_DANCING, p_34790_);
-    }
-
-    public boolean hurt(DamageSource p_34694_, float p_34695_) {
-        if (this.admireTicks > 0) {
-            this.admireTicks = 0;
-            if (this.getOffhandItem().is(Items.GOLD_INGOT)) {
-                this.setItemSlot(EquipmentSlot.OFFHAND, ItemStack.EMPTY);
-            }
-        }
-        return super.hurt(p_34694_, p_34695_);
     }
 
     public void performRangedAttack(LivingEntity p_34704_, float p_34705_) {
