@@ -34,6 +34,8 @@ public class GiantSnowballServantRenderer extends EntityRenderer<GiantSnowballSe
 
     public void render(GiantSnowballServant p_115373_, float p_115374_, float p_115375_, PoseStack p_115376_, MultiBufferSource p_115377_, int p_115378_) {
         p_115376_.pushPose();
+        float scale = p_115373_.getSizeScale();
+        p_115376_.scale(scale, scale, scale);
         p_115376_.translate(0.0, -0.25, 0.0);
         p_115376_.mulPose(Axis.YP.rotationDegrees(Mth.lerp(p_115375_, p_115373_.yRotO, p_115373_.getYRot()) - 90.0F));
         VertexConsumer vertexconsumer = p_115377_.getBuffer(this.model.renderType(this.getTextureLocation(p_115373_)));

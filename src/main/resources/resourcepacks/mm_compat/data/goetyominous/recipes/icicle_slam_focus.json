@@ -1,0 +1,33 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:ice_spike_focus"
+  },
+  "craftType": "frost",
+  "soulCost": 1,
+  "duration": 10,
+  "ingredients": [
+    {
+      "item": "mutantmore:mutant_frozen_zombie_spikes"
+    },
+    {
+      "item": "minecraft:snow_block"
+    },
+    {
+      "item": "minecraft:powder_snow_bucket"
+    },
+    {
+      "item": "goety:soul_emerald"
+    },
+    {
+      "item": "goety:chill_fabric"
+    },
+    {
+      "item": "goety:ectoplasm"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:icicle_slam_focus"
+  }
+}

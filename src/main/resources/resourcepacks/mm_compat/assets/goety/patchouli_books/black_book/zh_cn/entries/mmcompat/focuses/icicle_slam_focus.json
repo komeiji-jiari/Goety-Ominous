@@ -1,0 +1,21 @@
+{
+  "name": "冰刺猛击聚晶",
+  "icon": "goetyominous:icicle_slam_focus",
+  "category": "goety:mmcompat/focuses",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "text",
+      "text": "突变霜冻僵尸的冰刺让你想到一种增强冰霜力量的方法。你尝试改进了你的冰刺聚晶，现在他能够像突变霜冻僵尸那样释放出大量拔地而起的冰刺。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:icicle_slam_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "冰霜魔杖允许你召唤更多冰刺。"
+    }
+  ]
+}

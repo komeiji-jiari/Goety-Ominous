@@ -1,0 +1,21 @@
+{
+  "name": "Icicle Spike Focus",
+  "icon": "goetyominous:icicle_spike_focus",
+  "category": "goety:mmcompat/focuses",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "text",
+      "text": "This improved icicle spell fires a larger, more powerful icicle that pierces through creatures while inflicting Freezing on them."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goetyominous:icicle_spike_focus",
+      "text": "Ice ice ice!"
+    },
+    {
+      "type": "text",
+      "text": "A Frost Staff allows you to fire 3 dense icicles at once."
+    }
+  ]
+}

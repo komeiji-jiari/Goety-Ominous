@@ -1,11 +1,15 @@
 package com.qiuyue.goetyominous.common.events;
 
+import com.Polarice3.Goety.api.entities.IOwned;
+import com.Polarice3.Goety.utils.MobUtil;
 import com.mojang.logging.LogUtils;
 import com.qiuyue.goetyominous.common.init.ModParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -21,6 +25,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import javax.annotation.Nullable;
 
 @Mod.EventBusSubscriber(modid = "goetyominous")
 public class WindBowEvents {
@@ -113,10 +118,27 @@ public class WindBowEvents {
         return axis.lengthSqr() < 1.0E-4D ? new Vec3(0.0D, 1.0D, 0.0D) : axis.normalize();
     }
 
-    private static void pull(ServerLevel server, Vec3 centre, double radius, double pull, double lift) {
+    private static boolean isAlly(@Nullable LivingEntity owner, Mob mob) {
+        if (owner == null) {
+            return false;
+        }
+        if (mob == owner) {
+            return true;
+        }
+        if (mob instanceof IOwned owned && owned.getMasterOwner() == owner) {
+            return true;
+        }
+        if (mob instanceof OwnableEntity ownable && ownable.getOwner() == owner) {
+            return true;
+        }
+        return MobUtil.areAllies(owner, mob);
+    }
+
+    private static void pull(ServerLevel server, Vec3 centre, double radius, double pull, double lift,
+                             @Nullable LivingEntity owner) {
         AABB box = new AABB(centre, centre).inflate(radius);
         for (Mob mob : server.getEntitiesOfClass(Mob.class, box)) {
-            if (mob.isSpectator()) {
+            if (mob.isSpectator() || isAlly(owner, mob)) {
                 continue;
             }
             Vec3 away = centre.subtract(mob.position());
@@ -152,7 +174,8 @@ public class WindBowEvents {
         long end = level.getGameTime() + FIELD_TICKS;
         arrow.getPersistentData().putLong(FIELD_END, end);
         if (level instanceof ServerLevel server) {
-            FIELDS.add(new WindField(server, arrow.position(), axisOf(arrow.getDeltaMovement()), end));
+            FIELDS.add(new WindField(server, arrow.position(), axisOf(arrow.getDeltaMovement()), end,
+                    arrow.getOwner() instanceof LivingEntity owner ? owner : null));
             server.sendParticles(wind(WIND_SHOCKWAVE), arrow.getX(), arrow.getY(), arrow.getZ(),
                     8, 1.2D, 0.1D, 1.2D, 0.05D);
         }
@@ -181,10 +204,10 @@ public class WindBowEvents {
                 continue;
             }
             Vec3 centre = arrow.position();
-            pull(server, centre, LURE_RADIUS, LURE_PULL, 0.02D);
+            pull(server, centre, LURE_RADIUS, LURE_PULL, 0.02D,
+                    arrow.getOwner() instanceof LivingEntity owner ? owner : null);
             if (arrow.getPersistentData().contains(FIELD_END)
                     && level.getGameTime() >= arrow.getPersistentData().getLong(FIELD_END)) {
-                arrow.discard();
                 it.remove();
                 continue;
             }
@@ -206,7 +229,7 @@ public class WindBowEvents {
                 continue;
             }
             Vec3 centre = field.centre;
-            pull(field.level, centre, FIELD_RADIUS, FIELD_PULL, 0.06D);
+            pull(field.level, centre, FIELD_RADIUS, FIELD_PULL, 0.06D, field.owner);
             if (!ring(field.level, centre, field.axis, FIELD_VORTEX_RADIUS, FIELD_RINGS, FIELD_VORTEX_LIFE)) {
                 field.level.sendParticles(ModParticleTypes.GUST.get(),
                         centre.x, centre.y, centre.z,
@@ -220,12 +243,16 @@ public class WindBowEvents {
         private final Vec3 centre;
         private final Vec3 axis;
         private final long endTick;
+        @Nullable
+        private final LivingEntity owner;
 
-        private WindField(ServerLevel level, Vec3 centre, Vec3 axis, long endTick) {
+        private WindField(ServerLevel level, Vec3 centre, Vec3 axis, long endTick,
+                          @Nullable LivingEntity owner) {
             this.level = level;
             this.centre = centre;
             this.axis = axis;
             this.endTick = endTick;
+            this.owner = owner;
         }
     }
 }

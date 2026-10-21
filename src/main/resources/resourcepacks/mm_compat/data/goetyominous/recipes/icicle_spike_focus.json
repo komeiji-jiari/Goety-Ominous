@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "ebe",
+    "ghg",
+    "ege"
+  ],
+  "key":
+  {
+    "e":
+    {
+      "item": "minecraft:blue_ice"
+    },
+    "h":
+    {
+      "item": "goety:ice_spike_focus"
+    },
+    "g":
+    {
+      "item": "minecraft:arrow"
+    },
+    "b":
+    {
+      "item": "mutantmore:mutant_frozen_zombie_spikes"
+    }
+  },
+  "result":
+  {
+    "item": "goetyominous:icicle_spike_focus",
+    "count": 1
+  }
+}

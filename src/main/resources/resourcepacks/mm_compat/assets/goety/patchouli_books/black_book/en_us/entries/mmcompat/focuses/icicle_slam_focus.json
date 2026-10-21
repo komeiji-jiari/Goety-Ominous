@@ -1,0 +1,21 @@
+{
+  "name": "Icicle Slam Focus",
+  "icon": "goetyominous:icicle_slam_focus",
+  "category": "goety:mmcompat/focuses",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "text",
+      "text": "The ice spikes of the Mutant Frozen Zombie inspired you with a way to enhance frost power. You have attempted to improve your Ice Spike Focus, and now it can unleash a large number of ice spikes erupting from the ground, just like the Mutant Frozen Zombie."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:icicle_slam_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "A Frost Staff allows you to summon more ice spikes."
+    }
+  ]
+}
