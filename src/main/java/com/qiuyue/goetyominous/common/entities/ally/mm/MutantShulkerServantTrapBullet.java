@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.mm;
 
+import com.Polarice3.Goety.api.entities.IOwned;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.alexander.mutantmore.util.MiscUtils;
 import com.google.common.collect.Lists;
@@ -55,10 +56,15 @@ public class MutantShulkerServantTrapBullet extends Projectile {
     }
 
     public MutantShulkerServantTrapBullet(Level level, LivingEntity owner, Entity target, Direction.Axis axis) {
+        this(level, owner, target, axis,
+                owner.blockPosition().getX() + 0.5D, owner.blockPosition().getY() + 0.5D, owner.blockPosition().getZ() + 0.5D);
+    }
+
+    public MutantShulkerServantTrapBullet(Level level, LivingEntity owner, Entity target, Direction.Axis axis,
+                                          double x, double y, double z) {
         this(MmEntityRegistry.MUTANT_SHULKER_SERVANT_TRAP_BULLET.get(), level);
         this.setOwner(owner);
-        BlockPos pos = owner.blockPosition();
-        this.moveTo(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, this.getYRot(), this.getXRot());
+        this.moveTo(x, y, z, this.getYRot(), this.getXRot());
         this.finalTarget = target;
         this.currentMoveDirection = Direction.UP;
         this.selectNextMoveDirection(axis);
@@ -252,6 +258,10 @@ public class MutantShulkerServantTrapBullet extends Projectile {
     protected boolean canHitEntity(Entity target) {
         Entity owner = this.getOwner();
         if (owner != null && (target == owner || MobUtil.areAllies(owner, target))) {
+            return false;
+        }
+        if (owner instanceof LivingEntity livingOwner && target instanceof IOwned owned
+                && owned.getTrueOwner() == livingOwner) {
             return false;
         }
         return this.canHarm(target) && super.canHitEntity(target) && !target.noPhysics;

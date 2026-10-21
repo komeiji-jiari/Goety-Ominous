@@ -10,7 +10,11 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.EndersentServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.FlameDrifterServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.FlamebornGuardServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.FlamebornWarriorServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.FracturedApostleServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.FracturedServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.FrostbittenGolemServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.HauntedGuardServant;
+import com.qiuyue.goetyominous.common.entities.ally.lm.HauntedKnightServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.HoveringHurricaneServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.OvergrownColossusServant;
 import com.qiuyue.goetyominous.common.entities.ally.lm.PossessedPaladinServant;
@@ -292,6 +296,30 @@ public class LmEntityRegistry {
                     () -> EntityType.Builder.of(ChoruslingServant::new, MobCategory.MONSTER)
                             .sized(1.0F, 2.5F)
                             .build(GoetyOminous.MOD_ID + ":chorusling_servant"));
+
+    public static final RegistryObject<EntityType<FracturedServant>> FRACTURED_SERVANT =
+            LM_ENTITIES.register("fractured_servant",
+                    () -> EntityType.Builder.of(FracturedServant::new, MobCategory.MONSTER)
+                            .sized(1.0F, 2.0F).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":fractured_servant"));
+
+    public static final RegistryObject<EntityType<FracturedApostleServant>> FRACTURED_APOSTLE_SERVANT =
+            LM_ENTITIES.register("fractured_apostle_servant",
+                    () -> EntityType.Builder.of(FracturedApostleServant::new, MobCategory.MONSTER)
+                            .sized(1.25F, 2.0F).fireImmune()
+                            .build(GoetyOminous.MOD_ID + ":fractured_apostle_servant"));
+
+    public static final RegistryObject<EntityType<HauntedKnightServant>> HAUNTED_KNIGHT_SERVANT =
+            LM_ENTITIES.register("haunted_knight_servant",
+                    () -> EntityType.Builder.of(HauntedKnightServant::new, MobCategory.MONSTER)
+                            .sized(1.0F, 2.5F)
+                            .build(GoetyOminous.MOD_ID + ":haunted_knight_servant"));
+
+    public static final RegistryObject<EntityType<HauntedGuardServant>> HAUNTED_GUARD_SERVANT =
+            LM_ENTITIES.register("haunted_guard_servant",
+                    () -> EntityType.Builder.of(HauntedGuardServant::new, MobCategory.MONSTER)
+                            .sized(1.0F, 2.5F)
+                            .build(GoetyOminous.MOD_ID + ":haunted_guard_servant"));
 
     public static final RegistryObject<EntityType<ThrownKnight>> THROWN_KNIGHT =
             LM_ENTITIES.register("thrown_knight",

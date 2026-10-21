@@ -10,7 +10,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
-import com.qiuyue.goetyominous.config.uasr.UasrConfig;
+import com.qiuyue.goetyominous.config.ua.UaConfig;
 
 public class GreatThrasherServant extends ThrasherServant {
     private static final EntityDimensions DEFAULT_SIZE = EntityDimensions.fixed(2.8F, 1.575F);
@@ -22,14 +22,14 @@ public class GreatThrasherServant extends ThrasherServant {
 
     @Override
     public int getSummonLimit(LivingEntity owner) {
-        return UasrConfig.GreatThrasherServantLimit.get();
+        return UaConfig.GreatThrasherServantLimit.get();
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, UasrConfig.GreatThrasherServantHealth.get())
-                .add(Attributes.ATTACK_DAMAGE, UasrConfig.GreatThrasherServantDamage.get())
-                .add(Attributes.ARMOR, UasrConfig.GreatThrasherServantArmor.get());
+                .add(Attributes.MAX_HEALTH, UaConfig.GreatThrasherServantHealth.get())
+                .add(Attributes.ATTACK_DAMAGE, UaConfig.GreatThrasherServantDamage.get())
+                .add(Attributes.ARMOR, UaConfig.GreatThrasherServantArmor.get());
     }
 
     @Override

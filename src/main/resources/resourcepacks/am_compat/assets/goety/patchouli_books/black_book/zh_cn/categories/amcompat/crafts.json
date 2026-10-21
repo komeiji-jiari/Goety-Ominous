@@ -1,7 +1,0 @@
-{
-  "name": "合成",
-  "description": "更多可供合成的物品。",
-  "icon": "minecraft:crafting_table",
-  "parent": "goety:amcompat",
-  "sortnum": 5
-}

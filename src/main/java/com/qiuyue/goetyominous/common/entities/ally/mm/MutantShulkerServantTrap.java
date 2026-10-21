@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.mm;
 
+import com.Polarice3.Goety.api.entities.IOwned;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.alexander.mutantmore.config.mutant_shulker.MutantShulkerRewardsCommonConfig;
@@ -34,6 +35,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
@@ -85,15 +87,7 @@ public class MutantShulkerServantTrap extends Summoned {
 
     @Override
     protected void registerGoals() {
-
-    }
-
-    @Override
-    public void setTarget(@Nullable LivingEntity target) {
-
-        if (!this.isSpawnedByMutantShulker() || target != null) {
-            super.setTarget(target);
-        }
+        this.targetSelectGoal();
     }
 
     @Override
@@ -134,6 +128,52 @@ public class MutantShulkerServantTrap extends Summoned {
             return false;
         }
         return !(target instanceof LivingEntity) || !MobUtil.areAllies(this, target);
+    }
+
+    @Nullable
+    private LivingEntity getBulletTarget() {
+        LivingEntity target = this.getTarget();
+        if (this.isValidBulletTarget(target) && this.isHostileMob(target)) {
+            return target;
+        }
+        LivingEntity nearest = this.findNearestBulletTarget();
+        if (nearest != null) {
+            this.setTarget(nearest);
+            return nearest;
+        }
+        return this.isValidBulletTarget(target) ? target : null;
+    }
+
+    private boolean isValidBulletTarget(@Nullable LivingEntity target) {
+        if (target == null || target == this || !target.isAlive() || target.isRemoved() || target.level() != this.level()) {
+            return false;
+        }
+        if (target instanceof Player) {
+            return false;
+        }
+        return this.isHostileTarget(target);
+    }
+
+    private boolean isHostileMob(LivingEntity entity) {
+        return entity instanceof Enemy || entity instanceof IOwned owned && owned.isHostile();
+    }
+
+    @Nullable
+    private LivingEntity findNearestBulletTarget() {
+        LivingEntity best = null;
+        int bestScore = Integer.MAX_VALUE;
+        double bestDistance = Double.MAX_VALUE;
+        for (LivingEntity candidate : this.level().getEntitiesOfClass(LivingEntity.class,
+                this.getBoundingBox().inflate(32.0D), this::isValidBulletTarget)) {
+            int score = (this.hasLineOfSight(candidate) ? 0 : 2) + (this.isHostileMob(candidate) ? 0 : 1);
+            double distance = this.distanceToSqr(candidate);
+            if (score < bestScore || score == bestScore && distance < bestDistance) {
+                bestScore = score;
+                bestDistance = distance;
+                best = candidate;
+            }
+        }
+        return best;
     }
 
     @Override
@@ -193,18 +233,19 @@ public class MutantShulkerServantTrap extends Summoned {
             this.level().broadcastEntityEvent(this, (byte) 11);
         }
         if (!this.level().isClientSide && this.vanishAnimationTick == 1) {
+            LivingEntity bulletTarget = this.getBulletTarget();
+            double bulletX = this.getX();
+            double bulletY = this.getY() + 0.25D;
+            double bulletZ = this.getZ();
             this.discard();
-            if (MutantShulkerRewardsCommonConfig.trap_turns_to_bullet.get()) {
-                LivingEntity bulletTarget = this.getTarget();
-                if (bulletTarget != null) {
-                    LivingEntity owner = this.getTrueOwner();
-                    MutantShulkerServantTrapBullet bullet = new MutantShulkerServantTrapBullet(this.level(), owner != null ? owner : this, bulletTarget, Direction.Axis.Y);
-                    bullet.damage = MutantShulkerRewardsCommonConfig.trap_shulker_bullet_damage.get().floatValue() + this.bonusDamage;
-                    bullet.levitationLength = MutantShulkerRewardsCommonConfig.trap_shulker_bullet_levitation_length.get();
-                    bullet.levitationLevel = MutantShulkerRewardsCommonConfig.trap_shulker_bullet_levitation_level.get();
-                    bullet.moveTo(this.getX(), this.getY() + 0.25, this.getZ());
-                    this.level().addFreshEntity(bullet);
-                }
+            if (MutantShulkerRewardsCommonConfig.trap_turns_to_bullet.get() && bulletTarget != null) {
+                LivingEntity owner = this.getTrueOwner();
+                MutantShulkerServantTrapBullet bullet = new MutantShulkerServantTrapBullet(this.level(),
+                        owner != null ? owner : this, bulletTarget, Direction.Axis.Y, bulletX, bulletY, bulletZ);
+                bullet.damage = MutantShulkerRewardsCommonConfig.trap_shulker_bullet_damage.get().floatValue() + this.bonusDamage;
+                bullet.levitationLength = MutantShulkerRewardsCommonConfig.trap_shulker_bullet_levitation_length.get();
+                bullet.levitationLevel = MutantShulkerRewardsCommonConfig.trap_shulker_bullet_levitation_level.get();
+                this.level().addFreshEntity(bullet);
             }
         }
         if (!this.level().isClientSide && this.activateAnimationTick == 1

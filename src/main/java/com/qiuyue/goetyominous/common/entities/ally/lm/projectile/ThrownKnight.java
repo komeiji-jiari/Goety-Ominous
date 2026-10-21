@@ -38,18 +38,15 @@ public class ThrownKnight extends SpellThrowableProjectile {
 
     private static final EntityDataAccessor<Float> DAMAGE =
             SynchedEntityData.defineId(ThrownKnight.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Boolean> ENHANCED =
-            SynchedEntityData.defineId(ThrownKnight.class, EntityDataSerializers.BOOLEAN);
 
     public ThrownKnight(EntityType<? extends ThrownKnight> type, Level level) {
         super(type, level);
     }
 
     public ThrownKnight(Level level, LivingEntity shooter, double offsetX, double offsetY, double offsetZ,
-                        float damage, ResurrectedKnightServant passenger, boolean enhanced) {
+                        float damage, ResurrectedKnightServant passenger) {
         super(LmEntityRegistry.THROWN_KNIGHT.get(), level);
         this.setDamage(damage);
-        this.setEnhanced(enhanced);
         this.setOwner(shooter);
         this.moveTo(offsetX, offsetY, offsetZ);
         if (passenger != null) {
@@ -61,27 +58,6 @@ public class ThrownKnight extends SpellThrowableProjectile {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(DAMAGE, 0.0F);
-        this.entityData.define(ENHANCED, false);
-    }
-
-    public boolean isEnhanced() {
-        return this.entityData.get(ENHANCED);
-    }
-
-    public void setEnhanced(boolean enhanced) {
-        this.entityData.set(ENHANCED, enhanced);
-    }
-
-    private float ringRed() {
-        return this.isEnhanced() ? 1.0F : 0.25F;
-    }
-
-    private float ringGreen() {
-        return this.isEnhanced() ? 0.25F : 1.0F;
-    }
-
-    private float ringBlue() {
-        return this.isEnhanced() ? 0.25F : 0.75F;
     }
 
     @Override
@@ -173,7 +149,7 @@ public class ThrownKnight extends SpellThrowableProjectile {
                 double spawnX = this.getX() + vec3.x + vecX * 1.5D;
                 double spawnZ = this.getZ() + vec3.z + vecZ * 1.5D;
                 this.level().addParticle(new Circle.RingData(this.horizontalCollision ? 0.0F : yaw, this.horizontalCollision ? 90.0F : 0.0F,
-                                30, this.ringRed(), this.ringGreen(), this.ringBlue(), 0.8F, 40.0F, false, Circle.EnumRingBehavior.GROW_THEN_SHRINK),
+                                30, 0.25F, 1.0F, 0.75F, 0.8F, 40.0F, false, Circle.EnumRingBehavior.GROW_THEN_SHRINK),
                         spawnX, this.getY() + 1.0D, spawnZ, 0.0D, 0.0D, 0.0D);
             }
         }
@@ -213,9 +189,9 @@ public class ThrownKnight extends SpellThrowableProjectile {
         this.AreaAttack(4.0F, 4.0F, 360.0F, this.getDamage());
         LmScreenShake.shake(this.level(), this.position(), 5.0F, 0.1F, 5, 5);
         this.playSound(SoundEvents.DRAGON_FIREBALL_EXPLODE, 1.0F, 1.0F);
-        this.level().addParticle(new Circle.RingData(0.0F, 1.5707964F, 30, this.ringRed(), this.ringGreen(), this.ringBlue(), 1.0F, 100.0F,
+        this.level().addParticle(new Circle.RingData(0.0F, 1.5707964F, 30, 0.25F, 1.0F, 0.75F, 1.0F, 100.0F,
                 false, Circle.EnumRingBehavior.GROW), this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
-        this.level().addParticle(new Circle.RingData(1.5707964F, 0.0F, 30, this.ringRed(), this.ringGreen(), this.ringBlue(), 1.0F, 100.0F,
+        this.level().addParticle(new Circle.RingData(1.5707964F, 0.0F, 30, 0.25F, 1.0F, 0.75F, 1.0F, 100.0F,
                 false, Circle.EnumRingBehavior.GROW), this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
         if (!this.level().isClientSide) {
             this.discard();
@@ -234,9 +210,9 @@ public class ThrownKnight extends SpellThrowableProjectile {
             Vec3 vec3 = this.getDeltaMovement();
             double spawnX = this.getX() + vec3.x + vecX * 1.5D;
             double spawnZ = this.getZ() + vec3.z + vecZ * 1.5D;
-            this.level().addParticle(new Circle.RingData(0.0F, 1.5707964F, 30, this.ringRed(), this.ringGreen(), this.ringBlue(), 0.8F, 40.0F,
+            this.level().addParticle(new Circle.RingData(0.0F, 1.5707964F, 30, 0.25F, 1.0F, 0.75F, 0.8F, 40.0F,
                     false, Circle.EnumRingBehavior.GROW_THEN_SHRINK), spawnX, this.getY() + 1.0D, spawnZ, 0.0D, 0.0D, 0.0D);
-            this.level().addParticle(new Circle.RingData(1.5707964F, 0.0F, 30, this.ringRed(), this.ringGreen(), this.ringBlue(), 0.8F, 40.0F,
+            this.level().addParticle(new Circle.RingData(1.5707964F, 0.0F, 30, 0.25F, 1.0F, 0.75F, 0.8F, 40.0F,
                     false, Circle.EnumRingBehavior.GROW_THEN_SHRINK), spawnX, this.getY() + 1.0D, spawnZ, 0.0D, 0.0D, 0.0D);
         } else {
             super.handleEntityEvent(id);
@@ -284,7 +260,7 @@ public class ThrownKnight extends SpellThrowableProjectile {
         } while ((double) blockpos.getY() >= lowestYCheck);
         if (flag) {
             world.addFreshEntity(new SoulPillar(world, x, (double) blockpos.getY() + d0, z, yRot,
-                    warmupDelayTicks, caster, 20, 8.0F, this.isEnhanced()));
+                    warmupDelayTicks, caster, 20, 8.0F, false));
             return true;
         }
         return false;

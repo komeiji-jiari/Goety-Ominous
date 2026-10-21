@@ -2,7 +2,6 @@ package com.qiuyue.goetyominous.common.entities.ally.lm;
 
 import com.Polarice3.Goety.api.entities.ally.IServant;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
-import com.Polarice3.Goety.common.items.ModItems;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IMoveGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.knight.KnightAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.knight.KnightStateGoal;
@@ -17,7 +16,6 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
 import net.miauczel.legendary_monsters.Particle.custom.SoulSweepParticle;
-import net.miauczel.legendary_monsters.Particle.custom.SoulSweepRedParticle;
 import net.miauczel.legendary_monsters.effect.ModEffects;
 import net.miauczel.legendary_monsters.entity.client.ControlledAnim;
 import net.miauczel.legendary_monsters.sound.ModSounds;
@@ -69,8 +67,6 @@ public class ResurrectedKnightServant extends IAnimatedMiniBossServant {
 
     private static final EntityDataAccessor<Integer> TEXTURE_VARIANT =
             SynchedEntityData.defineId(ResurrectedKnightServant.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> ENHANCED =
-            SynchedEntityData.defineId(ResurrectedKnightServant.class, EntityDataSerializers.BOOLEAN);
 
     public static final int DEFAULT_VARIANT = 1;
     public static final int GOLDEN_VARIANT = 2;
@@ -474,50 +470,6 @@ public class ResurrectedKnightServant extends IAnimatedMiniBossServant {
     @Override
     public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
         ItemStack itemstack = pPlayer.getItemInHand(pHand);
-        if (this.getTrueOwner() == pPlayer && !this.isEnhanced() && itemstack.is(Items.RED_DYE)) {
-            if (!this.level().isClientSide) {
-                if (!pPlayer.getAbilities().instabuild) {
-                    itemstack.shrink(1);
-                }
-                this.setEnhanced(true);
-                this.playSound(SoundEvents.SOUL_ESCAPE, 1.0F, 0.75F);
-                this.gameEvent(GameEvent.ENTITY_INTERACT, pPlayer);
-                if (this.level() instanceof ServerLevel serverLevel) {
-                    for (int i = 0; i < 12; ++i) {
-                        double d0 = this.random.nextGaussian() * 0.02D;
-                        double d1 = this.random.nextGaussian() * 0.02D;
-                        double d2 = this.random.nextGaussian() * 0.02D;
-                        serverLevel.sendParticles(ModParticles.GHOSTLY_SOUL_RED.get(),
-                                this.getRandomX(1.0D), this.getY() + this.getBbHeight() + 0.3F, this.getRandomZ(1.0D),
-                                0, d0, d1, d2, 0.5F);
-                    }
-                }
-            }
-            pPlayer.swing(pHand);
-            return InteractionResult.sidedSuccess(this.level().isClientSide);
-        }
-        if (this.getTrueOwner() == pPlayer && this.isEnhanced() && itemstack.is(ModItems.ECTOPLASM.get())) {
-            if (!this.level().isClientSide) {
-                if (!pPlayer.getAbilities().instabuild) {
-                    itemstack.shrink(1);
-                }
-                this.setEnhanced(false);
-                this.playSound(SoundEvents.SOUL_ESCAPE, 1.0F, 1.3F);
-                this.gameEvent(GameEvent.ENTITY_INTERACT, pPlayer);
-                if (this.level() instanceof ServerLevel serverLevel) {
-                    for (int i = 0; i < 12; ++i) {
-                        double d0 = this.random.nextGaussian() * 0.02D;
-                        double d1 = this.random.nextGaussian() * 0.02D;
-                        double d2 = this.random.nextGaussian() * 0.02D;
-                        serverLevel.sendParticles(this.soulParticle(),
-                                this.getRandomX(1.0D), this.getY() + this.getBbHeight() + 0.3F, this.getRandomZ(1.0D),
-                                0, d0, d1, d2, 0.5F);
-                    }
-                }
-            }
-            pPlayer.swing(pHand);
-            return InteractionResult.sidedSuccess(this.level().isClientSide);
-        }
         if (this.getTrueOwner() == pPlayer && this.tryRestyle(pPlayer, pHand, itemstack)) {
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
@@ -616,7 +568,6 @@ public class ResurrectedKnightServant extends IAnimatedMiniBossServant {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(TEXTURE_VARIANT, 1);
-        this.entityData.define(ENHANCED, false);
     }
 
     public int getTextureVariant() {
@@ -627,23 +578,14 @@ public class ResurrectedKnightServant extends IAnimatedMiniBossServant {
         this.entityData.set(TEXTURE_VARIANT, textureVariant);
     }
 
-    public boolean isEnhanced() {
-        return this.entityData.get(ENHANCED);
-    }
-
-    public void setEnhanced(boolean enhanced) {
-        this.entityData.set(ENHANCED, enhanced);
-    }
-
     public ParticleOptions soulParticle() {
-        return this.isEnhanced() ? ModParticles.GHOSTLY_SOUL_RED.get() : ModParticles.GHOSTLY_SOUL.get();
+        return ModParticles.GHOSTLY_SOUL.get();
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag pCompound) {
         pCompound.putBoolean("is_Sleep", this.isSleep());
         pCompound.putInt("texture_variant", this.getTextureVariant());
-        pCompound.putBoolean("enhanced", this.isEnhanced());
         super.addAdditionalSaveData(pCompound);
     }
 
@@ -651,7 +593,6 @@ public class ResurrectedKnightServant extends IAnimatedMiniBossServant {
     public void readAdditionalSaveData(CompoundTag compound) {
         this.setSleep(compound.getBoolean("is_Sleep"));
         this.setTextureVariant(compound.getInt("texture_variant"));
-        this.setEnhanced(compound.getBoolean("enhanced"));
         super.readAdditionalSaveData(compound);
     }
 
@@ -908,13 +849,8 @@ public class ResurrectedKnightServant extends IAnimatedMiniBossServant {
                 if (this.level().isClientSide) {
                     float yaw = (float) Math.toRadians(-this.yBodyRot + 90.0F);
                     float pitch = (float) Math.toRadians(-this.getXRot() + 180.0F);
-                    if (this.isEnhanced()) {
-                        this.level().addParticle(new SoulSweepRedParticle.SweepData(this.getScale() * 2.0F, yaw, pitch),
-                                this.getX(), this.getY() + bigSweepAdditionalY, this.getZ(), 0.0D, 0.0D, 0.0D);
-                    } else {
-                        this.level().addParticle(new SoulSweepParticle.SweepData(this.getScale() * 2.0F, yaw, pitch),
-                                this.getX(), this.getY() + bigSweepAdditionalY, this.getZ(), 0.0D, 0.0D, 0.0D);
-                    }
+                    this.level().addParticle(new SoulSweepParticle.SweepData(this.getScale() * 2.0F, yaw, pitch),
+                            this.getX(), this.getY() + bigSweepAdditionalY, this.getZ(), 0.0D, 0.0D, 0.0D);
                 }
                 this.StraightLineAreaAttack(swordWidth, 1.0F, slashRange, 80, 15.0F, true, 1.0F, 0.0F);
             }
@@ -936,13 +872,8 @@ public class ResurrectedKnightServant extends IAnimatedMiniBossServant {
             double lookX = -Math.cos(yaw);
             double lookZ = -Math.sin(yaw);
             float pitch = (float) (reverse ? -1 : 1) * (float) Math.atan2(yHeight, Math.sqrt(lookX * lookX + lookZ * lookZ));
-            if (this.isEnhanced()) {
-                this.level().addParticle(new SoulSweepRedParticle.SweepData(this.getScale() * scale, yaw, pitch),
-                        x, d1, z, 0.0D, 0.0D, 0.0D);
-            } else {
-                this.level().addParticle(new SoulSweepParticle.SweepData(this.getScale() * scale, yaw, pitch),
-                        x, d1, z, 0.0D, 0.0D, 0.0D);
-            }
+            this.level().addParticle(new SoulSweepParticle.SweepData(this.getScale() * scale, yaw, pitch),
+                    x, d1, z, 0.0D, 0.0D, 0.0D);
         }
     }
 
@@ -1037,7 +968,7 @@ public class ResurrectedKnightServant extends IAnimatedMiniBossServant {
     }
 
     public void shootSoulJavelin(LivingEntity pTarget, float pDistanceFactor) {
-        SoulJavelin soulJavelin = new SoulJavelin(this.level(), this, this.isEnhanced());
+        SoulJavelin soulJavelin = new SoulJavelin(this.level(), this);
         double d0 = pTarget.getX() - this.getX();
         double d1 = pTarget.getY(0.3333333333333333D) - soulJavelin.getY();
         double d2 = pTarget.getZ() - this.getZ();

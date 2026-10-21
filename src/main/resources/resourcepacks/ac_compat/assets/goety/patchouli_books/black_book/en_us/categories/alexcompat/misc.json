@@ -1,0 +1,7 @@
+{
+  "name": "Miscellaneous",
+  "description": "A miscellany of cavernous dark arts.",
+  "icon": "alexscaves:cave_tablet",
+  "sortnum": 8,
+  "parent": "goety:alexcompat"
+}

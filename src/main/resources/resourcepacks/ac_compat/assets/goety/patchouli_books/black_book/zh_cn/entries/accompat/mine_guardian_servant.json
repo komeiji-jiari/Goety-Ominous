@@ -2,7 +2,7 @@
   "name": "水雷守卫者",
   "icon": "alexscaves:depth_charge",
   "category": "goety:abyssalchasm",
-  "sortnum": 90,
+  "sortnum": 100,
   "pages": [
     {
       "type": "patchouli:text",

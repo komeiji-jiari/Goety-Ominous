@@ -235,7 +235,6 @@ public class MutantFrozenZombieServant extends AbstractMutantServant implements 
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        this.resetLifeRecovery();
         if (this.isDeadOrDying() && (pSource.is(ModDamageSource.DISMISSED) || pSource.is(DamageTypes.STARVE))) {
             this.deathDamageSource = pSource;
             this.killedBy = pSource;
@@ -506,8 +505,7 @@ public class MutantFrozenZombieServant extends AbstractMutantServant implements 
                 double d0 = this.random.nextGaussian() * 0.02D;
                 double d1 = this.random.nextGaussian() * 0.02D;
                 double d2 = this.random.nextGaussian() * 0.02D;
-                serverLevel.sendParticles(ParticleTypes.HEART, this.getRandomX(1.0D), this.getY() + 0.5D,
-                        this.getRandomZ(1.0D), 0, d0, d1, d2, 1.0D);
+                serverLevel.sendParticles(ParticleTypes.HEART, this.getRandomX(1.0D), this.getY() + this.getBbHeight() + 0.3D, this.getRandomZ(1.0D), 0, d0, d1, d2, 0.5F);
             }
         }
     }

@@ -3,5 +3,5 @@
   "description": "The primordial darkness calls.",
   "icon": "alexscaves:heavy_bone",
   "sortnum": 6,
-  "parent": "goety:accompat"
+  "parent": "goety:alexcompat"
 }

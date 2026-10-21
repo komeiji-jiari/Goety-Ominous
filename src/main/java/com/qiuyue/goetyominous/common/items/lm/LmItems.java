@@ -92,6 +92,22 @@ public class LmItems {
             "chorusling_servant_spawn_egg",
             () -> new ServantSpawnEggItem(LmEntityRegistry.CHORUSLING_SERVANT, 0x2E2133, 0x9A6FB5, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> FRACTURED_SPAWN_EGG = LM_ITEMS.register(
+            "fractured_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(LmEntityRegistry.FRACTURED_SERVANT, 0xB8C4C6, 0x5A7D82, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> FRACTURED_APOSTLE_SPAWN_EGG = LM_ITEMS.register(
+            "fractured_apostle_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(LmEntityRegistry.FRACTURED_APOSTLE_SERVANT, 0x9FAE9E, 0x3E5A4A, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> HAUNTED_KNIGHT_SPAWN_EGG = LM_ITEMS.register(
+            "haunted_knight_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(LmEntityRegistry.HAUNTED_KNIGHT_SERVANT, 0xCBD4D6, 0xEAEE57, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> HAUNTED_GUARD_SPAWN_EGG = LM_ITEMS.register(
+            "haunted_guard_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(LmEntityRegistry.HAUNTED_GUARD_SERVANT, 0xCBD4D6, 0x5B6B6E, egg()));
+
     public static void register(IEventBus modEventBus) {
         LM_ITEMS.register(modEventBus);
     }

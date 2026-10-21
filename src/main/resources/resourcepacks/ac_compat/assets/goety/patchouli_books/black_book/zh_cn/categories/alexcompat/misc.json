@@ -1,0 +1,7 @@
+{
+  "name": "杂项",
+  "description": "洞穴中形形色色的黑暗技艺。",
+  "icon": "alexscaves:cave_tablet",
+  "sortnum": 8,
+  "parent": "goety:alexcompat"
+}

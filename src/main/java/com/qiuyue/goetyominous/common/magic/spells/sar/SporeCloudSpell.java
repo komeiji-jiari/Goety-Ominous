@@ -17,13 +17,13 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.qiuyue.goetyominous.config.uasr.UasrConfig;
+import com.qiuyue.goetyominous.config.sar.SarConfig;
 
 public class SporeCloudSpell extends Spell {
 
     @Override
     public int defaultSoulCost() {
-        return com.qiuyue.goetyominous.config.uasr.UasrConfig.SporeCloudSoulCost.get();
+        return com.qiuyue.goetyominous.config.sar.SarConfig.SporeCloudSoulCost.get();
     }
 
     @Override
@@ -38,7 +38,7 @@ public class SporeCloudSpell extends Spell {
 
     @Override
     public int defaultSpellCooldown() {
-        return com.qiuyue.goetyominous.config.uasr.UasrConfig.SporeCloudCooldown.get();
+        return com.qiuyue.goetyominous.config.sar.SarConfig.SporeCloudCooldown.get();
     }
 
     @Override

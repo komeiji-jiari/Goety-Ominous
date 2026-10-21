@@ -27,13 +27,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
-import com.qiuyue.goetyominous.config.uasr.UasrConfig;
+import com.qiuyue.goetyominous.config.ua.UaConfig;
 
 public class ThrasherSpell extends SummonSpell {
 
     @Override
     public int defaultSoulCost() {
-        return com.qiuyue.goetyominous.config.uasr.UasrConfig.ThrasherSoulCost.get();
+        return com.qiuyue.goetyominous.config.ua.UaConfig.ThrasherSoulCost.get();
     }
 
     @Override
@@ -49,7 +49,7 @@ public class ThrasherSpell extends SummonSpell {
 
     @Override
     public int defaultSpellCooldown() {
-        return com.qiuyue.goetyominous.config.uasr.UasrConfig.ThrasherCooldown.get();
+        return com.qiuyue.goetyominous.config.ua.UaConfig.ThrasherCooldown.get();
     }
 
     @Override
@@ -88,8 +88,8 @@ public class ThrasherSpell extends SummonSpell {
     @Override
     public int summonLimit() {
         return this.summonGreatThrasher
-                ? com.qiuyue.goetyominous.config.uasr.UasrConfig.GreatThrasherServantLimit.get()
-                : com.qiuyue.goetyominous.config.uasr.UasrConfig.ThrasherServantLimit.get();
+                ? com.qiuyue.goetyominous.config.ua.UaConfig.GreatThrasherServantLimit.get()
+                : com.qiuyue.goetyominous.config.ua.UaConfig.ThrasherServantLimit.get();
     }
 
     @Override

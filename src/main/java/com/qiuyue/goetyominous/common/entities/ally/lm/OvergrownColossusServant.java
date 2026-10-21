@@ -4,7 +4,6 @@ import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.projectiles.FlyingItem;
 import com.qiuyue.goetyominous.compat.lm.LmScreenShake;
 import net.minecraft.core.particles.ParticleTypes;
-import com.Polarice3.Goety.config.ItemConfig;
 import com.Polarice3.Goety.utils.CuriosFinder;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
@@ -383,7 +382,6 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
             flyingItem.setOwner(this.getTrueOwner());
             flyingItem.setItem(itemStack);
             flyingItem.setParticle(ParticleTypes.HAPPY_VILLAGER);
-            flyingItem.setSecondsCool(ItemConfig.ReviveSecondsCool.get());
             this.level().addFreshEntity(flyingItem);
         }
         super.die(source);

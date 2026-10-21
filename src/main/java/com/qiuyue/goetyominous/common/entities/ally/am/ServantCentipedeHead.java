@@ -225,7 +225,7 @@ public class ServantCentipedeHead extends Summoned {
                 }
                 this.playSound(SoundEvents.ITEM_PICKUP, 1.0F, 1.0F);
                 ((ServerLevel) this.level()).sendParticles(ParticleTypes.HEART,
-                        this.getX(), this.getY() + this.getBbHeight() / 2, this.getZ(),
+                        this.getX(), this.getY() + this.getBbHeight() + 0.3D, this.getZ(),
                         5, 0.5, 0.5, 0.5, 0.0);
             }
             return InteractionResult.SUCCESS;

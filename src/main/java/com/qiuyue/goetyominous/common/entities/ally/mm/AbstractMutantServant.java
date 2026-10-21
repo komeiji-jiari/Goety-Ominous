@@ -40,6 +40,7 @@ public abstract class AbstractMutantServant extends Summoned implements IMutatab
     public float walkPhase;
     public float walkPhaseAge = -1.0F;
     private static final int LIFE_RECOVERY_TICKS_PER_HEALTH = 20;
+    private static final int COMBAT_LINGER_TICKS = 100;
     private int lifeRecoveryTicks;
 
     protected AbstractMutantServant(EntityType<? extends Owned> p_33002_, Level p_33003_) {
@@ -140,15 +141,24 @@ public abstract class AbstractMutantServant extends Summoned implements IMutatab
 
     private boolean hasLifeRecoveryRobe() {
         LivingEntity owner = this.getTrueOwner();
-        return owner != null
-                && (CuriosFinder.hasNecroCape(owner) || CuriosFinder.hasNamelessCape(owner));
+        return owner != null && CuriosFinder.hasNamelessCape(owner);
+    }
+
+    private boolean isInCombat() {
+        LivingEntity target = this.getTarget();
+        if (target != null && target.isAlive()) {
+            return true;
+        }
+        return this.getLastHurtByMob() != null
+                && this.tickCount - this.getLastHurtByMobTimestamp() < COMBAT_LINGER_TICKS;
     }
 
     private void tickLifeRecovery() {
-        if (this.getRestorableLives() <= 0
-                || this.getHealth() < this.getMaxHealth()
-                || !this.hasLifeRecoveryRobe()) {
+        if (this.getRestorableLives() <= 0) {
             this.resetLifeRecovery();
+            return;
+        }
+        if (this.getHealth() < this.getMaxHealth() || !this.hasLifeRecoveryRobe() || this.isInCombat()) {
             return;
         }
         ++this.lifeRecoveryTicks;

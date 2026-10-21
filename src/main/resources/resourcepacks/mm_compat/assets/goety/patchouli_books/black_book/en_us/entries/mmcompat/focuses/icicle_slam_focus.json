@@ -2,7 +2,7 @@
   "name": "Icicle Slam Focus",
   "icon": "goetyominous:icicle_slam_focus",
   "category": "goety:mmcompat/focuses",
-  "sortnum": 2,
+  "sortnum": 3,
   "pages": [
     {
       "type": "text",

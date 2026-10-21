@@ -346,7 +346,7 @@ public class GusterServant extends Summoned {
                     }
                     this.playSound(SoundEvents.SAND_BREAK, 1.0F, 1.0F);
                     ((ServerLevel) this.level()).sendParticles(ParticleTypes.HEART,
-                            this.getX(), this.getY() + this.getBbHeight() / 2, this.getZ(),
+                            this.getX(), this.getRandomY() + 1.0D, this.getZ(),
                             5, 0.5, 0.5, 0.5, 0.0);
                 }
                 return InteractionResult.SUCCESS;

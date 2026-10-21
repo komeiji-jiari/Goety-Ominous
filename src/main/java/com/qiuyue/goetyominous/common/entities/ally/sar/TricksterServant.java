@@ -43,7 +43,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
-import com.qiuyue.goetyominous.config.uasr.UasrConfig;
+import com.qiuyue.goetyominous.config.sar.SarConfig;
 
 public class TricksterServant extends SpellcasterIllagerServant {
     private static final EntityDataAccessor<Integer> PRISON_CHARGING_TIME = SynchedEntityData.defineId(TricksterServant.class, EntityDataSerializers.INT);
@@ -249,9 +249,9 @@ public class TricksterServant extends SpellcasterIllagerServant {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, UasrConfig.TricksterServantMovementSpeed.get())
-                .add(Attributes.MAX_HEALTH, UasrConfig.TricksterServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, UasrConfig.TricksterServantFollowRange.get());
+                .add(Attributes.MOVEMENT_SPEED, SarConfig.TricksterServantMovementSpeed.get())
+                .add(Attributes.MAX_HEALTH, SarConfig.TricksterServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, SarConfig.TricksterServantFollowRange.get());
     }
 
     class CreatePrisonGoal extends SpellcasterUseSpellGoal {

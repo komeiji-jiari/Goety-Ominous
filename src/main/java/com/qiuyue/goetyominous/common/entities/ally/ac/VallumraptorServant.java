@@ -571,7 +571,7 @@ public class VallumraptorServant extends AnimalSummon implements LaysEggs, IAnim
             for (int i = 0; i < 15; ++i) {
                 if (this.level().random.nextInt(8) < 3) {
                     this.level().addParticle(particle,
-                            this.getRandomX(1.0F), this.getY() + this.getBbHeight() + 0.3F, this.getRandomZ(1.0F),
+                            this.getRandomX(1.0F), this.getRandomY() + 1.0D, this.getRandomZ(1.0F),
                             this.random.nextGaussian() * 0.05, this.random.nextFloat() * 0.2, this.random.nextGaussian() * 0.05);
                 }
             }
@@ -641,7 +641,7 @@ public class VallumraptorServant extends AnimalSummon implements LaysEggs, IAnim
                                 double d0 = this.random.nextGaussian() * 0.02;
                                 double d1 = this.random.nextGaussian() * 0.02 + 0.1;
                                 double d2 = this.random.nextGaussian() * 0.02;
-                                serverLevel.sendParticles(ParticleTypes.HEART, this.getRandomX(1.0F), this.getY() + this.getBbHeight() + 0.3F + this.random.nextDouble() * 0.5F, this.getRandomZ(1.0F), 0, d0, d1, d2, 0.5);
+                                serverLevel.sendParticles(ParticleTypes.HEART, this.getRandomX(1.0F), this.getRandomY() + 1.0D, this.getRandomZ(1.0F), 0, d0, d1, d2, 0.5);
                             }
                         }
                         player.swing(hand);

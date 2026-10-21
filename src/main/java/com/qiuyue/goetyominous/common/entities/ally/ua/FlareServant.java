@@ -40,7 +40,7 @@ import net.minecraft.world.phys.Vec3;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
-import com.qiuyue.goetyominous.config.uasr.UasrConfig;
+import com.qiuyue.goetyominous.config.ua.UaConfig;
 
 public class FlareServant extends SummonedFlying {
     private static final EntityDataAccessor<Integer> SIZE = SynchedEntityData.defineId(FlareServant.class, EntityDataSerializers.INT);
@@ -80,12 +80,12 @@ public class FlareServant extends SummonedFlying {
 
     public static AttributeSupplier.Builder registerAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, UasrConfig.FlareServantHealth.get())
-                .add(Attributes.ARMOR, UasrConfig.FlareServantArmor.get())
-                .add(Attributes.ATTACK_DAMAGE, UasrConfig.FlareServantDamage.get())
-                .add(Attributes.FLYING_SPEED, UasrConfig.FlareServantFlyingSpeed.get())
-                .add(Attributes.MOVEMENT_SPEED, UasrConfig.FlareServantMovementSpeed.get())
-                .add(Attributes.FOLLOW_RANGE, UasrConfig.FlareServantFollowRange.get());
+                .add(Attributes.MAX_HEALTH, UaConfig.FlareServantHealth.get())
+                .add(Attributes.ARMOR, UaConfig.FlareServantArmor.get())
+                .add(Attributes.ATTACK_DAMAGE, UaConfig.FlareServantDamage.get())
+                .add(Attributes.FLYING_SPEED, UaConfig.FlareServantFlyingSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, UaConfig.FlareServantMovementSpeed.get())
+                .add(Attributes.FOLLOW_RANGE, UaConfig.FlareServantFollowRange.get());
     }
 
     protected void defineSynchedData() {

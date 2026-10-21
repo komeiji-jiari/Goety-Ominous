@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.ally.mm;
 
 import com.Polarice3.Goety.api.entities.IOwned;
+import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.compat.mm.MmScreenShake;
 import com.alexander.mutantmore.init.EffectInit;
@@ -75,6 +76,10 @@ public class ThrownIcicleServant extends ThrowableProjectile {
                 boolean flag = entity.hurt(MMDamageTypes.icicleAttack(this.damageSources(), this, entity1), this.damage);
                 if (entity instanceof LivingEntity) {
                     if (flag) {
+                        if (this.spellOwned) {
+                            this.playSound(ModSounds.ICE_SPIKE_HIT.get(), 1.0F,
+                                    0.9F + this.random.nextFloat() * 0.2F);
+                        }
                         if (((LivingEntity) entity).hasEffect(EffectInit.FREEZING.get())) {
                             ((LivingEntity) entity).addEffect(new MobEffectInstance(EffectInit.FREEZING.get(), ((LivingEntity) entity).getEffect(EffectInit.FREEZING.get()).getDuration() + this.freezingLength, this.freezingLevel));
                         } else {
@@ -94,6 +99,10 @@ public class ThrownIcicleServant extends ThrowableProjectile {
     protected void onHitBlock(BlockHitResult p_37258_) {
         super.onHitBlock(p_37258_);
         if (!this.level().isClientSide) {
+            if (this.spellOwned) {
+                this.playSound(ModSounds.ICE_SPIKE_HIT.get(), 1.0F,
+                        0.9F + this.random.nextFloat() * 0.2F);
+            }
             this.level().broadcastEntityEvent(this, (byte) 4);
             this.discard();
         }

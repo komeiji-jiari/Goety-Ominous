@@ -7,7 +7,6 @@ import com.Polarice3.Goety.common.entities.ai.SummonTargetGoal;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.common.entities.projectiles.FlyingItem;
 import com.Polarice3.Goety.common.items.ModItems;
-import com.Polarice3.Goety.config.ItemConfig;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.github.alexmodguy.alexscaves.AlexsCaves;
 import com.github.alexmodguy.alexscaves.server.entity.ai.AnimalRandomlySwimGoal;
@@ -279,7 +278,6 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
                 flyingItem.setOwner(this.getTrueOwner());
                 flyingItem.setItem(new ItemStack(ACItemRegistry.IMMORTAL_EMBRYO.get()));
                 flyingItem.setParticle(ParticleTypes.FALLING_WATER);
-                flyingItem.setSecondsCool(ItemConfig.ReviveSecondsCool.get());
                 this.level().addFreshEntity(flyingItem);
             }
             this.level().broadcastEntityEvent(this, (byte) 60);

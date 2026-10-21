@@ -4,7 +4,7 @@
   "activation_item": {
     "item": "mutantmore:compound_z"
   },
-  "craftType": "sky",
+  "craftType": "necroturgy",
   "entity_to_convert": {
     "tag": "goety:husk_convert",
     "display_name": "entity.goety.husk_servant"

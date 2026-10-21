@@ -2,7 +2,7 @@
   "name": "Hullbreaker",
   "icon": "alexscaves:immortal_embryo",
   "category": "goety:abyssalchasm",
-  "sortnum": 100,
+  "sortnum": 90,
   "advancement": "goety:goety/read_terminus_scroll",
   "secret": true,
   "pages": [

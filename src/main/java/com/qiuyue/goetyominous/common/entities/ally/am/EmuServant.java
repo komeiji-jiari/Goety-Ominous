@@ -20,9 +20,6 @@ import javax.annotation.Nullable;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -67,9 +64,6 @@ public class EmuServant extends AnimalSummon implements IAnimatedEntity {
     public static final Animation ANIMATION_PUZZLED = EntityEmu.ANIMATION_PUZZLED;
     private static final float SEED_HEAL = 2.0F;
 
-    private static final EntityDataAccessor<Integer> VARIANT =
-            SynchedEntityData.defineId(EmuServant.class, EntityDataSerializers.INT);
-
     private int animationTick;
     private Animation currentAnimation;
     public int timeUntilNextEgg = this.random.nextInt(6000) + 6000;
@@ -109,20 +103,6 @@ public class EmuServant extends AnimalSummon implements IAnimatedEntity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(VARIANT, 0);
-    }
-
-    public int getVariant() {
-        return this.entityData.get(VARIANT);
-    }
-
-    public void setVariant(int variant) {
-        this.entityData.set(VARIANT, variant);
-    }
-
-    @Override
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(1, new FloatGoal(this));
@@ -156,7 +136,7 @@ public class EmuServant extends AnimalSummon implements IAnimatedEntity {
                             double d1 = this.random.nextGaussian() * 0.02 + 0.1;
                             double d2 = this.random.nextGaussian() * 0.02;
                             serverLevel.sendParticles(ParticleTypes.HEART,
-                                    this.getRandomX(1.0), this.getRandomY() + 0.5, this.getRandomZ(1.0),
+                                    this.getRandomX(1.0), this.getRandomY() + 0.5D, this.getRandomZ(1.0),
                                     0, d0, d1, d2, 0.5);
                         }
                     }
@@ -231,11 +211,6 @@ public class EmuServant extends AnimalSummon implements IAnimatedEntity {
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
                                         MobSpawnType spawnType, @Nullable SpawnGroupData spawnData,
                                         @Nullable CompoundTag tag) {
-        if (this.random.nextInt(200) == 0) {
-            this.setVariant(2);
-        } else if (this.random.nextInt(3) == 0) {
-            this.setVariant(1);
-        }
         return super.finalizeSpawn(level, difficulty, spawnType, spawnData, tag);
     }
 
@@ -244,7 +219,6 @@ public class EmuServant extends AnimalSummon implements IAnimatedEntity {
         EmuServant baby = AmEntityRegistry.EMU_SERVANT.get().create(level);
         if (baby != null) {
             baby.setPersistenceRequired();
-            baby.setVariant(this.getVariant());
         }
         return baby;
     }
@@ -252,14 +226,12 @@ public class EmuServant extends AnimalSummon implements IAnimatedEntity {
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putInt("Variant", this.getVariant());
         tag.putInt("EggLayTime", this.timeUntilNextEgg);
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        this.setVariant(tag.getInt("Variant"));
         if (tag.contains("EggLayTime")) {
             this.timeUntilNextEgg = tag.getInt("EggLayTime");
         }

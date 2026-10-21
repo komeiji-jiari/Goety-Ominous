@@ -5,9 +5,6 @@ import com.qiuyue.goetyominous.common.init.lm.LmDamageTypes;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import com.qiuyue.goetyominous.common.init.lm.LmParticles;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
@@ -28,32 +25,14 @@ import javax.annotation.Nullable;
 
 public class SoulJavelin extends AbstractArrow {
 
-    private static final EntityDataAccessor<Boolean> ENHANCED =
-            SynchedEntityData.defineId(SoulJavelin.class, EntityDataSerializers.BOOLEAN);
-
     private boolean dealtDamage;
 
     public SoulJavelin(EntityType<? extends SoulJavelin> entityType, Level level) {
         super(entityType, level);
     }
 
-    public SoulJavelin(Level level, LivingEntity shooter, boolean enhanced) {
+    public SoulJavelin(Level level, LivingEntity shooter) {
         super(LmEntityRegistry.SOUL_JAVELIN.get(), shooter, level);
-        this.setEnhanced(enhanced);
-    }
-
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(ENHANCED, false);
-    }
-
-    public boolean isEnhanced() {
-        return this.entityData.get(ENHANCED);
-    }
-
-    public void setEnhanced(boolean enhanced) {
-        this.entityData.set(ENHANCED, enhanced);
     }
 
     @Override
@@ -127,10 +106,8 @@ public class SoulJavelin extends AbstractArrow {
         float f8 = (this.random.nextFloat() - 0.75F) * 5.0F;
         float f6 = (this.random.nextFloat() - 0.75F) * 3.0F;
         float f7 = (this.random.nextFloat() - 0.75F) * 5.0F;
-        SimpleParticleType explosion = this.isEnhanced()
-                ? LmParticles.SOUL_EXPLOSION_RED.get() : LmParticles.SOUL_EXPLOSION.get();
-        SimpleParticleType soul = this.isEnhanced()
-                ? LmParticles.GHOSTLY_SOUL_RED.get() : LmParticles.GHOSTLY_SOUL.get();
+        SimpleParticleType explosion = LmParticles.SOUL_EXPLOSION.get();
+        SimpleParticleType soul = LmParticles.GHOSTLY_SOUL.get();
         this.level().addParticle(explosion,
                 this.getX() + (double) f9, this.getY() + (double) f10, this.getZ() + (double) f2,
                 0.0D, 0.0D, 0.0D);
@@ -163,14 +140,12 @@ public class SoulJavelin extends AbstractArrow {
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.dealtDamage = compound.getBoolean("DealtDamage");
-        this.setEnhanced(compound.getBoolean("enhanced"));
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putBoolean("DealtDamage", this.dealtDamage);
-        compound.putBoolean("enhanced", this.isEnhanced());
     }
 
     @Override

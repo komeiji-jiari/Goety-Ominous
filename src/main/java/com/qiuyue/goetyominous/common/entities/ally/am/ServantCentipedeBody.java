@@ -96,7 +96,7 @@ public class ServantCentipedeBody extends Summoned implements IHurtableMultipart
                     }
                     this.playSound(SoundEvents.ITEM_PICKUP, 1.0F, 1.0F);
                     ((ServerLevel) this.level()).sendParticles(ParticleTypes.HEART,
-                            head.getX(), head.getY() + head.getBbHeight() / 2, head.getZ(),
+                            head.getX(), head.getY() + head.getBbHeight() + 0.3D, head.getZ(),
                             5, 0.5, 0.5, 0.5, 0.0);
                 }
             }

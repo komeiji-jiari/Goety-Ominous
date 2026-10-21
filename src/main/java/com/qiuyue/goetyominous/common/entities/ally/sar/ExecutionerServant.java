@@ -34,7 +34,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.HitResult;
 
 import javax.annotation.Nullable;
-import com.qiuyue.goetyominous.config.uasr.UasrConfig;
+import com.qiuyue.goetyominous.config.sar.SarConfig;
 
 public class ExecutionerServant extends AbstractIllagerServant {
 
@@ -64,11 +64,11 @@ public class ExecutionerServant extends AbstractIllagerServant {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, UasrConfig.ExecutionerServantMovementSpeed.get())
-                .add(Attributes.FOLLOW_RANGE, UasrConfig.ExecutionerServantFollowRange.get())
-                .add(Attributes.MAX_HEALTH, UasrConfig.ExecutionerServantHealth.get())
-                .add(Attributes.ATTACK_DAMAGE, UasrConfig.ExecutionerServantDamage.get())
-                .add(Attributes.ARMOR, UasrConfig.ExecutionerServantArmor.get());
+                .add(Attributes.MOVEMENT_SPEED, SarConfig.ExecutionerServantMovementSpeed.get())
+                .add(Attributes.FOLLOW_RANGE, SarConfig.ExecutionerServantFollowRange.get())
+                .add(Attributes.MAX_HEALTH, SarConfig.ExecutionerServantHealth.get())
+                .add(Attributes.ATTACK_DAMAGE, SarConfig.ExecutionerServantDamage.get())
+                .add(Attributes.ARMOR, SarConfig.ExecutionerServantArmor.get());
     }
 
     @Override

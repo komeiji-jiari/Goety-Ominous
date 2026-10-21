@@ -1,7 +1,0 @@
-{
-  "name": "仪式",
-  "description": "黑书之外的仪式。",
-  "icon": "minecraft:enchanted_book",
-  "parent": "goety:amcompat",
-  "sortnum": 6
-}

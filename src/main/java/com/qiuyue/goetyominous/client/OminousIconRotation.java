@@ -28,8 +28,7 @@ public class OminousIconRotation {
             new Entry("goetyabnormal", SavageRavageCompat::isSavageRavageLoaded, 0),
             new Entry("goetyabnormal", UpgradeAquaticCompat::isUpgradeAquaticLoaded, 1),
             new Entry("mmcompat", MutantMoreCompat::isMutantMoreLoaded, 2),
-            new Entry("amcompat", AlexMobsCompat::isAlexMobsLoaded, 4),
-            new Entry("accompat", AlexCavesCompat::isAlexCavesLoaded, 5),
+            new Entry("alexcompat", () -> AlexMobsCompat.isAlexMobsLoaded() || AlexCavesCompat.isAlexCavesLoaded(), 5),
             new Entry("ofcompat", OpposingForceCompat::isOpposingForceLoaded, 6)
     };
 

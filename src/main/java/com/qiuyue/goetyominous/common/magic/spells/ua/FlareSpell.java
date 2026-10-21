@@ -24,13 +24,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
-import com.qiuyue.goetyominous.config.uasr.UasrConfig;
+import com.qiuyue.goetyominous.config.ua.UaConfig;
 
 public class FlareSpell extends SummonSpell {
 
     @Override
     public int defaultSoulCost() {
-        return com.qiuyue.goetyominous.config.uasr.UasrConfig.FlareSoulCost.get();
+        return com.qiuyue.goetyominous.config.ua.UaConfig.FlareSoulCost.get();
     }
 
     @Override
@@ -46,7 +46,7 @@ public class FlareSpell extends SummonSpell {
 
     @Override
     public int defaultSpellCooldown() {
-        return com.qiuyue.goetyominous.config.uasr.UasrConfig.FlareCooldown.get();
+        return com.qiuyue.goetyominous.config.ua.UaConfig.FlareCooldown.get();
     }
 
     @Override

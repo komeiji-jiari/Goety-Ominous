@@ -3,5 +3,5 @@
   "description": "The darkness lurking in the deep sea.",
   "icon": "alexscaves:diving_helmet",
   "sortnum": 2,
-  "parent": "goety:accompat"
+  "parent": "goety:alexcompat"
 }

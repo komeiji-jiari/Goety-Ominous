@@ -2,7 +2,6 @@ package com.qiuyue.goetyominous.common.entities.ally.lm;
 
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.projectiles.FlyingItem;
-import com.Polarice3.Goety.config.ItemConfig;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.lm.goals.IAttackGoalMin;
@@ -410,7 +409,6 @@ public class AncientGuardianServant extends IAnimatedMiniBossServant {
         flyingItem.setOwner(this.getTrueOwner());
         flyingItem.setItem(new ItemStack(ModItems.ANCHOR_HANDLE.get()));
         flyingItem.setParticle(ParticleTypes.CRIT);
-        flyingItem.setSecondsCool(ItemConfig.ReviveSecondsCool.get());
         this.level().addFreshEntity(flyingItem);
     }
 
