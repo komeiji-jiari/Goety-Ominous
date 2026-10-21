@@ -66,6 +66,7 @@ public class MmConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> MutantWitherSkeletonServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> MutantHoglinServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> MutantShulkerServantLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> MutantShulkerServantMaxTraps;
     public static final ForgeConfigSpec.ConfigValue<Integer> MutantBlazeServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> RodlingServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> MutantJungleZombieServantLimit;
@@ -86,7 +87,6 @@ public class MmConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> MutantShulkerVoidEchoHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> MutantShulkerVoidEyeHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> MutantShulkerVoidShardHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> MutantShulkerBulletLevitationMaxHealth;
     public static final ForgeConfigSpec.ConfigValue<Integer> MBBulwarkFocusHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> MBBlazingHelmHealthBouns;
     public static final ForgeConfigSpec.ConfigValue<Integer> MBUnholyBloodHealthBouns;
@@ -267,6 +267,9 @@ public class MmConfig {
         MutantShulkerServantLimit = BUILDER
                 .comment("Maximum number of Mutant Shulker Servants that can be summoned (Default: 2)")
                 .defineInRange("mutantShulkerServantLimit", 2, 1, 100);
+        MutantShulkerServantMaxTraps = BUILDER
+                .comment("Maximum number of active Mutant Shulker Traps within 32 blocks before the servant stops summoning more; 0 disables trap summoning (Default: 24)")
+                .defineInRange("mutantShulkerServantMaxTraps", 24, 0, 1000);
         MutantBlazeServantLimit = BUILDER
                 .comment("Maximum number of Mutant Blaze Servants that can be summoned (Default: 2)")
                 .defineInRange("mutantBlazeServantLimit", 2, 1, 100);
@@ -318,9 +321,6 @@ public class MmConfig {
                 .defineInRange("mutantShulkerVoidEyeHealth", 10.0, 1.0, 1000.0);
         MutantShulkerVoidShardHealth = BUILDER.comment("Bonus max health of Void Shard Mutant Shulker (Default: 15)")
                 .defineInRange("mutantShulkerVoidShardHealth", 15.0, 1.0, 1000.0);
-        MutantShulkerBulletLevitationMaxHealth = BUILDER
-                .comment("Maximum max-health for entities that Mutant Shulker Servant bullets can apply Levitation to (Default: 100)")
-                .defineInRange("mutantShulkerBulletLevitationMaxHealth", 100.0, 1.0, 1000.0);
         BUILDER.pop();
         BUILDER.push("Mutant Blaze Enhancements");
         MBBulwarkFocusHealthBouns = BUILDER.comment("Extra health bonus when Mutant Blaze has Bulwark Focus, Default: 15")

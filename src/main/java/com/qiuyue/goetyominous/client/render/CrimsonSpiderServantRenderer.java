@@ -3,7 +3,7 @@ package com.qiuyue.goetyominous.client.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.render.layer.CrimsonSpiderEyesLayer;
-import com.qiuyue.goetyominous.common.entities.ally.spider.CrimsonSpiderServant;
+import com.qiuyue.goetyominous.common.entities.ally.mobs.CrimsonSpiderServant;
 import net.minecraft.client.model.SpiderModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

@@ -2,7 +2,7 @@ package com.qiuyue.goetyominous.common.events.mm;
 
 import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.qiuyue.goetyominous.GoetyOminous;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.WitherSlash;
+import com.qiuyue.goetyominous.common.entities.ally.mm.WitherSlash;
 import com.qiuyue.goetyominous.common.items.mm.WitherScytheItem;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;

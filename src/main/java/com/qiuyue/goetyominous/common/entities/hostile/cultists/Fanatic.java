@@ -2,7 +2,7 @@ package com.qiuyue.goetyominous.common.entities.hostile.cultists;
 
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ai.PotionGroupGoal;
-import com.qiuyue.goetyominous.common.entities.ally.spider.CrimsonSpiderServant;
+import com.qiuyue.goetyominous.common.entities.ally.mobs.CrimsonSpiderServant;
 import com.qiuyue.goetyominous.common.entities.projectile.PitchforkEntity;
 import com.qiuyue.goetyominous.common.entities.projectile.WitchBombEntity;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;

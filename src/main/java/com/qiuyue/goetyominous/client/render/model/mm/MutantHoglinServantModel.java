@@ -3,7 +3,7 @@ package com.qiuyue.goetyominous.client.render.model.mm;
 import com.alexander.mutantmore.animation.keyframe_animations.definition.MutantHoglinKeyframeAnimations;
 import com.alexander.mutantmore.animation.sine_wave_animations.SineWaveAnimationUtils;
 import com.qiuyue.goetyominous.client.render.model.animation.mm.MutantHoglinSineWaveAnimations;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.mm.MutantHoglinServant;
+import com.qiuyue.goetyominous.common.entities.ally.mm.MutantHoglinServant;
 import java.util.List;
 import java.util.stream.Collectors;
 import net.minecraft.client.model.HierarchicalModel;
