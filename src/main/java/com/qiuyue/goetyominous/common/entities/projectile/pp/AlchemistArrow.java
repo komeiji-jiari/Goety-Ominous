@@ -56,11 +56,15 @@ public class AlchemistArrow extends Arrow {
     }
 
     private boolean isFriendlyTarget(LivingEntity target) {
-        if (!(this.getOwner() instanceof AbstractPiglinServant shooter)
-                || !(target instanceof AbstractPiglinServant ally)) {
+        if (!(this.getOwner() instanceof AbstractPiglinServant shooter)) {
             return false;
         }
         LivingEntity owner = shooter.getTrueOwner();
-        return owner != null && owner == ally.getTrueOwner();
+        if (owner != null && target == owner) {
+            return true;
+        }
+        return target instanceof AbstractPiglinServant ally
+                && owner != null
+                && owner == ally.getTrueOwner();
     }
 }

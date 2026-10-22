@@ -4,6 +4,7 @@ import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractPiglinServan
 import com.qiuyue.goetyominous.common.entities.ally.pp.PiglinAlchemistServant;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -13,9 +14,7 @@ import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.phys.Vec3;
 import tallestred.piglinproliferation.client.PPSounds;
 
@@ -33,6 +32,7 @@ public class AlchemistPotionSupportGoal extends Goal {
     private LivingEntity potionTarget;
     private boolean selfTarget;
     private ItemStack heldPotion = ItemStack.EMPTY;
+    private boolean heldPotionPlayerGiven;
     private int throwTicks;
     private int nextThrowTick;
 
@@ -47,6 +47,9 @@ public class AlchemistPotionSupportGoal extends Goal {
             return false;
         }
         if (this.alchemist.isGonnaThrowPotion() || this.alchemist.isUsingItem()) {
+            return false;
+        }
+        if (!this.alchemist.getItemShownOnOffhand().isEmpty()) {
             return false;
         }
         this.pendingAction = this.findAction();
@@ -72,14 +75,17 @@ public class AlchemistPotionSupportGoal extends Goal {
         if (action == null) {
             return;
         }
-        int slot = this.findPotionSlot(action.potion());
+        int slot = this.findPotionSlot(action.effect());
         if (slot < 0) {
             return;
         }
+        this.heldPotionPlayerGiven = this.alchemist.isPlayerGivenSlot(slot);
         ItemStack potion = this.alchemist.beltInventory.get(slot).copy();
+        this.alchemist.setPlayerGivenSlot(slot, false);
         this.alchemist.beltInventory.set(slot, ItemStack.EMPTY);
         this.heldPotion = potion;
         this.alchemist.setItemShownOnOffhand(potion);
+        this.alchemist.setShownOffhandPlayerGiven(this.heldPotionPlayerGiven);
         this.alchemist.willThrowPotion(true);
         this.potionTarget = action.target();
         this.selfTarget = action.self();
@@ -129,8 +135,10 @@ public class AlchemistPotionSupportGoal extends Goal {
             this.returnPotionToBelt();
         }
         this.heldPotion = ItemStack.EMPTY;
+        this.heldPotionPlayerGiven = false;
         this.alchemist.willThrowPotion(false);
         this.alchemist.setItemShownOnOffhand(ItemStack.EMPTY);
+        this.alchemist.setShownOffhandPlayerGiven(false);
         this.alchemist.getNavigation().stop();
         this.potionTarget = null;
         this.throwTicks = 0;
@@ -162,7 +170,9 @@ public class AlchemistPotionSupportGoal extends Goal {
 
     private void finishThrow() {
         this.heldPotion = ItemStack.EMPTY;
+        this.heldPotionPlayerGiven = false;
         this.alchemist.setItemShownOnOffhand(ItemStack.EMPTY);
+        this.alchemist.setShownOffhandPlayerGiven(false);
         this.throwTicks = 0;
         this.nextThrowTick = this.alchemist.tickCount + 40;
     }
@@ -182,48 +192,53 @@ public class AlchemistPotionSupportGoal extends Goal {
         for (int slot = 0; slot < this.alchemist.beltInventory.size(); slot++) {
             if (this.alchemist.beltInventory.get(slot).isEmpty()) {
                 this.alchemist.beltInventory.set(slot, this.heldPotion);
+                this.alchemist.setPlayerGivenSlot(slot, this.heldPotionPlayerGiven);
+                this.heldPotion = ItemStack.EMPTY;
+                this.heldPotionPlayerGiven = false;
                 return;
             }
         }
         this.alchemist.spawnAtLocation(this.heldPotion);
+        this.heldPotion = ItemStack.EMPTY;
+        this.heldPotionPlayerGiven = false;
     }
 
     @Nullable
     private SupportAction findAction() {
-        if (this.alchemist.isOnFire() && this.canApply(this.alchemist, Potions.FIRE_RESISTANCE)) {
-            return new SupportAction(this.alchemist, Potions.FIRE_RESISTANCE, true);
+        if (this.alchemist.isOnFire() && this.canApply(this.alchemist, MobEffects.FIRE_RESISTANCE)) {
+            return new SupportAction(this.alchemist, MobEffects.FIRE_RESISTANCE, true);
         }
         if (this.alchemist.getHealth() < this.alchemist.getMaxHealth()) {
-            if (this.canApply(this.alchemist, Potions.STRONG_REGENERATION)) {
-                return new SupportAction(this.alchemist, Potions.STRONG_REGENERATION, true);
+            if (this.canApply(this.alchemist, MobEffects.REGENERATION)) {
+                return new SupportAction(this.alchemist, MobEffects.REGENERATION, true);
             }
-            if (!this.hasPotion(Potions.STRONG_REGENERATION) && this.canApply(this.alchemist, Potions.STRONG_HEALING)) {
-                return new SupportAction(this.alchemist, Potions.STRONG_HEALING, true);
+            if (!this.hasPotion(MobEffects.REGENERATION) && this.canApply(this.alchemist, MobEffects.HEAL)) {
+                return new SupportAction(this.alchemist, MobEffects.HEAL, true);
             }
         }
         List<LivingEntity> allies = this.getAllies();
         for (LivingEntity ally : allies) {
-            if (ally.isOnFire() && this.canApply(ally, Potions.FIRE_RESISTANCE)) {
-                return new SupportAction(ally, Potions.FIRE_RESISTANCE, false);
+            if (ally.isOnFire() && this.canApply(ally, MobEffects.FIRE_RESISTANCE)) {
+                return new SupportAction(ally, MobEffects.FIRE_RESISTANCE, false);
             }
         }
         for (LivingEntity ally : allies) {
-            if (ally.getHealth() < ally.getMaxHealth() && this.canApply(ally, Potions.STRONG_REGENERATION)) {
-                return new SupportAction(ally, Potions.STRONG_REGENERATION, false);
+            if (ally.getHealth() < ally.getMaxHealth() && this.canApply(ally, MobEffects.REGENERATION)) {
+                return new SupportAction(ally, MobEffects.REGENERATION, false);
             }
         }
         for (LivingEntity ally : allies) {
-            if (ally.getHealth() < ally.getMaxHealth() && !this.hasPotion(Potions.STRONG_REGENERATION)
-                    && this.canApply(ally, Potions.STRONG_HEALING)) {
-                return new SupportAction(ally, Potions.STRONG_HEALING, false);
+            if (ally.getHealth() < ally.getMaxHealth() && !this.hasPotion(MobEffects.REGENERATION)
+                    && this.canApply(ally, MobEffects.HEAL)) {
+                return new SupportAction(ally, MobEffects.HEAL, false);
             }
         }
         for (LivingEntity ally : allies) {
             if (ally instanceof Mob mob && mob.getTarget() != null
                     && ally.getHealth() < ally.getMaxHealth() * 0.5F
                     && !ally.isHolding(item -> item.getItem() instanceof ProjectileWeaponItem)
-                    && this.canApply(ally, Potions.STRONG_STRENGTH)) {
-                return new SupportAction(ally, Potions.STRONG_STRENGTH, false);
+                    && this.canApply(ally, MobEffects.DAMAGE_BOOST)) {
+                return new SupportAction(ally, MobEffects.DAMAGE_BOOST, false);
             }
         }
         return null;
@@ -245,43 +260,35 @@ public class AlchemistPotionSupportGoal extends Goal {
         return allies;
     }
 
-    private boolean canApply(LivingEntity target, Potion potion) {
-        if (!this.hasPotion(potion) || this.hasEffects(target, potion)) {
+    private boolean canApply(LivingEntity target, MobEffect effect) {
+        if (!this.hasPotion(effect) || target.hasEffect(effect)) {
             return false;
         }
-        if (target.isInvertedHealAndHarm()) {
-            for (MobEffectInstance effect : potion.getEffects()) {
-                if (effect.getEffect() == MobEffects.HEAL) {
-                    return false;
-                }
-            }
+        if (effect == MobEffects.HEAL && target.isInvertedHealAndHarm()) {
+            return false;
         }
-        return true;
+        return target.canBeAffected(new MobEffectInstance(effect, 1));
     }
 
-    private boolean hasEffects(LivingEntity target, Potion potion) {
-        for (MobEffectInstance effect : potion.getEffects()) {
-            if (target.hasEffect(effect.getEffect())) {
-                return true;
-            }
-        }
-        return false;
+    private boolean hasPotion(MobEffect effect) {
+        return this.findPotionSlot(effect) >= 0;
     }
 
-    private boolean hasPotion(Potion potion) {
-        return this.findPotionSlot(potion) >= 0;
-    }
-
-    private int findPotionSlot(Potion potion) {
+    private int findPotionSlot(MobEffect effect) {
         for (int slot = 0; slot < this.alchemist.beltInventory.size(); slot++) {
             ItemStack stack = this.alchemist.beltInventory.get(slot);
-            if (stack.is(Items.SPLASH_POTION) && PotionUtils.getPotion(stack) == potion) {
-                return slot;
+            if (!stack.is(Items.SPLASH_POTION)) {
+                continue;
+            }
+            for (MobEffectInstance instance : PotionUtils.getMobEffects(stack)) {
+                if (instance.getEffect() == effect) {
+                    return slot;
+                }
             }
         }
         return -1;
     }
 
-    private record SupportAction(LivingEntity target, Potion potion, boolean self) {
+    private record SupportAction(LivingEntity target, MobEffect effect, boolean self) {
     }
 }

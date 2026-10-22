@@ -70,4 +70,9 @@ public class ZPiglinAlchemistServant extends PiglinAlchemistServant {
         }
         this.playSound(SoundEvents.ZOMBIE_STEP, 0.15F, 1.0F);
     }
+
+    @Override
+    protected boolean canBarter() {
+        return false;
+    }
 }

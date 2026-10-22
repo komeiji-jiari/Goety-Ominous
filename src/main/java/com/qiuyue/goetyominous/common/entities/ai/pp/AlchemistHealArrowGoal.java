@@ -2,6 +2,8 @@ package com.qiuyue.goetyominous.common.entities.ai.pp;
 
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractPiglinServant;
 import com.qiuyue.goetyominous.common.entities.ally.pp.PiglinAlchemistServant;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -9,7 +11,6 @@ import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TippedArrowItem;
 import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraft.world.item.alchemy.Potions;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -99,6 +100,9 @@ public class AlchemistHealArrowGoal extends Goal {
         ItemStack shot = arrow.copyWithCount(1);
         this.alchemist.performRangedAttackAt(this.healTarget, 1.5F, shot);
         arrow.shrink(1);
+        if (arrow.isEmpty()) {
+            this.alchemist.setPlayerGivenSlot(slot, false);
+        }
         this.alchemist.beltInventory.set(slot, arrow.isEmpty() ? ItemStack.EMPTY : arrow);
         this.nextShotTick = this.alchemist.tickCount + 20;
     }
@@ -106,8 +110,12 @@ public class AlchemistHealArrowGoal extends Goal {
     private int findArrowSlot() {
         for (int slot = 0; slot < this.alchemist.beltInventory.size(); slot++) {
             ItemStack stack = this.alchemist.beltInventory.get(slot);
-            if (stack.getItem() instanceof TippedArrowItem && PotionUtils.getPotion(stack) == Potions.STRONG_HEALING) {
-                return slot;
+            if (stack.getItem() instanceof TippedArrowItem) {
+                for (MobEffectInstance effect : PotionUtils.getMobEffects(stack)) {
+                    if (effect.getEffect() == MobEffects.HEAL) {
+                        return slot;
+                    }
+                }
             }
         }
         return -1;

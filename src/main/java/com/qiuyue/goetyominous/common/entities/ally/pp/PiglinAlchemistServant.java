@@ -20,7 +20,10 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
@@ -33,6 +36,7 @@ import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.piglin.PiglinArmPose;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.entity.projectile.ThrownPotion;
@@ -44,9 +48,14 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.event.ForgeEventFactory;
 import tallestred.piglinproliferation.client.PPSounds;
+import tallestred.piglinproliferation.common.loot.PPLoot;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -64,6 +73,8 @@ public class PiglinAlchemistServant extends AbstractPiglinServant implements Ran
 
     public final BeltInventory beltInventory = new BeltInventory();
     private int arrowsShot;
+    private final boolean[] playerGivenSlots = new boolean[6];
+    private boolean shownOffhandPlayerGiven;
 
     public PiglinAlchemistServant(EntityType<? extends AbstractPiglinServant> type, Level level) {
         super(type, level);
@@ -113,6 +124,9 @@ public class PiglinAlchemistServant extends AbstractPiglinServant implements Ran
 
     @Override
     public PiglinArmPose getArmPose() {
+        if (this.getOffhandItem().is(Items.GOLD_INGOT)) {
+            return PiglinArmPose.ADMIRING_ITEM;
+        }
         return PiglinArmPose.DEFAULT;
     }
 
@@ -126,7 +140,7 @@ public class PiglinAlchemistServant extends AbstractPiglinServant implements Ran
         if (this.isAdult()) {
             this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
             if (random.nextFloat() < PpConfig.PiglinAlchemistServantHealingArrowChance.get()) {
-                ItemStack tippedArrow = PotionUtils.setPotion(new ItemStack(Items.TIPPED_ARROW, random.nextInt(4, 12)), Potions.STRONG_HEALING);
+                ItemStack tippedArrow = PotionUtils.setPotion(new ItemStack(Items.TIPPED_ARROW, random.nextInt(1, 7)), Potions.STRONG_HEALING);
                 this.setBeltInventorySlot(random.nextInt(this.beltInventory.size()), tippedArrow);
             }
             for (int slot = 0; slot < this.beltInventory.size(); slot++) {
@@ -178,6 +192,16 @@ public class PiglinAlchemistServant extends AbstractPiglinServant implements Ran
         this.playSound(PPSounds.ALCHEMIST_STEP.get(), 0.15F, 1.0F);
     }
 
+    @Override
+    protected List<ItemStack> rollBarterLoot(ServerLevel serverLevel) {
+        LootTable lootTable = serverLevel.getServer().getLootData().getLootTable(PPLoot.ALCHEMIST_BARTER);
+        LootParams lootParams = new LootParams.Builder(serverLevel)
+                .withParameter(LootContextParams.THIS_ENTITY, this)
+                .withParameter(LootContextParams.ORIGIN, this.position())
+                .create(LootContextParamSets.PIGLIN_BARTER);
+        return lootTable.getRandomItems(lootParams);
+    }
+
     public void performRangedAttackAt(LivingEntity target, float distanceFactor, ItemStack forcedArrow) {
         ItemStack itemstack = forcedArrow.isEmpty() ? this.getProjectile(this.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this, item -> item instanceof BowItem))) : forcedArrow;
         AbstractArrow arrow;
@@ -226,7 +250,9 @@ public class PiglinAlchemistServant extends AbstractPiglinServant implements Ran
                 if (this.getTarget() != null && target == this.getTarget() && effects.stream().anyMatch(effect -> !effect.getEffect().isBeneficial())
                         || target != this.getTarget()
                         || this.getTarget() != null && this.getTarget().isInvertedHealAndHarm() && effects.stream().anyMatch(effect -> effect.getEffect() == net.minecraft.world.effect.MobEffects.HEAL)) {
+                    this.setShownOffhandPlayerGiven(this.isPlayerGivenSlot(slot));
                     this.setItemShownOnOffhand(tippedArrow.copy());
+                    this.setPlayerGivenSlot(slot, false);
                     this.beltInventory.set(slot, ItemStack.EMPTY);
                 }
             }
@@ -237,6 +263,7 @@ public class PiglinAlchemistServant extends AbstractPiglinServant implements Ran
         this.performRangedAttackAt(target, distanceFactor, arrow);
         if (arrow.isEmpty() && this.getItemShownOnOffhand().is(arrow.getItem())) {
             this.setItemShownOnOffhand(ItemStack.EMPTY);
+            this.setShownOffhandPlayerGiven(false);
         }
     }
 
@@ -282,6 +309,17 @@ public class PiglinAlchemistServant extends AbstractPiglinServant implements Ran
 
     @Override
     protected void dropCustomDeathLoot(DamageSource source, int looting, boolean recentlyHit) {
+        for (int i = 0; i < this.beltInventory.size(); i++) {
+            ItemStack stack = this.beltInventory.get(i);
+            if (!stack.isEmpty() && this.isPlayerGivenSlot(i)) {
+                this.spawnAtLocation(stack.copy());
+            }
+        }
+        if (this.isShownOffhandPlayerGiven() && !this.getItemShownOnOffhand().isEmpty()) {
+            this.spawnAtLocation(this.getItemShownOnOffhand().copy());
+        }
+        this.setItemShownOnOffhand(ItemStack.EMPTY);
+        this.clearPlayerGivenSlots();
         this.beltInventory.clear();
         super.dropCustomDeathLoot(source, looting, recentlyHit);
     }
@@ -302,6 +340,7 @@ public class PiglinAlchemistServant extends AbstractPiglinServant implements Ran
             for (int slot = 0; slot < this.beltInventory.size(); slot++) {
                 zombified.setBeltInventorySlot(slot, this.beltInventory.get(slot).copy());
             }
+            zombified.copyPlayerGivenStateFrom(this);
         }
     }
 
@@ -325,6 +364,7 @@ public class PiglinAlchemistServant extends AbstractPiglinServant implements Ran
         for (int slot = 0; slot < this.beltInventory.size(); slot++) {
             zombified.setBeltInventorySlot(slot, this.beltInventory.get(slot).copy());
         }
+        zombified.copyPlayerGivenStateFrom(this);
         ForgeEventFactory.onLivingConvert(this, zombified);
         this.discard();
         serverLevel.addFreshEntity(zombified);
@@ -342,6 +382,14 @@ public class PiglinAlchemistServant extends AbstractPiglinServant implements Ran
         }
         compound.put("BeltItems", belt);
         compound.putInt("ArrowsShot", this.arrowsShot);
+        int givenMask = 0;
+        for (int i = 0; i < this.playerGivenSlots.length; i++) {
+            if (this.playerGivenSlots[i]) {
+                givenMask |= 1 << i;
+            }
+        }
+        compound.putInt("PlayerGivenBelt", givenMask);
+        compound.putBoolean("PlayerGivenOffhand", this.shownOffhandPlayerGiven);
     }
 
     @Override
@@ -352,11 +400,157 @@ public class PiglinAlchemistServant extends AbstractPiglinServant implements Ran
             this.beltInventory.set(i, belt.contains("Slot" + i) ? ItemStack.of(belt.getCompound("Slot" + i)) : ItemStack.EMPTY);
         }
         this.arrowsShot = compound.getInt("ArrowsShot");
+        int givenMask = compound.getInt("PlayerGivenBelt");
+        for (int i = 0; i < this.playerGivenSlots.length; i++) {
+            this.playerGivenSlots[i] = (givenMask & (1 << i)) != 0;
+        }
+        this.shownOffhandPlayerGiven = compound.getBoolean("PlayerGivenOffhand");
     }
+
+
 
     @Override
     public ItemStack getPickedResult(HitResult target) {
         return new ItemStack(PpItems.PIGLIN_ALCHEMIST_SERVANT_SPAWN_EGG.get());
+    }
+
+    public boolean isPlayerGivenSlot(int slot) {
+        return slot >= 0 && slot < this.playerGivenSlots.length && this.playerGivenSlots[slot];
+    }
+
+    public void setPlayerGivenSlot(int slot, boolean value) {
+        if (slot >= 0 && slot < this.playerGivenSlots.length) {
+            this.playerGivenSlots[slot] = value;
+        }
+    }
+
+    public boolean isShownOffhandPlayerGiven() {
+        return this.shownOffhandPlayerGiven;
+    }
+
+    public void setShownOffhandPlayerGiven(boolean value) {
+        this.shownOffhandPlayerGiven = value;
+    }
+
+    public void copyPlayerGivenStateFrom(PiglinAlchemistServant other) {
+        for (int i = 0; i < this.playerGivenSlots.length; i++) {
+            this.playerGivenSlots[i] = other.playerGivenSlots[i];
+        }
+        this.shownOffhandPlayerGiven = other.shownOffhandPlayerGiven;
+    }
+
+    private void clearPlayerGivenSlots() {
+        for (int i = 0; i < this.playerGivenSlots.length; i++) {
+            this.playerGivenSlots[i] = false;
+        }
+        this.shownOffhandPlayerGiven = false;
+    }
+
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (this.getTrueOwner() != player || stack.isEmpty()
+                || (!isHealingArrow(stack) && !isAllowedSplashPotion(stack))) {
+            return super.mobInteract(player, hand);
+        }
+        if (this.level().isClientSide) {
+            return InteractionResult.SUCCESS;
+        }
+        int moved = this.storeInBelt(stack);
+        if (moved <= 0) {
+            return super.mobInteract(player, hand);
+        }
+        if (!player.getAbilities().instabuild) {
+            stack.shrink(moved);
+        }
+        this.playSound(SoundEvents.ITEM_PICKUP, 1.0F, 1.0F);
+        return InteractionResult.CONSUME;
+    }
+
+    private static boolean isHealingArrow(ItemStack stack) {
+        if (!stack.is(Items.TIPPED_ARROW)) {
+            return false;
+        }
+        for (MobEffectInstance effect : PotionUtils.getMobEffects(stack)) {
+            if (effect.getEffect() == MobEffects.HEAL) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Nullable
+    public static MobEffect splashPotionEffect(ItemStack stack) {
+        if (!stack.is(Items.SPLASH_POTION)) {
+            return null;
+        }
+        for (MobEffectInstance effect : PotionUtils.getMobEffects(stack)) {
+            MobEffect type = effect.getEffect();
+            if (type == MobEffects.FIRE_RESISTANCE
+                    || type == MobEffects.REGENERATION
+                    || type == MobEffects.HEAL
+                    || type == MobEffects.DAMAGE_BOOST) {
+                return type;
+            }
+        }
+        return null;
+    }
+
+    private static boolean isAllowedSplashPotion(ItemStack stack) {
+        return splashPotionEffect(stack) != null;
+    }
+
+    private int storeInBelt(ItemStack held) {
+        if (isHealingArrow(held)) {
+            int remaining = held.getCount();
+            for (int i = 0; i < this.beltInventory.size() && remaining > 0; i++) {
+                ItemStack slot = this.beltInventory.get(i);
+                if (this.isPlayerGivenSlot(i) && isHealingArrow(slot)) {
+                    int space = slot.getMaxStackSize() - slot.getCount();
+                    if (space <= 0) {
+                        continue;
+                    }
+                    int moved = Math.min(space, remaining);
+                    ItemStack updated = slot.copy();
+                    updated.grow(moved);
+                    this.beltInventory.set(i, updated);
+                    remaining -= moved;
+                }
+            }
+            for (int i = 0; i < this.beltInventory.size() && remaining > 0; i++) {
+                if (!this.isPlayerGivenSlot(i) && this.beltInventory.get(i).isEmpty()) {
+                    int moved = Math.min(64, remaining);
+                    this.beltInventory.set(i, held.copyWithCount(moved));
+                    this.setPlayerGivenSlot(i, true);
+                    remaining -= moved;
+                }
+            }
+            for (int i = 0; i < this.beltInventory.size() && remaining > 0; i++) {
+                if (!this.isPlayerGivenSlot(i) && !this.beltInventory.get(i).isEmpty()) {
+                    int moved = Math.min(64, remaining);
+                    this.beltInventory.set(i, held.copyWithCount(moved));
+                    this.setPlayerGivenSlot(i, true);
+                    remaining -= moved;
+                }
+            }
+            return held.getCount() - remaining;
+        }
+        int moved = 0;
+        for (int i = 0; i < this.beltInventory.size() && moved < held.getCount(); i++) {
+            if (!this.isPlayerGivenSlot(i) && this.beltInventory.get(i).isEmpty()) {
+                this.beltInventory.set(i, held.copyWithCount(1));
+                this.setPlayerGivenSlot(i, true);
+                moved++;
+            }
+        }
+        for (int i = 0; i < this.beltInventory.size() && moved < held.getCount(); i++) {
+            if (!this.isPlayerGivenSlot(i) && !this.beltInventory.get(i).isEmpty()) {
+                this.beltInventory.set(i, held.copyWithCount(1));
+                this.setPlayerGivenSlot(i, true);
+                moved++;
+            }
+        }
+        return moved;
     }
 
     @SuppressWarnings("unchecked")

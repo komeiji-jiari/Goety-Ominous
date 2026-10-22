@@ -1,6 +1,8 @@
 package com.qiuyue.goetyominous.client.render.model.pp;
 
 import com.qiuyue.goetyominous.common.entities.ally.pp.PiglinAlchemistServant;
+import com.qiuyue.goetyominous.common.entities.ally.pp.ZPiglinAlchemistServant;
+import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.PiglinModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -9,6 +11,7 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.monster.piglin.PiglinArmPose;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -58,6 +61,25 @@ public class PiglinAlchemistServantModel<T extends PiglinAlchemistServant> exten
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        PiglinArmPose armPose = entity.getArmPose();
+        if (entity instanceof ZPiglinAlchemistServant
+                && armPose != PiglinArmPose.ADMIRING_ITEM
+                && !entity.isGonnaThrowPotion()
+                && !entity.isUsingItem()) {
+            AnimationUtils.animateZombieArms(this.leftArm, this.rightArm,
+                    entity.isAggressive(), this.attackTime, ageInTicks);
+        }
+        if (armPose == PiglinArmPose.ADMIRING_ITEM) {
+            this.head.xRot = 0.5F;
+            this.head.yRot = 0.0F;
+            if (entity.isLeftHanded()) {
+                this.rightArm.yRot = -0.5F;
+                this.rightArm.xRot = -0.9F;
+            } else {
+                this.leftArm.yRot = 0.5F;
+                this.leftArm.xRot = -0.9F;
+            }
+        }
         boolean wearingChestplateOrLeggings = entity.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ArmorItem
                 || entity.getItemBySlot(EquipmentSlot.LEGS).getItem() instanceof ArmorItem;
         this.bodyForLeggings.visible = entity.getItemBySlot(EquipmentSlot.LEGS).getItem() instanceof ArmorItem

@@ -49,6 +49,7 @@ public class MutantShulkerServantTrapBullet extends Projectile {
     public float damage = 0.0F;
     public int levitationLength = 0;
     public int levitationLevel = 0;
+    public float trackSpeed = 0.15F;
 
     public MutantShulkerServantTrapBullet(EntityType<? extends MutantShulkerServantTrapBullet> type, Level level) {
         super(type, level);
@@ -62,10 +63,16 @@ public class MutantShulkerServantTrapBullet extends Projectile {
 
     public MutantShulkerServantTrapBullet(Level level, LivingEntity owner, Entity target, Direction.Axis axis,
                                           double x, double y, double z) {
+        this(level, owner, target, axis, x, y, z, 0.15F);
+    }
+
+    public MutantShulkerServantTrapBullet(Level level, LivingEntity owner, Entity target, Direction.Axis axis,
+                                          double x, double y, double z, float trackSpeed) {
         this(MmEntityRegistry.MUTANT_SHULKER_SERVANT_TRAP_BULLET.get(), level);
         this.setOwner(owner);
         this.moveTo(x, y, z, this.getYRot(), this.getXRot());
         this.finalTarget = target;
+        this.trackSpeed = trackSpeed;
         this.currentMoveDirection = Direction.UP;
         this.selectNextMoveDirection(axis);
     }
@@ -91,6 +98,7 @@ public class MutantShulkerServantTrapBullet extends Projectile {
         tag.putFloat("Damage", this.damage);
         tag.putInt("LevitationLength", this.levitationLength);
         tag.putInt("LevitationLevel", this.levitationLevel);
+        tag.putFloat("TrackSpeed", this.trackSpeed);
     }
 
     @Override
@@ -109,6 +117,9 @@ public class MutantShulkerServantTrapBullet extends Projectile {
         this.damage = tag.getFloat("Damage");
         this.levitationLength = tag.getInt("LevitationLength");
         this.levitationLevel = tag.getInt("LevitationLevel");
+        if (tag.contains("TrackSpeed")) {
+            this.trackSpeed = tag.getFloat("TrackSpeed");
+        }
     }
 
     @Override
@@ -183,9 +194,9 @@ public class MutantShulkerServantTrapBullet extends Projectile {
             this.targetDeltaY = 0.0D;
             this.targetDeltaZ = 0.0D;
         } else {
-            this.targetDeltaX = d6 / d5 * 0.15D;
-            this.targetDeltaY = d7 / d5 * 0.15D;
-            this.targetDeltaZ = d4 / d5 * 0.15D;
+            this.targetDeltaX = d6 / d5 * (double) this.trackSpeed;
+            this.targetDeltaY = d7 / d5 * (double) this.trackSpeed;
+            this.targetDeltaZ = d4 / d5 * (double) this.trackSpeed;
         }
         this.hasImpulse = true;
         this.flightSteps = 10 + this.random.nextInt(5) * 10;

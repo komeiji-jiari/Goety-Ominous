@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.client.render.model.pp;
 
 import com.qiuyue.goetyominous.common.entities.ally.pp.PiglinTravelerServant;
+import com.qiuyue.goetyominous.common.entities.ally.pp.ZPiglinTravelerServant;
 import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.PiglinModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -68,6 +69,9 @@ public class PiglinTravelerServantModel<T extends PiglinTravelerServant> extends
             AnimationUtils.animateCrossbowHold(this.rightArm, this.leftArm, this.head, !entity.isLeftHanded());
         } else if (armPose == PiglinArmPose.CROSSBOW_CHARGE) {
             AnimationUtils.animateCrossbowCharge(this.rightArm, this.leftArm, entity, !entity.isLeftHanded());
+        } else if (entity instanceof ZPiglinTravelerServant) {
+            AnimationUtils.animateZombieArms(this.leftArm, this.rightArm,
+                    entity.isAggressive(), this.attackTime, ageInTicks);
         }
         if (entity.isSitting()) {
             this.rightArm.xRot += -0.62831855F;

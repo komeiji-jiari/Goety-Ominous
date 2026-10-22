@@ -1,0 +1,40 @@
+{
+  "name": "猪灵的职业",
+  "icon": "minecraft:gold_ingot",
+  "category": "goety:ominous_mutations",
+  "sortnum": 1,
+  "advancement": "goetyominous:goetyominous/read_bastion_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你发现了更多不同的猪灵们。通过仪式，你可以启发你的猪灵们担任这些不同的职业。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:piglin_alchemist_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:piglin_alchemist_servant",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "猪灵中的炼金师擅长用药箭以及多种药水增援他们的盟友。他们可以接受治疗药箭，以及抗火，再生，治疗，力量喷溅型药水。主人右键可以将这些物品交给他们，他们会将其储存在腰带里，在需要的时候用于增援。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:piglin_traveler_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:piglin_traveler_servant",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "旅行者是一种喜爱兜售物品的猪灵种类，他们会出售用于寻找群系的指南针等物品。你也可以为他们装备任意剑或者弩来参与战斗。"
+    }
+  ]
+}
