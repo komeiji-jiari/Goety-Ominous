@@ -96,6 +96,7 @@ public class MmConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> MutantJungleZombieServantOriginalTexture;
     public static final ForgeConfigSpec.ConfigValue<Boolean> MutantFrozenZombieServantOriginalTexture;
     public static final ForgeConfigSpec.ConfigValue<Boolean> MutantHuskServantOriginalTexture;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> MutantMoreMobAnimationFix;
     public static final ForgeConfigSpec.ConfigValue<Integer> HogChargeSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> HogChargeCooldown;
     public static final ForgeConfigSpec.ConfigValue<Double> HogChargeDamage;
@@ -437,6 +438,11 @@ public class MmConfig {
         WitherScytheAttackSpeed = BUILDER
                 .comment("Wither Scythe attack speed modifier, Default: -3.3")
                 .defineInRange("witherScytheAttackSpeed", -3.3, -4.0, 10.0);
+        BUILDER.pop();
+        BUILDER.push("Mutant More Mobs");
+        MutantMoreMobAnimationFix = BUILDER
+                .comment("Apply GoetyOminous' fixed animations to Mutant More's own mutant mobs (client-side, requires restart) (Default: true)")
+                .define("mutantMoreMobAnimationFix", true);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }

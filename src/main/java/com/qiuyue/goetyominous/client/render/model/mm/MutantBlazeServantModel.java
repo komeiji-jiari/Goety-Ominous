@@ -13,6 +13,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 public class MutantBlazeServantModel<T extends MutantBlazeServant> extends MMBaseEntityModel<T> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("mutantmore", "mutant_blaze"), "main");
@@ -145,7 +146,20 @@ public class MutantBlazeServantModel<T extends MutantBlazeServant> extends MMBas
 
     public void setupAnim(T pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
         super.setupAnim(pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-        float walkSpeed = (float)pEntity.getDeltaMovement().horizontalDistance() * 15.0F;
+        MutantMobAnimationState state = MutantMobAnimationStates.get(pEntity);
+        double dx = pEntity.getX() - pEntity.xo;
+        double dz = pEntity.getZ() - pEntity.zo;
+        float targetWalkSpeed = pEntity.isFlying() ? 0.0F : (float)Math.sqrt(dx * dx + dz * dz) * 8.2F;
+        float deltaTicks;
+        if (state.walkPhaseAge < 0.0F) {
+            deltaTicks = 1.0F;
+            state.smoothedWalkSpeed = targetWalkSpeed;
+        } else {
+            deltaTicks = Mth.clamp(pAgeInTicks - state.walkPhaseAge, 0.0F, 2.0F);
+            state.smoothedWalkSpeed += (targetWalkSpeed - state.smoothedWalkSpeed) * Math.min(1.0F, deltaTicks * 0.35F);
+        }
+        state.walkPhaseAge = pAgeInTicks;
+        float walkSpeed = state.smoothedWalkSpeed;
         this.mathAnimateState(pEntity, pEntity.introAnimation, MutantBlazeMathAnimations.INTRO, 1.0F, walkSpeed, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
         if (!pEntity.introAnimation.isStarted() && !pEntity.stunnedAnimation.isStarted()) {
             this.mathAnimate(pEntity, MutantBlazeMathAnimations.IDLE, 0L, walkSpeed, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);

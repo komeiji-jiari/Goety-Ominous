@@ -221,7 +221,8 @@ public class MutantShulkerServant extends AbstractMutantServant implements IHasC
         if (MutantShulkerCommonConfig.attacks_players.get() && !MutantMoreGroupedOptionsCommonConfig.mutants_attack_players_off.get()) {
             this.targetSelector.addGoal(1, (new AllDirectionsTargetGoal(this, Player.class, true)).setUnseenMemoryTicks(6000));
         }
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<LivingEntity>(this, LivingEntity.class, 20, false, false, entity -> MobUtil.isOwnedTargetable(this, entity)) {
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<LivingEntity>(this, LivingEntity.class, 20, false, false,
+                entity -> MobUtil.isOwnedTargetable(this, entity) || MutantTargeting.isDefendingOwner(this, entity)) {
             protected AABB getTargetSearchArea(double p_26069_) {
                 return this.mob.getBoundingBox().inflate(MutantShulkerCommonConfig.follow_non_player_distance.get(), MutantShulkerCommonConfig.follow_non_player_distance.get(), MutantShulkerCommonConfig.follow_non_player_distance.get());
             }

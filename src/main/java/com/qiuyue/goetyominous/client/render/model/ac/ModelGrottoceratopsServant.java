@@ -355,6 +355,16 @@ public class ModelGrottoceratopsServant extends AdvancedEntityModel<Grottocerato
         this.rleg.rotationPointY += Math.min(0.0F, this.walkValue(limbSwing, limbSwingAmount, walkSpeed, -0.5F, 5.0F, false)) - bob;
         this.rleg.rotationPointZ += this.walkValue(limbSwing, limbSwingAmount, walkSpeed, -0.5F, 1.0F, false);
 
+        float danceAmount = entity.getDanceProgress(partialTick);
+        if (danceAmount > 0.0F) {
+            float danceSpeed = 0.5F;
+            this.neck.rotationPointY += this.walkValue(ageInTicks, danceAmount, danceSpeed * 1.5F, 1.0F, 1.5F, false);
+            this.neck.rotationPointX += this.walkValue(ageInTicks, danceAmount, danceSpeed * 1.5F, 0.0F, 3.0F, false);
+            this.swing(this.body, danceSpeed, 0.1F, false, 1.0F, 0.0F, ageInTicks, danceAmount);
+            this.swing(this.tail, danceSpeed, 0.5F, false, 1.0F, 0.0F, ageInTicks, danceAmount);
+            this.swing(this.tail2, danceSpeed, 0.5F, false, 1.0F, 0.0F, ageInTicks, danceAmount);
+        }
+
                 if (entity.getAnimation() != GrottoceratopsServant.ANIMATION_MELEE_TAIL_1 && entity.getAnimation() != GrottoceratopsServant.ANIMATION_MELEE_TAIL_2) {
             float yawRad = netHeadYaw / 57.295776F;
             float pitchRad = headPitch / 57.295776F;

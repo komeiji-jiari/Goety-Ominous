@@ -576,6 +576,22 @@ public class ModelVallumraptorServant extends AdvancedEntityModel<VallumraptorSe
         this.neck.rotateAngleX -= Math.abs(puzzleRotRad * 0.3F);
         tail.rotateAngleY += tailYaw * 0.8F;
         tailTip.rotateAngleY += tailYaw * 0.2F;
+        float danceAmount = entity.getDanceProgress(partialTick);
+        if (danceAmount > 0.0F) {
+            float danceSpeed = 0.5F;
+            progressRotationPrev(rarm, danceAmount, (float) Math.toRadians(-50), (float) Math.toRadians(50), 0, 1F);
+            progressRotationPrev(larm, danceAmount, (float) Math.toRadians(-50), (float) Math.toRadians(-50), 0, 1F);
+            this.swing(this.body, danceSpeed, 0.1F, false, 1.0F, 0.0F, ageInTicks, danceAmount);
+            this.flap(this.rarm, danceSpeed, 0.5F, false, 0.0F, 0.0F, ageInTicks, danceAmount);
+            this.flap(this.larm, danceSpeed, 0.5F, false, 0.0F, 0.0F, ageInTicks, danceAmount);
+            this.walk(this.rhand, danceSpeed, 0.5F, false, 1.0F, 0.0F, ageInTicks, danceAmount);
+            this.walk(this.lhand, danceSpeed, 0.5F, true, 1.0F, 0.0F, ageInTicks, danceAmount);
+            this.walk(this.neck, danceSpeed, 0.25F, false, 1.0F, 0.0F, ageInTicks, danceAmount);
+            this.walk(this.head, danceSpeed, 0.25F, false, 1.0F, 0.0F, ageInTicks, danceAmount);
+            this.walk(this.tail, danceSpeed, 0.15F, false, 2.0F, 0.0F, ageInTicks, danceAmount);
+            this.bob(this.rarm, danceSpeed, 1.0F, false, ageInTicks, danceAmount);
+            this.bob(this.larm, danceSpeed, 1.0F, false, ageInTicks, danceAmount);
+        }
         this.faceTarget(netHeadYaw, headPitch, 1, neck, head);
     }
 

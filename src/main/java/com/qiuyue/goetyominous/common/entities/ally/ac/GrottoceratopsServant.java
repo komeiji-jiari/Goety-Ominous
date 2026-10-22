@@ -20,6 +20,7 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.animation.LegSolverQuadruped;
+import com.github.alexthe666.citadel.server.entity.IDancesToJukebox;
 import com.qiuyue.goetyominous.common.entities.ai.ac.ServantBreedGoal;
 import com.qiuyue.goetyominous.common.entities.ai.ac.ServantLayEggGoal;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockRegistry;
@@ -57,6 +58,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
@@ -64,8 +66,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Predicate;
 import com.qiuyue.goetyominous.config.ac.AcConfig;
 
-public class GrottoceratopsServant extends AnimalSummon implements LaysEggs, IAnimatedEntity, PlayerRideable, IAutoRideable {
+public class GrottoceratopsServant extends AnimalSummon implements LaysEggs, IAnimatedEntity, PlayerRideable, IAutoRideable, IDancesToJukebox {
 
+    private static final EntityDataAccessor<Boolean> DANCING = SynchedEntityData.defineId(GrottoceratopsServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Float> TAIL_SWING_ROT = SynchedEntityData.defineId(GrottoceratopsServant.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> AUTO_MODE = SynchedEntityData.defineId(GrottoceratopsServant.class, EntityDataSerializers.BOOLEAN);
     public LegSolverQuadruped legSolver = new LegSolverQuadruped(0.0F, 1.1F, 1.15F, 1.15F, 1);
@@ -85,6 +88,9 @@ public class GrottoceratopsServant extends AnimalSummon implements LaysEggs, IAn
     private float buryEggsProgress;
     public boolean buryingEggs;
     private boolean followingStanceEnforced = false;
+    private float prevDanceProgress;
+    private float danceProgress;
+    private BlockPos jukeboxPosition;
 
     public GrottoceratopsServant(EntityType<? extends Owned> type, Level level) {
         super(type, level);
@@ -107,6 +113,7 @@ public class GrottoceratopsServant extends AnimalSummon implements LaysEggs, IAn
         this.entityData.define(DATA_HAS_EGG, false);
         this.entityData.define(TAIL_SWING_ROT, 0F);
         this.entityData.define(AUTO_MODE, false);
+        this.entityData.define(DANCING, false);
     }
     @Override
     public int getSummonLimit(LivingEntity player) {
@@ -173,6 +180,17 @@ public class GrottoceratopsServant extends AnimalSummon implements LaysEggs, IAn
     public void tick() {
         super.tick();
         this.enforceFollowingStanceOnce();
+        this.prevDanceProgress = this.danceProgress;
+        if (this.jukeboxPosition == null || !this.jukeboxPosition.closerToCenterThan(this.position(), 15.0D) || !this.level().getBlockState(this.jukeboxPosition).is(Blocks.JUKEBOX)) {
+            this.setDancing(false);
+            this.jukeboxPosition = null;
+        }
+        if (this.isDancing() && this.danceProgress < 5.0F) {
+            this.danceProgress++;
+        }
+        if (!this.isDancing() && this.danceProgress > 0.0F) {
+            this.danceProgress--;
+        }
         this.prevBuryEggsProgress = this.buryEggsProgress;
         if (this.buryingEggs && this.buryEggsProgress < 5.0F) {
             this.buryEggsProgress++;
@@ -612,6 +630,40 @@ public class GrottoceratopsServant extends AnimalSummon implements LaysEggs, IAn
 
     protected SoundEvent getDeathSound() {
         return ACSoundRegistry.GROTTOCERATOPS_DEATH.get();
+    }
+
+    public float getDanceProgress(float partialTicks) {
+        return (this.prevDanceProgress + (this.danceProgress - this.prevDanceProgress) * partialTicks) * 0.2F;
+    }
+
+    public boolean isDancing() {
+        return this.entityData.get(DANCING);
+    }
+
+    @Override
+    public void setDancing(boolean bool) {
+        this.entityData.set(DANCING, bool);
+    }
+
+    @Override
+    public void setJukeboxPos(BlockPos blockPos) {
+        this.jukeboxPosition = blockPos;
+    }
+
+    @Override
+    public void setRecordPlayingNearby(BlockPos pos, boolean playing) {
+        this.onClientPlayMusicDisc(this.getId(), pos, playing);
+    }
+
+    @Override
+    public void travel(Vec3 vec3d) {
+        if (this.isDancing()) {
+            if (this.getNavigation().getPath() != null) {
+                this.getNavigation().stop();
+            }
+            vec3d = Vec3.ZERO;
+        }
+        super.travel(vec3d);
     }
 
     private class GrottoceratopsServantMeleeAttackGoal extends MeleeAttackGoal {

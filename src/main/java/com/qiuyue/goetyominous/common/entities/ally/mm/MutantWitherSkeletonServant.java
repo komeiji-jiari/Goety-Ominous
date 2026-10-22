@@ -282,9 +282,10 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
         }
 
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<LivingEntity>(this, LivingEntity.class, 20, false, false, (entity) -> {
-            return entity.getType().is(EntityTypes.MUTANT_WITHER_SKELETON_TARGETS)
+            return (entity.getType().is(EntityTypes.MUTANT_WITHER_SKELETON_TARGETS)
                     && !(entity instanceof AbstractPiglin)
-                    && !(entity instanceof IronGolem);
+                    && !(entity instanceof IronGolem))
+                    || MutantTargeting.isDefendingOwner(this, entity);
         }) {
             protected AABB getTargetSearchArea(double p_26069_) {
                 return this.mob.getBoundingBox().inflate((Double)MutantWitherSkeletonCommonConfig.follow_non_player_distance.get(), (Double)MutantWitherSkeletonCommonConfig.follow_non_player_distance.get(), (Double)MutantWitherSkeletonCommonConfig.follow_non_player_distance.get());

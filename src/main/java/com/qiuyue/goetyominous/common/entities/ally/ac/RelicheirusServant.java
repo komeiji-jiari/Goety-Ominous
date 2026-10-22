@@ -17,6 +17,7 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.animation.LegSolverQuadruped;
+import com.github.alexthe666.citadel.server.entity.IDancesToJukebox;
 import com.qiuyue.goetyominous.common.entities.ai.ac.ServantBreedGoal;
 import com.qiuyue.goetyominous.common.entities.ai.ac.ServantLayEggGoal;
 import com.qiuyue.goetyominous.common.entities.ai.ac.ServantTemptGoal;
@@ -54,6 +55,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
@@ -63,7 +65,7 @@ import java.util.function.Predicate;
 import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 
-public class RelicheirusServant extends AnimalSummon implements LaysEggs, IAnimatedEntity {
+public class RelicheirusServant extends AnimalSummon implements LaysEggs, IAnimatedEntity, IDancesToJukebox {
 
     public LegSolverQuadruped legSolver = new LegSolverQuadruped(-0.15F, 0.6F, 0.5F, 0.75F, 1);
     public static final Animation ANIMATION_SPEAK_1 = Animation.create(13);
@@ -86,9 +88,14 @@ public class RelicheirusServant extends AnimalSummon implements LaysEggs, IAnima
             SynchedEntityData.defineId(RelicheirusServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> PUSHING_TREES_FOR =
             SynchedEntityData.defineId(RelicheirusServant.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> DANCING =
+            SynchedEntityData.defineId(RelicheirusServant.class, EntityDataSerializers.BOOLEAN);
     public static final int PUSHING_TREES_TICKS = 1200;
     private Animation currentAnimation;
     private int animationTick;
+    private float prevDanceProgress;
+    private float danceProgress;
+    private BlockPos jukeboxPosition;
     private float prevRaiseArmsAmount = 0;
     private float raiseArmsAmount = 0;
     private float prevBuryEggsProgress;
@@ -118,6 +125,7 @@ public class RelicheirusServant extends AnimalSummon implements LaysEggs, IAnima
         this.entityData.define(ALT_SKIN, 0);
         this.entityData.define(DATA_HAS_EGG, false);
         this.entityData.define(PUSHING_TREES_FOR, 0);
+        this.entityData.define(DANCING, false);
     }
     @Override
     public int getSummonLimit(LivingEntity player) {
@@ -155,6 +163,17 @@ public class RelicheirusServant extends AnimalSummon implements LaysEggs, IAnima
     public void tick() {
         super.tick();
         this.enforceFollowingStanceOnce();
+        this.prevDanceProgress = this.danceProgress;
+        if (this.jukeboxPosition == null || !this.jukeboxPosition.closerToCenterThan(this.position(), 15.0D) || !this.level().getBlockState(this.jukeboxPosition).is(Blocks.JUKEBOX)) {
+            this.setDancing(false);
+            this.jukeboxPosition = null;
+        }
+        if (this.isDancing() && this.danceProgress < 5.0F) {
+            this.danceProgress++;
+        }
+        if (!this.isDancing() && this.danceProgress > 0.0F) {
+            this.danceProgress--;
+        }
         this.prevBuryEggsProgress = this.buryEggsProgress;
         if (this.buryingEggs && this.buryEggsProgress < 5.0F) {
             this.buryEggsProgress++;
@@ -178,7 +197,7 @@ public class RelicheirusServant extends AnimalSummon implements LaysEggs, IAnima
             this.heal(2);
         }
         if (!level().isClientSide) {
-            if (this.isStillEnough() && random.nextInt(200) == 0 && this.getAnimation() == NO_ANIMATION && !this.isStaying()) {
+            if (this.isStillEnough() && random.nextInt(200) == 0 && this.getAnimation() == NO_ANIMATION && !this.isStaying() && !this.isDancing()) {
                 Animation idle;
                 float rand = random.nextFloat();
                 if (rand < 0.15F) {
@@ -250,7 +269,26 @@ public class RelicheirusServant extends AnimalSummon implements LaysEggs, IAnima
     }
 
     public float getDanceProgress(float partialTicks) {
-        return 0.0F;
+        return (this.prevDanceProgress + (this.danceProgress - this.prevDanceProgress) * partialTicks) * 0.2F;
+    }
+
+    public boolean isDancing() {
+        return this.entityData.get(DANCING);
+    }
+
+    @Override
+    public void setDancing(boolean dancing) {
+        this.entityData.set(DANCING, dancing);
+    }
+
+    @Override
+    public void setJukeboxPos(BlockPos blockPos) {
+        this.jukeboxPosition = blockPos;
+    }
+
+    @Override
+    public void setRecordPlayingNearby(BlockPos pos, boolean playing) {
+        this.onClientPlayMusicDisc(this.getId(), pos, playing);
     }
 
     public float getBuryEggsProgress(float partialTicks) {
@@ -391,7 +429,10 @@ public class RelicheirusServant extends AnimalSummon implements LaysEggs, IAnima
 
     @Override
     public void travel(Vec3 vec3d) {
-        if (this.getAnimation() == ANIMATION_EAT_TRILOCARIS) {
+        if (this.getAnimation() == ANIMATION_EAT_TRILOCARIS || this.isDancing()) {
+            if (this.isDancing() && this.getNavigation().getPath() != null) {
+                this.getNavigation().stop();
+            }
             vec3d = Vec3.ZERO;
         }
         super.travel(vec3d);
