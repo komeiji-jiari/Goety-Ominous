@@ -84,6 +84,7 @@ public class ShulkerScatterSpell extends Spell {
                 trap.bonusDamage = potency;
                 trap.voidTouchedHit = usingRightStaff;
                 trap.bulletTurnTimeReduction = Math.min((int) velocity * 20, 100);
+                trap.bulletTrackSpeed = 0.15F * (1.0F + velocity * 0.2F);
                 worldIn.addFreshEntity(trap);
             }
         }

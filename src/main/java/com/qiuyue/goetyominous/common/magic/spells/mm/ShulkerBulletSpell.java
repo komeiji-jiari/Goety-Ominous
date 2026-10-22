@@ -1,11 +1,11 @@
 package com.qiuyue.goetyominous.common.magic.spells.mm;
 
+import com.Polarice3.Goety.api.entities.IOwned;
 import com.Polarice3.Goety.api.magic.SpellType;
 import com.Polarice3.Goety.common.enchantments.ModEnchantments;
 import com.Polarice3.Goety.common.magic.Spell;
 import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.init.ModSounds;
-import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.alexander.mutantmore.config.mutant_shulker.MutantShulkerCommonConfig;
 import com.alexander.mutantmore.init.SoundEventInit;
@@ -15,10 +15,13 @@ import com.qiuyue.goetyominous.config.mm.MmConfig;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
+
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.minecraft.server.TickTask;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -127,31 +130,75 @@ public class ShulkerBulletSpell extends Spell {
             double bestDot = 0.98D;
             for (LivingEntity entity : worldIn.getEntitiesOfClass(LivingEntity.class,
                     caster.getBoundingBox().inflate(64.0D),
-                    e -> e != caster && e.isAlive() && !MobUtil.areAllies(caster, e)
-                            && !(e instanceof Player p && (p.isCreative() || p.isSpectator())))) {
+                    e -> this.isValidTarget(caster, e))) {
                 Vec3 toEntity = entity.getEyePosition(1.0F).subtract(eyePos);
                 double distSq = toEntity.lengthSqr();
                 if (distSq < 1.0D) continue;
                 double dot = toEntity.normalize().dot(lookVec);
-                if (dot > bestDot && caster.hasLineOfSight(entity)) {
+                if (dot > bestDot) {
                     bestDot = dot;
                     target = entity;
                 }
             }
-        }
-        if (target == null) {
+            if (target != null) {
+                return target;
+            }
+
             double bestDist = Double.MAX_VALUE;
             for (LivingEntity entity : worldIn.getEntitiesOfClass(LivingEntity.class,
                     caster.getBoundingBox().inflate(32.0D),
-                    e -> e != caster && e.isAlive() && !MobUtil.areAllies(caster, e)
-                            && !(e instanceof Player p && (p.isCreative() || p.isSpectator())))) {
+                    e -> this.isValidTarget(caster, e))) {
+                Vec3 toEntity = entity.getEyePosition(1.0F).subtract(eyePos);
+                double distSq = toEntity.lengthSqr();
+                if (distSq < 1.0D) continue;
+                if (toEntity.normalize().dot(lookVec) <= 0.0D) continue;
                 double d = caster.distanceToSqr(entity);
                 if (d < bestDist) {
                     bestDist = d;
                     target = entity;
                 }
             }
+            return target;
+        }
+
+        double bestDist = Double.MAX_VALUE;
+        for (LivingEntity entity : worldIn.getEntitiesOfClass(LivingEntity.class,
+                caster.getBoundingBox().inflate(32.0D),
+                e -> this.isValidTarget(caster, e))) {
+            double d = caster.distanceToSqr(entity);
+            if (d < bestDist) {
+                bestDist = d;
+                target = entity;
+            }
         }
         return target;
+    }
+
+    private boolean isValidTarget(LivingEntity caster, LivingEntity entity) {
+        return entity != caster
+                && entity.isAlive()
+                && !(entity instanceof Player player && (player.isCreative() || player.isSpectator()))
+                && !this.isFriendly(caster, entity)
+                && caster.hasLineOfSight(entity);
+    }
+
+    private boolean isFriendly(LivingEntity caster, LivingEntity target) {
+        LivingEntity root = caster;
+        if (caster instanceof IOwned ownedCaster && ownedCaster.getMasterOwner() != null) {
+            root = ownedCaster.getMasterOwner();
+        }
+        if (target == caster || target == root) {
+            return true;
+        }
+        if (target instanceof IOwned ownedTarget && ownedTarget.getMasterOwner() == root) {
+            return true;
+        }
+        if (target instanceof OwnableEntity ownable && ownable.getOwner() == root) {
+            return true;
+        }
+        if (caster.isAlliedTo(target) || target.isAlliedTo(caster)) {
+            return true;
+        }
+        return ServantAllyUtil.areAllied(caster, target);
     }
 }

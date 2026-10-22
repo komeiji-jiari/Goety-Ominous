@@ -1,0 +1,40 @@
+{
+  "name": "Piglin Professions",
+  "icon": "minecraft:gold_ingot",
+  "category": "goety:ominous_mutations",
+  "sortnum": 1,
+  "advancement": "goetyominous:goetyominous/read_bastion_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You have discovered more varieties of Piglins. Through rituals, you can enlighten your Piglins to take up these various professions."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:piglin_alchemist_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:piglin_alchemist_servant",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Alchemists among the Piglins excel at supporting their allies with tipped arrows and various potions. They can accept Arrows of Healing, as well as Splash Potions of Fire Resistance, Regeneration, Healing, and Strength. The owner can right-click to hand these items to them, and they will store them in their belt for use in reinforcement when needed."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:piglin_traveler_servant"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:piglin_traveler_servant",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Travelers are a type of Piglin fond of peddling goods. They sell items such as compasses used to locate biomes. You can also equip them with any sword or crossbow so they can join the fight."
+    }
+  ]
+}

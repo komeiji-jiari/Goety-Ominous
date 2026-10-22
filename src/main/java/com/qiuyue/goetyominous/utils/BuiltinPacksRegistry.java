@@ -58,6 +58,46 @@ public class BuiltinPacksRegistry {
             }
         }
 
+        if (event.getPackType() == PackType.CLIENT_RESOURCES && PiglinProliferationCompat.isLoaded()) {
+            Path packPath = modFile.findResource("resourcepacks/pp_compat");
+            if (packPath != null) {
+                event.addRepositorySource(consumer -> {
+                    Pack pack = Pack.readMetaAndCreate(
+                            "goetyominous/pp_compat",
+                            Component.literal("PP Compatibility Pack"),
+                            true,
+                            id -> new PathPackResources(id, packPath, true),
+                            PackType.CLIENT_RESOURCES,
+                            Pack.Position.TOP,
+                            PackSource.BUILT_IN
+                    );
+                    if (pack != null) {
+                        consumer.accept(pack);
+                    }
+                });
+            }
+        }
+
+        if (event.getPackType() == PackType.SERVER_DATA && PiglinProliferationCompat.isLoaded()) {
+            Path packPath = modFile.findResource("resourcepacks/pp_compat");
+            if (packPath != null) {
+                event.addRepositorySource(consumer -> {
+                    Pack pack = Pack.readMetaAndCreate(
+                            "goetyominous/pp_compat_data",
+                            Component.literal("PP Compatibility Data"),
+                            true,
+                            id -> new PathPackResources(id, packPath, true),
+                            PackType.SERVER_DATA,
+                            Pack.Position.TOP,
+                            PackSource.BUILT_IN
+                    );
+                    if (pack != null) {
+                        consumer.accept(pack);
+                    }
+                });
+            }
+        }
+
         if (event.getPackType() == PackType.CLIENT_RESOURCES && AlexCavesCompat.isAlexCavesLoaded()) {
             Path packPath = modFile.findResource("resourcepacks/ac_compat");
             if (packPath != null) {

@@ -60,6 +60,7 @@ public class MutantShulkerServantTrap extends Summoned {
     public int bonusDamage = 0;
     public boolean voidTouchedHit = false;
     public int bulletTurnTimeReduction = 0;
+    public float bulletTrackSpeed = 0.15F;
 
 
     private final Predicate<Entity> SNAPPABLE = target -> this.canSnap(target)
@@ -241,7 +242,8 @@ public class MutantShulkerServantTrap extends Summoned {
             if (MutantShulkerRewardsCommonConfig.trap_turns_to_bullet.get() && bulletTarget != null) {
                 LivingEntity owner = this.getTrueOwner();
                 MutantShulkerServantTrapBullet bullet = new MutantShulkerServantTrapBullet(this.level(),
-                        owner != null ? owner : this, bulletTarget, Direction.Axis.Y, bulletX, bulletY, bulletZ);
+                        owner != null ? owner : this, bulletTarget, Direction.Axis.Y, bulletX, bulletY, bulletZ,
+                        this.bulletTrackSpeed);
                 bullet.damage = MutantShulkerRewardsCommonConfig.trap_shulker_bullet_damage.get().floatValue() + this.bonusDamage;
                 bullet.levitationLength = MutantShulkerRewardsCommonConfig.trap_shulker_bullet_levitation_length.get();
                 bullet.levitationLevel = MutantShulkerRewardsCommonConfig.trap_shulker_bullet_levitation_level.get();
@@ -318,6 +320,7 @@ public class MutantShulkerServantTrap extends Summoned {
         tag.putBoolean("SpawnedByMutantShulker", this.isSpawnedByMutantShulker());
         tag.putByte("Color", this.entityData.get(COLOR_ID));
         tag.putInt("LifeTime", this.lifeTime);
+        tag.putFloat("BulletTrackSpeed", this.bulletTrackSpeed);
     }
 
     @Override
@@ -329,6 +332,9 @@ public class MutantShulkerServantTrap extends Summoned {
         this.setSpawnedByMutantShulker(tag.getBoolean("SpawnedByMutantShulker"));
         if (tag.contains("LifeTime", 3)) {
             this.lifeTime = tag.getInt("LifeTime");
+        }
+        if (tag.contains("BulletTrackSpeed")) {
+            this.bulletTrackSpeed = tag.getFloat("BulletTrackSpeed");
         }
         if (this.isSpawnedByMutantShulker() && !this.hasLifespan()) {
             this.setLimitedLife(MobUtil.getSummonLifespan(this.level()));
