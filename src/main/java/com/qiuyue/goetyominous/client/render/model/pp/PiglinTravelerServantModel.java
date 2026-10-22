@@ -1,6 +1,6 @@
 package com.qiuyue.goetyominous.client.render.model.pp;
 
-import com.qiuyue.goetyominous.common.entities.ally.pp.PiglinTravelerServant;
+import com.qiuyue.goetyominous.common.entities.ally.pp.TravelerAnimatable;
 import com.qiuyue.goetyominous.common.entities.ally.pp.ZPiglinTravelerServant;
 import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.PiglinModel;
@@ -13,12 +13,13 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.piglin.PiglinArmPose;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class PiglinTravelerServantModel<T extends PiglinTravelerServant> extends PiglinModel<T> {
+public class PiglinTravelerServantModel<T extends Mob & TravelerAnimatable> extends PiglinModel<T> {
 
     public final ModelPart jacket;
     public final ModelPart hatBrim;

@@ -1,16 +1,17 @@
 package com.qiuyue.goetyominous.common.entities.ai.pp;
 
-import com.qiuyue.goetyominous.common.entities.ally.pp.PiglinTravelerServant;
+import com.qiuyue.goetyominous.common.entities.ally.pp.TravelerAnimatable;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
 
-public class TravelerKickGoal extends Goal {
+public class TravelerKickGoal<T extends Mob & TravelerAnimatable> extends Goal {
 
-    private final PiglinTravelerServant traveler;
+    private final T traveler;
     private LivingEntity target;
 
-    public TravelerKickGoal(PiglinTravelerServant traveler) {
+    public TravelerKickGoal(T traveler) {
         this.traveler = traveler;
     }
 

@@ -1,17 +1,18 @@
 package com.qiuyue.goetyominous.common.entities.ai.pp;
 
-import com.qiuyue.goetyominous.common.entities.ally.pp.PiglinTravelerServant;
+import com.Polarice3.Goety.common.entities.ally.Summoned;
+import com.qiuyue.goetyominous.common.entities.ally.pp.TravelerAnimatable;
 import net.minecraft.world.entity.ai.goal.Goal;
 
 import java.util.EnumSet;
 
-public class TravelerSitGoal extends Goal {
+public class TravelerSitGoal<T extends Summoned & TravelerAnimatable> extends Goal {
 
     private static final int MAX_SIT_TICKS = 1200;
-    private final PiglinTravelerServant traveler;
+    private final T traveler;
     private int sitTicks;
 
-    public TravelerSitGoal(PiglinTravelerServant traveler) {
+    public TravelerSitGoal(T traveler) {
         this.traveler = traveler;
         this.setFlags(EnumSet.of(Flag.MOVE, Flag.JUMP));
     }

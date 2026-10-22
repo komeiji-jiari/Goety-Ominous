@@ -59,8 +59,7 @@ public class IcicleSpikeSpell extends Spell {
 
     @Override
     public void SpellResult(ServerLevel worldIn, LivingEntity caster, ItemStack staff, SpellStat spellStat) {
-        float damage = MutantFrozenZombieCommonConfig.thrown_icicle_damage.get().floatValue()
-                + spellStat.getPotency();
+        float damage = 3.0F + spellStat.getPotency();
         float velocity = spellStat.getVelocity();
         if (WandUtil.enchantedFocus(caster)) {
             damage += WandUtil.getLevels(ModEnchantments.POTENCY.get(), caster);

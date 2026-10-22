@@ -65,7 +65,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PiglinTravelerServant extends AbstractPiglinServant implements CrossbowAttackMob {
+public class PiglinTravelerServant extends AbstractPiglinServant implements CrossbowAttackMob, TravelerAnimatable {
 
     protected static final EntityDataAccessor<Integer> KICK_TICKS =
             SynchedEntityData.defineId(PiglinTravelerServant.class, EntityDataSerializers.INT);
@@ -114,8 +114,8 @@ public class PiglinTravelerServant extends AbstractPiglinServant implements Cros
         this.crossbowGoal = new BackawayCrossbowGoal<>(this, 1.0D, 15.0F);
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.goalSelector.addGoal(2, this.crossbowGoal);
-        this.goalSelector.addGoal(2, new TravelerKickGoal(this));
-        this.goalSelector.addGoal(6, new TravelerSitGoal(this));
+        this.goalSelector.addGoal(2, new TravelerKickGoal<>(this));
+        this.goalSelector.addGoal(6, new TravelerSitGoal<>(this));
         this.goalSelector.addGoal(8, new com.Polarice3.Goety.common.entities.ally.Summoned.WanderGoal<>(this, 0.6D));
         this.goalSelector.addGoal(9, new LookAtPlayerWhenIdleGoal(this, Player.class, 15.0F, 1.0F));
         this.goalSelector.addGoal(10, new LookAtPlayerWhenIdleGoal(this, Mob.class, 15.0F));
@@ -187,16 +187,13 @@ public class PiglinTravelerServant extends AbstractPiglinServant implements Cros
     @Nullable
     @Override
     protected EntityType<? extends Mob> getZombieVariantType() {
-        if (this instanceof ZPiglinTravelerServant) {
-            return null;
-        }
         return PpEntityRegistry.ZPIGLIN_TRAVELER_SERVANT.get();
     }
 
     @Override
     protected void afterZombieConversion(Mob zombie) {
         if (zombie instanceof ZPiglinTravelerServant zombified) {
-            zombified.alreadyLocatedObjects = new HashMap<>(this.alreadyLocatedObjects);
+            zombified.setItemSlot(EquipmentSlot.MAINHAND, this.getMainHandItem().copy());
         }
     }
 
@@ -216,7 +213,6 @@ public class PiglinTravelerServant extends AbstractPiglinServant implements Cros
         zombified.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()),
                 MobSpawnType.CONVERSION, null, null);
         zombified.setItemSlot(EquipmentSlot.MAINHAND, this.getMainHandItem().copy());
-        zombified.alreadyLocatedObjects = new HashMap<>(this.alreadyLocatedObjects);
         ForgeEventFactory.onLivingConvert(this, zombified);
         this.discard();
         serverLevel.addFreshEntity(zombified);

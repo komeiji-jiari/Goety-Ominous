@@ -1,6 +1,6 @@
 package com.qiuyue.goetyominous.client.render.model.pp;
 
-import com.qiuyue.goetyominous.common.entities.ally.pp.PiglinAlchemistServant;
+import com.qiuyue.goetyominous.common.entities.ally.pp.AlchemistAnimatable;
 import com.qiuyue.goetyominous.common.entities.ally.pp.ZPiglinAlchemistServant;
 import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.PiglinModel;
@@ -11,13 +11,14 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.piglin.PiglinArmPose;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class PiglinAlchemistServantModel<T extends PiglinAlchemistServant> extends PiglinModel<T> {
+public class PiglinAlchemistServantModel<T extends Mob & AlchemistAnimatable> extends PiglinModel<T> {
 
     public final ModelPart bodyForLeggings;
     public final ModelPart bodyForChest;
