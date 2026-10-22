@@ -1,24 +1,27 @@
 package com.qiuyue.goetyominous.client.render.pp;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.init.ModEntityLayers;
 import com.qiuyue.goetyominous.client.render.model.pp.PiglinTravelerServantModel;
-import com.qiuyue.goetyominous.common.entities.ally.pp.PiglinTravelerServant;
+import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractPiglinServant;
+import com.qiuyue.goetyominous.common.entities.ally.pp.TravelerAnimatable;
 import net.minecraft.client.model.HumanoidArmorModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Mob;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class PiglinTravelerServantRenderer<T extends PiglinTravelerServant>
+public class PiglinTravelerServantRenderer<T extends Mob & TravelerAnimatable>
         extends HumanoidMobRenderer<T, PiglinTravelerServantModel<T>> {
 
     protected static final ResourceLocation TEXTURE =
-            new ResourceLocation("piglinproliferation", "textures/entity/piglin/traveler/traveler.png");
+            new ResourceLocation(GoetyOminous.MOD_ID, "textures/entity/piglin_traveler_servant.png");
 
     public PiglinTravelerServantRenderer(EntityRendererProvider.Context context) {
         super(context, new PiglinTravelerServantModel<>(context.bakeLayer(ModEntityLayers.PIGLIN_TRAVELER_SERVANT_LAYER)),
@@ -45,6 +48,7 @@ public class PiglinTravelerServantRenderer<T extends PiglinTravelerServant>
 
     @Override
     protected boolean isShaking(T entity) {
-        return super.isShaking(entity) || entity.isConverting();
+        return super.isShaking(entity)
+                || entity instanceof AbstractPiglinServant servant && servant.isConverting();
     }
 }

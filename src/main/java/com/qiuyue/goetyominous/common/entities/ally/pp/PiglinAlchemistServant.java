@@ -62,7 +62,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class PiglinAlchemistServant extends AbstractPiglinServant implements RangedAttackMob {
+public class PiglinAlchemistServant extends AbstractPiglinServant implements AlchemistBeltHolder {
 
     @SuppressWarnings("unchecked")
     private static final EntityDataAccessor<ItemStack>[] BELT_SLOTS = defineBeltInventory(6);
@@ -104,7 +104,7 @@ public class PiglinAlchemistServant extends AbstractPiglinServant implements Ran
     protected void registerGoals() {
         super.registerGoals();
         this.targetSelector.addGoal(1, new net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal(this));
-        this.goalSelector.addGoal(2, new AlchemistBowAttackGoal(this));
+        this.goalSelector.addGoal(2, new AlchemistBowAttackGoal<>(this));
         this.goalSelector.addGoal(3, new AlchemistHealArrowGoal(this));
         this.goalSelector.addGoal(3, new AlchemistPotionSupportGoal(this));
         this.goalSelector.addGoal(8, new com.Polarice3.Goety.common.entities.ally.Summoned.WanderGoal<>(this, 0.6D));
@@ -271,6 +271,16 @@ public class PiglinAlchemistServant extends AbstractPiglinServant implements Ran
         return this.arrowsShot;
     }
 
+    @Override
+    public int getBeltSize() {
+        return this.beltInventory.size();
+    }
+
+    @Override
+    public ItemStack getBeltItem(int slot) {
+        return this.beltInventory.get(slot);
+    }
+
     public void setArrowsShot(int arrowsShot) {
         this.arrowsShot = arrowsShot;
     }
@@ -327,20 +337,16 @@ public class PiglinAlchemistServant extends AbstractPiglinServant implements Ran
     @Nullable
     @Override
     protected EntityType<? extends Mob> getZombieVariantType() {
-        if (this instanceof ZPiglinAlchemistServant) {
-            return null;
-        }
         return PpEntityRegistry.ZPIGLIN_ALCHEMIST_SERVANT.get();
     }
 
     @Override
     protected void afterZombieConversion(Mob zombie) {
         if (zombie instanceof ZPiglinAlchemistServant zombified) {
-            zombified.setItemShownOnOffhand(this.getItemShownOnOffhand().copy());
+            zombified.setItemSlot(EquipmentSlot.MAINHAND, this.getMainHandItem().copy());
             for (int slot = 0; slot < this.beltInventory.size(); slot++) {
-                zombified.setBeltInventorySlot(slot, this.beltInventory.get(slot).copy());
+                zombified.setBeltItem(slot, this.beltInventory.get(slot).copy());
             }
-            zombified.copyPlayerGivenStateFrom(this);
         }
     }
 
@@ -360,11 +366,9 @@ public class PiglinAlchemistServant extends AbstractPiglinServant implements Ran
         zombified.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()),
                 MobSpawnType.CONVERSION, null, null);
         zombified.setItemSlot(EquipmentSlot.MAINHAND, this.getMainHandItem().copy());
-        zombified.setItemShownOnOffhand(this.getItemShownOnOffhand().copy());
         for (int slot = 0; slot < this.beltInventory.size(); slot++) {
-            zombified.setBeltInventorySlot(slot, this.beltInventory.get(slot).copy());
+            zombified.setBeltItem(slot, this.beltInventory.get(slot).copy());
         }
-        zombified.copyPlayerGivenStateFrom(this);
         ForgeEventFactory.onLivingConvert(this, zombified);
         this.discard();
         serverLevel.addFreshEntity(zombified);

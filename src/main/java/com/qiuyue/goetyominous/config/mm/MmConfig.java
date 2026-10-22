@@ -382,10 +382,10 @@ public class MmConfig {
                 .defineInRange("icicleSlamSoulCost", 24, 1, 100);
         IcicleSlamCooldown = BUILDER.comment("Cooldown of Icicle Slam spell in ticks (Default: 160)")
                 .defineInRange("icicleSlamCooldown", 160, 0, 2000);
-        IcicleSlamCastDuration = BUILDER.comment("Cast duration of Icicle Slam spell in ticks (Default: 100)")
-                .defineInRange("icicleSlamCastDuration", 100, 0, 500);
-        IcicleSlamDamage = BUILDER.comment("Base damage of each icicle (Default: 16.0)")
-                .defineInRange("icicleSlamDamage", 16.0, 0.0, Double.MAX_VALUE);
+        IcicleSlamCastDuration = BUILDER.comment("Cast duration of Icicle Slam spell in ticks (Default: 60)")
+                .defineInRange("icicleSlamCastDuration", 60, 0, 500);
+        IcicleSlamDamage = BUILDER.comment("Base damage of each icicle (Default: 3.0)")
+                .defineInRange("icicleSlamDamage", 3.0, 0.0, Double.MAX_VALUE);
         IcicleSlamFreezingLength = BUILDER.comment("Freezing effect duration of each icicle (Default: 100)")
                 .defineInRange("icicleSlamFreezingLength", 100, 0, 2000);
         IcicleSlamFreezingLevel = BUILDER.comment("Freezing effect level of each icicle (Default: 1)")
@@ -394,12 +394,12 @@ public class MmConfig {
                 .define("icicleSlamIgnoresInvulnerability", true);
         BUILDER.pop();
         BUILDER.push("IcicleSpike");
-        IcicleSpikeSoulCost = BUILDER.comment("Soul cost of Icicle Spike spell (Default: 20)")
-                .defineInRange("icicleSpikeSoulCost", 20, 1, 100);
-        IcicleSpikeCooldown = BUILDER.comment("Cooldown of Icicle Spike spell in ticks (Default: 120)")
-                .defineInRange("icicleSpikeCooldown", 120, 0, 2000);
-        IcicleSpikeCastDuration = BUILDER.comment("Cast duration of Icicle Spike spell in ticks (Default: 60)")
-                .defineInRange("icicleSpikeCastDuration", 60, 0, 500);
+        IcicleSpikeSoulCost = BUILDER.comment("Soul cost of Icicle Spike spell (Default: 12)")
+                .defineInRange("icicleSpikeSoulCost", 12, 1, 100);
+        IcicleSpikeCooldown = BUILDER.comment("Cooldown of Icicle Spike spell in ticks (Default: 60)")
+                .defineInRange("icicleSpikeCooldown", 60, 0, 2000);
+        IcicleSpikeCastDuration = BUILDER.comment("Cast duration of Icicle Spike spell in ticks (Default: 0)")
+                .defineInRange("icicleSpikeCastDuration", 0, 0, 500);
         BUILDER.pop();
         BUILDER.push("Shulker Scatter");
         ShulkerScatterSoulCost = BUILDER.comment("Soul cost of Shulker Scatter spell (Default: 32)")

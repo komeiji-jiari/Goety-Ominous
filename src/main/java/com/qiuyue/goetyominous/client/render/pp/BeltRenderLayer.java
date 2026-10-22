@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.qiuyue.goetyominous.client.init.ModEntityLayers;
 import com.qiuyue.goetyominous.client.render.model.pp.PiglinAlchemistServantModel;
-import com.qiuyue.goetyominous.common.entities.ally.pp.PiglinAlchemistServant;
+import com.qiuyue.goetyominous.common.entities.ally.pp.AlchemistBeltHolder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.ItemInHandRenderer;
@@ -16,13 +16,14 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BeltRenderLayer<T extends PiglinAlchemistServant, M extends PiglinAlchemistServantModel<T>> extends RenderLayer<T, M> {
+public class BeltRenderLayer<T extends Mob & AlchemistBeltHolder, M extends PiglinAlchemistServantModel<T>> extends RenderLayer<T, M> {
 
     private static final ResourceLocation BELT_TEXTURE =
             new ResourceLocation("piglinproliferation", "textures/entity/piglin/alchemist/belt.png");
@@ -39,8 +40,8 @@ public class BeltRenderLayer<T extends PiglinAlchemistServant, M extends PiglinA
     @Override
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T entity, float limbSwing,
                        float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
-        for (int slot = 0; slot < entity.beltInventory.size(); ++slot) {
-            ItemStack stack = entity.beltInventory.get(slot);
+        for (int slot = 0; slot < entity.getBeltSize(); ++slot) {
+            ItemStack stack = entity.getBeltItem(slot);
             if (!stack.isEmpty()) {
                 poseStack.pushPose();
                 if (this.getParentModel().young) {

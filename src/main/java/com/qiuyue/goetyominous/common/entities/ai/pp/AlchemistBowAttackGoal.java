@@ -1,8 +1,9 @@
 package com.qiuyue.goetyominous.common.entities.ai.pp;
 
-import com.qiuyue.goetyominous.common.entities.ally.pp.PiglinAlchemistServant;
+import com.qiuyue.goetyominous.common.entities.ally.pp.AlchemistAnimatable;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
@@ -14,9 +15,9 @@ import net.minecraft.world.phys.Vec3;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 
-public class AlchemistBowAttackGoal extends Goal {
+public class AlchemistBowAttackGoal<T extends PathfinderMob & AlchemistAnimatable> extends Goal {
 
-    private final PiglinAlchemistServant alchemist;
+    private final T alchemist;
     private final double speedModifier;
     private final float attackRadiusSqr;
     private Path path;
@@ -24,7 +25,7 @@ public class AlchemistBowAttackGoal extends Goal {
     private int seeTime;
     private int avoidTime;
 
-    public AlchemistBowAttackGoal(PiglinAlchemistServant alchemist) {
+    public AlchemistBowAttackGoal(T alchemist) {
         this.alchemist = alchemist;
         this.speedModifier = 1.5D;
         this.attackRadiusSqr = 15.0F * 15.0F;

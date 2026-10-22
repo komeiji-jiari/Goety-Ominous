@@ -190,8 +190,7 @@ public class ModItems {
             () -> new NetherWartPotion());
 
     public static final RegistryObject<Item> OMINOUS_BOTTLE = ITEMS.register("ominous_bottle",
-            () -> new OminousBottleItem(new Item.Properties().food(
-                    new FoodProperties.Builder().nutrition(1).saturationMod(0.1F).build())));
+            () -> new OminousBottleItem(new Item.Properties()));
 
     public static final RegistryObject<Item> BOLT_ARMOR_TRIM_SMITHING_TEMPLATE = ITEMS.register("bolt_armor_trim_smithing_template",
             () -> SmithingTemplateItem.createArmorTrimTemplate(new ResourceLocation("bolt")));

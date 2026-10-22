@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.client.render.pp;
 
+import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.pp.ZPiglinTravelerServant;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -13,6 +14,9 @@ public class ZPiglinTravelerServantRenderer extends PiglinTravelerServantRendere
         super(context);
         this.model.rightEar.visible = false;
     }
+
+    private static final ResourceLocation TEXTURE =
+            new ResourceLocation(GoetyOminous.MOD_ID, "textures/entity/zpiglin_traveler_servant.png");
 
     @Override
     public ResourceLocation getTextureLocation(ZPiglinTravelerServant entity) {
