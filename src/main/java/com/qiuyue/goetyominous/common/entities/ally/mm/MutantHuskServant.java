@@ -177,7 +177,8 @@ public class MutantHuskServant extends AbstractMutantServant {
             this.targetSelector.addGoal(1, (new AllDirectionsTargetGoal(this, Player.class, true)).setUnseenMemoryTicks(6000));
         }
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<LivingEntity>(this, LivingEntity.class, 20, false, false, (entity) -> {
-            return entity.getType().is(EntityTypes.MUTANT_HUSK_TARGETS);
+            return entity.getType().is(EntityTypes.MUTANT_HUSK_TARGETS)
+                    || MutantTargeting.isDefendingOwner(this, entity);
         }) {
             protected AABB getTargetSearchArea(double p_26069_) {
                 return this.mob.getBoundingBox().inflate(MutantHuskCommonConfig.follow_non_player_distance.get(), MutantHuskCommonConfig.follow_non_player_distance.get(), MutantHuskCommonConfig.follow_non_player_distance.get());

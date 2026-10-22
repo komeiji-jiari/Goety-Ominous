@@ -13,6 +13,7 @@ import com.qiuyue.goetyominous.client.render.model.mm.MutantShulkerServantTrapMo
 import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
 import com.qiuyue.goetyominous.common.init.mm.ModSpellControllers;
 import com.qiuyue.goetyominous.compat.mod.MutantMoreCompat;
+import com.qiuyue.goetyominous.config.mm.MmConfig;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -174,5 +175,31 @@ public class MmClientEvents {
                 com.qiuyue.goetyominous.client.render.projectile.mm.GiantHellBlastRenderer::new);
 
         event.registerEntityRenderer(ModSpellControllers.WITHER_BREATH_CONTROLLER.get(), EmptyRenderer::new);
+
+        if (MmConfig.SPEC.isLoaded() && MmConfig.MutantMoreMobAnimationFix.get()) {
+            event.registerEntityRenderer(
+                    com.alexander.mutantmore.init.EntityTypeInit.MUTANT_HOGLIN.get(),
+                    com.qiuyue.goetyominous.client.render.mm.FixedMutantHoglinRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.alexander.mutantmore.init.EntityTypeInit.MUTANT_HUSK.get(),
+                    com.qiuyue.goetyominous.client.render.mm.FixedMutantHuskRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.alexander.mutantmore.init.EntityTypeInit.MUTANT_JUNGLE_ZOMBIE.get(),
+                    com.qiuyue.goetyominous.client.render.mm.FixedMutantJungleZombieRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.alexander.mutantmore.init.EntityTypeInit.MUTANT_FROZEN_ZOMBIE.get(),
+                    com.qiuyue.goetyominous.client.render.mm.FixedMutantFrozenZombieRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.alexander.mutantmore.init.EntityTypeInit.MUTANT_WITHER_SKELETON.get(),
+                    com.qiuyue.goetyominous.client.render.mm.FixedMutantWitherSkeletonRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.alexander.mutantmore.init.EntityTypeInit.MUTANT_SHULKER.get(),
+                    com.qiuyue.goetyominous.client.render.mm.FixedMutantShulkerRenderer::new);
+        }
     }
 }

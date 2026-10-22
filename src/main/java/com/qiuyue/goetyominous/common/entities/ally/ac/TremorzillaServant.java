@@ -37,6 +37,7 @@ import com.github.alexmodguy.alexscaves.server.potion.ACEffectRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import com.github.alexthe666.citadel.server.entity.IDancesToJukebox;
 import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.IAdvancedPathingMob;
 import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.ITallWalker;
 import com.qiuyue.goetyominous.client.sound.ac.TremorzillaEmergenceRoarSound;
@@ -119,7 +120,7 @@ import java.util.stream.Stream;
 import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class TremorzillaServant extends AnimalSummon
-        implements KeybindUsingMount, IAnimatedEntity, ShakesScreen, KaijuMob, ActivatesSirens, ITallWalker, IAdvancedPathingMob {
+        implements KeybindUsingMount, IAnimatedEntity, IDancesToJukebox, ShakesScreen, KaijuMob, ActivatesSirens, ITallWalker, IAdvancedPathingMob {
 
     private static final EntityDataAccessor<Optional<Vec3>> BEAM_END_POSITION =
             SynchedEntityData.defineId(TremorzillaServant.class, ACEntityDataRegistry.OPTIONAL_VEC_3.get());
@@ -136,6 +137,8 @@ public class TremorzillaServant extends AnimalSummon
     private static final EntityDataAccessor<Integer> ALT_SKIN =
             SynchedEntityData.defineId(TremorzillaServant.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> EMERGING =
+            SynchedEntityData.defineId(TremorzillaServant.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DANCING =
             SynchedEntityData.defineId(TremorzillaServant.class, EntityDataSerializers.BOOLEAN);
 
     public static final Animation ANIMATION_SPEAK = Animation.create(20);
@@ -210,6 +213,9 @@ public class TremorzillaServant extends AnimalSummon
     private int killCountFromBeam = 0;
     private float prevSitProgress;
     private float sitProgress;
+    private float prevDanceProgress;
+    private float danceProgress;
+    private BlockPos jukeboxPosition;
     private boolean followingStanceEnforced = false;
 
     public TremorzillaServant(EntityType<? extends Owned> type, Level level) {
@@ -269,6 +275,7 @@ public class TremorzillaServant extends AnimalSummon
         this.entityData.define(MAX_BEAM_BREAK_LENGTH, 100.0F);
         this.entityData.define(FIRING, false);
         this.entityData.define(EMERGING, false);
+        this.entityData.define(DANCING, false);
     }
 
     @Override
@@ -278,7 +285,7 @@ public class TremorzillaServant extends AnimalSummon
 
     @Override
     public boolean stopTickingPathing() {
-        return this.isVehicle() || this.isStaying();
+        return this.isVehicle() || this.isStaying() || this.isDancing();
     }
 
     @Override
@@ -380,6 +387,17 @@ public class TremorzillaServant extends AnimalSummon
         this.prevClientBeamEndPosition = this.clientBeamEndPosition;
         this.prevClientSpikesDownAmount = this.clientSpikesDownAmount;
         this.prevSitProgress = this.sitProgress;
+        this.prevDanceProgress = this.danceProgress;
+        if (this.jukeboxPosition == null || !this.jukeboxPosition.closerToCenterThan(this.position(), 15.0D) || !this.level().getBlockState(this.jukeboxPosition).is(Blocks.JUKEBOX)) {
+            this.setDancing(false);
+            this.jukeboxPosition = null;
+        }
+        if (this.isDancing() && this.danceProgress < 5.0F) {
+            this.danceProgress++;
+        }
+        if (!this.isDancing() && this.danceProgress > 0.0F) {
+            this.danceProgress--;
+        }
         if (this.isStaying() && this.sitProgress < this.maxSitTicks()) {
             ++this.sitProgress;
         }
@@ -625,7 +643,7 @@ public class TremorzillaServant extends AnimalSummon
                 }
             } else {
                 this.setSpikesDownAmount(Math.max(this.getSpikesDownAmount() - 0.05F, 0.0F));
-                if (this.getDeltaMovement().horizontalDistance() < 0.05 && this.getAnimation() == NO_ANIMATION && !this.isStaying() && !this.isNoAi() && this.random.nextInt(800) == 0 && !this.isVehicle()) {
+                if (this.getDeltaMovement().horizontalDistance() < 0.05 && this.getAnimation() == NO_ANIMATION && !this.isStaying() && !this.isDancing() && !this.isNoAi() && this.random.nextInt(800) == 0 && !this.isVehicle()) {
                     this.tryRoar();
                 }
             }
@@ -838,7 +856,10 @@ public class TremorzillaServant extends AnimalSummon
 
     @Override
     public void travel(Vec3 vec3d) {
-        if (this.getAnimation() == ANIMATION_LEFT_STOMP || this.getAnimation() == ANIMATION_RIGHT_STOMP || this.getAnimation() == ANIMATION_LEFT_TAIL || this.getAnimation() == ANIMATION_RIGHT_TAIL || this.isFiring() && !this.isVehicle()) {
+        if (this.getAnimation() == ANIMATION_LEFT_STOMP || this.getAnimation() == ANIMATION_RIGHT_STOMP || this.getAnimation() == ANIMATION_LEFT_TAIL || this.getAnimation() == ANIMATION_RIGHT_TAIL || this.isFiring() && !this.isVehicle() || this.isDancing()) {
+            if (this.isDancing() && this.getNavigation().getPath() != null) {
+                this.getNavigation().stop();
+            }
             vec3d = Vec3.ZERO;
             super.travel(vec3d);
         } else if (this.isInFluidType() && (this.isEffectiveAi() || this.isVehicle())) {
@@ -990,7 +1011,7 @@ public class TremorzillaServant extends AnimalSummon
         float swimAmount = this.getSwimAmount(1.0F);
         float swimAddition = (float) ((double) swimAmount * Math.sin((float) this.tickCount * 0.4F) * 25.0);
         float swingAddition = (float) (Math.sin((float) this.tickCount * 0.03F) * 10.0);
-        if (this.isStaying()) {
+        if (this.isStaying() && !this.isDancing()) {
             return target + 90.0F;
         }
         if (this.getAnimation() == ANIMATION_LEFT_TAIL || this.getAnimation() == ANIMATION_RIGHT_TAIL) {
@@ -1839,7 +1860,26 @@ public class TremorzillaServant extends AnimalSummon
     }
 
     public float getDanceProgress(float partialTicks) {
-        return 0.0F;
+        return (this.prevDanceProgress + (this.danceProgress - this.prevDanceProgress) * partialTicks) * 0.2F;
+    }
+
+    public boolean isDancing() {
+        return this.entityData.get(DANCING);
+    }
+
+    @Override
+    public void setDancing(boolean dancing) {
+        this.entityData.set(DANCING, dancing);
+    }
+
+    @Override
+    public void setJukeboxPos(BlockPos blockPos) {
+        this.jukeboxPosition = blockPos;
+    }
+
+    @Override
+    public void setRecordPlayingNearby(BlockPos pos, boolean playing) {
+        this.onClientPlayMusicDisc(this.getId(), pos, playing);
     }
 
     public float getSitProgress(float partialTicks) {
@@ -2001,7 +2041,7 @@ public class TremorzillaServant extends AnimalSummon
         @Override
         public boolean canUse() {
             LivingEntity target = TremorzillaServant.this.getTarget();
-            return target != null && target.isAlive();
+            return target != null && target.isAlive() && !TremorzillaServant.this.isDancing();
         }
 
         @Override

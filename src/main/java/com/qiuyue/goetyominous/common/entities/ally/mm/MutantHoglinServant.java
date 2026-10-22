@@ -70,10 +70,8 @@ import com.qiuyue.goetyominous.config.mm.MmConfig;
 public class MutantHoglinServant extends AbstractMutantServant implements PlayerRideable {
     public float chargeAnimationAmount;
     public float walkAnimationAmount;
-    public float trotAnimationAmount;
     public float idleAnimationAmount = 1.0F;
     public float keyframeAnimationAmount;
-    public boolean trotting;
     public float[][] heldPose;
     public AnimationState noveltyAnimationState = new AnimationState();
     public int noveltyAnimationTick;
@@ -363,7 +361,8 @@ public class MutantHoglinServant extends AbstractMutantServant implements Player
         }
 
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<LivingEntity>(this, LivingEntity.class, 20, false, false, (entity) -> {
-            return entity.getType().is(EntityTypes.MUTANT_HOGLIN_TARGETS);
+            return entity.getType().is(EntityTypes.MUTANT_HOGLIN_TARGETS)
+                    || MutantTargeting.isDefendingOwner(this, entity);
         }) {
             protected AABB getTargetSearchArea(double p_26069_) {
                 return this.mob.getBoundingBox().inflate((Double)MutantHoglinCommonConfig.follow_non_player_distance.get(), (Double)MutantHoglinCommonConfig.follow_non_player_distance.get(), (Double)MutantHoglinCommonConfig.follow_non_player_distance.get());

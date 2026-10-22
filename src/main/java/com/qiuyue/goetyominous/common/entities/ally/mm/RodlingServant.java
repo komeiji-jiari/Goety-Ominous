@@ -90,7 +90,7 @@ public class RodlingServant extends Summoned {
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)).setUnseenMemoryTicks(6000));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<LivingEntity>(this, LivingEntity.class, 20, false, false,
-                entity -> com.Polarice3.Goety.utils.MobUtil.isOwnedTargetable(this, entity)));
+                entity -> this.canTarget(entity)));
     }
 
     public boolean canAttack(LivingEntity target) {
@@ -99,7 +99,8 @@ public class RodlingServant extends Summoned {
 
     boolean canTarget(Entity target) {
         return target instanceof LivingEntity living
-                && com.Polarice3.Goety.utils.MobUtil.isOwnedTargetable(this, living);
+                && (com.Polarice3.Goety.utils.MobUtil.isOwnedTargetable(this, living)
+                || MutantTargeting.isDefendingOwner(this, living));
     }
 
     public static AttributeSupplier.Builder createConfiguredAttributes() {

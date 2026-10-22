@@ -195,7 +195,8 @@ public class MutantFrozenZombieServant extends AbstractMutantServant implements 
             this.targetSelector.addGoal(1, (new AllDirectionsTargetGoal(this, Player.class, true)).setUnseenMemoryTicks(6000));
         }
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<LivingEntity>(this, LivingEntity.class, 20, false, false, (entity) -> {
-            return entity.getType().is(EntityTypes.MUTANT_FROZEN_ZOMBIE_TARGETS);
+            return entity.getType().is(EntityTypes.MUTANT_FROZEN_ZOMBIE_TARGETS)
+                    || MutantTargeting.isDefendingOwner(this, entity);
         }) {
             protected AABB getTargetSearchArea(double p_26069_) {
                 return this.mob.getBoundingBox().inflate(MutantFrozenZombieCommonConfig.follow_non_player_distance.get(), MutantFrozenZombieCommonConfig.follow_non_player_distance.get(), MutantFrozenZombieCommonConfig.follow_non_player_distance.get());

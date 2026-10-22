@@ -333,6 +333,7 @@ public class ModelAtlatitanServant extends AdvancedEntityModel<AtlatitanServant>
         float walkAmount = armsWalkAmount;
         float raiseArmsAmount = entity.getRaiseArmsAmount(partialTicks);
         float legBack = entity.getLegBackAmount(partialTicks);
+        float danceAmount = entity.getDanceProgress(partialTicks);
         this.positionNeckAndTail(entity, netHeadYaw, headPitch, partialTicks);
         this.articulateLegs(entity.legSolver, raiseArmsAmount, partialTicks);
         this.walk(this.neck, idleSpeed, 0.03F, true, 0.0F, 0.0F, ageInTicks, 1.0F);
@@ -352,6 +353,49 @@ public class ModelAtlatitanServant extends AdvancedEntityModel<AtlatitanServant>
         this.animateLegWalking(this.right_Leg, this.right_Foot, legAnimSeperation * 2.0F, walkSpeed, walkDegree, walk, walkAmount, false, false, legBack);
         this.animateLegWalking(this.left_Arm, this.left_Hand, legAnimSeperation, walkSpeed, walkDegree, walk, armsWalkAmount, true, true, legBack);
         this.animateLegWalking(this.left_Leg, this.left_Foot, 0.0F, walkSpeed, walkDegree, walk, walkAmount, false, true, legBack);
+        this.animateDancing(entity, danceAmount, ageInTicks);
+    }
+
+    private void animateDancing(AtlatitanServant entity, float danceAmount, float ageInTicks) {
+        float ageSine = Mth.clamp((float) ((float) Math.sin(ageInTicks * 0.08F) * 2.0F), 0.0F, 1.0F);
+        float gangnam1 = danceAmount * ageSine;
+        float gangnam2 = danceAmount * (1.0F - ageSine);
+        float gangnamSpeed = 0.65F;
+        this.progressPositionPrev(this.body, danceAmount, 0.0F, -37.0F, -23.0F, 1.0F);
+        this.progressRotationPrev(this.body, danceAmount, (float) Math.toRadians(-50.0), 0.0F, 0.0F, 1.0F);
+        this.progressRotationPrev(this.left_Leg, danceAmount, (float) Math.toRadians(50.0), 0.0F, 0.0F, 1.0F);
+        this.progressRotationPrev(this.right_Leg, danceAmount, (float) Math.toRadians(50.0), 0.0F, 0.0F, 1.0F);
+        this.progressRotationPrev(this.tail, danceAmount, (float) Math.toRadians(50.0), 0.0F, 0.0F, 1.0F);
+        this.progressRotationPrev(this.neck, danceAmount, (float) Math.toRadians(30.0), 0.0F, 0.0F, 1.0F);
+        this.progressRotationPrev(this.neck2, danceAmount, (float) Math.toRadians(30.0), 0.0F, 0.0F, 1.0F);
+        this.progressPositionPrev(this.left_Arm, gangnam1, 2.0F, 0.0F, -5.0F, 1.0F);
+        this.progressPositionPrev(this.right_Arm, gangnam1, -2.0F, 0.0F, -5.0F, 1.0F);
+        this.progressRotationPrev(this.left_Arm, gangnam1, (float) Math.toRadians(-5.0), 0.0F, (float) Math.toRadians(10.0), 1.0F);
+        this.progressRotationPrev(this.right_Arm, gangnam1, (float) Math.toRadians(-20.0), 0.0F, (float) Math.toRadians(-10.0), 1.0F);
+        this.progressRotationPrev(this.left_Hand, gangnam1, (float) Math.toRadians(10.0), 0.0F, (float) Math.toRadians(30.0), 1.0F);
+        this.progressRotationPrev(this.right_Hand, gangnam1, (float) Math.toRadians(-20.0), 0.0F, (float) Math.toRadians(-30.0), 1.0F);
+        this.body.swing(gangnamSpeed, 0.05F, false, 0.0F, 0.0F, ageInTicks, danceAmount);
+        this.tail.flap(gangnamSpeed, 0.1F, true, 1.0F, 0.0F, ageInTicks, danceAmount);
+        this.tail2.swing(gangnamSpeed, 0.1F, true, 1.0F, 0.0F, ageInTicks, danceAmount);
+        this.tail3.swing(gangnamSpeed, 0.1F, true, 1.0F, 0.0F, ageInTicks, danceAmount);
+        this.left_Arm.walk(gangnamSpeed, 0.2F, false, 2.0F, -0.3F, ageInTicks, danceAmount);
+        this.right_Arm.walk(gangnamSpeed, 0.2F, false, 2.0F, -0.3F, ageInTicks, gangnam1);
+        this.left_Hand.walk(gangnamSpeed, 0.1F, false, 1.0F, -0.1F, ageInTicks, danceAmount);
+        this.right_Hand.walk(gangnamSpeed, 0.1F, false, 1.0F, -0.1F, ageInTicks, gangnam1);
+        this.left_Leg.walk(gangnamSpeed, 0.3F, false, 1.0F, -0.1F, ageInTicks, danceAmount);
+        this.right_Leg.walk(gangnamSpeed, 0.3F, true, 1.0F, -0.1F, ageInTicks, danceAmount);
+        this.body.bob(gangnamSpeed, 10.0F, false, ageInTicks, danceAmount);
+        this.progressPositionPrev(this.left_Arm, gangnam2, 2.0F, 20.0F, -5.0F, 1.0F);
+        this.progressPositionPrev(this.left_Hand, gangnam2, 0.0F, -4.0F, -4.0F, 1.0F);
+        this.progressPositionPrev(this.right_Arm, gangnam2, 2.0F, 0.0F, -10.0F, 1.0F);
+        this.progressPositionPrev(this.right_Hand, gangnam2, 3.0F, -3.0F, 3.0F, 1.0F);
+        this.progressRotationPrev(this.left_Arm, gangnam2, (float) Math.toRadians(-10.0), 0.0F, (float) Math.toRadians(-30.0), 1.0F);
+        this.progressRotationPrev(this.left_Hand, gangnam2, (float) Math.toRadians(-10.0), 0.0F, (float) Math.toRadians(90.0), 1.0F);
+        this.progressRotationPrev(this.right_Arm, gangnam2, (float) Math.toRadians(-80.0), (float) Math.toRadians(40.0), (float) Math.toRadians(-20.0), 1.0F);
+        this.progressRotationPrev(this.right_Hand, gangnam2, (float) Math.toRadians(-40.0), (float) Math.toRadians(-40.0), (float) Math.toRadians(20.0), 1.0F);
+        this.right_Arm.flap(gangnamSpeed, 0.5F, false, 1.0F, 0.0F, ageInTicks, gangnam2);
+        this.right_Arm.swing(gangnamSpeed, 0.5F, false, 0.0F, 0.0F, ageInTicks, gangnam2);
+        this.right_Hand.flap(gangnamSpeed, 0.2F, false, 3.0F, -0.1F, ageInTicks, gangnam2);
     }
 
     private void setupAnimForAnimation(AtlatitanServant entity, Animation animation, float ageInTicks) {

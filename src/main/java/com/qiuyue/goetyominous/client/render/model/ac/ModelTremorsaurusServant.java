@@ -348,7 +348,8 @@ public class ModelTremorsaurusServant extends AdvancedEntityModel<TremorsaurusSe
         float buryEggsProgress = entity.getBuryEggsProgress(partialTicks);
         float walkSpeed = 0.8F;
         float walkDegree = 1.0F;
-        this.glasses.showModel = false;
+        float danceAmount = entity.getDanceProgress(partialTicks);
+        this.glasses.showModel = danceAmount > 0.0F;
 
         this.progressPositionPrev(this.body, sitAmount, 0.0F, 18.0F, -1.0F, 1.0F);
         this.progressPositionPrev(this.rleg, sitAmount, 0.0F, -11.0F, 12.0F, 1.0F);
@@ -406,6 +407,18 @@ public class ModelTremorsaurusServant extends AdvancedEntityModel<TremorsaurusSe
         this.rfoot.rotationPointY += Math.min(0.0F, this.walkValue(limbSwing, limbSwingAmount, walkSpeed, -1.5F, walkDegree * 2.0F, true));
         this.flap(this.rarm, walkSpeed, walkDegree * 0.1F, false, -1.5F, 0.2F, limbSwing, limbSwingAmount);
         this.flap(this.larm, walkSpeed, walkDegree * 0.1F, true, -1.5F, 0.2F, limbSwing, limbSwingAmount);
+        if (danceAmount > 0.0F) {
+            float danceSpeed = 0.5F;
+            this.walk(this.neck, danceSpeed, 0.5F, false, 1.0F, 0.2F, ageInTicks, danceAmount);
+            this.swing(this.neck, danceSpeed, 0.35F, false, 0.0F, 0.0F, ageInTicks, danceAmount);
+            this.walk(this.head, danceSpeed, 0.5F, true, 1.0F, 0.2F, ageInTicks, danceAmount);
+            this.swing(this.head, danceSpeed, 0.35F, true, 1.0F, 0.0F, ageInTicks, danceAmount);
+            this.swing(this.larm, danceSpeed, 0.6F, false, 1.0F, -0.3F, ageInTicks, danceAmount);
+            this.swing(this.rarm, danceSpeed, 0.6F, false, 1.0F, -0.3F, ageInTicks, danceAmount);
+            this.flap(this.larm, danceSpeed, 0.3F, false, 1.0F, -0.3F, ageInTicks, danceAmount);
+            this.flap(this.rarm, danceSpeed, 0.3F, false, 1.0F, 0.3F, ageInTicks, danceAmount);
+            this.swing(this.body, danceSpeed, 0.2F, false, -1.0F, 0.0F, ageInTicks, danceAmount);
+        }
         this.faceTarget(netHeadYaw, headPitch, 1.0F, new AdvancedModelBox[]{this.neck, this.head});
         this.articulateLegs(entity.legSolver, partialTicks);
     }

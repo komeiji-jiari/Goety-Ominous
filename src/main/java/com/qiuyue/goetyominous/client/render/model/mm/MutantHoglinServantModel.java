@@ -92,17 +92,9 @@ public class MutantHoglinServantModel<T extends MutantHoglinServant> extends Hie
 
         boolean movingOnLand = entity.onGround() && !entity.isInWaterOrBubble() && limbSwingAmount > 0.005F;
 
-        if (entity.trotting) {
-            if (limbSwingAmount < 0.06F) {
-                entity.trotting = false;
-            }
-        } else if (limbSwingAmount > 0.12F) {
-            entity.trotting = true;
-        }
         boolean shouldPlayChargingAnimation = entity.charging && entity.notCurrentlyPlayingKeyframeAnimation();
-        boolean shouldPlayTrotAnimation = entity.trotting && movingOnLand && !shouldPlayChargingAnimation && entity.notCurrentlyPlayingKeyframeAnimation();
-        boolean shouldPlayWalkAnimation = movingOnLand && !shouldPlayTrotAnimation && !shouldPlayChargingAnimation && entity.notCurrentlyPlayingKeyframeAnimation();
-        boolean shouldPlayIdleAnimation = !shouldPlayWalkAnimation && !shouldPlayTrotAnimation && !shouldPlayChargingAnimation && entity.notCurrentlyPlayingKeyframeAnimation();
+        boolean shouldPlayWalkAnimation = movingOnLand && !shouldPlayChargingAnimation && entity.notCurrentlyPlayingKeyframeAnimation();
+        boolean shouldPlayIdleAnimation = !shouldPlayWalkAnimation && !shouldPlayChargingAnimation && entity.notCurrentlyPlayingKeyframeAnimation();
         boolean keyframeActive = entity.deathTime > 0
                 || entity.stompAnimationTick > 0
                 || entity.prepareChargeAnimationTick > 0
@@ -113,7 +105,6 @@ public class MutantHoglinServantModel<T extends MutantHoglinServant> extends Hie
         float blendSpeed = 0.12F;
         entity.chargeAnimationAmount = SineWaveAnimationUtils.tickAmountMultiplierChange(entity.chargeAnimationAmount, shouldPlayChargingAnimation, deltaTicks * blendSpeed);
         entity.walkAnimationAmount = SineWaveAnimationUtils.tickAmountMultiplierChange(entity.walkAnimationAmount, shouldPlayWalkAnimation, deltaTicks * blendSpeed);
-        entity.trotAnimationAmount = SineWaveAnimationUtils.tickAmountMultiplierChange(entity.trotAnimationAmount, shouldPlayTrotAnimation, deltaTicks * blendSpeed);
         entity.idleAnimationAmount = SineWaveAnimationUtils.tickAmountMultiplierChange(entity.idleAnimationAmount, shouldPlayIdleAnimation, deltaTicks * blendSpeed);
         entity.keyframeAnimationAmount = SineWaveAnimationUtils.tickAmountMultiplierChange(entity.keyframeAnimationAmount, keyframeActive, deltaTicks * 0.2F);
         this.animateHeadLookTarget(netHeadYaw, headPitch);
@@ -121,7 +112,6 @@ public class MutantHoglinServantModel<T extends MutantHoglinServant> extends Hie
         float sineTick = SineWaveAnimationUtils.getTick(entity.tickCount, true);
         MutantHoglinSineWaveAnimations.mutantHoglinChargingAnimation(this, sineTick, 3.2F, entity.chargeAnimationAmount);
         MutantHoglinSineWaveAnimations.mutantHoglinWalkAnimation(this, walkTick, 1.2F, entity.walkAnimationAmount);
-        MutantHoglinSineWaveAnimations.mutantHoglinTrotAnimation(this, walkTick, 2.0F, entity.trotAnimationAmount);
         MutantHoglinSineWaveAnimations.mutantHoglinIdleAnimation(this, sineTick, 1.0F, entity.idleAnimationAmount);
 
         List<ModelPart> parts = this.root().getAllParts().collect(Collectors.toList());

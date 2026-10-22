@@ -179,7 +179,7 @@ public class MutantBlazeServant extends AbstractMutantServant implements IHeatSo
         this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)).setUnseenMemoryTicks(6000));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<LivingEntity>(this, LivingEntity.class, 20, false, false,
-                entity -> com.Polarice3.Goety.utils.MobUtil.isOwnedTargetable(this, entity)) {
+                entity -> this.canTarget(entity)) {
             protected AABB getTargetSearchArea(double p_26069_) {
                 return this.mob.getBoundingBox().inflate(MutantBlazeCommonConfig.follow_non_player_distance.get(),
                         MutantBlazeCommonConfig.follow_non_player_distance.get(), MutantBlazeCommonConfig.follow_non_player_distance.get());
@@ -249,7 +249,8 @@ public class MutantBlazeServant extends AbstractMutantServant implements IHeatSo
 
     boolean canTarget(Entity target) {
         return target instanceof LivingEntity living
-                && com.Polarice3.Goety.utils.MobUtil.isOwnedTargetable(this, living);
+                && (com.Polarice3.Goety.utils.MobUtil.isOwnedTargetable(this, living)
+                || MutantTargeting.isDefendingOwner(this, living));
     }
 
     protected PathNavigation createNavigation(Level p_33348_) {

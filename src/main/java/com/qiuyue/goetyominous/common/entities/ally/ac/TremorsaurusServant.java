@@ -24,6 +24,7 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.animation.LegSolver;
+import com.github.alexthe666.citadel.server.entity.IDancesToJukebox;
 import com.qiuyue.goetyominous.common.entities.ai.ac.ServantBreedGoal;
 import com.qiuyue.goetyominous.common.entities.ai.ac.ServantLayEggGoal;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockRegistry;
@@ -85,8 +86,9 @@ import java.util.List;
 import java.util.function.Predicate;
 import com.qiuyue.goetyominous.config.ac.AcConfig;
 
-public class TremorsaurusServant extends AnimalSummon implements LaysEggs, KeybindUsingMount, IAnimatedEntity, ShakesScreen, PlayerRideable {
+public class TremorsaurusServant extends AnimalSummon implements LaysEggs, KeybindUsingMount, IAnimatedEntity, ShakesScreen, PlayerRideable, IDancesToJukebox {
 
+    private static final EntityDataAccessor<Boolean> DANCING = SynchedEntityData.defineId(TremorsaurusServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> RUNNING = SynchedEntityData.defineId(TremorsaurusServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> HELD_MOB_ID = SynchedEntityData.defineId(TremorsaurusServant.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> METER_AMOUNT = SynchedEntityData.defineId(TremorsaurusServant.class, EntityDataSerializers.FLOAT);
@@ -118,6 +120,9 @@ public class TremorsaurusServant extends AnimalSummon implements LaysEggs, Keybi
     private float buryEggsProgress;
     public boolean buryingEggs;
     private boolean followingStanceEnforced = false;
+    private float prevDanceProgress;
+    private float danceProgress;
+    private BlockPos jukeboxPosition;
 
     public TremorsaurusServant(EntityType<? extends Owned> type, Level level) {
         super(type, level);
@@ -141,6 +146,7 @@ public class TremorsaurusServant extends AnimalSummon implements LaysEggs, Keybi
         this.entityData.define(RUNNING, false);
         this.entityData.define(HELD_MOB_ID, -1);
         this.entityData.define(METER_AMOUNT, 1.0F);
+        this.entityData.define(DANCING, false);
     }
     @Override
     public int getSummonLimit(LivingEntity player) {
@@ -183,6 +189,17 @@ public class TremorsaurusServant extends AnimalSummon implements LaysEggs, Keybi
     public void tick() {
         super.tick();
         this.enforceFollowingStanceOnce();
+        this.prevDanceProgress = this.danceProgress;
+        if (this.jukeboxPosition == null || !this.jukeboxPosition.closerToCenterThan(this.position(), 15.0D) || !this.level().getBlockState(this.jukeboxPosition).is(Blocks.JUKEBOX)) {
+            this.setDancing(false);
+            this.jukeboxPosition = null;
+        }
+        if (this.isDancing() && this.danceProgress < 5.0F) {
+            this.danceProgress++;
+        }
+        if (!this.isDancing() && this.danceProgress > 0.0F) {
+            this.danceProgress--;
+        }
         this.prevBuryEggsProgress = this.buryEggsProgress;
         if (this.buryingEggs && this.buryEggsProgress < 5.0F) {
             this.buryEggsProgress++;
@@ -246,7 +263,7 @@ public class TremorsaurusServant extends AnimalSummon implements LaysEggs, Keybi
             actuallyPlayAmbientSound();
         }
         if (!level().isClientSide) {
-            if (this.getDeltaMovement().horizontalDistance() < 0.05 && this.getAnimation() == NO_ANIMATION && !this.isStaying()) {
+            if (this.getDeltaMovement().horizontalDistance() < 0.05 && this.getAnimation() == NO_ANIMATION && !this.isStaying() && !this.isDancing()) {
                 if (random.nextInt(180) == 0) {
                     this.syncAnimation(ANIMATION_SNIFF);
                 }
@@ -603,9 +620,35 @@ public class TremorsaurusServant extends AnimalSummon implements LaysEggs, Keybi
         }
     }
 
+    public float getDanceProgress(float partialTicks) {
+        return (this.prevDanceProgress + (this.danceProgress - this.prevDanceProgress) * partialTicks) * 0.2F;
+    }
+
+    public boolean isDancing() {
+        return this.entityData.get(DANCING);
+    }
+
+    @Override
+    public void setDancing(boolean bool) {
+        this.entityData.set(DANCING, bool);
+    }
+
+    @Override
+    public void setJukeboxPos(BlockPos blockPos) {
+        this.jukeboxPosition = blockPos;
+    }
+
+    @Override
+    public void setRecordPlayingNearby(BlockPos pos, boolean playing) {
+        this.onClientPlayMusicDisc(this.getId(), pos, playing);
+    }
+
     @Override
     public void travel(Vec3 vec3d) {
-        if (this.getAnimation() == ANIMATION_ROAR || this.getAnimation() == ANIMATION_SHAKE_PREY) {
+        if (this.getAnimation() == ANIMATION_ROAR || this.getAnimation() == ANIMATION_SHAKE_PREY || this.isDancing()) {
+            if (this.isDancing() && this.getNavigation().getPath() != null) {
+                this.getNavigation().stop();
+            }
             vec3d = Vec3.ZERO;
         }
         super.travel(vec3d);

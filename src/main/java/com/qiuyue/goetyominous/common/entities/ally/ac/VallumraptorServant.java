@@ -13,6 +13,7 @@ import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import com.github.alexthe666.citadel.server.entity.IDancesToJukebox;
 import com.qiuyue.goetyominous.common.entities.ai.ac.ServantBreedGoal;
 import com.qiuyue.goetyominous.common.entities.ai.ac.ServantLayEggGoal;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockRegistry;
@@ -53,6 +54,7 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
@@ -62,8 +64,9 @@ import java.util.EnumSet;
 import java.util.function.Predicate;
 import com.qiuyue.goetyominous.config.ac.AcConfig;
 
-public class VallumraptorServant extends AnimalSummon implements LaysEggs, IAnimatedEntity {
+public class VallumraptorServant extends AnimalSummon implements LaysEggs, IAnimatedEntity, IDancesToJukebox {
 
+    private static final EntityDataAccessor<Boolean> DANCING = SynchedEntityData.defineId(VallumraptorServant.class, EntityDataSerializers.BOOLEAN);
     public static final Animation ANIMATION_CALL_1 = Animation.create(15);
     public static final Animation ANIMATION_CALL_2 = Animation.create(25);
     public static final Animation ANIMATION_SCRATCH_1 = Animation.create(20);
@@ -106,6 +109,9 @@ public class VallumraptorServant extends AnimalSummon implements LaysEggs, IAnim
     private float buryEggsProgress;
     public boolean buryingEggs;
     private boolean followingStanceEnforced = false;
+    private float prevDanceProgress;
+    private float danceProgress;
+    private BlockPos jukeboxPosition;
 
     public VallumraptorServant(EntityType<? extends Owned> type, Level level) {
         super(type, level);
@@ -149,6 +155,7 @@ public class VallumraptorServant extends AnimalSummon implements LaysEggs, IAnim
         this.entityData.define(PUZZLED_HEAD_ROT, 0.0F);
         this.entityData.define(ELDER, false);
         this.entityData.define(HIDING_FOR, 0);
+        this.entityData.define(DANCING, false);
     }
     @Override
     public int getSummonLimit(LivingEntity player) {
@@ -183,6 +190,17 @@ public class VallumraptorServant extends AnimalSummon implements LaysEggs, IAnim
     public void tick() {
         super.tick();
         this.enforceFollowingStanceOnce();
+        this.prevDanceProgress = this.danceProgress;
+        if (this.jukeboxPosition == null || !this.jukeboxPosition.closerToCenterThan(this.position(), 15.0D) || !this.level().getBlockState(this.jukeboxPosition).is(Blocks.JUKEBOX)) {
+            this.setDancing(false);
+            this.jukeboxPosition = null;
+        }
+        if (this.isDancing() && this.danceProgress < 5.0F) {
+            this.danceProgress++;
+        }
+        if (!this.isDancing() && this.danceProgress > 0.0F) {
+            this.danceProgress--;
+        }
         this.prevBuryEggsProgress = this.buryEggsProgress;
         if (this.buryingEggs && this.buryEggsProgress < 5.0F) {
             this.buryEggsProgress++;
@@ -246,7 +264,7 @@ public class VallumraptorServant extends AnimalSummon implements LaysEggs, IAnim
         }
         if (!level().isClientSide) {
             this.puzzledTick(headPuzzleRot);
-            if (this.getDeltaMovement().horizontalDistance() < 0.05 && this.getAnimation() == NO_ANIMATION && !this.isStaying()) {
+            if (this.getDeltaMovement().horizontalDistance() < 0.05 && this.getAnimation() == NO_ANIMATION && !this.isStaying() && !this.isDancing()) {
                 if (random.nextInt(200) == 0) {
                     Animation idle;
                     float rand = random.nextFloat();
@@ -580,9 +598,35 @@ public class VallumraptorServant extends AnimalSummon implements LaysEggs, IAnim
         }
     }
 
+    public float getDanceProgress(float partialTicks) {
+        return (this.prevDanceProgress + (this.danceProgress - this.prevDanceProgress) * partialTicks) * 0.2F;
+    }
+
+    public boolean isDancing() {
+        return this.entityData.get(DANCING);
+    }
+
+    @Override
+    public void setDancing(boolean bool) {
+        this.entityData.set(DANCING, bool);
+    }
+
+    @Override
+    public void setJukeboxPos(BlockPos blockPos) {
+        this.jukeboxPosition = blockPos;
+    }
+
+    @Override
+    public void setRecordPlayingNearby(BlockPos pos, boolean playing) {
+        this.onClientPlayMusicDisc(this.getId(), pos, playing);
+    }
+
     @Override
     public void travel(Vec3 vec3d) {
-        if (this.getAnimation() == ANIMATION_GRAB) {
+        if (this.getAnimation() == ANIMATION_GRAB || this.isDancing()) {
+            if (this.isDancing() && this.getNavigation().getPath() != null) {
+                this.getNavigation().stop();
+            }
             vec3d = Vec3.ZERO;
         }
         super.travel(vec3d);

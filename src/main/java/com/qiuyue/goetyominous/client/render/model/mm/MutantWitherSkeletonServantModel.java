@@ -98,14 +98,24 @@ public class MutantWitherSkeletonServantModel<T extends MutantWitherSkeletonServ
             List<ModelPart> parts = this.root().getAllParts().toList();
 
             float deltaTicks;
-            if (entity.walkPhaseAge < 0.0F) {
+            boolean firstFrame = entity.walkPhaseAge < 0.0F;
+            if (firstFrame) {
                 deltaTicks = 1.0F;
             } else {
                 deltaTicks = Mth.clamp(ageInTicks - entity.walkPhaseAge, 0.0F, 2.0F);
             }
             entity.walkPhaseAge = ageInTicks;
+            double xDiff = entity.getX() - entity.xo;
+            double zDiff = entity.getZ() - entity.zo;
+            float distanceTravelled = (float) Math.sqrt(xDiff * xDiff + zDiff * zDiff);
+            MutantMobAnimationState state = MutantMobAnimationStates.get(entity);
+            if (firstFrame) {
+                state.smoothedWalkSpeed = distanceTravelled;
+            } else {
+                state.smoothedWalkSpeed += (distanceTravelled - state.smoothedWalkSpeed) * Math.min(1.0F, deltaTicks * 0.35F);
+            }
 
-            addWalkModifiers(entity, entity.getAnimation("walk"), deltaTicks, 3.0F, 1.0F);
+            addWalkModifiers(entity, entity.getAnimation("walk"), deltaTicks, state.smoothedWalkSpeed, 3.0F, 1.0F);
             addLegHeightOffsetModifier(entity, PositionUtils.getOffsetPos(entity, -0.75, 0.0, 0.0, 0.0F, entity.yBodyRot), 2, "offset_legs", "left_leg_y", deltaTicks, 0.2F, -0.75F, 1.5F, 1.2F);
             addLegHeightOffsetModifier(entity, PositionUtils.getOffsetPos(entity, 0.75, 0.0, 0.0, 0.0F, entity.yBodyRot), 2, "offset_legs", "right_leg_y", deltaTicks, 0.2F, -0.75F, 1.5F, 1.2F);
             AdvancedAnimator.animate(parts, entity.getAnimation("attack_left"), MutantWitherSkeletonAggressiveAdvancedAnimations.MUTANT_WITHER_SKELETON_ATTACK_LEFT);
@@ -129,10 +139,7 @@ public class MutantWitherSkeletonServantModel<T extends MutantWitherSkeletonServ
 
     }
 
-    private static void addWalkModifiers(MutantWitherSkeletonServant entity, EntityAdvancedAnimation animation, float deltaTicks, float groundSpeedMultiplier, float walkProgressMultiplier) {
-        double xDiff = entity.getX() - entity.xo;
-        double zDiff = entity.getZ() - entity.zo;
-        float distanceTravelled = (float)Math.sqrt(xDiff * xDiff + zDiff * zDiff);
+    private static void addWalkModifiers(MutantWitherSkeletonServant entity, EntityAdvancedAnimation animation, float deltaTicks, float distanceTravelled, float groundSpeedMultiplier, float walkProgressMultiplier) {
         entity.walkPhase += distanceTravelled / 300.0F * walkProgressMultiplier * deltaTicks;
         animation.getModifiers().put("walk_progress", entity.walkPhase);
         animation.getModifiers().put("ground_speed", distanceTravelled * groundSpeedMultiplier);

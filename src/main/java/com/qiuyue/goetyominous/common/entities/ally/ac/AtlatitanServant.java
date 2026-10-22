@@ -31,6 +31,7 @@ import com.github.alexmodguy.alexscaves.server.misc.ACTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import com.github.alexthe666.citadel.server.entity.IDancesToJukebox;
 import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.IAdvancedPathingMob;
 import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.ITallWalker;
 import com.qiuyue.goetyominous.common.entities.ai.ac.ServantBreedGoal;
@@ -97,8 +98,10 @@ import com.qiuyue.goetyominous.config.ac.AcConfig;
 
 public class AtlatitanServant extends AnimalSummon
         implements LaysEggs, KeybindUsingMount, IAnimatedEntity, ShakesScreen, KaijuMob,
-        ITallWalker, IAdvancedPathingMob, PlayerRideable {
+        ITallWalker, IAdvancedPathingMob, PlayerRideable, IDancesToJukebox {
 
+    private static final EntityDataAccessor<Boolean> DANCING =
+            SynchedEntityData.defineId(AtlatitanServant.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Boolean> WALKING =
             SynchedEntityData.defineId(AtlatitanServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Optional<BlockPos>> EATING_POS =
@@ -166,6 +169,9 @@ public class AtlatitanServant extends AnimalSummon
     private boolean wasPreviouslyChild;
     private int stepSoundCooldown = 0;
     private boolean followingStanceEnforced = false;
+    private float prevDanceProgress;
+    private float danceProgress;
+    private BlockPos jukeboxPosition;
 
     public AtlatitanServant(EntityType<? extends Owned> type, Level level) {
         super(type, level);
@@ -205,6 +211,7 @@ public class AtlatitanServant extends AnimalSummon
         this.entityData.define(METER_AMOUNT, 1.0F);
         this.entityData.define(DATA_HAS_EGG, false);
         this.entityData.define(ALT_SKIN, 0);
+        this.entityData.define(DANCING, false);
     }
 
     @Override
@@ -259,7 +266,7 @@ public class AtlatitanServant extends AnimalSummon
 
     @Override
     public boolean stopTickingPathing() {
-        return this.getControllingPassenger() != null || this.isStaying();
+        return this.getControllingPassenger() != null || this.isStaying() || this.isDancing();
     }
 
     @Override
@@ -288,6 +295,17 @@ public class AtlatitanServant extends AnimalSummon
     public void tick() {
         super.tick();
         this.enforceFollowingStanceOnce();
+        this.prevDanceProgress = this.danceProgress;
+        if (this.jukeboxPosition == null || !this.jukeboxPosition.closerToCenterThan(this.position(), 15.0D) || !this.level().getBlockState(this.jukeboxPosition).is(Blocks.JUKEBOX)) {
+            this.setDancing(false);
+            this.jukeboxPosition = null;
+        }
+        if (this.isDancing() && this.danceProgress < 5.0F) {
+            this.danceProgress++;
+        }
+        if (!this.isDancing() && this.danceProgress > 0.0F) {
+            this.danceProgress--;
+        }
         AnimationHandler.INSTANCE.updateAnimations(this);
         this.prevRaiseArmsAmount = this.raiseArmsAmount;
         this.prevScreenShakeAmount = this.screenShakeAmount;
@@ -1314,6 +1332,40 @@ public class AtlatitanServant extends AnimalSummon
     @Override
     protected SoundEvent getDeathSound() {
         return ACSoundRegistry.ATLATITAN_DEATH.get();
+    }
+
+    public float getDanceProgress(float partialTicks) {
+        return (this.prevDanceProgress + (this.danceProgress - this.prevDanceProgress) * partialTicks) * 0.2F;
+    }
+
+    public boolean isDancing() {
+        return this.entityData.get(DANCING);
+    }
+
+    @Override
+    public void setDancing(boolean bool) {
+        this.entityData.set(DANCING, bool);
+    }
+
+    @Override
+    public void setJukeboxPos(BlockPos blockPos) {
+        this.jukeboxPosition = blockPos;
+    }
+
+    @Override
+    public void setRecordPlayingNearby(BlockPos pos, boolean playing) {
+        this.onClientPlayMusicDisc(this.getId(), pos, playing);
+    }
+
+    @Override
+    public void travel(Vec3 vec3d) {
+        if (this.isDancing()) {
+            if (this.getNavigation().getPath() != null) {
+                this.getNavigation().stop();
+            }
+            vec3d = Vec3.ZERO;
+        }
+        super.travel(vec3d);
     }
 
     private class SauropodMoveHelper extends MoveControl {
