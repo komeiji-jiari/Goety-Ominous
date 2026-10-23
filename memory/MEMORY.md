@@ -47,6 +47,7 @@
 - 倒地转向：[倒地冻结朝向](mm-zombie-servant-down-yaw-freeze.md) — downYaw 在 die/event 7 捕获
 - 假死红：[overlay 不算 deathTime](mm-servant-death-red-overlay.md) — 客户端 tick 复活清零 deathTime;mixin 已删
 - 仆从不改地形：[雪删/流沙加回](mm-servants-no-terrain-placement.md) — 尸壳 4 处流沙已恢复
+- 突变仆从 AoE：[友军/主人守卫](mm-servant-aoe-ally-guards.md) — canHarm 不排除主人;击退要单独跳过
 - 突变尸壳：[husk 定案](mm-mutant-husk-servant-port-notes.md) — 不做小海龟/HuskHammer、[地涌扑空锁 AI](mm-husk-geyser-failed-leap-lock.md) — 已加出口，有意偏离上游
 - 三僵尸右键：[穿装备+腐肉喂食](mm-zombie-servant-equip-interaction.md) — setGuaranteedDrop 不能省
 - 移植陷阱：[CFR 全限定名残留](mm-port-cfr-fqn-residue.md) — 旧包名残留不报错但要改
