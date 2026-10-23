@@ -2,6 +2,8 @@ package com.qiuyue.goetyominous.common.events;
 
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.particle.*;
+import com.qiuyue.goetyominous.client.render.block.BoggedSkullBlockEntityRenderer;
+import com.qiuyue.goetyominous.client.render.block.MiredSkullBlockEntityRenderer;
 import com.qiuyue.goetyominous.client.render.block.PlushieBlockEntityRenderer;
 import com.qiuyue.goetyominous.client.render.block.TrialSpawnerRenderer;
 import com.qiuyue.goetyominous.client.render.block.VaultRenderer;
@@ -26,6 +28,8 @@ public class ClientEvents {
         event.registerBlockEntityRenderer(ModBlockEntities.TRIAL_SPAWNER.get(), TrialSpawnerRenderer::new);
         event.registerEntityRenderer(ModEntityTypes.OMINOUS_ITEM_SPAWNER.get(), OminousItemSpawnerRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.PLUSHIE.get(), PlushieBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.BOGGED_SKULL.get(), BoggedSkullBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.MIRED_SKULL.get(), MiredSkullBlockEntityRenderer::new);
         PlushieCurioRenderer.register();
     }
 

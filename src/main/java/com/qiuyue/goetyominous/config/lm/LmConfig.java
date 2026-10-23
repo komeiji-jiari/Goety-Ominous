@@ -246,6 +246,9 @@ public class LmConfig {
                 .defineInRange("overgrownColossusServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
         OvergrownColossusServantAttackKnockback = BUILDER.comment("How much Attack Knockback Overgrown Colossus Servants have, Default: 1.5")
                 .defineInRange("overgrownColossusServantAttackKnockback", 1.5, 0.0, Double.MAX_VALUE);
+        OvergrownColossusServantProjectileImmunity = BUILDER
+                .comment("Whether Overgrown Colossus Servants are immune to arrows (Default: true")
+                .define("overgrownColossusServantProjectileImmunity", true);
         BUILDER.pop();
         BUILDER.push("Frostbitten Golem Servant");
         FrostbittenGolemServantHealth = BUILDER.comment("How much Max Health Frostbitten Golem Servants have, Default: 220.0 (Legendary Monsters' value)")
@@ -262,6 +265,12 @@ public class LmConfig {
                 .defineInRange("frostbittenGolemServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
         FrostbittenGolemServantAttackKnockback = BUILDER.comment("How much Attack Knockback Frostbitten Golem Servants have, Default: 1.0 (Legendary Monsters' value)")
                 .defineInRange("frostbittenGolemServantAttackKnockback", 1.0, 0.0, Double.MAX_VALUE);
+        FrostbittenGolemServantProjectileImmunity = BUILDER
+                .comment("Whether Frostbitten Golem Servants are immune to arrows (Default: true)")
+                .define("frostbittenGolemServantProjectileImmunity", true);
+        FrostbittenGolemServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("frostbittenGolemServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Ancient Guardian Servant");
         AncientGuardianServantHealth = BUILDER.comment("How much Max Health Ancient Guardian Servants have, Default: 170.0 (Legendary Monsters' value)")
@@ -278,6 +287,12 @@ public class LmConfig {
                 .defineInRange("ancientGuardianServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
         AncientGuardianServantAttackKnockback = BUILDER.comment("How much Attack Knockback Ancient Guardian Servants have, Default: 1.0 (Legendary Monsters' value)")
                 .defineInRange("ancientGuardianServantAttackKnockback", 1.0, 0.0, Double.MAX_VALUE);
+        AncientGuardianServantProjectileImmunity = BUILDER
+                .comment("Whether Ancient Guardian Servants are immune to arrows (Default: true)")
+                .define("ancientGuardianServantProjectileImmunity", true);
+        AncientGuardianServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("ancientGuardianServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Possessed Paladin Servant");
         PossessedPaladinServantHealth = BUILDER.comment("How much Max Health Possessed Paladin Servants have, Default: 400.0 (Legendary Monsters' value)")
@@ -298,6 +313,12 @@ public class LmConfig {
                 .defineInRange("possessedPaladinServantAttackKnockback", 1.0, 0.0, Double.MAX_VALUE);
         PossessedPaladinServantDamageCap = BUILDER.comment("Maximum damage a single hit can deal to Possessed Paladin Servants, Default: 21.0 (Legendary Monsters' own Possessed Paladin Damage Cap; bypassed by damage that ignores invulnerability)")
                 .defineInRange("possessedPaladinServantDamageCap", 21.0, 1.0, Double.MAX_VALUE);
+        PossessedPaladinServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("possessedPaladinServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
+        PossessedPaladinServantInvulnerabilityTime = BUILDER
+                .comment("Whether Possessed Paladin Servants get 10 ticks of invulnerability after being hit (Default: true)")
+                .define("possessedPaladinServantInvulnerabilityTime", true);
         BUILDER.pop();
         BUILDER.push("Hovering Hurricane Servant");
         HoveringHurricaneServantHealth = BUILDER.comment("How much Max Health Hovering Hurricane Servants have, Default: 30.0")
@@ -314,6 +335,9 @@ public class LmConfig {
                 .defineInRange("hoveringHurricaneServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
         HoveringHurricaneServantAttackKnockback = BUILDER.comment("How much Attack Knockback Hovering Hurricane Servants have, Default: 0.5")
                 .defineInRange("hoveringHurricaneServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
+        HoveringHurricaneServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("hoveringHurricaneServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Cloud Golem Servant");
         CloudGolemServantHealth = BUILDER.comment("How much Max Health Cloud Golem Servants have, Default: 350.0")
@@ -332,6 +356,24 @@ public class LmConfig {
                 .defineInRange("cloudGolemServantAttackKnockback", 1.0, 0.0, Double.MAX_VALUE);
         CloudGolemServantDamageCap = BUILDER.comment("Maximum damage a single hit can deal to Cloud Golem Servants, Default: 18.0 (Legendary Monsters' own Cloud Golem Damage Cap; bypassed by damage that ignores invulnerability)")
                 .defineInRange("cloudGolemServantDamageCap", 18.0, 0.0, 1000.0);
+        CloudGolemServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("cloudGolemServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
+        CloudGolemServantLosesConsciousness = BUILDER
+                .comment("Whether Cloud Golem Servants go dormant after their laser attack (Default: true)")
+                .define("cloudGolemServantLosesConsciousness", true);
+        CloudGolemServantCanCharge2Times = BUILDER
+                .comment("Whether Cloud Golem Servants charge one more time after missing while low on health (Default: true)")
+                .define("cloudGolemServantCanCharge2Times", true);
+        CloudGolemServantInvulnerabilityTime = BUILDER
+                .comment("Whether Cloud Golem Servants get a short window of invulnerability after every hit they take (Default: true)")
+                .define("cloudGolemServantInvulnerabilityTime", true);
+        CloudGolemServantProjectileImmunityTimer = BUILDER
+                .comment("Whether the arrows a Cloud Golem Servant shrugs off share a cooldown, so it cannot ignore an entire volley (Default: true)")
+                .define("cloudGolemServantProjectileImmunityTimer", true);
+        CloudGolemServantFallingCloudParticles = BUILDER
+                .comment("Whether the clouds a Cloud Golem Servant drops keep their falling particles (Default: true)")
+                .define("cloudGolemServantFallingCloudParticles", true);
         BUILDER.pop();
         BUILDER.push("Wandering Eye Servant");
         WanderingEyeServantHealth = BUILDER.comment("How much Max Health Wandering Eye Servants have, Default: 30.0")
@@ -348,6 +390,9 @@ public class LmConfig {
                 .defineInRange("wanderingEyeServantKnockbackResistance", 0.34754D, 0.0, Double.MAX_VALUE);
         WanderingEyeServantAttackKnockback = BUILDER.comment("How much Attack Knockback Wandering Eye Servants have, Default: 0.5")
                 .defineInRange("wanderingEyeServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
+        WanderingEyeServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("wanderingEyeServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Shulker Mimic Servant");
         ShulkerMimicServantHealth = BUILDER.comment("How much Max Health Shulker Mimic Servants have, Default: 200.0")
@@ -364,6 +409,9 @@ public class LmConfig {
                 .defineInRange("shulkerMimicServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
         ShulkerMimicServantAttackKnockback = BUILDER.comment("How much Attack Knockback Shulker Mimic Servants have, Default: 0.5")
                 .defineInRange("shulkerMimicServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
+        ShulkerMimicServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("shulkerMimicServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Annihilation Pursuer Servant");
         AnnihilationPursuerServantHealth = BUILDER.comment("How much Max Health Annihilation Pursuer Servants have, Default: 210.0")
@@ -380,6 +428,9 @@ public class LmConfig {
                 .defineInRange("annihilationPursuerServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
         AnnihilationPursuerServantAttackKnockback = BUILDER.comment("How much Attack Knockback Annihilation Pursuer Servants have, Default: 0.5")
                 .defineInRange("annihilationPursuerServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
+        AnnihilationPursuerServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("annihilationPursuerServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("The Obliterator Servant");
         TheObliteratorServantHealth = BUILDER.comment("How much Max Health The Obliterator Servants have, Default: 450.0 (Legendary Monsters' value)")
@@ -402,6 +453,16 @@ public class LmConfig {
                 .defineInRange("theObliteratorServantDamageCap", 20.0, 1.0, Double.MAX_VALUE);
         TheObliteratorServantAdaptationFactorMultiplier = BUILDER.comment("The bigger it is the stronger The Obliterator Servants' damage adaptation becomes, Default: 1 (Legendary Monsters' own The Obliterator Damage Adaptation Multiplier)")
                 .defineInRange("theObliteratorServantAdaptationFactorMultiplier", 1, 0, 1000);
+        TheObliteratorServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("theObliteratorServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
+        TheObliteratorCloneBurstHpDamage = BUILDER
+                .comment("Percentage of the victim's max health added on top of an armed clone's burst (Default: 7)",
+                "Matches Legendary Monsters' own theObliteratorCloneBurstHPDamage, but only affects the servant's clones")
+                .defineInRange("theObliteratorCloneBurstHpDamage", 7, 0, 1000);
+        TheObliteratorServantFirstPhaseProjectileImmunity = BUILDER
+                .comment("Whether The Obliterator Servants are immune to arrows and other projectiles while in their first phase (Default: true; Legendary Monsters' ON/OFF The Obliterator Projectile immunity in first Phase)")
+                .define("theObliteratorServantFirstPhaseProjectileImmunity", true);
         BUILDER.pop();
         BUILDER.push("Flame Drifter Servant");
         FlameDrifterServantHealth = BUILDER.comment("How much Max Health Flame Drifter Servants have, Default: 60.0")
@@ -418,6 +479,9 @@ public class LmConfig {
                 .defineInRange("flameDrifterServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
         FlameDrifterServantAttackKnockback = BUILDER.comment("How much Attack Knockback Flame Drifter Servants have, Default: 0.5")
                 .defineInRange("flameDrifterServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
+        FlameDrifterServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("flameDrifterServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Flameborn Warrior Servant");
         FlamebornWarriorServantHealth = BUILDER.comment("How much Max Health Flameborn Warrior Servants have, Default: 50.0")
@@ -434,6 +498,9 @@ public class LmConfig {
                 .defineInRange("flamebornWarriorServantKnockbackResistance", 0.3, 0.0, Double.MAX_VALUE);
         FlamebornWarriorServantAttackKnockback = BUILDER.comment("How much Attack Knockback Flameborn Warrior Servants have, Default: 0.5")
                 .defineInRange("flamebornWarriorServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
+        FlamebornWarriorServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("flamebornWarriorServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Flameborn Guard Servant");
         FlamebornGuardServantHealth = BUILDER.comment("How much Max Health Flameborn Guard Servants have, Default: 60.0")
@@ -450,6 +517,9 @@ public class LmConfig {
                 .defineInRange("flamebornGuardServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
         FlamebornGuardServantAttackKnockback = BUILDER.comment("How much Attack Knockback Flameborn Guard Servants have, Default: 0.5")
                 .defineInRange("flamebornGuardServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
+        FlamebornGuardServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("flamebornGuardServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Beheaded Knight Servant");
         BeheadedKnightServantHealth = BUILDER.comment("How much Max Health Beheaded Knight Servants have, Default: 195.0 (Legendary Monsters' value)")
@@ -468,6 +538,9 @@ public class LmConfig {
                 .defineInRange("beheadedKnightServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
         BeheadedKnightServantAttackKnockback = BUILDER.comment("How much Attack Knockback Beheaded Knight Servants have, Default: 0.5 (Legendary Monsters' value)")
                 .defineInRange("beheadedKnightServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
+        BeheadedKnightServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("beheadedKnightServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Resurrected Knight Servant");
         ResurrectedKnightServantHealth = BUILDER.comment("How much Max Health Resurrected Knight Servants have, Default: 190.0 (Legendary Monsters' value)")
@@ -486,6 +559,9 @@ public class LmConfig {
                 .defineInRange("resurrectedKnightServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
         ResurrectedKnightServantAttackKnockback = BUILDER.comment("How much Attack Knockback Resurrected Knight Servants have, Default: 0.5 (Legendary Monsters' value)")
                 .defineInRange("resurrectedKnightServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
+        ResurrectedKnightServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("resurrectedKnightServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Endersent Servant");
         EndersentServantHealth = BUILDER.comment("How much Max Health Endersent Servants have, Default: 200.0 (Goety's value)")
@@ -506,6 +582,9 @@ public class LmConfig {
                 .defineInRange("endersentServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
         EndersentServantAttackKnockback = BUILDER.comment("How much Attack Knockback Endersent Servants have, Default: 2.0 (Goety's value)")
                 .defineInRange("endersentServantAttackKnockback", 2.0, 0.0, Double.MAX_VALUE);
+        EndersentServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("endersentServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Chorusling Servant");
         ChoruslingServantHealth = BUILDER.comment("How much Max Health Chorusling Servants have, Default: 70.0 (Legendary Monsters' value)")
@@ -522,6 +601,9 @@ public class LmConfig {
                 .defineInRange("choruslingServantKnockbackResistance", 0.5, 0.0, Double.MAX_VALUE);
         ChoruslingServantAttackKnockback = BUILDER.comment("How much Attack Knockback Chorusling Servants have, Default: 0.5 (Legendary Monsters' value)")
                 .defineInRange("choruslingServantAttackKnockback", 0.5, 0.0, Double.MAX_VALUE);
+        ChoruslingServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("choruslingServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Fractured Servant");
         FracturedServantHealth = BUILDER.comment("How much Max Health Fractured Servants have, Default: 40.0 (Legendary Monsters' value)")
@@ -540,6 +622,9 @@ public class LmConfig {
                 .defineInRange("fracturedServantKnockbackResistance", 0.7, 0.0, Double.MAX_VALUE);
         FracturedServantAttackKnockback = BUILDER.comment("How much Attack Knockback Fractured Servants have, Default: 1.3 (Legendary Monsters' value)")
                 .defineInRange("fracturedServantAttackKnockback", 1.3, 0.0, Double.MAX_VALUE);
+        FracturedServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("fracturedServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Fractured Apostle Servant");
         FracturedApostleServantHealth = BUILDER.comment("How much Max Health Fractured Apostle Servants have, Default: 50.0 (Legendary Monsters' value)")
@@ -558,6 +643,9 @@ public class LmConfig {
                 .defineInRange("fracturedApostleServantKnockbackResistance", 0.7, 0.0, Double.MAX_VALUE);
         FracturedApostleServantAttackKnockback = BUILDER.comment("How much Attack Knockback Fractured Apostle Servants have, Default: 1.3 (Legendary Monsters' value)")
                 .defineInRange("fracturedApostleServantAttackKnockback", 1.3, 0.0, Double.MAX_VALUE);
+        FracturedApostleServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("fracturedApostleServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Haunted Knight Servant");
         HauntedKnightServantHealth = BUILDER.comment("How much Max Health Haunted Knight Servants have, Default: 50.0 (Legendary Monsters' value)")
@@ -576,6 +664,9 @@ public class LmConfig {
                 .defineInRange("hauntedKnightServantKnockbackResistance", 0.7, 0.0, Double.MAX_VALUE);
         HauntedKnightServantAttackKnockback = BUILDER.comment("How much Attack Knockback Haunted Knight Servants have, Default: 0.7 (Legendary Monsters' value)")
                 .defineInRange("hauntedKnightServantAttackKnockback", 0.7, 0.0, Double.MAX_VALUE);
+        HauntedKnightServantDamageMultiplier = BUILDER
+                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
+                .defineInRange("hauntedKnightServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Haunted Guard Servant");
         HauntedGuardServantHealth = BUILDER.comment("How much Max Health Haunted Guard Servants have, Default: 50.0 (Legendary Monsters' value)")
@@ -594,156 +685,6 @@ public class LmConfig {
                 .defineInRange("hauntedGuardServantKnockbackResistance", 0.7, 0.0, Double.MAX_VALUE);
         HauntedGuardServantAttackKnockback = BUILDER.comment("How much Attack Knockback Haunted Guard Servants have, Default: 1.3 (Legendary Monsters' value)")
                 .defineInRange("hauntedGuardServantAttackKnockback", 1.3, 0.0, Double.MAX_VALUE);
-        BUILDER.pop();
-        BUILDER.pop();
-        BUILDER.push("Servant Limits");
-        OvergrownColossusServantLimit = BUILDER
-                .comment("Maximum number of Overgrown Colossus Servants that can be summoned (Default: 2)")
-                .defineInRange("overgrownColossusServantLimit", 2, 1, 100);
-        OvergrownColossusServantProjectileImmunity = BUILDER
-                .comment("Whether Overgrown Colossus Servants are immune to arrows (Default: true")
-                .define("overgrownColossusServantProjectileImmunity", true);
-        FrostbittenGolemServantLimit = BUILDER
-                .comment("Maximum number of Frostbitten Golem Servants that can be summoned (Default: 2)")
-                .defineInRange("frostbittenGolemServantLimit", 2, 1, 100);
-        FrostbittenGolemServantProjectileImmunity = BUILDER
-                .comment("Whether Frostbitten Golem Servants are immune to arrows (Default: true)")
-                .define("frostbittenGolemServantProjectileImmunity", true);
-        FrostbittenGolemServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("frostbittenGolemServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-        AncientGuardianServantLimit = BUILDER
-                .comment("Maximum number of Ancient Guardian Servants that can be summoned (Default: 2)")
-                .defineInRange("ancientGuardianServantLimit", 2, 1, 100);
-        AncientGuardianServantProjectileImmunity = BUILDER
-                .comment("Whether Ancient Guardian Servants are immune to arrows (Default: true)")
-                .define("ancientGuardianServantProjectileImmunity", true);
-        AncientGuardianServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("ancientGuardianServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-        PossessedPaladinServantLimit = BUILDER
-                .comment("Maximum number of Possessed Paladin Servants that can be summoned (Default: 1)")
-                .defineInRange("possessedPaladinServantLimit", 1, 1, 100);
-        PossessedPaladinServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("possessedPaladinServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-        PossessedPaladinServantInvulnerabilityTime = BUILDER
-                .comment("Whether Possessed Paladin Servants get 10 ticks of invulnerability after being hit (Default: true)")
-                .define("possessedPaladinServantInvulnerabilityTime", true);
-        HoveringHurricaneServantLimit = BUILDER
-                .comment("Maximum number of Hovering Hurricane Servants that can be summoned (Default: 8)")
-                .defineInRange("hoveringHurricaneServantLimit", 8, 1, 100);
-        HoveringHurricaneServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("hoveringHurricaneServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-        CloudGolemServantLimit = BUILDER
-                .comment("Maximum number of Cloud Golem Servants that can be summoned (Default: 1)")
-                .defineInRange("cloudGolemServantLimit", 1, 1, 100);
-        CloudGolemServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("cloudGolemServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-        CloudGolemServantLosesConsciousness = BUILDER
-                .comment("Whether Cloud Golem Servants go dormant after their laser attack (Default: true)")
-                .define("cloudGolemServantLosesConsciousness", true);
-        CloudGolemServantCanCharge2Times = BUILDER
-                .comment("Whether Cloud Golem Servants charge one more time after missing while low on health (Default: true)")
-                .define("cloudGolemServantCanCharge2Times", true);
-        CloudGolemServantInvulnerabilityTime = BUILDER
-                .comment("Whether Cloud Golem Servants get a short window of invulnerability after every hit they take (Default: true)")
-                .define("cloudGolemServantInvulnerabilityTime", true);
-        CloudGolemServantProjectileImmunityTimer = BUILDER
-                .comment("Whether the arrows a Cloud Golem Servant shrugs off share a cooldown, so it cannot ignore an entire volley (Default: true)")
-                .define("cloudGolemServantProjectileImmunityTimer", true);
-        CloudGolemServantFallingCloudParticles = BUILDER
-                .comment("Whether the clouds a Cloud Golem Servant drops keep their falling particles (Default: true)")
-                .define("cloudGolemServantFallingCloudParticles", true);
-        ShulkerMimicServantLimit = BUILDER
-                .comment("Maximum number of Shulker Mimic Servants that can be summoned (Default: 1)")
-                .defineInRange("shulkerMimicServantLimit", 1, 1, 100);
-        ShulkerMimicServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("shulkerMimicServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-        AnnihilationPursuerServantLimit = BUILDER
-                .comment("Maximum number of Annihilation Pursuer Servants that can be summoned (Default: 1)")
-                .defineInRange("annihilationPursuerServantLimit", 1, 1, 100);
-        AnnihilationPursuerServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("annihilationPursuerServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-        BeheadedKnightServantLimit = BUILDER
-                .comment("Maximum number of Beheaded Knight Servants that can be summoned (Default: 2)")
-                .defineInRange("beheadedKnightServantLimit", 2, 1, 100);
-        BeheadedKnightServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("beheadedKnightServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-        ResurrectedKnightServantLimit = BUILDER
-                .comment("Maximum number of Resurrected Knight Servants that can be summoned (Default: 2)")
-                .defineInRange("resurrectedKnightServantLimit", 2, 1, 100);
-        ResurrectedKnightServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("resurrectedKnightServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-        EndersentServantLimit = BUILDER
-                .comment("Maximum number of Endersent Servants that can be summoned (Default: 2)")
-                .defineInRange("endersentServantLimit", 2, 1, 100);
-        EndersentServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("endersentServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-        ChoruslingServantLimit = BUILDER
-                .comment("Maximum number of Chorusling Servants that can be summoned (Default: 4)")
-                .defineInRange("choruslingServantLimit", 4, 1, 100);
-        ChoruslingServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("choruslingServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-        TheObliteratorServantLimit = BUILDER
-                .comment("Maximum number of The Obliterator Servants that can be summoned (Default: 1)")
-                .defineInRange("theObliteratorServantLimit", 1, 1, 100);
-        TheObliteratorServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("theObliteratorServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-        FlamebornGuardServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("flamebornGuardServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-        FlamebornWarriorServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("flamebornWarriorServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-        FlameDrifterServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("flameDrifterServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-        WanderingEyeServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("wanderingEyeServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-        TheObliteratorCloneBurstHpDamage = BUILDER
-                .comment("Percentage of the victim's max health added on top of an armed clone's burst (Default: 7)",
-                "Matches Legendary Monsters' own theObliteratorCloneBurstHPDamage, but only affects the servant's clones")
-                .defineInRange("theObliteratorCloneBurstHpDamage", 7, 0, 1000);
-        TheObliteratorServantFirstPhaseProjectileImmunity = BUILDER
-                .comment("Whether The Obliterator Servants are immune to arrows and other projectiles while in their first phase (Default: true; Legendary Monsters' ON/OFF The Obliterator Projectile immunity in first Phase)")
-                .define("theObliteratorServantFirstPhaseProjectileImmunity", true);
-        SoulFractureOnServantHit = BUILDER
-                .comment("Whether Beheaded Knight, Resurrected Knight and Possessed Paladin Servants apply Soul Fracture to the enemies they hit (Default: false)",
-                "Soul Fracture is Legendary Monsters' stacking -20% max health debuff; only the attacks of these three servants ever apply it",
-                "This never touches the original Legendary Monsters bosses")
-                .define("soulFractureOnServantHit", false);
-        FracturedServantLimit = BUILDER
-                .comment("Maximum number of Fractured Servants that can be summoned (Default: 4)")
-                .defineInRange("fracturedServantLimit", 4, 1, 100);
-        FracturedServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("fracturedServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-        FracturedApostleServantLimit = BUILDER
-                .comment("Maximum number of Fractured Apostle Servants that can be summoned (Default: 2)")
-                .defineInRange("fracturedApostleServantLimit", 2, 1, 100);
-        FracturedApostleServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("fracturedApostleServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-        HauntedKnightServantLimit = BUILDER
-                .comment("Maximum number of Haunted Knight Servants that can be summoned (Default: 2)")
-                .defineInRange("hauntedKnightServantLimit", 2, 1, 100);
-        HauntedKnightServantDamageMultiplier = BUILDER
-                .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
-                .defineInRange("hauntedKnightServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
-        HauntedGuardServantLimit = BUILDER
-                .comment("Maximum number of Haunted Guard Servants that can be summoned (Default: 2)")
-                .defineInRange("hauntedGuardServantLimit", 2, 1, 100);
         HauntedGuardServantDamageMultiplier = BUILDER
                 .comment(LM_DAMAGE_MULTIPLIER_COMMENT)
                 .defineInRange("hauntedGuardServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
@@ -751,9 +692,68 @@ public class LmConfig {
                 .comment("Whether Haunted Guard Servants are immune to arrows (Default: true; Legendary Monsters' Guardprojectile)")
                 .define("hauntedGuardServantProjectileImmunity", true);
         BUILDER.pop();
+        BUILDER.pop();
+        BUILDER.push("Servant Limits");
+        OvergrownColossusServantLimit = BUILDER
+                .comment("Maximum number of Overgrown Colossus Servants that can be summoned (Default: 2)")
+                .defineInRange("overgrownColossusServantLimit", 2, 1, 100);
+        FrostbittenGolemServantLimit = BUILDER
+                .comment("Maximum number of Frostbitten Golem Servants that can be summoned (Default: 2)")
+                .defineInRange("frostbittenGolemServantLimit", 2, 1, 100);
+        AncientGuardianServantLimit = BUILDER
+                .comment("Maximum number of Ancient Guardian Servants that can be summoned (Default: 2)")
+                .defineInRange("ancientGuardianServantLimit", 2, 1, 100);
+        PossessedPaladinServantLimit = BUILDER
+                .comment("Maximum number of Possessed Paladin Servants that can be summoned (Default: 1)")
+                .defineInRange("possessedPaladinServantLimit", 1, 1, 100);
+        HoveringHurricaneServantLimit = BUILDER
+                .comment("Maximum number of Hovering Hurricane Servants that can be summoned (Default: 8)")
+                .defineInRange("hoveringHurricaneServantLimit", 8, 1, 100);
+        CloudGolemServantLimit = BUILDER
+                .comment("Maximum number of Cloud Golem Servants that can be summoned (Default: 1)")
+                .defineInRange("cloudGolemServantLimit", 1, 1, 100);
+        ShulkerMimicServantLimit = BUILDER
+                .comment("Maximum number of Shulker Mimic Servants that can be summoned (Default: 1)")
+                .defineInRange("shulkerMimicServantLimit", 1, 1, 100);
+        AnnihilationPursuerServantLimit = BUILDER
+                .comment("Maximum number of Annihilation Pursuer Servants that can be summoned (Default: 1)")
+                .defineInRange("annihilationPursuerServantLimit", 1, 1, 100);
+        BeheadedKnightServantLimit = BUILDER
+                .comment("Maximum number of Beheaded Knight Servants that can be summoned (Default: 2)")
+                .defineInRange("beheadedKnightServantLimit", 2, 1, 100);
+        ResurrectedKnightServantLimit = BUILDER
+                .comment("Maximum number of Resurrected Knight Servants that can be summoned (Default: 2)")
+                .defineInRange("resurrectedKnightServantLimit", 2, 1, 100);
+        EndersentServantLimit = BUILDER
+                .comment("Maximum number of Endersent Servants that can be summoned (Default: 2)")
+                .defineInRange("endersentServantLimit", 2, 1, 100);
+        ChoruslingServantLimit = BUILDER
+                .comment("Maximum number of Chorusling Servants that can be summoned (Default: 4)")
+                .defineInRange("choruslingServantLimit", 4, 1, 100);
+        TheObliteratorServantLimit = BUILDER
+                .comment("Maximum number of The Obliterator Servants that can be summoned (Default: 1)")
+                .defineInRange("theObliteratorServantLimit", 1, 1, 100);
+        FracturedServantLimit = BUILDER
+                .comment("Maximum number of Fractured Servants that can be summoned (Default: 4)")
+                .defineInRange("fracturedServantLimit", 4, 1, 100);
+        FracturedApostleServantLimit = BUILDER
+                .comment("Maximum number of Fractured Apostle Servants that can be summoned (Default: 2)")
+                .defineInRange("fracturedApostleServantLimit", 2, 1, 100);
+        HauntedKnightServantLimit = BUILDER
+                .comment("Maximum number of Haunted Knight Servants that can be summoned (Default: 2)")
+                .defineInRange("hauntedKnightServantLimit", 2, 1, 100);
+        HauntedGuardServantLimit = BUILDER
+                .comment("Maximum number of Haunted Guard Servants that can be summoned (Default: 2)")
+                .defineInRange("hauntedGuardServantLimit", 2, 1, 100);
+        BUILDER.pop();
         BUILDER.push("Legendary Monsters Servants");
         LmServantScreenShake = BUILDER.comment("Whether Legendary Monsters Servants' attacks and abilities shake nearby players' cameras (Default: false)")
                 .define("lmServantScreenShake", false);
+        SoulFractureOnServantHit = BUILDER
+                .comment("Whether Beheaded Knight, Resurrected Knight and Possessed Paladin Servants apply Soul Fracture to the enemies they hit (Default: false)",
+                "Soul Fracture is Legendary Monsters' stacking -20% max health debuff; only the attacks of these three servants ever apply it",
+                "This never touches the original Legendary Monsters bosses")
+                .define("soulFractureOnServantHit", false);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }

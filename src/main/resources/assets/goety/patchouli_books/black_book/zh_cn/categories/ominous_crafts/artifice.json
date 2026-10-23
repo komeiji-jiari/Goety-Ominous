@@ -1,7 +1,7 @@
 {
   "name": "设备",
   "description": "利用和操纵灵魂能量。",
-  "icon": "goety:soul_absorber",
+  "icon": "goety:ominous_pyre",
   "parent": "goety:ominous_crafts",
   "sortnum": 3
 }

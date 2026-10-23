@@ -1,7 +1,7 @@
 {
   "name": "工具和设备",
   "description": "为黑暗巫师而生的工具，黑暗而强大。",
-  "icon": "goety:eerie_pickaxe",
+  "icon": "goetyominous:bone_cudgel",
   "parent": "goety:ominous_crafts",
   "sortnum": 1
 }

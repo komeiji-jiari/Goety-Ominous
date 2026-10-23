@@ -347,6 +347,12 @@ public class AcConfig {
                 .defineInRange("tremorzillaServantArmor", 10.0, 0.0, Double.MAX_VALUE);
         TremorzillaServantBeamDamage = BUILDER.comment("How much damage each hit of a Tremorzilla Servant's nuclear beam deals, Default: 20.0 (matches Alex's Caves Tremorzilla)")
                 .defineInRange("tremorzillaServantBeamDamage", 20.0, 1.0, Double.MAX_VALUE);
+        TremorzillaServantBreakBlocks = BUILDER
+                .comment("Whether Tremorzilla Servants can break blocks (melee attacks, beam, tail sweep and stomping through terrain while walking) (Default: false)")
+                .define("tremorzillaServantBreakBlocks", false);
+        TremorzillaServantBreakTrees = BUILDER
+                .comment("Whether Tremorzilla Servants smash the leaves, logs and wool they walk through, like a Redstone Monstrosity (Default: true; also requires the mobGriefing game rule)")
+                .define("tremorzillaServantBreakTrees", true);
         AtlatitanServantHealth = BUILDER.comment("How much Max Health Atlatitan Servants have, Default: 400.0 (matches Alex's Caves Atlatitan)")
                 .defineInRange("atlatitanServantHealth", 400.0, 1.0, Double.MAX_VALUE);
         AtlatitanServantDamage = BUILDER.comment("How much damage Atlatitan Servants' kick and tail whip deal, Default: 8.0 (matches Alex's Caves Atlatitan)")
@@ -357,6 +363,9 @@ public class AcConfig {
                 .defineInRange("atlatitanServantFollowRange", 32.0, 0.0, Double.MAX_VALUE);
         AtlatitanServantKnockbackResistance = BUILDER.comment("How much Knockback Resistance Atlatitan Servants have, Default: 1.0 (matches Alex's Caves Atlatitan)")
                 .defineInRange("atlatitanServantKnockbackResistance", 1.0, 0.0, Double.MAX_VALUE);
+        AtlatitanServantBreakBlocks = BUILDER
+                .comment("Whether Atlatitan Servants can crush blocks with their stomp (Default: true; also requires the mobGriefing game rule)")
+                .define("atlatitanServantBreakBlocks", true);
         LuxtructosaurusServantHealth = BUILDER.comment("How much Max Health Luxtructosaurus Servants have, Default: 600.0 (matches Alex's Caves Luxtructosaurus)")
                 .defineInRange("luxtructosaurusServantHealth", 600.0, 1.0, Double.MAX_VALUE);
         LuxtructosaurusServantDamage = BUILDER.comment("How much damage Luxtructosaurus Servants' stomp, kick, tail whip and flames deal, Default: 12.0 (matches Alex's Caves Luxtructosaurus)")
@@ -371,6 +380,30 @@ public class AcConfig {
                 .defineInRange("luxtructosaurusServantArmor", 20.0, 0.0, Double.MAX_VALUE);
         LuxtructosaurusServantTargetRange = BUILDER.comment("How far (in blocks) Luxtructosaurus Servants look for their own targets, Default: 32.0 (their follow range of 256 is only used for following)")
                 .defineInRange("luxtructosaurusServantTargetRange", 32.0, 0.0, Double.MAX_VALUE);
+        LuxtructosaurusServantBreakTrees = BUILDER
+                .comment("Whether Luxtructosaurus Servants smash the leaves, logs and wool they walk through, like a Redstone Monstrosity (Default: true; also requires the mobGriefing game rule)")
+                .define("luxtructosaurusServantBreakTrees", true);
+        LuxtructosaurusServantFire = BUILDER
+                .comment("Whether Luxtructosaurus Servants set fire to the ground with their flame breath (Default: true; also requires the mobGriefing game rule)")
+                .define("luxtructosaurusServantFire", true);
+        LuxtructosaurusServantWaterToStone = BUILDER
+                .comment("Whether Luxtructosaurus Servants turn the water they wade through into stone (Default: true; also requires the mobGriefing game rule)")
+                .define("luxtructosaurusServantWaterToStone", true);
+        LuxtructosaurusServantTephra = BUILDER
+                .comment("Whether Luxtructosaurus Servants call down a tephra bombardment while roaring. The meteors never break blocks (Default: true)")
+                .define("luxtructosaurusServantTephra", true);
+        LuxtructosaurusServantJumpExplosion = BUILDER
+                .comment("Whether Luxtructosaurus Servants blast the ground alight where they land after a leap, like one of their falling tephra bombs. The blast damages and knocks back everything nearby and lights fires, but never breaks blocks (Default: true)")
+                .define("luxtructosaurusServantJumpExplosion", true);
+        LuxtructosaurusServantPrimalMagma = BUILDER
+                .comment("Whether a Luxtructosaurus Servant keeps the primal magma around it molten the way the primordial boss does, and walks over it instead of sinking in (Default: true)")
+                .define("luxtructosaurusServantPrimalMagma", true);
+        LuxtructosaurusServantExtinctionCatalyst = BUILDER
+                .comment("Whether owned Luxtructosaurus Servants return an Extinction Catalyst when they die (Default: true)")
+                .define("luxtructosaurusServantExtinctionCatalyst", true);
+        LuxtructosaurusServantRoarInterval = BUILDER
+                .comment("How many seconds an enraged Luxtructosaurus Servant may go at most without roaring and calling down another tephra bombardment. The timer only runs while enraged, and never while a player is riding it. Set to 0 to disable (Default: 30)")
+                .defineInRange("luxtructosaurusServantRoarInterval", 30, 0, 3600);
         GumWormServantHealth = BUILDER.comment("How much Max Health Gum Worm Servants have, Default: 150.0 (matches Alex's Caves Gum Worm)")
                 .defineInRange("gumWormServantHealth", 150.0, 1.0, Double.MAX_VALUE);
         GumWormServantDamage = BUILDER.comment("How much damage Gum Worm Servants' bite deals, Default: 9.0 (matches Alex's Caves Gum Worm)")
@@ -399,6 +432,9 @@ public class AcConfig {
                 .defineInRange("vallumraptorServantElderHealth", 32.0, 1.0, Double.MAX_VALUE);
         VallumraptorServantElderArmor = BUILDER.comment("How much natural Armor Vallumraptor Servant Elders have, Default: 5.0 (matches Alex's Caves Vallumraptor elder)")
                 .defineInRange("vallumraptorServantElderArmor", 5.0, 0.0, Double.MAX_VALUE);
+        VallumraptorElderChance = BUILDER
+                .comment("Chance (percent) for a Vallumraptor Servant to spawn as an Elder/leader variant with boosted health and armor (Default: 15)")
+                .defineInRange("vallumraptorElderChance", 15, 0, 100);
         NucleeperServantHealth = BUILDER.comment("How much Max Health Nucleeper Servants have, Default: 40.0 (matches Alex's Caves Nucleeper)")
                 .defineInRange("nucleeperServantHealth", 40.0, 1.0, Double.MAX_VALUE);
         NucleeperServantDamage = BUILDER.comment("How much damage Nucleeper Servants deal, Default: 2.0 (vanilla monster default; Nucleeper's real threat is its explosion)")
@@ -609,17 +645,15 @@ public class AcConfig {
                 .defineInRange("licowitchServantKnockbackResistance", 0.0, 0.0, Double.MAX_VALUE);
         LicowitchServantArmor = BUILDER.comment("How much natural Armor Licowitch Servants have, Default: 0.0 (Alex's Caves Licowitch has none)")
                 .defineInRange("licowitchServantArmor", 0.0, 0.0, Double.MAX_VALUE);
+        LicowitchSummonsLife = BUILDER
+                .comment("Whether candy servants a Licowitch Servant summons have a limited lifespan (45~120s); when false they persist until killed, like Goety Necromancer summons with NecromancerSummonsLife off (Default: true)")
+                .define("licowitchSummonsLife", true);
         HullbreakerServantHealth = BUILDER.comment("How much Max Health Hullbreaker Servants have, Default: 400.0 (matches Alex's Caves Hullbreaker)")
                 .defineInRange("hullbreakerServantHealth", 400.0, 1.0, Double.MAX_VALUE);
         HullbreakerServantDamage = BUILDER.comment("How much damage Hullbreaker Servants deal, Default: 16.0 (matches Alex's Caves Hullbreaker)")
                 .defineInRange("hullbreakerServantDamage", 16.0, 1.0, Double.MAX_VALUE);
         HullbreakerServantMovementSpeed = BUILDER.comment("How fast Hullbreaker Servants move, Default: 0.3 (matches Alex's Caves Hullbreaker)")
                 .defineInRange("hullbreakerServantMovementSpeed", 0.3, 0.0, Double.MAX_VALUE);
-        BUILDER.pop();
-        BUILDER.push("Servant Limits");
-        HullbreakerServantLimit = BUILDER
-                .comment("Maximum number of Hullbreaker Servants that can be summoned (Default: 1)")
-                .defineInRange("hullbreakerServantLimit", 1, 1, 100);
         HullbreakerServantReturnEmbryo = BUILDER
                 .comment("Whether Hullbreaker Servants drop an immortal embryo when they die while owned (Default: true)")
                 .define("hullbreakerServantReturnEmbryo", true);
@@ -628,6 +662,15 @@ public class AcConfig {
                 .define("hullbreakerServantPickUpDrops", true);
         HullbreakerServantBlockBreakGriefing = BUILDER.comment("Whether Hullbreaker Servants break blocks when bashing, Default: false (set to true to allow block destruction, which also respects the mobGriefing game rule)")
                 .define("hullbreakerServantBlockBreakGriefing", false);
+        BUILDER.push("Mine Guardian Servant");
+        MineGuardianServantExplosionGriefing = BUILDER.comment("Whether Mine Guardian Servant explosions destroy blocks, Default: false (set to true to allow block destruction, which also respects the mobGriefing game rule)")
+                .define("mineGuardianServantExplosionGriefing", false);
+        BUILDER.pop();
+        BUILDER.pop();
+        BUILDER.push("Servant Limits");
+        HullbreakerServantLimit = BUILDER
+                .comment("Maximum number of Hullbreaker Servants that can be summoned (Default: 1)")
+                .defineInRange("hullbreakerServantLimit", 1, 1, 100);
         GrottoceratopsServantLimit = BUILDER
                 .comment("Maximum number of Grottoceratops Servants that can be summoned (Default: 16)")
                 .defineInRange("grottoceratopsServantLimit", 16, 1, 100);
@@ -640,54 +683,18 @@ public class AcConfig {
         TremorzillaServantLimit = BUILDER
                 .comment("Maximum number of Tremorzilla Servants that can be summoned (Default: 1)")
                 .defineInRange("tremorzillaServantLimit", 1, 1, 100);
-        TremorzillaServantBreakBlocks = BUILDER
-                .comment("Whether Tremorzilla Servants can break blocks (melee attacks, beam, tail sweep and stomping through terrain while walking) (Default: false)")
-                .define("tremorzillaServantBreakBlocks", false);
-        TremorzillaServantBreakTrees = BUILDER
-                .comment("Whether Tremorzilla Servants smash the leaves, logs and wool they walk through, like a Redstone Monstrosity (Default: true; also requires the mobGriefing game rule)")
-                .define("tremorzillaServantBreakTrees", true);
         AtlatitanServantLimit = BUILDER
                 .comment("Maximum number of Atlatitan Servants that can be summoned (Default: 3)")
                 .defineInRange("atlatitanServantLimit", 3, 1, 100);
-        AtlatitanServantBreakBlocks = BUILDER
-                .comment("Whether Atlatitan Servants can crush blocks with their stomp (Default: true; also requires the mobGriefing game rule)")
-                .define("atlatitanServantBreakBlocks", true);
         LuxtructosaurusServantLimit = BUILDER
                 .comment("Maximum number of Luxtructosaurus Servants that can be summoned (Default: 1)")
                 .defineInRange("luxtructosaurusServantLimit", 1, 1, 100);
-        LuxtructosaurusServantBreakTrees = BUILDER
-                .comment("Whether Luxtructosaurus Servants smash the leaves, logs and wool they walk through, like a Redstone Monstrosity (Default: true; also requires the mobGriefing game rule)")
-                .define("luxtructosaurusServantBreakTrees", true);
-        LuxtructosaurusServantFire = BUILDER
-                .comment("Whether Luxtructosaurus Servants set fire to the ground with their flame breath (Default: true; also requires the mobGriefing game rule)")
-                .define("luxtructosaurusServantFire", true);
-        LuxtructosaurusServantWaterToStone = BUILDER
-                .comment("Whether Luxtructosaurus Servants turn the water they wade through into stone (Default: true; also requires the mobGriefing game rule)")
-                .define("luxtructosaurusServantWaterToStone", true);
-        LuxtructosaurusServantTephra = BUILDER
-                .comment("Whether Luxtructosaurus Servants call down a tephra bombardment while roaring. The meteors never break blocks (Default: true)")
-                .define("luxtructosaurusServantTephra", true);
-        LuxtructosaurusServantJumpExplosion = BUILDER
-                .comment("Whether Luxtructosaurus Servants blast the ground alight where they land after a leap, like one of their falling tephra bombs. The blast damages and knocks back everything nearby and lights fires, but never breaks blocks (Default: true)")
-                .define("luxtructosaurusServantJumpExplosion", true);
-        LuxtructosaurusServantPrimalMagma = BUILDER
-                .comment("Whether a Luxtructosaurus Servant keeps the primal magma around it molten the way the primordial boss does, and walks over it instead of sinking in (Default: true)")
-                .define("luxtructosaurusServantPrimalMagma", true);
-        LuxtructosaurusServantExtinctionCatalyst = BUILDER
-                .comment("Whether owned Luxtructosaurus Servants return an Extinction Catalyst when they die (Default: true)")
-                .define("luxtructosaurusServantExtinctionCatalyst", true);
-        LuxtructosaurusServantRoarInterval = BUILDER
-                .comment("How many seconds an enraged Luxtructosaurus Servant may go at most without roaring and calling down another tephra bombardment. The timer only runs while enraged, and never while a player is riding it. Set to 0 to disable (Default: 30)")
-                .defineInRange("luxtructosaurusServantRoarInterval", 30, 0, 3600);
         GumWormServantLimit = BUILDER
                 .comment("Maximum number of Gum Worm Servants that can be summoned (Default: 1; each one is a head plus 15-19 body segment entities)")
                 .defineInRange("gumWormServantLimit", 1, 1, 100);
         VallumraptorServantLimit = BUILDER
                 .comment("Maximum number of Vallumraptor Servants that can be summoned (Default: 32)")
                 .defineInRange("vallumraptorServantLimit", 32, 1, 100);
-        VallumraptorElderChance = BUILDER
-                .comment("Chance (percent) for a Vallumraptor Servant to spawn as an Elder/leader variant with boosted health and armor (Default: 15)")
-                .defineInRange("vallumraptorElderChance", 15, 0, 100);
         NucleeperServantLimit = BUILDER
                 .comment("Maximum number of Nucleeper Servants that can be summoned (Default: 8)")
                 .defineInRange("nucleeperServantLimit", 8, 1, 100);
@@ -733,16 +740,11 @@ public class AcConfig {
         DeepOneMageServantLimit = BUILDER
                 .comment("Maximum number of Deep One Mage Servants that can be summoned (Default: 6)")
                 .defineInRange("deepOneMageServantLimit", 6, 1, 100);
-        LicowitchSummonsLife = BUILDER
-                .comment("Whether candy servants a Licowitch Servant summons have a limited lifespan (45~120s); when false they persist until killed, like Goety Necromancer summons with NecromancerSummonsLife off (Default: true)")
-                .define("licowitchSummonsLife", true);
         LicowitchSummonLimit = BUILDER
                 .comment("Maximum number of candy servants one Licowitch Servant can keep summoned at once, Default: 6)")
                 .defineInRange("licowitchSummonLimit", 6, 1, 100);
         MineGuardianServantLimit = BUILDER
                 .defineInRange("mineGuardianServantLimit", 16, 1, 100);
-        MineGuardianServantExplosionGriefing = BUILDER.comment("Whether Mine Guardian Servant explosions destroy blocks, Default: false (set to true to allow block destruction, which also respects the mobGriefing game rule)")
-                .define("mineGuardianServantExplosionGriefing", false);
         NuclearGuardianServantLimit = BUILDER
                 .comment("Maximum number of Nuclear Guardian Servants that can be summoned (Default: 2)")
                 .defineInRange("nuclearGuardianServantLimit", 2, 1, 100);
