@@ -217,6 +217,9 @@ public class MutantFrozenZombieServant extends AbstractMutantServant implements 
     }
 
     public boolean canHarm(Entity target) {
+        if (MobUtil.areAllies(this, target)) {
+            return false;
+        }
         return MiscUtils.canHarmBasedOnTeamAndTag(EntityTypes.MUTANT_FROZEN_ZOMBIE_CANT_HURT, this, target, this, null);
     }
 

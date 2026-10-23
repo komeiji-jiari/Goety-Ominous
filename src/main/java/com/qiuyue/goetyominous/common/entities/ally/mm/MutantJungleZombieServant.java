@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.entities.ally.mm;
 
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.common.items.equipment.PhilosophersMaceItem;
+import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.ModDamageSource;
 import com.alexander.mutantmore.ai.goals.AllDirectionsTargetGoal;
 import com.alexander.mutantmore.ai.goals.ApproachTargetGoal;
@@ -281,6 +282,9 @@ public class MutantJungleZombieServant extends AbstractMutantServant {
     }
 
     public boolean canHarm(Entity target) {
+        if (MobUtil.areAllies(this, target)) {
+            return false;
+        }
         return MiscUtils.canHarmBasedOnTeamAndTag(EntityTypes.MUTANT_JUNGLE_ZOMBIE_CANT_HURT, this, target, this, (Predicate) null);
     }
 

@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.entities.ally.mm;
 
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.init.ModMobType;
+import com.Polarice3.Goety.utils.MobUtil;
 import com.alexander.mutantmore.ai.goals.AllDirectionsTargetGoal;
 import com.alexander.mutantmore.ai.goals.ApproachTargetGoal;
 import com.alexander.mutantmore.ai.goals.GroundPullAntiCheeseGoal;
@@ -383,6 +384,9 @@ public class MutantHoglinServant extends AbstractMutantServant implements Player
     }
 
     public boolean canHarm(Entity target) {
+        if (MobUtil.areAllies(this, target)) {
+            return false;
+        }
         return MiscUtils.canHarmBasedOnTeamAndTag(EntityTypes.MUTANT_HOGLIN_CANT_HURT, this, target, this, (Predicate)null);
     }
 
@@ -784,6 +788,10 @@ public class MutantHoglinServant extends AbstractMutantServant implements Player
                                 entity = (Entity)var2.next();
                             } while(entity == this);
                         } while(!entity.onGround() && (!entity.isPassenger() || !entity.getRootVehicle().onGround()));
+
+                        if (MobUtil.areAllies(this, entity)) {
+                            continue;
+                        }
 
                         if (this.canHarm(entity)) {
                             if ((Boolean)MutantHoglinCommonConfig.ignores_invulnerability_time.get()) {

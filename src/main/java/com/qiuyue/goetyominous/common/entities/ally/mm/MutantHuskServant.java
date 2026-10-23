@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.entities.ally.mm;
 
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.common.items.equipment.PhilosophersMaceItem;
+import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.ModDamageSource;
 import com.alexander.mutantmore.ai.goals.AllDirectionsTargetGoal;
 import com.alexander.mutantmore.ai.goals.ApproachTargetGoal;
@@ -199,6 +200,9 @@ public class MutantHuskServant extends AbstractMutantServant {
     }
 
     public boolean canHarm(Entity target) {
+        if (MobUtil.areAllies(this, target)) {
+            return false;
+        }
         return MiscUtils.canHarmBasedOnTeamAndTag(EntityTypes.MUTANT_HUSK_CANT_HURT, this, target, this, (Predicate) null);
     }
 
@@ -507,7 +511,7 @@ public class MutantHuskServant extends AbstractMutantServant {
     private void roar() {
         if (this.isAlive()) {
             for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(MutantHuskCommonConfig.roar_damage_range.get(), MutantHuskCommonConfig.roar_damage_range.get() / 2.0, MutantHuskCommonConfig.roar_damage_range.get()), ALIVE)) {
-                if (entity == this) continue;
+                if (entity == this || MobUtil.areAllies(this, entity)) continue;
                 if (this.canHarm(entity)) {
                     if (MutantHuskCommonConfig.ignores_invulnerability_time.get()) {
                         entity.invulnerableTime = 0;
