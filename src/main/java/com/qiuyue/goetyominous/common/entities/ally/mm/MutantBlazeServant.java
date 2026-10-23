@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.entities.ally.mm;
 
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.init.ModMobType;
+import com.Polarice3.Goety.utils.MobUtil;
 import com.alexander.mutantmore.ai.goals.ApproachTargetGoal;
 import com.alexander.mutantmore.ai.goals.GroundPullAntiCheeseGoal;
 import com.alexander.mutantmore.ai.goals.LookAtTargetGoal;
@@ -823,10 +824,11 @@ public class MutantBlazeServant extends AbstractMutantServant implements IHeatSo
     }
 
     private void shockwave() {
-        Entity entity;
         if (this.isAlive()) {
-            for(Iterator var1 = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate((Double)MutantBlazeCommonConfig.stun_shockwave_range.get()), SHOCKWAVABLE).iterator(); var1.hasNext(); this.strongKnockback(entity)) {
-                entity = (Entity)var1.next();
+            for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate((Double)MutantBlazeCommonConfig.stun_shockwave_range.get()), SHOCKWAVABLE)) {
+                if (MobUtil.areAllies(this, entity)) {
+                    continue;
+                }
                 if (this.canHurt(entity)) {
                     if ((Boolean)MutantBlazeCommonConfig.ignores_invulnerability_time.get()) {
                         entity.invulnerableTime = 0;
@@ -834,16 +836,18 @@ public class MutantBlazeServant extends AbstractMutantServant implements IHeatSo
 
                     entity.hurt(this.damageSources().mobAttack(this), ((Double)MutantBlazeCommonConfig.stun_shockwave_damage.get()).floatValue());
                     entity.setSecondsOnFire((Integer)MutantBlazeCommonConfig.stun_shockwave_fire_length.get());
-                    if (entity instanceof LivingEntity) {
-                        MiscUtils.disableShield((LivingEntity)entity, (Integer)MutantBlazeCommonConfig.stun_shockwave_disable_shield_length.get());
-                    }
+                    MiscUtils.disableShield(entity, (Integer)MutantBlazeCommonConfig.stun_shockwave_disable_shield_length.get());
                 }
+                this.strongKnockback(entity);
             }
         }
 
     }
 
     boolean canHurt(Entity target) {
+        if (MobUtil.areAllies(this, target)) {
+            return false;
+        }
         return MiscUtils.canHarmBasedOnTeamAndTag(EntityTypes.MUTANT_BLAZE_CANT_HURT, this, target, this, (Predicate)null);
     }
 
