@@ -227,7 +227,8 @@ public class MutantFrozenZombieServant extends AbstractMutantServant implements 
                 .add(Attributes.ARMOR_TOUGHNESS, MmConfig.MutantFrozenZombieServantArmorToughness.get())
                 .add(Attributes.KNOCKBACK_RESISTANCE, MmConfig.MutantFrozenZombieServantKnockbackResistance.get())
                 .add(Attributes.FOLLOW_RANGE, MmConfig.MutantFrozenZombieServantFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, MmConfig.MutantFrozenZombieServantMovementSpeed.get());
+                .add(Attributes.MOVEMENT_SPEED, MmConfig.MutantFrozenZombieServantMovementSpeed.get())
+                .add(Attributes.ATTACK_DAMAGE, MutantFrozenZombieCommonConfig.melee_attack_damage.get());
     }
 
     private boolean isRealDeath(DamageSource source) {

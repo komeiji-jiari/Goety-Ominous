@@ -83,7 +83,8 @@ public class MutantShulkerServantTrap extends Summoned {
                 .add(Attributes.MAX_HEALTH, MutantShulkerRewardsCommonConfig.trap_max_health.get())
                 .add(Attributes.ARMOR, MutantShulkerRewardsCommonConfig.trap_armour.get())
                 .add(Attributes.ARMOR_TOUGHNESS, MutantShulkerRewardsCommonConfig.trap_armour_toughness.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, MutantShulkerRewardsCommonConfig.trap_knockback_resistance.get());
+                .add(Attributes.KNOCKBACK_RESISTANCE, MutantShulkerRewardsCommonConfig.trap_knockback_resistance.get())
+                .add(Attributes.ATTACK_DAMAGE, MutantShulkerRewardsCommonConfig.trap_player_damage.get());
     }
 
     @Override

@@ -288,7 +288,8 @@ public class MutantBlazeServant extends AbstractMutantServant implements IHeatSo
                 .add(Attributes.ARMOR_TOUGHNESS, MmConfig.MutantBlazeServantArmorToughness.get())
                 .add(Attributes.KNOCKBACK_RESISTANCE, MmConfig.MutantBlazeServantKnockbackResistance.get())
                 .add(Attributes.FOLLOW_RANGE, MmConfig.MutantBlazeServantFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, MmConfig.MutantBlazeServantMovementSpeed.get());
+                .add(Attributes.MOVEMENT_SPEED, MmConfig.MutantBlazeServantMovementSpeed.get())
+                .add(Attributes.ATTACK_DAMAGE, MutantBlazeCommonConfig.stun_shockwave_damage.get());
     }
 
     public void onMutated() {
