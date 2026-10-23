@@ -2,6 +2,8 @@ package com.qiuyue.goetyominous.common.init;
 
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.blocks.PiglinMerchantSpawnerBlockEntity;
+import com.qiuyue.goetyominous.common.blocks.entities.BoggedSkullBlockEntity;
+import com.qiuyue.goetyominous.common.blocks.entities.MiredSkullBlockEntity;
 import com.qiuyue.goetyominous.common.blocks.entities.PlushieBlockEntity;
 import com.qiuyue.goetyominous.common.blocks.entities.WolfTotemBlockEntity;
 import com.qiuyue.goetyominous.common.blocks.trial.TrialBlocks;
@@ -40,6 +42,20 @@ public class ModBlockEntities {
                     () -> BlockEntityType.Builder.of(
                             WolfTotemBlockEntity::new,
                             ModBlocks.WOLF_TOTEM.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<BoggedSkullBlockEntity>> BOGGED_SKULL =
+            BLOCK_ENTITIES.register("bogged_skull",
+                    () -> BlockEntityType.Builder.of(
+                            BoggedSkullBlockEntity::new,
+                            ModBlocks.BOGGED_SKULL.get(),
+                            ModBlocks.BOGGED_WALL_SKULL.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<MiredSkullBlockEntity>> MIRED_SKULL =
+            BLOCK_ENTITIES.register("mired_skull",
+                    () -> BlockEntityType.Builder.of(
+                            MiredSkullBlockEntity::new,
+                            ModBlocks.MIRED_SKULL.get(),
+                            ModBlocks.MIRED_WALL_SKULL.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<PlushieBlockEntity>> PLUSHIE =
             BLOCK_ENTITIES.register("plushie",

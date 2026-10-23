@@ -179,6 +179,9 @@ public class OfConfig {
                 .defineInRange("skyvernServantKnockbackResistance", 1.0, 0.0, 1.0);
         SkyvernServantFollowRange = BUILDER.comment("How much Follow Range Skyvern Servants have, Default: 80.0")
                 .defineInRange("skyvernServantFollowRange", 80.0, 1.0, Double.MAX_VALUE);
+        SkyvernServantGhost = BUILDER
+                .comment("Whether Skyvern Servants summoned while the owner wears a Wind Robe become translucent and lose collision (Default: true)")
+                .define("skyvernServantGhost", true);
         BUILDER.pop();
         BUILDER.push("Terror Servant");
         TerrorServantHealth = BUILDER.comment("How much Max Health Terror Servants have, Default: 36.0")
@@ -228,9 +231,6 @@ public class OfConfig {
         SkyvernServantLimit = BUILDER
                 .comment("Maximum number of Skyvern Servants that can be summoned (Default: 3)")
                 .defineInRange("skyvernServantLimit", 3, 1, 100);
-        SkyvernServantGhost = BUILDER
-                .comment("Whether Skyvern Servants summoned while the owner wears a Wind Robe become translucent and lose collision (Default: true)")
-                .define("skyvernServantGhost", true);
         BUILDER.pop();
         BUILDER.push("Spells");
         BUILDER.push("Volt");

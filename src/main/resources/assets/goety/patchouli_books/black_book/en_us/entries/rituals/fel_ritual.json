@@ -1,6 +1,6 @@
 {
   "name": "Fel Ritual",
-  "icon": "goety:rotten_bookshelf",
+  "icon": "goety:witch_cauldron",
   "advancement": "goetyominous:goetyominous/witch_lesson",
   "secret": true,
   "category": "goety:ominous_rituals",

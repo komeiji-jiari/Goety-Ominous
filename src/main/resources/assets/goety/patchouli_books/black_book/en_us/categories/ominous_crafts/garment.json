@@ -1,7 +1,7 @@
 {
   "name": "Garments",
   "description": "Curios and Clothing of Dark Wizards.",
-  "icon": "goety:dark_hat",
+  "icon": "goetyominous:fungus_pack",
   "parent": "goety:ominous_crafts",
   "sortnum": 2
 }

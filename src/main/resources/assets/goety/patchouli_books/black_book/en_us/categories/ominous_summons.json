@@ -1,7 +1,7 @@
 {
   "name": "Summons",
   "description": "Dark Servants for a Dark Wizard.",
-  "icon": "minecraft:zombie_head",
+  "icon": "goetyominous:bogged_skull",
   "parent": "goety:ominous",
   "sortnum": 3
 }

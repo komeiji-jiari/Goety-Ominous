@@ -86,6 +86,14 @@ public class ModItems {
     public static final RegistryObject<Item> WOLF_TONGUE = ITEMS.register("wolf_tongue",
             () -> new Item(new Item.Properties().rarity(Rarity.COMMON).stacksTo(64)));
 
+    public static final RegistryObject<Item> BOGGED_SKULL = ITEMS.register("bogged_skull",
+            () -> new BoggedSkullItem(ModBlocks.BOGGED_SKULL.get(), ModBlocks.BOGGED_WALL_SKULL.get(),
+                    new Item.Properties().rarity(Rarity.COMMON)));
+
+    public static final RegistryObject<Item> MIRED_SKULL = ITEMS.register("mired_skull",
+            () -> new MiredSkullItem(ModBlocks.MIRED_SKULL.get(), ModBlocks.MIRED_WALL_SKULL.get(),
+                    new Item.Properties().rarity(Rarity.COMMON)));
+
     public static final RegistryObject<Item> COLD_HEART = ITEMS.register("cold_heart",
             () -> new ColdHeartItem());
 

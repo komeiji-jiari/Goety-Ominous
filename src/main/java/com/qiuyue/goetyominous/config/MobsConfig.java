@@ -62,9 +62,6 @@ public class MobsConfig {
         HurricaneServantLimit = BUILDER
                 .comment("Number of Hurricane Servants that an individual player can have in total (Default: 3)")
                 .defineInRange("hurricaneServantLimit", 3, 1, 100);
-        HurricaneServantCore = BUILDER
-                .comment("Whether owned Hurricane Servants drop Hurricane Cores, Default: true")
-                .define("hurricaneServantCore", true);
         CerberusLimit = BUILDER
                 .comment("The maximum number of living Cerberuses owned by one player (Default: 1)")
                 .defineInRange("cerberusLimit", 1, 0, 100);
@@ -74,8 +71,6 @@ public class MobsConfig {
         HeresiarchServantLimit = BUILDER
                 .comment("Maximum number of Heresiarch Servants that can be summoned (Default: 3)")
                 .defineInRange("heresiarchServantLimit", 3, 1, 100);
-        LeapkelpMoistness = BUILDER.comment("Whether Leapkelp Servants have a moistness meter; when false they never dry out (Default: true)")
-                .define("leapkelpMoistness", true);
         BUILDER.pop();
         BUILDER.push("Mechanics");
         ApostleSpawnDisciple = BUILDER
@@ -170,6 +165,11 @@ public class MobsConfig {
         RaidOmen = BUILDER
                 .comment("Whether Bad Omen becomes a 30-second Raid Omen in a village and starts the raid when it expires, as in 1.21. When false, the 1.20 behavior is kept (Default: false)")
                 .define("raidOmen", false);
+        HurricaneServantCore = BUILDER
+                .comment("Whether owned Hurricane Servants drop Hurricane Cores, Default: true")
+                .define("hurricaneServantCore", true);
+        LeapkelpMoistness = BUILDER.comment("Whether Leapkelp Servants have a moistness meter; when false they never dry out (Default: true)")
+                .define("leapkelpMoistness", true);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }

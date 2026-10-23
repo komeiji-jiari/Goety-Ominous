@@ -5,6 +5,7 @@ import com.Polarice3.Goety.utils.MathHelper;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.entities.util.BoggedLike;
 import com.qiuyue.goetyominous.common.init.ModSounds;
+import com.qiuyue.goetyominous.common.items.ModItems;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -27,6 +28,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RangedBowAttackGoal;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Arrow;
@@ -180,6 +182,15 @@ public class BoggedEntity extends AbstractSkeleton implements ICustomAttributes,
             amount *= 0.75F;
         }
         return super.hurt(source, amount);
+    }
+
+    @Override
+    protected void dropCustomDeathLoot(DamageSource source, int looting, boolean recentlyHit) {
+        super.dropCustomDeathLoot(source, looting, recentlyHit);
+        if (source.getEntity() instanceof Creeper creeper && creeper.canDropMobsSkull()) {
+            creeper.increaseDroppedSkulls();
+            this.spawnAtLocation(ModItems.BOGGED_SKULL.get());
+        }
     }
 
     @Override

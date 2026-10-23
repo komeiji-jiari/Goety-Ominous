@@ -602,12 +602,12 @@ public class MutantShulkerServant extends AbstractMutantServant implements IHasC
                 return InteractionResult.sidedSuccess(this.level().isClientSide);
             }
         }
-        if (this.getOwner() == player && itemstack.getItem() == Items.ENDER_PEARL && this.getHealth() < this.getMaxHealth()) {
+        if (this.getOwner() == player && itemstack.getItem() == Items.SHULKER_SHELL && this.getHealth() < this.getMaxHealth()) {
             if (!player.getAbilities().instabuild) {
                 itemstack.shrink(1);
             }
             this.playSound(SoundEventInit.MUTANT_SHULKER_IDLE.get(), 1.0F, 1.0F);
-            this.heal(2.0F);
+            this.heal(10.0F);
             if (this.level() instanceof ServerLevel serverLevel) {
                 for (int i = 0; i < 7; ++i) {
                     double d0 = this.random.nextGaussian() * 0.02D;

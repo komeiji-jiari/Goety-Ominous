@@ -1,6 +1,6 @@
 {
   "name": "猪灵的职业",
-  "icon": "minecraft:gold_ingot",
+  "icon": "piglinproliferation:travelers_compass",
   "category": "goety:ominous_mutations",
   "sortnum": 1,
   "advancement": "goetyominous:goetyominous/read_bastion_scroll",

@@ -200,6 +200,10 @@ public class MmClientEvents {
             event.registerEntityRenderer(
                     com.alexander.mutantmore.init.EntityTypeInit.MUTANT_SHULKER.get(),
                     com.qiuyue.goetyominous.client.render.mm.FixedMutantShulkerRenderer::new);
+
+            event.registerEntityRenderer(
+                    com.alexander.mutantmore.init.EntityTypeInit.MUTANT_BLAZE.get(),
+                    com.qiuyue.goetyominous.client.render.mm.FixedMutantBlazeRenderer::new);
         }
     }
 }
