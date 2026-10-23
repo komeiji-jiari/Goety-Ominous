@@ -208,9 +208,9 @@ public class GoetyOminous {
                 FMLPaths.CONFIGDIR.get().resolve("goetyominous/goetyominous-legendary_monsters.toml").toString());
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, PpConfig.SPEC,
-                "goetyominous/goetyominous-Piglin Proliferation.toml");
+                "goetyominous/goetyominous-piglin_proliferation.toml");
         PpConfig.loadConfig(PpConfig.SPEC,
-                FMLPaths.CONFIGDIR.get().resolve("goetyominous/goetyominous-Piglin Proliferation.toml").toString());
+                FMLPaths.CONFIGDIR.get().resolve("goetyominous/goetyominous-piglin_proliferation.toml").toString());
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, MmConfig.SPEC,
                 "goetyominous/goetyominous-mutantmore.toml");
