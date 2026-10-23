@@ -29,7 +29,7 @@
 - 索敌：[搜索盒 ±4 格](goety-target-search-area-vertical-4-blocks.md) — 高空飞仆锁不上地面怪
 - 长尾鲨：[两段式索敌](thrasher-servant-two-stage-targeting.md)、[玩家骑乘](thrasher-servant-player-riding.md) — 声呐目标必须 isInWater
 - 移植审计：[OF 三易漏落点](of-servant-port-checklist.md)、[蚀牙兽还原度审计](corrodent-servant-fidelity-audit.md)、[试炼四效果定案](trial-effect-port-1.21.1.md)、[Summoned 已含亡灵点燃](goety-summoned-dohurttarget-duplicate.md)、[Frowzy 有意偏离 OF](frowzy-servant-deliberate-divergences.md) — finalizeSpawn 里的 elite 掷骰;doHurtTarget 别重复搬
-- 其他仆从件：[飞行 isStableDestination](forge-goety-flyer-isStableDestination.md)、[飞行游荡死区](forge-flying-stroll-deadzone.md)、[训练方块当造兵方块](goety-training-block-base.md)、[FlyingItem 返还](goety-flyingitem-return-semantics.md)、[复用模型私有字段](goety-model-reuse-private-fields.md)
+- 其他仆从件：[自建仆从要 ATTACK_DAMAGE](goety-servant-missing-attack-damage.md) — Aether 减伤会查 source 属性;Mob.createMobAttributes 不含、[飞行 isStableDestination](forge-goety-flyer-isStableDestination.md)、[飞行游荡死区](forge-flying-stroll-deadzone.md)、[训练方块当造兵方块](goety-training-block-base.md)、[FlyingItem 返还](goety-flyingitem-return-semantics.md)、[复用模型私有字段](goety-model-reuse-private-fields.md)
 - 陷阱蓝线：[来历与剥离](mm-shulker-trap-texture-blue-outline.md) — 贴图多描的 2px 浅蓝边;改 PNG 别用 GDI+,用 .scratch/_strip_trap_outline.mjs
 - 仆从贴图自家化：[共用渲染器一起换](mm-servant-textures-own-copies.md) — 霜冻/尸壳换自家皮;雪球冰锥沙球同源贴图要一起改;husk 沙型只两种
 - 潜影贝染色：[现状](mm-mutant-shulker-dyeing.md) — 本体/陷阱可染,两种导弹明确不染;小导弹用自家实体
