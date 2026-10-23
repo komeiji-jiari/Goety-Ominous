@@ -209,7 +209,8 @@ public class MutantHuskServant extends AbstractMutantServant {
                 .add(Attributes.ARMOR_TOUGHNESS, MmConfig.MutantHuskServantArmorToughness.get())
                 .add(Attributes.KNOCKBACK_RESISTANCE, MmConfig.MutantHuskServantKnockbackResistance.get())
                 .add(Attributes.FOLLOW_RANGE, MmConfig.MutantHuskServantFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, MmConfig.MutantHuskServantMovementSpeed.get());
+                .add(Attributes.MOVEMENT_SPEED, MmConfig.MutantHuskServantMovementSpeed.get())
+                .add(Attributes.ATTACK_DAMAGE, MutantHuskCommonConfig.basic_attack_damage.get());
     }
 
     private boolean isRealDeath(DamageSource source) {

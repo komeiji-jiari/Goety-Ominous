@@ -293,7 +293,8 @@ public class MutantShulkerServant extends AbstractMutantServant implements IHasC
                 .add(Attributes.ARMOR_TOUGHNESS, MmConfig.MutantShulkerServantArmorToughness.get())
                 .add(Attributes.KNOCKBACK_RESISTANCE, MmConfig.MutantShulkerServantKnockbackResistance.get())
                 .add(Attributes.FOLLOW_RANGE, MmConfig.MutantShulkerServantFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, MmConfig.MutantShulkerServantMovementSpeed.get());
+                .add(Attributes.MOVEMENT_SPEED, MmConfig.MutantShulkerServantMovementSpeed.get())
+                .add(Attributes.ATTACK_DAMAGE, MutantShulkerCommonConfig.bite_damage.get());
     }
 
     protected SoundEvent getAmbientSound() {
