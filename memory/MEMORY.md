@@ -11,6 +11,7 @@
 - 移植准则：[表现原版/实现 Goety](ac-servant-parity-keep-original.md)、[飓风分叉是有意的](hurricane-breeze-intentional-divergence.md)、[移植漏单行](ac-goety-port-probability-gates.md) — 冲突时 Goety 优先
 - MM 手臂道具：[已按用户令删除](mm-mutant-jungle-zombie-arm-port.md) — 别再主动重提
 - dist 审计：[现状+已修/仍脆弱](client-dist-audit-fragile-spots.md) — HUD 已移 client 包;LM 粒子嵌套类仍须保持无类级注解
+- [错题本同步到仓库](memory-notebook-sync-to-repo.md) — memory 整份复制到仓库 memory/，独立提交后推送
 
 ## Goety 仆从骨架
 - 状态机：[跟随/待命](goety-servant-follow-standby.md)、[空闲冻结](goety-summon-idle-freeze.md)、[能力位vs状态位](goety-iservant-capability-vs-state.md) — 短路 checkDespawn→用 Summoned.WanderGoal
