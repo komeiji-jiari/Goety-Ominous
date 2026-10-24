@@ -7,6 +7,7 @@ import net.miauczel.legendary_monsters.damagetype.ModDamageTypes;
 import net.miauczel.legendary_monsters.effect.ModEffects;
 import net.miauczel.legendary_monsters.entity.AnimatedMonster.IAnimatedBoss.TheObliterator.TheObliteratorUtils;
 import net.miauczel.legendary_monsters.sound.ModSounds;
+import net.miauczel.legendary_monsters.util.MathUtils;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -96,7 +97,8 @@ public class AnnihilationBomb extends SpellThrowableProjectile {
             if (MobUtil.areAllies(livingOwner, living)) {
                 return;
             }
-            living.hurt(ModDamageTypes.causeAnnihilationDamage(livingOwner, livingOwner), this.getDamage());
+            living.hurt(ModDamageTypes.causeAnnihilationDamage(livingOwner, livingOwner),
+                    (float) (this.getDamage() + MathUtils.entityBasedHpDamage(living, 3.0F)));
             TheObliteratorUtils.applyAnnihilationEffect(living, ModEffects.ANNIHILATION.get(), 1, false);
         }
     }

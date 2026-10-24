@@ -433,8 +433,8 @@ public class LmConfig {
                 .defineInRange("annihilationPursuerServantDamageMultiplier", 1.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("The Obliterator Servant");
-        TheObliteratorServantHealth = BUILDER.comment("How much Max Health The Obliterator Servants have, Default: 450.0 (Legendary Monsters' value)")
-                .defineInRange("theObliteratorServantHealth", 450.0, 1.0, Double.MAX_VALUE);
+        TheObliteratorServantHealth = BUILDER.comment("How much Max Health The Obliterator Servants have, Default: 550.0 (Legendary Monsters' value)")
+                .defineInRange("theObliteratorServantHealth", 550.0, 1.0, Double.MAX_VALUE);
         TheObliteratorServantArmor = BUILDER.comment("How much natural Armor The Obliterator Servants have, Default: 14.0 (Legendary Monsters' value)")
                 .defineInRange("theObliteratorServantArmor", 14.0, 0.0, Double.MAX_VALUE);
         TheObliteratorServantArmorToughness = BUILDER.comment("How much Armor Toughness The Obliterator Servants have, Default: 4.0 (Legendary Monsters' value). Halved from phase 2 on, same as the boss")
