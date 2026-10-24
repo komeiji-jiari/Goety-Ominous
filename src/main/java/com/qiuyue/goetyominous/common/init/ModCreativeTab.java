@@ -15,6 +15,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
+import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -45,6 +46,7 @@ public class ModCreativeTab {
                     .displayItems((parameters, output) -> {
                         Buckets buckets = Buckets.collect();
                         buckets.weapons.forEach(output::accept);
+                        buckets.curios.forEach(output::accept);
                         buckets.armor.forEach(output::accept);
                         buckets.foci.forEach(output::accept);
                         buckets.other.forEach(output::accept);
@@ -84,6 +86,7 @@ public class ModCreativeTab {
         final List<Item> spawnEggs = new ArrayList<>();
         final List<Item> foci = new ArrayList<>();
         final List<Item> weapons = new ArrayList<>();
+        final List<Item> curios = new ArrayList<>();
         final List<Item> armor = new ArrayList<>();
         final List<Item> other = new ArrayList<>();
         final List<Item> blocks = new ArrayList<>();
@@ -153,23 +156,25 @@ public class ModCreativeTab {
         registry.getEntries().forEach(entry -> {
             if (entry.isPresent()) {
                 Item item = entry.get();
-                if (isVanillaTabbed(item)) {
+                if (isVanillaTabbed(item)
+                        || item instanceof PlushieBlockItem
+                        || item instanceof OminousIconItem) {
                     return;
                 }
                 if (item instanceof SpawnEggItem) {
                     buckets.spawnEggs.add(item);
+                } else if (item instanceof ICurioItem) {
+                    buckets.curios.add(item);
                 } else if (item instanceof MagicFocus) {
                     buckets.foci.add(item);
                 } else if (isWeapon(item)) {
                     buckets.weapons.add(item);
                 } else if (isMobArmor(item)) {
                     buckets.armor.add(item);
-                } else if (!(item instanceof PlushieBlockItem) && !(item instanceof OminousIconItem)) {
-                    if (item instanceof BlockItem) {
-                        buckets.blocks.add(item);
-                    } else {
-                        buckets.other.add(item);
-                    }
+                } else if (item instanceof BlockItem) {
+                    buckets.blocks.add(item);
+                } else {
+                    buckets.other.add(item);
                 }
             }
         });
@@ -184,13 +189,7 @@ public class ModCreativeTab {
         order.add(ModItems.WORMY_APPLE.get());
         order.add(ModItems.COLD_HEART.get());
         order.add(ModItems.ACID_FUNGUS.get());
-        order.add(ModItems.BREEZE_ROD.get());
-        order.add(ModItems.WIND_CHARGE.get());
         order.add(ModItems.HURRICANE_CORE.get());
-
-        order.add(ModItems.TRIAL_KEY.get());
-        order.add(ModItems.OMINOUS_TRIAL_KEY.get());
-        order.add(ModItems.OMINOUS_BOTTLE.get());
 
         order.add(ModItems.BURNING_POTION.get());
         order.add(ModItems.NETHER_WART_POTION.get());
@@ -201,13 +200,6 @@ public class ModCreativeTab {
         order.add(ModItems.STORM_SOUL_JAR.get());
         order.add(ModItems.THUNDER_HORN.get());
         order.add(ModItems.BROKEN_STORM_CROWN.get());
-        order.add(ModItems.DARK_ANKH.get());
-        order.add(ModItems.SCREAMING_SKULL_JAR.get());
-        order.add(ModItems.FUNGUS_PACK.get());
-        order.add(ModItems.RAGGED_FUNGUS_PACK.get());
-
-        order.add(ModItems.CRONE_ROBE.get());
-        order.add(ModItems.CRONE_ROBE_ALT.get());
 
         items.sort(Comparator.comparingInt(item -> {
             int index = order.indexOf(item);
