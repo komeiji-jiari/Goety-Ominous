@@ -36,18 +36,6 @@ public class ModBlocks {
     public static final RegistryObject<WolfTotemBlock> WOLF_TOTEM =
             BLOCKS.register("wolf_totem", WolfTotemBlock::new);
 
-    public static final RegistryObject<Block> BOGGED_SKULL =
-            BLOCKS.register("bogged_skull", BoggedSkullBlock::new);
-
-    public static final RegistryObject<Block> BOGGED_WALL_SKULL =
-            BLOCKS.register("bogged_wall_skull", BoggedWallSkullBlock::new);
-
-    public static final RegistryObject<Block> MIRED_SKULL =
-            BLOCKS.register("mired_skull", MiredSkullBlock::new);
-
-    public static final RegistryObject<Block> MIRED_WALL_SKULL =
-            BLOCKS.register("mired_wall_skull", MiredWallSkullBlock::new);
-
     public static final List<RegistryObject<PlushieBlock>> PLUSHIES = new ArrayList<>();
 
     public static final RegistryObject<PlushieBlock> PLUSHIE_ALASJ_XIAONIAO = plushie("plushie_alasj_xiaoniao", "alasj_xiaoniao");
