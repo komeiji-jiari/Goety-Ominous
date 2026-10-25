@@ -41,7 +41,7 @@
 
 ## 项目与约定
 - [多 jar 拆分](goetyominous-split-into-modules.md) — 判据=核心文件直接 import 第三方包；配置已拆 acam/uasr/lm/mm/of 5 组
-- [远征系统方案](expedition-system-plan.md) — 核心化旅行家远征/指南针：核心/PP 分层、独立 ExpeditionConfig、绑定反馈；已并入 aaacat 1.1.8 交付/会话机制，UI 双 Tab/滚动列表/队伍卡片对齐 aaacat，含“召集旅行家”；战利品改存旅行家背包/空手交付/箱子自动存入；**已落盘/编译+无PP启动通过，待游戏内实测**
+- [远征系统方案](expedition-system-plan.md) — 核心化旅行家远征/指南针：核心/PP 分层、独立 ExpeditionConfig、绑定反馈；已并入 aaacat 1.1.8 交付/会话机制，UI 双 Tab/滚动列表/队伍卡片对齐 aaacat，含“召集旅行家”；战利品改存旅行家背包/空手交付/箱子自动存入，箱满/跟随/待命可空手取回，未交付物品禁止再派遣；**已落盘/编译+无PP启动通过，待游戏内实测**
 - [ModMobType](modmobtype-name-collision.md)、[AnnihilationBomb](annihilation-bomb-ac-lm-name-collision.md) — 常量不能跨 jar 复制
 - 工作偏好：[不写注释](no-code-comments.md)、[别擅自写配方手册](no-unrequested-recipes-patchouli.md)、[模组名 4 处显示面](goetyominous-name-surfaces-ask-scope.md)、[别自动 build jar](no-auto-build-jar.md) — 文案要就问;用户说构建才构建
 - 死代码：[清理偏好](goetyominous-deadcode-cleanup-preference.md)、[脚本](goetyominous-deadcode-analysis-scripts.md) — .scratch/_deadcode.mjs + _deadfields.mjs

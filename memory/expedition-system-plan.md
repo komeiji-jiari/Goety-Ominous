@@ -113,7 +113,8 @@ metadata:
 - Lang：删除未使用的 `message.goetyominous.expedition.inventoryFull`、`screen...noTeamAction`、`noBiomes/noRuins/noTravelers/noTeams`、`biomes/ruins`；增加 tab/search/selectFiltered/filter/empty/summary/health 键。动态 status/marker/fail/filter 键保留。中英 JSON 校验通过。
 - 滚动列表相关方法名：ScrollList 使用 mojmap；如需改 UI 先看它和 screen 的 bounds/rowTop/contentRight。
 - 2026-10-25 追加：搜索框改为 aaacat 精确布局（modeW=min(66,leftW/2)，x=left+modeW+4，width=leftW-modeW-4，右边缘对齐左列），不再伸入右列。
-- 2026-10-25 追加：My Teams 的筛选按钮右侧新增“召集旅行家/Gather Travelers”按钮；新包 `ExpeditionGatherPacket`（协议版本升 6）；`ExpeditionViewSessions.gather` 用会话手持指南针，把已绑定且已加载的 READY/TOO_FAR/LIMITED_LIFE 旅行家传送到玩家周围 1.5 格，跳过远征中/未加载/死亡/非主人/BUSY；成功/失败通过 feedback 回界面和聊天栏。队伍卡仍只有右侧动作格触发 Recall/Claim/Retry。
+- 2026-10-25 追加：My Teams 的筛选按钮右侧新增“召集旅行家/Gather Travelers”按钮；新包 `ExpeditionGatherPacket`（协议版本升 6）；`ExpeditionViewSessions.gather` 用会话手持指南针，把已绑定且已加载的 READY/TOO_FAR/LIMITED_LIFE/PENDING_LOOT 旅行家传送到玩家周围 1.5 格，跳过远征中/未加载/死亡/非主人/BUSY；成功/失败通过 feedback 回界面和聊天栏。队伍卡仍只有右侧动作格触发 Recall/Claim/Retry。
+- 2026-10-25 修正箱子满死锁：`ExpeditionLootStorage.hasRoom` 检查“任意一件远征物品是否能进箱”；`ExpeditionLootChestGoal` 只在至少一件能进时启动，`chestInteract` 会尽量塞、放不下的继续留在身上（不再因第一件放不下就整队停）。`PiglinTravelerServant.canAutoStoreExpeditionLoot()` = 有可用箱子 + 不跟随/待命/无目标 + 箱子有任意空间；只有返回 false 时空手右键才把全部远征物品丢给玩家。因此箱子满、箱子失效、跟随/待命/战斗中都可手动取回。新增 `TravelerStatus.PENDING_LOOT`（尚有未交付物品），`evaluate` 对带远征物品的实体返回该状态，UI 置灰，Start 返回 `fail.pendingLoot`；Gather 仍允许传送该状态。
 
 ## 实施顺序
 1. 核心 ExpeditionConfig（17 项）+ ExpeditionData/ExpeditionDelivery + TravelerStatus + 枚举。
