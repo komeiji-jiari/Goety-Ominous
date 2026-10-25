@@ -151,7 +151,7 @@ public class PiglinTravelerServant extends AbstractPiglinServant implements Cros
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack held = player.getItemInHand(hand);
         if (!this.level().isClientSide && held.isEmpty() && player.getUUID().equals(this.getOwnerId())
-                && this.hasExpeditionLoot() && !this.hasUsableChestLink()) {
+                && this.hasExpeditionLoot() && !this.canAutoStoreExpeditionLoot()) {
             int count = 0;
             for (ItemStack stack : this.expeditionLoot) {
                 if (!stack.isEmpty()) {
@@ -166,6 +166,16 @@ public class PiglinTravelerServant extends AbstractPiglinServant implements Cros
             return InteractionResult.SUCCESS;
         }
         return super.mobInteract(player, hand);
+    }
+
+    private boolean canAutoStoreExpeditionLoot() {
+        if (this.isFollowing() || this.isStaying() || this.getTarget() != null) {
+            return false;
+        }
+        if (!this.hasUsableChestLink()) {
+            return false;
+        }
+        return ExpeditionLootStorage.hasRoom(this.level(), this.getChestPos(), this.expeditionLoot);
     }
 
     @Override

@@ -9,5 +9,7 @@ public enum TravelerStatus {
     LIMITED_LIFE,
     TOO_FAR,
     BUSY,
-    DEAD
+    DEAD,
+    PENDING_LOOT,
+    NO_IMMUNITY
 }

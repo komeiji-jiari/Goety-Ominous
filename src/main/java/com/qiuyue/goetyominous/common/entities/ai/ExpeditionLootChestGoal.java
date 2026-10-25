@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.ai;
 
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractPiglinServant;
+import com.qiuyue.goetyominous.common.explore.ExpeditionLootStorage;
 import com.qiuyue.goetyominous.common.explore.IExpeditionLootHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
@@ -25,8 +26,7 @@ public class ExpeditionLootChestGoal<T extends AbstractPiglinServant & IExpediti
         if (chestPos == null || this.getChest(this.piglin.level(), chestPos) == null) {
             return false;
         }
-        ItemStack first = this.getItem();
-        if (first.isEmpty() || this.isFull(first, this.piglin.level(), chestPos)) {
+        if (!ExpeditionLootStorage.hasRoom(this.piglin.level(), chestPos, this.piglin.getExpeditionLoot())) {
             return false;
         }
         return super.canUse();
@@ -64,9 +64,6 @@ public class ExpeditionLootChestGoal<T extends AbstractPiglinServant & IExpediti
             if (stack.isEmpty()) {
                 loot.remove(index);
                 continue;
-            }
-            if (inserted == 0) {
-                break;
             }
             index++;
         }
