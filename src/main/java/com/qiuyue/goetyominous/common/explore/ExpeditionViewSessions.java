@@ -101,7 +101,7 @@ public final class ExpeditionViewSessions {
             View view = entry.getValue();
             try {
                 ExpeditionNetwork.sendProgress(player,
-                        ExpeditionManager.travelerEntries(player, view.hand()),
+                        ExpeditionManager.travelerEntries(player, view.hand(), view.dimension()),
                         ExpeditionManager.expeditionInfos(player));
             } catch (RuntimeException broken) {
                 GoetyOminous.LOGGER.warn("[goetyominous] Failed to push expedition progress: {}", broken.toString());
@@ -133,7 +133,7 @@ public final class ExpeditionViewSessions {
             }
             TravelerStatus status = compass.evaluate(player, entity);
             if (status != TravelerStatus.READY && status != TravelerStatus.TOO_FAR
-                    && status != TravelerStatus.LIMITED_LIFE) {
+                    && status != TravelerStatus.LIMITED_LIFE && status != TravelerStatus.PENDING_LOOT) {
                 continue;
             }
             double angle = (double) index * 2.399963229728653D;

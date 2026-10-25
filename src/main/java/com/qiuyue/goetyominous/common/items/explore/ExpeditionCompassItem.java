@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.common.items.explore;
 import com.Polarice3.Goety.api.entities.IOwned;
 import com.qiuyue.goetyominous.common.explore.ExpeditionData;
 import com.qiuyue.goetyominous.common.explore.ExpeditionViewSessions;
+import com.qiuyue.goetyominous.common.explore.IExpeditionLootHolder;
 import com.qiuyue.goetyominous.common.explore.TravelerStatus;
 import com.qiuyue.goetyominous.config.ExpeditionConfig;
 import net.minecraft.core.particles.ParticleTypes;
@@ -37,6 +38,10 @@ public abstract class ExpeditionCompassItem extends Item {
 
     protected abstract boolean acceptsTraveler(LivingEntity entity);
 
+    public boolean canTravelTo(LivingEntity traveler, ServerLevel destination) {
+        return true;
+    }
+
     protected UUID getOwnerId(LivingEntity entity) {
         return entity instanceof IOwned owned ? owned.getOwnerId() : null;
     }
@@ -50,6 +55,10 @@ public abstract class ExpeditionCompassItem extends Item {
     }
 
     public TravelerStatus evaluate(ServerPlayer player, Entity entity) {
+        return this.evaluate(player, entity, null);
+    }
+
+    public TravelerStatus evaluate(ServerPlayer player, Entity entity, ServerLevel destination) {
         if (entity == null) {
             return TravelerStatus.UNLOADED;
         }
@@ -86,6 +95,12 @@ public abstract class ExpeditionCompassItem extends Item {
         }
         if (living.isPassenger() || living.isVehicle()) {
             return TravelerStatus.BUSY;
+        }
+        if (living instanceof IExpeditionLootHolder holder && holder.hasExpeditionLoot()) {
+            return TravelerStatus.PENDING_LOOT;
+        }
+        if (destination != null && !this.canTravelTo(living, destination)) {
+            return TravelerStatus.NO_IMMUNITY;
         }
         return TravelerStatus.READY;
     }

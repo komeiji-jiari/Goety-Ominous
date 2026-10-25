@@ -107,6 +107,12 @@ public final class ExpeditionManager {
             if (status != TravelerStatus.READY) {
                 return fail(statusKey(status));
             }
+            if (living instanceof IExpeditionLootHolder holder && holder.hasExpeditionLoot()) {
+                return fail("pendingLoot");
+            }
+            if (!compass.canTravelTo(living, targetLevel)) {
+                return fail("zombification");
+            }
             travelers.add(living);
         }
 
@@ -247,7 +253,7 @@ public final class ExpeditionManager {
             }
         }
 
-        List<ExpeditionSnapshot.TravelerEntry> travelers = travelerEntries(player, hand);
+        List<ExpeditionSnapshot.TravelerEntry> travelers = travelerEntries(player, hand, effective);
         List<ExpeditionSnapshot.ExpeditionInfo> expeditions = expeditionInfos(player);
 
         ResourceLocation playerBiome = player.level().getBiome(player.blockPosition()).unwrapKey()
@@ -259,7 +265,8 @@ public final class ExpeditionManager {
                 feedback == null ? Component.empty() : feedback);
     }
 
-    public static List<ExpeditionSnapshot.TravelerEntry> travelerEntries(ServerPlayer player, InteractionHand hand) {
+    public static List<ExpeditionSnapshot.TravelerEntry> travelerEntries(ServerPlayer player, InteractionHand hand,
+                                                                         ResourceKey<Level> destination) {
         MinecraftServer server = player.getServer();
         if (server == null) {
             return List.of();
@@ -269,6 +276,7 @@ public final class ExpeditionManager {
             return List.of();
         }
         ExpeditionData data = ExpeditionData.get(server);
+        ServerLevel targetLevel = destination == null ? null : server.getLevel(destination);
         compass.reconcile(held, player);
         Map<UUID, ExpeditionSnapshot.TravelerEntry> entries = new LinkedHashMap<>();
         for (UUID id : ExpeditionCompassItem.getBound(held)) {
@@ -292,7 +300,7 @@ public final class ExpeditionManager {
                         0.0F, 0.0F, false, false));
                 continue;
             }
-            TravelerStatus status = compass.evaluate(player, entity);
+            TravelerStatus status = compass.evaluate(player, entity, targetLevel);
             if (status == TravelerStatus.DEAD) {
                 continue;
             }
@@ -498,6 +506,8 @@ public final class ExpeditionManager {
             case BUSY -> "busy";
             case IN_EXPEDITION -> "expedition";
             case DEAD -> "gone";
+            case PENDING_LOOT -> "pendingLoot";
+            case NO_IMMUNITY -> "zombification";
             default -> "gone";
         };
     }
