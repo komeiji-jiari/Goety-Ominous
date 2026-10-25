@@ -1,7 +1,47 @@
 # Memory Index
 
+## ⚠️ 本机最高优先级
+- [No edit without consent](no-edit-without-consent.md) — ⚠️最高优先级：除非用户明确说"edit"这个词，否则绝不修改任何语段/创建任何文件，只给代码和行号
+- [代码不加注释](no-comments-in-code.md) — 写进工程的代码一律裸代码（无 javadoc/行内注释），"为什么"写在对话或记忆里；已有注释不动
+- [⚠️Windy 移植 1:1 铁律](windy-port-1to1-principle.md) — 最高优先级：必须逐签名逐方法复刻 1.21（含常量/数值），不许简化或砍功能；缺的原版件用反编译器读源码后等价实现
+- [⚠️移植数据不得捏造](port-data-fidelity-rule.md) — 注册数据(尺寸/eyeHeight/分类/数值)必须与 1.21/Goety-3 逐字段一致，先查再写；1.20.1 缺 API 用等价手段复现同数值（实例：sized 0.3125 + getEyeHeight 覆写）
+
+## 本机补充笔记（E:\java）
+- [MutantBlaze 仆从移植进度](mutant-blaze-servant-port-progress.md) — ShieldPart/Fireball/Rod 已交付；RodlingServant 待办（裁剪已定、反编译源/关键方法速查）
+- [Dreden 移植计划](dreden-port-plan.md) — Goety1 Dreden → 1.20.1/goety2 基座核对与文件面；基座=goety2 AbstractWraith，FrostBall/两 goal 需自移植，法术最后
+- [Axis 的 SRG 映射](srg-axis-mapping.md) — 反编译 goety 还原 `Axis.f_252392_` 时踩过坑：它是 YN 不是 YP，猜错模型就转向反了
+- [Goety2 基座源码](goety2-base-source.md) — 移植参考基座是 libs/goety-2.5.56.5.jar（deobf，用 javap 反汇编），不是仓库里的 Goety-3-main/Goety-master 源码树
+- [Goety2 反编译源码位置](goety2-src-decompile.md) — Goety 2.5.58.2 源码已反编译在 `.disasm/goety_src/`，读前置模组直接看它；含重生成命令与"根目录 Goety-3 不能当参考"的坑
+- [Goety2 仆从基座](goety2-servant-system.md) — Summoned/Owned/IServant 继承、stance/命令/巡逻、registerGoals 自动装的 goal 与优先级、goal 清单与坑、最小模板
+- [Goety2 法术基座](goety2-spell-system.md) — ISpell/Spell/SummonSpell 契约、startSpell→useSpell→SpellResult→stopSpell 生命周期、SpellStat、召唤模板、无注册表只能用 MagicFocus、坑
+- [联动的两层 compat 结构](goetyominous-compat-architecture.md) — goety+curios 硬前置、软前置清单、compat/mod 门槛层 vs compat/<abbr> 注册层、每个联动一套目录、mods.toml 缺声明的不一致
+- [软前置反射三条铁律](goetyominous-soft-dep-reflection.md) — 能放门槛后就别反射；mixin 绝不 @Mixin 软前置类（用注册名字符串或 Class.forName）；惰性缓存+吞异常写法
+- [Stash 核对结论 2026-09-26](stash-audit-2026-09-26.md) — 6 个 stash 全部无丢失内容可安全 drop；别用整体 diff 判断已合并（三类误报清单）
+- [错题本·编译与构建](cuotiben-build-and-merge.md) — 合并后必须全量编译：两边都加同名符号/一边删一边没动的两个静默坑；clean 砸 fg_cache 的假错误；别凭记忆写原版 API
+- [错题本·Goety 仆从框架](cuotiben-goety-servant-framework.md) — 注册表隔离、goal 优先级双向陷阱（太低被抢 / 0 号挤光近战）、导航器别在构造里抄死、toml 覆盖默认值
+- [错题本·LM 移植](cuotiben-lm-port.md) — isAlliedTo/UpdateWithAttack/最小距离招三查点、限伤放最上游、移速=基础速×倍率（圣骑三档 0.30 不覆写）、语言键前缀、别人有公开 API 别抄
+- [错题本·工具与流程](cuotiben-tooling.md) — 别信工具显示（Grep 的 `//`、Edit 缩进）、中文 Windows javac 是 GBK、移植前先和原版同名类对比、伤害类型 tag、SRG 混淆名、mixin 的 @Shadow 目标 javac 不校验、**跨版本同名 API 必须看 1.20.1 本体实现（createArrow(null) 崩服 / setEffectsFromItem 只认 tipped_arrow / getBaseClass 假 API / 光照旁路只有 1.21 有）**
+- [Abyss Staff 法术加强计划](abyss-staff-enhancement-plan.md) — key_of_rlyeh 要强化的 14 个 abyss 法术及各自数值要求（召唤 2→3、伤害 +N、连发次数等），防遗忘用
+- [Abyss 加强·实际类名核实](abyss-enhancement-actual-names.md) — 14 个法术的真实类名/包（Rotten→ZombieSpell、WaterWhip→GulfTentacleSpell、Steaming→SteamSpell）；且 rightStaff 无法区分 key_of_rlyeh
+- [拉莱耶 tooltip 移植](key-of-rlyeh-tooltip-port.md) — 朋友示范包移植进本 mod：资源已落地、Java 待用户自填；不写跨 mod 兼容层；三项设计决议与两个静默坑
+- [ModernUI 文字管线逆向](modernui-text-pipeline-findings.md) — 共存失败已撤待朋友方案；三条 shader 路径/图集语义相反/反射点/反编译命令，回来直接用
+- [Windy Update 移植计划](windy-update-port-plan.md) — Goety-3 `2f424351` 移植：范围(Breeze/Hurricane/Whirling Cage/Wind Shrine+群系，排除 Pale Crystal Ball 与试炼密室)、对照源码在 `E:\java\Goety-3-main`、AI 全 goal 制、1.21 缺失 API 复刻清单与顺序；CFR 反编译器在 `E:\java\tools\cfr-0.152.jar`
+- [1.21.1 素材提取法](mc-1211-asset-extraction.md) — 本体 jar 无 ogg；sounds 在 E: 启动器 assets 对象库按 SHA1 提；1.21.2 起部分音效被重编码（按基准版本取）；**大 ogg 走资产索引+官方 CDN（镜像会截断/第三方会转码）**；mappings 解混淆对照表
+- [凶兆/队长掉落实证](trial-omen-captain-drop-findings.md) — 1.21.1 掉瓶=仅掠夺者战利品表(is_captain,无击杀门)；1.20.1 die 内联坏兆块+精确注入签名;1.20.1 官方映射 jar 路径与常用 CFR 手法；1.21.1 jar 无 zh_cn
+- [1.20.1 原版数据源](mc-1201-vanilla-data-source.md) — 权威 data（战利品表/标签）在 PCL Forge 客户端 jar：E:/.minecraft/versions/1.20.1-Forge_47.3.12/；附 1.20.1 loot 格式与 API 等价件实证（name 字段、无 Codec.validate、ClipContext 传 null、NumberProvider、BuiltInRegistries 取 tag）
+- [宝库移植进度](vault-port-progress.md) — 宝库+不祥宝库已全部落地并编译通过（loot 函数在 utils 包、不祥宝库物品、lenient/LinkedHashSet 收尾）；仅剩进游戏实测
+- [试炼刷怪笼移植计划](trial-spawner-port-plan.md) — 第四批**已全部落地并编译通过**（2026-10-08/09）：交付清单 + 1.20.1 无法消除的差异 + **⚠️有意偏离 1.21 的 6 条（和平/禁刷怪三处、MONSTER 光照旁路、装备槽位、药箭表）** + SRG 坑（fR=setPersistenceRequired、Direction.a=DOWN、Axis a.d=YP、**Vec3 c=atBottomCenterOf**、**Mth lerp/rotLerp 是两个函数**）
+- [试炼密室移植计划](trial-chamber-port-plan.md) — 2026-10-09 **已落地、批 5 实测中**：数据 170 模板/45 池 + 陶片 + 别名机制（⚠️ 懒执行血案：别名必须靠闭包捕获）+ 陶罐战利品（1.20.1 陶罐 BE 无 lootTable，用 `BlockBehaviour.onRemove` HEAD 钩子补上）；含 size上限/pool_aliases/二进制 NBT 三大 1.20.1 障碍的解法与全部实证
+- [密室结构 NBT 引用清单](trial-chamber-structure-nbt-refs.md) — 移植密室结构时必须把 `minecraft:` 引用改成 `goetyominous:`（5 张刷怪笼表 + 6 张装备表的完整对照表），漏改会静默失效
+- [刷怪笼加怪脚本](trial-spawner-mob-tool.md) — `tools/add_trial_spawner_mob.py`：给密室刷怪笼家族纯新增怪（family=哪一档 / --base=周边方块抄谁）；含引用链、两个轴、6 个坑（结构 json 必须 sort_keys=False、worldgen 不能 /reload 等）；已加 mired 进 melee
+- [试炼战利品表](trial-loot-tables.md) — 宝库/刷怪笼战利品的链路与热更边界（内容可 /reload、接线在 worldgen/代码里）；2026-10-11 给普通宝库加了 18 条 goety 条目；`enchant_randomly` 指定列表可绕过 `isAllowedOnBooks` 产书
+- [新增文件必须 git add](git-add-new-files.md) — 我新建/搬运的 json、贴图、模型、语言等落盘后立刻 add 并复查无未跟踪；2026-10-07 漏过两件被用户抓
+
+## 徒弟错题本（仓库 memory/ 同步于 2026-10-23）
+
 ## 项目与约定
 - [多 jar 拆分](goetyominous-split-into-modules.md) — 判据=核心文件直接 import 第三方包；配置已拆 acam/uasr/lm/mm/of 5 组
+- [远征系统方案](expedition-system-plan.md) — 核心化旅行家远征/指南针：核心/PP 分层、独立 ExpeditionConfig、绑定反馈；已并入 aaacat 1.1.8 交付/会话机制，UI 双 Tab/滚动列表/队伍卡片对齐 aaacat，含“召集旅行家”；战利品改存旅行家背包/空手交付/箱子自动存入；**已落盘/编译+无PP启动通过，待游戏内实测**
 - [ModMobType](modmobtype-name-collision.md)、[AnnihilationBomb](annihilation-bomb-ac-lm-name-collision.md) — 常量不能跨 jar 复制
 - 工作偏好：[不写注释](no-code-comments.md)、[别擅自写配方手册](no-unrequested-recipes-patchouli.md)、[模组名 4 处显示面](goetyominous-name-surfaces-ask-scope.md)、[别自动 build jar](no-auto-build-jar.md) — 文案要就问;用户说构建才构建
 - 死代码：[清理偏好](goetyominous-deadcode-cleanup-preference.md)、[脚本](goetyominous-deadcode-analysis-scripts.md) — .scratch/_deadcode.mjs + _deadfields.mjs
