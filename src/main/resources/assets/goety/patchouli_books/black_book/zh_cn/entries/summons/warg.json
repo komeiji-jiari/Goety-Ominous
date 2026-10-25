@@ -32,6 +32,36 @@
     {
       "type": "patchouli:text",
       "text": "与它们较小的亲戚类似，座狼能够使用更大号护甲，只不过必须是它们自己专用的。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:warg{WargVariant:5}",
+      "scale": 0.35,
+      "text": "普通狼晋升后的座狼，忠诚可靠的伙伴。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:warg{WargVariant:1}",
+      "scale": 0.35,
+      "text": "霜冻变种的座狼可以通过晋升凛冬狼获得。它们的攻击会让受害者更慢。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:warg{WargVariant:2}",
+      "scale": 0.35,
+      "text": "风暴变种的座狼可以通过晋升风暴犬获得。它们的攻击会附带痉挛。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:warg{WargVariant:4}",
+      "scale": 0.35,
+      "text": "死灵变种的座狼可以通过晋升骷髅狼获得。它们会嚎叫以支援骷髅仆从。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:warg{WargVariant:6}",
+      "scale": 0.35,
+      "text": "邪能变种的座狼可以通过晋升疫犬获得。它们的攻击带有毒性。"
     }
   ]
 }

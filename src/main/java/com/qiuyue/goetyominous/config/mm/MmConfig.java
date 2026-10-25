@@ -119,6 +119,18 @@ public class MmConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> IcicleSpikeSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> IcicleSpikeCooldown;
     public static final ForgeConfigSpec.ConfigValue<Integer> IcicleSpikeCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SandBallSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SandBallCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SandBallCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Double> SandBallDamage;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SandGeyserSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SandGeyserCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SandGeyserCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Double> SandGeyserDamage;
+    public static final ForgeConfigSpec.ConfigValue<Integer> PoisonBreathSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> PoisonBreathCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Double> PoisonBreathDamage;
+    public static final ForgeConfigSpec.ConfigValue<Integer> PoisonBreathDuration;
     public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerScatterSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerScatterCooldown;
     public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerScatterCastDuration;
@@ -401,6 +413,36 @@ public class MmConfig {
                 .defineInRange("icicleSpikeCooldown", 60, 0, 2000);
         IcicleSpikeCastDuration = BUILDER.comment("Cast duration of Icicle Spike spell in ticks (Default: 0)")
                 .defineInRange("icicleSpikeCastDuration", 0, 0, 500);
+        BUILDER.pop();
+        BUILDER.push("SandBall");
+        SandBallSoulCost = BUILDER.comment("Soul cost of Sand Ball spell (Default: 16)")
+                .defineInRange("sandBallSoulCost", 16, 1, 100);
+        SandBallCooldown = BUILDER.comment("Cooldown of Sand Ball spell in ticks (Default: 100)")
+                .defineInRange("sandBallCooldown", 100, 0, 2000);
+        SandBallDamage = BUILDER.comment("Base damage of Sand Ball (Default: 10.0, matches Mutant Husk sand boulder)")
+                .defineInRange("sandBallDamage", 10.0, 0.0, Double.MAX_VALUE);
+        SandBallCastDuration = BUILDER.comment("Cast duration of Sand Ball spell in ticks (Default: 40)")
+                .defineInRange("sandBallCastDuration", 40, 0, 500);
+        BUILDER.pop();
+        BUILDER.push("SandGeyser");
+        SandGeyserSoulCost = BUILDER.comment("Soul cost of Sand Geyser spell (Default: 20)")
+                .defineInRange("sandGeyserSoulCost", 20, 1, 100);
+        SandGeyserCooldown = BUILDER.comment("Cooldown of Sand Geyser spell in ticks (Default: 400)")
+                .defineInRange("sandGeyserCooldown", 400, 0, 2000);
+        SandGeyserDamage = BUILDER.comment("Base damage of Sand Geyser (Default: 8.0, matches Mutant Husk geyser)")
+                .defineInRange("sandGeyserDamage", 8.0, 0.0, Double.MAX_VALUE);
+        SandGeyserCastDuration = BUILDER.comment("Cast duration of Sand Geyser spell in ticks (Default: 60)")
+                .defineInRange("sandGeyserCastDuration", 60, 0, 500);
+        BUILDER.pop();
+        BUILDER.push("PoisonBreath");
+        PoisonBreathSoulCost = BUILDER.comment("Soul cost of Poison Breath (Default: 2)")
+                .defineInRange("poisonBreathSoulCost", 2, 1, 100);
+        PoisonBreathCooldown = BUILDER.comment("Cooldown of Poison Breath in ticks (Default: 100)")
+                .defineInRange("poisonBreathCooldown", 100, 0, 5000);
+        PoisonBreathDamage = BUILDER.comment("Damage per Poison Breath hit (Default: 1.0)")
+                .defineInRange("poisonBreathDamage", 1.0, 0.0, Double.MAX_VALUE);
+        PoisonBreathDuration = BUILDER.comment("Breath duration of Poison Breath (Default: 100)")
+                .defineInRange("poisonBreathDuration", 100, 0, 1000);
         BUILDER.pop();
         BUILDER.push("Shulker Scatter");
         ShulkerScatterSoulCost = BUILDER.comment("Soul cost of Shulker Scatter spell (Default: 32)")

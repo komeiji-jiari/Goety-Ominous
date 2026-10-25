@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "nfn",
+    "beb",
+    "nbn"
+  ],
+  "key":
+  {
+    "b":
+    {
+      "item": "goety:venomous_fang"
+    },
+    "f":
+    {
+      "item": "mutantmore:mutant_jungle_zombie_vine_seed"
+    },
+    "e":
+    {
+      "item": "goety:empty_focus"
+    },
+    "n":
+    {
+      "item": "minecraft:vine"
+    }
+  },
+  "result": {
+    "item": "goetyominous:poison_breath_focus"
+  }
+}

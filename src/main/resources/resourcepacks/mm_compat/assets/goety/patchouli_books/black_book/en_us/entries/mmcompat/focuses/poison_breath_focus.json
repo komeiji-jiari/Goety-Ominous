@@ -1,0 +1,21 @@
+{
+  "name": "Poison Breath Focus",
+  "icon": "goetyominous:poison_breath_focus",
+  "category": "goety:mmcompat/focuses",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You don't want to breathe fire or frost—you have devised a spell that exhales venom, and now you can poison your enemies with your breath."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goetyominous:poison_breath_focus",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "A Wild Staff doubles the damage of breath spells. If you wear Wild Robe, this spell inflicts Acid Venom instead of Poison on creatures."
+    }
+  ]
+}

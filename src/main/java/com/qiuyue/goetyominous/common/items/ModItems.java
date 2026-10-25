@@ -257,6 +257,12 @@ public class ModItems {
     public static final RegistryObject<Item> WOLF_TOTEM = ITEMS.register("wolf_totem",
             () -> new BlockItemBase(ModBlocks.WOLF_TOTEM.get()));
 
+    public static final RegistryObject<Item> CULT_STATUE = ITEMS.register("cult_statue",
+            () -> new CultStatueBlockItem());
+
+    public static final RegistryObject<Item> GOLDEN_PIGLIN_STATUE = ITEMS.register("golden_piglin_statue",
+            () -> new CultStatueBlockItem(ModBlocks.GOLDEN_PIGLIN_STATUE.get()));
+
     public static final RegistryObject<Item> WHIRLING_CAGE = ITEMS.register("whirling_cage",
             () -> new BlockItemBase(ModBlocks.WHIRLING_CAGE.get()));
 

@@ -30,6 +30,10 @@ public class PpItems {
             "zpiglin_traveler_servant_spawn_egg",
             () -> new ServantSpawnEggItem(PpEntityRegistry.ZPIGLIN_TRAVELER_SERVANT, 9413466, 7027242, egg()));
 
+    public static final RegistryObject<TravelerCompassItem> TRAVELER_COMPASS = PP_ITEMS.register(
+            "traveler_compass",
+            () -> new TravelerCompassItem(new Item.Properties().stacksTo(1)));
+
     public static Item.Properties egg() {
         return new Item.Properties();
     }

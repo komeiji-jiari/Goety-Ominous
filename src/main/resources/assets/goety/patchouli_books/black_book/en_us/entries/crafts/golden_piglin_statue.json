@@ -1,0 +1,26 @@
+{
+  "name": "Golden Piglin Statue",
+  "icon": "goetyominous:golden_piglin_statue",
+  "category": "goety:ominous_crafts/artifice",
+  "advancement": "goetyominous:goetyominous/read_bastion_scroll",
+  "secret": true,
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "By improving upon the original Nether Shrine, you have designed a more powerful Golden Statue capable of housing twice as many Piglin servants as an ordinary Nether Shrine."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:golden_piglin_statue"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Rather than dying, those bound to the shrine will teleport back to it at the precipice of death, unless it was by their master dismissing them with a Wand/Staff, or if the idol they're bound with is in another dimension. They will, however, be grievously wounded, unable to be revived for a Minecraft day, and be crippled for 5 minutes until they are sufficiently healed."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "To bind your servant to the shrine, simply use a Waystone, have it bound to the shrine, and right click your servant with it. The shrine can only hold up to 24 servants (by default) and will not accept more after. Much like other artifices, the shrine requires Soul Energy to function, which it gets by placing it on top of a filled $(l:intro/cursed_cage)Cursed Cage$()."
+    }
+  ]
+}

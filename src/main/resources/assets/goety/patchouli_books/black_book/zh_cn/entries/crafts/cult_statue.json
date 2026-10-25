@@ -1,0 +1,26 @@
+{
+  "name": "下界神龛",
+  "icon": "goetyominous:cult_statue",
+  "category": "goety:ominous_crafts/artifice",
+  "advancement": "goetyominous:goetyominous/read_bastion_scroll",
+  "secret": true,
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "根据卷轴上的知识，你设计出一个神龛，允许你将你的猪灵仆从置于它的保护之下，就像不祥神像为灾厄村民提供的保护一样。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:cult_statue"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "被神龛绑定的猪灵仆从在濒死时不会真正死亡，而是会传送回神龛旁——除非它们的主人使用法杖/权杖主动解散它们。但此后它们会被赋予神陨效果：不仅一个游戏日内无法再次复活，还会陷入持续5分钟的缚骨状态，直至完全恢复。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "绑定猪灵仆从时，只需使用已与神龛建立连接的传送石，对目标仆从右键即可。神龛最多可绑定12个仆从（默认值），达到上限后不再接收新单位。与其他装置类似，这个神龛需要灵魂能量才能运作，将其放置在已充能的$(l:intro/cursed_cage)诅咒之笼$()上方即可获取能量。"
+    }
+  ]
+}

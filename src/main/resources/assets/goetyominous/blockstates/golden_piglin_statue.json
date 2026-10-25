@@ -1,0 +1,36 @@
+{
+  "multipart": [
+    {
+      "when": { "half": "lower", "facing": "north" },
+      "apply": { "model": "goetyominous:block/golden_piglin_statue" }
+    },
+    {
+      "when": { "half": "lower", "facing": "east" },
+      "apply": { "model": "goetyominous:block/golden_piglin_statue", "y": 90 }
+    },
+    {
+      "when": { "half": "lower", "facing": "south" },
+      "apply": { "model": "goetyominous:block/golden_piglin_statue", "y": 180 }
+    },
+    {
+      "when": { "half": "lower", "facing": "west" },
+      "apply": { "model": "goetyominous:block/golden_piglin_statue", "y": 270 }
+    },
+    {
+      "when": { "half": "lower", "facing": "north", "powered": "true" },
+      "apply": { "model": "goetyominous:block/golden_piglin_statue_glow" }
+    },
+    {
+      "when": { "half": "lower", "facing": "east", "powered": "true" },
+      "apply": { "model": "goetyominous:block/golden_piglin_statue_glow", "y": 90 }
+    },
+    {
+      "when": { "half": "lower", "facing": "south", "powered": "true" },
+      "apply": { "model": "goetyominous:block/golden_piglin_statue_glow", "y": 180 }
+    },
+    {
+      "when": { "half": "lower", "facing": "west", "powered": "true" },
+      "apply": { "model": "goetyominous:block/golden_piglin_statue_glow", "y": 270 }
+    }
+  ]
+}

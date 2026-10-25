@@ -1,0 +1,26 @@
+{
+  "name": "黄金猪灵神像",
+  "icon": "goetyominous:golden_piglin_statue",
+  "category": "goety:ominous_crafts/artifice",
+  "advancement": "goetyominous:goetyominous/read_bastion_scroll",
+  "secret": true,
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "通过改进原有的下界神龛，你设计出了一个更为强大的黄金神像，它能够容纳比起普通的下界神龛多一倍的猪灵仆从。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:golden_piglin_statue"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "被神像绑定的猪灵仆从在濒死时不会真正死亡，而是会传送回神像旁——除非它们的主人使用法杖/权杖主动解散它们。但此后它们会被赋予神陨效果：不仅一个游戏日内无法再次复活，还会陷入持续5分钟的缚骨状态，直至完全恢复。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "绑定猪灵仆从时，只需使用已与神像建立连接的传送石，对目标仆从右键即可。神像最多可绑定24个仆从（默认值），达到上限后不再接收新单位。与其他装置类似，这个神像需要灵魂能量才能运作，将其放置在已充能的$(l:intro/cursed_cage)诅咒之笼$()上方即可获取能量。"
+    }
+  ]
+}

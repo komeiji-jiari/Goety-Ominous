@@ -50,6 +50,8 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> StrongPiglinHunterServantEvolutionDamage;
     public static final ForgeConfigSpec.ConfigValue<Boolean> RaidCaptainDropsOminousBottle;
     public static final ForgeConfigSpec.ConfigValue<Boolean> RaidOmen;
+    public static final ForgeConfigSpec.ConfigValue<Integer> CultStatueBindLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> CultStatueReviveCost;
 
     static {
         BUILDER.push("Servant Limits");
@@ -170,6 +172,14 @@ public class MobsConfig {
                 .define("hurricaneServantCore", true);
         LeapkelpMoistness = BUILDER.comment("Whether Leapkelp Servants have a moistness meter; when false they never dry out (Default: true)")
                 .define("leapkelpMoistness", true);
+        BUILDER.pop();
+        BUILDER.push("Cult Statue");
+        CultStatueBindLimit = BUILDER
+                .comment("Maximum number of Piglin Servants a Cult Statue can bind (Default: 12)")
+                .defineInRange("cultStatueBindLimit", 12, 0, Integer.MAX_VALUE);
+        CultStatueReviveCost = BUILDER
+                .comment("Soul Energy required to revive a bound Piglin Servant (Default: 500)")
+                .defineInRange("cultStatueReviveCost", 500, 0, Integer.MAX_VALUE);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }

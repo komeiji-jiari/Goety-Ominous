@@ -32,6 +32,36 @@
     {
       "type": "patchouli:text",
       "text": "Similar to their smaller kin, Wargs can use larger armor harnesses, though they must be their own specialized set."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:warg{WargVariant:5}",
+      "scale": 0.35,
+      "text": "The Warg raised from an ordinary wolf—a loyal and dependable companion."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:warg{WargVariant:1}",
+      "scale": 0.35,
+      "text": "The Frost variant of the Warg can be obtained by elevating a Winter Wolf. Their attacks slow their victims."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:warg{WargVariant:2}",
+      "scale": 0.35,
+      "text": "The Storm variant of the Warg can be obtained by elevating a Stormhound. Their attacks inflict Spasms."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:warg{WargVariant:4}",
+      "scale": 0.35,
+      "text": "The Necro variant of the Warg can be obtained by elevating a Skeleton Wolf. They howl to support Skeleton servants."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:warg{WargVariant:6}",
+      "scale": 0.35,
+      "text": "The Fel variant of the Warg can be obtained by elevating a Plague Wolf. Their attacks carry poison."
     }
   ]
 }

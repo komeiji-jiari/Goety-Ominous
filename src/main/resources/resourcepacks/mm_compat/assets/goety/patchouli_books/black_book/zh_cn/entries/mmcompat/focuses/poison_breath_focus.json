@@ -1,0 +1,21 @@
+{
+  "name": "毒呼聚晶",
+  "icon": "goetyominous:poison_breath_focus",
+  "category": "goety:mmcompat/focuses",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你不想喷火或者喷冰，你设计出一个可以喷出毒液的法术，现在你可以用呼吸毒害你的敌人。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goetyominous:poison_breath_focus",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "text": "荒野魔杖能够翻倍呼吸法术的伤害。如果你穿着荒野长袍，那么这个法术会对生物造成毒液而不是中毒效果。"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "Nether Shrine Statue",
+  "icon": "goetyominous:cult_statue",
+  "category": "goety:ominous_crafts/artifice",
+  "advancement": "goetyominous:goetyominous/read_bastion_scroll",
+  "secret": true,
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Using the knowledge recorded on the scroll, you have designed a shrine that allows you to place your Piglin Servants under its protection, much like the protection an Ominous Idol provides for Illagers."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:cult_statue"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Rather than dying, those bound to the shrine will teleport back to it at the precipice of death, unless it was by their master dismissing them with a Wand/Staff, or if the idol they're bound with is in another dimension. They will, however, be grievously wounded, unable to be revived for a Minecraft day, and be crippled for 5 minutes until they are sufficiently healed."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "To bind your servant to the shrine, simply use a Waystone, have it bound to the shrine, and right click your servant with it. The shrine can only hold up to 12 servants (by default) and will not accept more after. Much like other artifices, the shrine requires Soul Energy to function, which it gets by placing it on top of a filled $(l:intro/cursed_cage)Cursed Cage$()."
+    }
+  ]
+}

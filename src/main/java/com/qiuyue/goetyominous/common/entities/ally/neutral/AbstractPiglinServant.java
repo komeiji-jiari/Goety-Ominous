@@ -4,19 +4,29 @@ import javax.annotation.Nullable;
 
 import com.Polarice3.Goety.api.entities.ally.illager.ILooter;
 import com.Polarice3.Goety.api.items.magic.IWand;
+import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
+import com.Polarice3.Goety.common.entities.projectiles.Hellfire;
+import com.Polarice3.Goety.common.entities.projectiles.SpellEntity;
+import com.Polarice3.Goety.config.MainConfig;
 import com.Polarice3.Goety.init.ModMobType;
 import com.Polarice3.Goety.utils.CuriosFinder;
+import com.Polarice3.Goety.utils.MobUtil;
+import com.Polarice3.Goety.utils.ModDamageSource;
 import com.Polarice3.Goety.utils.ServantUtil;
+import com.qiuyue.goetyominous.common.blocks.CultStatueBlock;
+import com.qiuyue.goetyominous.common.blocks.entities.CultStatueBlockEntity;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.*;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.common.items.NetherWartPotion;
+import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -75,6 +85,8 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
     public String chestDim;
     public @Nullable BlockPos dumpChestPos;
     public String dumpChestDim;
+    public @Nullable BlockPos revivePos;
+    public String reviveDim = Level.OVERWORLD.location().toString();
     private final SimpleContainer inventory;
     protected int meleeDamageDealt;
     public boolean isImmune() { return this.isImmuneToZombification(); }
@@ -137,6 +149,10 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
         p_34661_.putInt("EatCool", this.eatCool);
         p_34661_.putInt("EatenFoodLevel", this.eatenFoodLevel);
         this.saveLooterData(p_34661_);
+        if (this.revivePos != null) {
+            p_34661_.put("RevivePos", NbtUtils.writeBlockPos(this.revivePos));
+        }
+        p_34661_.putString("ReviveDim", this.reviveDim);
         this.writeInventoryToTag(p_34661_);
         p_34661_.putInt("MeleeDamageDealt", this.meleeDamageDealt);
         p_34661_.putInt("RangedDamageDealt", this.rangedDamageDealt);
@@ -163,6 +179,12 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
             this.eatenFoodLevel = p_34659_.getInt("EatenFoodLevel");
         }
         this.readLooterData(p_34659_);
+        if (p_34659_.contains("RevivePos")) {
+            this.revivePos = NbtUtils.readBlockPos(p_34659_.getCompound("RevivePos"));
+        }
+        if (p_34659_.contains("ReviveDim")) {
+            this.reviveDim = p_34659_.getString("ReviveDim");
+        }
         this.readInventoryFromTag(p_34659_);
         this.meleeDamageDealt = p_34659_.getInt("MeleeDamageDealt");
         this.rangedDamageDealt = p_34659_.getInt("RangedDamageDealt");
@@ -858,6 +880,14 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
                 }
             }
 
+            if (pPlayer.getMainHandItem().is(com.Polarice3.Goety.common.items.ModItems.WAYSTONE.get())
+                    && com.Polarice3.Goety.common.items.WaystoneItem.isSameDimension(this, pPlayer.getMainHandItem())) {
+                BlockEntity linked = com.Polarice3.Goety.common.items.WaystoneItem.getBlockEntity(pPlayer.getMainHandItem(), this.level());
+                if (linked instanceof CultStatueBlockEntity shrine) {
+                    return this.linkToShrine(pPlayer, shrine);
+                }
+            }
+
             if (pPlayer.getMainHandItem().is(com.Polarice3.Goety.common.items.ModItems.WAYSTONE.get())) {
                 if (com.Polarice3.Goety.common.items.WaystoneItem.isSameDimension(this, pPlayer.getMainHandItem())) {
                     BlockEntity var18 = com.Polarice3.Goety.common.items.WaystoneItem.getBlockEntity(pPlayer.getMainHandItem(), this.level());
@@ -888,6 +918,115 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
         }
 
         return super.mobInteract(pPlayer, pHand);
+    }
+
+    @Override
+    public @Nullable BlockPos getRevivePos() {
+        return this.revivePos;
+    }
+
+    @Override
+    public void setRevivePos(BlockPos pos) {
+        this.revivePos = pos;
+    }
+
+    @Override
+    public String getReviveDim() {
+        return this.reviveDim;
+    }
+
+    @Override
+    public void setReviveDim(String dim) {
+        this.reviveDim = dim;
+    }
+
+    @Nullable
+    public CultStatueBlockEntity getShrine() {
+        if (this.getServer() != null && this.revivePos != null) {
+            for (ServerLevel level : this.getServer().getAllLevels()) {
+                if (level.dimension() == this.getReviveLevel()) {
+                    BlockEntity blockEntity = level.getBlockEntity(this.revivePos);
+                    if (blockEntity instanceof CultStatueBlockEntity shrine
+                            && shrine.getTrueOwner() == this.getTrueOwner()) {
+                        return shrine;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean canRevive(DamageSource source) {
+        CultStatueBlockEntity shrine = this.getShrine();
+        return !source.is(ModDamageSource.DISMISSED)
+                && MainConfig.OminousIdolRevive.get()
+                && !this.hasEffect(GoetyEffects.WOUNDED.get())
+                && shrine != null
+                && !shrine.getBlockState().getValue(CultStatueBlock.ENABLED)
+                && this.level().dimension() == this.getReviveLevel()
+                && shrine.getSoulEnergy() >= MobsConfig.CultStatueReviveCost.get()
+                && shrine.getUuids().contains(this.getUUID());
+    }
+
+    @Override
+    public void reviveOwned() {
+        super.reviveOwned();
+        this.setTarget(null);
+        this.getNavigation().stop();
+        this.level().broadcastEntityEvent(this, (byte) 35);
+        this.addEffect(new MobEffectInstance(GoetyEffects.WOUNDED.get(), 24000));
+        this.addEffect(new MobEffectInstance(GoetyEffects.CRIPPLED.get(), 6000));
+        for (Entity entity : this.level().getEntitiesOfClass(Entity.class, this.getBoundingBox().inflate(16.0D))) {
+            if ((entity instanceof Hellfire || entity instanceof SpellEntity) && !MobUtil.areAllies(this, entity)) {
+                entity.discard();
+            }
+        }
+        CultStatueBlockEntity shrine = this.getShrine();
+        if (shrine != null) {
+            shrine.siphonSoulEnergy(MobsConfig.CultStatueReviveCost.get());
+        }
+    }
+
+    @Override
+    public void reviveTick() {
+        super.reviveTick();
+        this.getActiveEffects().removeIf(instance ->
+                instance.getEffect() != GoetyEffects.WOUNDED.get()
+                        && instance.getEffect() != GoetyEffects.CRIPPLED.get());
+    }
+
+    public InteractionResult linkToShrine(Player player, CultStatueBlockEntity shrine) {
+        if (shrine.getTrueOwner() != this.getTrueOwner()) {
+            return InteractionResult.FAIL;
+        }
+        if (shrine.getBlockState().getValue(CultStatueBlock.ENABLED)) {
+            return InteractionResult.FAIL;
+        }
+        CultStatueBlockEntity old = this.getShrine();
+        if (old != shrine && !shrine.hasSpace()) {
+            return InteractionResult.FAIL;
+        }
+        if (!this.level().isClientSide) {
+            if (old != null && old != shrine) {
+                old.removeServant(this);
+            }
+            shrine.addServant(this);
+            this.setRevivePos(shrine.getBlockPos());
+            this.setReviveDim(this.level().dimension());
+            this.playSound(SoundEvents.ARROW_HIT_PLAYER, 1.0F, 0.45F);
+            if (this.level() instanceof ServerLevel serverLevel) {
+                for (int i = 0; i < 7; ++i) {
+                    double d0 = this.random.nextGaussian() * 0.02D;
+                    double d1 = this.random.nextGaussian() * 0.02D;
+                    double d2 = this.random.nextGaussian() * 0.02D;
+                    serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER,
+                            this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D),
+                            0, d0, d1, d2, 0.5D);
+                }
+            }
+        }
+        return InteractionResult.SUCCESS;
     }
 
     protected boolean canBarter() {
@@ -1027,6 +1166,16 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
     @Override
     public ResourceKey<Level> getChestLevel() {
         return ResourceKey.create(Registries.DIMENSION, new ResourceLocation(this.chestDim));
+    }
+
+    public boolean hasUsableChestLink() {
+        if (this.chestPos == null) {
+            return false;
+        }
+        if (!this.getChestLevel().equals(this.level().dimension())) {
+            return false;
+        }
+        return this.level().getBlockEntity(this.chestPos) instanceof ChestBlockEntity;
     }
 
     @Override

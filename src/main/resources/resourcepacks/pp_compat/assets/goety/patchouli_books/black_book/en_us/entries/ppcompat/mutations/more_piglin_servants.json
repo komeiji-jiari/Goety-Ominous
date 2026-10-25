@@ -34,7 +34,26 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Travelers are a type of Piglin fond of peddling goods. They sell items such as compasses used to locate biomes. You can also equip them with any sword or crossbow so they can join the fight."
+      "text": "Travelers are a type of Piglin who love exploration. They can undertake expedition missions, which require crafting a Traveler's Compass to begin. You can also equip them with any sword, pickaxe, or crossbow."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:traveler_compass"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goetyominous:traveler_compass",
+      "text": "Right-clicking this compass opens a UI that allows you to dispatch Piglin explorers to gather resources. An expedition team can accept up to 10 explorers. The more explorers there are, the more resources can be obtained, and the chance of accidental death gradually decreases, reaching 0 with 10 members."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Explorers holding pickaxes increase the chance of obtaining ores once, while explorers holding crossbows increase the chance of obtaining creature drops once. After exploration is complete, you must right-click the returned explorers with an empty hand to have them hand over their loot."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goety:waystone",
+      "text": "If an explorer has been bound to a chest via a Waystone, they will automatically deposit their loot into that chest. Note that explorers will not interact with the chest while in following or standby mode."
     }
+
   ]
 }
