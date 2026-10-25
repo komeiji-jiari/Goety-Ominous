@@ -4,6 +4,8 @@
     "goetyominous:heavy_core",
     "goetyominous:wolf_totem",
     "goetyominous:whirling_cage",
+    "goetyominous:cult_statue",
+    "goetyominous:golden_piglin_statue",
     {
       "id": "goetyominous:gammaroach_nest",
       "required": false

@@ -1,0 +1,21 @@
+{
+  "name": "Sand Geyser Focus",
+  "icon": "goetyominous:sand_geyser_focus",
+  "category": "goety:mmcompat/focuses",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "text",
+      "text": "Using the vocal cords of your defeated foe—the Mutant Husk—you have learned how to channel sand geysers up from the earth, violently sweeping your enemies into the air. If you cast while sneaking, a sand geyser erupts beneath every creature around you instead."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:sand_geyser_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "Casting with a Geo Staff makes the sand geysers last longer. This spell accepts the Range enchantment, with each level increasing the maximum distance at which a geyser can be created by 2 blocks."
+    }
+  ]
+}

@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.init;
 
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.blocks.PiglinMerchantSpawnerBlockEntity;
+import com.qiuyue.goetyominous.common.blocks.entities.CultStatueBlockEntity;
 import com.qiuyue.goetyominous.common.blocks.entities.PlushieBlockEntity;
 import com.qiuyue.goetyominous.common.blocks.entities.WolfTotemBlockEntity;
 import com.qiuyue.goetyominous.common.blocks.trial.TrialBlocks;
@@ -40,6 +41,13 @@ public class ModBlockEntities {
                     () -> BlockEntityType.Builder.of(
                             WolfTotemBlockEntity::new,
                             ModBlocks.WOLF_TOTEM.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<CultStatueBlockEntity>> CULT_STATUE =
+            BLOCK_ENTITIES.register("cult_statue",
+                    () -> BlockEntityType.Builder.of(
+                            CultStatueBlockEntity::new,
+                            ModBlocks.CULT_STATUE.get(),
+                            ModBlocks.GOLDEN_PIGLIN_STATUE.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<PlushieBlockEntity>> PLUSHIE =
             BLOCK_ENTITIES.register("plushie",

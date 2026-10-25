@@ -26,8 +26,10 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
@@ -41,6 +43,8 @@ import net.minecraftforge.network.NetworkHooks;
 public class SandBoulderServant extends ThrowableProjectile {
     private static final EntityDataAccessor<String> SAND_TYPE =
             SynchedEntityData.defineId(SandBoulderServant.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<Float> SIZE_SCALE =
+            SynchedEntityData.defineId(SandBoulderServant.class, EntityDataSerializers.FLOAT);
 
     public float damage = 0.0F;
     public int lifeSpan = 100;
@@ -183,6 +187,7 @@ public class SandBoulderServant extends ThrowableProjectile {
         tag.putBoolean("Griefing", this.griefing);
         tag.putBoolean("IgnoresInvulTime", this.ignoresInvulTime);
         tag.putString("SandType", this.getSandType());
+        tag.putFloat("SizeScale", this.getSizeScale());
     }
 
     @Override
@@ -203,11 +208,15 @@ public class SandBoulderServant extends ThrowableProjectile {
         if (tag.contains("SandType")) {
             this.setSandType(tag.getString("SandType"));
         }
+        if (tag.contains("SizeScale")) {
+            this.setSizeScale(tag.getFloat("SizeScale"));
+        }
     }
 
     @Override
     protected void defineSynchedData() {
         this.entityData.define(SAND_TYPE, "");
+        this.entityData.define(SIZE_SCALE, 1.0F);
     }
 
     public String getSandType() {
@@ -216,6 +225,28 @@ public class SandBoulderServant extends ThrowableProjectile {
 
     public void setSandType(String value) {
         this.entityData.set(SAND_TYPE, value);
+    }
+
+    @Override
+    public EntityDimensions getDimensions(Pose pose) {
+        return super.getDimensions(pose).scale(this.getSizeScale());
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+        super.onSyncedDataUpdated(key);
+        if (SIZE_SCALE.equals(key)) {
+            this.refreshDimensions();
+        }
+    }
+
+    public void setSizeScale(float scale) {
+        this.entityData.set(SIZE_SCALE, scale);
+        this.refreshDimensions();
+    }
+
+    public float getSizeScale() {
+        return this.entityData.get(SIZE_SCALE);
     }
 
     @Override

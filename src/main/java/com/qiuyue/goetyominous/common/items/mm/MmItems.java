@@ -14,6 +14,7 @@ import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+
 public class MmItems {
 
     public static final DeferredRegister<Item> MM_ITEMS =
@@ -74,6 +75,18 @@ public class MmItems {
     public static final RegistryObject<MagicFocus> ICICLE_SPIKE_FOCUS = MM_ITEMS.register(
             "icicle_spike_focus",
             () -> new MagicFocus(new IcicleSpikeSpell()));
+
+    public static final RegistryObject<MagicFocus> SAND_BALL_FOCUS = MM_ITEMS.register(
+            "sand_ball_focus",
+            () -> new MagicFocus(new SandBallSpell()));
+
+    public static final RegistryObject<MagicFocus> SAND_GEYSER_FOCUS = MM_ITEMS.register(
+            "sand_geyser_focus",
+            () -> new MagicFocus(new SandGeyserSpell()));
+
+    public static final RegistryObject<MagicFocus> POISON_BREATH_FOCUS = MM_ITEMS.register(
+            "poison_breath_focus",
+            () -> new MagicFocus(new PoisonBreathSpell()));
 
     public static final RegistryObject<MagicFocus> WITHER_BREATH_FOCUS = MM_ITEMS.register(
             "wither_breath_focus",

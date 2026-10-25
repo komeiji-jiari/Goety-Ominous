@@ -99,7 +99,8 @@
     "VaultLevelRendererMixin",
     "WeavingLevelRendererMixin",
     "ModEffectParticleMixin",
-    "TrialSpawnerLevelRendererMixin"
+    "TrialSpawnerLevelRendererMixin",
+    "CultStatueGlowMixin"
   ],
   "server": [],
   "injectors": {

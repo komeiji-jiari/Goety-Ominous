@@ -7,7 +7,7 @@
   "craftType": "magic",
   "entity_to_convert": {
     "tag": "goety:elephant_convert",
-    "display_name": "entity.alexsmobs.elephant"
+    "display_name": "entity.goetyominous.tusked_elephant"
   },
   "entity_to_convert_into": "goetyominous:illager_elephant_servant",
   "soulCost": 1,

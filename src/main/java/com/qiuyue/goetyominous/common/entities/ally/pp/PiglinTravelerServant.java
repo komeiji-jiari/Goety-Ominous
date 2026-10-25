@@ -2,10 +2,13 @@ package com.qiuyue.goetyominous.common.entities.ally.pp;
 
 import com.Polarice3.Goety.common.entities.ai.BackawayCrossbowGoal;
 import com.Polarice3.Goety.common.entities.ai.ModMeleeAttackGoal;
+import com.qiuyue.goetyominous.common.entities.ai.ExpeditionLootChestGoal;
 import com.qiuyue.goetyominous.common.entities.ai.pp.TravelerKickGoal;
 import com.qiuyue.goetyominous.common.entities.ai.pp.TravelerSitGoal;
 import com.qiuyue.goetyominous.common.entities.ai.pp.LookAtPlayerWhenIdleGoal;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractPiglinServant;
+import com.qiuyue.goetyominous.common.explore.ExpeditionLootStorage;
+import com.qiuyue.goetyominous.common.explore.IExpeditionLootHolder;
 import com.qiuyue.goetyominous.common.init.pp.PpEntityRegistry;
 import com.qiuyue.goetyominous.common.items.pp.PpItems;
 import com.qiuyue.goetyominous.config.pp.PpConfig;
@@ -18,10 +21,11 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -33,6 +37,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.monster.CrossbowAttackMob;
 import net.minecraft.world.entity.monster.piglin.PiglinArmPose;
@@ -42,6 +47,7 @@ import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.level.Level;
@@ -61,11 +67,12 @@ import tallestred.piglinproliferation.common.loot.PPLoot;
 import tallestred.piglinproliferation.common.tags.EitherTag;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PiglinTravelerServant extends AbstractPiglinServant implements CrossbowAttackMob, TravelerAnimatable {
+public class PiglinTravelerServant extends AbstractPiglinServant implements CrossbowAttackMob, TravelerAnimatable, IExpeditionLootHolder {
 
     protected static final EntityDataAccessor<Integer> KICK_TICKS =
             SynchedEntityData.defineId(PiglinTravelerServant.class, EntityDataSerializers.INT);
@@ -80,6 +87,7 @@ public class PiglinTravelerServant extends AbstractPiglinServant implements Cros
     public Map<EitherTag.Location, Integer> alreadyLocatedObjects = new HashMap<>();
     @Nullable
     public Map.Entry<EitherTag.Location, BlockPos> currentlyLocatedObject;
+    private final List<ItemStack> expeditionLoot = new ArrayList<>();
 
     private ModMeleeAttackGoal meleeGoal;
     private BackawayCrossbowGoal<PiglinTravelerServant> crossbowGoal;
@@ -115,10 +123,49 @@ public class PiglinTravelerServant extends AbstractPiglinServant implements Cros
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.goalSelector.addGoal(2, this.crossbowGoal);
         this.goalSelector.addGoal(2, new TravelerKickGoal<>(this));
+        this.goalSelector.addGoal(4, new ExpeditionLootChestGoal<>(this));
         this.goalSelector.addGoal(6, new TravelerSitGoal<>(this));
         this.goalSelector.addGoal(8, new com.Polarice3.Goety.common.entities.ally.Summoned.WanderGoal<>(this, 0.6D));
         this.goalSelector.addGoal(9, new LookAtPlayerWhenIdleGoal(this, Player.class, 15.0F, 1.0F));
         this.goalSelector.addGoal(10, new LookAtPlayerWhenIdleGoal(this, Mob.class, 15.0F));
+    }
+
+    @Override
+    public List<ItemStack> getExpeditionLoot() {
+        return this.expeditionLoot;
+    }
+
+    @Override
+    public void addExpeditionLoot(ItemStack stack) {
+        if (!stack.isEmpty()) {
+            this.expeditionLoot.add(stack.copy());
+        }
+    }
+
+    @Override
+    public void clearExpeditionLoot() {
+        this.expeditionLoot.clear();
+    }
+
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack held = player.getItemInHand(hand);
+        if (!this.level().isClientSide && held.isEmpty() && player.getUUID().equals(this.getOwnerId())
+                && this.hasExpeditionLoot() && !this.hasUsableChestLink()) {
+            int count = 0;
+            for (ItemStack stack : this.expeditionLoot) {
+                if (!stack.isEmpty()) {
+                    BehaviorUtils.throwItem(this, stack.copy(), player.position());
+                    count++;
+                }
+            }
+            this.expeditionLoot.clear();
+            if (count > 0) {
+                player.displayClientMessage(Component.translatable("message.goetyominous.expedition.lootHanded", count), true);
+            }
+            return InteractionResult.SUCCESS;
+        }
+        return super.mobInteract(player, hand);
     }
 
     @Override
@@ -133,7 +180,7 @@ public class PiglinTravelerServant extends AbstractPiglinServant implements Cros
 
     @Override
     protected boolean isAcceptedWeapon(Item item) {
-        return item instanceof CrossbowItem || item instanceof SwordItem;
+        return item instanceof CrossbowItem || item instanceof SwordItem || item instanceof PickaxeItem;
     }
 
     public void reassessWeaponGoal() {
@@ -279,6 +326,7 @@ public class PiglinTravelerServant extends AbstractPiglinServant implements Cros
         CompoundTag map = new CompoundTag();
         this.alreadyLocatedObjects.forEach((key, value) -> map.putInt(key.serialise(), value));
         compound.put("AlreadyLocatedObjects", map);
+        ExpeditionLootStorage.write(compound, this.expeditionLoot);
     }
 
     @Override
@@ -289,6 +337,8 @@ public class PiglinTravelerServant extends AbstractPiglinServant implements Cros
         for (String key : map.getAllKeys()) {
             this.alreadyLocatedObjects.put(EitherTag.Location.deserialise(key), map.getInt(key));
         }
+        this.expeditionLoot.clear();
+        this.expeditionLoot.addAll(ExpeditionLootStorage.read(compound));
         this.reassessWeaponGoal();
     }
 

@@ -1,0 +1,21 @@
+{
+  "name": "Sand Boulder Focus",
+  "icon": "goetyominous:sand_ball_focus",
+  "category": "goety:mmcompat/focuses",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "text",
+      "text": "You have learned how to hurl a large clump of sandstone at your enemies with magic. The thrown sandstone rolls across the ground, leaving quicksand behind that hinders creatures' movement."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:sand_ball_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "Casting with a Geo Staff increases the size of the Sandstone Boulder."
+    }
+  ]
+}

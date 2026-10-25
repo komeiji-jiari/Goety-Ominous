@@ -1,0 +1,21 @@
+{
+  "name": "沙团聚晶",
+  "icon": "goetyominous:sand_ball_focus",
+  "category": "goety:mmcompat/focuses",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "text",
+      "text": "你学会如何用法术向你的敌人投掷一大团砂岩。发射出去的砂岩会在地面上滚动，留下流沙阻滞生物的行动。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:sand_ball_focus",
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "用地卜魔杖施法，可以增加大砂岩块的体积。"
+    }
+  ]
+}

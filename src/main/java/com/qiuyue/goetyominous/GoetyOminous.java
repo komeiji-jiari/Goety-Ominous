@@ -4,6 +4,7 @@ import com.Polarice3.Goety.api.entities.ally.illager.IllagerType;
 import com.Polarice3.Goety.common.entities.ally.BlackWolf;
 import com.Polarice3.Goety.common.entities.neutral.ZPiglinServant;
 import com.qiuyue.goetyominous.common.blocks.trial.TrialBlocks;
+import com.qiuyue.goetyominous.common.explore.ExploreEvents;
 import com.qiuyue.goetyominous.common.blocks.trial.TrialSounds;
 import com.qiuyue.goetyominous.common.entities.ally.ias.*;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractDredenEntity;
@@ -23,6 +24,7 @@ import com.qiuyue.goetyominous.common.research.ResearchList;
 import com.qiuyue.goetyominous.common.ritual.FelRitualType;
 import com.qiuyue.goetyominous.common.world.ModMobSpawnBiomeModifier;
 import com.qiuyue.goetyominous.compat.mod.*;
+import com.qiuyue.goetyominous.config.ExpeditionConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.config.SpellConfig;
 import com.qiuyue.goetyominous.config.ac.AcConfig;
@@ -95,6 +97,7 @@ public class GoetyOminous {
         modEventBus.addListener(BuiltinPacksRegistry::register);
         modEventBus.addListener(this::onClientSetup);
         ModNetwork.init();
+        ExploreEvents.register();
         ModEntityTypes.register(modEventBus);
         ModContainerTypes.register(modEventBus);
         var biomeModifiers = DeferredRegister.create(
@@ -171,6 +174,11 @@ public class GoetyOminous {
                 "goetyominous/goetyominous-mobs.toml");
         MobsConfig.loadConfig(MobsConfig.SPEC,
                 FMLPaths.CONFIGDIR.get().resolve("goetyominous/goetyominous-mobs.toml").toString());
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ExpeditionConfig.SPEC,
+                "goetyominous/goetyominous-expeditions.toml");
+        ExpeditionConfig.loadConfig(ExpeditionConfig.SPEC,
+                FMLPaths.CONFIGDIR.get().resolve("goetyominous/goetyominous-expeditions.toml").toString());
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, SpellConfig.SPEC,
                 "goetyominous/goetyominous-spells.toml");

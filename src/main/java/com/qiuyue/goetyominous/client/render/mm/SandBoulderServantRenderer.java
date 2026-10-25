@@ -36,7 +36,8 @@ public class SandBoulderServantRenderer extends EntityRenderer<SandBoulderServan
     @Override
     public void render(SandBoulderServant entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
-        poseStack.scale(1.25F, 1.25F, 1.25F);
+        float scale = entity.getSizeScale();
+        poseStack.scale(1.25F * scale, 1.25F * scale, 1.25F * scale);
         poseStack.translate(0.0, -0.15F, 0.0);
         poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 90.0F));
         VertexConsumer vertexconsumer = buffer.getBuffer(this.model.renderType(this.getTextureLocation(entity)));

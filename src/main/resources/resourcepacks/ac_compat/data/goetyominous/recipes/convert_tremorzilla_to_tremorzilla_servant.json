@@ -7,7 +7,7 @@
   "craftType": "magic",
   "entity_to_convert": {
     "tag": "goety:tremorzilla_convert",
-    "display_name": "entity.alexscaves.tremorzilla"
+    "display_name": "entity.goetyominous.baby_tremorzilla"
   },
   "entity_to_convert_into": "goetyominous:tremorzilla_servant",
   "soulCost": 50,

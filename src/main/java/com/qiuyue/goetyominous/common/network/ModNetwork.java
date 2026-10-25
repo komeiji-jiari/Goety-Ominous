@@ -1,6 +1,14 @@
 package com.qiuyue.goetyominous.common.network;
 
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.common.explore.network.ExpeditionClaimPacket;
+import com.qiuyue.goetyominous.common.explore.network.ExpeditionGatherPacket;
+import com.qiuyue.goetyominous.common.explore.network.ExpeditionOpenPacket;
+import com.qiuyue.goetyominous.common.explore.network.ExpeditionProgressPacket;
+import com.qiuyue.goetyominous.common.explore.network.ExpeditionRecallPacket;
+import com.qiuyue.goetyominous.common.explore.network.ExpeditionRequestPacket;
+import com.qiuyue.goetyominous.common.explore.network.ExpeditionStartPacket;
+import com.qiuyue.goetyominous.common.explore.network.ExpeditionViewPacket;
 import com.qiuyue.goetyominous.common.network.ac.CBarbaricAxeShakePacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -13,7 +21,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class ModNetwork {
-    private static final String PROTOCOL_VERSION = "4";
+    private static final String PROTOCOL_VERSION = "6";
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(GoetyOminous.MOD_ID, "main"),
             () -> PROTOCOL_VERSION,
@@ -44,6 +52,38 @@ public class ModNetwork {
                 CBarbaricAxeShakePacket::encode,
                 CBarbaricAxeShakePacket::decode,
                 CBarbaricAxeShakePacket::handle);
+        register(ExpeditionOpenPacket.class,
+                ExpeditionOpenPacket::encode,
+                ExpeditionOpenPacket::decode,
+                ExpeditionOpenPacket::handle);
+        register(ExpeditionRequestPacket.class,
+                ExpeditionRequestPacket::encode,
+                ExpeditionRequestPacket::decode,
+                ExpeditionRequestPacket::handle);
+        register(ExpeditionStartPacket.class,
+                ExpeditionStartPacket::encode,
+                ExpeditionStartPacket::decode,
+                ExpeditionStartPacket::handle);
+        register(ExpeditionClaimPacket.class,
+                ExpeditionClaimPacket::encode,
+                ExpeditionClaimPacket::decode,
+                ExpeditionClaimPacket::handle);
+        register(ExpeditionRecallPacket.class,
+                ExpeditionRecallPacket::encode,
+                ExpeditionRecallPacket::decode,
+                ExpeditionRecallPacket::handle);
+        register(ExpeditionProgressPacket.class,
+                ExpeditionProgressPacket::encode,
+                ExpeditionProgressPacket::decode,
+                ExpeditionProgressPacket::handle);
+        register(ExpeditionViewPacket.class,
+                ExpeditionViewPacket::encode,
+                ExpeditionViewPacket::decode,
+                ExpeditionViewPacket::handle);
+        register(ExpeditionGatherPacket.class,
+                ExpeditionGatherPacket::encode,
+                ExpeditionGatherPacket::decode,
+                ExpeditionGatherPacket::handle);
     }
 
     public static <T> void register(Class<T> messageType,

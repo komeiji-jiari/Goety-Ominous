@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "goetyominous:block/cult_statue",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "goetyominous:block/cult_statue"
+    },
+    "facing=south": {
+      "model": "goetyominous:block/cult_statue",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "goetyominous:block/cult_statue",
+      "y": 270
+    }
+  }
+}

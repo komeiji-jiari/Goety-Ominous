@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.mm;
 
+import com.Polarice3.Goety.api.entities.IOwned;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.alexander.mutantmore.blocks.QuicksandBlock;
@@ -64,6 +65,7 @@ public class AreaDamage extends Entity {
     public DamageSource damageSource = this.damageSources().generic();
     public LivingEntity owner;
     public boolean constantDamage;
+    public boolean spellOwned;
     public List<Entity> damagedEntities = Lists.newArrayList();
     public List<Entity> blockedByEntities = Lists.newArrayList();
     public boolean friendlyFire;
@@ -73,6 +75,7 @@ public class AreaDamage extends Entity {
     public int extraTimeTick;
     public boolean ignoresInvulTime;
     public TagKey<EntityType<?>> cantHurtTag;
+    public Predicate<Entity> friendlyCheck;
     public List<AreaDamage> connectedAreaDamages = Lists.newArrayList();
 
     public int witherBreathBuffLevelBonus = 0;
@@ -135,6 +138,9 @@ public class AreaDamage extends Entity {
     }
 
     public boolean canEntityBeDamaged(Entity entity) {
+        if (entity != null && this.friendlyCheck != null && this.friendlyCheck.test(entity)) {
+            return false;
+        }
         if ((this.getAreaDamageType() == 3 || this.getActiveType() == 3) && entity instanceof LivingEntity && !((LivingEntity)entity).canBeAffected(new MobEffectInstance(MobEffects.POISON))) {
             return false;
         } else if (this.owner instanceof SentryVine && !(entity instanceof Enemy) && !entity.getType().is(EntityTypes.SENTRY_VINE_TARGETS) && this.getTeam() == null && entity.getTeam() == null && !(Boolean)MutantJungleZombieRewardsCommonConfig.vine_friendly_fire.get() && !(Boolean)MutantMoreGroupedOptionsCommonConfig.friendly_fire_on.get()) {
@@ -156,6 +162,10 @@ public class AreaDamage extends Entity {
                             canConnectedAreaDamagesHarm = false;
                         }
                     }
+                }
+
+                if (this.isOwnerAllied(entity)) {
+                    return false;
                 }
 
                 return canConnectedAreaDamagesHarm && entity != this.owner && this.canHarm(entity);
@@ -183,6 +193,14 @@ public class AreaDamage extends Entity {
                 return canConnectedAreaDamagesHarm;
             }
         }
+    }
+
+    private boolean isOwnerAllied(Entity entity) {
+        LivingEntity root = this.owner;
+        if (root instanceof IOwned owned && owned.getMasterOwner() != null) {
+            root = owned.getMasterOwner();
+        }
+        return root != null && MobUtil.areAllies(root, entity);
     }
 
     boolean canHarm(Entity target) {
@@ -286,17 +304,22 @@ public class AreaDamage extends Entity {
                                     }
 
                                     boolean flag = entity.hurt(this.damageSource, this.getActiveType() == 3 && entity instanceof LivingEntity ? Mth.clamp(this.damage, 0.0F, ((LivingEntity) entity).getHealth() - 1.0F) : this.damage);
-                                    if (this.knockbackAmount > 0.0 || this.getYKnockback() > 0.0F) {
+                                    float yKnockback = this.getYKnockback();
+                                    if (this.spellOwned && yKnockback > 0.0F) {
+                                        double heightRatio = Mth.clamp((entity.getY() - this.getY()) / Math.max(1.0D, this.getYSize()), 0.0D, 1.0D);
+                                        yKnockback *= (float) (1.0D - heightRatio);
+                                    }
+                                    if ((this.knockbackAmount > 0.0 || yKnockback > 0.0F) && (!this.spellOwned || flag)) {
                                         entity.hurtMarked = true;
                                         if (this.shouldDirectionalMotion()) {
                                             Vec3 directionalMotion = PositionUtils.getOffsetMotion(this, 0.0, 0.0, this.knockbackAmount, 0.0F, this.getYRot());
-                                            entity.push(directionalMotion.x, (double) this.getYKnockback(), directionalMotion.z);
+                                            entity.push(directionalMotion.x, (double) yKnockback, directionalMotion.z);
                                         } else {
                                             double d0 = entity.getX() - this.getX();
                                             double d1 = entity.getZ() - this.getZ();
                                             double d2 = Math.max(d0 * d0 + d1 * d1, 0.001);
                                             if ((double) this.distanceTo(entity) >= 0.5) {
-                                                entity.push(d0 / d2 * this.knockbackAmount, (double) this.getYKnockback(), d1 / d2 * this.knockbackAmount);
+                                                entity.push(d0 / d2 * this.knockbackAmount, (double) yKnockback, d1 / d2 * this.knockbackAmount);
                                             }
                                         }
                                     }
@@ -537,6 +560,10 @@ public class AreaDamage extends Entity {
             this.constantDamage = p_70037_1_.getBoolean("ConstantDamage");
         }
 
+        if (p_70037_1_.contains("SpellOwned")) {
+            this.spellOwned = p_70037_1_.getBoolean("SpellOwned");
+        }
+
         if (p_70037_1_.contains("KnockbackAmount")) {
             this.knockbackAmount = p_70037_1_.getDouble("KnockbackAmount");
         }
@@ -566,6 +593,7 @@ public class AreaDamage extends Entity {
         p_213281_1_.putInt("StartDelay", this.getStartDelay());
         p_213281_1_.putBoolean("IgnoresInvulTime", this.ignoresInvulTime);
         p_213281_1_.putBoolean("ConstantDamage", this.constantDamage);
+        p_213281_1_.putBoolean("SpellOwned", this.spellOwned);
         p_213281_1_.putDouble("KnockbackAmount", this.knockbackAmount);
         p_213281_1_.putFloat("KnockbackAmountY", this.getYKnockback());
         p_213281_1_.putInt("DisableShieldTime", this.disableShieldTime);

@@ -1,0 +1,9 @@
+{
+  "loader": "goetyominous:free_rotations",
+  "template": "goetyominous:block/golden_piglin_statue_raw",
+  "ambientocclusion": false,
+  "textures": {
+    "0": "goetyominous:block/golden_piglin_statue_glow",
+    "particle": "goetyominous:block/golden_piglin_statue_glow"
+  }
+}

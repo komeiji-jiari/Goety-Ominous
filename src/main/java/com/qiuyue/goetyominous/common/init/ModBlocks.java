@@ -36,6 +36,12 @@ public class ModBlocks {
     public static final RegistryObject<WolfTotemBlock> WOLF_TOTEM =
             BLOCKS.register("wolf_totem", WolfTotemBlock::new);
 
+    public static final RegistryObject<Block> CULT_STATUE =
+            BLOCKS.register("cult_statue", CultStatueBlock::new);
+
+    public static final RegistryObject<Block> GOLDEN_PIGLIN_STATUE =
+            BLOCKS.register("golden_piglin_statue", GoldenPiglinStatueBlock::new);
+
     public static final List<RegistryObject<PlushieBlock>> PLUSHIES = new ArrayList<>();
 
     public static final RegistryObject<PlushieBlock> PLUSHIE_ALASJ_XIAONIAO = plushie("plushie_alasj_xiaoniao", "alasj_xiaoniao");
