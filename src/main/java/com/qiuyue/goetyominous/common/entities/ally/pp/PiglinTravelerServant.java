@@ -7,7 +7,9 @@ import com.qiuyue.goetyominous.common.entities.ai.pp.TravelerKickGoal;
 import com.qiuyue.goetyominous.common.entities.ai.pp.TravelerSitGoal;
 import com.qiuyue.goetyominous.common.entities.ai.pp.LookAtPlayerWhenIdleGoal;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractPiglinServant;
+import com.qiuyue.goetyominous.common.explore.ExpeditionData;
 import com.qiuyue.goetyominous.common.explore.ExpeditionLootStorage;
+import com.qiuyue.goetyominous.common.explore.ExpeditionManager;
 import com.qiuyue.goetyominous.common.explore.IExpeditionLootHolder;
 import com.qiuyue.goetyominous.common.init.pp.PpEntityRegistry;
 import com.qiuyue.goetyominous.common.items.pp.PpItems;
@@ -250,6 +252,9 @@ public class PiglinTravelerServant extends AbstractPiglinServant implements Cros
     @Override
     protected void afterZombieConversion(Mob zombie) {
         if (zombie instanceof ZPiglinTravelerServant zombified) {
+            if (this.level() instanceof ServerLevel serverLevel) {
+                this.markExpeditionBindingDead(serverLevel);
+            }
             zombified.setItemSlot(EquipmentSlot.MAINHAND, this.getMainHandItem().copy());
         }
     }
@@ -261,6 +266,7 @@ public class PiglinTravelerServant extends AbstractPiglinServant implements Cros
 
     @Override
     protected void finishConversion(ServerLevel serverLevel) {
+        this.markExpeditionBindingDead(serverLevel);
         ZPiglinTravelerServant zombified = new ZPiglinTravelerServant(
                 PpEntityRegistry.ZPIGLIN_TRAVELER_SERVANT.get(), serverLevel);
         zombified.copyTrueOwner(this);
@@ -273,6 +279,11 @@ public class PiglinTravelerServant extends AbstractPiglinServant implements Cros
         ForgeEventFactory.onLivingConvert(this, zombified);
         this.discard();
         serverLevel.addFreshEntity(zombified);
+    }
+
+    private void markExpeditionBindingDead(ServerLevel serverLevel) {
+        ExpeditionData.get(serverLevel.getServer()).markDeadBinding(this.getUUID());
+        ExpeditionManager.flush(serverLevel.getServer());
     }
 
     @Override

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "goetyominous:item/traveler_compass/traveler_compass_10"
+  }
+}

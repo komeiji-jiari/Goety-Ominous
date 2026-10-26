@@ -1039,6 +1039,8 @@
   "config.jade.plugin_goetyominous.mutant_servant_life": "突变僵尸复活",
   "message.goetyominous.teletor_switched_tool": "磁流灵已握持:%s",
   "tooltip.goetyominous.cult_statue.count": "猪灵仆从: ",
+  "info.goetyominous.barbaric_axe.combo": "连击为战斧叠加蓄力。",
+  "info.goetyominous.barbaric_axe.finisher": "按住shift右键以释放灭绝冲击。",
 
   "entity.goetyominous.baby_villager": "幼年村民",
   "entity.goetyominous.tusked_elephant": "带有长牙的大象",

@@ -1,0 +1,22 @@
+{
+  "name": "Barbaric Axe",
+  "icon": "goetyominous:barbaric_axe",
+  "category": "goety:primordialcaves",
+  "sortnum": 1,
+  "advancement": "goety:goety/read_terminus_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Forged from the fragments of a Luxtructosaurus, this battleaxe carries the power of extinction. Every strike sets creatures ablaze and accumulates destructive force. Once the axe's power reaches its limit, sneak and right-click to release a devastating impact even more destructive than its normal strike."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:barbaric_axe"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "This battleaxe has infinite durability and cannot be destroyed by fire or explosions. When used to break logs while not sneaking, it automatically chain-breaks connected logs of the same type."
+    }
+  ]
+}

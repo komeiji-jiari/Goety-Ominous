@@ -142,7 +142,7 @@ public abstract class AbstractWindCharge extends AbstractHurtingProjectile imple
 
     public boolean shouldAffectEntity(Entity entity) {
         Entity owner = this.getOwner();
-        return owner == null || !ServantAllyUtil.areAllied(owner, entity);
+        return owner == null || entity == owner || !ServantAllyUtil.areAllied(owner, entity);
     }
 
     private boolean grantsFallDamageImmunity;

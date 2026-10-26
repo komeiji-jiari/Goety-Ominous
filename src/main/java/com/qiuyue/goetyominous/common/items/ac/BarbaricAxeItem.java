@@ -1,36 +1,46 @@
 package com.qiuyue.goetyominous.common.items.ac;
 
 import com.Polarice3.Goety.common.magic.spells.geomancy.QuakingSpell;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.common.network.ac.CBarbaricAxeShakePacket;
 import com.qiuyue.goetyominous.common.rlyeh.ac.ExtinctionStyled;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 import com.qiuyue.goetyominous.config.ac.AcConfig;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
 
@@ -55,10 +65,17 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
     private static final int HEAVE_RINGS = 3;
     private static final double HEAVE_HEIGHT = 3.0D;
     private static final float HEAVE_KNOCK_UP = 0.1F;
+    private static final java.util.UUID ENTITY_REACH_UUID =
+            java.util.UUID.fromString("7f4c2a9e-3b6d-4e1a-9c58-2d7e6f1a0b3c");
 
     public BarbaricAxeItem() {
         super(Tiers.NETHERITE, damageArgument(), speedArgument(),
-                new Properties().stacksTo(1).rarity(Rarity.RARE));
+                new Properties().stacksTo(1).rarity(Rarity.RARE).fireResistant());
+    }
+
+    @Override
+    public boolean canBeHurtBy(DamageSource source) {
+        return !source.is(DamageTypeTags.IS_EXPLOSION) && super.canBeHurtBy(source);
     }
 
     private static float damageArgument() {
@@ -75,11 +92,32 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
             return true;
         }
         if (entity instanceof LivingEntity && !player.level().isClientSide) {
-            sweep(player, entity);
+            sweep(stack, player, entity);
             addCombo(stack);
             CBarbaricAxeShakePacket.send(player, 0.7F, 6);
         }
         return false;
+    }
+
+    @Override
+    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        boolean result = super.hurtEnemy(stack, target, attacker);
+        target.setSecondsOnFire(5);
+        return result;
+    }
+
+    @Override
+    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
+        Multimap<Attribute, AttributeModifier> modifiers = super.getDefaultAttributeModifiers(slot);
+        if (slot != EquipmentSlot.MAINHAND) {
+            return modifiers;
+        }
+        ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
+        builder.putAll(modifiers);
+        builder.put(net.minecraftforge.common.ForgeMod.ENTITY_REACH.get(),
+                new AttributeModifier(ENTITY_REACH_UUID, "Entity reach modifier",
+                        1.0D, AttributeModifier.Operation.ADDITION));
+        return builder.build();
     }
 
     @Override
@@ -100,7 +138,11 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        slam(level, player, stack, player.blockPosition(), finisherReady(stack, player));
+        boolean finisher = finisherReady(stack, player);
+        if (player.isShiftKeyDown() && !finisher) {
+            return InteractionResultHolder.pass(stack);
+        }
+        slam(level, player, stack, player.blockPosition(), finisher);
         return InteractionResultHolder.success(stack);
     }
 
@@ -115,12 +157,16 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
             return InteractionResult.PASS;
         }
         ItemStack stack = context.getItemInHand();
+        boolean finisher = finisherReady(stack, player);
+        if (player.isShiftKeyDown() && !finisher) {
+            return InteractionResult.PASS;
+        }
         return slam(context.getLevel(), player, stack,
-                context.getClickedPos().relative(context.getClickedFace()), finisherReady(stack, player));
+                context.getClickedPos().relative(context.getClickedFace()), finisher);
     }
 
     private static boolean finisherReady(ItemStack stack, Player player) {
-        return combo(stack) >= COMBO_MAX && !player.onGround();
+        return player.isShiftKeyDown() && combo(stack) >= COMBO_MAX;
     }
 
     private static int combo(ItemStack stack) {
@@ -135,7 +181,7 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
         stack.getOrCreateTag().putInt(COMBO_COUNT_TAG, combo);
     }
 
-    private static void sweep(Player player, Entity primary) {
+    private static void sweep(ItemStack stack, Player player, Entity primary) {
         Level level = player.level();
         double range = AcConfig.BarbaricAxeSweepRange.get();
         float damage = AcConfig.BarbaricAxeSweepDamage.get().floatValue();
@@ -161,7 +207,8 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
             if (offset.lengthSqr() < 1.0E-4D || forward.dot(offset.normalize()) < cosLimit) {
                 continue;
             }
-            target.hurt(level.damageSources().playerAttack(player), damage);
+            float finalDamage = damage + EnchantmentHelper.getDamageBonus(stack, target.getMobType());
+            target.hurt(level.damageSources().playerAttack(player), finalDamage);
             target.knockback(0.6D, target.getX() - player.getX(), target.getZ() - player.getZ());
         }
 
@@ -206,7 +253,9 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
                     || target.distanceToSqr(centerX, centerY, centerZ) > radius * radius) {
                 continue;
             }
-            target.hurt(level.damageSources().playerAttack(player), (float) damage);
+            float finalDamage = (float) damage
+                    + EnchantmentHelper.getDamageBonus(stack, target.getMobType());
+            target.hurt(level.damageSources().playerAttack(player), finalDamage);
             double offsetX = target.getX() - centerX;
             double offsetZ = target.getZ() - centerZ;
             if (finisher) {
@@ -279,5 +328,14 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         return enchantment.category == EnchantmentCategory.WEAPON
                 || super.canApplyAtEnchantingTable(stack, enchantment);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, level, tooltip, flag);
+        tooltip.add(Component.translatable("info.goetyominous.barbaric_axe.combo")
+                .withStyle(ChatFormatting.DARK_PURPLE));
+        tooltip.add(Component.translatable("info.goetyominous.barbaric_axe.finisher")
+                .withStyle(ChatFormatting.DARK_PURPLE));
     }
 }

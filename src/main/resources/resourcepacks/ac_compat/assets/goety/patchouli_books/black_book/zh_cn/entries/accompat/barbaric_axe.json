@@ -1,0 +1,22 @@
+{
+  "name": "灭绝战斧",
+  "icon": "goetyominous:barbaric_axe",
+  "category": "goety:primordialcaves",
+  "sortnum": 1,
+  "advancement": "goety:goety/read_terminus_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "这把锻自暝煌龙碎片的战斧带有灭绝的力量，每次攻击生物都会使生物着火并且积蓄毁灭之力。一旦战斧的力量达到上限，潜行右键即可释放一次比常态冲击更具破坏力的毁灭冲击。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:barbaric_axe"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "这把战斧具有无限的耐久，而且不会被火焰或者爆炸摧毁。使用这把战斧非潜行状态破坏原木时，能够自动连锁破坏相连的同一种方块原木。"
+    }
+  ]
+}
