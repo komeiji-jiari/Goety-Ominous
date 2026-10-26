@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.common.entities.projectile;
 import com.Polarice3.Goety.client.particles.ModParticleTypes;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.ModTags;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.qiuyue.goetyominous.utils.SimpleExplosionDamageCalculator;
 import java.util.Optional;
 import javax.annotation.Nullable;
@@ -140,7 +141,8 @@ public abstract class AbstractWindCharge extends AbstractHurtingProjectile imple
     }
 
     public boolean shouldAffectEntity(Entity entity) {
-        return true;
+        Entity owner = this.getOwner();
+        return owner == null || !ServantAllyUtil.areAllied(owner, entity);
     }
 
     private boolean grantsFallDamageImmunity;

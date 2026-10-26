@@ -2,7 +2,7 @@
   "name": "Sand Geyser Focus",
   "icon": "goetyominous:sand_geyser_focus",
   "category": "goety:mmcompat/focuses",
-  "sortnum": 5,
+  "sortnum": 8,
   "pages": [
     {
       "type": "text",

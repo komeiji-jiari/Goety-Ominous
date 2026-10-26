@@ -1,7 +1,7 @@
 {
   "name": "Artifices",
   "description": "Utilizing and Manipulating Soul Energy.",
-  "icon": "goety:ominous_pyre",
+  "icon": "goetyominous:golden_piglin_statue",
   "parent": "goety:ominous_crafts",
   "sortnum": 3
 }

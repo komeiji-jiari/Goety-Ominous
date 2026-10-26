@@ -40,6 +40,12 @@ public class WindChargeExplosion extends Explosion {
     private final ParticleOptions goetyominous$smallParticle;
     private final ParticleOptions goetyominous$largeParticle;
     private final SoundEvent goetyominous$sound;
+    private Entity goetyominous$allyOwner;
+
+    public WindChargeExplosion setAllyOwner(Entity owner) {
+        this.goetyominous$allyOwner = owner;
+        return this;
+    }
 
     public WindChargeExplosion(Level level, Entity source, DamageSource damageSource, ExplosionDamageCalculator calculator,
                                double x, double y, double z, float radius,
@@ -127,6 +133,9 @@ public class WindChargeExplosion extends Explosion {
 
             if (accessor.getSource() instanceof com.qiuyue.goetyominous.common.entities.projectile.AbstractWindCharge windCharge
                     && !windCharge.shouldAffectEntity(entity)) {
+                continue;
+            }
+            if (this.goetyominous$allyOwner != null && ServantAllyUtil.areAllied(this.goetyominous$allyOwner, entity)) {
                 continue;
             }
 

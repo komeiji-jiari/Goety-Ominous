@@ -2,7 +2,7 @@
   "name": "更多突变",
   "icon": "mutantmore:formula_y",
   "category": "goety:mmcompat/mutations",
-  "sortnum": 10,
+  "sortnum": 1,
   "pages": [
     {
       "type": "patchouli:text",

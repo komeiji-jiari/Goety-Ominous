@@ -79,7 +79,7 @@ public class SoulVultureServant extends Summoned implements FlyingAnimal {
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AmConfig.SoulVultureServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AmConfig.SoulVultureServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 32.0)
                 .add(Attributes.ATTACK_DAMAGE, AmConfig.SoulVultureServantDamage.get())
                 .add(Attributes.MOVEMENT_SPEED, 0.25D);
     }
@@ -93,7 +93,7 @@ public class SoulVultureServant extends Summoned implements FlyingAnimal {
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AmConfig.SoulVultureServantDamage.get() * this.soulScale);
         }
         if (this.getAttribute(Attributes.FOLLOW_RANGE) != null) {
-            this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(AmConfig.SoulVultureServantFollowRange.get());
+            this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(32.0);
         }
     }
 

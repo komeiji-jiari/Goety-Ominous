@@ -128,17 +128,17 @@ public class AxolotlServant extends AnimalSummon implements LerpingModel{
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, AttributesConfig.AxolotlServantHealth.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.AxolotlServantMovementSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 1.0)
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.AxolotlServantDamage.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.AxolotlServantFollowRange.get());
+                .add(Attributes.FOLLOW_RANGE, 16.0);
     }
 
     @Override
     public void setConfigurableAttributes() {
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(AttributesConfig.AxolotlServantHealth.get());
-        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AttributesConfig.AxolotlServantMovementSpeed.get());
+        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(1.0);
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AttributesConfig.AxolotlServantDamage.get());
-        this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(AttributesConfig.AxolotlServantFollowRange.get());
+        this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(16.0);
     }
 
     @Override

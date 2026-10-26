@@ -74,11 +74,11 @@ public class FlameDrifterServant extends AbstractFlamebornServant {
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, LmConfig.FlameDrifterServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.FlameDrifterServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, LmConfig.FlameDrifterServantFollowRange.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
+                .add(Attributes.FOLLOW_RANGE, 20.0)
                 .add(Attributes.ARMOR, LmConfig.FlameDrifterServantArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, LmConfig.FlameDrifterServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.FlameDrifterServantAttackKnockback.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.1)
+                .add(Attributes.ATTACK_KNOCKBACK, 0.5)
                 .add(Attributes.ATTACK_DAMAGE, LmConfig.FlameDrifterServantDamage.get());
     }
 

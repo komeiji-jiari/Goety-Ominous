@@ -103,12 +103,12 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AmConfig.WarpedMoscoServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AmConfig.WarpedMoscoServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 64.0)
                 .add(Attributes.ATTACK_DAMAGE, AmConfig.WarpedMoscoServantDamage.get())
                 .add(Attributes.ARMOR, AmConfig.WarpedMoscoServantArmor.get())
                 .add(Attributes.ARMOR_TOUGHNESS, AmConfig.WarpedMoscoServantArmorToughness.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AmConfig.WarpedMoscoServantKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AmConfig.WarpedMoscoServantMovementSpeed.get());
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.3);
     }
 
     public MobType getMobType() {
@@ -147,8 +147,8 @@ public class WarpedMoscoServant extends Summoned implements IAnimatedEntity {
         AttributeInstance health = this.getAttribute(Attributes.MAX_HEALTH);
         AttributeInstance attack = this.getAttribute(Attributes.ATTACK_DAMAGE);
         if (this.hasUnholyBlood()) {
-            this.addModIfMissing(health, UNHOLY_BLOOD_HEALTH_UUID, "Unholy Blood Health", AmConfig.WarpedMoscoUnholyBloodHealthBouns.get());
-            this.addModIfMissing(attack, UNHOLY_BLOOD_ATTACK_UUID, "Unholy Blood Attack", AmConfig.WarpedMoscoUnholyBloodDamageBouns.get());
+            this.addModIfMissing(health, UNHOLY_BLOOD_HEALTH_UUID, "Unholy Blood Health", AmConfig.WarpedMoscoUnholyBloodHealthBonus.get());
+            this.addModIfMissing(attack, UNHOLY_BLOOD_ATTACK_UUID, "Unholy Blood Attack", AmConfig.WarpedMoscoUnholyBloodDamageBonus.get());
         }
     }
 

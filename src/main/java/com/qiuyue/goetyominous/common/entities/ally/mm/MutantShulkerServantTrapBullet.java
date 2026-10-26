@@ -36,6 +36,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 
 public class MutantShulkerServantTrapBullet extends Projectile {
+    private static final double FINAL_APPROACH_DISTANCE = 2.0D;
+    private static final float FINAL_APPROACH_SPEED = 0.3F;
     @Nullable
     private Entity finalTarget;
     @Nullable
@@ -126,11 +128,6 @@ public class MutantShulkerServantTrapBullet extends Projectile {
     protected void defineSynchedData() {
     }
 
-    @Nullable
-    private Direction getMoveDirection() {
-        return this.currentMoveDirection;
-    }
-
     private void setMoveDirection(@Nullable Direction direction) {
         this.currentMoveDirection = direction;
     }
@@ -202,6 +199,28 @@ public class MutantShulkerServantTrapBullet extends Projectile {
         this.flightSteps = 10 + this.random.nextInt(5) * 10;
     }
 
+    private void updateFinalApproach() {
+        if (this.finalTarget == null) {
+            return;
+        }
+        Vec3 center = this.finalTarget.position().add(0.0D, this.finalTarget.getBbHeight() * 0.5D, 0.0D);
+        double distance = this.position().distanceTo(center);
+        if (this.currentMoveDirection != null && distance > FINAL_APPROACH_DISTANCE) {
+            return;
+        }
+        float speed = Math.max(this.trackSpeed, FINAL_APPROACH_SPEED);
+        Vec3 aim = center.add(this.finalTarget.getDeltaMovement().scale(Math.min(distance / speed, 2.0D)));
+        Vec3 delta = aim.subtract(this.position());
+        double length = delta.length();
+        if (length > 1.0E-4D) {
+            this.targetDeltaX = delta.x / length * speed;
+            this.targetDeltaY = delta.y / length * speed;
+            this.targetDeltaZ = delta.z / length * speed;
+        }
+        this.setMoveDirection(null);
+        this.flightSteps = 0;
+    }
+
     @Override
     public void checkDespawn() {
         if (this.level().getDifficulty() == Difficulty.PEACEFUL) {
@@ -227,6 +246,7 @@ public class MutantShulkerServantTrapBullet extends Projectile {
                 this.targetDeltaX = Mth.clamp(this.targetDeltaX * 1.025D, -1.0D, 1.0D);
                 this.targetDeltaY = Mth.clamp(this.targetDeltaY * 1.025D, -1.0D, 1.0D);
                 this.targetDeltaZ = Mth.clamp(this.targetDeltaZ * 1.025D, -1.0D, 1.0D);
+                this.updateFinalApproach();
                 Vec3 vec3 = this.getDeltaMovement();
                 this.setDeltaMovement(vec3.add((this.targetDeltaX - vec3.x) * 0.2D, (this.targetDeltaY - vec3.y) * 0.2D, (this.targetDeltaZ - vec3.z) * 0.2D));
             }
@@ -295,6 +315,7 @@ public class MutantShulkerServantTrapBullet extends Projectile {
     @Override
     protected void onHitEntity(EntityHitResult hitResult) {
         super.onHitEntity(hitResult);
+        this.playSound(SoundEvents.SHULKER_BULLET_HIT, 1.0F, 1.0F);
         Entity entity = hitResult.getEntity();
         Entity entity1 = this.getOwner();
         if (this.canHarm(entity)) {
@@ -302,7 +323,7 @@ public class MutantShulkerServantTrapBullet extends Projectile {
             boolean flag = entity.hurt(this.damageSources().mobProjectile(this, livingentity), this.damage);
             if (flag) {
                 this.doEnchantDamageEffects(livingentity, entity);
-                if (entity instanceof LivingEntity living && !BossUtil.isBoss(living)) {
+                if (entity instanceof LivingEntity living && !BossUtil.isBoss(living) && this.levitationLength > 0) {
                     living.addEffect(new MobEffectInstance(MobEffects.LEVITATION, this.levitationLength, this.levitationLevel),
                             entity1 != null ? entity1 : this);
                 }

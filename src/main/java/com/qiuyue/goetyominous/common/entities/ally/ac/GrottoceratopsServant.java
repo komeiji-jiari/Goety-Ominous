@@ -100,10 +100,10 @@ public class GrottoceratopsServant extends AnimalSummon implements LaysEggs, IAn
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AcConfig.GrottoceratopsServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AcConfig.GrottoceratopsServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 32.0)
                 .add(Attributes.ATTACK_DAMAGE, AcConfig.GrottoceratopsServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.GrottoceratopsServantKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AcConfig.GrottoceratopsServantMovementSpeed.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.9)
+                .add(Attributes.MOVEMENT_SPEED, 0.2)
                 .add(Attributes.ARMOR, AcConfig.GrottoceratopsServantArmor.get());
     }
     @Override

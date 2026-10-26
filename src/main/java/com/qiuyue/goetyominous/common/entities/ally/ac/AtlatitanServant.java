@@ -197,10 +197,10 @@ public class AtlatitanServant extends AnimalSummon
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AcConfig.AtlatitanServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AcConfig.AtlatitanServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 32.0)
                 .add(Attributes.ATTACK_DAMAGE, AcConfig.AtlatitanServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.AtlatitanServantKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AcConfig.AtlatitanServantMovementSpeed.get());
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.325);
     }
     @Override
     protected void defineSynchedData() {

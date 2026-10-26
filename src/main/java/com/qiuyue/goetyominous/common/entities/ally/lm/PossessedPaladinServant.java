@@ -65,7 +65,6 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.miauczel.legendary_monsters.damagetype.ModDamageTypes;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -335,10 +334,10 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                 .add(Attributes.ARMOR, LmConfig.PossessedPaladinServantArmor.get())
                 .add(Attributes.ARMOR_TOUGHNESS, LmConfig.PossessedPaladinServantArmorToughness.get())
                 .add(Attributes.ATTACK_DAMAGE, LmConfig.PossessedPaladinServantDamage.get())
-                .add(Attributes.MOVEMENT_SPEED, LmConfig.PossessedPaladinServantMovementSpeed.get())
-                .add(Attributes.FOLLOW_RANGE, LmConfig.PossessedPaladinServantFollowRange.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.PossessedPaladinServantKnockbackResistance.get())
-                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.PossessedPaladinServantAttackKnockback.get());
+                .add(Attributes.MOVEMENT_SPEED, 0.3)
+                .add(Attributes.FOLLOW_RANGE, 30.0)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
+                .add(Attributes.ATTACK_KNOCKBACK, 1.0);
     }
 
     public void setConfigurableAttributes() {
@@ -2769,10 +2768,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                     EntityUtil.cancelBuffs(entityHit);
                     entityHit.invulnerableTime = 0;
                     this.shouldAttackMore = true;
-                    if (LmConfig.SoulFractureOnServantHit.get()) {
-                        this.applyStackingEffect(entityHit, ModEffects.SOUL_FRACTURE.get(), 1, 4,
-                                MathUtils.toTicks(10.0F));
-                    }
                 }
                 if (flag && launch) {
                     this.launch(entityHit, true);
@@ -3103,10 +3098,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                 boolean flag = entityHit.hurt(this.damageSources().mobAttack(this),
                         (float) ((double) damage + (double) MathUtils.entityBasedHpDamage(entityHit, 3.0F)));
                 if (flag) {
-                    if (LmConfig.SoulFractureOnServantHit.get()) {
-                        this.applyStackingEffect(entityHit, ModEffects.SOUL_FRACTURE.get(), 1, 4,
-                                MathUtils.toTicks(10.0F));
-                    }
                     EntityUtil.cancelBuffs(entityHit);
                     boolean mounted = entityHit.startRiding(this, true);
                     if (mounted) {
@@ -3325,10 +3316,6 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
                         entityHit.addEffect(new MobEffectInstance(ModEffects.STUN.get(),
                                 this.getStunDuration(), 0));
                     }
-                    if (LmConfig.SoulFractureOnServantHit.get()) {
-                        this.applyStackingEffect(entityHit, ModEffects.SOUL_FRACTURE.get(), 1, 4,
-                                MathUtils.toTicks(10.0F));
-                    }
                     this.playSound(soundEvent, 1.0F, pitch);
                 }
                 if (entityHit instanceof Player && entityHit.isBlocking() && brokenShieldTicks > 0) {
@@ -3521,7 +3508,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
         }
 
         if (this.BossInvulnerabilityTime > 0
-                && LmConfig.PossessedPaladinServantInvulnerabilityTime.get()) {
+                && LmConfig.PossessedPaladinServantInvulnerability.get()) {
             return false;
         }
 
@@ -3543,7 +3530,7 @@ public class PossessedPaladinServant extends IAnimatedBossServant {
 
         boolean hurt1 = super.hurt(source, amount);
         if (hurt1 && !this.level().isClientSide
-                && LmConfig.PossessedPaladinServantInvulnerabilityTime.get()
+                && LmConfig.PossessedPaladinServantInvulnerability.get()
                 && this.BossInvulnerabilityTime <= 0) {
             this.BossInvulnerabilityTime = BOSS_INVULNERABILITY_TICKS;
         }

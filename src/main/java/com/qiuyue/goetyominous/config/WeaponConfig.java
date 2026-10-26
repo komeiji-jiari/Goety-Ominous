@@ -23,6 +23,7 @@ public class WeaponConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> BlackBeastArmorSoulRepairInterval;
 
     static {
+        BUILDER.push("Tools & Weapons");
         BUILDER.push("Fel Staff");
         FelStaffDamage = BUILDER.comment("Melee damage of Fel Staff (Default: 4.0)")
                 .defineInRange("felStaffDamage", 4.0, 1.0, 100.0);
@@ -43,6 +44,8 @@ public class WeaponConfig {
                 .comment("Firebrand bonus fire damage dealt to burning targets, Default: 3.0")
                 .defineInRange("firebrandFireBonus", 3.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
+        BUILDER.pop();
+        BUILDER.push("Armor");
         BUILDER.push("Wolf Armor");
         WolfArmorDurability = BUILDER
                 .comment("Cursed Metal Wolf Armor durability, Default: 78")
@@ -76,13 +79,14 @@ public class WeaponConfig {
                 .comment("Dark Black Beast Armor soul repair interval in ticks (1 durability per N ticks), Default: 20")
                 .defineInRange("blackBeastArmorSoulRepairInterval", 20, 1, 10000);
         BUILDER.pop();
+        BUILDER.pop();
         SPEC = BUILDER.build();
     }
     public static void loadConfig(ForgeConfigSpec spec, String path) {
         final com.electronwill.nightconfig.core.file.CommentedFileConfig configData =
                 com.electronwill.nightconfig.core.file.CommentedFileConfig.builder(new File(path))
                         .sync()
-                        .autoreload()
+                        .autosave()
                         .writingMode(com.electronwill.nightconfig.core.io.WritingMode.REPLACE)
                         .build();
         configData.load();

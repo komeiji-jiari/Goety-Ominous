@@ -25,8 +25,13 @@ public final class ServantAllyUtil {
         if (MobUtil.areAllies(attacker, target)) {
             return true;
         }
-        return attacker instanceof IOwned ownedAttacker
-                && target instanceof IOwned ownedTarget
-                && MobUtil.ownerStack(ownedAttacker, ownedTarget);
+        if (attacker instanceof IOwned ownedAttacker && target instanceof IOwned ownedTarget
+                && MobUtil.ownerStack(ownedAttacker, ownedTarget)) {
+            return true;
+        }
+        if (target instanceof IOwned ownedTarget && ownedTarget.getTrueOwner() == attacker) {
+            return true;
+        }
+        return attacker instanceof IOwned ownedAttacker && ownedAttacker.getTrueOwner() == target;
     }
 }

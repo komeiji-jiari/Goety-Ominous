@@ -8,7 +8,6 @@ import com.qiuyue.goetyominous.common.init.lm.LmDamageTypes;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import com.qiuyue.goetyominous.common.init.lm.LmSounds;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
-import net.miauczel.legendary_monsters.effect.ModEffects;
 import net.miauczel.legendary_monsters.util.EntityUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -31,7 +30,6 @@ import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
-import com.qiuyue.goetyominous.config.lm.LmConfig;
 
 public class SoulPillar extends Entity {
 
@@ -247,10 +245,6 @@ public class SoulPillar extends Entity {
         }
 
         if (impactEntity.hurt(LmDamageTypes.ghostly(caster), this.getDamage())) {
-            if (LmConfig.SoulFractureOnServantHit.get()) {
-                EntityUtil.applyStackingEffect(impactEntity, ModEffects.SOUL_FRACTURE.get(),
-                        1, 4, ServantMath.toTicks(10.0F));
-            }
             impactEntity.setDeltaMovement(this.getDeltaMovement().x,
                     this.getDeltaMovement().y + 0.85D, this.getDeltaMovement().z);
             EntityUtil.applyPlayerDeltaMovement(impactEntity);

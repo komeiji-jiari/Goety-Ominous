@@ -44,7 +44,7 @@ public class FireSlimeServant extends SlimeServant {
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, OfConfig.FireSlimeServantHealth.get())
-                .add(Attributes.MOVEMENT_SPEED, OfConfig.FireSlimeServantMovementSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.6)
                 .add(Attributes.ATTACK_DAMAGE, OfConfig.FireSlimeServantAttackDamage.get());
     }
 

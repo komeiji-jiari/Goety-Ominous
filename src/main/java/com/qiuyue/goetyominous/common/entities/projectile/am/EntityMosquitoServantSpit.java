@@ -4,6 +4,7 @@ import com.Polarice3.Goety.common.entities.projectiles.SpellThrowableProjectile;
 import com.github.alexthe666.alexsmobs.entity.EntityCrimsonMosquito;
 import com.qiuyue.goetyominous.common.entities.ally.am.CrimsonMosquitoServant;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -53,7 +54,7 @@ public class EntityMosquitoServantSpit extends SpellThrowableProjectile {
         Entity hitEntity = result.getEntity();
         if (!this.level().isClientSide) {
             LivingEntity living = this.getOwner();
-            if (living != null) {
+            if (living != null && !ServantAllyUtil.areAllied(living, hitEntity)) {
                 hitEntity.hurt(this.damageSources().mobProjectile(this, living), this.getExtraDamage());
             }
             this.discard();

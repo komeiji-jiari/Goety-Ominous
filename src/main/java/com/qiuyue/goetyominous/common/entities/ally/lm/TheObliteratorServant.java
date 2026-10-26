@@ -316,10 +316,10 @@ public class TheObliteratorServant extends IAnimatedBossServant {
                 .add(Attributes.ARMOR, LmConfig.TheObliteratorServantArmor.get())
                 .add(Attributes.ARMOR_TOUGHNESS, LmConfig.TheObliteratorServantArmorToughness.get())
                 .add(Attributes.ATTACK_DAMAGE, LmConfig.TheObliteratorServantDamage.get())
-                .add(Attributes.MOVEMENT_SPEED, LmConfig.TheObliteratorServantMovementSpeed.get())
-                .add(Attributes.FOLLOW_RANGE, LmConfig.TheObliteratorServantFollowRange.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.TheObliteratorServantKnockbackResistance.get())
-                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.TheObliteratorServantAttackKnockback.get());
+                .add(Attributes.MOVEMENT_SPEED, 0.36)
+                .add(Attributes.FOLLOW_RANGE, 30.0)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
+                .add(Attributes.ATTACK_KNOCKBACK, 0.5);
     }
 
     public void setConfigurableAttributes() {

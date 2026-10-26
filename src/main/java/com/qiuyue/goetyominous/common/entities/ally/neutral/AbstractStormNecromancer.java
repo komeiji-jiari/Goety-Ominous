@@ -83,7 +83,7 @@ public class AbstractStormNecromancer extends AbstractNecromancer {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, AttributesConfig.StormNecromancerHealth.get())
                 .add(Attributes.ARMOR, AttributesConfig.StormNecromancerArmor.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.StormNecromancerFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 32.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.25D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.StormNecromancerDamage.get());
@@ -92,7 +92,7 @@ public class AbstractStormNecromancer extends AbstractNecromancer {
     public void setConfigurableAttributes() {
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), AttributesConfig.StormNecromancerHealth.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), AttributesConfig.StormNecromancerArmor.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.FOLLOW_RANGE), AttributesConfig.StormNecromancerFollowRange.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.FOLLOW_RANGE), 32.0);
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), AttributesConfig.StormNecromancerDamage.get());
     }
 

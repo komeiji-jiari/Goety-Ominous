@@ -344,11 +344,11 @@ public class OvergrownColossusServant extends IAnimatedMiniBossServant {
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, LmConfig.OvergrownColossusServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.OvergrownColossusServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, LmConfig.OvergrownColossusServantFollowRange.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
+                .add(Attributes.FOLLOW_RANGE, 30.0)
                 .add(Attributes.ARMOR, LmConfig.OvergrownColossusServantArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, LmConfig.OvergrownColossusServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.OvergrownColossusServantAttackKnockback.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.3)
+                .add(Attributes.ATTACK_KNOCKBACK, 1.5)
                 .add(Attributes.ATTACK_DAMAGE, LmConfig.OvergrownColossusServantDamage.get());
     }
 

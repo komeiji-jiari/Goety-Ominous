@@ -75,10 +75,10 @@ public class GrieferServant extends AbstractIllagerServant implements RangedAtta
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, SarConfig.GrieferServantMovementSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.35)
                 .add(Attributes.MAX_HEALTH, SarConfig.GrieferServantHealth.get())
                 .add(Attributes.ATTACK_DAMAGE, SarConfig.GrieferServantDamage.get())
-                .add(Attributes.FOLLOW_RANGE, SarConfig.GrieferServantFollowRange.get());
+                .add(Attributes.FOLLOW_RANGE, 32.0);
     }
 
     @Override

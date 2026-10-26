@@ -13,12 +13,10 @@ import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import com.qiuyue.goetyominous.config.mm.MmConfig;
 
 @OnlyIn(Dist.CLIENT)
 public class MutantJungleZombieServantRenderer extends MobRenderer<MutantJungleZombieServant, MutantJungleZombieServantModel<MutantJungleZombieServant>> {
     private static final ResourceLocation SERVANT_TEXTURE = new ResourceLocation(GoetyOminous.MOD_ID, "textures/entity/mutant_jungle_zombie_servant.png");
-    private static final ResourceLocation ORIGINAL_TEXTURE = new ResourceLocation("mutantmore", "textures/entities/mutant_jungle_zombie.png");
 
     public MutantJungleZombieServantRenderer(EntityRendererProvider.Context context) {
         super(context, new MutantJungleZombieServantModel(context.bakeLayer(ModEntityLayers.MUTANT_JUNGLE_ZOMBIE_SERVANT_LAYER)), 1.25F);
@@ -37,6 +35,6 @@ public class MutantJungleZombieServantRenderer extends MobRenderer<MutantJungleZ
     }
 
     public ResourceLocation getTextureLocation(MutantJungleZombieServant entity) {
-        return MmConfig.MutantJungleZombieServantOriginalTexture.get() ? ORIGINAL_TEXTURE : SERVANT_TEXTURE;
+        return SERVANT_TEXTURE;
     }
 }

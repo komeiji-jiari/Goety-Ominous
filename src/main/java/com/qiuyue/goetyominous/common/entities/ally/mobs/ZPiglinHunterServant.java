@@ -49,7 +49,7 @@ public class ZPiglinHunterServant extends ZPiglinServant implements CrossbowAtta
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AttributesConfig.PiglinHunterServantHealth.get())
                 .add(Attributes.ARMOR, AttributesConfig.PiglinHunterServantArmor.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.PiglinHunterServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 16.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.23)
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.PiglinHunterServantDamage.get());
     }

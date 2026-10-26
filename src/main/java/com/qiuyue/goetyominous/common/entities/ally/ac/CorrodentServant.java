@@ -121,11 +121,11 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AcConfig.CorrodentServantMovementSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.25)
                 .add(Attributes.MAX_HEALTH, AcConfig.CorrodentServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AcConfig.CorrodentServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 32.0)
                 .add(Attributes.ATTACK_DAMAGE, AcConfig.CorrodentServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.CorrodentServantKnockbackResistance.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.0)
                 .add(Attributes.ARMOR, AcConfig.CorrodentServantArmor.get());
     }
 

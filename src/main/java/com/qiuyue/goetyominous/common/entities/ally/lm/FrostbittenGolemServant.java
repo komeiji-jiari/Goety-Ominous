@@ -319,11 +319,11 @@ public class FrostbittenGolemServant extends IAnimatedMiniBossServant {
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, LmConfig.FrostbittenGolemServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.FrostbittenGolemServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, LmConfig.FrostbittenGolemServantFollowRange.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
+                .add(Attributes.FOLLOW_RANGE, 30.0)
                 .add(Attributes.ARMOR, LmConfig.FrostbittenGolemServantArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, LmConfig.FrostbittenGolemServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.FrostbittenGolemServantAttackKnockback.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.3)
+                .add(Attributes.ATTACK_KNOCKBACK, 1.0)
                 .add(Attributes.ATTACK_DAMAGE, LmConfig.FrostbittenGolemServantDamage.get());
     }
 

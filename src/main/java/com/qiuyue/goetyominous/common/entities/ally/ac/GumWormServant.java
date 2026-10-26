@@ -116,11 +116,11 @@ public class GumWormServant extends Summoned implements KaijuMob {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AcConfig.GumWormServantMovementSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.25)
                 .add(Attributes.MAX_HEALTH, AcConfig.GumWormServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AcConfig.GumWormServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 128.0)
                 .add(Attributes.ATTACK_DAMAGE, AcConfig.GumWormServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.GumWormServantKnockbackResistance.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.0)
                 .add(Attributes.ARMOR, AcConfig.GumWormServantArmor.get());
     }
 

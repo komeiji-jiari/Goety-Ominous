@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.common.entities.ally.mm;
 import com.Polarice3.Goety.api.entities.IOwned;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.utils.MobUtil;
+import com.Polarice3.Goety.utils.SEHelper;
 import com.alexander.mutantmore.config.mutant_shulker.MutantShulkerRewardsCommonConfig;
 import com.qiuyue.goetyominous.compat.mm.MmScreenShake;
 import com.alexander.mutantmore.init.EffectInit;
@@ -16,7 +17,6 @@ import java.util.UUID;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
 
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -129,6 +129,15 @@ public class MutantShulkerServantTrap extends Summoned {
         if (this.isAlliedTo(target)) {
             return false;
         }
+        if (target instanceof LivingEntity living) {
+            LivingEntity owner = this.getTrueOwner();
+            if (owner != null && target instanceof IOwned owned && owned.getTrueOwner() == owner) {
+                return false;
+            }
+            if (owner instanceof Player player && SEHelper.isAlly(player, living)) {
+                return false;
+            }
+        }
         return !(target instanceof LivingEntity) || !MobUtil.areAllies(this, target);
     }
 
@@ -151,6 +160,9 @@ public class MutantShulkerServantTrap extends Summoned {
             return false;
         }
         if (target instanceof Player) {
+            return false;
+        }
+        if (this.distanceToSqr(target) > 32.0D * 32.0D) {
             return false;
         }
         return this.isHostileTarget(target);
@@ -243,7 +255,7 @@ public class MutantShulkerServantTrap extends Summoned {
             if (MutantShulkerRewardsCommonConfig.trap_turns_to_bullet.get() && bulletTarget != null) {
                 LivingEntity owner = this.getTrueOwner();
                 MutantShulkerServantTrapBullet bullet = new MutantShulkerServantTrapBullet(this.level(),
-                        owner != null ? owner : this, bulletTarget, Direction.Axis.Y, bulletX, bulletY, bulletZ,
+                        owner != null ? owner : this, bulletTarget, null, bulletX, bulletY, bulletZ,
                         this.bulletTrackSpeed);
                 bullet.damage = MutantShulkerRewardsCommonConfig.trap_shulker_bullet_damage.get().floatValue() + this.bonusDamage;
                 bullet.levitationLength = MutantShulkerRewardsCommonConfig.trap_shulker_bullet_levitation_length.get();

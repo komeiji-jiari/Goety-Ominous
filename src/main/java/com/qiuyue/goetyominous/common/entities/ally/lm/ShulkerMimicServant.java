@@ -138,11 +138,11 @@ public class ShulkerMimicServant extends IAnimatedMiniBossServant {
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, LmConfig.ShulkerMimicServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.ShulkerMimicServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, LmConfig.ShulkerMimicServantFollowRange.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
+                .add(Attributes.FOLLOW_RANGE, 30.0)
                 .add(Attributes.ARMOR, LmConfig.ShulkerMimicServantArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, LmConfig.ShulkerMimicServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.ShulkerMimicServantAttackKnockback.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.1)
+                .add(Attributes.ATTACK_KNOCKBACK, 0.5)
                 .add(Attributes.ATTACK_DAMAGE, LmConfig.ShulkerMimicServantDamage.get());
     }
 

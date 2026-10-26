@@ -74,9 +74,9 @@ public class GusterServant extends Summoned {
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AmConfig.GusterServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AmConfig.GusterServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 32.0)
                 .add(Attributes.ATTACK_DAMAGE, AmConfig.GusterServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AmConfig.GusterServantKnockbackResistance.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.2D);
     }
 
@@ -89,10 +89,10 @@ public class GusterServant extends Summoned {
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AmConfig.GusterServantDamage.get());
         }
         if (this.getAttribute(Attributes.FOLLOW_RANGE) != null) {
-            this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(AmConfig.GusterServantFollowRange.get());
+            this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(32.0);
         }
         if (this.getAttribute(Attributes.KNOCKBACK_RESISTANCE) != null) {
-            this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(AmConfig.GusterServantKnockbackResistance.get());
+            this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(0.0);
         }
     }
 

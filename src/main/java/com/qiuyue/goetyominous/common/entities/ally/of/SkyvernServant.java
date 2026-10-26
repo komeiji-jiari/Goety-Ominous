@@ -107,11 +107,11 @@ public class SkyvernServant extends Summoned implements FlyingAnimal, AttackStat
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, OfConfig.SkyvernServantHealth.get())
-                .add(Attributes.MOVEMENT_SPEED, OfConfig.SkyvernServantMovementSpeed.get())
-                .add(Attributes.FLYING_SPEED, OfConfig.SkyvernServantFlyingSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.9)
+                .add(Attributes.FLYING_SPEED, 0.9)
                 .add(Attributes.ATTACK_DAMAGE, OfConfig.SkyvernServantAttackDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, OfConfig.SkyvernServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, OfConfig.SkyvernServantFollowRange.get());
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
+                .add(Attributes.FOLLOW_RANGE, 80.0);
     }
 
     @Override

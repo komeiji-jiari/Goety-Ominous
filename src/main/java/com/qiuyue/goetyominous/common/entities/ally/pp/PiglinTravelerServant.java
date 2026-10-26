@@ -101,8 +101,8 @@ public class PiglinTravelerServant extends AbstractPiglinServant implements Cros
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, PpConfig.PiglinTravelerServantHealth.get())
                 .add(Attributes.ARMOR, PpConfig.PiglinTravelerServantArmor.get())
-                .add(Attributes.FOLLOW_RANGE, PpConfig.PiglinTravelerServantFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, PpConfig.PiglinTravelerServantMovementSpeed.get())
+                .add(Attributes.FOLLOW_RANGE, 16.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.35)
                 .add(Attributes.ATTACK_DAMAGE, PpConfig.PiglinTravelerServantDamage.get());
     }
 

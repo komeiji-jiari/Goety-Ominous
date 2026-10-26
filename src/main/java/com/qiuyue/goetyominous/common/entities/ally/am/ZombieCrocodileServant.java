@@ -94,11 +94,11 @@ public class ZombieCrocodileServant extends Summoned implements IAnimatedEntity,
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AmConfig.ZombieCrocodileServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AmConfig.ZombieCrocodileServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 15.0)
                 .add(Attributes.ATTACK_DAMAGE, AmConfig.ZombieCrocodileServantDamage.get())
                 .add(Attributes.ARMOR, AmConfig.ZombieCrocodileServantArmor.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AmConfig.ZombieCrocodileServantKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AmConfig.ZombieCrocodileServantMovementSpeed.get());
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.4)
+                .add(Attributes.MOVEMENT_SPEED, 0.25);
     }
 
     @Override
@@ -332,7 +332,7 @@ public class ZombieCrocodileServant extends Summoned implements IAnimatedEntity,
     }
 
     private double getBaseSpeed() {
-        return AmConfig.ZombieCrocodileServantMovementSpeed.get();
+        return 0.25;
     }
 
     protected void damageShieldFor(Player holder, float damage) {

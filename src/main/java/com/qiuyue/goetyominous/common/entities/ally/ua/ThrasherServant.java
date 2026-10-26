@@ -98,10 +98,10 @@ public class ThrasherServant extends Summoned implements Endimatable {
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.ATTACK_DAMAGE, UaConfig.ThrasherServantDamage.get())
-                .add(Attributes.MOVEMENT_SPEED, UaConfig.ThrasherServantMovementSpeed.get())
-                .add(Attributes.FOLLOW_RANGE, UaConfig.ThrasherServantFollowRange.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.55)
+                .add(Attributes.FOLLOW_RANGE, 32.0)
                 .add(Attributes.MAX_HEALTH, UaConfig.ThrasherServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, UaConfig.ThrasherServantKnockbackResistance.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.25)
                 .add(Attributes.ARMOR, UaConfig.ThrasherServantArmor.get());
     }
 

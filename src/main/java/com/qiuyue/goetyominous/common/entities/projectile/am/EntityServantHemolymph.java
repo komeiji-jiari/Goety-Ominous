@@ -4,6 +4,7 @@ import com.Polarice3.Goety.common.entities.projectiles.SpellThrowableProjectile;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.qiuyue.goetyominous.common.entities.ally.am.WarpedMoscoServant;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -90,7 +91,8 @@ public class EntityServantHemolymph extends SpellThrowableProjectile {
     protected boolean canHitEntity(Entity target) {
         if (!target.isSpectator() && target.isAlive() && target.isPickable()) {
             Entity entity = this.getOwner();
-            return entity == null || this.leftOwner || !entity.isPassengerOfSameVehicle(target);
+            return (entity == null || this.leftOwner || !entity.isPassengerOfSameVehicle(target))
+                    && (entity == null || !ServantAllyUtil.areAllied(entity, target));
         } else {
             return false;
         }

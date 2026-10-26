@@ -25,7 +25,11 @@ import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import com.qiuyue.goetyominous.common.init.lm.LmParticles;
 import com.qiuyue.goetyominous.common.init.lm.LmSounds;
 import com.qiuyue.goetyominous.common.items.lm.LmItems;
+import com.qiuyue.goetyominous.config.lm.LmConfig;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.loading.FMLPaths;
 
 public class LmCompatManager {
 
@@ -41,6 +45,13 @@ public class LmCompatManager {
         LmParticles.register(modEventBus);
 
         modEventBus.addListener(LmCompatManager::setCustomAttributes);
+    }
+
+    public static void registerConfig() {
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, LmConfig.SPEC,
+                "goetyominous/goetyominous-legendary_monsters.toml");
+        LmConfig.loadConfig(LmConfig.SPEC,
+                FMLPaths.CONFIGDIR.get().resolve("goetyominous/goetyominous-legendary_monsters.toml").toString());
     }
 
     public static void setCustomAttributes(net.minecraftforge.event.entity.EntityAttributeCreationEvent event) {

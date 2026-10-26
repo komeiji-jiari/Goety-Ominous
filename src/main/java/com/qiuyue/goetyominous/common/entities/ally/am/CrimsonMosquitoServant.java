@@ -111,11 +111,11 @@ public class CrimsonMosquitoServant extends Summoned {
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AmConfig.CrimsonMosquitoServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AmConfig.CrimsonMosquitoServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 32.0)
                 .add(Attributes.ARMOR, 0.0D)
                 .add(Attributes.ATTACK_DAMAGE, AmConfig.CrimsonMosquitoServantDamage.get())
-                .add(Attributes.MOVEMENT_SPEED, AmConfig.CrimsonMosquitoServantMovementSpeed.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AmConfig.CrimsonMosquitoServantKnockbackResistance.get());
+                .add(Attributes.MOVEMENT_SPEED, 0.25)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.0);
     }
 
     @Override

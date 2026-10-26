@@ -1,7 +1,7 @@
 {
   "name": "Mutations",
   "description": "Transforming one creature into another.",
-  "icon": "mutantmore:formula_y",
+  "icon": "mutantmore:compound_z",
   "parent": "goety:mmcompat",
   "sortnum": 4
 }

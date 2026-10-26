@@ -9,6 +9,7 @@ import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.ModDamageSource;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.ally.sar.RunePrison;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
@@ -69,7 +70,7 @@ public class RunePrisonSpell extends Spell {
 
         if (target instanceof com.Polarice3.Goety.common.entities.neutral.Owned owned) {
             LivingEntity trueOwner = owned.getTrueOwner();
-            if (trueOwner != null && (trueOwner == caster || caster.isAlliedTo(trueOwner))) {
+            if (trueOwner != null && (trueOwner == caster || ServantAllyUtil.areAllied(caster, trueOwner))) {
                 return false;
             }
         }
@@ -110,13 +111,13 @@ public class RunePrisonSpell extends Spell {
                     continue;
                 }
 
-                if (caster.isAlliedTo(entity)) {
+                if (ServantAllyUtil.areAllied(caster, entity)) {
                     continue;
                 }
 
                 if (entity instanceof com.Polarice3.Goety.common.entities.neutral.Owned owned) {
                     LivingEntity trueOwner = owned.getTrueOwner();
-                    if (trueOwner != null && (trueOwner == caster || caster.isAlliedTo(trueOwner))) {
+                    if (trueOwner != null && (trueOwner == caster || ServantAllyUtil.areAllied(caster, trueOwner))) {
                         continue;
                     }
                 }

@@ -7,6 +7,7 @@ import com.qiuyue.goetyominous.utils.WindChargeImpulse;
 import com.qiuyue.goetyominous.common.init.ModEnchantments;
 import com.qiuyue.goetyominous.common.init.ModParticleTypes;
 import com.qiuyue.goetyominous.common.init.ModTags;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.qiuyue.goetyominous.utils.SimpleExplosionDamageCalculator;
 import com.qiuyue.goetyominous.utils.WindChargeExplosion;
 import java.util.function.Predicate;
@@ -118,7 +119,7 @@ public class MaceItem extends Item implements Vanishable {
                                         .map(holders -> (HolderSet<Block>) holders)),
                         player.getX(), player.getY(), player.getZ(), 3.5F,
                         ModParticleTypes.GUST_EMITTER_SMALL.get(), ModParticleTypes.GUST_EMITTER_LARGE.get(),
-                        ModSounds.BREEZE_WIND_CHARGE_BURST.get());
+                        ModSounds.BREEZE_WIND_CHARGE_BURST.get()).setAllyOwner(player);
                 explosion.explode();
                 explosion.finalizeExplosion(true);
                 impulse.onMaceSmashImpact();
@@ -168,7 +169,7 @@ public class MaceItem extends Item implements Vanishable {
         return entity -> {
             boolean notSpectator = !entity.isSpectator();
             boolean notSelfOrTarget = entity != player && entity != target;
-            boolean notAlly = !player.isAlliedTo(entity);
+            boolean notAlly = !ServantAllyUtil.areAllied(player, entity);
             boolean notOwnedByPlayer = !(entity instanceof OwnableEntity ownable
                     && ownable.getOwnerUUID() != null && player.getUUID().equals(ownable.getOwnerUUID()));
             boolean notMarkerStand = !(entity instanceof ArmorStand armorStand) || !armorStand.isMarker();

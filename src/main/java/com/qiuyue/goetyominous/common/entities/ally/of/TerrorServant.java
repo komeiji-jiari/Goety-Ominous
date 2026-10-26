@@ -98,7 +98,7 @@ public class TerrorServant extends Summoned implements EliteVariant {
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, OfConfig.TerrorServantHealth.get())
-                .add(Attributes.MOVEMENT_SPEED, OfConfig.TerrorServantMovementSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.25)
                 .add(Attributes.ATTACK_DAMAGE, OfConfig.TerrorServantAttackDamage.get());
     }
 

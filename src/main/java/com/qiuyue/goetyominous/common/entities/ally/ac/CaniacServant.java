@@ -79,11 +79,11 @@ public class CaniacServant extends Summoned implements IAnimatedEntity {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AcConfig.CaniacServantMovementSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.25)
                 .add(Attributes.MAX_HEALTH, AcConfig.CaniacServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AcConfig.CaniacServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 32.0)
                 .add(Attributes.ATTACK_DAMAGE, AcConfig.CaniacServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.CaniacServantKnockbackResistance.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.0)
                 .add(Attributes.ARMOR, AcConfig.CaniacServantArmor.get());
     }
 

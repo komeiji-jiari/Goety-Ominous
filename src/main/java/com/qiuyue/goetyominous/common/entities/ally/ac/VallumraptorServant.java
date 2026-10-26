@@ -123,10 +123,10 @@ public class VallumraptorServant extends AnimalSummon implements LaysEggs, IAnim
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AcConfig.VallumraptorServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AcConfig.VallumraptorServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 32.0)
                 .add(Attributes.ATTACK_DAMAGE, AcConfig.VallumraptorServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.VallumraptorServantKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AcConfig.VallumraptorServantMovementSpeed.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.2)
                 .add(Attributes.ARMOR, AcConfig.VallumraptorServantArmor.get());
     }
     @Nullable
@@ -245,7 +245,7 @@ public class VallumraptorServant extends AnimalSummon implements LaysEggs, IAnim
         }
         if (!isRunning() && hasRunningAttributes) {
             hasRunningAttributes = false;
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AcConfig.VallumraptorServantMovementSpeed.get());
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2);
         }
         if (isElder() && !hasElderAttributes) {
             hasElderAttributes = true;
@@ -330,7 +330,7 @@ public class VallumraptorServant extends AnimalSummon implements LaysEggs, IAnim
     }
 
     public double getRunningSpeed() {
-        return AcConfig.VallumraptorServantMovementSpeed.get() * 1.75D;
+        return 0.2 * 1.75D;
     }
 
     private void puzzledTick(float current) {

@@ -1,8 +1,8 @@
 {
   "name": "复合物配方",
   "icon": "mutantmore:compound_z",
-  "category": "goety:mmcompat/crafts",
-  "sortnum": 10,
+  "category": "goety:mmcompat/mutations",
+  "sortnum": 2,
   "pages": [
     {
       "type": "patchouli:text",

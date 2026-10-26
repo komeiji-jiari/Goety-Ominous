@@ -6,6 +6,7 @@ import com.Polarice3.Goety.init.ModSounds;
 import com.github.alexthe666.alexsmobs.entity.EntityVoidWorm;
 import com.github.alexthe666.alexsmobs.entity.EntityVoidWormPart;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -181,10 +182,10 @@ public class EntityServantVoidWormShot extends SpellThrowableProjectile {
         for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class,
                 owner.getBoundingBox().inflate(24.0D),
                 e -> e != owner && e.isAlive() && !e.isSpectator()
-                        && !owner.isAlliedTo(e) && owner.hasLineOfSight(e))) {
+                        && !ServantAllyUtil.areAllied(owner, e) && owner.hasLineOfSight(e))) {
             if (entity instanceof com.Polarice3.Goety.common.entities.neutral.Owned owned) {
                 LivingEntity trueOwner = owned.getTrueOwner();
-                if (trueOwner != null && (trueOwner == owner || owner.isAlliedTo(trueOwner))) {
+                if (trueOwner != null && (trueOwner == owner || ServantAllyUtil.areAllied(owner, trueOwner))) {
                     continue;
                 }
             }
@@ -214,7 +215,7 @@ public class EntityServantVoidWormShot extends SpellThrowableProjectile {
             boolean b = this.wormAttack(result.getEntity(), this.damageSources().mobProjectile(this, shooter),
                     AmConfig.VoidShotDamage.get().floatValue() + this.getExtraDamage());
             if (this.voidStaff && result.getEntity() instanceof LivingEntity living
-                    && !shooter.isAlliedTo(living)) {
+                    && !ServantAllyUtil.areAllied(shooter, living)) {
                 living.addEffect(new MobEffectInstance(GoetyEffects.VOID_TOUCHED.get(), 80, 0, false, true));
             }
             if (b && result.getEntity() instanceof Player player) {
@@ -369,6 +370,7 @@ public class EntityServantVoidWormShot extends SpellThrowableProjectile {
         if (!target.isSpectator() && target.isAlive() && target.isPickable()) {
             Entity shooter = this.getOwner();
             return (shooter == null || this.leftOwner || !shooter.isPassengerOfSameVehicle(target))
+                    && (shooter == null || !ServantAllyUtil.areAllied(shooter, target))
                     && !(target instanceof EntityServantVoidWormShot)
                     && !(target instanceof EntityVoidWormPart);
         }

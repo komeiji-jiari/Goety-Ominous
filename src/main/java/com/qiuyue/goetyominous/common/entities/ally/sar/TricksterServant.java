@@ -249,9 +249,9 @@ public class TricksterServant extends SpellcasterIllagerServant {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, SarConfig.TricksterServantMovementSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.5)
                 .add(Attributes.MAX_HEALTH, SarConfig.TricksterServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, SarConfig.TricksterServantFollowRange.get());
+                .add(Attributes.FOLLOW_RANGE, 16.0);
     }
 
     class CreatePrisonGoal extends SpellcasterUseSpellGoal {

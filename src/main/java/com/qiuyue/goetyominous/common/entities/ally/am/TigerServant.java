@@ -102,10 +102,10 @@ public class TigerServant extends AnimalSummon implements IAnimatedEntity, ICust
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AmConfig.TigerServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AmConfig.TigerServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 32.0)
                 .add(Attributes.ATTACK_DAMAGE, AmConfig.TigerServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AmConfig.TigerServantKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AmConfig.TigerServantMovementSpeed.get());
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.25);
     }
 
     @Override
@@ -426,13 +426,13 @@ public class TigerServant extends AnimalSummon implements IAnimatedEntity, ICust
                 this.hasSpedUp = true;
                 this.setMaxUpStep(1.0F);
                 this.setSprinting(true);
-                this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AmConfig.TigerServantMovementSpeed.get() + 0.15D);
+                this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25 + 0.15D);
             }
             if (!this.isRunning() && this.hasSpedUp) {
                 this.hasSpedUp = false;
                 this.setMaxUpStep(0.6F);
                 this.setSprinting(false);
-                this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AmConfig.TigerServantMovementSpeed.get());
+                this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25);
             }
             if (this.getDeltaMovement().lengthSqr() < 0.03D && this.getAnimation() == NO_ANIMATION && !this.isHolding() && this.getTarget() == null && this.random.nextInt(100) == 0) {
                 this.setAnimation(ANIMATION_TAIL_FLICK);

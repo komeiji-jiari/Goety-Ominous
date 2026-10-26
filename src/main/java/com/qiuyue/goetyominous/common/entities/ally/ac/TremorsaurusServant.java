@@ -132,10 +132,10 @@ public class TremorsaurusServant extends AnimalSummon implements LaysEggs, Keybi
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AcConfig.TremorsaurusServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AcConfig.TremorsaurusServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 32.0)
                 .add(Attributes.ATTACK_DAMAGE, AcConfig.TremorsaurusServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.TremorsaurusServantKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AcConfig.TremorsaurusServantMovementSpeed.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.9)
+                .add(Attributes.MOVEMENT_SPEED, 0.2)
                 .add(Attributes.ARMOR, AcConfig.TremorsaurusServantArmor.get());
     }
     @Override
@@ -242,7 +242,7 @@ public class TremorsaurusServant extends AnimalSummon implements LaysEggs, Keybi
         }
         if (!isRunning() && hasRunningAttributes) {
             hasRunningAttributes = false;
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AcConfig.TremorsaurusServantMovementSpeed.get());
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2);
         }
         if (this.getAnimation() == ANIMATION_ROAR && this.getAnimationTick() == 5 && !this.level().isClientSide) {
             this.playRoarSound();
@@ -334,7 +334,7 @@ public class TremorsaurusServant extends AnimalSummon implements LaysEggs, Keybi
     }
 
     public double getRunningSpeed() {
-        return AcConfig.TremorsaurusServantMovementSpeed.get() * 1.75D;
+        return 0.2 * 1.75D;
     }
 
     private void playRoarSound() {

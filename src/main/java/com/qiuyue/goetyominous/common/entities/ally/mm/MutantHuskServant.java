@@ -211,9 +211,9 @@ public class MutantHuskServant extends AbstractMutantServant {
                 .add(Attributes.MAX_HEALTH, MmConfig.MutantHuskServantHealth.get())
                 .add(Attributes.ARMOR, MmConfig.MutantHuskServantArmor.get())
                 .add(Attributes.ARMOR_TOUGHNESS, MmConfig.MutantHuskServantArmorToughness.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, MmConfig.MutantHuskServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, MmConfig.MutantHuskServantFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, MmConfig.MutantHuskServantMovementSpeed.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
+                .add(Attributes.FOLLOW_RANGE, 64.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.24)
                 .add(Attributes.ATTACK_DAMAGE, MutantHuskCommonConfig.basic_attack_damage.get());
     }
 

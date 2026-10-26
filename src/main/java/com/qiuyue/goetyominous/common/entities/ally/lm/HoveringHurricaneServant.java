@@ -162,11 +162,11 @@ public class HoveringHurricaneServant extends IAnimatedMonsterServant {
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, LmConfig.HoveringHurricaneServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.HoveringHurricaneServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, LmConfig.HoveringHurricaneServantFollowRange.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
+                .add(Attributes.FOLLOW_RANGE, 20.0)
                 .add(Attributes.ARMOR, LmConfig.HoveringHurricaneServantArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, LmConfig.HoveringHurricaneServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.HoveringHurricaneServantAttackKnockback.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.1)
+                .add(Attributes.ATTACK_KNOCKBACK, 0.5)
                 .add(Attributes.ATTACK_DAMAGE, LmConfig.HoveringHurricaneServantDamage.get());
     }
 

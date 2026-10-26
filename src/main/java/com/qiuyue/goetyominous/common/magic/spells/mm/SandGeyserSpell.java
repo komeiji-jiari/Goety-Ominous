@@ -99,7 +99,7 @@ public class SandGeyserSpell extends Spell {
 
         Predicate<Entity> friendly = this.createFriendlyCheck(caster);
         List<AreaDamage> geysers = Lists.newArrayList();
-        if (this.isShifting(caster)) {
+        if (caster.isCrouching()) {
             this.spawnUnderEntities(worldIn, caster, range, damage, source, extraTime, geysers, friendly);
         } else {
             this.spawnLine(worldIn, caster, range, damage, source, extraTime, geysers, friendly);

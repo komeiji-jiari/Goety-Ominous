@@ -77,8 +77,8 @@ public class EmuServant extends AnimalSummon implements IAnimatedEntity {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AmConfig.EmuServantHealth.get())
                 .add(Attributes.ATTACK_DAMAGE, AmConfig.EmuServantDamage.get())
-                .add(Attributes.MOVEMENT_SPEED, AmConfig.EmuServantMovementSpeed.get())
-                .add(Attributes.FOLLOW_RANGE, AmConfig.EmuServantFollowRange.get());
+                .add(Attributes.MOVEMENT_SPEED, 0.35)
+                .add(Attributes.FOLLOW_RANGE, 32.0);
     }
 
     public MobType getMobType() {

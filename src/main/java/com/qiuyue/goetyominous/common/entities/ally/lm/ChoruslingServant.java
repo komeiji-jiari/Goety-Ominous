@@ -49,11 +49,11 @@ public class ChoruslingServant extends IAnimatedMobServant {
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, LmConfig.ChoruslingServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.ChoruslingServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, LmConfig.ChoruslingServantFollowRange.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.5)
+                .add(Attributes.FOLLOW_RANGE, 14.0)
                 .add(Attributes.ARMOR, LmConfig.ChoruslingServantArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, LmConfig.ChoruslingServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.ChoruslingServantAttackKnockback.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.1)
+                .add(Attributes.ATTACK_KNOCKBACK, 0.5)
                 .add(Attributes.ATTACK_DAMAGE, LmConfig.ChoruslingServantDamage.get());
     }
 

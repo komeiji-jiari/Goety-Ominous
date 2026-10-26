@@ -6,7 +6,11 @@ import com.qiuyue.goetyominous.common.init.mm.MmBlocks;
 import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
 import com.qiuyue.goetyominous.common.init.mm.ModSpellControllers;
 import com.qiuyue.goetyominous.common.items.mm.MmItems;
+import com.qiuyue.goetyominous.config.mm.MmConfig;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.loading.FMLPaths;
 
 public class MmCompatManager {
 
@@ -27,6 +31,13 @@ public class MmCompatManager {
         MmItems.register(modEventBus);
 
         com.qiuyue.goetyominous.common.init.ModCreativeTab.registerCompatItems(MmItems.MM_ITEMS);
+    }
+
+    public static void registerConfig() {
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, MmConfig.SPEC,
+                "goetyominous/goetyominous-mutantmore.toml");
+        MmConfig.loadConfig(MmConfig.SPEC,
+                FMLPaths.CONFIGDIR.get().resolve("goetyominous/goetyominous-mutantmore.toml").toString());
     }
 
     public static void setCustomAttributes(net.minecraftforge.event.entity.EntityAttributeCreationEvent event) {

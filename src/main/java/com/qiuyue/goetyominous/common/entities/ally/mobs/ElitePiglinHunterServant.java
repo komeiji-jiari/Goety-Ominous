@@ -36,8 +36,8 @@ public class ElitePiglinHunterServant extends StrongPiglinHunterServant {
                         + AttributesConfig.PiglinHunterServantEvolvedHealthBonus.get()
                         + AttributesConfig.PiglinHunterServantEvolved2HealthBonus.get())
                 .add(Attributes.ARMOR, AttributesConfig.PiglinHunterServantArmor.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.PiglinHunterServantFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.PiglinHunterServantMovementSpeed.get())
+                .add(Attributes.FOLLOW_RANGE, 16.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.35)
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.PiglinHunterServantDamage.get()
                         + AttributesConfig.PiglinHunterServantEvolvedDamageBonus.get()
                         + AttributesConfig.PiglinHunterServantEvolved2DamageBonus.get());

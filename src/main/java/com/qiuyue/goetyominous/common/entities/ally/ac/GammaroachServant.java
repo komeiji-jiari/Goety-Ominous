@@ -74,11 +74,11 @@ public class GammaroachServant extends Summoned implements IAnimatedEntity, Play
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AcConfig.GammaroachServantMovementSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.4)
                 .add(Attributes.MAX_HEALTH, AcConfig.GammaroachServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AcConfig.GammaroachServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 32.0)
                 .add(Attributes.ATTACK_DAMAGE, AcConfig.GammaroachServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.GammaroachServantKnockbackResistance.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.0)
                 .add(Attributes.ARMOR, AcConfig.GammaroachServantArmor.get());
     }
 

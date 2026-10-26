@@ -10,6 +10,7 @@ import com.Polarice3.Goety.utils.EntityFinder;
 import com.Polarice3.Goety.utils.SEHelper;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.projectile.am.EntityServantVoidWormShot;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -115,7 +116,7 @@ public class VoidShotSpell extends EverChargeSpell {
         CompoundTag data = caster.getPersistentData();
 
         LivingEntity aimed = this.getTarget(caster);
-        if (aimed != null && aimed.isAlive() && !aimed.isSpectator() && !caster.isAlliedTo(aimed)) {
+        if (aimed != null && aimed.isAlive() && !aimed.isSpectator() && !ServantAllyUtil.areAllied(caster, aimed)) {
             data.putUUID("GoetyOminousVoidShotTarget", aimed.getUUID());
             return aimed;
         }
@@ -125,7 +126,7 @@ public class VoidShotSpell extends EverChargeSpell {
             LivingEntity locked = EntityFinder.getLivingEntityByUuiD(lockedId);
             if (locked != null && locked.isAlive() && !locked.isSpectator()
                     && caster.distanceToSqr(locked) <= 64.0D * 64.0D
-                    && !caster.isAlliedTo(locked)) {
+                    && !ServantAllyUtil.areAllied(caster, locked)) {
                 return locked;
             }
             data.remove("GoetyOminousVoidShotTarget");
@@ -137,10 +138,10 @@ public class VoidShotSpell extends EverChargeSpell {
         for (LivingEntity entity : worldIn.getEntitiesOfClass(LivingEntity.class,
                 caster.getBoundingBox().inflate((double) range),
                 e -> e != caster && e.isAlive() && !e.isSpectator()
-                        && !caster.isAlliedTo(e) && caster.hasLineOfSight(e))) {
+                        && !ServantAllyUtil.areAllied(caster, e) && caster.hasLineOfSight(e))) {
             if (entity instanceof com.Polarice3.Goety.common.entities.neutral.Owned owned) {
                 LivingEntity trueOwner = owned.getTrueOwner();
-                if (trueOwner != null && (trueOwner == caster || caster.isAlliedTo(trueOwner))) {
+                if (trueOwner != null && (trueOwner == caster || ServantAllyUtil.areAllied(caster, trueOwner))) {
                     continue;
                 }
             }

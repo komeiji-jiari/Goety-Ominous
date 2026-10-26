@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.common.items;
 import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.config.WeaponConfig;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -105,7 +106,7 @@ public class BoneCudgelItem extends Item {
                         float range = sweepLevel + 1.2F;
                         AABB aabb = AABB.ofSize(target.position(), range, range, range);
                         for (Entity entity : target.level().getEntities(attacker, aabb, Entity::canBeHitByProjectile)) {
-                            if (entity != target && !entity.isAlliedTo(attacker)
+                            if (entity != target && !ServantAllyUtil.areAllied(attacker, entity)
                                     && entity.distanceTo(target) <= range
                                     && entity instanceof LivingEntity inflict) {
                                 inflict.hurt(inflict.level().damageSources().mobAttack(attacker), 1.0F);

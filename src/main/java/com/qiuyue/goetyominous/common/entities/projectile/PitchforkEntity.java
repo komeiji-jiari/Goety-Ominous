@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.entities.projectile;
 
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.common.items.ModItems;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -94,6 +95,12 @@ public class PitchforkEntity extends AbstractArrow {
     @OnlyIn(Dist.CLIENT)
     public boolean isFoil() {
         return this.entityData.get(ID_FOIL);
+    }
+
+    @Override
+    protected boolean canHitEntity(Entity target) {
+        Entity owner = this.getOwner();
+        return super.canHitEntity(target) && (owner == null || !ServantAllyUtil.areAllied(owner, target));
     }
 
     @Nullable

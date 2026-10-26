@@ -2,7 +2,7 @@
   "name": "Wither Breath Focus",
   "icon": "goetyominous:wither_breath_focus",
   "category": "goety:mmcompat/focuses",
-  "sortnum": 520,
+  "sortnum": 810,
   "advancement": "goety:goety/read_bygone_scroll",
   "secret": true,
   "pages": [

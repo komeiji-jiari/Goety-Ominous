@@ -32,8 +32,8 @@ public abstract class AbstractMiredEntity extends ZombieServant {
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, AttributesConfig.MiredHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.MiredFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.MiredMovementSpeed.get())
+                .add(Attributes.FOLLOW_RANGE, 35.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.20)
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.MiredDamage.get())
                 .add(Attributes.ARMOR, AttributesConfig.MiredArmor.get());
     }

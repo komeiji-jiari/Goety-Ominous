@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.projectile.ac;
 
 import com.Polarice3.Goety.common.entities.projectiles.WaterHurtingProjectile;
+import com.Polarice3.Goety.utils.SEHelper;
 import com.github.alexmodguy.alexscaves.AlexsCaves;
 import com.github.alexmodguy.alexscaves.client.particle.ACParticleRegistry;
 import com.github.alexmodguy.alexscaves.server.entity.living.DeepOneBaseEntity;
@@ -235,6 +236,19 @@ public class WaterBoltProjectile extends WaterHurtingProjectile {
     }
 
     @Override
+    protected boolean canHitEntity(Entity target) {
+        if (target instanceof LivingEntity living && this.isGoodwillAlly(living)) {
+            return false;
+        }
+        return super.canHitEntity(target);
+    }
+
+    private boolean isGoodwillAlly(LivingEntity entity) {
+        Entity owner = this.getOwner();
+        return owner instanceof Player player && SEHelper.isAlly(player, entity);
+    }
+
+    @Override
     protected void onHitEntity(EntityHitResult hitResult) {
         super.onHitEntity(hitResult);
         if (!this.playedSplashSound) {
@@ -263,6 +277,9 @@ public class WaterBoltProjectile extends WaterHurtingProjectile {
                 continue;
             }
             if (owner != null && (entity.is(owner) || entity.isAlliedTo(owner))) {
+                continue;
+            }
+            if (this.isGoodwillAlly(entity)) {
                 continue;
             }
             lastHitMob = entity;
@@ -295,6 +312,9 @@ public class WaterBoltProjectile extends WaterHurtingProjectile {
                 continue;
             }
             if (owner != null && (entity.is(owner) || entity.isAlliedTo(owner))) {
+                continue;
+            }
+            if (this.isGoodwillAlly(entity)) {
                 continue;
             }
             if (entity.distanceTo(hitBy) <= 3.0D) {

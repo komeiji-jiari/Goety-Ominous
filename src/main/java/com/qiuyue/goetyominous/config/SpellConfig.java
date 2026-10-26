@@ -57,7 +57,7 @@ public class SpellConfig {
 
     static {
         BUILDER.push("Spells");
-        BUILDER.push("Acid Pool");
+        BUILDER.push("Acid Pool Spell");
         AcidPoolSoulCost = BUILDER.comment("Soul cost of Acid Pool spell (Default: 24)")
                 .defineInRange("acidPoolSoulCost", 24, 1, 100);
         AcidPoolCastDuration = BUILDER.comment("Cast duration of Acid Pool spell in ticks (Default: 60)")
@@ -71,13 +71,13 @@ public class SpellConfig {
         AcidPoolRadius = BUILDER.comment("Radius of Acid Pool (Default: 1.0)")
                 .defineInRange("acidPoolRadius", 1.0D, 0.5D, 16.0D);
         BUILDER.pop();
-        BUILDER.push("Brain Eater");
+        BUILDER.push("Brain Eater Spell");
         BrainEaterDrainPerSecond = BUILDER.comment("Experience drained per second while channeling (Default: 10)")
                 .defineInRange("brainEaterDrainPerSecond", 10, 1, 1000);
         BrainEaterSoulsPerDrain = BUILDER.comment("Souls gained per drain (Default: 100)")
                 .defineInRange("brainEaterSoulsPerDrain", 100, 1, 100000);
         BUILDER.pop();
-        BUILDER.push("Poison Ball");
+        BUILDER.push("Poison Ball Spell");
         PoisonBallCost = BUILDER.comment("Soul cost of Poison Ball spell (Default: 8)")
                 .defineInRange("poisonBallCost", 8, 1, 100);
         PoisonBallCoolDown = BUILDER.comment("Cooldown of Poison Ball (Default: 20)")
@@ -85,7 +85,7 @@ public class SpellConfig {
         PoisonBallDamage = BUILDER.comment("Base damage of Poison Ball (Default: 5.0)")
                 .defineInRange("poisonBallDamage", 5.0, 1.0, 1000.0);
         BUILDER.pop();
-        BUILDER.push("Urbhadhach");
+        BUILDER.push("Urbhadhach Spell");
         UrbhadhachSoulCost = BUILDER.comment("Soul cost of Urbhadhach Servant spell (Default: 48)")
                 .defineInRange("urbhadhachSoulCost", 48, 1, 100);
         UrbhadhachCastDuration = BUILDER.comment("Cast duration of Urbhadhach Servant spell in ticks (Default: 60)")
@@ -95,7 +95,7 @@ public class SpellConfig {
         UrbhadhachCoolDown = BUILDER.comment("Cooldown of Urbhadhach Servant spell in ticks (Default: 300)")
                 .defineInRange("urbhadhachCoolDown", 300, 0, 5000);
         BUILDER.pop();
-        BUILDER.push("Dreden");
+        BUILDER.push("Rigid Spell");
         DredenSoulCost = BUILDER.comment("Soul cost of Dreden Servant spell (Default: 24)")
                 .defineInRange("dredenSoulCost", 24, 1, 100);
         DredenCastDuration = BUILDER.comment("Cast duration of Dreden Servant spell in ticks (Default: 80)")
@@ -105,7 +105,7 @@ public class SpellConfig {
         DredenCoolDown = BUILDER.comment("Cooldown of Dreden Servant spell in ticks (Default: 120)")
                 .defineInRange("dredenCoolDown", 120, 0, 5000);
         BUILDER.pop();
-        BUILDER.push("Breeze");
+        BUILDER.push("Breeze Spell");
         BreezeCost = BUILDER.comment("Soul cost of Breeze Servant spell (Default: 16)")
                 .defineInRange("breezeSoulCost", 16, 1, 100);
         BreezeDuration = BUILDER.comment("Cast duration of Breeze Servant spell in ticks (Default: 100)")
@@ -115,7 +115,7 @@ public class SpellConfig {
         BreezeCoolDown = BUILDER.comment("Cooldown of Breeze Servant spell in ticks (Default: 200)")
                 .defineInRange("breezeCoolDown", 200, 0, 5000);
         BUILDER.pop();
-        BUILDER.push("Scorch");
+        BUILDER.push("Scorch Spell");
         ScorchSoulCost = BUILDER.comment("Soul cost of Scorch spell (Default: 18)")
                 .defineInRange("scorchSoulCost", 18, 1, 100);
         ScorchCastDuration = BUILDER.comment("Cast duration of Scorch spell in ticks (Default: 40)")
@@ -125,7 +125,7 @@ public class SpellConfig {
         ScorchCoolDown = BUILDER.comment("Cooldown of Scorch spell in ticks (Default: 100)")
                 .defineInRange("scorchCoolDown", 100, 0, 5000);
         BUILDER.pop();
-        BUILDER.push("Brood");
+        BUILDER.push("Brood Spell");
         BroodSoulCost = BUILDER.comment("Soul cost of Brood spell (Default: 48)")
                 .defineInRange("broodSoulCost", 48, 1, 100);
         BroodSummonDown = BUILDER.comment("Summon down duration of Brood spell in ticks (Default: 300)")
@@ -133,7 +133,7 @@ public class SpellConfig {
         BroodCoolDown = BUILDER.comment("Cooldown of Brood spell in ticks (Default: 1000)")
                 .defineInRange("broodCoolDown", 1000, 0, 5000);
         BUILDER.pop();
-        BUILDER.push("Spider");
+        BUILDER.push("Spider Spell");
         SpiderCost = BUILDER.comment("Soul cost of Spider spell (Default: 8)")
                 .defineInRange("spiderCost", 8, 1, 100);
         SpiderDuration = BUILDER.comment("Cast duration of Spider spell in ticks (Default: 20)")
@@ -143,7 +143,7 @@ public class SpellConfig {
         SpiderSummonDown = BUILDER.comment("Summon down duration of Spider spell in ticks (Default: 80)")
                 .defineInRange("spiderSummonDown", 80, 0, 5000);
         BUILDER.pop();
-        BUILDER.push("Redstone Cube");
+        BUILDER.push("Redstone Spell");
         RedstoneCost = BUILDER.comment("Soul cost of Redstone Cube spell (Default: 10)")
                 .defineInRange("redstoneCost", 10, 1, 100);
         RedstoneDuration = BUILDER.comment("Cast duration of Redstone Cube spell in ticks (Default: 20)")
@@ -155,7 +155,7 @@ public class SpellConfig {
         RedstoneCubeLimit = BUILDER.comment("Max number of Redstone Cubes summoned (Default: 16)")
                 .defineInRange("redstoneCubeLimit", 16, 1, 100);
         BUILDER.pop();
-        BUILDER.push("Haunt");
+        BUILDER.push("Haunt Spell");
         HauntSoulCost = BUILDER.comment("Soul cost of Haunt spell (Default: 6)")
                 .defineInRange("hauntCost", 6, 1, 100);
         HauntCastDuration = BUILDER.comment("Cast duration of Haunt spell in ticks (Default: 20)")

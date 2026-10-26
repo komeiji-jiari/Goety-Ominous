@@ -1,10 +1,10 @@
 package com.qiuyue.goetyominous.common.entities.projectile.ac;
 
 import com.Polarice3.Goety.common.entities.projectiles.AbstractWave;
-import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.ModDamageSource;
 import com.github.alexmodguy.alexscaves.client.particle.ACParticleRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
@@ -83,8 +83,7 @@ public class DeepOneServantWave extends AbstractWave {
                 : this.getBoundingBox().inflate(0.5F * scale, 0.5F, 0.5F * scale);
         for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, box)) {
             Entity waveOwner = this.getOwner() != null ? this.getOwner() : this;
-            if (!waveOwner.isAlliedTo(entity) && !entity.isAlliedTo(waveOwner)
-                    && !MobUtil.areAllies(entity, waveOwner)) {
+            if (!ServantAllyUtil.areAllied(waveOwner, entity)) {
                 float damage = scale + 1.0F + this.getExtraDamage();
                 entity.hurt(source, damage);
                 this.setSlamming(true);

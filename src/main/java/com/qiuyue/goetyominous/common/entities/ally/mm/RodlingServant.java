@@ -108,10 +108,10 @@ public class RodlingServant extends Summoned {
                 .add(Attributes.MAX_HEALTH, MmConfig.RodlingServantHealth.get())
                 .add(Attributes.ARMOR, MmConfig.RodlingServantArmor.get())
                 .add(Attributes.ARMOR_TOUGHNESS, MmConfig.RodlingServantArmorToughness.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, MmConfig.RodlingServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, MmConfig.RodlingServantFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, MmConfig.RodlingServantMovementSpeed.get())
-                .add(Attributes.FLYING_SPEED, MmConfig.RodlingServantMovementSpeed.get());
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.0)
+                .add(Attributes.FOLLOW_RANGE, 20.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.125)
+                .add(Attributes.FLYING_SPEED, 0.125);
     }
 
     @Override

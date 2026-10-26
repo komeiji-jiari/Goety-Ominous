@@ -133,11 +133,11 @@ public class GummyBearServant extends AnimalSummon implements IAnimatedEntity, I
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AcConfig.GummyBearServantMovementSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.25)
                 .add(Attributes.MAX_HEALTH, AcConfig.GummyBearServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AcConfig.GummyBearServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 32.0)
                 .add(Attributes.ATTACK_DAMAGE, AcConfig.GummyBearServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.GummyBearServantKnockbackResistance.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.0)
                 .add(Attributes.ARMOR, AcConfig.GummyBearServantArmor.get());
     }
 

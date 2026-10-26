@@ -1,8 +1,8 @@
 package com.qiuyue.goetyominous.common.entities.projectile.am;
 
-import com.Polarice3.Goety.utils.MobUtil;
 import com.github.alexthe666.alexsmobs.entity.EntityFart;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -43,9 +43,6 @@ public class FartServantEntity extends EntityFart {
         if (target == shooter || target.is(shooter)) {
             return true;
         }
-        if (target.isAlliedTo(shooter) || shooter.isAlliedTo(target)) {
-            return true;
-        }
-        return MobUtil.areAllies(target, shooter);
+        return ServantAllyUtil.areAllied(shooter, target);
     }
 }

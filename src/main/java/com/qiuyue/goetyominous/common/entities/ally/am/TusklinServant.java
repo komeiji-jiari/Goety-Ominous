@@ -73,10 +73,10 @@ public class TusklinServant extends AnimalSummon implements IAnimatedEntity {
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AmConfig.TusklinServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AmConfig.TusklinServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 32.0)
                 .add(Attributes.ATTACK_DAMAGE, AmConfig.TusklinServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AmConfig.TusklinServantKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AmConfig.TusklinServantMovementSpeed.get());
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.9)
+                .add(Attributes.MOVEMENT_SPEED, 0.3);
     }
 
     protected SoundEvent getAmbientSound() {

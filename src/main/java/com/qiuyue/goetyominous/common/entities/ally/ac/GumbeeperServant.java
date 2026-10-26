@@ -74,11 +74,11 @@ public class GumbeeperServant extends Summoned implements PowerableMob {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AcConfig.GumbeeperServantMovementSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.2)
                 .add(Attributes.MAX_HEALTH, AcConfig.GumbeeperServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AcConfig.GumbeeperServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 32.0)
                 .add(Attributes.ATTACK_DAMAGE, AcConfig.GumbeeperServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.GumbeeperServantKnockbackResistance.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.0)
                 .add(Attributes.ARMOR, AcConfig.GumbeeperServantArmor.get());
     }
 

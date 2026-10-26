@@ -89,12 +89,12 @@ public class HauntedGuardServant extends IAnimatedMonsterServant {
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, LmConfig.HauntedGuardServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.HauntedGuardServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, LmConfig.HauntedGuardServantFollowRange.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.7)
+                .add(Attributes.FOLLOW_RANGE, 30.0)
                 .add(Attributes.ARMOR, LmConfig.HauntedGuardServantArmor.get())
                 .add(Attributes.ARMOR_TOUGHNESS, LmConfig.HauntedGuardServantArmorToughness.get())
-                .add(Attributes.MOVEMENT_SPEED, LmConfig.HauntedGuardServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.HauntedGuardServantAttackKnockback.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.3)
+                .add(Attributes.ATTACK_KNOCKBACK, 1.3)
                 .add(Attributes.ATTACK_DAMAGE, LmConfig.HauntedGuardServantDamage.get());
     }
 

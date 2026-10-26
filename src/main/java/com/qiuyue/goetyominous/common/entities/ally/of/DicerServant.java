@@ -75,10 +75,10 @@ public class DicerServant extends Summoned implements AttackState, EliteVariant 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, OfConfig.DicerServantHealth.get())
-                .add(Attributes.MOVEMENT_SPEED, OfConfig.DicerServantMovementSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.2)
                 .add(Attributes.ATTACK_DAMAGE, OfConfig.DicerServantAttackDamage.get())
-                .add(Attributes.ATTACK_KNOCKBACK, OfConfig.DicerServantAttackKnockback.get())
-                .add(Attributes.FOLLOW_RANGE, OfConfig.DicerServantFollowRange.get());
+                .add(Attributes.ATTACK_KNOCKBACK, 0.3)
+                .add(Attributes.FOLLOW_RANGE, 24.0);
     }
 
     protected void registerGoals() {

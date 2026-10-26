@@ -21,8 +21,6 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> MiredHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> MiredDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> MiredArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> MiredFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> MiredMovementSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> BoggedHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> BoggedArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> BoggedDamage;
@@ -35,19 +33,14 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> CerberusDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> DredenHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> DredenDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> DredenFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> DredenMovementSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> SunkenNecromancerHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> SunkenNecromancerArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> SunkenNecromancerFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> SunkenNecromancerDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> StormNecromancerHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> StormNecromancerArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> StormNecromancerFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> StormNecromancerDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> ReturnedHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> ReturnedArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> ReturnedFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> AgonyHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> AgonyDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> BeldamHealth;
@@ -65,18 +58,13 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> ArchGeomancerHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> ArchGeomancerArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> ArchGeomancerArmorToughness;
-    public static final ForgeConfigSpec.ConfigValue<Double> ArchGeomancerMovementSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> ArchGeomancerAttackDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> PiglinServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> PiglinServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> PiglinServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantEvolvedHealthBonus;
     public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantEvolvedDamageBonus;
     public static final ForgeConfigSpec.ConfigValue<Double> PiglinBruteServantEvolved2HealthBonus;
@@ -84,8 +72,6 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantEvolvedHealthBonus;
     public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantEvolvedDamageBonus;
     public static final ForgeConfigSpec.ConfigValue<Double> PiglinHunterServantEvolved2HealthBonus;
@@ -93,26 +79,20 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> FungusThrowerServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> FungusThrowerServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> FungusThrowerServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> FungusThrowerServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> FungusThrowerServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> CrimsonSpiderServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> CrimsonSpiderServantDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> AxolotlServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> AxolotlServantDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> AxolotlServantMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> AxolotlServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> DiscipleHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> DiscipleArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> DiscipleDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> DiscipleMovementSpeed;
-    public static final ForgeConfigSpec.ConfigValue<Double> DiscipleFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> HeresiarchServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> HeresiarchServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> HeresiarchServantDamage;
 
     static {
         BUILDER.push("Servants Attributes");
-        BUILDER.push("Breeze");
+        BUILDER.push("Breeze Servant");
         BreezeHealth = BUILDER.comment("How much Max Health Breezes have, Default: 30.0")
                 .defineInRange("breezeHealth", 30.0, 1.0, Double.MAX_VALUE);
         BreezeArmor = BUILDER.comment("How much natural Armor Breezes have, Default: 0.0")
@@ -120,7 +100,7 @@ public class AttributesConfig {
         BreezeRangeDamage = BUILDER.comment("How much damage a direct hit from a Breeze Servant's wind charge deals, Default: 3.0. Hostile Breezes keep vanilla's flat 1.0 direct hit; this value only feeds their ATTACK_DAMAGE attribute.")
                 .defineInRange("breezeRangeDamage", 3.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-        BUILDER.push("Hurricane");
+        BUILDER.push("Hurricane Servant");
         HurricaneHealth = BUILDER.comment("How much Max Health Hurricanes have, Default: 110.0")
                 .defineInRange("hurricaneHealth", 110.0, 1.0, Double.MAX_VALUE);
         HurricaneArmor = BUILDER.comment("How much natural Armor Hurricanes have, Default: 0.0")
@@ -132,19 +112,15 @@ public class AttributesConfig {
         HurricaneCycloneDamage = BUILDER.comment("How much damage the Hurricane's cyclone deals each time it strikes, Default: 2.0")
                 .defineInRange("hurricaneCycloneDamage", 2.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
-        BUILDER.push("Mired");
+        BUILDER.push("Mired Servant");
         MiredHealth = BUILDER.comment("How much Max Health Mired and Mired Servants have, Default: 24.0")
                 .defineInRange("miredHealth", 24.0, 1.0, Double.MAX_VALUE);
         MiredDamage = BUILDER.comment("How much damage Mired and Mired Servants deal, Default: 3.0")
                 .defineInRange("miredDamage", 3.0, 1.0, Double.MAX_VALUE);
         MiredArmor = BUILDER.comment("How much natural Armor Mired and Mired Servants have, Default: 6.0")
                 .defineInRange("miredArmor", 6.0, 0.0, Double.MAX_VALUE);
-        MiredFollowRange = BUILDER.comment("Mired and Mired Servants follow range, Default: 35.0")
-                .defineInRange("miredFollowRange", 35.0, 1.0, Double.MAX_VALUE);
-        MiredMovementSpeed = BUILDER.comment("Mired and Mired Servants movement speed, Default: 0.20")
-                .defineInRange("miredMovementSpeed", 0.20, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
-        BUILDER.push("Bogged");
+        BUILDER.push("Bogged Servant");
         BoggedHealth = BUILDER.comment("How much Max Health Bogged and Bogged Servants have, Default: 16.0")
                 .defineInRange("boggedHealth", 16.0, 1.0, Double.MAX_VALUE);
         BoggedArmor = BUILDER.comment("How much natural Armor Bogged and Bogged Servants have, Default: 0.0")
@@ -154,7 +130,7 @@ public class AttributesConfig {
         BoggedRangeDamage = BUILDER.comment("How much damage Bogged and Bogged Servant arrows deal, Default: 2.0")
                 .defineInRange("boggedRangeDamage", 2.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
-        BUILDER.push("Warg");
+        BUILDER.push("Warg Servant");
         WargHealth = BUILDER.comment("How much Max Health Wargs have, Default: 50.0")
                 .defineInRange("wargHealth", 50.0, 1.0, Double.MAX_VALUE);
         WargArmor = BUILDER.comment("How much armor Wargs have, Default: 0.0")
@@ -162,7 +138,7 @@ public class AttributesConfig {
         WargDamage = BUILDER.comment("How much damage Wargs deal, Default: 8.0")
                 .defineInRange("wargDamage", 8.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-        BUILDER.push("Cerberus");
+        BUILDER.push("Cerberus Servant");
         CerberusHealth = BUILDER.comment("How much Max Health Cerberuses have, Default: 100.0")
                 .defineInRange("cerberusHealth", 100.0, 1.0, Double.MAX_VALUE);
         CerberusArmor = BUILDER.comment("How much natural Armor Cerberuses have, Default: 0.0")
@@ -170,61 +146,51 @@ public class AttributesConfig {
         CerberusDamage = BUILDER.comment("How much damage Cerberus melee attacks deal, Default: 8.0")
                 .defineInRange("cerberusDamage", 8.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-        BUILDER.push("Dreden");
+        BUILDER.push("Dreden Servant");
         DredenHealth = BUILDER.comment("How much Max Health Dredens have, Default: 30.0")
                 .defineInRange("dredenHealth", 30.0, 1.0, Double.MAX_VALUE);
         DredenDamage = BUILDER.comment("How much damage Dreden deals, Default: 2.0")
                 .defineInRange("dredenDamage", 2.0, 1.0, Double.MAX_VALUE);
-        DredenFollowRange = BUILDER.comment("Dreden follow range, Default: 35.0")
-                .defineInRange("dredenFollowRange", 35.0, 1.0, Double.MAX_VALUE);
-        DredenMovementSpeed = BUILDER.comment("Dreden movement speed, Default: 0.25")
-                .defineInRange("dredenMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
-        BUILDER.push("Necromancer");
+        BUILDER.push("Sunken Necromancer Servant");
         SunkenNecromancerHealth = BUILDER.comment("How much Max Health Sunken Necromancers have, Default: 50.0")
-                .defineInRange("SunkenNecromancerHealth", 50.0, 1.0, Double.MAX_VALUE);
+                .defineInRange("sunkenNecromancerHealth", 50.0, 1.0, Double.MAX_VALUE);
         SunkenNecromancerArmor = BUILDER.comment("How much natural Armor Sunken Necromancers have, Default: 5.0")
-                .defineInRange("SunkenNecromancerArmor", 5.0, 0.0, Double.MAX_VALUE);
-        SunkenNecromancerFollowRange = BUILDER.comment("How much following/detection range Sunken Necromancers have, Default: 16.0")
-                .defineInRange("SunkenNecromancerFollowRange", 16.0, 1.0, 2048.0);
+                .defineInRange("sunkenNecromancerArmor", 5.0, 0.0, Double.MAX_VALUE);
         SunkenNecromancerDamage = BUILDER.comment("How much damage Sunken Necromancers deals, Default: 5.0")
-                .defineInRange("SunkenNecromancerDamage", 5.0, 1.0, Double.MAX_VALUE);
+                .defineInRange("sunkenNecromancerDamage", 5.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-        BUILDER.push("Storm Necromancer");
+        BUILDER.push("Storm Necromancer Servant");
         StormNecromancerHealth = BUILDER.comment("How much Max Health Storm Necromancers have, Default: 220.0")
                 .defineInRange("stormNecromancerHealth", 220.0, 1.0, Double.MAX_VALUE);
         StormNecromancerArmor = BUILDER.comment("How much natural Armor Storm Necromancers have, Default: 4.0")
                 .defineInRange("stormNecromancerArmor", 4.0, 0.0, Double.MAX_VALUE);
-        StormNecromancerFollowRange = BUILDER.comment("How much following/detection range Storm Necromancers have, Default: 32.0")
-                .defineInRange("stormNecromancerFollowRange", 32.0, 1.0, 2048.0);
         StormNecromancerDamage = BUILDER.comment("How much damage Storm Necromancers deals, Default: 3.0")
                 .defineInRange("stormNecromancerDamage", 3.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-        BUILDER.push("Returned");
+        BUILDER.push("Returned Servant");
         ReturnedHealth = BUILDER.comment("How much Max Health Returned have, Default: 10.0")
                 .defineInRange("returnedHealth", 40.0, 1.0, Double.MAX_VALUE);
         ReturnedArmor = BUILDER.comment("How much natural Armor Returned have, Default: 2.0")
                 .defineInRange("returnedArmor", 2.0, 0.0, Double.MAX_VALUE);
-        ReturnedFollowRange = BUILDER.comment("How much following/detection range Returned have, Default: 32.0")
-                .defineInRange("returnedFollowRange", 32.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-        BUILDER.push("Agony");
+        BUILDER.push("Agony Servant");
         AgonyHealth = BUILDER.comment("How much Max Health Agony have, Default: 50.0")
                 .defineInRange("agonyHealth", 50.0, 1.0, Double.MAX_VALUE);
         AgonyDamage = BUILDER.comment("How much damage Agony deals, Default: 9.0")
                 .defineInRange("agonyDamage", 9.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-        BUILDER.push("Beldam");
+        BUILDER.push("Beldam Servant");
         BeldamHealth = BUILDER
                 .comment("How much Max Health Beldam have, Default: 26.0")
                 .defineInRange("beldamHealth", 26.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-        BUILDER.push("Zealot");
+        BUILDER.push("Zealot Servant");
         ZealotHealth = BUILDER
                 .comment("How much Max Health Zealot have, Default: 24.0")
                 .defineInRange("zealotHealth", 24.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-        BUILDER.push("Fanatic");
+        BUILDER.push("Fanatic Servant");
         FanaticHealth = BUILDER
                 .comment("How much Max Health Fanatic have, Default: 24.0")
                 .defineInRange("fanaticHealth", 24.0, 1.0, Double.MAX_VALUE);
@@ -232,42 +198,40 @@ public class AttributesConfig {
                 .comment("How much damage Fanatic deals, Default: 2.0")
                 .defineInRange("fanaticDamage", 2.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-        BUILDER.push("Thug");
+        BUILDER.push("Thug Servant");
         ThugHealth = BUILDER.comment("How much Max Health Thug have, Default: 50.0")
                 .defineInRange("thugHealth", 50.0, 1.0, Double.MAX_VALUE);
         ThugDamage = BUILDER.comment("How much damage Thug deals, Default: 7.0")
                 .defineInRange("thugDamage", 7.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-        BUILDER.push("Martyr");
+        BUILDER.push("Martyr Servant");
         MartyrHealth = BUILDER
                 .comment("How much Max Health Martyr have, Default: 32.0")
                 .defineInRange("martyrHealth", 32.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-        BUILDER.push("Channeller");
+        BUILDER.push("Channeller Servant");
         ChannellerHealth = BUILDER.comment("How much Max Health Channeller have, Default: 32.0")
                 .defineInRange("channellerHealth", 32.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-        BUILDER.push("Scorch");
+        BUILDER.push("Scorch Servant");
         ScorchHealth = BUILDER.comment("How much Max Health Scorch have, Default: 14.0")
                 .defineInRange("scorchHealth", 14.0, 1.0, Double.MAX_VALUE);
         ScorchDamage = BUILDER.comment("How much damage Scorch deals, Default: 6.0")
                 .defineInRange("scorchDamage", 6.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-        BUILDER.push("Urbhadhach");
+        BUILDER.push("Urbhadhach Servant");
         UrbhadhachHealth = BUILDER.comment("How much Max Health Urbhadhach have, Default: 50.0")
                 .defineInRange("urbhadhachHealth", 50.0, 1.0, Double.MAX_VALUE);
         UrbhadhachDamage = BUILDER.comment("How much damage Urbhadhach deals, Default: 12.0")
                 .defineInRange("urbhadhachDamage", 12.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
-        BUILDER.push("Arch Geomancer");
+        BUILDER.push("Arch Geomancer Servant");
         ArchGeomancerHealth = BUILDER.comment("How much Max Health Arch Geomancers have, Default: 160.0")
                 .defineInRange("archGeomancerHealth", 160.0, 1.0, Double.MAX_VALUE);
         ArchGeomancerArmor = BUILDER.comment("How much natural Armor Arch Geomancers have, Default: 4.0")
                 .defineInRange("archGeomancerArmor", 4.0, 0.0, Double.MAX_VALUE);
         ArchGeomancerArmorToughness = BUILDER.comment("How much natural Armor Toughness Arch Geomancers have, Default: 0.0")
                 .defineInRange("archGeomancerArmorToughness", 0.0, 0.0, Double.MAX_VALUE);
-        ArchGeomancerMovementSpeed = BUILDER.comment("How fast Arch Geomancers move, Default: 0.25")
-                .defineInRange("archGeomancerMovementSpeed", 0.25, 0.0, Double.MAX_VALUE);
         ArchGeomancerAttackDamage = BUILDER.comment("How much damage Arch Geomancers deal, Default: 7.0")
                 .defineInRange("archGeomancerAttackDamage", 7.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
@@ -278,10 +242,6 @@ public class AttributesConfig {
                 .defineInRange("piglinServantArmor", 0.0, 0.0, Double.MAX_VALUE);
         PiglinServantDamage = BUILDER.comment("How much damage Piglin Servants deals, Default: 5.0")
                 .defineInRange("piglinServantDamage", 5.0, 1.0, Double.MAX_VALUE);
-        PiglinServantMovementSpeed = BUILDER.comment("How fast Piglin Servants move, Default: 0.35")
-                .defineInRange("piglinServantMovementSpeed", 0.35, 0.0, Double.MAX_VALUE);
-        PiglinServantFollowRange = BUILDER.comment("How much following/detection range Piglin Servants have, Default: 16.0")
-                .defineInRange("piglinServantFollowRange", 16.0, 1.0, 2048.0);
         BUILDER.pop();
         BUILDER.push("Piglin Brute Servant");
         PiglinBruteServantHealth = BUILDER.comment("How much Max Health Piglin Brute Servants have, Default: 50.0")
@@ -290,10 +250,6 @@ public class AttributesConfig {
                 .defineInRange("piglinBruteServantArmor", 0.0, 0.0, Double.MAX_VALUE);
         PiglinBruteServantDamage = BUILDER.comment("How much damage Piglin Brute Servants deals, Default: 7.0")
                 .defineInRange("piglinBruteServantDamage", 7.0, 1.0, Double.MAX_VALUE);
-        PiglinBruteServantMovementSpeed = BUILDER.comment("How fast Piglin Brute Servants move, Default: 0.35")
-                .defineInRange("piglinBruteServantMovementSpeed", 0.35, 0.0, Double.MAX_VALUE);
-        PiglinBruteServantFollowRange = BUILDER.comment("How much following/detection range Piglin Brute Servants have, Default: 16.0")
-                .defineInRange("piglinBruteServantFollowRange", 16.0, 1.0, 2048.0);
         PiglinBruteServantEvolvedHealthBonus = BUILDER
                 .comment("How much bonus Max Health Evolved Piglin Brute Servants gain, Default: 20.0")
                 .defineInRange("piglinBruteServantEvolvedHealthBonus", 20.0, 0.0, Double.MAX_VALUE);
@@ -314,10 +270,6 @@ public class AttributesConfig {
                 .defineInRange("piglinHunterServantArmor", 0.0, 0.0, Double.MAX_VALUE);
         PiglinHunterServantDamage = BUILDER.comment("How much damage Piglin Hunter Servants deal, Default: 7.0")
                 .defineInRange("piglinHunterServantDamage", 7.0, 1.0, Double.MAX_VALUE);
-        PiglinHunterServantMovementSpeed = BUILDER.comment("How fast Piglin Hunter Servants move, Default: 0.35")
-                .defineInRange("piglinHunterServantMovementSpeed", 0.35, 0.0, Double.MAX_VALUE);
-        PiglinHunterServantFollowRange = BUILDER.comment("How much following/detection range Piglin Hunter Servants have, Default: 16.0")
-                .defineInRange("piglinHunterServantFollowRange", 16.0, 1.0, 2048.0);
         PiglinHunterServantEvolvedHealthBonus = BUILDER
                 .comment("How much bonus Max Health Evolved Piglin Hunter Servants gain, Default: 20.0")
                 .defineInRange("piglinHunterServantEvolvedHealthBonus", 20.0, 0.0, Double.MAX_VALUE);
@@ -331,17 +283,13 @@ public class AttributesConfig {
                 .comment("How much bonus damage Stage 2 Evolved Piglin Hunter Servants deal, Default: 3.0")
                 .defineInRange("piglinHunterServantEvolved2DamageBonus", 3.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
-        BUILDER.push("Fungus Thrower");
+        BUILDER.push("Fungus Thrower Servant");
         FungusThrowerServantHealth = BUILDER.comment("How much Max Health Fungus Thrower have, Default: 20.0")
                 .defineInRange("fungusThrowerHealth", 16.0, 1.0, Double.MAX_VALUE);
         FungusThrowerServantArmor = BUILDER.comment("How much natural Armor Fungus Thrower have, Default: 0.0")
                 .defineInRange("fungusThrowerArmor", 0.0, 0.0, Double.MAX_VALUE);
         FungusThrowerServantDamage = BUILDER.comment("How much damage Fungus Thrower deal, Default: 3.0")
                 .defineInRange("fungusThrowerDamage", 2.0, 1.0, Double.MAX_VALUE);
-        FungusThrowerServantMovementSpeed = BUILDER.comment("How fast Fungus Thrower move, Default: 0.35")
-                .defineInRange("fungusThrowerMovementSpeed", 0.35, 0.0, Double.MAX_VALUE);
-        FungusThrowerServantFollowRange = BUILDER.comment("How much following/detection range Fungus Thrower have, Default: 32.0")
-                .defineInRange("fungusThrowerFollowRange", 32.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Crimson Spider Servant");
         CrimsonSpiderServantHealth = BUILDER
@@ -353,26 +301,17 @@ public class AttributesConfig {
         BUILDER.pop();
         BUILDER.push("Axolotl Servant");
         AxolotlServantHealth = BUILDER.comment("How much Max Health Axolotl Servants have, Default: 15.0")
-                .defineInRange("AxolotlServantHealth", 14.0, 1.0, Double.MAX_VALUE);
+                .defineInRange("axolotlServantHealth", 14.0, 1.0, Double.MAX_VALUE);
         AxolotlServantDamage = BUILDER.comment("How much damage Axolotl Servants deals, Default: 0.0")
-                .defineInRange("AxolotlServantDamage", 3.0, 0.0, Double.MAX_VALUE);
-        AxolotlServantMovementSpeed = BUILDER.comment("How fast Axolotl Servants move, Default: 0.0")
-                .defineInRange("AxolotlServantMovementSpeed", 1.0, 0.0, Double.MAX_VALUE);
-        AxolotlServantFollowRange = BUILDER
-                .comment("How much following/detection range Axolotl Servants have, Default: 32.0")
-                .defineInRange("AxolotlServantFollowRange", 16.0, 1.0, Double.MAX_VALUE);
+                .defineInRange("axolotlServantDamage", 3.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
-        BUILDER.push("Disciple");
+        BUILDER.push("Disciple Servant");
         DiscipleHealth = BUILDER.comment("How much Max Health Disciples have, Default: 50.0")
                 .defineInRange("discipleHealth", 50.0, 1.0, Double.MAX_VALUE);
         DiscipleArmor = BUILDER.comment("How much natural Armor Disciples have, Default: 2.0")
                 .defineInRange("discipleArmor", 2.0, 0.0, Double.MAX_VALUE);
         DiscipleDamage = BUILDER.comment("How much damage Disciples deal, Default: 3.0")
                 .defineInRange("discipleDamage", 3.0, 1.0, Double.MAX_VALUE);
-        DiscipleMovementSpeed = BUILDER.comment("How fast Disciples move, Default: 0.25")
-                .defineInRange("discipleMovementSpeed", 0.35, 0.0, Double.MAX_VALUE);
-        DiscipleFollowRange = BUILDER.comment("How much following/detection range Disciples have, Default: 32.0")
-                .defineInRange("discipleFollowRange", 32.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Heresiarch Servant");
         HeresiarchServantHealth = BUILDER.comment("How much Max Health Heresiarch Servants have, Default: 200.0")

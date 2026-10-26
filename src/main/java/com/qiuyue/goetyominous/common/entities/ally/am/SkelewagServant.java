@@ -79,10 +79,10 @@ public class SkelewagServant extends Summoned implements IAnimatedEntity, ISemiA
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AmConfig.SkelewagServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AmConfig.SkelewagServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 16.0)
                 .add(Attributes.ATTACK_DAMAGE, AmConfig.SkelewagServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AmConfig.SkelewagServantKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AmConfig.SkelewagServantMovementSpeed.get());
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.45);
     }
 
     @Override

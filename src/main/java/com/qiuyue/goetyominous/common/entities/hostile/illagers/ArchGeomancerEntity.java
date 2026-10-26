@@ -111,7 +111,7 @@ public class ArchGeomancerEntity extends HuntingIllagerEntity {
                 .add(Attributes.MAX_HEALTH, AttributesConfig.ArchGeomancerHealth.get())
                 .add(Attributes.ARMOR, AttributesConfig.ArchGeomancerArmor.get())
                 .add(Attributes.ARMOR_TOUGHNESS, AttributesConfig.ArchGeomancerArmorToughness.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.ArchGeomancerMovementSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.25)
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.ArchGeomancerAttackDamage.get())
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5D)
                 .add(Attributes.FOLLOW_RANGE, 48.0D);
@@ -124,7 +124,7 @@ public class ArchGeomancerEntity extends HuntingIllagerEntity {
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR_TOUGHNESS),
                 AttributesConfig.ArchGeomancerArmorToughness.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.MOVEMENT_SPEED),
-                AttributesConfig.ArchGeomancerMovementSpeed.get());
+                0.25);
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE),
                 AttributesConfig.ArchGeomancerAttackDamage.get());
     }

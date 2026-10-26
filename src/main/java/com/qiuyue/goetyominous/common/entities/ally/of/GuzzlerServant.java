@@ -63,10 +63,10 @@ public class GuzzlerServant extends Summoned implements AttackState {
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, OfConfig.GuzzlerServantHealth.get())
-                .add(Attributes.MOVEMENT_SPEED, OfConfig.GuzzlerServantMovementSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.13)
                 .add(Attributes.ATTACK_DAMAGE, OfConfig.GuzzlerServantAttackDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, OfConfig.GuzzlerServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, OfConfig.GuzzlerServantFollowRange.get());
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.5)
+                .add(Attributes.FOLLOW_RANGE, 32.0);
     }
 
     @Override

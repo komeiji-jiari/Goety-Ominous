@@ -114,7 +114,7 @@ public class CreepieServant extends Summoned implements PowerableMob {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, SarConfig.CreepieServantHealth.get())
                 .add(Attributes.ATTACK_DAMAGE, SarConfig.CreepieServantDamage.get())
-                .add(Attributes.MOVEMENT_SPEED, SarConfig.CreepieServantMovementSpeed.get());
+                .add(Attributes.MOVEMENT_SPEED, 0.35);
     }
 
     @Override

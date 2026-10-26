@@ -41,8 +41,8 @@ public abstract class AbstractDredenEntity extends AbstractWraith implements IBr
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, AttributesConfig.DredenHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.DredenFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.DredenMovementSpeed.get())
+                .add(Attributes.FOLLOW_RANGE, 35.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.25)
                 .add(ForgeMod.STEP_HEIGHT_ADDITION.get(), 1.0D)
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.DredenDamage.get());
     }

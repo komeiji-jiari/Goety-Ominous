@@ -100,8 +100,8 @@ public class DiscipleServant extends CultistServant {
                 .add(Attributes.MAX_HEALTH, AttributesConfig.DiscipleHealth.get())
                 .add(Attributes.ARMOR, AttributesConfig.DiscipleArmor.get())
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.DiscipleDamage.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.DiscipleMovementSpeed.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.DiscipleFollowRange.get());
+                .add(Attributes.MOVEMENT_SPEED, 0.35)
+                .add(Attributes.FOLLOW_RANGE, 32.0);
     }
 
     public void setConfigurableAttributes() {

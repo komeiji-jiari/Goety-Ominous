@@ -32,11 +32,16 @@ import com.qiuyue.goetyominous.common.events.ac.*;
 import com.qiuyue.goetyominous.common.init.ac.*;
 import com.qiuyue.goetyominous.common.items.ac.AcItems;
 import com.qiuyue.goetyominous.common.ritual.ac.PureDarkRitualType;
+import com.qiuyue.goetyominous.compat.curios.CuriosIntegration;
 import com.qiuyue.goetyominous.compat.mod.PatchouliCompat;
+import com.qiuyue.goetyominous.config.ac.AcConfig;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.loading.FMLPaths;
 
 public class AcCompatManager {
 
@@ -48,6 +53,7 @@ public class AcCompatManager {
                 AcItems.register(modEventBus);
 
                 com.qiuyue.goetyominous.common.init.ModCreativeTab.registerCompatItems(new com.qiuyue.goetyominous.compat.ac.AcCompatItems());
+                CuriosIntegration.registerCompatCurio(AcItems.RAYCAT_AMULET);
                 AcParticles.register(modEventBus);
                 AcEffects.register(modEventBus);
                 RitualType.addRitualType("dim", new PureDarkRitualType("dim"));
@@ -72,6 +78,13 @@ public class AcCompatManager {
 
                 modEventBus.addListener(AcCompatManager::setCustomAttributes);
                 modEventBus.addListener(AcCompatManager::commonSetup);
+    }
+
+    public static void registerConfig() {
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, AcConfig.SPEC,
+                "goetyominous/goetyominous-alexscaves.toml");
+        AcConfig.loadConfig(AcConfig.SPEC,
+                FMLPaths.CONFIGDIR.get().resolve("goetyominous/goetyominous-alexscaves.toml").toString());
     }
 
     public static void commonSetup(FMLCommonSetupEvent event) {

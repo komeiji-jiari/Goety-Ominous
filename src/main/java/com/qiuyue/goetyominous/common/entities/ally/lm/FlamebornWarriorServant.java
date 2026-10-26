@@ -56,11 +56,11 @@ public class FlamebornWarriorServant extends AbstractFlamebornServant {
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, LmConfig.FlamebornWarriorServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.FlamebornWarriorServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, LmConfig.FlamebornWarriorServantFollowRange.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.3)
+                .add(Attributes.FOLLOW_RANGE, 20.0)
                 .add(Attributes.ARMOR, LmConfig.FlamebornWarriorServantArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, LmConfig.FlamebornWarriorServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.FlamebornWarriorServantAttackKnockback.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.1)
+                .add(Attributes.ATTACK_KNOCKBACK, 0.5)
                 .add(Attributes.ATTACK_DAMAGE, LmConfig.FlamebornWarriorServantDamage.get());
     }
 

@@ -83,9 +83,9 @@ public class FlareServant extends SummonedFlying {
                 .add(Attributes.MAX_HEALTH, UaConfig.FlareServantHealth.get())
                 .add(Attributes.ARMOR, UaConfig.FlareServantArmor.get())
                 .add(Attributes.ATTACK_DAMAGE, UaConfig.FlareServantDamage.get())
-                .add(Attributes.FLYING_SPEED, UaConfig.FlareServantFlyingSpeed.get())
-                .add(Attributes.MOVEMENT_SPEED, UaConfig.FlareServantMovementSpeed.get())
-                .add(Attributes.FOLLOW_RANGE, UaConfig.FlareServantFollowRange.get());
+                .add(Attributes.FLYING_SPEED, 0.6)
+                .add(Attributes.MOVEMENT_SPEED, 0.3)
+                .add(Attributes.FOLLOW_RANGE, 64.0);
     }
 
     protected void defineSynchedData() {
