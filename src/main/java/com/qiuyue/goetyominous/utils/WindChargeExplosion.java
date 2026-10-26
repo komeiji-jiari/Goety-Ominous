@@ -135,7 +135,9 @@ public class WindChargeExplosion extends Explosion {
                     && !windCharge.shouldAffectEntity(entity)) {
                 continue;
             }
-            if (this.goetyominous$allyOwner != null && ServantAllyUtil.areAllied(this.goetyominous$allyOwner, entity)) {
+            if (this.goetyominous$allyOwner != null
+                    && entity != this.goetyominous$allyOwner
+                    && ServantAllyUtil.areAllied(this.goetyominous$allyOwner, entity)) {
                 continue;
             }
 

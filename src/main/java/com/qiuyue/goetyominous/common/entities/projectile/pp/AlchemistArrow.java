@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.entities.projectile.pp;
 
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractPiglinServant;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Arrow;
@@ -55,6 +56,19 @@ public class AlchemistArrow extends Arrow {
         super.onHitEntity(result);
     }
 
+    private boolean isHealing() {
+        return this.potion.getEffects().stream().anyMatch(effect -> effect.getEffect() == MobEffects.HEAL)
+                || this.customEffects.stream().anyMatch(effect -> effect.getEffect() == MobEffects.HEAL);
+    }
+
+    @Override
+    protected boolean canHitEntity(Entity target) {
+        if (target instanceof LivingEntity living && this.isHealing() && this.isFriendlyTarget(living)) {
+            return true;
+        }
+        return super.canHitEntity(target);
+    }
+
     private boolean isFriendlyTarget(LivingEntity target) {
         if (!(this.getOwner() instanceof AbstractPiglinServant shooter)) {
             return false;
@@ -63,8 +77,6 @@ public class AlchemistArrow extends Arrow {
         if (owner != null && target == owner) {
             return true;
         }
-        return target instanceof AbstractPiglinServant ally
-                && owner != null
-                && owner == ally.getTrueOwner();
+        return target instanceof AbstractPiglinServant ally && owner == ally.getTrueOwner();
     }
 }

@@ -1,0 +1,40 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:rampaging_axe"
+  },
+  "craftType": "expert_nether",
+  "soulCost": 5,
+  "duration": 30,
+  "research": "terminus",
+  "ingredients": [
+    {
+      "item": "alexscaves:tectonic_shard"
+    },
+    {
+      "item": "alexscaves:tectonic_shard"
+    },
+    {
+      "item": "alexscaves:tectonic_shard"
+    },
+    {
+      "item": "minecraft:lava_bucket"
+    },
+    {
+      "tag": "forge:ingots/netherite"
+    },
+    {
+      "item": "minecraft:gunpowder"
+    },
+    {
+      "tag": "forge:gems/quartz"
+    },
+    {
+      "tag": "forge:gems/quartz"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:barbaric_axe"
+  }
+}
