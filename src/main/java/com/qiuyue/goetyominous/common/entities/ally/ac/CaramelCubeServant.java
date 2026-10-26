@@ -71,11 +71,11 @@ public class CaramelCubeServant extends Summoned {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AcConfig.CaramelCubeServantMovementSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.25)
                 .add(Attributes.MAX_HEALTH, AcConfig.CaramelCubeServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AcConfig.CaramelCubeServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 32.0)
                 .add(Attributes.ATTACK_DAMAGE, AcConfig.CaramelCubeServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.CaramelCubeServantKnockbackResistance.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.0)
                 .add(Attributes.ARMOR, AcConfig.CaramelCubeServantArmor.get());
     }
 
@@ -158,7 +158,7 @@ public class CaramelCubeServant extends Summoned {
         this.reapplyPosition();
         this.refreshDimensions();
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(AcConfig.CaramelCubeServantHealth.get() + 6.0F * size);
-        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AcConfig.CaramelCubeServantMovementSpeed.get() + 0.1F * size);
+        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25 + 0.1F * size);
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AcConfig.CaramelCubeServantDamage.get() + (double) (2.0F * size));
         if (heal) {
             this.setHealth(this.getMaxHealth());

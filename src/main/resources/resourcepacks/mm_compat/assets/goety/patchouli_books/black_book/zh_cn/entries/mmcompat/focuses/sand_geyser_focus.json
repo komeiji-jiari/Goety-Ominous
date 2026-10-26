@@ -2,11 +2,11 @@
   "name": "沙泉爆发聚晶",
   "icon": "goetyominous:sand_geyser_focus",
   "category": "goety:mmcompat/focuses",
-  "sortnum": 5,
+  "sortnum": 8,
   "pages": [
     {
       "type": "text",
-      "text": "利用你的手下败将——突变尸壳的声带，你学会如何将沙泉自大地之中引导而出，猛烈地将你的敌人席卷到空中。如果按住shift施法，则改为在周围所有生物脚下生成一道沙泉。"
+      "text": "利用你的手下败将——突变尸壳的声带，你学会如何将沙泉自大地之中引导而出，猛烈地将你的敌人席卷到空中。如果潜行施法，则改为在周围所有生物脚下生成一道沙泉。"
     },
     {
       "type": "goety:ritual",

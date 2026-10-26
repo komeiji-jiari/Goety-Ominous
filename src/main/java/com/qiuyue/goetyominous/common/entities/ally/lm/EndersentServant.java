@@ -129,12 +129,12 @@ public class EndersentServant extends AbstractEnderling implements LmServantDama
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, LmConfig.EndersentServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.EndersentServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, LmConfig.EndersentServantFollowRange.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
+                .add(Attributes.FOLLOW_RANGE, 32.0)
                 .add(Attributes.ARMOR, LmConfig.EndersentServantArmor.get())
                 .add(Attributes.ARMOR_TOUGHNESS, LmConfig.EndersentServantArmorToughness.get())
-                .add(Attributes.MOVEMENT_SPEED, LmConfig.EndersentServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.EndersentServantAttackKnockback.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.25)
+                .add(Attributes.ATTACK_KNOCKBACK, 2.0)
                 .add(Attributes.ATTACK_DAMAGE, LmConfig.EndersentServantDamage.get())
                 .add(ForgeMod.STEP_HEIGHT_ADDITION.get(), 1.0D);
     }

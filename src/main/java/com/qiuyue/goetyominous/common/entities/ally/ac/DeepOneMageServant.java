@@ -121,11 +121,11 @@ public class DeepOneMageServant extends Summoned implements IDeepOneBarterer, IA
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AcConfig.DeepOneMageServantMovementSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.25)
                 .add(Attributes.MAX_HEALTH, AcConfig.DeepOneMageServantHealth.get())
                 .add(Attributes.ATTACK_DAMAGE, AcConfig.DeepOneMageServantDamage.get())
-                .add(Attributes.FOLLOW_RANGE, AcConfig.DeepOneMageServantFollowRange.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.DeepOneMageServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, 32.0)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.0)
                 .add(Attributes.ARMOR, AcConfig.DeepOneMageServantArmor.get());
     }
 

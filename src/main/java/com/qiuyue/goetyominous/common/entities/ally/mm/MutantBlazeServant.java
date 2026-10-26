@@ -287,9 +287,9 @@ public class MutantBlazeServant extends AbstractMutantServant implements IHeatSo
                 .add(Attributes.MAX_HEALTH, MmConfig.MutantBlazeServantHealth.get())
                 .add(Attributes.ARMOR, MmConfig.MutantBlazeServantArmor.get())
                 .add(Attributes.ARMOR_TOUGHNESS, MmConfig.MutantBlazeServantArmorToughness.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, MmConfig.MutantBlazeServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, MmConfig.MutantBlazeServantFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, MmConfig.MutantBlazeServantMovementSpeed.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
+                .add(Attributes.FOLLOW_RANGE, 64.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.25)
                 .add(Attributes.ATTACK_DAMAGE, MutantBlazeCommonConfig.stun_shockwave_damage.get());
     }
 
@@ -659,13 +659,13 @@ public class MutantBlazeServant extends AbstractMutantServant implements IHeatSo
     private void applyEnhancementModifiers() {
         AttributeInstance health = this.getAttribute(Attributes.MAX_HEALTH);
         if (this.hasBulwarkFocus()) {
-            this.addModIfMissing(health, BULWARK_HEALTH_UUID, "Bulwark Focus Health", MmConfig.MBBulwarkFocusHealthBouns.get());
+            this.addModIfMissing(health, BULWARK_HEALTH_UUID, "Bulwark Focus Health", MmConfig.MutantBlazeBulwarkFocusHealthBonus.get());
         }
         if (this.hasBlazingHelm()) {
-            this.addModIfMissing(health, BLAZING_HELM_HEALTH_UUID, "Blazing Helm Health", MmConfig.MBBlazingHelmHealthBouns.get());
+            this.addModIfMissing(health, BLAZING_HELM_HEALTH_UUID, "Blazing Helm Health", MmConfig.MutantBlazeBlazingHelmHealthBonus.get());
         }
         if (this.hasUnholyBlood()) {
-            this.addModIfMissing(health, UNHOLY_BLOOD_HEALTH_UUID, "Unholy Blood Health", MmConfig.MBUnholyBloodHealthBouns.get());
+            this.addModIfMissing(health, UNHOLY_BLOOD_HEALTH_UUID, "Unholy Blood Health", MmConfig.MutantBlazeUnholyBloodHealthBonus.get());
         }
     }
 

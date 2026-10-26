@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.ally.sar;
 
 import com.Polarice3.Goety.common.entities.neutral.Owned;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.teamabnormals.savage_and_ravage.common.block.RunedGloomyTilesBlock;
 import com.teamabnormals.savage_and_ravage.core.registry.SRBlocks;
 import com.teamabnormals.savage_and_ravage.core.registry.SRMobEffects;
@@ -131,7 +132,7 @@ public class RunePrison extends Owned {
         LivingEntity owner = this.getTrueOwner();
         for (LivingEntity livingEntity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox())) {
             if (livingEntity.isAffectedByPotions()) {
-                if (owner != null && (livingEntity == owner || owner.isAlliedTo(livingEntity))) {
+                if (owner != null && ServantAllyUtil.areAllied(owner, livingEntity)) {
                     continue;
                 }
                 livingEntity.addEffect(new MobEffectInstance(SRMobEffects.WEIGHT.get(), 60, 2));

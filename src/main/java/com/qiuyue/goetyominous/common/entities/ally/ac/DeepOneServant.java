@@ -103,11 +103,11 @@ public class DeepOneServant extends Summoned implements IDeepOneBarterer, IDeepO
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AcConfig.DeepOneServantMovementSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.25)
                 .add(Attributes.MAX_HEALTH, AcConfig.DeepOneServantHealth.get())
                 .add(Attributes.ATTACK_DAMAGE, AcConfig.DeepOneServantDamage.get())
-                .add(Attributes.FOLLOW_RANGE, AcConfig.DeepOneServantFollowRange.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.DeepOneServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, 32.0)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.0)
                 .add(Attributes.ARMOR, AcConfig.DeepOneServantArmor.get());
     }
 

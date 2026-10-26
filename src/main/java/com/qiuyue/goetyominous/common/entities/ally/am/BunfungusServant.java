@@ -79,8 +79,8 @@ public class BunfungusServant extends Summoned implements IAnimatedEntity {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AmConfig.BunfungusServantHealth.get())
                 .add(Attributes.ATTACK_DAMAGE, AmConfig.BunfungusServantDamage.get())
-                .add(Attributes.FOLLOW_RANGE, AmConfig.BunfungusServantFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, AmConfig.BunfungusServantMovementSpeed.get())
+                .add(Attributes.FOLLOW_RANGE, 16.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.32)
                 .add(Attributes.ARMOR, AmConfig.BunfungusServantArmor.get());
     }
 

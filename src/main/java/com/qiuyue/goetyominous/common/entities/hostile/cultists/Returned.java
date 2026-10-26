@@ -87,7 +87,7 @@ public class Returned extends AbstractReturned {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MOVEMENT_SPEED, 0.4D)
                 .add(Attributes.FLYING_SPEED, 0.15D)
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.ReturnedFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 32.0)
                 .add(Attributes.ARMOR, AttributesConfig.ReturnedArmor.get())
                 .add(Attributes.MAX_HEALTH, AttributesConfig.ReturnedHealth.get());
     }

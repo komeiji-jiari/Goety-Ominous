@@ -12,8 +12,12 @@ import com.qiuyue.goetyominous.common.entities.ally.of.UmberSpiderServant;
 import com.qiuyue.goetyominous.common.entities.ally.of.VoltServant;
 import com.qiuyue.goetyominous.common.init.of.OfEntityRegistry;
 import com.qiuyue.goetyominous.common.items.of.OfItems;
+import com.qiuyue.goetyominous.config.of.OfConfig;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.loading.FMLPaths;
 
 public class OfCompatManager {
 
@@ -24,6 +28,13 @@ public class OfCompatManager {
         com.qiuyue.goetyominous.common.init.ModCreativeTab.registerCompatItems(OfItems.OF_ITEMS);
 
         modEventBus.addListener(OfCompatManager::setCustomAttributes);
+    }
+
+    public static void registerConfig() {
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, OfConfig.SPEC,
+                "goetyominous/goetyominous-opposing_force.toml");
+        OfConfig.loadConfig(OfConfig.SPEC,
+                FMLPaths.CONFIGDIR.get().resolve("goetyominous/goetyominous-opposing_force.toml").toString());
     }
 
     public static void setCustomAttributes(EntityAttributeCreationEvent event) {

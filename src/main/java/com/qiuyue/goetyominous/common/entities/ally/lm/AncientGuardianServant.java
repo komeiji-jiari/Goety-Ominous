@@ -328,11 +328,11 @@ public class AncientGuardianServant extends IAnimatedMiniBossServant {
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, LmConfig.AncientGuardianServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.AncientGuardianServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, LmConfig.AncientGuardianServantFollowRange.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
+                .add(Attributes.FOLLOW_RANGE, 30.0)
                 .add(Attributes.ARMOR, LmConfig.AncientGuardianServantArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, LmConfig.AncientGuardianServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.AncientGuardianServantAttackKnockback.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.3)
+                .add(Attributes.ATTACK_KNOCKBACK, 1.0)
                 .add(Attributes.ATTACK_DAMAGE, LmConfig.AncientGuardianServantDamage.get());
     }
 

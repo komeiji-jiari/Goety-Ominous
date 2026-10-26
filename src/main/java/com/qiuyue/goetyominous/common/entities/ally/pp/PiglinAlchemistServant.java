@@ -85,8 +85,8 @@ public class PiglinAlchemistServant extends AbstractPiglinServant implements Alc
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, PpConfig.PiglinAlchemistServantHealth.get())
                 .add(Attributes.ARMOR, PpConfig.PiglinAlchemistServantArmor.get())
-                .add(Attributes.FOLLOW_RANGE, PpConfig.PiglinAlchemistServantFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, PpConfig.PiglinAlchemistServantMovementSpeed.get())
+                .add(Attributes.FOLLOW_RANGE, 24.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.35)
                 .add(Attributes.ATTACK_DAMAGE, PpConfig.PiglinAlchemistServantDamage.get());
     }
 

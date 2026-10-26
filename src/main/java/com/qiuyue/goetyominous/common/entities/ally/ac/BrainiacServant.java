@@ -99,11 +99,11 @@ public class BrainiacServant extends Summoned implements IAnimatedEntity {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AcConfig.BrainiacServantMovementSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.25)
                 .add(Attributes.MAX_HEALTH, AcConfig.BrainiacServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AcConfig.BrainiacServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 32.0)
                 .add(Attributes.ATTACK_DAMAGE, AcConfig.BrainiacServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.BrainiacServantKnockbackResistance.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.0)
                 .add(Attributes.ARMOR, AcConfig.BrainiacServantArmor.get());
     }
     protected PathNavigation createNavigation(Level level) {

@@ -291,9 +291,9 @@ public class MutantShulkerServant extends AbstractMutantServant implements IHasC
                 .add(Attributes.MAX_HEALTH, MmConfig.MutantShulkerServantHealth.get())
                 .add(Attributes.ARMOR, MmConfig.MutantShulkerServantArmor.get())
                 .add(Attributes.ARMOR_TOUGHNESS, MmConfig.MutantShulkerServantArmorToughness.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, MmConfig.MutantShulkerServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, MmConfig.MutantShulkerServantFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, MmConfig.MutantShulkerServantMovementSpeed.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
+                .add(Attributes.FOLLOW_RANGE, 64.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.275)
                 .add(Attributes.ATTACK_DAMAGE, MutantShulkerCommonConfig.bite_damage.get());
     }
 
@@ -522,13 +522,13 @@ public class MutantShulkerServant extends AbstractMutantServant implements IHasC
     private void applyEnhancementModifiers() {
         AttributeInstance health = this.getAttribute(Attributes.MAX_HEALTH);
         if (this.hasVoidEcho()) {
-            this.addModIfMissing(health, VOID_ECHO_HEALTH_UUID, "Void Echo Health", MmConfig.MutantShulkerVoidEchoHealth.get());
+            this.addModIfMissing(health, VOID_ECHO_HEALTH_UUID, "Void Echo Health", MmConfig.MutantShulkerVoidEchoHealthBonus.get());
         }
         if (this.hasVoidEye()) {
-            this.addModIfMissing(health, VOID_EYE_HEALTH_UUID, "Void Eye Health", MmConfig.MutantShulkerVoidEyeHealth.get());
+            this.addModIfMissing(health, VOID_EYE_HEALTH_UUID, "Void Eye Health", MmConfig.MutantShulkerVoidEyeHealthBonus.get());
         }
         if (this.hasVoidShard()) {
-            this.addModIfMissing(health, VOID_SHARD_HEALTH_UUID, "Void Shard Health", MmConfig.MutantShulkerVoidShardHealth.get());
+            this.addModIfMissing(health, VOID_SHARD_HEALTH_UUID, "Void Shard Health", MmConfig.MutantShulkerVoidShardHealthBonus.get());
         }
     }
 

@@ -5,8 +5,6 @@ import com.qiuyue.goetyominous.common.entities.ally.lm.ServantMath;
 import com.qiuyue.goetyominous.common.init.lm.LmDamageTypes;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import com.qiuyue.goetyominous.common.init.lm.LmParticles;
-import net.miauczel.legendary_monsters.effect.ModEffects;
-import net.miauczel.legendary_monsters.util.EntityUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -38,7 +36,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
-import com.qiuyue.goetyominous.config.lm.LmConfig;
 
 public class SoulTrident extends AbstractArrow {
 
@@ -158,11 +155,6 @@ public class SoulTrident extends AbstractArrow {
             if (hitEntity.hurt(damageSource, damage)) {
                 if (owner instanceof LivingEntity livingOwner) {
                     livingOwner.heal(8.0F);
-                }
-
-                if (LmConfig.SoulFractureOnServantHit.get()) {
-                    EntityUtil.applyStackingEffect(livingEntity, ModEffects.SOUL_FRACTURE.get(),
-                            1, 5, ServantMath.toTicks(10.0F));
                 }
 
                 if (hitEntity.getType() == EntityType.ENDERMAN) {

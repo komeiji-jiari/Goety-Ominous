@@ -8,7 +8,6 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -19,7 +18,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
-import com.qiuyue.goetyominous.config.lm.LmConfig;
 
 /**
  * 大 Boss 级仆从的基类，对应传奇怪物（Legendary Monsters）原版的 IAnimatedBoss。
@@ -263,34 +261,6 @@ public class IAnimatedBossServant extends IAnimatedMonsterServant {
         Vec3 sub = position().subtract(rollPos);
         Vec3 finalPos = sub.scale(Vscale);
         setDeltaMovement(finalPos.x, getDeltaMovement().y, finalPos.z);
-    }
-
-    /**
-     * 给目标「叠层」上 debuff：没说有就上 0 级，已经有了就在原等级上 +{@code bonusLevel}，
-     * 但封顶在 {@code maxLevel}。
-     *
-     * <p>圣骑用它给被砍中的敌人叠「灵魂碎裂」（{@code ModEffects.SOUL_FRACTURE}）：
-     * 砍得越多层数越高，最高 {@code maxLevel} 层。
-     * 受 {@code LmConfig.SoulFractureOnServantHit} 门控，默认关闭，此时这里不再被调用。
-     * 幻影匕首（{@code ThrownPhantomDagger}）命中也叠同一个效果 ——
-     * 那边调的是 LM 的 {@code EntityUtil.applyStackingEffect}，逻辑和这里这份一模一样。
-     *
-     * <p>⚠️ 中间那个 {@code else if (!(A && B))} 写法很啰嗦（其实就是 {@code else}），
-     * 是 LM 原版这么写的，<b>照抄没动</b>。两者等价，不要顺手简化。
-     */
-    public void applyStackingEffect(LivingEntity entity, MobEffect effect, int bonusLevel, int maxLevel, int duration) {
-
-        MobEffectInstance effectInstance = entity.getEffect(effect);
-
-        if (entity.hasEffect(effect) && effectInstance != null) {
-
-            int effectLevel = effectInstance.getAmplifier();
-            if (effectLevel < maxLevel) {
-                entity.addEffect(new MobEffectInstance(effect, duration, effectLevel + bonusLevel));
-            }
-        } else if (!(entity.hasEffect(effect) && effectInstance != null)) {
-            entity.addEffect(new MobEffectInstance(effect, duration, 0));
-        }
     }
 
     /**

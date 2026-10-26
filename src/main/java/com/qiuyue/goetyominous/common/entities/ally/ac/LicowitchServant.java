@@ -111,11 +111,11 @@ public class LicowitchServant extends Summoned implements IAnimatedEntity {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AcConfig.LicowitchServantMovementSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.25)
                 .add(Attributes.MAX_HEALTH, AcConfig.LicowitchServantHealth.get())
                 .add(Attributes.ATTACK_DAMAGE, AcConfig.LicowitchServantDamage.get())
-                .add(Attributes.FOLLOW_RANGE, AcConfig.LicowitchServantFollowRange.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.LicowitchServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, 48.0)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.0)
                 .add(Attributes.ARMOR, AcConfig.LicowitchServantArmor.get());
     }
 

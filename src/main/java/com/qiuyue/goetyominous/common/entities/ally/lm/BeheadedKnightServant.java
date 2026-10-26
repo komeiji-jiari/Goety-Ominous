@@ -125,12 +125,12 @@ public class BeheadedKnightServant extends IAnimatedMiniBossServant {
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, LmConfig.BeheadedKnightServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.BeheadedKnightServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, LmConfig.BeheadedKnightServantFollowRange.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
+                .add(Attributes.FOLLOW_RANGE, 30.0)
                 .add(Attributes.ARMOR, LmConfig.BeheadedKnightServantArmor.get())
                 .add(Attributes.ARMOR_TOUGHNESS, LmConfig.BeheadedKnightServantArmorToughness.get())
-                .add(Attributes.MOVEMENT_SPEED, LmConfig.BeheadedKnightServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.BeheadedKnightServantAttackKnockback.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.1)
+                .add(Attributes.ATTACK_KNOCKBACK, 0.5)
                 .add(Attributes.ATTACK_DAMAGE, LmConfig.BeheadedKnightServantDamage.get());
     }
 

@@ -4,8 +4,6 @@ import com.qiuyue.goetyominous.client.particle.lm.PhantomDaggerTrail;
 import net.miauczel.legendary_monsters.entity.client.ControlledAnim;
 import com.qiuyue.goetyominous.common.entities.ally.lm.ServantMath;
 import com.qiuyue.goetyominous.common.init.lm.LmDamageTypes;
-import net.miauczel.legendary_monsters.effect.ModEffects;
-import net.miauczel.legendary_monsters.util.EntityUtil;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -16,7 +14,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import com.qiuyue.goetyominous.config.lm.LmConfig;
 
 public class ThrownPhantomDagger extends ServantFlyingProjectile {
 
@@ -173,10 +170,6 @@ public class ThrownPhantomDagger extends ServantFlyingProjectile {
                 this.getDamage() + m);
 
         if (hurt) {
-            if (LmConfig.SoulFractureOnServantHit.get()) {
-                EntityUtil.applyStackingEffect(livingTarget, ModEffects.SOUL_FRACTURE.get(),
-                        1, 4, ServantMath.toTicks(10.0F));
-            }
             livingOwner.heal(3.0F);
         }
     }

@@ -1,9 +1,8 @@
 package com.qiuyue.goetyominous.compat.curios;
 
 import com.qiuyue.goetyominous.common.items.ModItems;
-import com.qiuyue.goetyominous.common.items.ac.AcItems;
 import com.qiuyue.goetyominous.common.items.curios.DarkAnkh;
-import com.qiuyue.goetyominous.compat.mod.AlexCavesCompat;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.fml.InterModComms;
@@ -14,10 +13,18 @@ import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 @SuppressWarnings("all")
 public class CuriosIntegration {
+
+    private static final List<Supplier<? extends Item>> COMPAT_CURIOS = new ArrayList<>();
+
+    public static void registerCompatCurio(Supplier<? extends Item> item) {
+        COMPAT_CURIOS.add(item);
+    }
 
     public void setup(FMLCommonSetupEvent event) {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
@@ -35,8 +42,7 @@ public class CuriosIntegration {
     private void registerCapabilities(RegisterCapabilitiesEvent event) {
         CuriosApi.registerCurio(ModItems.DARK_ANKH.get(), new DarkAnkh());
         CuriosApi.registerCurio(ModItems.FUNGUS_PACK.get(), (ICurioItem) ModItems.FUNGUS_PACK.get());
-        if (AlexCavesCompat.isAlexCavesLoaded()) {
-            CuriosApi.registerCurio(AcItems.RAYCAT_AMULET.get(), (ICurioItem) AcItems.RAYCAT_AMULET.get());
-        }
+        COMPAT_CURIOS.forEach(item ->
+                CuriosApi.registerCurio(item.get(), (ICurioItem) item.get()));
     }
 }

@@ -80,7 +80,7 @@ public class FrowzyServant extends Summoned implements AttackState, VariantHolde
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, OfConfig.FrowzyServantHealth.get())
                 .add(Attributes.FOLLOW_RANGE, 16.0D)
-                .add(Attributes.MOVEMENT_SPEED, OfConfig.FrowzyServantMovementSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.3)
                 .add(Attributes.ATTACK_DAMAGE, OfConfig.FrowzyServantAttackDamage.get());
     }
 
@@ -183,7 +183,7 @@ public class FrowzyServant extends Summoned implements AttackState, VariantHolde
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(OfConfig.FrowzyServantHealth.get());
         }
         if (this.getAttribute(Attributes.MOVEMENT_SPEED) != null) {
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(OfConfig.FrowzyServantMovementSpeed.get());
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.3);
         }
         if (this.getAttribute(Attributes.ATTACK_DAMAGE) != null) {
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(OfConfig.FrowzyServantAttackDamage.get());

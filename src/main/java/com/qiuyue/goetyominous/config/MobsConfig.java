@@ -74,19 +74,46 @@ public class MobsConfig {
                 .comment("Maximum number of Heresiarch Servants that can be summoned (Default: 3)")
                 .defineInRange("heresiarchServantLimit", 3, 1, 100);
         BUILDER.pop();
+        BUILDER.push("Servants");
+        HeresiarchHysteriaEnabled = BUILDER
+                .comment("Whether Heresiarch Servants can apply Hysteria effect to nearby cultist servants (Default: true)")
+                .define("heresiarchHysteriaEnabled", true);
+        ChannellerMaxStealHealth = BUILDER
+                .comment("Maximum health for mobs that Channeller can steal/control (Default: 40)")
+                .defineInRange("channellerMaxStealHealth", 40, 1, 1000);
+        PiglinServantBabyGrowthTime = BUILDER.comment("How many ticks it takes for a baby Piglin Servant to grow up, Default: 12000 (10 minutes)")
+                .defineInRange("piglinServantBabyGrowthTime", 12000, 1, Integer.MAX_VALUE);
+        PiglinServantEvolutionDamage = BUILDER
+                .comment("How much melee damage a Piglin Servant needs to evolve into a Brute, Default: 100")
+                .defineInRange("piglinServantEvolutionDamage", 100, 1, Integer.MAX_VALUE);
+        PiglinBruteServantEvolutionDamage = BUILDER
+                .comment("How much melee damage a Brute needs to evolve into Strong, Default: 180")
+                .defineInRange("piglinBruteServantEvolutionDamage", 180, 1, Integer.MAX_VALUE);
+        StrongPiglinBruteServantEvolutionDamage = BUILDER
+                .comment("How much melee damage a Strong Brute needs to evolve into Elite, Default: 260")
+                .defineInRange("strongPiglinBruteServantEvolutionDamage", 260, 1, Integer.MAX_VALUE);
+        PiglinServantRangedEvolutionDamage = BUILDER
+                .comment("How much ranged damage a Piglin Servant needs to evolve into a Hunter, Default: 60")
+                .defineInRange("piglinServantRangedEvolutionDamage", 60, 1, Integer.MAX_VALUE);
+        PiglinHunterServantEvolutionDamage = BUILDER
+                .comment("How much ranged damage a Hunter needs to evolve into Strong, Default: 80")
+                .defineInRange("piglinHunterServantEvolutionDamage", 80, 1, Integer.MAX_VALUE);
+        StrongPiglinHunterServantEvolutionDamage = BUILDER
+                .comment("How much ranged damage a Strong Hunter needs to evolve into Elite, Default: 160")
+                .defineInRange("strongPiglinHunterServantEvolutionDamage", 160, 1, Integer.MAX_VALUE);
+        HurricaneServantCore = BUILDER
+                .comment("Whether owned Hurricane Servants drop Hurricane Cores, Default: true")
+                .define("hurricaneServantCore", true);
+        LeapkelpMoistness = BUILDER.comment("Whether Leapkelp Servants have a moistness meter; when false they never dry out (Default: true)")
+                .define("leapkelpMoistness", true);
+        BUILDER.pop();
         BUILDER.push("Mechanics");
         ApostleSpawnDisciple = BUILDER
                 .comment("Whether Apostles spawn with Disciple servants in the Nether Sabbath Ritual (Default: false)")
                 .define("apostleSpawnDisciple", false);
-        HeresiarchHysteriaEnabled = BUILDER
-                .comment("Whether Heresiarch Servants can apply Hysteria effect to nearby cultist servants (Default: true)")
-                .define("heresiarchHysteriaEnabled", true);
         CultistSpread = BUILDER
                 .comment("Whether Villagers are able to become secret Cultists (Default: true)")
                 .define("cultistSpread", true);
-        ChannellerMaxStealHealth = BUILDER
-                .comment("Maximum health for mobs that Channeller can steal/control (Default: 40)")
-                .defineInRange("channellerMaxStealHealth", 40, 1, 1000);
         CultistPatrol = BUILDER
                 .comment("Whether AbstractGOCultists can spawn in night patrols near players (Default: true)")
                 .define("cultistPatrol", true);
@@ -141,37 +168,12 @@ public class MobsConfig {
                 .defineInRange("dredenSpawnMinCount", 1, 1, 10);
         DredenSpawnMaxCount = BUILDER.comment("Dreden spawn pack max (Default: 2)")
                 .defineInRange("dredenSpawnMaxCount", 2, 1, 10);
-        PiglinServantBabyGrowthTime = BUILDER.comment("How many ticks it takes for a baby Piglin Servant to grow up, Default: 12000 (10 minutes)")
-                .defineInRange("piglinServantBabyGrowthTime", 12000, 1, Integer.MAX_VALUE);
-        PiglinServantEvolutionDamage = BUILDER
-                .comment("How much melee damage a Piglin Servant needs to evolve into a Brute, Default: 100")
-                .defineInRange("piglinServantEvolutionDamage", 100, 1, Integer.MAX_VALUE);
-        PiglinBruteServantEvolutionDamage = BUILDER
-                .comment("How much melee damage a Brute needs to evolve into Strong, Default: 180")
-                .defineInRange("piglinBruteServantEvolutionDamage", 180, 1, Integer.MAX_VALUE);
-        StrongPiglinBruteServantEvolutionDamage = BUILDER
-                .comment("How much melee damage a Strong Brute needs to evolve into Elite, Default: 260")
-                .defineInRange("strongPiglinBruteServantEvolutionDamage", 260, 1, Integer.MAX_VALUE);
-        PiglinServantRangedEvolutionDamage = BUILDER
-                .comment("How much ranged damage a Piglin Servant needs to evolve into a Hunter, Default: 60")
-                .defineInRange("piglinServantRangedEvolutionDamage", 60, 1, Integer.MAX_VALUE);
-        PiglinHunterServantEvolutionDamage = BUILDER
-                .comment("How much ranged damage a Hunter needs to evolve into Strong, Default: 80")
-                .defineInRange("piglinHunterServantEvolutionDamage", 80, 1, Integer.MAX_VALUE);
-        StrongPiglinHunterServantEvolutionDamage = BUILDER
-                .comment("How much ranged damage a Strong Hunter needs to evolve into Elite, Default: 160")
-                .defineInRange("strongPiglinHunterServantEvolutionDamage", 160, 1, Integer.MAX_VALUE);
         RaidCaptainDropsOminousBottle = BUILDER
                 .comment("Whether raid captains not in a raid drop an Ominous Bottle (I-V, equal chance) on death instead of giving Bad Omen (Default: false)")
                 .define("trialCaptainDropsOminousBottle", false);
         RaidOmen = BUILDER
                 .comment("Whether Bad Omen becomes a 30-second Raid Omen in a village and starts the raid when it expires, as in 1.21. When false, the 1.20 behavior is kept (Default: false)")
                 .define("raidOmen", false);
-        HurricaneServantCore = BUILDER
-                .comment("Whether owned Hurricane Servants drop Hurricane Cores, Default: true")
-                .define("hurricaneServantCore", true);
-        LeapkelpMoistness = BUILDER.comment("Whether Leapkelp Servants have a moistness meter; when false they never dry out (Default: true)")
-                .define("leapkelpMoistness", true);
         BUILDER.pop();
         BUILDER.push("Cult Statue");
         CultStatueBindLimit = BUILDER

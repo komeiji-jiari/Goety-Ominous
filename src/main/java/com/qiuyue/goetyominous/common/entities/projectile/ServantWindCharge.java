@@ -1,10 +1,10 @@
 package com.qiuyue.goetyominous.common.entities.projectile;
 
-import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.common.init.ModParticleTypes;
 import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.common.init.ModTags;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.qiuyue.goetyominous.utils.SimpleExplosionDamageCalculator;
 import com.qiuyue.goetyominous.utils.WindChargeExplosion;
 import java.util.Optional;
@@ -64,18 +64,8 @@ public class ServantWindCharge extends AbstractWindCharge {
     @Override
     protected boolean canHitEntity(Entity entity) {
         if (!super.canHitEntity(entity)) return false;
-        if (this.getOwner() instanceof Owned owned) {
-            return entity != owned.getTrueOwner() && !owned.isAlliedTo(entity);
-        }
-        return true;
-    }
-
-    @Override
-    public boolean shouldAffectEntity(Entity entity) {
-        if (this.getOwner() instanceof Owned owned) {
-            return entity != owned.getTrueOwner() && !owned.isAlliedTo(entity);
-        }
-        return true;
+        Entity owner = this.getOwner();
+        return owner == null || !ServantAllyUtil.areAllied(owner, entity);
     }
 
     @Override

@@ -85,9 +85,9 @@ public class RamblerServant extends Summoned implements AttackState {
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, OfConfig.RamblerServantHealth.get())
-                .add(Attributes.MOVEMENT_SPEED, OfConfig.RamblerServantMovementSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.15)
                 .add(Attributes.ATTACK_DAMAGE, OfConfig.RamblerServantAttackDamage.get())
-                .add(Attributes.ATTACK_KNOCKBACK, OfConfig.RamblerServantAttackKnockback.get());
+                .add(Attributes.ATTACK_KNOCKBACK, 0.3);
     }
 
     protected void registerGoals() {

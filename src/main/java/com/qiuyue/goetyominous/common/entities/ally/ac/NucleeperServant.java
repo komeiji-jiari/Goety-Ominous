@@ -113,11 +113,11 @@ public class NucleeperServant extends Summoned implements ActivatesSirens, Power
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AcConfig.NucleeperServantMovementSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.2)
                 .add(Attributes.MAX_HEALTH, AcConfig.NucleeperServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AcConfig.NucleeperServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 32.0)
                 .add(Attributes.ATTACK_DAMAGE, AcConfig.NucleeperServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.NucleeperServantKnockbackResistance.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.0)
                 .add(Attributes.ARMOR, AcConfig.NucleeperServantArmor.get());
     }
     protected PathNavigation createNavigation(Level level) {

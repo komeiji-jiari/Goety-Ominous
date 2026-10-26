@@ -53,8 +53,8 @@ public class PiglinBruteServant extends AbstractPiglinServant {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, AttributesConfig.PiglinBruteServantHealth.get())
                 .add(Attributes.ARMOR, AttributesConfig.PiglinBruteServantArmor.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.PiglinBruteServantFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.PiglinBruteServantMovementSpeed.get())
+                .add(Attributes.FOLLOW_RANGE, 16.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.35)
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.PiglinBruteServantDamage.get());
     }
 

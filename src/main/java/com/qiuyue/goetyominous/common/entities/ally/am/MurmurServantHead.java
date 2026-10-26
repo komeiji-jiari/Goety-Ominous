@@ -131,9 +131,9 @@ public class MurmurServantHead extends Summoned implements FlyingAnimal {
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AmConfig.MurmurServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AmConfig.MurmurServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 48.0)
                 .add(Attributes.ATTACK_DAMAGE, AmConfig.MurmurServantDamage.get())
-                .add(Attributes.MOVEMENT_SPEED, AmConfig.MurmurServantMovementSpeed.get());
+                .add(Attributes.MOVEMENT_SPEED, 0.2);
     }
 
     public boolean causeFallDamage(float distance, float damageMultiplier) {

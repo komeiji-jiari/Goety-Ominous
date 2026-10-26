@@ -276,11 +276,11 @@ public class CloudGolemServant extends IAnimatedBossServant {
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, LmConfig.CloudGolemServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.CloudGolemServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, LmConfig.CloudGolemServantFollowRange.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
+                .add(Attributes.FOLLOW_RANGE, 90.0)
                 .add(Attributes.ARMOR, LmConfig.CloudGolemServantArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, LmConfig.CloudGolemServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.CloudGolemServantAttackKnockback.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.1)
+                .add(Attributes.ATTACK_KNOCKBACK, 1.0)
                 .add(Attributes.ATTACK_DAMAGE, LmConfig.CloudGolemServantDamage.get());
     }
 
@@ -929,7 +929,7 @@ public class CloudGolemServant extends IAnimatedBossServant {
         if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             return super.hurt(source, amount);
         }
-        if (this.GolemInvulnerabilityTime > 0 && LmConfig.CloudGolemServantInvulnerabilityTime.get()) {
+        if (this.GolemInvulnerabilityTime > 0 && LmConfig.CloudGolemServantInvulnerability.get()) {
             return false;
         }
         if (source.is(DamageTypes.IN_FIRE) || source.is(DamageTypes.ON_FIRE) || source.is(DamageTypes.LAVA)
@@ -964,7 +964,7 @@ public class CloudGolemServant extends IAnimatedBossServant {
             if (this.ArrowDamageCooldown > 0) {
                 return false;
             }
-            if (LmConfig.CloudGolemServantProjectileImmunityTimer.get()) {
+            if (LmConfig.CloudGolemServantProjectileImmunity.get()) {
                 this.ArrowDamageCooldown = 30;
             }
         }

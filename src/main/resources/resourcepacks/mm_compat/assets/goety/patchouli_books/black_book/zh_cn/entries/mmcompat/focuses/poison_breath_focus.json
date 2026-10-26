@@ -2,7 +2,7 @@
   "name": "毒呼聚晶",
   "icon": "goetyominous:poison_breath_focus",
   "category": "goety:mmcompat/focuses",
-  "sortnum": 6,
+  "sortnum": 1,
   "pages": [
     {
       "type": "patchouli:text",

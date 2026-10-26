@@ -2,7 +2,7 @@
   "name": "凋零斩切聚晶",
   "icon": "goetyominous:wither_slash_focus",
   "category": "goety:mmcompat/focuses",
-  "sortnum": 530,
+  "sortnum": 820,
   "advancement": "goety:goety/read_bygone_scroll",
   "secret": true,
   "pages": [

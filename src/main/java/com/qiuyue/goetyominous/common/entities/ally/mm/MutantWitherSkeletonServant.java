@@ -175,16 +175,16 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
         AttributeInstance health = this.getAttribute(Attributes.MAX_HEALTH);
         AttributeInstance attack = this.getAttribute(Attributes.ATTACK_DAMAGE);
         if (this.hasSoulShield()) {
-            this.addModIfMissing(health, SOUL_SHIELD_HEALTH_UUID, "Soul Shield Health", MmConfig.MWSSoulShieldHealthBouns.get());
-            this.addModIfMissing(attack, SOUL_SHIELD_ATTACK_UUID, "Soul Shield Attack", MmConfig.MWSSoulShieldDamageBouns.get());
+            this.addModIfMissing(health, SOUL_SHIELD_HEALTH_UUID, "Soul Shield Health", MmConfig.MutantWitherSkeletonSoulShieldHealthBonus.get());
+            this.addModIfMissing(attack, SOUL_SHIELD_ATTACK_UUID, "Soul Shield Attack", MmConfig.MutantWitherSkeletonSoulShieldDamageBonus.get());
         }
         if (this.hasHowlingSoul()) {
-            this.addModIfMissing(health, HOWLING_SOUL_HEALTH_UUID, "Howling Soul Health", MmConfig.MWSHowlingSoulHealthBouns.get());
-            this.addModIfMissing(attack, HOWLING_SOUL_ATTACK_UUID, "Howling Soul Attack", MmConfig.MWSHowlingSoulDamageBouns.get());
+            this.addModIfMissing(health, HOWLING_SOUL_HEALTH_UUID, "Howling Soul Health", MmConfig.MutantWitherSkeletonHowlingSoulHealthBonus.get());
+            this.addModIfMissing(attack, HOWLING_SOUL_ATTACK_UUID, "Howling Soul Attack", MmConfig.MutantWitherSkeletonHowlingSoulDamageBonus.get());
         }
         if (this.hasUnholyBlood()) {
-            this.addModIfMissing(health, UNHOLY_BLOOD_HEALTH_UUID, "Unholy Blood Health", MmConfig.MWSUnholyBloodHealthBouns.get());
-            this.addModIfMissing(attack, UNHOLY_BLOOD_ATTACK_UUID, "Unholy Blood Attack", MmConfig.MWSUnholyBloodDamageBouns.get());
+            this.addModIfMissing(health, UNHOLY_BLOOD_HEALTH_UUID, "Unholy Blood Health", MmConfig.MutantWitherSkeletonUnholyBloodHealthBonus.get());
+            this.addModIfMissing(attack, UNHOLY_BLOOD_ATTACK_UUID, "Unholy Blood Attack", MmConfig.MutantWitherSkeletonUnholyBloodDamageBonus.get());
         }
     }
 
@@ -235,11 +235,11 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
                 .add(Attributes.MAX_HEALTH, MmConfig.MutantWitherSkeletonServantHealth.get())
                 .add(Attributes.ARMOR, MmConfig.MutantWitherSkeletonServantArmor.get())
                 .add(Attributes.ARMOR_TOUGHNESS, MmConfig.MutantWitherSkeletonServantArmorToughness.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, MmConfig.MutantWitherSkeletonServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, MmConfig.MutantWitherSkeletonServantFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, MmConfig.MutantWitherSkeletonServantMovementSpeed.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
+                .add(Attributes.FOLLOW_RANGE, 64.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.27)
                 .add(Attributes.ATTACK_DAMAGE, MmConfig.MutantWitherSkeletonServantAttackDamage.get())
-                .add(Attributes.ATTACK_KNOCKBACK, MmConfig.MutantWitherSkeletonServantAttackKnockback.get());
+                .add(Attributes.ATTACK_KNOCKBACK, 0.2);
     }
 
     protected void registerGoals() {

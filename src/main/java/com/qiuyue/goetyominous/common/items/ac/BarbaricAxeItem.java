@@ -4,6 +4,7 @@ import com.Polarice3.Goety.common.magic.spells.geomancy.QuakingSpell;
 import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.common.network.ac.CBarbaricAxeShakePacket;
 import com.qiuyue.goetyominous.common.rlyeh.ac.ExtinctionStyled;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
@@ -150,7 +151,7 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
         AABB area = player.getBoundingBox().inflate(range);
         for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, area,
                 e -> e != player && e != primary && e.isAlive())) {
-            if (target.isAlliedTo(player) || target == player.getRootVehicle()) {
+            if (ServantAllyUtil.areAllied(player, target) || target == player.getRootVehicle()) {
                 continue;
             }
             if (player.distanceTo(target) > range) {
@@ -201,7 +202,7 @@ public class BarbaricAxeItem extends AxeItem implements ExtinctionStyled {
                 centerX + radius, centerY + radius, centerZ + radius);
         for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, area,
                 e -> e != player && e.isAlive())) {
-            if (target.isAlliedTo(player)
+            if (ServantAllyUtil.areAllied(player, target)
                     || target.distanceToSqr(centerX, centerY, centerZ) > radius * radius) {
                 continue;
             }

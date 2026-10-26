@@ -71,8 +71,8 @@ public class PiglinServant extends AbstractPiglinServant implements CrossbowAtta
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, AttributesConfig.PiglinServantHealth.get())
                 .add(Attributes.ARMOR, AttributesConfig.PiglinServantArmor.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.PiglinServantFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.PiglinServantMovementSpeed.get())
+                .add(Attributes.FOLLOW_RANGE, 16.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.35)
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.PiglinServantDamage.get());
     }
 

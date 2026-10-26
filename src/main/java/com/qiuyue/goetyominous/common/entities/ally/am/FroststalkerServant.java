@@ -123,9 +123,9 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AmConfig.FroststalkerServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AmConfig.FroststalkerServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 16.0)
                 .add(Attributes.ATTACK_DAMAGE, AmConfig.FroststalkerServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AmConfig.FroststalkerServantKnockbackResistance.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.0)
                 .add(Attributes.ARMOR, AmConfig.FroststalkerServantArmor.get())
                 .add(Attributes.MOVEMENT_SPEED, 0.3D);
     }
@@ -140,11 +140,11 @@ public class FroststalkerServant extends AnimalSummon implements IAnimatedEntity
         }
         if (this.getAttribute(Attributes.FOLLOW_RANGE) != null) {
             this.getAttribute(Attributes.FOLLOW_RANGE)
-                    .setBaseValue(AmConfig.FroststalkerServantFollowRange.get());
+                    .setBaseValue(16.0);
         }
         if (this.getAttribute(Attributes.KNOCKBACK_RESISTANCE) != null) {
             this.getAttribute(Attributes.KNOCKBACK_RESISTANCE)
-                    .setBaseValue(AmConfig.FroststalkerServantKnockbackResistance.get());
+                    .setBaseValue(0.0);
         }
         if (this.getAttribute(Attributes.ARMOR) != null) {
             this.getAttribute(Attributes.ARMOR).setBaseValue(AmConfig.FroststalkerServantArmor.get());

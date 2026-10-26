@@ -111,10 +111,10 @@ public class RelicheirusServant extends AnimalSummon implements LaysEggs, IAnima
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AcConfig.RelicheirusServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AcConfig.RelicheirusServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 32.0)
                 .add(Attributes.ATTACK_DAMAGE, AcConfig.RelicheirusServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.RelicheirusServantKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AcConfig.RelicheirusServantMovementSpeed.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.9)
+                .add(Attributes.MOVEMENT_SPEED, 0.2)
                 .add(Attributes.ARMOR, AcConfig.RelicheirusServantArmor.get());
     }
     @Override

@@ -1,4 +1,4 @@
-package com.qiuyue.goetyominous.compat.jade;
+package com.qiuyue.goetyominous.compat.mm.jade;
 
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.mm.AbstractMutantServant;

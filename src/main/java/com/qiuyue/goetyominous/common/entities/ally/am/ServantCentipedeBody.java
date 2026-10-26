@@ -262,12 +262,12 @@ public class ServantCentipedeBody extends Summoned implements IHurtableMultipart
 
     public static AttributeSupplier.Builder bakeAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AmConfig.ServantCentipedeBodyHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AmConfig.ServantCentipedeFollowRange.get())
-                .add(Attributes.ARMOR, AmConfig.ServantCentipedeArmor.get())
-                .add(Attributes.ATTACK_DAMAGE, AmConfig.ServantCentipedeAttackDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AmConfig.ServantCentipedeKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AmConfig.ServantCentipedeBodyMovementSpeed.get());
+                .add(Attributes.MAX_HEALTH, AmConfig.CentipedeServantBodyHealth.get())
+                .add(Attributes.FOLLOW_RANGE, 32.0)
+                .add(Attributes.ARMOR, AmConfig.CentipedeServantArmor.get())
+                .add(Attributes.ATTACK_DAMAGE, AmConfig.CentipedeServantAttackDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.5)
+                .add(Attributes.MOVEMENT_SPEED, 0.25);
     }
 
     public Vec3 tickMultipartPosition(int headId, float parentOffset, Vec3 parentPosition, float parentXRot, float ourYRot, boolean doHeight) {

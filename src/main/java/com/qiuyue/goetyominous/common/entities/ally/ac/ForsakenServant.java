@@ -150,11 +150,11 @@ public class ForsakenServant extends Summoned implements IAnimatedEntity, Shakes
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AcConfig.ForsakenServantMovementSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.25)
                 .add(Attributes.MAX_HEALTH, AcConfig.ForsakenServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AcConfig.ForsakenServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 64.0)
                 .add(Attributes.ATTACK_DAMAGE, AcConfig.ForsakenServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.ForsakenServantKnockbackResistance.get());
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.6);
     }
 
     @Override

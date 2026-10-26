@@ -8,6 +8,7 @@ import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.qiuyue.goetyominous.common.entities.projectile.ac.DeepOneServantWave;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.qiuyue.goetyominous.utils.ac.CurseOfRlyehHelper;
 import com.qiuyue.goetyominous.utils.ac.KeyOfRlyehMixinHelper;
 import net.minecraft.server.level.ServerLevel;
@@ -94,7 +95,7 @@ public class WaveBashSpell extends Spell {
             DamageSource dashSource = caster.damageSources().playerAttack(
                     caster instanceof Player player ? player : null);
             for (LivingEntity hit : worldIn.getEntitiesOfClass(LivingEntity.class, dashBox)) {
-                if (!caster.isAlliedTo(hit) && !caster.equals(hit) && caster.hasLineOfSight(hit)) {
+                if (!caster.equals(hit) && !ServantAllyUtil.areAllied(caster, hit) && caster.hasLineOfSight(hit)) {
                     if (hit.hurt(dashSource, CurseOfRlyehHelper.amplifyKeySpellDamage(hit, (float) dashDamage))) {
                         CurseOfRlyehHelper.applyCurseOnHit(hit, staff);
                     }

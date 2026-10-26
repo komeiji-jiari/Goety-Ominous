@@ -293,9 +293,9 @@ public class MutantJungleZombieServant extends AbstractMutantServant {
                 .add(Attributes.MAX_HEALTH, MmConfig.MutantJungleZombieServantHealth.get())
                 .add(Attributes.ARMOR, MmConfig.MutantJungleZombieServantArmor.get())
                 .add(Attributes.ARMOR_TOUGHNESS, MmConfig.MutantJungleZombieServantArmorToughness.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, MmConfig.MutantJungleZombieServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, MmConfig.MutantJungleZombieServantFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, MmConfig.MutantJungleZombieServantMovementSpeed.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
+                .add(Attributes.FOLLOW_RANGE, 64.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.24)
                 .add(Attributes.ATTACK_DAMAGE, MmConfig.MutantJungleZombieServantAttackDamage.get());
     }
 

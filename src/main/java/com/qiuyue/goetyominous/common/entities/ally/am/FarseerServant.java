@@ -92,10 +92,10 @@ public class FarseerServant extends Summoned implements IAnimatedEntity {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AmConfig.FarseerServantHealth.get())
                 .add(Attributes.ARMOR, AmConfig.FarseerServantArmor.get())
-                .add(Attributes.FLYING_SPEED, AmConfig.FarseerServantFlyingSpeed.get())
+                .add(Attributes.FLYING_SPEED, 0.5)
                 .add(Attributes.ATTACK_DAMAGE, AmConfig.FarseerServantDamage.get())
-                .add(Attributes.MOVEMENT_SPEED, AmConfig.FarseerServantMovementSpeed.get())
-                .add(Attributes.FOLLOW_RANGE, AmConfig.FarseerServantFollowRange.get());
+                .add(Attributes.MOVEMENT_SPEED, 0.35)
+                .add(Attributes.FOLLOW_RANGE, 16.0);
     }
 
     public boolean isNoGravity() {

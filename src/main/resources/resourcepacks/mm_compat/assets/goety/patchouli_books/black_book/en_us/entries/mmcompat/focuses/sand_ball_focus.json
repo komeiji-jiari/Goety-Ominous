@@ -2,7 +2,7 @@
   "name": "Sand Boulder Focus",
   "icon": "goetyominous:sand_ball_focus",
   "category": "goety:mmcompat/focuses",
-  "sortnum": 4,
+  "sortnum": 7,
   "pages": [
     {
       "type": "text",

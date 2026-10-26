@@ -5,8 +5,6 @@ import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import com.qiuyue.goetyominous.common.init.lm.LmDamageTypes;
 import com.qiuyue.goetyominous.common.init.lm.LmEntityRegistry;
 import net.miauczel.legendary_monsters.Particle.ModParticles;
-import net.miauczel.legendary_monsters.effect.ModEffects;
-import net.miauczel.legendary_monsters.util.EntityUtil;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -26,7 +24,6 @@ import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
-import com.qiuyue.goetyominous.config.lm.LmConfig;
 
 public class SoulShield extends LmAnimatedProjectile {
 
@@ -269,12 +266,7 @@ public class SoulShield extends LmAnimatedProjectile {
         float amount = this.getDamage() + ServantMath.entityBasedHpDamage(impactEntity, 3.0F);
 
         if (caster == null) {
-            if (impactEntity.hurt(LmDamageTypes.ghostlyOrAttackerless(this.level(), null), amount)) {
-                if (LmConfig.SoulFractureOnServantHit.get()) {
-                    EntityUtil.applyStackingEffect(impactEntity, ModEffects.SOUL_FRACTURE.get(),
-                            1, 4, ServantMath.toTicks(10.0F));
-                }
-            }
+            impactEntity.hurt(LmDamageTypes.ghostlyOrAttackerless(this.level(), null), amount);
             return;
         }
 
@@ -283,10 +275,6 @@ public class SoulShield extends LmAnimatedProjectile {
         }
 
         if (impactEntity.hurt(LmDamageTypes.ghostly(caster), amount)) {
-            if (LmConfig.SoulFractureOnServantHit.get()) {
-                EntityUtil.applyStackingEffect(impactEntity, ModEffects.SOUL_FRACTURE.get(),
-                        1, 4, ServantMath.toTicks(10.0F));
-            }
             caster.heal(5.0F);
         }
     }

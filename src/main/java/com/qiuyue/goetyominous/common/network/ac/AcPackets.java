@@ -29,5 +29,9 @@ public class AcPackets {
                 ServantAbilityKeyPacket::encode,
                 ServantAbilityKeyPacket::decode,
                 ServantAbilityKeyPacket::handle);
+        ModNetwork.register(CBarbaricAxeShakePacket.class,
+                CBarbaricAxeShakePacket::encode,
+                CBarbaricAxeShakePacket::decode,
+                CBarbaricAxeShakePacket::handle);
     }
 }

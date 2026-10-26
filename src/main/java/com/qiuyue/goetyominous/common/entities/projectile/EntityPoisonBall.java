@@ -7,6 +7,7 @@ import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.config.SpellConfig;
 import com.qiuyue.goetyominous.utils.CroneCuriosUtil;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -51,6 +52,12 @@ public class EntityPoisonBall extends SpellThrowableProjectile {
             this.level().addParticle(ParticleTypes.ITEM_SLIME,
                     this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
         }
+    }
+
+    @Override
+    protected boolean canHitEntity(Entity target) {
+        Entity owner = this.getOwner();
+        return super.canHitEntity(target) && (owner == null || !ServantAllyUtil.areAllied(owner, target));
     }
 
     @Override

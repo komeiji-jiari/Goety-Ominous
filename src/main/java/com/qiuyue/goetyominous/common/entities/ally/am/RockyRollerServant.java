@@ -94,11 +94,11 @@ public class RockyRollerServant extends Summoned implements ICustomCollisions {
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AmConfig.RockyRollerServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AmConfig.RockyRollerServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 20.0)
                 .add(Attributes.ATTACK_DAMAGE, AmConfig.RockyRollerServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AmConfig.RockyRollerServantKnockbackResistance.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.7)
                 .add(Attributes.ARMOR, AmConfig.RockyRollerServantArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, AmConfig.RockyRollerServantMovementSpeed.get());
+                .add(Attributes.MOVEMENT_SPEED, 0.25);
     }
 
     @Override
@@ -107,19 +107,19 @@ public class RockyRollerServant extends Summoned implements ICustomCollisions {
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(AmConfig.RockyRollerServantHealth.get());
         }
         if (this.getAttribute(Attributes.FOLLOW_RANGE) != null) {
-            this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(AmConfig.RockyRollerServantFollowRange.get());
+            this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(20.0);
         }
         if (this.getAttribute(Attributes.ATTACK_DAMAGE) != null) {
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AmConfig.RockyRollerServantDamage.get());
         }
         if (this.getAttribute(Attributes.KNOCKBACK_RESISTANCE) != null) {
-            this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(AmConfig.RockyRollerServantKnockbackResistance.get());
+            this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(0.7);
         }
         if (this.getAttribute(Attributes.ARMOR) != null) {
             this.getAttribute(Attributes.ARMOR).setBaseValue(AmConfig.RockyRollerServantArmor.get());
         }
         if (this.getAttribute(Attributes.MOVEMENT_SPEED) != null) {
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AmConfig.RockyRollerServantMovementSpeed.get());
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25);
         }
     }
 

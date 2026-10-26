@@ -3,8 +3,12 @@ package com.qiuyue.goetyominous.compat.am;
 import com.qiuyue.goetyominous.common.entities.ally.am.*;
 import com.qiuyue.goetyominous.common.init.am.AmEntityRegistry;
 import com.qiuyue.goetyominous.common.items.am.AmItems;
+import com.qiuyue.goetyominous.config.am.AmConfig;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.loading.FMLPaths;
 
 public class AmCompatManager {
 
@@ -16,6 +20,13 @@ public class AmCompatManager {
                 com.qiuyue.goetyominous.common.init.ModCreativeTab.registerCompatItems(new com.qiuyue.goetyominous.compat.am.AmCompatItems());
 
                 modEventBus.addListener(AmCompatManager::setCustomAttributes);
+    }
+
+    public static void registerConfig() {
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, AmConfig.SPEC,
+                "goetyominous/goetyominous-alexsmobs.toml");
+        AmConfig.loadConfig(AmConfig.SPEC,
+                FMLPaths.CONFIGDIR.get().resolve("goetyominous/goetyominous-alexsmobs.toml").toString());
     }
 
     public static void setCustomAttributes(EntityAttributeCreationEvent event) {

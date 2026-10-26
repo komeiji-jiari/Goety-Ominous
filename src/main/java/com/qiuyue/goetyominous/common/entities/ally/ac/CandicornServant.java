@@ -124,11 +124,11 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, AcConfig.CandicornServantMovementSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.25)
                 .add(Attributes.MAX_HEALTH, AcConfig.CandicornServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AcConfig.CandicornServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 64.0)
                 .add(Attributes.ATTACK_DAMAGE, AcConfig.CandicornServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.CandicornServantKnockbackResistance.get());
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.0);
     }
 
     @Override

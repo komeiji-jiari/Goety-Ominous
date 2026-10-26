@@ -113,9 +113,9 @@ public class DropBearServant extends Summoned implements IAnimatedEntity {
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AmConfig.DropBearServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AmConfig.DropBearServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 20.0)
                 .add(Attributes.ATTACK_DAMAGE, AmConfig.DropBearServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AmConfig.DropBearServantKnockbackResistance.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.7)
                 .add(Attributes.MOVEMENT_SPEED, 0.25D);
     }
 
@@ -128,10 +128,10 @@ public class DropBearServant extends Summoned implements IAnimatedEntity {
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AmConfig.DropBearServantDamage.get());
         }
         if (this.getAttribute(Attributes.FOLLOW_RANGE) != null) {
-            this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(AmConfig.DropBearServantFollowRange.get());
+            this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(20.0);
         }
         if (this.getAttribute(Attributes.KNOCKBACK_RESISTANCE) != null) {
-            this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(AmConfig.DropBearServantKnockbackResistance.get());
+            this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(0.7);
         }
     }
 

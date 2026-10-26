@@ -2,7 +2,7 @@
   "name": "Giant Snowball Focus",
   "icon": "goetyominous:giant_snowball_focus",
   "category": "goety:mmcompat/focuses",
-  "sortnum": 1,
+  "sortnum": 4,
   "pages": [
     {
       "type": "text",

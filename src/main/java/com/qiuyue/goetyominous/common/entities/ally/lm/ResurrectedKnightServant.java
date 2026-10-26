@@ -114,12 +114,12 @@ public class ResurrectedKnightServant extends IAnimatedMiniBossServant {
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, LmConfig.ResurrectedKnightServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.ResurrectedKnightServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, LmConfig.ResurrectedKnightServantFollowRange.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
+                .add(Attributes.FOLLOW_RANGE, 30.0)
                 .add(Attributes.ARMOR, LmConfig.ResurrectedKnightServantArmor.get())
                 .add(Attributes.ARMOR_TOUGHNESS, LmConfig.ResurrectedKnightServantArmorToughness.get())
-                .add(Attributes.MOVEMENT_SPEED, LmConfig.ResurrectedKnightServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.ResurrectedKnightServantAttackKnockback.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.1)
+                .add(Attributes.ATTACK_KNOCKBACK, 0.5)
                 .add(Attributes.ATTACK_DAMAGE, LmConfig.ResurrectedKnightServantDamage.get());
     }
 

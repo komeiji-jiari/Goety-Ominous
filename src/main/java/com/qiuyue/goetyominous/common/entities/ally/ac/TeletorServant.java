@@ -98,11 +98,11 @@ public class TeletorServant extends Summoned {
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.FLYING_SPEED, 1.0D)
-                .add(Attributes.MOVEMENT_SPEED, AcConfig.TeletorServantMovementSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.2)
                 .add(Attributes.MAX_HEALTH, AcConfig.TeletorServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AcConfig.TeletorServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 32.0)
                 .add(Attributes.ATTACK_DAMAGE, AcConfig.TeletorServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.TeletorServantKnockbackResistance.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.0)
                 .add(Attributes.ARMOR, AcConfig.TeletorServantArmor.get());
     }
 

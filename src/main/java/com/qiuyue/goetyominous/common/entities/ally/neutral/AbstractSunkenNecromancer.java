@@ -94,7 +94,7 @@ public class AbstractSunkenNecromancer extends AbstractNecromancer {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, AttributesConfig.SunkenNecromancerHealth.get())
                 .add(Attributes.ARMOR, AttributesConfig.SunkenNecromancerArmor.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.SunkenNecromancerFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 16.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.25F)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.SunkenNecromancerDamage.get());
@@ -103,7 +103,7 @@ public class AbstractSunkenNecromancer extends AbstractNecromancer {
     public void setConfigurableAttributes() {
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), AttributesConfig.SunkenNecromancerHealth.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), AttributesConfig.SunkenNecromancerArmor.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.FOLLOW_RANGE), AttributesConfig.SunkenNecromancerFollowRange.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.FOLLOW_RANGE), 16.0);
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), AttributesConfig.SunkenNecromancerDamage.get());
     }
 

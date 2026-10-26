@@ -59,8 +59,8 @@ public class SkeletonVillagerServant extends AbstractSkeletonServant implements 
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, SarConfig.SkeletonVillagerServantMovementSpeed.get())
-                .add(Attributes.FOLLOW_RANGE, SarConfig.SkeletonVillagerServantFollowRange.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.25)
+                .add(Attributes.FOLLOW_RANGE, 16.0)
                 .add(Attributes.MAX_HEALTH, SarConfig.SkeletonVillagerServantHealth.get())
                 .add(Attributes.ATTACK_DAMAGE, SarConfig.SkeletonVillagerServantDamage.get());
     }

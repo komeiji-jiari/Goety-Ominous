@@ -126,11 +126,11 @@ public class WanderingEyeServant extends AbstractFlamebornServant {
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, LmConfig.WanderingEyeServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.WanderingEyeServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, LmConfig.WanderingEyeServantFollowRange.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.34754D)
+                .add(Attributes.FOLLOW_RANGE, 20.0)
                 .add(Attributes.ARMOR, LmConfig.WanderingEyeServantArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, LmConfig.WanderingEyeServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.WanderingEyeServantAttackKnockback.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.1)
+                .add(Attributes.ATTACK_KNOCKBACK, 0.5)
                 .add(Attributes.ATTACK_DAMAGE, LmConfig.WanderingEyeServantDamage.get());
     }
 

@@ -242,10 +242,10 @@ public class TremorzillaServant extends AnimalSummon
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AcConfig.TremorzillaServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AcConfig.TremorzillaServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 32.0)
                 .add(Attributes.ATTACK_DAMAGE, AcConfig.TremorzillaServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.TremorzillaServantKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AcConfig.TremorzillaServantMovementSpeed.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.3)
                 .add(Attributes.ARMOR, AcConfig.TremorzillaServantArmor.get());
     }
 

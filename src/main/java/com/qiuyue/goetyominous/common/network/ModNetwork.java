@@ -9,7 +9,6 @@ import com.qiuyue.goetyominous.common.explore.network.ExpeditionRecallPacket;
 import com.qiuyue.goetyominous.common.explore.network.ExpeditionRequestPacket;
 import com.qiuyue.goetyominous.common.explore.network.ExpeditionStartPacket;
 import com.qiuyue.goetyominous.common.explore.network.ExpeditionViewPacket;
-import com.qiuyue.goetyominous.common.network.ac.CBarbaricAxeShakePacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkEvent;
@@ -21,7 +20,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class ModNetwork {
-    private static final String PROTOCOL_VERSION = "6";
+    private static final String PROTOCOL_VERSION = "7";
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(GoetyOminous.MOD_ID, "main"),
             () -> PROTOCOL_VERSION,
@@ -48,10 +47,6 @@ public class ModNetwork {
                 WindChargeImpulsePacket::encode,
                 WindChargeImpulsePacket::decode,
                 WindChargeImpulsePacket::handle);
-        register(CBarbaricAxeShakePacket.class,
-                CBarbaricAxeShakePacket::encode,
-                CBarbaricAxeShakePacket::decode,
-                CBarbaricAxeShakePacket::handle);
         register(ExpeditionOpenPacket.class,
                 ExpeditionOpenPacket::encode,
                 ExpeditionOpenPacket::decode,

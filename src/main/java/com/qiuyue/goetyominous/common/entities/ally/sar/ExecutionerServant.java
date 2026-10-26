@@ -64,8 +64,8 @@ public class ExecutionerServant extends AbstractIllagerServant {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MOVEMENT_SPEED, SarConfig.ExecutionerServantMovementSpeed.get())
-                .add(Attributes.FOLLOW_RANGE, SarConfig.ExecutionerServantFollowRange.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.30)
+                .add(Attributes.FOLLOW_RANGE, 14.0)
                 .add(Attributes.MAX_HEALTH, SarConfig.ExecutionerServantHealth.get())
                 .add(Attributes.ATTACK_DAMAGE, SarConfig.ExecutionerServantDamage.get())
                 .add(Attributes.ARMOR, SarConfig.ExecutionerServantArmor.get());

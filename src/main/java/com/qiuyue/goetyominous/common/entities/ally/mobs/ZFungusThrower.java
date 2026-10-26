@@ -40,8 +40,8 @@ public class ZFungusThrower extends ZPiglinServant {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AttributesConfig.FungusThrowerServantHealth.get())
                 .add(Attributes.ARMOR, AttributesConfig.FungusThrowerServantArmor.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.FungusThrowerServantFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.FungusThrowerServantMovementSpeed.get())
+                .add(Attributes.FOLLOW_RANGE, 32.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.35)
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.FungusThrowerServantDamage.get());
     }
 

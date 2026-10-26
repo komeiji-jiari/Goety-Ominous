@@ -62,12 +62,12 @@ public class ServantCentipedeHead extends Summoned {
 
     public static AttributeSupplier.Builder bakeAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, AmConfig.ServantCentipedeHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AmConfig.ServantCentipedeFollowRange.get())
-                .add(Attributes.ARMOR, AmConfig.ServantCentipedeArmor.get())
-                .add(Attributes.ATTACK_DAMAGE, AmConfig.ServantCentipedeAttackDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AmConfig.ServantCentipedeKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AmConfig.ServantCentipedeMovementSpeed.get());
+                .add(Attributes.MAX_HEALTH, AmConfig.CentipedeServantHealth.get())
+                .add(Attributes.FOLLOW_RANGE, 32.0)
+                .add(Attributes.ARMOR, AmConfig.CentipedeServantArmor.get())
+                .add(Attributes.ATTACK_DAMAGE, AmConfig.CentipedeServantAttackDamage.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.5)
+                .add(Attributes.MOVEMENT_SPEED, 0.22);
     }
 
     @Override

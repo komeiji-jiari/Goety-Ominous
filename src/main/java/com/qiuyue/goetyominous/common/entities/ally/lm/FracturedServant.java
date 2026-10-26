@@ -51,12 +51,12 @@ public class FracturedServant extends IAnimatedMobServant {
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, LmConfig.FracturedServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.FracturedServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, LmConfig.FracturedServantFollowRange.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.7)
+                .add(Attributes.FOLLOW_RANGE, 30.0)
                 .add(Attributes.ARMOR, LmConfig.FracturedServantArmor.get())
                 .add(Attributes.ARMOR_TOUGHNESS, LmConfig.FracturedServantArmorToughness.get())
-                .add(Attributes.MOVEMENT_SPEED, LmConfig.FracturedServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.FracturedServantAttackKnockback.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.3)
+                .add(Attributes.ATTACK_KNOCKBACK, 1.3)
                 .add(Attributes.ATTACK_DAMAGE, LmConfig.FracturedServantDamage.get());
     }
 

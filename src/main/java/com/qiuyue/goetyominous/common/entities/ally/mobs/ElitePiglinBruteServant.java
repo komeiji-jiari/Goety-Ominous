@@ -28,8 +28,8 @@ public class ElitePiglinBruteServant extends PiglinBruteServant {
                         + AttributesConfig.PiglinBruteServantEvolvedHealthBonus.get()
                         + AttributesConfig.PiglinBruteServantEvolved2HealthBonus.get())
                 .add(Attributes.ARMOR, AttributesConfig.PiglinBruteServantArmor.get())
-                .add(Attributes.FOLLOW_RANGE, AttributesConfig.PiglinBruteServantFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.PiglinBruteServantMovementSpeed.get())
+                .add(Attributes.FOLLOW_RANGE, 16.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.35)
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.PiglinBruteServantDamage.get()
                         + AttributesConfig.PiglinBruteServantEvolvedDamageBonus.get()
                         + AttributesConfig.PiglinBruteServantEvolved2DamageBonus.get());

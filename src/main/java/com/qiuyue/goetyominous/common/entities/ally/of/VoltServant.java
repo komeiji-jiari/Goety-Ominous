@@ -103,8 +103,8 @@ public class VoltServant extends Summoned implements AttackState, EliteVariant, 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, OfConfig.VoltServantHealth.get())
-                .add(Attributes.MOVEMENT_SPEED, OfConfig.VoltServantMovementSpeed.get())
-                .add(Attributes.FOLLOW_RANGE, OfConfig.VoltServantFollowRange.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.21)
+                .add(Attributes.FOLLOW_RANGE, 32.0)
                 .add(Attributes.ATTACK_DAMAGE, 5.0D)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.5D);
     }

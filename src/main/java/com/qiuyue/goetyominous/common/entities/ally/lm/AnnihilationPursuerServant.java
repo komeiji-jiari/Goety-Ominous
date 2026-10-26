@@ -120,12 +120,12 @@ public class AnnihilationPursuerServant extends IAnimatedMiniBossServant {
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, LmConfig.AnnihilationPursuerServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.AnnihilationPursuerServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, LmConfig.AnnihilationPursuerServantFollowRange.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
+                .add(Attributes.FOLLOW_RANGE, 30.0)
                 .add(Attributes.ARMOR, LmConfig.AnnihilationPursuerServantArmor.get())
                 .add(Attributes.ARMOR_TOUGHNESS, 4.0D)
-                .add(Attributes.MOVEMENT_SPEED, LmConfig.AnnihilationPursuerServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.AnnihilationPursuerServantAttackKnockback.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.1)
+                .add(Attributes.ATTACK_KNOCKBACK, 0.5)
                 .add(Attributes.ATTACK_DAMAGE, LmConfig.AnnihilationPursuerServantDamage.get());
     }
 

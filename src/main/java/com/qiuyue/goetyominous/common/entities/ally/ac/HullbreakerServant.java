@@ -123,7 +123,7 @@ public class HullbreakerServant extends Summoned implements IAnimatedEntity, Kai
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AcConfig.HullbreakerServantHealth.get())
                 .add(Attributes.ATTACK_DAMAGE, AcConfig.HullbreakerServantDamage.get())
-                .add(Attributes.MOVEMENT_SPEED, AcConfig.HullbreakerServantMovementSpeed.get());
+                .add(Attributes.MOVEMENT_SPEED, 0.3);
     }
 
     @Override

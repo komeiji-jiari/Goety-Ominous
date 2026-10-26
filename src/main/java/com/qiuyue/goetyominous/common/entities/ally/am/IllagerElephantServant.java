@@ -143,18 +143,18 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AmConfig.IllagerElephantServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AmConfig.IllagerElephantServantFollowRange.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AmConfig.IllagerElephantServantKnockbackResistance.get())
+                .add(Attributes.FOLLOW_RANGE, 32.0)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.9)
                 .add(Attributes.ATTACK_DAMAGE, AmConfig.IllagerElephantServantDamage.get())
-                .add(Attributes.MOVEMENT_SPEED, AmConfig.IllagerElephantServantMovementSpeed.get());
+                .add(Attributes.MOVEMENT_SPEED, 0.35);
     }
 
     public void setConfigurableAttributes() {
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(AmConfig.IllagerElephantServantHealth.get());
-        this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(AmConfig.IllagerElephantServantFollowRange.get());
-        this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(AmConfig.IllagerElephantServantKnockbackResistance.get());
+        this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(32.0);
+        this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(0.9);
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(AmConfig.IllagerElephantServantDamage.get());
-        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AmConfig.IllagerElephantServantMovementSpeed.get());
+        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35);
     }
     @Nullable
     public static DyeColor getCarpetColor(ItemStack stack) {
@@ -455,11 +455,11 @@ public class IllagerElephantServant extends RaiderServant implements ITargetsDro
             }
         }
         if (this.isCharging() && !this.hasChargedSpeed) {
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AmConfig.IllagerElephantServantMovementSpeed.get() + 0.3);
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35 + 0.3);
             this.hasChargedSpeed = true;
         }
         if (!this.isCharging() && this.hasChargedSpeed) {
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(AmConfig.IllagerElephantServantMovementSpeed.get());
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35);
             this.hasChargedSpeed = false;
         }
         if (!this.level().isClientSide && this.getRandom().nextInt(400) == 0 && this.getAnimation() == NO_ANIMATION) {

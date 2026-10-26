@@ -73,10 +73,10 @@ public class TremblerServant extends Summoned implements EliteVariant {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, OfConfig.TremblerServantHealth.get())
                 .add(Attributes.ARMOR, OfConfig.TremblerServantArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, OfConfig.TremblerServantMovementSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.15)
                 .add(Attributes.ATTACK_DAMAGE, OfConfig.TremblerServantAttackDamage.get())
-                .add(Attributes.ATTACK_KNOCKBACK, OfConfig.TremblerServantAttackKnockback.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, OfConfig.TremblerServantKnockbackResistance.get());
+                .add(Attributes.ATTACK_KNOCKBACK, 1.0)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.5);
     }
 
     @Override

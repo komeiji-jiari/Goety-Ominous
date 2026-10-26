@@ -65,12 +65,12 @@ public class FracturedApostleServant extends IAnimatedMobServant {
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, LmConfig.FracturedApostleServantHealth.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, LmConfig.FracturedApostleServantKnockbackResistance.get())
-                .add(Attributes.FOLLOW_RANGE, LmConfig.FracturedApostleServantFollowRange.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.7)
+                .add(Attributes.FOLLOW_RANGE, 30.0)
                 .add(Attributes.ARMOR, LmConfig.FracturedApostleServantArmor.get())
                 .add(Attributes.ARMOR_TOUGHNESS, LmConfig.FracturedApostleServantArmorToughness.get())
-                .add(Attributes.MOVEMENT_SPEED, LmConfig.FracturedApostleServantMovementSpeed.get())
-                .add(Attributes.ATTACK_KNOCKBACK, LmConfig.FracturedApostleServantAttackKnockback.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.3)
+                .add(Attributes.ATTACK_KNOCKBACK, 1.3)
                 .add(Attributes.ATTACK_DAMAGE, LmConfig.FracturedApostleServantDamage.get());
     }
 

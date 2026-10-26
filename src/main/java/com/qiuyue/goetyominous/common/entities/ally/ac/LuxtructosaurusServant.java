@@ -208,10 +208,10 @@ public class LuxtructosaurusServant extends Summoned
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AcConfig.LuxtructosaurusServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AcConfig.LuxtructosaurusServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 256.0)
                 .add(Attributes.ATTACK_DAMAGE, AcConfig.LuxtructosaurusServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AcConfig.LuxtructosaurusServantKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AcConfig.LuxtructosaurusServantMovementSpeed.get())
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.325)
                 .add(Attributes.ARMOR, AcConfig.LuxtructosaurusServantArmor.get());
     }
     @Override

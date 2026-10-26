@@ -48,10 +48,10 @@ public class MurmurServant extends Summoned implements ISemiAquatic {
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AmConfig.MurmurServantHealth.get())
-                .add(Attributes.FOLLOW_RANGE, AmConfig.MurmurServantFollowRange.get())
+                .add(Attributes.FOLLOW_RANGE, 48.0)
                 .add(Attributes.ATTACK_DAMAGE, AmConfig.MurmurServantDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, AmConfig.MurmurServantKnockbackResistance.get())
-                .add(Attributes.MOVEMENT_SPEED, AmConfig.MurmurServantMovementSpeed.get());
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.3)
+                .add(Attributes.MOVEMENT_SPEED, 0.2);
     }
 
     protected void registerGoals() {
