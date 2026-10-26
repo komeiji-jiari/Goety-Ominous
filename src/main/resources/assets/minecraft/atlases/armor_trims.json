@@ -39,8 +39,7 @@
         "naga_scale": "twilightforest:trims/color_palettes/naga_scale",
         "steeleaf": "twilightforest:trims/color_palettes/steeleaf",
         "platinum": "illagerinvasion:trims/color_palettes/platinum",
-        "upgrade_aquatic_tooth": "upgrade_aquatic:trims/color_palettes/tooth",
-        "resin": "trims/color_palettes/resin"
+        "upgrade_aquatic_tooth": "upgrade_aquatic:trims/color_palettes/tooth"
       }
     }
   ]

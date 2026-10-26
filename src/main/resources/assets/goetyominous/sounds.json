@@ -7,6 +7,14 @@
       { "name": "goetyominous:trial_spawner/break3" }
     ]
   },
+  "trial_spawner_hit": {
+    "subtitle": "subtitles.block.generic.hit",
+    "sounds": [
+      { "name": "goetyominous:trial_spawner/place1" },
+      { "name": "goetyominous:trial_spawner/place2" },
+      { "name": "goetyominous:trial_spawner/place3" }
+    ]
+  },
   "trial_spawner_step": {
     "sounds": [
       { "name": "goetyominous:trial_spawner/step1" },

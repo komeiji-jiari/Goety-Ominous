@@ -74,6 +74,7 @@
     "trial.JigsawStructureMixin",
     "trial.JigsawStructureAccessor",
     "trial.BeardifierMixin",
+    "trial.JigsawPlacementMixin",
     "trial.JigsawPlacementPlacerMixin",
     "trial.LightningBoltCopperMixin",
     "trial.LivingEntityTrialOmenMixin",
