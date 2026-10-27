@@ -335,4 +335,7 @@ public class ModEntityLayers {
 
     public static final ModelLayerLocation PIGLIN_SERVANT_PP_OUTER_ARMOR_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "piglin_servant_pp_outer_armor"), "main");
+
+    public static final ModelLayerLocation CRIMSON_GUARD_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "crimson_guard"), "main");
 }

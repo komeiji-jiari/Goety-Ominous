@@ -187,6 +187,8 @@ public class ModModelLayers {
                 () -> LayerDefinition.create(
                         HumanoidModel.createMesh(new CubeDeformation(1.0F), 1.0F), 64, 32));
 
+        event.registerLayerDefinition(ModEntityLayers.CRIMSON_GUARD_LAYER,
+                CrimsonGuardModel::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -194,6 +196,9 @@ public class ModModelLayers {
                 event.registerEntityRenderer(ModEntityTypes.CONQUILLAGER_SERVANT.get(),
                 ConquillagerServantRenderer::new);
                 event.registerEntityRenderer(ModEntityTypes.INQUILLAGER_SERVANT.get(), InquillagerServantRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.CRIMSON_GUARD.get(), CrimsonGuardRenderer::new);
+        event.registerEntityRenderer(ModEntityTypes.CRIMSON_GUARD_SERVANT.get(), CrimsonGuardRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.FUNGUS_THROWER.get(),
                 context -> new PiglinServantRenderer(context,

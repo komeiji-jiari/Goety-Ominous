@@ -23,6 +23,16 @@
     {
       "type": "patchouli:text",
       "text": "这些专职于猎杀法师的灾厄村民对魔法有着极高的抗性，他们也会朝敌人扔出药水，或是施法治愈自己。"
+    },
+    {
+      "type": "patchouli:entity",
+      "advancement": "goety:goety/read_front_scroll",
+      "entity": "goetyominous:crimson_guard_servant",
+      "scale": 0.75
+    },
+    {
+      "type": "patchouli:text",
+      "text": "作为皇家守卫的变种，斩灵守卫擅长从敌人身上收割生命力，对敌人造成越高的伤害他们就能从中恢复越多的血量。"
     }
   ]
 }

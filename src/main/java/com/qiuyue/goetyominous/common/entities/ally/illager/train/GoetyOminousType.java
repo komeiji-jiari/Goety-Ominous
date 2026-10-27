@@ -1,14 +1,19 @@
 package com.qiuyue.goetyominous.common.entities.ally.illager.train;
 
+import com.Polarice3.Goety.api.entities.IOwned;
 import com.Polarice3.Goety.api.entities.ally.illager.ITrainIllager;
-import com.Polarice3.Goety.common.blocks.ModBlocks;
+import com.Polarice3.Goety.common.blocks.*;
 import com.Polarice3.Goety.common.entities.ally.illager.Neollager;
+import com.Polarice3.Goety.common.research.ResearchList;
 import com.Polarice3.Goety.common.ritual.RitualChecker;
 import com.Polarice3.Goety.init.ModTags;
+import com.Polarice3.Goety.utils.SEHelper;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraftforge.common.Tags;
@@ -31,6 +36,15 @@ public class GoetyOminousType implements ITrainIllager {
             return mob instanceof Neollager neollager && neollager.isMagic();
         } else if (entityType == ModEntityTypes.CONQUILLAGER_SERVANT.get()) {
             return mob.getType() == ModEntityType.PILLAGER_SERVANT.get();
+        } else if (entityType == ModEntityTypes.CRIMSON_GUARD_SERVANT.get()) {
+            if (mob.getType() == ModEntityType.VINDICATOR_SERVANT.get() && mob instanceof IOwned owned) {
+                LivingEntity owner = owned.getTrueOwner();
+                if (owner instanceof Player player) {
+                    return SEHelper.hasResearch(player, ResearchList.FRONT);
+                }
+            }
+
+            return false;
         }
 
         return false;
@@ -56,6 +70,14 @@ public class GoetyOminousType implements ITrainIllager {
                 && checker.hasBlocks(blockState -> blockState.getBlock() instanceof BrewingStandBlock, 1)
                 && checker.hasBlocks(blockState -> blockState.getBlock() instanceof EnchantmentTableBlock, 1)) {
             return ModEntityTypes.INQUILLAGER_SERVANT.get();
+
+        } else if (checker.hasBlocks(blockState -> blockState.getBlock() instanceof OminousStatueBlock
+                || blockState.getBlock() instanceof OminousBrazierStatueBlock, 4)
+                && checker.hasBlocks(blockState -> blockState.getBlock() instanceof AbstractSkullBlock, 4)
+                && checker.hasBlocks(blockState -> blockState.getBlock() instanceof StashUrnBlock, 8)
+                && checker.hasBlocks(blockState -> blockState.getBlock() instanceof FancyCarpetBlock, 8)
+                && checker.hasBlocks(blockState -> blockState.getBlock() instanceof AnvilBlock, 4)) {
+            return ModEntityTypes.CRIMSON_GUARD_SERVANT.get();
         }
 
         return null;

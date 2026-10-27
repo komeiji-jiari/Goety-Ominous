@@ -2,6 +2,8 @@ package com.qiuyue.goetyominous.common.init;
 
 import com.qiuyue.goetyominous.common.blocks.trial.OminousItemSpawner;
 import com.qiuyue.goetyominous.common.entities.ally.ias.*;
+import com.qiuyue.goetyominous.common.entities.ally.illager.CrimsonGuardServant;
+import com.qiuyue.goetyominous.common.entities.hostile.illagers.CrimsonGuard;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.*;
 
 import com.qiuyue.goetyominous.common.entities.ally.mobs.StormNecromancerServant;
@@ -38,6 +40,20 @@ public class ModEntityTypes {
                     .sized(0.6F, 1.95F)
                     .clientTrackingRange(8)
                     .build(MOD_ID + ":inquillager_servant"));
+
+    public static final RegistryObject<EntityType<CrimsonGuardServant>> CRIMSON_GUARD_SERVANT = ENTITY_TYPES.register(
+            "crimson_guard_servant",
+            () -> EntityType.Builder.of(CrimsonGuardServant::new, MobCategory.MISC)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":crimson_guard_servant"));
+
+    public static final RegistryObject<EntityType<CrimsonGuard>> CRIMSON_GUARD = ENTITY_TYPES.register(
+            "crimson_guard",
+            () -> EntityType.Builder.of(CrimsonGuard::new, MobCategory.MONSTER)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(10)
+                    .build(MOD_ID + ":crimson_guard"));
 
     public static final RegistryObject<EntityType<DredenEntity>> DREDEN = ENTITY_TYPES.register(
             "dreden",

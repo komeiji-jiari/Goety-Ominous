@@ -21,6 +21,12 @@
       "type": "patchouli:text",
       "title": "Inquillager Servant",
       "text": "Requirements: $(li)Magic Neollager$(li)64 Planks$(li)60 Any Bricks$(li)10 Any Walls$(li)10 Fences$(li)2 Stash Urns$(li)1 Brewing Stand$(li)1 Enchanting Table"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Crimson Guard Servant",
+      "advancement": "goety:goety/read_front_scroll",
+      "text": "$(o)Note: Owner must have read $(l:goety:rumors/desert)Front Scroll$()$()$(br)Requirements: $(li)Vindicator Servant $(li)4 Ominous Statues $(li)8 Royal/Frosty Carpets $(li)4 Skeleton Skulls $(li)4 Anvils $(li)8 $(l:goety:crafts/stash_urn)Stash Urns$()"
     }
   ],
   "extra_recipe_mappings": {

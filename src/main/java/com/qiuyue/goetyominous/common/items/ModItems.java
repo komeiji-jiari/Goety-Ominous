@@ -314,6 +314,14 @@ public class ModItems {
             "inquillager_servant_spawn_egg",
             () -> new ServantSpawnEggItem(ModEntityTypes.INQUILLAGER_SERVANT, 0xBCA341, 0x5C121B, egg()));
 
+    public static final RegistryObject<ForgeSpawnEggItem> CRIMSON_GUARD_SPAWN_EGG = ITEMS.register(
+            "crimson_guard_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.CRIMSON_GUARD, 0x2B2B2B, 0xA11E1E, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> CRIMSON_GUARD_SERVANT_SPAWN_EGG = ITEMS.register(
+            "crimson_guard_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.CRIMSON_GUARD_SERVANT, 0x2B2B2B, 0xA11E1E, egg()));
+
     public static final RegistryObject<ServantSpawnEggItem> SUNKEN_NECROMANCER_SERVANT_SPAWN_EGG = ITEMS.register(
             "sunken_necromancer_servant_spawn_egg",
             () -> new ServantSpawnEggItem(ModEntityTypes.SUNKEN_NECROMANCER_SERVANT, 0x4A235A, 0xE67E22, egg()));

@@ -50,6 +50,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> StrongPiglinHunterServantEvolutionDamage;
     public static final ForgeConfigSpec.ConfigValue<Boolean> RaidCaptainDropsOminousBottle;
     public static final ForgeConfigSpec.ConfigValue<Boolean> RaidOmen;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> ProtectTrialChambers;
     public static final ForgeConfigSpec.ConfigValue<Integer> CultStatueBindLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> CultStatueReviveCost;
 
@@ -174,6 +175,9 @@ public class MobsConfig {
         RaidOmen = BUILDER
                 .comment("Whether Bad Omen becomes a 30-second Raid Omen in a village and starts the raid when it expires, as in 1.21. When false, the 1.20 behavior is kept (Default: false)")
                 .define("raidOmen", false);
+        ProtectTrialChambers = BUILDER
+                .comment("Whether trial chamber structures are protected from worldgen features replacing their solid blocks (Default: true)")
+                .define("protectTrialChambers", true);
         BUILDER.pop();
         BUILDER.push("Cult Statue");
         CultStatueBindLimit = BUILDER
