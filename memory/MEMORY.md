@@ -41,16 +41,17 @@
 ## 徒弟错题本（仓库 memory/ 同步于 2026-10-23）
 
 ## 项目与约定
-- [多 jar 拆分](goetyominous-split-into-modules.md) — 判据=核心文件直接 import 第三方包；配置已拆 acam/uasr/lm/mm/of 5 组
+- [多 jar 拆分](goetyominous-split-into-modules.md) — 判据=核心文件直接 import 第三方包；配置按上游拆 8 类；2026-10-26 单 jar 残留清零，只剩 GoetyOminous manager 接缝
 - [远征系统方案](expedition-system-plan.md) — 核心化旅行家远征/指南针：核心/PP 分层、独立 ExpeditionConfig、绑定反馈；已并入 aaacat 1.1.8 交付/会话机制，UI 双 Tab/滚动列表/队伍卡片对齐 aaacat，含“召集旅行家”；战利品改存旅行家背包/空手交付/箱子自动存入，箱满/跟随/待命可空手取回，未交付物品禁止再派遣；**已落盘/编译+无PP启动通过，待游戏内实测**
 - [ModMobType](modmobtype-name-collision.md)、[AnnihilationBomb](annihilation-bomb-ac-lm-name-collision.md) — 常量不能跨 jar 复制
 - 工作偏好：[不写注释](no-code-comments.md)、[别擅自写配方手册](no-unrequested-recipes-patchouli.md)、[模组名 4 处显示面](goetyominous-name-surfaces-ask-scope.md)、[别自动 build jar](no-auto-build-jar.md) — 文案要就问;用户说构建才构建
 - 死代码：[清理偏好](goetyominous-deadcode-cleanup-preference.md)、[脚本](goetyominous-deadcode-analysis-scripts.md) — .scratch/_deadcode.mjs + _deadfields.mjs
-- 配置归属：[该进哪个文件](config-file-split-rule.md)、[LM 伤害](lm-servant-damage-config.md)、[敌对/仆从共用](goety-hostile-servant-shared-config.md)、[无引用键不是死键](mobsconfig-unwired-keys-are-not-dead.md)、[TOML 排序](forge-config-toml-order-historical.md) — 删前先问；键序是历史插入序，重建才按源码
+- 配置归属：[该进哪个文件](config-file-split-rule.md)、[LM 伤害](lm-servant-damage-config.md)、[敌对/仆从共用](goety-hostile-servant-shared-config.md)、[无引用键不是死键](mobsconfig-unwired-keys-are-not-dead.md)、[TOML 排序](forge-config-toml-order-historical.md)、[Goety 式命名/分段](config-goety-style-naming.md) — 删前先问；键序是历史插入序，重建才按源码
 - 落点/收尾：[modid 子包隔离](goetyominous-mod-folder-isolation.md)、[刷怪蛋要补 model](servant-spawn-egg-item-model.md)、[实测实例/日志](goetyominous-test-instance-and-logs.md) — 漏 model 会紫黑块
 - 可选依赖注册：[必须放 CompatManager](optional-mod-registration-manager-gated.md) — core 无条件注册 extends 第三方类型会缺模启动崩
 - 移植准则：[表现原版/实现 Goety](ac-servant-parity-keep-original.md)、[飓风分叉是有意的](hurricane-breeze-intentional-divergence.md)、[移植漏单行](ac-goety-port-probability-gates.md) — 冲突时 Goety 优先
 - MM 手臂道具：[已按用户令删除](mm-mutant-jungle-zombie-arm-port.md) — 别再主动重提
+- 已按用户令删除：[仆从+敌对移速/跟随范围/击退抗性/攻击击退配置](servant-speed-follow-config-removed.md)、[灵魂碎裂开关](soul-fracture-servant-option-removed.md) — 属性硬编码原默认值;别再提重加
 - dist 审计：[现状+已修/仍脆弱](client-dist-audit-fragile-spots.md) — HUD 已移 client 包;LM 粒子嵌套类仍须保持无类级注解
 - [错题本同步到仓库](memory-notebook-sync-to-repo.md) — memory 整份复制到仓库 memory/，独立提交后推送
 
@@ -60,7 +61,7 @@
 - 解散/上限：[解散二次确认](goety-servant-trykill-confirm.md)、[上限两条通道](goety-servant-limit-two-channels.md)、[canAttackType=false 废索敌](goety-servant-canattacktype-kills-targeting.md)、[多命 vs 解散/寿命](goety-multilife-servant-dismiss-conflict.md) — 覆写 tryKill;多命复活会吃掉 DISMISSED
 - 召唤法术：[约定](goety-summon-spell-conventions.md)、[王冠/长袍两通道](goety-crown-vs-robe-two-channels.md)、[寿命锚点](summon-spell-lifespan-anchor-pattern.md)、[owner 顺序](goety-summonspawn-owner-order.md)、[属性偏移存 NBT](goety-configurable-attrs-reset-on-load.md) — 先 setTrueOwner 再 finalizeSpawn
 - 蛋/移速：[蛋要潜行才有主人](goety-egg-owner-requires-crouch.md)、[移速多个通道](goety-move-speed-two-channels.md)、[AC 冲量式 MoveControl](ac-impulse-movecontrol-speed.md)、[持久冷却用 SEHelper](goety-persistent-item-cooldown.md) — 别改 MovementSpeed 属性
-- 骑乘：[条件链](goety-servant-riding-mechanism.md)、[positionRider 两个重载](forge-positionrider-two-overloads.md)、[下马摔伤](mount-dismount-fall-damage.md)、[水中速度/姿势](forge-ridden-mob-water-speed.md)、[服务端 delta 清零](forge-travelridden-server-zero-delta.md) — 水里 getRiddenSpeed 失效;单参 super=崩服
+- 骑乘：[条件链](goety-servant-riding-mechanism.md)、[positionRider 两个重载](forge-positionrider-two-overloads.md)、[下马摔伤](mount-dismount-fall-damage.md)、[水中速度/姿势](forge-ridden-mob-water-speed.md)、[服务端 delta 清零](forge-travelridden-server-zero-delta.md)、[键控转向符号](mount-key-steering-xxa-sign.md) — 水里 getRiddenSpeed 失效;单参 super=崩服
 - 骑乘者接管：[不操控时 AI 接管](goety-mount-idle-ai-authority.md)、[isImmobile 定身](goety-mount-immobile-anim-root.md)、[AC 双重渲染](ac-rider-layer-double-render.md)、[Mob 骑 Mob 关载具 AI](forge-mob-rider-disables-vehicle-ai.md) — 按 zza/xxa 返回玩家/null
 - 多部件：[肢体 extends Summoned 三坑](goety-multipart-part-as-servant.md)、[肢体被打崩](goety-multipart-part-projectile-crash.md)、[部件晚一拍](sauropod-part-oldpos-teleport-neck.md)、[yBodyRot 客户端算](sauropod-client-ybodyrot-local.md)、[移动时 yBodyRot 硬贴](mob-tickheadturn-bodyrot-snap.md)、[骑乘扭头](goety-sauropod-ridden-neck-lag.md)、[蜈蚣体节抖动](goety-centipede-ringbuffer-freeze-seam.md) — 委派 isCommanded 不委派 getCommandPos→NPE
 - 水陆两栖：[导航 goal 规则](goety-water-navigation-goals.md)、[水面弹跳](goety-amphibious-floatgoal-bounce.md)、[泳控对照](vanilla-swim-movecontrol-xxa-reference.md) — 水下自灭用 AirAndWaterRandomPos
@@ -94,7 +95,7 @@
 - 移植陷阱：[CFR 全限定名残留](mm-port-cfr-fqn-residue.md) — 旧包名残留不报错但要改
 - 方块/容器/仪式：[tesseract 容量 tag](goety-tesseract-capacity-tags.md)、[方匣取出强制跟随](goety-tesseract-eject-forces-follow.md)、[仪式每cast防 stale](goety-ritual-percast-state-stale.md)、[Mold 写死实体](goety-mold-hardcoded-mixin.md) — 占4格 medium/占2格 small
 - 标签：[powerful_servants 纯成员标签](goety-powerful-servants-tag.md)、[联动配方在自己 data/ 下](compat-pack-recipes-in-own-datapack.md) — 漏 required:false 会级联炸
-- 弹射物：[换 Goety 基类](goety-projectile-base-choice.md)、[幽灵弹三要素](projectile-no-despawn-three-conditions.md)、[风弹击退=同 tick ADD](wind-charge-knockback-delivery.md)、[友伤免疫吞药箭效果](goety-friendly-fire-suppresses-tipped-arrow-effects.md) — 覆写 tick 用 baseTick();友方辅助弹射物别依赖 hurt
+- 弹射物：[换 Goety 基类](goety-projectile-base-choice.md)、[幽灵弹三要素](projectile-no-despawn-three-conditions.md)、[风弹击退=同 tick ADD](wind-charge-knockback-delivery.md)、[友伤免疫吞药箭效果](goety-friendly-fire-suppresses-tipped-arrow-effects.md)、[亲善名单只有 SEHelper 认](goety-goodwill-ally-check-api.md) — 覆写 tick 用 baseTick();友方辅助弹射物别依赖 hurt
 - 波/粒子：[冲击波尺寸换算](goety-shockwave-particle-geometry.md)、[AbstractWave 伤害标定](goety-abstractwave-attackentities-scale.md) — size 是半径,实参序 (originSize,size,speed)
 - 敌对突变怪动画：[渲染器覆盖式修复](mm-hostile-mob-animation-fix.md) — 无 mixin;后注册覆盖 + 仆从模型当零件架;6 种（含潜影贝，须留两段飞行动画）
 
@@ -118,6 +119,7 @@
 ## 原版/Forge 机制
 - 属性/碰撞：[上台阶](forge-maxupstep-mapping.md)、[近战射程](forge-meleeattackgoal-reach.md)、[.sized vs getDimensions](forge-entity-sized-vs-getdimensions.md)、[1.20.1 溺水链](forge-1.20.1-air-supply-drown-chain.md)、[1.20.1 无肉 tag](forge-1.20.1-no-meat-tag.md)、[eat() 双扣](forge-livingentity-eat-double-consume.md) — 溺水在 ForgeHooks.onLivingBreathe
 - 私有原版方法：[collide / rotlerp 私有 / 没有 getGravity](mc-1201-entity-collide-private.md) — 要 AT 写 SRG 名
+- 注入/mixin：[@Redirect 冲突改 RETURN 包装](mixin-redirect-conflict-return-wrap.md) — 被跳过的 redirect + require=1 = 启动崩;别靠抬优先级压人
 - tick/导航顺序：[baseTick 绕过](forge-bypass-intermediate-tick-baseTick.md)、[MoveControl 晚于 goal](forge-movecontrol-runs-after-goals.md)、[goalSelector 在 aiStep 内](forge-goalselector-in-aistep-ordering.md)、[LookControl 回正](vanilla-lookcontrol-head-forward.md)、[followThePath ULP](forge-followthepath-bbwidth-ulp-freeze.md)、[近战别再喂导航](mc-moveto-every-tick-yaw-whipsaw.md)、[Citadel moveTo 恒 true](citadel-advancedpathnavigate-moveto-always-true.md)、[限转向=绕圈](mob-turn-cap-min-radius-orbit.md) — 顺序 goal→nav→moveControl
 - 事件/注册：[RightClickBlock getLevel](forge-rightclickblock-getlevel-pattern.md)、[re-add 发 JoinLevelEvent](forge-entityjoinlevelevent-on-readd.md)、[DeferredRegister 惰性](forge-deferredregister-clinit-lazy-trap.md)、[页签定点插入](forge-creative-tab-insert-position.md)、[dungeonsdelight 并发崩](dungeonsdelight-fastutil-dispenser-race.md)、[1.21 爆炸 null source](goety-1.21-explosion-null-damagesource.md)、[MobEffect 无死亡钩子](forge-1.20.1-mobeffect-no-death-hook.md) — putAfter 顺序调用会反序
 - 寻路/同步：[NodeEvaluator 按格钩子](forge-nodeevaluator-per-cell-hooks.md)、[裸 Entity 位置包频率](forge-bare-entity-update-interval-smoothness.md)、[插值同步顺序](mc-1201-client-interp-sync-order.md)、[客户端 getDeltaMovement](mc-client-deltamovement-motion-packets.md) — 按格判定须覆写 getCachedBlockType

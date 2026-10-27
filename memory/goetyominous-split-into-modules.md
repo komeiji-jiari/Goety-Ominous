@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: d32db0f4-b36c-414f-bc45-874cd71b4a4c
-  modified: 2026-10-19T17:59:39.348Z
+  modified: 2026-10-26T00:11:18.300Z
 ---
 
 2026-10-07 评估并决定：goetyominous（1318 文件，其中 711 是第三方派生，约 54%）把联动内容切成独立 jar。
@@ -141,6 +141,22 @@ metadata:
 - 图标：两个包各放一份 `acamcompat.json`，AC 包用 `alexscaves:tectonic_shard`、AM 包用 `alexsmobs:blood_sac`；双装时靠包优先级让 AC 那份胜出，只装 AM 时也不会引用缺失贴图。分类名用户定为 `Goety Alex`（zh 写 `诡厄Alex`）。
 - 客户端包 id 改为 `goetyominous/acam_ac_compat`（TOP）与 `goetyominous/acam_am_compat`（BOTTOM），数据包 id 不变。**1.20.1 源码核实**：`PackRepository.m_10517_` 只对未选中的 required 包按 TreeMap id 序调用 `Position.m_10470_`；TOP 扫描到末尾后追加（列表末位）、BOTTOM 插到开头；`MultiPackResourceManager` 按选中列表正序加包，`FallbackResourceManager.getResource` 从末位往前找 → **末位 = 最高优先级**。改 id 是为了让 options.txt 里的旧 id 失效、强制按 Position 重新插入（已在选项里的包不会因 Position 变化重排）。
 - `OminousIconRotation`：两条 Entry 改为同一路径 `acamcompat`，AC 在前（index 5）、AM 在后（index 4）；`indexOf` 取第一个已加载项，`installedOrder` 的 categoryPath 去重保证只轮转一次。`OminousRotationBookOrder` 从书根 `goetyominous` 的**直接子分类**取 path，合并后直接子分类是 `acamcompat`，用旧路径会得到空轮转。
+
+**2026-10-26 拆分准备度复核（用户问"结构有没有为部分联动拆分做好准备"）：**
+- 归位仍全绿：`_extcore` A=0/B=0；`_verify` 单 jar 残留 4（acam 2：`common/init/ModCreativeTab.java:219` FQN `BarbaricAxeItem`、`common/network/ModNetwork.java:12/51` 无条件注册 `CBarbaricAxeShakePacket`；mm 2：`compat/jade/{MutantServantJadePlugin,MutantServantLifeProvider}` 引用 `AbstractMutantServant`）+ 白名单 `CuriosIntegration:39 AcItems`；枢纽 1（`GoetyOminous`）；`_modedge` 真边 = 主→acam 3 / mm 2 / uasr 1（`MixinOssuaryBlockEntity` 混血：一半给 core BOGGED_SERVANT，一半给 sar SarEntityRegistry）/ ias 3。
+- **配置类现状与 10-19 记录不同**：现在是 `config/<上游>/{Ac,Am,Lm,Mm,Of,Pp,Sar,Ua}Config` **8 个类**（每上游一份 TOML `goetyominous-<modid>.toml`），10-19 的 `AcamConfig/UasrConfig` 已被后续"配置扁平化改名"改回按上游。`GoetyOminous:193-231` 仍**无条件**注册这 8 份 → 拆分时整段搬进各自 jar；acam/uasr 各要注册 2 份。
+- 计划外第 9/10 个联动：`pp`（28 文件，config/items/entities/client/resourcepack 齐全）和 `iss`（Iron's Spellbooks，2 个事件类）都在 core 门控，均不在 `_groups.mjs` 的 MODS/5-jar 计划。拆前先定留 core 还是并进某 jar。
+- 外壳仍未动：`settings.gradle` 单 project；mixins 单份 76+18（模块 ac 17 + mm 1，`"defaultRequire": 0` 漏带会静默失效）；mods.toml 单份（已声明 alexscaves/alexsmobs/mutantmore/legendary_monsters/savage_and_ravage/upgrade_aquatic 等 optional，**缺 opposing_force/piglinproliferation/jade**）；资源 3162 个仅 349 可按类名归因，`resourcepacks/` 7 个缺 lm；`client/OminousIconRotation.java:27-32` 静态 5 条 Entry。
+- 脚本盲区：`_modedge` 的 `SUB` 不含 `network`/`compat`，漏报 `ModNetwork→acam` 与 `GoetyOminous→manager`，跨 jar 边只能当下限，以 `_verify` 为准。
+- 单 jar 试点阻力排序：`of` 最小（0 模块 mixin、已有 of_compat 包，core 只碰 GoetyOminous 两处）→ `lm`（0 mixin，但无资源包）→ `mm`（多 Jade 2 文件）→ `uasr`（混血 mixin）→ `acam`（3 个引用点）。
+- `_privacy` 13 个里建议只挪 3 个：`MovementBodyRotationControl`→lm、`AdvancedBlockFinder`→uasr、`BossUtil`→mm；其余 ModernUI/Cataclysm/Create/IRayMuzzle/SmeltHelper/ContinuousControllerSpell 是通用工具，留 core。
+- **2026-10-26 同日修复（用户"你来修"，compileJava 通过，`_verify` 单 jar 残留 0）：**
+  1. 8 份模块配置注册移入各自 manager 的 `public static registerConfig()`；`GoetyOminous` 只保留 8 行无条件调用（不是 `isLoaded()` 门控，保持"装了单 jar 就生成 TOML"的原行为）。`getOrCreateDirectory` 提到 manager 调用之前。
+  2. `ModNetwork` 的 `CBarbaricAxeShakePacket` 注册搬进 `AcPackets`，并 `PROTOCOL_VERSION` 6→7（包 id 重排）。
+  3. `ModCreativeTab.isWeapon` 删掉 `BarbaricAxeItem` 那行——`AxeItem` 已继承 `TieredItem`，本来就走 `item instanceof TieredItem`，是死分支。
+  4. Jade 三件 `MutantServantJadePlugin/LifeProvider/LifeComponent` → `compat/mm/jade/`（package 同步改）。
+  5. Curios 的 RAYCAT_AMULET 改成扩展点：核心 `CuriosIntegration.registerCompatCurio(Supplier<? extends Item>)` + 静态列表，AC manager 注册；核心不再 import `AcItems`。
+  - 仍保留：`GoetyOminous` 对 9 个 manager 的 FQN 入口（唯一有意接缝）+ `MixinOssuaryBlockEntity` 的 sar 半边（`Class.forName` 反射，零编译依赖，真拆时再随 uasr 劈）。两者都不是编译阻塞。
 
 **Why:** 用户先问"拆了该做什么"→ 澄清为"切出第三方内容、每个来源 mod 一个 jar"→ 又确认要单仓库多 jar。2026-10-07 版把 sar/ias 一起划为留守；2026-10-08 用户先提"会拆分有仆从的联动项"（8 个 modid 全有仆从），复核后定案"只会拆 ua sar of am ac mm lm" → **sar 改拆，只有 ias 留守**；同日又定"先不拆，只做提前准备"。2026-10-11 晚用户再把 7 个收成 5 个 jar（配对捆绑可选前置）。
 
