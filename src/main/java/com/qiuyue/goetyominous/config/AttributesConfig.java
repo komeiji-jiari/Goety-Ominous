@@ -89,6 +89,14 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> HeresiarchServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> HeresiarchServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> HeresiarchServantDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonGuardHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonGuardArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonGuardToughness;
+    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonGuardDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonGuardSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonGuardFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonGuardKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonGuardAttackKnockback;
 
     static {
         BUILDER.push("Servants Attributes");
@@ -320,6 +328,24 @@ public class AttributesConfig {
                 .defineInRange("heresiarchServantArmor", 4.0, 0.0, Double.MAX_VALUE);
         HeresiarchServantDamage = BUILDER.comment("How much damage Heresiarch Servants deals, Default: 8.0")
                 .defineInRange("heresiarchServantDamage", 2.0, 1.0, Double.MAX_VALUE);
+        BUILDER.pop();
+        BUILDER.push("Crimson Guard");
+        CrimsonGuardHealth = BUILDER.comment("How much Max Health Crimson Guards have, Default: 48.0")
+                .defineInRange("crimsonGuardHealth", 48.0, 1.0, Double.MAX_VALUE);
+        CrimsonGuardArmor = BUILDER.comment("How much natural Armor Crimson Guards have, Default: 12.0")
+                .defineInRange("crimsonGuardArmor", 12.0, 0.0, Double.MAX_VALUE);
+        CrimsonGuardToughness = BUILDER.comment("How much natural Armor Toughness Crimson Guards have, Default: 6.0")
+                .defineInRange("crimsonGuardToughness", 6.0, 0.0, Double.MAX_VALUE);
+        CrimsonGuardDamage = BUILDER.comment("How much damage Crimson Guards deal, Default: 8.0")
+                .defineInRange("crimsonGuardDamage", 8.0, 1.0, Double.MAX_VALUE);
+        CrimsonGuardSpeed = BUILDER.comment("How fast Crimson Guards move, Default: 0.3")
+                .defineInRange("crimsonGuardSpeed", 0.3, 0.0, Double.MAX_VALUE);
+        CrimsonGuardFollowRange = BUILDER.comment("How far Crimson Guards follow targets, Default: 16.0")
+                .defineInRange("crimsonGuardFollowRange", 16.0, 0.0, Double.MAX_VALUE);
+        CrimsonGuardKnockbackResistance = BUILDER.comment("How much knockback resistance Crimson Guards have, Default: 1.0")
+                .defineInRange("crimsonGuardKnockbackResistance", 1.0, 0.0, 1.0);
+        CrimsonGuardAttackKnockback = BUILDER.comment("How much knockback Crimson Guards deal, Default: 1.5")
+                .defineInRange("crimsonGuardAttackKnockback", 1.5, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.pop();
         SPEC = BUILDER.build();

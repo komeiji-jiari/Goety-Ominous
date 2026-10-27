@@ -26,13 +26,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.RangedAttackMob;
-import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.piglin.PiglinArmPose;
@@ -152,6 +147,19 @@ public class PiglinAlchemistServant extends AbstractPiglinServant implements Alc
                     this.setBeltInventorySlot(slot, PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), effect));
                 }
             }
+        }
+    }
+
+    @Override
+    public void convertNewEquipment(Entity entity) {
+        ItemStack weapon = this.getMainHandItem().copy();
+        if (entity instanceof AbstractPiglinServant source && source.isImmune()) {
+            this.setImmune(true);
+        }
+        super.convertNewEquipment(entity);
+        this.setDropChance(EquipmentSlot.MAINHAND, 0.0F);
+        if (!weapon.isEmpty()) {
+            this.spawnAtLocation(weapon);
         }
     }
 

@@ -1,6 +1,8 @@
 package com.qiuyue.goetyominous.common.mixin;
 
 import com.Polarice3.Goety.common.events.IllagerSpawner;
+import com.Polarice3.Goety.utils.SEHelper;
+import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.common.items.curios.ScreamingSkullJar;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -53,6 +55,11 @@ public abstract class IllagerSpawnerMixin {
                     cir.setReturnValue(false);
                 }
             }
+        }
+
+        if (dataType.raider.equals(ModEntityTypes.CRIMSON_GUARD.getId())
+                && SEHelper.getSoulAmountInt(player) < 70000) {
+            cir.setReturnValue(false);
         }
     }
 }

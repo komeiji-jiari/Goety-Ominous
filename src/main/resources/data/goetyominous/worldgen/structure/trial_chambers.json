@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:jigsaw",
+  "type": "goetyominous:trial_jigsaw",
   "biomes": "#goetyominous:has_structure/trial_chambers",
   "dimension_padding": 10,
   "liquid_settings": "ignore_waterlogging",

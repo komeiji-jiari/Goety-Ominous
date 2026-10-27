@@ -125,10 +125,7 @@ public class VaultBlockEntity extends BlockEntity {
         public static void tick(ServerLevel level, BlockPos pos, BlockState state, VaultConfig config,
                                 VaultServerData serverData, VaultSharedData sharedData) {
             VaultState vaultState = state.getValue(VaultBlock.STATE);
-            // ⚠️ 1.21 原版这里只看时间，**没有** state == ACTIVE 这个条件（那是客户端判断要不要
-            // 渲染旋转用的）。之前误加进来 → vault 处于 INACTIVE（附近没玩家）时展示物品被清空，
-            // 表现就是"宝库里什么都没有在转"。
-            if (shouldCycleDisplayItem(level.getGameTime())) {
+            if (shouldCycleDisplayItem(level.getGameTime(), vaultState)) {
                 cycleDisplayItemFromLootTable(level, vaultState, config, sharedData, pos);
             }
             BlockState blockState = state;
@@ -182,8 +179,10 @@ public class VaultBlockEntity extends BlockEntity {
 
         static void cycleDisplayItemFromLootTable(ServerLevel level, VaultState state, VaultConfig config,
                                                   VaultSharedData sharedData, BlockPos pos) {
-            // ⚠️ 1.21 原版这里**不按状态过滤**（不是 canEjectReward 那套）：INACTIVE 的 vault 也应该
-            // 有物品在转。loot table 为空时 getRandomItems 返回空表 → displayItem 自然是 EMPTY。
+            if (!canEjectReward(config, state)) {
+                sharedData.setDisplayItem(ItemStack.EMPTY);
+                return;
+            }
             ItemStack itemStack = getRandomDisplayItemFromLootTable(level, pos,
                     config.overrideLootTableToDisplay().orElse(config.lootTable()));
             sharedData.setDisplayItem(itemStack);
@@ -224,8 +223,8 @@ public class VaultBlockEntity extends BlockEntity {
             return ItemStack.isSameItemSameTags(stack, config.keyItem()) && stack.getCount() >= config.keyItem().getCount();
         }
 
-        private static boolean shouldCycleDisplayItem(long gameTime) {
-            return gameTime % DISPLAY_CYCLE_TICK_RATE == 0L;
+        private static boolean shouldCycleDisplayItem(long gameTime, VaultState vaultState) {
+            return gameTime % DISPLAY_CYCLE_TICK_RATE == 0L && vaultState == VaultState.ACTIVE;
         }
 
         private static void playInsertFailSound(ServerLevel level, VaultServerData serverData, BlockPos pos, SoundEvent sound) {

@@ -23,6 +23,16 @@
     {
       "type": "patchouli:text",
       "text": "These Illagers, specialized in hunting mages, possess high resistance to magic. They also throw potions at enemies or cast spells to heal themselves."
+    },
+    {
+      "type": "patchouli:entity",
+      "advancement": "goety:goety/read_front_scroll",
+      "entity": "goetyominous:crimson_guard_servant",
+      "scale": 0.75
+    },
+    {
+      "type": "patchouli:text",
+      "text": "As a variant of the Royal Guard, the Crimson Guard excels at harvesting life force from enemies. The more damage they deal to a foe, the more health they recover from it."
     }
   ]
 }
