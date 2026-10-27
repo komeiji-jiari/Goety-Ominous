@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: c6e12552-53c3-420f-9575-5bd05d7000b8
-  modified: 2026-10-19T11:59:46.105Z
+  modified: 2026-10-25T20:36:31.283Z
 ---
 
 Forge 1.20.1 生成/维护配置文件的顺序规则：
@@ -13,6 +13,7 @@ Forge 1.20.1 生成/维护配置文件的顺序规则：
 - `ForgeConfigSpec.Builder` 内部是 `LinkedHashMap`（`ForgeConfigSpec.java` 注释 "Use LinkedHashMap for consistent ordering"），spec 本身按 `define` 调用顺序排列
 - 但 `ConfigFileTypeHandler.reader` 用 NightConfig 的 `preserveInsertionOrder()` 读文件，`ForgeConfigSpec.correct()` 对已存在的键只改值、不动位置，只有缺失的键才 `put` 到所在 section 末尾
 - 所以现有 TOML 的顺序 = 每个键第一次被加进配置的年代顺序；在源码里移动 `define` 不会让旧文件重排
+- `setConfig()`（源码 `ForgeConfigSpec.java:79-96`）发现文件不符时会 `correct()`，其第二步 "removes the unspecified values" **递归删除 spec 里不存在的键**，然后对 `FileConfig` 立即 `save()`。所以改键名/挪分区后不需要写迁移或清理代码，旧键和旧值会随下次启动自动消失，用户拿到的是新键默认值
 
 **Why:** 用户看 `run/config` 里排序乱，会误以为源码定义顺序乱；实际源码改不动旧文件，只有删掉文件让 `setConfig → correct → save` 从空表重建才按 spec 顺序写出。
 
