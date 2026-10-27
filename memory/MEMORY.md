@@ -5,6 +5,7 @@
 - [代码不加注释](no-comments-in-code.md) — 写进工程的代码一律裸代码（无 javadoc/行内注释），"为什么"写在对话或记忆里；已有注释不动
 - [⚠️Windy 移植 1:1 铁律](windy-port-1to1-principle.md) — 最高优先级：必须逐签名逐方法复刻 1.21（含常量/数值），不许简化或砍功能；缺的原版件用反编译器读源码后等价实现
 - [⚠️移植数据不得捏造](port-data-fidelity-rule.md) — 注册数据(尺寸/eyeHeight/分类/数值)必须与 1.21/Goety-3 逐字段一致，先查再写；1.20.1 缺 API 用等价手段复现同数值（实例：sized 0.3125 + getEyeHeight 覆写）
+- [⚠️API 不得猜想](api-must-be-empirically-verified.md) — ⚠️最高优先级：任何方法/字段/SRG 常量/mixin target/codec/行为语义必须查映射、javap、反编译源码、refmap 或实测，禁止按名字猜；实例 BooleanOp.f_82689_=AND 不是 ONLY_FIRST
 
 ## 本机补充笔记（E:\java）
 - [MutantBlaze 仆从移植进度](mutant-blaze-servant-port-progress.md) — ShieldPart/Fireball/Rod 已交付；RodlingServant 待办（裁剪已定、反编译源/关键方法速查）
