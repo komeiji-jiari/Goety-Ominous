@@ -30,7 +30,7 @@ public class ElephantRiderInputHandler {
             return;
         }
         if (player.getVehicle() instanceof IllagerElephantServant) {
-            player.setYRot(player.getYRot() + player.xxa * IllagerElephantServant.RIDER_TURN_SPEED);
+            player.setYRot(player.getYRot() - player.xxa * IllagerElephantServant.RIDER_TURN_SPEED);
         }
     }
 
