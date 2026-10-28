@@ -3,8 +3,10 @@ package com.qiuyue.goetyominous.client.render.model;
 import com.qiuyue.goetyominous.client.render.model.animation.CrimsonGuardAnimation;
 import com.qiuyue.goetyominous.common.entities.ally.illager.CrimsonGuardServant;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.CrimsonGuard;
+import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.client.model.geom.PartPose;
@@ -15,9 +17,11 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.joml.Vector3f;
 
 @OnlyIn(Dist.CLIENT)
 public class CrimsonGuardModel<T extends Mob> extends HierarchicalModel<T> {
+	private static final Vector3f ANIMATION_VEC = new Vector3f();
 	private final ModelPart root;
 	private final ModelPart head;
 
@@ -181,11 +185,15 @@ public class CrimsonGuardModel<T extends Mob> extends HierarchicalModel<T> {
 			} else if (currentAnimation == CrimsonGuardServant.ANIM_SWEEP) {
 				this.animate(sweep, CrimsonGuardAnimation.SWEEP, ageInTicks);
 			}
-		} else {
-			this.animate(idle, CrimsonGuardAnimation.IDLE, ageInTicks);
+			return;
 		}
 
-		this.animateWalk(CrimsonGuardAnimation.WALK, limbSwing, limbSwingAmount, 2.5F, 3.5F);
+		float walkWeight = Mth.clamp(limbSwingAmount * 3.5F, 0.0F, 1.0F);
+		KeyframeAnimations.animate(this, CrimsonGuardAnimation.WALK, (long)(limbSwing * 50.0F * 2.5F),
+				walkWeight, ANIMATION_VEC);
+		idle.updateTime(ageInTicks, 1.0F);
+		idle.ifStarted(state -> KeyframeAnimations.animate(this, CrimsonGuardAnimation.IDLE,
+				state.getAccumulatedTime(), 1.0F - walkWeight, ANIMATION_VEC));
 	}
 
 	@Override
