@@ -127,7 +127,7 @@ public class CrimsonGuard extends HuntingIllagerEntity {
     }
 
     public boolean isMoving() {
-        return this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6D;
+        return this.walkAnimation.speed() >= 0.01F;
     }
 
     protected void beginAttack(int type) {
@@ -174,7 +174,7 @@ public class CrimsonGuard extends HuntingIllagerEntity {
         super.tick();
         if (this.level().isClientSide) {
             if (this.isAlive()) {
-                this.idleAnimationState.animateWhen(!this.isMeleeAttacking() && !this.isMoving(), this.tickCount);
+                this.idleAnimationState.animateWhen(!this.isMeleeAttacking(), this.tickCount);
             }
             if (!this.isMeleeAttacking()) {
                 this.slamAnimationState.stop();

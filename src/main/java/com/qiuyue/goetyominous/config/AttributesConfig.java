@@ -308,10 +308,10 @@ public class AttributesConfig {
                 .defineInRange("crimsonSpiderServantDamage", 5.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Axolotl Servant");
-        AxolotlServantHealth = BUILDER.comment("How much Max Health Axolotl Servants have, Default: 15.0")
+        AxolotlServantHealth = BUILDER.comment("How much Max Health Axolotl Servants have, Default: 14.0")
                 .defineInRange("axolotlServantHealth", 14.0, 1.0, Double.MAX_VALUE);
-        AxolotlServantDamage = BUILDER.comment("How much damage Axolotl Servants deals, Default: 0.0")
-                .defineInRange("axolotlServantDamage", 3.0, 0.0, Double.MAX_VALUE);
+        AxolotlServantDamage = BUILDER.comment("How much damage Axolotl Servants deals, Default: 2.0")
+                .defineInRange("axolotlServantDamage", 2.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Disciple Servant");
         DiscipleHealth = BUILDER.comment("How much Max Health Disciples have, Default: 50.0")

@@ -77,7 +77,17 @@ public class AxolotlServant extends AnimalSummon implements LerpingModel{
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 0.6D, true));
+        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 0.6D, true) {
+            @Override
+            public boolean canUse() {
+                return !AxolotlServant.this.isPlayingDead() && super.canUse();
+            }
+
+            @Override
+            public boolean canContinueToUse() {
+                return !AxolotlServant.this.isPlayingDead() && super.canContinueToUse();
+            }
+        });
         this.goalSelector.addGoal(2, new BreedGoal(this, 0.2D));
         this.goalSelector.addGoal(3, new Summoned.WanderGoal<>(this, 0.5D));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
@@ -329,10 +339,6 @@ public class AxolotlServant extends AnimalSummon implements LerpingModel{
                 this.explosionCountdown = -1;
             }
 
-            if (this.isInWaterOrBubble()) {
-                this.setAirSupply(300);
-            }
-
             if (!this.isNoAi() && this.isPlayingDead()) {
                 if (this.playDeadTimer > 0) {
                     this.playDeadTimer--;
@@ -383,6 +389,16 @@ public class AxolotlServant extends AnimalSummon implements LerpingModel{
     }
 
     @Override
+    public int getMaxAirSupply() {
+        return 6000;
+    }
+
+    public void rehydrate() {
+        int i = this.getAirSupply() + 1800;
+        this.setAirSupply(Math.min(i, this.getMaxAirSupply()));
+    }
+
+    @Override
     public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
         ItemStack itemstack = pPlayer.getItemInHand(pHand);
         if (this.getTrueOwner() != null && pPlayer == this.getTrueOwner()) {
@@ -420,6 +436,15 @@ public class AxolotlServant extends AnimalSummon implements LerpingModel{
             }
         }
         return super.mobInteract(pPlayer, pHand);
+    }
+
+    @Override
+    protected void usePlayerItem(Player pPlayer, InteractionHand pHand, ItemStack pStack) {
+        if (pStack.is(Items.TROPICAL_FISH_BUCKET)) {
+            pPlayer.setItemInHand(pHand, new ItemStack(Items.WATER_BUCKET));
+        } else {
+            super.usePlayerItem(pPlayer, pHand, pStack);
+        }
     }
 
     @Override

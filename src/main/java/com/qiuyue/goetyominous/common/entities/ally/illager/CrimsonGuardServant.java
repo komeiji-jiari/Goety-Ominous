@@ -145,10 +145,6 @@ public class CrimsonGuardServant extends AbstractIllagerServant {
         return this.attackTick;
     }
 
-    public boolean isMoving() {
-        return this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6D;
-    }
-
     protected void beginAttack(int type) {
         this.attackTick = 0;
         this.entityData.set(DATA_ATTACKING, true);
@@ -193,7 +189,7 @@ public class CrimsonGuardServant extends AbstractIllagerServant {
         super.tick();
         if (this.level().isClientSide) {
             if (this.isAlive()) {
-                this.idleAnimationState.animateWhen(!this.isMeleeAttacking() && !this.isMoving(), this.tickCount);
+                this.idleAnimationState.animateWhen(!this.isMeleeAttacking(), this.tickCount);
             }
             if (!this.isMeleeAttacking()) {
                 this.slamAnimationState.stop();
