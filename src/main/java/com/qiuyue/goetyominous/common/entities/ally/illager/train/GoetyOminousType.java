@@ -30,8 +30,7 @@ public class GoetyOminousType implements ITrainIllager {
     }
 
     @Override
-    public boolean mobCanTrainTo(Mob mob, Level level, BlockPos blockPos, int range) {
-        EntityType<?> entityType = this.getIllager(level, blockPos, range);
+    public boolean mobCanTrainToType(Mob mob, EntityType<?> entityType) {
         if (entityType == ModEntityTypes.INQUILLAGER_SERVANT.get()) {
             return mob instanceof Neollager neollager && neollager.isMagic();
         } else if (entityType == ModEntityTypes.CONQUILLAGER_SERVANT.get()) {
@@ -48,6 +47,11 @@ public class GoetyOminousType implements ITrainIllager {
         }
 
         return false;
+    }
+
+    @Override
+    public boolean mobCanTrainTo(Mob mob, Level level, BlockPos blockPos, int range) {
+        return this.mobCanTrainToType(mob, this.getIllager(level, blockPos, range));
     }
 
     @Override

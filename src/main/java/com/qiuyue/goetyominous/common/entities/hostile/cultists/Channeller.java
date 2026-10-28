@@ -1,6 +1,5 @@
 package com.qiuyue.goetyominous.common.entities.hostile.cultists;
 
-import com.Polarice3.Goety.client.particles.ModParticleTypes;
 import com.Polarice3.Goety.common.entities.ModEntityType;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
@@ -12,6 +11,7 @@ import com.Polarice3.Goety.utils.EntityFinder;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.ServerParticleUtil;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
+import com.qiuyue.goetyominous.common.init.ModParticleTypes;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import net.minecraft.core.BlockPos;
@@ -247,7 +247,7 @@ public class Channeller extends AbstractGOCultist implements ICultist {
 
             if (!this.level().isClientSide) {
                 if (this.level() instanceof ServerLevel serverLevel) {
-                    ServerParticleUtil.gatheringParticles(ModParticleTypes.SMALL_FIRE.get(), this, serverLevel);
+                    ServerParticleUtil.gatheringParticles(ModParticleTypes.FLAME_GATHER.get(), this, serverLevel);
                 }
             }
         }

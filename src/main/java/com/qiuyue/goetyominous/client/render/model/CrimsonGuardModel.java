@@ -161,18 +161,18 @@ public class CrimsonGuardModel<T extends Mob> extends HierarchicalModel<T> {
 			this.head.yRot = netHeadYaw * ((float)Math.PI / 180F);
 			this.head.xRot = headPitch * ((float)Math.PI / 180F);
 			if (entity instanceof CrimsonGuardServant servant) {
-				this.setupCrimsonGuard(servant.isMeleeAttacking(), servant.getCurrentAnimation(), servant.isMoving(),
+				this.setupCrimsonGuard(servant.isMeleeAttacking(), servant.getCurrentAnimation(),
 						servant.idleAnimationState, servant.slamAnimationState, servant.sweepAnimationState,
 						limbSwing, limbSwingAmount, ageInTicks);
 			} else if (entity instanceof CrimsonGuard guard) {
-				this.setupCrimsonGuard(guard.isMeleeAttacking(), guard.getCurrentAnimation(), guard.isMoving(),
+				this.setupCrimsonGuard(guard.isMeleeAttacking(), guard.getCurrentAnimation(),
 						guard.idleAnimationState, guard.slamAnimationState, guard.sweepAnimationState,
 						limbSwing, limbSwingAmount, ageInTicks);
 			}
 		}
 	}
 
-	private void setupCrimsonGuard(boolean attacking, int currentAnimation, boolean moving,
+	private void setupCrimsonGuard(boolean attacking, int currentAnimation,
 								   AnimationState idle, AnimationState slam, AnimationState sweep,
 								   float limbSwing, float limbSwingAmount, float ageInTicks) {
 		if (attacking) {
@@ -181,11 +181,11 @@ public class CrimsonGuardModel<T extends Mob> extends HierarchicalModel<T> {
 			} else if (currentAnimation == CrimsonGuardServant.ANIM_SWEEP) {
 				this.animate(sweep, CrimsonGuardAnimation.SWEEP, ageInTicks);
 			}
-		} else if (moving) {
-			this.animateWalk(CrimsonGuardAnimation.WALK, limbSwing, limbSwingAmount, 2.5F, 3.5F);
 		} else {
 			this.animate(idle, CrimsonGuardAnimation.IDLE, ageInTicks);
 		}
+
+		this.animateWalk(CrimsonGuardAnimation.WALK, limbSwing, limbSwingAmount, 2.5F, 3.5F);
 	}
 
 	@Override

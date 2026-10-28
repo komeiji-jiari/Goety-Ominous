@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.events;
 
+import com.Polarice3.Goety.client.particles.GatheringParticle;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.particle.*;
 import com.qiuyue.goetyominous.client.render.block.PlushieBlockEntityRenderer;
@@ -36,6 +37,7 @@ public class ClientEvents {
         event.registerSpriteSet(ModParticleTypes.GUST.get(), GustParticle.Provider::new);
         event.registerSpriteSet(ModParticleTypes.SMALL_GUST.get(), GustParticle.SmallProvider::new);
         event.registerSpriteSet(ModParticleTypes.INFESTED.get(), SpellParticle.Provider::new);
+        event.registerSpriteSet(ModParticleTypes.FLAME_GATHER.get(), GatheringParticle.Provider::new);
         event.registerSpecial(ModParticleTypes.DUST_PILLAR.get(), new DustPillarProvider());
         event.registerSpriteSet(ModParticleTypes.TRIAL_OMEN.get(), SpellParticle.Provider::new);
         event.registerSpriteSet(ModParticleTypes.VAULT_CONNECTION.get(), FlyTowardsPositionParticle.VaultConnectionProvider::new);
