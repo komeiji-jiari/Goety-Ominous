@@ -5,6 +5,8 @@ import com.Polarice3.Goety.common.enchantments.ModEnchantments;
 import com.Polarice3.Goety.common.entities.ModEntityType;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.ally.golem.RedstoneCube;
+import com.Polarice3.Goety.common.entities.ally.undead.GraveCube;
+import com.Polarice3.Goety.common.items.ModItems;
 import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.common.magic.SummonSpell;
 import com.Polarice3.Goety.init.ModSounds;
@@ -66,13 +68,18 @@ public class RedstoneSpell extends SummonSpell {
     }
 
     public Predicate<LivingEntity> summonPredicate() {
-        return (livingEntity) -> {
-            return livingEntity instanceof RedstoneCube;
-        };
+        return livingEntity -> livingEntity instanceof RedstoneCube || livingEntity instanceof GraveCube;
     }
 
     public int summonLimit() {
         return (Integer)SpellConfig.RedstoneCubeLimit.get();
+    }
+
+    @Override
+    public boolean rightStaff(ItemStack staff) {
+        return super.rightStaff(staff)
+                || staff.is(ModItems.NECRO_STAFF.get())
+                || staff.is(ModItems.NAMELESS_STAFF.get());
     }
 
     public void SpellResult(ServerLevel worldIn, LivingEntity caster, ItemStack staff, SpellStat spellStat) {
@@ -85,13 +92,21 @@ public class RedstoneSpell extends SummonSpell {
         }
 
         if (!this.isShifting(caster)) {
+            boolean namelessStaff = staff.is(ModItems.NAMELESS_STAFF.get());
+            boolean graveCube = namelessStaff || staff.is(ModItems.NECRO_STAFF.get());
+
             int i = 1;
             if (this.rightStaff(staff)) {
                 i = 2 + caster.level().getRandom().nextInt(2);
             }
+            if (namelessStaff) {
+                i += 2;
+            }
 
             for(int i1 = 0; i1 < i; ++i1) {
-                Summoned summonedentity = new RedstoneCube((EntityType)ModEntityType.REDSTONE_CUBE.get(), worldIn);
+                Summoned summonedentity = graveCube
+                        ? new GraveCube(ModEntityType.GRAVE_CUBE.get(), worldIn)
+                        : new RedstoneCube((EntityType) ModEntityType.REDSTONE_CUBE.get(), worldIn);
 
                 BlockPos blockPos = BlockFinder.SummonRadius(caster.blockPosition(), (Entity)summonedentity, worldIn);
                 ((Summoned)summonedentity).setTrueOwner(caster);

@@ -4,7 +4,7 @@
   "activation_item": {
     "item": "opposing_force:terror_saw"
   },
-  "craftType": "forge",
+  "craftType": "deep",
   "entity_to_summon": "goetyominous:terror_servant",
   "soulCost": 1,
   "duration": 5,

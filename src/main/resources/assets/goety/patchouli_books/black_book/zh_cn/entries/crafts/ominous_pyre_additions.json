@@ -24,7 +24,7 @@
     },
     {
       "type": "patchouli:text",
-      "title": "斩灵守卫仆从",
+      "title": "皇家禁卫仆从",
       "advancement": "goety:goety/read_front_scroll",
       "text": "$(o)注: 所有者必须阅读过$(l:goety:rumors/desert)先锋卷轴$()$()$(br)需求：$(li)卫道士仆从 $(li)4个不祥雕像 $(li)8块皇家地毯或霜冻地毯 $(li)4个骷髅头颅 $(li)4个铁砧 $(li)8个$(l:goety:crafts/stash_urn)隐秘之瓮$()"
     }

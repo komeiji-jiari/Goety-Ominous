@@ -22,6 +22,7 @@ public class ModParticleTypes {
     public static final RegistryObject<SimpleParticleType> GUST_EMITTER_SMALL = PARTICLE_TYPES.register("gust_emitter_small", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> GUST_EMITTER_LARGE = PARTICLE_TYPES.register("gust_emitter_large", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> INFESTED = PARTICLE_TYPES.register("infested", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> FLAME_GATHER = PARTICLE_TYPES.register("flame_gather", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> TRIAL_OMEN = PARTICLE_TYPES.register("trial_omen", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> TRIAL_SPAWNER_DETECTION =
             PARTICLE_TYPES.register("trial_spawner_detection", () -> new SimpleParticleType(true));
@@ -32,7 +33,6 @@ public class ModParticleTypes {
 
     public static final RegistryObject<SimpleParticleType> VAULT_CONNECTION = PARTICLE_TYPES.register("vault_connection", () -> new SimpleParticleType(false));
 
-    /** 台风粒子 —— 绕中心旋转上升的环形风迹（风弓的飞行尾迹 + 风场环绕）。 */
     public static final RegistryObject<SimpleParticleType> WIND_TYPHOON = PARTICLE_TYPES.register("wind_typhoon", () -> new SimpleParticleType(false));
 
     public static final RegistryObject<ParticleType<BlockParticleOption>> DUST_PILLAR = PARTICLE_TYPES.register("dust_pillar",

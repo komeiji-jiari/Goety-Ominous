@@ -19,6 +19,26 @@ import net.minecraft.world.level.block.Blocks;
 public class SarOminousType implements ITrainIllager {
 
     @Override
+    public boolean canSpawn(Level level, BlockPos blockPos, int range) {
+        return this.getIllager(level, blockPos, range) != null;
+    }
+
+    @Override
+    public boolean mobCanTrainToType(Mob mob, EntityType<?> entityType) {
+        if (!SavageRavageCompat.isSavageRavageLoaded()) {
+            return false;
+        }
+        if (entityType == SarEntityRegistry.GRIEFER_SERVANT.get()
+                || entityType == SarEntityRegistry.EXECUTIONER_SERVANT.get()) {
+            return mob instanceof Neollager;
+        }
+        if (entityType == SarEntityRegistry.TRICKSTER_SERVANT.get()) {
+            return mob instanceof Neollager neollager && neollager.isMagic();
+        }
+        return false;
+    }
+
+    @Override
     public EntityType<? extends Mob> getIllager(Level level, BlockPos blockPos, int range) {
         if (!SavageRavageCompat.isSavageRavageLoaded()) {
             return null;
@@ -72,19 +92,6 @@ public class SarOminousType implements ITrainIllager {
 
     @Override
     public boolean mobCanTrainTo(Mob mob, Level level, BlockPos blockPos, int range) {
-        if (!SavageRavageCompat.isSavageRavageLoaded()) {
-            return false;
-        }
-
-        EntityType<?> resolvedType = this.getIllager(level, blockPos, range);
-        if (resolvedType == SarEntityRegistry.GRIEFER_SERVANT.get()
-                || resolvedType == SarEntityRegistry.EXECUTIONER_SERVANT.get()) {
-            return mob instanceof Neollager;
-        }
-        if (resolvedType == SarEntityRegistry.TRICKSTER_SERVANT.get()) {
-            return mob instanceof Neollager neollager && neollager.isMagic();
-        }
-
-        return false;
+        return this.mobCanTrainToType(mob, this.getIllager(level, blockPos, range));
     }
 }

@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Casting this spell with a Geo Staff summons more Redstone Cubes. If you are wearing Geo Robe, the Redstone Cubes you summon will gain Iron Hide effect."
+      "text": "Casting with a Geo Staff summons more Redstone Cubes. Using a Necro Staff instead summons Grave Cubes, and a Nameless Staff summons more Grave Cubes. If you wear Geo Robe, the Redstone Cubes you summon gain the Iron Hide effect."
     }
   ]
 }
