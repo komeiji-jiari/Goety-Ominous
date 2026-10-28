@@ -88,6 +88,8 @@ public class Leapkelp extends Leapleaf {
     private int surfaceLeapCooldown;
     private float swimPoseAmount;
     private float swimPoseAmountO;
+    private float attackStrokeAmount;
+    private float attackStrokeAmountO;
     public Leapkelp(EntityType<? extends Owned> type, Level level) {
         super(type, level);
         this.moveControl = new LeapkelpMoveControl(this);
@@ -207,6 +209,7 @@ public class Leapkelp extends Leapleaf {
     public void tick() {
         super.tick();
         this.updateSwimPoseAmount();
+        this.updateAttackStrokeAmount();
         if (this.level().isClientSide) {
             return;
         }
@@ -269,6 +272,11 @@ public class Leapkelp extends Leapleaf {
         float target = this.isSwimmingPose() ? 1.0F : 0.0F;
         this.swimPoseAmount = Mth.approach(this.swimPoseAmount, target, SWIM_POSE_STEP);
     }
+    protected void updateAttackStrokeAmount() {
+        this.attackStrokeAmountO = this.attackStrokeAmount;
+        float target = this.isMeleeAttacking() ? 1.0F : 0.0F;
+        this.attackStrokeAmount = Mth.approach(this.attackStrokeAmount, target, SWIM_POSE_STEP);
+    }
     protected boolean isSwimmingPose() {
         return this.isInWater()
                 && this.isEyeInFluidType(ForgeMod.WATER_TYPE.get())
@@ -284,6 +292,9 @@ public class Leapkelp extends Leapleaf {
     }
     public float getSwimPoseAmount(float partialTicks) {
         return Mth.lerp(partialTicks, this.swimPoseAmountO, this.swimPoseAmount);
+    }
+    public float getAttackStrokeAmount(float partialTicks) {
+        return Mth.lerp(partialTicks, this.attackStrokeAmountO, this.attackStrokeAmount);
     }
     @Override
     public void travel(Vec3 travelVector) {
