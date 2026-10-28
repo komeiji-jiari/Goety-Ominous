@@ -20,6 +20,8 @@ public class LeapkelpModel<T extends Leapkelp> extends LeapleafModel<T> {
     private static final float SWIM_STROKE_DEGREE = 0.5F;
     private static final float SWIM_LEG_SPEED = 0.375F;
     private static final float SWIM_STROKE_GAIN = 0.7F;
+    private static final float SWIM_ATTACK_STROKE_AMOUNT = 0.3F;
+    private static final float SWIM_ATTACK_STROKE_PHASE = 0.5F;
 
     private final ModelPart root;
     private final ModelPart body;
@@ -44,7 +46,8 @@ public class LeapkelpModel<T extends Leapkelp> extends LeapleafModel<T> {
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.root().getAllParts().forEach(ModelPart::resetPose);
-        float swimAmount = entity.getSwimPoseAmount(ageInTicks - entity.tickCount);
+        float partialTicks = ageInTicks - entity.tickCount;
+        float swimAmount = entity.getSwimPoseAmount(partialTicks);
         boolean alert = entity.getCurrentAnimation() == entity.getAnimationState(Leapkelp.ALERT);
         boolean blend = swimAmount > 0.0F && swimAmount < 1.0F;
         if (!entity.isDeadOrDying() && !entity.isResting()) {
@@ -64,6 +67,11 @@ public class LeapkelpModel<T extends Leapkelp> extends LeapleafModel<T> {
         if (swimAmount > 0.0F) {
             this.applySwimPose(swimAmount);
             this.applySwimMotion(limbSwing, limbSwingAmount * swimAmount * SWIM_STROKE_GAIN);
+            float attackStroke = entity.getAttackStrokeAmount(partialTicks);
+            if (attackStroke > 0.0F) {
+                this.applySwimMotion(ageInTicks * SWIM_ATTACK_STROKE_PHASE,
+                        attackStroke * swimAmount * SWIM_STROKE_GAIN * SWIM_ATTACK_STROKE_AMOUNT);
+            }
             if (blend) {
                 this.blendLandPose(swimAmount);
             }
