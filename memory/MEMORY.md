@@ -47,11 +47,11 @@
 - 工作偏好：[不写注释](no-code-comments.md)、[别擅自写配方手册](no-unrequested-recipes-patchouli.md)、[模组名 4 处显示面](goetyominous-name-surfaces-ask-scope.md)、[别自动 build jar](no-auto-build-jar.md) — 文案要就问;用户说构建才构建
 - 死代码：[清理偏好](goetyominous-deadcode-cleanup-preference.md)、[脚本](goetyominous-deadcode-analysis-scripts.md) — .scratch/_deadcode.mjs + _deadfields.mjs
 - 配置归属：[该进哪个文件](config-file-split-rule.md)、[LM 伤害](lm-servant-damage-config.md)、[敌对/仆从共用](goety-hostile-servant-shared-config.md)、[无引用键不是死键](mobsconfig-unwired-keys-are-not-dead.md)、[TOML 排序](forge-config-toml-order-historical.md)、[Goety 式命名/分段](config-goety-style-naming.md) — 删前先问；键序是历史插入序，重建才按源码
+- 已按用户令删除：[仆从+敌对移速/跟随范围/击退抗性/攻击击退配置](servant-speed-follow-config-removed.md)、[灵魂碎裂开关](soul-fracture-servant-option-removed.md) — 属性硬编码原默认值;别再提重加
 - 落点/收尾：[modid 子包隔离](goetyominous-mod-folder-isolation.md)、[刷怪蛋要补 model](servant-spawn-egg-item-model.md)、[实测实例/日志](goetyominous-test-instance-and-logs.md) — 漏 model 会紫黑块
 - 可选依赖注册：[必须放 CompatManager](optional-mod-registration-manager-gated.md) — core 无条件注册 extends 第三方类型会缺模启动崩
 - 移植准则：[表现原版/实现 Goety](ac-servant-parity-keep-original.md)、[飓风分叉是有意的](hurricane-breeze-intentional-divergence.md)、[移植漏单行](ac-goety-port-probability-gates.md) — 冲突时 Goety 优先
 - MM 手臂道具：[已按用户令删除](mm-mutant-jungle-zombie-arm-port.md) — 别再主动重提
-- 已按用户令删除：[仆从+敌对移速/跟随范围/击退抗性/攻击击退配置](servant-speed-follow-config-removed.md)、[灵魂碎裂开关](soul-fracture-servant-option-removed.md) — 属性硬编码原默认值;别再提重加
 - dist 审计：[现状+已修/仍脆弱](client-dist-audit-fragile-spots.md) — HUD 已移 client 包;LM 粒子嵌套类仍须保持无类级注解
 - [错题本同步到仓库](memory-notebook-sync-to-repo.md) — memory 整份复制到仓库 memory/，独立提交后推送
 
