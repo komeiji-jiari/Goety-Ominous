@@ -76,6 +76,7 @@ public class Leapkelp extends Leapleaf {
     private static final float SMASH_HIT_VOLUME = 0.5F;
     private static final double SMASH_LAUNCH_POWER = 2.0D;
     private static final double SMASH_LAUNCH_LIFT = 0.5D;
+    private static final double SMASH_LUNGE_POWER = 0.35D;
     public static String RIGHT_SMASH = "right_smash";
     public static String LEFT_SMASH = "left_smash";
     private static final EntityDataAccessor<Integer> MOISTNESS = SynchedEntityData.defineId(Leapkelp.class, EntityDataSerializers.INT);
@@ -606,7 +607,7 @@ public class Leapkelp extends Leapleaf {
         @Override
         public void start() {
             this.startTick = this.leapkelp.tickCount;
-            this.right = this.leapkelp.getRandom().nextBoolean();
+            this.right = !this.right;
             this.leapkelp.setMeleeAttacking(true);
             this.leapkelp.setAggressive(true);
             this.leapkelp.level().broadcastEntityEvent(this.leapkelp, (byte) 6);
@@ -632,6 +633,7 @@ public class Leapkelp extends Leapleaf {
             this.leapkelp.attackTick = 0;
         }
         private void hit() {
+            Vec3 look = this.leapkelp.getHorizontalLookAngle();
             AABB aabb = this.leapkelp.getBoundingBox().inflate(HIT_INFLATE);
             for (LivingEntity living : this.leapkelp.level().getEntitiesOfClass(LivingEntity.class, aabb)) {
                 if (living == this.leapkelp || living.isAlliedTo(this.leapkelp) || this.leapkelp.isAlliedTo(living)) {
@@ -640,16 +642,17 @@ public class Leapkelp extends Leapleaf {
                 this.leapkelp.doHurtTarget(living);
                 this.launch(living);
             }
+            this.leapkelp.push(look.x * SMASH_LUNGE_POWER, 0.0D, look.z * SMASH_LUNGE_POWER);
             this.leapkelp.playSound(ModSounds.HAMMER_IMPACT.get(), SMASH_HIT_VOLUME, 1.0F + this.leapkelp.getRandom().nextFloat() * 0.1F);
             CameraShake.cameraShake(this.leapkelp.level(), this.leapkelp.position(), 10.0F, 0.15F, 0, 20);
             if (!(this.leapkelp.level() instanceof ServerLevel serverLevel)) {
                 return;
             }
-            Vec3 look = this.leapkelp.getHorizontalLookAngle();
             double x = this.leapkelp.getX() + look.x * 2.0D;
             double z = this.leapkelp.getZ() + look.z * 2.0D;
             serverLevel.sendParticles(new SmashParticleOption(ColorUtil.WHITE, HIT_PARTICLE_SIZE, 8), x, this.leapkelp.getY(), z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
             serverLevel.sendParticles(ParticleTypes.SPLASH, x, this.leapkelp.getY() + 0.3D, z, 20, 1.5D, 0.3D, 1.5D, 0.15D);
+            serverLevel.sendParticles(ParticleTypes.BUBBLE, x, this.leapkelp.getY() + 0.2D, z, 15, 0.9D, 0.6D, 0.9D, 0.05D);
         }
         private void launch(LivingEntity living) {
             double dx = living.getX() - this.leapkelp.getX();
