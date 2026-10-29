@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: reference
   originSessionId: 0672aaf0-77b6-46d7-81bf-27f28135f10d
-  modified: 2026-10-03T17:26:34.886Z
+  modified: 2026-10-28T18:17:56.391Z
 ---
 
 潮涌之叶(`Leapkelp`)在水里的泳姿 / 划水 / 近战,2026-10-03 从 **珊瑚巨像 Coralssus** 改成了 **珊瑚傀儡 Coral Golem**(两只不同的怪,见 [[cataclysm-coral-golem-vs-coralssus]])。范围**仅限水里**,陆地砸地 `LeapkelpSmashGoal` 不动。
@@ -42,8 +42,8 @@ cataclysm/Goety-Cataclysm 用 LionfishAPI,和原版 `KeyframeAnimations` 是**�
 
 ## 落地的实现(2026-10-03)
 
-- `LeapkelpAnimations` 现在**只剩** `RIGHT_SMASH`/`LEFT_SMASH`(`withLength(1.8F)`,36 tick,8 个采样点 `t∈{0,5,10,15,16,26,31,36}`,LINEAR)。
-- `LeapkelpModel` 里 `applySwimPose(swim)` + `applySwimMotion(limbSwing, limbSwingAmount*swimAmount)` 取代了 `applyStatic(SWIM_POSE)` + `animateWalk(SWIM)`;`stroke()` 就是 `calculateRotation` 的直译。泳姿常量是 `LeapkelpModel` 的 private static final(不再是 AnimationDefinition)。
+- `LeapkelpAnimations` 现在**只剩** `RIGHT_SMASH`/`LEFT_SMASH`(`withLength(1.8F)`,36 tick)。⚠ 原始落盘是 8 个采样点 LINEAR、带两段静止窗口;**2026-10-28 已被重排成 11 点 CATMULLROM**,见 [[leapkelp-water-smash-resmooth]]。
+- `LeapkelpModel` 里 `applySwimPose(swim)` + `applySwimMotion(limbSwing, limbSwingAmount*swimAmount)` 取代了 `applyStatic(SWIM_POSE)` + `animateWalk(SWIM)`。泳姿常量是 `LeapkelpModel` 的 private static final(不再是 AnimationDefinition)。⚠ `stroke()` 只是 `calculateRotation` 的**近似**直译:手臂的 `flap` 应该加 zRot(我们写成了 xRot),且 `+ weight*amount` 那项丢了 —— 见 [[leapkelp-water-smash-resmooth]] 末节。
 - `Leapkelp`:状态常量 `SMASH_STATE_RIGHT/LEFT`(仍 8/9)、`SMASH_HIT_TICK=16`、`SMASH_END_TICK=36`、字符串 `RIGHT_SMASH`/`LEFT_SMASH`;`AnimationState right/leftSmashAnimationState`、字段 `smashAnimation`。goal 改名 `LeapkelpWaterSmashGoal`(原 `LeapkelpPunchGoal`),`ATTACK_RANGE 4.5→3.75`、`HIT_INFLATE 3.5→3.0`,左右改随机。
 - `hit()` 顺序改成 **先 `doHurtTarget` 后 `launch`**(对齐 `EarthQuake`),`launch` 用 `push` 不用 `setDeltaMovement`。音效仍 Goety `ModSounds.HAMMER_IMPACT`、粒子仍 `SmashParticleOption`+`SPLASH`(不引 cataclysm 的 `CataclysmSounds.EXPLOSION` / 方块碎片环 —— 后者的 `Makeparticle` 在水里会被 `getRenderShape()==INVISIBLE` 跳过,等于没有)。
 
