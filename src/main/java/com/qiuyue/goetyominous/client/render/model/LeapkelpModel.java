@@ -20,7 +20,7 @@ public class LeapkelpModel<T extends Leapkelp> extends LeapleafModel<T> {
     private static final float SWIM_STROKE_DEGREE = 0.5F;
     private static final float SWIM_LEG_SPEED = 0.375F;
     private static final float SWIM_STROKE_GAIN = 0.7F;
-    private static final float SWIM_ATTACK_STROKE_AMOUNT = 0.3F;
+    private static final float SWIM_ATTACK_STROKE_AMOUNT = 0.15F;
     private static final float SWIM_ATTACK_STROKE_PHASE = 0.5F;
 
     private final ModelPart root;
