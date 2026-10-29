@@ -120,14 +120,12 @@ public class IcicleSpikeServant extends Entity {
                         : this.owner;
                 for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox())) {
                     if (entity == this.owner || !this.canHarm(entity) || this.alreadyHurtEntities.contains(entity)) continue;
-                    if (this.spellOwned) {
-                        if (entity instanceof Player player && (player.isCreative() || player.isSpectator())) continue;
-                        if (root != null && (entity == root
-                                || entity instanceof IOwned owned && owned.getMasterOwner() == root
-                                || entity instanceof OwnableEntity ownable && ownable.getOwner() == root
-                                || MobUtil.areAllies(root, entity))) {
-                            continue;
-                        }
+                    if (entity instanceof Player player && (player.isCreative() || player.isSpectator())) continue;
+                    if (root != null && (entity == root
+                            || entity instanceof IOwned owned && owned.getMasterOwner() == root
+                            || entity instanceof OwnableEntity ownable && ownable.getOwner() == root
+                            || MobUtil.areAllies(root, entity))) {
+                        continue;
                     }
                     if (this.ignoresInvulTime) {
                         entity.invulnerableTime = 0;

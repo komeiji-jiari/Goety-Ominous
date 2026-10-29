@@ -5,6 +5,7 @@ import com.Polarice3.Goety.api.entities.ally.IServant;
 import com.Polarice3.Goety.utils.MobUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.OwnableEntity;
 
 public final class ServantAllyUtil {
 
@@ -22,6 +23,9 @@ public final class ServantAllyUtil {
         if (attacker == null || target == null) {
             return false;
         }
+        if (attacker == target) {
+            return true;
+        }
         if (MobUtil.areAllies(attacker, target)) {
             return true;
         }
@@ -29,9 +33,20 @@ public final class ServantAllyUtil {
                 && MobUtil.ownerStack(ownedAttacker, ownedTarget)) {
             return true;
         }
-        if (target instanceof IOwned ownedTarget && ownedTarget.getTrueOwner() == attacker) {
-            return true;
+        LivingEntity ownerAttacker = getOwner(attacker);
+        LivingEntity ownerTarget = getOwner(target);
+        return ownerAttacker != null && ownerAttacker == target
+                || ownerTarget != null && ownerTarget == attacker
+                || ownerAttacker != null && ownerAttacker == ownerTarget;
+    }
+
+    private static LivingEntity getOwner(Entity entity) {
+        if (entity instanceof IOwned owned && owned.getTrueOwner() != null) {
+            return owned.getTrueOwner();
         }
-        return attacker instanceof IOwned ownedAttacker && ownedAttacker.getTrueOwner() == target;
+        if (entity instanceof OwnableEntity ownable) {
+            return ownable.getOwner();
+        }
+        return null;
     }
 }

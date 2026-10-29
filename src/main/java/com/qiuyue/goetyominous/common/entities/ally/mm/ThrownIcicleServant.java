@@ -47,7 +47,7 @@ public class ThrownIcicleServant extends ThrowableProjectile {
     }
 
     private boolean isSpellFriendly(Entity target) {
-        if (!this.spellOwned || this.getOwner() == null) {
+        if (this.getOwner() == null) {
             return false;
         }
         if (target == this.getOwner()) {
@@ -56,12 +56,12 @@ public class ThrownIcicleServant extends ThrowableProjectile {
         LivingEntity root = this.getOwner() instanceof IOwned owned
                 ? owned.getMasterOwner()
                 : (LivingEntity) this.getOwner();
-        if (target instanceof Player player && (player.isCreative() || player.isSpectator())) {
+        if (this.spellOwned && target instanceof Player player && (player.isCreative() || player.isSpectator())) {
             return true;
         }
-        return target instanceof IOwned owned && owned.getMasterOwner() == root
+        return root != null && (target instanceof IOwned owned && owned.getMasterOwner() == root
                 || target instanceof OwnableEntity ownable && ownable.getOwner() == root
-                || MobUtil.areAllies(root, target);
+                || MobUtil.areAllies(root, target));
     }
 
     protected void onHitEntity(EntityHitResult p_37386_) {
