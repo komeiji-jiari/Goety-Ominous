@@ -1,6 +1,5 @@
 package com.qiuyue.goetyominous.common.entities.ally.mm.goals.MutantHoglinServant;
 
-import com.Polarice3.Goety.utils.MobUtil;
 import com.alexander.mutantmore.config.mutant_hoglin.MutantHoglinCommonConfig;
 import com.qiuyue.goetyominous.compat.mm.MmScreenShake;
 import com.alexander.mutantmore.init.MMDamageTypes;
@@ -8,6 +7,7 @@ import com.alexander.mutantmore.init.ParticleTypeInit;
 import com.alexander.mutantmore.util.MiscUtils;
 import com.alexander.mutantmore.util.PositionUtils;
 import com.qiuyue.goetyominous.common.entities.ally.mm.MutantHoglinServant;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Objects;
@@ -100,7 +100,7 @@ public class MutantHoglinStompAttackGoal extends Goal {
                 } while(entity == this.mob);
             } while(!entity.onGround() && (!entity.isPassenger() || !entity.getRootVehicle().onGround()));
 
-            if (MobUtil.areAllies(this.mob, entity)) {
+            if (ServantAllyUtil.areAllied(this.mob, entity)) {
                 continue;
             }
 

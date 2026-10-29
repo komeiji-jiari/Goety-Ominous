@@ -84,6 +84,7 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.ForgeRegistries;
 import com.qiuyue.goetyominous.config.mm.MmConfig;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 
 public class MutantFrozenZombieServant extends AbstractMutantServant implements ISnowstormSource {
     private static final EntityDataAccessor<Integer> REMAINING_LIVES = SynchedEntityData.defineId(MutantFrozenZombieServant.class, EntityDataSerializers.INT);
@@ -217,7 +218,7 @@ public class MutantFrozenZombieServant extends AbstractMutantServant implements 
     }
 
     public boolean canHarm(Entity target) {
-        if (MobUtil.areAllies(this, target)) {
+        if (ServantAllyUtil.areAllied(this, target)) {
             return false;
         }
         return MiscUtils.canHarmBasedOnTeamAndTag(EntityTypes.MUTANT_FROZEN_ZOMBIE_CANT_HURT, this, target, this, null);
