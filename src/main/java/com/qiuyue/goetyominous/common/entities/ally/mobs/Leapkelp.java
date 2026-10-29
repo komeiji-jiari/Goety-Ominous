@@ -76,7 +76,7 @@ public class Leapkelp extends Leapleaf {
     private static final float SMASH_HIT_VOLUME = 0.5F;
     private static final double SMASH_LAUNCH_POWER = 2.0D;
     private static final double SMASH_LAUNCH_LIFT = 0.5D;
-    private static final double SMASH_LUNGE_POWER = 0.35D;
+    private static final double SMASH_LUNGE_POWER = 0.08D;
     public static String RIGHT_SMASH = "right_smash";
     public static String LEFT_SMASH = "left_smash";
     private static final EntityDataAccessor<Integer> MOISTNESS = SynchedEntityData.defineId(Leapkelp.class, EntityDataSerializers.INT);
