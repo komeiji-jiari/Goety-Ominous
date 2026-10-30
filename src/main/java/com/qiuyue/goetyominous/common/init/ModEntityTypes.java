@@ -3,7 +3,9 @@ package com.qiuyue.goetyominous.common.init;
 import com.qiuyue.goetyominous.common.blocks.trial.OminousItemSpawner;
 import com.qiuyue.goetyominous.common.entities.ally.ias.*;
 import com.qiuyue.goetyominous.common.entities.ally.illager.CrimsonGuardServant;
+import com.qiuyue.goetyominous.common.entities.ally.illager.ImperialChasseurServant;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.CrimsonGuard;
+import com.qiuyue.goetyominous.common.entities.hostile.illagers.ImperialChasseur;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.*;
 
 import com.qiuyue.goetyominous.common.entities.ally.mobs.StormNecromancerServant;
@@ -55,6 +57,20 @@ public class ModEntityTypes {
                     .clientTrackingRange(10)
                     .build(MOD_ID + ":crimson_guard"));
 
+    public static final RegistryObject<EntityType<ImperialChasseurServant>> IMPERIAL_CHASSEUR_SERVANT = ENTITY_TYPES.register(
+            "imperial_chasseur_servant",
+            () -> EntityType.Builder.of(ImperialChasseurServant::new, MobCategory.MISC)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":imperial_chasseur_servant"));
+
+    public static final RegistryObject<EntityType<ImperialChasseur>> IMPERIAL_CHASSEUR = ENTITY_TYPES.register(
+            "imperial_chasseur",
+            () -> EntityType.Builder.of(ImperialChasseur::new, MobCategory.MONSTER)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(10)
+                    .build(MOD_ID + ":imperial_chasseur"));
+
     public static final RegistryObject<EntityType<DredenEntity>> DREDEN = ENTITY_TYPES.register(
             "dreden",
             () -> EntityType.Builder.of(DredenEntity::new, MobCategory.MONSTER)
@@ -82,6 +98,14 @@ public class ModEntityTypes {
                     .sized(0.35F, 0.35F)
                     .clientTrackingRange(4)
                     .build(MOD_ID + ":frost_ball"));
+
+    public static final RegistryObject<EntityType<ChasseurArrow>> CHASSEUR_ARROW = ENTITY_TYPES.register(
+            "chasseur_arrow",
+            () -> EntityType.Builder.<ChasseurArrow>of(ChasseurArrow::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(4)
+                    .updateInterval(20)
+                    .build(MOD_ID + ":chasseur_arrow"));
 
     public static final RegistryObject<EntityType<SunkenNecromancerServant>> SUNKEN_NECROMANCER_SERVANT = ENTITY_TYPES.register(
             "sunken_necromancer_servant",

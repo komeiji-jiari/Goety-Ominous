@@ -176,6 +176,9 @@ public class ModModelLayers {
         event.registerLayerDefinition(ModEntityLayers.ARCH_GEOMANCER_LAYER,
                 ArchGeomancerModel::createBodyLayer);
 
+        event.registerLayerDefinition(ModEntityLayers.IMPERIAL_CHASSEUR_LAYER,
+                ImperialChasseurModel::createBodyLayer);
+
         event.registerLayerDefinition(ModEntityLayers.PIGLIN_SERVANT_LAYER,
                 () -> net.minecraft.client.model.geom.builders.LayerDefinition.create(
                         PiglinServantModel.createMesh(net.minecraft.client.model.geom.builders.CubeDeformation.NONE), 64, 64));
@@ -286,6 +289,9 @@ public class ModModelLayers {
                         super.scale(entity, poseStack, partialTicks);
                     }
                 });
+
+        event.registerEntityRenderer(ModEntityTypes.IMPERIAL_CHASSEUR_SERVANT.get(), ImperialChasseurRenderer::new);
+        event.registerEntityRenderer(ModEntityTypes.IMPERIAL_CHASSEUR.get(), ImperialChasseurRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.MIRED_SERVANT.get(), MiredRenderer::new);
 

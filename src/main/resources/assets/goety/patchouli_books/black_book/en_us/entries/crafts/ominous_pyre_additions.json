@@ -27,6 +27,12 @@
       "title": "Crimson Guard Servant",
       "advancement": "goety:goety/read_front_scroll",
       "text": "$(o)Note: Owner must have read $(l:goety:rumors/desert)Front Scroll$()$()$(br)Requirements: $(li)Vindicator Servant $(li)4 Ominous Statues $(li)8 Royal/Frosty Carpets $(li)4 Skeleton Skulls $(li)4 Anvils $(li)8 $(l:goety:crafts/stash_urn)Stash Urns$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Imperial Chasseur Servant",
+      "advancement": "goety:goety/read_front_scroll",
+      "text": "$(o)Note: Owner must have read $(l:goety:rumors/desert)Front Scroll$()$()$(br)Requirements: $(li)Pillager Servant $(li)4 Ominous Statues $(li)6 Bookshelves/Enchant Power $(li)4 Hay/Target Blocks $(li)4 Fletching Table $(li)1 Enchantment Table $(li)8 $(l:goety:crafts/stash_urn)Stash Urns$()"
     }
   ],
   "extra_recipe_mappings": {

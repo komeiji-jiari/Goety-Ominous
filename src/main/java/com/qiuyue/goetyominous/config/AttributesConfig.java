@@ -97,6 +97,15 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> CrimsonGuardFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> CrimsonGuardKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> CrimsonGuardAttackKnockback;
+    public static final ForgeConfigSpec.ConfigValue<Double> ImperialChasseurHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> ImperialChasseurArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> ImperialChasseurToughness;
+    public static final ForgeConfigSpec.ConfigValue<Double> ImperialChasseurDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> ImperialChasseurRangeDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> ImperialChasseurSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> ImperialChasseurFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> ImperialChasseurKnockbackResistance;
+    public static final ForgeConfigSpec.ConfigValue<Double> ImperialChasseurAttackKnockback;
 
     static {
         BUILDER.push("Servants Attributes");
@@ -346,6 +355,26 @@ public class AttributesConfig {
                 .defineInRange("crimsonGuardKnockbackResistance", 1.0, 0.0, 1.0);
         CrimsonGuardAttackKnockback = BUILDER.comment("How much knockback Crimson Guards deal, Default: 1.5")
                 .defineInRange("crimsonGuardAttackKnockback", 1.5, 0.0, Double.MAX_VALUE);
+        BUILDER.pop();
+        BUILDER.push("Imperial Chasseur");
+        ImperialChasseurHealth = BUILDER.comment("How much Max Health Imperial Chasseurs have, Default: 48.0")
+                .defineInRange("imperialChasseurHealth", 48.0D, 1.0D, Double.MAX_VALUE);
+        ImperialChasseurArmor = BUILDER.comment("How much natural Armor Imperial Chasseurs have, Default: 12.0")
+                .defineInRange("imperialChasseurArmor", 12.0D, 0.0D, Double.MAX_VALUE);
+        ImperialChasseurToughness = BUILDER.comment("How much natural Armor Toughness Imperial Chasseurs have, Default: 2.0")
+                .defineInRange("imperialChasseurToughness", 2.0D, 0.0D, Double.MAX_VALUE);
+        ImperialChasseurDamage = BUILDER.comment("How much melee damage Imperial Chasseurs deal, Default: 8.0")
+                .defineInRange("imperialChasseurDamage", 8.0D, 1.0D, Double.MAX_VALUE);
+        ImperialChasseurRangeDamage = BUILDER.comment("Base damage of an Imperial Chasseur's heavy arrow, Default: 10.0")
+                .defineInRange("imperialChasseurRangeDamage", 10.0D, 0.0D, Double.MAX_VALUE);
+        ImperialChasseurSpeed = BUILDER.comment("How fast Imperial Chasseurs move, Default: 0.3")
+                .defineInRange("imperialChasseurSpeed", 0.3D, 0.0D, Double.MAX_VALUE);
+        ImperialChasseurFollowRange = BUILDER.comment("How far Imperial Chasseurs target enemies, Default: 32.0")
+                .defineInRange("imperialChasseurFollowRange", 32.0D, 0.0D, Double.MAX_VALUE);
+        ImperialChasseurKnockbackResistance = BUILDER.comment("How much knockback resistance Imperial Chasseurs have, Default: 1.0")
+                .defineInRange("imperialChasseurKnockbackResistance", 1.0D, 0.0D, 1.0D);
+        ImperialChasseurAttackKnockback = BUILDER.comment("How much knockback Imperial Chasseurs deal, Default: 2.0")
+                .defineInRange("imperialChasseurAttackKnockback", 2.0D, 0.0D, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.pop();
         SPEC = BUILDER.build();

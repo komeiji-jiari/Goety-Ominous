@@ -34,6 +34,17 @@
       "type": "patchouli:text",
       "advancement": "goety:goety/read_front_scroll",
       "text": "As a variant of the Royal Guard, the Crimson Guard excels at harvesting life force from enemies. The more damage they deal to a foe, the more health they recover from it."
+    },
+    {
+      "type": "patchouli:entity",
+      "advancement": "goety:goety/read_front_scroll",
+      "entity": "goetyominous:imperial_chasseur_servant",
+      "scale": 0.75
+    },
+    {
+      "type": "patchouli:text",
+      "advancement": "goety:goety/read_front_scroll",
+      "text": "These elites among the Pillagers excel at precise shooting. In addition to firing heavier, more penetrating arrows, they also use special explosive magic ammunition to shoot at creatures."
     }
   ]
 }

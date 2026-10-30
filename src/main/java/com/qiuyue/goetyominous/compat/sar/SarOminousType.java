@@ -77,6 +77,7 @@ public class SarOminousType implements ITrainIllager {
             return SarEntityRegistry.EXECUTIONER_SERVANT.get();
         }
 
+
         if (gloomyTilesBlock != null && chiseledGloomyTilesBlock != null
                 && checker.hasBlocks(blockState -> blockState.is(Blocks.CARVED_PUMPKIN), 2)
                 && checker.hasBlocks(blockState -> blockState.is(Blocks.HAY_BLOCK), 2)
