@@ -65,7 +65,7 @@
 - 骑乘者接管：[不操控时 AI 接管](goety-mount-idle-ai-authority.md)、[isImmobile 定身](goety-mount-immobile-anim-root.md)、[AC 双重渲染](ac-rider-layer-double-render.md)、[Mob 骑 Mob 关载具 AI](forge-mob-rider-disables-vehicle-ai.md) — 按 zza/xxa
 - 多部件：[肢体 extends Summoned 三坑](goety-multipart-part-as-servant.md)、[肢体被打崩](goety-multipart-part-projectile-crash.md)、[部件晚一拍](sauropod-part-oldpos-teleport-neck.md)、[yBodyRot 客户端算](sauropod-client-ybodyrot-local.md)、[移动时 yBodyRot 硬贴](mob-tickheadturn-bodyrot-snap.md)、[骑乘扭头](goety-sauropod-ridden-neck-lag.md)、[蜈蚣体节抖动](goety-centipede-ringbuffer-freeze-seam.md) — 委派 isCommanded
 - 水陆两栖：[导航 goal 规则](goety-water-navigation-goals.md)、[水面弹跳](goety-amphibious-floatgoal-bounce.md)、[泳控对照](vanilla-swim-movecontrol-xxa-reference.md) — 水下自灭用 AirAndWaterR
-- 潮涌之叶：[上岸/下水/跳劈](goety-leapkelp-land-water-leap.md)、[泳姿来自珊瑚傀儡](leapkelp-swim-anim-coralssus-port.md)、[水中重砸重排(有意偏离)](leapkelp-water-smash-resmooth.md)、[珊瑚傀儡≠珊瑚巨像](cataclysm-coral-golem-vs-coralssus.md) — 离水关 wantsToSwim
+- 潮涌之叶：[上岸/下水/跳劈](goety-leapkelp-land-water-leap.md)、[泳姿来自珊瑚傀儡](leapkelp-swim-anim-coralssus-port.md)、[水中重砸重排(有意偏离)](leapkelp-water-smash-resmooth.md)、[珊瑚傀儡≠珊瑚巨像](cataclysm-coral-golem-vs-coralssus.md)、[游荡 AI 平滑改造四条根因](leapkelp-wander-ai-tuning.md) — 离水关 wantsToSwim;别再主动重做游荡/上浮/转向
 - Leapleaf：[水陆门控](goety-leapleaf-leap-goal-gating.md)、[静止姿势](goety-leapleaf-model-geometry.md)、[restTick 冻结 AI](goety-leapleaf-rest-immobile-freeze.md) — 无 onGround 检查→浅水会跳
 - 灵魂鹫：[仆从移植](soul-vulture-servant-port.md) — 栖息三态
 - 索敌：[搜索盒 ±4 格](goety-target-search-area-vertical-4-blocks.md) — 高空飞仆锁不上地面怪
