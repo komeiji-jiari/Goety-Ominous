@@ -22,6 +22,10 @@ public class LeapkelpModel<T extends Leapkelp> extends LeapleafModel<T> {
     private static final float SWIM_STROKE_GAIN = 0.7F;
     private static final float SWIM_ATTACK_STROKE_AMOUNT = 0.15F;
     private static final float SWIM_ATTACK_STROKE_PHASE = 0.5F;
+    private static final float SWIM_IDLE_GAIN = 0.35F;
+    private static final float SWIM_IDLE_BOB = 0.5F;
+    private static final float SWIM_IDLE_BOB_SPEED = 0.1F;
+    private static final float SWIM_MOVE_FULL_SPEED = 4.0F;
 
     private final ModelPart root;
     private final ModelPart body;
@@ -67,6 +71,10 @@ public class LeapkelpModel<T extends Leapkelp> extends LeapleafModel<T> {
         if (swimAmount > 0.0F) {
             this.applySwimPose(swimAmount);
             this.applySwimMotion(limbSwing, limbSwingAmount * swimAmount * SWIM_STROKE_GAIN);
+            float idleAmount = (1.0F - Mth.clamp(limbSwingAmount * SWIM_MOVE_FULL_SPEED, 0.0F, 1.0F)) * swimAmount;
+            if (idleAmount > 0.0F) {
+                this.applySwimIdle(ageInTicks, idleAmount);
+            }
             float attackStroke = entity.getAttackStrokeAmount(partialTicks);
             if (attackStroke > 0.0F) {
                 this.applySwimMotion(ageInTicks * SWIM_ATTACK_STROKE_PHASE,
@@ -104,6 +112,11 @@ public class LeapkelpModel<T extends Leapkelp> extends LeapleafModel<T> {
         this.rightArm.xRot += stroke(SWIM_STROKE_SPEED, SWIM_STROKE_DEGREE * 2.75F, true, -0.5F, limbSwing, amount);
         this.rightLeg.xRot += stroke(SWIM_LEG_SPEED, SWIM_STROKE_DEGREE, true, 2.0F, limbSwing, amount);
         this.leftLeg.xRot += stroke(SWIM_LEG_SPEED, SWIM_STROKE_DEGREE, false, 2.0F, limbSwing, amount);
+    }
+
+    private void applySwimIdle(float ageInTicks, float amount) {
+        this.applySwimMotion(ageInTicks, amount * SWIM_IDLE_GAIN);
+        this.root.y += Mth.sin(ageInTicks * SWIM_IDLE_BOB_SPEED) * SWIM_IDLE_BOB * amount;
     }
 
     private static float stroke(float speed, float degree, boolean invert, float offset, float swing, float amount) {

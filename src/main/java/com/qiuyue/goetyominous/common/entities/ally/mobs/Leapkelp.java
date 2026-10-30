@@ -11,6 +11,7 @@ import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.BlockFinder;
 import com.Polarice3.Goety.utils.ColorUtil;
 import com.Polarice3.Goety.utils.MobUtil;
+import com.qiuyue.goetyominous.common.entities.ai.am.SmoothBodyRotationControl;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -20,6 +21,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.AnimationState;
@@ -30,13 +32,13 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
-import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
@@ -57,13 +59,23 @@ public class Leapkelp extends Leapleaf {
     private static final int MAX_REST_TICKS = 20;
     private static final float SWIM_SPEED_MULTIPLIER = 4.0F;
     private static final float SWIM_THRUST = 0.014F;
-    private static final int SWIM_MAX_TURN_Y = 90;
+    private static final int SWIM_MAX_TURN_Y = 20;
+    private static final double SWIM_LOOKAHEAD_SQR = 25.0D;
+    private static final float SWIM_HEAD_TURN = 12.0F;
     private static final int SWIM_MAX_TURN_X = 85;
     private static final float SWIM_PITCH_STEP = 5.0F;
     private static final float SWIM_CLIMB_SPEED = 0.3F;
     private static final float SWIM_MIN_DISTANCE_SQR = 2.5E-7F;
     private static final float SWIM_POSE_STEP = 0.15F;
+    private static final int SWIM_POSE_SWITCH_TICKS = 4;
     private static final int SWIM_UP_RETARGET_COOLDOWN = 10;
+    private static final double SWIM_UP_DISTANCE = 4.0D;
+    private static final int[] WANDER_RADII = {16, 12};
+    private static final double WANDER_CONE = Math.PI / 9.0D;
+    private static final double WANDER_MIN_LEG_SQR = 36.0D;
+    private static final int WANDER_LEGS_MAX = 3;
+    private static final float WANDER_TURN_MIN = 45.0F;
+    private static final float WANDER_TURN_SPAN = 90.0F;
     private static final int MOISTNESS_DRAIN_DAY = 10;
     private static final int MOISTNESS_DRAIN_NIGHT = 5;
     private static final int LEAP_COOLDOWN_TICKS = 10;
@@ -85,6 +97,8 @@ public class Leapkelp extends Leapleaf {
     protected final ModWaterPathNavigation waterNavigation;
     protected final GroundPathNavigation groundNavigation;
     private boolean searchingForLand;
+    private boolean swimmingPose;
+    private int swimPoseSwitchTick;
     private int smashAnimation;
     private int surfaceLeapCooldown;
     private float swimPoseAmount;
@@ -99,6 +113,10 @@ public class Leapkelp extends Leapleaf {
         this.setPathfindingMalus(BlockPathTypes.UNPASSABLE_RAIL, 0.0F);
         this.waterNavigation = new ModWaterPathNavigation(this, level);
         this.groundNavigation = new GroundPathNavigatorFat(this, level);
+    }
+    @Override
+    protected BodyRotationControl createBodyControl() {
+        return new SmoothBodyRotationControl(this);
     }
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Leapleaf.setCustomAttributes().add(Attributes.MOVEMENT_SPEED, 0.3D);
@@ -118,24 +136,98 @@ public class Leapkelp extends Leapleaf {
         this.goalSelector.addGoal(3, new LeapkelpGoToBeachGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new LeapkelpGoToWaterGoal(this, 1.0D));
         this.goalSelector.addGoal(4, new LeapkelpSwimAttackGoal(this, 1.0D));
-        this.goalSelector.addGoal(6, new LeapkelpSwimUpGoal(this, 1.0D, this.level().getSeaLevel()));
         this.goalSelector.addGoal(7, new Summoned.WaterWanderGoal<Leapkelp>(this, 1.0D) {
+            private float courseYaw = Float.NaN;
+            private int courseLegs;
+
             @Override
-            public boolean canUse() {
-                return super.canUse() && !Leapkelp.this.isNovelty;
+            public boolean canContinueToUse() {
+                if (Leapkelp.this.isVehicle()) {
+                    return false;
+                }
+                if (!Leapkelp.this.getNavigation().isDone()) {
+                    return true;
+                }
+                if (!Leapkelp.this.isInWaterOrBubble()) {
+                    return false;
+                }
+                for (int i = 0; i < 3; ++i) {
+                    Vec3 next = this.getPosition();
+                    if (next == null || Leapkelp.this.distanceToSqr(next) < WANDER_MIN_LEG_SQR) {
+                        continue;
+                    }
+                    this.wantedX = next.x;
+                    this.wantedY = next.y;
+                    this.wantedZ = next.z;
+                    if (Leapkelp.this.getNavigation().moveTo(next.x, next.y, next.z, this.speedModifier)) {
+                        this.nextLeg();
+                        return true;
+                    }
+                }
+                return false;
             }
+
             @Override
             protected Vec3 getPosition() {
-                if (Leapkelp.this.isInWaterOrBubble()) {
-                    Vec3 view = Leapkelp.this.getViewVector(0.0F);
-                    Vec3 waterPos = AirAndWaterRandomPos.getPos(Leapkelp.this, 10, 7, -2, view.x, view.z, Math.PI / 2.0D);
+                if (!Leapkelp.this.isInWaterOrBubble()) {
+                    this.courseYaw = Float.NaN;
+                    return super.getPosition();
+                }
+                if (Float.isNaN(this.courseYaw)) {
+                    this.courseYaw = Leapkelp.this.getYRot();
+                    this.courseLegs = this.legsPerCourse();
+                }
+                for (int radius : WANDER_RADII) {
+                    Vec3 waterPos = this.findWaterTarget(this.courseYaw, radius, WANDER_CONE);
                     if (waterPos != null) {
                         return waterPos;
                     }
                 }
-                return super.getPosition();
+                this.courseYaw = Leapkelp.this.getYRot() + (Leapkelp.this.getRandom().nextFloat() - 0.5F) * 180.0F;
+                this.courseLegs = this.legsPerCourse();
+                Vec3 waterPos = this.findWaterTarget(this.courseYaw, WANDER_RADII[0], Math.PI);
+                if (waterPos != null) {
+                    this.courseYaw = this.yawTo(waterPos);
+                }
+                return waterPos;
+            }
+
+            private void nextLeg() {
+                if (--this.courseLegs > 0) {
+                    return;
+                }
+                this.courseLegs = this.legsPerCourse();
+                float turn = (WANDER_TURN_MIN + Leapkelp.this.getRandom().nextFloat() * WANDER_TURN_SPAN)
+                        * (Leapkelp.this.getRandom().nextBoolean() ? 1.0F : -1.0F);
+                this.courseYaw = Mth.wrapDegrees(this.courseYaw + turn);
+            }
+
+            private int legsPerCourse() {
+                return 1 + Leapkelp.this.getRandom().nextInt(WANDER_LEGS_MAX);
+            }
+
+            private float yawTo(Vec3 pos) {
+                double dx = pos.x - Leapkelp.this.getX();
+                double dz = pos.z - Leapkelp.this.getZ();
+                return (float) (Mth.atan2(dz, dx) * (180.0D / Math.PI)) - 90.0F;
+            }
+
+            @Nullable
+            private Vec3 findWaterTarget(float yaw, int radius, double maxAngle) {
+                float rad = yaw * ((float) Math.PI / 180.0F);
+                double dirX = -Mth.sin(rad);
+                double dirZ = Mth.cos(rad);
+                for (int i = 0; i < 4; ++i) {
+                    Vec3 pos = AirAndWaterRandomPos.getPos(Leapkelp.this, radius, 6, -3, dirX, dirZ, maxAngle);
+                    if (pos != null && Leapkelp.this.distanceToSqr(pos) >= WANDER_MIN_LEG_SQR
+                            && Leapkelp.this.level().getFluidState(BlockPos.containing(pos)).is(FluidTags.WATER)) {
+                        return pos;
+                    }
+                }
+                return null;
             }
         });
+        this.goalSelector.addGoal(9, new LeapkelpSwimUpGoal(this, 1.0D, this.level().getSeaLevel()));
     }
     @Override
     public void followGoal() {
@@ -214,6 +306,9 @@ public class Leapkelp extends Leapleaf {
         if (this.level().isClientSide) {
             return;
         }
+        if (this.isInWater()) {
+            this.yHeadRot += Mth.clamp(Mth.wrapDegrees(this.getYRot() - this.yHeadRot), -SWIM_HEAD_TURN, SWIM_HEAD_TURN);
+        }
         if (this.restTick > MAX_REST_TICKS) {
             this.restTick = MAX_REST_TICKS;
         }
@@ -270,7 +365,14 @@ public class Leapkelp extends Leapleaf {
     }
     protected void updateSwimPoseAmount() {
         this.swimPoseAmountO = this.swimPoseAmount;
-        float target = this.isSwimmingPose() ? 1.0F : 0.0F;
+        boolean raw = this.canSwimPose();
+        if (raw == this.swimmingPose) {
+            this.swimPoseSwitchTick = 0;
+        } else if (++this.swimPoseSwitchTick > SWIM_POSE_SWITCH_TICKS) {
+            this.swimmingPose = raw;
+            this.swimPoseSwitchTick = 0;
+        }
+        float target = this.swimmingPose ? 1.0F : 0.0F;
         this.swimPoseAmount = Mth.approach(this.swimPoseAmount, target, SWIM_POSE_STEP);
     }
     protected void updateAttackStrokeAmount() {
@@ -279,6 +381,9 @@ public class Leapkelp extends Leapleaf {
         this.attackStrokeAmount = Mth.approach(this.attackStrokeAmount, target, SWIM_POSE_STEP);
     }
     protected boolean isSwimmingPose() {
+        return this.swimmingPose;
+    }
+    private boolean canSwimPose() {
         return this.isInWater()
                 && this.isEyeInFluidType(ForgeMod.WATER_TYPE.get())
                 && this.level().noCollision(this, this.getBoundingBox())
@@ -400,18 +505,18 @@ public class Leapkelp extends Leapleaf {
                     this.leapkelp.setDeltaMovement(this.leapkelp.getDeltaMovement().add(0.0D, 0.002D, 0.0D));
                 }
                 if (this.operation == MoveControl.Operation.MOVE_TO && !this.leapkelp.getNavigation().isDone()) {
-                    double dx = this.wantedX - this.leapkelp.getX();
-                    double dy = this.wantedY - this.leapkelp.getY();
-                    double dz = this.wantedZ - this.leapkelp.getZ();
+                    Vec3 steer = this.steerPoint();
+                    double dx = steer.x - this.leapkelp.getX();
+                    double dy = steer.y - this.leapkelp.getY();
+                    double dz = steer.z - this.leapkelp.getZ();
                     if (dx * dx + dy * dy + dz * dz < SWIM_MIN_DISTANCE_SQR) {
                         this.leapkelp.setZza(0.0F);
                         this.leapkelp.setYya(0.0F);
                         return;
                     }
                     float yRot = (float) (Mth.atan2(dz, dx) * (180F / (float) Math.PI)) - 90.0F;
-                    this.leapkelp.setYRot(this.rotlerp(this.leapkelp.getYRot(), yRot, SWIM_MAX_TURN_Y));
-                    this.leapkelp.yBodyRot = this.leapkelp.getYRot();
-                    this.leapkelp.yHeadRot = this.leapkelp.getYRot();
+                    float delta = Mth.wrapDegrees(yRot - this.leapkelp.getYRot());
+                    this.leapkelp.setYRot(this.leapkelp.getYRot() + Mth.clamp(delta, -SWIM_MAX_TURN_Y, SWIM_MAX_TURN_Y));
                     float speed = (float) (this.speedModifier * SWIM_SPEED_MULTIPLIER * this.leapkelp.getAttributeValue(Attributes.MOVEMENT_SPEED));
                     this.leapkelp.setSpeed(speed);
                     Vec3 movement = this.leapkelp.getDeltaMovement();
@@ -441,6 +546,22 @@ public class Leapkelp extends Leapleaf {
                 }
                 super.tick();
             }
+        }
+        private Vec3 steerPoint() {
+            Path path = this.leapkelp.getNavigation().getPath();
+            Vec3 point = new Vec3(this.wantedX, this.wantedY, this.wantedZ);
+            if (path == null) {
+                return point;
+            }
+            int next = path.getNextNodeIndex();
+            for (int i = next; i < path.getNodeCount() && i < next + 8; ++i) {
+                Vec3 node = path.getEntityPosAtNode(this.leapkelp, i);
+                if (node.distanceToSqr(this.leapkelp.getX(), this.leapkelp.getY(), this.leapkelp.getZ()) > SWIM_LOOKAHEAD_SQR) {
+                    break;
+                }
+                point = node;
+            }
+            return point;
         }
         @Override
         protected float rotlerp(float source, float target, float maxChange) {
@@ -490,6 +611,7 @@ public class Leapkelp extends Leapleaf {
         protected boolean isValidTarget(LevelReader levelReader, BlockPos pos) {
             BlockPos above = pos.above();
             return levelReader.isEmptyBlock(above) && levelReader.isEmptyBlock(above.above())
+                    && levelReader.getFluidState(above).isEmpty() && levelReader.getFluidState(above.above()).isEmpty()
                     && levelReader.getBlockState(pos).entityCanStandOn(levelReader, pos, this.leapkelp);
         }
     }
@@ -898,8 +1020,8 @@ public class Leapkelp extends Leapleaf {
         private final Leapkelp leapkelp;
         private final double speedModifier;
         private final int seaLevel;
-        private boolean stuck;
         private int retargetTick;
+        private float upYaw;
         public LeapkelpSwimUpGoal(Leapkelp leapkelp, double speedModifier, int seaLevel) {
             this.leapkelp = leapkelp;
             this.speedModifier = speedModifier;
@@ -914,34 +1036,49 @@ public class Leapkelp extends Leapleaf {
             if (this.leapkelp.getTrueOwner() != null && this.leapkelp.isFollowing()) {
                 return false;
             }
-            return (this.leapkelp.level().isRaining() || this.leapkelp.isInWater()) && this.leapkelp.getY() < (double) (this.seaLevel - 2);
+            return (this.leapkelp.level().isRaining() || this.leapkelp.isInWater()) && this.leapkelp.getY() < (double) (this.getSurfaceY() - 2);
         }
         @Override
         public boolean canContinueToUse() {
-            return this.canUse() && !this.stuck;
+            return this.canUse();
         }
         @Override
         public void tick() {
             this.retargetTick = Math.max(this.retargetTick - 1, 0);
-            if (this.retargetTick <= 0 && this.leapkelp.getY() < (double) (this.seaLevel - 1) && this.leapkelp.getNavigation().isDone()) {
-                Vec3 pos = DefaultRandomPos.getPosTowards((PathfinderMob) this.leapkelp, 4, 8, new Vec3(this.leapkelp.getX(), this.seaLevel - 1, this.leapkelp.getZ()), 1.5707963705062866D);
-                if (pos == null) {
-                    this.stuck = true;
-                    return;
-                }
-                this.retargetTick = SWIM_UP_RETARGET_COOLDOWN;
-                this.leapkelp.getNavigation().moveTo(pos.x, pos.y, pos.z, this.speedModifier);
+            if (this.retargetTick > 0 || !this.leapkelp.getNavigation().isDone()) {
+                return;
             }
+            this.retargetTick = SWIM_UP_RETARGET_COOLDOWN;
+            int surfaceY = this.getSurfaceY();
+            if (!this.moveUp(surfaceY, SWIM_UP_DISTANCE)) {
+                this.upYaw += 90.0F;
+                this.moveUp(surfaceY, SWIM_UP_DISTANCE * 0.5D);
+            }
+        }
+        private boolean moveUp(int surfaceY, double distance) {
+            float rad = this.upYaw * ((float) Math.PI / 180.0F);
+            double x = this.leapkelp.getX() - (double) Mth.sin(rad) * distance;
+            double z = this.leapkelp.getZ() + (double) Mth.cos(rad) * distance;
+            return this.leapkelp.getNavigation().moveTo(x, (double) surfaceY, z, this.speedModifier);
+        }
+        private int getSurfaceY() {
+            BlockPos.MutableBlockPos pos = this.leapkelp.blockPosition().mutable();
+            int top = pos.getY();
+            while (top < this.seaLevel + 16 && this.leapkelp.level().getFluidState(pos.setY(top + 1)).is(FluidTags.WATER)) {
+                ++top;
+            }
+            return top;
         }
         @Override
         public void start() {
             this.leapkelp.setSearchingForLand(true);
-            this.stuck = false;
             this.retargetTick = 0;
+            this.upYaw = this.leapkelp.getYRot();
         }
         @Override
         public void stop() {
             this.leapkelp.setSearchingForLand(false);
+            this.leapkelp.getNavigation().stop();
         }
     }
     public static class LeapkelpFollowOwnerGoal extends Goal {
