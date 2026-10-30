@@ -1,0 +1,28 @@
+{
+  "name": "灾厄猎杀队",
+  "icon": "minecraft:crossbow",
+  "category": "goety:ominous_world/bestiary",
+  "advancement": "goety:goety/kill_hunting_illagers",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "当你的灵魂能量不断增长时，你注意到一些精英部队出现在了猎杀分队的行列中。这些隶属于某种皇室或者最高议会的新型高阶灾厄村民装备精良，训练有素，你认为有必要将他们的存在记录下来用来提醒自己。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:crimson_guard"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "手持大剑的皇家部队成员，他们能轻易举起对于一般人来说过于沉重的武器，这件武器还会在命中生物后会他们回复部分血量。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:imperial_chasseur"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "被训练成出人意料的猎人的灾厄村民，在灾厄村民中享有很高的声誉。他们时常带着一份赏金名单，用精湛的射击技术和爆炸弹药逐一猎杀名单上的猎物。不幸的是，他们只对像你这样危险的威胁感兴趣。"
+    }
+  ]
+}

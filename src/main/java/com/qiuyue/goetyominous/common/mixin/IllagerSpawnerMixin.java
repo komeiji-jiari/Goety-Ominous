@@ -57,7 +57,8 @@ public abstract class IllagerSpawnerMixin {
             }
         }
 
-        if (dataType.raider.equals(ModEntityTypes.CRIMSON_GUARD.getId())
+        if ((dataType.raider.equals(ModEntityTypes.CRIMSON_GUARD.getId())
+                || dataType.raider.equals(ModEntityTypes.IMPERIAL_CHASSEUR.getId()))
                 && SEHelper.getSoulAmountInt(player) < 70000) {
             cir.setReturnValue(false);
         }

@@ -322,6 +322,14 @@ public class ModItems {
             "crimson_guard_servant_spawn_egg",
             () -> new ServantSpawnEggItem(ModEntityTypes.CRIMSON_GUARD_SERVANT, 0x2B2B2B, 0xA11E1E, egg()));
 
+    public static final RegistryObject<ForgeSpawnEggItem> IMPERIAL_CHASSEUR_SPAWN_EGG = ITEMS.register(
+            "imperial_chasseur_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.IMPERIAL_CHASSEUR, 0x4B2E83, 0xD4AF37, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> IMPERIAL_CHASSEUR_SERVANT_SPAWN_EGG = ITEMS.register(
+            "imperial_chasseur_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.IMPERIAL_CHASSEUR_SERVANT, 0x4B2E83, 0xD4AF37, egg()));
+
     public static final RegistryObject<ServantSpawnEggItem> SUNKEN_NECROMANCER_SERVANT_SPAWN_EGG = ITEMS.register(
             "sunken_necromancer_servant_spawn_egg",
             () -> new ServantSpawnEggItem(ModEntityTypes.SUNKEN_NECROMANCER_SERVANT, 0x4A235A, 0xE67E22, egg()));

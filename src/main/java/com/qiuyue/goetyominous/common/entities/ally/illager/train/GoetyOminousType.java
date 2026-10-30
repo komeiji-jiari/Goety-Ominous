@@ -7,6 +7,7 @@ import com.Polarice3.Goety.common.entities.ally.illager.Neollager;
 import com.Polarice3.Goety.common.research.ResearchList;
 import com.Polarice3.Goety.common.ritual.RitualChecker;
 import com.Polarice3.Goety.init.ModTags;
+import com.Polarice3.Goety.utils.BlockFinder;
 import com.Polarice3.Goety.utils.SEHelper;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import net.minecraft.core.BlockPos;
@@ -43,6 +44,15 @@ public class GoetyOminousType implements ITrainIllager {
                 }
             }
 
+            return false;
+
+        } else if (entityType == ModEntityTypes.IMPERIAL_CHASSEUR_SERVANT.get()) {
+            if (mob.getType() == ModEntityType.PILLAGER_SERVANT.get() && mob instanceof IOwned owned) {
+                LivingEntity owner = owned.getTrueOwner();
+                if (owner instanceof Player player) {
+                    return SEHelper.hasResearch(player, ResearchList.FRONT);
+                }
+            }
             return false;
         }
 
@@ -82,6 +92,15 @@ public class GoetyOminousType implements ITrainIllager {
                 && checker.hasBlocks(blockState -> blockState.getBlock() instanceof FancyCarpetBlock, 8)
                 && checker.hasBlocks(blockState -> blockState.getBlock() instanceof AnvilBlock, 4)) {
             return ModEntityTypes.CRIMSON_GUARD_SERVANT.get();
+
+        } else if (checker.hasBlocks(blockState -> blockState.getBlock() instanceof OminousStatueBlock
+                || blockState.getBlock() instanceof OminousBrazierStatueBlock, 4)
+                && BlockFinder.getNearbyEnchantPower(level, blockPos, range, 6)
+                && checker.hasBlocks(blockState -> blockState.getBlock() instanceof EnchantmentTableBlock, 1)
+                && checker.hasBlocks(blockState -> blockState.is(Blocks.HAY_BLOCK) || blockState.is(Blocks.TARGET), 4)
+                && checker.hasBlocks(blockState -> blockState.is(Blocks.FLETCHING_TABLE), 4)
+                && checker.hasBlocks(blockState -> blockState.getBlock() instanceof StashUrnBlock, 8)) {
+            return ModEntityTypes.IMPERIAL_CHASSEUR_SERVANT.get();
         }
 
         return null;

@@ -34,6 +34,17 @@
       "type": "patchouli:text",
       "advancement": "goety:goety/read_front_scroll",
       "text": "作为皇家守卫的变种，皇家禁卫擅长从敌人身上收割生命力，对敌人造成越高的伤害他们就能从中恢复越多的血量。"
+    },
+    {
+      "type": "patchouli:entity",
+      "advancement": "goety:goety/read_front_scroll",
+      "entity": "goetyominous:imperial_chasseur_servant",
+      "scale": 0.75
+    },
+    {
+      "type": "patchouli:text",
+      "advancement": "goety:goety/read_front_scroll",
+      "text": "这些掠夺者中的精英擅长精确射击，除了发射更具穿透力的重箭，他们还会使用特殊的爆炸性魔法弹药来射击生物。"
     }
   ]
 }

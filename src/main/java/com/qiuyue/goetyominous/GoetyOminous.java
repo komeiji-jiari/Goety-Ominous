@@ -4,6 +4,7 @@ import com.Polarice3.Goety.api.entities.ally.illager.IllagerType;
 import com.Polarice3.Goety.common.entities.ally.BlackWolf;
 import com.Polarice3.Goety.common.entities.neutral.ZPiglinServant;
 import com.qiuyue.goetyominous.common.blocks.trial.TrialBlocks;
+import com.qiuyue.goetyominous.common.entities.ally.illager.ImperialChasseurServant;
 import com.qiuyue.goetyominous.common.explore.ExploreEvents;
 import com.qiuyue.goetyominous.common.blocks.trial.TrialSounds;
 import com.qiuyue.goetyominous.common.entities.ally.ias.*;
@@ -35,6 +36,7 @@ import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractStormNecroma
 import com.qiuyue.goetyominous.common.entities.hostile.SunkenNecromancer;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.ArchGeomancerEntity;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.CrimsonGuard;
+import com.qiuyue.goetyominous.common.entities.hostile.illagers.ImperialChasseur;
 import com.qiuyue.goetyominous.common.items.ModItems;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.compat.curios.CuriosIntegration;
@@ -288,6 +290,8 @@ public class GoetyOminous {
         event.put(ModEntityTypes.LEAPKELP.get(), Leapkelp.setCustomAttributes().build());
         event.put(ModEntityTypes.WARG.get(), Warg.setCustomAttributes().build());
         event.put(ModEntityTypes.CERBERUS.get(), Cerberus.setCustomAttributes().build());
+        event.put(ModEntityTypes.IMPERIAL_CHASSEUR_SERVANT.get(), ImperialChasseurServant.createAttributes().build());
+        event.put(ModEntityTypes.IMPERIAL_CHASSEUR.get(), ImperialChasseur.createAttributes().build());
         event.put(ModEntityTypes.HERESIARCH_SERVANT.get(), HeresiarchServant.setCustomAttributes().build());
         event.put(ModEntityTypes.DISCIPLE.get(), Disciple.setCustomAttributes().build());
         event.put(ModEntityTypes.CRIMSON_SPIDER_SERVANT.get(), CrimsonSpiderServant.setCustomAttributes().build());

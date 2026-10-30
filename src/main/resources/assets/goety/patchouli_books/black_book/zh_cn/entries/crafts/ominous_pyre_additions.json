@@ -27,6 +27,12 @@
       "title": "皇家禁卫仆从",
       "advancement": "goety:goety/read_front_scroll",
       "text": "$(o)注: 所有者必须阅读过$(l:goety:rumors/desert)先锋卷轴$()$()$(br)需求：$(li)卫道士仆从 $(li)4个不祥雕像 $(li)8块皇家地毯或霜冻地毯 $(li)4个骷髅头颅 $(li)4个铁砧 $(li)8个$(l:goety:crafts/stash_urn)隐秘之瓮$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "帝国猎兵仆从",
+      "advancement": "goety:goety/read_front_scroll",
+      "text": "$(o)注: 所有者必须阅读过$(l:goety:rumors/desert)先锋卷轴$()$()$(br)需求：$(li)掠夺者仆从 $(li)4个不祥雕像 $(li)6个书架/附魔能力与前者等同的方块 $(li)4个干草块或标靶 $(li)4个制箭台 $(li)1个附魔台 $(li)8个$(l:goety:crafts/stash_urn)隐秘之瓮$()"
     }
   ],
   "extra_recipe_mappings": {

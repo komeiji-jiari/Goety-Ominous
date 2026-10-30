@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.mixin;
 
 import com.Polarice3.Goety.utils.SEHelper;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.CrimsonGuard;
+import com.qiuyue.goetyominous.common.entities.hostile.illagers.ImperialChasseur;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
@@ -72,6 +73,14 @@ public class RaidMixin {
                 CrimsonGuard guard = ModEntityTypes.CRIMSON_GUARD.get().create(this.level);
                 if (guard != null) {
                     raid.joinRaid(wave, guard, pos, false);
+                }
+            }
+
+            int chasseurs = 1 + this.level.random.nextInt(2);
+            for (int i = 0; i < chasseurs; i++) {
+                ImperialChasseur chasseur = ModEntityTypes.IMPERIAL_CHASSEUR.get().create(this.level);
+                if (chasseur != null) {
+                    raid.joinRaid(wave, chasseur, pos, false);
                 }
             }
         }

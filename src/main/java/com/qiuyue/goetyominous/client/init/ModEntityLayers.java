@@ -15,6 +15,9 @@ public class ModEntityLayers {
     public static final ModelLayerLocation INQUILLAGER_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "inquillager_servant"), "main");
 
+    public static final ModelLayerLocation IMPERIAL_CHASSEUR_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "imperial_chasseur"), "main");
+
     public static final ModelLayerLocation BOGGED_LAYER = new ModelLayerLocation(
             new ResourceLocation("goetyominous", "bogged"), "main");
 

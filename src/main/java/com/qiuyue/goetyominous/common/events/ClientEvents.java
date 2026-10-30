@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.common.events;
 import com.Polarice3.Goety.client.particles.GatheringParticle;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.particle.*;
+import com.qiuyue.goetyominous.client.render.ChasseurArrowRenderer;
 import com.qiuyue.goetyominous.client.render.block.PlushieBlockEntityRenderer;
 import com.qiuyue.goetyominous.client.render.block.TrialSpawnerRenderer;
 import com.qiuyue.goetyominous.client.render.block.VaultRenderer;
@@ -26,6 +27,7 @@ public class ClientEvents {
         event.registerBlockEntityRenderer(ModBlockEntities.VAULT.get(), VaultRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.TRIAL_SPAWNER.get(), TrialSpawnerRenderer::new);
         event.registerEntityRenderer(ModEntityTypes.OMINOUS_ITEM_SPAWNER.get(), OminousItemSpawnerRenderer::new);
+        event.registerEntityRenderer(ModEntityTypes.CHASSEUR_ARROW.get(), ChasseurArrowRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.PLUSHIE.get(), PlushieBlockEntityRenderer::new);
         PlushieCurioRenderer.register();
     }

@@ -1,0 +1,28 @@
+{
+  "name": "Illager Hunters",
+  "icon": "minecraft:crossbow",
+  "category": "goety:ominous_world/bestiary",
+  "advancement": "goety:goety/kill_hunting_illagers",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "As your Soul Energy continues to grow, you have noticed that elite units have begun appearing among the hunting illagers. These new high-ranking Illagers, belonging to some royal court or high council, are well-equipped and well-trained. You believe it is necessary to record their existence as a reminder to yourself."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:crimson_guard"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Members of the royal forces wielding greatswords. They can easily lift weapons far too heavy for ordinary folk, and their weapons restore some of their health upon striking creatures."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:imperial_chasseur"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Illagers trained to be surprisingly skilled hunters, held in high esteem among their kind. They often carry a bounty list, using their superb marksmanship and explosive ammunition to hunt down the prey on it one by one. Unfortunately, they are only interested in dangerous threats like you."
+    }
+  ]
+}
