@@ -19,6 +19,8 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
@@ -100,8 +102,8 @@ public class CrimsonGuardServant extends AbstractIllagerServant {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(0, new AttackSequenceGoal());
-        this.goalSelector.addGoal(1, new ApproachGoal(this, this.getFollowSpeed()));
+        this.goalSelector.addGoal(4, new AttackSequenceGoal());
+        this.goalSelector.addGoal(5, new ApproachGoal(this, this.getFollowSpeed()));
     }
 
     @Override
@@ -122,6 +124,10 @@ public class CrimsonGuardServant extends AbstractIllagerServant {
     @Override
     public boolean canHaveWeapon() {
         return false;
+    }
+
+    @Override
+    protected void populateDefaultEquipmentSlots(RandomSource randomSource, DifficultyInstance difficulty) {
     }
 
     @Override
