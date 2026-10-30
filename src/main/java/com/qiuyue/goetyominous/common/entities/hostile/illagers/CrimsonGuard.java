@@ -100,8 +100,8 @@ public class CrimsonGuard extends HuntingIllagerEntity {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(0, new AttackSequenceGoal());
-        this.goalSelector.addGoal(1, new ApproachGoal(this, 1.25D));
+        this.goalSelector.addGoal(4, new AttackSequenceGoal());
+        this.goalSelector.addGoal(5, new ApproachGoal(this, 1.25D));
         this.goalSelector.addGoal(2, new RaiderOpenDoorGoal(this));
     }
 
