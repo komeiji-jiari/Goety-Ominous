@@ -1,7 +1,6 @@
 package com.qiuyue.goetyominous.common.mixin;
 
 import com.Polarice3.Goety.common.entities.ally.Leapleaf;
-import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.Leapkelp;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import net.minecraft.world.entity.Entity;
@@ -51,10 +50,28 @@ public class LeapleafWaterConversionMixin {
 
     @Unique
     private static void goetyominous$convert(Leapleaf self) {
-        Entity converted = MobUtil.convertTo(self, ModEntityTypes.LEAPKELP.get(), false, null);
-        if (!(converted instanceof Leapkelp leapkelp)) {
+        Level level = self.level();
+        Leapkelp leapkelp = ModEntityTypes.LEAPKELP.get().create(level);
+        if (leapkelp == null) {
             return;
         }
+        leapkelp.moveTo(self.getX(), self.getY(), self.getZ(), self.getYRot(), self.getXRot());
+        leapkelp.setYHeadRot(self.getYHeadRot());
+        leapkelp.setYBodyRot(self.yBodyRot);
+        leapkelp.yHeadRotO = self.yHeadRotO;
+        leapkelp.yBodyRotO = self.yBodyRotO;
+        leapkelp.yRotO = self.yRotO;
+        leapkelp.xRotO = self.xRotO;
+        leapkelp.setBaby(self.isBaby());
+        leapkelp.setNoAi(self.isNoAi());
+        if (self.hasCustomName()) {
+            leapkelp.setCustomName(self.getCustomName());
+            leapkelp.setCustomNameVisible(self.isCustomNameVisible());
+        }
+        if (self.isPersistenceRequired()) {
+            leapkelp.setPersistenceRequired();
+        }
+        leapkelp.setInvulnerable(self.isInvulnerable());
         if (self.getTrueOwner() != null) {
             leapkelp.setTrueOwner(self.getTrueOwner());
         }
@@ -67,6 +84,15 @@ public class LeapleafWaterConversionMixin {
         if (self.limitedLifeTicks > 0) {
             leapkelp.setLimitedLife(self.limitedLifeTicks);
         }
+        Entity vehicle = self.getVehicle();
+        if (vehicle != null) {
+            self.stopRiding();
+        }
+        level.addFreshEntity(leapkelp);
+        if (vehicle != null) {
+            leapkelp.startRiding(vehicle, true);
+        }
+        self.discard();
         ForgeEventFactory.onLivingConvert(self, leapkelp);
     }
 }
