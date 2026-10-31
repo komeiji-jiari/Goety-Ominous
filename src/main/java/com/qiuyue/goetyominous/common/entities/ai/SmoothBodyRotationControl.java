@@ -1,4 +1,4 @@
-package com.qiuyue.goetyominous.common.entities.ai.am;
+package com.qiuyue.goetyominous.common.entities.ai;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;

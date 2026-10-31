@@ -11,7 +11,7 @@ import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.BlockFinder;
 import com.Polarice3.Goety.utils.ColorUtil;
 import com.Polarice3.Goety.utils.MobUtil;
-import com.qiuyue.goetyominous.common.entities.ai.am.SmoothBodyRotationControl;
+import com.qiuyue.goetyominous.common.entities.ai.SmoothBodyRotationControl;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
