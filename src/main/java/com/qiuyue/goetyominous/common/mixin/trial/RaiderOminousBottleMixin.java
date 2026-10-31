@@ -43,7 +43,7 @@ public abstract class RaiderOminousBottleMixin {
     }
 
     @Redirect(method = "die", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/world/entity/player/Player;removeEffectNoUpdate(Lnet/minecraft/world/effect/MobEffect;)Lnet/minecraft/world/effect/MobEffectInstance;"))
+            target = "Lnet/minecraft/world/entity/player/Player;removeEffectNoUpdate(Lnet/minecraft/world/effect/MobEffect;)Lnet/minecraft/world/effect/MobEffectInstance;"), require = 1)
     private MobEffectInstance goetyominous$skipBadOmenUpgrade(Player player, MobEffect effect) {
         if (MobsConfig.RaidCaptainDropsOminousBottle.get()) {
             return null;
@@ -52,7 +52,7 @@ public abstract class RaiderOminousBottleMixin {
     }
 
     @Redirect(method = "die", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/world/entity/player/Player;addEffect(Lnet/minecraft/world/effect/MobEffectInstance;)Z"))
+            target = "Lnet/minecraft/world/entity/player/Player;addEffect(Lnet/minecraft/world/effect/MobEffectInstance;)Z"), require = 1)
     private boolean goetyominous$skipBadOmen(Player player, MobEffectInstance effect) {
         if (MobsConfig.RaidCaptainDropsOminousBottle.get()) {
             return false;

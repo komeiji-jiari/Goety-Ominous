@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class RaidsRaidOmenMixin {
 
     @Redirect(method = "createOrExtendRaid", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/server/level/ServerPlayer;blockPosition()Lnet/minecraft/core/BlockPos;"))
+            target = "Lnet/minecraft/server/level/ServerPlayer;blockPosition()Lnet/minecraft/core/BlockPos;"), require = 1)
     private BlockPos goetyominous$useRaidOmenOrigin(ServerPlayer player) {
         BlockPos origin = RaidStartContext.current();
         return origin != null ? origin : player.blockPosition();

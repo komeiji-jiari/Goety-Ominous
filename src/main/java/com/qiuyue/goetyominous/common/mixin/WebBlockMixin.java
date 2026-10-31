@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public class WebBlockMixin {
 
     @Redirect(method = "entityInside", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/world/entity/Entity;makeStuckInBlock(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/phys/Vec3;)V"))
+            target = "Lnet/minecraft/world/entity/Entity;makeStuckInBlock(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/phys/Vec3;)V"), require = 1)
     private void goetyominous$weavingStuckMultiplier(Entity entity, BlockState state, Vec3 multiplier) {
         if (entity instanceof LivingEntity living && living.hasEffect(ModEffects.WEAVING.get())) {
             entity.makeStuckInBlock(state, new Vec3(0.5D, 0.25D, 0.5D));

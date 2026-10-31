@@ -20,7 +20,7 @@ public class WraithSpellFelMixin {
             method = "SpellResult",
             at = @At(value = "INVOKE",
                     target = "Lcom/Polarice3/Goety/common/magic/spells/necromancy/WraithSpell;typeStaff(Lnet/minecraft/world/item/ItemStack;Lcom/Polarice3/Goety/api/magic/SpellType;)Z"),
-            remap = false)
+            remap = false, require = 1)
     private boolean goetyominous$felOrWild(WraithSpell self, ItemStack staff, SpellType type) {
         return self.typeStaff(staff, type) || self.typeStaff(staff, GoetyOminous.FEL);
     }

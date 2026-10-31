@@ -28,7 +28,7 @@ public class PrismaBeamSpellCurseMixin {
 
     @Redirect(method = "SpellResult", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/world/entity/LivingEntity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z",
-            ordinal = 0))
+            ordinal = 0), require = 1)
     private boolean goetyominous$curseOnFirstHit(LivingEntity target, DamageSource source, float amount) {
         float modified = CurseOfRlyehHelper.amplifyKeySpellDamage(target, amount);
         boolean hurt = target.hurt(source, modified);
@@ -40,7 +40,7 @@ public class PrismaBeamSpellCurseMixin {
 
     @Redirect(method = "SpellResult", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/world/entity/LivingEntity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z",
-            ordinal = 1))
+            ordinal = 1), require = 1)
     private boolean goetyominous$curseOnSecondHit(LivingEntity target, DamageSource source, float amount) {
         float modified = CurseOfRlyehHelper.amplifyKeySpellDamage(target, amount);
         boolean hurt = target.hurt(source, modified);

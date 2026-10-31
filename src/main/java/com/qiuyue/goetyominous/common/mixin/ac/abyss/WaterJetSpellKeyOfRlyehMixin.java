@@ -45,7 +45,7 @@ public class WaterJetSpellKeyOfRlyehMixin {
     }
 
     @Redirect(method = "SpellResult", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/world/entity/Entity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"))
+            target = "Lnet/minecraft/world/entity/Entity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"), require = 1)
     private boolean goetyominous$curseOnWaterJetHit(Entity target, DamageSource source, float amount) {
         float modified = target instanceof LivingEntity living
                 ? CurseOfRlyehHelper.amplifyKeySpellDamage(living, amount)

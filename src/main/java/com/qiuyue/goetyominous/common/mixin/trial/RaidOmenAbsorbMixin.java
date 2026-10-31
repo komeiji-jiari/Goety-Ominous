@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class RaidOmenAbsorbMixin {
 
     @Redirect(method = "absorbBadOmen", at = @At(value = "FIELD",
-            target = "Lnet/minecraft/world/effect/MobEffects;BAD_OMEN:Lnet/minecraft/world/effect/MobEffect;"))
+            target = "Lnet/minecraft/world/effect/MobEffects;BAD_OMEN:Lnet/minecraft/world/effect/MobEffect;"), require = 1)
     private MobEffect goetyominous$absorbRaidOmenLevel(Player player) {
         return RaidStartContext.current() != null ? ModEffects.RAID_OMEN.get() : MobEffects.BAD_OMEN;
     }
