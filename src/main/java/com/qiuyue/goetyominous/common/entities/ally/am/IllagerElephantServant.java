@@ -14,7 +14,7 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.google.common.collect.Maps;
-import com.qiuyue.goetyominous.common.entities.ai.am.SmoothBodyRotationControl;
+import com.qiuyue.goetyominous.common.entities.ai.SmoothBodyRotationControl;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
