@@ -105,8 +105,7 @@ public class ModEventHandler {
                 event.setCanceled(true);
             }
         } catch (Exception e) {
-            System.err.println("[GoetyOminous] Failed to convert GoetyAwaken HeresiarchServant: " + e.getMessage());
-            e.printStackTrace();
+            GoetyOminous.LOGGER.error("Failed to convert GoetyAwaken HeresiarchServant", e);
         }
     }
 

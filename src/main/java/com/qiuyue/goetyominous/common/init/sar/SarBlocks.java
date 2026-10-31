@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.init.sar;
 
+import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.compat.mod.SavageRavageCompat;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -33,7 +34,7 @@ public class SarBlocks {
             );
             initialized = true;
         } catch (Exception e) {
-            System.err.println("[SarBlocks] Failed to initialize SAR blocks: " + e.getMessage());
+            GoetyOminous.LOGGER.error("Failed to initialize Savage and Ravage blocks", e);
         }
     }
 

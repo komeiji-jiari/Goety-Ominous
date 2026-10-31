@@ -323,7 +323,7 @@ public class HeresiarchServant extends CultistServant {
             java.lang.reflect.Field empoweredField = this.goetyAwakenMonolith.getClass().getField("empowered");
             empoweredField.setInt(this.goetyAwakenMonolith, 10);
         } catch (Exception e) {
-            System.err.println("[GoetyOminous] Failed to set GoetyAwaken monolith empowered: " + e.getMessage());
+            GoetyOminous.LOGGER.error("Failed to set GoetyAwaken monolith empowered", e);
         }
     }
 
@@ -1050,7 +1050,7 @@ public class HeresiarchServant extends CultistServant {
                                                 MathHelper.secondsToTicks(45), 1, false, false));
                                     }
                                 } catch (Exception e) {
-                                    System.err.println("[GoetyOminous] Failed to apply Buff effect: " + e.getMessage());
+                                    GoetyOminous.LOGGER.error("Failed to apply Buff effect", e);
                                 }
                             }
 
@@ -1092,7 +1092,7 @@ public class HeresiarchServant extends CultistServant {
                             }
                         }
                     } catch (Exception e) {
-                        System.err.println("[GoetyOminous] Failed to apply Rallied effect: " + e.getMessage());
+                        GoetyOminous.LOGGER.error("Failed to apply Rallied effect", e);
                     }
                 }
             }

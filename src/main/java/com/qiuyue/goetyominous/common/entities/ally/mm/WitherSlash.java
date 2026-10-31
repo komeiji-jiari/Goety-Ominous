@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.ally.mm;
 
 import com.Polarice3.Goety.utils.MobUtil;
+import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.compat.mm.MmScreenShake;
 import com.alexander.mutantmore.init.MMDamageTypes;
 import com.alexander.mutantmore.util.MiscUtils;
@@ -80,7 +81,7 @@ public class WitherSlash extends ThrowableProjectile {
                     addFireSlashAudioMethod.invoke(null, mutantMoreWitherSlash, this.level());
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                GoetyOminous.LOGGER.error("Failed to add wither slash looping audio", e);
             }
         }
     }

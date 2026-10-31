@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.compat.mod;
 
+import com.qiuyue.goetyominous.GoetyOminous;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.fml.ModList;
 
@@ -23,7 +24,7 @@ public class GoetyAwakenCompat {
             Class<?> monolithServantClass = Class.forName("com.k1sak1.goetyawaken.common.entities.ally.ObsidianMonolithServant");
             return monolithServantClass.isInstance(entity);
         } catch (ClassNotFoundException e) {
-            System.err.println("[GoetyOminous] GoetyAwaken ObsidianMonolithServant class not found: " + e.getMessage());
+            GoetyOminous.LOGGER.error("GoetyAwaken ObsidianMonolithServant class not found", e);
             return false;
         }
     }
@@ -37,7 +38,7 @@ public class GoetyAwakenCompat {
             String entityTypeRegistryName = net.minecraftforge.registries.ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString();
             return "goetyawaken:heresiarch_servant".equals(entityTypeRegistryName);
         } catch (Exception e) {
-            System.err.println("[GoetyOminous] Failed to check GoetyAwaken HeresiarchServant: " + e.getMessage());
+            GoetyOminous.LOGGER.error("Failed to check GoetyAwaken HeresiarchServant", e);
             return false;
         }
     }
