@@ -26,7 +26,7 @@ public final class WindChargeShaders {
                     new ResourceLocation(GoetyOminous.MOD_ID, "rendertype_breeze_wind"),
                     DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP), s -> breezeWind = s);
         } catch (Exception e) {
-            e.printStackTrace();
+            GoetyOminous.LOGGER.error("Failed to register breeze wind shader", e);
         }
     }
 

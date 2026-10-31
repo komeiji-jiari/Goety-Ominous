@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.compat.mod;
 
 import com.Polarice3.Goety.api.magic.SpellType;
+import com.qiuyue.goetyominous.GoetyOminous;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.fml.ModList;
@@ -30,7 +31,7 @@ public class GoetyRevelationCompat {
             method.setAccessible(true);
             method.invoke(null, felType, "goety_revelation");
         } catch (Throwable t) {
-            System.err.println("[GoetyOminous] Failed to register fel spell power attribute: " + t);
+            GoetyOminous.LOGGER.error("Failed to register fel spell power attribute", t);
         }
     }
 
@@ -44,7 +45,7 @@ public class GoetyRevelationCompat {
                     new net.minecraft.resources.ResourceLocation("goety_revelation", "soul_of_obsidian")
             );
         } catch (Exception e) {
-            System.err.println("[GoetyOminous] Failed to get Soul of Obsidian: " + e.getMessage());
+            GoetyOminous.LOGGER.error("Failed to get Soul of Obsidian", e);
             return null;
         }
     }

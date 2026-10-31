@@ -16,6 +16,7 @@ import com.alexander.mutantmore.ai.goals.LookAtTargetGoal;
 import com.alexander.mutantmore.config.MutantMoreGroupedOptionsCommonConfig;
 import com.alexander.mutantmore.config.mutant_wither_skeleton.MutantWitherSkeletonCommonConfig;
 import com.alexander.mutantmore.entities.MutantWitherSkeletonBodyPart;
+import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.compat.mm.MmScreenShake;
 import com.alexander.mutantmore.init.ItemInit;
 import com.alexander.mutantmore.init.ParticleTypeInit;
@@ -678,7 +679,7 @@ public class MutantWitherSkeletonServant extends AbstractMutantServant implement
                 part.push(this.random.nextGaussian() * 0.5, this.random.nextGaussian() * 0.5, this.random.nextGaussian() * 0.5);
                 this.level().addFreshEntity(part);
             } catch (Exception e) {
-                e.printStackTrace();
+                GoetyOminous.LOGGER.error("Failed to create mutant wither skeleton body part", e);
             }
         }
 
