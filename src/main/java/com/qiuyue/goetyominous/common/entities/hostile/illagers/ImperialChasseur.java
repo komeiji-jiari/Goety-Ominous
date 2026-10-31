@@ -19,10 +19,8 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
 
@@ -35,7 +33,7 @@ public class ImperialChasseur extends HuntingIllagerEntity {
     public static final int ANIM_RETURN_IDLE = 5;
     public static final int ANIM_AIM_RELOAD = 6;
 
-    private static final double ATTACK_RANGE = 24.0D;
+    private static final double ATTACK_RANGE = 32.0D;
     private static final double MELEE_RANGE = 3.0D;
     private static final int MELEE_COOLDOWN = 10;
     private static final double CHASE_SPEED = 1.25D;
@@ -57,7 +55,6 @@ public class ImperialChasseur extends HuntingIllagerEntity {
 
     private int meleeCooldown;
     private int heavyShots;
-    private int attackCooldown;
 
     public ImperialChasseur(EntityType<? extends ImperialChasseur> type, Level level) {
         super(type, level);
@@ -90,7 +87,7 @@ public class ImperialChasseur extends HuntingIllagerEntity {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(4, new CombatGoal(this));
+        this.goalSelector.addGoal(0, new CombatGoal(this));
     }
 
     @Override
@@ -133,13 +130,8 @@ public class ImperialChasseur extends HuntingIllagerEntity {
         super.tick();
         if (this.level().isClientSide) {
             this.idleAnimationState.animateWhen(this.getAnimState() == ANIM_NONE, this.tickCount);
-        } else {
-            if (this.meleeCooldown > 0) {
-                --this.meleeCooldown;
-            }
-            if (this.attackCooldown > 0) {
-                --this.attackCooldown;
-            }
+        } else if (this.meleeCooldown > 0) {
+            --this.meleeCooldown;
         }
     }
 
@@ -184,14 +176,6 @@ public class ImperialChasseur extends HuntingIllagerEntity {
 
     private void setMeleeCooldown(int ticks) {
         this.meleeCooldown = ticks;
-    }
-
-    private int getAttackCooldown() {
-        return this.attackCooldown;
-    }
-
-    private void setAttackCooldown(int ticks) {
-        this.attackCooldown = ticks;
     }
 
     private void setHeavyShots(int shots) {
@@ -253,8 +237,6 @@ public class ImperialChasseur extends HuntingIllagerEntity {
     public static class CombatGoal extends Goal {
         private final ImperialChasseur mob;
         private int actionTick;
-        private int retreatTick;
-        private int recalcTick;
 
         public CombatGoal(ImperialChasseur mob) {
             this.mob = mob;
@@ -263,9 +245,6 @@ public class ImperialChasseur extends HuntingIllagerEntity {
 
         @Override
         public boolean canUse() {
-            if (this.mob.getAttackCooldown() > 0) {
-                return false;
-            }
             LivingEntity target = this.mob.getTarget();
             return target != null && target.isAlive();
         }
@@ -287,9 +266,6 @@ public class ImperialChasseur extends HuntingIllagerEntity {
         @Override
         public void stop() {
             this.actionTick = 0;
-            this.retreatTick = 0;
-            this.recalcTick = 0;
-            this.mob.setAttackCooldown(20);
             this.mob.setAnimState(ANIM_NONE);
             this.mob.setHeavyShots(0);
             this.mob.getNavigation().stop();
@@ -316,48 +292,20 @@ public class ImperialChasseur extends HuntingIllagerEntity {
                 this.mob.getNavigation().stop();
                 return;
             }
-            if (this.retreatTick > 0) {
-                --this.retreatTick;
-            }
             double distance = this.mob.distanceTo(target);
             if (distance > ATTACK_RANGE) {
-                this.chase(target);
-                return;
-            }
-            if (distance <= MELEE_RANGE && (this.mob.getMeleeCooldown() > 0 || this.retreatTick > 0)) {
-                this.retreat(target);
+                this.mob.getNavigation().moveTo(target, CHASE_SPEED);
                 return;
             }
             this.mob.getNavigation().stop();
             if (distance <= MELEE_RANGE) {
-                this.startMelee(false);
+                if (this.mob.getMeleeCooldown() <= 0) {
+                    this.startMelee(false);
+                }
                 return;
             }
-            if (this.mob.hasLineOfSight(target)) {
+            if (this.mob.getMeleeCooldown() <= 0 && this.mob.hasLineOfSight(target)) {
                 this.startReloadAim();
-            } else {
-                this.chase(target);
-            }
-        }
-
-        private void chase(LivingEntity target) {
-            if (this.recalcTick > 0 && !this.mob.getNavigation().isDone()) {
-                --this.recalcTick;
-                return;
-            }
-            this.mob.getNavigation().moveTo(target, CHASE_SPEED);
-            this.recalcTick = 10;
-        }
-
-        private void retreat(LivingEntity target) {
-            if (this.recalcTick > 0 && !this.mob.getNavigation().isDone()) {
-                --this.recalcTick;
-                return;
-            }
-            Vec3 away = DefaultRandomPos.getPosAway(this.mob, 16, 7, target.position());
-            this.recalcTick = 20;
-            if (away != null) {
-                this.mob.getNavigation().moveTo(away.x, away.y, away.z, CHASE_SPEED);
             }
         }
 
@@ -372,7 +320,7 @@ public class ImperialChasseur extends HuntingIllagerEntity {
                 case ANIM_RELOAD_AIM, ANIM_AIM_RELOAD -> {
                     if (this.actionTick >= 35) {
                         if (target != null && target.isAlive()) {
-                            if (this.mob.distanceTo(target) <= MELEE_RANGE && this.mob.getMeleeCooldown() <= 0) {
+                            if (this.mob.distanceTo(target) <= MELEE_RANGE) {
                                 this.startMelee(true);
                             } else {
                                 this.startShoot();
@@ -387,9 +335,8 @@ public class ImperialChasseur extends HuntingIllagerEntity {
                         this.mob.sweep();
                     }
                     if (this.actionTick >= 30) {
-                        this.mob.setMeleeCooldown(MELEE_COOLDOWN);
-                        this.retreatTick = 40;
                         if (this.mob.getAnimState() == ANIM_MELEE) {
+                            this.mob.setMeleeCooldown(MELEE_COOLDOWN);
                             this.finishAction();
                         } else if (target != null && target.isAlive()) {
                             this.startShoot();
@@ -405,7 +352,7 @@ public class ImperialChasseur extends HuntingIllagerEntity {
                     if (this.actionTick >= 22) {
                         if (target != null && target.isAlive()) {
                             if (this.mob.distanceTo(target) <= MELEE_RANGE) {
-                                this.startReturnIdle();
+                                this.startMelee(true);
                             } else {
                                 this.startAimReload();
                             }
@@ -416,7 +363,20 @@ public class ImperialChasseur extends HuntingIllagerEntity {
                 }
                 case ANIM_RETURN_IDLE -> {
                     if (this.actionTick >= 20) {
-                        this.finishAction();
+                        if (target != null && target.isAlive()) {
+                            double distance = this.mob.distanceTo(target);
+                            if (distance <= MELEE_RANGE) {
+                                if (this.mob.getMeleeCooldown() <= 0) {
+                                    this.startMelee(false);
+                                }
+                            } else if (distance <= ATTACK_RANGE && this.mob.getMeleeCooldown() <= 0 && this.mob.hasLineOfSight(target)) {
+                                this.startReloadAim();
+                            } else {
+                                this.finishAction();
+                            }
+                        } else {
+                            this.finishAction();
+                        }
                     }
                 }
                 default -> this.finishAction();

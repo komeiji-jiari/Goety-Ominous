@@ -363,14 +363,14 @@ public class AttributesConfig {
                 .defineInRange("imperialChasseurArmor", 12.0D, 0.0D, Double.MAX_VALUE);
         ImperialChasseurToughness = BUILDER.comment("How much natural Armor Toughness Imperial Chasseurs have, Default: 2.0")
                 .defineInRange("imperialChasseurToughness", 2.0D, 0.0D, Double.MAX_VALUE);
-        ImperialChasseurDamage = BUILDER.comment("How much melee damage Imperial Chasseurs deal, Default: 8.0")
-                .defineInRange("imperialChasseurDamage", 8.0D, 1.0D, Double.MAX_VALUE);
+        ImperialChasseurDamage = BUILDER.comment("How much melee damage Imperial Chasseurs deal, Default: 10.0")
+                .defineInRange("imperialChasseurDamage", 10.0D, 1.0D, Double.MAX_VALUE);
         ImperialChasseurRangeDamage = BUILDER.comment("Base damage of an Imperial Chasseur's heavy arrow, Default: 10.0")
                 .defineInRange("imperialChasseurRangeDamage", 10.0D, 0.0D, Double.MAX_VALUE);
         ImperialChasseurSpeed = BUILDER.comment("How fast Imperial Chasseurs move, Default: 0.3")
                 .defineInRange("imperialChasseurSpeed", 0.3D, 0.0D, Double.MAX_VALUE);
-        ImperialChasseurFollowRange = BUILDER.comment("How far Imperial Chasseurs target enemies, Default: 32.0")
-                .defineInRange("imperialChasseurFollowRange", 32.0D, 0.0D, Double.MAX_VALUE);
+        ImperialChasseurFollowRange = BUILDER.comment("How far Imperial Chasseurs target enemies, Default: 48.0")
+                .defineInRange("imperialChasseurFollowRange", 48.0D, 0.0D, Double.MAX_VALUE);
         ImperialChasseurKnockbackResistance = BUILDER.comment("How much knockback resistance Imperial Chasseurs have, Default: 1.0")
                 .defineInRange("imperialChasseurKnockbackResistance", 1.0D, 0.0D, 1.0D);
         ImperialChasseurAttackKnockback = BUILDER.comment("How much knockback Imperial Chasseurs deal, Default: 2.0")
