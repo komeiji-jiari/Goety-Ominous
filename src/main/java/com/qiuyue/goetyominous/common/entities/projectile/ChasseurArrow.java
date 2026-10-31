@@ -38,6 +38,7 @@ import org.joml.Vector3f;
 public class ChasseurArrow extends AbstractArrow {
 
     private static final float EXPLOSION_RADIUS = 2.0F;
+    private static final double MAX_DISTANCE_SQR = 64.0D * 64.0D;
     public final TrailEffect trail = new TrailEffect(0.2F, 4.0F);
     public final TrailEffect trailOuter = new TrailEffect(0.4F, 4.0F);
     private boolean exploded;
@@ -45,16 +46,19 @@ public class ChasseurArrow extends AbstractArrow {
     public ChasseurArrow(EntityType<? extends ChasseurArrow> type, Level level) {
         super(type, level);
         this.setBaseDamage(5.0D);
+        this.setNoGravity(true);
     }
 
     public ChasseurArrow(Level level, LivingEntity shooter) {
         super(ModEntityTypes.CHASSEUR_ARROW.get(), shooter, level);
         this.setBaseDamage(5.0D);
+        this.setNoGravity(true);
     }
 
     public ChasseurArrow(Level level, double x, double y, double z) {
         super(ModEntityTypes.CHASSEUR_ARROW.get(), x, y, z, level);
         this.setBaseDamage(5.0D);
+        this.setNoGravity(true);
     }
 
     @Override
@@ -74,6 +78,13 @@ public class ChasseurArrow extends AbstractArrow {
     @Override
     public void tick() {
         super.tick();
+        if (!this.level().isClientSide) {
+            Entity owner = this.getOwner();
+            if (owner != null && this.distanceToSqr(owner) > MAX_DISTANCE_SQR) {
+                this.explode(null);
+                return;
+            }
+        }
         if (this.level().isClientSide && this.tickCount > 2) {
             Vec3 oldPos = new Vec3(this.xo, this.yo + this.getBbHeight() / 2.0F, this.zo);
             this.trail.update(oldPos);
