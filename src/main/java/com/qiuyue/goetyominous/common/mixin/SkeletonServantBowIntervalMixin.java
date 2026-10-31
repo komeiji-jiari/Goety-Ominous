@@ -14,7 +14,7 @@ public class SkeletonServantBowIntervalMixin {
             method = "reassessWeaponGoal",
             at = @At(value = "INVOKE",
                     target = "Lcom/Polarice3/Goety/common/entities/ai/CreatureBowAttackGoal;setMinAttackInterval(I)V"),
-            remap = false)
+            remap = false, require = 1)
     private void goetyominous$boggedBowInterval(CreatureBowAttackGoal<?> goal, int interval) {
         if (((Object) this) instanceof BoggedServant bogged && !bogged.hasNecroCapeOwner()) {
             goal.setMinAttackInterval(70);

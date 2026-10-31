@@ -26,7 +26,7 @@ public class SkeletonSpellBoggedMixin {
             method = "SpellResult",
             at = @At(value = "INVOKE",
                     target = "Lcom/Polarice3/Goety/common/entities/ally/undead/skeleton/AbstractSkeletonServant;getVariant(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/entity/EntityType;"),
-            remap = false)
+            remap = false, require = 1)
     private EntityType<?> goetyominous$boggedOnFel(AbstractSkeletonServant servant, Player player,
                                                    Level level, BlockPos pos) {
         if (player != null && isFelStaff(WandUtil.findWand(player))) {

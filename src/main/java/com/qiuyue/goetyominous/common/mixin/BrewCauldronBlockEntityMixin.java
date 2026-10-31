@@ -10,7 +10,7 @@ public class BrewCauldronBlockEntityMixin {
 
     @Redirect(method = "takeBrew", remap = false,
             at = @At(value = "INVOKE", remap = false,
-                    target = "Lcom/Polarice3/Goety/utils/CuriosFinder;hasWitchRobe(Lnet/minecraft/world/entity/LivingEntity;)Z"))
+                    target = "Lcom/Polarice3/Goety/utils/CuriosFinder;hasWitchRobe(Lnet/minecraft/world/entity/LivingEntity;)Z"), require = 1)
     private boolean goetyominous$croneRobeBrewBonus(LivingEntity player) {
         return com.Polarice3.Goety.utils.CuriosFinder.hasWitchRobe(player)
                 || com.qiuyue.goetyominous.utils.CroneCuriosUtil.hasCroneRobe(player);
