@@ -2,7 +2,7 @@
   "name": "Cerberus",
   "icon": "minecraft:lava_bucket",
   "category": "goety:ominous_summons",
-  "sortnum": 6,
+  "sortnum": 5,
   "pages": [
     {
       "type": "patchouli:text",

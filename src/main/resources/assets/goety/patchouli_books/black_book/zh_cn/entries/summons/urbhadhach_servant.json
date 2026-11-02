@@ -2,7 +2,7 @@
   "name": "霜猎兽仆从",
   "icon": "goetyominous:cold_heart",
   "category": "goety:ominous_summons",
-  "sortnum": 11,
+  "sortnum": 10,
   "pages": [
     {
       "type": "patchouli:text",

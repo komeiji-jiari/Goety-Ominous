@@ -2,7 +2,7 @@
   "name": "地狱三头犬",
   "icon": "minecraft:lava_bucket",
   "category": "goety:ominous_summons",
-  "sortnum": 6,
+  "sortnum": 5,
   "pages": [
     {
       "type": "patchouli:text",
