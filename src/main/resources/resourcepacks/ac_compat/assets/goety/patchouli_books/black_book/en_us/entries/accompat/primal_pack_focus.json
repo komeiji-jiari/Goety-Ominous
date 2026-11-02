@@ -2,7 +2,7 @@
   "name": "Primal Pack Focus",
   "icon": "goetyominous:primal_pack_focus",
   "category": "goety:primordialcaves",
-  "sortnum": 20,
+  "sortnum": 30,
   "pages": [
     {
       "type": "patchouli:text",
