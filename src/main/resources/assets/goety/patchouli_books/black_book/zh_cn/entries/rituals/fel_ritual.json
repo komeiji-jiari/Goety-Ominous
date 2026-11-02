@@ -3,7 +3,8 @@
   "icon": "goety:witch_cauldron",
   "advancement": "goetyominous:goetyominous/witch_lesson",
   "secret": true,
-  "category": "goety:ominous_rituals",
+  "category": "goety:ominous_fel",
+  "sortnum": 1,
   "pages": [
     {
       "type": "patchouli:text",
