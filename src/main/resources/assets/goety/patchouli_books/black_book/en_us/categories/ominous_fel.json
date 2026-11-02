@@ -1,0 +1,8 @@
+{
+  "name": "Fel",
+  "description": "Forbidden knowledge whispered among witches, and the rituals, crafts and magic driven by Fel.",
+  "icon": "goetyominous:fel_core",
+  "parent": "goety:ominous",
+  "sortnum": 8,
+  "secret": true
+}
