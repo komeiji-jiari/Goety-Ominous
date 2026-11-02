@@ -2,7 +2,7 @@
   "name": "Urbhadhach Servant",
   "icon": "goetyominous:cold_heart",
   "category": "goety:ominous_summons",
-  "sortnum": 11,
+  "sortnum": 10,
   "pages": [
     {
       "type": "patchouli:text",
