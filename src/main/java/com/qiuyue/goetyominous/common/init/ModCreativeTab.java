@@ -26,6 +26,7 @@ import java.util.Set;
 public class ModCreativeTab {
 
     private static final List<CompatItemSource> COMPAT_ITEM_SOURCES = new ArrayList<>();
+    private static final List<CompatItemSource> MAIN_TAB_ITEM_SOURCES = new ArrayList<>();
 
     public static void registerCompatItems(DeferredRegister<Item> registry) {
         registerCompatItems(CompatItemSource.of(registry));
@@ -33,6 +34,10 @@ public class ModCreativeTab {
 
     public static void registerCompatItems(CompatItemSource source) {
         COMPAT_ITEM_SOURCES.add(source);
+    }
+
+    public static void registerMainTabItems(DeferredRegister<Item> registry) {
+        MAIN_TAB_ITEM_SOURCES.add(CompatItemSource.of(registry));
     }
 
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister
@@ -94,6 +99,7 @@ public class ModCreativeTab {
         static Buckets collect() {
             Buckets buckets = new Buckets();
             collectFrom(ModItems.ITEMS, buckets);
+            MAIN_TAB_ITEM_SOURCES.forEach(source -> collectFrom(source.registry(), buckets));
             sortOther(buckets.other);
             return buckets;
         }
