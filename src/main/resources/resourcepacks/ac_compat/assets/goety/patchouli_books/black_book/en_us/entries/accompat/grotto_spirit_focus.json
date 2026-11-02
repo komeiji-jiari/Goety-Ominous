@@ -2,7 +2,7 @@
   "name": "Grotto Spirit Focus",
   "icon": "goetyominous:grotto_spirit_focus",
   "category": "goety:primordialcaves",
-  "sortnum": 90,
+  "sortnum": 100,
   "advancement": "goety:goety/read_bygone_scroll",
   "secret": true,
   "pages": [
