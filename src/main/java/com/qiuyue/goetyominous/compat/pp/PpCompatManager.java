@@ -18,7 +18,7 @@ public class PpCompatManager {
     public static void init(IEventBus modEventBus) {
         PpEntityRegistry.register(modEventBus);
         PpItems.register(modEventBus);
-        com.qiuyue.goetyominous.common.init.ModCreativeTab.registerCompatItems(PpItems.PP_ITEMS);
+        com.qiuyue.goetyominous.common.init.ModCreativeTab.registerMainTabItems(PpItems.PP_ITEMS);
         modEventBus.addListener(PpCompatManager::setCustomAttributes);
     }
 
