@@ -2,7 +2,7 @@
   "name": "More Illager Servants",
   "icon": "goety:magic_emerald",
   "category": "goety:ominous_mutations",
-  "sortnum": 2,
+  "sortnum": 5,
   "pages": [
     {
       "type": "patchouli:text",

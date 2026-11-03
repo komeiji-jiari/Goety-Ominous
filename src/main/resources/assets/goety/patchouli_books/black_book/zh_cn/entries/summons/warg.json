@@ -1,8 +1,8 @@
 {
   "name": "座狼",
   "icon": "minecraft:saddle",
-  "category": "goety:ominous_summons",
-  "sortnum": 4,
+  "category": "goety:ominous_mutations",
+  "sortnum": 1,
   "pages": [
     {
       "type": "patchouli:text",

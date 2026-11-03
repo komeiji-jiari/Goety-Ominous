@@ -2,7 +2,7 @@
   "name": "异教牧首仆从",
   "icon": "goety:malefic_helm",
   "category": "goety:ominous_mutations",
-  "sortnum": 3,
+  "sortnum": 6,
   "advancement": "goety:goety/read_bygone_scroll",
   "pages": [
     {

@@ -1,16 +1,12 @@
 {
-  "name": "Crimson Spider Servant",
+  "name": "Spider Servant Variants",
   "icon": "minecraft:spider_eye",
   "category": "goety:ominous_summons",
-  "sortnum": 7,
+  "sortnum": 4,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The members of the Nether cult summon and control fierce Crimson Spiders to launch fanatical attacks against you. You have discovered that the spiders they summon are created by infusing ordinary spiders with the twisted energy of the Nether. However, the Nether's extreme temperatures prevent you from hatching such spiders from Spider Nests, but you can still summon them through a ritual."
-    },
-    {
-      "type": "goety:ritual",
-      "recipe": "goetyominous:crimson_spider_servant"
+      "text": "The webs grow denser by the day. Beyond ordinary spiders, more magically twisted kin lurk in the shadows, spinning their snares—and you intend to claim them all."
     },
     {
       "type": "patchouli:entity",
@@ -19,7 +15,15 @@
     },
     {
       "type": "patchouli:text",
-      "text": "You can also summon them directly in the Nether using the Spider Focus. Like other Nether creatures, they are immune to fire and can set prey ablaze. If you are wearing Nether Robes, they gain passive natural healing. Additionally, meat can be used to restore their health."
+      "text": "The members of the Nether cult summon and control fierce Crimson Spiders to launch fanatical attacks against you. You have discovered that the spiders they summon are created by infusing ordinary spiders with the twisted energy of the Nether. However, the Nether's extreme temperatures prevent you from hatching such spiders from Spider Nests. You can summon them through a ritual, or directly in the Nether using the Spider Focus."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:crimson_spider_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Like other Nether creatures, they are immune to fire and can set prey ablaze. If you are wearing Nether Robes, they gain passive natural healing. Additionally, meat can be used to restore their health."
     }
   ]
 }

@@ -2,7 +2,7 @@
   "name": "猪灵的职业",
   "icon": "piglinproliferation:travelers_compass",
   "category": "goety:ominous_mutations",
-  "sortnum": 1,
+  "sortnum": 4,
   "advancement": "goetyominous:goetyominous/read_bastion_scroll",
   "secret": true,
   "pages": [

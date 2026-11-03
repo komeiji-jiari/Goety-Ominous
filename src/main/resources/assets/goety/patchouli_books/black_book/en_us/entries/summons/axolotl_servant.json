@@ -1,8 +1,8 @@
 {
-  "name": "Axolotl",
+  "name": "Axolotl Servant",
   "icon": "minecraft:axolotl_bucket",
   "category": "goety:ominous_summons",
-  "sortnum": 13,
+  "sortnum": 14,
   "pages": [
     {
       "type": "patchouli:text",

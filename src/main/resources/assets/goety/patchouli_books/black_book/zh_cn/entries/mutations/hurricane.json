@@ -2,7 +2,7 @@
   "name": "飓风",
   "icon": "goetyominous:heavy_core",
   "category": "goety:ominous_mutations",
-  "sortnum": 6,
+  "sortnum": 9,
   "advancement": "goety:goety/read_mistral_scroll",
   "secret": true,
   "pages": [
