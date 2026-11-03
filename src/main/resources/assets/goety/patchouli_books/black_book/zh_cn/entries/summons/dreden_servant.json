@@ -1,6 +1,6 @@
 {
   "name": "惧灵仆从",
-  "icon": "minecraft:blue_ice",
+  "icon": "goety:ice_cube",
   "category": "goety:ominous_summons",
   "sortnum": 9,
   "advancement": "goety:goety/read_haunting_scroll",

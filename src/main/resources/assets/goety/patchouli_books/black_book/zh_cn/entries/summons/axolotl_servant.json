@@ -1,8 +1,8 @@
 {
-  "name": "美西螈",
+  "name": "美西螈仆从",
   "icon": "minecraft:axolotl_bucket",
   "category": "goety:ominous_summons",
-  "sortnum": 13,
+  "sortnum": 14,
   "pages": [
     {
       "type": "patchouli:text",

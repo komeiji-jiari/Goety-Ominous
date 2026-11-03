@@ -1,8 +1,8 @@
 {
-  "name": "怨鬼",
+  "name": "怨鬼仆从",
   "icon": "minecraft:blaze_powder",
   "category": "goety:ominous_summons",
-  "sortnum": 6,
+  "sortnum": 8,
   "pages": [
     {
       "type": "patchouli:text",
