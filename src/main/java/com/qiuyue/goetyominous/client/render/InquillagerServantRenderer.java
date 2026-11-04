@@ -1,11 +1,11 @@
-package com.qiuyue.goetyominous.client.render.ias;
+package com.qiuyue.goetyominous.client.render;
 
 import com.Polarice3.Goety.client.render.ModModelLayer;
 import com.Polarice3.Goety.client.render.model.VillagerArmorModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.qiuyue.goetyominous.client.render.model.ias.InquillagerServantModel;
-import com.qiuyue.goetyominous.common.entities.ally.ias.InquillagerServant;
+import com.qiuyue.goetyominous.client.render.model.InquillagerServantModel;
+import com.qiuyue.goetyominous.common.entities.ally.illager.InquillagerServant;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;

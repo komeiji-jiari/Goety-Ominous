@@ -1,4 +1,4 @@
-package com.qiuyue.goetyominous.common.entities.ally.ias;
+package com.qiuyue.goetyominous.common.entities.ally.illager;
 
 import com.Polarice3.Goety.client.particles.ModParticleTypes;
 import com.Polarice3.Goety.common.effects.GoetyEffects;
