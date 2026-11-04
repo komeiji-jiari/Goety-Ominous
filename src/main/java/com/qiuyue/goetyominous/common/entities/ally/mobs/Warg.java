@@ -13,6 +13,8 @@ import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.ModDamageSource;
 import com.qiuyue.goetyominous.common.blocks.entities.WolfTotemBlockEntity;
 import com.qiuyue.goetyominous.common.blocks.entities.WolfTotemHooks;
+import com.qiuyue.goetyominous.common.entities.ai.CenteredGroundNavigation;
+import com.qiuyue.goetyominous.common.entities.ai.SmoothBodyRotationControl;
 import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.common.items.CursedMetalWolfArmorItem;
 import com.qiuyue.goetyominous.common.items.CursedWargArmorItem;
@@ -43,7 +45,9 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.player.Player;
@@ -242,6 +246,16 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
     @Override
     public float getStepHeight() {
         return 2.0F;
+    }
+
+    @Override
+    protected PathNavigation createNavigation(Level level) {
+        return new CenteredGroundNavigation(this, level);
+    }
+
+    @Override
+    protected BodyRotationControl createBodyControl() {
+        return new SmoothBodyRotationControl(this);
     }
 
     @Override
@@ -536,6 +550,11 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
     }
 
     protected void updateExtraAnimationStates() {
+        boolean attacking = this.getAttackTicks() > 0;
+        int attackType = this.getAttackType();
+        setAnimation(this.biteAnimationState, attacking && attackType == ATTACK_BITE);
+        setAnimation(this.spinAnimationState, attacking && attackType == ATTACK_SPIN);
+        setAnimation(this.slashAnimationState, attacking && attackType == ATTACK_SLASH);
     }
 
     private void setAnimation(AnimationState state, boolean running) {
@@ -570,11 +589,14 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
             }
             return;
         }
-        this.applyLockedAttackFacing();
-        this.getNavigation().stop();
-        if (this.getAttackType() == ATTACK_SPIN && ticks == 10) {
+        int attackType = this.getAttackType();
+        if (attackType == ATTACK_SPIN || attackType == ATTACK_SLASH) {
+            this.applyLockedAttackFacing();
+            this.getNavigation().stop();
+        }
+        if (attackType == ATTACK_SPIN && ticks == 10) {
             this.performSpinAttack();
-        } else if (this.getAttackType() == ATTACK_SLASH && ticks == 7) {
+        } else if (attackType == ATTACK_SLASH && ticks == 7) {
             this.performSlashAttack();
         }
         this.entityData.set(ATTACK_TICKS, ticks - 1);
@@ -798,6 +820,9 @@ public class Warg extends BlackWolf implements PlayerRideableJumping {
                 if (held.is(ItemTags.SWORDS) && this.getMainHandItem().isEmpty()) {
 
                     this.setItemSlot(EquipmentSlot.MAINHAND, held.copyWithCount(1));
+                    if (this.getMainHandItem().isEmpty()) {
+                        return InteractionResult.PASS;
+                    }
                     this.setDropChance(EquipmentSlot.MAINHAND, 2.0F);
                     consumeOne(player, held);
                     return InteractionResult.sidedSuccess(this.level().isClientSide);
