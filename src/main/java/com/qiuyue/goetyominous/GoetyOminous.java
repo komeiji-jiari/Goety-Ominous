@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous;
 
 import com.Polarice3.Goety.api.entities.ally.illager.IllagerType;
 import com.Polarice3.Goety.common.entities.ally.BlackWolf;
+import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.common.entities.neutral.ZPiglinServant;
 import com.qiuyue.goetyominous.common.blocks.trial.TrialBlocks;
 import com.qiuyue.goetyominous.common.entities.ally.illager.ImperialChasseurServant;
@@ -12,6 +13,7 @@ import com.qiuyue.goetyominous.common.entities.ally.illager.InquillagerServant;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractDredenEntity;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractHurricane;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractMiredEntity;
+import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractUrbhadhach;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.CrimsonSpiderServant;
 import com.qiuyue.goetyominous.common.entities.hostile.Scorch;
 import com.qiuyue.goetyominous.common.entities.hostile.cultists.Disciple;
@@ -266,7 +268,7 @@ public class GoetyOminous {
                 (type, level, spawnType, pos, random) -> {
                     if (MobsConfig.UrbhadhachSpawnWeight.get() <= 0) return false;
                     if (level.getMoonPhase() != 0) return false;
-                    return Monster.checkMonsterSpawnRules(type, level, spawnType, pos, random);
+                    return Owned.checkHostileSpawnRules(type, level, spawnType, pos, random);
                 });
         ResearchList.register();
     }
@@ -278,8 +280,8 @@ public class GoetyOminous {
         event.put(ModEntityTypes.BREEZE.get(), BreezeEntity.setCustomAttributes().build());
         event.put(ModEntityTypes.HURRICANE.get(), AbstractHurricane.setCustomAttributes().build());
         event.put(ModEntityTypes.HURRICANE_SERVANT.get(), AbstractHurricane.setCustomAttributes().build());
-        event.put(ModEntityTypes.URBHADHACH.get(), UrbhadhachEntity.setCustomAttributes().build());
-        event.put(ModEntityTypes.URBHADHACH_SERVANT.get(), UrbhadhachServant.setCustomAttributes().build());
+        event.put(ModEntityTypes.URBHADHACH.get(), AbstractUrbhadhach.setCustomAttributes().build());
+        event.put(ModEntityTypes.URBHADHACH_SERVANT.get(), AbstractUrbhadhach.setCustomAttributes().build());
         event.put(ModEntityTypes.MIRED_SERVANT.get(), AbstractMiredEntity.setCustomAttributes().build());
         event.put(ModEntityTypes.MIRED.get(), AbstractMiredEntity.setCustomAttributes().build());
         event.put(ModEntityTypes.BOGGED_SERVANT.get(), BoggedServant.setCustomAttributes().build());
