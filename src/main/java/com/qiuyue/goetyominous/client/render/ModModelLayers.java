@@ -88,9 +88,6 @@ public class ModModelLayers {
         event.registerLayerDefinition(ModEntityLayers.URBHADHACH_LAYER,
                 UrbhadhachModel::createBodyLayer);
 
-        event.registerLayerDefinition(ModEntityLayers.URBHADHACH_SERVANT_LAYER,
-                UrbhadhachServantModel::createBodyLayer);
-
         event.registerLayerDefinition(ModEntityLayers.FANATIC_LAYER,
                 FanaticModel::createBodyLayer);
 
@@ -351,7 +348,7 @@ public class ModModelLayers {
 
         event.registerEntityRenderer(ModEntityTypes.URBHADHACH.get(), UrbhadhachRenderer::new);
 
-        event.registerEntityRenderer(ModEntityTypes.URBHADHACH_SERVANT.get(), UrbhadhachServantRenderer::new);
+        event.registerEntityRenderer(ModEntityTypes.URBHADHACH_SERVANT.get(), UrbhadhachRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.ZEALOT.get(), ZealotRenderer::new);
 

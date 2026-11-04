@@ -198,9 +198,6 @@ public class ModEntityLayers {
     public static final ModelLayerLocation URBHADHACH_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "urbhadhach"), "main");
 
-    public static final ModelLayerLocation URBHADHACH_SERVANT_LAYER = new ModelLayerLocation(
-            new ResourceLocation(GoetyOminous.MOD_ID, "urbhadhach_servant"), "main");
-
     public static final ModelLayerLocation THUG_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "thug"), "main");
 

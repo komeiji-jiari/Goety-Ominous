@@ -2,136 +2,171 @@ package com.qiuyue.goetyominous.client.render.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.qiuyue.goetyominous.common.entities.hostile.UrbhadhachEntity;
-import net.minecraft.client.model.EntityModel;
+import com.qiuyue.goetyominous.client.render.model.animation.UrbhadhachAnimations;
+import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractUrbhadhach;
+import net.minecraft.client.animation.AnimationDefinition;
+import net.minecraft.client.animation.KeyframeAnimations;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.joml.Vector3f;
 
 @OnlyIn(Dist.CLIENT)
-public class UrbhadhachModel<T extends UrbhadhachEntity> extends EntityModel<T> {
-    private final ModelPart body;
+public class UrbhadhachModel<T extends AbstractUrbhadhach> extends HierarchicalModel<T> {
+    private static final float DEG_TO_RAD = (float) Math.PI / 180F;
+    private static final float MAX_HEAD_PITCH = 30.0F * DEG_TO_RAD;
+    private static final float ACTION_FADE_OUT = 0.3F;
+    private static final Vector3f VECTOR_CACHE = new Vector3f();
+    private final ModelPart root;
+    private final ModelPart bear;
     private final ModelPart head;
-    private final ModelPart jaw;
-    private final ModelPart leg0;
-    private final ModelPart leg1;
-    private final ModelPart leg2;
-    private final ModelPart leg3;
 
     public UrbhadhachModel(ModelPart root) {
-        this.body = root.getChild("body");
-        this.head = root.getChild("head");
-        this.jaw = head.getChild("jaw");
-        this.leg0 = root.getChild("leg0");
-        this.leg1 = root.getChild("leg1");
-        this.leg2 = root.getChild("leg2");
-        this.leg3 = root.getChild("leg3");
+        this.root = root;
+        this.bear = root.getChild("bear");
+        ModelPart allbody = this.bear.getChild("allbody");
+        ModelPart bodyHead = allbody.getChild("body+head");
+        this.head = bodyHead.getChild("head");
     }
 
     public static LayerDefinition createBodyLayer() {
-        MeshDefinition mesh = new MeshDefinition();
-        PartDefinition root = mesh.getRoot();
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition body = root.addOrReplaceChild("body", CubeListBuilder.create()
-                        .texOffs(0, 19)
-                        .addBox(-5.0F, -13.0F, -7.0F, 14.0F, 14.0F, 11.0F, new CubeDeformation(-0.25F)),
-                PartPose.offsetAndRotation(-2.0F, 9.0F, 12.0F, 1.5708F, 0.0F, 0.0F));
-        body.addOrReplaceChild("bodyUpper", CubeListBuilder.create()
-                        .texOffs(39, 0)
-                        .addBox(-4.0F, -25.0F, -7.0F, 12.0F, 12.0F, 10.0F, new CubeDeformation(0.25F)),
+        PartDefinition bear = partdefinition.addOrReplaceChild("bear", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
+
+        PartDefinition allbody = bear.addOrReplaceChild("allbody", CubeListBuilder.create(), PartPose.offsetAndRotation(-2.0F, -9.0F, 8.0F, 1.5708F, 0.0F, 0.0F));
+
+        PartDefinition bodyHead = allbody.addOrReplaceChild("body+head", CubeListBuilder.create()
+                        .texOffs(0, 0).addBox(-6.0F, -20.0F, 0.0F, 16.0F, 11.0F, 15.0F, new CubeDeformation(0.0F))
+                        .texOffs(62, 0).addBox(-5.0F, -9.0F, 0.0F, 14.0F, 13.0F, 13.0F, new CubeDeformation(0.0F)),
                 PartPose.offset(0.0F, 0.0F, 0.0F));
 
-        PartDefinition head = root.addOrReplaceChild("head", CubeListBuilder.create()
-                        .texOffs(0, 0)
-                        .addBox(-3.5F, -3.0F, -3.0F, 7.0F, 8.0F, 7.0F)
-                        .texOffs(26, 0)
-                        .addBox(-4.5F, -4.0F, -1.0F, 2.0F, 2.0F, 1.0F)
-                        .texOffs(26, 0)
-                        .addBox(2.5F, -4.0F, -1.0F, 2.0F, 2.0F, 1.0F, true)
-                        .texOffs(0, 44)
-                        .addBox(-2.5F, 1.0F, -6.0F, 5.0F, 3.0F, 3.0F, new CubeDeformation(0.25F)),
-                PartPose.offset(0.0F, 10.0F, -16.0F));
+        PartDefinition head = bodyHead.addOrReplaceChild("head", CubeListBuilder.create()
+                        .texOffs(0, 26).addBox(-6.5F, -6.0F, -6.0F, 13.0F, 10.0F, 6.0F, new CubeDeformation(0.0F))
+                        .texOffs(5, 42).addBox(-4.5F, -2.0F, -9.0F, 9.0F, 5.0F, 3.0F, new CubeDeformation(0.0F))
+                        .texOffs(0, 0).addBox(-7.5F, -7.0F, -5.0F, 2.0F, 2.0F, 1.0F, new CubeDeformation(0.0F))
+                        .texOffs(0, 0).mirror().addBox(5.5F, -7.0F, -5.0F, 2.0F, 2.0F, 1.0F, new CubeDeformation(0.0F)).mirror(false)
+                        .texOffs(88, 31).addBox(-6.5F, -6.0F, -2.0F, 13.0F, 10.0F, 2.0F, new CubeDeformation(0.2F))
+                        .texOffs(99, 43).addBox(-1.5F, 4.2F, -1.0F, 3.0F, 5.0F, 0.0F, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(2.0F, -20.0F, 5.0F, -1.5708F, 0.0F, 0.0F));
+
+        head.addOrReplaceChild("eye", CubeListBuilder.create()
+                        .texOffs(0, 3).addBox(-1.0F, -1.0F, 0.0F, 2.0F, 1.0F, 0.0F, new CubeDeformation(0.0F)),
+                PartPose.offset(-2.5F, -2.0F, -6.01F));
+
+        head.addOrReplaceChild("eye2", CubeListBuilder.create()
+                        .texOffs(0, 3).mirror().addBox(-1.0F, -1.0F, 0.0F, 2.0F, 1.0F, 0.0F, new CubeDeformation(0.0F)).mirror(false),
+                PartPose.offset(2.5F, -2.0F, -6.01F));
 
         head.addOrReplaceChild("jaw", CubeListBuilder.create()
-                        .texOffs(0, 52)
-                        .addBox(-2.5F, -0.25F, -3.5F, 5.0F, 2.0F, 3.0F),
-                PartPose.offset(0.0F, 3.25F, -2.5F));
+                        .texOffs(4, 50).addBox(-4.5F, -1.0F, -3.0F, 9.0F, 3.0F, 4.0F, new CubeDeformation(-0.1F)),
+                PartPose.offset(0.0F, 2.0F, -6.0F));
 
-        root.addOrReplaceChild("leg0", CubeListBuilder.create()
-                        .texOffs(50, 22)
-                        .addBox(-2.0F, 0.0F, -2.0F, 4.0F, 10.0F, 8.0F, true),
-                PartPose.offset(-4.5F, 14.0F, 6.0F));
+        allbody.addOrReplaceChild("leg2", CubeListBuilder.create()
+                        .texOffs(60, 43).addBox(-3.0F, -3.0F, -10.0F, 6.0F, 7.0F, 10.0F, new CubeDeformation(0.0F)),
+                PartPose.offset(-2.5F, -16.0F, 1.0F));
 
-        root.addOrReplaceChild("leg1", CubeListBuilder.create()
-                        .texOffs(50, 22)
-                        .addBox(-2.0F, 0.0F, -2.0F, 4.0F, 10.0F, 8.0F),
-                PartPose.offset(4.5F, 14.0F, 6.0F));
+        allbody.addOrReplaceChild("leg3", CubeListBuilder.create()
+                        .texOffs(60, 43).mirror().addBox(-3.0F, -3.0F, -10.0F, 6.0F, 7.0F, 10.0F, new CubeDeformation(0.0F)).mirror(false),
+                PartPose.offset(6.5F, -16.0F, 1.0F));
 
-        root.addOrReplaceChild("leg2", CubeListBuilder.create()
-                        .texOffs(50, 40)
-                        .addBox(-2.0F, 0.0F, -2.0F, 4.0F, 10.0F, 6.0F, true),
-                PartPose.offset(-3.5F, 14.0F, -8.0F));
+        bear.addOrReplaceChild("leg0", CubeListBuilder.create()
+                        .texOffs(64, 26).addBox(-2.5F, 0.0F, -3.5F, 5.0F, 10.0F, 7.0F, new CubeDeformation(0.0F)),
+                PartPose.offset(-4.0F, -10.0F, 7.5F));
 
-        root.addOrReplaceChild("leg3", CubeListBuilder.create()
-                        .texOffs(50, 40)
-                        .addBox(-2.0F, 0.0F, -2.0F, 4.0F, 10.0F, 6.0F),
-                PartPose.offset(3.5F, 14.0F, -8.0F));
+        bear.addOrReplaceChild("leg1", CubeListBuilder.create()
+                        .texOffs(64, 26).mirror().addBox(-2.5F, 0.0F, -3.5F, 5.0F, 10.0F, 7.0F, new CubeDeformation(0.0F)).mirror(false),
+                PartPose.offset(4.0F, -10.0F, 7.5F));
 
-        return LayerDefinition.create(mesh, 128, 64);
+        return LayerDefinition.create(meshdefinition, 128, 128);
+    }
+
+    @Override
+    public ModelPart root() {
+        return this.root;
     }
 
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        this.head.xRot = headPitch * ((float) Math.PI / 180F);
-        this.head.yRot = netHeadYaw * ((float) Math.PI / 180F);
-        this.body.xRot = ((float) Math.PI / 2F);
-        this.leg0.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-        this.leg1.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
-        this.leg2.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
-        this.leg3.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-
-        float f = ageInTicks - (float) entity.tickCount;
-        float f1 = entity.getStandingAnimationScale(f);
-        f1 = f1 * f1;
-        float f2 = 1.0F - f1;
-        this.body.xRot = ((float) Math.PI / 2F) - f1 * (float) Math.PI * 0.35F;
-        this.body.y = 9.0F * f2 + 11.0F * f1;
-        this.leg2.y = 14.0F * f2 - 6.0F * f1;
-        this.leg2.z = -8.0F * f2 - 4.0F * f1;
-        this.leg2.xRot -= f1 * (float) Math.PI * 0.45F;
-        this.leg3.y = this.leg2.y;
-        this.leg3.z = this.leg2.z;
-        this.leg3.xRot -= f1 * (float) Math.PI * 0.45F;
-        this.head.y = 10.0F * f2 - 14.0F * f1;
-        this.head.z = -16.0F * f2 - 3.0F * f1;
-        this.head.xRot += f1 * (float) Math.PI * 0.15F;
-    }
-
-    @Override
-    public void prepareMobModel(T entity, float limbSwing, float limbSwingAmount, float partialTick) {
-        int roarTick = entity.getRoarTick();
-        if (entity.isStanding()) {
-            this.jaw.xRot = 0.7854F;
-        } else {
-            if (roarTick > 0) {
-                float f7 = Mth.sin(((float) (20 - roarTick) - partialTick) / 20.0F * (float) Math.PI * 0.25F);
-                this.jaw.xRot = ((float) Math.PI / 2F) * f7;
-            } else {
-                this.jaw.xRot = 0.0F;
-            }
+        this.root().getAllParts().forEach(ModelPart::resetPose);
+        int animation = entity.getAnimationState();
+        if (animation == AbstractUrbhadhach.ANIM_NONE) {
+            float locomotion = 1.0F - this.animateFinishedAction(entity, ageInTicks);
+            entity.idleAnimationState.startIfStopped(entity.tickCount);
+            this.animateWalkWeighted(limbSwing, limbSwingAmount, locomotion);
+            this.animateWeighted(entity.idleAnimationState, UrbhadhachAnimations.IDLE, ageInTicks, locomotion);
+            this.head.zRot -= netHeadYaw * DEG_TO_RAD * locomotion;
+            this.head.xRot += Mth.clamp(headPitch * DEG_TO_RAD, -MAX_HEAD_PITCH, MAX_HEAD_PITCH) * locomotion;
+            return;
+        }
+        switch (animation) {
+            case AbstractUrbhadhach.ANIM_BITE -> this.animate(entity.biteAnimationState, UrbhadhachAnimations.BITE_ATTACK, ageInTicks);
+            case AbstractUrbhadhach.ANIM_CLAW -> this.animate(entity.clawAnimationState, UrbhadhachAnimations.CLAW_ATTACK, ageInTicks);
+            case AbstractUrbhadhach.ANIM_SIT -> this.animate(entity.sitAnimationState, UrbhadhachAnimations.CROUCH, ageInTicks);
+            case AbstractUrbhadhach.ANIM_SLEEP -> this.animate(entity.sleepAnimationState, UrbhadhachAnimations.SLEEP, ageInTicks);
+            case AbstractUrbhadhach.ANIM_WAKE_UP -> this.animate(entity.wakeUpAnimationState, UrbhadhachAnimations.WAKE_UP, ageInTicks);
+            case AbstractUrbhadhach.ANIM_ROAR -> this.animate(entity.roarAnimationState, UrbhadhachAnimations.ROAR, ageInTicks);
+            case AbstractUrbhadhach.ANIM_DASH_START -> this.animate(entity.dashStartAnimationState, UrbhadhachAnimations.DASH_START, ageInTicks);
+            case AbstractUrbhadhach.ANIM_DASH_LOOP -> this.animate(entity.dashLoopAnimationState, UrbhadhachAnimations.DASH_LOOP, ageInTicks);
         }
     }
 
+    private float animateFinishedAction(T entity, float ageInTicks) {
+        int endTick = entity.getAnimationEndTick();
+        long endTime = entity.getAnimationEndTime();
+        if (endTick < 0 || endTime < 0L) {
+            return 0.0F;
+        }
+        float elapsed = (ageInTicks - endTick) / 20.0F;
+        if (elapsed >= ACTION_FADE_OUT) {
+            return 0.0F;
+        }
+        float weight = 1.0F - Math.max(elapsed, 0.0F) / ACTION_FADE_OUT;
+        this.animateFinished(entity.biteAnimationState, UrbhadhachAnimations.BITE_ATTACK, endTime, weight);
+        this.animateFinished(entity.clawAnimationState, UrbhadhachAnimations.CLAW_ATTACK, endTime, weight);
+        this.animateFinished(entity.sitAnimationState, UrbhadhachAnimations.CROUCH, endTime, weight);
+        this.animateFinished(entity.sleepAnimationState, UrbhadhachAnimations.SLEEP, endTime, weight);
+        this.animateFinished(entity.wakeUpAnimationState, UrbhadhachAnimations.WAKE_UP, endTime, weight);
+        this.animateFinished(entity.roarAnimationState, UrbhadhachAnimations.ROAR, endTime, weight);
+        this.animateFinished(entity.dashStartAnimationState, UrbhadhachAnimations.DASH_START, endTime, weight);
+        this.animateFinished(entity.dashLoopAnimationState, UrbhadhachAnimations.DASH_LOOP, endTime, weight);
+        return weight;
+    }
+
+    private void animateFinished(AnimationState state, AnimationDefinition definition, long time, float weight) {
+        if (state.isStarted()) {
+            KeyframeAnimations.animate(this, definition, time, weight, VECTOR_CACHE);
+        }
+    }
+
+    private void animateWeighted(AnimationState state, AnimationDefinition definition, float ageInTicks, float weight) {
+        state.updateTime(ageInTicks, 1.0F);
+        if (weight <= 0.0F) {
+            return;
+        }
+        state.ifStarted(animation -> KeyframeAnimations.animate(this, definition, animation.getAccumulatedTime(), weight, VECTOR_CACHE));
+    }
+
+    private void animateWalkWeighted(float limbSwing, float limbSwingAmount, float weight) {
+        float walkWeight = Math.min(limbSwingAmount * 2.0F, 1.0F) * weight;
+        if (walkWeight <= 0.0F) {
+            return;
+        }
+        KeyframeAnimations.animate(this, UrbhadhachAnimations.WALK, (long) (limbSwing * 90.0F), walkWeight, VECTOR_CACHE);
+    }
+
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        this.head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        this.body.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        this.leg0.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        this.leg1.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        this.leg2.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        this.leg3.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        this.bear.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }
