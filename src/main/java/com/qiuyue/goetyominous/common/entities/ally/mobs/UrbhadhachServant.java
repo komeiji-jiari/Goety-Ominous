@@ -39,9 +39,10 @@ public class UrbhadhachServant extends AbstractUrbhadhach implements PlayerRidea
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new StandbyGoal());
-        this.goalSelector.addGoal(3, new Summoned.WanderGoal<>(this, 1.0D));
-        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0F));
-        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(3, new ShadeSleepGoal());
+        this.goalSelector.addGoal(4, new Summoned.WanderGoal<>(this, 1.0D));
+        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, AgeableMob.class, 10, true, false, LivingEntity::isBaby));
     }
 
@@ -120,10 +121,17 @@ public class UrbhadhachServant extends AbstractUrbhadhach implements PlayerRidea
         if (!this.level().isClientSide) {
             int animation = this.getAnimationState();
             if ((animation == ANIM_SIT || animation == ANIM_SLEEP)
-                    && (!this.isStaying() || this.getTarget() != null || this.hurtTime > 0 || this.isVehicle())) {
+                    && (this.getTarget() != null || this.hurtTime > 0 || this.isVehicle()
+                            || !this.isStaying() && !this.canRestInShade())) {
                 this.triggerWakeUp();
             }
         }
+    }
+
+    private boolean canRestInShade() {
+        return (this.isWandering() || this.isGuardingArea())
+                && this.level().isDay()
+                && !this.level().canSeeSky(this.blockPosition());
     }
 
     @Override
@@ -166,8 +174,8 @@ public class UrbhadhachServant extends AbstractUrbhadhach implements PlayerRidea
 
     class StandbyGoal extends Goal {
         private static final int SIT_DELAY = 40;
-        private static final int SLEEP_DELAY = 640;
         private int stayTicks;
+        private int sitTicks;
 
         StandbyGoal() {
             this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
@@ -191,6 +199,7 @@ public class UrbhadhachServant extends AbstractUrbhadhach implements PlayerRidea
         @Override
         public void start() {
             this.stayTicks = 0;
+            this.sitTicks = 0;
         }
 
         @Override
@@ -201,10 +210,69 @@ public class UrbhadhachServant extends AbstractUrbhadhach implements PlayerRidea
             } else {
                 ++this.stayTicks;
             }
+            if (animation == ANIM_SIT) {
+                ++this.sitTicks;
+            } else {
+                this.sitTicks = 0;
+            }
             UrbhadhachServant.this.getNavigation().stop();
             if (animation == ANIM_NONE && this.stayTicks > SIT_DELAY) {
                 UrbhadhachServant.this.startAnimation(ANIM_SIT, SIT_DURATION);
-            } else if (animation == ANIM_SIT && this.stayTicks > SLEEP_DELAY) {
+            } else if (animation == ANIM_SIT && this.sitTicks >= SIT_DURATION) {
+                UrbhadhachServant.this.startAnimation(ANIM_SLEEP, SLEEP_DURATION);
+            }
+        }
+    }
+
+    class ShadeSleepGoal extends Goal {
+        private static final int SIT_DELAY = 40;
+        private int restTicks;
+        private int sitTicks;
+
+        ShadeSleepGoal() {
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        }
+
+        @Override
+        public boolean canUse() {
+            return UrbhadhachServant.this.canRestInShade()
+                    && UrbhadhachServant.this.getTarget() == null
+                    && !UrbhadhachServant.this.isVehicle()
+                    && UrbhadhachServant.this.getAnimationState() == ANIM_NONE
+                    && UrbhadhachServant.this.onGround();
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return UrbhadhachServant.this.canRestInShade()
+                    && UrbhadhachServant.this.getTarget() == null
+                    && !UrbhadhachServant.this.isVehicle()
+                    && UrbhadhachServant.this.onGround();
+        }
+
+        @Override
+        public void start() {
+            this.restTicks = 0;
+            this.sitTicks = 0;
+        }
+
+        @Override
+        public void tick() {
+            int animation = UrbhadhachServant.this.getAnimationState();
+            if (animation == ANIM_WAKE_UP) {
+                this.restTicks = 0;
+            } else {
+                ++this.restTicks;
+            }
+            if (animation == ANIM_SIT) {
+                ++this.sitTicks;
+            } else {
+                this.sitTicks = 0;
+            }
+            UrbhadhachServant.this.getNavigation().stop();
+            if (animation == ANIM_NONE && this.restTicks > SIT_DELAY) {
+                UrbhadhachServant.this.startAnimation(ANIM_SIT, SIT_DURATION);
+            } else if (animation == ANIM_SIT && this.sitTicks >= SIT_DURATION) {
                 UrbhadhachServant.this.startAnimation(ANIM_SLEEP, SLEEP_DURATION);
             }
         }

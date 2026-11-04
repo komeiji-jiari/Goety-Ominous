@@ -25,6 +25,7 @@ public class UrbhadhachModel<T extends AbstractUrbhadhach> extends HierarchicalM
     private static final float DEG_TO_RAD = (float) Math.PI / 180F;
     private static final float MAX_HEAD_PITCH = 30.0F * DEG_TO_RAD;
     private static final float ACTION_FADE_OUT = 0.3F;
+    private static final float SLEEP_BLEND_SECONDS = 0.4F;
     private static final Vector3f VECTOR_CACHE = new Vector3f();
     private final ModelPart root;
     private final ModelPart bear;
@@ -113,12 +114,25 @@ public class UrbhadhachModel<T extends AbstractUrbhadhach> extends HierarchicalM
             case AbstractUrbhadhach.ANIM_BITE -> this.animate(entity.biteAnimationState, UrbhadhachAnimations.BITE_ATTACK, ageInTicks);
             case AbstractUrbhadhach.ANIM_CLAW -> this.animate(entity.clawAnimationState, UrbhadhachAnimations.CLAW_ATTACK, ageInTicks);
             case AbstractUrbhadhach.ANIM_SIT -> this.animate(entity.sitAnimationState, UrbhadhachAnimations.CROUCH, ageInTicks);
-            case AbstractUrbhadhach.ANIM_SLEEP -> this.animate(entity.sleepAnimationState, UrbhadhachAnimations.SLEEP, ageInTicks);
+            case AbstractUrbhadhach.ANIM_SLEEP -> this.animateSleep(entity, ageInTicks);
             case AbstractUrbhadhach.ANIM_WAKE_UP -> this.animate(entity.wakeUpAnimationState, UrbhadhachAnimations.WAKE_UP, ageInTicks);
             case AbstractUrbhadhach.ANIM_ROAR -> this.animate(entity.roarAnimationState, UrbhadhachAnimations.ROAR, ageInTicks);
             case AbstractUrbhadhach.ANIM_DASH_START -> this.animate(entity.dashStartAnimationState, UrbhadhachAnimations.DASH_START, ageInTicks);
             case AbstractUrbhadhach.ANIM_DASH_LOOP -> this.animate(entity.dashLoopAnimationState, UrbhadhachAnimations.DASH_LOOP, ageInTicks);
         }
+    }
+
+    private void animateSleep(T entity, float ageInTicks) {
+        entity.sleepAnimationState.updateTime(ageInTicks, 1.0F);
+        entity.sleepAnimationState.ifStarted(state -> {
+            long elapsed = state.getAccumulatedTime();
+            float blend = Mth.clamp(elapsed / (SLEEP_BLEND_SECONDS * 1000.0F), 0.0F, 1.0F);
+            if (blend < 1.0F) {
+                long crouchEnd = (long) (UrbhadhachAnimations.CROUCH.lengthInSeconds() * 1000.0F) + 1L;
+                KeyframeAnimations.animate(this, UrbhadhachAnimations.CROUCH, crouchEnd, 1.0F - blend, VECTOR_CACHE);
+            }
+            KeyframeAnimations.animate(this, UrbhadhachAnimations.SLEEP, elapsed, blend, VECTOR_CACHE);
+        });
     }
 
     private float animateFinishedAction(T entity, float ageInTicks) {

@@ -60,6 +60,8 @@ public abstract class AbstractUrbhadhach extends Summoned {
     public static final int ANIM_DASH_LOOP = 8;
     public static final int BITE_DURATION = 15;
     public static final int CLAW_DURATION = 45;
+    private static final int BELLY_EXPOSED_START = 9;
+    private static final int BELLY_EXPOSED_END = 35;
     public static final int SIT_DURATION = 20;
     public static final int SLEEP_DURATION = 50;
     public static final int WAKE_UP_DURATION = 49;
@@ -106,7 +108,7 @@ public abstract class AbstractUrbhadhach extends Summoned {
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.25D)
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.UrbhadhachDamage.get())
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.0D);
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.25D);
     }
 
     @Override
@@ -120,7 +122,7 @@ public abstract class AbstractUrbhadhach extends Summoned {
         super.setUpgraded(upgraded);
         AttributeInstance knockback = this.getAttribute(Attributes.KNOCKBACK_RESISTANCE);
         if (knockback != null) {
-            knockback.setBaseValue(upgraded ? 1.0D : 0.0D);
+            knockback.setBaseValue(upgraded ? 1.0D : 0.25D);
         }
     }
 
@@ -585,9 +587,9 @@ public abstract class AbstractUrbhadhach extends Summoned {
                             player.level().broadcastEntityEvent(player, (byte) 30);
                         }
                     }
-                    livingEntity.knockback(4.0F,
-                            Mth.sin(livingEntity.getYRot() * ((float) Math.PI / 180F)),
-                            -Mth.cos(livingEntity.getYRot() * ((float) Math.PI / 180F)));
+                    livingEntity.knockback(1.0F,
+                            livingEntity.getX() - this.getX(),
+                            livingEntity.getZ() - this.getZ());
                     livingEntity.setDeltaMovement(livingEntity.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
                 }
                 if (livingEntity.isBaby()) {
@@ -631,7 +633,7 @@ public abstract class AbstractUrbhadhach extends Summoned {
             damage = amount * 2;
         }
 
-        if (this.isStanding()) {
+        if (this.isBellyExposed()) {
             damage = amount * 1.5F;
         }
 
@@ -723,6 +725,12 @@ public abstract class AbstractUrbhadhach extends Summoned {
         this.entityData.set(DATA_THRALLING_ID, thralling);
     }
 
+    public boolean isBellyExposed() {
+        return this.getAnimationState() == ANIM_CLAW
+                && this.actionTicks >= BELLY_EXPOSED_START
+                && this.actionTicks <= BELLY_EXPOSED_END;
+    }
+
     public boolean isStanding() {
         return this.entityData.get(DATA_STANDING_ID);
     }
@@ -756,8 +764,9 @@ public abstract class AbstractUrbhadhach extends Summoned {
 
     class AttackGoal extends MeleeAttackGoal {
         private static final int BITE_HIT_TICK = 9;
-        private static final int CLAW_FIRST_HIT_TICK = 9;
-        private static final int CLAW_SECOND_HIT_TICK = 27;
+        private static final int CLAW_FIRST_HIT_TICK = 17;
+        private static final int CLAW_SECOND_HIT_TICK = 28;
+        private static final double CLAW_SWEEP_RADIUS = 3.5D;
         private int attackSpeed;
         private int actionType = ANIM_NONE;
         private int actionElapsed;
@@ -828,21 +837,33 @@ public abstract class AbstractUrbhadhach extends Summoned {
 
         private void tickAction() {
             LivingEntity enemy = this.mob.getTarget();
-            if (enemy == null) {
-                this.endAction();
-                return;
-            }
             this.mob.getNavigation().stop();
-            this.mob.getLookControl().setLookAt(enemy, 30.0F, 30.0F);
+            if (enemy != null) {
+                this.mob.getLookControl().setLookAt(enemy, 30.0F, 30.0F);
+            }
             ++this.actionElapsed;
             if (this.actionType == ANIM_BITE && this.actionElapsed == BITE_HIT_TICK) {
-                this.mob.doHurtTarget(enemy);
+                if (enemy != null) {
+                    this.mob.doHurtTarget(enemy);
+                }
             } else if (this.actionType == ANIM_CLAW
                     && (this.actionElapsed == CLAW_FIRST_HIT_TICK || this.actionElapsed == CLAW_SECOND_HIT_TICK)) {
-                this.mob.doHurtTarget(enemy);
+                this.sweepAttack();
             }
             if (this.actionElapsed >= this.actionDuration) {
                 this.endAction();
+            }
+        }
+
+        private void sweepAttack() {
+            for (LivingEntity livingEntity : this.mob.level().getEntitiesOfClass(LivingEntity.class,
+                    this.mob.getBoundingBox().inflate(CLAW_SWEEP_RADIUS),
+                    living -> living != this.mob
+                            && this.mob.distanceToSqr(living) <= Mth.square(CLAW_SWEEP_RADIUS)
+                            && this.mob.canAttack(living)
+                            && !MobUtil.areAllies(this.mob, living)
+                            && this.mob.hasLineOfSight(living))) {
+                this.mob.doHurtTarget(livingEntity);
             }
         }
 
@@ -902,11 +923,12 @@ public abstract class AbstractUrbhadhach extends Summoned {
 
         @Override
         public boolean canUse() {
-            if (this.mob.isVehicle() || this.mob.dashCooldown > 0 || this.mob.isActionLocked()) {
+            if (this.mob.isVehicle() || this.mob.dashCooldown > 0 || this.mob.isPlayingSpecialAnimation()) {
                 return false;
             }
             LivingEntity target = this.mob.getTarget();
-            if (target == null || !target.isAlive() || !this.mob.onGround() || this.mob.isUnderWater()) {
+            if (target == null || !target.isAlive() || !this.mob.onGround() || this.mob.isUnderWater()
+                    || !this.mob.hasLineOfSight(target)) {
                 return false;
             }
             double distance = this.mob.distanceToSqr(target);
@@ -981,7 +1003,8 @@ public abstract class AbstractUrbhadhach extends Summoned {
             }
             for (LivingEntity entity : this.mob.level().getEntitiesOfClass(LivingEntity.class,
                     this.mob.getBoundingBox().inflate(HIT_RADIUS),
-                    e -> e != this.mob && e.isAlive() && !MobUtil.areAllies(this.mob, e))) {
+                    e -> e != this.mob && e.isAlive() && !MobUtil.areAllies(this.mob, e)
+                            && this.mob.hasLineOfSight(e))) {
                 if (entity == primary || this.mob.distanceTo(entity) > HIT_RADIUS) {
                     continue;
                 }
