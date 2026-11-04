@@ -1,4 +1,4 @@
-package com.qiuyue.goetyominous.client.render.ias;
+package com.qiuyue.goetyominous.client.render;
 
 import com.Polarice3.Goety.Goety;
 import com.Polarice3.Goety.client.render.ModModelLayer;
@@ -6,8 +6,8 @@ import com.Polarice3.Goety.client.render.model.VillagerArmorModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.qiuyue.goetyominous.GoetyOminous;
-import com.qiuyue.goetyominous.client.render.model.ias.ConquillagerServantModel;
-import com.qiuyue.goetyominous.common.entities.ally.ias.ConquillagerServant;
+import com.qiuyue.goetyominous.client.render.model.ConquillagerServantModel;
+import com.qiuyue.goetyominous.common.entities.ally.illager.ConquillagerServant;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;

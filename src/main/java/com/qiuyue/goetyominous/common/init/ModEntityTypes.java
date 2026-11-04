@@ -1,7 +1,8 @@
 package com.qiuyue.goetyominous.common.init;
 
 import com.qiuyue.goetyominous.common.blocks.trial.OminousItemSpawner;
-import com.qiuyue.goetyominous.common.entities.ally.ias.*;
+import com.qiuyue.goetyominous.common.entities.ally.illager.ConquillagerServant;
+import com.qiuyue.goetyominous.common.entities.ally.illager.InquillagerServant;
 import com.qiuyue.goetyominous.common.entities.ally.illager.CrimsonGuardServant;
 import com.qiuyue.goetyominous.common.entities.ally.illager.ImperialChasseurServant;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.CrimsonGuard;

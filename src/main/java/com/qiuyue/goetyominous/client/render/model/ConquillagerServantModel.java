@@ -1,4 +1,4 @@
-package com.qiuyue.goetyominous.client.render.model.ias;
+package com.qiuyue.goetyominous.client.render.model;
 
 import com.Polarice3.Goety.common.entities.ally.illager.AbstractIllagerServant;
 import com.google.common.collect.ImmutableList;
