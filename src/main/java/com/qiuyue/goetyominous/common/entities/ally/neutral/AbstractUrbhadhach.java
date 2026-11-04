@@ -40,6 +40,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -417,7 +418,7 @@ public abstract class AbstractUrbhadhach extends Summoned {
 
         if (this.getHealth() <= this.getMaxHealth() / 2) {
             for (AgeableMob ageableMob : this.level().getEntitiesOfClass(AgeableMob.class, this.getBoundingBox().inflate(32))) {
-                if (ageableMob.isBaby() && this.getTarget() != ageableMob) {
+                if (ageableMob.isBaby() && this.getTarget() != ageableMob && !MobUtil.areAllies(this, ageableMob)) {
                     this.setTarget(ageableMob);
                 }
             }
@@ -569,6 +570,11 @@ public abstract class AbstractUrbhadhach extends Summoned {
                 && this.level().isDay()
                 && this.level().canSeeSky(this.blockPosition())
                 && !this.level().isRainingAt(this.blockPosition());
+    }
+
+    @Override
+    public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+        return -level.getPathfindingCostFromLightLevels(pos);
     }
 
     @Override

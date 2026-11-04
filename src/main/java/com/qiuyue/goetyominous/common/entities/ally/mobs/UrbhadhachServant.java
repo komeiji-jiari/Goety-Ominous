@@ -16,9 +16,11 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PlayerRideable;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FleeSunGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RestrictSunGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -39,10 +41,12 @@ public class UrbhadhachServant extends AbstractUrbhadhach implements PlayerRidea
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new StandbyGoal());
-        this.goalSelector.addGoal(3, new ShadeSleepGoal());
-        this.goalSelector.addGoal(4, new Summoned.WanderGoal<>(this, 1.0D));
-        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
-        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(3, new RestrictSunGoal(this));
+        this.goalSelector.addGoal(4, new FleeSunGoal(this, 1.0D));
+        this.goalSelector.addGoal(5, new ShadeSleepGoal());
+        this.goalSelector.addGoal(6, new Summoned.WanderGoal<>(this, 1.0D));
+        this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, AgeableMob.class, 10, true, false, LivingEntity::isBaby));
     }
 
