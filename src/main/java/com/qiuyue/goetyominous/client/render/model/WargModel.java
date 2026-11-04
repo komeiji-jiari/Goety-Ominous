@@ -124,7 +124,7 @@ public class WargModel extends HierarchicalModel<Warg> {
     @Override
     public void setupAnim(Warg entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.root().getAllParts().forEach(ModelPart::resetPose);
-        this.head.yRot += netHeadYaw * ((float)Math.PI / 180F);
+        this.head.zRot -= netHeadYaw * ((float)Math.PI / 180F);
         this.head.xRot += headPitch * ((float)Math.PI / 180F);
         float gait = entity.getGaitWeight(ageInTicks);
         PoseBlend.animate(this, entity.idleAnimationState, WargAnimations.idle, ageInTicks, gait);
