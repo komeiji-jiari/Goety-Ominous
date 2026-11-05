@@ -123,9 +123,6 @@ public class FrowzyServant extends Summoned implements AttackState, VariantHolde
         }
         if (this.level().isClientSide) {
             this.setupAnimationStates();
-            if (this.isAggressive() && this.isAlive()) {
-            } else {
-            }
         }
         if (this.attackTicks > 0) {
             --this.attackTicks;
@@ -163,8 +160,6 @@ public class FrowzyServant extends Summoned implements AttackState, VariantHolde
 
     @Override
     public void remove(@NotNull RemovalReason reason) {
-        if (this.level().isClientSide) {
-        }
         super.remove(reason);
     }
 

@@ -402,9 +402,6 @@ public class SkyvernServant extends Summoned implements FlyingAnimal, AttackStat
         }
         if (this.level().isClientSide) {
             this.setupAnimationStates();
-            if (this.isAlive()) {
-            } else {
-            }
             if (this.lSteps > 0) {
                 double x = this.getX() + (this.lx - this.getX()) / (double) this.lSteps;
                 double y = this.getY() + (this.ly - this.getY()) / (double) this.lSteps;
@@ -446,8 +443,6 @@ public class SkyvernServant extends Summoned implements FlyingAnimal, AttackStat
 
     @Override
     public void remove(@NotNull RemovalReason reason) {
-        if (this.level().isClientSide) {
-        }
         if (reason == RemovalReason.KILLED || reason == RemovalReason.DISCARDED || reason == RemovalReason.CHANGED_DIMENSION) {
             this.discardSegments();
         }
@@ -456,8 +451,6 @@ public class SkyvernServant extends Summoned implements FlyingAnimal, AttackStat
 
     @Override
     public void die(@NotNull DamageSource damageSource) {
-        if (this.level().isClientSide) {
-        }
         this.discardSegments();
         super.die(damageSource);
     }

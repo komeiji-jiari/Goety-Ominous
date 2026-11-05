@@ -424,8 +424,6 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
                 this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(baseMoveSpeed);
             }
         } else {
-            if (this.isCharging() && this.isAlive()) {
-            }
             Player player = AlexsCaves.PROXY.getClientSidePlayer();
             if (player != null && player.isPassengerOfSameVehicle(this)) {
                 if (AlexsCaves.PROXY.isKeyDown(2) && this.getMeterAmount() >= 1.0F && this.isRunning()) {
@@ -805,8 +803,6 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
 
     @Override
     public void remove(Entity.RemovalReason removalReason) {
-        if (this.level().isClientSide) {
-        }
         super.remove(removalReason);
     }
 
