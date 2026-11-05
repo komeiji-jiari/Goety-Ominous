@@ -5,7 +5,6 @@ import com.Polarice3.Goety.common.entities.projectiles.SpellEntity;
 import com.Polarice3.Goety.utils.MathHelper;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
-import com.qiuyue.goetyominous.client.sound.of.DicerServantLaserSoundHandler;
 import com.qiuyue.goetyominous.common.init.of.OfDamageTypes;
 import com.qiuyue.goetyominous.common.init.of.OfEntityRegistry;
 import com.unusualmodding.opposing_force.registry.OPParticles;
@@ -172,7 +171,6 @@ public class DicerServantLaser extends SpellEntity {
                 this.spawnLaserParticles();
             }
             if (this.level().isClientSide && this.isAlive()) {
-                DicerServantLaserSoundHandler.playFor(this);
             }
             if (!this.level().isClientSide) {
                 for (LivingEntity target : entities) {
@@ -364,7 +362,6 @@ public class DicerServantLaser extends SpellEntity {
     @Override
     public void remove(RemovalReason reason) {
         if (this.level().isClientSide) {
-            DicerServantLaserSoundHandler.clearFor(this);
         }
         super.remove(reason);
     }

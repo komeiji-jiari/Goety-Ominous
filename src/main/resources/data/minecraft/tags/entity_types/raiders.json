@@ -2,11 +2,13 @@
   "replace": false,
   "values": [
     "goetyominous:beldam",
+    "goetyominous:disciple",
     "goetyominous:fanatic",
     "goetyominous:zealot",
     "goetyominous:thug",
     "goetyominous:channeller",
     "goetyominous:arch_geomancer",
-    "goetyominous:crimson_guard"
+    "goetyominous:crimson_guard",
+    "goetyominous:pyrologer"
   ]
 }

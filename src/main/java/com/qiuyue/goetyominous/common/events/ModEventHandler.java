@@ -1,6 +1,5 @@
 package com.qiuyue.goetyominous.common.events;
 
-import com.Polarice3.Goety.common.blocks.ModBlocks;
 import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.common.entities.hostile.HostileBlackWolf;
 import com.qiuyue.goetyominous.GoetyOminous;
@@ -157,7 +156,7 @@ public class ModEventHandler {
 
         if (event.getSource().getDirectEntity() instanceof com.Polarice3.Goety.common.entities.projectiles.AcidPool pool
                 && pool.getPersistentData().getBoolean(com.qiuyue.goetyominous.common.magic.spells.AcidPoolSpell.FEL_MARKER)) {
-            LivingEntity owner = pool.getOwner();
+            LivingEntity owner = ((net.minecraft.world.entity.OwnableEntity) pool).getOwner();
             if (owner != null) {
                 int amplifier = 0;
                 if (com.qiuyue.goetyominous.utils.CroneCuriosUtil.hasCroneRobe(owner)) {

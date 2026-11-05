@@ -1,5 +1,7 @@
 package com.qiuyue.goetyominous.client.sound.ac;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.qiuyue.goetyominous.common.entities.ally.ac.TremorzillaServant;
 import net.minecraft.client.Minecraft;
@@ -8,6 +10,7 @@ import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 
+@OnlyIn(Dist.CLIENT)
 public class TremorzillaEmergenceRoarSound extends AbstractTickableSoundInstance {
 
     private static final int FADE_IN_TICKS = 4;

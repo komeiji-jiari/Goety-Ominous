@@ -1,5 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.ally.mm;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import com.Polarice3.Goety.common.entities.projectiles.SpellThrowableProjectile;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.alexander.mutantmore.audio.soundinstances.EntityLoopingSoundInstance;
@@ -196,6 +198,7 @@ public class MutantShulkerServantBullet extends SpellThrowableProjectile {
         return true;
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void onAddedToWorld() {
         super.onAddedToWorld();

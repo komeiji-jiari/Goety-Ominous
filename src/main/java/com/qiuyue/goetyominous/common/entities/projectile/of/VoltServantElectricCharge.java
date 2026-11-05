@@ -1,7 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.projectile.of;
 
 import com.Polarice3.Goety.common.entities.projectiles.WaterHurtingProjectile;
-import com.qiuyue.goetyominous.client.sound.of.VoltServantElectricChargeSoundHandler;
 import com.unusualmodding.opposing_force.entity.projectile.FrictionlessProjectile;
 import com.unusualmodding.opposing_force.utils.ParticleUtils;
 import net.minecraft.core.particles.ParticleTypes;
@@ -143,7 +142,6 @@ public class VoltServantElectricCharge extends WaterHurtingProjectile {
     public void tick() {
         this.baseTick();
         if (this.level().isClientSide && this.isAlive()) {
-            VoltServantElectricChargeSoundHandler.playFor(this);
         }
         this.moveCharge();
         this.spawnElectricParticles(1 + this.random.nextInt(3), 0.0F, 16.0F);
@@ -244,7 +242,6 @@ public class VoltServantElectricCharge extends WaterHurtingProjectile {
     @Override
     public void remove(RemovalReason reason) {
         if (this.level().isClientSide) {
-            VoltServantElectricChargeSoundHandler.clearFor(this);
         }
         super.remove(reason);
     }

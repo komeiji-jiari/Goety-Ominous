@@ -4,7 +4,6 @@ import com.Polarice3.Goety.api.items.magic.IWand;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.utils.ServantUtil;
-import com.qiuyue.goetyominous.client.sound.of.FrowzyServantPantingSoundHandler;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.FrowzyServantAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.FrowzyServantLeapGoal;
 import com.unusualmodding.opposing_force.entity.Frowzy;
@@ -125,9 +124,7 @@ public class FrowzyServant extends Summoned implements AttackState, VariantHolde
         if (this.level().isClientSide) {
             this.setupAnimationStates();
             if (this.isAggressive() && this.isAlive()) {
-                FrowzyServantPantingSoundHandler.playFor(this);
             } else {
-                FrowzyServantPantingSoundHandler.clearFor(this);
             }
         }
         if (this.attackTicks > 0) {
@@ -167,7 +164,6 @@ public class FrowzyServant extends Summoned implements AttackState, VariantHolde
     @Override
     public void remove(@NotNull RemovalReason reason) {
         if (this.level().isClientSide) {
-            FrowzyServantPantingSoundHandler.clearFor(this);
         }
         super.remove(reason);
     }

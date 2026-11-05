@@ -11,11 +11,12 @@ import com.qiuyue.goetyominous.client.render.model.equipment.BoneCudgelModel;
 import com.qiuyue.goetyominous.client.render.model.projectile.AcidFungus;
 import com.qiuyue.goetyominous.client.render.model.projectile.PitchforkModel;
 import com.qiuyue.goetyominous.client.render.projectile.*;
+import com.qiuyue.goetyominous.common.entities.projectile.PyromancerFireball;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
-import com.qiuyue.goetyominous.compat.mod.*;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.entity.WolfRenderer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -170,6 +171,9 @@ public class ModModelLayers {
 
         event.registerLayerDefinition(ModEntityLayers.ARCH_GEOMANCER_LAYER,
                 ArchGeomancerModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.PYROLOGER_LAYER,
+                PyrologerModel::createBodyLayer);
 
         event.registerLayerDefinition(ModEntityLayers.IMPERIAL_CHASSEUR_LAYER,
                 ImperialChasseurModel::createBodyLayer);
@@ -407,6 +411,14 @@ public class ModModelLayers {
         event.registerEntityRenderer(
                 com.qiuyue.goetyominous.common.init.ModEntityTypes.POISON_BALL.get(),
                 com.qiuyue.goetyominous.client.render.projectile.RenderPoisonBall::new);
+
+        event.registerEntityRenderer(ModEntityTypes.PYROMANCER_FIREBALL.get(),
+                context -> new ThrownItemRenderer<PyromancerFireball>(context, 3.0F, true));
+
+        event.registerEntityRenderer(ModEntityTypes.FIRE_WALL.get(), FireWallRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.PYROLOGER_SERVANT.get(), PyrologerRenderer::new);
+        event.registerEntityRenderer(ModEntityTypes.PYROLOGER.get(), PyrologerRenderer::new);
     }
 
     @SubscribeEvent

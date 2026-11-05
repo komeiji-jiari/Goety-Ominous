@@ -257,6 +257,7 @@
   "block.goetyominous.plushie_xinjimu": "§5Xinjimu §rPlushie",
   "block.goetyominous.plushie_xueyuefeng": "§aXueyuefeng §rPlushie",
 
+  "entity.goetyominous.fire_wall": "Fire Wall",
   "entity.goetyominous.ominous_item_spawner": "Ominous Item Spawner",
   "entity.goetyominous.warg": "Warg",
   "entity.goetyominous.swamp_wolf": "Plague Wolf",
@@ -324,6 +325,8 @@
   "entity.goetyominous.piglin_merchant": "Piglin Merchant",
   "entity.goetyominous.conquillager_servant": "Conquillager Servant",
   "entity.goetyominous.inquillager_servant": "Inquillager Servant",
+  "entity.goetyominous.pyrologer_servant": "Pyrologer Servant",
+  "entity.goetyominous.pyrologer": "Pyrologer",
   "entity.goetyominous.sunken_necromancer_servant": "Sunken Necromancer",
   "entity.goetyominous.sunken_necromancer": "Sunken Necromancer",
   "entity.goetyominous.heresiarch_servant": "Heresiarch Servant",
@@ -486,6 +489,7 @@
   "item.goetyominous.crimson_spider_servant_spawn_egg": "Crimson Spider Servant Spawn Egg",
   "item.goetyominous.conquillager_servant_spawn_egg": "Conquillager Servant Spawn Egg",
   "item.goetyominous.inquillager_servant_spawn_egg": "Inquillager Servant Spawn Egg",
+  "item.goetyominous.pyrologer_servant_spawn_egg": "Pyrologer Servant Spawn Egg",
   "item.goetyominous.sunken_necromancer_servant_spawn_egg": "Sunken Necromancer Servant Spawn Egg",
   "item.goetyominous.sunken_necromancer_spawn_egg": "Sunken Necromancer Spawn Egg",
   "item.goetyominous.heresiarch_servant_spawn_egg": "Heresiarch Servant Spawn Egg",
@@ -715,6 +719,7 @@
   "item.goetyominous.crimson_guard_servant_spawn_egg": "Crimson Guard Servant Spawn Egg",
   "item.goetyominous.imperial_chasseur_spawn_egg": "Imperial Chasseur Spawn Egg",
   "item.goetyominous.imperial_chasseur_servant_spawn_egg": "Imperial Chasseur Servant Spawn Egg",
+  "item.goetyominous.pyrologer_spawn_egg": "Pyrologer Spawn Egg",
   "item.goetyominous.ominous_bottle": "Ominous Bottle",
   "item.goetyominous.trial_key": "Trial Key",
   "item.goetyominous.ominous_trial_key": "Ominous Trial Key",
@@ -997,6 +1002,8 @@
   "effect.goetyominous.wind_charged.description": "Makes affected entities emit a burst of wind on death.",
   "effect.goetyominous.infested": "Infested",
   "effect.goetyominous.infested.description": "Gives affected entities a 10% chance to spawn between 1 and 2 silverfish when hurt.",
+  "effect.goetyominous.fiery_hide": "Fiery Hide",
+  "effect.goetyominous.fiery_hide.description": "Grants 3 armor points per level. Attackers are set on fire and take 20% of the damage they deal as reflected damage.",
   "effect.goetyominous.curse_of_rlyeh": "Curse of Rlyeh",
   "effect.goetyominous.curse_of_rlyeh.description": "Marked by the deep. Movement speed and attack damage are reduced by 15% per level (max 3 levels); abyss spells cast with the Key of Rlyeh deal 15% more damage per level; fire, freezing and lightning damage taken is increased by 30%, and each such hit cuts 2 seconds off this effect's remaining duration. Repeated hits stack its level, up to 3.",
 
@@ -1053,5 +1060,7 @@
 
   "entity.goetyominous.baby_villager": "Baby Villager",
   "entity.goetyominous.tusked_elephant": "Tusked Elephant",
-  "entity.goetyominous.baby_tremorzilla": "Baby Tremorzilla"
+  "entity.goetyominous.baby_tremorzilla": "Baby Tremorzilla",
+
+  "death.attack.goetyominous.fire_wall": "%1$s was burned by %2$s's fire wall."
 }

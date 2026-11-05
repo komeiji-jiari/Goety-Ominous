@@ -74,6 +74,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.HitResult.Type;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.entity.PartEntity;
@@ -350,6 +352,7 @@ public class MutantBlazeServant extends AbstractMutantServant implements IHeatSo
     protected void playStepSound(BlockPos p_20135_, BlockState p_20136_) {
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void onAddedToWorld() {
         super.onAddedToWorld();

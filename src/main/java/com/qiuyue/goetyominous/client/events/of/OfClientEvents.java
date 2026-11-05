@@ -6,8 +6,10 @@ import com.qiuyue.goetyominous.client.render.model.of.RamblerServantModel;
 import com.qiuyue.goetyominous.compat.mod.OpposingForceCompat;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class OfClientEvents {
@@ -116,5 +118,13 @@ public class OfClientEvents {
         event.registerEntityRenderer(
                 com.qiuyue.goetyominous.common.init.of.OfEntityRegistry.SKYVERN_SEGMENT_SERVANT.get(),
                 com.qiuyue.goetyominous.client.render.of.SkyvernSegmentServantRenderer::new);
+    }
+
+    @SubscribeEvent
+    public static void onClientSetup(FMLClientSetupEvent event) {
+        if (!OpposingForceCompat.isOpposingForceLoaded()) {
+            return;
+        }
+        MinecraftForge.EVENT_BUS.register(OfServantSoundEvents.class);
     }
 }

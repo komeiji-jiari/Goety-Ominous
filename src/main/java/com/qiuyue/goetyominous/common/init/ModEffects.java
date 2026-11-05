@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.common.init;
 
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.common.effects.FieryHideEffect;
 import com.qiuyue.goetyominous.common.effects.InfestedEffect;
 import com.qiuyue.goetyominous.common.effects.OozingEffect;
 import com.qiuyue.goetyominous.common.effects.RaidOmenEffect;
@@ -29,6 +30,7 @@ public class ModEffects {
     public static final RegistryObject<MobEffect> WEAVING = EFFECTS.register("weaving", WeavingEffect::new);
     public static final RegistryObject<MobEffect> WIND_CHARGED = EFFECTS.register("wind_charged", WindChargedEffect::new);
     public static final RegistryObject<MobEffect> INFESTED = EFFECTS.register("infested", InfestedEffect::new);
+    public static final RegistryObject<MobEffect> FIERY_HIDE = EFFECTS.register("fiery_hide", FieryHideEffect::new);
 
     public static void init() {
         EFFECTS.register(FMLJavaModLoadingContext.get().getModEventBus());

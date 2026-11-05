@@ -1,5 +1,7 @@
 package com.qiuyue.goetyominous.client.sound.of;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import com.qiuyue.goetyominous.common.entities.projectile.of.VoltServantElectricCharge;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -7,6 +9,7 @@ import net.minecraft.client.Minecraft;
 
 import java.util.Iterator;
 
+@OnlyIn(Dist.CLIENT)
 public class VoltServantElectricChargeSoundHandler {
 
     private static final Int2ObjectMap<VoltServantElectricChargeSound> SOUND_INSTANCE_MAP = new Int2ObjectOpenHashMap<>();

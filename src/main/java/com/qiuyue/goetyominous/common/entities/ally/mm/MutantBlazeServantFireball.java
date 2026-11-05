@@ -1,5 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.ally.mm;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.alexander.mutantmore.audio.soundinstances.EntityLoopingSoundInstance;
 import com.alexander.mutantmore.config.mutant_blaze.MutantBlazeCommonConfig;
@@ -93,6 +95,7 @@ public class MutantBlazeServantFireball extends Fireball {
         }
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void onAddedToWorld() {
         super.onAddedToWorld();
