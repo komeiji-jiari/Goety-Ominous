@@ -237,7 +237,7 @@ public class Zealot extends AbstractGOCultist implements CrossbowAttackMob, Rang
     }
 
     protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty) {
-        int random = this.level().random.nextInt(2);
+        int random = this.random.nextInt(2);
         if (random == 1) {
             this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
         } else {
