@@ -162,7 +162,6 @@ public class Pyrologer extends HuntingIllagerEntity {
         super.addAdditionalSaveData(tag);
         tag.putInt("SpellCool", this.spellCool);
         tag.putInt("AnimResetTicks", this.animResetTicks);
-        tag.putBoolean("FireBreathCasting", this.fireBreathCasting);
     }
 
     @Override
@@ -170,7 +169,6 @@ public class Pyrologer extends HuntingIllagerEntity {
         super.readAdditionalSaveData(tag);
         this.spellCool = tag.getInt("SpellCool");
         this.animResetTicks = tag.getInt("AnimResetTicks");
-        this.fireBreathCasting = tag.getBoolean("FireBreathCasting");
         this.setConfigurableAttributes();
     }
 
@@ -673,6 +671,11 @@ public class Pyrologer extends HuntingIllagerEntity {
                 ++this.sprayTicks;
             }
             this.spell.useParticle(Pyrologer.this.level(), Pyrologer.this, ItemStack.EMPTY);
+        }
+
+        @Override
+        public boolean requiresUpdateEveryTick() {
+            return true;
         }
 
         @Override

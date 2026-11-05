@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.entities.ally.illager;
 
 import com.Polarice3.Goety.common.entities.ai.AvoidTargetGoal;
 import com.Polarice3.Goety.common.entities.ally.illager.SpellcasterIllagerServant;
+import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.common.magic.spells.nether.FireBreathSpell;
 import com.Polarice3.Goety.utils.MobUtil;
@@ -11,6 +12,7 @@ import com.qiuyue.goetyominous.common.entities.util.FireWallEntity;
 import com.qiuyue.goetyominous.common.entities.util.FireWallShape;
 import com.qiuyue.goetyominous.common.init.ModEffects;
 import com.qiuyue.goetyominous.config.AttributesConfig;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -32,6 +34,7 @@ import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class PyrologerServant extends SpellcasterIllagerServant {
@@ -43,7 +46,8 @@ public class PyrologerServant extends SpellcasterIllagerServant {
             PyrologerServant.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> DATA_BREATH_PITCH = SynchedEntityData.defineId(
             PyrologerServant.class, EntityDataSerializers.FLOAT);
-    private static final double SUPPORT_RANGE = 13.0D;
+    private static final double SUPPORT_RANGE = 16.0D;
+    private static final int SUPPORT_MAX_SERVANTS = 7;
     private static final int FIRE_BREATH_CHARGE_TICKS = 13;
     private static final int FIRE_BREATH_LOOP_TICKS = 20;
     private static final int FIRE_BREATH_MAX_SPRAY_TICKS = 100;
@@ -280,12 +284,16 @@ public class PyrologerServant extends SpellcasterIllagerServant {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
+        this.spellCool = tag.getInt("SpellCool");
+        this.animResetTicks = tag.getInt("AnimResetTicks");
         this.setConfigurableAttributes();
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
+        tag.putInt("SpellCool", this.spellCool);
+        tag.putInt("AnimResetTicks", this.animResetTicks);
     }
 
     @Override
@@ -297,24 +305,40 @@ public class PyrologerServant extends SpellcasterIllagerServant {
         return super.mobInteract(player, hand);
     }
 
+    private static boolean canSupport(LivingEntity entity) {
+        return !entity.isDeadOrDying()
+                && !entity.hasEffect(ModEffects.FIERY_HIDE.get())
+                && entity.getAttribute(Attributes.ATTACK_DAMAGE) != null
+                && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity);
+    }
+
     private List<LivingEntity> getSupportTargets() {
         List<LivingEntity> targets = new ArrayList<>();
-        if (!this.isDeadOrDying()
-                && !this.hasEffect(ModEffects.FIERY_HIDE.get())
-                && this.getAttribute(Attributes.ATTACK_DAMAGE) != null) {
+        if (canSupport(this)) {
             targets.add(this);
         }
         LivingEntity owner = this.getTrueOwner();
-        targets.addAll(this.level().getEntitiesOfClass(LivingEntity.class,
+        if (owner != null
+                && this.getBoundingBox().inflate(SUPPORT_RANGE).intersects(owner.getBoundingBox())
+                && !owner.isDeadOrDying()
+                && owner.getAttribute(Attributes.ATTACK_DAMAGE) != null
+                && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(owner)) {
+            targets.add(owner);
+        }
+        List<LivingEntity> servants = this.level().getEntitiesOfClass(LivingEntity.class,
                 this.getBoundingBox().inflate(SUPPORT_RANGE),
                 entity -> entity != this
-                        && (entity == owner
-                        || (owner != null && (MobUtil.getOwner(entity) == owner
-                        || MobUtil.areAllies(owner, entity))))
-                        && !entity.isDeadOrDying()
-                        && !entity.hasEffect(ModEffects.FIERY_HIDE.get())
-                        && entity.getAttribute(Attributes.ATTACK_DAMAGE) != null
-                        && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity)));
+                        && entity != owner
+                        && owner != null
+                        && entity instanceof Summoned
+                        && !(entity instanceof PyrologerServant)
+                        && (MobUtil.getOwner(entity) == owner || MobUtil.areAllies(owner, entity))
+                        && canSupport(entity));
+        servants.sort(Comparator.comparingDouble(LivingEntity::getHealth).reversed());
+        if (servants.size() > SUPPORT_MAX_SERVANTS) {
+            servants = new ArrayList<>(servants.subList(0, SUPPORT_MAX_SERVANTS));
+        }
+        targets.addAll(servants);
         return targets;
     }
 
@@ -742,7 +766,13 @@ public class PyrologerServant extends SpellcasterIllagerServant {
     }
 
     private class FireBreathGoal extends SpellcasterUseSpellGoal {
-        private final FireBreathSpell spell = new FireBreathSpell();
+        private final FireBreathSpell spell = new FireBreathSpell() {
+            @Override
+            public List<Entity> getBreathTarget(LivingEntity caster, double range) {
+                return MobUtil.getTargets(caster.level(), caster, range, 3.0D,
+                        entity -> entity != caster && !ServantAllyUtil.areAllied(caster, entity));
+            }
+        };
         private int chargeTicks;
         private int sprayTicks;
         private int sprayDuration;
@@ -812,6 +842,11 @@ public class PyrologerServant extends SpellcasterIllagerServant {
                 ++this.sprayTicks;
             }
             this.spell.useParticle(PyrologerServant.this.level(), PyrologerServant.this, ItemStack.EMPTY);
+        }
+
+        @Override
+        public boolean requiresUpdateEveryTick() {
+            return true;
         }
 
         @Override

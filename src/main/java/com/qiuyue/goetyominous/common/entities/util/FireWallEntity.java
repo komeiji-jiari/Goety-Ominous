@@ -242,11 +242,14 @@ public class FireWallEntity extends Entity implements IEntityAdditionalSpawnData
 
     private void applyEffects() {
         LivingEntity owner = this.getOwnerEntity();
+        if (owner == null) {
+            this.clearSlows();
+            return;
+        }
         DamageSource source = ModDamageSource.noKnockbackDamageSource(this.level(), FIRE_WALL_DAMAGE, this, owner);
         Set<UUID> touching = new HashSet<>();
         for (LivingEntity target : this.level().getEntitiesOfClass(LivingEntity.class, this.getWallArea())) {
-            if (target == owner || (owner != null && MobUtil.areAllies(owner, target))
-                    || (owner != null && isHostileIllager(owner) && isHostileIllager(target))) {
+            if (this.isOwnerSide(target)) {
                 continue;
             }
             if (!this.isTouching(target)) {

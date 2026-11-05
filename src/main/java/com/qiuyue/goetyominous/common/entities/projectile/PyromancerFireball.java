@@ -11,6 +11,7 @@ import com.Polarice3.Goety.utils.ModDamageSource;
 import com.Polarice3.Goety.utils.ServerParticleUtil;
 import com.Polarice3.Goety.utils.SpellExplosion;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -31,6 +32,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -48,6 +50,7 @@ public class PyromancerFireball extends ModFireball {
     private static final double FIREBALL_POWER = 0.1D;
     private static final float HOMING_TURN = 0.22F;
     private static final float FIRE_RADIUS = 2.5F;
+    private static final int MAX_HELD_TICKS = 40;
     private static final EntityDataAccessor<Boolean> DATA_HELD = SynchedEntityData.defineId(
             PyromancerFireball.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Float> DATA_POWER_X = SynchedEntityData.defineId(
@@ -59,6 +62,8 @@ public class PyromancerFireball extends ModFireball {
 
     @Nullable
     private UUID homingTarget;
+    private int heldTicks;
+    private boolean launched;
 
     public PyromancerFireball(EntityType<? extends ModFireball> type, Level level) {
         super(type, level);
@@ -95,6 +100,7 @@ public class PyromancerFireball extends ModFireball {
     }
 
     public void launch(Vec3 target) {
+        this.launched = true;
         this.entityData.set(DATA_HELD, false);
         this.noPhysics = false;
         Vec3 direction = target.subtract(this.position());
@@ -135,10 +141,20 @@ public class PyromancerFireball extends ModFireball {
 
     @Override
     public void tick() {
+        if (!this.level().isClientSide && !this.launched && !this.isHeld()) {
+            this.discard();
+            return;
+        }
         if (this.isHeld()) {
             this.baseTick();
             if (this.level().isClientSide) {
                 this.trailParticles();
+            } else {
+                ++this.heldTicks;
+                Entity owner = this.getOwner();
+                if (owner == null || !owner.isAlive() || owner.isRemoved() || this.heldTicks > MAX_HELD_TICKS) {
+                    this.discard();
+                }
             }
             return;
         }
@@ -201,6 +217,7 @@ public class PyromancerFireball extends ModFireball {
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
+        tag.putBoolean("Launched", this.launched);
         if (this.homingTarget != null) {
             tag.putUUID("HomingTarget", this.homingTarget);
         }
@@ -209,7 +226,13 @@ public class PyromancerFireball extends ModFireball {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
+        this.launched = tag.getBoolean("Launched");
         this.homingTarget = tag.hasUUID("HomingTarget") ? tag.getUUID("HomingTarget") : null;
+        if (!this.level().isClientSide && this.launched) {
+            this.entityData.set(DATA_POWER_X, (float) this.xPower);
+            this.entityData.set(DATA_POWER_Y, (float) this.yPower);
+            this.entityData.set(DATA_POWER_Z, (float) this.zPower);
+        }
     }
 
     private void trailParticles() {
@@ -311,13 +334,26 @@ public class PyromancerFireball extends ModFireball {
         return ForgeEventFactory.getMobGriefingEvent(level, owner);
     }
 
+    @Override
+    protected void onHitEntity(EntityHitResult result) {
+        Entity owner = this.getOwner();
+        if (owner != null && ServantAllyUtil.areAllied(owner, result.getEntity())) {
+            return;
+        }
+        super.onHitEntity(result);
+    }
+
     private void applyAoe(ServerLevel level, Vec3 pos) {
         float baseDamage = this.getDamage() * AOE_DAMAGE_MULTIPLIER;
-        DamageSource source = ModDamageSource.magicFireball(this, this.getOwner(), level);
+        Entity owner = this.getOwner();
+        DamageSource source = ModDamageSource.magicFireball(this, owner, level);
         new SpellExplosion(level, this, source, pos.x, pos.y, pos.z, AOE_RADIUS, 0.0F) {
             @Override
             public void explodeHurt(Entity target, DamageSource damageSource, double x, double y, double z,
                                     double seen, float actualDamage) {
+                if (ServantAllyUtil.areAllied(owner, target)) {
+                    return;
+                }
                 float damage = (float) (baseDamage * (seen * seen + seen) * 0.5D);
                 if (damage > 0.0F) {
                     super.explodeHurt(target, damageSource, x, y, z, seen, damage);
