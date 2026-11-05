@@ -242,7 +242,7 @@ public class FireWallEntity extends Entity implements IEntityAdditionalSpawnData
 
     private void applyEffects() {
         LivingEntity owner = this.getOwnerEntity();
-        if (owner == null) {
+        if (owner == null && this.ownerUUID != null) {
             this.clearSlows();
             return;
         }
