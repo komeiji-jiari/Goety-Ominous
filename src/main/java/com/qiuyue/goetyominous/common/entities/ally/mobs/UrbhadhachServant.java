@@ -17,7 +17,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PlayerRideable;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FleeSunGoal;
-import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RestrictSunGoal;
@@ -28,10 +27,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.EnumSet;
-
 public class UrbhadhachServant extends AbstractUrbhadhach implements PlayerRideable {
     private static final double PASSENGER_RIDING_OFFSET = 1.6D;
+    private static final ResourceLocation NAMELESS_CROWN_ID = new ResourceLocation("goety", "nameless_crown");
+    private static final ResourceLocation NAMELESS_CAPE_ID = new ResourceLocation("goety", "nameless_cape");
+    private boolean namelessSet;
+    private int namelessSetTicks;
 
     public UrbhadhachServant(EntityType<? extends AbstractUrbhadhach> type, Level level) {
         super(type, level);
@@ -40,14 +41,18 @@ public class UrbhadhachServant extends AbstractUrbhadhach implements PlayerRidea
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(0, new StandbyGoal());
+        this.goalSelector.addGoal(0, new RestGoal(this,
+                () -> this.isStaying() && !this.isVehicle() && !this.isPlayingSpecialAnimation(),
+                () -> this.isStaying() && !this.isVehicle()));
         this.goalSelector.addGoal(3, new RestrictSunGoal(this));
         this.goalSelector.addGoal(4, new FleeSunGoal(this, 1.0D));
-        this.goalSelector.addGoal(5, new ShadeSleepGoal());
+        this.goalSelector.addGoal(5, new RestGoal(this,
+                () -> this.canRestInShade() && !this.isVehicle() && this.getAnimationState() == ANIM_NONE && this.onGround(),
+                () -> this.canRestInShade() && !this.isVehicle() && this.onGround()));
         this.goalSelector.addGoal(6, new Summoned.WanderGoal<>(this, 1.0D));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, AgeableMob.class, 10, true, false, LivingEntity::isBaby));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, AgeableMob.class, 10, true, false, LivingEntity::isBaby));
     }
 
     @Override
@@ -107,13 +112,19 @@ public class UrbhadhachServant extends AbstractUrbhadhach implements PlayerRidea
     }
 
     private boolean hasNamelessSet() {
+        if (--this.namelessSetTicks <= 0) {
+            this.namelessSetTicks = 20;
+            this.namelessSet = this.checkNamelessSet();
+        }
+        return this.namelessSet;
+    }
+
+    private boolean checkNamelessSet() {
         if (this.getTrueOwner() instanceof Player player) {
             boolean hasCrown = CuriosFinder.hasCurio(player,
-                    net.minecraftforge.registries.ForgeRegistries.ITEMS.getValue(
-                            new ResourceLocation("goety", "nameless_crown")));
+                    net.minecraftforge.registries.ForgeRegistries.ITEMS.getValue(NAMELESS_CROWN_ID));
             boolean hasCape = CuriosFinder.hasCurio(player,
-                    net.minecraftforge.registries.ForgeRegistries.ITEMS.getValue(
-                            new ResourceLocation("goety", "nameless_cape")));
+                    net.minecraftforge.registries.ForgeRegistries.ITEMS.getValue(NAMELESS_CAPE_ID));
             return hasCrown && hasCape;
         }
         return false;
@@ -174,111 +185,5 @@ public class UrbhadhachServant extends AbstractUrbhadhach implements PlayerRidea
     public void tryKill(Player player) {
         this.triggerWakeUp();
         super.tryKill(player);
-    }
-
-    class StandbyGoal extends Goal {
-        private static final int SIT_DELAY = 40;
-        private int stayTicks;
-        private int sitTicks;
-
-        StandbyGoal() {
-            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
-        }
-
-        @Override
-        public boolean canUse() {
-            return UrbhadhachServant.this.isStaying()
-                    && UrbhadhachServant.this.getTarget() == null
-                    && !UrbhadhachServant.this.isVehicle()
-                    && !UrbhadhachServant.this.isPlayingSpecialAnimation();
-        }
-
-        @Override
-        public boolean canContinueToUse() {
-            return UrbhadhachServant.this.isStaying()
-                    && UrbhadhachServant.this.getTarget() == null
-                    && !UrbhadhachServant.this.isVehicle();
-        }
-
-        @Override
-        public void start() {
-            this.stayTicks = 0;
-            this.sitTicks = 0;
-        }
-
-        @Override
-        public void tick() {
-            int animation = UrbhadhachServant.this.getAnimationState();
-            if (animation == ANIM_WAKE_UP) {
-                this.stayTicks = 0;
-            } else {
-                ++this.stayTicks;
-            }
-            if (animation == ANIM_SIT) {
-                ++this.sitTicks;
-            } else {
-                this.sitTicks = 0;
-            }
-            UrbhadhachServant.this.getNavigation().stop();
-            if (animation == ANIM_NONE && this.stayTicks > SIT_DELAY) {
-                UrbhadhachServant.this.startAnimation(ANIM_SIT, SIT_DURATION);
-            } else if (animation == ANIM_SIT && this.sitTicks >= SIT_DURATION) {
-                UrbhadhachServant.this.startAnimation(ANIM_SLEEP, SLEEP_DURATION);
-            }
-        }
-    }
-
-    class ShadeSleepGoal extends Goal {
-        private static final int SIT_DELAY = 40;
-        private int restTicks;
-        private int sitTicks;
-
-        ShadeSleepGoal() {
-            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
-        }
-
-        @Override
-        public boolean canUse() {
-            return UrbhadhachServant.this.canRestInShade()
-                    && UrbhadhachServant.this.getTarget() == null
-                    && !UrbhadhachServant.this.isVehicle()
-                    && UrbhadhachServant.this.getAnimationState() == ANIM_NONE
-                    && UrbhadhachServant.this.onGround();
-        }
-
-        @Override
-        public boolean canContinueToUse() {
-            return UrbhadhachServant.this.canRestInShade()
-                    && UrbhadhachServant.this.getTarget() == null
-                    && !UrbhadhachServant.this.isVehicle()
-                    && UrbhadhachServant.this.onGround();
-        }
-
-        @Override
-        public void start() {
-            this.restTicks = 0;
-            this.sitTicks = 0;
-        }
-
-        @Override
-        public void tick() {
-            int animation = UrbhadhachServant.this.getAnimationState();
-            if (animation == ANIM_WAKE_UP) {
-                this.restTicks = 0;
-            } else {
-                ++this.restTicks;
-            }
-            if (animation == ANIM_SIT) {
-                ++this.sitTicks;
-            } else {
-                this.sitTicks = 0;
-            }
-            UrbhadhachServant.this.getNavigation().stop();
-            if (animation == ANIM_NONE && this.restTicks > SIT_DELAY) {
-                UrbhadhachServant.this.startAnimation(ANIM_SIT, SIT_DURATION);
-            } else if (animation == ANIM_SIT && this.sitTicks >= SIT_DURATION) {
-                UrbhadhachServant.this.startAnimation(ANIM_SLEEP, SLEEP_DURATION);
-            }
-        }
     }
 }
