@@ -43,12 +43,12 @@ public class UrbhadhachServant extends AbstractUrbhadhach implements PlayerRidea
         super.registerGoals();
         this.goalSelector.addGoal(0, new RestGoal(this,
                 () -> this.isStaying() && !this.isVehicle() && !this.isPlayingSpecialAnimation(),
-                () -> this.isStaying() && !this.isVehicle()));
+                () -> this.isStaying() && !this.isVehicle(), false));
         this.goalSelector.addGoal(3, new RestrictSunGoal(this));
         this.goalSelector.addGoal(4, new FleeSunGoal(this, 1.0D));
         this.goalSelector.addGoal(5, new RestGoal(this,
                 () -> this.canRestInShade() && !this.isVehicle() && this.getAnimationState() == ANIM_NONE && this.onGround(),
-                () -> this.canRestInShade() && !this.isVehicle() && this.onGround()));
+                () -> this.canRestInShade() && !this.isVehicle() && this.onGround(), true));
         this.goalSelector.addGoal(6, new Summoned.WanderGoal<>(this, 1.0D));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
@@ -137,7 +137,9 @@ public class UrbhadhachServant extends AbstractUrbhadhach implements PlayerRidea
             int animation = this.getAnimationState();
             if ((animation == ANIM_SIT || animation == ANIM_SLEEP)
                     && (this.getTarget() != null || this.hurtTime > 0 || this.isVehicle()
-                            || !this.isStaying() && !this.canRestInShade())) {
+                            || (this.isRestingInShade()
+                                    ? !this.canRestInShade() || !this.onGround()
+                                    : !this.isStaying()))) {
                 this.triggerWakeUp();
             }
         }

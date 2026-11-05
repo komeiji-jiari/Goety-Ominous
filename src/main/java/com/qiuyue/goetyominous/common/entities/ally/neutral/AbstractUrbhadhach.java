@@ -104,6 +104,7 @@ public abstract class AbstractUrbhadhach extends Summoned {
     private int actionDuration;
     private boolean eatQueued;
     private boolean stunEndQueued;
+    private boolean restingInShade;
     private int warningSoundTicks;
     private int roarCooldown;
     private int thrallCooldown;
@@ -849,18 +850,28 @@ public abstract class AbstractUrbhadhach extends Summoned {
         }
     }
 
+    private void setRestingInShade(boolean restingInShade) {
+        this.restingInShade = restingInShade;
+    }
+
+    protected boolean isRestingInShade() {
+        return this.restingInShade;
+    }
+
     public static class RestGoal extends Goal {
         private static final int SIT_DELAY = 40;
         private final AbstractUrbhadhach mob;
         private final BooleanSupplier canRest;
         private final BooleanSupplier canContinueResting;
+        private final boolean shadeRest;
         private int restTicks;
         private int sitTicks;
 
-        public RestGoal(AbstractUrbhadhach mob, BooleanSupplier canRest, BooleanSupplier canContinueResting) {
+        public RestGoal(AbstractUrbhadhach mob, BooleanSupplier canRest, BooleanSupplier canContinueResting, boolean shadeRest) {
             this.mob = mob;
             this.canRest = canRest;
             this.canContinueResting = canContinueResting;
+            this.shadeRest = shadeRest;
             this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
         }
 
@@ -878,6 +889,7 @@ public abstract class AbstractUrbhadhach extends Summoned {
         public void start() {
             this.restTicks = 0;
             this.sitTicks = 0;
+            this.mob.setRestingInShade(this.shadeRest);
         }
 
         @Override
