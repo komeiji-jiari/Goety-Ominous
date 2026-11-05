@@ -14,7 +14,6 @@ import com.github.alexmodguy.alexscaves.server.item.ACItemRegistry;
 import com.github.alexmodguy.alexscaves.server.misc.ACDamageTypes;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.google.common.base.Predicates;
-import com.qiuyue.goetyominous.client.sound.ac.NucleeperServantSoundHandler;
 import com.qiuyue.goetyominous.common.events.ac.NucleeperNukeKillHandler;
 import com.qiuyue.goetyominous.common.events.ac.NucleeperNukeProtectionHandler;
 import com.qiuyue.goetyominous.common.items.ac.RaycatAmuletItem;
@@ -274,7 +273,6 @@ public class NucleeperServant extends Summoned implements ActivatesSirens, Power
             }
         }
         if (this.isTriggered() && this.isAlive() && this.level().isClientSide) {
-            NucleeperServantSoundHandler.startSirenFor(this);
         }
         sirenAngle += (10F + 30F * closeProgress) % 360F;
         closeProgress = (float) time / AlexsCaves.COMMON_CONFIG.nucleeperFuseTime.get();
@@ -296,7 +294,6 @@ public class NucleeperServant extends Summoned implements ActivatesSirens, Power
     public void remove(Entity.RemovalReason removalReason) {
         if (this.level().isClientSide) {
             AlexsCaves.PROXY.clearSoundCacheFor(this);
-            NucleeperServantSoundHandler.clearSoundFor(this);
         }
         super.remove(removalReason);
     }

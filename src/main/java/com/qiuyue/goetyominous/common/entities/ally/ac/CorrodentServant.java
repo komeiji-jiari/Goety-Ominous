@@ -13,7 +13,6 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.server.entity.collision.ICustomCollisions;
-import com.qiuyue.goetyominous.client.sound.ac.CorrodentServantDigSoundHandler;
 import com.qiuyue.goetyominous.common.network.ModNetwork;
 import com.qiuyue.goetyominous.common.network.ac.ServantAbilityKeyPacket;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
@@ -343,7 +342,6 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
             }
         } else {
             if (this.isDigging() && this.isAlive()) {
-                CorrodentServantDigSoundHandler.startDigFor(this);
             }
             Player localPlayer = AlexsCaves.PROXY.getClientSidePlayer();
             boolean abilityKeyDown = localPlayer != null && localPlayer.getUUID().equals(this.getOwnerId())
@@ -576,7 +574,6 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
     @Override
     public void remove(Entity.RemovalReason removalReason) {
         if (this.level().isClientSide) {
-            CorrodentServantDigSoundHandler.clearDigFor(this);
         }
         super.remove(removalReason);
         if (this.allParts != null) {

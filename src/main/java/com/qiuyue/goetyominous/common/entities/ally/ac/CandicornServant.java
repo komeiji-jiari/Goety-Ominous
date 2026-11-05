@@ -15,7 +15,6 @@ import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
-import com.qiuyue.goetyominous.client.sound.ac.CandicornServantChargeSoundHandler;
 import com.qiuyue.goetyominous.common.init.ac.AcParticles;
 import com.qiuyue.goetyominous.utils.ModMobType;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
@@ -426,7 +425,6 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
             }
         } else {
             if (this.isCharging() && this.isAlive()) {
-                CandicornServantChargeSoundHandler.startChargeFor(this);
             }
             Player player = AlexsCaves.PROXY.getClientSidePlayer();
             if (player != null && player.isPassengerOfSameVehicle(this)) {
@@ -808,7 +806,6 @@ public class CandicornServant extends AnimalSummon implements IAnimatedEntity, P
     @Override
     public void remove(Entity.RemovalReason removalReason) {
         if (this.level().isClientSide) {
-            CandicornServantChargeSoundHandler.clearChargeFor(this);
         }
         super.remove(removalReason);
     }

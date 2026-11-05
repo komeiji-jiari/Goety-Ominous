@@ -191,6 +191,7 @@ public class AcClientEvents {
             return;
         }
 
+        MinecraftForge.EVENT_BUS.register(AcServantSoundEvents.class);
         MinecraftForge.EVENT_BUS.register(TremorsaurusHudEvents.class);
         MinecraftForge.EVENT_BUS.register(TremorzillaHudEvents.class);
         MinecraftForge.EVENT_BUS.register(AtlatitanHudEvents.class);

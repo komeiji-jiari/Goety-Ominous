@@ -3,7 +3,6 @@ package com.qiuyue.goetyominous.common.entities.ally.of;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.utils.MobUtil;
-import com.qiuyue.goetyominous.client.sound.of.TerrorServantSawSoundHandler;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.TerrorServantAttackGoal;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.TerrorServantFollowGoal;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.TerrorServantStrollGoal;
@@ -176,9 +175,7 @@ public class TerrorServant extends Summoned implements EliteVariant {
         if (this.level().isClientSide) {
             this.setupAnimationStates();
             if (this.isAlive() && this.getPose() == OPPoses.SAWING.get()) {
-                TerrorServantSawSoundHandler.playFor(this);
             } else {
-                TerrorServantSawSoundHandler.clearFor(this);
             }
         } else if (this.random.nextInt(600) == 0) {
             this.spinSaw();
@@ -339,7 +336,6 @@ public class TerrorServant extends Summoned implements EliteVariant {
     @Override
     public void remove(@NotNull RemovalReason reason) {
         if (this.level().isClientSide) {
-            TerrorServantSawSoundHandler.clearFor(this);
         }
         super.remove(reason);
     }

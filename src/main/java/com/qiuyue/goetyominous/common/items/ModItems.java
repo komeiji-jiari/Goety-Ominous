@@ -1,5 +1,7 @@
 package com.qiuyue.goetyominous.common.items;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import com.Polarice3.Goety.common.items.ServantSpawnEggItem;
 import com.Polarice3.Goety.common.items.block.BlockItemBase;
 import com.Polarice3.Goety.common.items.magic.DarkStaff;
@@ -20,7 +22,6 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -126,6 +127,7 @@ public class ModItems {
 
     public static final RegistryObject<Item> BONE_CUDGEL = ITEMS.register("bone_cudgel",
             () -> new BoneCudgelItem() {
+                @OnlyIn(Dist.CLIENT)
                 @Override
                 public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.extensions.common.IClientItemExtensions> consumer) {
                     consumer.accept(new net.minecraftforge.client.extensions.common.IClientItemExtensions() {
@@ -313,6 +315,14 @@ public class ModItems {
     public static final RegistryObject<ServantSpawnEggItem> INQUILLAGER_SERVANT_SPAWN_EGG = ITEMS.register(
             "inquillager_servant_spawn_egg",
             () -> new ServantSpawnEggItem(ModEntityTypes.INQUILLAGER_SERVANT, 0xBCA341, 0x5C121B, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> PYROLOGER_SERVANT_SPAWN_EGG = ITEMS.register(
+            "pyrologer_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.PYROLOGER_SERVANT, 0xFF6A1E, 0x2B1B12, egg()));
+
+    public static final RegistryObject<ForgeSpawnEggItem> PYROLOGER_SPAWN_EGG = ITEMS.register(
+            "pyrologer_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.PYROLOGER, 0xFF6A1E, 0x2B1B12, egg()));
 
     public static final RegistryObject<ForgeSpawnEggItem> CRIMSON_GUARD_SPAWN_EGG = ITEMS.register(
             "crimson_guard_spawn_egg",

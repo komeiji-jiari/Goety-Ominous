@@ -30,6 +30,8 @@ public class ModParticleTypes {
             PARTICLE_TYPES.register("trial_spawner_detection_ominous", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> OMINOUS_SPAWNING =
             PARTICLE_TYPES.register("ominous_spawning", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> BOUNCING_SPARK =
+            PARTICLE_TYPES.register("bouncing_spark", () -> new SimpleParticleType(true));
 
     public static final RegistryObject<SimpleParticleType> VAULT_CONNECTION = PARTICLE_TYPES.register("vault_connection", () -> new SimpleParticleType(false));
 

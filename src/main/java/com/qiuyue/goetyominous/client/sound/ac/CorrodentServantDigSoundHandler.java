@@ -1,5 +1,7 @@
 package com.qiuyue.goetyominous.client.sound.ac;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import com.qiuyue.goetyominous.common.entities.ally.ac.CorrodentServant;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -7,6 +9,7 @@ import net.minecraft.client.Minecraft;
 
 import java.util.Iterator;
 
+@OnlyIn(Dist.CLIENT)
 public class CorrodentServantDigSoundHandler {
 
     private static final Int2ObjectMap<CorrodentServantDigSound> SOUND_INSTANCE_MAP = new Int2ObjectOpenHashMap<>();

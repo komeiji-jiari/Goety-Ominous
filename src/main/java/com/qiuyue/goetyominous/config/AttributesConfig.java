@@ -106,6 +106,11 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> ImperialChasseurFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> ImperialChasseurKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> ImperialChasseurAttackKnockback;
+    public static final ForgeConfigSpec.ConfigValue<Double> PyrologerServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> PyrologerServantSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> PyrologerServantFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> PyrologerServantAttackDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> PyrologerServantArmor;
 
     static {
         BUILDER.push("Servants Attributes");
@@ -375,6 +380,18 @@ public class AttributesConfig {
                 .defineInRange("imperialChasseurKnockbackResistance", 1.0D, 0.0D, 1.0D);
         ImperialChasseurAttackKnockback = BUILDER.comment("How much knockback Imperial Chasseurs deal, Default: 2.0")
                 .defineInRange("imperialChasseurAttackKnockback", 2.0D, 0.0D, Double.MAX_VALUE);
+        BUILDER.pop();
+        BUILDER.push("Pyrologer Servant");
+        PyrologerServantHealth = BUILDER.comment("How much Max Health Pyrologer Servants have, Default: 32.0")
+                .defineInRange("pyrologerServantHealth", 32.0D, 1.0D, Double.MAX_VALUE);
+        PyrologerServantSpeed = BUILDER.comment("How fast Pyrologer Servants move, Default: 0.3")
+                .defineInRange("pyrologerServantSpeed", 0.3D, 0.0D, Double.MAX_VALUE);
+        PyrologerServantFollowRange = BUILDER.comment("How far Pyrologer Servants target enemies, Default: 24.0")
+                .defineInRange("pyrologerServantFollowRange", 24.0D, 0.0D, Double.MAX_VALUE);
+        PyrologerServantAttackDamage = BUILDER.comment("How much attack damage Pyrologer Servants have, Default: 8.0")
+                .defineInRange("pyrologerServantAttackDamage", 8.0D, 1.0D, Double.MAX_VALUE);
+        PyrologerServantArmor = BUILDER.comment("How much natural Armor Pyrologer Servants have, Default: 0.0")
+                .defineInRange("pyrologerServantArmor", 0.0D, 0.0D, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.pop();
         SPEC = BUILDER.build();

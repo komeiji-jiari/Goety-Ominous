@@ -4,7 +4,6 @@ import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.SkyvernServantChargeGoal;
 import com.qiuyue.goetyominous.common.entities.ally.of.goals.SkyvernServantFlightGoal;
-import com.qiuyue.goetyominous.client.sound.of.SkyvernServantLoopSoundHandler;
 import com.qiuyue.goetyominous.common.init.of.OfEntityRegistry;
 import com.unusualmodding.opposing_force.entity.Skyvern.SkyvernVariant;
 import com.unusualmodding.opposing_force.entity.ai.control.SkyvernLookControl;
@@ -404,9 +403,7 @@ public class SkyvernServant extends Summoned implements FlyingAnimal, AttackStat
         if (this.level().isClientSide) {
             this.setupAnimationStates();
             if (this.isAlive()) {
-                SkyvernServantLoopSoundHandler.playFor(this);
             } else {
-                SkyvernServantLoopSoundHandler.clearFor(this);
             }
             if (this.lSteps > 0) {
                 double x = this.getX() + (this.lx - this.getX()) / (double) this.lSteps;
@@ -450,7 +447,6 @@ public class SkyvernServant extends Summoned implements FlyingAnimal, AttackStat
     @Override
     public void remove(@NotNull RemovalReason reason) {
         if (this.level().isClientSide) {
-            SkyvernServantLoopSoundHandler.clearFor(this);
         }
         if (reason == RemovalReason.KILLED || reason == RemovalReason.DISCARDED || reason == RemovalReason.CHANGED_DIMENSION) {
             this.discardSegments();
@@ -461,7 +457,6 @@ public class SkyvernServant extends Summoned implements FlyingAnimal, AttackStat
     @Override
     public void die(@NotNull DamageSource damageSource) {
         if (this.level().isClientSide) {
-            SkyvernServantLoopSoundHandler.clearFor(this);
         }
         this.discardSegments();
         super.die(damageSource);

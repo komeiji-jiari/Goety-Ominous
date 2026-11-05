@@ -6,6 +6,7 @@ import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.common.entities.neutral.ZPiglinServant;
 import com.qiuyue.goetyominous.common.blocks.trial.TrialBlocks;
 import com.qiuyue.goetyominous.common.entities.ally.illager.ImperialChasseurServant;
+import com.qiuyue.goetyominous.common.entities.ally.illager.PyrologerServant;
 import com.qiuyue.goetyominous.common.explore.ExploreEvents;
 import com.qiuyue.goetyominous.common.blocks.trial.TrialSounds;
 import com.qiuyue.goetyominous.common.entities.ally.illager.ConquillagerServant;
@@ -40,6 +41,7 @@ import com.qiuyue.goetyominous.common.entities.hostile.SunkenNecromancer;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.ArchGeomancerEntity;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.CrimsonGuard;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.ImperialChasseur;
+import com.qiuyue.goetyominous.common.entities.hostile.illagers.Pyrologer;
 import com.qiuyue.goetyominous.common.items.ModItems;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.compat.curios.CuriosIntegration;
@@ -276,6 +278,8 @@ public class GoetyOminous {
     private void addAttributes(final EntityAttributeCreationEvent event) {
         event.put(ModEntityTypes.CONQUILLAGER_SERVANT.get(), ConquillagerServant.setCustomAttributes().build());
         event.put(ModEntityTypes.INQUILLAGER_SERVANT.get(), InquillagerServant.setCustomAttributes().build());
+        event.put(ModEntityTypes.PYROLOGER_SERVANT.get(), PyrologerServant.setCustomAttributes().build());
+        event.put(ModEntityTypes.PYROLOGER.get(), Pyrologer.createAttributes().build());
         event.put(ModEntityTypes.BREEZE_SERVANT.get(), BreezeServant.setCustomAttributes().build());
         event.put(ModEntityTypes.BREEZE.get(), BreezeEntity.setCustomAttributes().build());
         event.put(ModEntityTypes.HURRICANE.get(), AbstractHurricane.setCustomAttributes().build());

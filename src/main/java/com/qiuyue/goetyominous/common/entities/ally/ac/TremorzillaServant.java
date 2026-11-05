@@ -40,7 +40,6 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.server.entity.IDancesToJukebox;
 import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.IAdvancedPathingMob;
 import com.github.alexthe666.citadel.server.entity.pathfinding.raycoms.ITallWalker;
-import com.qiuyue.goetyominous.client.sound.ac.TremorzillaEmergenceRoarSound;
 import com.qiuyue.goetyominous.common.blocks.ac.TitanBombBlock;
 import com.qiuyue.goetyominous.common.blocks.entities.ac.TitanBombBlockEntity;
 import com.qiuyue.goetyominous.common.entities.ai.ac.ServantTemptGoal;
@@ -180,6 +179,14 @@ public class TremorzillaServant extends AnimalSummon
     private int blastFlingGuard;
     private int emergingTicks;
     private boolean emergenceRoarPlayed;
+
+    public boolean tryPlayEmergenceRoar() {
+        if (!this.emergenceRoarPlayed) {
+            this.emergenceRoarPlayed = true;
+            return true;
+        }
+        return false;
+    }
     private float lastYawBeforeWhip;
     protected boolean isLandNavigator;
     private double lastStompX = 0.0;
@@ -359,12 +366,7 @@ public class TremorzillaServant extends AnimalSummon
             this.yHeadRot = yaw;
             this.yHeadRotO = yaw;
             this.lastYawBeforeWhip = yaw;
-            if (this.level().isClientSide) {
-                if (!this.emergenceRoarPlayed && this.getAnimation() == ANIMATION_ROAR_2) {
-                    this.emergenceRoarPlayed = true;
-                    TremorzillaEmergenceRoarSound.play(this);
-                }
-            } else {
+            if (!this.level().isClientSide) {
                 ++this.emergingTicks;
                 if (this.emergingTicks == NUKE_EMERGENCE_DELAY) {
                     this.setAnimationTick(0);

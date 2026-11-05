@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "goetyominous:wind_charge"
+    "goetyominous:wind_charge",
+    "goetyominous:fire_wall"
   ]
 }
