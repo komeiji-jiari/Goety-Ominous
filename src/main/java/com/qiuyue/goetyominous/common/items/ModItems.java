@@ -402,11 +402,11 @@ public class ModItems {
 
     public static final RegistryObject<ServantSpawnEggItem> STRONG_PIGLIN_HUNTER_SERVANT_SPAWN_EGG = ITEMS.register(
             "strong_piglin_hunter_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.STRONG_PIGLIN_HUNTER_SERVANT, 0x9C7A3C, 0x2A6E9E, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.STRONG_PIGLIN_HUNTER_SERVANT, 0x9C7A3C, 0x003049, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> ELITE_PIGLIN_HUNTER_SERVANT_SPAWN_EGG = ITEMS.register(
             "elite_piglin_hunter_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.ELITE_PIGLIN_HUNTER_SERVANT, 0x9C7A3C, 0x7A2A14, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.ELITE_PIGLIN_HUNTER_SERVANT, 0x9C7A3C, 0x490300, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> ZPIGLIN_HUNTER_SERVANT_SPAWN_EGG = ITEMS.register(
             "zpiglin_hunter_servant_spawn_egg",
@@ -414,11 +414,11 @@ public class ModItems {
 
     public static final RegistryObject<ServantSpawnEggItem> STRONG_ZPIGLIN_HUNTER_SERVANT_SPAWN_EGG = ITEMS.register(
             "strong_zpiglin_hunter_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.STRONG_ZPIGLIN_HUNTER_SERVANT, 0xE6918B, 0x2A6E9E, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.STRONG_ZPIGLIN_HUNTER_SERVANT, 0xE6918B, 0x003049, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> ELITE_ZPIGLIN_HUNTER_SERVANT_SPAWN_EGG = ITEMS.register(
             "elite_zpiglin_hunter_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.ELITE_ZPIGLIN_HUNTER_SERVANT, 0xE6918B, 0x7A2A14, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.ELITE_ZPIGLIN_HUNTER_SERVANT, 0xE6918B, 0x490300, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> FUNGUS_THROWER_SPAWN_EGG = ITEMS.register(
             "fungus_thrower_spawn_egg",
