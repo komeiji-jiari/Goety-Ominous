@@ -272,8 +272,6 @@ public class NucleeperServant extends Summoned implements ActivatesSirens, Power
                 getNearbySirens(serverLevel, 256).forEach(this::activateSiren);
             }
         }
-        if (this.isTriggered() && this.isAlive() && this.level().isClientSide) {
-        }
         sirenAngle += (10F + 30F * closeProgress) % 360F;
         closeProgress = (float) time / AlexsCaves.COMMON_CONFIG.nucleeperFuseTime.get();
         if (this.catScareTime > 0) {

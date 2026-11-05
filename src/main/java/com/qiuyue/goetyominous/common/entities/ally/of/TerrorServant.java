@@ -174,9 +174,6 @@ public class TerrorServant extends Summoned implements EliteVariant {
         super.tick();
         if (this.level().isClientSide) {
             this.setupAnimationStates();
-            if (this.isAlive() && this.getPose() == OPPoses.SAWING.get()) {
-            } else {
-            }
         } else if (this.random.nextInt(600) == 0) {
             this.spinSaw();
         }
@@ -335,8 +332,6 @@ public class TerrorServant extends Summoned implements EliteVariant {
 
     @Override
     public void remove(@NotNull RemovalReason reason) {
-        if (this.level().isClientSide) {
-        }
         super.remove(reason);
     }
 

@@ -341,8 +341,6 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
                 this.setNoGravity(false);
             }
         } else {
-            if (this.isDigging() && this.isAlive()) {
-            }
             Player localPlayer = AlexsCaves.PROXY.getClientSidePlayer();
             boolean abilityKeyDown = localPlayer != null && localPlayer.getUUID().equals(this.getOwnerId())
                     && AlexsCaves.PROXY.isKeyDown(2);
@@ -573,8 +571,6 @@ public class CorrodentServant extends Summoned implements IAnimatedEntity, ICust
 
     @Override
     public void remove(Entity.RemovalReason removalReason) {
-        if (this.level().isClientSide) {
-        }
         super.remove(removalReason);
         if (this.allParts != null) {
             for (PartEntity<?> part : this.allParts) {
