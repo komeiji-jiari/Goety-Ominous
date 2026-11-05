@@ -119,6 +119,10 @@ public class UrbhadhachModel<T extends AbstractUrbhadhach> extends HierarchicalM
             case AbstractUrbhadhach.ANIM_ROAR -> this.animate(entity.roarAnimationState, UrbhadhachAnimations.ROAR, ageInTicks);
             case AbstractUrbhadhach.ANIM_DASH_START -> this.animate(entity.dashStartAnimationState, UrbhadhachAnimations.DASH_START, ageInTicks);
             case AbstractUrbhadhach.ANIM_DASH_LOOP -> this.animate(entity.dashLoopAnimationState, UrbhadhachAnimations.DASH_LOOP, ageInTicks);
+            case AbstractUrbhadhach.ANIM_DASH_END -> this.animate(entity.dashEndAnimationState, UrbhadhachAnimations.DASH_END, ageInTicks);
+            case AbstractUrbhadhach.ANIM_DASH_STUN -> this.animate(entity.dashStunAnimationState, UrbhadhachAnimations.DASH_STUN, ageInTicks);
+            case AbstractUrbhadhach.ANIM_STUN_END -> this.animate(entity.stunEndAnimationState, UrbhadhachAnimations.STUN_END, ageInTicks);
+            case AbstractUrbhadhach.ANIM_EAT -> this.animate(entity.eatAnimationState, UrbhadhachAnimations.EAT, ageInTicks);
         }
     }
 
@@ -154,6 +158,10 @@ public class UrbhadhachModel<T extends AbstractUrbhadhach> extends HierarchicalM
         this.animateFinished(entity.roarAnimationState, UrbhadhachAnimations.ROAR, endTime, weight);
         this.animateFinished(entity.dashStartAnimationState, UrbhadhachAnimations.DASH_START, endTime, weight);
         this.animateFinished(entity.dashLoopAnimationState, UrbhadhachAnimations.DASH_LOOP, endTime, weight);
+        this.animateFinished(entity.dashEndAnimationState, UrbhadhachAnimations.DASH_END, endTime, weight);
+        this.animateFinished(entity.dashStunAnimationState, UrbhadhachAnimations.DASH_STUN, endTime, weight);
+        this.animateFinished(entity.stunEndAnimationState, UrbhadhachAnimations.STUN_END, endTime, weight);
+        this.animateFinished(entity.eatAnimationState, UrbhadhachAnimations.EAT, endTime, weight);
         return weight;
     }
 
