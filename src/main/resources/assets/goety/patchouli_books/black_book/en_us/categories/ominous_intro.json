@@ -1,0 +1,7 @@
+{
+  "name": "First Steps",
+  "description": "An introduction to a new side of magic",
+  "icon": "minecraft:writable_book",
+  "parent": "goety:ominous",
+  "sortnum": 0
+}

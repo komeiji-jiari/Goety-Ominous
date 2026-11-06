@@ -1,8 +1,0 @@
-{
-  "name": "邪能",
-  "description": "女巫们口耳相传的禁忌知识，以及由邪能驱动的仪式、造物与法术。",
-  "icon": "goetyominous:fel_core",
-  "parent": "goety:ominous",
-  "sortnum": 8,
-  "secret": true
-}

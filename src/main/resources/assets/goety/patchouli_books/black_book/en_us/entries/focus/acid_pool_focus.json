@@ -1,8 +1,8 @@
 {
   "name": "Acid Pool Focus",
   "icon": "goetyominous:acid_pool_focus",
-  "category": "goety:ominous_fel",
-  "sortnum": 8,
+  "category": "goety:ominous_focuses",
+  "sortnum": 11,
   "advancement": "goetyominous:goetyominous/witch_lesson",
   "secret": true,
   "pages": [
