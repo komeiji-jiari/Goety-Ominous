@@ -50,7 +50,7 @@ public class AmItems {
 
     public static final RegistryObject<ServantSpawnEggItem> ROCKY_ROLLER_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("rocky_roller_servant_spawn_egg",
-                    () -> new ServantSpawnEggItem(AmEntityRegistry.ROCKY_ROLLER_SERVANT, 0xB0856F, 0x999184, egg()));
+                    () -> new ServantSpawnEggItem(AmEntityRegistry.ROCKY_ROLLER_SERVANT, 0x6C6F64, 0xBDC299, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> ZOMBIE_CROCODILE_SERVANT_SPAWN_EGG =
             AM_ITEMS.register("zombie_crocodile_servant_spawn_egg",

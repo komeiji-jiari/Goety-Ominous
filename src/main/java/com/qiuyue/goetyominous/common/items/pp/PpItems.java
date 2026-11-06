@@ -24,11 +24,11 @@ public class PpItems {
 
     public static final RegistryObject<ServantSpawnEggItem> ZPIGLIN_ALCHEMIST_SERVANT_SPAWN_EGG = PP_ITEMS.register(
             "zpiglin_alchemist_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(PpEntityRegistry.ZPIGLIN_ALCHEMIST_SERVANT, 9413466, 3955242, egg()));
+            () -> new ServantSpawnEggItem(PpEntityRegistry.ZPIGLIN_ALCHEMIST_SERVANT, 15110539, 10944611, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> ZPIGLIN_TRAVELER_SERVANT_SPAWN_EGG = PP_ITEMS.register(
             "zpiglin_traveler_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(PpEntityRegistry.ZPIGLIN_TRAVELER_SERVANT, 9413466, 7027242, egg()));
+            () -> new ServantSpawnEggItem(PpEntityRegistry.ZPIGLIN_TRAVELER_SERVANT, 15110539, 3848107, egg()));
 
     public static final RegistryObject<TravelerCompassItem> TRAVELER_COMPASS = PP_ITEMS.register(
             "traveler_compass",

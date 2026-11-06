@@ -38,11 +38,11 @@ public class LmItems {
 
     public static final RegistryObject<ServantSpawnEggItem> POSSESSED_PALADIN_SPAWN_EGG = LM_ITEMS.register(
             "possessed_paladin_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(LmEntityRegistry.POSSESSED_PALADIN_SERVANT, 0x8B0000, 0xD3D3D3, egg()));
+            () -> new ServantSpawnEggItem(LmEntityRegistry.POSSESSED_PALADIN_SERVANT, 0x666666, 0x660099, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> THE_OBLITERATOR_SPAWN_EGG = LM_ITEMS.register(
             "the_obliterator_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(LmEntityRegistry.THE_OBLITERATOR_SERVANT, 0x2E3B2E, 0x8CFF5C, egg()));
+            () -> new ServantSpawnEggItem(LmEntityRegistry.THE_OBLITERATOR_SERVANT, 0x427367, 0xB5E45A, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> HOVERING_HURRICANE_SPAWN_EGG = LM_ITEMS.register(
             "hovering_hurricane_servant_spawn_egg",
@@ -78,35 +78,35 @@ public class LmItems {
 
     public static final RegistryObject<ServantSpawnEggItem> BEHEADED_KNIGHT_SPAWN_EGG = LM_ITEMS.register(
             "beheaded_knight_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(LmEntityRegistry.BEHEADED_KNIGHT_SERVANT, 0xCBD4D6, 0x4A2F4A, egg()));
+            () -> new ServantSpawnEggItem(LmEntityRegistry.BEHEADED_KNIGHT_SERVANT, 0x758085, 0xC73333, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> RESURRECTED_KNIGHT_SPAWN_EGG = LM_ITEMS.register(
             "resurrected_knight_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(LmEntityRegistry.RESURRECTED_KNIGHT_SERVANT, 0x8A8F99, 0x3B4A5C, egg()));
+            () -> new ServantSpawnEggItem(LmEntityRegistry.RESURRECTED_KNIGHT_SERVANT, 0x758085, 0x349E9C, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> ENDERSENT_SPAWN_EGG = LM_ITEMS.register(
             "endersent_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(LmEntityRegistry.ENDERSENT_SERVANT, 0x1B1226, 0x7D5AA8, egg()));
+            () -> new ServantSpawnEggItem(LmEntityRegistry.ENDERSENT_SERVANT, 0x000000, 0x990099, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> CHORUSLING_SPAWN_EGG = LM_ITEMS.register(
             "chorusling_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(LmEntityRegistry.CHORUSLING_SERVANT, 0x2E2133, 0x9A6FB5, egg()));
+            () -> new ServantSpawnEggItem(LmEntityRegistry.CHORUSLING_SERVANT, 0x312933, 0x473147, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> FRACTURED_SPAWN_EGG = LM_ITEMS.register(
             "fractured_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(LmEntityRegistry.FRACTURED_SERVANT, 0xB8C4C6, 0x5A7D82, egg()));
+            () -> new ServantSpawnEggItem(LmEntityRegistry.FRACTURED_SERVANT, 0x28707F, 0x39BEC5, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> FRACTURED_APOSTLE_SPAWN_EGG = LM_ITEMS.register(
             "fractured_apostle_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(LmEntityRegistry.FRACTURED_APOSTLE_SERVANT, 0x9FAE9E, 0x3E5A4A, egg()));
+            () -> new ServantSpawnEggItem(LmEntityRegistry.FRACTURED_APOSTLE_SERVANT, 0xC73333, 0xDBA213, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> HAUNTED_KNIGHT_SPAWN_EGG = LM_ITEMS.register(
             "haunted_knight_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(LmEntityRegistry.HAUNTED_KNIGHT_SERVANT, 0xCBD4D6, 0xEAEE57, egg()));
+            () -> new ServantSpawnEggItem(LmEntityRegistry.HAUNTED_KNIGHT_SERVANT, 0x666666, 0xCCCCCC, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> HAUNTED_GUARD_SPAWN_EGG = LM_ITEMS.register(
             "haunted_guard_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(LmEntityRegistry.HAUNTED_GUARD_SERVANT, 0xCBD4D6, 0x5B6B6E, egg()));
+            () -> new ServantSpawnEggItem(LmEntityRegistry.HAUNTED_GUARD_SERVANT, 0x666666, 0xFFCC33, egg()));
 
     public static void register(IEventBus modEventBus) {
         LM_ITEMS.register(modEventBus);
