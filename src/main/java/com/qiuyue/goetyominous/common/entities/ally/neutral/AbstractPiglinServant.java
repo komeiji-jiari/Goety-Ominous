@@ -621,6 +621,7 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
         if (this instanceof PiglinBruteServant) return com.Polarice3.Goety.common.entities.ModEntityType.ZPIGLIN_BRUTE_SERVANT.get();
         if (this instanceof PiglinServant) return com.Polarice3.Goety.common.entities.ModEntityType.ZPIGLIN_SERVANT.get();
         if (this instanceof FungusThrower) return ModEntityTypes.ZFUNGUS_THROWER.get();
+        if (this instanceof PiglinDrummer) return ModEntityTypes.ZPIGLIN_DRUMMER.get();
         return null;
     }
 

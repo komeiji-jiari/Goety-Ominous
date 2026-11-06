@@ -4,19 +4,20 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.init.ModEntityLayers;
 import com.qiuyue.goetyominous.client.render.curios.CroneRobeRenderer;
+import com.qiuyue.goetyominous.client.render.ias.*;
 import com.qiuyue.goetyominous.client.render.layer.CursedWolfArmorLayer;
 import com.qiuyue.goetyominous.client.render.model.*;
+import com.qiuyue.goetyominous.client.render.model.ias.*;
 import com.qiuyue.goetyominous.client.render.model.curios.CroneRobeModel;
 import com.qiuyue.goetyominous.client.render.model.equipment.BoneCudgelModel;
 import com.qiuyue.goetyominous.client.render.model.projectile.AcidFungus;
 import com.qiuyue.goetyominous.client.render.model.projectile.PitchforkModel;
 import com.qiuyue.goetyominous.client.render.projectile.*;
-import com.qiuyue.goetyominous.common.entities.projectile.PyromancerFireball;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
+import com.qiuyue.goetyominous.compat.mod.*;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.entity.WolfRenderer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -88,6 +89,9 @@ public class ModModelLayers {
 
         event.registerLayerDefinition(ModEntityLayers.URBHADHACH_LAYER,
                 UrbhadhachModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.URBHADHACH_SERVANT_LAYER,
+                UrbhadhachServantModel::createBodyLayer);
 
         event.registerLayerDefinition(ModEntityLayers.FANATIC_LAYER,
                 FanaticModel::createBodyLayer);
@@ -163,6 +167,9 @@ public class ModModelLayers {
         event.registerLayerDefinition(PiglinMerchantModel.LAYER_LOCATION,
                 PiglinMerchantModel::createBodyLayer);
 
+        event.registerLayerDefinition(PiglinDrummerModel.LAYER_LOCATION,
+                PiglinDrummerModel::createBodyLayer);
+
         event.registerLayerDefinition(ModEntityLayers.CURSED_BLACK_WOLF_ARMOR_LAYER,
                 CursedBlackWolfArmorModel::createBodyLayer);
 
@@ -171,9 +178,6 @@ public class ModModelLayers {
 
         event.registerLayerDefinition(ModEntityLayers.ARCH_GEOMANCER_LAYER,
                 ArchGeomancerModel::createBodyLayer);
-
-        event.registerLayerDefinition(ModEntityLayers.PYROLOGER_LAYER,
-                PyrologerModel::createBodyLayer);
 
         event.registerLayerDefinition(ModEntityLayers.IMPERIAL_CHASSEUR_LAYER,
                 ImperialChasseurModel::createBodyLayer);
@@ -352,7 +356,7 @@ public class ModModelLayers {
 
         event.registerEntityRenderer(ModEntityTypes.URBHADHACH.get(), UrbhadhachRenderer::new);
 
-        event.registerEntityRenderer(ModEntityTypes.URBHADHACH_SERVANT.get(), UrbhadhachRenderer::new);
+        event.registerEntityRenderer(ModEntityTypes.URBHADHACH_SERVANT.get(), UrbhadhachServantRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.ZEALOT.get(), ZealotRenderer::new);
 
@@ -394,6 +398,10 @@ public class ModModelLayers {
 
         event.registerEntityRenderer(ModEntityTypes.PIGLIN_MERCHANT.get(), PiglinMerchantRenderer::new);
 
+        event.registerEntityRenderer(ModEntityTypes.PIGLIN_DRUMMER.get(), PiglinDrummerRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.ZPIGLIN_DRUMMER.get(), ZPiglinDrummerRenderer::new);
+
         event.registerEntityRenderer(ModEntityTypes.STORM_NECROMANCER.get(),
                 com.qiuyue.goetyominous.client.render.StormNecromancerRenderer::new);
 
@@ -411,14 +419,6 @@ public class ModModelLayers {
         event.registerEntityRenderer(
                 com.qiuyue.goetyominous.common.init.ModEntityTypes.POISON_BALL.get(),
                 com.qiuyue.goetyominous.client.render.projectile.RenderPoisonBall::new);
-
-        event.registerEntityRenderer(ModEntityTypes.PYROMANCER_FIREBALL.get(),
-                context -> new ThrownItemRenderer<PyromancerFireball>(context, 3.0F, true));
-
-        event.registerEntityRenderer(ModEntityTypes.FIRE_WALL.get(), FireWallRenderer::new);
-
-        event.registerEntityRenderer(ModEntityTypes.PYROLOGER_SERVANT.get(), PyrologerRenderer::new);
-        event.registerEntityRenderer(ModEntityTypes.PYROLOGER.get(), context -> new PyrologerRenderer<>(context, false));
     }
 
     @SubscribeEvent
