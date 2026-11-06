@@ -1,0 +1,20 @@
+{
+  "name": "Soul Star Focus",
+  "icon": "goetyominous:soulstar_focus",
+  "category": "goety:ominous_focuses",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You command the earth to yield up the spirits of the dead within, violently tearing their souls apart and reshaping them into flickering novas that hurtle at high speed toward the creatures you indicate, exploding with soul-searing force. If the launch direction is slightly off from the target, the Soul Stars will correct their own trajectory."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:soulstar_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "A Necro Staff increases the number of Soul Stars you summon. Casting with a Nameless Staff further increases the number while also dealing higher damage."
+    }
+  ]
+}

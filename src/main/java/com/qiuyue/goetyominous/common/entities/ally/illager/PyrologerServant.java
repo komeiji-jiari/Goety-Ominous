@@ -1,11 +1,13 @@
 package com.qiuyue.goetyominous.common.entities.ally.illager;
 
+import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.common.entities.ai.AvoidTargetGoal;
 import com.Polarice3.Goety.common.entities.ally.illager.SpellcasterIllagerServant;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.common.magic.spells.nether.FireBreathSpell;
 import com.Polarice3.Goety.utils.MobUtil;
+import com.Polarice3.Goety.utils.ModDamageSource;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.projectile.PyromancerFireball;
 import com.qiuyue.goetyominous.common.entities.util.FireWallEntity;
@@ -17,10 +19,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -59,6 +64,7 @@ public class PyrologerServant extends SpellcasterIllagerServant {
     private static final int ANIM_FIRE_BREATH_LOOP = 5;
     private static final int ANIM_FIRE_BREATH_END = 6;
     private static final int FIRE_BREATH_END_TICKS = 12;
+    private static final byte EVENT_ICE_DEATH = 61;
     private final AnimationState idleAnimationState = new AnimationState();
     private final AnimationState fireWallAnimationState = new AnimationState();
     private final AnimationState fireballAnimationState = new AnimationState();
@@ -66,8 +72,12 @@ public class PyrologerServant extends SpellcasterIllagerServant {
     private final AnimationState fireBreathStartAnimationState = new AnimationState();
     private final AnimationState fireBreathLoopAnimationState = new AnimationState();
     private final AnimationState fireBreathEndAnimationState = new AnimationState();
+    private final AnimationState deathAnimationState = new AnimationState();
     private int spellCool;
     private int animResetTicks;
+    private boolean playDeathAnimation;
+    private float deathRotation;
+    private int iceDeathTime;
     private boolean fireBreathCasting;
 
     public PyrologerServant(EntityType<? extends PyrologerServant> type, Level level) {
@@ -219,7 +229,20 @@ public class PyrologerServant extends SpellcasterIllagerServant {
             }
         }
         super.tick();
-        if (this.entityData.get(DATA_BREATH_LOCK)) {
+        if (this.isDeadOrDying() && (this.playDeathAnimation || this.deathAnimationState.isStarted())) {
+            for (AnimationState state : this.getAllAnimations()) {
+                if (state != this.deathAnimationState) {
+                    state.stop();
+                }
+            }
+            this.setYRot(this.deathRotation);
+            this.setYBodyRot(this.deathRotation);
+            if (!this.level().isClientSide) {
+                this.getNavigation().stop();
+                this.getMoveControl().strafe(0.0F, 0.0F);
+            }
+        }
+        if (!this.isDeadOrDying() && this.entityData.get(DATA_BREATH_LOCK)) {
             float yaw = this.entityData.get(DATA_BREATH_YAW);
             float pitch = this.entityData.get(DATA_BREATH_PITCH);
             this.setYRot(yaw);
@@ -242,12 +265,13 @@ public class PyrologerServant extends SpellcasterIllagerServant {
         states.add(this.fireBreathStartAnimationState);
         states.add(this.fireBreathLoopAnimationState);
         states.add(this.fireBreathEndAnimationState);
+        states.add(this.deathAnimationState);
         return states;
     }
 
     private void stopMostAnimation(@Nullable AnimationState exception) {
         for (AnimationState state : this.getAllAnimations()) {
-            if (state != exception) {
+            if (state != exception && state != this.deathAnimationState) {
                 state.stop();
             }
         }
@@ -281,6 +305,10 @@ public class PyrologerServant extends SpellcasterIllagerServant {
         return this.fireBreathEndAnimationState;
     }
 
+    public AnimationState getDeathState() {
+        return this.deathAnimationState;
+    }
+
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
@@ -298,6 +326,60 @@ public class PyrologerServant extends SpellcasterIllagerServant {
 
     @Override
     protected void dropCustomDeathLoot(net.minecraft.world.damagesource.DamageSource source, int looting, boolean recentlyHit) {
+        super.dropCustomDeathLoot(source, looting, recentlyHit);
+    }
+
+    @Override
+    public void die(net.minecraft.world.damagesource.DamageSource source) {
+        boolean play = !this.level().isClientSide
+                && this.getTrueOwner() instanceof Player
+                && source.is(DamageTypeTags.IS_FREEZING)
+                && source.getEntity() instanceof LivingEntity
+                && this.random.nextFloat() < 0.5F;
+        super.die(source);
+        if (play) {
+            this.playDeathAnimation = true;
+            this.iceDeathTime = 0;
+            this.deathRotation = this.getYRot();
+            this.hurtTime = 0;
+            this.hurtDuration = 0;
+            this.deathTime = 0;
+            this.level().broadcastEntityEvent(this, EVENT_ICE_DEATH);
+        }
+    }
+
+    @Override
+    public void handleEntityEvent(byte id) {
+        if (id == EVENT_ICE_DEATH) {
+            this.stopMostAnimation(this.deathAnimationState);
+            this.deathAnimationState.start(this.tickCount);
+            this.deathRotation = this.getYRot();
+            this.hurtTime = 0;
+            this.hurtDuration = 0;
+            this.deathTime = 0;
+        } else {
+            super.handleEntityEvent(id);
+        }
+    }
+
+    @Override
+    protected void tickDeath() {
+        boolean extended = this.playDeathAnimation || this.deathAnimationState.isStarted();
+        if (extended) {
+            ++this.iceDeathTime;
+            this.deathTime = 0;
+            this.setYRot(this.deathRotation);
+            this.setYBodyRot(this.deathRotation);
+            if (this.iceDeathTime >= 30 && !this.level().isClientSide) {
+                this.spawnAnim();
+                this.remove(RemovalReason.KILLED);
+            }
+            return;
+        }
+        if (this.deathTime >= 19 && !this.level().isClientSide) {
+            this.spawnAnim();
+        }
+        super.tickDeath();
     }
 
     @Override
@@ -772,7 +854,25 @@ public class PyrologerServant extends SpellcasterIllagerServant {
                 return MobUtil.getTargets(caster.level(), caster, range, 3.0D,
                         entity -> entity != caster && !ServantAllyUtil.areAllied(caster, entity));
             }
+
+            @Override
+            public void SpellResult(ServerLevel level, LivingEntity caster, ItemStack staff, SpellStat spellStat) {
+                int burning = spellStat.getBurning();
+                float damage = this.damage + spellStat.getPotency();
+                for (Entity target : this.getBreathTarget(caster, spellStat.getRange())) {
+                    if (!(target instanceof LivingEntity living)) {
+                        continue;
+                    }
+                    DamageSource source = ModDamageSource.fireBreath(caster, caster);
+                    if (!living.hurt(source, damage)) {
+                        continue;
+                    }
+                    living.addEffect(new MobEffectInstance(
+                            GoetyEffects.SOUL_BURN.get(), 5 * burning * 20, 0), caster);
+                }
+            }
         };
+
         private int chargeTicks;
         private int sprayTicks;
         private int sprayDuration;

@@ -229,6 +229,9 @@ public class ModItems {
     public static final RegistryObject<Item> HAUNT_FOCUS = ITEMS.register("haunt_focus",
             () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.HauntSpell()));
 
+    public static final RegistryObject<Item> SOULSTAR_FOCUS = ITEMS.register("soulstar_focus",
+            () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.SoulStarSpell()));
+
     public static final RegistryObject<Item> DREDEN_FOCUS = ITEMS.register("rigid_focus",
             () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.DredenSpell()));
 

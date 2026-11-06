@@ -1,7 +1,9 @@
 package com.qiuyue.goetyominous.client.render.model;
 
+import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.Polarice3.Goety.client.render.layer.HierarchicalArmor;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.render.model.animation.PyrologerAnimation;
 import com.qiuyue.goetyominous.common.entities.ally.illager.PyrologerServant;
@@ -22,7 +24,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class PyrologerModel<T extends Mob> extends HierarchicalModel<T> {
+public class PyrologerModel<T extends Mob> extends HierarchicalModel<T> implements HierarchicalArmor {
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(GoetyOminous.MOD_ID, "pyrologer"), "main");
 	private final ModelPart root;
 	private final ModelPart body;
@@ -42,10 +44,10 @@ public class PyrologerModel<T extends Mob> extends HierarchicalModel<T> {
 	private final ModelPart arms;
 	private final ModelPart RightArm;
 	private final ModelPart LeftArm;
-	private final ModelPart banner;
-	private final ModelPart drop;
 	private final ModelPart leg0;
 	private final ModelPart leg1;
+	private final ModelPart banner;
+	private final ModelPart drop;
 
 	public PyrologerModel(ModelPart root) {
 		this.root = root.getChild("root");
@@ -66,10 +68,10 @@ public class PyrologerModel<T extends Mob> extends HierarchicalModel<T> {
 		this.arms = this.body.getChild("arms");
 		this.RightArm = this.body.getChild("RightArm");
 		this.LeftArm = this.body.getChild("LeftArm");
-		this.banner = this.body.getChild("banner");
-		this.drop = this.banner.getChild("drop");
 		this.leg0 = this.root.getChild("leg0");
 		this.leg1 = this.root.getChild("leg1");
+		this.banner = this.body.getChild("banner");
+		this.drop = this.banner.getChild("drop");
 	}
 
 	public static LayerDefinition createBodyLayer() {
@@ -121,47 +123,49 @@ public class PyrologerModel<T extends Mob> extends HierarchicalModel<T> {
 		PartDefinition LeftArm = body.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(40, 46).mirror().addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false)
 		.texOffs(56, 46).mirror().addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.5F)).mirror(false), PartPose.offset(5.0F, -10.0F, 0.0F));
 
-		PartDefinition banner = body.addOrReplaceChild("banner", CubeListBuilder.create().texOffs(120, 64).addBox(-1.0F, -48.0F, -1.0F, 2.0F, 36.0F, 2.0F, new CubeDeformation(0.0F))
-		.texOffs(120, 82).addBox(-1.0F, -12.0F, -1.0F, 2.0F, 24.0F, 2.0F, new CubeDeformation(0.0F))
-		.texOffs(64, 108).addBox(-10.0F, -50.0F, -1.0F, 20.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -12.0F, 6.0F));
-
-		PartDefinition drop = banner.addOrReplaceChild("drop", CubeListBuilder.create().texOffs(0, 80).addBox(-12.0F, 0.0F, 0.0F, 24.0F, 48.0F, 0.0F, new CubeDeformation(0.0F))
-		.texOffs(24, 78).addBox(-12.0F, 0.0F, -1.0F, 24.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(69, 70).addBox(-12.0F, 1.0F, -1.0F, 24.0F, 36.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(1, 77).addBox(-11.0F, 37.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(5, 77).addBox(-10.0F, 38.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(5, 77).addBox(-9.0F, 39.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(5, 77).addBox(-8.0F, 40.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(5, 77).addBox(-7.0F, 41.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(5, 77).addBox(-6.0F, 42.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(5, 77).addBox(-5.0F, 43.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(9, 77).addBox(-4.0F, 44.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(9, 77).addBox(-3.0F, 45.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(9, 77).addBox(-2.0F, 46.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(9, 77).addBox(-1.0F, 47.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(9, 77).addBox(0.0F, 47.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(9, 77).addBox(1.0F, 46.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(9, 77).addBox(2.0F, 45.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(9, 77).addBox(3.0F, 44.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(9, 77).addBox(4.0F, 43.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(9, 77).addBox(5.0F, 42.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(9, 77).addBox(6.0F, 41.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(9, 77).addBox(7.0F, 40.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(9, 77).addBox(8.0F, 39.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(9, 77).addBox(9.0F, 38.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(9, 77).addBox(10.0F, 37.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(0, 80).addBox(-12.0F, 0.0F, -1.0F, 24.0F, 48.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -50.0F, -1.0F));
-
 		PartDefinition leg0 = root.addOrReplaceChild("leg0", CubeListBuilder.create().texOffs(0, 22).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-2.0F, -12.0F, 0.0F));
 
 		PartDefinition leg1 = root.addOrReplaceChild("leg1", CubeListBuilder.create().texOffs(0, 22).mirror().addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(2.0F, -12.0F, 0.0F));
 
+		PartDefinition banner = body.addOrReplaceChild("banner", CubeListBuilder.create().texOffs(120, 64).addBox(-1.0F, -48.0F, -1.0F, 2.0F, 36.0F, 2.0F, new CubeDeformation(0.0F))
+				.texOffs(120, 82).addBox(-1.0F, -12.0F, -1.0F, 2.0F, 24.0F, 2.0F, new CubeDeformation(0.0F))
+				.texOffs(64, 108).addBox(-10.0F, -50.0F, -1.0F, 20.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -12.0F, 6.0F));
+
+		PartDefinition drop = banner.addOrReplaceChild("drop", CubeListBuilder.create().texOffs(0, 80).addBox(-12.0F, 0.0F, 0.0F, 24.0F, 48.0F, 0.0F, new CubeDeformation(0.0F))
+				.texOffs(24, 78).addBox(-12.0F, 0.0F, -1.0F, 24.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(69, 70).addBox(-12.0F, 1.0F, -1.0F, 24.0F, 36.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(1, 77).addBox(-11.0F, 37.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(5, 77).addBox(-10.0F, 38.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(5, 77).addBox(-9.0F, 39.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(5, 77).addBox(-8.0F, 40.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(5, 77).addBox(-7.0F, 41.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(5, 77).addBox(-6.0F, 42.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(5, 77).addBox(-5.0F, 43.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(9, 77).addBox(-4.0F, 44.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(9, 77).addBox(-3.0F, 45.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(9, 77).addBox(-2.0F, 46.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(9, 77).addBox(-1.0F, 47.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(9, 77).addBox(0.0F, 47.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(9, 77).addBox(1.0F, 46.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(9, 77).addBox(2.0F, 45.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(9, 77).addBox(3.0F, 44.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(9, 77).addBox(4.0F, 43.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(9, 77).addBox(5.0F, 42.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(9, 77).addBox(6.0F, 41.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(9, 77).addBox(7.0F, 40.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(9, 77).addBox(8.0F, 39.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(9, 77).addBox(9.0F, 38.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(9, 77).addBox(10.0F, 37.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+				.texOffs(0, 80).addBox(-12.0F, 0.0F, -1.0F, 24.0F, 48.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -50.0F, -1.0F));
 		return LayerDefinition.create(meshdefinition, 128, 128);
 	}
 
 	@Override
 	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root.getAllParts().forEach(ModelPart::resetPose);
+		boolean showModelBanner = entity instanceof Pyrologer;
+		this.banner.visible = showModelBanner;
+		this.drop.visible = showModelBanner;
 		this.arms.visible = false;
 		this.Head.yRot = netHeadYaw * ((float) Math.PI / 180.0F);
 		this.Head.xRot = headPitch * ((float) Math.PI / 180.0F);
@@ -173,6 +177,7 @@ public class PyrologerModel<T extends Mob> extends HierarchicalModel<T> {
 		AnimationState fireBreathStartState;
 		AnimationState fireBreathLoopState;
 		AnimationState fireBreathEndState;
+		AnimationState deathState;
 		if (entity instanceof PyrologerServant servant) {
 			currentAnimation = servant.getCurrentAnimation();
 			idleState = servant.getIdleState();
@@ -182,6 +187,7 @@ public class PyrologerModel<T extends Mob> extends HierarchicalModel<T> {
 			fireBreathStartState = servant.getFireBreathStartState();
 			fireBreathLoopState = servant.getFireBreathLoopState();
 			fireBreathEndState = servant.getFireBreathEndState();
+			deathState = servant.getDeathState();
 		} else if (entity instanceof Pyrologer pyrologer) {
 			currentAnimation = pyrologer.getCurrentAnimation();
 			idleState = pyrologer.getIdleState();
@@ -191,7 +197,12 @@ public class PyrologerModel<T extends Mob> extends HierarchicalModel<T> {
 			fireBreathStartState = pyrologer.getFireBreathStartState();
 			fireBreathLoopState = pyrologer.getFireBreathLoopState();
 			fireBreathEndState = pyrologer.getFireBreathEndState();
+			deathState = pyrologer.getDeathState();
 		} else {
+			return;
+		}
+		if (deathState.isStarted()) {
+			this.animate(deathState, PyrologerAnimation.UNKNOWN, ageInTicks, 1.0F);
 			return;
 		}
 		this.animate(idleState, PyrologerAnimation.IDLE, ageInTicks, 1.0F);
@@ -209,6 +220,30 @@ public class PyrologerModel<T extends Mob> extends HierarchicalModel<T> {
 	@Override
 	public ModelPart root() {
 		return this.root;
+	}
+
+	@Override
+	public void translateToHead(ModelPart part, PoseStack poseStack) {
+		this.root.translateAndRotate(poseStack);
+		this.body.translateAndRotate(poseStack);
+		part.translateAndRotate(poseStack);
+	}
+
+	@Override
+	public void translateToChest(ModelPart part, PoseStack poseStack) {
+	}
+
+	@Override
+	public void translateToLeg(ModelPart part, PoseStack poseStack) {
+	}
+
+	@Override
+	public void translateToArms(ModelPart part, PoseStack poseStack) {
+	}
+
+	@Override
+	public Iterable<ModelPart> headPartArmors() {
+		return ImmutableList.of(this.Head);
 	}
 
 	@Override

@@ -20,7 +20,6 @@ import com.qiuyue.goetyominous.common.entities.hostile.Scorch;
 import com.qiuyue.goetyominous.common.entities.hostile.cultists.Disciple;
 import com.qiuyue.goetyominous.common.entities.hostile.BoggedEntity;
 import com.qiuyue.goetyominous.common.entities.hostile.BreezeEntity;
-import com.qiuyue.goetyominous.common.entities.hostile.UrbhadhachEntity;
 import com.qiuyue.goetyominous.common.entities.hostile.cultists.*;
 import com.qiuyue.goetyominous.common.init.*;
 import com.qiuyue.goetyominous.common.items.CogCrossbowItem;

@@ -34,8 +34,10 @@ public class GoetyOminousType implements ITrainIllager {
     public boolean mobCanTrainToType(Mob mob, EntityType<?> entityType) {
         if (entityType == ModEntityTypes.INQUILLAGER_SERVANT.get()) {
             return mob instanceof Neollager neollager && neollager.isMagic();
+
         } else if (entityType == ModEntityTypes.CONQUILLAGER_SERVANT.get()) {
             return mob.getType() == ModEntityType.PILLAGER_SERVANT.get();
+
         } else if (entityType == ModEntityTypes.CRIMSON_GUARD_SERVANT.get()) {
             if (mob.getType() == ModEntityType.VINDICATOR_SERVANT.get() && mob instanceof IOwned owned) {
                 LivingEntity owner = owned.getTrueOwner();
@@ -54,6 +56,10 @@ public class GoetyOminousType implements ITrainIllager {
                 }
             }
             return false;
+
+        } else if (entityType == ModEntityTypes.PYROLOGER_SERVANT.get()) {
+            return mob.getType() == ModEntityType.EVOKER_SERVANT.get()
+                    || mob.getType() == ModEntityType.ENCHANTER_SERVANT.get();
         }
 
         return false;
@@ -101,6 +107,17 @@ public class GoetyOminousType implements ITrainIllager {
                 && checker.hasBlocks(blockState -> blockState.is(Blocks.FLETCHING_TABLE), 4)
                 && checker.hasBlocks(blockState -> blockState.getBlock() instanceof StashUrnBlock, 8)) {
             return ModEntityTypes.IMPERIAL_CHASSEUR_SERVANT.get();
+
+        } else if (checker.hasBlocks(blockState ->
+                blockState.getBlock().getDescriptionId().contains("nether_brick")
+                        && !(blockState.getBlock() instanceof BrazierBlock), 64)
+                && checker.hasBlocks(blockState ->
+                blockState.getBlock().getDescriptionId().contains("blackstone")
+                        && !(blockState.getBlock() instanceof BrazierBlock), 16)
+                && checker.hasBlocks(blockState -> blockState.getBlock() instanceof BrazierBlock, 4)
+                && BlockFinder.getNearbyEnchantPower(level, blockPos, range, 16)
+                && level.getBiome(blockPos).value().getBaseTemperature() >= 2.0F) {
+            return ModEntityTypes.PYROLOGER_SERVANT.get();
         }
 
         return null;

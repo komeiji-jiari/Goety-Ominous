@@ -23,6 +23,14 @@
     {
       "type": "patchouli:text",
       "text": "Illagers trained to be surprisingly skilled hunters, held in high esteem among their kind. They often carry a bounty list, using their superb marksmanship and explosive ammunition to hunt down the prey on it one by one. Unfortunately, they are only interested in dangerous threats like you."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:pyrologer"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Charismatic Illager spellcasters who excel at using a variety of fire spells for both offense and supporting their allies. The fire wall they summon can block the vast majority of projectiles."
     }
   ]
 }
