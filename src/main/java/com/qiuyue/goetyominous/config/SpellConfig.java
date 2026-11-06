@@ -57,6 +57,7 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> SoulStarSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> SoulStarCastDuration;
     public static final ForgeConfigSpec.ConfigValue<Double> SoulStarDamage;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SoulStarSoulGain;
 
     static {
         BUILDER.push("Spells");
@@ -177,6 +178,8 @@ public class SpellConfig {
                 .defineInRange("soulStarCastDuration", 100, 0, 5000);
         SoulStarDamage = BUILDER.comment("Base damage of Soul Star (Default: 8.0)")
                 .defineInRange("soulStarDamage", 8.0, 1.0, 1000.0);
+        SoulStarSoulGain = BUILDER.comment("Souls gained per Soul Eater level when Soul Star hits a soul-bearing target (Default: 1)")
+                .defineInRange("soulStarSoulGain", 1, 0, 1000);
         BUILDER.pop();
         BUILDER.pop();
         SPEC = BUILDER.build();
