@@ -1,0 +1,7 @@
+{
+  "name": "Rituals And You",
+  "description": "Of course a magic mod has to have rituals!",
+  "icon": "goety:dark_altar",
+  "parent": "goety:ominous",
+  "sortnum": 1
+}

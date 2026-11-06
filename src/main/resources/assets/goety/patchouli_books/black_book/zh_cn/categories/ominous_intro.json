@@ -1,0 +1,7 @@
+{
+  "name": "起步",
+  "description": "介绍了魔法的全新的一面。",
+  "icon": "minecraft:writable_book",
+  "parent": "goety:ominous",
+  "sortnum": 0
+}
