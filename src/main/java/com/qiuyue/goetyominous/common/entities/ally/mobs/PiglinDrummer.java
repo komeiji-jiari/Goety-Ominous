@@ -4,9 +4,12 @@ import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractPiglinServant;
+import com.qiuyue.goetyominous.common.init.ModEntityTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -15,6 +18,7 @@ import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
@@ -23,6 +27,7 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.monster.piglin.PiglinArmPose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
 import java.util.Comparator;
@@ -66,7 +71,8 @@ public class PiglinDrummer extends AbstractPiglinServant implements DrummerAnima
                 .add(Attributes.ARMOR, 0.0D)
                 .add(Attributes.ARMOR_TOUGHNESS, 0.0D)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.38D);
+                .add(Attributes.MOVEMENT_SPEED, 0.38D)
+                .add(Attributes.ATTACK_DAMAGE, 1.0D);
     }
 
     @Override
@@ -86,6 +92,25 @@ public class PiglinDrummer extends AbstractPiglinServant implements DrummerAnima
         this.goalSelector.addGoal(8, new Summoned.WanderGoal<>(this, 0.6D));
         this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 15.0F, 1.0F));
         this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Mob.class, 15.0F));
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putInt("DrumCooldown", this.drumCooldown);
+        compound.putInt("CheerCooldown", this.cheerCooldown);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.drumCooldown = compound.getInt("DrumCooldown");
+        this.cheerCooldown = compound.getInt("CheerCooldown");
+    }
+
+    @Override
+    public boolean canSpawnArmor() {
+        return false;
     }
 
     public boolean isDrumming() {
@@ -201,7 +226,7 @@ public class PiglinDrummer extends AbstractPiglinServant implements DrummerAnima
         List<LivingEntity> allies = this.level().getEntitiesOfClass(LivingEntity.class,
                 this.getBoundingBox().inflate(BUFF_RADIUS),
                 living -> living != this && living.isAlive()
-                        && !(living instanceof PiglinDrummer)
+                        && !(living instanceof DrummerAnimatable)
                         && MobUtil.areAllies(this, living));
         allies.sort(Comparator.comparingDouble(this::distanceToSqr));
         return allies.isEmpty() ? null : allies.get(0);
@@ -243,6 +268,25 @@ public class PiglinDrummer extends AbstractPiglinServant implements DrummerAnima
     @Override
     protected void playConvertedSound() {
         this.playSound(SoundEvents.PIGLIN_CONVERTED_TO_ZOMBIFIED, 1.0F, 1.0F);
+    }
+
+    @Override
+    protected EntityType<? extends Mob> getConversionTarget() {
+        return ModEntityTypes.ZPIGLIN_DRUMMER.get();
+    }
+
+    @Override
+    protected void finishConversion(ServerLevel serverLevel) {
+        ZPiglinDrummer zombified = new ZPiglinDrummer(ModEntityTypes.ZPIGLIN_DRUMMER.get(), serverLevel);
+        zombified.copyTrueOwner(this);
+        zombified.setBaby(this.isBaby());
+        zombified.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
+        zombified.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 0));
+        zombified.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()),
+                MobSpawnType.CONVERSION, null, null);
+        ForgeEventFactory.onLivingConvert(this, zombified);
+        this.discard();
+        serverLevel.addFreshEntity(zombified);
     }
 
     public static class DrumGoal extends Goal {
@@ -317,8 +361,8 @@ public class PiglinDrummer extends AbstractPiglinServant implements DrummerAnima
         public void stop() {
             if (this.started) {
                 this.drummer.setDrumming(false);
+                this.drummer.drumCooldown = DRUM_COOLDOWN;
             }
-            this.drummer.drumCooldown = DRUM_COOLDOWN;
             this.friendly = null;
             this.approachTick = 0;
             this.drumTick = 0;
@@ -382,9 +426,6 @@ public class PiglinDrummer extends AbstractPiglinServant implements DrummerAnima
             LivingEntity target = this.drummer.getTarget();
             if (target != null && target.isAlive()) {
                 this.drummer.getLookControl().setLookAt(target, 30.0F, 30.0F);
-            }
-            if (this.tick >= CHEER_DURATION) {
-                this.stop();
             }
         }
 

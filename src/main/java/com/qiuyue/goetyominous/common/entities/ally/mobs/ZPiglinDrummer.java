@@ -4,6 +4,7 @@ import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.ZPiglinServant;
 import com.Polarice3.Goety.utils.MobUtil;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -106,6 +107,29 @@ public class ZPiglinDrummer extends ZPiglinServant implements DrummerAnimatable 
     @Override
     public boolean fireImmune() {
         return true;
+    }
+
+    @Override
+    public void setConfigurableAttributes() {
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putInt("DrumCooldown", this.drumCooldown);
+        compound.putInt("CheerCooldown", this.cheerCooldown);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.drumCooldown = compound.getInt("DrumCooldown");
+        this.cheerCooldown = compound.getInt("CheerCooldown");
+    }
+
+    @Override
+    public boolean canSpawnArmor() {
+        return false;
     }
 
     public boolean isDrumming() {
@@ -216,7 +240,7 @@ public class ZPiglinDrummer extends ZPiglinServant implements DrummerAnimatable 
         List<LivingEntity> allies = this.level().getEntitiesOfClass(LivingEntity.class,
                 this.getBoundingBox().inflate(BUFF_RADIUS),
                 living -> living != this && living.isAlive()
-                        && !(living instanceof ZPiglinDrummer)
+                        && !(living instanceof DrummerAnimatable)
                         && MobUtil.areAllies(this, living));
         allies.sort(Comparator.comparingDouble(this::distanceToSqr));
         return allies.isEmpty() ? null : allies.get(0);
@@ -317,8 +341,8 @@ public class ZPiglinDrummer extends ZPiglinServant implements DrummerAnimatable 
         public void stop() {
             if (this.started) {
                 this.drummer.setDrumming(false);
+                this.drummer.drumCooldown = DRUM_COOLDOWN;
             }
-            this.drummer.drumCooldown = DRUM_COOLDOWN;
             this.friendly = null;
             this.approachTick = 0;
             this.drumTick = 0;
@@ -382,9 +406,6 @@ public class ZPiglinDrummer extends ZPiglinServant implements DrummerAnimatable 
             LivingEntity target = this.drummer.getTarget();
             if (target != null && target.isAlive()) {
                 this.drummer.getLookControl().setLookAt(target, 30.0F, 30.0F);
-            }
-            if (this.tick >= CHEER_DURATION) {
-                this.stop();
             }
         }
 
