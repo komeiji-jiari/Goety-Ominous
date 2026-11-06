@@ -274,11 +274,11 @@ public class ModItems {
 
     public static final RegistryObject<ForgeSpawnEggItem> BREEZE_SPAWN_EGG = ITEMS.register(
             "breeze_spawn_egg",
-            () -> new ForgeSpawnEggItem(ModEntityTypes.BREEZE, 0xAF94DF, 0x9F5CC0, egg()));
+            () -> new ForgeSpawnEggItem(ModEntityTypes.BREEZE, 0xAB9CCB, 0x576C9D, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> BREEZE_SERVANT_SPAWN_EGG = ITEMS.register(
             "breeze_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.BREEZE_SERVANT, 0xAF94DF, 0x9F5CC0, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.BREEZE_SERVANT, 0xDFDAE8, 0x8F90AF, egg()));
 
     public static final RegistryObject<ForgeSpawnEggItem> HURRICANE_SPAWN_EGG = ITEMS.register(
             "hurricane_spawn_egg",
@@ -290,7 +290,7 @@ public class ModItems {
 
     public static final RegistryObject<ServantSpawnEggItem> MIRED_SERVANT_SPAWN_EGG = ITEMS.register(
             "mired_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.MIRED_SERVANT, 0x2D2013, 0xEEC5AD, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.MIRED_SERVANT, 0x3D2E21, 0xEEC5AD, egg()));
 
     public static final RegistryObject<ForgeSpawnEggItem> MIRED_SPAWN_EGG = ITEMS.register(
             "mired_spawn_egg",
@@ -298,7 +298,7 @@ public class ModItems {
 
     public static final RegistryObject<ServantSpawnEggItem> BOGGED_SERVANT_SPAWN_EGG = ITEMS.register(
             "bogged_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.BOGGED_SERVANT, 0x8FB85A, 0x1D3B06, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.BOGGED_SERVANT, 0x1D3B06, 0x8FB85A, egg()));
 
     public static final RegistryObject<ForgeSpawnEggItem> BOGGED_SPAWN_EGG = ITEMS.register(
             "bogged_spawn_egg",
@@ -310,15 +310,15 @@ public class ModItems {
 
     public static final RegistryObject<ServantSpawnEggItem> CONQUILLAGER_SERVANT_SPAWN_EGG = ITEMS.register(
             "conquillager_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.CONQUILLAGER_SERVANT, 0xD3D3D3, 0x0F0F0F, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.CONQUILLAGER_SERVANT, 0x161616, 0x8B0000, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> INQUILLAGER_SERVANT_SPAWN_EGG = ITEMS.register(
             "inquillager_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.INQUILLAGER_SERVANT, 0xBCA341, 0x5C121B, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.INQUILLAGER_SERVANT, 0x660028, 0xF3CE3F, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> PYROLOGER_SERVANT_SPAWN_EGG = ITEMS.register(
             "pyrologer_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.PYROLOGER_SERVANT, 0xFF6A1E, 0x2B1B12, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.PYROLOGER_SERVANT, 0x2B1B12, 0xFF6A1E, egg()));
 
     public static final RegistryObject<ForgeSpawnEggItem> PYROLOGER_SPAWN_EGG = ITEMS.register(
             "pyrologer_spawn_egg",
@@ -330,7 +330,7 @@ public class ModItems {
 
     public static final RegistryObject<ServantSpawnEggItem> CRIMSON_GUARD_SERVANT_SPAWN_EGG = ITEMS.register(
             "crimson_guard_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.CRIMSON_GUARD_SERVANT, 0x2B2B2B, 0xA11E1E, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.CRIMSON_GUARD_SERVANT, 0xA11E1E, 0x2B2B2B, egg()));
 
     public static final RegistryObject<ForgeSpawnEggItem> IMPERIAL_CHASSEUR_SPAWN_EGG = ITEMS.register(
             "imperial_chasseur_spawn_egg",
@@ -338,55 +338,55 @@ public class ModItems {
 
     public static final RegistryObject<ServantSpawnEggItem> IMPERIAL_CHASSEUR_SERVANT_SPAWN_EGG = ITEMS.register(
             "imperial_chasseur_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.IMPERIAL_CHASSEUR_SERVANT, 0x4B2E83, 0xD4AF37, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.IMPERIAL_CHASSEUR_SERVANT, 0x4B2E83, 0xD5D5D5, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> SUNKEN_NECROMANCER_SERVANT_SPAWN_EGG = ITEMS.register(
             "sunken_necromancer_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.SUNKEN_NECROMANCER_SERVANT, 0x4A235A, 0xE67E22, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.SUNKEN_NECROMANCER_SERVANT, 0x1B4F72, 0xF9BE26, egg()));
 
     public static final RegistryObject<ForgeSpawnEggItem> SUNKEN_NECROMANCER_SPAWN_EGG = ITEMS.register(
             "sunken_necromancer_spawn_egg",
-            () -> new ForgeSpawnEggItem(ModEntityTypes.SUNKEN_NECROMANCER, 0x1B4F72, 0x7D6608, egg()));
+            () -> new ForgeSpawnEggItem(ModEntityTypes.SUNKEN_NECROMANCER, 0x2B3E56, 0x049FD0, egg()));
 
     public static final RegistryObject<ForgeSpawnEggItem> ARCH_GEOMANCER_SPAWN_EGG = ITEMS.register(
             "arch_geomancer_spawn_egg",
-            () -> new ForgeSpawnEggItem(ModEntityTypes.ARCH_GEOMANCER, 0x2F4F4F, 0xC9A227, egg()));
+            () -> new ForgeSpawnEggItem(ModEntityTypes.ARCH_GEOMANCER, 0x797F7F, 0x490C0C, egg()));
 
     public static final RegistryObject<ForgeSpawnEggItem> STORM_NECROMANCER_SPAWN_EGG = ITEMS.register(
             "storm_necromancer_spawn_egg",
-            () -> new ForgeSpawnEggItem(ModEntityTypes.STORM_NECROMANCER, 0x2E4053, 0x85C1E9, egg()));
+            () -> new ForgeSpawnEggItem(ModEntityTypes.STORM_NECROMANCER, 0x40250D, 0xF9BD23, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> STORM_NECROMANCER_SERVANT_SPAWN_EGG = ITEMS.register(
             "storm_necromancer_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.STORM_NECROMANCER_SERVANT, 0x2E4053, 0x85C1E9, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.STORM_NECROMANCER_SERVANT, 0x5B3E1C, 0xF9BD23, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> HERESIARCH_SERVANT_SPAWN_EGG = ITEMS.register(
             "heresiarch_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.HERESIARCH_SERVANT, 0x0f1119, 0x4A235A, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.HERESIARCH_SERVANT, 0x0E0E10, 0xC0BC9F, egg()));
 
     public static final RegistryObject<ForgeSpawnEggItem> DISCIPLE_SPAWN_EGG = ITEMS.register(
             "disciple_spawn_egg",
-            () -> new ForgeSpawnEggItem(ModEntityTypes.DISCIPLE, 0x1B4F72, 0xE67E22, egg()));
+            () -> new ForgeSpawnEggItem(ModEntityTypes.DISCIPLE, 0x120E0E, 0xE6B800, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> DISCIPLE_SERVANT_SPAWN_EGG = ITEMS.register(
             "disciple_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.DISCIPLE_SERVANT, 0x1B4F72, 0xE6E6FA, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.DISCIPLE_SERVANT, 0x8B0000, 0xE6B800, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> PIGLIN_SERVANT_SPAWN_EGG = ITEMS.register(
             "piglin_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.PIGLIN_SERVANT, 0x9C7A3C, 0xF0D7A7, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.PIGLIN_SERVANT, 0xF2BA86, 0xF0D7A7, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> PIGLIN_BRUTE_SERVANT_SPAWN_EGG = ITEMS.register(
             "piglin_brute_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.PIGLIN_BRUTE_SERVANT, 0x9C7A3C, 0x492F24, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.PIGLIN_BRUTE_SERVANT, 0xF2BA86, 0x492F24, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> STRONG_PIGLIN_BRUTE_SERVANT_SPAWN_EGG = ITEMS.register(
             "piglin_brute_servant_strong_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.STRONG_PIGLIN_BRUTE_SERVANT, 0x9C7A3C, 0x003049, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.STRONG_PIGLIN_BRUTE_SERVANT, 0xF2BA86, 0x0077BE, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> ELITE_PIGLIN_BRUTE_SERVANT_SPAWN_EGG = ITEMS.register(
             "piglin_brute_servant_elite_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.ELITE_PIGLIN_BRUTE_SERVANT, 0x9C7A3C, 0x490300, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.ELITE_PIGLIN_BRUTE_SERVANT, 0xF2BA86, 0xC0392B, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> STRONG_ZPIGLIN_BRUTE_SERVANT_SPAWN_EGG = ITEMS.register(
             "strong_zpiglin_brute_servant_spawn_egg",
@@ -398,15 +398,15 @@ public class ModItems {
 
     public static final RegistryObject<ServantSpawnEggItem> PIGLIN_HUNTER_SERVANT_SPAWN_EGG = ITEMS.register(
             "piglin_hunter_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.PIGLIN_HUNTER_SERVANT, 0x9C7A3C, 0x5C3A1E, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.PIGLIN_HUNTER_SERVANT, 0xF2BA86, 0xA9743F, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> STRONG_PIGLIN_HUNTER_SERVANT_SPAWN_EGG = ITEMS.register(
             "strong_piglin_hunter_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.STRONG_PIGLIN_HUNTER_SERVANT, 0x9C7A3C, 0x003049, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.STRONG_PIGLIN_HUNTER_SERVANT, 0xF2BA86, 0x0077BE, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> ELITE_PIGLIN_HUNTER_SERVANT_SPAWN_EGG = ITEMS.register(
             "elite_piglin_hunter_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.ELITE_PIGLIN_HUNTER_SERVANT, 0x9C7A3C, 0x490300, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.ELITE_PIGLIN_HUNTER_SERVANT, 0xF2BA86, 0xC0392B, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> ZPIGLIN_HUNTER_SERVANT_SPAWN_EGG = ITEMS.register(
             "zpiglin_hunter_servant_spawn_egg",
@@ -422,7 +422,7 @@ public class ModItems {
 
     public static final RegistryObject<ServantSpawnEggItem> FUNGUS_THROWER_SPAWN_EGG = ITEMS.register(
             "fungus_thrower_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.FUNGUS_THROWER, 0x9C7A3C, 0x3366FF, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.FUNGUS_THROWER, 0xF2BA86, 0x3366FF, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> ZFUNGUS_THROWER_SPAWN_EGG = ITEMS.register(
             "zfungus_thrower_spawn_egg",
@@ -431,7 +431,7 @@ public class ModItems {
     public static final RegistryObject<net.minecraftforge.common.ForgeSpawnEggItem> PIGLIN_MERCHANT_SPAWN_EGG = ITEMS.register(
             "piglin_merchant_spawn_egg",
             () -> new net.minecraftforge.common.ForgeSpawnEggItem(ModEntityTypes.PIGLIN_MERCHANT,
-                    0x9C7A3C, 0x6B4E2E, egg()));
+                    0xF2BA86, 0x6B4E2E, egg()));
 
     public static final RegistryObject<ForgeSpawnEggItem> DREDEN_SPAWN_EGG = ITEMS.register(
             "dreden_spawn_egg",
@@ -447,23 +447,23 @@ public class ModItems {
 
     public static final RegistryObject<ForgeSpawnEggItem> FANATIC_SPAWN_EGG = ITEMS.register(
             "fanatic_spawn_egg",
-            () -> new ForgeSpawnEggItem(ModEntityTypes.FANATIC, 0x8B0000, 0x2D0000, egg()));
+            () -> new ForgeSpawnEggItem(ModEntityTypes.FANATIC, 0xAB9F8D, 0x80725E, egg()));
 
     public static final RegistryObject<ForgeSpawnEggItem> ZEALOT_SPAWN_EGG = ITEMS.register(
             "zealot_spawn_egg",
-            () -> new ForgeSpawnEggItem(ModEntityTypes.ZEALOT, 0x5C4033, 0xD4A76A, egg()));
+            () -> new ForgeSpawnEggItem(ModEntityTypes.ZEALOT, 0x111111, 0xAB9F8D, egg()));
 
     public static final RegistryObject<ForgeSpawnEggItem> BELDAM_SPAWN_EGG = ITEMS.register(
             "beldam_spawn_egg",
-            () -> new ForgeSpawnEggItem(ModEntityTypes.BELDAM, 0x340000, 0x191919, egg()));
+            () -> new ForgeSpawnEggItem(ModEntityTypes.BELDAM, 0x191919, 0x8B0000, egg()));
 
     public static final RegistryObject<ForgeSpawnEggItem> THUG_SPAWN_EGG = ITEMS.register(
             "thug_spawn_egg",
-            () -> new ForgeSpawnEggItem(ModEntityTypes.THUG, 0x8B0000, 0x191919, egg()));
+            () -> new ForgeSpawnEggItem(ModEntityTypes.THUG, 0x0E0E0E, 0xA39483, egg()));
 
     public static final RegistryObject<ForgeSpawnEggItem> CHANNELLER_SPAWN_EGG = ITEMS.register(
             "channeller_spawn_egg",
-            () -> new ForgeSpawnEggItem(ModEntityTypes.CHANNELLER, 0x4a0e4e, 0xe5c07f, egg()));
+            () -> new ForgeSpawnEggItem(ModEntityTypes.CHANNELLER, 0x9F1818, 0xF2E157, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> CRIMSON_SPIDER_SERVANT_SPAWN_EGG = ITEMS.register(
             "crimson_spider_servant_spawn_egg",
@@ -479,7 +479,7 @@ public class ModItems {
 
     public static final RegistryObject<ServantSpawnEggItem> SCORCH_SPAWN_EGG = ITEMS.register(
             "scorch_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.SCORCH, 0x3b1414, 0xFFD700, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.SCORCH, 0xC90437, 0x8C00A8, egg()));
 
     public static final RegistryObject<ForgeSpawnEggItem> URBHADHACH_SPAWN_EGG = ITEMS.register(
             "urbhadhach_spawn_egg",
@@ -491,7 +491,7 @@ public class ModItems {
 
     public static final RegistryObject<ServantSpawnEggItem> SWAMP_WOLF_SPAWN_EGG = ITEMS.register(
             "swamp_wolf_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.SWAMP_WOLF, 0x3A4A2A, 0x7A8C4F, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.SWAMP_WOLF, 0x6C8031, 0x1B1A0E, egg()));
 
     public static final RegistryObject<WargSpawnEggItem> WARG_SPAWN_EGG = ITEMS.register(
             "warg_spawn_egg",
@@ -511,7 +511,7 @@ public class ModItems {
 
     public static final RegistryObject<WargSpawnEggItem> SKELETAL_WARG_SPAWN_EGG = ITEMS.register(
             "skeletal_warg_spawn_egg",
-            () -> new WargSpawnEggItem(ModEntityTypes.WARG, 0xE8E8E8, 0xFFFFFF, egg(), Warg.Variant.SKELETAL, false));
+            () -> new WargSpawnEggItem(ModEntityTypes.WARG, 0xE8E8E8, 0x4A4A50, egg(), Warg.Variant.SKELETAL, false));
 
     public static final RegistryObject<WargSpawnEggItem> GRAY_WARG_SPAWN_EGG = ITEMS.register(
             "gray_warg_spawn_egg",

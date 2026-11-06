@@ -135,7 +135,7 @@ public class AcItems {
 
     public static final RegistryObject<ServantSpawnEggItem> CARAMEL_CUBE_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("caramel_cube_servant_spawn_egg",
-                    () -> new ServantSpawnEggItem(AcEntityRegistry.CARAMEL_CUBE_SERVANT, 0xCC8015, 0xB86A0D, egg()));
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.CARAMEL_CUBE_SERVANT, 0xCC8015, 0xFFE2A8, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> GUMBEEPER_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("gumbeeper_servant_spawn_egg",
@@ -155,7 +155,7 @@ public class AcItems {
 
     public static final RegistryObject<ServantSpawnEggItem> FORSAKEN_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("forsaken_servant_spawn_egg",
-                    () -> new ServantSpawnEggItem(AcEntityRegistry.FORSAKEN_SERVANT, 0x000000, 0x110909, egg()));
+                    () -> new ServantSpawnEggItem(AcEntityRegistry.FORSAKEN_SERVANT, 0x0B0B10, 0x9AA7C7, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> CANDICORN_SERVANT_SPAWN_EGG =
             AC_ITEMS.register("candicorn_servant_spawn_egg",
