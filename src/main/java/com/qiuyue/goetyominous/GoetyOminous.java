@@ -2,24 +2,21 @@ package com.qiuyue.goetyominous;
 
 import com.Polarice3.Goety.api.entities.ally.illager.IllagerType;
 import com.Polarice3.Goety.common.entities.ally.BlackWolf;
-import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.common.entities.neutral.ZPiglinServant;
 import com.qiuyue.goetyominous.common.blocks.trial.TrialBlocks;
 import com.qiuyue.goetyominous.common.entities.ally.illager.ImperialChasseurServant;
-import com.qiuyue.goetyominous.common.entities.ally.illager.PyrologerServant;
 import com.qiuyue.goetyominous.common.explore.ExploreEvents;
 import com.qiuyue.goetyominous.common.blocks.trial.TrialSounds;
-import com.qiuyue.goetyominous.common.entities.ally.illager.ConquillagerServant;
-import com.qiuyue.goetyominous.common.entities.ally.illager.InquillagerServant;
+import com.qiuyue.goetyominous.common.entities.ally.ias.*;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractDredenEntity;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractHurricane;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractMiredEntity;
-import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractUrbhadhach;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.CrimsonSpiderServant;
 import com.qiuyue.goetyominous.common.entities.hostile.Scorch;
 import com.qiuyue.goetyominous.common.entities.hostile.cultists.Disciple;
 import com.qiuyue.goetyominous.common.entities.hostile.BoggedEntity;
 import com.qiuyue.goetyominous.common.entities.hostile.BreezeEntity;
+import com.qiuyue.goetyominous.common.entities.hostile.UrbhadhachEntity;
 import com.qiuyue.goetyominous.common.entities.hostile.cultists.*;
 import com.qiuyue.goetyominous.common.init.*;
 import com.qiuyue.goetyominous.common.items.CogCrossbowItem;
@@ -40,7 +37,6 @@ import com.qiuyue.goetyominous.common.entities.hostile.SunkenNecromancer;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.ArchGeomancerEntity;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.CrimsonGuard;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.ImperialChasseur;
-import com.qiuyue.goetyominous.common.entities.hostile.illagers.Pyrologer;
 import com.qiuyue.goetyominous.common.items.ModItems;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.compat.curios.CuriosIntegration;
@@ -269,7 +265,7 @@ public class GoetyOminous {
                 (type, level, spawnType, pos, random) -> {
                     if (MobsConfig.UrbhadhachSpawnWeight.get() <= 0) return false;
                     if (level.getMoonPhase() != 0) return false;
-                    return Owned.checkHostileSpawnRules(type, level, spawnType, pos, random);
+                    return Monster.checkMonsterSpawnRules(type, level, spawnType, pos, random);
                 });
         ResearchList.register();
     }
@@ -277,14 +273,12 @@ public class GoetyOminous {
     private void addAttributes(final EntityAttributeCreationEvent event) {
         event.put(ModEntityTypes.CONQUILLAGER_SERVANT.get(), ConquillagerServant.setCustomAttributes().build());
         event.put(ModEntityTypes.INQUILLAGER_SERVANT.get(), InquillagerServant.setCustomAttributes().build());
-        event.put(ModEntityTypes.PYROLOGER_SERVANT.get(), PyrologerServant.setCustomAttributes().build());
-        event.put(ModEntityTypes.PYROLOGER.get(), Pyrologer.createAttributes().build());
         event.put(ModEntityTypes.BREEZE_SERVANT.get(), BreezeServant.setCustomAttributes().build());
         event.put(ModEntityTypes.BREEZE.get(), BreezeEntity.setCustomAttributes().build());
         event.put(ModEntityTypes.HURRICANE.get(), AbstractHurricane.setCustomAttributes().build());
         event.put(ModEntityTypes.HURRICANE_SERVANT.get(), AbstractHurricane.setCustomAttributes().build());
-        event.put(ModEntityTypes.URBHADHACH.get(), AbstractUrbhadhach.setCustomAttributes().build());
-        event.put(ModEntityTypes.URBHADHACH_SERVANT.get(), AbstractUrbhadhach.setCustomAttributes().build());
+        event.put(ModEntityTypes.URBHADHACH.get(), UrbhadhachEntity.setCustomAttributes().build());
+        event.put(ModEntityTypes.URBHADHACH_SERVANT.get(), UrbhadhachServant.setCustomAttributes().build());
         event.put(ModEntityTypes.MIRED_SERVANT.get(), AbstractMiredEntity.setCustomAttributes().build());
         event.put(ModEntityTypes.MIRED.get(), AbstractMiredEntity.setCustomAttributes().build());
         event.put(ModEntityTypes.BOGGED_SERVANT.get(), BoggedServant.setCustomAttributes().build());
@@ -320,6 +314,8 @@ public class GoetyOminous {
         event.put(ModEntityTypes.FUNGUS_THROWER.get(), FungusThrower.createAttributes().build());
         event.put(ModEntityTypes.ZFUNGUS_THROWER.get(), ZPiglinServant.setCustomAttributes().build());
         event.put(ModEntityTypes.PIGLIN_MERCHANT.get(), PiglinMerchant.createAttributes().build());
+        event.put(ModEntityTypes.PIGLIN_DRUMMER.get(), PiglinDrummer.createAttributes().build());
+        event.put(ModEntityTypes.ZPIGLIN_DRUMMER.get(), ZPiglinDrummer.createAttributes().build());
         event.put(ModEntityTypes.PIGLIN_SERVANT.get(), PiglinServant.createAttributes().build());
         event.put(ModEntityTypes.PIGLIN_BRUTE_SERVANT.get(), PiglinBruteServant.createAttributes().build());
         event.put(ModEntityTypes.STRONG_PIGLIN_BRUTE_SERVANT.get(), StrongPiglinBruteServant.createAttributes().build());
