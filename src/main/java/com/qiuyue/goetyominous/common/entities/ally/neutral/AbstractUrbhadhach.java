@@ -244,13 +244,6 @@ public abstract class AbstractUrbhadhach extends Summoned {
 
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
-        if (this.level().isClientSide && ANIMATION_SEQUENCE.equals(accessor)) {
-            int sequence = this.entityData.get(ANIMATION_SEQUENCE);
-            if (sequence != this.clientAnimationSequence) {
-                this.clientAnimationSequence = sequence;
-                this.startClientAnimation();
-            }
-        }
         if (this.level().isClientSide && ANIMATION_STATE.equals(accessor) && this.getAnimationState() == ANIM_NONE) {
             this.actionTicks = 0;
             this.actionDuration = 0;
@@ -622,6 +615,13 @@ public abstract class AbstractUrbhadhach extends Summoned {
     @Override
     public void tick() {
         super.tick();
+        if (this.level().isClientSide) {
+            int sequence = this.entityData.get(ANIMATION_SEQUENCE);
+            if (sequence != this.clientAnimationSequence) {
+                this.clientAnimationSequence = sequence;
+                this.startClientAnimation();
+            }
+        }
         if (this.warningSoundTicks > 0) {
             --this.warningSoundTicks;
         }

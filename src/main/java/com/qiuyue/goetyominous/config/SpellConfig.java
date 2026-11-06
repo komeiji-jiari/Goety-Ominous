@@ -54,6 +54,9 @@ public class SpellConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> HauntCoolDown;
     public static final ForgeConfigSpec.ConfigValue<Integer> HauntSummonDown;
     public static final ForgeConfigSpec.ConfigValue<Integer> HauntLimit;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SoulStarSoulCost;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SoulStarCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Double> SoulStarDamage;
 
     static {
         BUILDER.push("Spells");
@@ -166,6 +169,14 @@ public class SpellConfig {
                 .defineInRange("hauntSummonDown", 60, 0, 5000);
         HauntLimit = BUILDER.comment("Max number of Haunt summoned (Default: 32)")
                 .defineInRange("hauntLimit", 32, 1, 100);
+        BUILDER.pop();
+        BUILDER.push("Soul Star Spell");
+        SoulStarSoulCost = BUILDER.comment("Soul cost of Soul Star spell (Default: 32)")
+                .defineInRange("soulStarCost", 32, 1, 100);
+        SoulStarCastDuration = BUILDER.comment("Cast duration of Soul Star (Default: 100)")
+                .defineInRange("soulStarCastDuration", 100, 0, 5000);
+        SoulStarDamage = BUILDER.comment("Base damage of Soul Star (Default: 8.0)")
+                .defineInRange("soulStarDamage", 8.0, 1.0, 1000.0);
         BUILDER.pop();
         BUILDER.pop();
         SPEC = BUILDER.build();

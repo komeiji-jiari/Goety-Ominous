@@ -1,0 +1,33 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goety:bombardment_focus"
+  },
+  "craftType": "necroturgy",
+  "soulCost": 1,
+  "duration": 10,
+  "ingredients": [
+    {
+      "item": "goety:shadow_essence"
+    },
+    {
+      "item": "goety:ectoplasm"
+    },
+    {
+      "item": "goety:ectoplasm"
+    },
+    {
+      "item": "goety:shadow_essence"
+    },
+    {
+      "item": "goety:shadow_essence"
+    },
+    {
+      "item": "goety:soul_ruby"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:soulstar_focus"
+  }
+}

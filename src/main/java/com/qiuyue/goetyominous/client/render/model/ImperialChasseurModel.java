@@ -1,5 +1,8 @@
 package com.qiuyue.goetyominous.client.render.model;
 
+import com.Polarice3.Goety.client.render.layer.HierarchicalArmor;
+import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.qiuyue.goetyominous.client.render.model.animation.ImperialChasseurAnimation;
 import com.qiuyue.goetyominous.common.entities.ally.illager.ImperialChasseurServant;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.ImperialChasseur;
@@ -17,7 +20,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import org.joml.Vector3f;
 
-public class ImperialChasseurModel<T extends Mob> extends HierarchicalModel<T> {
+public class ImperialChasseurModel<T extends Mob> extends HierarchicalModel<T> implements HierarchicalArmor {
     private static final Vector3f ANIMATION_VEC = new Vector3f();
     private final ModelPart root;
     private final ModelPart body;
@@ -341,5 +344,29 @@ public class ImperialChasseurModel<T extends Mob> extends HierarchicalModel<T> {
     @Override
     public ModelPart root() {
         return this.root;
+    }
+
+    @Override
+    public void translateToHead(ModelPart part, PoseStack poseStack) {
+        this.root.translateAndRotate(poseStack);
+        this.body.translateAndRotate(poseStack);
+        part.translateAndRotate(poseStack);
+    }
+
+    @Override
+    public void translateToChest(ModelPart part, PoseStack poseStack) {
+    }
+
+    @Override
+    public void translateToLeg(ModelPart part, PoseStack poseStack) {
+    }
+
+    @Override
+    public void translateToArms(ModelPart part, PoseStack poseStack) {
+    }
+
+    @Override
+    public Iterable<ModelPart> headPartArmors() {
+        return ImmutableList.of(this.Head);
     }
 }

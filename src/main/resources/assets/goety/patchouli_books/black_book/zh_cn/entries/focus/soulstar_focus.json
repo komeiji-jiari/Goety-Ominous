@@ -1,0 +1,20 @@
+{
+  "name": "灵魂新星聚晶",
+  "icon": "goetyominous:soulstar_focus",
+  "category": "goety:ominous_focuses",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你号令大地交出其中的死者之灵，将他们的灵魂粗暴地扯碎并重塑为闪烁的新星，高速冲向你所指的生物并产生灼烧灵魂的爆炸。如果发射的方向距离目标稍有偏差，灵魂之星还会自行修正弹道。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:soulstar_focus"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "死灵魔杖可以增加你召唤的灵魂之星数量。使用无名魔杖施法，则可以继续增加数量的同时还能造成更高的伤害。"
+    }
+  ]
+}

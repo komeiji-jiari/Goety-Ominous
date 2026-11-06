@@ -1,5 +1,8 @@
 package com.qiuyue.goetyominous.client.render.model;
 
+import com.Polarice3.Goety.client.render.layer.HierarchicalArmor;
+import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.qiuyue.goetyominous.client.render.model.animation.CrimsonGuardAnimation;
 import com.qiuyue.goetyominous.common.entities.ally.illager.CrimsonGuardServant;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.CrimsonGuard;
@@ -20,15 +23,16 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.joml.Vector3f;
 
 @OnlyIn(Dist.CLIENT)
-public class CrimsonGuardModel<T extends Mob> extends HierarchicalModel<T> {
+public class CrimsonGuardModel<T extends Mob> extends HierarchicalModel<T> implements HierarchicalArmor {
 	private static final Vector3f ANIMATION_VEC = new Vector3f();
 	private final ModelPart root;
+	private final ModelPart body;
 	private final ModelPart head;
 
 	public CrimsonGuardModel(ModelPart root) {
 		this.root = root;
-		ModelPart body = root.getChild("body");
-		this.head = body.getChild("Head");
+		this.body = root.getChild("body");
+		this.head = this.body.getChild("Head");
 	}
 
 	public static LayerDefinition createBodyLayer() {
@@ -199,5 +203,29 @@ public class CrimsonGuardModel<T extends Mob> extends HierarchicalModel<T> {
 	@Override
 	public ModelPart root() {
 		return this.root;
+	}
+
+	@Override
+	public void translateToHead(ModelPart part, PoseStack poseStack) {
+		this.root.translateAndRotate(poseStack);
+		this.body.translateAndRotate(poseStack);
+		part.translateAndRotate(poseStack);
+	}
+
+	@Override
+	public void translateToChest(ModelPart part, PoseStack poseStack) {
+	}
+
+	@Override
+	public void translateToLeg(ModelPart part, PoseStack poseStack) {
+	}
+
+	@Override
+	public void translateToArms(ModelPart part, PoseStack poseStack) {
+	}
+
+	@Override
+	public Iterable<ModelPart> headPartArmors() {
+		return ImmutableList.of(this.head);
 	}
 }

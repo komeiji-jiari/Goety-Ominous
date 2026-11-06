@@ -33,6 +33,11 @@
       "title": "帝国猎兵仆从",
       "advancement": "goety:goety/read_front_scroll",
       "text": "$(o)注: 所有者必须阅读过$(l:goety:rumors/desert)先锋卷轴$()$()$(br)需求：$(li)掠夺者仆从 $(li)4个不祥雕像 $(li)6个书架/附魔能力与前者等同的方块 $(li)4个干草块或标靶 $(li)4个制箭台 $(li)1个附魔台 $(li)8个$(l:goety:crafts/stash_urn)隐秘之瓮$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "火术师仆从",
+      "text": "需求: $(li)唤魔者仆从或附魔师仆从 $(li)火炬必须在炎热群系 $(li)64个任意下界砖 $(li)16个任意黑石 $(li)4个任意火盆 $(li)16个书架/附魔能力与前者等同的方块"
     }
   ],
   "extra_recipe_mappings": {

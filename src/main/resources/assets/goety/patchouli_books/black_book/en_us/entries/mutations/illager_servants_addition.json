@@ -45,6 +45,14 @@
       "type": "patchouli:text",
       "advancement": "goety:goety/read_front_scroll",
       "text": "These elites among the Pillagers excel at precise shooting. In addition to firing heavier, more penetrating arrows, they also use special explosive magic ammunition to shoot at creatures."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:pyrologer_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "They use a variety of fire spells to burn away the enemies before them."
     }
   ]
 }

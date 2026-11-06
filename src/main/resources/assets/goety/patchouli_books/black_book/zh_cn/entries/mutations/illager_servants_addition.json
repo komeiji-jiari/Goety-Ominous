@@ -45,6 +45,14 @@
       "type": "patchouli:text",
       "advancement": "goety:goety/read_front_scroll",
       "text": "这些掠夺者中的精英擅长精确射击，除了发射更具穿透力的重箭，他们还会使用特殊的爆炸性魔法弹药来射击生物。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:pyrologer_servant"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "他们会用多种火焰法术烧尽面前的敌人。"
     }
   ]
 }

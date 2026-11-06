@@ -418,7 +418,7 @@ public class ModModelLayers {
         event.registerEntityRenderer(ModEntityTypes.FIRE_WALL.get(), FireWallRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.PYROLOGER_SERVANT.get(), PyrologerRenderer::new);
-        event.registerEntityRenderer(ModEntityTypes.PYROLOGER.get(), PyrologerRenderer::new);
+        event.registerEntityRenderer(ModEntityTypes.PYROLOGER.get(), context -> new PyrologerRenderer<>(context, false));
     }
 
     @SubscribeEvent
