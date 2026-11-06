@@ -146,6 +146,8 @@ public class PiglinDrummerModel<T extends Entity> extends HierarchicalModel<T> {
         this.head.yRot = netHeadYaw * ((float)Math.PI / 180F);
         this.head.xRot = headPitch * ((float)Math.PI / 180F);
         if (entity instanceof DrummerAnimatable drummer) {
+            drummer.getIdleAnimationState().updateTime(ageInTicks, 1.0F);
+            drummer.getWalkAnimationState().updateTime(ageInTicks, 1.0F);
             if (drummer.isDrumming()) {
                 drummer.getDrumAnimationState().startIfStopped(entity.tickCount);
                 this.animate(drummer.getDrumAnimationState(), PiglinDrummerAnimations.DRUM, ageInTicks);

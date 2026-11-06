@@ -1,11 +1,14 @@
 package com.qiuyue.goetyominous.common.init;
 
 import com.qiuyue.goetyominous.common.blocks.trial.OminousItemSpawner;
-import com.qiuyue.goetyominous.common.entities.ally.ias.*;
+import com.qiuyue.goetyominous.common.entities.ally.illager.ConquillagerServant;
+import com.qiuyue.goetyominous.common.entities.ally.illager.InquillagerServant;
 import com.qiuyue.goetyominous.common.entities.ally.illager.CrimsonGuardServant;
 import com.qiuyue.goetyominous.common.entities.ally.illager.ImperialChasseurServant;
+import com.qiuyue.goetyominous.common.entities.ally.illager.PyrologerServant;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.CrimsonGuard;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.ImperialChasseur;
+import com.qiuyue.goetyominous.common.entities.hostile.illagers.Pyrologer;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.*;
 
 import com.qiuyue.goetyominous.common.entities.ally.mobs.StormNecromancerServant;
@@ -15,6 +18,7 @@ import com.qiuyue.goetyominous.common.entities.hostile.cultists.*;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.ArchGeomancerEntity;
 import com.qiuyue.goetyominous.common.entities.projectile.*;
 import com.qiuyue.goetyominous.common.entities.util.BurningGroundEntity;
+import com.qiuyue.goetyominous.common.entities.util.FireWallEntity;
 import com.qiuyue.goetyominous.utils.HurricaneCoreSummon;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -42,6 +46,20 @@ public class ModEntityTypes {
                     .sized(0.6F, 1.95F)
                     .clientTrackingRange(8)
                     .build(MOD_ID + ":inquillager_servant"));
+
+    public static final RegistryObject<EntityType<PyrologerServant>> PYROLOGER_SERVANT = ENTITY_TYPES.register(
+            "pyrologer_servant",
+            () -> EntityType.Builder.of(PyrologerServant::new, MobCategory.MISC)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":pyrologer_servant"));
+
+    public static final RegistryObject<EntityType<Pyrologer>> PYROLOGER = ENTITY_TYPES.register(
+            "pyrologer",
+            () -> EntityType.Builder.of(Pyrologer::new, MobCategory.MONSTER)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(10)
+                    .build(MOD_ID + ":pyrologer"));
 
     public static final RegistryObject<EntityType<CrimsonGuardServant>> CRIMSON_GUARD_SERVANT = ENTITY_TYPES.register(
             "crimson_guard_servant",
@@ -556,6 +574,22 @@ public class ModEntityTypes {
                     .sized(0.25F, 0.25F)
                     .clientTrackingRange(8)
                     .build(MOD_ID + ":ominous_item_spawner"));
+
+    public static final RegistryObject<EntityType<PyromancerFireball>> PYROMANCER_FIREBALL = ENTITY_TYPES.register(
+            "pyromancer_fireball",
+            () -> EntityType.Builder.<PyromancerFireball>of(PyromancerFireball::new, MobCategory.MISC)
+                    .sized(1.0F, 1.0F)
+                    .clientTrackingRange(4)
+                    .updateInterval(10)
+                    .build(MOD_ID + ":pyromancer_fireball"));
+
+    public static final RegistryObject<EntityType<FireWallEntity>> FIRE_WALL = ENTITY_TYPES.register(
+            "fire_wall",
+            () -> EntityType.Builder.<FireWallEntity>of(FireWallEntity::new, MobCategory.MISC)
+                    .sized(1.0F, 3.0F)
+                    .clientTrackingRange(16)
+                    .updateInterval(10)
+                    .build(MOD_ID + ":fire_wall"));
 
     public static void register(IEventBus modEventBus) {
         ENTITY_TYPES.register(modEventBus);
