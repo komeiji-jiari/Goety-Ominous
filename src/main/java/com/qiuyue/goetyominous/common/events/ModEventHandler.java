@@ -2,13 +2,17 @@ package com.qiuyue.goetyominous.common.events;
 
 import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.common.entities.hostile.HostileBlackWolf;
+import com.Polarice3.Goety.common.entities.projectiles.SoulStar;
+import com.Polarice3.Goety.utils.SEHelper;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.blocks.HimPlushieRitual;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.HeresiarchServant;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.common.items.ModItems;
 import com.qiuyue.goetyominous.common.items.curios.ScreamingSkullJar;
+import com.qiuyue.goetyominous.common.magic.spells.SoulStarSpell;
 import com.qiuyue.goetyominous.compat.mod.GoetyAwakenCompat;
+import com.qiuyue.goetyominous.config.SpellConfig;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -20,8 +24,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import top.theillusivec4.curios.api.CuriosApi;
@@ -195,6 +201,20 @@ public class ModEventHandler {
                 float originalDamage = event.getAmount();
                 float reducedDamage = originalDamage * 0.85F;
                 event.setAmount(reducedDamage);
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onSoulStarDamage(LivingDamageEvent event) {
+        if (event.getEntity().level().isClientSide || event.getAmount() <= 0.0F) {
+            return;
+        }
+        if (event.getSource().getDirectEntity() instanceof SoulStar star
+                && event.getSource().getEntity() instanceof Player player) {
+            int soulEater = Math.min(star.getPersistentData().getInt(SoulStarSpell.SOUL_EATER_TAG), 10);
+            if (soulEater > 0 && SEHelper.getSoulGiven(event.getEntity()) > 0) {
+                SEHelper.increaseSouls(player, SpellConfig.SoulStarSoulGain.get() * soulEater);
             }
         }
     }
