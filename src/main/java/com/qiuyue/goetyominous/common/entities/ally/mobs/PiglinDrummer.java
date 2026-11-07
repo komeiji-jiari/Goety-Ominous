@@ -5,6 +5,7 @@ import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractPiglinServant;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
+import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -15,7 +16,9 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AnimationState;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
@@ -26,6 +29,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.monster.piglin.PiglinArmPose;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.ForgeEventFactory;
 
@@ -34,7 +38,7 @@ import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
 
-public class PiglinDrummer extends AbstractPiglinServant implements DrummerAnimatable {
+public class PiglinDrummer extends AbstractPiglinServant {
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState walkAnimationState = new AnimationState();
@@ -67,12 +71,22 @@ public class PiglinDrummer extends AbstractPiglinServant implements DrummerAnima
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 18.0D)
-                .add(Attributes.ARMOR, 0.0D)
-                .add(Attributes.ARMOR_TOUGHNESS, 0.0D)
-                .add(Attributes.FOLLOW_RANGE, 32.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.38D)
-                .add(Attributes.ATTACK_DAMAGE, 1.0D);
+                .add(Attributes.MAX_HEALTH, AttributesConfig.PiglinDrummerHealth.get())
+                .add(Attributes.ARMOR, AttributesConfig.PiglinDrummerArmor.get())
+                .add(Attributes.ARMOR_TOUGHNESS, AttributesConfig.PiglinDrummerArmorToughness.get())
+                .add(Attributes.FOLLOW_RANGE, AttributesConfig.PiglinDrummerFollowRange.get())
+                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.PiglinDrummerSpeed.get())
+                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.PiglinDrummerDamage.get());
+    }
+
+    @Override
+    public void setConfigurableAttributes() {
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), AttributesConfig.PiglinDrummerHealth.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), AttributesConfig.PiglinDrummerArmor.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR_TOUGHNESS), AttributesConfig.PiglinDrummerArmorToughness.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.FOLLOW_RANGE), AttributesConfig.PiglinDrummerFollowRange.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MOVEMENT_SPEED), AttributesConfig.PiglinDrummerSpeed.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), AttributesConfig.PiglinDrummerDamage.get());
     }
 
     @Override
@@ -111,6 +125,26 @@ public class PiglinDrummer extends AbstractPiglinServant implements DrummerAnima
     @Override
     public boolean canSpawnArmor() {
         return false;
+    }
+
+    @Override
+    public boolean canHaveWeapon() {
+        return false;
+    }
+
+    @Override
+    public void convertNewEquipment(Entity entity) {
+        if (this.level().isClientSide) {
+            return;
+        }
+        if (entity instanceof AbstractPiglinServant old && old.isImmune()) {
+            this.setImmune(true);
+        }
+        ItemStack mainHand = this.getMainHandItem();
+        if (!mainHand.isEmpty()) {
+            this.spawnAtLocation(mainHand);
+            this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+        }
     }
 
     public boolean isDrumming() {
@@ -178,26 +212,6 @@ public class PiglinDrummer extends AbstractPiglinServant implements DrummerAnima
         return this.walkWeight;
     }
 
-    @Override
-    public AnimationState getIdleAnimationState() {
-        return this.idleAnimationState;
-    }
-
-    @Override
-    public AnimationState getWalkAnimationState() {
-        return this.walkAnimationState;
-    }
-
-    @Override
-    public AnimationState getDrumAnimationState() {
-        return this.drumAnimationState;
-    }
-
-    @Override
-    public AnimationState getCheerAnimationState() {
-        return this.cheerAnimationState;
-    }
-
     private static float approach(float value, float target, float step) {
         return value < target ? Math.min(value + step, target) : Math.max(value - step, target);
     }
@@ -226,7 +240,8 @@ public class PiglinDrummer extends AbstractPiglinServant implements DrummerAnima
         List<LivingEntity> allies = this.level().getEntitiesOfClass(LivingEntity.class,
                 this.getBoundingBox().inflate(BUFF_RADIUS),
                 living -> living != this && living.isAlive()
-                        && !(living instanceof DrummerAnimatable)
+                        && !(living instanceof PiglinDrummer)
+                        && !(living instanceof ZPiglinDrummer)
                         && MobUtil.areAllies(this, living));
         allies.sort(Comparator.comparingDouble(this::distanceToSqr));
         return allies.isEmpty() ? null : allies.get(0);
@@ -277,6 +292,11 @@ public class PiglinDrummer extends AbstractPiglinServant implements DrummerAnima
 
     @Override
     protected void finishConversion(ServerLevel serverLevel) {
+        ItemStack mainHand = this.getMainHandItem();
+        if (!mainHand.isEmpty()) {
+            this.spawnAtLocation(mainHand);
+            this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+        }
         ZPiglinDrummer zombified = new ZPiglinDrummer(ModEntityTypes.ZPIGLIN_DRUMMER.get(), serverLevel);
         zombified.copyTrueOwner(this);
         zombified.setBaby(this.isBaby());

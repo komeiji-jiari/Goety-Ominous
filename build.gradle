@@ -227,6 +227,7 @@ dependencies {
     compileOnly fg.deobf("curse.maven:goety-cataclysm-1224214:8645833")
     compileOnly fg.deobf("curse.maven:goetyawaken-1412569:8880533")
     compileOnly fg.deobf("curse.maven:goety-revelation-1236817:8311906")
+    compileOnly fg.deobf("curse.maven:assault-expansion-1748170:9469237")
 
     compileOnly fg.deobf("curse.maven:savage-and-ravage-381736:7115735")
     compileOnly fg.deobf("curse.maven:blueprint-382216:8048579")

@@ -4,14 +4,15 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.qiuyue.goetyominous.client.render.model.animation.PiglinDrummerAnimations;
 import com.qiuyue.goetyominous.client.render.model.animation.PoseBlend;
-import com.qiuyue.goetyominous.common.entities.ally.mobs.DrummerAnimatable;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.PiglinDrummer;
+import com.qiuyue.goetyominous.common.entities.ally.mobs.ZPiglinDrummer;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -145,22 +146,35 @@ public class PiglinDrummerModel<T extends Entity> extends HierarchicalModel<T> {
         this.root().getAllParts().forEach(ModelPart::resetPose);
         this.head.yRot = netHeadYaw * ((float)Math.PI / 180F);
         this.head.xRot = headPitch * ((float)Math.PI / 180F);
-        if (entity instanceof DrummerAnimatable drummer) {
-            drummer.getIdleAnimationState().updateTime(ageInTicks, 1.0F);
-            drummer.getWalkAnimationState().updateTime(ageInTicks, 1.0F);
-            if (drummer.isDrumming()) {
-                drummer.getDrumAnimationState().startIfStopped(entity.tickCount);
-                this.animate(drummer.getDrumAnimationState(), PiglinDrummerAnimations.DRUM, ageInTicks);
-            } else if (drummer.isCheering()) {
-                drummer.getCheerAnimationState().startIfStopped(entity.tickCount);
-                this.animate(drummer.getCheerAnimationState(), PiglinDrummerAnimations.CHEER, ageInTicks);
-            } else {
-                float walk = drummer.getWalkWeight();
-                drummer.getIdleAnimationState().startIfStopped(entity.tickCount);
-                drummer.getWalkAnimationState().startIfStopped(entity.tickCount);
-                PoseBlend.animate(this, drummer.getIdleAnimationState(), PiglinDrummerAnimations.IDLE, ageInTicks, 1.0F - walk);
-                PoseBlend.animate(this, drummer.getWalkAnimationState(), PiglinDrummerAnimations.WALK, ageInTicks, walk);
-            }
+        if (entity instanceof PiglinDrummer drummer) {
+            this.setupDrummer(entity.tickCount, ageInTicks,
+                    drummer.idleAnimationState, drummer.walkAnimationState,
+                    drummer.drumAnimationState, drummer.cheerAnimationState,
+                    drummer.isDrumming(), drummer.isCheering(), drummer.getWalkWeight());
+        } else if (entity instanceof ZPiglinDrummer drummer) {
+            this.setupDrummer(entity.tickCount, ageInTicks,
+                    drummer.idleAnimationState, drummer.walkAnimationState,
+                    drummer.drumAnimationState, drummer.cheerAnimationState,
+                    drummer.isDrumming(), drummer.isCheering(), drummer.getWalkWeight());
+        }
+    }
+
+    private void setupDrummer(int tickCount, float ageInTicks,
+            AnimationState idle, AnimationState walk, AnimationState drum, AnimationState cheer,
+            boolean drumming, boolean cheering, float walkWeight) {
+        idle.updateTime(ageInTicks, 1.0F);
+        walk.updateTime(ageInTicks, 1.0F);
+        if (drumming) {
+            drum.startIfStopped(tickCount);
+            this.animate(drum, PiglinDrummerAnimations.DRUM, ageInTicks);
+        } else if (cheering) {
+            cheer.startIfStopped(tickCount);
+            this.animate(cheer, PiglinDrummerAnimations.CHEER, ageInTicks);
+        } else {
+            idle.startIfStopped(tickCount);
+            walk.startIfStopped(tickCount);
+            PoseBlend.animate(this, idle, PiglinDrummerAnimations.IDLE, ageInTicks, 1.0F - walkWeight);
+            PoseBlend.animate(this, walk, PiglinDrummerAnimations.WALK, ageInTicks, walkWeight);
         }
     }
 

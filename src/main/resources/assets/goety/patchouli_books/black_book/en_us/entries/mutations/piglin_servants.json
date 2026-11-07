@@ -53,6 +53,18 @@
       "text": "You've managed to enlighten your Piglins with new knowledge through a ritual. These Piglins, skilled at throwing acidic fungus, continue the ancient Piglin traditions. Their acid fungus bombs form pools of acid upon landing, dealing massive damage to enemies caught within."
     },
     {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:piglin_drummer"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_piglin_to_piglin_drummer"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Among the ancient customs of the Piglin Hordes are dedicated drummers who rally their allies with war drums. You have managed to train one of your Piglin servants into such a drummer, though note that they have no means of defending themselves."
+    },
+    {
       "type": "patchouli:spotlight",
       "item": "minecraft:cooked_porkchop",
       "title": "Feeding, Healing & Breeding",

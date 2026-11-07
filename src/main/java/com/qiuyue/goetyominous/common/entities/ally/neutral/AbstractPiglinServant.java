@@ -1232,7 +1232,13 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
 
     public void playAmbientSound() {
         if (this.getTarget() == null && !this.isAggressive()) {
-            super.playAmbientSound();
+            if (this.isConverting()) {
+                if (!this.level().isClientSide) {
+                    this.playSound(SoundEvents.PIGLIN_RETREAT, this.getSoundVolume(), this.getVoicePitch());
+                }
+            } else {
+                super.playAmbientSound();
+            }
         }
     }
 

@@ -53,6 +53,18 @@
       "text": "你设法用仪式启发了你的猪灵新的知识。这些擅长投掷酸性真菌的猪灵延续了古代猪灵的部分习性，他们丢出的酸液菌接触地面后会化成一团酸液池，对其中的敌人造成大量伤害。"
     },
     {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:piglin_drummer"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_piglin_to_piglin_drummer"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "猪灵部落的古老习俗中有着以战鼓振奋盟友的专职鼓手，你设法也将你的猪灵仆从训练成了其中一个，不过需要注意的是他们并没有自保能力。"
+    },
+    {
       "type": "patchouli:spotlight",
       "item": "minecraft:cooked_porkchop",
       "title": "喂食、治愈与繁殖",

@@ -274,9 +274,6 @@ public class PiglinServant extends AbstractPiglinServant implements CrossbowAtta
     }
 
     protected void customServerAiStep() {
-        if (this.isConverting() && this.timeInOverworld == 0) {
-            this.playSound(SoundEvents.PIGLIN_RETREAT, 1.0F, 1.0F);
-        }
         if (this.isNearJukebox()) {
             this.setDancing(true);
             this.danceTicks = 0;

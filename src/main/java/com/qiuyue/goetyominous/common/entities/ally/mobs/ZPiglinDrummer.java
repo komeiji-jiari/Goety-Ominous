@@ -4,6 +4,7 @@ import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.ZPiglinServant;
 import com.Polarice3.Goety.utils.MobUtil;
+import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -31,7 +32,7 @@ import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
 
-public class ZPiglinDrummer extends ZPiglinServant implements DrummerAnimatable {
+public class ZPiglinDrummer extends ZPiglinServant {
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState walkAnimationState = new AnimationState();
@@ -64,12 +65,22 @@ public class ZPiglinDrummer extends ZPiglinServant implements DrummerAnimatable 
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 18.0D)
-                .add(Attributes.ARMOR, 0.0D)
-                .add(Attributes.ARMOR_TOUGHNESS, 0.0D)
-                .add(Attributes.FOLLOW_RANGE, 32.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.38D)
-                .add(Attributes.ATTACK_DAMAGE, 1.0D);
+                .add(Attributes.MAX_HEALTH, AttributesConfig.PiglinDrummerHealth.get())
+                .add(Attributes.ARMOR, 2.0)
+                .add(Attributes.ARMOR_TOUGHNESS, AttributesConfig.PiglinDrummerArmorToughness.get())
+                .add(Attributes.FOLLOW_RANGE, AttributesConfig.PiglinDrummerFollowRange.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.35)
+                .add(Attributes.ATTACK_DAMAGE, AttributesConfig.PiglinDrummerDamage.get());
+    }
+
+    @Override
+    public void setConfigurableAttributes() {
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), AttributesConfig.PiglinDrummerHealth.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), 2.0);
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR_TOUGHNESS), AttributesConfig.PiglinDrummerArmorToughness.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.FOLLOW_RANGE), AttributesConfig.PiglinDrummerFollowRange.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MOVEMENT_SPEED), 0.35);
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), AttributesConfig.PiglinDrummerDamage.get());
     }
 
     @Override
@@ -110,10 +121,6 @@ public class ZPiglinDrummer extends ZPiglinServant implements DrummerAnimatable 
     }
 
     @Override
-    public void setConfigurableAttributes() {
-    }
-
-    @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("DrumCooldown", this.drumCooldown);
@@ -129,6 +136,11 @@ public class ZPiglinDrummer extends ZPiglinServant implements DrummerAnimatable 
 
     @Override
     public boolean canSpawnArmor() {
+        return false;
+    }
+
+    @Override
+    public boolean canHaveWeapon() {
         return false;
     }
 
@@ -197,26 +209,6 @@ public class ZPiglinDrummer extends ZPiglinServant implements DrummerAnimatable 
         return this.walkWeight;
     }
 
-    @Override
-    public AnimationState getIdleAnimationState() {
-        return this.idleAnimationState;
-    }
-
-    @Override
-    public AnimationState getWalkAnimationState() {
-        return this.walkAnimationState;
-    }
-
-    @Override
-    public AnimationState getDrumAnimationState() {
-        return this.drumAnimationState;
-    }
-
-    @Override
-    public AnimationState getCheerAnimationState() {
-        return this.cheerAnimationState;
-    }
-
     private static float approach(float value, float target, float step) {
         return value < target ? Math.min(value + step, target) : Math.max(value - step, target);
     }
@@ -240,7 +232,8 @@ public class ZPiglinDrummer extends ZPiglinServant implements DrummerAnimatable 
         List<LivingEntity> allies = this.level().getEntitiesOfClass(LivingEntity.class,
                 this.getBoundingBox().inflate(BUFF_RADIUS),
                 living -> living != this && living.isAlive()
-                        && !(living instanceof DrummerAnimatable)
+                        && !(living instanceof PiglinDrummer)
+                        && !(living instanceof ZPiglinDrummer)
                         && MobUtil.areAllies(this, living));
         allies.sort(Comparator.comparingDouble(this::distanceToSqr));
         return allies.isEmpty() ? null : allies.get(0);

@@ -1,4 +1,5 @@
 package com.qiuyue.goetyominous.common.entities.ally.mobs;
+
 import com.Polarice3.Goety.client.particles.SmashParticleOption;
 import com.Polarice3.Goety.common.entities.ai.path.GroundPathNavigatorFat;
 import com.Polarice3.Goety.common.entities.ai.path.ModWaterPathNavigation;
@@ -12,7 +13,7 @@ import com.Polarice3.Goety.utils.BlockFinder;
 import com.Polarice3.Goety.utils.ColorUtil;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.entities.ai.SmoothBodyRotationControl;
-import net.minecraft.commands.arguments.EntityAnchorArgument;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -49,9 +50,11 @@ import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
+
 import org.jetbrains.annotations.Nullable;
 import java.util.EnumSet;
 import java.util.List;
+
 public class Leapkelp extends Leapleaf {
     public static final int MAX_MOISTNESS = 40000;
     public static final int SEEK_WATER_MOISTNESS = 4000;
@@ -105,6 +108,7 @@ public class Leapkelp extends Leapleaf {
     private float swimPoseAmountO;
     private float attackStrokeAmount;
     private float attackStrokeAmountO;
+
     public Leapkelp(EntityType<? extends Owned> type, Level level) {
         super(type, level);
         this.moveControl = new LeapkelpMoveControl(this);
@@ -118,9 +122,11 @@ public class Leapkelp extends Leapleaf {
     protected BodyRotationControl createBodyControl() {
         return new SmoothBodyRotationControl(this);
     }
+
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Leapleaf.setCustomAttributes().add(Attributes.MOVEMENT_SPEED, 0.3D);
     }
+
     @Override
     protected void registerGoals() {
         super.registerGoals();
@@ -233,6 +239,7 @@ public class Leapkelp extends Leapleaf {
     public void followGoal() {
         this.goalSelector.addGoal(5, new LeapkelpFollowOwnerGoal(this, 1.0D, 10.0F, 2.0F));
     }
+
     @Override
     public int getAnimationState(String animation) {
         if (RIGHT_SMASH.equals(animation)) {
@@ -243,6 +250,7 @@ public class Leapkelp extends Leapleaf {
         }
         return super.getAnimationState(animation);
     }
+
     @Override
     public List<AnimationState> getAllAnimations() {
         List<AnimationState> animationStates = super.getAllAnimations();
@@ -250,6 +258,7 @@ public class Leapkelp extends Leapleaf {
         animationStates.add(this.leftSmashAnimationState);
         return animationStates;
     }
+
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
         super.onSyncedDataUpdated(accessor);
@@ -269,16 +278,19 @@ public class Leapkelp extends Leapleaf {
         smash.startIfStopped(this.tickCount);
         this.stopMostAnimation(smash);
     }
+
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(MOISTNESS, MAX_MOISTNESS);
     }
+
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("Moisture", this.getMoistness());
     }
+
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
@@ -286,6 +298,7 @@ public class Leapkelp extends Leapleaf {
             this.setMoistness(compound.getInt("Moisture"));
         }
     }
+
     public int getMoistness() {
         return this.entityData.get(MOISTNESS);
     }
@@ -298,6 +311,7 @@ public class Leapkelp extends Leapleaf {
         }
         return this.getTrueOwner() != null && this.isFollowing() && this.getTrueOwner().isInWater();
     }
+
     @Override
     public void tick() {
         super.tick();
@@ -336,6 +350,7 @@ public class Leapkelp extends Leapleaf {
             this.setMoistness(this.getMoistness() - dry);
         }
     }
+
     protected boolean wantsToSwim() {
         if (this.searchingForLand) {
             return true;
@@ -351,6 +366,7 @@ public class Leapkelp extends Leapleaf {
         }
         return this.getTrueOwner() != null && this.isFollowing() && this.getTrueOwner().isInWater();
     }
+
     @Override
     public void updateSwimming() {
         if (!this.level().isClientSide) {
@@ -363,6 +379,7 @@ public class Leapkelp extends Leapleaf {
             }
         }
     }
+
     protected void updateSwimPoseAmount() {
         this.swimPoseAmountO = this.swimPoseAmount;
         boolean raw = this.canSwimPose();
@@ -375,14 +392,17 @@ public class Leapkelp extends Leapleaf {
         float target = this.swimmingPose ? 1.0F : 0.0F;
         this.swimPoseAmount = Mth.approach(this.swimPoseAmount, target, SWIM_POSE_STEP);
     }
+
     protected void updateAttackStrokeAmount() {
         this.attackStrokeAmountO = this.attackStrokeAmount;
         float target = this.isMeleeAttacking() ? 1.0F : 0.0F;
         this.attackStrokeAmount = Mth.approach(this.attackStrokeAmount, target, SWIM_POSE_STEP);
     }
+
     protected boolean isSwimmingPose() {
         return this.swimmingPose;
     }
+
     private boolean canSwimPose() {
         return this.isInWater()
                 && this.isEyeInFluidType(ForgeMod.WATER_TYPE.get())
@@ -390,18 +410,23 @@ public class Leapkelp extends Leapleaf {
                 && !this.isLeaping()
                 && !this.isCharging();
     }
+
     public int getSurfaceLeapCooldown() {
         return this.surfaceLeapCooldown;
     }
+
     public void setSurfaceLeapCooldown(int ticks) {
         this.surfaceLeapCooldown = ticks;
     }
+
     public float getSwimPoseAmount(float partialTicks) {
         return Mth.lerp(partialTicks, this.swimPoseAmountO, this.swimPoseAmount);
     }
+
     public float getAttackStrokeAmount(float partialTicks) {
         return Mth.lerp(partialTicks, this.attackStrokeAmountO, this.attackStrokeAmount);
     }
+
     @Override
     public void travel(Vec3 travelVector) {
         if (this.isEffectiveAi() && this.isInWater() && this.wantsToSwim() && !this.isLeaping()) {
@@ -412,22 +437,27 @@ public class Leapkelp extends Leapleaf {
             super.travel(travelVector);
         }
     }
+
     @Override
     public boolean isVisuallySwimming() {
         return this.isSwimming();
     }
+
     @Override
     public boolean isPushedByFluid() {
         return !this.isSwimming();
     }
+
     @Override
     public float getStepHeight() {
         return Math.max(1.25F, super.getStepHeight());
     }
+
     @Override
     public boolean canBreatheUnderwater() {
         return true;
     }
+
     @Override
     public int getMaxAirSupply() {
         return DRY_OUT_TICKS - 20;
@@ -443,16 +473,19 @@ public class Leapkelp extends Leapleaf {
             this.setAirSupply(this.getMaxAirSupply());
         }
     }
+
     @Override
     public void aiStep() {
         int airSupply = this.getAirSupply();
         super.aiStep();
         this.handleAirSupply(airSupply);
     }
+
     @Override
     protected int increaseAirSupply(int airSupply) {
         return airSupply;
     }
+
     @Override
     public boolean checkSpawnObstruction(LevelReader levelReader) {
         return levelReader.isUnobstructed(this);
@@ -471,6 +504,7 @@ public class Leapkelp extends Leapleaf {
         }
         return false;
     }
+
     protected boolean wantsToLeaveWater() {
         LivingEntity target = this.getTarget();
         if (target != null && target.isAlive()) {
@@ -482,6 +516,7 @@ public class Leapkelp extends Leapleaf {
         LivingEntity owner = this.getTrueOwner();
         return owner != null && this.isFollowing() && !owner.isInWater();
     }
+
     public static class LeapkelpMoveControl extends MoveControl {
         private final Leapkelp leapkelp;
         private float swimPitch;
@@ -489,6 +524,7 @@ public class Leapkelp extends Leapleaf {
             super(leapkelp);
             this.leapkelp = leapkelp;
         }
+
         @Override
         public void tick() {
             if (this.leapkelp.isLeaping()) {
@@ -547,6 +583,7 @@ public class Leapkelp extends Leapleaf {
                 super.tick();
             }
         }
+
         private Vec3 steerPoint() {
             Path path = this.leapkelp.getNavigation().getPath();
             Vec3 point = new Vec3(this.wantedX, this.wantedY, this.wantedZ);
@@ -563,6 +600,7 @@ public class Leapkelp extends Leapleaf {
             }
             return point;
         }
+
         @Override
         protected float rotlerp(float source, float target, float maxChange) {
             double dx = this.wantedX - this.leapkelp.getX();
@@ -573,6 +611,7 @@ public class Leapkelp extends Leapleaf {
             return super.rotlerp(source, target, maxChange);
         }
     }
+
     public static class LeapkelpGoToBeachGoal extends MoveToBlockGoal {
         private static final int BEACH_TIMEOUT_TICKS = 120;
         private static final int BEACH_RETRY_TICKS = 20;
@@ -582,6 +621,7 @@ public class Leapkelp extends Leapleaf {
             super(leapkelp, speedModifier, 8, 2);
             this.leapkelp = leapkelp;
         }
+
         @Override
         public boolean canUse() {
             if (!this.leapkelp.isInWater() || this.leapkelp.isCommanded() || this.leapkelp.isStaying() || !this.leapkelp.wantsToLeaveWater()) {
@@ -589,24 +629,29 @@ public class Leapkelp extends Leapleaf {
             }
             return super.canUse();
         }
+
         @Override
         public boolean canContinueToUse() {
             return this.timeoutTick > 0 && this.leapkelp.isInWater() && this.leapkelp.wantsToLeaveWater() && super.canContinueToUse();
         }
+
         @Override
         public void start() {
             this.timeoutTick = BEACH_TIMEOUT_TICKS;
             super.start();
         }
+
         @Override
         public void tick() {
             --this.timeoutTick;
             super.tick();
         }
+
         @Override
         protected int nextStartTick(PathfinderMob mob) {
             return BEACH_RETRY_TICKS + mob.getRandom().nextInt(BEACH_RETRY_TICKS);
         }
+
         @Override
         protected boolean isValidTarget(LevelReader levelReader, BlockPos pos) {
             BlockPos above = pos.above();
@@ -615,6 +660,7 @@ public class Leapkelp extends Leapleaf {
                     && levelReader.getBlockState(pos).entityCanStandOn(levelReader, pos, this.leapkelp);
         }
     }
+
     public static class LeapkelpSmashGoal extends Goal {
         private static final float ATTACK_RANGE = 2.5F;
         private static final float SMASH_INFLATE = 1.0F;
@@ -625,6 +671,7 @@ public class Leapkelp extends Leapleaf {
             this.leapkelp = leapkelp;
             this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK, Goal.Flag.JUMP));
         }
+
         @Override
         public boolean canUse() {
             if (this.leapkelp.isInWater() && !this.leapkelp.onGround()) {
@@ -636,22 +683,26 @@ public class Leapkelp extends Leapleaf {
             }
             return target.distanceTo(this.leapkelp) <= ATTACK_RANGE && this.leapkelp.hasLineOfSight(target);
         }
+
         @Override
         public boolean canContinueToUse() {
             return this.leapkelp.isMeleeAttacking();
         }
+
         @Override
         public void start() {
             this.leapkelp.setMeleeAttacking(true);
             this.leapkelp.setAggressive(true);
             this.leapkelp.level().broadcastEntityEvent(this.leapkelp, (byte) 6);
         }
+
         @Override
         public void stop() {
             this.leapkelp.setMeleeAttacking(false);
             this.leapkelp.setAggressive(false);
             this.leapkelp.level().broadcastEntityEvent(this.leapkelp, (byte) 7);
         }
+
         @Override
         public void tick() {
             LivingEntity target = this.leapkelp.getTarget();
@@ -686,11 +737,13 @@ public class Leapkelp extends Leapleaf {
             ColorUtil colorUtil = color == 0 ? ColorUtil.WHITE : new ColorUtil(color);
             serverLevel.sendParticles(new SmashParticleOption(colorUtil, 5.0F, 10), x, BlockFinder.moveDownToGround(this.leapkelp), z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
         }
+
         @Override
         public boolean requiresUpdateEveryTick() {
             return true;
         }
     }
+
     public static class LeapkelpWaterSmashGoal extends Goal {
         private static final float ATTACK_RANGE = 3.75F;
         private static final float HIT_INFLATE = 3.0F;
@@ -702,6 +755,7 @@ public class Leapkelp extends Leapleaf {
             this.leapkelp = leapkelp;
             this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK, Goal.Flag.JUMP));
         }
+
         @Override
         public boolean canUse() {
             if (this.leapkelp.isCommanded() || this.leapkelp.isStaying()) {
@@ -719,13 +773,16 @@ public class Leapkelp extends Leapleaf {
             }
             return this.leapkelp.distanceTo(target) <= ATTACK_RANGE && this.leapkelp.hasLineOfSight(target);
         }
+
         @Override
         public boolean canContinueToUse() {
             return this.leapkelp.isMeleeAttacking() && this.elapsedTicks() <= SMASH_END_TICK;
         }
+
         private int elapsedTicks() {
             return this.leapkelp.tickCount - this.startTick;
         }
+
         @Override
         public void start() {
             this.startTick = this.leapkelp.tickCount;
@@ -736,12 +793,14 @@ public class Leapkelp extends Leapleaf {
             this.leapkelp.setAnimationState(this.right ? RIGHT_SMASH : LEFT_SMASH);
             this.leapkelp.getNavigation().stop();
         }
+
         @Override
         public void stop() {
             this.leapkelp.setMeleeAttacking(false);
             this.leapkelp.setAggressive(false);
             this.leapkelp.level().broadcastEntityEvent(this.leapkelp, (byte) 7);
         }
+
         @Override
         public void tick() {
             LivingEntity target = this.leapkelp.getTarget();
@@ -754,6 +813,7 @@ public class Leapkelp extends Leapleaf {
             }
             this.leapkelp.attackTick = 0;
         }
+
         private void hit() {
             Vec3 look = this.leapkelp.getHorizontalLookAngle();
             AABB aabb = this.leapkelp.getBoundingBox().inflate(HIT_INFLATE);
@@ -782,11 +842,13 @@ public class Leapkelp extends Leapleaf {
             double distance = Math.max(dx * dx + dz * dz, 0.001D);
             living.push(dx / distance * SMASH_LAUNCH_POWER, SMASH_LAUNCH_LIFT, dz / distance * SMASH_LAUNCH_POWER);
         }
+
         @Override
         public boolean requiresUpdateEveryTick() {
             return true;
         }
     }
+
     public static class LeapkelpSurfaceLeapGoal extends Goal {
         private static final int CHARGE_TICKS = 24;
         private static final int COOLDOWN_TICKS = 40;
@@ -808,6 +870,7 @@ public class Leapkelp extends Leapleaf {
             this.leapkelp = leapkelp;
             this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.JUMP));
         }
+
         @Override
         public boolean canUse() {
             this.target = this.leapkelp.getTarget();
@@ -820,11 +883,13 @@ public class Leapkelp extends Leapleaf {
                     && !this.leapkelp.onGround()
                     && this.leapkelp.canAttack(this.target);
         }
+
         @Override
         public boolean canContinueToUse() {
             this.target = this.leapkelp.getTarget();
             return this.target != null && (this.leapkelp.isCharging() || this.leapkelp.isLeaping());
         }
+
         @Override
         public void start() {
             if (this.target != null) {
@@ -833,6 +898,7 @@ public class Leapkelp extends Leapleaf {
             this.leapkelp.setMeleeAttacking(false);
             this.leapkelp.setCharging(!this.leapkelp.isCharging());
         }
+
         @Override
         public void stop() {
             this.leapkelp.setLeaping(false);
@@ -840,6 +906,7 @@ public class Leapkelp extends Leapleaf {
             this.leapDirection = Vec3.ZERO;
             this.leapkelp.setSurfaceLeapCooldown(COOLDOWN_TICKS);
         }
+
         @Override
         public void tick() {
             this.target = this.leapkelp.getTarget();
@@ -877,6 +944,7 @@ public class Leapkelp extends Leapleaf {
                 this.land();
             }
         }
+
         private void land() {
             Vec3 front = MobUtil.getFrontPos(this.leapkelp, 1.0D);
             AABB aabb = new AABB(front, front).inflate(LAND_INFLATE);
@@ -900,11 +968,13 @@ public class Leapkelp extends Leapleaf {
             serverLevel.sendParticles(new SmashParticleOption(ColorUtil.WHITE, LAND_PARTICLE_SIZE, 10), x, this.leapkelp.getY(), z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
             serverLevel.sendParticles(ParticleTypes.SPLASH, x, this.leapkelp.getY() + 0.3D, z, 20, 1.5D, 0.3D, 1.5D, 0.15D);
         }
+
         @Override
         public boolean requiresUpdateEveryTick() {
             return true;
         }
     }
+
     public static class LeapkelpGoToWaterGoal extends Goal {
         private final Leapkelp leapkelp;
         private final double speedModifier;
@@ -912,12 +982,14 @@ public class Leapkelp extends Leapleaf {
         private double wantedX;
         private double wantedY;
         private double wantedZ;
+
         public LeapkelpGoToWaterGoal(Leapkelp leapkelp, double speedModifier) {
             this.leapkelp = leapkelp;
             this.speedModifier = speedModifier;
             this.level = leapkelp.level();
             this.setFlags(EnumSet.of(Goal.Flag.MOVE));
         }
+
         @Override
         public boolean canUse() {
             if (this.leapkelp.isCommanded() || this.leapkelp.isInWater() || !this.leapkelp.needsWater()) {
@@ -932,14 +1004,17 @@ public class Leapkelp extends Leapleaf {
             this.wantedZ = waterPos.z;
             return true;
         }
+
         @Override
         public boolean canContinueToUse() {
             return !this.leapkelp.getNavigation().isDone();
         }
+
         @Override
         public void start() {
             this.leapkelp.getNavigation().moveTo(this.wantedX, this.wantedY, this.wantedZ, this.speedModifier);
         }
+
         @Nullable
         private Vec3 getWaterPos() {
             RandomSource random = this.leapkelp.getRandom();
@@ -953,6 +1028,7 @@ public class Leapkelp extends Leapleaf {
             return null;
         }
     }
+
     public static class LeapkelpSwimAttackGoal extends Goal {
         private static final double CHASE_DISTANCE_SQR = 4.0D;
         private static final int PATH_RECALC_TICKS = 10;
@@ -965,6 +1041,7 @@ public class Leapkelp extends Leapleaf {
             this.speedModifier = speedModifier;
             this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
         }
+
         @Override
         public boolean canUse() {
             if (this.leapkelp.isCommanded() || this.leapkelp.isStaying()) {
@@ -975,6 +1052,7 @@ public class Leapkelp extends Leapleaf {
             }
             return this.leapkelp.distanceToSqr(this.target) > CHASE_DISTANCE_SQR;
         }
+
         @Override
         public boolean canContinueToUse() {
             return this.canSwimToTarget();
@@ -993,15 +1071,18 @@ public class Leapkelp extends Leapleaf {
             this.target = living;
             return true;
         }
+
         @Override
         public void start() {
             this.pathTick = 0;
         }
+
         @Override
         public void stop() {
             this.target = null;
             this.leapkelp.getNavigation().stop();
         }
+
         @Override
         public void tick() {
             this.leapkelp.getLookControl().setLookAt(this.target, 30.0F, 30.0F);
@@ -1016,6 +1097,7 @@ public class Leapkelp extends Leapleaf {
             }
         }
     }
+
     public static class LeapkelpSwimUpGoal extends Goal {
         private final Leapkelp leapkelp;
         private final double speedModifier;
@@ -1028,6 +1110,7 @@ public class Leapkelp extends Leapleaf {
             this.seaLevel = seaLevel;
             this.setFlags(EnumSet.of(Goal.Flag.MOVE));
         }
+
         @Override
         public boolean canUse() {
             if (this.leapkelp.isCommanded() || this.leapkelp.isStaying() || this.leapkelp.isGuardingArea()) {
@@ -1038,10 +1121,12 @@ public class Leapkelp extends Leapleaf {
             }
             return (this.leapkelp.level().isRaining() || this.leapkelp.isInWater()) && this.leapkelp.getY() < (double) (this.getSurfaceY() - 2);
         }
+
         @Override
         public boolean canContinueToUse() {
             return this.canUse();
         }
+
         @Override
         public void tick() {
             this.retargetTick = Math.max(this.retargetTick - 1, 0);
@@ -1055,12 +1140,14 @@ public class Leapkelp extends Leapleaf {
                 this.moveUp(surfaceY, SWIM_UP_DISTANCE * 0.5D);
             }
         }
+
         private boolean moveUp(int surfaceY, double distance) {
             float rad = this.upYaw * ((float) Math.PI / 180.0F);
             double x = this.leapkelp.getX() - (double) Mth.sin(rad) * distance;
             double z = this.leapkelp.getZ() + (double) Mth.cos(rad) * distance;
             return this.leapkelp.getNavigation().moveTo(x, (double) surfaceY, z, this.speedModifier);
         }
+
         private int getSurfaceY() {
             BlockPos.MutableBlockPos pos = this.leapkelp.blockPosition().mutable();
             int top = pos.getY();
@@ -1069,18 +1156,21 @@ public class Leapkelp extends Leapleaf {
             }
             return top;
         }
+
         @Override
         public void start() {
             this.leapkelp.setSearchingForLand(true);
             this.retargetTick = 0;
             this.upYaw = this.leapkelp.getYRot();
         }
+
         @Override
         public void stop() {
             this.leapkelp.setSearchingForLand(false);
             this.leapkelp.getNavigation().stop();
         }
     }
+
     public static class LeapkelpFollowOwnerGoal extends Goal {
         private final Leapkelp leapkelp;
         private final Level level;
@@ -1093,6 +1183,7 @@ public class Leapkelp extends Leapleaf {
         private double pathedTargetY;
         private double pathedTargetZ;
         private int ticksUntilNextPathRecalculation;
+
         public LeapkelpFollowOwnerGoal(Leapkelp leapkelp, double speed, float startDistance, float stopDistance) {
             this.leapkelp = leapkelp;
             this.level = leapkelp.level();
@@ -1101,6 +1192,7 @@ public class Leapkelp extends Leapleaf {
             this.stopDistance = stopDistance;
             this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
         }
+
         @Override
         public boolean canUse() {
             LivingEntity livingentity = this.leapkelp.getTrueOwner();
@@ -1125,6 +1217,7 @@ public class Leapkelp extends Leapleaf {
                 return true;
             }
         }
+
         @Override
         public boolean canContinueToUse() {
             if (this.owner == null || !this.owner.isAlive()) {
@@ -1139,16 +1232,19 @@ public class Leapkelp extends Leapleaf {
                 return !(this.leapkelp.distanceToSqr(this.owner) <= (double) Mth.square(this.stopDistance));
             }
         }
+
         @Override
         public void start() {
             this.leapkelp.getNavigation().moveTo(this.path, this.followSpeed);
             this.ticksUntilNextPathRecalculation = 0;
         }
+
         @Override
         public void stop() {
             this.owner = null;
             this.leapkelp.getNavigation().stop();
         }
+
         @Override
         public void tick() {
             this.leapkelp.getLookControl().setLookAt(this.owner, 30.0F, 30.0F);
@@ -1179,6 +1275,7 @@ public class Leapkelp extends Leapleaf {
                 }
             }
         }
+
         private void tryToTeleportNearEntity() {
             BlockPos blockpos = this.owner.blockPosition();
             for (int i = 0; i < 10; ++i) {
@@ -1190,6 +1287,7 @@ public class Leapkelp extends Leapleaf {
                 }
             }
         }
+
         private boolean tryToTeleportToLocation(int x, int y, int z) {
             if (Math.abs(x - this.owner.getX()) < 2.0D && Math.abs(z - this.owner.getZ()) < 2.0D) {
                 return false;
@@ -1201,6 +1299,7 @@ public class Leapkelp extends Leapleaf {
                 return true;
             }
         }
+
         private boolean isTeleportFriendlyBlock(BlockPos pos) {
             BlockPathTypes pathType = WalkNodeEvaluator.getBlockPathTypeStatic(this.level, pos.mutable());
             if (pathType != BlockPathTypes.WALKABLE) {
@@ -1212,6 +1311,7 @@ public class Leapkelp extends Leapleaf {
                 return this.level.noCollision(this.leapkelp, this.leapkelp.getBoundingBox().move(offset));
             }
         }
+
         private int getRandomNumber(int min, int max) {
             return this.leapkelp.getRandom().nextInt(max - min + 1) + min;
         }

@@ -439,6 +439,14 @@ public class ModItems {
             "zpiglin_drummer_spawn_egg",
             () -> new ServantSpawnEggItem(ModEntityTypes.ZPIGLIN_DRUMMER, 0xE6918B, 0x8B2A1E, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> BASTION_GUARD_SERVANT_SPAWN_EGG = ITEMS.register(
+            "bastion_guard_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.BASTION_GUARD_SERVANT, 0x2B2B2B, 0xC9A227, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> ZBASTION_GUARD_SERVANT_SPAWN_EGG = ITEMS.register(
+            "zbastion_guard_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.ZBASTION_GUARD_SERVANT, 0x4E6B4E, 0xC9A227, egg()));
+
     public static final RegistryObject<net.minecraftforge.common.ForgeSpawnEggItem> PIGLIN_MERCHANT_SPAWN_EGG = ITEMS.register(
             "piglin_merchant_spawn_egg",
             () -> new net.minecraftforge.common.ForgeSpawnEggItem(ModEntityTypes.PIGLIN_MERCHANT,

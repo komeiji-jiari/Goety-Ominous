@@ -591,6 +591,20 @@ public class ModEntityTypes {
                     .updateInterval(10)
                     .build(MOD_ID + ":fire_wall"));
 
+    public static final RegistryObject<EntityType<BastionGuardServant>> BASTION_GUARD_SERVANT = ENTITY_TYPES.register(
+            "bastion_guard_servant",
+            () -> EntityType.Builder.of(BastionGuardServant::new, MobCategory.MISC)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":bastion_guard_servant"));
+
+    public static final RegistryObject<EntityType<ZBastionGuardServant>> ZBASTION_GUARD_SERVANT = ENTITY_TYPES.register(
+            "zbastion_guard_servant",
+            () -> EntityType.Builder.of(ZBastionGuardServant::new, MobCategory.MISC)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":zbastion_guard_servant"));
+
     public static void register(IEventBus modEventBus) {
         ENTITY_TYPES.register(modEventBus);
     }

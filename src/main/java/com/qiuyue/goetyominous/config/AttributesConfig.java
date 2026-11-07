@@ -111,6 +111,16 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> PyrologerServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> PyrologerServantAttackDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> PyrologerServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinDrummerHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinDrummerArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinDrummerArmorToughness;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinDrummerFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinDrummerSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinDrummerDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> BastionGuardServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> BastionGuardServantArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> BastionGuardServantArmorToughness;
+    public static final ForgeConfigSpec.ConfigValue<Double> BastionGuardServantAttackDamage;
 
     static {
         BUILDER.push("Servants Attributes");
@@ -392,6 +402,30 @@ public class AttributesConfig {
                 .defineInRange("pyrologerServantAttackDamage", 8.0D, 1.0D, Double.MAX_VALUE);
         PyrologerServantArmor = BUILDER.comment("How much natural Armor Pyrologer Servants have, Default: 0.0")
                 .defineInRange("pyrologerServantArmor", 0.0D, 0.0D, Double.MAX_VALUE);
+        BUILDER.pop();
+        BUILDER.push("Piglin Drummer");
+        PiglinDrummerHealth = BUILDER.comment("How much Max Health Piglin Drummers and their zombified version have, Default: 18.0")
+                .defineInRange("piglinDrummerHealth", 18.0D, 1.0D, Double.MAX_VALUE);
+        PiglinDrummerArmor = BUILDER.comment("How much natural Armor Piglin Drummers and their zombified version have, Default: 0.0")
+                .defineInRange("piglinDrummerArmor", 0.0D, 0.0D, Double.MAX_VALUE);
+        PiglinDrummerArmorToughness = BUILDER.comment("How much natural Armor Toughness Piglin Drummers and their zombified version have, Default: 0.0")
+                .defineInRange("piglinDrummerArmorToughness", 0.0D, 0.0D, Double.MAX_VALUE);
+        PiglinDrummerFollowRange = BUILDER.comment("How far Piglin Drummers and their zombified version target enemies, Default: 32.0")
+                .defineInRange("piglinDrummerFollowRange", 32.0D, 0.0D, Double.MAX_VALUE);
+        PiglinDrummerSpeed = BUILDER.comment("How fast Piglin Drummers and their zombified version move, Default: 0.38")
+                .defineInRange("piglinDrummerSpeed", 0.38D, 0.0D, Double.MAX_VALUE);
+        PiglinDrummerDamage = BUILDER.comment("How much attack damage Piglin Drummers and their zombified version have, Default: 1.0")
+                .defineInRange("piglinDrummerDamage", 1.0D, 1.0D, Double.MAX_VALUE);
+        BUILDER.pop();
+        BUILDER.push("Bastion Guard Servant");
+        BastionGuardServantHealth = BUILDER.comment("How much Max Health Bastion Guard Servants have (Default: 40.0)")
+                .defineInRange("bastionGuardServantHealth", 40.0D, 1.0D, Double.MAX_VALUE);
+        BastionGuardServantArmor = BUILDER.comment("How much natural Armor Bastion Guard Servants have (Default: 24.0)")
+                .defineInRange("bastionGuardServantArmor", 24.0D, 0.0D, Double.MAX_VALUE);
+        BastionGuardServantArmorToughness = BUILDER.comment("How much Armor Toughness Bastion Guard Servants have (Default: 6.0)")
+                .defineInRange("bastionGuardServantArmorToughness", 6.0D, 0.0D, Double.MAX_VALUE);
+        BastionGuardServantAttackDamage = BUILDER.comment("How much damage Bastion Guard Servants deal (Default: 12.0)")
+                .defineInRange("bastionGuardServantAttackDamage", 12.0D, 1.0D, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.pop();
         SPEC = BUILDER.build();

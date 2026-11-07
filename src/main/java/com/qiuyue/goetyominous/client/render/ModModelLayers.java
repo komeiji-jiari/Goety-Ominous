@@ -166,6 +166,9 @@ public class ModModelLayers {
         event.registerLayerDefinition(PiglinDrummerModel.LAYER_LOCATION,
                 PiglinDrummerModel::createBodyLayer);
 
+        event.registerLayerDefinition(BastionGuardModel.LAYER_LOCATION,
+                BastionGuardModel::createBodyLayer);
+
         event.registerLayerDefinition(ModEntityLayers.CURSED_BLACK_WOLF_ARMOR_LAYER,
                 CursedBlackWolfArmorModel::createBodyLayer);
 
@@ -400,6 +403,12 @@ public class ModModelLayers {
         event.registerEntityRenderer(ModEntityTypes.PIGLIN_DRUMMER.get(), PiglinDrummerRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.ZPIGLIN_DRUMMER.get(), ZPiglinDrummerRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.BASTION_GUARD_SERVANT.get(),
+                context -> new BastionGuardRenderer<>(context));
+
+        event.registerEntityRenderer(ModEntityTypes.ZBASTION_GUARD_SERVANT.get(),
+                context -> new BastionGuardRenderer<>(context));
 
         event.registerEntityRenderer(ModEntityTypes.STORM_NECROMANCER.get(),
                 com.qiuyue.goetyominous.client.render.StormNecromancerRenderer::new);

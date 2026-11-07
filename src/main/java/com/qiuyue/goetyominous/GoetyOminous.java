@@ -319,6 +319,8 @@ public class GoetyOminous {
         event.put(ModEntityTypes.STORM_NECROMANCER.get(), AbstractStormNecromancer.setCustomAttributes().build());
         event.put(ModEntityTypes.FUNGUS_THROWER.get(), FungusThrower.createAttributes().build());
         event.put(ModEntityTypes.ZFUNGUS_THROWER.get(), ZPiglinServant.setCustomAttributes().build());
+        event.put(ModEntityTypes.BASTION_GUARD_SERVANT.get(), BastionGuardServant.createAttributes().build());
+        event.put(ModEntityTypes.ZBASTION_GUARD_SERVANT.get(), ZBastionGuardServant.createAttributes().build());
         event.put(ModEntityTypes.PIGLIN_MERCHANT.get(), PiglinMerchant.createAttributes().build());
         event.put(ModEntityTypes.PIGLIN_DRUMMER.get(), PiglinDrummer.createAttributes().build());
         event.put(ModEntityTypes.ZPIGLIN_DRUMMER.get(), ZPiglinDrummer.createAttributes().build());

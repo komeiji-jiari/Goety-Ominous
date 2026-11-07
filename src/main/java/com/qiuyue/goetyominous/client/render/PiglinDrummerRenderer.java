@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.client.render;
 
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.render.model.PiglinDrummerModel;
+import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractPiglinServant;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -16,6 +17,12 @@ public class PiglinDrummerRenderer extends LivingEntityRenderer<Mob, PiglinDrumm
 
     public PiglinDrummerRenderer(EntityRendererProvider.Context context) {
         super(context, new PiglinDrummerModel<>(context.bakeLayer(PiglinDrummerModel.LAYER_LOCATION)), 0.5F);
+    }
+
+    @Override
+    protected boolean isShaking(Mob entity) {
+        return super.isShaking(entity)
+                || entity instanceof AbstractPiglinServant servant && servant.isConverting();
     }
 
     @Override
