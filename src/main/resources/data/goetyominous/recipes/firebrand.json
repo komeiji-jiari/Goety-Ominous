@@ -2,7 +2,7 @@
   "type": "goety:ritual",
   "ritual_type": "goety:craft",
   "activation_item": {
-    "item": "goety:rampaging_axe"
+    "item": "minecraft:iron_axe"
   },
   "craftType": "adept_nether",
   "soulCost": 1,
@@ -16,13 +16,16 @@
       "item": "minecraft:blaze_powder"
     },
     {
-      "item": "minecraft:ghast_tear"
+      "item": "goety:cursed_ingot"
     },
     {
       "item": "minecraft:quartz"
     },
     {
       "item": "minecraft:lava_bucket"
+    },
+    {
+      "tag": "forge:gems/diamond"
     }
   ],
   "result": {

@@ -3,15 +3,17 @@ package com.qiuyue.goetyominous.common.entities.ally.ac;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.github.alexmodguy.alexscaves.server.misc.ACSoundRegistry;
 import com.qiuyue.goetyominous.common.events.ac.NucleeperNukeProtectionHandler;
+import com.qiuyue.goetyominous.common.init.ac.AcParticles;
 import com.qiuyue.goetyominous.common.magic.spells.ac.XRaySpell;
 import com.qiuyue.goetyominous.common.network.ModNetwork;
-import com.qiuyue.goetyominous.common.network.ac.NuclearExplosionEffectPacket;
 import com.qiuyue.goetyominous.common.network.ac.XRayPacket;
 import com.qiuyue.goetyominous.utils.IRayMuzzle;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.ItemTags;
@@ -33,6 +35,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -148,8 +151,33 @@ public class NuclearGuardianServant extends MineGuardianServant implements IRayM
         NucleeperNukeProtectionHandler.registerProtection(serverLevel, origin, NUKE_SIZE, ownerIds);
         NucleeperNukeProtectionHandler.syncZoneToClients(serverLevel, origin, NUKE_SIZE, ownerIds);
         NucleeperNukeProtectionHandler.irradiateBlast(serverLevel, origin, BLAST_RADIUS * 2.0D + 1.0D, RADIATION_LEVEL);
-        NuclearExplosionEffectPacket.send(serverLevel, origin, NUKE_SIZE);
+        spawnSurfaceCloud(serverLevel, origin, NUKE_SIZE);
         super.explode();
+    }
+
+    private static void spawnSurfaceCloud(ServerLevel level, Vec3 center, float size) {
+        double x = center.x;
+        double z = center.z;
+        double y = findSurfaceY(level, x, z);
+        for (ServerPlayer player : level.players()) {
+            level.sendParticles(player, (SimpleParticleType) AcParticles.NUCLEEPER_MUSHROOM_CLOUD.get(), true,
+                    x, y, z, 0, 1.0D, 0.0D, 0.0D, size);
+        }
+    }
+
+    private static double findSurfaceY(Level level, double x, double z) {
+        int cx = Mth.floor(x);
+        int cz = Mth.floor(z);
+        int surface = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, cx, cz);
+        for (int dx = -8; dx <= 8; dx += 4) {
+            for (int dz = -8; dz <= 8; dz += 4) {
+                int h = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, cx + dx, cz + dz);
+                if (h > surface) {
+                    surface = h;
+                }
+            }
+        }
+        return surface + 1.0;
     }
 
     @Override

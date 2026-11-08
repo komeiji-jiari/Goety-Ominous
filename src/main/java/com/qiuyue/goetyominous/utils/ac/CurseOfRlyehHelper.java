@@ -6,6 +6,7 @@ import com.Polarice3.Goety.utils.ModDamageSource;
 import com.qiuyue.goetyominous.common.init.ac.AcEffects;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -28,13 +29,18 @@ public final class CurseOfRlyehHelper {
                 || KeyOfRlyehMixinHelper.isKeyOfRlyeh(entity.getOffhandItem());
     }
 
+    private static MobEffect curseEffect() {
+        return AcEffects.CURSE_OF_RLYEH.isPresent() ? AcEffects.CURSE_OF_RLYEH.get() : null;
+    }
+
     public static void applyCurse(LivingEntity target) {
-        if (target == null || target.level().isClientSide) {
+        MobEffect effect = curseEffect();
+        if (effect == null || target == null || target.level().isClientSide) {
             return;
         }
-        MobEffectInstance current = target.getEffect(AcEffects.CURSE_OF_RLYEH.get());
+        MobEffectInstance current = target.getEffect(effect);
         int amplifier = current == null ? 0 : Math.min(current.getAmplifier() + 1, MAX_LEVELS - 1);
-        target.addEffect(new MobEffectInstance(AcEffects.CURSE_OF_RLYEH.get(),
+        target.addEffect(new MobEffectInstance(effect,
                 CURSE_DURATION, amplifier, false, true, true));
     }
 
@@ -51,11 +57,16 @@ public final class CurseOfRlyehHelper {
     }
 
     public static boolean hasCurse(LivingEntity target) {
-        return target.hasEffect(AcEffects.CURSE_OF_RLYEH.get());
+        MobEffect effect = curseEffect();
+        return effect != null && target.hasEffect(effect);
     }
 
     public static int curseLevel(LivingEntity target) {
-        MobEffectInstance instance = target.getEffect(AcEffects.CURSE_OF_RLYEH.get());
+        MobEffect effect = curseEffect();
+        if (effect == null) {
+            return 0;
+        }
+        MobEffectInstance instance = target.getEffect(effect);
         return instance == null ? 0 : Math.min(instance.getAmplifier() + 1, MAX_LEVELS);
     }
 
@@ -95,14 +106,18 @@ public final class CurseOfRlyehHelper {
     }
 
     public static void shortenCurse(LivingEntity target) {
-        MobEffectInstance instance = target.getEffect(AcEffects.CURSE_OF_RLYEH.get());
+        MobEffect effect = curseEffect();
+        if (effect == null) {
+            return;
+        }
+        MobEffectInstance instance = target.getEffect(effect);
         if (instance == null) {
             return;
         }
         int remaining = instance.getDuration() - ELEMENT_DURATION_CUT;
-        target.removeEffect(AcEffects.CURSE_OF_RLYEH.get());
+        target.removeEffect(effect);
         if (remaining > 0) {
-            target.addEffect(new MobEffectInstance(AcEffects.CURSE_OF_RLYEH.get(), remaining,
+            target.addEffect(new MobEffectInstance(effect, remaining,
                     instance.getAmplifier(), false, true, true));
         }
     }

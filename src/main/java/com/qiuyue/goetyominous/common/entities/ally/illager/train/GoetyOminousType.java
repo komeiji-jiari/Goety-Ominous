@@ -95,7 +95,7 @@ public class GoetyOminousType implements ITrainIllager {
                 || blockState.getBlock() instanceof OminousBrazierStatueBlock, 4)
                 && checker.hasBlocks(blockState -> blockState.getBlock() instanceof AbstractSkullBlock, 4)
                 && checker.hasBlocks(blockState -> blockState.getBlock() instanceof StashUrnBlock, 8)
-                && checker.hasBlocks(blockState -> blockState.getBlock() instanceof FancyCarpetBlock, 8)
+                && checker.hasBlocks(blockState -> blockState.getBlock() instanceof StairCarpetBlock, 8)
                 && checker.hasBlocks(blockState -> blockState.getBlock() instanceof AnvilBlock, 4)) {
             return ModEntityTypes.CRIMSON_GUARD_SERVANT.get();
 

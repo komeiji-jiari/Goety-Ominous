@@ -4,6 +4,7 @@ import com.Polarice3.Goety.common.entities.hostile.illagers.HuntingIllagerEntity
 import com.Polarice3.Goety.common.entities.projectiles.HeavyArrow;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.entities.projectile.ChasseurArrow;
+import com.qiuyue.goetyominous.common.entities.projectile.ChasseurHeavyArrow;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -33,7 +34,7 @@ public class ImperialChasseur extends HuntingIllagerEntity {
     public static final int ANIM_RETURN_IDLE = 5;
     public static final int ANIM_AIM_RELOAD = 6;
 
-    private static final double ATTACK_RANGE = 32.0D;
+    private static final double ATTACK_RANGE = 48.0D;
     private static final double MELEE_RANGE = 3.0D;
     private static final int MELEE_COOLDOWN = 10;
     private static final double CHASE_SPEED = 1.25D;
@@ -82,6 +83,11 @@ public class ImperialChasseur extends HuntingIllagerEntity {
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.MOVEMENT_SPEED), AttributesConfig.ImperialChasseurSpeed.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.FOLLOW_RANGE), AttributesConfig.ImperialChasseurFollowRange.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.KNOCKBACK_RESISTANCE), AttributesConfig.ImperialChasseurKnockbackResistance.get());
+    }
+
+    @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return false;
     }
 
     @Override
@@ -188,7 +194,7 @@ public class ImperialChasseur extends HuntingIllagerEntity {
             arrow = new ChasseurArrow(this.level(), this);
             this.heavyShots = 0;
         } else {
-            HeavyArrow heavyArrow = new HeavyArrow(this.level(), this);
+            HeavyArrow heavyArrow = new ChasseurHeavyArrow(this.level(), this);
             heavyArrow.setBaseDamage(AttributesConfig.ImperialChasseurRangeDamage.get());
             heavyArrow.setPierceLevel((byte) 4);
             arrow = heavyArrow;

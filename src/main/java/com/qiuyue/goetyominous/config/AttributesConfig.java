@@ -384,8 +384,8 @@ public class AttributesConfig {
                 .defineInRange("imperialChasseurRangeDamage", 10.0D, 0.0D, Double.MAX_VALUE);
         ImperialChasseurSpeed = BUILDER.comment("How fast Imperial Chasseurs move, Default: 0.3")
                 .defineInRange("imperialChasseurSpeed", 0.3D, 0.0D, Double.MAX_VALUE);
-        ImperialChasseurFollowRange = BUILDER.comment("How far Imperial Chasseurs target enemies, Default: 48.0")
-                .defineInRange("imperialChasseurFollowRange", 48.0D, 0.0D, Double.MAX_VALUE);
+        ImperialChasseurFollowRange = BUILDER.comment("How far Imperial Chasseurs target enemies, Default: 64.0")
+                .defineInRange("imperialChasseurFollowRange", 64.0D, 0.0D, Double.MAX_VALUE);
         ImperialChasseurKnockbackResistance = BUILDER.comment("How much knockback resistance Imperial Chasseurs have, Default: 1.0")
                 .defineInRange("imperialChasseurKnockbackResistance", 1.0D, 0.0D, 1.0D);
         ImperialChasseurAttackKnockback = BUILDER.comment("How much knockback Imperial Chasseurs deal, Default: 2.0")

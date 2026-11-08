@@ -1,9 +1,11 @@
 package com.qiuyue.goetyominous.common.entities.ally.illager;
 
 import com.Polarice3.Goety.common.entities.ally.illager.AbstractIllagerServant;
+import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.common.entities.projectiles.HeavyArrow;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.entities.projectile.ChasseurArrow;
+import com.qiuyue.goetyominous.common.entities.projectile.ChasseurHeavyArrow;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -35,7 +37,7 @@ public class ImperialChasseurServant extends AbstractIllagerServant {
     public static final int ANIM_RETURN_IDLE = 5;
     public static final int ANIM_AIM_RELOAD = 6;
 
-    private static final double ATTACK_RANGE = 32.0D;
+    private static final double ATTACK_RANGE = 48.0D;
     private static final double MELEE_RANGE = 3.0D;
     private static final int MELEE_COOLDOWN = 10;
     private static final double CHASE_SPEED = 1.25D;
@@ -90,6 +92,38 @@ public class ImperialChasseurServant extends AbstractIllagerServant {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new CombatGoal(this));
+    }
+
+    @Override
+    public void ownerHurtGoals() {
+        this.targetSelector.addGoal(1, new ChasseurOwnerHurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new ChasseurOwnerHurtTargetGoal(this));
+    }
+
+    public static class ChasseurOwnerHurtByTargetGoal
+            extends Owned.OwnerHurtByTargetGoal<ImperialChasseurServant> {
+
+        public ChasseurOwnerHurtByTargetGoal(ImperialChasseurServant mob) {
+            super(mob);
+        }
+
+        @Override
+        protected double getFollowDistance() {
+            return Double.MAX_VALUE;
+        }
+    }
+
+    public static class ChasseurOwnerHurtTargetGoal
+            extends Owned.OwnerHurtTargetGoal<ImperialChasseurServant> {
+
+        public ChasseurOwnerHurtTargetGoal(ImperialChasseurServant mob) {
+            super(mob);
+        }
+
+        @Override
+        protected double getFollowDistance() {
+            return Double.MAX_VALUE;
+        }
     }
 
     @Override
@@ -173,7 +207,7 @@ public class ImperialChasseurServant extends AbstractIllagerServant {
             arrow = new ChasseurArrow(this.level(), this);
             this.heavyShots = 0;
         } else {
-            HeavyArrow heavyArrow = new HeavyArrow(this.level(), this);
+            HeavyArrow heavyArrow = new ChasseurHeavyArrow(this.level(), this);
             heavyArrow.setBaseDamage(AttributesConfig.ImperialChasseurRangeDamage.get());
             heavyArrow.setPierceLevel((byte) 4);
             arrow = heavyArrow;

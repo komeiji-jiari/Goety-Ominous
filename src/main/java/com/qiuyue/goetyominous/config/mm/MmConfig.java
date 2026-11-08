@@ -298,11 +298,11 @@ public class MmConfig {
                 .defineInRange("witherSlashDamage", 6.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Giant Snowball Spell");
-        GiantSnowballSoulCost = BUILDER.comment("Soul cost of Giant Snowball spell (Default: 12)")
-                .defineInRange("giantSnowballSoulCost", 20, 1, 100);
+        GiantSnowballSoulCost = BUILDER.comment("Soul cost of Giant Snowball spell (Default: 16)")
+                .defineInRange("giantSnowballSoulCost", 16, 1, 100);
         GiantSnowballCooldown = BUILDER.comment("Cooldown of Giant Snowball spell in ticks (Default: 160)")
                 .defineInRange("giantSnowballCooldown", 160, 0, 2000);
-        GiantSnowballDamage = BUILDER.comment("Damage of Giant Snowball against bosses (Default: 12.0)")
+        GiantSnowballDamage = BUILDER.comment("Damage of Giant Snowball (full against bosses, half against other mobs) (Default: 12.0)")
                 .defineInRange("giantSnowballDamage", 12.0, 0.0, Double.MAX_VALUE);
         GiantSnowballCastDuration = BUILDER.comment("Cast duration of Giant Snowball spell in ticks (Default: 40)")
                 .defineInRange("giantSnowballCastDuration", 40, 0, 500);
@@ -380,12 +380,12 @@ public class MmConfig {
                 .defineInRange("shulkerBulletDamage", 8.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Rod Strike Spell");
-        RodStrikeSoulCost = BUILDER.comment("Soul cost of Rod Strike spell (Default: 28)")
-                .defineInRange("rodStrikeSoulCost", 28, 1, 100);
+        RodStrikeSoulCost = BUILDER.comment("Soul cost of Rod Strike spell (Default: 16)")
+                .defineInRange("rodStrikeSoulCost", 16, 1, 100);
         RodStrikeCooldown = BUILDER.comment("Cooldown of Rod Strike spell in ticks (Default: 160)")
                 .defineInRange("rodStrikeCooldown", 160, 0, 2000);
-        RodStrikeCastDuration = BUILDER.comment("Cast duration of Rod Strike spell in ticks (Default: 71)")
-                .defineInRange("rodStrikeCastDuration", 71, 0, 500);
+        RodStrikeCastDuration = BUILDER.comment("Cast duration of Rod Strike spell in ticks (Default: 80)")
+                .defineInRange("rodStrikeCastDuration", 80, 0, 500);
         RodStrikeSummonDown = BUILDER.comment("Summon down duration of Rod Strike spell in ticks (Default: 80)")
                 .defineInRange("rodStrikeSummonDown", 80, 0, 5000);
         RodStrikeRodCount = BUILDER.comment("Number of rods fired by Rod Strike spell (Default: 13)")

@@ -38,7 +38,7 @@ import org.joml.Vector3f;
 public class ChasseurArrow extends AbstractArrow {
 
     private static final float EXPLOSION_RADIUS = 2.0F;
-    private static final double MAX_DISTANCE_SQR = 64.0D * 64.0D;
+    private static final double MAX_DISTANCE_SQR = 72.0D * 72.0D;
     public final TrailEffect trail = new TrailEffect(0.2F, 4.0F);
     public final TrailEffect trailOuter = new TrailEffect(0.4F, 4.0F);
     private boolean exploded;
@@ -80,7 +80,11 @@ public class ChasseurArrow extends AbstractArrow {
         super.tick();
         if (!this.level().isClientSide) {
             Entity owner = this.getOwner();
-            if (owner != null && this.distanceToSqr(owner) > MAX_DISTANCE_SQR) {
+            if (owner == null || !owner.isAlive()) {
+                this.discard();
+                return;
+            }
+            if (this.distanceToSqr(owner) > MAX_DISTANCE_SQR) {
                 this.explode(null);
                 return;
             }

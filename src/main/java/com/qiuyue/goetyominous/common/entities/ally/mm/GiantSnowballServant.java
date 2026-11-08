@@ -78,6 +78,10 @@ public class GiantSnowballServant extends ThrowableProjectile {
                     this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(),
                             SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 1.0F, 1.0F);
                 } else {
+                    if (this.extraDamage > 0.0F) {
+                        entity.hurt(this.damageSources().indirectMagic(this,
+                                this.getOwner() instanceof LivingEntity attacker ? attacker : null), this.extraDamage * 0.5F);
+                    }
                     IceCube iceCube = EntityTypeInit.ICE_CUBE.get().create(this.level());
                     iceCube.moveTo(entity.position());
                     iceCube.setTarget(entity);

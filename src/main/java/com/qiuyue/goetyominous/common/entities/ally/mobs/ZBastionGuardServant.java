@@ -271,6 +271,9 @@ public class ZBastionGuardServant extends ZPiglinServant implements IShielded {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
+        if (this.isInvulnerableTo(source)) {
+            return false;
+        }
         if (source.is(DamageTypeTags.IS_FALL) || source.is(DamageTypeTags.IS_EXPLOSION)) {
             return false;
         }

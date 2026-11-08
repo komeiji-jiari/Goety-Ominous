@@ -21,10 +21,6 @@ public class AcPackets {
                 XRayPacket::encode,
                 XRayPacket::decode,
                 XRayPacket::handle);
-        ModNetwork.register(NuclearExplosionEffectPacket.class,
-                NuclearExplosionEffectPacket::encode,
-                NuclearExplosionEffectPacket::decode,
-                NuclearExplosionEffectPacket::handle);
         ModNetwork.register(ServantAbilityKeyPacket.class,
                 ServantAbilityKeyPacket::encode,
                 ServantAbilityKeyPacket::decode,

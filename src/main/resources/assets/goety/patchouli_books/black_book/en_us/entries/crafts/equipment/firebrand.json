@@ -8,7 +8,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "You attempt to temper the Rampaging Axe using the ancient techniques of the Piglins, resulting in an axe wreathed in flames. You feel that this style suits you well as a Nether mage."
+      "text": "You attempt to temper an iron axe using the ancient techniques of the Piglins, resulting in a Nether version of the Rampaging Axe wreathed in flames. You feel this style suits you well as a Nether mage."
     },
     {
       "type": "goety:ritual",

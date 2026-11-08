@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "text",
-      "text": "With this spell, you can charge forward like a Mutant Hoglin, tearing through any stone blocks in your path like a human-shaped tunnel boring machine! If you prefer not to destroy blocks, you can cast the spell while sneaking—it will be slower, but at least you won't leave craters everywhere. The charge sends creatures in your path flying, but Bosses stand their ground—they still take the impact damage, but cannot be knocked back."
+      "text": "With this spell, you can charge forward like a Mutant Hoglin, tearing through any stone blocks in your path like a human-shaped tunnel boring machine! If you prefer not to destroy blocks, you can cast the spell while sneaking—it will be slower, but at least you won't leave craters everywhere. The charge event can send creatures in your path flying!"
     },
     {
       "type": "goety:ritual",
