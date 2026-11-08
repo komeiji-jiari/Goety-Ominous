@@ -253,7 +253,7 @@ public class ZBastionGuardServant extends ZPiglinServant implements IShielded {
 
     @Override
     public boolean isShieldRepair(ItemStack stack) {
-        return stack.is(Items.NETHERITE_SCRAP);
+        return stack.is(Items.GOLD_INGOT);
     }
 
     @Override

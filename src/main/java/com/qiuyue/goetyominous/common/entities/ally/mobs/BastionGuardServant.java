@@ -189,9 +189,19 @@ public class BastionGuardServant extends AbstractPiglinServant implements IShiel
         zombified.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 0));
         zombified.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()),
                 MobSpawnType.CONVERSION, null, null);
+        zombified.setShield(this.hasShield());
+        zombified.setShieldHealth(this.getShieldHealth());
         ForgeEventFactory.onLivingConvert(this, zombified);
         this.discard();
         serverLevel.addFreshEntity(zombified);
+    }
+
+    @Override
+    protected void afterZombieConversion(Mob zombie) {
+        if (zombie instanceof ZBastionGuardServant zombified) {
+            zombified.setShield(this.hasShield());
+            zombified.setShieldHealth(this.getShieldHealth());
+        }
     }
 
     @Override
@@ -284,7 +294,7 @@ public class BastionGuardServant extends AbstractPiglinServant implements IShiel
 
     @Override
     public boolean isShieldRepair(ItemStack stack) {
-        return stack.is(Items.NETHERITE_SCRAP);
+        return stack.is(Items.GOLD_INGOT);
     }
 
     @Override
