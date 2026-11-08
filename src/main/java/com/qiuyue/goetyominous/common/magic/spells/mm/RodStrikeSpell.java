@@ -20,6 +20,8 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
@@ -54,6 +56,10 @@ public class RodStrikeSpell extends SummonSpell {
 
     public SoundEvent CastingSound(LivingEntity caster) {
         return SoundEventInit.MUTANT_BLAZE_RODSHOT.get();
+    }
+
+    public float castingVolume() {
+        return 2.0F;
     }
 
     public int defaultSpellCooldown() {
@@ -120,6 +126,16 @@ public class RodStrikeSpell extends SummonSpell {
         float inaccuracy = MmConfig.RodStrikeRodInaccuracy.get().floatValue();
         int shotPotency = potency;
 
+        HitResult hit = this.rayTrace(worldIn, caster, 32, 0.5D);
+        Vec3 aimPos;
+        if (hit instanceof EntityHitResult entityHit) {
+            aimPos = entityHit.getEntity().getEyePosition(1.0F);
+        } else if (hit.getType() == HitResult.Type.BLOCK) {
+            aimPos = hit.getLocation();
+        } else {
+            aimPos = caster.getEyePosition(1.0F).add(caster.getViewVector(1.0F).scale(32.0D));
+        }
+
         Set<Integer> rodlingIndexes = new HashSet<>();
         while (rodlingIndexes.size() < rodlingCount) {
             rodlingIndexes.add(caster.getRandom().nextInt(rodCount));
@@ -131,7 +147,7 @@ public class RodStrikeSpell extends SummonSpell {
             boolean rodling = rodlingIndexes.contains(i);
             boolean armour = rodling && caster.getHealth() <= caster.getMaxHealth() * 0.5F && caster.getRandom().nextInt(100) < 50;
             boolean shields = rodling && caster.getHealth() <= caster.getMaxHealth() * 0.25F && caster.getRandom().nextInt(100) < 50;
-            Runnable shot = () -> this.shootRod(worldIn, caster, rodling, armour, shields, damage, fireLength, speed, inaccuracy, life, shotPotency, sapSnapshot);
+            Runnable shot = () -> this.shootRod(worldIn, caster, aimPos, rodling, armour, shields, damage, fireLength, speed, inaccuracy, life, shotPotency, sapSnapshot);
             if (i == 0) {
                 shot.run();
             } else {
@@ -182,14 +198,12 @@ public class RodStrikeSpell extends SummonSpell {
         }
     }
 
-    private void shootRod(ServerLevel worldIn, LivingEntity caster, boolean rodling, boolean armour, boolean shields,
+    private void shootRod(ServerLevel worldIn, LivingEntity caster, Vec3 aimPos, boolean rodling, boolean armour, boolean shields,
                           float damage, int fireLength, float speed, float inaccuracy,
                           int lifespan, int potency, boolean sapSnapshot) {
         if (!caster.isAlive() || caster.isRemoved() || caster.level() != worldIn) {
             return;
         }
-        Vec3 view = caster.getViewVector(1.0F);
-        Vec3 aimPos = caster.getEyePosition(1.0F).add(view.scale(32.0D));
         Vec3 spawnPos = new Vec3(caster.getX(), caster.getY() + caster.getBbHeight() + 0.6D, caster.getZ())
                 .add(Vec3.directionFromRotation(0.0F, caster.yBodyRot).scale(0.5D));
         Vec3 direction = aimPos.subtract(spawnPos);
@@ -198,6 +212,9 @@ public class RodStrikeSpell extends SummonSpell {
         rod.damage = damage;
         rod.fireLength = fireLength;
         rod.ignoresInvulTime = true;
+        rod.griefing = false;
+        rod.griefingDropsBlocks = false;
+        rod.fireGriefing = true;
         if (rodling) {
             rod.setIsRodling(true);
             rod.setHasArmour(armour);

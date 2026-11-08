@@ -384,8 +384,8 @@ public class MmConfig {
                 .defineInRange("rodStrikeSoulCost", 28, 1, 100);
         RodStrikeCooldown = BUILDER.comment("Cooldown of Rod Strike spell in ticks (Default: 160)")
                 .defineInRange("rodStrikeCooldown", 160, 0, 2000);
-        RodStrikeCastDuration = BUILDER.comment("Cast duration of Rod Strike spell in ticks (Default: 60)")
-                .defineInRange("rodStrikeCastDuration", 60, 0, 500);
+        RodStrikeCastDuration = BUILDER.comment("Cast duration of Rod Strike spell in ticks (Default: 71)")
+                .defineInRange("rodStrikeCastDuration", 71, 0, 500);
         RodStrikeSummonDown = BUILDER.comment("Summon down duration of Rod Strike spell in ticks (Default: 80)")
                 .defineInRange("rodStrikeSummonDown", 80, 0, 5000);
         RodStrikeRodCount = BUILDER.comment("Number of rods fired by Rod Strike spell (Default: 13)")

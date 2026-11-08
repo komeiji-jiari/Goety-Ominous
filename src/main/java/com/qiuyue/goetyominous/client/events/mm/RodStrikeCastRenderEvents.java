@@ -3,15 +3,18 @@ package com.qiuyue.goetyominous.client.events.mm;
 import com.Polarice3.Goety.api.items.magic.IWand;
 import com.Polarice3.Goety.api.magic.ISpell;
 import com.Polarice3.Goety.utils.WandUtil;
+import com.alexander.mutantmore.animation.keyframe_animations.definition.MutantBlazeKeyframeAnimations;
 import com.alexander.mutantmore.animation.math_animation.AnimationData;
 import com.alexander.mutantmore.animation.math_animation.MathAnim;
 import com.alexander.mutantmore.animation.math_animation.definition.MutantBlazeMathAnimations;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.render.model.mm.MutantBlazeServantModel;
+import com.qiuyue.goetyominous.common.entities.ally.mm.MutantBlazeServant;
 import com.qiuyue.goetyominous.common.magic.spells.mm.RodStrikeSpell;
 import com.qiuyue.goetyominous.compat.mod.MutantMoreCompat;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LightTexture;
@@ -27,6 +30,7 @@ import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.joml.Vector3f;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -41,8 +45,9 @@ public final class RodStrikeCastRenderEvents {
     private static final float LOWEST_RING_HEIGHT = 15.0F * MODEL_SCALE / 16.0F;
     private static final float RING_CLEARANCE = 0.25F;
     private static final float SHOT_START_SECONDS = 3.55F;
-    private static final float SHOT_END_SECONDS = 4.2F;
-    private static final int SHOT_TICKS = 13;
+    private static final float SHOT_END_SECONDS = 4.25F;
+    private static final float SHOT_TICKS = (SHOT_END_SECONDS - SHOT_START_SECONDS) * 20.0F;
+    private static final Vector3f ANIMATION_CACHE = new Vector3f();
     private static final Map<UUID, BurstState> BURSTS = new HashMap<>();
 
     private RodStrikeCastRenderEvents() {
@@ -75,11 +80,21 @@ public final class RodStrikeCastRenderEvents {
                 BurstState state = BURSTS.get(uuid);
                 if (state != null && state.using) {
                     state.using = false;
-                    state.finished = player.tickCount - state.useStartTick >= state.useDuration - 3;
+                    if (player.tickCount - state.useStartTick >= state.useDuration - 3) {
+                        state.finished = true;
+                        state.shotStartTick = player.tickCount;
+                    } else {
+                        BURSTS.remove(uuid);
+                    }
                 }
             }
         }
         BURSTS.keySet().retainAll(present);
+        BURSTS.entrySet().removeIf(entry -> {
+            BurstState state = entry.getValue();
+            Player player = level.getPlayerByUUID(entry.getKey());
+            return !state.using && player != null && player.tickCount - state.shotStartTick > SHOT_TICKS;
+        });
     }
 
     @SubscribeEvent
@@ -111,15 +126,12 @@ public final class RodStrikeCastRenderEvents {
             chargeSeconds = progress * SHOT_START_SECONDS;
         } else {
             BurstState state = BURSTS.get(uuid);
-            if (state == null) {
+            if (state == null || state.using) {
                 return;
             }
             if (!state.finished) {
                 BURSTS.remove(uuid);
                 return;
-            }
-            if (state.shotStartTick < 0) {
-                state.shotStartTick = player.tickCount;
             }
             float sinceShot = player.tickCount + event.getPartialTick() - state.shotStartTick;
             if (sinceShot > SHOT_TICKS) {
@@ -129,30 +141,20 @@ public final class RodStrikeCastRenderEvents {
             shotElapsed = Math.max(0.0F, sinceShot);
         }
 
+        float elapsed = chargeSeconds >= 0.0F ? chargeSeconds : SHOT_START_SECONDS + shotElapsed / 20.0F;
+        float walkSpeed = (float) player.getDeltaMovement().length() * 15.0F;
+
         ModelPart rods = ServantRings.RODS;
         rods.getAllParts().forEach(ModelPart::resetPose);
-        for (ModelPart rod : ServantRings.LAYER1_RODS) {
-            rod.visible = true;
-        }
         MathAnim.animate(ServantRings.PARTS::get,
-                new AnimationData(null, 0, 0.0F, 0.0F, 0.0F, 0.0F, ticks, 0.0F, 0.0F),
+                new AnimationData(null, 0, 0.0F, walkSpeed, 0.0F, 0.0F, ticks, 0.0F, 0.0F),
                 MutantBlazeMathAnimations.IDLE);
-        if (chargeSeconds >= 0.0F) {
-            float rotSpeed = chargeSeconds < 1.5F ? 150.0F : (chargeSeconds < 3.5F ? Mth.lerp((chargeSeconds - 1.5F) / 2.0F, 300.0F, 600.0F) : (chargeSeconds < 4.5F ? 300.0F : 150.0F));
-            ServantRings.PARTS.get("rodLayer1").yRot = (float) Math.toRadians(ticks / 20.0F * rotSpeed);
-        } else if (shotElapsed >= 0.0F) {
-            float elapsed = SHOT_START_SECONDS + shotElapsed / 20.0F;
-            if (elapsed <= SHOT_END_SECONDS) {
-                ServantRings.PARTS.get("rodLayer1").yRot = 0.0F;
-                MathAnim.animate(ServantRings.PARTS::get,
-                        new AnimationData(null, 0, elapsed, 1.0F, 0.0F, 0.0F, ticks, 0.0F, 0.0F),
-                        MutantBlazeMathAnimations.ROD_SHOT_MATH);
-            }
-            int thrown = Math.min((int) shotElapsed + 1, ServantRings.LAYER1_RODS.length);
-            for (int i = 0; i < thrown; ++i) {
-                ServantRings.LAYER1_RODS[i].visible = false;
-            }
-        }
+        ServantRings.PARTS.get("rodLayer1").yRot = 0.0F;
+        KeyframeAnimations.animate(ServantRings.MODEL, MutantBlazeKeyframeAnimations.ROD_SHOT_KEYFRAME,
+                (long)(elapsed * 1000.0F), 1.0F, ANIMATION_CACHE);
+        MathAnim.animate(ServantRings.PARTS::get,
+                new AnimationData(null, 0, elapsed, 1.0F, 0.0F, 0.0F, ticks, 0.0F, 0.0F),
+                MutantBlazeMathAnimations.ROD_SHOT_MATH);
 
         PoseStack poseStack = event.getPoseStack();
         MultiBufferSource buffer = event.getMultiBufferSource();
@@ -173,18 +175,11 @@ public final class RodStrikeCastRenderEvents {
     }
 
     private static final class ServantRings {
-        private static final ModelPart RODS = MutantBlazeServantModel.createBodyLayer().bakeRoot().getChild("everything").getChild("rods");
+        private static final MutantBlazeServantModel<MutantBlazeServant> MODEL =
+                new MutantBlazeServantModel<>(MutantBlazeServantModel.createBodyLayer().bakeRoot());
+        private static final ModelPart RODS = MODEL.root().getChild("everything").getChild("rods");
         private static final ModelPart LAYER1 = RODS.getChild("rodLayer1Rot").getChild("rodLayer1");
         private static final Map<String, ModelPart> PARTS = createParts();
-        private static final ModelPart[] LAYER1_RODS = createLayer1Rods();
-
-        private static ModelPart[] createLayer1Rods() {
-            ModelPart[] rods = new ModelPart[15];
-            for (int i = 0; i < rods.length; ++i) {
-                rods[i] = LAYER1.getChild(i == 0 ? "rod" : "rod" + (i + 1));
-            }
-            return rods;
-        }
 
         private static Map<String, ModelPart> createParts() {
             Map<String, ModelPart> parts = new HashMap<>();

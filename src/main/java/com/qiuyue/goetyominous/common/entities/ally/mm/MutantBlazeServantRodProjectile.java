@@ -8,6 +8,7 @@ import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.ServerParticleUtil;
 import com.alexander.mutantmore.config.mutant_blaze.RodlingCommonConfig;
 import com.alexander.mutantmore.init.MMDamageTypes;
+import com.alexander.mutantmore.init.TagInit;
 import com.alexander.mutantmore.init.SoundEventInit;
 import com.alexander.mutantmore.util.MiscUtils;
 import javax.annotation.Nullable;
@@ -36,6 +37,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -58,6 +60,9 @@ public class MutantBlazeServantRodProjectile extends SpellThrowableProjectile {
     public float damage = 0.0F;
     public int fireLength = 0;
     public boolean ignoresInvulTime = true;
+    public boolean griefing = true;
+    public boolean griefingDropsBlocks = false;
+    public boolean fireGriefing = false;
     public int despawnTime = 1200;
     public boolean glows = false;
     public int spellLifespanMultiplier = 0;
@@ -140,6 +145,10 @@ public class MutantBlazeServantRodProjectile extends SpellThrowableProjectile {
         if (!this.hasBrokenBlock()) {
             this.setHasBrokenBlock(true);
             this.setDeltaMovement(this.getDeltaMovement().multiply(-0.25D, 0.5D, -0.25D));
+            if (!this.level().isClientSide && this.griefing && !this.isCollectable()
+                    && !this.level().getBlockState(pos).is(TagInit.Blocks.UNBREAKABLE)) {
+                this.level().destroyBlock(pos, this.griefingDropsBlocks);
+            }
         } else {
             if (this.isRodling() && !this.isCollectable() && !this.summonedRodling) {
                 this.becomeRodling(null);
@@ -148,6 +157,9 @@ public class MutantBlazeServantRodProjectile extends SpellThrowableProjectile {
             this.landed = true;
             this.setDeltaMovement(0.0D, 0.0D, 0.0D);
             if (!this.level().isClientSide && !this.isCollectable() && !this.isRodling()) {
+                if (this.fireGriefing && this.level().getBlockState(this.blockPosition()).isAir()) {
+                    this.level().setBlockAndUpdate(this.blockPosition(), BaseFireBlock.getState(this.level(), pos));
+                }
                 this.discard();
             }
         }
@@ -327,6 +339,9 @@ public class MutantBlazeServantRodProjectile extends SpellThrowableProjectile {
         tag.putFloat("Damage", this.damage);
         tag.putInt("FireLength", this.fireLength);
         tag.putBoolean("IgnoresInvulTime", this.ignoresInvulTime);
+        tag.putBoolean("Griefing", this.griefing);
+        tag.putBoolean("GriefingDropsBlocks", this.griefingDropsBlocks);
+        tag.putBoolean("FireGriefing", this.fireGriefing);
         tag.putInt("DespawnTime", this.despawnTime);
         tag.putBoolean("Glows", this.glows);
         tag.putInt("SpellRodlingLifespan", this.spellRodlingLifespan);
@@ -345,6 +360,9 @@ public class MutantBlazeServantRodProjectile extends SpellThrowableProjectile {
         if (tag.contains("Damage")) this.damage = tag.getFloat("Damage");
         if (tag.contains("FireLength")) this.fireLength = tag.getInt("FireLength");
         if (tag.contains("IgnoresInvulTime")) this.ignoresInvulTime = tag.getBoolean("IgnoresInvulTime");
+        if (tag.contains("Griefing")) this.griefing = tag.getBoolean("Griefing");
+        if (tag.contains("GriefingDropsBlocks")) this.griefingDropsBlocks = tag.getBoolean("GriefingDropsBlocks");
+        if (tag.contains("FireGriefing")) this.fireGriefing = tag.getBoolean("FireGriefing");
         if (tag.contains("DespawnTime")) this.despawnTime = tag.getInt("DespawnTime");
         if (tag.contains("Glows")) this.glows = tag.getBoolean("Glows");
         if (tag.contains("SpellRodlingLifespan")) this.spellRodlingLifespan = tag.getInt("SpellRodlingLifespan");
