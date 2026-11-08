@@ -12,7 +12,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public class FieryHideEffect extends MobEffect {
     private static final ColorUtil FIERY_HIDE = new ColorUtil(1.0F, 0.35F, 0.05F);
-    private static final ColorUtil FIERY_HIDE_AURA = new ColorUtil(1.0F, 0.8F, 0.15F);
+    public static final ColorUtil FIERY_HIDE_AURA = new ColorUtil(1.0F, 0.8F, 0.15F);
 
     public FieryHideEffect() {
         super(MobEffectCategory.BENEFICIAL, 0xFF6A1E);

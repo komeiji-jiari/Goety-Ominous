@@ -4,9 +4,10 @@ import com.Polarice3.Goety.api.magic.SpellType;
 import com.Polarice3.Goety.common.enchantments.ModEnchantments;
 import com.Polarice3.Goety.common.magic.EverChargeSpell;
 import com.Polarice3.Goety.common.magic.SpellStat;
-import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.WandUtil;
+import com.alexander.mutantmore.init.SoundEventInit;
 import com.qiuyue.goetyominous.common.magic.utils.SmeltHelper;
+import com.qiuyue.goetyominous.utils.BossUtil;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -17,14 +18,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.Tags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +32,7 @@ import com.qiuyue.goetyominous.config.mm.MmConfig;
 public class HogChargeSpell extends EverChargeSpell {
 
     public static final int MAX_CAST_TICKS = 120;
+    private static final int SOUND_INTERVAL = 10;
 
     @Override
     public SpellStat defaultStats() {
@@ -61,7 +61,7 @@ public class HogChargeSpell extends EverChargeSpell {
 
     @Override
     public SoundEvent CastingSound() {
-        return ModSounds.MCD_HOGLIN_GALLOP.get();
+        return SoundEventInit.MUTANT_HOGLIN_STEP.get();
     }
 
     @Override
@@ -102,6 +102,10 @@ public class HogChargeSpell extends EverChargeSpell {
             caster.setDeltaMovement(motion.x, 0.0D, motion.z);
         }
 
+        if (caster.tickCount % SOUND_INTERVAL == 0) {
+            this.playSound(worldIn, caster, SoundEventInit.MUTANT_HOGLIN_STEP.get(), 0.75F, 1.0F);
+        }
+
         if (!worldIn.isClientSide) {
             if (!caster.isShiftKeyDown()) {
                 BlockPos center = caster.blockPosition();
@@ -116,7 +120,7 @@ public class HogChargeSpell extends EverChargeSpell {
 
                             BlockState state = worldIn.getBlockState(pos);
                             if (state.isAir() || state.getDestroySpeed(worldIn, pos) < 0) continue;
-                            if (!this.isBreakable(state)) continue;
+                            if (!this.isBreakable(worldIn, pos, state)) continue;
 
                             if (usingNetherStaff) {
                                 this.breakAndSmelt(worldIn, pos, state, caster);
@@ -140,8 +144,10 @@ public class HogChargeSpell extends EverChargeSpell {
                 float dmg = MmConfig.HogChargeDamage.get().floatValue() * WandUtil.damageMultiply() + potency;
                 target.hurt(worldIn.damageSources().mobAttack(caster), dmg);
                 target.setSecondsOnFire(5);
-                target.setDeltaMovement(target.getDeltaMovement().add(lookVec.scale(1.5)));
-                target.hurtMarked = true;
+                if (!BossUtil.isBoss(target)) {
+                    target.setDeltaMovement(target.getDeltaMovement().add(lookVec.scale(1.5)));
+                    target.hurtMarked = true;
+                }
 
                 worldIn.sendParticles(ParticleTypes.CLOUD,
                         target.getX(), target.getY() + target.getBbHeight() / 2, target.getZ(),
@@ -166,13 +172,9 @@ public class HogChargeSpell extends EverChargeSpell {
         }
     }
 
-    private boolean isBreakable(BlockState state) {
-        return state.is(Tags.Blocks.STONE) || state.is(Tags.Blocks.COBBLESTONE)
-                || state.is(Tags.Blocks.ORES) || state.is(net.minecraft.tags.BlockTags.BASE_STONE_OVERWORLD)
-                || state.is(net.minecraft.tags.BlockTags.BASE_STONE_NETHER)
-                || state.is(Blocks.NETHERRACK) || state.is(Blocks.BLACKSTONE)
-                || state.is(Blocks.BASALT) || state.is(Blocks.SMOOTH_BASALT)
-                || state.is(Blocks.GRAVEL) || state.is(Blocks.END_STONE);
+    private boolean isBreakable(ServerLevel worldIn, BlockPos pos, BlockState state) {
+        float hardness = state.getDestroySpeed(worldIn, pos);
+        return hardness >= 0.0F && hardness <= 50.0F;
     }
 
     private void breakAndSmelt(ServerLevel worldIn, BlockPos pos, BlockState state, LivingEntity caster) {
