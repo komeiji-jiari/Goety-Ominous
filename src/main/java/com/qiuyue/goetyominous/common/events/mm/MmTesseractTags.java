@@ -1,17 +1,14 @@
 package com.qiuyue.goetyominous.common.events.mm;
 
-import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
 import com.qiuyue.goetyominous.compat.mod.MutantMoreCompat;
 import net.minecraftforge.event.TagsUpdatedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import static com.qiuyue.goetyominous.common.events.TesseractTagHandler.TESSERACT_LARGE;
 import static com.qiuyue.goetyominous.common.events.TesseractTagHandler.TESSERACT_MEDIUM;
 import static com.qiuyue.goetyominous.common.events.TesseractTagHandler.addToTag;
 
-@Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID)
 public class MmTesseractTags {
 
     @SubscribeEvent

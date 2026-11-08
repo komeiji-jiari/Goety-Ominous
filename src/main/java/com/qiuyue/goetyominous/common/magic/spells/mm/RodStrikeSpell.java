@@ -7,7 +7,6 @@ import com.Polarice3.Goety.common.magic.SummonSpell;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.alexander.mutantmore.init.SoundEventInit;
-import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.mm.MutantBlazeServantRodProjectile;
 import com.qiuyue.goetyominous.common.entities.ally.mm.RodlingServant;
 import com.qiuyue.goetyominous.config.mm.MmConfig;
@@ -26,7 +25,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -35,7 +33,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
-@Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class RodStrikeSpell extends SummonSpell {
     private static final List<PendingRodShot> PENDING_ROD_SHOTS = new ArrayList<>();
 

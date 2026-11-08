@@ -7,7 +7,10 @@ import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
 import com.qiuyue.goetyominous.common.init.mm.ModSpellControllers;
 import com.qiuyue.goetyominous.common.items.mm.MmItems;
 import com.qiuyue.goetyominous.config.mm.MmConfig;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.loading.FMLPaths;
@@ -29,6 +32,13 @@ public class MmCompatManager {
         MmItems.register(modEventBus);
 
         com.qiuyue.goetyominous.common.init.ModCreativeTab.registerCompatItems(MmItems.MM_ITEMS);
+
+        MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.mm.MmTesseractTags.class);
+        MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.mm.MutantShulkerServantEvents.class);
+        MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.mm.WitherScytheEvents.class);
+        MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.magic.spells.mm.RodStrikeSpell.class);
+
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> MmClientCompatManager.register(modEventBus));
     }
 
     public static void registerConfig() {

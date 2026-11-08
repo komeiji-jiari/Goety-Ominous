@@ -1,6 +1,6 @@
 package com.qiuyue.goetyominous.compat.mm.jade;
 
-import com.qiuyue.goetyominous.common.entities.ally.mm.AbstractMutantServant;
+import com.qiuyue.goetyominous.compat.mod.MutantMoreCompat;
 import snownee.jade.api.IWailaClientRegistration;
 import snownee.jade.api.IWailaCommonRegistration;
 import snownee.jade.api.IWailaPlugin;
@@ -11,13 +11,15 @@ public class MutantServantJadePlugin implements IWailaPlugin {
 
     @Override
     public void register(IWailaCommonRegistration registration) {
-        registration.registerEntityDataProvider(
-                MutantServantLifeProvider.INSTANCE, AbstractMutantServant.class);
+        if (MutantMoreCompat.isMutantMoreLoaded()) {
+            MutantServantJadeRegistration.register(registration);
+        }
     }
 
     @Override
     public void registerClient(IWailaClientRegistration registration) {
-        registration.registerEntityComponent(
-                MutantServantLifeComponent.INSTANCE, AbstractMutantServant.class);
+        if (MutantMoreCompat.isMutantMoreLoaded()) {
+            MutantServantJadeRegistration.registerClient(registration);
+        }
     }
 }

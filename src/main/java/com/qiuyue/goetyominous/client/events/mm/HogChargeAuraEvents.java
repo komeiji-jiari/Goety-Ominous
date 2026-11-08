@@ -5,7 +5,6 @@ import com.Polarice3.Goety.client.render.ChargeAuraRenderer;
 import com.Polarice3.Goety.common.entities.util.ChargeAura;
 import com.Polarice3.Goety.utils.ColorUtil;
 import com.Polarice3.Goety.utils.WandUtil;
-import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.effects.FieryHideEffect;
 import com.qiuyue.goetyominous.common.magic.spells.mm.HogChargeSpell;
 import com.qiuyue.goetyominous.compat.mod.MutantMoreCompat;
@@ -14,11 +13,9 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,7 +23,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-@Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class HogChargeAuraEvents {
 
     private static final Map<UUID, ChargeAura> AURAS = new HashMap<>();

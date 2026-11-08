@@ -8,7 +8,6 @@ import com.alexander.mutantmore.animation.math_animation.AnimationData;
 import com.alexander.mutantmore.animation.math_animation.MathAnim;
 import com.alexander.mutantmore.animation.math_animation.definition.MutantBlazeMathAnimations;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.render.model.mm.MutantBlazeServantModel;
 import com.qiuyue.goetyominous.common.entities.ally.mm.MutantBlazeServant;
 import com.qiuyue.goetyominous.common.magic.spells.mm.RodStrikeSpell;
@@ -25,11 +24,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import org.joml.Vector3f;
 
 import java.util.HashMap;
@@ -38,7 +35,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-@Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class RodStrikeCastRenderEvents {
     private static final ResourceLocation TEXTURE = new ResourceLocation("mutantmore", "textures/entities/mutant_blaze.png");
     private static final float MODEL_SCALE = 1.5F;

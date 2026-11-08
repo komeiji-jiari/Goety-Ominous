@@ -4,7 +4,6 @@ import com.Polarice3.Goety.api.entities.IOwned;
 import com.Polarice3.Goety.common.items.ModItems;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.alexander.mutantmore.entities.MutantShulker;
-import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.items.mm.MmItems;
 import com.qiuyue.goetyominous.compat.mod.MutantMoreCompat;
 import com.qiuyue.goetyominous.common.entities.ally.mm.MutantShulkerServant;
@@ -23,11 +22,9 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.level.ExplosionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
 
-@Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID)
 public class MutantShulkerServantEvents {
 
     @SubscribeEvent

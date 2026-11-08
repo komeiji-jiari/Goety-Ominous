@@ -1,6 +1,5 @@
 package com.qiuyue.goetyominous.client.events.mm;
 
-import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.init.ModEntityLayers;
 import com.qiuyue.goetyominous.client.render.EmptyRenderer;
 import com.qiuyue.goetyominous.client.render.mm.MutantHoglinServantRenderer;
@@ -15,12 +14,9 @@ import com.qiuyue.goetyominous.common.init.mm.ModSpellControllers;
 import com.qiuyue.goetyominous.compat.mod.MutantMoreCompat;
 import com.qiuyue.goetyominous.config.mm.MmConfig;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class MmClientEvents {
 
     @SubscribeEvent
