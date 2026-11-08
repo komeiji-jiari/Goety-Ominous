@@ -1058,6 +1058,7 @@
   "item.goety.focus.info": "当用法杖施放时：",
   "jade.goetyominous.melee_progress": "蛮兵升级进度 %s/%s",
   "jade.goetyominous.ranged_progress": "猎手升级进度 %s/%s",
+  "jade.goetyominous.bastion_guard_progress": "堡垒守卫升级进度 %s/%s",
   "jade.goetyominous.remaining_lives": "复活次数 %s/%s",
   "jade.goetyominous.life_recovery": "恢复冷却 %s 秒",
   "config.jade.plugin_goetyominous.piglin_evolution": "猪灵进化进度",

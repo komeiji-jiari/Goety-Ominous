@@ -1,4 +1,4 @@
-package com.qiuyue.goetyominous.client.render.model.animation;// Save this class in your mod and generate all required imports
+package com.qiuyue.goetyominous.client.render.model.animation;
 
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
@@ -6,6 +6,10 @@ import net.minecraft.client.animation.Keyframe;
 import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
 public class BastionGuardAnimation {
@@ -894,6 +898,17 @@ public class BastionGuardAnimation {
 			new Keyframe(4.0F, KeyframeAnimations.degreeVec(-12.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
 		))
 		.build();
+
+	public static final AnimationDefinition IDLE_SHIELD_GUARD = new AnimationDefinition(
+			IDLE_SHIELD.lengthInSeconds(),
+			IDLE_SHIELD.looping(),
+			guardIdleBones());
+
+	private static Map<String, List<AnimationChannel>> guardIdleBones() {
+		Map<String, List<AnimationChannel>> map = new HashMap<>(IDLE_SHIELD.boneAnimations());
+		map.remove("head");
+		return map;
+	}
 
 	public static final AnimationDefinition WALK_SHIELD = AnimationDefinition.Builder.withLength(0.6667F).looping()
 		.addAnimation("Body", new AnimationChannel(AnimationChannel.Targets.ROTATION, 

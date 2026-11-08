@@ -56,6 +56,12 @@ public class StrongPiglinBruteServant extends PiglinBruteServant {
         if (result && target instanceof LivingEntity living) {
             int dealt = (int) Math.ceil(prevHealth - living.getHealth());
             if (dealt > 0) {
+                if (this.tryFirebrandConversion()) {
+                    return result;
+                }
+                if (this.isFirebrandHeld()) {
+                    return result;
+                }
                 if (this.meleeDamageDealt >= MobsConfig.StrongPiglinBruteServantEvolutionDamage.get() && !this.level().isClientSide) {
                     ElitePiglinBruteServant elite = new ElitePiglinBruteServant(
                             ModEntityTypes.ELITE_PIGLIN_BRUTE_SERVANT.get(), this.level());

@@ -1058,6 +1058,7 @@
   "item.goety.focus.info": "When Cast in Wand or Staff:",
   "jade.goetyominous.melee_progress": "Brute Upgrade Progress %s/%s",
   "jade.goetyominous.ranged_progress": "Hunter Upgrade Progress %s/%s",
+  "jade.goetyominous.bastion_guard_progress": "Bastion Guard Upgrade Progress %s/%s",
   "jade.goetyominous.remaining_lives": "Revives %s/%s",
   "jade.goetyominous.life_recovery": "Recovery Cooldown %s s",
   "config.jade.plugin_goetyominous.piglin_evolution": "Piglin Evolution Progress",

@@ -26,6 +26,15 @@ public enum PiglinEvolutionComponent implements IEntityComponentProvider {
         Entity entity = accessor.getEntity();
         int melee = data.getInt("MeleeDamageDealt");
         int ranged = data.getInt("RangedDamageDealt");
+        boolean firebrand = data.getBoolean("Firebrand");
+        boolean locked = data.getBoolean("UpgradesLocked");
+        if (entity instanceof PiglinBruteServant && firebrand) {
+            if (!locked) {
+                addBastionGuardProgress(tooltip, melee);
+            }
+            return;
+        }
+        if (locked) return;
         if (melee <= 0 && ranged <= 0) return;
 
         boolean isBrute = entity instanceof PiglinBruteServant && !(entity instanceof ElitePiglinBruteServant);
@@ -46,6 +55,14 @@ public enum PiglinEvolutionComponent implements IEntityComponentProvider {
             addMeleeProgress(tooltip, entity, melee);
         } else if (isHunter && ranged > 0) {
             addRangedProgress(tooltip, entity, ranged);
+        }
+    }
+
+    private void addBastionGuardProgress(ITooltip tooltip, int progress) {
+        int max = MobsConfig.BastionGuardServantEvolutionDamage.get();
+        if (max > 0) {
+            tooltip.add(Component.translatable("jade.goetyominous.bastion_guard_progress",
+                    progress, max));
         }
     }
 

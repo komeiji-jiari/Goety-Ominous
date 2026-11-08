@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.compat.jade;
 
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.common.entities.ally.mobs.PiglinBruteServant;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractPiglinServant;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -15,6 +16,10 @@ public enum PiglinEvolutionProvider implements IServerDataProvider<EntityAccesso
         if (accessor.getEntity() instanceof AbstractPiglinServant piglin && !piglin.isBaby()) {
             tag.putInt("MeleeDamageDealt", piglin.getMeleeDamageDealt());
             tag.putInt("RangedDamageDealt", piglin.getRangedDamageDealt());
+            tag.putBoolean("UpgradesLocked", piglin.upgradesLocked());
+            if (piglin instanceof PiglinBruteServant brute) {
+                tag.putBoolean("Firebrand", brute.isFirebrandHeld());
+            }
         }
     }
 

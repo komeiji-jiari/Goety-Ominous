@@ -45,6 +45,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> PiglinServantEvolutionDamage;
     public static final ForgeConfigSpec.ConfigValue<Integer> PiglinBruteServantEvolutionDamage;
     public static final ForgeConfigSpec.ConfigValue<Integer> StrongPiglinBruteServantEvolutionDamage;
+    public static final ForgeConfigSpec.ConfigValue<Integer> BastionGuardServantEvolutionDamage;
     public static final ForgeConfigSpec.ConfigValue<Integer> PiglinServantRangedEvolutionDamage;
     public static final ForgeConfigSpec.ConfigValue<Integer> PiglinHunterServantEvolutionDamage;
     public static final ForgeConfigSpec.ConfigValue<Integer> StrongPiglinHunterServantEvolutionDamage;
@@ -93,6 +94,9 @@ public class MobsConfig {
         StrongPiglinBruteServantEvolutionDamage = BUILDER
                 .comment("How much melee damage a Strong Brute needs to evolve into Elite, Default: 260")
                 .defineInRange("strongPiglinBruteServantEvolutionDamage", 260, 1, Integer.MAX_VALUE);
+        BastionGuardServantEvolutionDamage = BUILDER
+                .comment("How much melee damage a Firebrand-wielding piglin brute needs to evolve into a Bastion Guard, Default: 320")
+                .defineInRange("bastionGuardServantEvolutionDamage", 320, 1, Integer.MAX_VALUE);
         PiglinServantRangedEvolutionDamage = BUILDER
                 .comment("How much ranged damage a Piglin Servant needs to evolve into a Hunter, Default: 60")
                 .defineInRange("piglinServantRangedEvolutionDamage", 60, 1, Integer.MAX_VALUE);

@@ -53,6 +53,7 @@ public class ZBastionGuardServant extends ZPiglinServant implements IShielded {
     public static final int ANIM_ATTACK_SHIELD = 1;
     public static final int ANIM_ATTACK_NO_SHIELD = 2;
     public static final int ANIM_COMBO = 3;
+    public static final int ANIM_GUARD_IDLE = 4;
     public static final int ACTION_FADE_TICKS = 5;
 
     private static final EntityDataAccessor<Boolean> HAS_SHIELD = SynchedEntityData.defineId(
@@ -68,6 +69,8 @@ public class ZBastionGuardServant extends ZPiglinServant implements IShielded {
     private static final int RAMPAGE_DURATION = 100;
     private static final int RAMPAGE_REFRESH = 60;
     private static final int ORANGE_COLOR = 0xFF8C00;
+    private static final int GUARD_IDLE_HOLD_TICKS = 15;
+    private static final double GUARD_IDLE_CHECK_RANGE = 16.0D;
 
     private int shieldHealth = SHIELD_MAX;
     private int attackTick;
@@ -78,6 +81,7 @@ public class ZBastionGuardServant extends ZPiglinServant implements IShielded {
     private boolean lastShieldClient = true;
     private boolean shieldClientInit;
     private int shieldBreakTicks;
+    private int guardIdleTicks;
     public int actionFadeStart = -1;
 
     public final AnimationState idleAnimationState = new AnimationState();
@@ -86,6 +90,7 @@ public class ZBastionGuardServant extends ZPiglinServant implements IShielded {
     public final AnimationState attackNoShieldAnimationState = new AnimationState();
     public final AnimationState comboAnimationState = new AnimationState();
     public final AnimationState shieldBreakAnimationState = new AnimationState();
+    public final AnimationState guardIdleAnimationState = new AnimationState();
 
     public ZBastionGuardServant(EntityType<? extends ZPiglinServant> type, Level level) {
         super(type, level);
@@ -255,6 +260,7 @@ public class ZBastionGuardServant extends ZPiglinServant implements IShielded {
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (this.getTrueOwner() != null && player.getUUID().equals(this.getTrueOwner().getUUID())
+                && !this.level().isClientSide
                 && this.getShieldHealth() < this.getMaxShieldHealth()
                 && this.isShieldRepair(stack)
                 && this.getTarget() == null && this.hurtTime <= 0) {
@@ -304,7 +310,8 @@ public class ZBastionGuardServant extends ZPiglinServant implements IShielded {
 
     @Override
     public boolean isMeleeAttacking() {
-        return this.getCurrentAnimation() != ANIM_IDLE;
+        int animation = this.getCurrentAnimation();
+        return animation == ANIM_ATTACK_SHIELD || animation == ANIM_ATTACK_NO_SHIELD || animation == ANIM_COMBO;
     }
 
     @Override
@@ -335,6 +342,7 @@ public class ZBastionGuardServant extends ZPiglinServant implements IShielded {
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
         if (ANIM_STATE.equals(accessor) && this.level().isClientSide) {
+            this.guardIdleAnimationState.stop();
             switch (this.getCurrentAnimation()) {
                 case ANIM_ATTACK_SHIELD -> {
                     this.stopAttackAnimations();
@@ -350,6 +358,10 @@ public class ZBastionGuardServant extends ZPiglinServant implements IShielded {
                     this.stopAttackAnimations();
                     this.comboAnimationState.start(this.tickCount);
                     this.actionFadeStart = -1;
+                }
+                case ANIM_GUARD_IDLE -> {
+                    this.actionFadeStart = this.tickCount;
+                    this.guardIdleAnimationState.start(this.tickCount);
                 }
                 default -> {
                     this.actionFadeStart = this.tickCount;
@@ -435,7 +447,20 @@ public class ZBastionGuardServant extends ZPiglinServant implements IShielded {
                     }
                 }
             }
+            if (this.getCurrentAnimation() == ANIM_GUARD_IDLE) {
+                if (this.hasNearbyEnemy()) {
+                    this.guardIdleTicks = 0;
+                } else if (++this.guardIdleTicks >= GUARD_IDLE_HOLD_TICKS) {
+                    this.setAnimationState(ANIM_IDLE);
+                }
+            }
         }
+    }
+
+    private boolean hasNearbyEnemy() {
+        return !this.level().getEntitiesOfClass(LivingEntity.class,
+                this.getBoundingBox().inflate(GUARD_IDLE_CHECK_RANGE),
+                entity -> entity != this && entity.isAlive() && !entity.isSpectator() && MobUtil.canAttack(this, entity)).isEmpty();
     }
 
     private void onShieldBroken() {
@@ -443,6 +468,8 @@ public class ZBastionGuardServant extends ZPiglinServant implements IShielded {
         this.getNavigation().stop();
         this.attackCoolTick = 0;
         this.enraged = false;
+        this.guardIdleTicks = 0;
+        this.setAnimationState(ANIM_IDLE);
         this.stunTicks = STUN_TICKS;
         this.addEffect(new MobEffectInstance(GoetyEffects.STUNNED.get(), STUN_TICKS, 0, false, false, false), this);
         if (this.level() instanceof ServerLevel serverLevel) {
@@ -611,7 +638,12 @@ public class ZBastionGuardServant extends ZPiglinServant implements IShielded {
             this.attackTime = -1;
             this.combo = false;
             this.mob.attackCoolTick = ATTACK_RECOVERY;
-            this.mob.setAnimationState(ANIM_IDLE);
+            this.mob.guardIdleTicks = 0;
+            if (this.mob.hasShield()) {
+                this.mob.setAnimationState(ANIM_GUARD_IDLE);
+            } else {
+                this.mob.setAnimationState(ANIM_IDLE);
+            }
             this.mob.getNavigation().stop();
         }
 

@@ -4,12 +4,14 @@ import com.Polarice3.Goety.api.entities.IShielded;
 import com.Polarice3.Goety.client.particles.ModParticleTypes;
 import com.Polarice3.Goety.client.particles.SmashParticleOption;
 import com.Polarice3.Goety.common.effects.GoetyEffects;
+import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.BlockFinder;
 import com.Polarice3.Goety.utils.ColorUtil;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.ServerParticleUtil;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractPiglinServant;
+import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -28,11 +30,13 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -45,6 +49,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.ForgeEventFactory;
 
 import java.util.EnumSet;
 
@@ -53,6 +58,7 @@ public class BastionGuardServant extends AbstractPiglinServant implements IShiel
     public static final int ANIM_ATTACK_SHIELD = 1;
     public static final int ANIM_ATTACK_NO_SHIELD = 2;
     public static final int ANIM_COMBO = 3;
+    public static final int ANIM_GUARD_IDLE = 4;
     public static final int ACTION_FADE_TICKS = 5;
 
     private static final EntityDataAccessor<Boolean> HAS_SHIELD = SynchedEntityData.defineId(
@@ -68,6 +74,8 @@ public class BastionGuardServant extends AbstractPiglinServant implements IShiel
     private static final int RAMPAGE_DURATION = 100;
     private static final int RAMPAGE_REFRESH = 60;
     private static final int RAMPAGE_COLOR = 0xFF8C00;
+    private static final int GUARD_IDLE_HOLD_TICKS = 15;
+    private static final double GUARD_IDLE_CHECK_RANGE = 16.0D;
 
     private int shieldHealth = SHIELD_MAX;
     private int attackTick;
@@ -78,6 +86,7 @@ public class BastionGuardServant extends AbstractPiglinServant implements IShiel
     private boolean lastShieldClient = true;
     private boolean shieldClientInit;
     private int shieldBreakTicks;
+    private int guardIdleTicks;
     public int actionFadeStart = -1;
 
     public final AnimationState idleAnimationState = new AnimationState();
@@ -86,11 +95,11 @@ public class BastionGuardServant extends AbstractPiglinServant implements IShiel
     public final AnimationState attackNoShieldAnimationState = new AnimationState();
     public final AnimationState comboAnimationState = new AnimationState();
     public final AnimationState shieldBreakAnimationState = new AnimationState();
+    public final AnimationState guardIdleAnimationState = new AnimationState();
 
     public BastionGuardServant(EntityType<? extends AbstractPiglinServant> type, Level level) {
         super(type, level);
         this.xpReward = 15;
-        this.setImmuneToZombification(true);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -147,6 +156,7 @@ public class BastionGuardServant extends AbstractPiglinServant implements IShiel
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(1, new BastionGuardMeleeGoal(this));
+        this.goalSelector.addGoal(8, new Summoned.WanderGoal<>(this, 0.6D));
     }
 
     @Override
@@ -162,6 +172,26 @@ public class BastionGuardServant extends AbstractPiglinServant implements IShiel
     @Override
     protected void playConvertedSound() {
         this.playSound(SoundEvents.PIGLIN_BRUTE_CONVERTED_TO_ZOMBIFIED, 1.0F, this.getVoicePitch());
+    }
+
+    @Override
+    protected EntityType<? extends Mob> getConversionTarget() {
+        return ModEntityTypes.ZBASTION_GUARD_SERVANT.get();
+    }
+
+    @Override
+    protected void finishConversion(ServerLevel serverLevel) {
+        this.getInventory().removeAllItems().forEach(this::spawnAtLocation);
+        ZBastionGuardServant zombified = new ZBastionGuardServant(
+                ModEntityTypes.ZBASTION_GUARD_SERVANT.get(), serverLevel);
+        zombified.copyTrueOwner(this);
+        zombified.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
+        zombified.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 0));
+        zombified.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()),
+                MobSpawnType.CONVERSION, null, null);
+        ForgeEventFactory.onLivingConvert(this, zombified);
+        this.discard();
+        serverLevel.addFreshEntity(zombified);
     }
 
     @Override
@@ -261,12 +291,34 @@ public class BastionGuardServant extends AbstractPiglinServant implements IShiel
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (this.getTrueOwner() != null && player.getUUID().equals(this.getTrueOwner().getUUID())
+                && !this.level().isClientSide
                 && this.getShieldHealth() < this.getMaxShieldHealth()
                 && this.isShieldRepair(stack)
                 && this.getTarget() == null && this.hurtTime <= 0) {
             return this.repairShield(player, stack);
         }
         return super.mobInteract(player, hand);
+    }
+
+    @Override
+    public boolean wantsToPickUp(ItemStack stack) {
+        return this.isShieldRepair(stack) && this.getInventory().canAddItem(stack)
+                || super.wantsToPickUp(stack);
+    }
+
+    @Override
+    public boolean validLootToStore(ItemStack stack) {
+        return super.validLootToStore(stack) && !this.isShieldRepair(stack);
+    }
+
+    @Override
+    public void healServant() {
+        super.healServant();
+        if (!this.level().isClientSide && this.getShieldHealth() < this.getMaxShieldHealth()
+                && this.getTarget() == null && this.hurtTime <= 0) {
+            this.itemsInInv(this::isShieldRepair).stream().findFirst()
+                    .ifPresent(stack -> this.repairShield(this, stack));
+        }
     }
 
     @Override
@@ -310,7 +362,8 @@ public class BastionGuardServant extends AbstractPiglinServant implements IShiel
 
     @Override
     public boolean isMeleeAttacking() {
-        return this.getCurrentAnimation() != ANIM_IDLE;
+        int animation = this.getCurrentAnimation();
+        return animation == ANIM_ATTACK_SHIELD || animation == ANIM_ATTACK_NO_SHIELD || animation == ANIM_COMBO;
     }
 
     @Override
@@ -341,6 +394,7 @@ public class BastionGuardServant extends AbstractPiglinServant implements IShiel
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
         if (ANIM_STATE.equals(accessor) && this.level().isClientSide) {
+            this.guardIdleAnimationState.stop();
             switch (this.getCurrentAnimation()) {
                 case ANIM_ATTACK_SHIELD -> {
                     this.stopAttackAnimations();
@@ -356,6 +410,10 @@ public class BastionGuardServant extends AbstractPiglinServant implements IShiel
                     this.stopAttackAnimations();
                     this.comboAnimationState.start(this.tickCount);
                     this.actionFadeStart = -1;
+                }
+                case ANIM_GUARD_IDLE -> {
+                    this.actionFadeStart = this.tickCount;
+                    this.guardIdleAnimationState.start(this.tickCount);
                 }
                 default -> {
                     this.actionFadeStart = this.tickCount;
@@ -441,7 +499,20 @@ public class BastionGuardServant extends AbstractPiglinServant implements IShiel
                     }
                 }
             }
+            if (this.getCurrentAnimation() == ANIM_GUARD_IDLE) {
+                if (this.hasNearbyEnemy()) {
+                    this.guardIdleTicks = 0;
+                } else if (++this.guardIdleTicks >= GUARD_IDLE_HOLD_TICKS) {
+                    this.setAnimationState(ANIM_IDLE);
+                }
+            }
         }
+    }
+
+    private boolean hasNearbyEnemy() {
+        return !this.level().getEntitiesOfClass(LivingEntity.class,
+                this.getBoundingBox().inflate(GUARD_IDLE_CHECK_RANGE),
+                entity -> entity != this && entity.isAlive() && !entity.isSpectator() && MobUtil.canAttack(this, entity)).isEmpty();
     }
 
     private void onShieldBroken() {
@@ -449,6 +520,8 @@ public class BastionGuardServant extends AbstractPiglinServant implements IShiel
         this.getNavigation().stop();
         this.attackCoolTick = 0;
         this.enraged = false;
+        this.guardIdleTicks = 0;
+        this.setAnimationState(ANIM_IDLE);
         this.stunTicks = STUN_TICKS;
         this.addEffect(new MobEffectInstance(GoetyEffects.STUNNED.get(), STUN_TICKS, 0, false, false, false), this);
         if (this.level() instanceof ServerLevel serverLevel) {
@@ -619,7 +692,12 @@ public class BastionGuardServant extends AbstractPiglinServant implements IShiel
             this.attackTime = -1;
             this.combo = false;
             this.mob.attackCoolTick = ATTACK_RECOVERY;
-            this.mob.setAnimationState(ANIM_IDLE);
+            this.mob.guardIdleTicks = 0;
+            if (this.mob.hasShield()) {
+                this.mob.setAnimationState(ANIM_GUARD_IDLE);
+            } else {
+                this.mob.setAnimationState(ANIM_IDLE);
+            }
             this.mob.getNavigation().stop();
         }
 

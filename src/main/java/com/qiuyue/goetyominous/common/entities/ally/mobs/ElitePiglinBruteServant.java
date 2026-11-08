@@ -37,6 +37,7 @@ public class ElitePiglinBruteServant extends PiglinBruteServant {
 
     @Override
     protected void onMeleeDamageDealt() {
+        this.tryFirebrandConversion();
     }
 
     @Override

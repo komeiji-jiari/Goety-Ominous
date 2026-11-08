@@ -200,6 +200,8 @@ public class BastionGuardModel<T extends Mob> extends HierarchicalModel<T> {
 					guard.idleAnimationState, guard.noShieldIdleAnimationState,
 					guard.attackAnimationState, guard.attackNoShieldAnimationState,
 					guard.comboAnimationState, guard.shieldBreakAnimationState,
+					guard.getCurrentAnimation() == BastionGuardServant.ANIM_GUARD_IDLE,
+					guard.guardIdleAnimationState,
 					limbSwing, limbSwingAmount, ageInTicks,
 					actionFade(guard.actionFadeStart, BastionGuardServant.ACTION_FADE_TICKS, ageInTicks));
 		} else if (entity instanceof ZBastionGuardServant guard) {
@@ -208,6 +210,8 @@ public class BastionGuardModel<T extends Mob> extends HierarchicalModel<T> {
 					guard.idleAnimationState, guard.noShieldIdleAnimationState,
 					guard.attackAnimationState, guard.attackNoShieldAnimationState,
 					guard.comboAnimationState, guard.shieldBreakAnimationState,
+					guard.getCurrentAnimation() == ZBastionGuardServant.ANIM_GUARD_IDLE,
+					guard.guardIdleAnimationState,
 					limbSwing, limbSwingAmount, ageInTicks,
 					actionFade(guard.actionFadeStart, ZBastionGuardServant.ACTION_FADE_TICKS, ageInTicks));
 		}
@@ -221,6 +225,7 @@ public class BastionGuardModel<T extends Mob> extends HierarchicalModel<T> {
 							AnimationState idle, AnimationState noShieldIdle,
 							AnimationState attack, AnimationState attackNoShield,
 							AnimationState combo, AnimationState shieldBreak,
+							boolean guardIdle, AnimationState guardIdleState,
 							float limbSwing, float limbSwingAmount, float ageInTicks, float actionFade) {
 		boolean shieldStance = shielded || breaking;
 		this.shield.visible = shieldStance;
@@ -259,9 +264,18 @@ public class BastionGuardModel<T extends Mob> extends HierarchicalModel<T> {
 			actionWeight = 1.0F - actionFade;
 		}
 		float walkWeight = moving ? Math.min(1.0F, limbSwingAmount * (shieldStance ? 4.0F : 9.6F)) : 0.0F;
-		this.animateIdle(shieldStance ? idle : noShieldIdle,
-				shieldStance ? BastionGuardAnimation.IDLE_SHIELD : BastionGuardAnimation.IDLE_NO_SHIELD,
-				ageInTicks, 1.0F - walkWeight);
+		float idleWeight = 1.0F - walkWeight;
+		if (guardIdle && shieldStance && !breaking) {
+			guardIdleState.updateTime(ageInTicks, 1.0F);
+			if (idleWeight > 0.0F) {
+				long guardTime = 3000L + guardIdleState.getAccumulatedTime();
+				KeyframeAnimations.animate(this, BastionGuardAnimation.IDLE_SHIELD_GUARD, guardTime, idleWeight, ANIMATION_VECTOR);
+			}
+		} else {
+			this.animateIdle(shieldStance ? idle : noShieldIdle,
+					shieldStance ? BastionGuardAnimation.IDLE_SHIELD : BastionGuardAnimation.IDLE_NO_SHIELD,
+					ageInTicks, idleWeight);
+		}
 		if (walkWeight > 0.0F) {
 			this.animateWalk(shieldStance ? BastionGuardAnimation.WALK_SHIELD : BastionGuardAnimation.WALK_NO_SHIELD,
 					limbSwing, walkWeight, 1.5F, 1.0F);

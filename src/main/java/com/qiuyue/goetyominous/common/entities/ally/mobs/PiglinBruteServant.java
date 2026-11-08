@@ -5,6 +5,7 @@ import com.Polarice3.Goety.common.entities.neutral.ZPiglinBruteServant;
 import javax.annotation.Nullable;
 
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
+import com.qiuyue.goetyominous.common.items.ModItems;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractPiglinServant;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
@@ -34,6 +35,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.ForgeEventFactory;
 
 public class PiglinBruteServant extends AbstractPiglinServant {
+
+    private boolean lastFirebrand;
+    private boolean firebrandInitialized;
 
     public PiglinBruteServant(EntityType<? extends Owned> p_35048_, Level p_35049_) {
         super(p_35048_, p_35049_);
@@ -79,6 +83,8 @@ public class PiglinBruteServant extends AbstractPiglinServant {
     @Override
     protected void onMeleeDamageDealt() {
         if (this.level().isClientSide) return;
+        if (this.tryFirebrandConversion()) return;
+        if (this.isFirebrandHeld()) return;
         if (this.meleeDamageDealt >= MobsConfig.PiglinBruteServantEvolutionDamage.get()){
             StrongPiglinBruteServant stronger = new StrongPiglinBruteServant(
                     ModEntityTypes.STRONG_PIGLIN_BRUTE_SERVANT.get(), this.level());
@@ -103,6 +109,48 @@ public class PiglinBruteServant extends AbstractPiglinServant {
             ((ServerLevel) this.level()).sendParticles(ParticleTypes.FLASH,
                     this.getX(), this.getY() + 1.0, this.getZ(), 1, 0, 0, 0, 0);
         }
+    }
+
+    protected boolean tryFirebrandConversion() {
+        if (this.level().isClientSide || this.upgradesLocked()) {
+            return false;
+        }
+        if (!this.isFirebrandHeld()
+                || this.meleeDamageDealt < MobsConfig.BastionGuardServantEvolutionDamage.get()) {
+            return false;
+        }
+        if (!(this.level() instanceof ServerLevel serverLevel)) {
+            return false;
+        }
+        BastionGuardServant guard = new BastionGuardServant(
+                ModEntityTypes.BASTION_GUARD_SERVANT.get(), serverLevel);
+        guard.copyTrueOwner(this);
+        guard.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
+        guard.setBaby(this.isBaby());
+        guard.setHealth(guard.getMaxHealth());
+        if (this.isImmuneToZombification()) {
+            guard.setImmuneToZombification(true);
+        }
+        for (int i = 0; i < this.getInventory().getContainerSize(); i++) {
+            ItemStack stack = this.getInventory().getItem(i);
+            if (!stack.isEmpty()) {
+                guard.getInventory().setItem(i, stack.copy());
+            }
+        }
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            if (slot == EquipmentSlot.MAINHAND) {
+                continue;
+            }
+            ItemStack stack = this.getItemBySlot(slot);
+            if (!stack.isEmpty()) {
+                this.spawnAtLocation(stack.copy());
+            }
+        }
+        this.discard();
+        serverLevel.addFreshEntity(guard);
+        serverLevel.sendParticles(ParticleTypes.FLASH,
+                this.getX(), this.getY() + 1.0, this.getZ(), 1, 0, 0, 0, 0);
+        return true;
     }
 
     @Override
@@ -138,7 +186,21 @@ public class PiglinBruteServant extends AbstractPiglinServant {
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_AXE));
     }
 
+    public boolean isFirebrandHeld() {
+        return this.getMainHandItem().is(ModItems.FIREBRAND.get());
+    }
+
+    @Override
     protected void customServerAiStep() {
+        boolean firebrand = this.isFirebrandHeld();
+        if (this.firebrandInitialized) {
+            if (firebrand != this.lastFirebrand) {
+                this.meleeDamageDealt = 0;
+            }
+        } else {
+            this.firebrandInitialized = true;
+        }
+        this.lastFirebrand = firebrand;
         super.customServerAiStep();
     }
 

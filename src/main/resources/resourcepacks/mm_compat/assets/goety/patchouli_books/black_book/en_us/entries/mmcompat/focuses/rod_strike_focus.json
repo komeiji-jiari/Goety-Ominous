@@ -8,7 +8,7 @@
   "pages": [
     {
       "type": "text",
-      "text": "This spell allows you to summon Rodling servants that will never turn against you. These miniature Blazes, far smaller than their kin, are equally adept at launching fireballs to burn creatures to death."
+      "text": "This spell allows you to fire volleys of Blaze Rods in rows at your enemies. Upon landing, the Blaze Rods transform into Rodling servants that will never turn against you. These miniature Blazes are equally adept at launching fireballs to burn creatures to death."
     },
     {
       "type": "goety:ritual",
@@ -17,7 +17,7 @@
     },
     {
       "type": "text",
-      "text": "Using a Nether Staff allows you to summon more Rodlings at once."
+      "text": "Casting this spell with a Nether Staff fires 3 additional Blaze Rods and converts 1 additional Rodling servant."
     }
   ]
 }

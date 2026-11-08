@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.client.render;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.render.model.BastionGuardModel;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.ZBastionGuardServant;
+import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractPiglinServant;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -19,6 +20,12 @@ public class BastionGuardRenderer<T extends Mob> extends MobRenderer<T, BastionG
 
     public BastionGuardRenderer(EntityRendererProvider.Context context) {
         super(context, new BastionGuardModel<>(context.bakeLayer(BastionGuardModel.LAYER_LOCATION)), 0.5F);
+    }
+
+    @Override
+    protected boolean isShaking(T entity) {
+        return super.isShaking(entity)
+                || entity instanceof AbstractPiglinServant piglin && piglin.isConverting();
     }
 
     @Override
