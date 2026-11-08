@@ -43,29 +43,17 @@ public class MutantShulkerServantModel<T extends MutantShulkerServant> extends M
         }
         pEntity.walkPhaseAge = pAgeInTicks;
 
-        this.mathAnimateState(pEntity, pEntity.deathAnimation, MutantShulkerMathAnimations3.DEATH, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-        if (pEntity.introAnimationTick > 0) {
-            this.mathAnimateState(pEntity, pEntity.idleRareAnimation, MutantShulkerMathAnimations1.IDLE_RARE, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-        }
-        this.mathAnimateState(pEntity, pEntity.anvilCrushAnimation, MutantShulkerMathAnimations3.ANVIL_CRUSH, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-        this.mathAnimateState(pEntity, pEntity.summonTrapsInShellAnimation, MutantShulkerMathAnimations3.SUMMON_TRAPS_IN_SHELL, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-        this.mathAnimateState(pEntity, pEntity.shootInShellAnimation, MutantShulkerMathAnimations3.SHOOT_IN_SHELL, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-        this.mathAnimateState(pEntity, pEntity.idleRareInShellAnimation, MutantShulkerMathAnimations3.IDLE_RARE_IN_SHELL, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-        this.mathAnimateState(pEntity, pEntity.idleInShellAnimation, MutantShulkerMathAnimations3.IDLE_IN_SHELL, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-        this.mathAnimateState(pEntity, pEntity.summonTrapsAnimation, MutantShulkerMathAnimations3.SUMMON_TRAPS, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-        this.mathAnimateState(pEntity, pEntity.biteAnimation, MutantShulkerMathAnimations2.BITE, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-        this.mathAnimateState(pEntity, pEntity.shootAnimation, MutantShulkerMathAnimations2.SHOOT, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-        boolean priorityActive = pEntity.isInBox()
-                || pEntity.deathAnimation.isStarted()
+        boolean actionActive = pEntity.deathAnimation.isStarted()
+                || pEntity.idleRareAnimation.isStarted()
                 || pEntity.anvilCrushAnimation.isStarted()
                 || pEntity.summonTrapsInShellAnimation.isStarted()
                 || pEntity.shootInShellAnimation.isStarted()
                 || pEntity.idleRareInShellAnimation.isStarted()
-                || pEntity.idleInShellAnimation.isStarted()
                 || pEntity.summonTrapsAnimation.isStarted()
                 || pEntity.biteAnimation.isStarted()
-                || pEntity.shootAnimation.isStarted()
-                || (pEntity.idleRareAnimation.isStarted() && pEntity.introAnimationTick > 0);
+                || pEntity.shootAnimation.isStarted();
+        pEntity.actionAmount = Mth.clamp(SineWaveAnimationUtils.tickAmountMultiplierChange(pEntity.actionAmount, actionActive, deltaTicks * 0.25F), 0.0F, 1.0F);
+
         float wSpeed = Math.abs(pEntity.walkAnimation.speed());
         boolean walking = pEntity.onGround();
         if (pEntity.wasWalking) {
@@ -76,36 +64,66 @@ public class MutantShulkerServantModel<T extends MutantShulkerServant> extends M
             pEntity.wasWalking = true;
         }
         pEntity.walkAmount = Mth.clamp(SineWaveAnimationUtils.tickAmountMultiplierChange(pEntity.walkAmount, pEntity.wasWalking, deltaTicks * 0.18F), 0.0F, 1.0F);
-        if (!priorityActive) {
-            if (pEntity.walkAmount > 0.001F) {
 
-                float targetScale = Mth.clamp(wSpeed * 2.8F, 0.0F, 5.0F);
-                pEntity.walkScale += (targetScale - pEntity.walkScale) * Math.min(1.0F, deltaTicks * 0.4F);
-                pEntity.walkPhaseSeconds += pEntity.walkScale * (deltaTicks / 20.0F);
-                this.ensurePoseBuffers();
+        this.ensurePoseBuffers();
+        this.resetAll();
+        if (pEntity.isInBox()) {
+            this.mathAnimateState(pEntity, pEntity.idleInShellAnimation, MutantShulkerMathAnimations3.IDLE_IN_SHELL, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
+        } else if (pEntity.walkAmount > 0.001F) {
+            float targetScale = Mth.clamp(wSpeed * 2.8F, 0.0F, 5.0F);
+            pEntity.walkScale += (targetScale - pEntity.walkScale) * Math.min(1.0F, deltaTicks * 0.4F);
+            pEntity.walkPhaseSeconds += pEntity.walkScale * (deltaTicks / 20.0F);
 
+            this.applyIdleBase(pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
+            this.capturePose(this.basePose);
+            this.resetAll();
+            this.mathAnimate(pEntity, MutantShulkerMathAnimations1.WALK, (long)(pEntity.walkPhaseSeconds * 1000.0F), 1.0F, pLimbSwing, pLimbSwingAmount, pEntity.walkPhaseSeconds * 20.0F, pNetHeadYaw, pHeadPitch);
+            this.capturePose(this.walkPose);
+            this.resetAll();
+            this.applyIdleBase(pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
+            this.lerpTo(this.basePose, this.walkPose, pEntity.walkAmount);
+        } else {
+            this.applyIdleBase(pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
+        }
+        this.capturePose(this.basePose);
+
+        if (pEntity.actionAmount > 0.001F) {
+            if (actionActive) {
                 this.resetAll();
-                this.applyIdleBase(pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-                this.capturePose(this.basePose);
-                this.resetAll();
-                this.mathAnimate(pEntity, MutantShulkerMathAnimations1.WALK, (long)(pEntity.walkPhaseSeconds * 1000.0F), 1.0F, pLimbSwing, pLimbSwingAmount, pEntity.walkPhaseSeconds * 20.0F, pNetHeadYaw, pHeadPitch);
-                this.capturePose(this.walkPose);
-                this.resetAll();
-                this.applyIdleBase(pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-                this.lerpTo(this.basePose, this.walkPose, pEntity.walkAmount);
-            } else {
-                this.applyIdleBase(pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
+                if (pEntity.idleRareAnimation.isStarted()) {
+                    this.mathAnimateState(pEntity, pEntity.idleAnimation, MutantShulkerMathAnimations1.IDLE, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
+                    this.mathAnimateState(pEntity, pEntity.idleRareAnimation, MutantShulkerMathAnimations1.IDLE_RARE, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
+                }
+                this.mathAnimateState(pEntity, pEntity.deathAnimation, MutantShulkerMathAnimations3.DEATH, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
+                this.mathAnimateState(pEntity, pEntity.anvilCrushAnimation, MutantShulkerMathAnimations3.ANVIL_CRUSH, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
+                this.mathAnimateState(pEntity, pEntity.summonTrapsInShellAnimation, MutantShulkerMathAnimations3.SUMMON_TRAPS_IN_SHELL, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
+                this.mathAnimateState(pEntity, pEntity.shootInShellAnimation, MutantShulkerMathAnimations3.SHOOT_IN_SHELL, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
+                this.mathAnimateState(pEntity, pEntity.idleRareInShellAnimation, MutantShulkerMathAnimations3.IDLE_RARE_IN_SHELL, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
+                this.mathAnimateState(pEntity, pEntity.summonTrapsAnimation, MutantShulkerMathAnimations3.SUMMON_TRAPS, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
+                this.mathAnimateState(pEntity, pEntity.biteAnimation, MutantShulkerMathAnimations2.BITE, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
+                this.mathAnimateState(pEntity, pEntity.shootAnimation, MutantShulkerMathAnimations2.SHOOT, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
+                this.capturePose(this.actionSnapshot(pEntity));
+            }
+            float[][] snapshot = pEntity.actionPoseSnapshot;
+            if (snapshot != null && snapshot.length == this.parts().size()) {
+                this.lerpTo(this.basePose, snapshot, pEntity.actionAmount);
             }
         }
+
         this.head.xRot += (float)Math.toRadians(pHeadPitch);
         this.head.yRot += (float)Math.toRadians(pNetHeadYaw);
     }
 
     private void applyIdleBase(T pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
         this.mathAnimateState(pEntity, pEntity.idleAnimation, MutantShulkerMathAnimations1.IDLE, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-        if (!pEntity.wasWalking) {
-            this.mathAnimateState(pEntity, pEntity.idleRareAnimation, MutantShulkerMathAnimations1.IDLE_RARE, 1.0F, 1.0F, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
+    }
+
+    private float[][] actionSnapshot(T pEntity) {
+        int n = this.parts().size();
+        if (pEntity.actionPoseSnapshot == null || pEntity.actionPoseSnapshot.length != n) {
+            pEntity.actionPoseSnapshot = new float[n][6];
         }
+        return pEntity.actionPoseSnapshot;
     }
 
     private List<ModelPart> parts() {

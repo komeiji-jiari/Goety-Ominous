@@ -5,7 +5,6 @@ import com.Polarice3.Goety.utils.MobUtil;
 import com.alexander.mutantmore.util.MiscUtils;
 import com.google.common.collect.Lists;
 import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
-import com.qiuyue.goetyominous.utils.BossUtil;
 import java.util.ArrayList;
 import java.util.UUID;
 import javax.annotation.Nullable;
@@ -20,8 +19,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -49,8 +46,6 @@ public class MutantShulkerServantTrapBullet extends Projectile {
     @Nullable
     private UUID targetId;
     public float damage = 0.0F;
-    public int levitationLength = 0;
-    public int levitationLevel = 0;
     public float trackSpeed = 0.15F;
 
     public MutantShulkerServantTrapBullet(EntityType<? extends MutantShulkerServantTrapBullet> type, Level level) {
@@ -98,8 +93,6 @@ public class MutantShulkerServantTrapBullet extends Projectile {
         tag.putDouble("TYD", this.targetDeltaY);
         tag.putDouble("TZD", this.targetDeltaZ);
         tag.putFloat("Damage", this.damage);
-        tag.putInt("LevitationLength", this.levitationLength);
-        tag.putInt("LevitationLevel", this.levitationLevel);
         tag.putFloat("TrackSpeed", this.trackSpeed);
     }
 
@@ -117,8 +110,6 @@ public class MutantShulkerServantTrapBullet extends Projectile {
             this.targetId = tag.getUUID("Target");
         }
         this.damage = tag.getFloat("Damage");
-        this.levitationLength = tag.getInt("LevitationLength");
-        this.levitationLevel = tag.getInt("LevitationLevel");
         if (tag.contains("TrackSpeed")) {
             this.trackSpeed = tag.getFloat("TrackSpeed");
         }
@@ -196,7 +187,7 @@ public class MutantShulkerServantTrapBullet extends Projectile {
             this.targetDeltaZ = d4 / d5 * (double) this.trackSpeed;
         }
         this.hasImpulse = true;
-        this.flightSteps = 10 + this.random.nextInt(5) * 10;
+        this.flightSteps = 20 + this.random.nextInt(5) * 10;
     }
 
     private void updateFinalApproach() {
@@ -248,7 +239,7 @@ public class MutantShulkerServantTrapBullet extends Projectile {
                 this.targetDeltaZ = Mth.clamp(this.targetDeltaZ * 1.025D, -1.0D, 1.0D);
                 this.updateFinalApproach();
                 Vec3 vec3 = this.getDeltaMovement();
-                this.setDeltaMovement(vec3.add((this.targetDeltaX - vec3.x) * 0.2D, (this.targetDeltaY - vec3.y) * 0.2D, (this.targetDeltaZ - vec3.z) * 0.2D));
+                this.setDeltaMovement(vec3.add((this.targetDeltaX - vec3.x) * 0.35D, (this.targetDeltaY - vec3.y) * 0.35D, (this.targetDeltaZ - vec3.z) * 0.35D));
             }
             HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
             if (hitresult.getType() != HitResult.Type.MISS && !ForgeEventFactory.onProjectileImpact(this, hitresult)) {
@@ -265,7 +256,7 @@ public class MutantShulkerServantTrapBullet extends Projectile {
             if (this.flightSteps > 0) {
                 --this.flightSteps;
                 if (this.flightSteps == 0) {
-                    this.selectNextMoveDirection(this.currentMoveDirection == null ? null : this.currentMoveDirection.getAxis());
+                    this.selectNextMoveDirection(null);
                 }
             }
             if (this.currentMoveDirection != null) {
@@ -323,10 +314,6 @@ public class MutantShulkerServantTrapBullet extends Projectile {
             boolean flag = entity.hurt(this.damageSources().mobProjectile(this, livingentity), this.damage);
             if (flag) {
                 this.doEnchantDamageEffects(livingentity, entity);
-                if (entity instanceof LivingEntity living && !BossUtil.isBoss(living) && this.levitationLength > 0) {
-                    living.addEffect(new MobEffectInstance(MobEffects.LEVITATION, this.levitationLength, this.levitationLevel),
-                            entity1 != null ? entity1 : this);
-                }
             }
         }
     }

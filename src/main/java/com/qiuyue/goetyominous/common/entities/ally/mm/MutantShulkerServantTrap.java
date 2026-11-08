@@ -258,8 +258,6 @@ public class MutantShulkerServantTrap extends Summoned {
                         owner != null ? owner : this, bulletTarget, null, bulletX, bulletY, bulletZ,
                         this.bulletTrackSpeed);
                 bullet.damage = MutantShulkerRewardsCommonConfig.trap_shulker_bullet_damage.get().floatValue() + this.bonusDamage;
-                bullet.levitationLength = MutantShulkerRewardsCommonConfig.trap_shulker_bullet_levitation_length.get();
-                bullet.levitationLevel = MutantShulkerRewardsCommonConfig.trap_shulker_bullet_levitation_level.get();
                 this.level().addFreshEntity(bullet);
             }
         }

@@ -12,7 +12,6 @@ import com.alexander.mutantmore.init.ParticleTypeInit;
 import com.alexander.mutantmore.init.SoundEventInit;
 import com.alexander.mutantmore.init.TagInit.Blocks;
 import com.alexander.mutantmore.util.MiscUtils;
-import com.qiuyue.goetyominous.utils.BossUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -24,8 +23,6 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -47,8 +44,6 @@ public class MutantShulkerServantBullet extends SpellThrowableProjectile {
     public int immuneTicks = 0;
     public float damage = 0.0F;
     public float explosionSize = 1.0F;
-    public int levitationLength = 0;
-    public int levitationLevel = 0;
     public boolean ignoresInvulTime = true;
     public float trackSpeed = 1.25F;
     public int moveDelay = 0;
@@ -232,10 +227,6 @@ public class MutantShulkerServantBullet extends SpellThrowableProjectile {
                 this.explode();
                 if (flag) {
                     this.doEnchantDamageEffects(owner, entity);
-                    if (entity instanceof LivingEntity living && !(owner instanceof MutantShulkerServant)
-                            && !BossUtil.isBoss(living) && this.levitationLength > 0) {
-                        living.addEffect(new MobEffectInstance(MobEffects.LEVITATION, this.levitationLength, this.levitationLevel), owner != null ? owner : this);
-                    }
                 }
             }
         } else if (entity instanceof MutantShulkerServantBullet) {
@@ -346,8 +337,6 @@ public class MutantShulkerServantBullet extends SpellThrowableProjectile {
         tag.putInt("RemainingHits", this.getRemainingHits());
         tag.putFloat("Damage", this.damage);
         tag.putFloat("ExplosionSize", this.explosionSize);
-        tag.putInt("LevitationLength", this.levitationLength);
-        tag.putInt("LevitationLevel", this.levitationLevel);
         tag.putBoolean("IgnoresInvulTime", this.ignoresInvulTime);
         tag.putFloat("TrackSpeed", this.trackSpeed);
     }
@@ -363,12 +352,6 @@ public class MutantShulkerServantBullet extends SpellThrowableProjectile {
         }
         if (tag.contains("ExplosionSize")) {
             this.explosionSize = tag.getFloat("ExplosionSize");
-        }
-        if (tag.contains("LevitationLength")) {
-            this.levitationLength = tag.getInt("LevitationLength");
-        }
-        if (tag.contains("LevitationLevel")) {
-            this.levitationLevel = tag.getInt("LevitationLevel");
         }
         if (tag.contains("IgnoresInvulTime")) {
             this.ignoresInvulTime = tag.getBoolean("IgnoresInvulTime");

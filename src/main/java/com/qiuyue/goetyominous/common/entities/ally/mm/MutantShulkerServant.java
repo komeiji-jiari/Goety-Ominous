@@ -89,6 +89,8 @@ public class MutantShulkerServant extends AbstractMutantServant implements IHasC
     public boolean wasWalking;
     public float walkScale;
     public float walkPhaseSeconds;
+    public float actionAmount;
+    public float[][] actionPoseSnapshot;
     private static final EntityDataAccessor<Boolean> IN_BOX = SynchedEntityData.defineId(MutantShulkerServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> ANVIL_ATTACKING = SynchedEntityData.defineId(MutantShulkerServant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Byte> COLOR_ID = SynchedEntityData.defineId(MutantShulkerServant.class, EntityDataSerializers.BYTE);
@@ -451,7 +453,7 @@ public class MutantShulkerServant extends AbstractMutantServant implements IHasC
             this.playSound(SoundEvents.SHULKER_HURT_CLOSED, 1.0F, 0.5F);
             return false;
         }
-        if (!this.level().isClientSide && MutantShulkerCommonConfig.teleports_when_hit.get() && !this.isStaying() && this.random.nextInt(MutantShulkerCommonConfig.teleport_when_hit_chance.get()) == 0 && !p_21016_.is(DamageTypes.GENERIC_KILL) && !p_21016_.is(DamageTypes.FELL_OUT_OF_WORLD) && !this.isDeadOrDying()) {
+        if (!this.level().isClientSide && MutantShulkerCommonConfig.teleports_when_hit.get() && !this.isStaying() && !this.isAnvilCrushActive() && this.random.nextInt(MutantShulkerCommonConfig.teleport_when_hit_chance.get()) == 0 && !p_21016_.is(DamageTypes.GENERIC_KILL) && !p_21016_.is(DamageTypes.FELL_OUT_OF_WORLD) && !this.isDeadOrDying()) {
             this.teleport();
             return false;
         }
@@ -551,6 +553,10 @@ public class MutantShulkerServant extends AbstractMutantServant implements IHasC
 
     public boolean isAnvilAttacking() {
         return this.getEntityData().get(ANVIL_ATTACKING);
+    }
+
+    public boolean isAnvilCrushActive() {
+        return this.isAnvilAttacking() || this.anvilCrushAnimationTick > 0;
     }
 
     public void setAnvilAttacking(boolean inBox) {
@@ -699,16 +705,16 @@ public class MutantShulkerServant extends AbstractMutantServant implements IHasC
             }
             entity.hurt(MMDamageTypes.mutantShulkerAnvilCrushAttack(this.damageSources(), this), MutantShulkerCommonConfig.anvil_crush_damage.get().floatValue());
         }
-        if (!this.level().isClientSide && MutantShulkerCommonConfig.teleports_to_avoid_falling_into_the_void.get() && this.getTarget() != null && this.isFallingToDoom() && !this.isAnvilAttacking()) {
+        if (!this.level().isClientSide && MutantShulkerCommonConfig.teleports_to_avoid_falling_into_the_void.get() && this.getTarget() != null && this.isFallingToDoom() && !this.isAnvilCrushActive()) {
             this.teleportTowards(this.getTarget());
         }
-        if (this.isInWater() && MutantShulkerCommonConfig.teleports_in_water.get() && !this.isIdleStandby()) {
+        if (this.isInWater() && MutantShulkerCommonConfig.teleports_in_water.get() && !this.isIdleStandby() && !this.isAnvilCrushActive()) {
             if (!this.tryTeleportOutOfWater()) {
 
                 this.sinkInWater();
             }
         }
-        if (!this.level().isClientSide && this.getTarget() != null && this.distanceTo(this.getTarget()) > 5.0F && this.random.nextInt(MutantShulkerCommonConfig.basic_teleport_chance.get()) == 0 && !this.isDeadOrDying() && !this.isAnvilAttacking() && !this.isStaying()) {
+        if (!this.level().isClientSide && this.getTarget() != null && this.distanceTo(this.getTarget()) > 5.0F && this.random.nextInt(MutantShulkerCommonConfig.basic_teleport_chance.get()) == 0 && !this.isDeadOrDying() && !this.isAnvilCrushActive() && !this.isStaying()) {
             if (this.isInBox() && MutantShulkerCommonConfig.teleports_while_in_shell.get()) {
                 this.teleport(this.getTarget().getX() - 15.0 + this.random.nextInt(30), this.getY(), this.getTarget().getZ() - 15.0 + this.random.nextInt(30));
             } else if (MutantShulkerCommonConfig.teleports_to_follow_target.get()) {
@@ -774,8 +780,6 @@ public class MutantShulkerServant extends AbstractMutantServant implements IHasC
             if (this.hasVoidShard()) {
                 projectile.explosionSize += 2.0F;
             }
-            projectile.levitationLength = MutantShulkerCommonConfig.mutant_shulker_bullet_levitation_length.get();
-            projectile.levitationLevel = MutantShulkerCommonConfig.mutant_shulker_bullet_levitation_level.get();
             projectile.ignoresInvulTime = MutantShulkerCommonConfig.ignores_invulnerability_time.get();
             projectile.setRemainingHits(MutantShulkerCommonConfig.mutant_shulker_bullet_hits.get());
             projectile.moveDelay = 8;
@@ -791,8 +795,6 @@ public class MutantShulkerServant extends AbstractMutantServant implements IHasC
             if (this.hasVoidShard()) {
                 projectile.explosionSize += 2.0F;
             }
-            projectile.levitationLength = MutantShulkerCommonConfig.mutant_shulker_bullet_levitation_length.get();
-            projectile.levitationLevel = MutantShulkerCommonConfig.mutant_shulker_bullet_levitation_level.get();
             projectile.ignoresInvulTime = MutantShulkerCommonConfig.ignores_invulnerability_time.get();
             projectile.setRemainingHits(MutantShulkerCommonConfig.mutant_shulker_bullet_hits.get());
             projectile.moveDelay = 8;
@@ -882,7 +884,7 @@ public class MutantShulkerServant extends AbstractMutantServant implements IHasC
         somethingAnimating = somethingAnimating || this.shootInShellAnimation.isStarted();
         this.idleRareInShellAnimation.animateWhen(this.isInBox() && this.specialAnimationTickInShell > 0 && !somethingAnimating, this.tickCount);
         somethingAnimating = somethingAnimating || this.idleRareInShellAnimation.isStarted();
-        this.idleInShellAnimation.animateWhen(this.isInBox() && !somethingAnimating, this.tickCount);
+        this.idleInShellAnimation.animateWhen(this.isInBox(), this.tickCount);
         somethingAnimating = somethingAnimating || this.idleInShellAnimation.isStarted();
         this.summonTrapsAnimation.animateWhen(!this.isInBox() && this.summonTrapsAnimationTick > 0 && !somethingAnimating, this.tickCount);
         somethingAnimating = somethingAnimating || this.summonTrapsAnimation.isStarted();
@@ -892,7 +894,7 @@ public class MutantShulkerServant extends AbstractMutantServant implements IHasC
         somethingAnimating = somethingAnimating || this.shootAnimation.isStarted();
         this.idleRareAnimation.animateWhen(!this.isInBox() && this.specialAnimationTick > 0 && !somethingAnimating, this.tickCount);
         somethingAnimating = somethingAnimating || this.idleRareAnimation.isStarted();
-        this.idleAnimation.animateWhen(!this.isInBox() && !somethingAnimating, this.tickCount);
+        this.idleAnimation.animateWhen(!this.isInBox(), this.tickCount);
     }
 
     public void tickDownAnimTimers() {

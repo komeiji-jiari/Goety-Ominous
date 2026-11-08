@@ -69,6 +69,7 @@ public class MutantShulkerServantScatterTrapsAttackGoal extends Goal {
             trap.setSpawnedByMutantShulker(true);
             trap.setLimitedLife(MobUtil.getSummonLifespan(this.mob.level()));
             trap.setColor(this.mob.getColor());
+            trap.voidTouchedHit = this.mob.hasVoidEye();
             trap.setTarget(this.target);
             ((ServerLevel)this.mob.level()).addFreshEntityWithPassengers(trap);
         }
