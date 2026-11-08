@@ -1,24 +1,39 @@
 package com.qiuyue.goetyominous.common.entities.ally.mm;
 
+import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.common.entities.projectiles.SpellThrowableProjectile;
+import com.Polarice3.Goety.utils.ColorUtil;
+import com.Polarice3.Goety.utils.EffectsUtil;
 import com.Polarice3.Goety.utils.MobUtil;
+import com.Polarice3.Goety.utils.ServerParticleUtil;
+import com.alexander.mutantmore.config.mutant_blaze.RodlingCommonConfig;
 import com.alexander.mutantmore.init.MMDamageTypes;
 import com.alexander.mutantmore.init.SoundEventInit;
 import com.alexander.mutantmore.util.MiscUtils;
 import javax.annotation.Nullable;
 
 import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
+import com.qiuyue.goetyominous.config.mm.MmConfig;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
@@ -46,6 +61,9 @@ public class MutantBlazeServantRodProjectile extends SpellThrowableProjectile {
     public int despawnTime = 1200;
     public boolean glows = false;
     public int spellLifespanMultiplier = 0;
+    public int spellRodlingLifespan = 0;
+    public int spellPotency = 0;
+    public boolean spellSapSnapshot = false;
 
     public MutantBlazeServantRodProjectile(EntityType<? extends MutantBlazeServantRodProjectile> type, Level level) {
         super(type, level);
@@ -158,6 +176,10 @@ public class MutantBlazeServantRodProjectile extends SpellThrowableProjectile {
         if (owner == null && this.getOwner() != null) {
             owner = this.getOwner();
         }
+        if (player == null && owner instanceof Player && this.spellRodlingLifespan > 0) {
+            this.becomeSpellRodling((Player)owner);
+            return;
+        }
         if (player == null && owner instanceof MutantBlazeServant blaze
                 && blaze.rodlingServantCount() >= MutantBlazeServant.MAX_RODLING_SERVANTS) {
             this.summonedRodling = true;
@@ -192,6 +214,63 @@ public class MutantBlazeServantRodProjectile extends SpellThrowableProjectile {
         this.level().addFreshEntity(rodling);
         this.summonedRodling = true;
         this.discard();
+    }
+
+    private void becomeSpellRodling(Player player) {
+        if (this.level().isClientSide || this.summonedRodling) {
+            return;
+        }
+        if (this.countOwnedRodlings(player) >= MmConfig.RodlingServantLimit.get()) {
+            this.summonedRodling = true;
+            this.discard();
+            return;
+        }
+
+        RodlingServant rodling = new RodlingServant(MmEntityRegistry.RODLING_SERVANT.get(), this.level());
+        rodling.setTrueOwner(player);
+        rodling.setPersistenceRequired();
+        rodling.setLimitedLife(this.spellRodlingLifespan);
+        if (this.hasShields()) {
+            rodling.setShields(2);
+        }
+        if (this.hasArmour()) {
+            rodling.setHasHelmet(true);
+        }
+        rodling.moveTo(this.getX(), this.getY(), this.getZ());
+
+        ServerLevel serverLevel = (ServerLevel)this.level();
+        rodling.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(rodling.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+
+        if (this.spellPotency > 0) {
+            rodling.setFireBallDamage(RodlingCommonConfig.tamed_fireball_damage.get().floatValue() + this.spellPotency);
+        }
+        MobEffectInstance down = this.spellSapSnapshot ? player.getEffect(GoetyEffects.SUMMON_DOWN.get()) : null;
+        if (down != null) {
+            rodling.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, EffectsUtil.infiniteEffect(), down.getAmplifier()));
+            rodling.addEffect(new MobEffectInstance(GoetyEffects.SAPPED.get(), EffectsUtil.infiniteEffect(), down.getAmplifier() + 4));
+            for (ItemStack stack : rodling.getAllSlots()) {
+                if (!stack.isDamageableItem()) {
+                    continue;
+                }
+                stack.setDamageValue(stack.getMaxDamage() - rodling.getRandom().nextInt(1 + rodling.getRandom().nextInt(Math.max(stack.getMaxDamage() - 3, 1))));
+            }
+            rodling.setHealth(rodling.getMaxHealth() / 2.0F);
+        } else if (this.spellPotency > 0) {
+            rodling.addEffect(new MobEffectInstance(GoetyEffects.BUFF.get(), EffectsUtil.infiniteEffect(), Mth.clamp(this.spellPotency - 1, 0, 10), false, false));
+        }
+
+        ServerParticleUtil.summonUndeadParticles(serverLevel, rodling, new ColorUtil(16753408), 16753408, 0xFFFF6E);
+        this.level().addFreshEntity(rodling);
+        if (player instanceof ServerPlayer serverPlayer) {
+            CriteriaTriggers.SUMMONED_ENTITY.trigger(serverPlayer, rodling);
+        }
+        this.summonedRodling = true;
+        this.discard();
+    }
+
+    private int countOwnedRodlings(LivingEntity owner) {
+        return this.level().getEntitiesOfClass(RodlingServant.class, this.getBoundingBox().inflate(64.0D),
+                rodling -> rodling.isAlive() && owner.getUUID().equals(rodling.getOwnerId())).size();
     }
 
     @Override
@@ -250,6 +329,9 @@ public class MutantBlazeServantRodProjectile extends SpellThrowableProjectile {
         tag.putBoolean("IgnoresInvulTime", this.ignoresInvulTime);
         tag.putInt("DespawnTime", this.despawnTime);
         tag.putBoolean("Glows", this.glows);
+        tag.putInt("SpellRodlingLifespan", this.spellRodlingLifespan);
+        tag.putInt("SpellPotency", this.spellPotency);
+        tag.putBoolean("SpellSapSnapshot", this.spellSapSnapshot);
     }
 
     @Override
@@ -265,5 +347,8 @@ public class MutantBlazeServantRodProjectile extends SpellThrowableProjectile {
         if (tag.contains("IgnoresInvulTime")) this.ignoresInvulTime = tag.getBoolean("IgnoresInvulTime");
         if (tag.contains("DespawnTime")) this.despawnTime = tag.getInt("DespawnTime");
         if (tag.contains("Glows")) this.glows = tag.getBoolean("Glows");
+        if (tag.contains("SpellRodlingLifespan")) this.spellRodlingLifespan = tag.getInt("SpellRodlingLifespan");
+        if (tag.contains("SpellPotency")) this.spellPotency = tag.getInt("SpellPotency");
+        if (tag.contains("SpellSapSnapshot")) this.spellSapSnapshot = tag.getBoolean("SpellSapSnapshot");
     }
 }

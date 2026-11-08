@@ -64,9 +64,9 @@ public class GiantSnowBallSpell extends Spell {
 
         GiantSnowballServant snowball = new GiantSnowballServant(worldIn, caster);
         snowball.moveTo(spawnPos.x, spawnPos.y - 0.2D, spawnPos.z, caster.getYRot(), caster.getXRot());
-        snowball.setExtraDamage(MmConfig.GiantSnowballDamage.get().floatValue() + potency);
+        snowball.setExtraDamage(MmConfig.GiantSnowballDamage.get().floatValue() * WandUtil.damageMultiply() + potency);
         if (this.rightStaff(staff)) {
-            snowball.setSizeScale(1.5F);
+            snowball.setPierce(true);
         }
         snowball.shoot(view.x, view.y, view.z, speed, 0.0F);
         worldIn.addFreshEntity(snowball);

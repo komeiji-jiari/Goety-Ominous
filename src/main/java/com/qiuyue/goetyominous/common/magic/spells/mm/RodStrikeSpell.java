@@ -1,54 +1,63 @@
 package com.qiuyue.goetyominous.common.magic.spells.mm;
 
 import com.Polarice3.Goety.api.magic.SpellType;
-import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.common.enchantments.ModEnchantments;
 import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.common.magic.SummonSpell;
-import com.Polarice3.Goety.init.ModSounds;
-import com.Polarice3.Goety.utils.*;
-import com.alexander.mutantmore.config.mutant_blaze.RodlingCommonConfig;
+import com.Polarice3.Goety.utils.MobUtil;
+import com.Polarice3.Goety.utils.WandUtil;
+import com.alexander.mutantmore.init.SoundEventInit;
+import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.common.entities.ally.mm.MutantBlazeServantRodProjectile;
 import com.qiuyue.goetyominous.common.entities.ally.mm.RodlingServant;
-import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
-import net.minecraft.nbt.CompoundTag;
+import com.qiuyue.goetyominous.config.mm.MmConfig;
+import net.minecraft.network.protocol.game.ClientboundStopSoundPacket;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.util.Mth;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.server.ServerStoppingEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
-import com.qiuyue.goetyominous.config.mm.MmConfig;
 
+@Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class RodStrikeSpell extends SummonSpell {
+    private static final List<PendingRodShot> PENDING_ROD_SHOTS = new ArrayList<>();
+
     public RodStrikeSpell() {
     }
 
     public int defaultSoulCost() {
-        return (Integer) MmConfig.RodStrikeSoulCost.get();
+        return MmConfig.RodStrikeSoulCost.get();
     }
 
     public int defaultCastDuration() {
-        return (Integer) MmConfig.RodStrikeCastDuration.get();
+        return MmConfig.RodStrikeCastDuration.get();
     }
 
     public int SummonDownDuration() {
-        return (Integer) MmConfig.RodStrikeSummonDown.get();
+        return MmConfig.RodStrikeSummonDown.get();
     }
 
     public SoundEvent CastingSound(LivingEntity caster) {
-        return CuriosFinder.hasUnholySet(caster) ? (SoundEvent)ModSounds.APOSTLE_PREPARE_SUMMON.get() : (SoundEvent)ModSounds.PREPARE_SUMMON.get();
+        return SoundEventInit.MUTANT_BLAZE_RODSHOT.get();
     }
 
     public int defaultSpellCooldown() {
-        return (Integer) MmConfig.RodStrikeCooldown.get();
+        return MmConfig.RodStrikeCooldown.get();
     }
 
     public SpellType getSpellType() {
@@ -56,75 +65,153 @@ public class RodStrikeSpell extends SummonSpell {
     }
 
     public List<Enchantment> acceptedEnchantments() {
-        List<Enchantment> list = new ArrayList();
-        list.add((Enchantment) ModEnchantments.POTENCY.get());
-        list.add((Enchantment) ModEnchantments.DURATION.get());
+        List<Enchantment> list = new ArrayList<>();
+        list.add(ModEnchantments.POTENCY.get());
+        list.add(ModEnchantments.DURATION.get());
         return list;
     }
 
     public Predicate<LivingEntity> summonPredicate() {
-        return (livingEntity) -> {
-            return livingEntity instanceof RodlingServant;
-        };
+        return livingEntity -> livingEntity instanceof RodlingServant;
     }
 
     public int summonLimit() {
-        return (Integer) MmConfig.RodlingServantLimit.get();
+        return MmConfig.RodlingServantLimit.get();
+    }
+
+    @Override
+    public void stopSpell(ServerLevel worldIn, LivingEntity caster, ItemStack staff, ItemStack focus, int castTime, SpellStat spellStat) {
+        SoundEvent sound = this.CastingSound(caster);
+        if (sound == null || castTime < 1 || castTime >= staff.getUseDuration()) {
+            return;
+        }
+        ClientboundStopSoundPacket packet = new ClientboundStopSoundPacket(sound.getLocation(), SoundSource.PLAYERS);
+        for (ServerPlayer player : worldIn.players()) {
+            if (player.distanceToSqr(caster) <= 1024.0D) {
+                player.connection.send(packet);
+            }
+        }
     }
 
     public void SpellResult(ServerLevel worldIn, LivingEntity caster, ItemStack staff, SpellStat spellStat) {
         this.commonResult(worldIn, caster);
+        if (this.isShifting(caster)) {
+            return;
+        }
+
         int potency = spellStat.getPotency();
         int duration = spellStat.getDuration();
         if (WandUtil.enchantedFocus(caster)) {
             potency += WandUtil.getPotencyLevel(caster);
-            duration += WandUtil.getLevels((Enchantment) ModEnchantments.DURATION.get(), caster) + 1;
+            duration += WandUtil.getLevels(ModEnchantments.DURATION.get(), caster) + 1;
         }
 
-        if (!this.isShifting(caster)) {
-            int i = 2;
-            if (this.rightStaff(staff)) {
-                i = 2 + caster.level().random.nextInt(4);
+        boolean rightStaff = this.rightStaff(staff);
+        int rodCount = MmConfig.RodStrikeRodCount.get() + (rightStaff ? 3 : 0);
+        int rodlingCount = MmConfig.RodStrikeRodlingCount.get() + (rightStaff ? 1 : 0);
+        int remaining = Math.max(0, this.summonLimit() - this.countOwnedRodlings(worldIn, caster));
+        rodlingCount = Math.min(rodlingCount, Math.min(rodCount, remaining));
+
+        boolean sapSnapshot = this.hasSummonDown(caster);
+        int life = MobUtil.getSummonLifespan(worldIn) * duration;
+        float damage = MmConfig.RodStrikeRodDamage.get().floatValue() * WandUtil.damageMultiply() + potency;
+        int fireLength = MmConfig.RodStrikeRodFireLength.get();
+        float speed = MmConfig.RodStrikeRodSpeed.get().floatValue();
+        float inaccuracy = MmConfig.RodStrikeRodInaccuracy.get().floatValue();
+        int shotPotency = potency;
+
+        Set<Integer> rodlingIndexes = new HashSet<>();
+        while (rodlingIndexes.size() < rodlingCount) {
+            rodlingIndexes.add(caster.getRandom().nextInt(rodCount));
+        }
+
+        MinecraftServer server = worldIn.getServer();
+        int startTick = server.getTickCount();
+        for (int i = 0; i < rodCount; ++i) {
+            boolean rodling = rodlingIndexes.contains(i);
+            boolean armour = rodling && caster.getHealth() <= caster.getMaxHealth() * 0.5F && caster.getRandom().nextInt(100) < 50;
+            boolean shields = rodling && caster.getHealth() <= caster.getMaxHealth() * 0.25F && caster.getRandom().nextInt(100) < 50;
+            Runnable shot = () -> this.shootRod(worldIn, caster, rodling, armour, shields, damage, fireLength, speed, inaccuracy, life, shotPotency, sapSnapshot);
+            if (i == 0) {
+                shot.run();
+            } else {
+                PENDING_ROD_SHOTS.add(new PendingRodShot(server, startTick + i, shot));
             }
+        }
 
-            for (int i1 = 0; i1 < i; ++i1) {
-                RodlingServant summonedentity = new RodlingServant(MmEntityRegistry.RODLING_SERVANT.get(), worldIn);
-                summonedentity.setTrueOwner(caster);
-                summonedentity.moveTo(BlockFinder.SummonRadius(caster.blockPosition(), summonedentity, worldIn), 0.0F, 0.0F);
-                MobUtil.moveDownToGround(summonedentity);
-                summonedentity.setPersistenceRequired();
-                summonedentity.setLimitedLife(MobUtil.getSummonLifespan(worldIn) * duration);
-                summonedentity.finalizeSpawn(worldIn, caster.level().getCurrentDifficultyAt(caster.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
-                if (potency > 0) {
-                    summonedentity.setFireBallDamage(
-                            RodlingCommonConfig.tamed_fireball_damage.get().floatValue() + potency);
-                }
-                this.buffSummon(caster, summonedentity, potency);
-                this.SummonSap(caster, summonedentity);
-                this.setTarget(caster, summonedentity);
-                if (worldIn.addFreshEntity(summonedentity)) {
-                    this.uponSummon(worldIn, caster, staff, summonedentity);
-                }
-
-                this.summonAdvancement(caster, summonedentity);
-            }
-
+        if (rodlingCount > 0) {
             this.SummonDown(caster);
-            this.playSound(worldIn, caster, (SoundEvent)ModSounds.SUMMON_SPELL_FIERY.get());
         }
-
     }
 
-    public void buffSummon(LivingEntity caster, LivingEntity summoned, int potency) {
-        if (potency > 0 && !this.hasSummonDown(caster)) {
-            int boost = Mth.clamp(potency - 1, 0, 10);
-            summoned.addEffect(new MobEffectInstance((MobEffect) GoetyEffects.BUFF.get(), EffectsUtil.infiniteEffect(), boost, false, false));
-            if (summoned instanceof RodlingServant) {
-                RodlingServant rodlingServant = (RodlingServant)summoned;
-                rodlingServant.setFireBallDamage(rodlingServant.getFireBallDamage() + (float)potency);
+    @SubscribeEvent
+    public static void onServerTick(TickEvent.ServerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END || PENDING_ROD_SHOTS.isEmpty()) {
+            return;
+        }
+        MinecraftServer server = event.getServer();
+        if (server == null) {
+            return;
+        }
+        int now = server.getTickCount();
+        Iterator<PendingRodShot> iterator = PENDING_ROD_SHOTS.iterator();
+        while (iterator.hasNext()) {
+            PendingRodShot pending = iterator.next();
+            if (pending.server != server || pending.tick > now) {
+                continue;
             }
+            iterator.remove();
+            pending.shot.run();
         }
-
     }
 
+    @SubscribeEvent
+    public static void onServerStopping(ServerStoppingEvent event) {
+        PENDING_ROD_SHOTS.clear();
+    }
+
+    private static final class PendingRodShot {
+        private final MinecraftServer server;
+        private final int tick;
+        private final Runnable shot;
+
+        private PendingRodShot(MinecraftServer server, int tick, Runnable shot) {
+            this.server = server;
+            this.tick = tick;
+            this.shot = shot;
+        }
+    }
+
+    private void shootRod(ServerLevel worldIn, LivingEntity caster, boolean rodling, boolean armour, boolean shields,
+                          float damage, int fireLength, float speed, float inaccuracy,
+                          int lifespan, int potency, boolean sapSnapshot) {
+        if (!caster.isAlive() || caster.isRemoved() || caster.level() != worldIn) {
+            return;
+        }
+        Vec3 view = caster.getViewVector(1.0F);
+        Vec3 aimPos = caster.getEyePosition(1.0F).add(view.scale(32.0D));
+        Vec3 spawnPos = new Vec3(caster.getX(), caster.getY() + caster.getBbHeight() + 0.6D, caster.getZ())
+                .add(Vec3.directionFromRotation(0.0F, caster.yBodyRot).scale(0.5D));
+        Vec3 direction = aimPos.subtract(spawnPos);
+        MutantBlazeServantRodProjectile rod = new MutantBlazeServantRodProjectile(worldIn, caster);
+        rod.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
+        rod.damage = damage;
+        rod.fireLength = fireLength;
+        rod.ignoresInvulTime = true;
+        if (rodling) {
+            rod.setIsRodling(true);
+            rod.setHasArmour(armour);
+            rod.setHasShields(shields);
+            rod.spellRodlingLifespan = lifespan;
+            rod.spellPotency = potency;
+            rod.spellSapSnapshot = sapSnapshot;
+        }
+        rod.shoot(direction.x, direction.y, direction.z, speed, inaccuracy);
+        worldIn.addFreshEntity(rod);
+    }
+
+    private int countOwnedRodlings(ServerLevel worldIn, LivingEntity owner) {
+        return worldIn.getEntitiesOfClass(RodlingServant.class, owner.getBoundingBox().inflate(64.0D),
+                rodling -> rodling.isAlive() && owner.getUUID().equals(rodling.getOwnerId())).size();
+    }
 }

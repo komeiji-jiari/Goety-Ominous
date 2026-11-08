@@ -72,6 +72,7 @@ public class HogChargeSpell extends EverChargeSpell {
     @Override
     public List<Enchantment> acceptedEnchantments() {
         List<Enchantment> list = new ArrayList<>();
+        list.add(ModEnchantments.POTENCY.get());
         list.add(ModEnchantments.RADIUS.get());
         list.add(ModEnchantments.VELOCITY.get());
         return list;
@@ -79,6 +80,10 @@ public class HogChargeSpell extends EverChargeSpell {
 
     @Override
     public void SpellResult(ServerLevel worldIn, LivingEntity caster, ItemStack staff, SpellStat spellStat) {
+        int potency = spellStat.getPotency();
+        if (WandUtil.enchantedFocus(caster)) {
+            potency += WandUtil.getPotencyLevel(caster);
+        }
         double radius = spellStat.getRadius() + WandUtil.getLevels(ModEnchantments.RADIUS.get(), caster);
         float velocity = spellStat.getVelocity() + WandUtil.getLevels(ModEnchantments.VELOCITY.get(), caster);
         boolean usingNetherStaff = this.rightStaff(staff);
@@ -91,6 +96,11 @@ public class HogChargeSpell extends EverChargeSpell {
         caster.setDeltaMovement(caster.getDeltaMovement().add(push.x, 0, push.z));
         caster.hurtMarked = true;
         caster.resetFallDistance();
+
+        Vec3 motion = caster.getDeltaMovement();
+        if (caster.onGround() && motion.y > 0.0D) {
+            caster.setDeltaMovement(motion.x, 0.0D, motion.z);
+        }
 
         if (!worldIn.isClientSide) {
             if (!caster.isShiftKeyDown()) {
@@ -127,7 +137,7 @@ public class HogChargeSpell extends EverChargeSpell {
                 if (target instanceof Player player && (player.isCreative() || player.isSpectator())) continue;
                 if (!caster.canAttack(target)) continue;
 
-                float dmg = MmConfig.HogChargeDamage.get().floatValue();
+                float dmg = MmConfig.HogChargeDamage.get().floatValue() * WandUtil.damageMultiply() + potency;
                 target.hurt(worldIn.damageSources().mobAttack(caster), dmg);
                 target.setSecondsOnFire(5);
                 target.setDeltaMovement(target.getDeltaMovement().add(lookVec.scale(1.5)));

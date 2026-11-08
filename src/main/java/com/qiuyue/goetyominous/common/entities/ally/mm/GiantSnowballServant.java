@@ -3,7 +3,6 @@ package com.qiuyue.goetyominous.common.entities.ally.mm;
 import com.Polarice3.Goety.api.entities.IOwned;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.alexander.mutantmore.entities.IceCube;
-import com.qiuyue.goetyominous.compat.mm.MmBossIceCubeController;
 import com.qiuyue.goetyominous.compat.mm.MmScreenShake;
 import com.alexander.mutantmore.init.EntityTypeInit;
 import com.alexander.mutantmore.init.TagInit;
@@ -12,18 +11,25 @@ import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
 import com.qiuyue.goetyominous.utils.BossUtil;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 public class GiantSnowballServant extends ThrowableProjectile {
     public GiantSnowballServant(EntityType<? extends GiantSnowballServant> p_37391_, Level p_37392_) {
@@ -56,25 +62,32 @@ public class GiantSnowballServant extends ThrowableProjectile {
                     ? ownedOwner.getMasterOwner()
                     : this.getOwner() instanceof LivingEntity living ? living : null;
             for (Entity entity : this.level().getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), null, this.getBoundingBox().inflate(2.0))) {
-                if (entity == this.getOwner() || !this.canHitEntity(entity)) continue;
+                if (entity == this.getOwner() || !this.canHitEntity(entity) || this.hitEntities.contains(entity.getUUID())) continue;
                 if (root != null && (entity == root
                         || entity instanceof IOwned owned && owned.getMasterOwner() == root
                         || entity instanceof OwnableEntity ownable && ownable.getOwner() == root
                         || MobUtil.areAllies(root, entity))) {
                     continue;
                 }
-                if (this.extraDamage > 0.0F) {
-                    entity.hurt(this.damageSources().indirectMagic(this,
-                            this.getOwner() instanceof LivingEntity attacker ? attacker : null), this.extraDamage);
+                boolean boss = BossUtil.isBoss(entity);
+                if (boss) {
+                    if (this.extraDamage > 0.0F) {
+                        entity.hurt(this.damageSources().indirectMagic(this,
+                                this.getOwner() instanceof LivingEntity attacker ? attacker : null), this.extraDamage);
+                    }
+                    this.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(),
+                            SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 1.0F, 1.0F);
+                } else {
+                    IceCube iceCube = EntityTypeInit.ICE_CUBE.get().create(this.level());
+                    iceCube.moveTo(entity.position());
+                    iceCube.setTarget(entity);
+                    this.level().addFreshEntity(iceCube);
                 }
-                IceCube iceCube = EntityTypeInit.ICE_CUBE.get().create(this.level());
-                iceCube.moveTo(entity.position());
-                iceCube.setTarget(entity);
-                this.level().addFreshEntity(iceCube);
-                if (BossUtil.isBoss(entity)) {
-                    MmBossIceCubeController.track((ServerLevel) this.level(), iceCube);
-                }
+                this.hitEntities.add(entity.getUUID());
                 this.level().broadcastEntityEvent(this, (byte) 4);
+                if (this.pierce && !boss) {
+                    continue;
+                }
                 this.discard();
                 if (this.getOwner() == null || !(this.getOwner() instanceof MutantFrozenZombieServant zombie) || zombie.getTarget() == null || entity != zombie.getTarget()) continue;
                 zombie.wantsToJump = true;
@@ -111,6 +124,8 @@ public class GiantSnowballServant extends ThrowableProjectile {
             SynchedEntityData.defineId(GiantSnowballServant.class, EntityDataSerializers.FLOAT);
 
     private float extraDamage;
+    private boolean pierce;
+    private final Set<UUID> hitEntities = new HashSet<>();
 
     @Override
     public EntityDimensions getDimensions(Pose pose) {
@@ -138,6 +153,10 @@ public class GiantSnowballServant extends ThrowableProjectile {
         this.extraDamage = damage;
     }
 
+    public void setPierce(boolean pierce) {
+        this.pierce = pierce;
+    }
+
     @Override
     protected void defineSynchedData() {
         this.entityData.define(SIZE_SCALE, 1.0F);
@@ -148,6 +167,12 @@ public class GiantSnowballServant extends ThrowableProjectile {
         super.addAdditionalSaveData(tag);
         tag.putFloat("SizeScale", this.getSizeScale());
         tag.putFloat("ExtraDamage", this.extraDamage);
+        tag.putBoolean("Pierce", this.pierce);
+        ListTag hitList = new ListTag();
+        for (UUID uuid : this.hitEntities) {
+            hitList.add(NbtUtils.createUUID(uuid));
+        }
+        tag.put("HitEntities", hitList);
     }
 
     @Override
@@ -157,5 +182,13 @@ public class GiantSnowballServant extends ThrowableProjectile {
             this.setSizeScale(tag.getFloat("SizeScale"));
         }
         this.extraDamage = tag.getFloat("ExtraDamage");
+        if (tag.contains("Pierce")) {
+            this.pierce = tag.getBoolean("Pierce");
+        }
+        this.hitEntities.clear();
+        ListTag hitList = tag.getList("HitEntities", 11);
+        for (int i = 0; i < hitList.size(); ++i) {
+            this.hitEntities.add(NbtUtils.loadUUID(hitList.get(i)));
+        }
     }
 }

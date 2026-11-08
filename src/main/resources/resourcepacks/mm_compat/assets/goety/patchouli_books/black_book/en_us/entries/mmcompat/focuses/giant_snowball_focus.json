@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "text",
-      "text": "With this spell, you can start a deadly snowball fight with your opponents! Creatures struck by the giant snowball are temporarily frozen and unable to move effectively."
+      "text": "With this spell, you can start a deadly snowball fight with your opponents! Creatures struck by the giant snowball are temporarily frozen and unable to move effectively. Mighty bosses, however, cannot be frozen, and the ice shatters on impact."
     },
     {
       "type": "goety:ritual",
@@ -15,7 +15,7 @@
     },
     {
       "type": "text",
-      "text": "Casting with a Frost Staff increases the size of the Giant Snowball."
+      "text": "Casting with a Frost Staff grants the Giant Snowball piercing: it passes through struck creatures without being consumed, hitting multiple targets."
     }
   ]
 }

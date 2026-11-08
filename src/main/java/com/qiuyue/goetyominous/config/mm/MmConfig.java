@@ -113,6 +113,12 @@ public class MmConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> RodStrikeCooldown;
     public static final ForgeConfigSpec.ConfigValue<Integer> RodStrikeCastDuration;
     public static final ForgeConfigSpec.ConfigValue<Integer> RodStrikeSummonDown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> RodStrikeRodCount;
+    public static final ForgeConfigSpec.ConfigValue<Double> RodStrikeRodDamage;
+    public static final ForgeConfigSpec.ConfigValue<Integer> RodStrikeRodFireLength;
+    public static final ForgeConfigSpec.ConfigValue<Integer> RodStrikeRodlingCount;
+    public static final ForgeConfigSpec.ConfigValue<Double> RodStrikeRodSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> RodStrikeRodInaccuracy;
     public static final ForgeConfigSpec.ConfigValue<Double> WitherScytheDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> WitherScytheAttackSpeed;
 
@@ -270,12 +276,12 @@ public class MmConfig {
         BUILDER.pop();
         BUILDER.push("Spells");
         BUILDER.push("Hog Charge Spell");
-        HogChargeSoulCost = BUILDER.comment("Soul cost of Hog Charge spell (Default: 4)")
-                .defineInRange("hogChargeSoulCost", 4, 1, 100);
-        HogChargeCooldown = BUILDER.comment("Cooldown of Hog Charge spell in ticks (Default: 60)")
-                .defineInRange("hogChargeCooldown", 60, 0, 2000);
-        HogChargeDamage = BUILDER.comment("Base damage of Hog Charge (Default: 4.0)")
-                .defineInRange("hogChargeDamage", 4.0, 0.0, Double.MAX_VALUE);
+        HogChargeSoulCost = BUILDER.comment("Soul cost of Hog Charge spell (Default: 10)")
+                .defineInRange("hogChargeSoulCost", 10, 1, 100);
+        HogChargeCooldown = BUILDER.comment("Cooldown of Hog Charge spell in ticks (Default: 100)")
+                .defineInRange("hogChargeCooldown", 100, 0, 2000);
+        HogChargeDamage = BUILDER.comment("Base damage of Hog Charge (Default: 14.0)")
+                .defineInRange("hogChargeDamage", 14.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Wither Breath Spell");
         WitherBreathSoulCost = BUILDER.comment("Soul cost per second during Wither Breath channel, Default: 24")
@@ -293,10 +299,10 @@ public class MmConfig {
         BUILDER.pop();
         BUILDER.push("Giant Snowball Spell");
         GiantSnowballSoulCost = BUILDER.comment("Soul cost of Giant Snowball spell (Default: 12)")
-                .defineInRange("giantSnowballSoulCost", 12, 1, 100);
-        GiantSnowballCooldown = BUILDER.comment("Cooldown of Giant Snowball spell in ticks (Default: 120)")
-                .defineInRange("giantSnowballCooldown", 120, 0, 2000);
-        GiantSnowballDamage = BUILDER.comment("Base damage of Giant Snowball (Default: 12.0)")
+                .defineInRange("giantSnowballSoulCost", 20, 1, 100);
+        GiantSnowballCooldown = BUILDER.comment("Cooldown of Giant Snowball spell in ticks (Default: 160)")
+                .defineInRange("giantSnowballCooldown", 160, 0, 2000);
+        GiantSnowballDamage = BUILDER.comment("Damage of Giant Snowball against bosses (Default: 12.0)")
                 .defineInRange("giantSnowballDamage", 12.0, 0.0, Double.MAX_VALUE);
         GiantSnowballCastDuration = BUILDER.comment("Cast duration of Giant Snowball spell in ticks (Default: 40)")
                 .defineInRange("giantSnowballCastDuration", 40, 0, 500);
@@ -374,14 +380,26 @@ public class MmConfig {
                 .defineInRange("shulkerBulletDamage", 8.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Rod Strike Spell");
-        RodStrikeSoulCost = BUILDER.comment("Soul cost of Rod Strike spell (Default: 6)")
-                .defineInRange("rodStrikeSoulCost", 6, 1, 100);
-        RodStrikeCooldown = BUILDER.comment("Cooldown of Rod Strike spell in ticks (Default: 100)")
-                .defineInRange("rodStrikeCooldown", 100, 0, 2000);
+        RodStrikeSoulCost = BUILDER.comment("Soul cost of Rod Strike spell (Default: 28)")
+                .defineInRange("rodStrikeSoulCost", 28, 1, 100);
+        RodStrikeCooldown = BUILDER.comment("Cooldown of Rod Strike spell in ticks (Default: 160)")
+                .defineInRange("rodStrikeCooldown", 160, 0, 2000);
         RodStrikeCastDuration = BUILDER.comment("Cast duration of Rod Strike spell in ticks (Default: 60)")
                 .defineInRange("rodStrikeCastDuration", 60, 0, 500);
         RodStrikeSummonDown = BUILDER.comment("Summon down duration of Rod Strike spell in ticks (Default: 80)")
                 .defineInRange("rodStrikeSummonDown", 80, 0, 5000);
+        RodStrikeRodCount = BUILDER.comment("Number of rods fired by Rod Strike spell (Default: 13)")
+                .defineInRange("rodStrikeRodCount", 13, 1, 100);
+        RodStrikeRodDamage = BUILDER.comment("Damage of each rod fired by Rod Strike spell (Default: 4.0)")
+                .defineInRange("rodStrikeRodDamage", 4.0, 0.0, Double.MAX_VALUE);
+        RodStrikeRodFireLength = BUILDER.comment("Fire duration in seconds of each rod (Default: 3)")
+                .defineInRange("rodStrikeRodFireLength", 3, 0, 100);
+        RodStrikeRodlingCount = BUILDER.comment("Number of rods that become Rodling Servants on landing (Default: 2)")
+                .defineInRange("rodStrikeRodlingCount", 2, 0, 100);
+        RodStrikeRodSpeed = BUILDER.comment("Speed of each rod (Default: 1.8)")
+                .defineInRange("rodStrikeRodSpeed", 1.8, 0.1, 10.0);
+        RodStrikeRodInaccuracy = BUILDER.comment("Inaccuracy of each rod (Default: 5.0)")
+                .defineInRange("rodStrikeRodInaccuracy", 5.0, 0.0, 45.0);
         BUILDER.pop();
         BUILDER.pop();
         BUILDER.push("Tools & Weapons");
