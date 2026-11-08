@@ -6,6 +6,8 @@ import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.render.model.animation.BastionGuardAnimation;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.BastionGuardServant;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.ZBastionGuardServant;
+import net.minecraft.client.animation.AnimationDefinition;
+import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -20,11 +22,19 @@ import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Mob;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
+
+import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 public class BastionGuardModel<T extends Mob> extends HierarchicalModel<T> {
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(
 			new ResourceLocation(GoetyOminous.MOD_ID, "bastion_guard"), "main");
+	private static final Vector3f ANIMATION_VECTOR = new Vector3f();
+	private static final Vector3f ANIMATION_EULER = new Vector3f();
+	private static final Quaternionf ANIMATION_ROTATION_FROM = new Quaternionf();
+	private static final Quaternionf ANIMATION_ROTATION_TO = new Quaternionf();
 	private final ModelPart root;
 	private final ModelPart Body;
 	private final ModelPart head;
@@ -37,6 +47,8 @@ public class BastionGuardModel<T extends Mob> extends HierarchicalModel<T> {
 	private final ModelPart shield;
 	private final ModelPart RightLeg;
 	private final ModelPart LeftLeg;
+	private List<ModelPart> animationParts;
+	private float[] poseSnapshot;
 
 	public BastionGuardModel(ModelPart root) {
 		this.root = root.getChild("root");
@@ -182,24 +194,26 @@ public class BastionGuardModel<T extends Mob> extends HierarchicalModel<T> {
 	@Override
 	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		if (!entity.isDeadOrDying()) {
-			this.head.yRot = netHeadYaw * ((float) Math.PI / 180F);
-			this.head.xRot = headPitch * ((float) Math.PI / 180F);
-		}
 		if (entity instanceof BastionGuardServant guard) {
 			this.setupGuard(guard.hasShield(), guard.isMeleeAttacking(),
 					guard.shieldBreakAnimationState.isStarted(), guard.walkAnimation.isMoving(),
 					guard.idleAnimationState, guard.noShieldIdleAnimationState,
 					guard.attackAnimationState, guard.attackNoShieldAnimationState,
 					guard.comboAnimationState, guard.shieldBreakAnimationState,
-					limbSwing, limbSwingAmount, ageInTicks);
+					limbSwing, limbSwingAmount, ageInTicks,
+					actionFade(guard.actionFadeStart, BastionGuardServant.ACTION_FADE_TICKS, ageInTicks));
 		} else if (entity instanceof ZBastionGuardServant guard) {
 			this.setupGuard(guard.hasShield(), guard.isMeleeAttacking(),
 					guard.shieldBreakAnimationState.isStarted(), guard.walkAnimation.isMoving(),
 					guard.idleAnimationState, guard.noShieldIdleAnimationState,
 					guard.attackAnimationState, guard.attackNoShieldAnimationState,
 					guard.comboAnimationState, guard.shieldBreakAnimationState,
-					limbSwing, limbSwingAmount, ageInTicks);
+					limbSwing, limbSwingAmount, ageInTicks,
+					actionFade(guard.actionFadeStart, ZBastionGuardServant.ACTION_FADE_TICKS, ageInTicks));
+		}
+		if (!entity.isDeadOrDying()) {
+			this.head.yRot += netHeadYaw * ((float) Math.PI / 180F);
+			this.head.xRot += headPitch * ((float) Math.PI / 180F);
 		}
 	}
 
@@ -207,33 +221,141 @@ public class BastionGuardModel<T extends Mob> extends HierarchicalModel<T> {
 							AnimationState idle, AnimationState noShieldIdle,
 							AnimationState attack, AnimationState attackNoShield,
 							AnimationState combo, AnimationState shieldBreak,
-							float limbSwing, float limbSwingAmount, float ageInTicks) {
+							float limbSwing, float limbSwingAmount, float ageInTicks, float actionFade) {
+		boolean shieldStance = shielded || breaking;
+		this.shield.visible = shieldStance;
+		AnimationState actionState = null;
+		AnimationDefinition actionDefinition = null;
+		float actionWeight = 0.0F;
 		if (breaking) {
-			this.shield.visible = true;
-			this.animate(shieldBreak, BastionGuardAnimation.SHIELD_BREAK, ageInTicks);
+			actionWeight = this.fadeInWeight(shieldBreak, ageInTicks, 4.0F);
+			actionState = shieldBreak;
+			actionDefinition = BastionGuardAnimation.SHIELD_BREAK;
+		} else if (attacking) {
+			if (attack.isStarted()) {
+				actionWeight = this.fadeInWeight(attack, ageInTicks, 3.0F);
+				actionState = attack;
+				actionDefinition = BastionGuardAnimation.ATTACK_SHIELD;
+			} else if (attackNoShield.isStarted()) {
+				actionWeight = this.fadeInWeight(attackNoShield, ageInTicks, 3.0F);
+				actionState = attackNoShield;
+				actionDefinition = BastionGuardAnimation.ATTACK_NO_SHIELD;
+			} else if (combo.isStarted()) {
+				actionWeight = this.fadeInWeight(combo, ageInTicks, 3.0F);
+				actionState = combo;
+				actionDefinition = BastionGuardAnimation.COMBO_NO_SHIELD;
+			}
+		} else if (actionFade < 1.0F) {
+			if (attack.isStarted()) {
+				actionState = attack;
+				actionDefinition = BastionGuardAnimation.ATTACK_SHIELD;
+			} else if (attackNoShield.isStarted()) {
+				actionState = attackNoShield;
+				actionDefinition = BastionGuardAnimation.ATTACK_NO_SHIELD;
+			} else if (combo.isStarted()) {
+				actionState = combo;
+				actionDefinition = BastionGuardAnimation.COMBO_NO_SHIELD;
+			}
+			actionWeight = 1.0F - actionFade;
+		}
+		float walkWeight = moving ? Math.min(1.0F, limbSwingAmount * (shieldStance ? 4.0F : 9.6F)) : 0.0F;
+		this.animateIdle(shieldStance ? idle : noShieldIdle,
+				shieldStance ? BastionGuardAnimation.IDLE_SHIELD : BastionGuardAnimation.IDLE_NO_SHIELD,
+				ageInTicks, 1.0F - walkWeight);
+		if (walkWeight > 0.0F) {
+			this.animateWalk(shieldStance ? BastionGuardAnimation.WALK_SHIELD : BastionGuardAnimation.WALK_NO_SHIELD,
+					limbSwing, walkWeight, 1.5F, 1.0F);
+		}
+		if (actionState == null || actionWeight <= 0.0F) {
 			return;
 		}
-		this.shield.visible = shielded;
-		if (!attacking && !moving) {
-			if (shielded) {
-				this.animate(idle, BastionGuardAnimation.IDLE_SHIELD, ageInTicks);
-			} else {
-				this.animate(noShieldIdle, BastionGuardAnimation.IDLE_NO_SHIELD, ageInTicks);
-			}
+		if (actionWeight < 1.0F) {
+			this.savePose();
 		}
-		if (attacking) {
-			if (shielded) {
-				this.animate(attack, BastionGuardAnimation.ATTACK_SHIELD, ageInTicks);
-			} else {
-				this.animate(attackNoShield, BastionGuardAnimation.ATTACK_NO_SHIELD, ageInTicks);
-				this.animate(combo, BastionGuardAnimation.COMBO_NO_SHIELD, ageInTicks);
-			}
+		this.root().getAllParts().forEach(ModelPart::resetPose);
+		KeyframeAnimations.animate(this, actionDefinition, actionState.getAccumulatedTime(), 1.0F, ANIMATION_VECTOR);
+		if (actionWeight < 1.0F) {
+			this.blendPose(actionWeight);
 		}
-		if (!attacking && moving) {
-			float walkAmount = Math.min(1.0F, limbSwingAmount * 1.6F);
-			this.animateWalk(shielded ? BastionGuardAnimation.WALK_SHIELD : BastionGuardAnimation.WALK_NO_SHIELD,
-					limbSwing, walkAmount, 1.5F, shielded ? 2.5F : 6.0F);
+	}
+
+	private static float actionFade(int fadeStart, int fadeTicks, float ageInTicks) {
+		if (fadeStart < 0) {
+			return 1.0F;
 		}
+		return Math.max(0.0F, Math.min(1.0F, (ageInTicks - fadeStart) / (float) fadeTicks));
+	}
+
+	private float fadeInWeight(AnimationState state, float ageInTicks, float fadeTicks) {
+		state.updateTime(ageInTicks, 1.0F);
+		if (!state.isStarted()) {
+			return 0.0F;
+		}
+		return Math.min(1.0F, (float) state.getAccumulatedTime() / (50.0F * fadeTicks));
+	}
+
+	private void animateIdle(AnimationState state, AnimationDefinition definition, float ageInTicks, float weight) {
+		state.updateTime(ageInTicks, 1.0F);
+		if (weight > 0.0F && state.isStarted()) {
+			KeyframeAnimations.animate(this, definition, state.getAccumulatedTime(), weight, ANIMATION_VECTOR);
+		}
+	}
+
+	private List<ModelPart> animationParts() {
+		if (this.animationParts == null) {
+			this.animationParts = this.root().getAllParts().toList();
+			this.poseSnapshot = new float[this.animationParts.size() * 9];
+		}
+		return this.animationParts;
+	}
+
+	private void savePose() {
+		List<ModelPart> parts = this.animationParts();
+		float[] snapshot = this.poseSnapshot;
+		int index = 0;
+		for (ModelPart part : parts) {
+			snapshot[index++] = part.x;
+			snapshot[index++] = part.y;
+			snapshot[index++] = part.z;
+			snapshot[index++] = part.xRot;
+			snapshot[index++] = part.yRot;
+			snapshot[index++] = part.zRot;
+			snapshot[index++] = part.xScale;
+			snapshot[index++] = part.yScale;
+			snapshot[index++] = part.zScale;
+		}
+	}
+
+	private void blendPose(float weight) {
+		List<ModelPart> parts = this.animationParts();
+		float[] snapshot = this.poseSnapshot;
+		int index = 0;
+		for (ModelPart part : parts) {
+			part.x = snapshot[index] + weight * (part.x - snapshot[index]);
+			part.y = snapshot[index + 1] + weight * (part.y - snapshot[index + 1]);
+			part.z = snapshot[index + 2] + weight * (part.z - snapshot[index + 2]);
+			Quaternionf from = ANIMATION_ROTATION_FROM.rotationZYX(snapshot[index + 5], snapshot[index + 4], snapshot[index + 3]);
+			Quaternionf to = ANIMATION_ROTATION_TO.rotationZYX(part.zRot, part.yRot, part.xRot);
+			from.slerp(to, weight);
+			eulerZYX(from, ANIMATION_EULER);
+			part.xRot = ANIMATION_EULER.x;
+			part.yRot = ANIMATION_EULER.y;
+			part.zRot = ANIMATION_EULER.z;
+			part.xScale = snapshot[index + 6] + weight * (part.xScale - snapshot[index + 6]);
+			part.yScale = snapshot[index + 7] + weight * (part.yScale - snapshot[index + 7]);
+			part.zScale = snapshot[index + 8] + weight * (part.zScale - snapshot[index + 8]);
+			index += 9;
+		}
+	}
+
+	private static void eulerZYX(Quaternionf quaternion, Vector3f dest) {
+		float x = quaternion.x;
+		float y = quaternion.y;
+		float z = quaternion.z;
+		float w = quaternion.w;
+		dest.x = (float) Math.atan2(2.0F * (y * z + w * x), 1.0F - 2.0F * (x * x + y * y));
+		dest.y = (float) Math.asin(Math.max(-1.0F, Math.min(1.0F, -2.0F * (x * z - w * y))));
+		dest.z = (float) Math.atan2(2.0F * (x * y + w * z), 1.0F - 2.0F * (y * y + z * z));
 	}
 
 	@Override

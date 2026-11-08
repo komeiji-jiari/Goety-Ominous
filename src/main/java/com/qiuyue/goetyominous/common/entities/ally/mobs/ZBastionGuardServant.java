@@ -53,6 +53,7 @@ public class ZBastionGuardServant extends ZPiglinServant implements IShielded {
     public static final int ANIM_ATTACK_SHIELD = 1;
     public static final int ANIM_ATTACK_NO_SHIELD = 2;
     public static final int ANIM_COMBO = 3;
+    public static final int ACTION_FADE_TICKS = 5;
 
     private static final EntityDataAccessor<Boolean> HAS_SHIELD = SynchedEntityData.defineId(
             ZBastionGuardServant.class, EntityDataSerializers.BOOLEAN);
@@ -75,7 +76,9 @@ public class ZBastionGuardServant extends ZPiglinServant implements IShielded {
     private int stunTicks;
     private boolean enraged;
     private boolean lastShieldClient = true;
+    private boolean shieldClientInit;
     private int shieldBreakTicks;
+    public int actionFadeStart = -1;
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState noShieldIdleAnimationState = new AnimationState();
@@ -94,7 +97,7 @@ public class ZBastionGuardServant extends ZPiglinServant implements IShielded {
                 .add(Attributes.MAX_HEALTH, AttributesConfig.BastionGuardServantHealth.get())
                 .add(Attributes.ARMOR, AttributesConfig.BastionGuardServantArmor.get())
                 .add(Attributes.ARMOR_TOUGHNESS, AttributesConfig.BastionGuardServantArmorToughness.get())
-                .add(Attributes.MOVEMENT_SPEED, 0.22D)
+                .add(Attributes.MOVEMENT_SPEED, 0.25D)
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.BastionGuardServantAttackDamage.get())
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
                 .add(Attributes.FOLLOW_RANGE, 24.0D);
@@ -332,16 +335,28 @@ public class ZBastionGuardServant extends ZPiglinServant implements IShielded {
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
         if (ANIM_STATE.equals(accessor) && this.level().isClientSide) {
-            this.stopAttackAnimations();
             switch (this.getCurrentAnimation()) {
-                case ANIM_ATTACK_SHIELD -> this.attackAnimationState.start(this.tickCount);
-                case ANIM_ATTACK_NO_SHIELD -> this.attackNoShieldAnimationState.start(this.tickCount);
-                case ANIM_COMBO -> this.comboAnimationState.start(this.tickCount);
+                case ANIM_ATTACK_SHIELD -> {
+                    this.stopAttackAnimations();
+                    this.attackAnimationState.start(this.tickCount);
+                    this.actionFadeStart = -1;
+                }
+                case ANIM_ATTACK_NO_SHIELD -> {
+                    this.stopAttackAnimations();
+                    this.attackNoShieldAnimationState.start(this.tickCount);
+                    this.actionFadeStart = -1;
+                }
+                case ANIM_COMBO -> {
+                    this.stopAttackAnimations();
+                    this.comboAnimationState.start(this.tickCount);
+                    this.actionFadeStart = -1;
+                }
                 default -> {
+                    this.actionFadeStart = this.tickCount;
                     if (this.hasShield()) {
-                        this.idleAnimationState.startIfStopped(this.tickCount);
+                        this.idleAnimationState.start(this.tickCount);
                     } else {
-                        this.noShieldIdleAnimationState.startIfStopped(this.tickCount);
+                        this.noShieldIdleAnimationState.start(this.tickCount);
                     }
                 }
             }
@@ -364,10 +379,19 @@ public class ZBastionGuardServant extends ZPiglinServant implements IShielded {
         super.tick();
         if (this.level().isClientSide) {
             boolean shielded = this.hasShield();
+            if (!this.shieldClientInit) {
+                this.shieldClientInit = true;
+                this.lastShieldClient = shielded;
+            }
+            if (this.actionFadeStart >= 0 && this.tickCount - this.actionFadeStart >= ACTION_FADE_TICKS) {
+                this.stopAttackAnimations();
+                this.actionFadeStart = -1;
+            }
             if (!shielded && this.lastShieldClient) {
                 this.stopAttackAnimations();
                 this.shieldBreakAnimationState.start(this.tickCount);
                 this.shieldBreakTicks = 0;
+                this.actionFadeStart = -1;
             }
             if (shielded && !this.lastShieldClient) {
                 this.shieldBreakAnimationState.stop();
@@ -375,8 +399,9 @@ public class ZBastionGuardServant extends ZPiglinServant implements IShielded {
             this.lastShieldClient = shielded;
             if (!shielded && this.shieldBreakAnimationState.isStarted()) {
                 ++this.shieldBreakTicks;
-                if (this.shieldBreakTicks >= STUN_TICKS) {
+                if (this.shieldBreakTicks >= STUN_TICKS + 2) {
                     this.shieldBreakAnimationState.stop();
+                    this.noShieldIdleAnimationState.start(this.tickCount);
                 }
             }
             this.idleAnimationState.animateWhen(!this.isDeadOrDying(), this.tickCount);
