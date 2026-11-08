@@ -3,7 +3,6 @@ package com.qiuyue.goetyominous.client.render.mm;
 import com.alexander.mutantmore.util.MiscUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.init.ModEntityLayers;
 import com.qiuyue.goetyominous.client.render.model.mm.IcicleSpikeServantModel;
 import com.qiuyue.goetyominous.common.entities.ally.mm.IcicleSpikeServant;
@@ -17,7 +16,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class IcicleSpikeServantRenderer extends EntityRenderer<IcicleSpikeServant> {
-    private static final ResourceLocation SERVANT_TEXTURE = new ResourceLocation(GoetyOminous.MOD_ID, "textures/entity/mutant_frozen_zombie_servant.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation("mutantmore", "textures/entities/mutant_frozen_zombie.png");
 
     private final IcicleSpikeServantModel<IcicleSpikeServant> model;
 
@@ -42,6 +41,6 @@ public class IcicleSpikeServantRenderer extends EntityRenderer<IcicleSpikeServan
     }
 
     public ResourceLocation getTextureLocation(IcicleSpikeServant entity) {
-        return SERVANT_TEXTURE;
+        return TEXTURE;
     }
 }

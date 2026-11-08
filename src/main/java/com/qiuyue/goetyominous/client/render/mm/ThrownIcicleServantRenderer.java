@@ -3,7 +3,6 @@ package com.qiuyue.goetyominous.client.render.mm;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.init.ModEntityLayers;
 import com.qiuyue.goetyominous.client.render.model.mm.ThrownIcicleServantModel;
 import com.qiuyue.goetyominous.common.entities.ally.mm.ThrownIcicleServant;
@@ -19,7 +18,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class ThrownIcicleServantRenderer extends EntityRenderer<ThrownIcicleServant> {
-    private static final ResourceLocation SERVANT_TEXTURE = new ResourceLocation(GoetyOminous.MOD_ID, "textures/entity/mutant_frozen_zombie_servant.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation("mutantmore", "textures/entities/mutant_frozen_zombie.png");
 
     private final ThrownIcicleServantModel model;
 
@@ -41,6 +40,6 @@ public class ThrownIcicleServantRenderer extends EntityRenderer<ThrownIcicleServ
     }
 
     public ResourceLocation getTextureLocation(ThrownIcicleServant entity) {
-        return SERVANT_TEXTURE;
+        return TEXTURE;
     }
 }
