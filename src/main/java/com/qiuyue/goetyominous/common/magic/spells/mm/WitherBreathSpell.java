@@ -221,18 +221,26 @@ public class WitherBreathSpell extends ContinuousControllerSpell<WitherBreathSpe
             }
 
             if (progress > 1.0F) {
-                Vec3 particlePos = PositionUtils.getOffsetPos(caster,
-                        0.0, caster.getBbHeight() * 0.6, caster.getBbWidth(), 0.0F, caster.yBodyRot);
+                if (!areaDamageSpawned) {
+                    Vec3 particlePos = PositionUtils.getOffsetPos(caster,
+                            0.0, caster.getBbHeight() * 0.6, caster.getBbWidth() + 1.0, 0.0F, caster.getYHeadRot());
 
-                for (int i = 0; i < 10; i++) {
-                    level.sendParticles(ParticleTypeInit.WITHER_GAS.get(),
-                            particlePos.x, particlePos.y, particlePos.z,
-                            1, 0.2, 0.2, 0.2, 0.1);
-                }
-                for (int i = 0; i < 20; i++) {
-                    level.sendParticles(ParticleTypes.SMOKE,
-                            particlePos.x, particlePos.y, particlePos.z,
-                            1, 0.2, 0.2, 0.2, 0.1);
+                    for (int i = 0; i < 10; i++) {
+                        Vec3 motion = PositionUtils.getOffsetMotion(caster,
+                                this.random.nextGaussian() * 0.2, this.random.nextGaussian() * 0.2,
+                                0.75 + this.random.nextGaussian() * 0.25, 0.0F, caster.getYHeadRot());
+                        level.sendParticles(ParticleTypeInit.WITHER_GAS.get(),
+                                particlePos.x, particlePos.y, particlePos.z,
+                                0, motion.x, motion.y, motion.z, 1.0);
+                    }
+                    for (int i = 0; i < 20; i++) {
+                        Vec3 motion = PositionUtils.getOffsetMotion(caster,
+                                this.random.nextGaussian() * 0.2, this.random.nextGaussian() * 0.2,
+                                0.75 + this.random.nextGaussian() * 0.25, 0.0F, caster.getYHeadRot());
+                        level.sendParticles(ParticleTypes.SMOKE,
+                                particlePos.x, particlePos.y, particlePos.z,
+                                0, motion.x, motion.y, motion.z, 1.0);
+                    }
                 }
 
                 applyBreathEffects(level, caster, progress);
@@ -257,7 +265,7 @@ public class WitherBreathSpell extends ContinuousControllerSpell<WitherBreathSpe
 
         private void applyBreathEffects(ServerLevel level, LivingEntity caster, float progress) {
             Vec3 offsetPos = PositionUtils.getOffsetPos(caster,
-                    0.0, 0.0, BASE_RADIUS / 2.0F + caster.getBbWidth(), 0.0F, caster.yBodyRot);
+                    0.0, 0.0, BASE_RADIUS / 2.0F + caster.getBbWidth(), 0.0F, caster.getYHeadRot());
 
             AABB bb = new AABB(
                     offsetPos.add(BASE_RADIUS / 2.0F, 1.0, BASE_RADIUS / 2.0F),
@@ -293,7 +301,7 @@ public class WitherBreathSpell extends ContinuousControllerSpell<WitherBreathSpe
 
         private void spawnAreaDamage(ServerLevel level, LivingEntity caster) {
             Vec3 offsetPos = PositionUtils.getOffsetPos(caster,
-                    0.0, 0.0, BASE_RADIUS / 2.0F + caster.getBbWidth(), 0.0F, caster.yBodyRot);
+                    0.0, 0.0, BASE_RADIUS / 2.0F + caster.getBbWidth(), 0.0F, caster.getYHeadRot());
 
             int extraTime = AREA_DAMAGE_EXTRA_TIME_BASE + duration * AREA_DAMAGE_EXTRA_TIME_PER_DURATION;
 
