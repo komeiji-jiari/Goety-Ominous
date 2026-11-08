@@ -106,7 +106,6 @@ public class MutantShulkerServant extends AbstractMutantServant implements IHasC
     public final AnimationState summonTrapsAnimation = new AnimationState();
     public final AnimationState summonTrapsInShellAnimation = new AnimationState();
     public int followTeleportCooldown;
-    public int specialAnimationTick;
     public int introAnimationTick;
     public int shootAnimationTick;
     public int shootAnimationLength = 45;
@@ -278,8 +277,7 @@ public class MutantShulkerServant extends AbstractMutantServant implements IHasC
                 && this.shootAnimationTick <= 0
                 && this.biteAnimationTick <= 0
                 && this.summonTrapsAnimationTick <= 0
-                && this.anvilCrushAnimationTick <= 0
-                && this.specialAnimationTick <= 0;
+                && this.anvilCrushAnimationTick <= 0;
     }
 
     @Override
@@ -752,16 +750,10 @@ public class MutantShulkerServant extends AbstractMutantServant implements IHasC
         }
         Vec3 velocity = this.getDeltaMovement();
         float groundSpeed = Mth.sqrt((float)(velocity.x * velocity.x + velocity.z * velocity.z));
-        if (!this.level().isClientSide && groundSpeed <= 0.1F && this.specialAnimationTick <= 0 && this.random.nextInt(400) == 0 && (this.getTarget() == null || this.getTarget().isDeadOrDying() || this.getTarget().isRemoved())) {
-            if (this.isInBox()) {
-                this.playSound(SoundEventInit.MUTANT_SHULKER_OPEN.get(), 1.0F, 1.0F);
-                this.specialAnimationTickInShell = this.specialAnimationLengthInShell;
-                this.level().broadcastEntityEvent(this, (byte)36);
-            } else {
-                this.playSound(SoundEventInit.MUTANT_SHULKER_ROAR.get(), 1.0F, 1.0F);
-                this.specialAnimationTick = 45;
-                this.level().broadcastEntityEvent(this, (byte)4);
-            }
+        if (!this.level().isClientSide && groundSpeed <= 0.1F && this.isInBox() && this.random.nextInt(400) == 0 && (this.getTarget() == null || this.getTarget().isDeadOrDying() || this.getTarget().isRemoved())) {
+            this.playSound(SoundEventInit.MUTANT_SHULKER_OPEN.get(), 1.0F, 1.0F);
+            this.specialAnimationTickInShell = this.specialAnimationLengthInShell;
+            this.level().broadcastEntityEvent(this, (byte)36);
         }
         if (this.specialAnimationTickInShell == 20 && groundSpeed <= 0.1F && (this.getTarget() == null || this.getTarget().isDeadOrDying() || this.getTarget().isRemoved())) {
             this.playSound(SoundEventInit.MUTANT_SHULKER_CLOSE.get(), 1.0F, 1.0F);
@@ -833,9 +825,7 @@ public class MutantShulkerServant extends AbstractMutantServant implements IHasC
     }
 
     public void handleEntityEvent(byte p_28844_) {
-        if (p_28844_ == 4) {
-            this.specialAnimationTick = 45;
-        } else if (p_28844_ == 11) {
+        if (p_28844_ == 11) {
             this.introAnimationTick = 45;
         } else if (p_28844_ == 33) {
             this.shootAnimationTick = this.shootAnimationLength;
@@ -892,15 +882,10 @@ public class MutantShulkerServant extends AbstractMutantServant implements IHasC
         somethingAnimating = somethingAnimating || this.biteAnimation.isStarted();
         this.shootAnimation.animateWhen(!this.isInBox() && this.shootAnimationTick > 0 && !somethingAnimating, this.tickCount);
         somethingAnimating = somethingAnimating || this.shootAnimation.isStarted();
-        this.idleRareAnimation.animateWhen(!this.isInBox() && this.specialAnimationTick > 0 && !somethingAnimating, this.tickCount);
-        somethingAnimating = somethingAnimating || this.idleRareAnimation.isStarted();
         this.idleAnimation.animateWhen(!this.isInBox(), this.tickCount);
     }
 
     public void tickDownAnimTimers() {
-        if (this.specialAnimationTick > 0) {
-            --this.specialAnimationTick;
-        }
         if (this.introAnimationTick > 0) {
             --this.introAnimationTick;
         }

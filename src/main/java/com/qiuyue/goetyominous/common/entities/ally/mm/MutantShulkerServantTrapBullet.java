@@ -2,6 +2,9 @@ package com.qiuyue.goetyominous.common.entities.ally.mm;
 
 import com.Polarice3.Goety.api.entities.IOwned;
 import com.Polarice3.Goety.utils.MobUtil;
+import com.alexander.mutantmore.init.ParticleTypeInit;
+import com.alexander.mutantmore.init.SoundEventInit;
+import com.alexander.mutantmore.interfaces.IHasCustomExplosion;
 import com.alexander.mutantmore.util.MiscUtils;
 import com.google.common.collect.Lists;
 import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
@@ -25,6 +28,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.level.Explosion.BlockInteraction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -32,7 +36,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 
-public class MutantShulkerServantTrapBullet extends Projectile {
+public class MutantShulkerServantTrapBullet extends Projectile implements IHasCustomExplosion {
     private static final double FINAL_APPROACH_DISTANCE = 2.0D;
     private static final float FINAL_APPROACH_SPEED = 0.3F;
     @Nullable
@@ -230,9 +234,9 @@ public class MutantShulkerServantTrapBullet extends Projectile {
                 }
             }
             if (this.finalTarget == null || !this.finalTarget.isAlive() || this.finalTarget instanceof Player && this.finalTarget.isSpectator()) {
-                if (!this.isNoGravity()) {
-                    this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.04D, 0.0D));
-                }
+                this.explode();
+                this.discard();
+                return;
             } else {
                 this.targetDeltaX = Mth.clamp(this.targetDeltaX * 1.025D, -1.0D, 1.0D);
                 this.targetDeltaY = Mth.clamp(this.targetDeltaY * 1.025D, -1.0D, 1.0D);
@@ -327,6 +331,30 @@ public class MutantShulkerServantTrapBullet extends Projectile {
         super.onHitBlock(hitResult);
         ((ServerLevel) this.level()).sendParticles(ParticleTypes.EXPLOSION, this.getX(), this.getY(), this.getZ(), 2, 0.2D, 0.2D, 0.2D, 0.0D);
         this.playSound(SoundEvents.SHULKER_BULLET_HIT, 1.0F, 1.0F);
+    }
+
+    private void explode() {
+        LivingEntity owner = this.getOwner() instanceof LivingEntity livingOwner ? livingOwner : null;
+        MiscUtils.customExplosion(this.level(), this,
+                this.damageSources().explosion(this, owner),
+                null, this.getX(), this.getY(), this.getZ(),
+                1.0F, false,
+                BlockInteraction.KEEP, SoundEventInit.MUTANT_SHULKER_PROJECTILE_IMPACT.get(),
+                this.getSoundSource(), ParticleTypeInit.MUTANT_SHULKER_BULLET.get(), ParticleTypeInit.MUTANT_SHULKER_BULLET.get(),
+                this.damage, true, false);
+    }
+
+    @Override
+    public boolean canHarmWithExplosion(Entity target) {
+        Entity owner = this.getOwner();
+        if (owner != null && (target == owner || MobUtil.areAllies(owner, target))) {
+            return false;
+        }
+        if (owner instanceof LivingEntity livingOwner && target instanceof IOwned owned
+                && owned.getTrueOwner() == livingOwner) {
+            return false;
+        }
+        return !MobUtil.areAllies(this, target) && this.canHarm(target);
     }
 
     @Override
