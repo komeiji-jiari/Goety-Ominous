@@ -2,7 +2,7 @@
   "name": "Mutant Blaze Servant",
   "icon": "mutantmore:mutant_blaze_core",
   "category": "goety:mmcompat/summons",
-  "sortnum": 10,
+  "sortnum": 50,
   "advancement": "goety:goety/read_bygone_scroll",
   "secret": true,
   "pages": [

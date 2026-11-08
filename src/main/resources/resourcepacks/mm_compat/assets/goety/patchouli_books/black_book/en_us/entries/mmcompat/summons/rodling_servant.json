@@ -2,7 +2,7 @@
   "name": "Rodling Servant",
   "icon": "mutantmore:rodling_helmet",
   "category": "goety:mmcompat/summons",
-  "sortnum": 50,
+  "sortnum": 60,
   "advancement": "goety:goety/read_bygone_scroll",
   "secret": true,
   "pages": [

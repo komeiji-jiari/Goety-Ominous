@@ -2,7 +2,7 @@
   "name": "Mutant Shulker Servant",
   "icon": "mutantmore:mutant_shulker_shell",
   "category": "goety:mmcompat/summons",
-  "sortnum": 30,
+  "sortnum": 80,
   "pages": [
     {
       "type": "patchouli:text",
@@ -24,7 +24,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Mutant Shulkers accept void-empowered items to enhance their abilities. Void Shards increase the power of their homing missiles, Voided Eyes infuse their bite with Void-Touched, and The Keeper's Echoes make them harder to bring down in battle."
+      "text": "Mutant Shulkers accept void-empowered items to enhance their abilities. Void Shards increase the power of their homing missiles, Voided Eyes infuse their bite and their traps with Void-Touched, and The Keeper's Echoes make them harder to bring down in battle."
     },
     {
       "type": "patchouli:text",

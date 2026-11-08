@@ -2,7 +2,7 @@
   "name": "突变凋灵骷髅仆从",
   "icon": "mutantmore:mutant_wither_skeleton_skull",
   "category": "goety:mmcompat/summons",
-  "sortnum": 40,
+  "sortnum": 70,
   "advancement": "goety:goety/read_bygone_scroll",
   "secret": true,
   "pages": [

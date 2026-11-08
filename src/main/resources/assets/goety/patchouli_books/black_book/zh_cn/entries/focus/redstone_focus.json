@@ -2,7 +2,7 @@
   "name": "红石聚晶",
   "icon": "goetyominous:redstone_focus",
   "category": "goety:ominous_focuses",
-  "sortnum": 1,
+  "sortnum": 8,
   "pages": [
     {
       "type": "patchouli:text",

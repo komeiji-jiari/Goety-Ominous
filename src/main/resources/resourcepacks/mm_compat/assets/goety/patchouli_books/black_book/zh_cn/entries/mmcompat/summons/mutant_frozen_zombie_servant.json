@@ -2,7 +2,7 @@
   "name": "突变霜冻僵尸仆从",
   "icon": "mutantmore:mutant_frozen_zombie_spikes",
   "category": "goety:mmcompat/summons",
-  "sortnum": 3,
+  "sortnum": 30,
   "pages": [
     {
       "type": "patchouli:text",

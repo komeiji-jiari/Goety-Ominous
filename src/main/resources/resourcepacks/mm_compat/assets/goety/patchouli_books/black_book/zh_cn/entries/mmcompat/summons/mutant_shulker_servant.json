@@ -2,7 +2,7 @@
   "name": "突变潜影贝仆从",
   "icon": "mutantmore:mutant_shulker_shell",
   "category": "goety:mmcompat/summons",
-  "sortnum": 30,
+  "sortnum": 80,
   "pages": [
     {
       "type": "patchouli:text",
@@ -24,7 +24,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "突变潜影贝接受充满虚空能量的物品强化其能力。虚空碎片能够增加突变潜影贝发射的导弹的威力，虚空之眼为其咬合附上虚空侵蚀，而守望者的回响让它更难在战斗中倒下。"
+      "text": "突变潜影贝接受充满虚空能量的物品强化其能力。虚空碎片能够增加突变潜影贝发射的导弹的威力，虚空之眼为其咬击与陷阱附上虚空侵蚀，而守望者的回响让它更难在战斗中倒下。"
     },
     {
       "type": "patchouli:text",

@@ -2,7 +2,7 @@
   "name": "Mutant Hoglin Servant",
   "icon": "mutantmore:mutant_hoglin_tusk",
   "category": "goety:mmcompat/summons",
-  "sortnum": 20,
+  "sortnum": 40,
   "pages": [
     {
       "type": "patchouli:text",

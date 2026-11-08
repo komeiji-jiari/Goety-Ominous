@@ -2,7 +2,7 @@
   "name": "Mutant Jungle Zombie Servant",
   "icon": "mutantmore:mutant_jungle_zombie_vine_seed",
   "category": "goety:mmcompat/summons",
-  "sortnum": 2,
+  "sortnum": 20,
   "advancement": "goety:goety/read_floral_scroll",
   "pages": [
     {
