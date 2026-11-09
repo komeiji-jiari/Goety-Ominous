@@ -26,30 +26,16 @@ public class WargSwordLayer extends RenderLayer<Warg, WargModel> {
         if (!warg.hasSword()) {
             return;
         }
+        ItemStack sword = warg.getMainHandItem();
         poseStack.pushPose();
         this.getParentModel().translateToSword(poseStack);
-        poseStack.translate(0.3125F, -0.3125F, -0.1875F);
-        SwordMount mount = getSwordMount(warg.getMainHandItem());
-        if (mount.verticalOffset() != 0.0F) {
-            poseStack.translate(0.0F, mount.verticalOffset(), 0.0F);
-        }
-        poseStack.mulPose(Axis.ZP.rotationDegrees(mount.rotation()));
-        if (mount.gripOffset() != 0.0F) {
-            poseStack.translate(0.0F, mount.gripOffset(), 0.0F);
-        }
-        poseStack.scale(2.5F, 2.5F, 2.5F);
-        this.itemRenderer.renderItem(warg, warg.getMainHandItem(), ItemDisplayContext.GROUND, false, poseStack, buffer, packedLight);
-        poseStack.popPose();
-    }
-
-    private static SwordMount getSwordMount(ItemStack sword) {
+        poseStack.translate(0.3125F, -0.03125F, 0.3125F);
+        poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
         if (sword.is(ModItems.BLADE_OF_ENDER.get())) {
-            return new SwordMount(-90.0F, -0.375F, 0.25F);
+            poseStack.translate(-0.084375F, -0.084375F, 0.0F);
+            poseStack.mulPose(Axis.ZP.rotationDegrees(-45.0F));
         }
-        return SwordMount.FLAT_SWORD;
-    }
-
-    private record SwordMount(float rotation, float gripOffset, float verticalOffset) {
-        private static final SwordMount FLAT_SWORD = new SwordMount(-45.0F, 0.0F, 0.0F);
+        this.itemRenderer.renderItem(warg, sword, ItemDisplayContext.NONE, false, poseStack, buffer, packedLight);
+        poseStack.popPose();
     }
 }

@@ -50,12 +50,26 @@ public class Cerberus extends Warg implements IBreathing {
     private static final double HEAD_YAW_SPREAD = Math.toRadians(35.0D);
     private static final double MUZZLE_HEIGHT = 2.2D;
     private static final double MUZZLE_FORWARD = 2.2D;
-    private static final double RIDER_FORWARD_OFFSET = -1.36D;
-    private static final double RIDER_HEIGHT = 1.575D;
-    private static final double RIDER_BOUNCE = 0.08D;
+    private static final int CERBERUS_POSE_GROUNDED = 0;
+    private static final int CERBERUS_POSE_JUMP = 1;
+    private static final int CERBERUS_POSE_BITE = 2;
+    private static final int CERBERUS_POSE_BREATH = 3;
+    private static final int CERBERUS_POSE_COUNT = 4;
+    private static final float CERBERUS_LAND_FADE_STEP = 0.1F;
+    private static final double CERBERUS_RISE_PER_TICK = 0.05D;
 
     private final FireBreathSpell breathSpell = new FireBreathSpell();
+    private final float[] cerberusPoseWeights = new float[CERBERUS_POSE_COUNT];
+    private final float[] cerberusPoseWeightsOld = new float[CERBERUS_POSE_COUNT];
+    private float cerberusLocomotionWeight;
+    private float cerberusLocomotionWeightOld;
+    private float cerberusMoveWeight;
+    private float cerberusMoveWeightOld;
 
+    public final AnimationState idleAnimationState = new AnimationState();
+    public final AnimationState walkAnimationState = new AnimationState();
+    public final AnimationState groundedAnimationState = new AnimationState();
+    public final AnimationState jumpAnimationState = new AnimationState();
     public final AnimationState biteAnimationState = new AnimationState();
     public final AnimationState fireBreathAnimationState = new AnimationState();
 
@@ -67,6 +81,11 @@ public class Cerberus extends Warg implements IBreathing {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(2, new CerberusBreathGoal());
+    }
+
+    @Override
+    protected float getLeapPower() {
+        return 0.0F;
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
@@ -136,46 +155,15 @@ public class Cerberus extends Warg implements IBreathing {
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        ItemStack held = player.getItemInHand(hand);
-        if (held.is(Items.SADDLE)) {
+        if (player.getItemInHand(hand).is(Items.SADDLE)) {
             return InteractionResult.PASS;
-        }
-        if (held.isEmpty() && this.isOwnedByPlayer(player) && this.getPassengers().isEmpty()) {
-            if (!this.level().isClientSide) {
-                player.setYRot(this.getYRot());
-                player.setXRot(this.getXRot());
-                player.startRiding(this);
-            }
-            return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
         return super.mobInteract(player, hand);
     }
 
     @Override
     protected boolean canAddPassenger(Entity passenger) {
-        return this.getPassengers().isEmpty() && passenger instanceof Player;
-    }
-
-    @Override
-    public LivingEntity getControllingPassenger() {
-        Entity passenger = this.getFirstPassenger();
-        return passenger instanceof Player player && this.isOwnedByPlayer(player) ? player : null;
-    }
-
-    @Override
-    public boolean canJump() {
-        return this.onGround() && !this.isBreathing();
-    }
-
-    @Override
-    public void positionRider(Entity passenger, Entity.MoveFunction moveFunction) {
-        if (this.hasPassenger(passenger)) {
-            Vec3 facing = Vec3.directionFromRotation(0.0F, this.getYRot());
-            Vec3 seatOffset = facing.scale(RIDER_FORWARD_OFFSET);
-            double bounce = RIDER_BOUNCE * Mth.cos(this.walkAnimation.position() * 0.7F) * this.walkAnimation.speed();
-            moveFunction.accept(passenger, this.getX() + seatOffset.x,
-                    this.rideHeight + RIDER_HEIGHT + bounce, this.getZ() + seatOffset.z);
-        }
+        return false;
     }
 
     @Override
@@ -210,8 +198,11 @@ public class Cerberus extends Warg implements IBreathing {
     @Override
     public void tick() {
         super.tick();
-        if (this.level().isClientSide && this.isBreathing()) {
-            this.spawnBreathParticles();
+        if (this.level().isClientSide) {
+            this.updateCerberusAnimationStates();
+            if (this.isBreathing()) {
+                this.spawnBreathParticles();
+            }
         }
     }
 
@@ -277,22 +268,83 @@ public class Cerberus extends Warg implements IBreathing {
         }
     }
 
-    @Override
-    protected boolean suppressesLocomotionAnimation() {
-        return this.isBreathing();
+    private void updateCerberusAnimationStates() {
+        boolean rising = !this.onGround() && this.getY() - this.yo > CERBERUS_RISE_PER_TICK;
+        boolean airborne = this.tickAirborneAnimation() || rising;
+        boolean breathing = !airborne && this.isBreathing();
+        boolean biting = !airborne && !breathing && this.getAttackTicks() > 0 && this.getAttackType() == ATTACK_BITE;
+        boolean grounded = !breathing && !biting && !airborne;
+        boolean standing = grounded && !this.isSitting();
+        boolean moving = standing && this.walkAnimation.speed() > 0.05F;
+        this.cerberusLocomotionWeightOld = this.cerberusLocomotionWeight;
+        this.cerberusMoveWeightOld = this.cerberusMoveWeight;
+        this.cerberusLocomotionWeight = approach(this.cerberusLocomotionWeight, standing ? 1.0F : 0.0F, POSE_BLEND_STEP);
+        this.cerberusMoveWeight = approach(this.cerberusMoveWeight, moving ? 1.0F : 0.0F, POSE_BLEND_STEP);
+        this.stepCerberusPose(CERBERUS_POSE_GROUNDED, grounded && this.isSitting() ? 1.0F : 0.0F);
+        this.stepCerberusPose(CERBERUS_POSE_JUMP, airborne ? 1.0F : 0.0F, airborne ? POSE_BLEND_STEP : CERBERUS_LAND_FADE_STEP);
+        this.stepCerberusPose(CERBERUS_POSE_BITE, biting ? 1.0F : 0.0F);
+        this.stepCerberusPose(CERBERUS_POSE_BREATH, breathing ? 1.0F : 0.0F);
+        this.setAnimation(this.fireBreathAnimationState, this.cerberusPoseActive(CERBERUS_POSE_BREATH));
+        this.setAnimation(this.biteAnimationState, this.cerberusPoseActive(CERBERUS_POSE_BITE));
+        this.setAnimation(this.jumpAnimationState, this.cerberusPoseActive(CERBERUS_POSE_JUMP));
+        this.setAnimation(this.groundedAnimationState, this.cerberusPoseActive(CERBERUS_POSE_GROUNDED));
+        this.setAnimation(this.walkAnimationState, this.cerberusLocomotionActive(this.cerberusMoveWeight, this.cerberusMoveWeightOld));
+        this.setAnimation(this.idleAnimationState, this.cerberusLocomotionActive(1.0F - this.cerberusMoveWeight, 1.0F - this.cerberusMoveWeightOld));
+    }
+
+    private boolean cerberusPoseActive(int index) {
+        return this.cerberusPoseWeights[index] > 0.0F || this.cerberusPoseWeightsOld[index] > 0.0F;
+    }
+
+    private boolean cerberusLocomotionActive(float factor, float previousFactor) {
+        return this.cerberusLocomotionWeight * factor > 0.0F || this.cerberusLocomotionWeightOld * previousFactor > 0.0F;
+    }
+
+    private void stepCerberusPose(int index, float target) {
+        this.stepCerberusPose(index, target, POSE_BLEND_STEP);
+    }
+
+    private void stepCerberusPose(int index, float target, float step) {
+        this.cerberusPoseWeightsOld[index] = this.cerberusPoseWeights[index];
+        this.cerberusPoseWeights[index] = approach(this.cerberusPoseWeights[index], target, step);
+    }
+
+    private float cerberusPoseWeight(int index, float ageInTicks) {
+        return Mth.lerp(this.partialTick(ageInTicks), this.cerberusPoseWeightsOld[index], this.cerberusPoseWeights[index]);
     }
 
     @Override
-    protected void updateExtraAnimationStates() {
-        boolean breathing = this.isBreathing();
-        boolean biting = !breathing && this.getAttackTicks() > 0 && this.getAttackType() == ATTACK_BITE;
-        setAnimation(this.fireBreathAnimationState, breathing);
-        setAnimation(this.biteAnimationState, biting);
+    public float getIdleWeight(float ageInTicks) {
+        float partial = this.partialTick(ageInTicks);
+        float locomotion = Mth.lerp(partial, this.cerberusLocomotionWeightOld, this.cerberusLocomotionWeight);
+        float move = Mth.lerp(partial, this.cerberusMoveWeightOld, this.cerberusMoveWeight);
+        return locomotion * (1.0F - move);
     }
 
     @Override
-    public float getGallopBob(float partialTicks) {
-        return 2.0F * super.getGallopBob(partialTicks);
+    public float getWalkWeight(float ageInTicks) {
+        float partial = this.partialTick(ageInTicks);
+        float locomotion = Mth.lerp(partial, this.cerberusLocomotionWeightOld, this.cerberusLocomotionWeight);
+        float move = Mth.lerp(partial, this.cerberusMoveWeightOld, this.cerberusMoveWeight);
+        return locomotion * move;
+    }
+
+    @Override
+    public float getGroundedWeight(float ageInTicks) {
+        return this.cerberusPoseWeight(CERBERUS_POSE_GROUNDED, ageInTicks);
+    }
+
+    public float getJumpWeight(float ageInTicks) {
+        return this.cerberusPoseWeight(CERBERUS_POSE_JUMP, ageInTicks);
+    }
+
+    @Override
+    public float getBiteWeight(float ageInTicks) {
+        return this.cerberusPoseWeight(CERBERUS_POSE_BITE, ageInTicks);
+    }
+
+    public float getFireBreathWeight(float ageInTicks) {
+        return this.cerberusPoseWeight(CERBERUS_POSE_BREATH, ageInTicks);
     }
 
     private void setAnimation(AnimationState state, boolean running) {
@@ -316,16 +368,13 @@ public class Cerberus extends Warg implements IBreathing {
                 --this.cooldownTicks;
                 return false;
             }
-            if (!Cerberus.this.onGround()) {
-                return false;
-            }
             return super.canUse();
         }
 
         @Override
         public boolean canContinueToUse() {
             LivingEntity target = Cerberus.this.getTarget();
-            return Cerberus.this.onGround() && target != null && target.isAlive()
+            return target != null && target.isAlive()
                     && this.attackTarget == target && super.canContinueToUse();
         }
 

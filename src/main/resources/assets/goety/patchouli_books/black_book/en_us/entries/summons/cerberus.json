@@ -28,7 +28,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Right-click to ride your Cerberus. They do not require a Saddle to be ridden. If their owner is equipped with Nether Robe, their breath can damage fire-resistant creatures, though to a lesser extent."
+      "text": "If their owner is equipped with a Nether Robe, their breath can damage fire-resistant creatures, though to a lesser extent."
     }
   ]
 }

@@ -318,6 +318,9 @@ public class WolfTotemHooks {
         if (entity.hasEffect(GoetyEffects.WOUNDED.get())) {
             return false;
         }
+        if (!(entity instanceof IOwned owned) || entity.level().dimension() != getStoredReviveLevel(owned)) {
+            return false;
+        }
         WolfTotemBlockEntity totem = getTotem(entity);
         if (totem == null) {
             return false;

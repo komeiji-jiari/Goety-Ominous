@@ -177,21 +177,20 @@ public class CerberusModel extends HierarchicalModel<Cerberus> {
     @Override
     public void setupAnim(Cerberus entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.root().getAllParts().forEach(ModelPart::resetPose);
-        // Only the center head tracks the look target directly; the two side heads keep their idle/attack keyframes.
-        this.head1.yRot += netHeadYaw * ((float)Math.PI / 180F);
-        this.head1.xRot += headPitch * ((float)Math.PI / 180F);
-        float gait = entity.getGaitWeight(ageInTicks);
-        PoseBlend.animate(this, entity.idleAnimationState, CerberusAnimations.idle, ageInTicks, gait);
-        PoseBlend.animate(this, entity.walkAnimationState, CerberusAnimations.walking, ageInTicks, gait);
-        PoseBlend.animate(this, entity.runAnimationState, CerberusAnimations.running, ageInTicks, gait);
-        PoseBlend.animate(this, entity.runStopAnimationState, CerberusAnimations.run_stop, ageInTicks, gait);
-        PoseBlend.animate(this, entity.groundedAnimationState, CerberusAnimations.grounded, ageInTicks, gait);
-        PoseBlend.animate(this, entity.sitDownAnimationState, CerberusAnimations.sit_down, ageInTicks, gait);
-        PoseBlend.animate(this, entity.standUpAnimationState, CerberusAnimations.stand_up, ageInTicks, gait);
+        this.head1.zRot -= netHeadYaw * ((float)Math.PI / 180);
+        this.head1.xRot += headPitch * ((float)Math.PI / 180);
+        PoseBlend.animate(this, entity.idleAnimationState, CerberusAnimations.idle, ageInTicks, entity.getIdleWeight(ageInTicks));
+        PoseBlend.animate(this, entity.walkAnimationState, CerberusAnimations.walking, ageInTicks, entity.getWalkWeight(ageInTicks));
+        PoseBlend.animate(this, entity.groundedAnimationState, CerberusAnimations.grounded, ageInTicks, entity.getGroundedWeight(ageInTicks));
         PoseBlend.animate(this, entity.jumpAnimationState, CerberusAnimations.jumping, ageInTicks, entity.getJumpWeight(ageInTicks));
-        PoseBlend.animate(this, entity.landingAnimationState, CerberusAnimations.landing, ageInTicks, entity.getLandingWeight(ageInTicks));
-        this.animate(entity.biteAnimationState, CerberusAnimations.biting, ageInTicks);
-        this.animate(entity.fireBreathAnimationState, CerberusAnimations.fire_breath, ageInTicks);
+        PoseBlend.animate(this, entity.biteAnimationState, CerberusAnimations.biting, ageInTicks, entity.getBiteWeight(ageInTicks));
+        PoseBlend.animate(this, entity.fireBreathAnimationState, CerberusAnimations.fire_breath, ageInTicks, entity.getFireBreathWeight(ageInTicks));
+        this.mane.x = 0.5F;
+        this.mane.y = -1.5F;
+        this.mane.z = 10.0F;
+        this.mane.xRot = 1.5708F;
+        this.mane.yRot = 0.0F;
+        this.mane.zRot = 0.0F;
         this.tail.xRot += entity.getTailAngle() - 0.6981F;
         this.fur_1.visible = !entity.hasWargArmor();
         this.fur_2.visible = !entity.hasWargArmor();
