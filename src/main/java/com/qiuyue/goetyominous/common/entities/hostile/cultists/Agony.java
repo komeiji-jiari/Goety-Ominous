@@ -75,7 +75,9 @@ public class Agony extends Summoned {
         super.registerGoals();
         this.goalSelector.addGoal(1, new GuardingGoal(this, 0.75, 20.0F));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false,
-                target -> target instanceof Player player && !CuriosFinder.isWitchFriendly(player)));
+                target -> target instanceof Player player
+                        && !(this.getTrueOwner() instanceof Player)
+                        && !CuriosFinder.isWitchFriendly(player)));
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(8, new Summoned.WanderGoal(this, 1.0, 10.0F));

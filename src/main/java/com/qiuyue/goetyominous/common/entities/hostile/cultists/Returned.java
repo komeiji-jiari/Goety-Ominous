@@ -79,7 +79,9 @@ public class Returned extends AbstractReturned {
         this.goalSelector.addGoal(2, new SpellGoal());
         this.goalSelector.addGoal(3, new AvoidTargetGoal(this, LivingEntity.class, 8.0F, 0.6D, 1.0D));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false,
-                target -> target instanceof Player player && !CuriosFinder.isWitchFriendly(player)));
+                target -> target instanceof Player player
+                        && !(this.getTrueOwner() instanceof Player)
+                        && !CuriosFinder.isWitchFriendly(player)));
         this.goalSelector.addGoal(4, new SurroundGoal<>(this, 1.0D, 8.0F));
     }
 
