@@ -4,6 +4,26 @@
     {
       "id": "goetyominous:mutant_shulker_servant",
       "required": false
+    },
+    {
+      "id": "goetyominous:endersent_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:chorusling_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:annihilation_pursuer_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:flameborn_guard_servant",
+      "required": false
+    },
+    {
+      "id": "goetyominous:flameborn_warrior_servant",
+      "required": false
     }
   ]
 }

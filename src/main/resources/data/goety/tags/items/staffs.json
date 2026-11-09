@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "goetyominous:fel_staff",
+    {
+      "id": "goetyominous:key_of_rlyeh",
+      "required": false
+    }
+  ]
+}

@@ -80,6 +80,22 @@
     {
       "id":"goetyominous:mutant_jungle_zombie_servant",
       "required": false
+    },
+    {
+      "id":"goetyominous:the_obliterator_servant",
+      "required": false
+    },
+    {
+      "id":"goetyominous:endersent_servant",
+      "required": false
+    },
+    {
+      "id":"goetyominous:possessed_paladin_servant",
+      "required": false
+    },
+    {
+      "id":"goetyominous:cloud_golem_servant",
+      "required": false
     }
   ]
 }

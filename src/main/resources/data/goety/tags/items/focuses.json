@@ -1,0 +1,241 @@
+{
+  "replace": false,
+  "values": [
+    "goetyominous:breeze_focus",
+    "goetyominous:haunt_focus",
+    "goetyominous:soulstar_focus",
+    "goetyominous:rigid_focus",
+    "goetyominous:brood_focus",
+    "goetyominous:spider_focus",
+    "goetyominous:redstone_focus",
+    "goetyominous:urbhadhach_focus",
+    "goetyominous:scorch_focus",
+    "goetyominous:braineater_focus",
+    "goetyominous:poison_ball_focus",
+    "goetyominous:acid_pool_focus",
+    {
+      "id": "goetyominous:extinction_breath_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:extinction_meteor_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:primal_pack_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:tremor_spirit_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:grotto_spirit_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:deep_one_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:deep_knight_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:deep_mage_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:water_bolt_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:deep_wave_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:wave_bash_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:atomic_bomb_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:atomic_breath_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:xray_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:brainiac_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:murmur_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:crimson_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:bloodspray_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:farseer_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:froststalker_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:roller_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:skelewag_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:guster_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:dropbear_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:sand_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:voidshot_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:centipede_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:vulture_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:fart_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:giant_snowball_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:icicle_slam_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:icicle_spike_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:sand_ball_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:sand_geyser_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:poison_breath_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:wither_breath_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:wither_slash_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:hog_charge_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:shulker_scatter_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:shulker_bullet_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:rod_strike_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:volt_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:volt_bolt_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:dicer_laser_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:dicer_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:terror_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:skyvern_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:trembler_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:umber_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:inferno_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:frowzy_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:spore_cloud_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:rune_prison_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:confusion_bolt_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:thrasher_focus",
+      "required": false
+    },
+    {
+      "id": "goetyominous:flare_focus",
+      "required": false
+    }
+  ]
+}

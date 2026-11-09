@@ -1,6 +1,10 @@
 {
   "replace": false,
   "values": [
-    "goetyominous:crimson_spider_servant"
+    "goetyominous:crimson_spider_servant",
+    {
+      "id": "goetyominous:umber_spider_servant",
+      "required": false
+    }
   ]
 }
