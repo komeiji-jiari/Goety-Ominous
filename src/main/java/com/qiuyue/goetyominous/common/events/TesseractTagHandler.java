@@ -30,6 +30,7 @@ public class TesseractTagHandler {
     public static void onTagsUpdated(TagsUpdatedEvent event) {
         addToTag(TESSERACT_SMALL, ModEntityTypes.URBHADHACH_SERVANT);
         addToTag(TESSERACT_SMALL, ModEntityTypes.HURRICANE_SERVANT);
+        addToTag(TESSERACT_SMALL, ModEntityTypes.CERBERUS);
 
         addToTag(TESSERACT_MEDIUM, ModEntityTypes.HERESIARCH_SERVANT);
         addToTag(TESSERACT_MEDIUM, ModEntityTypes.STORM_NECROMANCER_SERVANT);
