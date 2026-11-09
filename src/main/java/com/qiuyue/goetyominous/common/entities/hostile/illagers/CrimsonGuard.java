@@ -45,6 +45,7 @@ public class CrimsonGuard extends HuntingIllagerEntity {
     private static final EntityDataAccessor<Integer> DATA_ANIM_STATE =
             SynchedEntityData.defineId(CrimsonGuard.class, EntityDataSerializers.INT);
     public final AnimationState idleAnimationState = new AnimationState();
+    public final AnimationState standAnimationState = new AnimationState();
     public final AnimationState slamAnimationState = new AnimationState();
     public final AnimationState sweepAnimationState = new AnimationState();
     private int attackTick;

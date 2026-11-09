@@ -86,6 +86,8 @@ public class ZBastionGuardServant extends ZPiglinServant implements IShielded {
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState noShieldIdleAnimationState = new AnimationState();
+    public final AnimationState standAnimationState = new AnimationState();
+    public final AnimationState standNoShieldAnimationState = new AnimationState();
     public final AnimationState attackAnimationState = new AnimationState();
     public final AnimationState attackNoShieldAnimationState = new AnimationState();
     public final AnimationState comboAnimationState = new AnimationState();
@@ -193,17 +195,17 @@ public class ZBastionGuardServant extends ZPiglinServant implements IShielded {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.PIGLIN_BRUTE_AMBIENT;
+        return this.isAggressive() ? SoundEvents.ZOMBIFIED_PIGLIN_ANGRY : SoundEvents.ZOMBIFIED_PIGLIN_AMBIENT;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.PIGLIN_BRUTE_HURT;
+        return SoundEvents.ZOMBIFIED_PIGLIN_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.PIGLIN_BRUTE_DEATH;
+        return SoundEvents.ZOMBIFIED_PIGLIN_DEATH;
     }
 
     @Override
@@ -421,6 +423,8 @@ public class ZBastionGuardServant extends ZPiglinServant implements IShielded {
             }
             this.idleAnimationState.animateWhen(!this.isDeadOrDying(), this.tickCount);
             this.noShieldIdleAnimationState.animateWhen(!this.isDeadOrDying(), this.tickCount);
+            this.standAnimationState.animateWhen(!this.isDeadOrDying() && this.isStaying(), this.tickCount);
+            this.standNoShieldAnimationState.animateWhen(!this.isDeadOrDying() && this.isStaying(), this.tickCount);
         } else {
             if (this.attackCoolTick > 0) {
                 --this.attackCoolTick;
@@ -485,7 +489,7 @@ public class ZBastionGuardServant extends ZPiglinServant implements IShielded {
     private void applyRampage(boolean sound) {
         this.addEffect(new MobEffectInstance(GoetyEffects.RAMPAGE.get(), RAMPAGE_DURATION, 0, false, true, true), this);
         if (sound) {
-            this.playSound(SoundEvents.PIGLIN_BRUTE_ANGRY, this.getSoundVolume(), this.getVoicePitch());
+            this.playSound(SoundEvents.ZOMBIFIED_PIGLIN_ANGRY, this.getSoundVolume(), this.getVoicePitch());
         }
     }
 

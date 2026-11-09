@@ -50,6 +50,7 @@ public class ImperialChasseurServant extends AbstractIllagerServant {
             SynchedEntityData.defineId(ImperialChasseurServant.class, EntityDataSerializers.INT);
 
     public final AnimationState idleAnimationState = new AnimationState();
+    public final AnimationState standAnimationState = new AnimationState();
     public final AnimationState reloadAnimationState = new AnimationState();
     public final AnimationState meleeAnimationState = new AnimationState();
     public final AnimationState meleeAimAnimationState = new AnimationState();
@@ -148,7 +149,8 @@ public class ImperialChasseurServant extends AbstractIllagerServant {
     public void tick() {
         super.tick();
         if (this.level().isClientSide) {
-            this.idleAnimationState.animateWhen(this.getAnimState() == ANIM_NONE, this.tickCount);
+            this.idleAnimationState.animateWhen(this.getAnimState() == ANIM_NONE && !this.isStaying(), this.tickCount);
+            this.standAnimationState.animateWhen(this.getAnimState() == ANIM_NONE && this.isStaying(), this.tickCount);
         } else if (this.meleeCooldown > 0) {
             --this.meleeCooldown;
         }

@@ -8,7 +8,8 @@ import com.qiuyue.goetyominous.GoetyOminous;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtIo;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.StreamTagVisitor;
+import net.minecraft.nbt.TagType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -21,6 +22,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -39,8 +41,6 @@ public class StructureLootCache extends SimplePreparableReloadListener<Structure
     private static final String JSON_SUFFIX = ".json";
     private static final int MAX_STEPS = 20000;
     private static final int MAX_TEMPLATES = 8192;
-    private static final int MAX_NBT_DEPTH = 32;
-    private static final String JIGSAW_BLOCK = "minecraft:jigsaw";
     private static final String JIGSAW_POOL_FIELD = "pool";
     private static final Map<String, List<String>> CODE_GENERATED_LOOT = Map.ofEntries(
             Map.entry("minecraft:end_city", List.of("minecraft:chests/end_city_treasure")),
@@ -99,16 +99,14 @@ public class StructureLootCache extends SimplePreparableReloadListener<Structure
         for (Map.Entry<ResourceLocation, Resource> entry : sorted(manager, DIR_PREFIX, path -> path.getPath().endsWith(NBT_SUFFIX)).entrySet()) {
             templateFiles++;
             try (InputStream stream = entry.getValue().open()) {
-                CompoundTag root = NbtIo.readCompressed(stream);
-                Set<ResourceLocation> tables = new LinkedHashSet<>();
-                collectAllLootTables(root, tables, 0);
+                TemplateScanVisitor scanner = new TemplateScanVisitor();
+                NbtIo.parseCompressed(stream, scanner);
                 ResourceLocation templateId = templateIdOf(entry.getKey());
-                Set<ResourceLocation> outPools = collectJigsawPools(root);
-                if (!tables.isEmpty()) {
-                    templateLoot.put(templateId, Collections.unmodifiableSet(tables));
+                if (!scanner.lootTables.isEmpty()) {
+                    templateLoot.put(templateId, Collections.unmodifiableSet(scanner.lootTables));
                 }
-                if (!outPools.isEmpty()) {
-                    templatePools.put(templateId, Collections.unmodifiableSet(outPools));
+                if (!scanner.jigsawPools.isEmpty()) {
+                    templatePools.put(templateId, Collections.unmodifiableSet(scanner.jigsawPools));
                 }
             } catch (IOException | RuntimeException broken) {
                 GoetyOminous.LOGGER.warn("[goetyominous] Failed to read structure template {}, skipped: {}", entry.getKey(), broken.toString());
@@ -270,59 +268,130 @@ public class StructureLootCache extends SimplePreparableReloadListener<Structure
         return path;
     }
 
-    private static void collectAllLootTables(Tag tag, Set<ResourceLocation> lootOut, int depth) {
-        if (tag == null || depth > MAX_NBT_DEPTH) {
-            return;
-        }
-        if (tag instanceof CompoundTag compound) {
-            for (String key : compound.getAllKeys()) {
-                Tag child = compound.get(key);
-                if (child == null) {
-                    continue;
-                }
-                if ("LootTable".equals(key) && child.getId() == Tag.TAG_STRING) {
-                    ResourceLocation id = ResourceLocation.tryParse(compound.getString(key));
-                    if (id != null) {
-                        lootOut.add(id);
-                    }
-                    continue;
-                }
-                collectAllLootTables(child, lootOut, depth + 1);
-            }
-        } else if (tag instanceof ListTag list) {
-            for (int i = 0; i < list.size(); i++) {
-                collectAllLootTables(list.get(i), lootOut, depth + 1);
-            }
-        }
-    }
+    private static final class TemplateScanVisitor implements StreamTagVisitor {
+        private final Set<ResourceLocation> lootTables = new LinkedHashSet<>();
+        private final Set<ResourceLocation> jigsawPools = new LinkedHashSet<>();
+        private final List<String> path = new ArrayList<>();
+        private String currentName;
 
-    private static Set<ResourceLocation> collectJigsawPools(CompoundTag root) {
-        LinkedHashSet<ResourceLocation> out = new LinkedHashSet<>();
-        ListTag palette = root.getList("palette", Tag.TAG_COMPOUND);
-        ListTag blocks = root.getList("blocks", Tag.TAG_COMPOUND);
-        if (palette.isEmpty() || blocks.isEmpty()) {
-            return out;
+        @Override
+        public EntryResult visitEntry(TagType<?> type) {
+            this.currentName = null;
+            return EntryResult.ENTER;
         }
-        for (int i = 0; i < blocks.size(); i++) {
-            CompoundTag block = blocks.getCompound(i);
-            int index = block.getInt("state");
-            if (index < 0 || index >= palette.size()) {
-                continue;
+
+        @Override
+        public EntryResult visitEntry(TagType<?> type, String name) {
+            this.currentName = name;
+            if (isContainer(type)) {
+                this.path.add(name);
             }
-            if (!JIGSAW_BLOCK.equals(palette.getCompound(index).getString("Name"))) {
-                continue;
-            }
-            Tag nbtTag = block.get("nbt");
-            if (!(nbtTag instanceof CompoundTag nbt)) {
-                continue;
-            }
-            String pool = nbt.getString(JIGSAW_POOL_FIELD);
-            ResourceLocation id = ResourceLocation.tryParse(pool);
-            if (id != null) {
-                out.add(id);
-            }
+            return EntryResult.ENTER;
         }
-        return out;
+
+        @Override
+        public EntryResult visitElement(TagType<?> type, int index) {
+            this.currentName = null;
+            if (isContainer(type)) {
+                this.path.add(null);
+            }
+            return EntryResult.ENTER;
+        }
+
+        @Override
+        public ValueResult visit(String value) {
+            if ("LootTable".equals(this.currentName)) {
+                addId(value, this.lootTables);
+            } else if (JIGSAW_POOL_FIELD.equals(this.currentName) && this.isBlockNbt()) {
+                addId(value, this.jigsawPools);
+            }
+            return ValueResult.CONTINUE;
+        }
+
+        @Override
+        public ValueResult visit(byte value) {
+            return ValueResult.CONTINUE;
+        }
+
+        @Override
+        public ValueResult visit(short value) {
+            return ValueResult.CONTINUE;
+        }
+
+        @Override
+        public ValueResult visit(int value) {
+            return ValueResult.CONTINUE;
+        }
+
+        @Override
+        public ValueResult visit(long value) {
+            return ValueResult.CONTINUE;
+        }
+
+        @Override
+        public ValueResult visit(float value) {
+            return ValueResult.CONTINUE;
+        }
+
+        @Override
+        public ValueResult visit(double value) {
+            return ValueResult.CONTINUE;
+        }
+
+        @Override
+        public ValueResult visit(byte[] value) {
+            return ValueResult.CONTINUE;
+        }
+
+        @Override
+        public ValueResult visit(int[] value) {
+            return ValueResult.CONTINUE;
+        }
+
+        @Override
+        public ValueResult visit(long[] value) {
+            return ValueResult.CONTINUE;
+        }
+
+        @Override
+        public ValueResult visitList(TagType<?> type, int size) {
+            return ValueResult.CONTINUE;
+        }
+
+        @Override
+        public ValueResult visitRootEntry(TagType<?> type) {
+            if (isContainer(type)) {
+                this.path.add(null);
+            }
+            return ValueResult.CONTINUE;
+        }
+
+        @Override
+        public ValueResult visitContainerEnd() {
+            if (!this.path.isEmpty()) {
+                this.path.remove(this.path.size() - 1);
+            }
+            return ValueResult.CONTINUE;
+        }
+
+        @Override
+        public ValueResult visitEnd() {
+            return ValueResult.CONTINUE;
+        }
+
+        private boolean isBlockNbt() {
+            if (this.path.size() != 4) {
+                return false;
+            }
+            return this.path.get(0) == null
+                    && "blocks".equals(this.path.get(1))
+                    && this.path.get(2) == null
+                    && "nbt".equals(this.path.get(3));
+        }
+
+        private static boolean isContainer(TagType<?> type) {
+            return type == CompoundTag.TYPE || type == ListTag.TYPE;
+        }
     }
 
     private static JsonObject readJson(Resource resource) throws IOException {

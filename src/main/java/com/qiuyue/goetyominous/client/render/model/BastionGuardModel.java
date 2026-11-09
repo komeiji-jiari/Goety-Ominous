@@ -198,20 +198,22 @@ public class BastionGuardModel<T extends Mob> extends HierarchicalModel<T> {
 			this.setupGuard(guard.hasShield(), guard.isMeleeAttacking(),
 					guard.shieldBreakAnimationState.isStarted(), guard.walkAnimation.isMoving(),
 					guard.idleAnimationState, guard.noShieldIdleAnimationState,
+					guard.standAnimationState, guard.standNoShieldAnimationState,
 					guard.attackAnimationState, guard.attackNoShieldAnimationState,
 					guard.comboAnimationState, guard.shieldBreakAnimationState,
 					guard.getCurrentAnimation() == BastionGuardServant.ANIM_GUARD_IDLE,
-					guard.guardIdleAnimationState,
+					guard.guardIdleAnimationState, guard.isStaying(),
 					limbSwing, limbSwingAmount, ageInTicks,
 					actionFade(guard.actionFadeStart, BastionGuardServant.ACTION_FADE_TICKS, ageInTicks));
 		} else if (entity instanceof ZBastionGuardServant guard) {
 			this.setupGuard(guard.hasShield(), guard.isMeleeAttacking(),
 					guard.shieldBreakAnimationState.isStarted(), guard.walkAnimation.isMoving(),
 					guard.idleAnimationState, guard.noShieldIdleAnimationState,
+					guard.standAnimationState, guard.standNoShieldAnimationState,
 					guard.attackAnimationState, guard.attackNoShieldAnimationState,
 					guard.comboAnimationState, guard.shieldBreakAnimationState,
 					guard.getCurrentAnimation() == ZBastionGuardServant.ANIM_GUARD_IDLE,
-					guard.guardIdleAnimationState,
+					guard.guardIdleAnimationState, guard.isStaying(),
 					limbSwing, limbSwingAmount, ageInTicks,
 					actionFade(guard.actionFadeStart, ZBastionGuardServant.ACTION_FADE_TICKS, ageInTicks));
 		}
@@ -223,9 +225,10 @@ public class BastionGuardModel<T extends Mob> extends HierarchicalModel<T> {
 
 	private void setupGuard(boolean shielded, boolean attacking, boolean breaking, boolean moving,
 							AnimationState idle, AnimationState noShieldIdle,
+							AnimationState stand, AnimationState noShieldStand,
 							AnimationState attack, AnimationState attackNoShield,
 							AnimationState combo, AnimationState shieldBreak,
-							boolean guardIdle, AnimationState guardIdleState,
+							boolean guardIdle, AnimationState guardIdleState, boolean staying,
 							float limbSwing, float limbSwingAmount, float ageInTicks, float actionFade) {
 		boolean shieldStance = shielded || breaking;
 		this.shield.visible = shieldStance;
@@ -272,9 +275,13 @@ public class BastionGuardModel<T extends Mob> extends HierarchicalModel<T> {
 				KeyframeAnimations.animate(this, BastionGuardAnimation.IDLE_SHIELD_GUARD, guardTime, idleWeight, ANIMATION_VECTOR);
 			}
 		} else {
-			this.animateIdle(shieldStance ? idle : noShieldIdle,
-					shieldStance ? BastionGuardAnimation.IDLE_SHIELD : BastionGuardAnimation.IDLE_NO_SHIELD,
-					ageInTicks, idleWeight);
+			AnimationState baseIdle = staying
+					? (shieldStance ? stand : noShieldStand)
+					: (shieldStance ? idle : noShieldIdle);
+			AnimationDefinition baseDefinition = staying
+					? (shieldStance ? BastionGuardAnimation.STAND_SHIELD : BastionGuardAnimation.STAND_NO_SHIELD)
+					: (shieldStance ? BastionGuardAnimation.IDLE_SHIELD : BastionGuardAnimation.IDLE_NO_SHIELD);
+			this.animateIdle(baseIdle, baseDefinition, ageInTicks, idleWeight);
 		}
 		if (walkWeight > 0.0F) {
 			this.animateWalk(shieldStance ? BastionGuardAnimation.WALK_SHIELD : BastionGuardAnimation.WALK_NO_SHIELD,

@@ -91,6 +91,8 @@ public class BastionGuardServant extends AbstractPiglinServant implements IShiel
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState noShieldIdleAnimationState = new AnimationState();
+    public final AnimationState standAnimationState = new AnimationState();
+    public final AnimationState standNoShieldAnimationState = new AnimationState();
     public final AnimationState attackAnimationState = new AnimationState();
     public final AnimationState attackNoShieldAnimationState = new AnimationState();
     public final AnimationState comboAnimationState = new AnimationState();
@@ -483,6 +485,8 @@ public class BastionGuardServant extends AbstractPiglinServant implements IShiel
             }
             this.idleAnimationState.animateWhen(!this.isDeadOrDying(), this.tickCount);
             this.noShieldIdleAnimationState.animateWhen(!this.isDeadOrDying(), this.tickCount);
+            this.standAnimationState.animateWhen(!this.isDeadOrDying() && this.isStaying(), this.tickCount);
+            this.standNoShieldAnimationState.animateWhen(!this.isDeadOrDying() && this.isStaying(), this.tickCount);
         } else {
             if (this.attackCoolTick > 0) {
                 --this.attackCoolTick;

@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.qiuyue.goetyominous.client.render.model.animation.CrimsonGuardAnimation;
 import com.qiuyue.goetyominous.common.entities.ally.illager.CrimsonGuardServant;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.CrimsonGuard;
+import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -170,19 +171,19 @@ public class CrimsonGuardModel<T extends Mob> extends HierarchicalModel<T> imple
 			this.head.xRot = headPitch * ((float)Math.PI / 180F);
 			if (entity instanceof CrimsonGuardServant servant) {
 				this.setupCrimsonGuard(servant.isMeleeAttacking(), servant.getCurrentAnimation(),
-						servant.idleAnimationState, servant.slamAnimationState, servant.sweepAnimationState,
-						limbSwing, limbSwingAmount, ageInTicks);
+						servant.idleAnimationState, servant.standAnimationState, servant.slamAnimationState, servant.sweepAnimationState,
+						servant.isStaying(), limbSwing, limbSwingAmount, ageInTicks);
 			} else if (entity instanceof CrimsonGuard guard) {
 				this.setupCrimsonGuard(guard.isMeleeAttacking(), guard.getCurrentAnimation(),
-						guard.idleAnimationState, guard.slamAnimationState, guard.sweepAnimationState,
-						limbSwing, limbSwingAmount, ageInTicks);
+						guard.idleAnimationState, guard.standAnimationState, guard.slamAnimationState, guard.sweepAnimationState,
+						false, limbSwing, limbSwingAmount, ageInTicks);
 			}
 		}
 	}
 
 	private void setupCrimsonGuard(boolean attacking, int currentAnimation,
-								   AnimationState idle, AnimationState slam, AnimationState sweep,
-								   float limbSwing, float limbSwingAmount, float ageInTicks) {
+								   AnimationState idle, AnimationState stand, AnimationState slam, AnimationState sweep,
+								   boolean staying, float limbSwing, float limbSwingAmount, float ageInTicks) {
 		if (attacking) {
 			if (currentAnimation == CrimsonGuardServant.ANIM_SLAM) {
 				this.animate(slam, CrimsonGuardAnimation.SLAM, ageInTicks);
@@ -195,8 +196,10 @@ public class CrimsonGuardModel<T extends Mob> extends HierarchicalModel<T> imple
 		float walkWeight = Mth.clamp(limbSwingAmount * 3.5F, 0.0F, 1.0F);
 		KeyframeAnimations.animate(this, CrimsonGuardAnimation.WALK, (long)(limbSwing * 50.0F * 2.5F),
 				walkWeight, ANIMATION_VEC);
-		idle.updateTime(ageInTicks, 1.0F);
-		idle.ifStarted(state -> KeyframeAnimations.animate(this, CrimsonGuardAnimation.IDLE,
+		AnimationState baseState = staying ? stand : idle;
+		AnimationDefinition baseAnimation = staying ? CrimsonGuardAnimation.STAND : CrimsonGuardAnimation.IDLE;
+		baseState.updateTime(ageInTicks, 1.0F);
+		baseState.ifStarted(state -> KeyframeAnimations.animate(this, baseAnimation,
 				state.getAccumulatedTime(), 1.0F - walkWeight, ANIMATION_VEC));
 	}
 

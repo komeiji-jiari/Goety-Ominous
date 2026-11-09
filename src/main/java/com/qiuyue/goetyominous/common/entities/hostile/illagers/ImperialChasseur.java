@@ -47,6 +47,7 @@ public class ImperialChasseur extends HuntingIllagerEntity {
             SynchedEntityData.defineId(ImperialChasseur.class, EntityDataSerializers.INT);
 
     public final AnimationState idleAnimationState = new AnimationState();
+    public final AnimationState standAnimationState = new AnimationState();
     public final AnimationState reloadAnimationState = new AnimationState();
     public final AnimationState meleeAnimationState = new AnimationState();
     public final AnimationState meleeAimAnimationState = new AnimationState();

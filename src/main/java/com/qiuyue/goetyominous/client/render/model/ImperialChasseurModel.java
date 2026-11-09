@@ -8,6 +8,7 @@ import com.qiuyue.goetyominous.common.entities.ally.illager.ImperialChasseurServ
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.ImperialChasseur;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -281,6 +282,8 @@ public class ImperialChasseurModel<T extends Mob> extends HierarchicalModel<T> i
         this.Head.xRot = headPitch * ((float) Math.PI / 180F);
         int animState;
         AnimationState idleState;
+        AnimationState standState;
+        boolean staying;
         AnimationState reloadState;
         AnimationState meleeState;
         AnimationState meleeAimState;
@@ -290,6 +293,8 @@ public class ImperialChasseurModel<T extends Mob> extends HierarchicalModel<T> i
         if (entity instanceof ImperialChasseurServant servant) {
             animState = servant.getAnimState();
             idleState = servant.idleAnimationState;
+            standState = servant.standAnimationState;
+            staying = servant.isStaying();
             reloadState = servant.reloadAnimationState;
             meleeState = servant.meleeAnimationState;
             meleeAimState = servant.meleeAimAnimationState;
@@ -299,6 +304,8 @@ public class ImperialChasseurModel<T extends Mob> extends HierarchicalModel<T> i
         } else if (entity instanceof ImperialChasseur chasseur) {
             animState = chasseur.getAnimState();
             idleState = chasseur.idleAnimationState;
+            standState = chasseur.standAnimationState;
+            staying = false;
             reloadState = chasseur.reloadAnimationState;
             meleeState = chasseur.meleeAnimationState;
             meleeAimState = chasseur.meleeAimAnimationState;
@@ -336,9 +343,11 @@ public class ImperialChasseurModel<T extends Mob> extends HierarchicalModel<T> i
         float walkWeight = Mth.clamp(limbSwingAmount * 3.5F, 0.0F, 1.0F);
         KeyframeAnimations.animate(this, ImperialChasseurAnimation.WALK,
                 (long) (limbSwing * 50.0F * 2.5F), walkWeight, ANIMATION_VEC);
-        idleState.updateTime(ageInTicks, 1.0F);
-        idleState.ifStarted(currentIdle -> KeyframeAnimations.animate(this,
-                ImperialChasseurAnimation.IDLE, currentIdle.getAccumulatedTime(), 1.0F - walkWeight, ANIMATION_VEC));
+        AnimationState baseState = staying ? standState : idleState;
+        AnimationDefinition baseAnimation = staying ? ImperialChasseurAnimation.STAND : ImperialChasseurAnimation.IDLE;
+        baseState.updateTime(ageInTicks, 1.0F);
+        baseState.ifStarted(currentIdle -> KeyframeAnimations.animate(this,
+                baseAnimation, currentIdle.getAccumulatedTime(), 1.0F - walkWeight, ANIMATION_VEC));
     }
 
     @Override

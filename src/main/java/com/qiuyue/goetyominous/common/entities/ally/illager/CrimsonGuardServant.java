@@ -47,6 +47,7 @@ public class CrimsonGuardServant extends AbstractIllagerServant {
     private static final EntityDataAccessor<Integer> DATA_ANIM_STATE =
             SynchedEntityData.defineId(CrimsonGuardServant.class, EntityDataSerializers.INT);
     public final AnimationState idleAnimationState = new AnimationState();
+    public final AnimationState standAnimationState = new AnimationState();
     public final AnimationState slamAnimationState = new AnimationState();
     public final AnimationState sweepAnimationState = new AnimationState();
     private int attackTick;
@@ -195,7 +196,8 @@ public class CrimsonGuardServant extends AbstractIllagerServant {
         super.tick();
         if (this.level().isClientSide) {
             if (this.isAlive()) {
-                this.idleAnimationState.animateWhen(!this.isMeleeAttacking(), this.tickCount);
+                this.idleAnimationState.animateWhen(!this.isMeleeAttacking() && !this.isStaying(), this.tickCount);
+                this.standAnimationState.animateWhen(!this.isMeleeAttacking() && this.isStaying(), this.tickCount);
             }
             if (!this.isMeleeAttacking()) {
                 this.slamAnimationState.stop();
