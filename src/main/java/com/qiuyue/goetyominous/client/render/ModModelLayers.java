@@ -439,8 +439,7 @@ public class ModModelLayers {
 
     @SubscribeEvent
     public static void onAddLayers(EntityRenderersEvent.AddLayers event) {
-        WolfRenderer wolfRenderer = event.getRenderer(EntityType.WOLF);
-        if (wolfRenderer != null) {
+        if (event.getRenderer(EntityType.WOLF) instanceof WolfRenderer wolfRenderer) {
             wolfRenderer.addLayer(new CursedWolfArmorLayer(wolfRenderer, event.getEntityModels()));
         }
     }

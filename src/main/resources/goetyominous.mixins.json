@@ -88,7 +88,6 @@
   ],
   "client": [
     "MixinBlackWolfRenderer",
-    "MixinWolfRenderer",
     "MixinSkeletonWolfRenderer",
     "MixinStormhoundRenderer",
     "MixinWinterWolfRenderer",
