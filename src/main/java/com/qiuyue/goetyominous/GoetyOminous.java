@@ -5,6 +5,7 @@ import com.Polarice3.Goety.common.entities.ally.BlackWolf;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.common.entities.neutral.ZPiglinServant;
 import com.qiuyue.goetyominous.common.blocks.trial.TrialBlocks;
+import com.qiuyue.goetyominous.common.entities.ally.illager.BoundPyrologer;
 import com.qiuyue.goetyominous.common.entities.ally.illager.ImperialChasseurServant;
 import com.qiuyue.goetyominous.common.entities.ally.illager.PyrologerServant;
 import com.qiuyue.goetyominous.common.explore.ExploreEvents;
@@ -279,6 +280,7 @@ public class GoetyOminous {
         event.put(ModEntityTypes.INQUILLAGER_SERVANT.get(), InquillagerServant.setCustomAttributes().build());
         event.put(ModEntityTypes.PYROLOGER_SERVANT.get(), PyrologerServant.setCustomAttributes().build());
         event.put(ModEntityTypes.PYROLOGER.get(), Pyrologer.createAttributes().build());
+        event.put(ModEntityTypes.BOUND_PYROLOGER.get(), BoundPyrologer.setCustomAttributes().build());
         event.put(ModEntityTypes.BREEZE_SERVANT.get(), BreezeServant.setCustomAttributes().build());
         event.put(ModEntityTypes.BREEZE.get(), BreezeEntity.setCustomAttributes().build());
         event.put(ModEntityTypes.HURRICANE.get(), AbstractHurricane.setCustomAttributes().build());

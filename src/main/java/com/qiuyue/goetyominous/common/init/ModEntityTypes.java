@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.common.init;
 
 import com.qiuyue.goetyominous.common.blocks.trial.OminousItemSpawner;
+import com.qiuyue.goetyominous.common.entities.ally.illager.BoundPyrologer;
 import com.qiuyue.goetyominous.common.entities.ally.illager.ConquillagerServant;
 import com.qiuyue.goetyominous.common.entities.ally.illager.InquillagerServant;
 import com.qiuyue.goetyominous.common.entities.ally.illager.CrimsonGuardServant;
@@ -60,6 +61,13 @@ public class ModEntityTypes {
                     .sized(0.6F, 1.95F)
                     .clientTrackingRange(10)
                     .build(MOD_ID + ":pyrologer"));
+
+    public static final RegistryObject<EntityType<BoundPyrologer>> BOUND_PYROLOGER = ENTITY_TYPES.register(
+            "bound_pyrologer",
+            () -> EntityType.Builder.of(BoundPyrologer::new, MobCategory.MISC)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(10)
+                    .build(MOD_ID + ":bound_pyrologer"));
 
     public static final RegistryObject<EntityType<CrimsonGuardServant>> CRIMSON_GUARD_SERVANT = ENTITY_TYPES.register(
             "crimson_guard_servant",

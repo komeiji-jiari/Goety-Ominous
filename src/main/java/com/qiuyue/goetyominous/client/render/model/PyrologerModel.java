@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.Polarice3.Goety.client.render.layer.HierarchicalArmor;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.render.model.animation.PyrologerAnimation;
+import com.qiuyue.goetyominous.common.entities.ally.illager.BoundPyrologer;
 import com.qiuyue.goetyominous.common.entities.ally.illager.PyrologerServant;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.Pyrologer;
 import net.minecraft.client.model.HierarchicalModel;
@@ -198,6 +199,16 @@ public class PyrologerModel<T extends Mob> extends HierarchicalModel<T> implemen
 			fireBreathLoopState = pyrologer.getFireBreathLoopState();
 			fireBreathEndState = pyrologer.getFireBreathEndState();
 			deathState = pyrologer.getDeathState();
+		} else if (entity instanceof BoundPyrologer boundPyrologer) {
+			currentAnimation = boundPyrologer.getCurrentAnimation();
+			idleState = boundPyrologer.getIdleState();
+			fireWallState = boundPyrologer.getFireWallState();
+			fireballState = boundPyrologer.getFireballState();
+			fieryHideState = boundPyrologer.getFieryHideState();
+			fireBreathStartState = boundPyrologer.getFireBreathStartState();
+			fireBreathLoopState = boundPyrologer.getFireBreathLoopState();
+			fireBreathEndState = boundPyrologer.getFireBreathEndState();
+			deathState = boundPyrologer.getDeathState();
 		} else {
 			return;
 		}

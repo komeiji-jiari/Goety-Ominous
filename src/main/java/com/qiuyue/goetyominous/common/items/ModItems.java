@@ -327,6 +327,10 @@ public class ModItems {
             "pyrologer_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntityTypes.PYROLOGER, 0xFF6A1E, 0x2B1B12, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> BOUND_PYROLOGER_SPAWN_EGG = ITEMS.register(
+            "bound_pyrologer_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.BOUND_PYROLOGER, 0x1B1B20, 0xB03A16, egg()));
+
     public static final RegistryObject<ForgeSpawnEggItem> CRIMSON_GUARD_SPAWN_EGG = ITEMS.register(
             "crimson_guard_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntityTypes.CRIMSON_GUARD, 0x2B2B2B, 0xA11E1E, egg()));
