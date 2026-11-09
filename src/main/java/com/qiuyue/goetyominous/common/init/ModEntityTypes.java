@@ -4,6 +4,7 @@ import com.qiuyue.goetyominous.common.blocks.trial.OminousItemSpawner;
 import com.qiuyue.goetyominous.common.entities.ally.illager.ConquillagerServant;
 import com.qiuyue.goetyominous.common.entities.ally.illager.InquillagerServant;
 import com.qiuyue.goetyominous.common.entities.ally.illager.CrimsonGuardServant;
+import com.qiuyue.goetyominous.common.entities.ally.illager.ZCrimsonGuardServant;
 import com.qiuyue.goetyominous.common.entities.ally.illager.ImperialChasseurServant;
 import com.qiuyue.goetyominous.common.entities.ally.illager.PyrologerServant;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.CrimsonGuard;
@@ -67,6 +68,13 @@ public class ModEntityTypes {
                     .sized(0.6F, 1.95F)
                     .clientTrackingRange(8)
                     .build(MOD_ID + ":crimson_guard_servant"));
+
+    public static final RegistryObject<EntityType<ZCrimsonGuardServant>> ZCRIMSON_GUARD_SERVANT = ENTITY_TYPES.register(
+            "zombie_crimson_guard_servant",
+            () -> EntityType.Builder.of(ZCrimsonGuardServant::new, MobCategory.MISC)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":zombie_crimson_guard_servant"));
 
     public static final RegistryObject<EntityType<CrimsonGuard>> CRIMSON_GUARD = ENTITY_TYPES.register(
             "crimson_guard",

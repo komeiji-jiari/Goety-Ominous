@@ -207,6 +207,7 @@ public class ModModelLayers {
 
         event.registerEntityRenderer(ModEntityTypes.CRIMSON_GUARD.get(), CrimsonGuardRenderer::new);
         event.registerEntityRenderer(ModEntityTypes.CRIMSON_GUARD_SERVANT.get(), CrimsonGuardRenderer::new);
+        event.registerEntityRenderer(ModEntityTypes.ZCRIMSON_GUARD_SERVANT.get(), CrimsonGuardRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.FUNGUS_THROWER.get(),
                 context -> new PiglinServantRenderer(context,
