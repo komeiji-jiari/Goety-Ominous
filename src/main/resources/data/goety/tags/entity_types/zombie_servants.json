@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "goetyominous:zombie_crimson_guard_servant",
     "goetyominous:strong_zpiglin_brute_servant",
     "goetyominous:elite_zpiglin_brute_servant",
     "goetyominous:zpiglin_hunter_servant",
@@ -19,6 +20,8 @@
       "id": "goetyominous:mutant_jungle_zombie_servant",
       "required": false
     },
+    "goetyominous:zbastion_guard_servant",
+    "goetyominous:zpiglin_drummer",
     {
       "id": "goetyominous:zpiglin_alchemist_servant",
       "required": false

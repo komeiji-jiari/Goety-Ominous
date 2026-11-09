@@ -316,6 +316,7 @@ public class GoetyOminous {
         event.put(ModEntityTypes.ARCH_GEOMANCER.get(), ArchGeomancerEntity.setCustomAttributes().build());
         event.put(ModEntityTypes.CRIMSON_GUARD.get(), CrimsonGuard.createAttributes().build());
         event.put(ModEntityTypes.CRIMSON_GUARD_SERVANT.get(), CrimsonGuardServant.createAttributes().build());
+        event.put(ModEntityTypes.ZCRIMSON_GUARD_SERVANT.get(), com.qiuyue.goetyominous.common.entities.ally.illager.ZCrimsonGuardServant.createAttributes().build());
         event.put(ModEntityTypes.DISCIPLE_SERVANT.get(), DiscipleServant.setCustomAttributes().build());
         event.put(ModEntityTypes.STORM_NECROMANCER_SERVANT.get(), AbstractStormNecromancer.setCustomAttributes().build());
         event.put(ModEntityTypes.STORM_NECROMANCER.get(), AbstractStormNecromancer.setCustomAttributes().build());

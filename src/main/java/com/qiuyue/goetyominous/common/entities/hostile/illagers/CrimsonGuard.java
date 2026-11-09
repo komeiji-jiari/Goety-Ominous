@@ -3,11 +3,11 @@ package com.qiuyue.goetyominous.common.entities.hostile.illagers;
 import com.Polarice3.Goety.client.particles.SmashParticleOption;
 import com.Polarice3.Goety.common.entities.ai.ModMeleeAttackGoal;
 import com.Polarice3.Goety.common.entities.hostile.illagers.HuntingIllagerEntity;
+import com.Polarice3.Goety.common.entities.projectiles.NecroBolt;
 import com.Polarice3.Goety.init.ModSounds;
-import com.Polarice3.Goety.utils.BlockFinder;
-import com.Polarice3.Goety.utils.ColorUtil;
-import com.Polarice3.Goety.utils.MobUtil;
-import com.Polarice3.Goety.utils.ServerParticleUtil;
+import com.Polarice3.Goety.utils.*;
+import com.qiuyue.goetyominous.common.entities.ally.illager.ZCrimsonGuardServant;
+import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -20,19 +20,18 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AnimationState;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.ForgeEventFactory;
 
 import java.util.EnumSet;
 
@@ -53,6 +52,7 @@ public class CrimsonGuard extends HuntingIllagerEntity {
 
     public CrimsonGuard(EntityType<? extends CrimsonGuard> type, Level level) {
         super(type, level);
+        this.xpReward = 20;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -192,6 +192,51 @@ public class CrimsonGuard extends HuntingIllagerEntity {
     }
 
     @Override
+    public void die(DamageSource source) {
+        this.playSound(ModSounds.DOUBLE_AXE_IMPACT_SHING.get(),
+                0.75F * this.getRandom().nextIntBetweenInclusive(5, 10) * 0.1F,
+                (this.getRandom().nextBoolean() ? 0.65F : 0.6F)
+                        * this.getRandom().nextIntBetweenInclusive(5, 7) * 0.1F);
+        this.playSound(ModSounds.DIRT_SHATTER_THREE.get(),
+                0.375F * this.getRandom().nextIntBetweenInclusive(7, 10) * 0.1F,
+                (this.getRandom().nextBoolean() ? 0.65F : 0.6F)
+                        * this.getRandom().nextIntBetweenInclusive(7, 10) * 0.1F);
+        this.playSound(ModSounds.HAMMER_SHIMMER_IMPACT_FOUR.get(),
+                0.6F * this.getRandom().nextIntBetweenInclusive(5, 10) * 0.1F,
+                (this.getRandom().nextBoolean() ? 0.65F : 0.6F)
+                        * this.getRandom().nextIntBetweenInclusive(5, 7) * 0.1F);
+        this.playSound(ModSounds.PLATE_DROP.get(), this.getSoundVolume(), this.getVoicePitch());
+
+        Player necroPlayer = null;
+        if (!this.level().isClientSide) {
+            Entity direct = source.getDirectEntity();
+            if (direct instanceof NecroBolt bolt && bolt.getOwner() instanceof Player player) {
+                necroPlayer = player;
+            }
+        }
+
+        super.die(source);
+
+        if (necroPlayer == null || this.isRemoved()) {
+            return;
+        }
+        ZCrimsonGuardServant zombie = this.convertTo(ModEntityTypes.ZCRIMSON_GUARD_SERVANT.get(), true);
+        if (zombie == null) {
+            return;
+        }
+        zombie.setTrueOwner(necroPlayer);
+        if (this.level() instanceof ServerLevel serverLevel) {
+            zombie.finalizeSpawn(serverLevel,
+                    serverLevel.getCurrentDifficultyAt(zombie.blockPosition()),
+                    MobSpawnType.CONVERSION, null, null);
+        }
+        ForgeEventFactory.onLivingConvert(this, zombie);
+        if (!this.isSilent()) {
+            this.level().levelEvent(null, 1026, this.blockPosition(), 0);
+        }
+    }
+
+    @Override
     protected SoundEvent getAmbientSound() {
         return SoundEvents.VINDICATOR_AMBIENT;
     }
@@ -232,24 +277,6 @@ public class CrimsonGuard extends HuntingIllagerEntity {
                 0.32F * this.getRandom().nextIntBetweenInclusive(5, 10) * 0.1F,
                 this.getRandom().nextIntBetweenInclusive(5, 7) * 0.1F);
         this.playSound(ModSounds.PLATE.get(), this.getSoundVolume(), this.getVoicePitch());
-    }
-
-    @Override
-    public void die(DamageSource source) {
-        this.playSound(ModSounds.DOUBLE_AXE_IMPACT_SHING.get(),
-                0.75F * this.getRandom().nextIntBetweenInclusive(5, 10) * 0.1F,
-                (this.getRandom().nextBoolean() ? 0.65F : 0.6F)
-                        * this.getRandom().nextIntBetweenInclusive(5, 7) * 0.1F);
-        this.playSound(ModSounds.DIRT_SHATTER_THREE.get(),
-                0.375F * this.getRandom().nextIntBetweenInclusive(7, 10) * 0.1F,
-                (this.getRandom().nextBoolean() ? 0.65F : 0.6F)
-                        * this.getRandom().nextIntBetweenInclusive(7, 10) * 0.1F);
-        this.playSound(ModSounds.HAMMER_SHIMMER_IMPACT_FOUR.get(),
-                0.6F * this.getRandom().nextIntBetweenInclusive(5, 10) * 0.1F,
-                (this.getRandom().nextBoolean() ? 0.65F : 0.6F)
-                        * this.getRandom().nextIntBetweenInclusive(5, 7) * 0.1F);
-        this.playSound(ModSounds.PLATE_DROP.get(), this.getSoundVolume(), this.getVoicePitch());
-        super.die(source);
     }
 
     @Override

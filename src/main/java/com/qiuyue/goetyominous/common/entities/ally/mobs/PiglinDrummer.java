@@ -1,7 +1,9 @@
 package com.qiuyue.goetyominous.common.entities.ally.mobs;
 
+import com.Polarice3.Goety.client.particles.RisingCircleParticleOption;
 import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
+import com.Polarice3.Goety.utils.ColorUtil;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractPiglinServant;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
@@ -235,6 +237,26 @@ public class PiglinDrummer extends AbstractPiglinServant {
         }
     }
 
+    public void spawnDrumFinishParticles(@Nullable LivingEntity ally) {
+        if (!(this.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+        ColorUtil color = new ColorUtil(0xFF4500);
+        spawnRisingCircle(serverLevel, color, this);
+        if (ally != null && ally.isAlive()) {
+            spawnRisingCircle(serverLevel, color, ally);
+        }
+    }
+
+    private static void spawnRisingCircle(ServerLevel level, ColorUtil color, LivingEntity target) {
+        level.sendParticles(new RisingCircleParticleOption(0), target.getX(), target.getY(), target.getZ(), 0,
+                color.red(), color.green(), color.blue(), 1.0D);
+        level.sendParticles(new RisingCircleParticleOption(5), target.getX(), target.getY(), target.getZ(), 0,
+                color.red(), color.green(), color.blue(), 1.0D);
+        level.sendParticles(new RisingCircleParticleOption(10), target.getX(), target.getY(), target.getZ(), 0,
+                color.red(), color.green(), color.blue(), 1.0D);
+    }
+
     @Nullable
     public LivingEntity findFriendly() {
         List<LivingEntity> allies = this.level().getEntitiesOfClass(LivingEntity.class,
@@ -372,6 +394,7 @@ public class PiglinDrummer extends AbstractPiglinServant {
                     this.drummer.applyDrumBuffs();
                 }
                 if (this.drumTick >= DRUM_DURATION) {
+                    this.drummer.spawnDrumFinishParticles(this.friendly);
                     this.stop();
                 }
             }

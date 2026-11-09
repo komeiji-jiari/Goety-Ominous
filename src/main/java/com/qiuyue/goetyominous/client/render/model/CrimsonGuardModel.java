@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.qiuyue.goetyominous.client.render.model.animation.CrimsonGuardAnimation;
 import com.qiuyue.goetyominous.common.entities.ally.illager.CrimsonGuardServant;
+import com.qiuyue.goetyominous.common.entities.ally.illager.ZCrimsonGuardServant;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.CrimsonGuard;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.KeyframeAnimations;
@@ -177,6 +178,10 @@ public class CrimsonGuardModel<T extends Mob> extends HierarchicalModel<T> imple
 				this.setupCrimsonGuard(guard.isMeleeAttacking(), guard.getCurrentAnimation(),
 						guard.idleAnimationState, guard.standAnimationState, guard.slamAnimationState, guard.sweepAnimationState,
 						false, limbSwing, limbSwingAmount, ageInTicks);
+			} else if (entity instanceof ZCrimsonGuardServant zombie) {
+				this.setupCrimsonGuard(zombie.isMeleeAttacking(), zombie.getCurrentAnimation(),
+						zombie.idleAnimationState, zombie.standAnimationState, zombie.slamAnimationState, zombie.sweepAnimationState,
+						zombie.isStaying(), limbSwing, limbSwingAmount, ageInTicks);
 			}
 		}
 	}

@@ -8,6 +8,7 @@ import com.Polarice3.Goety.utils.BlockFinder;
 import com.Polarice3.Goety.utils.ColorUtil;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.ServerParticleUtil;
+import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -55,6 +56,7 @@ public class CrimsonGuardServant extends AbstractIllagerServant {
 
     public CrimsonGuardServant(EntityType<? extends CrimsonGuardServant> type, Level level) {
         super(type, level);
+        this.xpReward = 20;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -105,6 +107,11 @@ public class CrimsonGuardServant extends AbstractIllagerServant {
         super.registerGoals();
         this.goalSelector.addGoal(4, new AttackSequenceGoal());
         this.goalSelector.addGoal(5, new ApproachGoal(this, this.getFollowSpeed()));
+    }
+
+    @Override
+    public EntityType<? extends Mob> getNecroConvert() {
+        return ModEntityTypes.ZCRIMSON_GUARD_SERVANT.get();
     }
 
     @Override
