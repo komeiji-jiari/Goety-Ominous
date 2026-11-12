@@ -93,6 +93,8 @@ _strip_comments.tmp.js
 /tmp_omen_decompile/
 # aaacat / 远征移植反编译参照（不入库）
 /tmp_aaacat*/
+# GrimMonarch 反编译研究参照（不入库）
+/tmp_grimmonarch_research/
 
 # 运行时日志目录（不入库）
 /logs/
