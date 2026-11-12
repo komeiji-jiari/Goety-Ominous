@@ -4,6 +4,7 @@ import com.Polarice3.Goety.common.entities.ally.spider.SpiderServant;
 import com.Polarice3.Goety.init.ModMobType;
 import com.qiuyue.goetyominous.common.entities.hostile.cultists.AbstractGOCultist;
 import com.qiuyue.goetyominous.config.AttributesConfig;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -114,6 +115,12 @@ public class CrimsonSpiderServant extends SpiderServant {
     @Override
     public boolean spawnWithEffects() {
         return true;
+    }
+
+    @Nullable
+    @Override
+    public EntityType<?> getVariant(Level level, BlockPos blockPos) {
+        return this.getType();
     }
 
     @Nullable
