@@ -151,10 +151,6 @@ public class RodStrikeSpell extends SummonSpell {
                 PENDING_ROD_SHOTS.add(new PendingRodShot(server, startTick + i, shot));
             }
         }
-
-        if (rodlingCount > 0) {
-            this.SummonDown(caster);
-        }
     }
 
     @SubscribeEvent
