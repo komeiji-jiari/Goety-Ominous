@@ -818,14 +818,6 @@
       "goetyominous:armor/repair_wolf4"
     ]
   },
-  "lm_music_disc": {
-    "sounds": [
-      {
-        "name": "goetyominous:lm_music_disc",
-        "stream": true
-      }
-    ]
-  },
   "monarch_boss": {
     "sounds": [
       {

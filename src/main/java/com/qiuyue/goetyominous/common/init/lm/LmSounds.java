@@ -13,10 +13,6 @@ public class LmSounds {
     public static final DeferredRegister<SoundEvent> LM_SOUNDS =
             DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, GoetyOminous.MOD_ID);
 
-    public static final RegistryObject<SoundEvent> LM_MUSIC_DISC = LM_SOUNDS.register(
-            "lm_music_disc",
-            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(GoetyOminous.MOD_ID, "lm_music_disc")));
-
     /**
      * 灵魂柱从地里冒出来时的「风声」。注册名和传奇怪物逐字相同。
      *
