@@ -39,7 +39,8 @@ public class CroneRobeEvents {
                     com.Polarice3.Goety.utils.CuriosFinder.findCurio(victim,
                             stack -> stack.getItem() instanceof com.qiuyue.goetyominous.common.items.curios.CroneRobeItem));
             int soulCost = com.Polarice3.Goety.config.ItemConfig.SpitefulBeltUseAmount.get() * (thorns + 1);
-            if (com.Polarice3.Goety.utils.SEHelper.getSoulsAmount(player, soulCost)
+            if (thorns > 0
+                    && com.Polarice3.Goety.utils.SEHelper.getSoulsAmount(player, soulCost)
                     && !event.getSource().is(DamageTypeTags.IS_FIRE)
                     && !event.getSource().is(DamageTypes.IN_FIRE)) {
                 net.minecraft.world.entity.Entity source = event.getSource().getEntity();
