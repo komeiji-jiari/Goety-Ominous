@@ -57,6 +57,7 @@ public class FungusThrowerEvents {
         ServerLevel serverLevel = (ServerLevel) thrower.level();
         serverLevel.addFreshEntity(elite);
 
+        elite.setGuaranteedDrop(EquipmentSlot.CHEST);
         for (EquipmentSlot slot : EquipmentSlot.values()) {
             ItemStack stack = gear[slot.ordinal()];
             if (!stack.isEmpty()) elite.setItemSlot(slot, stack);

@@ -439,6 +439,14 @@ public class ModItems {
             "zfungus_thrower_spawn_egg",
             () -> new ServantSpawnEggItem(ModEntityTypes.ZFUNGUS_THROWER, 0xE6918B, 0xA800BF, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> ELITE_FUNGUS_THROWER_SPAWN_EGG = ITEMS.register(
+            "elite_fungus_thrower_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.ELITE_FUNGUS_THROWER, 0xF2BA86, 0x6A0DAD, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> ZELITE_FUNGUS_THROWER_SPAWN_EGG = ITEMS.register(
+            "zelite_fungus_thrower_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.ZELITE_FUNGUS_THROWER, 0xE6918B, 0x6A0DAD, egg()));
+
     public static final RegistryObject<ServantSpawnEggItem> PIGLIN_DRUMMER_SPAWN_EGG = ITEMS.register(
             "piglin_drummer_spawn_egg",
             () -> new ServantSpawnEggItem(ModEntityTypes.PIGLIN_DRUMMER, 0xE8B48C, 0x8B2A1E, egg()));

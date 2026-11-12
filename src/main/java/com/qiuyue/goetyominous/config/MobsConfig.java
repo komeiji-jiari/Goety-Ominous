@@ -49,6 +49,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> PiglinServantRangedEvolutionDamage;
     public static final ForgeConfigSpec.ConfigValue<Integer> PiglinHunterServantEvolutionDamage;
     public static final ForgeConfigSpec.ConfigValue<Integer> StrongPiglinHunterServantEvolutionDamage;
+    public static final ForgeConfigSpec.ConfigValue<Integer> FungusThrowerEvolutionDamage;
     public static final ForgeConfigSpec.ConfigValue<Boolean> RaidCaptainDropsOminousBottle;
     public static final ForgeConfigSpec.ConfigValue<Boolean> RaidOmen;
     public static final ForgeConfigSpec.ConfigValue<Boolean> ProtectTrialChambers;
@@ -106,6 +107,9 @@ public class MobsConfig {
         StrongPiglinHunterServantEvolutionDamage = BUILDER
                 .comment("How much ranged damage a Strong Hunter needs to evolve into Elite, Default: 160")
                 .defineInRange("strongPiglinHunterServantEvolutionDamage", 160, 1, Integer.MAX_VALUE);
+        FungusThrowerEvolutionDamage = BUILDER
+                .comment("How much ranged damage a Fungus Thrower needs to evolve into Elite, Default: 120")
+                .defineInRange("fungusThrowerEvolutionDamage", 120, 1, Integer.MAX_VALUE);
         HurricaneServantCore = BUILDER
                 .comment("Whether owned Hurricane Servants drop Hurricane Cores, Default: true")
                 .define("hurricaneServantCore", true);

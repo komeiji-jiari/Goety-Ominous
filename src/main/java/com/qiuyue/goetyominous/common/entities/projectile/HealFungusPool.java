@@ -15,19 +15,23 @@ public class HealFungusPool extends AcidPool {
     }
 
     @Override
-    public void poolTick() {
-        if (this.level().isClientSide) return;
-        if (this.tickCount % 10 != 0) return;
-        for (LivingEntity living : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox())) {
-            if (living.getHealth() >= living.getMaxHealth()) continue;
-            if (this.getOwner() != null && living != this.getOwner()
-                    && !MobUtil.areAllies(this.getOwner(), living)) continue;
-            living.heal(1.0F);
-            if (this.level() instanceof ServerLevel serverLevel) {
+    public void tick() {
+        this.baseTick();
+        if (!(this.level() instanceof ServerLevel serverLevel)) return;
+        LivingEntity owner = this.getOwner();
+        if (owner != null && this.tickCount % 10 == 0) {
+            for (LivingEntity living : serverLevel.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox())) {
+                if (!living.isAlive() || living.isSpectator()) continue;
+                if (living.getHealth() >= living.getMaxHealth()) continue;
+                if (living != owner && !MobUtil.areAllies(owner, living)) continue;
+                living.heal(1.0F);
                 serverLevel.sendParticles(ParticleTypes.HEART,
                         living.getX(), living.getY() + 0.8D, living.getZ(),
                         2, 0.3D, 0.3D, 0.3D, 0.0D);
             }
+        }
+        if (this.tickCount >= this.getDuration()) {
+            this.discard();
         }
     }
 }

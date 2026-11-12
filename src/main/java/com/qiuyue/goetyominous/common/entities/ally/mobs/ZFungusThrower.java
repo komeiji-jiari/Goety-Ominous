@@ -101,10 +101,15 @@ public class ZFungusThrower extends ZPiglinServant {
         }
     }
 
+    protected float getFungusDamage() {
+        return 4.0F;
+    }
+
     public void throwAcid(@Nullable LivingEntity target) {
         if (this.level().isClientSide) return;
 
         AcidFungus acid = new AcidFungus(this.level(), this);
+        acid.setDamage(this.getFungusDamage());
         double dx = target.getX() - this.getX();
         double dy = target.getY(0.33) - acid.getY();
         double dz = target.getZ() - this.getZ();
@@ -165,7 +170,7 @@ public class ZFungusThrower extends ZPiglinServant {
 
         @Override
         public boolean canContinueToUse() {
-            return this.throwTick < 30;
+            return this.throwTick < (thrower instanceof ZEliteFungusThrower ? 33 : 30);
         }
 
         @Override
@@ -181,12 +186,18 @@ public class ZFungusThrower extends ZPiglinServant {
         @Override
         public void start() {
             this.throwTick = 0;
+            if (thrower instanceof ZEliteFungusThrower elite) {
+                elite.setThrowing(true);
+            }
             thrower.level().broadcastEntityEvent(thrower, (byte) 4);
         }
 
         @Override
         public void stop() {
             thrower.fleeTime = 20;
+            if (thrower instanceof ZEliteFungusThrower elite) {
+                elite.setThrowing(false);
+            }
         }
 
         @Override
@@ -199,7 +210,7 @@ public class ZFungusThrower extends ZPiglinServant {
                 thrower.getLookControl().setLookAt(target, 100.0F, 100.0F);
                 thrower.lookAt(target, 100.0F, 100.0F);
             }
-            if (this.throwTick == 12 && target != null) {
+            if (this.throwTick == (thrower instanceof ZEliteFungusThrower ? 16 : 12) && target != null) {
                 thrower.swing(InteractionHand.MAIN_HAND);
                 thrower.throwAcid(target);
             }

@@ -5,6 +5,7 @@ import com.Polarice3.Goety.common.entities.projectiles.AcidPool;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.common.items.FungusPackHelper;
 import com.qiuyue.goetyominous.common.items.ModItems;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ItemSupplier;
@@ -35,6 +36,85 @@ public class AcidFungus extends ThrowableItemProjectile implements ItemSupplier 
         return 0.05F;
     }
 
+    private float damage = 4.0F;
+
+    private static final net.minecraft.network.syncher.EntityDataAccessor<Boolean> DATA_HEAL =
+            net.minecraft.network.syncher.SynchedEntityData.defineId(AcidFungus.class,
+                    net.minecraft.network.syncher.EntityDataSerializers.BOOLEAN);
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_HEAL, false);
+    }
+
+    public void setHeal(boolean heal) {
+        this.entityData.set(DATA_HEAL, heal);
+    }
+
+    public boolean isHeal() {
+        return this.entityData.get(DATA_HEAL);
+    }
+
+    public void setDamage(float damage) {
+        this.damage = damage;
+    }
+
+    public float getDamage() {
+        return this.damage;
+    }
+
+    @Override
+    public void addAdditionalSaveData(net.minecraft.nbt.CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putFloat("Damage", this.damage);
+        tag.putBoolean("Heal", this.isHeal());
+    }
+
+    @Override
+    public void readAdditionalSaveData(net.minecraft.nbt.CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (tag.contains("Damage")) this.damage = tag.getFloat("Damage");
+        if (tag.contains("Heal")) this.setHeal(tag.getBoolean("Heal"));
+    }
+
+    @Override
+    protected boolean canHitEntity(Entity target) {
+        if (this.isHeal()) {
+            return target instanceof LivingEntity living && this.isHealTarget(living);
+        }
+        return super.canHitEntity(target);
+    }
+
+    private boolean isHealTarget(LivingEntity living) {
+        Entity owner = this.getOwner();
+        if (owner == null) return false;
+        if (living.getHealth() >= living.getMaxHealth()) return false;
+        if (living == owner) return true;
+        return com.Polarice3.Goety.utils.MobUtil.areAllies(owner, living);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (this.level().isClientSide || this.isRemoved() || !this.isHeal()) return;
+        for (LivingEntity living : this.level().getEntitiesOfClass(LivingEntity.class,
+                this.getBoundingBox().inflate(0.5D), this::isHealTarget)) {
+            this.onHit(new EntityHitResult(living));
+            break;
+        }
+    }
+
+    @Override
+    protected void onHitEntity(EntityHitResult result) {
+        super.onHitEntity(result);
+        if (this.level().isClientSide) return;
+        if (this.isHeal()) return;
+        if (result.getEntity() instanceof LivingEntity living) {
+            living.hurt(this.damageSources().thrown(this, this.getOwner()), this.damage);
+        }
+    }
+
     @Override
     protected void onHit(HitResult result) {
         super.onHit(result);
@@ -44,25 +124,36 @@ public class AcidFungus extends ThrowableItemProjectile implements ItemSupplier 
                 com.Polarice3.Goety.init.ModSounds.BLAST_FUNGUS_EXPLODE.get(),
                 net.minecraft.sounds.SoundSource.NEUTRAL, 1.0F, 1.0F);
 
-        AcidPool pool = new AcidPool(ModEntityType.ACID_POOL.get(), this.level());
         Vec3 hitPos = result.getLocation();
         if (result instanceof EntityHitResult entityHit) {
             hitPos = entityHit.getEntity().position();
         }
+
+        AcidPool pool;
+        if (this.isHeal()) {
+            pool = new HealFungusPool(ModEntityTypes.HEAL_FUNGUS_POOL.get(), this.level());
+            pool.setColor(0xFF3B30);
+            pool.setWarmupColor(0xFF3B30);
+            pool.setRadius(3.0F);
+            pool.setDuration(80);
+        } else {
+            pool = new AcidPool(ModEntityType.ACID_POOL.get(), this.level());
+            pool.setColor(0x87CEEB);
+            pool.setWarmupColor(0x87CEEB);
+            pool.setRadius(3.0F);
+            pool.setDamage(this.damage);
+            int duration = 80;
+            if (this.getOwner() instanceof LivingEntity owner
+                    && FungusPackHelper.hasMatchingFungus(owner, ModItems.ACID_FUNGUS.get())) {
+                duration = 120;
+            }
+            pool.setDuration(duration);
+        }
+
         pool.setPos(hitPos);
         if (this.getOwner() instanceof LivingEntity owner) {
             pool.setOwner(owner);
         }
-        pool.setColor(0x87CEEB);
-        pool.setWarmupColor(0x87CEEB);
-        pool.setRadius(3.0F);
-        pool.setDamage(4.0F);
-        int duration = 80;
-        if (this.getOwner() instanceof LivingEntity owner
-                && FungusPackHelper.hasMatchingFungus(owner, ModItems.ACID_FUNGUS.get())) {
-            duration = 120;
-        }
-        pool.setDuration(duration);
         this.level().addFreshEntity(pool);
 
         this.discard();

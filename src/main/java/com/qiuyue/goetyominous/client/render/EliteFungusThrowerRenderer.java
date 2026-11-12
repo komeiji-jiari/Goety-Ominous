@@ -29,9 +29,4 @@ public class EliteFungusThrowerRenderer extends LivingEntityRenderer<Mob, EliteF
     public ResourceLocation getTextureLocation(Mob entity) {
         return TEXTURE;
     }
-
-    @Override
-    protected boolean shouldShowName(Mob entity) {
-        return false;
-    }
 }

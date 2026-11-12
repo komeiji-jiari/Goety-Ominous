@@ -51,13 +51,13 @@ public class EliteFungusThrower extends FungusThrower implements ThrowerAnimatab
 
     @Override
     public float getScale() {
-        return 1.25F;
+        return this.isBaby() ? 0.625F : 1.25F;
     }
 
     @Override
     public EntityDimensions getDimensions(Pose pose) {
-        EntityDimensions base = super.getDimensions(pose);
-        return EntityDimensions.scalable(base.width * 1.25F, base.height * 1.25F - 0.5F);
+        float baby = this.isBaby() ? 0.5F : 1.0F;
+        return EntityDimensions.scalable(0.75F * baby, 1.9375F * baby);
     }
 
     @Override

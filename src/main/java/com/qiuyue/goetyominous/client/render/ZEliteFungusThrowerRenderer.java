@@ -29,9 +29,4 @@ public class ZEliteFungusThrowerRenderer extends LivingEntityRenderer<Mob, Elite
     public ResourceLocation getTextureLocation(Mob entity) {
         return TEXTURE;
     }
-
-    @Override
-    protected boolean shouldShowName(Mob entity) {
-        return false;
-    }
 }

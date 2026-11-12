@@ -174,6 +174,9 @@ public class ModEntityLayers {
     public static final ModelLayerLocation ACID_FUNGUS_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "acid_fungus"), "main");
 
+    public static final ModelLayerLocation HEAL_FUNGUS_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "heal_fungus"), "main");
+
     public static final ModelLayerLocation FUNGUS_PACK_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "fungus_pack"), "main");
 

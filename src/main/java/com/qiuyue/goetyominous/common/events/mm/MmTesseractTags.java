@@ -5,7 +5,6 @@ import com.qiuyue.goetyominous.compat.mod.MutantMoreCompat;
 import net.minecraftforge.event.TagsUpdatedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import static com.qiuyue.goetyominous.common.events.TesseractTagHandler.TESSERACT_LARGE;
 import static com.qiuyue.goetyominous.common.events.TesseractTagHandler.TESSERACT_MEDIUM;
 import static com.qiuyue.goetyominous.common.events.TesseractTagHandler.addToTag;
 
@@ -17,11 +16,10 @@ public class MmTesseractTags {
             return;
         }
 
-        addToTag(TESSERACT_LARGE, MmEntityRegistry.MUTANT_HOGLIN_SERVANT);
-        addToTag(TESSERACT_LARGE, MmEntityRegistry.MUTANT_WITHER_SKELETON_SERVANT);
-        addToTag(TESSERACT_LARGE, MmEntityRegistry.MUTANT_SHULKER_SERVANT);
-        addToTag(TESSERACT_LARGE, MmEntityRegistry.MUTANT_BLAZE_SERVANT);
-
+        addToTag(TESSERACT_MEDIUM, MmEntityRegistry.MUTANT_HOGLIN_SERVANT);
+        addToTag(TESSERACT_MEDIUM, MmEntityRegistry.MUTANT_WITHER_SKELETON_SERVANT);
+        addToTag(TESSERACT_MEDIUM, MmEntityRegistry.MUTANT_SHULKER_SERVANT);
+        addToTag(TESSERACT_MEDIUM, MmEntityRegistry.MUTANT_BLAZE_SERVANT);
         addToTag(TESSERACT_MEDIUM, MmEntityRegistry.MUTANT_HUSK_SERVANT);
         addToTag(TESSERACT_MEDIUM, MmEntityRegistry.MUTANT_JUNGLE_ZOMBIE_SERVANT);
         addToTag(TESSERACT_MEDIUM, MmEntityRegistry.MUTANT_FROZEN_ZOMBIE_SERVANT);

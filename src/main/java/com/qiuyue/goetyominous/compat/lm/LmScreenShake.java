@@ -11,6 +11,6 @@ public class LmScreenShake {
         if (level.isClientSide || !LmConfig.LmServantScreenShake.get()) {
             return;
         }
-        level.addFreshEntity(new CameraShakeEntity(level, pos, radius, strength, duration, fadeDuration));
+        CameraShakeEntity.cameraShake(level, pos, radius, strength, duration, fadeDuration);
     }
 }

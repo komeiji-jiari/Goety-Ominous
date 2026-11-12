@@ -18,11 +18,16 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class AcidFungusRenderer<T extends Entity> extends EntityRenderer<T> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(GoetyOminous.MOD_ID,
             "textures/entity/projectile/acid_fungus.png");
+    private static final ResourceLocation HEAL_TEXTURE = new ResourceLocation(GoetyOminous.MOD_ID,
+            "textures/entity/piglin/elite_fungus_thrower.png");
     private final AcidFungus<T> model;
+    private final com.qiuyue.goetyominous.client.render.model.projectile.HealFungusModel<T> healModel;
 
     public AcidFungusRenderer(EntityRendererProvider.Context context) {
         super(context);
         this.model = new AcidFungus<>(context.bakeLayer(ModEntityLayers.ACID_FUNGUS_LAYER));
+        this.healModel = new com.qiuyue.goetyominous.client.render.model.projectile.HealFungusModel<>(
+                context.bakeLayer(ModEntityLayers.HEAL_FUNGUS_LAYER));
     }
 
     @Override
@@ -31,8 +36,13 @@ public class AcidFungusRenderer<T extends Entity> extends EntityRenderer<T> {
         poseStack.scale(-1.0F, -1.0F, 1.0F);
         poseStack.translate(0.0, -1.5, 0.0);
         poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees((entity.tickCount + partialTicks) * 20.0F));
-        VertexConsumer vertexconsumer = buffer.getBuffer(this.model.renderType(TEXTURE));
-        this.model.renderToBuffer(poseStack, vertexconsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        if (entity instanceof com.qiuyue.goetyominous.common.entities.projectile.AcidFungus fungus && fungus.isHeal()) {
+            VertexConsumer healer = buffer.getBuffer(this.healModel.renderType(HEAL_TEXTURE));
+            this.healModel.renderToBuffer(poseStack, healer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        } else {
+            VertexConsumer vertexconsumer = buffer.getBuffer(this.model.renderType(TEXTURE));
+            this.model.renderToBuffer(poseStack, vertexconsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        }
         poseStack.popPose();
         super.render(entity, entityYaw, partialTicks, poseStack, buffer, light);
     }

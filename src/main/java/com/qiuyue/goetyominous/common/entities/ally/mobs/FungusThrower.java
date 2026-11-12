@@ -60,6 +60,7 @@ public class FungusThrower extends AbstractPiglinServant {
     @Override
     public void onAddedToWorld() {
         super.onAddedToWorld();
+        if (this.getPersistentData().getBoolean("Upgraded")) return;
         if (!this.level().isClientSide && this.getItemBySlot(EquipmentSlot.CHEST).isEmpty()) {
             this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(com.qiuyue.goetyominous.common.items.ModItems.FUNGUS_PACK.get()));
             this.setGuaranteedDrop(EquipmentSlot.CHEST);
@@ -99,10 +100,15 @@ public class FungusThrower extends AbstractPiglinServant {
         }
     }
 
+    protected float getFungusDamage() {
+        return 4.0F;
+    }
+
     public void throwAcid(@Nullable LivingEntity target) {
         if (this.level().isClientSide) return;
 
         AcidFungus acid = new AcidFungus(this.level(), this);
+        acid.setDamage(this.getFungusDamage());
         double dx = target.getX() - this.getX();
         double dy = target.getY(0.33) - acid.getY();
         double dz = target.getZ() - this.getZ();
@@ -202,7 +208,7 @@ public class FungusThrower extends AbstractPiglinServant {
 
         @Override
         public boolean canContinueToUse() {
-            return this.throwTick < 30;
+            return this.throwTick < (thrower instanceof EliteFungusThrower ? 33 : 30);
         }
 
         @Override
@@ -218,12 +224,18 @@ public class FungusThrower extends AbstractPiglinServant {
         @Override
         public void start() {
             this.throwTick = 0;
+            if (thrower instanceof EliteFungusThrower elite) {
+                elite.setThrowing(true);
+            }
             thrower.level().broadcastEntityEvent(thrower, (byte) 4);
         }
 
         @Override
         public void stop() {
             thrower.fleeTime = 20;
+            if (thrower instanceof EliteFungusThrower elite) {
+                elite.setThrowing(false);
+            }
         }
 
         @Override
@@ -236,7 +248,7 @@ public class FungusThrower extends AbstractPiglinServant {
                 thrower.getLookControl().setLookAt(target, 100.0F, 100.0F);
                 thrower.lookAt(target, 100.0F, 100.0F);
             }
-            if (this.throwTick == 12 && target != null) {
+            if (this.throwTick == 16 && target != null) {
                 thrower.swing(InteractionHand.MAIN_HAND);
                 thrower.throwAcid(target);
             }

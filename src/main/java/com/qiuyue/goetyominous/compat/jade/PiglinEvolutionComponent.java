@@ -40,6 +40,7 @@ public enum PiglinEvolutionComponent implements IEntityComponentProvider {
         boolean isBrute = entity instanceof PiglinBruteServant && !(entity instanceof ElitePiglinBruteServant);
         boolean isHunter = entity instanceof PiglinHunterServant && !(entity instanceof ElitePiglinHunterServant);
         boolean isBase = entity instanceof PiglinServant;
+        boolean isFungus = entity instanceof FungusThrower && !(entity instanceof EliteFungusThrower);
 
         if (isBase) {
             ItemStack mainHand = ((LivingEntity) entity).getMainHandItem();
@@ -55,6 +56,16 @@ public enum PiglinEvolutionComponent implements IEntityComponentProvider {
             addMeleeProgress(tooltip, entity, melee);
         } else if (isHunter && ranged > 0) {
             addRangedProgress(tooltip, entity, ranged);
+        } else if (isFungus && ranged > 0) {
+            addFungusProgress(tooltip, ranged);
+        }
+    }
+
+    private void addFungusProgress(ITooltip tooltip, int ranged) {
+        int max = MobsConfig.FungusThrowerEvolutionDamage.get();
+        if (max > 0) {
+            tooltip.add(Component.translatable("jade.goetyominous.fungus_progress",
+                    ranged, max));
         }
     }
 
@@ -93,6 +104,8 @@ public enum PiglinEvolutionComponent implements IEntityComponentProvider {
         if (entity instanceof ElitePiglinHunterServant) return MobsConfig.StrongPiglinHunterServantEvolutionDamage.get();
         if (entity instanceof StrongPiglinHunterServant) return MobsConfig.StrongPiglinHunterServantEvolutionDamage.get();
         if (entity instanceof PiglinHunterServant) return MobsConfig.PiglinHunterServantEvolutionDamage.get();
+        if (entity instanceof EliteFungusThrower) return 0;
+        if (entity instanceof FungusThrower) return MobsConfig.FungusThrowerEvolutionDamage.get();
         if (entity instanceof PiglinServant) return MobsConfig.PiglinServantRangedEvolutionDamage.get();
         return 0;
     }

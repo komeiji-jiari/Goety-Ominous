@@ -320,11 +320,32 @@ public class ModEntityTypes {
                     .clientTrackingRange(8)
                     .build(MOD_ID + ":zfungus_thrower"));
 
+    public static final RegistryObject<EntityType<EliteFungusThrower>> ELITE_FUNGUS_THROWER = ENTITY_TYPES.register(
+            "elite_fungus_thrower",
+            () -> EntityType.Builder.of(EliteFungusThrower::new, MobCategory.MISC)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":elite_fungus_thrower"));
+
+    public static final RegistryObject<EntityType<ZEliteFungusThrower>> ZELITE_FUNGUS_THROWER = ENTITY_TYPES.register(
+            "zelite_fungus_thrower",
+            () -> EntityType.Builder.of(ZEliteFungusThrower::new, MobCategory.MISC)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":zelite_fungus_thrower"));
+
     public static final RegistryObject<EntityType<AcidFungus>> ACID_FUNGUS = ENTITY_TYPES.register(
             "acid_fungus",
             () -> EntityType.Builder.<AcidFungus>of(AcidFungus::new, MobCategory.MISC)
                     .sized(0.25F, 0.25F)
                     .build(MOD_ID + ":acid_fungus"));
+
+    public static final RegistryObject<EntityType<com.qiuyue.goetyominous.common.entities.projectile.HealFungusPool>> HEAL_FUNGUS_POOL =
+            ENTITY_TYPES.register("heal_fungus_pool",
+                    () -> EntityType.Builder.<com.qiuyue.goetyominous.common.entities.projectile.HealFungusPool>of(
+                                    com.qiuyue.goetyominous.common.entities.projectile.HealFungusPool::new, MobCategory.MISC)
+                            .sized(1.0F, 0.1F)
+                            .build(MOD_ID + ":heal_fungus_pool"));
 
     public static final RegistryObject<EntityType<Fanatic>> FANATIC = ENTITY_TYPES.register("fanatic",
             () -> EntityType.Builder.of(Fanatic::new, MobCategory.MONSTER)

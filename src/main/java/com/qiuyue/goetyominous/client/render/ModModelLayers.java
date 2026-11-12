@@ -83,6 +83,9 @@ public class ModModelLayers {
         event.registerLayerDefinition(ModEntityLayers.ACID_FUNGUS_LAYER,
                 AcidFungus::createBodyLayer);
 
+        event.registerLayerDefinition(ModEntityLayers.HEAL_FUNGUS_LAYER,
+                com.qiuyue.goetyominous.client.render.model.projectile.HealFungusModel::createBodyLayer);
+
         event.registerLayerDefinition(ModEntityLayers.DREDEN_LAYER,
                 DredenModel::createBodyLayer);
 
@@ -165,6 +168,9 @@ public class ModModelLayers {
 
         event.registerLayerDefinition(PiglinDrummerModel.LAYER_LOCATION,
                 PiglinDrummerModel::createBodyLayer);
+
+        event.registerLayerDefinition(EliteFungusThrowerModel.LAYER_LOCATION,
+                EliteFungusThrowerModel::createBodyLayer);
 
         event.registerLayerDefinition(BastionGuardModel.LAYER_LOCATION,
                 BastionGuardModel::createBodyLayer);
@@ -384,6 +390,13 @@ public class ModModelLayers {
         event.registerEntityRenderer(ModEntityTypes.CERBERUS.get(), CerberusRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.ZFUNGUS_THROWER.get(), ZFungusThrowerRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.ELITE_FUNGUS_THROWER.get(), EliteFungusThrowerRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.ZELITE_FUNGUS_THROWER.get(), ZEliteFungusThrowerRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.HEAL_FUNGUS_POOL.get(),
+                com.Polarice3.Goety.client.render.TrapRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.SUNKEN_NECROMANCER.get(), SunkenNecromancerRenderer::new);
 

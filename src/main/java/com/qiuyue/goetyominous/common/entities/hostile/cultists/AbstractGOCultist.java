@@ -159,6 +159,7 @@ public abstract class AbstractGOCultist extends Cultist {
     }
 
     public void conversion() {
+        if (this.level().isClientSide) return;
         if (MobsConfig.CultistSpread.get()) {
             int timer = 1200;
             if (this.hasActiveRaid()) {

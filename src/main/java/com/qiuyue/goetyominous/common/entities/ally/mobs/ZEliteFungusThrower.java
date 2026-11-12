@@ -45,8 +45,7 @@ public class ZEliteFungusThrower extends ZFungusThrower implements ThrowerAnimat
 
     @Override
     public EntityDimensions getDimensions(Pose pose) {
-        EntityDimensions base = super.getDimensions(pose);
-        return EntityDimensions.scalable(base.width * 1.25F, base.height * 1.25F - 0.5F);
+        return EntityDimensions.scalable(0.75F, 1.9375F);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -78,7 +77,9 @@ public class ZEliteFungusThrower extends ZFungusThrower implements ThrowerAnimat
         this.goalSelector.removeAllGoals(goal ->
                 goal instanceof com.Polarice3.Goety.common.entities.ai.ModMeleeAttackGoal
                         || goal instanceof LookAtPlayerGoal
-                        || goal instanceof Summoned.WanderGoal);
+                        || goal instanceof Summoned.WanderGoal
+                        || goal instanceof HurtByTargetGoal
+                        || goal instanceof AvoidEntityGoal);
         this.goalSelector.addGoal(1, new HurtByTargetGoal(this));
         this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, net.minecraft.world.entity.LivingEntity.class, 8.0F, 1.2D, 1.2D,
                 target -> target == this.getTarget() && target != this.getTrueOwner()));
@@ -117,6 +118,11 @@ public class ZEliteFungusThrower extends ZFungusThrower implements ThrowerAnimat
     @Override
     public boolean isHealing() {
         return false;
+    }
+
+    @Override
+    protected float getFungusDamage() {
+        return 5.0F;
     }
 
     public float getWalkWeight() {
