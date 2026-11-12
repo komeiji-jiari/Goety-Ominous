@@ -1,7 +1,8 @@
 {
-  "name": "Bound Illagers",
+  "name": "More Bound Illagers",
   "icon": "minecraft:totem_of_undying",
   "category": "goety:ominous_summons",
+  "sortnum": 5,
   "advancement": "goety:goety/kill_a_evoker",
   "pages": [
     {

@@ -2,7 +2,7 @@
   "name": "Leapkelp",
   "icon": "minecraft:kelp",
   "category": "goety:ominous_summons",
-  "sortnum": 12,
+  "sortnum": 10,
   "advancement": "goety:goety/read_floral_scroll",
   "pages": [
     {
