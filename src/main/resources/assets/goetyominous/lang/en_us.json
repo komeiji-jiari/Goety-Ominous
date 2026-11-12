@@ -256,6 +256,18 @@
   "block.goetyominous.plushie_xin_tiris": "§3Xin_Tiris §rPlushie",
   "block.goetyominous.plushie_xinjimu": "§5Xinjimu §rPlushie",
   "block.goetyominous.plushie_xueyuefeng": "§aXueyuefeng §rPlushie",
+  "block.goetyominous.dark_altar_abyssmarine": "Dark Altar",
+  "block.goetyominous.dark_altar_guanostone": "Dark Altar",
+  "block.goetyominous.dark_altar_gingerbread": "Dark Altar",
+  "block.goetyominous.dark_altar_radrock": "Dark Altar",
+  "block.goetyominous.dark_altar_limestone": "Dark Altar",
+  "block.goetyominous.dark_altar_galena": "Dark Altar",
+  "block.goetyominous.pedestal_abyssmarine": "Pedestal",
+  "block.goetyominous.pedestal_guanostone": "Pedestal",
+  "block.goetyominous.pedestal_gingerbread": "Pedestal",
+  "block.goetyominous.pedestal_radrock": "Pedestal",
+  "block.goetyominous.pedestal_limestone": "Pedestal",
+  "block.goetyominous.pedestal_galena": "Pedestal",
 
   "entity.goetyominous.fire_wall": "Fire Wall",
   "entity.goetyominous.ominous_item_spawner": "Ominous Item Spawner",
@@ -294,6 +306,8 @@
   "entity.goetyominous.hurricane_punch": "Hurricane Fist",
   "entity.goetyominous.hurricane_cyclone": "Cyclone",
   "entity.goetyominous.hurricane_core_summon": "Hurricane Core",
+  "entity.goetyominous.grim_monarch": "Grim Monarch",
+  "entity.goetyominous.grim_monarch_echo": "Grim Echo",
   "entity.goetyominous.mired": "Mired",
   "entity.goetyominous.mired_servant": "Mired Servant",
   "entity.goetyominous.bogged": "Bogged",
@@ -1082,5 +1096,6 @@
   "entity.goetyominous.tusked_elephant": "Tusked Elephant",
   "entity.goetyominous.baby_tremorzilla": "Baby Tremorzilla",
 
-  "death.attack.goetyominous.fire_wall": "%1$s was burned by %2$s's fire wall."
+  "death.attack.goetyominous.fire_wall": "%1$s was burned by %2$s's fire wall.",
+  "death.attack.goetyominous.grim_monarch_combo": "%1$s was torn apart by %2$s."
 }

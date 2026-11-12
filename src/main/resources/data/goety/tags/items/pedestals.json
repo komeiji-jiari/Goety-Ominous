@@ -1,0 +1,29 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "goetyominous:pedestal_abyssmarine",
+      "required": false
+    },
+    {
+      "id": "goetyominous:pedestal_guanostone",
+      "required": false
+    },
+    {
+      "id": "goetyominous:pedestal_gingerbread",
+      "required": false
+    },
+    {
+      "id": "goetyominous:pedestal_radrock",
+      "required": false
+    },
+    {
+      "id": "goetyominous:pedestal_limestone",
+      "required": false
+    },
+    {
+      "id": "goetyominous:pedestal_galena",
+      "required": false
+    }
+  ]
+}

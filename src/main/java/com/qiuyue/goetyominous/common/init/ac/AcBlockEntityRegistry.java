@@ -1,6 +1,8 @@
 package com.qiuyue.goetyominous.common.init.ac;
 
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.common.blocks.entities.ac.AcDarkAltarBlockEntity;
+import com.qiuyue.goetyominous.common.blocks.entities.ac.AcPedestalBlockEntity;
 import com.qiuyue.goetyominous.common.blocks.entities.ac.TitanBombBlockEntity;
 import com.qiuyue.goetyominous.common.blocks.entities.ac.AtlatitanServantEggBlockEntity;
 import com.qiuyue.goetyominous.common.blocks.entities.ac.GammaroachNestBlockEntity;
@@ -61,7 +63,29 @@ public class AcBlockEntityRegistry {
                             GammaroachNestBlockEntity::new,
                             AcBlockRegistry.GAMMAROACH_NEST.get()).build(null));
 
-    public static void register(IEventBus modEventBus) {
-        AC_BLOCK_ENTITIES.register(modEventBus);
+    public static final RegistryObject<BlockEntityType<AcDarkAltarBlockEntity>> DARK_ALTAR =
+            AC_BLOCK_ENTITIES.register("dark_altar",
+                    () -> BlockEntityType.Builder.of(
+                            AcDarkAltarBlockEntity::new,
+                            AcBlockRegistry.DARK_ALTAR_ABYSSMARINE.get(),
+                            AcBlockRegistry.DARK_ALTAR_GUANOSTONE.get(),
+                            AcBlockRegistry.DARK_ALTAR_GINGERBREAD.get(),
+                            AcBlockRegistry.DARK_ALTAR_RADROCK.get(),
+                            AcBlockRegistry.DARK_ALTAR_LIMESTONE.get(),
+                            AcBlockRegistry.DARK_ALTAR_GALENA.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<AcPedestalBlockEntity>> PEDESTAL =
+            AC_BLOCK_ENTITIES.register("pedestal",
+                    () -> BlockEntityType.Builder.of(
+                            AcPedestalBlockEntity::new,
+                            AcBlockRegistry.PEDESTAL_ABYSSMARINE.get(),
+                            AcBlockRegistry.PEDESTAL_GUANOSTONE.get(),
+                            AcBlockRegistry.PEDESTAL_GINGERBREAD.get(),
+                            AcBlockRegistry.PEDESTAL_RADROCK.get(),
+                            AcBlockRegistry.PEDESTAL_LIMESTONE.get(),
+                            AcBlockRegistry.PEDESTAL_GALENA.get()).build(null));
+
+    public static void register(IEventBus eventBus) {
+        AC_BLOCK_ENTITIES.register(eventBus);
     }
 }

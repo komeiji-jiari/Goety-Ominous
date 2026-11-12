@@ -376,7 +376,7 @@ public class PiglinDrummer extends AbstractPiglinServant {
                     this.drummer.setDrumming(true);
                     this.drummer.playSound(SoundEvents.PIGLIN_CELEBRATE, 1.0F, 1.0F);
                 } else {
-                    this.drummer.getNavigation().moveTo(this.friendly, 1.2D);
+                    this.drummer.getNavigation().moveTo(this.friendly, 1.0D);
                     this.drummer.getLookControl().setLookAt(this.friendly, 30.0F, 30.0F);
                 }
             } else {

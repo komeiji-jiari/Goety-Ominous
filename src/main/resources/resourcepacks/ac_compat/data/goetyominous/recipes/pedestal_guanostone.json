@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "l",
+    "s",
+    "l"
+  ],
+  "key": {
+    "l": {
+      "item": "alexscaves:guanostone_slab"
+    },
+    "s": {
+      "item": "alexscaves:guanostone"
+    }
+  },
+  "result": {
+    "item": "goetyominous:pedestal_guanostone",
+    "count": 1
+  }
+}

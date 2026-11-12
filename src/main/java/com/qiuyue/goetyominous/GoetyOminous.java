@@ -38,6 +38,7 @@ import com.qiuyue.goetyominous.common.entities.ally.illager.train.GoetyOminousTy
 import com.qiuyue.goetyominous.common.entities.ally.mobs.*;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractStormNecromancer;
 import com.qiuyue.goetyominous.common.entities.hostile.SunkenNecromancer;
+import com.qiuyue.goetyominous.common.entities.hostile.grimmonarch.GrimMonarchEntity;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.ArchGeomancerEntity;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.CrimsonGuard;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.ImperialChasseur;
@@ -285,6 +286,8 @@ public class GoetyOminous {
         event.put(ModEntityTypes.BREEZE.get(), BreezeEntity.setCustomAttributes().build());
         event.put(ModEntityTypes.HURRICANE.get(), AbstractHurricane.setCustomAttributes().build());
         event.put(ModEntityTypes.HURRICANE_SERVANT.get(), AbstractHurricane.setCustomAttributes().build());
+        event.put(ModEntityTypes.GRIM_MONARCH.get(), GrimMonarchEntity.createAttributes().build());
+        event.put(ModEntityTypes.GRIM_MONARCH_ECHO.get(), GrimMonarchEntity.createEchoAttributes().build());
         event.put(ModEntityTypes.URBHADHACH.get(), AbstractUrbhadhach.setCustomAttributes().build());
         event.put(ModEntityTypes.URBHADHACH_SERVANT.get(), AbstractUrbhadhach.setCustomAttributes().build());
         event.put(ModEntityTypes.MIRED_SERVANT.get(), AbstractMiredEntity.setCustomAttributes().build());

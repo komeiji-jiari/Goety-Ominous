@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "l",
+    "s",
+    "l"
+  ],
+  "key": {
+    "l": {
+      "item": "alexscaves:limestone_slab"
+    },
+    "s": {
+      "item": "alexscaves:limestone"
+    }
+  },
+  "result": {
+    "item": "goetyominous:pedestal_limestone",
+    "count": 1
+  }
+}

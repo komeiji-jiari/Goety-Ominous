@@ -165,6 +165,8 @@ public class ModSounds {
 
     public static final RegistryObject<SoundEvent> ARCHGEOMANCER_MUSIC = create("archgeomancer");
 
+    public static final RegistryObject<SoundEvent> MONARCH_BOSS = create("monarch_boss");
+
     public static final RegistryObject<SoundEvent> MUSIC_DISC_PRECIPICE = create("music_disc_precipice");
 
     public static final RegistryObject<SoundEvent> MUSIC_DISC_CREATOR = create("music_disc_creator");

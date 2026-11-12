@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "goety:grim_monarch",
     {
       "id": "goetyominous:mutant_shulker_servant",
       "required": false

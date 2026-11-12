@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "l",
+    "s",
+    "l"
+  ],
+  "key": {
+    "l": {
+      "item": "alexscaves:radrock_slab"
+    },
+    "s": {
+      "item": "alexscaves:radrock"
+    }
+  },
+  "result": {
+    "item": "goetyominous:pedestal_radrock",
+    "count": 1
+  }
+}

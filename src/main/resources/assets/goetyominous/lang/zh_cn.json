@@ -256,6 +256,18 @@
   "block.goetyominous.plushie_xin_tiris": "§3Xin_Tiris§r毛绒玩偶",
   "block.goetyominous.plushie_xinjimu": "§5Xinjimu§r毛绒玩偶",
   "block.goetyominous.plushie_xueyuefeng": "§aXueyuefeng§r毛绒玩偶",
+  "block.goetyominous.dark_altar_abyssmarine": "黑暗祭坛",
+  "block.goetyominous.dark_altar_guanostone": "黑暗祭坛",
+  "block.goetyominous.dark_altar_gingerbread": "黑暗祭坛",
+  "block.goetyominous.dark_altar_radrock": "黑暗祭坛",
+  "block.goetyominous.dark_altar_limestone": "黑暗祭坛",
+  "block.goetyominous.dark_altar_galena": "黑暗祭坛",
+  "block.goetyominous.pedestal_abyssmarine": "祭坛基座",
+  "block.goetyominous.pedestal_guanostone": "祭坛基座",
+  "block.goetyominous.pedestal_gingerbread": "祭坛基座",
+  "block.goetyominous.pedestal_radrock": "祭坛基座",
+  "block.goetyominous.pedestal_limestone": "祭坛基座",
+  "block.goetyominous.pedestal_galena": "祭坛基座",
 
   "entity.goetyominous.fire_wall": "火墙",
   "entity.goetyominous.ominous_item_spawner": "不祥物品生成器",
@@ -292,6 +304,8 @@
   "entity.goetyominous.hurricane_punch": "飓风之拳",
   "entity.goetyominous.hurricane_cyclone": "龙卷风",
   "entity.goetyominous.hurricane_core_summon": "飓风核心",
+  "entity.goetyominous.grim_monarch": "幽影君主",
+  "entity.goetyominous.grim_monarch_echo": "幽影回响",
   "entity.goetyominous.dreden": "惧灵",
   "entity.goetyominous.dreden_servant": "惧灵仆从",
   "entity.goetyominous.arch_geomancer": "高位地卜师",
@@ -335,7 +349,7 @@
   "entity.goetyominous.inquillager_servant": "巡查官仆从",
   "entity.goetyominous.pyrologer_servant": "火术师仆从",
   "entity.goetyominous.pyrologer": "火术师",
-  "entity.goetyominous.bound_pyrologer": "被绑定的火术士",
+  "entity.goetyominous.bound_pyrologer": "被绑定的火术师",
   "entity.goetyominous.sunken_necromancer_servant": "沉溺死灵法师",
   "entity.goetyominous.sunken_necromancer": "沉溺死灵法师",
   "entity.goetyominous.heresiarch_servant": "异教牧首仆从",
@@ -498,7 +512,7 @@
   "item.goetyominous.conquillager_servant_spawn_egg": "征服者仆从刷怪蛋",
   "item.goetyominous.inquillager_servant_spawn_egg": "巡查官仆从刷怪蛋",
   "item.goetyominous.pyrologer_servant_spawn_egg": "火术师仆从刷怪蛋",
-  "item.goetyominous.bound_pyrologer_spawn_egg": "被绑定的火术士刷怪蛋",
+  "item.goetyominous.bound_pyrologer_spawn_egg": "被绑定的火术师刷怪蛋",
   "item.goetyominous.sunken_necromancer_servant_spawn_egg": "沉溺死灵法师仆从刷怪蛋",
   "item.goetyominous.sunken_necromancer_spawn_egg": "沉溺死灵法师刷怪蛋",
   "item.goetyominous.heresiarch_servant_spawn_egg": "异教牧首仆从刷怪蛋",
@@ -1082,5 +1096,6 @@
   "entity.goetyominous.tusked_elephant": "带有长牙的大象",
   "entity.goetyominous.baby_tremorzilla": "幼年撼地斯拉",
 
-  "death.attack.goetyominous.fire_wall": "%1$s撞上了%2$s的火墙。"
+  "death.attack.goetyominous.fire_wall": "%1$s撞上了%2$s的火墙。",
+  "death.attack.goetyominous.grim_monarch_combo": "%1$s的内脏变成了外脏，感谢%2$s带来的精彩演出。"
 }

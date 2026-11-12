@@ -1,0 +1,32 @@
+{
+  "name": "Bound Illagers",
+  "icon": "minecraft:totem_of_undying",
+  "category": "goety:ominous_summons",
+  "advancement": "goety:goety/kill_a_evoker",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "It seems even more Illager spellcasters can be turned into bound, tormented souls. You reckon that leading an army of undead corpses and wrathful spirits suits an evil dark magician like you quite well."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:bound_pyrologer"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Compared to their similarly undead colleagues, Bound Pyrologers can float above ground and is unaffected by gravity. Despite their spiritual looks, they cannot phase through walls and can still be harmed with conventional weaponry."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:summon_bound_pyrologer"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "These bound souls can be healed by right-clicking on them with Ectoplasm."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "As they still retain their mental faculties, these souls can be given your $(l:goety:mutations/illager_servants#banner)personal banner$() and lead your $(l:goety:mutations/illager_servants)Illager servants$() as well."
+    }
+  ]
+}

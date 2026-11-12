@@ -24,7 +24,6 @@ public abstract class JigsawStructureMixin {
                 ? DataResult.error(() -> "Structure size including terrain adaptation must not exceed 128")
                 : DataResult.success(structure));
     }
-
     @ModifyArg(method = "lambda$static$7(Lcom/mojang/serialization/codecs/RecordCodecBuilder$Instance;)Lcom/mojang/datafixers/kinds/App;",
             at = @At(value = "INVOKE",
                     target = "Lcom/mojang/serialization/Codec;intRange(II)Lcom/mojang/serialization/Codec;"), index = 1, require = 1)

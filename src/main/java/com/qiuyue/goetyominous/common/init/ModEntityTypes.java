@@ -17,6 +17,7 @@ import com.qiuyue.goetyominous.common.entities.ally.mobs.StormNecromancerServant
 import com.qiuyue.goetyominous.common.entities.ally.mobs.CrimsonSpiderServant;
 import com.qiuyue.goetyominous.common.entities.hostile.*;
 import com.qiuyue.goetyominous.common.entities.hostile.cultists.*;
+import com.qiuyue.goetyominous.common.entities.hostile.grimmonarch.GrimMonarchEntity;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.ArchGeomancerEntity;
 import com.qiuyue.goetyominous.common.entities.projectile.*;
 import com.qiuyue.goetyominous.common.entities.util.BurningGroundEntity;
@@ -486,6 +487,18 @@ public class ModEntityTypes {
                     .sized(1.6F, 3.4F)
                     .clientTrackingRange(10)
                     .build(MOD_ID + ":hurricane"));
+
+    public static final RegistryObject<EntityType<GrimMonarchEntity>> GRIM_MONARCH = ENTITY_TYPES.register("grim_monarch",
+            () -> EntityType.Builder.of(GrimMonarchEntity::new, MobCategory.MONSTER)
+                    .sized(1.6F, 5.5F)
+                    .clientTrackingRange(12)
+                    .build(MOD_ID + ":grim_monarch"));
+
+    public static final RegistryObject<EntityType<GrimMonarchEntity>> GRIM_MONARCH_ECHO = ENTITY_TYPES.register("grim_monarch_echo",
+            () -> EntityType.Builder.of(GrimMonarchEntity::new, MobCategory.MISC)
+                    .sized(1.6F, 5.5F)
+                    .clientTrackingRange(12)
+                    .build(MOD_ID + ":grim_monarch_echo"));
 
     public static final RegistryObject<EntityType<HurricaneServant>> HURRICANE_SERVANT = ENTITY_TYPES.register("hurricane_servant",
             () -> EntityType.Builder.of(HurricaneServant::new, MobCategory.MISC)

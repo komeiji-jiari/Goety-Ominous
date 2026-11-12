@@ -13,6 +13,7 @@ import com.qiuyue.goetyominous.common.entities.projectile.PyromancerFireball;
 import com.qiuyue.goetyominous.common.entities.util.FireWallEntity;
 import com.qiuyue.goetyominous.common.entities.util.FireWallShape;
 import com.qiuyue.goetyominous.common.init.ModEffects;
+import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.minecraft.nbt.CompoundTag;
@@ -209,6 +210,11 @@ public class PyrologerServant extends SpellcasterIllagerServant {
             }
         }
         super.onSyncedDataUpdated(accessor);
+    }
+
+    @Override
+    public EntityType<? extends Mob> getNecroConvert() {
+        return ModEntityTypes.BOUND_PYROLOGER.get();
     }
 
     @Override

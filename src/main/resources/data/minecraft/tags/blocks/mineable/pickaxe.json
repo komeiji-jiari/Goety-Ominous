@@ -66,6 +66,46 @@
     "goetyominous:waxed_copper_trapdoor",
     "goetyominous:waxed_exposed_copper_trapdoor",
     "goetyominous:waxed_weathered_copper_trapdoor",
-    "goetyominous:waxed_oxidized_copper_trapdoor"
+    "goetyominous:waxed_oxidized_copper_trapdoor",
+    {
+      "id": "goetyominous:dark_altar_abyssmarine",
+      "required": false
+    },
+    {
+      "id": "goetyominous:pedestal_abyssmarine",
+      "required": false
+    },
+    {
+      "id": "goetyominous:dark_altar_guanostone",
+      "required": false
+    },
+    {
+      "id": "goetyominous:pedestal_guanostone",
+      "required": false
+    },
+    {
+      "id": "goetyominous:dark_altar_radrock",
+      "required": false
+    },
+    {
+      "id": "goetyominous:pedestal_radrock",
+      "required": false
+    },
+    {
+      "id": "goetyominous:dark_altar_limestone",
+      "required": false
+    },
+    {
+      "id": "goetyominous:pedestal_limestone",
+      "required": false
+    },
+    {
+      "id": "goetyominous:dark_altar_galena",
+      "required": false
+    },
+    {
+      "id": "goetyominous:pedestal_galena",
+      "required": false
+    }
   ]
 }

@@ -84,3 +84,13 @@ Alex's Caves being loaded at runtime.
 
 Credits and thanks to AlexModGuy for Alex's Caves.
 
+
+=========================================================================
+
+grimmonarch: model and animation data
+
+The Grim Monarch's base model and 21 base animation clips
+(assets/goetyominous/grimmonarch/clips.json) are derived from the Goety Supreme
+Ifrit assets, which are distributed under the MIT license. The four additional
+animation clips (hover_loop, hover_loop_2, heel_stomp, dash_rest_loop) were
+authored for this mod. Thanks to the Goety and Goety Supreme authors.

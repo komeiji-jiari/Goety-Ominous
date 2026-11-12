@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "t t",
+    "scs"
+  ],
+  "key": {
+    "t": {
+      "item": "goety:magic_emerald"
+    },
+    "s": {
+      "item": "alexscaves:gingerbread_block"
+    },
+    "c": {
+      "tag": "goety:pedestals"
+    }
+  },
+  "result": {
+    "item": "goetyominous:dark_altar_gingerbread",
+    "count": 1
+  }
+}

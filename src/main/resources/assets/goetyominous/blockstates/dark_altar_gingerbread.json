@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "lit=true": { "model": "goetyominous:block/dark_altar_gingerbread_activated" },
+    "lit=false": { "model": "goetyominous:block/dark_altar_gingerbread" }
+  }
+}

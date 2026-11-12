@@ -826,6 +826,14 @@
       }
     ]
   },
+  "monarch_boss": {
+    "sounds": [
+      {
+        "name": "goetyominous:monarch_boss",
+        "stream": true
+      }
+    ]
+  },
   "music_disc_precipice": {
     "sounds": [
       {

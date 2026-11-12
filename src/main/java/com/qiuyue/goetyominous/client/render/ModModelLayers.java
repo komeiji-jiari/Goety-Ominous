@@ -73,6 +73,9 @@ public class ModModelLayers {
         event.registerLayerDefinition(HURRICANE,
                 com.qiuyue.goetyominous.client.render.model.HurricaneModel::createBodyLayer);
 
+        event.registerLayerDefinition(GrimMonarchModel.LAYER_LOCATION,
+                GrimMonarchModel::createBodyLayer);
+
         event.registerLayerDefinition(HURRICANE_PUNCH,
                 com.qiuyue.goetyominous.client.render.model.HurricanePunchModel::createBodyLayer);
 
@@ -342,6 +345,11 @@ public class ModModelLayers {
 
         event.registerEntityRenderer(ModEntityTypes.HURRICANE.get(),
                 com.qiuyue.goetyominous.client.render.HurricaneRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.GRIM_MONARCH.get(),
+                com.qiuyue.goetyominous.client.render.GrimMonarchRenderer::new);
+        event.registerEntityRenderer(ModEntityTypes.GRIM_MONARCH_ECHO.get(),
+                com.qiuyue.goetyominous.client.render.GrimMonarchRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.HURRICANE_SERVANT.get(),
                 com.qiuyue.goetyominous.client.render.HurricaneRenderer::new);

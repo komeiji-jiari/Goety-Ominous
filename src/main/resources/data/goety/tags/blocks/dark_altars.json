@@ -1,0 +1,25 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "goetyominous:dark_altar_abyssmarine",
+      "required": false
+    },
+    {
+      "id": "goetyominous:dark_altar_guanostone",
+      "required": false
+    },
+    {
+      "id": "goetyominous:dark_altar_radrock",
+      "required": false
+    },
+    {
+      "id": "goetyominous:dark_altar_limestone",
+      "required": false
+    },
+    {
+      "id": "goetyominous:dark_altar_galena",
+      "required": false
+    }
+  ]
+}

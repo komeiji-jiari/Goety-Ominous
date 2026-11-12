@@ -121,6 +121,17 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> BastionGuardServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> BastionGuardServantArmorToughness;
     public static final ForgeConfigSpec.ConfigValue<Double> BastionGuardServantAttackDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> GrimMonarchHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> GrimMonarchArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> GrimMonarchSpeed;
+    public static final ForgeConfigSpec.ConfigValue<Double> GrimMonarchFollowRange;
+    public static final ForgeConfigSpec.ConfigValue<Double> GrimMonarchAttackDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> GrimMonarchHPPercentDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> GrimMonarchKnockbackResistance;
+    public static final ForgeConfigSpec.IntValue GrimMonarchExperience;
+    public static final ForgeConfigSpec.ConfigValue<Double> GrimMonarchDamageCap;
+    public static final ForgeConfigSpec.ConfigValue<Double> GrimMonarchEchoHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> GrimMonarchEchoDamage;
 
     static {
         BUILDER.push("Servants Attributes");
@@ -427,6 +438,31 @@ public class AttributesConfig {
         BastionGuardServantAttackDamage = BUILDER.comment("How much damage Bastion Guard Servants deal (Default: 12.0)")
                 .defineInRange("bastionGuardServantAttackDamage", 12.0D, 1.0D, Double.MAX_VALUE);
         BUILDER.pop();
+        BUILDER.pop();
+        BUILDER.push("Grim Monarch");
+        GrimMonarchHealth = BUILDER.comment("How much Max Health the Grim Monarch has (Default: 600.0)")
+                .defineInRange("grimMonarchHealth", 600.0D, 1.0D, Double.MAX_VALUE);
+        GrimMonarchArmor = BUILDER.comment("How much natural Armor the Grim Monarch has (Default: 10.0)")
+                .defineInRange("grimMonarchArmor", 10.0D, 0.0D, Double.MAX_VALUE);
+        GrimMonarchSpeed = BUILDER.comment("How fast the Grim Monarch moves (Default: 0.3)")
+                .defineInRange("grimMonarchSpeed", 0.3D, 0.0D, Double.MAX_VALUE);
+        GrimMonarchFollowRange = BUILDER.comment("How far the Grim Monarch targets enemies (Default: 64.0)")
+                .defineInRange("grimMonarchFollowRange", 64.0D, 0.0D, Double.MAX_VALUE);
+        GrimMonarchAttackDamage = BUILDER.comment("Base damage used by all Grim Monarch attacks (Default: 16.0)")
+                .defineInRange("grimMonarchAttackDamage", 16.0D, 0.0D, Double.MAX_VALUE);
+        GrimMonarchHPPercentDamage = BUILDER.comment("Extra melee damage equal to this fraction of the target's max health (Default: 0.05 = 5%)")
+                .defineInRange("grimMonarchHPPercentDamage", 0.05D, 0.0D, 1.0D);
+        GrimMonarchKnockbackResistance = BUILDER.comment("How much knockback resistance the Grim Monarch has (Default: 1.0)")
+                .defineInRange("grimMonarchKnockbackResistance", 1.0D, 0.0D, 1.0D);
+        GrimMonarchExperience = BUILDER.comment("Experience dropped by the Grim Monarch (Default: 200)")
+                .defineInRange("grimMonarchExperience", 200, 0, Integer.MAX_VALUE);
+        GrimMonarchDamageCap = BUILDER
+                .comment("Maximum health the Grim Monarch can lose from a single hit. Set to 0 to disable. Default: 25.0")
+                .defineInRange("grimMonarchDamageCap", 25.0D, 0.0D, Double.MAX_VALUE);
+        GrimMonarchEchoHealth = BUILDER.comment("How much Max Health the Grim Monarch's Echo has (Default: 200.0)")
+                .defineInRange("grimMonarchEchoHealth", 200.0D, 1.0D, Double.MAX_VALUE);
+        GrimMonarchEchoDamage = BUILDER.comment("Damage multiplier applied to every Grim Monarch Echo attack (Default: 0.7)")
+                .defineInRange("grimMonarchEchoDamage", 0.7D, 0.0D, 10.0D);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }

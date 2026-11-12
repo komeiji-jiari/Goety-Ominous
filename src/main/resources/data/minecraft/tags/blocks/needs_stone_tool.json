@@ -40,6 +40,14 @@
     "goetyominous:waxed_copper_trapdoor",
     "goetyominous:waxed_exposed_copper_trapdoor",
     "goetyominous:waxed_weathered_copper_trapdoor",
-    "goetyominous:waxed_oxidized_copper_trapdoor"
+    "goetyominous:waxed_oxidized_copper_trapdoor",
+    {
+      "id": "goetyominous:dark_altar_abyssmarine",
+      "required": false
+    },
+    {
+      "id": "goetyominous:pedestal_abyssmarine",
+      "required": false
+    }
   ]
 }

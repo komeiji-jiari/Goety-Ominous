@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "goetyominous:dark_altar_gingerbread",
+      "required": false
+    },
+    {
+      "id": "goetyominous:pedestal_gingerbread",
+      "required": false
+    }
+  ]
+}

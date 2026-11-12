@@ -1,0 +1,80 @@
+package com.qiuyue.goetyominous.common.entities.hostile.grimmonarch;
+
+final class GrimMonarchConstants {
+
+    static final float MAX_UP_STEP = 1.0F;
+    static final double TURN_DEGREES_PER_TICK = 14.0D;
+    static final double ATTACK_TURN_DEGREES_PER_TICK = 90.0D;
+    static final double SWEEP_DAMAGE_MULTIPLIER = 1.2D;
+    static final double DASH_DAMAGE_MULTIPLIER = 1.8D;
+    static final double DASH_FOLLOWUP_DAMAGE_MULTIPLIER = 1.5D;
+    static final double COMBO_DAMAGE_MULTIPLIER = 1.0D;
+    static final double PART3_CLAW_DAMAGE_MULTIPLIER = 0.9D;
+    static final double HEEL_DAMAGE_MULTIPLIER = 2.0D;
+    static final double SOUL_STAR_DAMAGE_MULTIPLIER = 0.5D;
+    static final double RIPPLE_DAMAGE_MULTIPLIER = 1.5D;
+    static final double SHIELD_DISABLE_SECONDS = 5.0D;
+    static final double LIFE_LEECH = 0.15D;
+    static final double SWEEP_TRIGGER_RANGE = 5.5D;
+    static final double SWEEP_RADIUS = 5.0D;
+    static final double DASH_MIN_RANGE = 5.5D;
+    static final double DASH_MAX_RANGE = 24.0D;
+    static final double DASH_MAX_BLOCKS = 14.0D;
+    static final double DASH_BLOCKS_PER_TICK = 1.1D;
+    static final double SWEEP_BACKSTEP = 12.0D;
+    static final double LUNGE_MULTIPLIER = 1.0D;
+    static final double DASH_COOLDOWN_SECONDS = 4.0D;
+    static final double SWEEP_COOLDOWN_SECONDS = 3.0D;
+    static final double SUMMON_COOLDOWN_SECONDS = 20.0D;
+    static final double SUMMON_MIN_RANGE = 16.0D;
+    static final double TELEPORT_COOLDOWN_SECONDS = 3.0D;
+    static final double TELEPORT_RAPID_COOLDOWN_SECONDS = 1.0D;
+    static final double TELEPORT_ATTEMPT_SECONDS = 3.5D;
+    static final double TELEPORT_PURSUIT_RANGE = 16.0D;
+    static final double TELEPORT_NEAR_MIN = 6.0D;
+    static final double TELEPORT_NEAR_MAX = 10.0D;
+    static final double TELEPORT_NEAR_FALLBACK = 8.0D;
+    static final double TELEPORT_RANDOM_RADIUS = 16.0D;
+    static final double TELEPORT_TARGET_CLEARANCE = 6.0D;
+    static final int TELEPORT_DECISION_DELAY = 6;
+    static final int TELEPORT_RAPID_WINDOW = 20;
+    static final int TELEPORT_RAPID_HITS = 3;
+    static final float SUMMON_STAR_WINDOW_TICKS = 36.0F;
+    static final int SUMMON_BASE_STARS = 10;
+    static final double ECHO_DEATH_COOLDOWN_SECONDS = 100.0D;
+    static final double ECHO_RETRY_SECONDS = 2.0D;
+    static final double ECHO_HEALTH_THRESHOLD = 0.65D;
+    static final double ECHO_TELEPORT_DISTANCE = 64.0D;
+    static final int ECHO_TELEPORT_TICKS = 2000;
+    static final int ECHO_FOLLOW_REPATH_TICKS = 10;
+    static final double ECHO_FOLLOW_SPEED = 0.95D;
+    static final double ECHO_FOLLOW_STAND_GAP = 5.0D;
+    static final double ECHO_FOLLOW_START_GAP = 3.0D;
+    static final double SOUL_STAR_CIRCLE_RADIUS = 5.0D;
+    static final double SOUL_STAR_SPACING = 2.0D;
+    static final double SOUL_STAR_COOLDOWN_SECONDS = 8.0D;
+    static final int SOUL_STARS_PER_CIRCLE = 8;
+    static final double COMBO_DASH_BLOCKS = 18.0D;
+    static final double CALAMITY_HEALTH_THRESHOLD = 0.8D;
+    static final double CALAMITY_JUMP_HEIGHT = 5.0D;
+    static final double CALAMITY_FLIGHT_RETREAT = 8.0D;
+    static final double CALAMITY_JUMP_RANGE = 24.0D;
+    static final double CALAMITY_SLAM_RADIUS = 4.5D;
+    static final double CALAMITY_DASH_COOLDOWN_SECONDS = 5.0D;
+    static final double CALAMITY_FOLLOWUP_COOLDOWN_SECONDS = 1.0D;
+    static final double CALAMITY_COOLDOWN_SECONDS = 0.0D;
+    static final float LARGE_TARGET_WIDTH = 3.0F;
+    static final float LARGE_TARGET_HEIGHT = 4.0F;
+    static final float CALAMITY_DAMAGE_MULTIPLIER = 0.5F;
+    static final double DAMAGE_IMMUNITY_RANGE = 20.0D;
+    static final double DAMAGE_IMMUNITY_RANGE_SQR = DAMAGE_IMMUNITY_RANGE * DAMAGE_IMMUNITY_RANGE;
+    static final float OWNED_DAMAGE_MULTIPLIER = 0.5F;
+    static final int BYPASS_INVULNERABILITY_TICKS = 20;
+    static final int PLUNGE_TICKS = 5;
+    static final int DYNAMIC_REDUCTION_TICKS = 4;
+    static final int INDEPENDENT_INVULNERABILITY_TICKS = 25;
+    static final float DYNAMIC_REDUCTION_MULTIPLIER = 0.5F;
+
+    private GrimMonarchConstants() {
+    }
+}

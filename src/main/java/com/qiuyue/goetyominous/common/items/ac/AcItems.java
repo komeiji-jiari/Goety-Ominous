@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.items.ac;
 
 import com.Polarice3.Goety.common.items.ServantSpawnEggItem;
 import com.Polarice3.Goety.common.items.magic.MagicFocus;
+import com.github.alexmodguy.alexscaves.server.item.ACFoods;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.ac.AcBlockRegistry;
 import com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry;
@@ -243,6 +244,56 @@ public class AcItems {
 
     public static final RegistryObject<ExtinctionCatalyst> EXTINCTION_CATALYST =
             AC_ITEMS.register("extinction_catalyst", ExtinctionCatalyst::new);
+
+    public static final RegistryObject<BlockItem> DARK_ALTAR_ABYSSMARINE =
+            AC_ITEMS.register("dark_altar_abyssmarine",
+                    () -> new BlockItem(AcBlockRegistry.DARK_ALTAR_ABYSSMARINE.get(), new Item.Properties()));
+
+    public static final RegistryObject<BlockItem> DARK_ALTAR_GUANOSTONE =
+            AC_ITEMS.register("dark_altar_guanostone",
+                    () -> new BlockItem(AcBlockRegistry.DARK_ALTAR_GUANOSTONE.get(), new Item.Properties()));
+
+    public static final RegistryObject<BlockItem> DARK_ALTAR_GINGERBREAD =
+            AC_ITEMS.register("dark_altar_gingerbread",
+                    () -> new BlockItem(AcBlockRegistry.DARK_ALTAR_GINGERBREAD.get(),
+                            new Item.Properties().food(ACFoods.GINGERBREAD)));
+
+    public static final RegistryObject<BlockItem> DARK_ALTAR_RADROCK =
+            AC_ITEMS.register("dark_altar_radrock",
+                    () -> new BlockItem(AcBlockRegistry.DARK_ALTAR_RADROCK.get(), new Item.Properties()));
+
+    public static final RegistryObject<BlockItem> DARK_ALTAR_LIMESTONE =
+            AC_ITEMS.register("dark_altar_limestone",
+                    () -> new BlockItem(AcBlockRegistry.DARK_ALTAR_LIMESTONE.get(), new Item.Properties()));
+
+    public static final RegistryObject<BlockItem> DARK_ALTAR_GALENA =
+            AC_ITEMS.register("dark_altar_galena",
+                    () -> new BlockItem(AcBlockRegistry.DARK_ALTAR_GALENA.get(), new Item.Properties()));
+
+    public static final RegistryObject<BlockItem> PEDESTAL_ABYSSMARINE =
+            AC_ITEMS.register("pedestal_abyssmarine",
+                    () -> new BlockItem(AcBlockRegistry.PEDESTAL_ABYSSMARINE.get(), new Item.Properties()));
+
+    public static final RegistryObject<BlockItem> PEDESTAL_GUANOSTONE =
+            AC_ITEMS.register("pedestal_guanostone",
+                    () -> new BlockItem(AcBlockRegistry.PEDESTAL_GUANOSTONE.get(), new Item.Properties()));
+
+    public static final RegistryObject<BlockItem> PEDESTAL_GINGERBREAD =
+            AC_ITEMS.register("pedestal_gingerbread",
+                    () -> new BlockItem(AcBlockRegistry.PEDESTAL_GINGERBREAD.get(),
+                            new Item.Properties().food(ACFoods.GINGERBREAD)));
+
+    public static final RegistryObject<BlockItem> PEDESTAL_RADROCK =
+            AC_ITEMS.register("pedestal_radrock",
+                    () -> new BlockItem(AcBlockRegistry.PEDESTAL_RADROCK.get(), new Item.Properties()));
+
+    public static final RegistryObject<BlockItem> PEDESTAL_LIMESTONE =
+            AC_ITEMS.register("pedestal_limestone",
+                    () -> new BlockItem(AcBlockRegistry.PEDESTAL_LIMESTONE.get(), new Item.Properties()));
+
+    public static final RegistryObject<BlockItem> PEDESTAL_GALENA =
+            AC_ITEMS.register("pedestal_galena",
+                    () -> new BlockItem(AcBlockRegistry.PEDESTAL_GALENA.get(), new Item.Properties()));
 
     public static Item.Properties egg() {
         return new Item.Properties();

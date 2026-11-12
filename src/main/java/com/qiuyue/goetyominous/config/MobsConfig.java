@@ -55,6 +55,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> ProtectTrialChambers;
     public static final ForgeConfigSpec.ConfigValue<Integer> CultStatueBindLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> CultStatueReviveCost;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> GrimMonarchBossBar;
 
     static {
         BUILDER.push("Servant Limits");
@@ -194,6 +195,11 @@ public class MobsConfig {
         CultStatueReviveCost = BUILDER
                 .comment("Soul Energy required to revive a bound Piglin Servant (Default: 500)")
                 .defineInRange("cultStatueReviveCost", 500, 0, Integer.MAX_VALUE);
+        BUILDER.pop();
+        BUILDER.push("Grim Monarch");
+        GrimMonarchBossBar = BUILDER
+                .comment("Whether the Grim Monarch shows a boss bar (Default: true)")
+                .define("grimMonarchBossBar", true);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }

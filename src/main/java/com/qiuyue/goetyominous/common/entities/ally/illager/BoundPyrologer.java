@@ -47,6 +47,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class BoundPyrologer extends AbstractBoundIllager {
+
     private static final EntityDataAccessor<Integer> ANIM_STATE = SynchedEntityData.defineId(BoundPyrologer.class,
             EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DATA_BREATH_LOCK = SynchedEntityData.defineId(
@@ -146,6 +147,16 @@ public class BoundPyrologer extends AbstractBoundIllager {
     @Override
     protected SoundEvent getDeathSound() {
         return SoundEvents.EVOKER_DEATH;
+    }
+
+    @Override
+    public float getVoicePitch() {
+        return 0.45F;
+    }
+
+    @Override
+    public SoundEvent getCelebrateSound() {
+        return SoundEvents.EVOKER_CELEBRATE;
     }
 
     @Override
@@ -320,6 +331,16 @@ public class BoundPyrologer extends AbstractBoundIllager {
     }
 
     @Override
+    public void tryKill(Player player) {
+        if (this.killChance <= 0) {
+            this.warnKill(player);
+        } else {
+            super.tryKill(player);
+        }
+
+    }
+
+    @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         this.spellCool = tag.getInt("SpellCool");
@@ -336,6 +357,7 @@ public class BoundPyrologer extends AbstractBoundIllager {
 
     @Override
     public void die(DamageSource source) {
+        this.playSound(com.Polarice3.Goety.init.ModSounds.DEAD_MOAN.get(), 2.0F, 1.0F);
         boolean play = !this.level().isClientSide
                 && this.getTrueOwner() instanceof Player
                 && source.is(DamageTypeTags.IS_FREEZING)

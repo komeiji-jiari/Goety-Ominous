@@ -10,6 +10,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BoundPyrologerRenderer extends PyrologerRenderer<BoundPyrologer> {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation("goetyominous", "textures/entity/illager/bound_pyrologer.png");
+    private static final ResourceLocation ATTACKING =
+            new ResourceLocation("goetyominous", "textures/entity/illager/bound_pyrologer_attacking.png");
 
     public BoundPyrologerRenderer(EntityRendererProvider.Context context) {
         super(context);
@@ -17,6 +19,6 @@ public class BoundPyrologerRenderer extends PyrologerRenderer<BoundPyrologer> {
 
     @Override
     public ResourceLocation getTextureLocation(BoundPyrologer entity) {
-        return TEXTURE;
+        return entity.isCastingSpell() ? ATTACKING : TEXTURE;
     }
 }

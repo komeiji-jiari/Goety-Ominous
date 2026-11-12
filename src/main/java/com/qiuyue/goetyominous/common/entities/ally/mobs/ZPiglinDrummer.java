@@ -72,7 +72,7 @@ public class ZPiglinDrummer extends ZPiglinServant {
                 .add(Attributes.ARMOR, AttributesConfig.PiglinDrummerArmor.get())
                 .add(Attributes.ARMOR_TOUGHNESS, AttributesConfig.PiglinDrummerArmorToughness.get())
                 .add(Attributes.FOLLOW_RANGE, AttributesConfig.PiglinDrummerFollowRange.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.PiglinDrummerSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.PiglinDrummerSpeed.get()-0.05D)
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.PiglinDrummerDamage.get());
     }
 
@@ -82,7 +82,7 @@ public class ZPiglinDrummer extends ZPiglinServant {
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), AttributesConfig.PiglinDrummerArmor.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR_TOUGHNESS), AttributesConfig.PiglinDrummerArmorToughness.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.FOLLOW_RANGE), AttributesConfig.PiglinDrummerFollowRange.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MOVEMENT_SPEED), AttributesConfig.PiglinDrummerSpeed.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MOVEMENT_SPEED), AttributesConfig.PiglinDrummerSpeed.get()-0.05D);
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), AttributesConfig.PiglinDrummerDamage.get());
     }
 
@@ -330,7 +330,7 @@ public class ZPiglinDrummer extends ZPiglinServant {
                     this.drummer.setDrumming(true);
                     this.drummer.playSound(SoundEvents.ZOMBIFIED_PIGLIN_ANGRY, 1.0F, 1.0F);
                 } else {
-                    this.drummer.getNavigation().moveTo(this.friendly, 1.2D);
+                    this.drummer.getNavigation().moveTo(this.friendly, 1.0D);
                     this.drummer.getLookControl().setLookAt(this.friendly, 30.0F, 30.0F);
                 }
             } else {

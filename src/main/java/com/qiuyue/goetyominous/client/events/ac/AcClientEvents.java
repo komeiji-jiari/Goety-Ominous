@@ -1,5 +1,7 @@
 package com.qiuyue.goetyominous.client.events.ac;
 
+import com.Polarice3.Goety.client.render.block.DarkAltarRenderer;
+import com.Polarice3.Goety.client.render.block.PedestalRenderer;
 import com.Polarice3.Goety.client.render.block.TrainingBlockRenderer;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.particle.ac.CandicornServantChargeParticle;
@@ -52,6 +54,8 @@ public class AcClientEvents {
 
         event.registerEntityRenderer(AcEntityRegistry.EXTINCTION_CATALYST.get(), ItemEntityRenderer::new);
         event.registerBlockEntityRenderer(AcBlockEntityRegistry.GAMMAROACH_NEST.get(), TrainingBlockRenderer::new);
+        event.registerBlockEntityRenderer(AcBlockEntityRegistry.DARK_ALTAR.get(), DarkAltarRenderer::new);
+        event.registerBlockEntityRenderer(AcBlockEntityRegistry.PEDESTAL.get(), PedestalRenderer::new);
 
         event.registerEntityRenderer(
                 com.qiuyue.goetyominous.common.init.ac.AcEntityRegistry.GROTTOCERATOPS_SERVANT.get(),

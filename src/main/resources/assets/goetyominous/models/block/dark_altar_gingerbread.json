@@ -1,0 +1,6 @@
+{
+  "parent": "goety:block/template_altar",
+  "textures": {
+    "altar": "goetyominous:block/dark_altar_gingerbread"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "被绑定的灾厄村民",
+  "icon": "minecraft:totem_of_undying",
+  "category": "goety:ominous_summons",
+  "advancement": "goety:goety/kill_a_evoker",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "看起来还有更多刌民法师可以被制作成一个被绑定的痛苦灵魂。你觉得领导一支由不死尸体和愤怒灵魂组成的军队很适合像你这样的邪恶黑魔法师。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:bound_pyrologer"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "与那些同样变成亡灵的同僚相比，被绑定的火术师可以飘浮在地面上，不受重力影响。尽管他们看上去很像恼鬼，但他们无法穿过墙壁，且仍然会受到常规武器的伤害。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:summon_bound_pyrologer"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "手持灵质右键即可治疗这些被绑定的灾厄村民。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "因为这些灵魂的心智仍然被保留，所以你可以给予他一个$(l:goety:mutations/illager_servants#banner)个人旗帜$()并让他领导其他$(l:goety:mutations/illager_servants)灾厄村民仆从$()"
+    }
+  ]
+}
