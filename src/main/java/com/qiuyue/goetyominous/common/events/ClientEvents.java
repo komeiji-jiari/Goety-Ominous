@@ -4,6 +4,7 @@ import com.Polarice3.Goety.client.render.block.TrainingBlockRenderer;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.particle.*;
 import com.qiuyue.goetyominous.client.render.block.PlushieBlockEntityRenderer;
+import com.qiuyue.goetyominous.client.render.projectile.QuadStarRenderer;
 import com.qiuyue.goetyominous.client.particle.ac.CandicornServantChargeParticle;
 import com.qiuyue.goetyominous.client.particle.ac.ForsakenServantSpitParticle;
 import com.qiuyue.goetyominous.client.particle.ac.LuxtructosaurusServantAshParticle;
@@ -52,6 +53,7 @@ public class ClientEvents {
         event.registerBlockEntityRenderer(ModBlockEntities.VAULT.get(), VaultRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.TRIAL_SPAWNER.get(), TrialSpawnerRenderer::new);
         event.registerEntityRenderer(ModEntityTypes.OMINOUS_ITEM_SPAWNER.get(), OminousItemSpawnerRenderer::new);
+        event.registerEntityRenderer(ModEntityTypes.QUAD_STAR.get(), QuadStarRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.PLUSHIE.get(), PlushieBlockEntityRenderer::new);
         PlushieCurioRenderer.register();
 

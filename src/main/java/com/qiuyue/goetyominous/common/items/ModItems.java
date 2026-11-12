@@ -51,6 +51,10 @@ public class ModItems {
     public static final RegistryObject<Item> BREEZE_ROD = ITEMS.register("breeze_rod",
             () -> new Item(new Item.Properties()));
 
+    public static final RegistryObject<Item> QUAD_STAR_WAND = ITEMS.register("quad_star_wand",
+            () -> new QuadStarWandItem(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
+
+
     public static final RegistryObject<Item> TRIAL_KEY = ITEMS.register("trial_key",
             () -> new Item(new Item.Properties()));
 

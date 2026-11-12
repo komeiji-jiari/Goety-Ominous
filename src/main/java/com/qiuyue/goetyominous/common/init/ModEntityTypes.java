@@ -67,6 +67,14 @@ public class ModEntityTypes {
                     .clientTrackingRange(4)
                     .build(MOD_ID + ":frost_ball"));
 
+    public static final RegistryObject<EntityType<QuadStarProjectile>> QUAD_STAR = ENTITY_TYPES.register(
+            "quad_star",
+            () -> EntityType.Builder.<QuadStarProjectile>of(QuadStarProjectile::new, MobCategory.MISC)
+                    .sized(0.8F, 0.8F)
+                    .clientTrackingRange(8)
+                    .updateInterval(1)
+                    .build(MOD_ID + ":quad_star"));
+
     public static final RegistryObject<EntityType<SunkenNecromancerServant>> SUNKEN_NECROMANCER_SERVANT = ENTITY_TYPES.register(
             "sunken_necromancer_servant",
             () -> EntityType.Builder.of(SunkenNecromancerServant::new, MobCategory.MISC)

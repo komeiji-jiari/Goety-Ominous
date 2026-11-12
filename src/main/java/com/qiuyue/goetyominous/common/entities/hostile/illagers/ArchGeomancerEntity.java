@@ -19,6 +19,7 @@ import com.Polarice3.Goety.utils.BlockFinder;
 import com.Polarice3.Goety.utils.ColorUtil;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.ServerParticleUtil;
+import com.qiuyue.goetyominous.common.entities.ai.QuadStarCastGoal;
 import com.qiuyue.goetyominous.common.entities.projectile.ImpactBlockEntity;
 import com.qiuyue.goetyominous.common.entities.projectile.TremorBlockEntity;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
@@ -104,6 +105,7 @@ public class ArchGeomancerEntity extends HuntingIllagerEntity {
         this.goalSelector.addGoal(5, new BarrageGoal());
         this.goalSelector.addGoal(6, new RangedGoal());
         this.goalSelector.addGoal(7, new MoveTowardsTargetGoal(this, 1.0D, 13.0F));
+        this.goalSelector.addGoal(8, new QuadStarCastGoal(this, 140));
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
