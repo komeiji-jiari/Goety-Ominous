@@ -1,0 +1,566 @@
+package com.qiuyue.goetyominous.common.items;
+
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import com.Polarice3.Goety.common.items.ServantSpawnEggItem;
+import com.Polarice3.Goety.common.items.block.BlockItemBase;
+import com.Polarice3.Goety.common.items.magic.DarkStaff;
+import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.client.render.item.BoneCudgelRenderer;
+import com.qiuyue.goetyominous.common.entities.ally.mobs.Warg;
+import com.qiuyue.goetyominous.common.init.ModBlocks;
+import com.qiuyue.goetyominous.common.init.ModEntityTypes;
+import com.qiuyue.goetyominous.common.init.ModSounds;
+import com.qiuyue.goetyominous.common.items.curios.*;
+import com.qiuyue.goetyominous.common.items.revive.BrokenStormCrown;
+import com.qiuyue.goetyominous.common.items.revive.StormSoulJar;
+import com.qiuyue.goetyominous.common.items.revive.SunkenSoulJar;
+import com.qiuyue.goetyominous.common.items.revive.ThunderHorn;
+import com.qiuyue.goetyominous.common.research.ResearchList;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.*;
+import net.minecraftforge.common.ForgeSpawnEggItem;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
+
+import static com.qiuyue.goetyominous.config.WeaponConfig.FelStaffDamage;
+
+public class ModItems {
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS,
+            GoetyOminous.MOD_ID);
+
+    public static void init() {
+        ModItems.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
+    }
+
+    public static final RegistryObject<DarkStaff> FEL_STAFF = ITEMS.register("fel_staff",
+            () -> new DarkStaff(FelStaffDamage.get(), GoetyOminous.FEL));
+
+    public static final RegistryObject<Item> FEL_CORE = ITEMS.register("fel_core",
+            () -> new Item(new Item.Properties().rarity(Rarity.COMMON).stacksTo(64)));
+
+    public static final RegistryObject<Item> WIND_CHARGE = ITEMS.register("wind_charge",
+            () -> new WindChargeItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> BREEZE_ROD = ITEMS.register("breeze_rod",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> RESET_KEY = ITEMS.register("reset_key",
+            () -> new ResetKeyItem(new Item.Properties(), "info.goetyominous.reset_key"));
+
+    public static final RegistryObject<Item> OMINOUS_RESET_KEY = ITEMS.register("ominous_reset_key",
+            () -> new ResetKeyItem(new Item.Properties(), "info.goetyominous.ominous_reset_key"));
+
+    public static final RegistryObject<Item> TRIAL_KEY = ITEMS.register("trial_key",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> OMINOUS_TRIAL_KEY = ITEMS.register("ominous_trial_key",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> FLOW_POTTERY_SHERD = ITEMS.register("flow_pottery_sherd",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> GUSTER_POTTERY_SHERD = ITEMS.register("guster_pottery_sherd",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> SCRAPE_POTTERY_SHERD = ITEMS.register("scrape_pottery_sherd",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> HARMONIOUS_DIAMOND = ITEMS.register("harmonious_diamond",
+            () -> new Item(new Item.Properties().rarity(Rarity.COMMON).stacksTo(64)));
+
+    public static final RegistryObject<Item> OMINOUS_ICON = ITEMS.register("ominous_icon",
+            () -> new OminousIconItem(new Item.Properties().stacksTo(1)));
+
+    public static final RegistryObject<Item> BAT_WING = ITEMS.register("bat_wing",
+            () -> new BatWingItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> WORMY_APPLE = ITEMS.register("wormy_apple",
+            () -> new WormyAppleItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> WOLF_TONGUE = ITEMS.register("wolf_tongue",
+            () -> new Item(new Item.Properties().rarity(Rarity.COMMON).stacksTo(64)));
+
+    public static final RegistryObject<Item> COLD_HEART = ITEMS.register("cold_heart",
+            () -> new ColdHeartItem());
+
+    public static final RegistryObject<Item> ACID_FUNGUS = ITEMS.register("acid_fungus",
+            () -> new AcidFungusItem());
+
+    public static final RegistryObject<Item> BURNING_POTION = ITEMS.register("burning_potion",
+            () -> new BurningPotionItem());
+
+    public static final RegistryObject<Item> WITCH_BOMB = ITEMS.register("witch_bomb",
+            () -> new WitchBombItem());
+
+    public static final RegistryObject<CursedMetalWolfArmorItem> CURSED_METAL_WOLF_ARMOR = ITEMS.register(
+            "cursed_wolf_armor",
+            () -> new CursedMetalWolfArmorItem(new Item.Properties()));
+
+    public static final RegistryObject<DarkWolfArmorItem> DARK_WOLF_ARMOR = ITEMS.register(
+            "dark_wolf_armor",
+            () -> new DarkWolfArmorItem(new Item.Properties()));
+
+    public static final RegistryObject<CursedWargArmorItem> CURSED_WARG_ARMOR = ITEMS.register(
+            "warg_cursed_armor", () -> new CursedWargArmorItem(new Item.Properties()));
+
+    public static final RegistryObject<DarkWargArmorItem> DARK_WARG_ARMOR = ITEMS.register(
+            "warg_dark_armor", () -> new DarkWargArmorItem(new Item.Properties()));
+
+    public static final RegistryObject<CursedBlackBeastArmorItem> CURSED_BLACK_BEAST_ARMOR = ITEMS.register(
+            "black_beast_cursed_armor", () -> new CursedBlackBeastArmorItem(new Item.Properties()));
+
+    public static final RegistryObject<DarkBlackBeastArmorItem> DARK_BLACK_BEAST_ARMOR = ITEMS.register(
+            "black_beast_dark_armor", () -> new DarkBlackBeastArmorItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> MACE = ITEMS.register("mace",
+            () -> new MaceItem(new Item.Properties().durability(500).rarity(Rarity.EPIC)));
+
+    public static final RegistryObject<PitchforkItem> PITCHFORK = ITEMS.register("pitchfork",
+            () -> new PitchforkItem());
+
+    public static final RegistryObject<Item> BONE_CUDGEL = ITEMS.register("bone_cudgel",
+            () -> new BoneCudgelItem() {
+                @OnlyIn(Dist.CLIENT)
+                @Override
+                public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.extensions.common.IClientItemExtensions> consumer) {
+                    consumer.accept(new net.minecraftforge.client.extensions.common.IClientItemExtensions() {
+                        @Override
+                        public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                            Minecraft mc = Minecraft.getInstance();
+                            return new BoneCudgelRenderer(mc.getBlockEntityRenderDispatcher(), mc.getEntityModels());
+                        }
+                    });
+                }
+            });
+
+    public static final RegistryObject<Item> FIREBRAND = ITEMS.register("firebrand",
+            () -> new FirebrandItem());
+
+    public static final RegistryObject<WitchBowItem> WITCH_BOW = ITEMS.register("witch_bow",
+            () -> new WitchBowItem());
+
+    public static final RegistryObject<WindBowItem> WINDBOW = ITEMS.register("windbow",
+            () -> new WindBowItem());
+
+    public static final RegistryObject<Item> COG_CROSSBOW = ITEMS.register("cog_crossbow",
+            () -> new CogCrossbowItem());
+
+    public static final RegistryObject<Item> PIGLIN_PRIDE = ITEMS.register("piglin_pride",
+            () -> new PiglinPrideItem());
+
+    public static final RegistryObject<Item> BASTION_SCROLL = ITEMS.register("bastion_scroll",
+            () -> new ScrollItem(ResearchList.BASTION));
+
+    public static final RegistryObject<Item> SUNKEN_SOUL_JAR = ITEMS.register("sunken_soul_jar",
+            () -> new SunkenSoulJar());
+
+    public static final RegistryObject<Item> STORM_SOUL_JAR = ITEMS.register("storm_soul_jar",
+            () -> new StormSoulJar());
+
+    public static final RegistryObject<Item> THUNDER_HORN = ITEMS.register("thunder_horn",
+            () -> new ThunderHorn());
+
+    public static final RegistryObject<Item> BROKEN_STORM_CROWN = ITEMS.register("broken_storm_crown",
+            () -> new BrokenStormCrown());
+
+    public static final RegistryObject<Item> DARK_ANKH = ITEMS.register("dark_ankh",
+            () -> new DarkAnkh());
+
+    public static final RegistryObject<Item> SCREAMING_SKULL_JAR = ITEMS.register("screaming_skull_jar",
+            () -> new ScreamingSkullJar());
+
+    public static final RegistryObject<CroneRobeItem> CRONE_ROBE = ITEMS.register("crone_robe",
+            () -> new CroneRobeItem());
+
+    public static final RegistryObject<CroneRobeItem> CRONE_ROBE_ALT = ITEMS.register("crone_robe_alt",
+            () -> new CroneRobeItem());
+
+    public static final RegistryObject<Item> FUNGUS_PACK = ITEMS.register("fungus_pack",
+            () -> new FungusPackItem());
+
+    public static final RegistryObject<Item> RAGGED_FUNGUS_PACK = ITEMS.register("ragged_fungus_pack",
+            () -> new RaggedFungusPackItem());
+
+    public static final RegistryObject<Item> NETHER_WART_POTION = ITEMS.register("nether_wart_potion",
+            () -> new NetherWartPotion());
+
+    public static final RegistryObject<Item> OMINOUS_BOTTLE = ITEMS.register("ominous_bottle",
+            () -> new OminousBottleItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> BOLT_ARMOR_TRIM_SMITHING_TEMPLATE = ITEMS.register("bolt_armor_trim_smithing_template",
+            () -> SmithingTemplateItem.createArmorTrimTemplate(new ResourceLocation("bolt")));
+
+    public static final RegistryObject<Item> FLOW_ARMOR_TRIM_SMITHING_TEMPLATE = ITEMS.register("flow_armor_trim_smithing_template",
+            () -> SmithingTemplateItem.createArmorTrimTemplate(new ResourceLocation("flow")));
+
+    public static final RegistryObject<Item> FLOW_BANNER_PATTERN = ITEMS.register("flow_banner_pattern",
+            () -> new BannerPatternItem(TagKey.create(Registries.BANNER_PATTERN,
+                    new ResourceLocation(GoetyOminous.MOD_ID, "pattern_item/flow")), new Item.Properties()));
+
+    public static final RegistryObject<Item> GUSTER_BANNER_PATTERN = ITEMS.register("guster_banner_pattern",
+            () -> new BannerPatternItem(TagKey.create(Registries.BANNER_PATTERN,
+                    new ResourceLocation(GoetyOminous.MOD_ID, "pattern_item/guster")), new Item.Properties()));
+
+    public static final RegistryObject<Item> MUSIC_DISC_CREATOR = ITEMS.register("music_disc_creator",
+            () -> new RecordItem(12, ModSounds.MUSIC_DISC_CREATOR.get(),
+                    new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 3520));
+
+    public static final RegistryObject<Item> MUSIC_DISC_CREATOR_MUSIC_BOX = ITEMS.register("music_disc_creator_music_box",
+            () -> new RecordItem(11, ModSounds.MUSIC_DISC_CREATOR_MUSIC_BOX.get(),
+                    new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 1460));
+
+    public static final RegistryObject<Item> MUSIC_DISC_PRECIPICE = ITEMS.register("music_disc_precipice",
+            () -> new RecordItem(13, ModSounds.MUSIC_DISC_PRECIPICE.get(),
+                    new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 5980));
+
+    public static final RegistryObject<Item> HURRICANE_CORE = ITEMS.register("hurricane_core",
+            () -> new HurricaneCoreItem());
+
+    public static final RegistryObject<Item> BREEZE_FOCUS = ITEMS.register("breeze_focus",
+            () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.BreezeSpell()));
+
+    public static final RegistryObject<Item> HAUNT_FOCUS = ITEMS.register("haunt_focus",
+            () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.HauntSpell()));
+
+    public static final RegistryObject<Item> SOULSTAR_FOCUS = ITEMS.register("soulstar_focus",
+            () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.SoulStarSpell()));
+
+    public static final RegistryObject<Item> DREDEN_FOCUS = ITEMS.register("rigid_focus",
+            () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.DredenSpell()));
+
+    public static final RegistryObject<Item> BROOD_FOCUS = ITEMS.register("brood_focus",
+            () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.BroodSpell()));
+
+    public static final RegistryObject<Item> SPIDER_FOCUS = ITEMS.register("spider_focus",
+            () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.SpiderSpell()));
+
+    public static final RegistryObject<Item> REDSTONE_FOCUS = ITEMS.register("redstone_focus",
+            () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.RedstoneSpell()));
+
+    public static final RegistryObject<Item> URBHADHACH_FOCUS = ITEMS.register("urbhadhach_focus",
+            () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.UrbhadhachSpell()));
+
+    public static final RegistryObject<Item> SCORCH_FOCUS = ITEMS.register("scorch_focus",
+            () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.ScorchSpell()));
+
+    public static final RegistryObject<Item> BRAINEATER_FOCUS = ITEMS.register("braineater_focus",
+            () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.BrainEaterSpell()));
+
+    public static final RegistryObject<Item> POISONBALL_FOCUS = ITEMS.register("poison_ball_focus",
+            () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.PoisonBallSpell()));
+
+    public static final RegistryObject<Item> ACID_POOL_FOCUS = ITEMS.register("acid_pool_focus",
+            () -> new com.Polarice3.Goety.common.items.magic.MagicFocus(new com.qiuyue.goetyominous.common.magic.spells.AcidPoolSpell()));
+
+    public static final RegistryObject<Item> WOLF_TOTEM = ITEMS.register("wolf_totem",
+            () -> new BlockItemBase(ModBlocks.WOLF_TOTEM.get()));
+
+    public static final RegistryObject<Item> CULT_STATUE = ITEMS.register("cult_statue",
+            () -> new CultStatueBlockItem());
+
+    public static final RegistryObject<Item> GOLDEN_PIGLIN_STATUE = ITEMS.register("golden_piglin_statue",
+            () -> new CultStatueBlockItem(ModBlocks.GOLDEN_PIGLIN_STATUE.get()));
+
+    public static final RegistryObject<Item> WHIRLING_CAGE = ITEMS.register("whirling_cage",
+            () -> new BlockItemBase(ModBlocks.WHIRLING_CAGE.get()));
+
+    public static final RegistryObject<Item> HEAVY_CORE = ITEMS.register("heavy_core",
+            () -> new BlockItemBase(ModBlocks.HEAVY_CORE.get()));
+
+
+    public static final RegistryObject<ForgeSpawnEggItem> BREEZE_SPAWN_EGG = ITEMS.register(
+            "breeze_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.BREEZE, 0xAB9CCB, 0x576C9D, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> BREEZE_SERVANT_SPAWN_EGG = ITEMS.register(
+            "breeze_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.BREEZE_SERVANT, 0xDFDAE8, 0x8F90AF, egg()));
+
+    public static final RegistryObject<ForgeSpawnEggItem> HURRICANE_SPAWN_EGG = ITEMS.register(
+            "hurricane_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.HURRICANE, 0x5E6FA8, 0xE8ECFF, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> HURRICANE_SERVANT_SPAWN_EGG = ITEMS.register(
+            "hurricane_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.HURRICANE_SERVANT, 0xB9C4E8, 0x5E6FA8, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> MIRED_SERVANT_SPAWN_EGG = ITEMS.register(
+            "mired_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.MIRED_SERVANT, 0x3D2E21, 0xEEC5AD, egg()));
+
+    public static final RegistryObject<ForgeSpawnEggItem> MIRED_SPAWN_EGG = ITEMS.register(
+            "mired_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.MIRED, 0x2D2013, 0xEEC5AD, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> BOGGED_SERVANT_SPAWN_EGG = ITEMS.register(
+            "bogged_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.BOGGED_SERVANT, 0x1D3B06, 0x8FB85A, egg()));
+
+    public static final RegistryObject<ForgeSpawnEggItem> BOGGED_SPAWN_EGG = ITEMS.register(
+            "bogged_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.BOGGED, 0x8FB85A, 0x1D3B06, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> AXOLOTL_SERVANT_SPAWN_EGG = ITEMS.register(
+            "axolotl_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.AXOLOTL_SERVANT, 0xFBC1E3, 0xA62D74, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> CONQUILLAGER_SERVANT_SPAWN_EGG = ITEMS.register(
+            "conquillager_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.CONQUILLAGER_SERVANT, 0x161616, 0x8B0000, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> INQUILLAGER_SERVANT_SPAWN_EGG = ITEMS.register(
+            "inquillager_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.INQUILLAGER_SERVANT, 0x660028, 0xF3CE3F, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> PYROLOGER_SERVANT_SPAWN_EGG = ITEMS.register(
+            "pyrologer_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.PYROLOGER_SERVANT, 0x2B1B12, 0xFF6A1E, egg()));
+
+    public static final RegistryObject<ForgeSpawnEggItem> PYROLOGER_SPAWN_EGG = ITEMS.register(
+            "pyrologer_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.PYROLOGER, 0xFF6A1E, 0x2B1B12, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> BOUND_PYROLOGER_SPAWN_EGG = ITEMS.register(
+            "bound_pyrologer_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.BOUND_PYROLOGER, 0x1B1B20, 0xB03A16, egg()));
+
+    public static final RegistryObject<ForgeSpawnEggItem> CRIMSON_GUARD_SPAWN_EGG = ITEMS.register(
+            "crimson_guard_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.CRIMSON_GUARD, 0x2B2B2B, 0xA11E1E, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> CRIMSON_GUARD_SERVANT_SPAWN_EGG = ITEMS.register(
+            "crimson_guard_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.CRIMSON_GUARD_SERVANT, 0xA11E1E, 0x2B2B2B, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> ZCRIMSON_GUARD_SERVANT_SPAWN_EGG = ITEMS.register(
+            "zombie_crimson_guard_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.ZCRIMSON_GUARD_SERVANT, 0x3D5A3A, 0xA11E1E, egg()));
+
+    public static final RegistryObject<ForgeSpawnEggItem> IMPERIAL_CHASSEUR_SPAWN_EGG = ITEMS.register(
+            "imperial_chasseur_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.IMPERIAL_CHASSEUR, 0x4B2E83, 0xD4AF37, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> IMPERIAL_CHASSEUR_SERVANT_SPAWN_EGG = ITEMS.register(
+            "imperial_chasseur_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.IMPERIAL_CHASSEUR_SERVANT, 0x4B2E83, 0xD5D5D5, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> SUNKEN_NECROMANCER_SERVANT_SPAWN_EGG = ITEMS.register(
+            "sunken_necromancer_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.SUNKEN_NECROMANCER_SERVANT, 0x1B4F72, 0xF9BE26, egg()));
+
+    public static final RegistryObject<ForgeSpawnEggItem> SUNKEN_NECROMANCER_SPAWN_EGG = ITEMS.register(
+            "sunken_necromancer_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.SUNKEN_NECROMANCER, 0x2B3E56, 0x049FD0, egg()));
+
+    public static final RegistryObject<ForgeSpawnEggItem> ARCH_GEOMANCER_SPAWN_EGG = ITEMS.register(
+            "arch_geomancer_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.ARCH_GEOMANCER, 0x797F7F, 0x490C0C, egg()));
+
+    public static final RegistryObject<ForgeSpawnEggItem> STORM_NECROMANCER_SPAWN_EGG = ITEMS.register(
+            "storm_necromancer_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.STORM_NECROMANCER, 0x40250D, 0xF9BD23, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> STORM_NECROMANCER_SERVANT_SPAWN_EGG = ITEMS.register(
+            "storm_necromancer_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.STORM_NECROMANCER_SERVANT, 0x5B3E1C, 0xF9BD23, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> HERESIARCH_SERVANT_SPAWN_EGG = ITEMS.register(
+            "heresiarch_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.HERESIARCH_SERVANT, 0x0E0E10, 0xC0BC9F, egg()));
+
+    public static final RegistryObject<ForgeSpawnEggItem> DISCIPLE_SPAWN_EGG = ITEMS.register(
+            "disciple_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.DISCIPLE, 0x120E0E, 0xE6B800, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> DISCIPLE_SERVANT_SPAWN_EGG = ITEMS.register(
+            "disciple_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.DISCIPLE_SERVANT, 0x8B0000, 0xE6B800, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> PIGLIN_SERVANT_SPAWN_EGG = ITEMS.register(
+            "piglin_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.PIGLIN_SERVANT, 0xF2BA86, 0xF0D7A7, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> PIGLIN_BRUTE_SERVANT_SPAWN_EGG = ITEMS.register(
+            "piglin_brute_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.PIGLIN_BRUTE_SERVANT, 0xF2BA86, 0x492F24, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> STRONG_PIGLIN_BRUTE_SERVANT_SPAWN_EGG = ITEMS.register(
+            "piglin_brute_servant_strong_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.STRONG_PIGLIN_BRUTE_SERVANT, 0xF2BA86, 0x0077BE, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> ELITE_PIGLIN_BRUTE_SERVANT_SPAWN_EGG = ITEMS.register(
+            "piglin_brute_servant_elite_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.ELITE_PIGLIN_BRUTE_SERVANT, 0xF2BA86, 0xC0392B, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> STRONG_ZPIGLIN_BRUTE_SERVANT_SPAWN_EGG = ITEMS.register(
+            "strong_zpiglin_brute_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.STRONG_ZPIGLIN_BRUTE_SERVANT, 0xE6918B, 0x003049, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> ELITE_ZPIGLIN_BRUTE_SERVANT_SPAWN_EGG = ITEMS.register(
+            "elite_zpiglin_brute_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.ELITE_ZPIGLIN_BRUTE_SERVANT, 0xE6918B, 0x490300, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> PIGLIN_HUNTER_SERVANT_SPAWN_EGG = ITEMS.register(
+            "piglin_hunter_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.PIGLIN_HUNTER_SERVANT, 0xF2BA86, 0xA9743F, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> STRONG_PIGLIN_HUNTER_SERVANT_SPAWN_EGG = ITEMS.register(
+            "strong_piglin_hunter_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.STRONG_PIGLIN_HUNTER_SERVANT, 0xF2BA86, 0x0077BE, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> ELITE_PIGLIN_HUNTER_SERVANT_SPAWN_EGG = ITEMS.register(
+            "elite_piglin_hunter_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.ELITE_PIGLIN_HUNTER_SERVANT, 0xF2BA86, 0xC0392B, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> ZPIGLIN_HUNTER_SERVANT_SPAWN_EGG = ITEMS.register(
+            "zpiglin_hunter_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.ZPIGLIN_HUNTER_SERVANT, 0xE6918B, 0x594036, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> STRONG_ZPIGLIN_HUNTER_SERVANT_SPAWN_EGG = ITEMS.register(
+            "strong_zpiglin_hunter_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.STRONG_ZPIGLIN_HUNTER_SERVANT, 0xE6918B, 0x003049, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> ELITE_ZPIGLIN_HUNTER_SERVANT_SPAWN_EGG = ITEMS.register(
+            "elite_zpiglin_hunter_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.ELITE_ZPIGLIN_HUNTER_SERVANT, 0xE6918B, 0x490300, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> FUNGUS_THROWER_SPAWN_EGG = ITEMS.register(
+            "fungus_thrower_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.FUNGUS_THROWER, 0xF2BA86, 0xA800BF, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> ZFUNGUS_THROWER_SPAWN_EGG = ITEMS.register(
+            "zfungus_thrower_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.ZFUNGUS_THROWER, 0xE6918B, 0xA800BF, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> ELITE_FUNGUS_THROWER_SPAWN_EGG = ITEMS.register(
+            "elite_fungus_thrower_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.ELITE_FUNGUS_THROWER, 0xF2BA86, 0x6A0DAD, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> ZELITE_FUNGUS_THROWER_SPAWN_EGG = ITEMS.register(
+            "zelite_fungus_thrower_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.ZELITE_FUNGUS_THROWER, 0xE6918B, 0x6A0DAD, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> PIGLIN_DRUMMER_SPAWN_EGG = ITEMS.register(
+            "piglin_drummer_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.PIGLIN_DRUMMER, 0xE8B48C, 0x8B2A1E, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> ZPIGLIN_DRUMMER_SPAWN_EGG = ITEMS.register(
+            "zpiglin_drummer_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.ZPIGLIN_DRUMMER, 0xE6918B, 0x8B2A1E, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> BASTION_GUARD_SERVANT_SPAWN_EGG = ITEMS.register(
+            "bastion_guard_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.BASTION_GUARD_SERVANT, 0x2B2B2B, 0xE9AF15, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> ZBASTION_GUARD_SERVANT_SPAWN_EGG = ITEMS.register(
+            "zbastion_guard_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.ZBASTION_GUARD_SERVANT, 0x4E6B4E, 0xE9AF15, egg()));
+
+    public static final RegistryObject<net.minecraftforge.common.ForgeSpawnEggItem> PIGLIN_MERCHANT_SPAWN_EGG = ITEMS.register(
+            "piglin_merchant_spawn_egg",
+            () -> new net.minecraftforge.common.ForgeSpawnEggItem(ModEntityTypes.PIGLIN_MERCHANT,
+                    0xF2BA86, 0x6B4E2E, egg()));
+
+    public static final RegistryObject<ForgeSpawnEggItem> DREDEN_SPAWN_EGG = ITEMS.register(
+            "dreden_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.DREDEN, 0x0A0A12, 0x00BFFF, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> DREDEN_SERVANT_SPAWN_EGG = ITEMS.register(
+            "dreden_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.DREDEN_SERVANT, 0x0F0F12, 0x3A86FF, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> LEAPKELP_SPAWN_EGG = ITEMS.register(
+            "leapkelp_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.LEAPKELP, 0x2E5B34, 0x6FBF73, egg()));
+
+    public static final RegistryObject<ForgeSpawnEggItem> FANATIC_SPAWN_EGG = ITEMS.register(
+            "fanatic_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.FANATIC, 0xAB9F8D, 0x80725E, egg()));
+
+    public static final RegistryObject<ForgeSpawnEggItem> ZEALOT_SPAWN_EGG = ITEMS.register(
+            "zealot_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.ZEALOT, 0x111111, 0xAB9F8D, egg()));
+
+    public static final RegistryObject<ForgeSpawnEggItem> BELDAM_SPAWN_EGG = ITEMS.register(
+            "beldam_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.BELDAM, 0x191919, 0x8B0000, egg()));
+
+    public static final RegistryObject<ForgeSpawnEggItem> THUG_SPAWN_EGG = ITEMS.register(
+            "thug_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.THUG, 0x0E0E0E, 0xA39483, egg()));
+
+    public static final RegistryObject<ForgeSpawnEggItem> CHANNELLER_SPAWN_EGG = ITEMS.register(
+            "channeller_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.CHANNELLER, 0x9F1818, 0xF2E157, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> CRIMSON_SPIDER_SERVANT_SPAWN_EGG = ITEMS.register(
+            "crimson_spider_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.CRIMSON_SPIDER_SERVANT, 0xCC0000, 0xFFAA00, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> RETURNED_SPAWN_EGG = ITEMS.register(
+            "returned_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.RETURNED, 0x191919, 0x8b0000, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> AGONY_SPAWN_EGG = ITEMS.register(
+            "agony_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.AGONY, 0x2b0f0f, 0x8b0000, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> SCORCH_SPAWN_EGG = ITEMS.register(
+            "scorch_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.SCORCH, 0xC90437, 0x8C00A8, egg()));
+
+    public static final RegistryObject<ForgeSpawnEggItem> URBHADHACH_SPAWN_EGG = ITEMS.register(
+            "urbhadhach_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.URBHADHACH, 0x484848, 0x1c302f, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> URBHADHACH_SERVANT_SPAWN_EGG = ITEMS.register(
+            "urbhadhach_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.URBHADHACH_SERVANT, 0x484848, 0x88CCFF, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> SWAMP_WOLF_SPAWN_EGG = ITEMS.register(
+            "swamp_wolf_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.SWAMP_WOLF, 0x6C8031, 0x1B1A0E, egg()));
+
+    public static final RegistryObject<WargSpawnEggItem> WARG_SPAWN_EGG = ITEMS.register(
+            "warg_spawn_egg",
+            () -> new WargSpawnEggItem(ModEntityTypes.WARG, 0x17141B, 0x6B6572, egg(), Warg.Variant.BLACK, false));
+
+    public static final RegistryObject<WargSpawnEggItem> SWAMP_WARG_SPAWN_EGG = ITEMS.register(
+            "swamp_warg_spawn_egg",
+            () -> new WargSpawnEggItem(ModEntityTypes.WARG, 0x3A4A2A, 0x7A8C4F, egg(), Warg.Variant.SWAMP, false));
+
+    public static final RegistryObject<WargSpawnEggItem> WINTER_WARG_SPAWN_EGG = ITEMS.register(
+            "winter_warg_spawn_egg",
+            () -> new WargSpawnEggItem(ModEntityTypes.WARG, 0xDCE7ED, 0xFFFFFF, egg(), Warg.Variant.COLD, false));
+
+    public static final RegistryObject<WargSpawnEggItem> STORM_WARG_SPAWN_EGG = ITEMS.register(
+            "storm_warg_spawn_egg",
+            () -> new WargSpawnEggItem(ModEntityTypes.WARG, 0x6E422F, 0xB36A43, egg(), Warg.Variant.MODERATE, false));
+
+    public static final RegistryObject<WargSpawnEggItem> SKELETAL_WARG_SPAWN_EGG = ITEMS.register(
+            "skeletal_warg_spawn_egg",
+            () -> new WargSpawnEggItem(ModEntityTypes.WARG, 0xE8E8E8, 0x4A4A50, egg(), Warg.Variant.SKELETAL, false));
+
+    public static final RegistryObject<WargSpawnEggItem> GRAY_WARG_SPAWN_EGG = ITEMS.register(
+            "gray_warg_spawn_egg",
+            () -> new WargSpawnEggItem(ModEntityTypes.WARG, 0x7E8084, 0xC8C8C8, egg(), Warg.Variant.GRAY, false));
+
+    public static final RegistryObject<WargSpawnEggItem> HOSTILE_WARG_SPAWN_EGG = ITEMS.register(
+            "hostile_warg_spawn_egg",
+            () -> new WargSpawnEggItem(ModEntityTypes.WARG, 0x132025, 0x495065, egg(), Warg.Variant.BLACK, true));
+
+    public static final RegistryObject<ServantSpawnEggItem> CERBERUS_SPAWN_EGG = ITEMS.register(
+            "cerberus_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.CERBERUS, 0x2B1210, 0xC1440E, egg()));
+
+    public static Item.Properties egg() {
+        return new Item.Properties();
+    }
+}
