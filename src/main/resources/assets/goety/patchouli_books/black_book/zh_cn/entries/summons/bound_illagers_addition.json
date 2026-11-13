@@ -1,8 +1,7 @@
 {
-  "name": "被绑定的刌民",
+  "name": "被绑定的灾厄村民",
   "icon": "minecraft:totem_of_undying",
   "category": "goety:ominous_summons",
-  "sortnum": 5,
   "advancement": "goety:goety/kill_a_evoker",
   "pages": [
     {
