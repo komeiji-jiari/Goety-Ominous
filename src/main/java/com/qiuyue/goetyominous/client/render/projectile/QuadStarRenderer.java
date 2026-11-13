@@ -118,9 +118,14 @@ public class QuadStarRenderer extends EntityRenderer<QuadStarProjectile> {
     /**
      * 星体两个面：主面 + komeji 的副面。
      *
-     * <p>🔴 <b>姿态只认同步过来的方向，不做插值。</b>原来按 {@code yRotO → getYRot()} 插值，而客户端
-     * 的旋转本身是「每 tick 只走剩余差的 1/3」，插值的输入就不均匀，星就会跟着那股抖动晃。方向现在是
-     * 同步数据、两端同一份，直接拿它算角度就稳了 —— 20 Hz 的步进在缓慢转向时看不出来。
+     * <p>🔴 <b>姿态用的是插值后的方向，不是最新那一份。</b>方向本身来自同步数据，两端同一份；但它是
+     * 每 tick 才更新一次的离散量，追踪时一 tick 能转十几度 —— 直接拿最新值算角度，姿态就是 20 Hz 的
+     * 台阶。{@link QuadStarProjectile#getRenderAim(float)} 在上一 tick 和这一 tick 之间取值，和
+     * {@code getPosition(partialTicks)} 同一个时间基准。
+     *
+     * <p>（早先这里注释说「客户端旋转每 tick 只走剩余差的 1/3，插值输入不均匀」—— 那是
+     * {@code LivingEntity} 的行为，不是 {@code Entity} 的：普通实体的 {@code lerpTo} 直接 {@code setRot}，
+     * 所以那个理由不成立，路线本身也没问题。）
      *
      * <p>🔴 <b>没有扩张过程。</b>原来蓄力期按 tick 比例从 0.35 长到 1.0，主人 11-13 要求去掉：星一出现
      * 就是全尺寸。
@@ -129,7 +134,7 @@ public class QuadStarRenderer extends EntityRenderer<QuadStarProjectile> {
         if (FourPointStarShaders.fourPointStar() == null) {
             return;
         }
-        Vec3 aim = entity.getAim();
+        Vec3 aim = entity.getRenderAim(partialTicks);
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(-QuadStarProjectile.yawOf(aim)));
         poseStack.mulPose(Axis.XP.rotationDegrees(QuadStarProjectile.pitchOf(aim)));
@@ -160,13 +165,14 @@ public class QuadStarRenderer extends EntityRenderer<QuadStarProjectile> {
     /**
      * 预警线：从星体前方一直画到第一个挡路的方块，端点就是这一发会落在哪儿。
      *
-     * <p>⚠ 整个方法里<em>唯一</em>会随时间变的量是 {@code origin}（按 partialTicks 插值的位置）和各点
-     * 到相机的距离；方向取自同步数据，射线判定是确定性的。上一版把方向交给插值后的旋转，于是线和星一起
-     * 抖 —— 这不是线的画法问题，是输入在抖。
+     * <p>⚠ 这个方法的两个随时间变动的输入都是插值过的：{@code origin} 来自
+     * {@code getPosition(partialTicks)}，{@code dir} 来自 {@code getRenderAim(partialTicks)}；射线判定
+     * 本身是确定性的。所以线不会因为「方向每 tick 才更新一次」而跳 —— 之前它和星一起抖，根因是两者都
+     * 直接吃了未插值的采样，而不是画法有问题。
      */
     private void renderLine(QuadStarProjectile entity, float partialTicks, PoseStack poseStack,
             MultiBufferSource buffer) {
-        Vec3 dir = entity.getAim();
+        Vec3 dir = entity.getRenderAim(partialTicks);
         Vec3 origin = entity.getPosition(partialTicks);
         Vec3 start = origin.add(dir.scale(LINE_START));
         Vec3 end = start.add(dir.scale(entity.getLineLength()));
@@ -186,7 +192,7 @@ public class QuadStarRenderer extends EntityRenderer<QuadStarProjectile> {
 
     private void renderTrail(QuadStarProjectile entity, float partialTicks, PoseStack poseStack,
             MultiBufferSource buffer) {
-        Vec3 dir = entity.getAim();
+        Vec3 dir = entity.getRenderAim(partialTicks);
         Vec3 origin = entity.getPosition(partialTicks);
         Vec3 head = origin.subtract(dir.scale(TRAIL_START));
         Vec3 camera = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
