@@ -87,6 +87,8 @@
     "trial.RaidOmenAbsorbMixin"
   ],
   "client": [
+    "DarkSkyColorMixin",
+    "DarkMoonTintMixin",
     "MixinBlackWolfRenderer",
     "MixinSkeletonWolfRenderer",
     "MixinStormhoundRenderer",
