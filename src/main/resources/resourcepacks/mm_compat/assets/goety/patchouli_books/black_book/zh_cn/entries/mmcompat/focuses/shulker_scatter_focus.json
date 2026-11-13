@@ -2,7 +2,7 @@
   "name": "潜影陷阱聚晶",
   "icon": "goetyominous:shulker_scatter_focus",
   "category": "goety:mmcompat/focuses",
-  "sortnum": 720,
+  "sortnum": 80,
   "pages": [
     {
       "type": "text",

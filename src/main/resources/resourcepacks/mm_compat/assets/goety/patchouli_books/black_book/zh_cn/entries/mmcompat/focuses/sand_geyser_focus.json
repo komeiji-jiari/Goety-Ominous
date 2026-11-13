@@ -2,7 +2,7 @@
   "name": "沙泉爆发聚晶",
   "icon": "goetyominous:sand_geyser_focus",
   "category": "goety:mmcompat/focuses",
-  "sortnum": 8,
+  "sortnum": 40,
   "pages": [
     {
       "type": "text",

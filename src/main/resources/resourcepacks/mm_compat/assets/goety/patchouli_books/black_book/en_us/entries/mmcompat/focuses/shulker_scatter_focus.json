@@ -2,7 +2,7 @@
   "name": "Shulker Scatter Focus",
   "icon": "goetyominous:shulker_scatter_focus",
   "category": "goety:mmcompat/focuses",
-  "sortnum": 720,
+  "sortnum": 80,
   "pages": [
     {
       "type": "text",
