@@ -68,6 +68,8 @@
     "WebBlockMixin"
   ],
   "client": [
+    "DarkSkyColorMixin",
+    "DarkMoonTintMixin",
     "MixinBlackWolfRenderer",
     "MixinWolfRenderer",
     "MixinSkeletonWolfRenderer",

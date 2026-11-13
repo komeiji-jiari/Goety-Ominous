@@ -55,6 +55,9 @@ public class ModItems {
             () -> new QuadStarWandItem(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
 
 
+    public static final RegistryObject<Item> DARK_SCENE_STICK = ITEMS.register("dark_scene_stick",
+            () -> new DarkSceneStickItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));
+
     public static final RegistryObject<Item> TRIAL_KEY = ITEMS.register("trial_key",
             () -> new Item(new Item.Properties()));
 
