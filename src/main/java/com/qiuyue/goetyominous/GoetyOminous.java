@@ -7,6 +7,7 @@ import com.Polarice3.Goety.common.entities.neutral.ZPiglinServant;
 import com.qiuyue.goetyominous.common.blocks.trial.TrialBlocks;
 import com.qiuyue.goetyominous.common.entities.ally.illager.BoundPyrologer;
 import com.qiuyue.goetyominous.common.entities.ally.illager.ImperialChasseurServant;
+import com.qiuyue.goetyominous.common.entities.ally.illager.RogueChasseurServant;
 import com.qiuyue.goetyominous.common.entities.ally.illager.PyrologerServant;
 import com.qiuyue.goetyominous.common.explore.ExploreEvents;
 import com.qiuyue.goetyominous.common.blocks.trial.TrialSounds;
@@ -302,6 +303,7 @@ public class GoetyOminous {
         event.put(ModEntityTypes.WARG.get(), Warg.setCustomAttributes().build());
         event.put(ModEntityTypes.CERBERUS.get(), Cerberus.setCustomAttributes().build());
         event.put(ModEntityTypes.IMPERIAL_CHASSEUR_SERVANT.get(), ImperialChasseurServant.createAttributes().build());
+        event.put(ModEntityTypes.ROGUE_CHASSEUR_SERVANT.get(), RogueChasseurServant.createAttributes().build());
         event.put(ModEntityTypes.IMPERIAL_CHASSEUR.get(), ImperialChasseur.createAttributes().build());
         event.put(ModEntityTypes.HERESIARCH_SERVANT.get(), HeresiarchServant.setCustomAttributes().build());
         event.put(ModEntityTypes.DISCIPLE.get(), Disciple.setCustomAttributes().build());

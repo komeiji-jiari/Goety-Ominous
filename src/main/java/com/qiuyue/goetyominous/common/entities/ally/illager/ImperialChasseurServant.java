@@ -6,6 +6,7 @@ import com.Polarice3.Goety.common.entities.projectiles.HeavyArrow;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.entities.projectile.ChasseurArrow;
 import com.qiuyue.goetyominous.common.entities.projectile.ChasseurHeavyArrow;
+import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -93,6 +94,11 @@ public class ImperialChasseurServant extends AbstractIllagerServant {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new CombatGoal(this));
+    }
+
+    @Override
+    public EntityType<? extends Mob> getNecroConvert() {
+        return ModEntityTypes.ROGUE_CHASSEUR_SERVANT.get();
     }
 
     @Override

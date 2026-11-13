@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 
-public class EliteFungusThrower extends FungusThrower implements ThrowerAnimatable {
+public class EliteFungusThrower extends FungusThrower {
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState walkAnimationState = new AnimationState();
@@ -142,28 +142,8 @@ public class EliteFungusThrower extends FungusThrower implements ThrowerAnimatab
         return value < target ? Math.min(value + step, target) : Math.max(value - step, target);
     }
 
-    @Override
     public float getWalkWeight() {
         return this.walkWeight;
-    }
-
-    @Override
-    public AnimationState getIdleAnimationState() {
-        return this.idleAnimationState;
-    }
-
-    @Override
-    public AnimationState getWalkAnimationState() {
-        return this.walkAnimationState;
-    }
-
-    @Override
-    public AnimationState getHealAnimationState() {
-        return this.healAnimationState;
-    }
-
-    public AnimationState getThrowAnimationState() {
-        return this.throwAnimationState;
     }
 
     public void throwHealFungus(@Nullable LivingEntity target) {

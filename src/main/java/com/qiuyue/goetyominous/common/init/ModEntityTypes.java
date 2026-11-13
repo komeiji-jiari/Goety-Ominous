@@ -7,6 +7,7 @@ import com.qiuyue.goetyominous.common.entities.ally.illager.InquillagerServant;
 import com.qiuyue.goetyominous.common.entities.ally.illager.CrimsonGuardServant;
 import com.qiuyue.goetyominous.common.entities.ally.illager.ZCrimsonGuardServant;
 import com.qiuyue.goetyominous.common.entities.ally.illager.ImperialChasseurServant;
+import com.qiuyue.goetyominous.common.entities.ally.illager.RogueChasseurServant;
 import com.qiuyue.goetyominous.common.entities.ally.illager.PyrologerServant;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.CrimsonGuard;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.ImperialChasseur;
@@ -98,6 +99,13 @@ public class ModEntityTypes {
                     .sized(0.6F, 1.95F)
                     .clientTrackingRange(8)
                     .build(MOD_ID + ":imperial_chasseur_servant"));
+
+    public static final RegistryObject<EntityType<RogueChasseurServant>> ROGUE_CHASSEUR_SERVANT = ENTITY_TYPES.register(
+            "rogue_chasseur_servant",
+            () -> EntityType.Builder.of(RogueChasseurServant::new, MobCategory.MISC)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":rogue_chasseur_servant"));
 
     public static final RegistryObject<EntityType<ImperialChasseur>> IMPERIAL_CHASSEUR = ENTITY_TYPES.register(
             "imperial_chasseur",

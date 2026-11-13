@@ -28,7 +28,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Unfortunately, Mutant Shulkers do not count as void servants and cannot be healed by Void Robes. However, you can heal your Mutant Shulker by feeding it Shulker Shells. Additionally, you can customize your Mutant Shulker's color by using different dyes."
+      "text": "Unfortunately, Mutant Shulkers do not count as void servants and cannot be healed by Void Robes. However, you can heal your Mutant Shulker by feeding it Shulker Shells. For some arcane reason, the projectiles they fire don't have a floating effect. Additionally, you can customize your Mutant Shulker's color by using different dyes."
     }
   ]
 }

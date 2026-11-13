@@ -20,7 +20,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-public class ZEliteFungusThrower extends ZFungusThrower implements ThrowerAnimatable {
+public class ZEliteFungusThrower extends ZFungusThrower {
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState walkAnimationState = new AnimationState();
@@ -53,7 +53,7 @@ public class ZEliteFungusThrower extends ZFungusThrower implements ThrowerAnimat
                 .add(Attributes.MAX_HEALTH, AttributesConfig.PiglinBruteServantHealth.get())
                 .add(Attributes.ARMOR, AttributesConfig.PiglinBruteServantArmor.get())
                 .add(Attributes.FOLLOW_RANGE, 16.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.35)
+                .add(Attributes.MOVEMENT_SPEED, 0.23)
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.FungusThrowerServantDamage.get());
     }
 
@@ -115,7 +115,6 @@ public class ZEliteFungusThrower extends ZFungusThrower implements ThrowerAnimat
         return value < target ? Math.min(value + step, target) : Math.max(value - step, target);
     }
 
-    @Override
     public boolean isHealing() {
         return false;
     }
@@ -127,24 +126,5 @@ public class ZEliteFungusThrower extends ZFungusThrower implements ThrowerAnimat
 
     public float getWalkWeight() {
         return this.walkWeight;
-    }
-
-    @Override
-    public AnimationState getIdleAnimationState() {
-        return this.idleAnimationState;
-    }
-
-    @Override
-    public AnimationState getWalkAnimationState() {
-        return this.walkAnimationState;
-    }
-
-    @Override
-    public AnimationState getHealAnimationState() {
-        return this.healAnimationState;
-    }
-
-    public AnimationState getThrowAnimationState() {
-        return this.throwAnimationState;
     }
 }

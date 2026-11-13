@@ -62,6 +62,14 @@
     },
     {
       "type": "patchouli:entity",
+      "entity": "goetyominous:elite_fungus_thrower"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Trained Fungus Throwers not only gain improved endurance, but also learn to throw special Crimson Fungus at their allies to heal them."
+    },
+    {
+      "type": "patchouli:entity",
       "entity": "goetyominous:piglin_drummer"
     },
     {

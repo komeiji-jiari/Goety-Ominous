@@ -13,6 +13,15 @@ final class GrimMonarchConstants {
     static final double HEEL_DAMAGE_MULTIPLIER = 2.0D;
     static final double SOUL_STAR_DAMAGE_MULTIPLIER = 0.5D;
     static final double RIPPLE_DAMAGE_MULTIPLIER = 1.5D;
+    static final double QUAD_STAR_DAMAGE_MULTIPLIER = 0.5D;
+    static final double QUAD_STAR_HP_PERCENT = 0.03D;
+    static final int QUAD_STAR_CHARGE_TICKS = 60;
+    static final int QUAD_STAR_LOCK_TICKS = 0;
+    static final int QUAD_STAR_STUCK_LIFE = 0;
+    static final int QUAD_STAR_CURSED_TICKS = 160;
+    static final float QUAD_STAR_LINE_LENGTH = 20.0F;
+    static final double QUAD_STAR_SPAWN_HEIGHT = 2.0D;
+    static final double QUAD_STAR_MAX_OWNER_DISTANCE = 72.0D;
     static final double SHIELD_DISABLE_SECONDS = 5.0D;
     static final double LIFE_LEECH = 0.15D;
     static final double SWEEP_TRIGGER_RANGE = 5.5D;

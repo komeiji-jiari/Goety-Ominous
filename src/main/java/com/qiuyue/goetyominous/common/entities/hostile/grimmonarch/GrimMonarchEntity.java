@@ -483,7 +483,7 @@ public class GrimMonarchEntity extends Monster {
             GrimMonarchCombat.sweptDashHit(this, before, this.position(),
                     GrimMonarchConstants.DASH_DAMAGE_MULTIPLIER);
             if (this.position().distanceTo(this.lastShard) >= GrimMonarchConstants.SOUL_STAR_SPACING) {
-                GrimMonarchCombat.spawnSoulBullet(this, before.add(0.0D, 0.9D, 0.0D), this.getTarget());
+                GrimMonarchCombat.spawnQuadStar(this, before.add(0.0D, GrimMonarchConstants.QUAD_STAR_SPAWN_HEIGHT, 0.0D));
                 this.lastShard = this.position();
             }
             if (!moved || this.moveDistance <= 0.05D) {
@@ -539,7 +539,7 @@ public class GrimMonarchEntity extends Monster {
                         GrimMonarchConstants.COMBO_DAMAGE_MULTIPLIER);
             }
             if (this.position().distanceToSqr(this.lastShard) >= GrimMonarchConstants.SOUL_STAR_SPACING) {
-                GrimMonarchCombat.spawnSoulBullet(this, before.add(0.0D, 0.9D, 0.0D), this.getTarget());
+                GrimMonarchCombat.spawnQuadStar(this, before.add(0.0D, GrimMonarchConstants.QUAD_STAR_SPAWN_HEIGHT, 0.0D));
                 this.lastShard = this.position();
             }
         }
@@ -621,7 +621,7 @@ public class GrimMonarchEntity extends Monster {
         this.safeMove(direction.scale(distance), false);
         if (motion.kind() == GrimMonarchMotion.Kind.SIDESTEP
                 && this.position().distanceToSqr(this.lastShard) >= GrimMonarchConstants.SOUL_STAR_SPACING) {
-            GrimMonarchCombat.spawnSoulBullet(this, this.position().add(0.0D, 1.0D, 0.0D), this.getTarget());
+            GrimMonarchCombat.spawnQuadStar(this, this.position().add(0.0D, GrimMonarchConstants.QUAD_STAR_SPAWN_HEIGHT, 0.0D));
             this.lastShard = this.position();
         }
     }
@@ -1227,8 +1227,9 @@ public class GrimMonarchEntity extends Monster {
 
     private void spawnCircleShard(Vec3 at) {
         Vec3 ground = this.findGround(at, 6.0D);
-        Vec3 point = ground == null ? at : ground.add(0.0, 0.85D, 0.0);
-        GrimMonarchCombat.spawnSoulBullet(this, point, this.getTarget());
+        Vec3 point = (ground == null ? at : ground).add(
+                0.0D, GrimMonarchConstants.QUAD_STAR_SPAWN_HEIGHT, 0.0D);
+        GrimMonarchCombat.spawnQuadStar(this, point);
     }
 
     private void summonSoulStars() {

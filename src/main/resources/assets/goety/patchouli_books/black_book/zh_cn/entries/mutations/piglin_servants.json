@@ -62,6 +62,14 @@
     },
     {
       "type": "patchouli:entity",
+      "entity": "goetyominous:elite_fungus_thrower"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "经过训练的掷菌手不仅在耐力上获得了提升，他们还学会了向盟友投掷特殊的绯红菌，治愈他们。"
+    },
+    {
+      "type": "patchouli:entity",
       "entity": "goetyominous:piglin_drummer"
     },
     {

@@ -2,11 +2,11 @@ package com.qiuyue.goetyominous.common.entities.hostile.grimmonarch;
 
 import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.common.entities.projectiles.Ripple;
-import com.Polarice3.Goety.common.entities.projectiles.SoulBullet;
 import com.Polarice3.Goety.common.entities.projectiles.SoulStar;
 import com.Polarice3.Goety.utils.BlockFinder;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.common.entities.projectile.QuadStarProjectile;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.minecraft.core.BlockPos;
@@ -170,7 +170,6 @@ final class GrimMonarchCombat {
                 float lost = Math.max(0.0F, before - victim.getHealth());
                 boss.heal((float) (lost * GrimMonarchConstants.LIFE_LEECH));
             }
-            victim.addEffect(new MobEffectInstance(GoetyEffects.CURSED.get(), 60, 0, false, false));
         }
         return result;
     }
@@ -206,17 +205,23 @@ final class GrimMonarchCombat {
         server.addFreshEntity(ripple);
     }
 
-    static void spawnSoulBullet(GrimMonarchEntity boss, Vec3 at, LivingEntity target) {
+    static void spawnQuadStar(GrimMonarchEntity boss, Vec3 at) {
         if (!(boss.level() instanceof ServerLevel server)) {
             return;
         }
-        Vec3 direction = target != null
-                ? target.getEyePosition().subtract(at).normalize()
-                : new Vec3(0.0D, -0.2D, 0.0D);
-        SoulBullet bullet = new SoulBullet(server, boss,
-                direction.x * 0.4D, direction.y * 0.4D, direction.z * 0.4D);
-        bullet.setPos(at.x, at.y, at.z);
-        server.addFreshEntity(bullet);
+        QuadStarProjectile star = new QuadStarProjectile(server, boss, at, null)
+                .chargeTicks(GrimMonarchConstants.QUAD_STAR_CHARGE_TICKS)
+                .lockTicks(GrimMonarchConstants.QUAD_STAR_LOCK_TICKS)
+                .stuckLife(GrimMonarchConstants.QUAD_STAR_STUCK_LIFE)
+                .lineLength(GrimMonarchConstants.QUAD_STAR_LINE_LENGTH)
+                .maxOwnerDistance(GrimMonarchConstants.QUAD_STAR_MAX_OWNER_DISTANCE)
+                .damage((float) (AttributesConfig.GrimMonarchAttackDamage.get()
+                                * GrimMonarchConstants.QUAD_STAR_DAMAGE_MULTIPLIER
+                                * boss.echoDamageScale()),
+                        (float) (GrimMonarchConstants.QUAD_STAR_HP_PERCENT * boss.echoDamageScale()))
+                .cursedTicks(GrimMonarchConstants.QUAD_STAR_CURSED_TICKS)
+                .rememberTarget(true);
+        server.addFreshEntity(star);
     }
 
     static boolean hasEcho(GrimMonarchEntity boss) {

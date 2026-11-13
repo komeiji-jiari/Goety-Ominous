@@ -25,7 +25,6 @@ public class QuadStarRenderer extends EntityRenderer<QuadStarProjectile> {
     private static final float ROLL = 32.0F;
     private static final float EXTENT = 0.93F;
 
-    private static final float LINE_LENGTH = 48.0F;
     private static final float LINE_CORE_HALF = 0.020F;
     private static final float LINE_GLOW_HALF = 0.062F;
     private static final float LINE_MIN_SCREEN = 0.0016F;
@@ -110,12 +109,12 @@ public class QuadStarRenderer extends EntityRenderer<QuadStarProjectile> {
             return;
         }
         poseStack.pushPose();
-        poseStack.mulPose(Axis.YP.rotationDegrees(-Mth.lerp(partialTicks, entity.yRotO, entity.getYRot())));
+        poseStack.mulPose(Axis.YP.rotationDegrees(-Mth.rotLerp(partialTicks, entity.yRotO, entity.getYRot())));
         poseStack.mulPose(Axis.XP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot())));
         poseStack.mulPose(Axis.ZP.rotationDegrees(ROLL));
         float grow = entity.getState() == QuadStarProjectile.CHARGE
                 ? 0.35F + 0.65F * Mth.clamp(
-                        (entity.tickCount + partialTicks) / QuadStarProjectile.CHARGE_TICKS, 0.0F, 1.0F)
+                        (entity.tickCount + partialTicks) / entity.getChargeTicks(), 0.0F, 1.0F)
                 : 1.0F;
         poseStack.scale(grow, grow, grow);
         Matrix4f matrix = poseStack.last().pose();
@@ -141,12 +140,18 @@ public class QuadStarRenderer extends EntityRenderer<QuadStarProjectile> {
                 .endVertex();
     }
 
+    private Vec3 interpolatedDir(QuadStarProjectile entity, float partialTicks) {
+        float yaw = Mth.rotLerp(partialTicks, entity.yRotO, entity.getYRot());
+        float pitch = Mth.lerp(partialTicks, entity.xRotO, entity.getXRot());
+        return Vec3.directionFromRotation(pitch, yaw);
+    }
+
     private void renderLine(QuadStarProjectile entity, float partialTicks, PoseStack poseStack,
             MultiBufferSource buffer) {
-        Vec3 dir = entity.aimDir();
+        Vec3 dir = this.interpolatedDir(entity, partialTicks);
         Vec3 origin = entity.getPosition(partialTicks);
         Vec3 start = origin.add(dir.scale(0.35D));
-        Vec3 end = start.add(dir.scale(LINE_LENGTH));
+        Vec3 end = start.add(dir.scale(entity.getLineLength()));
         BlockHitResult clip = entity.level().clip(new ClipContext(start, end,
                 ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity));
         if (clip.getType() != HitResult.Type.MISS) {
@@ -163,7 +168,7 @@ public class QuadStarRenderer extends EntityRenderer<QuadStarProjectile> {
 
     private void renderTrail(QuadStarProjectile entity, float partialTicks, PoseStack poseStack,
             MultiBufferSource buffer) {
-        Vec3 dir = entity.aimDir();
+        Vec3 dir = this.interpolatedDir(entity, partialTicks);
         Vec3 origin = entity.getPosition(partialTicks);
         Vec3 head = origin.subtract(dir.scale(TRAIL_START));
         Vec3 camera = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();

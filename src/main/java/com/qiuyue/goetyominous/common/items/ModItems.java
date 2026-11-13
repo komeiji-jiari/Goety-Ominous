@@ -351,6 +351,10 @@ public class ModItems {
             "imperial_chasseur_servant_spawn_egg",
             () -> new ServantSpawnEggItem(ModEntityTypes.IMPERIAL_CHASSEUR_SERVANT, 0x4B2E83, 0xD5D5D5, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> ROGUE_CHASSEUR_SERVANT_SPAWN_EGG = ITEMS.register(
+            "rogue_chasseur_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.ROGUE_CHASSEUR_SERVANT, 0xD5D5D5, 0x4B2E83, egg()));
+
     public static final RegistryObject<ServantSpawnEggItem> SUNKEN_NECROMANCER_SERVANT_SPAWN_EGG = ITEMS.register(
             "sunken_necromancer_servant_spawn_egg",
             () -> new ServantSpawnEggItem(ModEntityTypes.SUNKEN_NECROMANCER_SERVANT, 0x1B4F72, 0xF9BE26, egg()));

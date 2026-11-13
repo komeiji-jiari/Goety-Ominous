@@ -104,25 +104,32 @@ public class EliteFungusThrowerModel<T extends Entity> extends HierarchicalModel
         this.head.yRot = netHeadYaw * ((float)Math.PI / 180F);
         this.head.xRot = headPitch * ((float)Math.PI / 180F);
         if (entity instanceof EliteFungusThrower thrower) {
-            this.animateThrower(thrower, entity.tickCount, ageInTicks);
+            this.setupThrower(entity.tickCount, ageInTicks,
+                    thrower.idleAnimationState, thrower.walkAnimationState,
+                    thrower.throwAnimationState, thrower.healAnimationState,
+                    thrower.isThrowing(), thrower.isHealing(), thrower.getWalkWeight());
         } else if (entity instanceof ZEliteFungusThrower thrower) {
-            this.animateThrower(thrower, entity.tickCount, ageInTicks);
+            this.setupThrower(entity.tickCount, ageInTicks,
+                    thrower.idleAnimationState, thrower.walkAnimationState,
+                    thrower.throwAnimationState, thrower.healAnimationState,
+                    thrower.isThrowing(), thrower.isHealing(), thrower.getWalkWeight());
         }
     }
 
-    private void animateThrower(com.qiuyue.goetyominous.common.entities.ally.mobs.ThrowerAnimatable thrower, int tickCount, float ageInTicks) {
-        if (thrower.isThrowing()) {
-            thrower.getThrowAnimationState().startIfStopped(tickCount);
-            this.animate(thrower.getThrowAnimationState(), EliteFungusThrowerAnimations.THROW, ageInTicks);
-        } else if (thrower.isHealing()) {
-            thrower.getHealAnimationState().startIfStopped(tickCount);
-            this.animate(thrower.getHealAnimationState(), EliteFungusThrowerAnimations.HEAL_THROW, ageInTicks);
+    private void setupThrower(int tickCount, float ageInTicks,
+            AnimationState idle, AnimationState walk, AnimationState throwingState, AnimationState heal,
+            boolean throwing, boolean healing, float walkWeight) {
+        if (throwing) {
+            throwingState.startIfStopped(tickCount);
+            this.animate(throwingState, EliteFungusThrowerAnimations.THROW, ageInTicks);
+        } else if (healing) {
+            heal.startIfStopped(tickCount);
+            this.animate(heal, EliteFungusThrowerAnimations.HEAL_THROW, ageInTicks);
         } else {
-            float walk = thrower.getWalkWeight();
-            thrower.getIdleAnimationState().startIfStopped(tickCount);
-            thrower.getWalkAnimationState().startIfStopped(tickCount);
-            PoseBlend.animate(this, thrower.getIdleAnimationState(), EliteFungusThrowerAnimations.IDLE, ageInTicks, 1.0F - walk);
-            PoseBlend.animate(this, thrower.getWalkAnimationState(), EliteFungusThrowerAnimations.WALK, ageInTicks, walk);
+            idle.startIfStopped(tickCount);
+            walk.startIfStopped(tickCount);
+            PoseBlend.animate(this, idle, EliteFungusThrowerAnimations.IDLE, ageInTicks, 1.0F - walkWeight);
+            PoseBlend.animate(this, walk, EliteFungusThrowerAnimations.WALK, ageInTicks, walkWeight);
         }
     }
 
