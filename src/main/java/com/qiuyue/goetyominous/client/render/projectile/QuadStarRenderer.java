@@ -25,12 +25,16 @@ public class QuadStarRenderer extends EntityRenderer<QuadStarProjectile> {
     private static final float ROLL = 32.0F;
     private static final float EXTENT = 0.93F;
 
-    private static final float LINE_CORE_HALF = 0.020F;
-    private static final float LINE_GLOW_HALF = 0.062F;
+    private static final float LINE_START = 0.35F;
+    private static final float LINE_END_PAD = 0.03F;
+    private static final float LINE_CORE_HALF = 0.026F;
+    private static final float LINE_GLOW_HALF = 0.078F;
     private static final float LINE_MIN_SCREEN = 0.0016F;
-    private static final int LINE_SEGMENTS = 12;
-    private static final float LINE_CORE_ALPHA = 0.92F;
-    private static final float LINE_GLOW_ALPHA = 0.30F;
+    private static final int LINE_SEGMENTS = 14;
+    private static final float LINE_CORE_TAPER = 0.55F;
+    private static final float LINE_GLOW_TAPER = 0.70F;
+    private static final float LINE_CORE_ALPHA = 0.95F;
+    private static final float LINE_GLOW_ALPHA = 0.32F;
     private static final float LINE_CORE_R = 0.44F;
     private static final float LINE_CORE_G = 0.92F;
     private static final float LINE_CORE_B = 1.00F;
@@ -77,12 +81,19 @@ public class QuadStarRenderer extends EntityRenderer<QuadStarProjectile> {
     private static final float CORNER_B = EXTENT;
 
     private static final float WING_MAIN = 1.0F;
-    private static final float WING_CROSS = 0.42F;
     private static final float BRIGHT_MAIN = 1.0F;
-    private static final float BRIGHT_CROSS = 0.62F;
     private static final float HALO_ON = 1.0F;
-    private static final float HALO_OFF = 0.0F;
     private static final float SOLID = 1.0F;
+
+    /**
+     * 副面，照 komeji 的做法：常驻的第二个面，不是我这边的「正对弹道才淡入」折中。
+     *
+     * <p>主面的法线在 X 轴上，顺着弹道（±Z）看过去只有一条线，这个副面就是补那个角度。他的配色是
+     * 尺寸 42%、亮度 62%、不画光晕 —— 副面只是别让星消失，不该抢主面的亮度，所以三个数原样照抄。
+     */
+    private static final float WING_CROSS = 0.42F;
+    private static final float BRIGHT_CROSS = 0.62F;
+    private static final float HALO_OFF = 0.0F;
 
     public QuadStarRenderer(EntityRendererProvider.Context context) {
         super(context);
@@ -104,19 +115,25 @@ public class QuadStarRenderer extends EntityRenderer<QuadStarProjectile> {
         }
     }
 
+    /**
+     * 星体两个面：主面 + komeji 的副面。
+     *
+     * <p>🔴 <b>姿态只认同步过来的方向，不做插值。</b>原来按 {@code yRotO → getYRot()} 插值，而客户端
+     * 的旋转本身是「每 tick 只走剩余差的 1/3」，插值的输入就不均匀，星就会跟着那股抖动晃。方向现在是
+     * 同步数据、两端同一份，直接拿它算角度就稳了 —— 20 Hz 的步进在缓慢转向时看不出来。
+     *
+     * <p>🔴 <b>没有扩张过程。</b>原来蓄力期按 tick 比例从 0.35 长到 1.0，主人 11-13 要求去掉：星一出现
+     * 就是全尺寸。
+     */
     private void body(QuadStarProjectile entity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer) {
         if (FourPointStarShaders.fourPointStar() == null) {
             return;
         }
+        Vec3 aim = entity.getAim();
         poseStack.pushPose();
-        poseStack.mulPose(Axis.YP.rotationDegrees(-Mth.rotLerp(partialTicks, entity.yRotO, entity.getYRot())));
-        poseStack.mulPose(Axis.XP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot())));
+        poseStack.mulPose(Axis.YP.rotationDegrees(-QuadStarProjectile.yawOf(aim)));
+        poseStack.mulPose(Axis.XP.rotationDegrees(QuadStarProjectile.pitchOf(aim)));
         poseStack.mulPose(Axis.ZP.rotationDegrees(ROLL));
-        float grow = entity.getState() == QuadStarProjectile.CHARGE
-                ? 0.35F + 0.65F * Mth.clamp(
-                        (entity.tickCount + partialTicks) / entity.getChargeTicks(), 0.0F, 1.0F)
-                : 1.0F;
-        poseStack.scale(grow, grow, grow);
         Matrix4f matrix = poseStack.last().pose();
         VertexConsumer solid = buffer.getBuffer(QuadStarRenderTypes.star());
         this.plane(matrix, solid, 0.0F, 1.0F, WING_MAIN, BRIGHT_MAIN, HALO_ON, SOLID);
@@ -140,35 +157,36 @@ public class QuadStarRenderer extends EntityRenderer<QuadStarProjectile> {
                 .endVertex();
     }
 
-    private Vec3 interpolatedDir(QuadStarProjectile entity, float partialTicks) {
-        float yaw = Mth.rotLerp(partialTicks, entity.yRotO, entity.getYRot());
-        float pitch = Mth.lerp(partialTicks, entity.xRotO, entity.getXRot());
-        return Vec3.directionFromRotation(pitch, yaw);
-    }
-
+    /**
+     * 预警线：从星体前方一直画到第一个挡路的方块，端点就是这一发会落在哪儿。
+     *
+     * <p>⚠ 整个方法里<em>唯一</em>会随时间变的量是 {@code origin}（按 partialTicks 插值的位置）和各点
+     * 到相机的距离；方向取自同步数据，射线判定是确定性的。上一版把方向交给插值后的旋转，于是线和星一起
+     * 抖 —— 这不是线的画法问题，是输入在抖。
+     */
     private void renderLine(QuadStarProjectile entity, float partialTicks, PoseStack poseStack,
             MultiBufferSource buffer) {
-        Vec3 dir = this.interpolatedDir(entity, partialTicks);
+        Vec3 dir = entity.getAim();
         Vec3 origin = entity.getPosition(partialTicks);
-        Vec3 start = origin.add(dir.scale(0.35D));
+        Vec3 start = origin.add(dir.scale(LINE_START));
         Vec3 end = start.add(dir.scale(entity.getLineLength()));
         BlockHitResult clip = entity.level().clip(new ClipContext(start, end,
                 ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity));
         if (clip.getType() != HitResult.Type.MISS) {
-            end = clip.getLocation().subtract(dir.scale(0.03D));
+            end = clip.getLocation().subtract(dir.scale(LINE_END_PAD));
         }
         Vec3 camera = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
         Vec3 side = this.side(dir, camera, start);
         Matrix4f matrix = poseStack.last().pose();
         this.beam(buffer.getBuffer(QuadStarRenderTypes.beamGlow()), matrix, origin, start, end, side, camera,
-                LINE_GLOW_HALF, LINE_GLOW_ALPHA, LINE_GLOW_R, LINE_GLOW_G, LINE_GLOW_B);
+                LINE_GLOW_HALF, LINE_GLOW_TAPER, LINE_GLOW_ALPHA, LINE_GLOW_R, LINE_GLOW_G, LINE_GLOW_B);
         this.beam(buffer.getBuffer(QuadStarRenderTypes.beamCore()), matrix, origin, start, end, side, camera,
-                LINE_CORE_HALF, LINE_CORE_ALPHA, LINE_CORE_R, LINE_CORE_G, LINE_CORE_B);
+                LINE_CORE_HALF, LINE_CORE_TAPER, LINE_CORE_ALPHA, LINE_CORE_R, LINE_CORE_G, LINE_CORE_B);
     }
 
     private void renderTrail(QuadStarProjectile entity, float partialTicks, PoseStack poseStack,
             MultiBufferSource buffer) {
-        Vec3 dir = this.interpolatedDir(entity, partialTicks);
+        Vec3 dir = entity.getAim();
         Vec3 origin = entity.getPosition(partialTicks);
         Vec3 head = origin.subtract(dir.scale(TRAIL_START));
         Vec3 camera = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
@@ -277,15 +295,23 @@ public class QuadStarRenderer extends EntityRenderer<QuadStarProjectile> {
         return side.normalize();
     }
 
+    /**
+     * 一条带锥度的带状线。
+     *
+     * <p>锥度是这一版和上一版的区别：上一版整条等宽，末端是个齐口的矩形，看着像贴上去的色条；现在从星
+     * 体那一端往落点逐渐收细，末端仍然是硬边 —— 落点就是要画清楚，不能淡掉。
+     */
     private void beam(VertexConsumer consumer, Matrix4f matrix, Vec3 origin, Vec3 start, Vec3 end, Vec3 side,
-            Vec3 camera, float half, float alpha, float red, float green, float blue) {
+            Vec3 camera, float half, float taper, float alpha, float red, float green, float blue) {
         for (int i = 0; i < LINE_SEGMENTS; i++) {
             float t0 = i / (float) LINE_SEGMENTS;
             float t1 = (i + 1) / (float) LINE_SEGMENTS;
             Vec3 p0 = start.lerp(end, t0);
             Vec3 p1 = start.lerp(end, t1);
-            Vec3 s0 = side.scale(this.lineWidth(camera, p0, half));
-            Vec3 s1 = side.scale(this.lineWidth(camera, p1, half));
+            float w0 = this.lineWidth(camera, p0, half * (1.0F - (1.0F - taper) * t0));
+            float w1 = this.lineWidth(camera, p1, half * (1.0F - (1.0F - taper) * t1));
+            Vec3 s0 = side.scale(w0);
+            Vec3 s1 = side.scale(w1);
             this.lineVertex(matrix, consumer, p0.subtract(s0).subtract(origin), 0.0F, t0, alpha, red, green, blue);
             this.lineVertex(matrix, consumer, p0.add(s0).subtract(origin), 1.0F, t0, alpha, red, green, blue);
             this.lineVertex(matrix, consumer, p1.add(s1).subtract(origin), 1.0F, t1, alpha, red, green, blue);

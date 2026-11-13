@@ -57,6 +57,22 @@ public class QuadStarProjectile extends Projectile {
     private static final EntityDataAccessor<Float> DATA_LINE_LENGTH = SynchedEntityData.defineId(
             QuadStarProjectile.class, EntityDataSerializers.FLOAT);
 
+    /**
+     * 飞行方向，作为数据同步，而不是让客户端从 yaw/pitch 反推。
+     *
+     * <p>🔴 客户端拿到的旋转是「插值后」的值（每 tick 只覆盖剩余差的 1/3），服务端用的是精确值，两边算
+     * 出来的方向必然不同；客户端自己也按这个方向积分走路，于是整条弹道和服务器越差越远，每收到一个位置
+     * 包就被拽回去一次 —— 表现出来就是星和预警线一起乱抖（主人 11-13 报的）。
+     *
+     * <p>方向一旦是同一份数据，客户端积分和服务端就逐 tick 一致，位置包只是确认，不再有拉扯。
+     */
+    private static final EntityDataAccessor<Float> DATA_AIM_X = SynchedEntityData.defineId(
+            QuadStarProjectile.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> DATA_AIM_Y = SynchedEntityData.defineId(
+            QuadStarProjectile.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> DATA_AIM_Z = SynchedEntityData.defineId(
+            QuadStarProjectile.class, EntityDataSerializers.FLOAT);
+
     private int chargeTicks = DEFAULT_CHARGE_TICKS;
     private int lockTicks = DEFAULT_LOCK_TICKS;
     private int flightLife = DEFAULT_FLIGHT_LIFE;
@@ -88,6 +104,7 @@ public class QuadStarProjectile extends Projectile {
         this.setPos(at.x, at.y, at.z);
         Vec3 dir = aim == null ? initialAim(shooter, at) : normalized(aim, shooter);
         this.setRot(yawOf(dir), pitchOf(dir));
+        this.setAim(dir);
         this.yRotO = this.getYRot();
         this.xRotO = this.getXRot();
         this.noPhysics = true;
@@ -131,6 +148,9 @@ public class QuadStarProjectile extends Projectile {
         this.entityData.define(DATA_CHARGE_TICKS, DEFAULT_CHARGE_TICKS);
         this.entityData.define(DATA_SPEED, DEFAULT_SPEED);
         this.entityData.define(DATA_LINE_LENGTH, DEFAULT_LINE_LENGTH);
+        this.entityData.define(DATA_AIM_X, 0.0F);
+        this.entityData.define(DATA_AIM_Y, 0.0F);
+        this.entityData.define(DATA_AIM_Z, 1.0F);
     }
 
     public int getState() {
@@ -209,12 +229,35 @@ public class QuadStarProjectile extends Projectile {
         return Vec3.directionFromRotation(this.getXRot(), this.getYRot());
     }
 
+    /**
+     * 同步过来的飞行方向。两端算的是同一份数，客户端不必再从（滞后的）旋转里反推。
+     *
+     * <p>长度不保证为 1：插值/同步不会改长度，但读出来仍然归一一下，免得某次写入的是零向量让方向塌掉。
+     */
+    public Vec3 getAim() {
+        Vec3 dir = new Vec3(this.entityData.get(DATA_AIM_X), this.entityData.get(DATA_AIM_Y),
+                this.entityData.get(DATA_AIM_Z));
+        return dir.lengthSqr() < 1.0E-6D ? this.getLookAngle() : dir.normalize();
+    }
+
+    /** 写方向，同时把实体自己的旋转对齐过去 —— 两者从这一刻起不再各算各的。 */
+    private void setAim(Vec3 dir) {
+        if (dir.lengthSqr() < 1.0E-6D) {
+            return;
+        }
+        Vec3 unit = dir.normalize();
+        this.entityData.set(DATA_AIM_X, (float) unit.x);
+        this.entityData.set(DATA_AIM_Y, (float) unit.y);
+        this.entityData.set(DATA_AIM_Z, (float) unit.z);
+    }
+
     @Override
     public void tick() {
         super.tick();
         if (this.level().isClientSide) {
             if (this.getState() == FLIGHT) {
-                Vec3 motion = this.aimDir().scale(this.getSpeed());
+                // 用同步过来的那一份方向，而不是从（滞后的）旋转反推，服务端与客户端的位移才逐 tick 相同。
+                Vec3 motion = this.getAim().scale(this.getSpeed());
                 this.setPos(this.getX() + motion.x, this.getY() + motion.y, this.getZ() + motion.z);
             }
             return;
@@ -288,6 +331,7 @@ public class QuadStarProjectile extends Projectile {
             Vec3 dir = target.getBoundingBox().getCenter().subtract(this.position());
             if (dir.lengthSqr() > 1.0E-6D) {
                 this.setRot(yawOf(dir), pitchOf(dir));
+                this.setAim(dir);
             }
             return;
         }
@@ -299,6 +343,7 @@ public class QuadStarProjectile extends Projectile {
             Vec3 dir = owner.getLookAngle();
             if (dir.lengthSqr() > 1.0E-6D) {
                 this.setRot(yawOf(dir), pitchOf(dir));
+                this.setAim(dir);
             }
         }
     }
@@ -306,7 +351,7 @@ public class QuadStarProjectile extends Projectile {
     private void launch() {
         this.setState(FLIGHT);
         this.noPhysics = false;
-        this.setDeltaMovement(this.aimDir().scale(this.getSpeed()));
+        this.setDeltaMovement(this.getAim().scale(this.getSpeed()));
         this.level().playSound(null, this.getX(), this.getY(), this.getZ(),
                 SoundEvents.TRIDENT_THROW, SoundSource.NEUTRAL, 1.0F, 1.6F);
     }
@@ -437,6 +482,8 @@ public class QuadStarProjectile extends Projectile {
             this.targetUUID = tag.getUUID("StarTarget");
         }
         this.noPhysics = this.getState() != FLIGHT;
+        // 方向不是存盘字段：读回来时按实体自己的旋转重建一次，免得同步数据停在默认的 (0,0,1)。
+        this.setAim(this.aimDir());
     }
 
     @Override
