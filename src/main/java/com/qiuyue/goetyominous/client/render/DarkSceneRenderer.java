@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.client.render;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.client.events.GrimMonarchClientEvents;
 import net.minecraft.Util;
 import net.minecraft.client.CloudStatus;
 import net.minecraft.client.Minecraft;
@@ -22,13 +23,11 @@ import javax.annotation.Nullable;
 @Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID, value = Dist.CLIENT)
 public class DarkSceneRenderer {
 
-    /** 可调档位：雾中能见度占渲染距离的比例，末档 0 就是全黑。 */
     private static final float[] VISIBILITY = {0.350F, 0.200F, 0.120F, 0.080F, 0.040F, 0.020F, 0.000F};
     private static final float MIN_FOG_END = 0.35F;
     private static final float FOG_START_RATIO = 0.30F;
     private static final float MIN_FOG_START = 0.02F;
 
-    /** 缩圈速率：格/秒。圈从视野尽头匀速收到目标能见度，档位越低圈收得越久。 */
     private static final float CLOSE_SPEED = 110.0F;
     private static final long MIN_ONSET_MILLIS = 700L;
     private static final long MAX_ONSET_MILLIS = 3200L;
@@ -37,10 +36,8 @@ public class DarkSceneRenderer {
     private static final float FOG_GREEN = 0.039F;
     private static final float FOG_BLUE = 0.063F;
 
-    /** 天空穹顶的固定色：比雾稍亮一点点，地平线上就不会出现一条硬缝。 */
     private static final Vec3 SKY_COLOR = new Vec3(0.055D, 0.053D, 0.072D);
 
-    /** 月亮滤镜：压红、抬绿蓝，原版那张灰白月相图会被染成灵魂青。 */
     private static final float MOON_TINT_RED = 0.38F;
     private static final float MOON_TINT_GREEN = 1.06F;
     private static final float MOON_TINT_BLUE = 1.18F;
@@ -71,12 +68,12 @@ public class DarkSceneRenderer {
         return SKY_COLOR;
     }
 
-    /** 由月亮贴图绑定的那一刻调用：把原版月亮染成灵魂青。 */
+    public static boolean moonTintActive() {
+        return GrimMonarchClientEvents.nightLocked();
+    }
+
     public static void applyMoonTint() {
-        // 🔴 压暗没开就一个像素都不许碰。这里原本无条件染色，于是「环境压暗：关」之后月亮依旧是灵魂
-        // 青（主人 11-13 抓到的就是这个）—— 天空颜色那边的 DarkSkyColorMixin 早就问了 active()，月亮
-        // 这一路漏了，两处必须同一个门。
-        if (!active) {
+        if (!moonTintActive()) {
             return;
         }
         Minecraft minecraft = Minecraft.getInstance();
@@ -104,7 +101,6 @@ public class DarkSceneRenderer {
     public static void cycleLevel() {
         level = (level + 1) % VISIBILITY.length;
         if (active) {
-            // 从当前圈半径继续按同一速率收，换档不会瞬间跳一下
             startOnset(Math.max(fogFar, MIN_FOG_END), Minecraft.getInstance());
         }
     }
@@ -158,8 +154,6 @@ public class DarkSceneRenderer {
                 return;
             }
             update(minecraft);
-            // 实体在 cutout 之后、AFTER_ENTITIES 之前画完；这段时间把雾起点顶到 MAX 就等于给生物
-            // 开一条免雾通道（fog.glsl 里 vertexDistance <= fogStart 时直接返回原色）。
             RenderSystem.setShaderFogStart(Float.MAX_VALUE);
             fogSuppressed = true;
         } else if (stage == RenderLevelStageEvent.Stage.AFTER_ENTITIES) {
@@ -180,7 +174,6 @@ public class DarkSceneRenderer {
         fogNear = Math.max(MIN_FOG_START, fogFar * FOG_START_RATIO);
     }
 
-    /** 线性推进 == 匀速缩圈；收满了就清掉计时。 */
     private static float onsetProgress() {
         if (onsetAt == 0L || onsetLength <= 0L) {
             return 1.0F;

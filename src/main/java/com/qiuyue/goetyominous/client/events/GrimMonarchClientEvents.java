@@ -10,15 +10,21 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID, value = Dist.CLIENT)
 public final class GrimMonarchClientEvents {
@@ -28,8 +34,27 @@ public final class GrimMonarchClientEvents {
             GoetyOminous.MOD_ID, "textures/gui/boss_bar_1.png");
     private static final ResourceLocation HURT = new ResourceLocation(
             GoetyOminous.MOD_ID, "textures/gui/boss_bar_hurt.png");
+    private static final Set<ResourceKey<Level>> LOCKED_DIMENSIONS = new HashSet<>();
 
     private GrimMonarchClientEvents() {
+    }
+
+    public static void setNightLocked(ResourceKey<Level> dimension, boolean locked) {
+        if (locked) {
+            LOCKED_DIMENSIONS.add(dimension);
+        } else {
+            LOCKED_DIMENSIONS.remove(dimension);
+        }
+    }
+
+    public static boolean nightLocked() {
+        Minecraft minecraft = Minecraft.getInstance();
+        return minecraft.level != null && LOCKED_DIMENSIONS.contains(minecraft.level.dimension());
+    }
+
+    @SubscribeEvent
+    public static void onLogout(ClientPlayerNetworkEvent.LoggingOut event) {
+        LOCKED_DIMENSIONS.clear();
     }
 
     @SubscribeEvent

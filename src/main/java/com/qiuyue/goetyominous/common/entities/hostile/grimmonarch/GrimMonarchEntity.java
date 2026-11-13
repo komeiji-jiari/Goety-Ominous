@@ -124,6 +124,7 @@ public class GrimMonarchEntity extends Monster {
     private int summonStarsRemaining;
     private float summonStarTimer;
     private float summonStarSpacing;
+    private boolean nightRegistered;
     private final GrimMonarchMoveRunner moveRunner = new GrimMonarchMoveRunner(this);
 
     public GrimMonarchEntity(EntityType<? extends GrimMonarchEntity> type, Level level) {
@@ -812,6 +813,10 @@ public class GrimMonarchEntity extends Monster {
         if (this.isDeadOrDying()) {
             return;
         }
+        if (!this.isEcho() && !this.nightRegistered) {
+            this.nightRegistered = true;
+            this.registerNight();
+        }
         this.tickSoulMechanics();
         if (this.moddedInvul > 0) {
             --this.moddedInvul;
@@ -876,6 +881,22 @@ public class GrimMonarchEntity extends Monster {
         }
         this.yBodyRot = this.getYRot();
         this.yHeadRot = this.getYRot();
+    }
+
+    private void registerNight() {
+        if (!this.level().isClientSide && !this.isEcho()
+                && this.level() instanceof ServerLevel server
+                && server.getServer() != null) {
+            GrimMonarchNightData.get(server).register(this.getUUID());
+        }
+    }
+
+    private void unregisterNight() {
+        if (!this.level().isClientSide && !this.isEcho()
+                && this.level() instanceof ServerLevel server
+                && server.getServer() != null) {
+            GrimMonarchNightData.get(server).unregister(this.getUUID());
+        }
     }
 
     @Override
@@ -2050,9 +2071,20 @@ public class GrimMonarchEntity extends Monster {
             this.moveRunner.stop();
             this.setVisualAction(GrimMonarchAction.IDLE);
         } else {
+            this.unregisterNight();
             this.startMove(GrimMonarchMoveTable.DEATH, GrimMonarchAction.DEATH);
         }
         super.die(source);
+    }
+
+    @Override
+    public void remove(Entity.RemovalReason reason) {
+        if (!this.level().isClientSide && !this.isEcho()
+                && reason != Entity.RemovalReason.UNLOADED_TO_CHUNK) {
+            this.unregisterNight();
+            this.nightRegistered = false;
+        }
+        super.remove(reason);
     }
 
     @Override

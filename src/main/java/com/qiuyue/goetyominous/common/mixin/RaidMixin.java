@@ -7,7 +7,6 @@ import com.qiuyue.goetyominous.common.entities.hostile.illagers.Pyrologer;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.raid.Raid;
 import net.minecraft.world.entity.raid.Raider;
@@ -41,33 +40,47 @@ public class RaidMixin {
     @Inject(method = "spawnGroup", at = @At("RETURN"))
     private void addCustomRaiders(BlockPos pos, CallbackInfo ci) {
         Raid raid = (Raid)(Object)this;
-        int count = 3 + this.level.random.nextInt(5);
+        int wave = this.getGroupsSpawned();
 
-        for (int i = 0; i < count; i++) {
-            int roll = this.level.random.nextInt(100);
-            EntityType<? extends Raider> type;
-            if (roll < 50) {
-                type = ModEntityTypes.FANATIC.get();
-            } else if (roll < 80) {
-                type = ModEntityTypes.ZEALOT.get();
-            } else if (roll < 90) {
-                type = ModEntityTypes.THUG.get();
-            } else if (roll < 95) {
-                type = ModEntityTypes.BELDAM.get();
-            } else {
-                type = ModEntityTypes.CHANNELLER.get();
+        if (wave <= 5) {
+            if (wave % 2 == 1 && this.goetyominous$hasTrigger && this.goetyominous$triggerSe >= 2500) {
+                int count = 1 + this.level.random.nextInt(2);
+
+                for (int i = 0; i < count * 2; i++) {
+                    EntityType<? extends Raider> type = this.level.random.nextBoolean()
+                            ? ModEntityTypes.FANATIC.get()
+                            : ModEntityTypes.ZEALOT.get();
+                    Raider raider = type.create(this.level);
+                    if (raider != null) {
+                        raid.joinRaid(wave, raider, pos, false);
+                    }
+                }
             }
+        } else if (this.goetyominous$hasTrigger && this.goetyominous$triggerSe >= 10000) {
+            int se = this.goetyominous$triggerSe;
+            int count = 1 + this.level.random.nextInt(2);
 
-            Raider raider = type.create(this.level);
-            if (raider != null) {
-                raider.setPos(pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5);
-                raider.finalizeSpawn(this.level, this.level.getCurrentDifficultyAt(pos),
-                        MobSpawnType.EVENT, null, null);
-                this.level.addFreshEntity(raider);
+            for (int i = 0; i < count; i++) {
+                EntityType<? extends Raider> type;
+                if (se >= 12000) {
+                    int roll = this.level.random.nextInt(3);
+                    if (roll == 0) {
+                        type = ModEntityTypes.BELDAM.get();
+                    } else if (roll == 1) {
+                        type = ModEntityTypes.CHANNELLER.get();
+                    } else {
+                        type = ModEntityTypes.THUG.get();
+                    }
+                } else {
+                    type = ModEntityTypes.BELDAM.get();
+                }
+                Raider raider = type.create(this.level);
+                if (raider != null) {
+                    raid.joinRaid(wave, raider, pos, false);
+                }
             }
         }
 
-        int wave = this.getGroupsSpawned();
         if (wave >= 6 && this.goetyominous$hasTrigger && this.goetyominous$triggerSe >= 70000) {
             int guards = 1 + this.level.random.nextInt(2);
             for (int i = 0; i < guards; i++) {

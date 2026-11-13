@@ -285,6 +285,7 @@ tasks.named('processResources', ProcessResources).configure {
 mixin {
     add sourceSets.main, "${mod_id}.mixins.refmap.json"
     config "${mod_id}.mixins.json"
+    config "${mod_id}.client.mixins.json"
 }
 
 // Example for how to get properties into the manifest for reading at runtime.

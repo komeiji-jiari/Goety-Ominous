@@ -1,4 +1,4 @@
-package com.qiuyue.goetyominous.common.mixin.ac;
+package com.qiuyue.goetyominous.client.mixin.ac;
 
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ShaderInstance;

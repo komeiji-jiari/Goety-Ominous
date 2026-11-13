@@ -24,17 +24,9 @@ public class ModKeyBindings {
             "key.categories.goetyominous"
     );
 
-    public static final KeyMapping DARK_SCENE_KEY = new KeyMapping(
-            "key.goetyominous.dark_scene",
-            InputConstants.Type.KEYSYM,
-            GLFW.GLFW_KEY_V,
-            "key.categories.goetyominous"
-    );
-
     @SubscribeEvent
     public static void registerKeys(RegisterKeyMappingsEvent event) {
         event.register(RIDER_CHARGE_KEY);
         event.register(OPEN_FUNGUS_PACK_KEY);
-        event.register(DARK_SCENE_KEY);
     }
 }

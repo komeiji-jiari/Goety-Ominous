@@ -86,27 +86,7 @@
     "trial.BadOmenRaidTriggerMixin",
     "trial.RaidOmenAbsorbMixin"
   ],
-  "client": [
-    "DarkSkyColorMixin",
-    "DarkMoonTintMixin",
-    "MixinBlackWolfRenderer",
-    "MixinSkeletonWolfRenderer",
-    "MixinStormhoundRenderer",
-    "MixinWinterWolfRenderer",
-    "MixinHellhoundRenderer",
-    "MixinBlackBeastRenderer",
-    "MixinBlackBeastModel",
-    "FontAccessor",
-    "ac.GameRendererAccessor",
-    "ac.MixinClientTextTooltip",
-    "MaceLevelRendererMixin",
-    "TrialOmenLevelRendererMixin",
-    "VaultLevelRendererMixin",
-    "WeavingLevelRendererMixin",
-    "ModEffectParticleMixin",
-    "TrialSpawnerLevelRendererMixin",
-    "CultStatueGlowMixin"
-  ],
+  "client": [],
   "server": [],
   "injectors": {
     "defaultRequire": 0

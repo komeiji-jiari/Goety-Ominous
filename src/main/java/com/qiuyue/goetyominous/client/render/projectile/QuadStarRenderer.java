@@ -85,12 +85,6 @@ public class QuadStarRenderer extends EntityRenderer<QuadStarProjectile> {
     private static final float HALO_ON = 1.0F;
     private static final float SOLID = 1.0F;
 
-    /**
-     * 副面，照 komeji 的做法：常驻的第二个面，不是我这边的「正对弹道才淡入」折中。
-     *
-     * <p>主面的法线在 X 轴上，顺着弹道（±Z）看过去只有一条线，这个副面就是补那个角度。他的配色是
-     * 尺寸 42%、亮度 62%、不画光晕 —— 副面只是别让星消失，不该抢主面的亮度，所以三个数原样照抄。
-     */
     private static final float WING_CROSS = 0.42F;
     private static final float BRIGHT_CROSS = 0.62F;
     private static final float HALO_OFF = 0.0F;
@@ -115,21 +109,6 @@ public class QuadStarRenderer extends EntityRenderer<QuadStarProjectile> {
         }
     }
 
-    /**
-     * 星体两个面：主面 + komeji 的副面。
-     *
-     * <p>🔴 <b>姿态用的是插值后的方向，不是最新那一份。</b>方向本身来自同步数据，两端同一份；但它是
-     * 每 tick 才更新一次的离散量，追踪时一 tick 能转十几度 —— 直接拿最新值算角度，姿态就是 20 Hz 的
-     * 台阶。{@link QuadStarProjectile#getRenderAim(float)} 在上一 tick 和这一 tick 之间取值，和
-     * {@code getPosition(partialTicks)} 同一个时间基准。
-     *
-     * <p>（早先这里注释说「客户端旋转每 tick 只走剩余差的 1/3，插值输入不均匀」—— 那是
-     * {@code LivingEntity} 的行为，不是 {@code Entity} 的：普通实体的 {@code lerpTo} 直接 {@code setRot}，
-     * 所以那个理由不成立，路线本身也没问题。）
-     *
-     * <p>🔴 <b>没有扩张过程。</b>原来蓄力期按 tick 比例从 0.35 长到 1.0，主人 11-13 要求去掉：星一出现
-     * 就是全尺寸。
-     */
     private void body(QuadStarProjectile entity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer) {
         if (FourPointStarShaders.fourPointStar() == null) {
             return;
@@ -162,14 +141,6 @@ public class QuadStarRenderer extends EntityRenderer<QuadStarProjectile> {
                 .endVertex();
     }
 
-    /**
-     * 预警线：从星体前方一直画到第一个挡路的方块，端点就是这一发会落在哪儿。
-     *
-     * <p>⚠ 这个方法的两个随时间变动的输入都是插值过的：{@code origin} 来自
-     * {@code getPosition(partialTicks)}，{@code dir} 来自 {@code getRenderAim(partialTicks)}；射线判定
-     * 本身是确定性的。所以线不会因为「方向每 tick 才更新一次」而跳 —— 之前它和星一起抖，根因是两者都
-     * 直接吃了未插值的采样，而不是画法有问题。
-     */
     private void renderLine(QuadStarProjectile entity, float partialTicks, PoseStack poseStack,
             MultiBufferSource buffer) {
         Vec3 dir = entity.getRenderAim(partialTicks);
@@ -301,12 +272,6 @@ public class QuadStarRenderer extends EntityRenderer<QuadStarProjectile> {
         return side.normalize();
     }
 
-    /**
-     * 一条带锥度的带状线。
-     *
-     * <p>锥度是这一版和上一版的区别：上一版整条等宽，末端是个齐口的矩形，看着像贴上去的色条；现在从星
-     * 体那一端往落点逐渐收细，末端仍然是硬边 —— 落点就是要画清楚，不能淡掉。
-     */
     private void beam(VertexConsumer consumer, Matrix4f matrix, Vec3 origin, Vec3 start, Vec3 end, Vec3 side,
             Vec3 camera, float half, float taper, float alpha, float red, float green, float blue) {
         for (int i = 0; i < LINE_SEGMENTS; i++) {

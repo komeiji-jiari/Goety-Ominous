@@ -1,0 +1,31 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.qiuyue.goetyominous.client.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "goetyominous.mixins.refmap.json",
+  "client": [
+    "DarkSkyColorMixin",
+    "DarkMoonTintMixin",
+    "MixinBlackWolfRenderer",
+    "MixinSkeletonWolfRenderer",
+    "MixinStormhoundRenderer",
+    "MixinWinterWolfRenderer",
+    "MixinHellhoundRenderer",
+    "MixinBlackBeastRenderer",
+    "MixinBlackBeastModel",
+    "FontAccessor",
+    "ac.GameRendererAccessor",
+    "ac.MixinClientTextTooltip",
+    "MaceLevelRendererMixin",
+    "TrialOmenLevelRendererMixin",
+    "VaultLevelRendererMixin",
+    "WeavingLevelRendererMixin",
+    "TrialSpawnerLevelRendererMixin",
+    "ModEffectParticleMixin",
+    "CultStatueGlowMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}

@@ -1,4 +1,4 @@
-package com.qiuyue.goetyominous.common.mixin;
+package com.qiuyue.goetyominous.client.mixin;
 
 import com.qiuyue.goetyominous.common.effects.ModEffectParticles;
 import java.util.List;

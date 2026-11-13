@@ -1,4 +1,4 @@
-package com.qiuyue.goetyominous.common.mixin;
+package com.qiuyue.goetyominous.client.mixin;
 
 import com.Polarice3.Goety.client.render.model.BlackBeastModel;
 import com.Polarice3.Goety.common.entities.ally.BlackBeast;

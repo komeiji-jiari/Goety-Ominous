@@ -3,6 +3,10 @@ package com.qiuyue.goetyominous.common.entities.hostile.grimmonarch;
 final class GrimMonarchConstants {
 
     static final float MAX_UP_STEP = 1.0F;
+    static final int NIGHT_TRANSITION_TICKS = 100;
+    static final long NIGHT_DAY_TICKS = 24000L;
+    static final long NIGHT_MIDNIGHT_TIME = 18000L;
+    static final long NIGHT_FULL_MOON_CYCLE = 8L;
     static final double TURN_DEGREES_PER_TICK = 14.0D;
     static final double ATTACK_TURN_DEGREES_PER_TICK = 90.0D;
     static final double SWEEP_DAMAGE_MULTIPLIER = 1.2D;
@@ -19,7 +23,7 @@ final class GrimMonarchConstants {
     static final int QUAD_STAR_LOCK_TICKS = 0;
     static final int QUAD_STAR_STUCK_LIFE = 0;
     static final int QUAD_STAR_CURSED_TICKS = 160;
-    static final float QUAD_STAR_LINE_LENGTH = 20.0F;
+    static final float QUAD_STAR_LINE_LENGTH = 10.0F;
     static final double QUAD_STAR_SPAWN_HEIGHT = 2.0D;
     static final double QUAD_STAR_MAX_OWNER_DISTANCE = 72.0D;
     static final double SHIELD_DISABLE_SECONDS = 5.0D;

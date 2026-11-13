@@ -1,4 +1,4 @@
-package com.qiuyue.goetyominous.common.mixin.ac;
+package com.qiuyue.goetyominous.client.mixin.ac;
 
 import com.qiuyue.goetyominous.client.rlyeh.ac.ExtinctionFont;
 import com.qiuyue.goetyominous.client.rlyeh.ac.RlyehFont;
