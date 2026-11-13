@@ -2,7 +2,6 @@
   "name": "狂风之弓",
   "icon": "goetyominous:windbow",
   "category": "goety:ominous_crafts/equipment",
-  "sortnum": 7,
   "pages": [
     {
       "type": "patchouli:text",

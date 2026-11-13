@@ -2,7 +2,6 @@
   "name": "Bastion Secrets",
   "icon": "minecraft:gilded_blackstone",
   "category": "goety:ominous_rumors",
-  "sortnum": 1,
   "read_by_default": true,
   "pages": [
     {

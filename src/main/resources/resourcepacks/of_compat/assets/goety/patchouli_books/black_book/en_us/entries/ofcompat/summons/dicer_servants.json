@@ -2,7 +2,6 @@
   "name": "Dicer",
   "icon": "opposing_force:laser_core",
   "category": "goety:ofcompat/summons",
-  "sortnum": 10,
   "pages": [
     {
       "type": "patchouli:text",

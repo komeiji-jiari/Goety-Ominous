@@ -2,7 +2,6 @@
   "name": "诡术师仆从",
   "icon": "savage_and_ravage:mask_of_dishonesty",
   "category": "goety:goetyabnormal/summons",
-  "sortnum": 70,
   "pages": [
     {
       "type": "patchouli:text",

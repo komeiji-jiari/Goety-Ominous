@@ -2,7 +2,6 @@
   "name": "Umber Spiders",
   "icon": "opposing_force:umber_fang",
   "category": "goety:ofcompat/summons",
-  "sortnum": 90,
   "pages": [
     {
       "type": "patchouli:text",

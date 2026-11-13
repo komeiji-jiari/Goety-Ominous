@@ -2,7 +2,6 @@
   "name": "Dicer Laser Focus",
   "icon": "goetyominous:dicer_laser_focus",
   "category": "goety:ofcompat/focuses",
-  "sortnum": 620,
   "pages": [
     {
       "type": "patchouli:text",

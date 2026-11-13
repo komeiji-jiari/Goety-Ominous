@@ -2,7 +2,6 @@
   "name": "Rigid Focus",
   "icon": "goetyominous:rigid_focus",
   "category": "goety:ominous_focuses",
-  "sortnum": 3,
   "advancement": "goety:goety/read_haunting_scroll",
   "secret": true,
   "pages": [

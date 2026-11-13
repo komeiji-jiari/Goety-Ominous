@@ -2,7 +2,6 @@
   "name": "惧灵",
   "icon": "goety:ice_cube",
   "category": "goety:ominous_world/bestiary",
-  "sortnum": 3,
   "pages": [
     {
       "type": "patchouli:text",

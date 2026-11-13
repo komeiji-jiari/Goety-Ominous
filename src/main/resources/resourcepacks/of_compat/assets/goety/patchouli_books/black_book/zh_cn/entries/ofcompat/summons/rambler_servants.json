@@ -2,7 +2,6 @@
   "name": "无章骨",
   "icon": "opposing_force:heavy_bone",
   "category": "goety:ofcompat/summons",
-  "sortnum": 60,
   "pages": [
     {
       "type": "patchouli:text",

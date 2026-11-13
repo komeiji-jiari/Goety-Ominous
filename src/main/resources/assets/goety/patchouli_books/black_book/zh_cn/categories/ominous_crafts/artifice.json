@@ -2,6 +2,5 @@
   "name": "设备",
   "description": "利用和操纵灵魂能量。",
   "icon": "goetyominous:golden_piglin_statue",
-  "parent": "goety:ominous_crafts",
-  "sortnum": 3
+  "parent": "goety:ominous_crafts"
 }

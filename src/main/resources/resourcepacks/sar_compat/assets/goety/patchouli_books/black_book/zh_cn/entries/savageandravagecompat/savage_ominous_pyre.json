@@ -2,7 +2,6 @@
   "name": "残暴的不祥火炬",
   "icon": "goety:ominous_pyre",
   "category": "goety:goetyabnormal/crafts",
-  "sortnum": 10,
   "pages": [
     {
       "type": "patchouli:text",

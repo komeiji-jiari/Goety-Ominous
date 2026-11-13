@@ -2,7 +2,6 @@
   "name": "耀斑聚晶",
   "icon": "goetyominous:flare_focus",
   "category": "goety:goetyabnormal/focuses",
-  "sortnum": 110,
   "pages": [
     {
       "type": "text",

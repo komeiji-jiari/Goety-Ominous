@@ -2,7 +2,6 @@
   "name": "突变烈焰人仆从",
   "icon": "mutantmore:mutant_blaze_core",
   "category": "goety:mmcompat/summons",
-  "sortnum": 50,
   "advancement": "goety:goety/read_bygone_scroll",
   "secret": true,
   "pages": [

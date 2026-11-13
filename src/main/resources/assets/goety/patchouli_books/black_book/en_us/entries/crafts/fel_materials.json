@@ -4,7 +4,6 @@
   "category": "goety:ominous_crafts",
   "advancement": "goetyominous:goetyominous/witch_lesson",
   "secret": true,
-  "sortnum": 1,
   "priority": true,
   "pages": [
     {

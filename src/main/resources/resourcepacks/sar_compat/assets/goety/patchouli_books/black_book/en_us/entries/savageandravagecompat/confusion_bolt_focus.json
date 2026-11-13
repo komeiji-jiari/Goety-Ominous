@@ -2,7 +2,6 @@
   "name": "Confusion Bolt Focus",
   "icon": "goetyominous:confusion_bolt_focus",
   "category": "goety:goetyabnormal/focuses",
-  "sortnum": 80,
   "pages": [
     {
       "type": "text",

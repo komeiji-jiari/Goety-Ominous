@@ -2,7 +2,6 @@
   "name": "Wolf Armor",
   "icon": "goetyominous:cursed_wolf_armor",
   "category": "goety:ominous_crafts",
-  "sortnum": 4,
   "pages": [
     {
       "type": "patchouli:text",

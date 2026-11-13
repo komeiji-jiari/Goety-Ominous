@@ -2,7 +2,6 @@
   "name": "火焰史莱姆",
   "icon": "opposing_force:fire_gel",
   "category": "goety:ofcompat/summons",
-  "sortnum": 71,
   "pages": [
     {
       "type": "patchouli:text",

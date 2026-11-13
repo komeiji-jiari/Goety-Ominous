@@ -2,7 +2,6 @@
   "name": "Dark Ankh",
   "icon": "goetyominous:dark_ankh",
   "category": "goety:ominous_crafts/garment",
-  "sortnum": 1,
   "pages": [
     {
       "type": "patchouli:text",

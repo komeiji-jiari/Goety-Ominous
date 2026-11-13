@@ -2,7 +2,6 @@
   "name": "Frowzy Servants",
   "icon": "minecraft:rotten_flesh",
   "category": "goety:ofcompat/summons",
-  "sortnum": 1,
   "pages": [
     {
       "type": "patchouli:text",

@@ -2,7 +2,6 @@
   "name": "Fungus Pack",
   "icon": "goetyominous:fungus_pack",
   "category": "goety:ominous_crafts/garment",
-  "sortnum": 4,
   "advancement": "goetyominous:goetyominous/read_bastion_scroll",
   "secret": true,
   "pages": [

@@ -2,7 +2,6 @@
   "name": "Howling Totem",
   "icon": "goetyominous:wolf_totem",
   "category": "goety:ominous_crafts/artifice",
-  "sortnum": 3,
   "pages": [
     {
       "type": "patchouli:text",

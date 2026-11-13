@@ -2,7 +2,6 @@
   "name": "新的刌民们",
   "icon": "goety:magic_emerald",
   "category": "goety:ominous_mutations",
-  "sortnum": 5,
   "pages": [
     {
       "type": "patchouli:text",

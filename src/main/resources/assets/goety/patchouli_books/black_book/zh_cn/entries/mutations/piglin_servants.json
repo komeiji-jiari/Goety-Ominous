@@ -2,7 +2,6 @@
   "name": "猪灵们",
   "icon": "minecraft:gold_ingot",
   "category": "goety:ominous_mutations",
-  "sortnum": 3,
   "advancement": "goetyominous:goetyominous/read_bastion_scroll",
   "secret": true,
   "pages": [

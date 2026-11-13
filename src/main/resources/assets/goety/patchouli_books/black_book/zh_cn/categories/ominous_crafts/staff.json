@@ -2,6 +2,5 @@
   "name": "法杖",
   "description": "黑暗巫师释放法术的方式",
   "icon": "goetyominous:fel_staff",
-  "parent": "goety:ominous_crafts",
-  "sortnum": 4
+  "parent": "goety:ominous_crafts"
 }

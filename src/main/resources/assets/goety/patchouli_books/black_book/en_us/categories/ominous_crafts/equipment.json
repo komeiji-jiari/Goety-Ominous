@@ -2,6 +2,5 @@
   "name": "Tools & Equipments",
   "description": "Dark and Powerful Tools for a Dark Wizard.",
   "icon": "goetyominous:bone_cudgel",
-  "parent": "goety:ominous_crafts",
-  "sortnum": 1
+  "parent": "goety:ominous_crafts"
 }

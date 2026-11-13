@@ -2,7 +2,6 @@
   "name": "Bone Cudgel",
   "icon": "goetyominous:bone_cudgel",
   "category": "goety:ominous_crafts/equipment",
-  "sortnum": 1,
   "advancement": "goetyominous:goetyominous/read_bastion_scroll",
   "secret": true,
   "pages": [

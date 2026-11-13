@@ -2,7 +2,6 @@
   "name": "Scorch Focus",
   "icon": "goetyominous:scorch_focus",
   "category": "goety:ominous_focuses",
-  "sortnum": 5,
   "pages": [
     {
       "type": "patchouli:text",

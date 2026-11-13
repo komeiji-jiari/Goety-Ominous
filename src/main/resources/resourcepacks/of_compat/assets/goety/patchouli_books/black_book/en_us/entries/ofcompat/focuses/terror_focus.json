@@ -2,7 +2,6 @@
   "name": "Terror Focus",
   "icon": "goetyominous:terror_focus",
   "category": "goety:ofcompat/focuses",
-  "sortnum": 110,
   "pages": [
     {
       "type": "patchouli:text",

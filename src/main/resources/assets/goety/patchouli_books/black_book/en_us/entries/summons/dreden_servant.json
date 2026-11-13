@@ -2,7 +2,6 @@
   "name": "Dreden Servant",
   "icon": "goety:ice_cube",
   "category": "goety:ominous_summons",
-  "sortnum": 7,
   "advancement": "goety:goety/read_haunting_scroll",
   "secret": true,
   "pages": [

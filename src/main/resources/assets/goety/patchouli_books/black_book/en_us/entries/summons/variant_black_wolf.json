@@ -2,7 +2,6 @@
   "name": "Black Wolf Variants",
   "icon": "minecraft:bone",
   "category": "goety:ominous_summons",
-  "sortnum": 3,
   "pages": [
     {
       "type": "patchouli:text",

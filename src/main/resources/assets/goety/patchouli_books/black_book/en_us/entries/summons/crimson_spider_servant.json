@@ -2,7 +2,6 @@
   "name": "Spider Servant Variants",
   "icon": "minecraft:spider_eye",
   "category": "goety:ominous_summons",
-  "sortnum": 4,
   "pages": [
     {
       "type": "patchouli:text",

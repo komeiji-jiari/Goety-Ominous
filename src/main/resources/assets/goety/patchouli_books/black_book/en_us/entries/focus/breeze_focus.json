@@ -2,7 +2,6 @@
   "name": "Breeze Focus",
   "icon": "goetyominous:breeze_focus",
   "category": "goety:ominous_focuses",
-  "sortnum": 9,
   "advancement": "goety:goety/read_mistral_scroll",
   "secret": true,
   "pages": [

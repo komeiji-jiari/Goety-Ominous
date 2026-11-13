@@ -2,7 +2,6 @@
   "name": "Skeleton Servant Variants",
   "icon": "minecraft:skeleton_skull",
   "category": "goety:ominous_summons",
-  "sortnum": 2,
   "pages": [
     {
       "type": "patchouli:text",

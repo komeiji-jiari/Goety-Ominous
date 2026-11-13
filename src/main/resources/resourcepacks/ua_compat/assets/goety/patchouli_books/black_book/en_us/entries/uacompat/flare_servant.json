@@ -2,7 +2,6 @@
   "name": "Flare Servant",
   "icon": "minecraft:potion{Potion:\"upgrade_aquatic:insomnia\"}",
   "category": "goety:goetyabnormal/summons",
-  "sortnum": 100,
   "pages": [
     {
       "type": "patchouli:text",

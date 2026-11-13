@@ -2,7 +2,6 @@
   "name": "天空飞龙",
   "icon": "opposing_force:skyvern_claw",
   "category": "goety:ofcompat/summons",
-  "sortnum": 20,
   "pages": [
     {
       "type": "patchouli:text",

@@ -4,7 +4,6 @@
   "category": "goety:ominous_crafts/artifice",
   "advancement": "goetyominous:goetyominous/read_bastion_scroll",
   "secret": true,
-  "sortnum": 2,
   "pages": [
     {
       "type": "patchouli:text",

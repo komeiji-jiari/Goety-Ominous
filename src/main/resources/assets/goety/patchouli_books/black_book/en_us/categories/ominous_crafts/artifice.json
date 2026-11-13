@@ -2,6 +2,5 @@
   "name": "Artifices",
   "description": "Utilizing and Manipulating Soul Energy.",
   "icon": "goetyominous:golden_piglin_statue",
-  "parent": "goety:ominous_crafts",
-  "sortnum": 3
+  "parent": "goety:ominous_crafts"
 }

@@ -2,7 +2,6 @@
   "name": "Pride of the Piglins",
   "icon": "goetyominous:piglin_pride",
   "category": "goety:ominous_crafts/equipment",
-  "sortnum": 5,
   "advancement": "goetyominous:goetyominous/read_bastion_scroll",
   "secret": true,
   "pages": [

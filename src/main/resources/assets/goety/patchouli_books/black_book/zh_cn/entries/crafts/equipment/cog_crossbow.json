@@ -2,7 +2,6 @@
   "name": "齿轮弩",
   "icon": "goetyominous:cog_crossbow",
   "category": "goety:ominous_crafts/equipment",
-  "sortnum": 2,
   "advancement": "goetyominous:goetyominous/read_bastion_scroll",
   "secret": true,
   "pages": [

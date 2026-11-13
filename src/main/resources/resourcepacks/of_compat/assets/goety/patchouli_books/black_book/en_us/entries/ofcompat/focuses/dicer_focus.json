@@ -2,7 +2,6 @@
   "name": "Dicer Focus",
   "icon": "goetyominous:dicer_focus",
   "category": "goety:ofcompat/focuses",
-  "sortnum": 610,
   "pages": [
     {
       "type": "patchouli:text",

@@ -2,7 +2,6 @@
   "name": "沉溺死灵法师",
   "icon": "goety:bouncy_bubble_focus",
   "category": "goety:ominous_mutations",
-  "sortnum": 8,
   "advancement": "goety:goety/unlock_necromancer",
   "pages": [
     {

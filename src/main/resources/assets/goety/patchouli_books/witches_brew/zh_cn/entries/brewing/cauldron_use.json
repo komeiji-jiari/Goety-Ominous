@@ -2,7 +2,6 @@
   "name": "坩埚的更多用处",
   "icon": "goety:witch_cauldron",
   "category": "goety:brewing",
-  "sortnum": 8,
   "pages": [
     {
       "type": "patchouli:text",

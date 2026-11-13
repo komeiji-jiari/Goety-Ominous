@@ -2,7 +2,6 @@
   "name": "阴影蜘蛛",
   "icon": "opposing_force:umber_fang",
   "category": "goety:ofcompat/summons",
-  "sortnum": 90,
   "pages": [
     {
       "type": "patchouli:text",

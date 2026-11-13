@@ -2,7 +2,6 @@
   "name": "Thrasher Servant",
   "icon": "upgrade_aquatic:thrasher_tooth",
   "category": "goety:goetyabnormal/summons",
-  "sortnum": 120,
   "pages": [
     {
       "type": "patchouli:text",

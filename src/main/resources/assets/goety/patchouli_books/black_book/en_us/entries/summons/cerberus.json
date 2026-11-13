@@ -2,7 +2,6 @@
   "name": "Cerberus",
   "icon": "minecraft:lava_bucket",
   "category": "goety:ominous_mutations",
-  "sortnum": 2,
   "pages": [
     {
       "type": "patchouli:text",

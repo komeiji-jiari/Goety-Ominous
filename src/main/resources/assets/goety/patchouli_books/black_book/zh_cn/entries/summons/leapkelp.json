@@ -2,7 +2,6 @@
   "name": "潮涌之叶",
   "icon": "minecraft:kelp",
   "category": "goety:ominous_summons",
-  "sortnum": 10,
   "advancement": "goety:goety/read_floral_scroll",
   "pages": [
     {

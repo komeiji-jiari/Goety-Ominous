@@ -2,7 +2,6 @@
   "name": "旋风人仆从",
   "icon": "goetyominous:breeze_rod",
   "category": "goety:ominous_summons",
-  "sortnum": 9,
   "advancement": "goety:goety/read_mistral_scroll",
   "secret": true,
   "pages": [

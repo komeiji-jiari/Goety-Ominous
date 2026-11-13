@@ -2,7 +2,6 @@
   "name": "Witch Bomb",
   "icon": "goetyominous:witch_bomb",
   "category": "goety:brewing",
-  "sortnum": 9,
   "pages": [
     {
       "type": "patchouli:text",

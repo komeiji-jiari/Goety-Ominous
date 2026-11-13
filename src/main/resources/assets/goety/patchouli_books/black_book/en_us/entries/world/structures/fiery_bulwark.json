@@ -2,7 +2,6 @@
   "name": "Fiery Bulwark",
   "icon": "minecraft:polished_blackstone_bricks",
   "category": "goety:ominous_world",
-  "sortnum": 2,
   "pages": [
     {
       "type": "patchouli:text",

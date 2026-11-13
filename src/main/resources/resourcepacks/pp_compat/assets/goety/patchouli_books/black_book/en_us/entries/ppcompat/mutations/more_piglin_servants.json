@@ -2,7 +2,6 @@
   "name": "Piglin Professions",
   "icon": "piglinproliferation:travelers_compass",
   "category": "goety:ominous_mutations",
-  "sortnum": 4,
   "advancement": "goetyominous:goetyominous/read_bastion_scroll",
   "secret": true,
   "pages": [

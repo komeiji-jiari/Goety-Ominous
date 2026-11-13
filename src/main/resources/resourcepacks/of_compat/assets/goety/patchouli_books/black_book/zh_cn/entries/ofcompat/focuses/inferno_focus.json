@@ -2,7 +2,6 @@
   "name": "熔火聚晶",
   "icon": "goetyominous:inferno_focus",
   "category": "goety:ofcompat/focuses",
-  "sortnum": 230,
   "pages": [
     {
       "type": "patchouli:text",

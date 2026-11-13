@@ -2,7 +2,6 @@
   "name": "Soul Star Focus",
   "icon": "goetyominous:soulstar_focus",
   "category": "goety:ominous_focuses",
-  "sortnum": 3,
   "pages": [
     {
       "type": "patchouli:text",

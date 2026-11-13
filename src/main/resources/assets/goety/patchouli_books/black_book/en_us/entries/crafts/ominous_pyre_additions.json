@@ -2,7 +2,6 @@
   "name": "Ominous Pyre Additions",
   "icon": "goety:ominous_pyre",
   "category": "goety:ominous_crafts/artifice",
-  "sortnum": 1,
   "pages": [
     {
       "type": "patchouli:text",

@@ -2,7 +2,6 @@
   "name": "Mutant Frozen Zombie Servant",
   "icon": "mutantmore:mutant_frozen_zombie_spikes",
   "category": "goety:mmcompat/summons",
-  "sortnum": 30,
   "pages": [
     {
       "type": "patchouli:text",

@@ -2,7 +2,6 @@
   "name": "耀翼仆从",
   "icon": "minecraft:potion{Potion:\"upgrade_aquatic:insomnia\"}",
   "category": "goety:goetyabnormal/summons",
-  "sortnum": 100,
   "pages": [
     {
       "type": "patchouli:text",

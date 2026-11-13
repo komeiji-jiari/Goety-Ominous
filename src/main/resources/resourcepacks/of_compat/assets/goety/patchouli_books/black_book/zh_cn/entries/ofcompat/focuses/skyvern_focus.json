@@ -2,7 +2,6 @@
   "name": "龙征聚晶",
   "icon": "goetyominous:skyvern_focus",
   "category": "goety:ofcompat/focuses",
-  "sortnum": 910,
   "pages": [
     {
       "type": "patchouli:text",
