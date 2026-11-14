@@ -49,12 +49,6 @@ public class GrottoceratopsSpiritSpell extends Spell {
     }
 
     @Override
-    public int soulCost(LivingEntity caster, ItemStack staff) {
-        int cost = super.soulCost(caster, staff);
-        return WandUtil.enchantedFocus(caster) ? cost * 2 : cost;
-    }
-
-    @Override
     public boolean conditionsMet(ServerLevel level, LivingEntity caster) {
         return !GrottoceratopsSpiritHandler.hasSpirits(caster) && super.conditionsMet(level, caster);
     }
