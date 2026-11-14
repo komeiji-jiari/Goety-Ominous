@@ -90,6 +90,7 @@ public class MmConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> IcicleSpikeSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> IcicleSpikeCooldown;
     public static final ForgeConfigSpec.ConfigValue<Integer> IcicleSpikeCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Double> IcicleSpikeDamage;
     public static final ForgeConfigSpec.ConfigValue<Integer> SandBallSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> SandBallCooldown;
     public static final ForgeConfigSpec.ConfigValue<Integer> SandBallCastDuration;
@@ -102,12 +103,15 @@ public class MmConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> PoisonBreathCooldown;
     public static final ForgeConfigSpec.ConfigValue<Double> PoisonBreathDamage;
     public static final ForgeConfigSpec.ConfigValue<Integer> PoisonBreathDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> PoisonBreathLingerDuration;
     public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerScatterSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerScatterCooldown;
     public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerScatterCastDuration;
     public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerBulletSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerBulletCooldown;
     public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerBulletCastDuration;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerBulletShotInterval;
+    public static final ForgeConfigSpec.ConfigValue<Integer> ShulkerBulletShots;
     public static final ForgeConfigSpec.ConfigValue<Double> ShulkerBulletDamage;
     public static final ForgeConfigSpec.ConfigValue<Integer> RodStrikeSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> RodStrikeCooldown;
@@ -276,46 +280,46 @@ public class MmConfig {
         BUILDER.pop();
         BUILDER.push("Spells");
         BUILDER.push("Hog Charge Spell");
-        HogChargeSoulCost = BUILDER.comment("Soul cost of Hog Charge spell (Default: 10)")
-                .defineInRange("hogChargeSoulCost", 10, 1, 100);
+        HogChargeSoulCost = BUILDER.comment("Soul cost of Hog Charge spell (Default: 8)")
+                .defineInRange("hogChargeSoulCost", 8, 1, 100);
         HogChargeCooldown = BUILDER.comment("Cooldown of Hog Charge spell in ticks (Default: 100)")
                 .defineInRange("hogChargeCooldown", 100, 0, 2000);
-        HogChargeDamage = BUILDER.comment("Base damage of Hog Charge (Default: 14.0)")
-                .defineInRange("hogChargeDamage", 14.0, 0.0, Double.MAX_VALUE);
+        HogChargeDamage = BUILDER.comment("Base damage of Hog Charge (Default: 12.0)")
+                .defineInRange("hogChargeDamage", 12.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Wither Breath Spell");
-        WitherBreathSoulCost = BUILDER.comment("Soul cost per second during Wither Breath channel, Default: 24")
-                .defineInRange("witherBreathSoulCost", 24, 1, 1000);
-        WitherBreathCooldown = BUILDER.comment("Cooldown of Wither Breath spell in ticks (Default: 400)")
-                .defineInRange("witherBreathCooldown", 400, 0, 2000);
+        WitherBreathSoulCost = BUILDER.comment("Soul cost per second during Wither Breath channel, Default: 4")
+                .defineInRange("witherBreathSoulCost", 4, 1, 1000);
+        WitherBreathCooldown = BUILDER.comment("Cooldown of Wither Breath spell in ticks (Default: 300)")
+                .defineInRange("witherBreathCooldown", 300, 0, 2000);
         BUILDER.pop();
         BUILDER.push("Wither Slash Spell");
         WitherSlashSoulCost = BUILDER.comment("Soul cost of Wither Slash spell (Default: 24)")
                 .defineInRange("witherSlashSoulCost", 24, 1, 100);
-        WitherSlashCooldown = BUILDER.comment("Cooldown of Wither Slash spell in ticks (Default: 60)")
-                .defineInRange("witherSlashCooldown", 60, 0, 2000);
+        WitherSlashCooldown = BUILDER.comment("Cooldown of Wither Slash spell in ticks (Default: 100)")
+                .defineInRange("witherSlashCooldown", 100, 0, 2000);
         WitherSlashDamage = BUILDER.comment("Base damage of Wither Slash (Default: 6.0)")
                 .defineInRange("witherSlashDamage", 6.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Giant Snowball Spell");
-        GiantSnowballSoulCost = BUILDER.comment("Soul cost of Giant Snowball spell (Default: 16)")
-                .defineInRange("giantSnowballSoulCost", 16, 1, 100);
-        GiantSnowballCooldown = BUILDER.comment("Cooldown of Giant Snowball spell in ticks (Default: 160)")
-                .defineInRange("giantSnowballCooldown", 160, 0, 2000);
-        GiantSnowballDamage = BUILDER.comment("Damage of Giant Snowball (full against bosses, half against other mobs) (Default: 12.0)")
-                .defineInRange("giantSnowballDamage", 12.0, 0.0, Double.MAX_VALUE);
+        GiantSnowballSoulCost = BUILDER.comment("Soul cost of Giant Snowball spell (Default: 12)")
+                .defineInRange("giantSnowballSoulCost", 12, 1, 100);
+        GiantSnowballCooldown = BUILDER.comment("Cooldown of Giant Snowball spell in ticks (Default: 120)")
+                .defineInRange("giantSnowballCooldown", 120, 0, 2000);
+        GiantSnowballDamage = BUILDER.comment("Damage of Giant Snowball (full against bosses, half against other mobs) (Default: 14.0)")
+                .defineInRange("giantSnowballDamage", 14.0, 0.0, Double.MAX_VALUE);
         GiantSnowballCastDuration = BUILDER.comment("Cast duration of Giant Snowball spell in ticks (Default: 40)")
                 .defineInRange("giantSnowballCastDuration", 40, 0, 500);
         BUILDER.pop();
         BUILDER.push("Icicle Slam Spell");
-        IcicleSlamSoulCost = BUILDER.comment("Soul cost of Icicle Slam spell (Default: 24)")
-                .defineInRange("icicleSlamSoulCost", 24, 1, 100);
-        IcicleSlamCooldown = BUILDER.comment("Cooldown of Icicle Slam spell in ticks (Default: 160)")
-                .defineInRange("icicleSlamCooldown", 160, 0, 2000);
+        IcicleSlamSoulCost = BUILDER.comment("Soul cost of Icicle Slam spell (Default: 64)")
+                .defineInRange("icicleSlamSoulCost", 64, 1, 100);
+        IcicleSlamCooldown = BUILDER.comment("Cooldown of Icicle Slam spell in ticks (Default: 300)")
+                .defineInRange("icicleSlamCooldown", 300, 0, 2000);
         IcicleSlamCastDuration = BUILDER.comment("Cast duration of Icicle Slam spell in ticks (Default: 60)")
                 .defineInRange("icicleSlamCastDuration", 60, 0, 500);
-        IcicleSlamDamage = BUILDER.comment("Base damage of each icicle (Default: 3.0)")
-                .defineInRange("icicleSlamDamage", 3.0, 0.0, Double.MAX_VALUE);
+        IcicleSlamDamage = BUILDER.comment("Base damage of each icicle (Default: 16.0)")
+                .defineInRange("icicleSlamDamage", 16.0, 0.0, Double.MAX_VALUE);
         IcicleSlamFreezingLength = BUILDER.comment("Freezing effect duration of each icicle (Default: 100)")
                 .defineInRange("icicleSlamFreezingLength", 100, 0, 2000);
         IcicleSlamFreezingLevel = BUILDER.comment("Freezing effect level of each icicle (Default: 1)")
@@ -324,12 +328,14 @@ public class MmConfig {
                 .define("icicleSlamIgnoresInvulnerability", true);
         BUILDER.pop();
         BUILDER.push("Icicle Spike Spell");
-        IcicleSpikeSoulCost = BUILDER.comment("Soul cost of Icicle Spike spell (Default: 12)")
-                .defineInRange("icicleSpikeSoulCost", 12, 1, 100);
-        IcicleSpikeCooldown = BUILDER.comment("Cooldown of Icicle Spike spell in ticks (Default: 60)")
-                .defineInRange("icicleSpikeCooldown", 60, 0, 2000);
+        IcicleSpikeSoulCost = BUILDER.comment("Soul cost of Icicle Spike spell (Default: 16)")
+                .defineInRange("icicleSpikeSoulCost", 16, 1, 100);
+        IcicleSpikeCooldown = BUILDER.comment("Cooldown of Icicle Spike spell in ticks (Default: 100)")
+                .defineInRange("icicleSpikeCooldown", 100, 0, 2000);
         IcicleSpikeCastDuration = BUILDER.comment("Cast duration of Icicle Spike spell in ticks (Default: 0)")
                 .defineInRange("icicleSpikeCastDuration", 0, 0, 500);
+        IcicleSpikeDamage = BUILDER.comment("Base damage of Icicle Spike (Default: 12.0, matches Mutant Frozen Zombie thrown icicle)")
+                .defineInRange("icicleSpikeDamage", 12.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Sand Boulder Spell");
         SandBallSoulCost = BUILDER.comment("Soul cost of Sand Ball spell (Default: 16)")
@@ -342,8 +348,8 @@ public class MmConfig {
                 .defineInRange("sandBallCastDuration", 40, 0, 500);
         BUILDER.pop();
         BUILDER.push("Sand Geyser Spell");
-        SandGeyserSoulCost = BUILDER.comment("Soul cost of Sand Geyser spell (Default: 20)")
-                .defineInRange("sandGeyserSoulCost", 20, 1, 100);
+        SandGeyserSoulCost = BUILDER.comment("Soul cost of Sand Geyser spell (Default: 24)")
+                .defineInRange("sandGeyserSoulCost", 24, 1, 100);
         SandGeyserCooldown = BUILDER.comment("Cooldown of Sand Geyser spell in ticks (Default: 400)")
                 .defineInRange("sandGeyserCooldown", 400, 0, 2000);
         SandGeyserDamage = BUILDER.comment("Base damage of Sand Geyser (Default: 8.0, matches Mutant Husk geyser)")
@@ -356,10 +362,12 @@ public class MmConfig {
                 .defineInRange("poisonBreathSoulCost", 2, 1, 100);
         PoisonBreathCooldown = BUILDER.comment("Cooldown of Poison Breath in ticks (Default: 100)")
                 .defineInRange("poisonBreathCooldown", 100, 0, 5000);
-        PoisonBreathDamage = BUILDER.comment("Damage per Poison Breath hit (Default: 1.0)")
-                .defineInRange("poisonBreathDamage", 1.0, 0.0, Double.MAX_VALUE);
+        PoisonBreathDamage = BUILDER.comment("Damage per Poison Breath hit (Default: 2.0)")
+                .defineInRange("poisonBreathDamage", 2.0, 0.0, Double.MAX_VALUE);
         PoisonBreathDuration = BUILDER.comment("Breath duration of Poison Breath (Default: 100)")
                 .defineInRange("poisonBreathDuration", 100, 0, 1000);
+        PoisonBreathLingerDuration = BUILDER.comment("Lingering gas duration of Poison Breath in ticks, scaled by how long the breath was held (Default: 100)")
+                .defineInRange("poisonBreathLingerDuration", 100, 0, 2000);
         BUILDER.pop();
         BUILDER.push("Shulker Scatter Spell");
         ShulkerScatterSoulCost = BUILDER.comment("Soul cost of Shulker Scatter spell (Default: 32)")
@@ -370,20 +378,24 @@ public class MmConfig {
                 .defineInRange("shulkerScatterCastDuration", 100, 0, 500);
         BUILDER.pop();
         BUILDER.push("Shulker Bullet Spell");
-        ShulkerBulletSoulCost = BUILDER.comment("Soul cost of Shulker Bullet spell (Default: 24)")
-                .defineInRange("shulkerBulletSoulCost", 24, 1, 100);
-        ShulkerBulletCooldown = BUILDER.comment("Cooldown of Shulker Bullet spell in ticks (Default: 100)")
-                .defineInRange("shulkerBulletCooldown", 100, 0, 2000);
-        ShulkerBulletCastDuration = BUILDER.comment("Cast duration of Shulker Bullet spell in ticks (Default: 40)")
-                .defineInRange("shulkerBulletCastDuration", 40, 0, 500);
+        ShulkerBulletSoulCost = BUILDER.comment("Soul cost of Shulker Bullet spell per second of channeling (Default: 16)")
+                .defineInRange("shulkerBulletSoulCost", 16, 1, 100);
+        ShulkerBulletCooldown = BUILDER.comment("Cooldown of Shulker Bullet spell in ticks, applied once the channel ends (Default: 160)")
+                .defineInRange("shulkerBulletCooldown", 160, 0, 2000);
+        ShulkerBulletCastDuration = BUILDER.comment("Cast up duration of Shulker Bullet spell in ticks, the first bullet fires after this (Default: 20)")
+                .defineInRange("shulkerBulletCastDuration", 20, 0, 500);
+        ShulkerBulletShotInterval = BUILDER.comment("Ticks between each Shulker Bullet during the channel (Default: 10)")
+                .defineInRange("shulkerBulletShotInterval", 10, 1, 200);
+        ShulkerBulletShots = BUILDER.comment("Number of Shulker Bullets fired per channel, the channel lasts shots x interval ticks (Default: 7)")
+                .defineInRange("shulkerBulletShots", 7, 1, 50);
         ShulkerBulletDamage = BUILDER.comment("Base damage of Shulker Bullet (Default: 8.0)")
                 .defineInRange("shulkerBulletDamage", 8.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Rod Strike Spell");
-        RodStrikeSoulCost = BUILDER.comment("Soul cost of Rod Strike spell (Default: 16)")
-                .defineInRange("rodStrikeSoulCost", 16, 1, 100);
-        RodStrikeCooldown = BUILDER.comment("Cooldown of Rod Strike spell in ticks (Default: 160)")
-                .defineInRange("rodStrikeCooldown", 160, 0, 2000);
+        RodStrikeSoulCost = BUILDER.comment("Soul cost of Rod Strike spell (Default: 32)")
+                .defineInRange("rodStrikeSoulCost", 32, 1, 100);
+        RodStrikeCooldown = BUILDER.comment("Cooldown of Rod Strike spell in ticks (Default: 240)")
+                .defineInRange("rodStrikeCooldown", 240, 0, 2000);
         RodStrikeCastDuration = BUILDER.comment("Cast duration of Rod Strike spell in ticks (Default: 80)")
                 .defineInRange("rodStrikeCastDuration", 80, 0, 500);
         RodStrikeSummonDown = BUILDER.comment("Summon down duration of Rod Strike spell in ticks (Default: 80)")
