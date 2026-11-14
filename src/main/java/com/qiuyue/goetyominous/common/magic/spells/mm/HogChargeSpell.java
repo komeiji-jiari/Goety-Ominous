@@ -6,10 +6,10 @@ import com.Polarice3.Goety.client.particles.CircleExplodeParticleOption;
 import com.Polarice3.Goety.client.particles.ModParticleTypes;
 import com.Polarice3.Goety.client.particles.SphereExplodeParticleOption;
 import com.Polarice3.Goety.common.enchantments.ModEnchantments;
-import com.Polarice3.Goety.common.entities.util.CameraShake;
 import com.Polarice3.Goety.common.magic.EverChargeSpell;
 import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.utils.ColorUtil;
+import com.Polarice3.Goety.utils.SEHelper;
 import com.Polarice3.Goety.utils.SpellExplosion;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.alexander.mutantmore.config.mutant_hoglin.MutantHoglinCommonConfig;
@@ -20,6 +20,7 @@ import com.qiuyue.goetyominous.common.magic.utils.SmeltHelper;
 import com.qiuyue.goetyominous.utils.BossUtil;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -35,6 +36,7 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -45,7 +47,7 @@ import com.qiuyue.goetyominous.config.mm.MmConfig;
 
 public class HogChargeSpell extends EverChargeSpell {
 
-    public static final int MAX_CAST_TICKS = 120;
+    public static final int MAX_CAST_TICKS = 200;
     private static final int SOUND_INTERVAL = 10;
     private final Set<UUID> channeling = new HashSet<>();
 
@@ -94,8 +96,29 @@ public class HogChargeSpell extends EverChargeSpell {
     }
 
     @Override
-    public void SpellResult(ServerLevel worldIn, LivingEntity caster, ItemStack staff, SpellStat spellStat) {
+    public void startSpell(ServerLevel worldIn, LivingEntity caster, ItemStack staff, SpellStat spellStat) {
         this.channeling.add(caster.getUUID());
+        if (staff.getTag() != null) {
+            staff.getTag().putInt("Seconds", 0);
+        }
+        if (caster instanceof Player player && !player.isCreative() && !player.isSpectator()
+                && staff.getItem() instanceof IWand wand) {
+            SEHelper.decreaseSouls(player, wand.SoulUse(caster, staff));
+        }
+    }
+
+    @Override
+    public boolean hasCustomCooldown(LivingEntity caster, ItemStack staff, ItemStack focus, int initialCooldown) {
+        if (!(caster instanceof Player player)) {
+            return false;
+        }
+        SEHelper.addCooldown(player, focus.getItem(),
+                Math.max(initialCooldown, MmConfig.HogChargeMinCooldown.get()));
+        return true;
+    }
+
+    @Override
+    public void SpellResult(ServerLevel worldIn, LivingEntity caster, ItemStack staff, SpellStat spellStat) {
         int potency = spellStat.getPotency();
         if (WandUtil.enchantedFocus(caster)) {
             potency += WandUtil.getPotencyLevel(caster);
@@ -124,7 +147,8 @@ public class HogChargeSpell extends EverChargeSpell {
 
         if (!worldIn.isClientSide) {
             if (!caster.isShiftKeyDown()) {
-                BlockPos center = caster.blockPosition();
+                BlockPos center = caster.blockPosition().offset(
+                        (int) Math.round(lookVec.x), 0, (int) Math.round(lookVec.z));
                 for (int dx = -breakRadius; dx <= breakRadius; dx++) {
                     for (int dy = 0; dy <= 2; dy++) {
                         for (int dz = -breakRadius; dz <= breakRadius; dz++) {
@@ -136,6 +160,11 @@ public class HogChargeSpell extends EverChargeSpell {
 
                             BlockState state = worldIn.getBlockState(pos);
                             if (state.isAir() || state.getDestroySpeed(worldIn, pos) < 0) continue;
+                            VoxelShape shape = state.getCollisionShape(worldIn, pos);
+                            if (!shape.isEmpty()
+                                    && shape.max(Direction.Axis.Y) + pos.getY() <= caster.getY() + caster.getStepHeight() + 1.0E-4D) {
+                                continue;
+                            }
                             if (!this.isBreakable(worldIn, pos, state)) continue;
 
                             if (usingNetherStaff) {
@@ -174,10 +203,9 @@ public class HogChargeSpell extends EverChargeSpell {
                         3, 0.3, 0.1, 0.3, 0.02);
             }
 
-            Vec3 base = caster.position().add(0, 3.0D * 0.4D, 0);
             worldIn.sendParticles(ModParticleTypes.SMALL_FIRE.get(),
-                    base.x, base.y, base.z,
-                    10, 0.6, 0.3, 0.6, 0.05);
+                    caster.getX(), caster.getY() + caster.getBbHeight() * 0.39D, caster.getZ(),
+                    10, 0.725D, caster.getBbHeight() * 0.39D, 0.725D, 0.02D);
 
             if (staff.getItem() instanceof IWand wand && wand.ShotsFired(staff) >= MAX_CAST_TICKS) {
                 this.endChannel(worldIn, caster);
@@ -187,7 +215,7 @@ public class HogChargeSpell extends EverChargeSpell {
 
     @Override
     public void stopSpell(ServerLevel worldIn, LivingEntity caster, ItemStack staff, ItemStack focus, int castTime, SpellStat spellStat) {
-        this.channeling.remove(caster.getUUID());
+        this.endChannel(worldIn, caster);
     }
 
     private void endChannel(ServerLevel level, LivingEntity caster) {
@@ -219,7 +247,6 @@ public class HogChargeSpell extends EverChargeSpell {
         new SpellExplosion(level, caster, level.damageSources().explosion(caster, caster), x, y, z, power, 0.0F);
         level.playSound(null, x, y, z, SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 4.0F,
                 (1.0F + (level.random.nextFloat() - level.random.nextFloat()) * 0.2F) * 0.7F);
-        CameraShake.cameraShake(level, new Vec3(x, y, z), power * 2.0F, 0.1F, 0, 20);
     }
 
     private boolean isBreakable(ServerLevel worldIn, BlockPos pos, BlockState state) {

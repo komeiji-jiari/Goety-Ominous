@@ -42,7 +42,7 @@ import com.qiuyue.goetyominous.config.mm.MmConfig;
 public class WitherBreathSpell extends ContinuousControllerSpell<WitherBreathSpell.WitherBreathController> {
 
     private static final int CHARGE_UP_TICKS = 20;
-    private static final int BREATH_TICKS = 55;
+    private static final int BREATH_TICKS = 60;
     private static final int END_LAG_TICKS = 20;
 
     private static final float BASE_RADIUS = 16.0F;

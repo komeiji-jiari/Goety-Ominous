@@ -70,6 +70,7 @@ public class MmConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> MutantMoreMobAnimationFix;
     public static final ForgeConfigSpec.ConfigValue<Integer> HogChargeSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> HogChargeCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> HogChargeMinCooldown;
     public static final ForgeConfigSpec.ConfigValue<Double> HogChargeDamage;
     public static final ForgeConfigSpec.ConfigValue<Integer> WitherBreathSoulCost;
     public static final ForgeConfigSpec.ConfigValue<Integer> WitherBreathCooldown;
@@ -280,12 +281,14 @@ public class MmConfig {
         BUILDER.pop();
         BUILDER.push("Spells");
         BUILDER.push("Hog Charge Spell");
-        HogChargeSoulCost = BUILDER.comment("Soul cost of Hog Charge spell (Default: 8)")
-                .defineInRange("hogChargeSoulCost", 8, 1, 100);
-        HogChargeCooldown = BUILDER.comment("Cooldown of Hog Charge spell in ticks (Default: 100)")
-                .defineInRange("hogChargeCooldown", 100, 0, 2000);
-        HogChargeDamage = BUILDER.comment("Base damage of Hog Charge (Default: 12.0)")
-                .defineInRange("hogChargeDamage", 12.0, 0.0, Double.MAX_VALUE);
+        HogChargeSoulCost = BUILDER.comment("Soul cost of Hog Charge spell per second (Default: 10)")
+                .defineInRange("hogChargeSoulCost", 10, 1, 100);
+        HogChargeCooldown = BUILDER.comment("Cooldown of Hog Charge spell in ticks (Default: 200)")
+                .defineInRange("hogChargeCooldown", 200, 0, 2000);
+        HogChargeMinCooldown = BUILDER.comment("Minimum cooldown of Hog Charge spell in ticks after any cast (Default: 40)")
+                .defineInRange("hogChargeMinCooldown", 40, 0, 2000);
+        HogChargeDamage = BUILDER.comment("Base damage of Hog Charge (Default: 10.0)")
+                .defineInRange("hogChargeDamage", 10.0, 0.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Wither Breath Spell");
         WitherBreathSoulCost = BUILDER.comment("Soul cost per second during Wither Breath channel, Default: 4")
@@ -306,8 +309,8 @@ public class MmConfig {
                 .defineInRange("giantSnowballSoulCost", 12, 1, 100);
         GiantSnowballCooldown = BUILDER.comment("Cooldown of Giant Snowball spell in ticks (Default: 120)")
                 .defineInRange("giantSnowballCooldown", 120, 0, 2000);
-        GiantSnowballDamage = BUILDER.comment("Damage of Giant Snowball (full against bosses, half against other mobs) (Default: 14.0)")
-                .defineInRange("giantSnowballDamage", 14.0, 0.0, Double.MAX_VALUE);
+        GiantSnowballDamage = BUILDER.comment("Damage of Giant Snowball (full against bosses, half against other mobs) (Default: 12.0)")
+                .defineInRange("giantSnowballDamage", 12.0, 0.0, Double.MAX_VALUE);
         GiantSnowballCastDuration = BUILDER.comment("Cast duration of Giant Snowball spell in ticks (Default: 40)")
                 .defineInRange("giantSnowballCastDuration", 40, 0, 500);
         BUILDER.pop();
