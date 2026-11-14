@@ -116,16 +116,46 @@ public class QuadStarProjectile extends Projectile {
     }
 
     private static Vec3 initialAim(LivingEntity shooter, Vec3 at) {
-        if (shooter instanceof Mob mob) {
-            LivingEntity target = mob.getTarget();
-            if (target != null && target.isAlive()) {
-                Vec3 dir = target.getBoundingBox().getCenter().subtract(at);
-                if (dir.lengthSqr() > 1.0E-6D) {
-                    return dir.normalize();
-                }
-            }
+        Vec3 aim = aimAt(initialTarget(shooter), at);
+        if (aim != null) {
+            return aim;
         }
-        return shooter.getLookAngle();
+        Vec3 look = shooter.getLookAngle();
+        Vec3 flat = new Vec3(look.x, 0.0D, look.z);
+        return flat.lengthSqr() < 1.0E-6D ? new Vec3(0.0D, 0.0D, 1.0D) : flat.normalize();
+    }
+
+    @Nullable
+    private static LivingEntity initialTarget(LivingEntity shooter) {
+        if (!(shooter instanceof Mob mob)) {
+            return null;
+        }
+        LivingEntity target = mob.getTarget();
+        if (target != null && target.isAlive()) {
+            return target;
+        }
+        return lastAttacker(mob);
+    }
+
+    @Nullable
+    private static LivingEntity lastAttacker(Mob mob) {
+        LivingEntity attacker = mob.getLastHurtByMob();
+        if (attacker == null || !attacker.isAlive()) {
+            attacker = mob.getLastHurtMob();
+        }
+        if (attacker == null || !attacker.isAlive() || attacker == mob) {
+            return null;
+        }
+        return mob.canAttack(attacker) ? attacker : null;
+    }
+
+    @Nullable
+    private static Vec3 aimAt(@Nullable LivingEntity target, Vec3 from) {
+        if (target == null || !target.isAlive()) {
+            return null;
+        }
+        Vec3 dir = target.getBoundingBox().getCenter().subtract(from);
+        return dir.lengthSqr() > 1.0E-6D ? dir.normalize() : null;
     }
 
     public static float yawOf(Vec3 dir) {
@@ -329,6 +359,13 @@ public class QuadStarProjectile extends Projectile {
                     this.targetUUID = target.getUUID();
                 }
                 return target;
+            }
+            LivingEntity attacker = lastAttacker(mob);
+            if (attacker != null) {
+                if (this.rememberTarget) {
+                    this.targetUUID = attacker.getUUID();
+                }
+                return attacker;
             }
         }
         return null;
