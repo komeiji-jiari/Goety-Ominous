@@ -4,7 +4,6 @@ import com.Polarice3.Goety.api.magic.SpellType;
 import com.Polarice3.Goety.common.enchantments.ModEnchantments;
 import com.Polarice3.Goety.common.magic.Spell;
 import com.Polarice3.Goety.common.magic.SpellStat;
-import com.Polarice3.Goety.config.SpellConfig;
 import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.ally.mm.IcicleSpikeServant;
@@ -40,15 +39,6 @@ public class IcicleSlamSpell extends Spell {
     }
 
     @Override
-    public int soulCost(LivingEntity caster, ItemStack staff) {
-        int cost = super.soulCost(caster, staff);
-        if (WandUtil.enchantedFocus(caster) && !SpellConfig.EnchantMultiCost.get()) {
-            return cost * 2;
-        }
-        return cost;
-    }
-
-    @Override
     public SoundEvent CastingSound() {
         return ModSounds.ICE_SPIKE_CAST.get();
     }
@@ -75,7 +65,7 @@ public class IcicleSlamSpell extends Spell {
             potency += WandUtil.getLevels(ModEnchantments.POTENCY.get(), caster);
         }
 
-        float damage = MmConfig.IcicleSlamDamage.get().floatValue() + potency;
+        float damage = MmConfig.IcicleSlamDamage.get().floatValue() * WandUtil.damageMultiply() + potency;
         int freezingLength = MmConfig.IcicleSlamFreezingLength.get();
         int freezingLevel = MmConfig.IcicleSlamFreezingLevel.get();
         boolean ignoresInvulnerability = MmConfig.IcicleSlamIgnoresInvulnerability.get();

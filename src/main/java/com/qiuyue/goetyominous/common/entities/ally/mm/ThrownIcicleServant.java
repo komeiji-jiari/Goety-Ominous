@@ -16,11 +16,16 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.OwnableEntity;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
@@ -30,6 +35,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraftforge.network.NetworkHooks;
 
 public class ThrownIcicleServant extends ThrowableProjectile {
+    private static final EntityDataAccessor<Float> DATA_SCALE = SynchedEntityData.defineId(ThrownIcicleServant.class, EntityDataSerializers.FLOAT);
     public float damage = 0.0F;
     public int freezingLength = 0;
     public int freezingLevel = 0;
@@ -156,6 +162,27 @@ public class ThrownIcicleServant extends ThrowableProjectile {
     }
 
     protected void defineSynchedData() {
+        this.entityData.define(DATA_SCALE, 1.0F);
+    }
+
+    public void onSyncedDataUpdated(EntityDataAccessor<?> p_147250_) {
+        super.onSyncedDataUpdated(p_147250_);
+        if (DATA_SCALE.equals(p_147250_)) {
+            this.refreshDimensions();
+        }
+    }
+
+    public EntityDimensions getDimensions(Pose p_19975_) {
+        return super.getDimensions(p_19975_).scale(this.getScale());
+    }
+
+    public float getScale() {
+        return this.entityData.get(DATA_SCALE);
+    }
+
+    public void setScale(float scale) {
+        this.entityData.set(DATA_SCALE, scale);
+        this.refreshDimensions();
     }
 
     public void addAdditionalSaveData(CompoundTag tag) {
@@ -166,6 +193,7 @@ public class ThrownIcicleServant extends ThrowableProjectile {
         tag.putInt("DisableShieldTime", this.disableShieldLength);
         tag.putBoolean("IgnoresInvulTime", this.ignoresInvulTime);
         tag.putBoolean("SpellOwned", this.spellOwned);
+        tag.putFloat("Scale", this.getScale());
     }
 
     public void readAdditionalSaveData(CompoundTag tag) {
@@ -186,6 +214,9 @@ public class ThrownIcicleServant extends ThrowableProjectile {
             this.ignoresInvulTime = tag.getBoolean("IgnoresInvulTime");
         }
         this.spellOwned = tag.getBoolean("SpellOwned");
+        if (tag.contains("Scale")) {
+            this.setScale(tag.getFloat("Scale"));
+        }
     }
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {

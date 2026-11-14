@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "text",
-      "text": "This improved icicle spell fires a larger, more powerful icicle that pierces through creatures while inflicting Freezing on them."
+      "text": "This improved icicle spell launches a much larger, sharper icicle that pierces through creatures while inflicting Freezing on them."
     },
     {
       "type": "patchouli:crafting",
@@ -15,7 +15,7 @@
     },
     {
       "type": "text",
-      "text": "A Frost Staff allows you to fire 3 dense icicles at once."
+      "text": "A Frost Staff makes the icicle larger and faster, dealing more damage and inflicting longer-lasting Freezing and shield-disabling effects."
     }
   ]
 }

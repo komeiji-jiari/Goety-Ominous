@@ -59,31 +59,27 @@ public class IcicleSpikeSpell extends Spell {
 
     @Override
     public void SpellResult(ServerLevel worldIn, LivingEntity caster, ItemStack staff, SpellStat spellStat) {
-        float damage = 3.0F + spellStat.getPotency();
+        float damage = MmConfig.IcicleSpikeDamage.get().floatValue() * WandUtil.damageMultiply();
         float velocity = spellStat.getVelocity();
+        float potency = spellStat.getPotency();
         if (WandUtil.enchantedFocus(caster)) {
-            damage += WandUtil.getLevels(ModEnchantments.POTENCY.get(), caster);
+            potency += WandUtil.getLevels(ModEnchantments.POTENCY.get(), caster);
             velocity += WandUtil.getLevels(ModEnchantments.VELOCITY.get(), caster) / 3.0F;
         }
+        boolean big = this.rightStaff(staff);
 
-        if (this.rightStaff(staff)) {
-            this.fire(worldIn, caster, damage, velocity, 0.0F);
-            this.fire(worldIn, caster, damage, velocity, -2.0F);
-            this.fire(worldIn, caster, damage, velocity, 2.0F);
-        } else {
-            this.fire(worldIn, caster, damage, velocity, 0.0F);
-        }
-    }
-
-    private void fire(ServerLevel worldIn, LivingEntity caster, float damage, float velocity, float yawOffset) {
         ThrownIcicleServant icicle = new ThrownIcicleServant(worldIn, caster);
-        icicle.damage = damage;
-        icicle.freezingLength = MutantFrozenZombieCommonConfig.thrown_icicle_freezing_length.get();
+        icicle.damage = (big ? damage * 1.5F : damage) + potency;
+        icicle.freezingLength = MutantFrozenZombieCommonConfig.thrown_icicle_freezing_length.get() * (big ? 3 : 2) / 2;
         icicle.freezingLevel = MutantFrozenZombieCommonConfig.thrown_icicle_freezing_level.get();
-        icicle.disableShieldLength = MutantFrozenZombieCommonConfig.thrown_icicle_disable_shield_length.get();
+        icicle.disableShieldLength = MutantFrozenZombieCommonConfig.thrown_icicle_disable_shield_length.get() * (big ? 2 : 1);
         icicle.ignoresInvulTime = MutantFrozenZombieCommonConfig.ignores_invulnerability_time.get();
         icicle.spellOwned = true;
-        icicle.shootFromRotation(caster, caster.getXRot(), caster.getYRot() + yawOffset, 0.0F, velocity, 1.0F);
+        if (big) {
+            icicle.setScale(1.5F);
+            velocity *= 1.5F;
+        }
+        icicle.shootFromRotation(caster, caster.getXRot(), caster.getYRot(), 0.0F, velocity, 1.0F);
         worldIn.addFreshEntity(icicle);
     }
 }

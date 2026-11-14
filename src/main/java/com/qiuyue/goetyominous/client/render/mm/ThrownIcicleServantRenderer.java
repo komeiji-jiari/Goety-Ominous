@@ -31,6 +31,8 @@ public class ThrownIcicleServantRenderer extends EntityRenderer<ThrownIcicleServ
         p_116114_.pushPose();
         p_116114_.mulPose(Axis.YP.rotationDegrees(Mth.lerp(p_116113_, p_116111_.yRotO, p_116111_.getYRot()) + 180.0F));
         p_116114_.mulPose(Axis.XP.rotationDegrees(Mth.lerp(p_116113_, p_116111_.xRotO, p_116111_.getXRot())));
+        float scale = p_116111_.getScale();
+        p_116114_.scale(scale, scale, scale);
         p_116114_.translate(0.0, -0.8, 1.0);
         RenderType RENDER_TYPE = RenderType.entityCutoutNoCull(this.getTextureLocation(p_116111_));
         VertexConsumer vertexconsumer = p_116115_.getBuffer(RENDER_TYPE);
