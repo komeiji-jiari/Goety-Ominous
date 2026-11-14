@@ -106,6 +106,10 @@ public class MutantHoglinSineWaveAnimations {
     }
 
     public static void mutantHoglinChargingAnimation(MutantHoglinServantModel<?> model, float tick, float speedMultiplier, float amountMultiplier) {
+        mutantHoglinChargingAnimation(model, tick, speedMultiplier, amountMultiplier, 1.0F);
+    }
+
+    public static void mutantHoglinChargingAnimation(MutantHoglinServantModel<?> model, float tick, float speedMultiplier, float amountMultiplier, float bodySwayMultiplier) {
         SineWaveAnimationUtils.addSineWaveMotionToModelPart(model.rightFrontLegLower, 62.0F, 250.0F, tick, 0.0F, floatMax, -50.0F, speedMultiplier, amountMultiplier, SineWaveMotionTypes.ROTATION_X);
         SineWaveAnimationUtils.addSineWaveMotionToModelPart(model.rightFrontLeg, -38.0F, 250.0F, tick, -floatMax, floatMax, -100.0F, speedMultiplier, amountMultiplier, SineWaveMotionTypes.ROTATION_X);
         SineWaveAnimationUtils.addSineWaveMotionToModelPart(model.rightFrontLeg, 9.0F, 250.0F, tick, 0.0F, floatMax, -40.0F, speedMultiplier, amountMultiplier, SineWaveMotionTypes.POSITION_Y);
@@ -142,14 +146,14 @@ public class MutantHoglinSineWaveAnimations {
         SineWaveAnimationUtils.adjustPositionOfModelPart(model.leftEar, 67.4419F, amountMultiplier, SineWaveMotionTypes.ROTATION_Z);
         SineWaveAnimationUtils.adjustPositionOfModelPart(model.leftEar, -2.0F, amountMultiplier, SineWaveMotionTypes.POSITION_Y);
         SineWaveAnimationUtils.adjustPositionOfModelPart(model.leftEar, -0.5F, amountMultiplier, SineWaveMotionTypes.POSITION_Z);
-        SineWaveAnimationUtils.addSineWaveMotionToModelPart(model.head, -6.5F, 250.0F, tick, -floatMax, floatMax, -200.0F, speedMultiplier, amountMultiplier, SineWaveMotionTypes.ROTATION_X);
+        SineWaveAnimationUtils.addSineWaveMotionToModelPart(model.head, -6.5F, 250.0F, tick, -floatMax, floatMax, -200.0F, speedMultiplier, amountMultiplier * bodySwayMultiplier, SineWaveMotionTypes.ROTATION_X);
         SineWaveAnimationUtils.adjustPositionOfModelPart(model.head, -20.0F, amountMultiplier, SineWaveMotionTypes.ROTATION_X);
-        SineWaveAnimationUtils.addSineWaveMotionToModelPart(model.neck, -6.5F, 250.0F, tick, -floatMax, floatMax, -100.0F, speedMultiplier, amountMultiplier, SineWaveMotionTypes.ROTATION_X);
+        SineWaveAnimationUtils.addSineWaveMotionToModelPart(model.neck, -6.5F, 250.0F, tick, -floatMax, floatMax, -100.0F, speedMultiplier, amountMultiplier * bodySwayMultiplier, SineWaveMotionTypes.ROTATION_X);
         SineWaveAnimationUtils.adjustPositionOfModelPart(model.neck, 15.0F, amountMultiplier, SineWaveMotionTypes.ROTATION_X);
-        SineWaveAnimationUtils.addSineWaveMotionToModelPart(model.chest, -3.5F, 250.0F, tick, -floatMax, floatMax, -50.0F, speedMultiplier, amountMultiplier, SineWaveMotionTypes.ROTATION_X);
+        SineWaveAnimationUtils.addSineWaveMotionToModelPart(model.chest, -3.5F, 250.0F, tick, -floatMax, floatMax, -50.0F, speedMultiplier, amountMultiplier * bodySwayMultiplier, SineWaveMotionTypes.ROTATION_X);
         SineWaveAnimationUtils.adjustPositionOfModelPart(model.chest, 22.0F, amountMultiplier, SineWaveMotionTypes.ROTATION_X);
-        SineWaveAnimationUtils.addSineWaveMotionToModelPart(model.body, -4.0F, 250.0F, tick, -floatMax, floatMax, 0.0F, speedMultiplier, amountMultiplier, SineWaveMotionTypes.ROTATION_X);
-        SineWaveAnimationUtils.addSineWaveMotionToModelPart(model.body, 3.5F, 250.0F, tick, -floatMax, floatMax, -140.0F, speedMultiplier, amountMultiplier, SineWaveMotionTypes.POSITION_Y);
+        SineWaveAnimationUtils.addSineWaveMotionToModelPart(model.body, -4.0F, 250.0F, tick, -floatMax, floatMax, 0.0F, speedMultiplier, amountMultiplier * bodySwayMultiplier, SineWaveMotionTypes.ROTATION_X);
+        SineWaveAnimationUtils.addSineWaveMotionToModelPart(model.body, 3.5F, 250.0F, tick, -floatMax, floatMax, -140.0F, speedMultiplier, amountMultiplier * bodySwayMultiplier, SineWaveMotionTypes.POSITION_Y);
         SineWaveAnimationUtils.adjustPositionOfModelPart(model.body, -22.0F, amountMultiplier, SineWaveMotionTypes.ROTATION_X);
         SineWaveAnimationUtils.adjustPositionOfModelPart(model.body, 4.5F, amountMultiplier, SineWaveMotionTypes.POSITION_Y);
     }

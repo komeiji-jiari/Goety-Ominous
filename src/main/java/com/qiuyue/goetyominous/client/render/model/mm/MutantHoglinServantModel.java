@@ -6,6 +6,7 @@ import com.qiuyue.goetyominous.client.render.model.animation.mm.MutantHoglinSine
 import com.qiuyue.goetyominous.common.entities.ally.mm.MutantHoglinServant;
 import java.util.List;
 import java.util.stream.Collectors;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -35,6 +36,9 @@ public class MutantHoglinServantModel<T extends MutantHoglinServant> extends Hie
     public final ModelPart leftFrontLegLower;
     public final ModelPart rightFrontLeg;
     public final ModelPart rightFrontLegLower;
+    private final ModelPart bodyMane;
+    private final ModelPart chestMane;
+    private final ModelPart neckMane;
 
     public MutantHoglinServantModel(ModelPart root) {
         this.root = root;
@@ -52,15 +56,21 @@ public class MutantHoglinServantModel<T extends MutantHoglinServant> extends Hie
         this.leftFrontLegLower = this.leftFrontLeg.getChild("leftFrontLegLower");
         this.rightFrontLeg = this.everything.getChild("rightFrontLeg");
         this.rightFrontLegLower = this.rightFrontLeg.getChild("rightFrontLegLower");
+        this.bodyMane = this.body.hasChild("bodyMane") ? this.body.getChild("bodyMane") : null;
+        this.chestMane = this.chest.hasChild("chestMane") ? this.chest.getChild("chestMane") : null;
+        this.neckMane = this.neck.hasChild("neckMane") ? this.neck.getChild("neckMane") : null;
     }
 
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
         PartDefinition everything = partdefinition.addOrReplaceChild("everything", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
-        PartDefinition body = everything.addOrReplaceChild("body", CubeListBuilder.create().texOffs(67, 0).addBox(-11.0F, -11.0F, -36.0F, 22.0F, 22.0F, 36.0F, new CubeDeformation(0.0F)).texOffs(193, 205).addBox(0.1F, -32.0F, -36.0F, 0.0F, 21.0F, 28.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -19.0F, 27.0F));
-        PartDefinition chest = body.addOrReplaceChild("chest", CubeListBuilder.create().texOffs(29, 60).addBox(-15.0F, -15.0F, -24.0F, 30.0F, 28.0F, 24.0F, new CubeDeformation(0.0F)).texOffs(192, 163).addBox(0.0F, -39.0F, -24.0F, 0.0F, 24.0F, 32.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -1.0F, -28.0F));
-        PartDefinition neck = chest.addOrReplaceChild("neck", CubeListBuilder.create().texOffs(15, 65).addBox(-5.0F, -5.0F, -8.0F, 10.0F, 10.0F, 8.0F, new CubeDeformation(0.0F)).texOffs(203, 151).addBox(-0.1F, -21.0F, -8.0F, 0.0F, 16.0F, 14.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, -24.0F));
+        PartDefinition body = everything.addOrReplaceChild("body", CubeListBuilder.create().texOffs(67, 0).addBox(-11.0F, -11.0F, -36.0F, 22.0F, 22.0F, 36.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -19.0F, 27.0F));
+        body.addOrReplaceChild("bodyMane", CubeListBuilder.create().texOffs(193, 205).addBox(0.1F, -32.0F, -36.0F, 0.0F, 21.0F, 28.0F, new CubeDeformation(0.0F)), PartPose.ZERO);
+        PartDefinition chest = body.addOrReplaceChild("chest", CubeListBuilder.create().texOffs(29, 60).addBox(-15.0F, -15.0F, -24.0F, 30.0F, 28.0F, 24.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -1.0F, -28.0F));
+        chest.addOrReplaceChild("chestMane", CubeListBuilder.create().texOffs(192, 163).addBox(0.0F, -39.0F, -24.0F, 0.0F, 24.0F, 32.0F, new CubeDeformation(0.0F)), PartPose.ZERO);
+        PartDefinition neck = chest.addOrReplaceChild("neck", CubeListBuilder.create().texOffs(15, 65).addBox(-5.0F, -5.0F, -8.0F, 10.0F, 10.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, -24.0F));
+        neck.addOrReplaceChild("neckMane", CubeListBuilder.create().texOffs(203, 151).addBox(-0.1F, -21.0F, -8.0F, 0.0F, 16.0F, 14.0F, new CubeDeformation(0.0F)), PartPose.ZERO);
         PartDefinition head = neck.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 0).addBox(-7.0F, -6.0F, -19.0F, 14.0F, 6.0F, 19.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -3.0F, -4.0F, 1.1781F, 0.0F, 0.0F));
         head.addOrReplaceChild("leftEar", CubeListBuilder.create().texOffs(47, 0).mirror().addBox(0.0F, 0.0F, -2.5F, 8.0F, 1.0F, 5.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(7.0F, -3.0F, -1.5F, -1.5708F, 0.0F, 0.0F));
         head.addOrReplaceChild("tusks", CubeListBuilder.create().texOffs(87, 162).mirror().addBox(-10.0F, -13.0F, -2.0F, 3.0F, 18.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false).texOffs(87, 162).addBox(7.0F, -13.0F, -2.0F, 3.0F, 18.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(57, 162).addBox(7.0F, -13.0F, 2.0F, 3.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)).texOffs(58, 163).mirror().addBox(-10.0F, -13.0F, 2.0F, 3.0F, 3.0F, 5.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(0.0F, -3.0F, -14.0F));
@@ -78,6 +88,20 @@ public class MutantHoglinServantModel<T extends MutantHoglinServant> extends Hie
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.root().getAllParts().forEach(ModelPart::resetPose);
 
+        Minecraft minecraft = Minecraft.getInstance();
+        boolean firstPersonRider = minecraft.player != null
+                && entity.getFirstPassenger() == minecraft.player
+                && minecraft.options.getCameraType().isFirstPerson();
+        if (this.bodyMane != null) {
+            this.bodyMane.visible = !firstPersonRider;
+        }
+        if (this.chestMane != null) {
+            this.chestMane.visible = !firstPersonRider;
+        }
+        if (this.neckMane != null) {
+            this.neckMane.visible = !firstPersonRider;
+        }
+
         float deltaTicks;
         if (entity.walkPhaseAge < 0.0F) {
             deltaTicks = 1.0F;
@@ -90,7 +114,10 @@ public class MutantHoglinServantModel<T extends MutantHoglinServant> extends Hie
         entity.walkPhase += walkSpeedFactor * deltaTicks;
         float walkTick = entity.walkPhase * ((float) Math.PI / 180.0F) / 20.0F;
 
-        boolean movingOnLand = entity.onGround() && !entity.isInWaterOrBubble() && limbSwingAmount > 0.005F;
+        double movedX = entity.getX() - entity.xOld;
+        double movedZ = entity.getZ() - entity.zOld;
+        boolean physicallyMoving = movedX * movedX + movedZ * movedZ >= 1.0E-4D;
+        boolean movingOnLand = entity.onGround() && !entity.isInWaterOrBubble() && physicallyMoving;
 
         boolean shouldPlayChargingAnimation = entity.charging && entity.notCurrentlyPlayingKeyframeAnimation();
         boolean shouldPlayWalkAnimation = movingOnLand && !shouldPlayChargingAnimation && entity.notCurrentlyPlayingKeyframeAnimation();
@@ -110,7 +137,7 @@ public class MutantHoglinServantModel<T extends MutantHoglinServant> extends Hie
         this.animateHeadLookTarget(netHeadYaw, headPitch);
 
         float sineTick = SineWaveAnimationUtils.getTick(entity.tickCount, true);
-        MutantHoglinSineWaveAnimations.mutantHoglinChargingAnimation(this, sineTick, 3.2F, entity.chargeAnimationAmount);
+        MutantHoglinSineWaveAnimations.mutantHoglinChargingAnimation(this, sineTick, 3.2F, entity.chargeAnimationAmount, entity.chargeBodySwayMultiplier());
         MutantHoglinSineWaveAnimations.mutantHoglinWalkAnimation(this, walkTick, 1.2F, entity.walkAnimationAmount);
         MutantHoglinSineWaveAnimations.mutantHoglinIdleAnimation(this, sineTick, 1.0F, entity.idleAnimationAmount);
 

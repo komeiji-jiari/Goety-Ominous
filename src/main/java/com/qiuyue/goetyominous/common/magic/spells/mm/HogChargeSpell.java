@@ -1,18 +1,29 @@
 package com.qiuyue.goetyominous.common.magic.spells.mm;
 
+import com.Polarice3.Goety.api.items.magic.IWand;
 import com.Polarice3.Goety.api.magic.SpellType;
+import com.Polarice3.Goety.client.particles.CircleExplodeParticleOption;
+import com.Polarice3.Goety.client.particles.ModParticleTypes;
+import com.Polarice3.Goety.client.particles.SphereExplodeParticleOption;
 import com.Polarice3.Goety.common.enchantments.ModEnchantments;
+import com.Polarice3.Goety.common.entities.util.CameraShake;
 import com.Polarice3.Goety.common.magic.EverChargeSpell;
 import com.Polarice3.Goety.common.magic.SpellStat;
+import com.Polarice3.Goety.utils.ColorUtil;
+import com.Polarice3.Goety.utils.SpellExplosion;
 import com.Polarice3.Goety.utils.WandUtil;
+import com.alexander.mutantmore.config.mutant_hoglin.MutantHoglinCommonConfig;
+import com.alexander.mutantmore.init.ParticleTypeInit;
 import com.alexander.mutantmore.init.SoundEventInit;
+import com.alexander.mutantmore.util.MiscUtils;
 import com.qiuyue.goetyominous.common.magic.utils.SmeltHelper;
 import com.qiuyue.goetyominous.utils.BossUtil;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -26,13 +37,17 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import com.qiuyue.goetyominous.config.mm.MmConfig;
 
 public class HogChargeSpell extends EverChargeSpell {
 
     public static final int MAX_CAST_TICKS = 120;
     private static final int SOUND_INTERVAL = 10;
+    private final Set<UUID> channeling = new HashSet<>();
 
     @Override
     public SpellStat defaultStats() {
@@ -80,6 +95,7 @@ public class HogChargeSpell extends EverChargeSpell {
 
     @Override
     public void SpellResult(ServerLevel worldIn, LivingEntity caster, ItemStack staff, SpellStat spellStat) {
+        this.channeling.add(caster.getUUID());
         int potency = spellStat.getPotency();
         if (WandUtil.enchantedFocus(caster)) {
             potency += WandUtil.getPotencyLevel(caster);
@@ -132,44 +148,78 @@ public class HogChargeSpell extends EverChargeSpell {
                 }
             }
 
-            AABB damageBox = caster.getBoundingBox()
-                    .inflate(1.5, 0.5, 1.5)
-                    .expandTowards(lookVec.scale(3.0));
+            AABB damageBox = new AABB(
+                    caster.getX() - 1.45D, caster.getY(), caster.getZ() - 1.45D,
+                    caster.getX() + 1.45D, caster.getY() + 3.0D, caster.getZ() + 1.45D);
             for (LivingEntity target : worldIn.getEntitiesOfClass(LivingEntity.class, damageBox)) {
                 if (target == caster) continue;
                 if (ServantAllyUtil.areAllied(caster, target)) continue;
                 if (target instanceof Player player && (player.isCreative() || player.isSpectator())) continue;
                 if (!caster.canAttack(target)) continue;
 
-                float dmg = MmConfig.HogChargeDamage.get().floatValue() * WandUtil.damageMultiply() + potency;
-                target.hurt(worldIn.damageSources().mobAttack(caster), dmg);
-                target.setSecondsOnFire(5);
                 if (!BossUtil.isBoss(target)) {
-                    target.setDeltaMovement(target.getDeltaMovement().add(lookVec.scale(1.5)));
-                    target.hurtMarked = true;
+                    double dx = target.getX() - caster.getX();
+                    double dz = target.getZ() - caster.getZ();
+                    double distSqr = Math.max(dx * dx + dz * dz, 0.001D);
+                    target.push(dx / distSqr * 4.0D, 0.2D, dz / distSqr * 4.0D);
                 }
 
-                worldIn.sendParticles(ParticleTypes.CLOUD,
+                float dmg = MmConfig.HogChargeDamage.get().floatValue() * WandUtil.damageMultiply() + potency;
+                target.hurt(worldIn.damageSources().mobAttack(caster), dmg);
+                MiscUtils.disableShield(target, MutantHoglinCommonConfig.charge_disable_shield_length.get());
+                target.setSecondsOnFire(5);
+
+                worldIn.sendParticles(ModParticleTypes.SMALL_FIRE.get(),
                         target.getX(), target.getY() + target.getBbHeight() / 2, target.getZ(),
                         3, 0.3, 0.1, 0.3, 0.02);
             }
 
-            Vec3 base = caster.position().add(0, caster.getBbHeight() * 0.4, 0);
-            worldIn.sendParticles(ParticleTypes.CLOUD,
+            Vec3 base = caster.position().add(0, 3.0D * 0.4D, 0);
+            worldIn.sendParticles(ModParticleTypes.SMALL_FIRE.get(),
                     base.x, base.y, base.z,
                     10, 0.6, 0.3, 0.6, 0.05);
-        }
 
-        Vec3 pos = caster.position().add(0, caster.getBbHeight() * 0.5, 0);
-        for (int i = 0; i < 10; i++) {
-            worldIn.addParticle(ParticleTypes.CLOUD,
-                    pos.x + worldIn.random.nextGaussian() * 0.7,
-                    pos.y + worldIn.random.nextGaussian() * 0.5,
-                    pos.z + worldIn.random.nextGaussian() * 0.7,
-                    lookVec.x * worldIn.random.nextFloat() * 0.8,
-                    0.05 + worldIn.random.nextFloat() * 0.1,
-                    lookVec.z * worldIn.random.nextFloat() * 0.8);
+            if (staff.getItem() instanceof IWand wand && wand.ShotsFired(staff) >= MAX_CAST_TICKS) {
+                this.endChannel(worldIn, caster);
+            }
         }
+    }
+
+    @Override
+    public void stopSpell(ServerLevel worldIn, LivingEntity caster, ItemStack staff, ItemStack focus, int castTime, SpellStat spellStat) {
+        this.channeling.remove(caster.getUUID());
+    }
+
+    private void endChannel(ServerLevel level, LivingEntity caster) {
+        if (!this.channeling.remove(caster.getUUID())) {
+            return;
+        }
+        Vec3 pos = caster.position();
+        this.explode(level, caster, pos.x, pos.y, pos.z, 5.0F);
+    }
+
+    private void explode(ServerLevel level, LivingEntity caster, double x, double y, double z, float power) {
+        ColorUtil color = new ColorUtil(16746757);
+        level.sendParticles(new CircleExplodeParticleOption(color.red, color.green, color.blue, power, 1),
+                x, y, z, 0, 0.0D, 0.0D, 0.0D, 0.0D);
+        level.sendParticles(new SphereExplodeParticleOption(color.red, color.green, color.blue, power, 1),
+                x, y, z, 0, 0.0D, 0.0D, 0.0D, 0.0D);
+        for (int i = 0; i < 32; i++) {
+            ColorUtil fireColor = new ColorUtil(11312015);
+            level.sendParticles(ModParticleTypes.BIG_CULT_SPELL.get(),
+                    x + (level.random.nextDouble() - 0.5D) * 2.0D, y,
+                    z + (level.random.nextDouble() - 0.5D) * 2.0D,
+                    0, fireColor.red, fireColor.green, fireColor.blue, 1.0D);
+            level.sendParticles(ModParticleTypes.BIG_FIRE_GROUND.get(),
+                    x + (level.random.nextDouble() - 0.5D) * 1.0D, y,
+                    z + (level.random.nextDouble() - 0.5D) * 1.0D,
+                    1, 0.0D, 0.0D, 0.0D, 0.0D);
+        }
+        level.sendParticles(ParticleTypeInit.SHOCKWAVE.get(), x, y, z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
+        new SpellExplosion(level, caster, level.damageSources().explosion(caster, caster), x, y, z, power, 0.0F);
+        level.playSound(null, x, y, z, SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 4.0F,
+                (1.0F + (level.random.nextFloat() - level.random.nextFloat()) * 0.2F) * 0.7F);
+        CameraShake.cameraShake(level, new Vec3(x, y, z), power * 2.0F, 0.1F, 0, 20);
     }
 
     private boolean isBreakable(ServerLevel worldIn, BlockPos pos, BlockState state) {

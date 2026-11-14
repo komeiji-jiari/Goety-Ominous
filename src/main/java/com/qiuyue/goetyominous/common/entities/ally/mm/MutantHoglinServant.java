@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.mm;
 
+import com.Polarice3.Goety.api.items.magic.IWand;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.init.ModMobType;
 import com.alexander.mutantmore.ai.goals.AllDirectionsTargetGoal;
@@ -165,7 +166,7 @@ public class MutantHoglinServant extends AbstractMutantServant implements Player
         Item item = itemstack.getItem();
 
         if (this.getTrueOwner() == null || pPlayer != this.getTrueOwner()) {
-            return InteractionResult.SUCCESS;
+            return InteractionResult.PASS;
         }
 
         if (pPlayer.isShiftKeyDown() && item == Items.CRIMSON_FUNGUS && this.getHealth() < this.getMaxHealth()) {
@@ -216,11 +217,16 @@ public class MutantHoglinServant extends AbstractMutantServant implements Player
             return InteractionResult.SUCCESS;
         }
 
-        if (!this.isVehicle()) {
+        if (!this.isVehicle() && !isHoldingWand(pPlayer)) {
             pPlayer.startRiding(this);
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
+    }
+
+    private static boolean isHoldingWand(Player player) {
+        return player.getMainHandItem().getItem() instanceof IWand
+                || player.getOffhandItem().getItem() instanceof IWand;
     }
 
     private static boolean isWitherNecromancerSoulJar(ItemStack stack) {
@@ -313,14 +319,14 @@ public class MutantHoglinServant extends AbstractMutantServant implements Player
 
     @Override
     public double getPassengersRidingOffset() {
-        return super.getPassengersRidingOffset() + 0.6D;
+        return super.getPassengersRidingOffset() + 0.7D;
     }
 
     @Override
     protected void positionRider(Entity pPassenger, Entity.MoveFunction pCallback) {
         super.positionRider(pPassenger, pCallback);
         if (this.isVehicle()) {
-            Vec3 forward = PositionUtils.getOffsetMotion(this, 0.0, 0.0, 1.35, 0.0F, this.yBodyRot);
+            Vec3 forward = PositionUtils.getOffsetMotion(this, 0.0, 0.0, 0.4, 0.0F, this.yBodyRot);
             pPassenger.setPos(pPassenger.getX() + forward.x, pPassenger.getY() + forward.y, pPassenger.getZ() + forward.z);
         }
     }
@@ -424,6 +430,10 @@ public class MutantHoglinServant extends AbstractMutantServant implements Player
 
     public float getEnragedAmount() {
         return Mth.clamp(this.enragedAmount, 0.0F, 1.0F);
+    }
+
+    public float chargeBodySwayMultiplier() {
+        return 1.0F;
     }
 
     public boolean doHurtTarget(Entity p_34207_) {

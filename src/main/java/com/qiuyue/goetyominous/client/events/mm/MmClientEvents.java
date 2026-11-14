@@ -13,11 +13,26 @@ import com.qiuyue.goetyominous.common.init.mm.MmEntityRegistry;
 import com.qiuyue.goetyominous.common.init.mm.ModSpellControllers;
 import com.qiuyue.goetyominous.compat.mod.MutantMoreCompat;
 import com.qiuyue.goetyominous.config.mm.MmConfig;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class MmClientEvents {
+
+    private static EntityRendererProvider.Context rendererContext;
+
+    @SubscribeEvent
+    public static void captureRendererContext(EntityRenderersEvent.AddLayers event) {
+        if (!MutantMoreCompat.isMutantMoreLoaded()) {
+            return;
+        }
+        rendererContext = event.getContext();
+    }
+
+    public static EntityRendererProvider.Context getRendererContext() {
+        return rendererContext;
+    }
 
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
