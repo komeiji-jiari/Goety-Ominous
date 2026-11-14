@@ -11,6 +11,7 @@ import com.alexander.mutantmore.init.MMDamageTypes;
 import com.alexander.mutantmore.init.ParticleTypeInit;
 import com.alexander.mutantmore.init.SoundEventInit;
 import com.alexander.mutantmore.init.TagInit.Blocks;
+import com.alexander.mutantmore.interfaces.IHasCustomExplosion;
 import com.alexander.mutantmore.util.MiscUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleTypes;
@@ -37,7 +38,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.HitResult.Type;
 import net.minecraft.world.phys.Vec3;
 
-public class MutantShulkerServantBullet extends SpellThrowableProjectile {
+public class MutantShulkerServantBullet extends SpellThrowableProjectile implements IHasCustomExplosion {
     private static final EntityDataAccessor<Integer> HITS_LEFT =
             SynchedEntityData.defineId(MutantShulkerServantBullet.class, EntityDataSerializers.INT);
 
@@ -242,6 +243,15 @@ public class MutantShulkerServantBullet extends SpellThrowableProjectile {
     }
 
     @Override
+    public boolean canHarmWithExplosion(Entity target) {
+        LivingEntity owner = this.getOwner();
+        if (owner != null && MobUtil.areAllies(owner, target)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     protected void onHitBlock(BlockHitResult hitResult) {
         super.onHitBlock(hitResult);
         if (!this.level().isClientSide && !this.level().getBlockState(hitResult.getBlockPos()).is(Blocks.MUTANT_SHULKER_BULLET_FLIES_THROUGH)) {
@@ -267,9 +277,8 @@ public class MutantShulkerServantBullet extends SpellThrowableProjectile {
     }
 
     private void explode() {
-        Entity damagingMob = this.getOwner() != null ? this.getOwner() : this;
         LivingEntity owner = this.getOwner();
-        MiscUtils.customExplosion(this.level(), damagingMob,
+        MiscUtils.customExplosion(this.level(), this,
                 this.damageSources().explosion(this, owner),
                 null, this.getX(), this.getY(), this.getZ(),
                 Mth.clamp(this.explosionSize, 1.0F, Float.MAX_VALUE), false,

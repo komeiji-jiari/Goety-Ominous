@@ -58,6 +58,7 @@ public class MutantShulkerServantTrap extends Summoned {
     public int snapCooldownTick;
     public int snapCooldownLength = 40;
     public int bonusDamage = 0;
+    public float damageMultiplier = 1.0F;
     public boolean voidTouchedHit = false;
     public int bulletTurnTimeReduction = 0;
     public float bulletTrackSpeed = 0.15F;
@@ -218,7 +219,7 @@ public class MutantShulkerServantTrap extends Summoned {
             MmScreenShake.shake(this.level(), 6, 0.075f, this.blockPosition(), 5);
             float damage = (this.isSpawnedByMutantShulker()
                     ? MutantShulkerRewardsCommonConfig.trap_mutant_shulker_damage.get().floatValue()
-                    : MutantShulkerRewardsCommonConfig.trap_player_damage.get().floatValue()) + this.bonusDamage;
+                    : MutantShulkerRewardsCommonConfig.trap_player_damage.get().floatValue()) * this.damageMultiplier + this.bonusDamage;
             List<Entity> hurtables = this.level().getEntities(this, this.getBoundingBox(), this.HURTABLE);
             for (Entity entity : hurtables) {
                 entity.hurt(MMDamageTypes.mutantShulkerTrapAttack(this.damageSources(), this), damage);
@@ -257,7 +258,7 @@ public class MutantShulkerServantTrap extends Summoned {
                 MutantShulkerServantTrapBullet bullet = new MutantShulkerServantTrapBullet(this.level(),
                         owner != null ? owner : this, bulletTarget, null, bulletX, bulletY, bulletZ,
                         this.bulletTrackSpeed);
-                bullet.damage = MutantShulkerRewardsCommonConfig.trap_shulker_bullet_damage.get().floatValue() + this.bonusDamage;
+                bullet.damage = MutantShulkerRewardsCommonConfig.trap_shulker_bullet_damage.get().floatValue() * this.damageMultiplier + this.bonusDamage;
                 this.level().addFreshEntity(bullet);
             }
         }
@@ -332,6 +333,7 @@ public class MutantShulkerServantTrap extends Summoned {
         tag.putByte("Color", this.entityData.get(COLOR_ID));
         tag.putInt("LifeTime", this.lifeTime);
         tag.putFloat("BulletTrackSpeed", this.bulletTrackSpeed);
+        tag.putFloat("DamageMultiplier", this.damageMultiplier);
     }
 
     @Override
@@ -346,6 +348,9 @@ public class MutantShulkerServantTrap extends Summoned {
         }
         if (tag.contains("BulletTrackSpeed")) {
             this.bulletTrackSpeed = tag.getFloat("BulletTrackSpeed");
+        }
+        if (tag.contains("DamageMultiplier")) {
+            this.damageMultiplier = tag.getFloat("DamageMultiplier");
         }
         if (this.isSpawnedByMutantShulker() && !this.hasLifespan()) {
             this.setLimitedLife(MobUtil.getSummonLifespan(this.level()));

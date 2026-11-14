@@ -82,6 +82,7 @@ public class ShulkerScatterSpell extends Spell {
                 trap.setSpawnedByMutantShulker(true);
                 trap.setLimitedLife(MobUtil.getSummonLifespan(worldIn));
                 trap.bonusDamage = potency;
+                trap.damageMultiplier = WandUtil.damageMultiply();
                 trap.voidTouchedHit = usingRightStaff;
                 trap.bulletTurnTimeReduction = Math.min((int) velocity * 20, 100);
                 trap.bulletTrackSpeed = 0.15F * (1.0F + velocity * 0.2F);

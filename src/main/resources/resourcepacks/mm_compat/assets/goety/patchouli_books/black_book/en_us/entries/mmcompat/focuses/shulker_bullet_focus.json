@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "text",
-      "text": "This spell allows you to fire 3 Mutant Shulker missiles in a quick burst. These missiles spread out in a fan, prioritize locking onto the creature in your line of sight, and possess homing capabilities."
+      "text": "This spell is channeled: holding the cast button fires a Mutant Shulker missile every half second, seven in total. It cannot be cast when no hostile creature is in your line of sight, and the channel ends early if the target disappears. The missiles lock onto the creature closest to your crosshair and home in on it."
     },
     {
       "type": "goety:ritual",
