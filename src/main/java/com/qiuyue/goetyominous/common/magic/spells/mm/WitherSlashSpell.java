@@ -65,11 +65,11 @@ public class WitherSlashSpell extends Spell {
         }
 
         float baseDamage = MmConfig.WitherSlashDamage.get().floatValue();
-        float damage = (usingNetherStaff ? baseDamage * 2.5F : baseDamage) + potency;
-        float leech = usingNetherStaff ? 8.0F : 4.0F;
+        float damage = (usingNetherStaff ? 16.0F : baseDamage) * WandUtil.damageMultiply() + potency;
+        float leech = usingNetherStaff ? 12.0F : 4.0F;
         int witherLength = 300;
-        int witherLevel = 1;
-        float size = usingNetherStaff ? 2.0F : 1.0F;
+        int witherLevel = 0;
+        float size = usingNetherStaff ? 3.0F : 1.0F;
         float baseSpeed = 1.5F + velocity * 0.2F;
 
         WitherSlash slash = new WitherSlash(worldIn, caster, caster.getYRot());

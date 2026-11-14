@@ -5,7 +5,6 @@ import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.common.enchantments.ModEnchantments;
 import com.Polarice3.Goety.common.magic.SpellStat;
 import com.Polarice3.Goety.utils.MobUtil;
-import com.Polarice3.Goety.utils.SEHelper;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.compat.mm.MmScreenShake;
 import com.alexander.mutantmore.init.EffectInit;
@@ -78,11 +77,6 @@ public class WitherBreathSpell extends ContinuousControllerSpell<WitherBreathSpe
         return MmConfig.WitherBreathCooldown.get();
     }
 
-    @Override
-    public int soulCost(LivingEntity caster, ItemStack staff) {
-        return 0;
-    }
-
     @Nullable
     @Override
     public SoundEvent CastingSound() {
@@ -122,12 +116,10 @@ public class WitherBreathSpell extends ContinuousControllerSpell<WitherBreathSpe
             duration += WandUtil.getLevels(ModEnchantments.DURATION.get(), caster);
         }
         boolean usingNetherStaff = this.rightStaff(staff);
-        int soulPerSecond = MmConfig.WitherBreathSoulCost.get();
 
         return new WitherBreathController(
                 world, caster.getUUID(),
-                potency, duration, usingNetherStaff,
-                soulPerSecond);
+                potency, duration, usingNetherStaff);
     }
 
     public static class WitherBreathController extends ContinuousControllerSpell.BaseController {
@@ -138,9 +130,7 @@ public class WitherBreathSpell extends ContinuousControllerSpell<WitherBreathSpe
         private int potency;
         private int duration;
         private boolean usingNetherStaff;
-        private int soulCostPerSecond;
 
-        private int soulCounter;
         private boolean areaDamageSpawned;
         private boolean roarPlayed;
 
@@ -149,14 +139,12 @@ public class WitherBreathSpell extends ContinuousControllerSpell<WitherBreathSpe
         }
 
         public WitherBreathController(ServerLevel world, UUID casterUUID,
-                                      int potency, int duration, boolean usingNetherStaff,
-                                      int soulCostPerSecond) {
+                                      int potency, int duration, boolean usingNetherStaff) {
             this(ModSpellControllers.WITHER_BREATH_CONTROLLER.get(), world);
             bindCaster(casterUUID);
             this.potency = potency;
             this.duration = duration;
             this.usingNetherStaff = usingNetherStaff;
-            this.soulCostPerSecond = soulCostPerSecond;
         }
 
         @Override
@@ -175,8 +163,6 @@ public class WitherBreathSpell extends ContinuousControllerSpell<WitherBreathSpe
             potency = tag.getInt("Potency");
             duration = tag.getInt("Duration");
             usingNetherStaff = tag.getBoolean("UsingNetherStaff");
-            soulCostPerSecond = tag.getInt("SoulCostPerSecond");
-            soulCounter = tag.getInt("SoulCounter");
             areaDamageSpawned = tag.getBoolean("AreaDamageSpawned");
             roarPlayed = tag.getBoolean("RoarPlayed");
         }
@@ -187,8 +173,6 @@ public class WitherBreathSpell extends ContinuousControllerSpell<WitherBreathSpe
             tag.putInt("Potency", potency);
             tag.putInt("Duration", duration);
             tag.putBoolean("UsingNetherStaff", usingNetherStaff);
-            tag.putInt("SoulCostPerSecond", soulCostPerSecond);
-            tag.putInt("SoulCounter", soulCounter);
             tag.putBoolean("AreaDamageSpawned", areaDamageSpawned);
             tag.putBoolean("RoarPlayed", roarPlayed);
         }
@@ -220,39 +204,12 @@ public class WitherBreathSpell extends ContinuousControllerSpell<WitherBreathSpe
                 MmScreenShake.shake(level, 100, 0.1F, caster.blockPosition(), 30);
             }
 
+            if (!areaDamageSpawned) {
+                this.spawnBreathParticles(level, caster);
+            }
+
             if (progress > 1.0F) {
-                if (!areaDamageSpawned) {
-                    Vec3 particlePos = PositionUtils.getOffsetPos(caster,
-                            0.0, caster.getBbHeight() * 0.6, caster.getBbWidth() + 1.0, 0.0F, caster.getYHeadRot());
-
-                    for (int i = 0; i < 10; i++) {
-                        Vec3 motion = PositionUtils.getOffsetMotion(caster,
-                                this.random.nextGaussian() * 0.2, this.random.nextGaussian() * 0.2,
-                                0.75 + this.random.nextGaussian() * 0.25, 0.0F, caster.getYHeadRot());
-                        level.sendParticles(ParticleTypeInit.WITHER_GAS.get(),
-                                particlePos.x, particlePos.y, particlePos.z,
-                                0, motion.x, motion.y, motion.z, 1.0);
-                    }
-                    for (int i = 0; i < 20; i++) {
-                        Vec3 motion = PositionUtils.getOffsetMotion(caster,
-                                this.random.nextGaussian() * 0.2, this.random.nextGaussian() * 0.2,
-                                0.75 + this.random.nextGaussian() * 0.25, 0.0F, caster.getYHeadRot());
-                        level.sendParticles(ParticleTypes.SMOKE,
-                                particlePos.x, particlePos.y, particlePos.z,
-                                0, motion.x, motion.y, motion.z, 1.0);
-                    }
-                }
-
                 applyBreathEffects(level, caster, progress);
-
-                soulCounter++;
-                if (soulCounter >= 20) {
-                    soulCounter = 0;
-                    if (!tryPaySoulCost(caster, soulCostPerSecond)) {
-                        discard();
-                        return;
-                    }
-                }
             }
 
             if (!areaDamageSpawned && tick >= CHARGE_UP_TICKS + BREATH_TICKS) {
@@ -261,6 +218,28 @@ public class WitherBreathSpell extends ContinuousControllerSpell<WitherBreathSpe
             }
 
             entityData.set(TICKS, tick + 1);
+        }
+
+        private void spawnBreathParticles(ServerLevel level, LivingEntity caster) {
+            Vec3 particlePos = PositionUtils.getOffsetPos(caster,
+                    0.0, caster.getBbHeight() * 0.6, caster.getBbWidth() + 1.0, 0.0F, caster.getYHeadRot());
+
+            for (int i = 0; i < 10; i++) {
+                Vec3 motion = PositionUtils.getOffsetMotion(caster,
+                        this.random.nextGaussian() * 0.2, this.random.nextGaussian() * 0.2,
+                        0.75 + this.random.nextGaussian() * 0.25, 0.0F, caster.getYHeadRot());
+                level.sendParticles(ParticleTypeInit.WITHER_GAS.get(),
+                        particlePos.x, particlePos.y, particlePos.z,
+                        0, motion.x, motion.y, motion.z, 1.0);
+            }
+            for (int i = 0; i < 20; i++) {
+                Vec3 motion = PositionUtils.getOffsetMotion(caster,
+                        this.random.nextGaussian() * 0.2, this.random.nextGaussian() * 0.2,
+                        0.75 + this.random.nextGaussian() * 0.25, 0.0F, caster.getYHeadRot());
+                level.sendParticles(ParticleTypes.SMOKE,
+                        particlePos.x, particlePos.y, particlePos.z,
+                        0, motion.x, motion.y, motion.z, 1.0);
+            }
         }
 
         private void applyBreathEffects(ServerLevel level, LivingEntity caster, float progress) {
@@ -309,7 +288,7 @@ public class WitherBreathSpell extends ContinuousControllerSpell<WitherBreathSpe
                     level, offsetPos, caster,
                     0.0F, null,
                     BASE_RADIUS, BASE_RADIUS,
-                    0.0F, AREA_DAMAGE_AMOUNT,
+                    0.0F, AREA_DAMAGE_AMOUNT * WandUtil.damageMultiply(),
                     extraTime, 0,
                     false, false, 0.0, 0.0, false, false, 0, false,
                     null, 4);
@@ -318,15 +297,6 @@ public class WitherBreathSpell extends ContinuousControllerSpell<WitherBreathSpe
             areaDamage.witherBreathBuffLevelBonus = potency;
             areaDamage.witherBreathUsingNetherStaff = usingNetherStaff;
             level.addFreshEntity(areaDamage);
-        }
-
-        private boolean tryPaySoulCost(LivingEntity caster, int cost) {
-            if (!(caster instanceof Player player)) return true;
-            if (cost <= 0) return true;
-            if (!SEHelper.getSoulsAmount(player, cost)) return false;
-            SEHelper.decreaseSouls(player, cost);
-            SEHelper.sendSEUpdatePacket(player);
-            return true;
         }
     }
 }

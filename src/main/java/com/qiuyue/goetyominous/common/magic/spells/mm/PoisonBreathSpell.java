@@ -13,6 +13,8 @@ import com.Polarice3.Goety.utils.ModDamageSource;
 import com.Polarice3.Goety.utils.ServerParticleUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.alexander.mutantmore.init.ParticleTypeInit;
+import com.alexander.mutantmore.util.PositionUtils;
+import com.qiuyue.goetyominous.common.entities.ally.mm.AreaDamage;
 import com.qiuyue.goetyominous.config.mm.MmConfig;
 import java.util.List;
 
@@ -30,6 +32,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class PoisonBreathSpell extends BreathingSpell {
 
@@ -107,6 +110,42 @@ public class PoisonBreathSpell extends BreathingSpell {
     }
 
     @Override
+    public void stopSpell(ServerLevel level, LivingEntity caster, ItemStack staff, ItemStack focus, int castTime, SpellStat stat) {
+        int channel = this.shotsNumber(caster, staff);
+        int linger = MmConfig.PoisonBreathLingerDuration.get();
+        if (channel <= 0 || linger <= 0) {
+            return;
+        }
+        int lingerTicks = (int) ((long) linger * Math.min(castTime, channel) / channel);
+        if (lingerTicks <= 0) {
+            return;
+        }
+        this.spawnLingeringGas(level, caster, staff, stat, lingerTicks);
+    }
+
+    private void spawnLingeringGas(ServerLevel level, LivingEntity caster, ItemStack staff, SpellStat stat, int lingerTicks) {
+        int range = stat.getRange();
+        int potency = stat.getPotency();
+        if (WandUtil.enchantedFocus(caster)) {
+            range += WandUtil.getRangeLevel(caster);
+            potency += WandUtil.getPotencyLevel(caster);
+        }
+
+        float damage = MmConfig.PoisonBreathDamage.get().floatValue() * WandUtil.damageMultiply() + potency;
+        if (this.rightStaff(staff)) {
+            damage *= 2.0F;
+        }
+        DamageSource source = ModDamageSource.noKnockbackDamageSource(level, ModDamageSource.VENOM, caster, caster);
+        Vec3 pos = PositionUtils.getOffsetPos(caster, 0.0D, 0.0D, range * 0.5D, 0.0F, caster.getYHeadRot());
+
+        AreaDamage cloud = AreaDamage.spawnAreaDamage(level, pos, caster, damage, source,
+                0.0F, range, 0.25F, 3.0F,
+                lingerTicks, 0,
+                true, false, 0.0D, 0.0D, false, false, 0, false, null, 3);
+        level.addFreshEntity(cloud);
+    }
+
+    @Override
     public void SpellResult(ServerLevel level, LivingEntity caster, ItemStack staff, SpellStat stat) {
         int range = stat.getRange();
         int duration = stat.getDuration();
@@ -117,7 +156,7 @@ public class PoisonBreathSpell extends BreathingSpell {
             potency += WandUtil.getPotencyLevel(caster);
         }
 
-        float damage = MmConfig.PoisonBreathDamage.get().floatValue() + potency;
+        float damage = MmConfig.PoisonBreathDamage.get().floatValue() * WandUtil.damageMultiply() + potency;
         if (this.rightStaff(staff)) {
             damage *= 2.0F;
         }
