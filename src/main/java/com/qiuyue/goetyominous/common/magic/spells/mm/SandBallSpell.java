@@ -65,7 +65,7 @@ public class SandBallSpell extends Spell {
             velocity += WandUtil.getLevels(ModEnchantments.VELOCITY.get(), caster);
         }
 
-        float damage = MmConfig.SandBallDamage.get().floatValue() + potency;
+        float damage = MmConfig.SandBallDamage.get().floatValue() * WandUtil.damageMultiply() + potency;
         float speed = BASE_SPEED + velocity * VELOCITY_PER_LEVEL;
 
         Vec3 view = caster.getViewVector(1.0F);

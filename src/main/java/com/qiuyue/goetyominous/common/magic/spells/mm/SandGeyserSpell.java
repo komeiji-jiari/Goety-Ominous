@@ -88,7 +88,7 @@ public class SandGeyserSpell extends Spell {
             duration += WandUtil.getLevels(ModEnchantments.DURATION.get(), caster);
         }
 
-        float damage = MmConfig.SandGeyserDamage.get().floatValue() + potency;
+        float damage = MmConfig.SandGeyserDamage.get().floatValue() * WandUtil.damageMultiply() + potency;
         int extraTime = BASE_EXTRA_TIME + duration * EXTRA_TIME_PER_DURATION;
         if (this.rightStaff(staff)) {
             extraTime += RIGHT_STAFF_EXTRA_TIME;
@@ -122,9 +122,10 @@ public class SandGeyserSpell extends Spell {
     }
 
     private void spawnUnderEntities(ServerLevel worldIn, LivingEntity caster, int range, float damage, DamageSource source, int extraTime, List<AreaDamage> geysers, Predicate<Entity> friendly) {
-        int i = (int) caster.getX();
-        int j = (int) caster.getY();
-        int k = (int) caster.getZ();
+        BlockPos casterPos = caster.blockPosition();
+        int i = casterPos.getX();
+        int j = casterPos.getY();
+        int k = casterPos.getZ();
         AABB area = new AABB(i, j, k, i, j - 4, k).inflate(range);
         Set<BlockPos> used = new HashSet<>();
         for (LivingEntity entity : worldIn.getEntitiesOfClass(LivingEntity.class, area, entity -> entity.isAlive() && !friendly.test(entity))) {

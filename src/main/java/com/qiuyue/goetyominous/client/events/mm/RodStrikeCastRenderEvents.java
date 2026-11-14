@@ -12,6 +12,7 @@ import com.qiuyue.goetyominous.client.render.model.mm.MutantBlazeServantModel;
 import com.qiuyue.goetyominous.common.entities.ally.mm.MutantBlazeServant;
 import com.qiuyue.goetyominous.common.magic.spells.mm.RodStrikeSpell;
 import com.qiuyue.goetyominous.compat.mod.MutantMoreCompat;
+import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.geom.ModelPart;
@@ -24,6 +25,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -99,47 +102,92 @@ public final class RodStrikeCastRenderEvents {
             return;
         }
         Player player = event.getEntity();
-        if (player.isCrouching()) {
+        float partialTick = event.getPartialTick();
+        float elapsed = elapsedSeconds(player, partialTick);
+        if (elapsed < 0.0F) {
             return;
         }
+        animateRods(player, partialTick, elapsed);
+        PoseStack poseStack = event.getPoseStack();
+        poseStack.pushPose();
+        poseStack.translate(0.0D, player.getBbHeight() + RING_CLEARANCE - LOWEST_RING_HEIGHT, 0.0D);
+        renderRods(poseStack, event.getMultiBufferSource());
+        poseStack.popPose();
+    }
+
+    @SubscribeEvent
+    public static void onRenderLevelStage(RenderLevelStageEvent event) {
+        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_ENTITIES) {
+            return;
+        }
+        if (!MutantMoreCompat.isMutantMoreLoaded()) {
+            return;
+        }
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.options.getCameraType() != CameraType.FIRST_PERSON) {
+            return;
+        }
+        Player player = minecraft.player;
+        if (player == null || minecraft.getCameraEntity() != player) {
+            return;
+        }
+        float partialTick = event.getPartialTick();
+        float elapsed = elapsedSeconds(player, partialTick);
+        if (elapsed < 0.0F) {
+            return;
+        }
+        animateRods(player, partialTick, elapsed);
+        Vec3 cameraPos = event.getCamera().getPosition();
+        Vec3 playerPos = player.getPosition(partialTick);
+        PoseStack poseStack = event.getPoseStack();
+        poseStack.pushPose();
+        poseStack.translate(playerPos.x - cameraPos.x, playerPos.y - cameraPos.y, playerPos.z - cameraPos.z);
+        poseStack.translate(0.0D, player.getBbHeight() + RING_CLEARANCE - LOWEST_RING_HEIGHT, 0.0D);
+        MultiBufferSource.BufferSource buffer = minecraft.renderBuffers().bufferSource();
+        renderRods(poseStack, buffer);
+        poseStack.popPose();
+        buffer.endBatch();
+    }
+
+    private static float elapsedSeconds(Player player, float partialTick) {
+        if (player.isCrouching()) {
+            return -1.0F;
+        }
         UUID uuid = player.getUUID();
-        float ticks = player.tickCount + event.getPartialTick();
-        float chargeSeconds = -1.0F;
-        float shotElapsed = -1.0F;
         if (player.isUsingItem()) {
             ItemStack stack = player.getUseItem();
             if (!(stack.getItem() instanceof IWand)) {
                 BURSTS.remove(uuid);
-                return;
+                return -1.0F;
             }
             ISpell spell = WandUtil.getSpellOnHand(player, player.getUsedItemHand());
             if (!(spell instanceof RodStrikeSpell)) {
                 BURSTS.remove(uuid);
-                return;
+                return -1.0F;
             }
             float duration = Math.max(1.0F, (float) stack.getUseDuration());
             float progress = Mth.clamp(1.0F - (float) player.getUseItemRemainingTicks() / duration, 0.0F, 1.0F);
-            chargeSeconds = progress * SHOT_START_SECONDS;
-        } else {
-            BurstState state = BURSTS.get(uuid);
-            if (state == null || state.using) {
-                return;
-            }
-            if (!state.finished) {
-                BURSTS.remove(uuid);
-                return;
-            }
-            float sinceShot = player.tickCount + event.getPartialTick() - state.shotStartTick;
-            if (sinceShot > SHOT_TICKS) {
-                BURSTS.remove(uuid);
-                return;
-            }
-            shotElapsed = Math.max(0.0F, sinceShot);
+            return progress * SHOT_START_SECONDS;
         }
+        BurstState state = BURSTS.get(uuid);
+        if (state == null || state.using) {
+            return -1.0F;
+        }
+        if (!state.finished) {
+            BURSTS.remove(uuid);
+            return -1.0F;
+        }
+        float sinceShot = player.tickCount + partialTick - state.shotStartTick;
+        if (sinceShot > SHOT_TICKS) {
+            BURSTS.remove(uuid);
+            return -1.0F;
+        }
+        return SHOT_START_SECONDS + Math.max(0.0F, sinceShot) / 20.0F;
+    }
 
-        float elapsed = chargeSeconds >= 0.0F ? chargeSeconds : SHOT_START_SECONDS + shotElapsed / 20.0F;
+    private static void animateRods(Player player, float partialTick, float elapsed) {
+        float ticks = player.tickCount + partialTick;
         float walkSpeed = (float) player.getDeltaMovement().length() * 15.0F;
-
         ModelPart rods = ServantRings.RODS;
         rods.getAllParts().forEach(ModelPart::resetPose);
         MathAnim.animate(ServantRings.PARTS::get,
@@ -151,15 +199,15 @@ public final class RodStrikeCastRenderEvents {
         MathAnim.animate(ServantRings.PARTS::get,
                 new AnimationData(null, 0, elapsed, 1.0F, 0.0F, 0.0F, ticks, 0.0F, 0.0F),
                 MutantBlazeMathAnimations.ROD_SHOT_MATH);
+        ServantRings.PARTS.get("rodLayer1").y = ServantRings.LAYER1_REST_Y;
+        ServantRings.PARTS.get("rodLayer2").y = ServantRings.LAYER2_REST_Y;
+    }
 
-        PoseStack poseStack = event.getPoseStack();
-        MultiBufferSource buffer = event.getMultiBufferSource();
-        poseStack.pushPose();
-        poseStack.translate(0.0D, player.getBbHeight() + RING_CLEARANCE - LOWEST_RING_HEIGHT, 0.0D);
+    private static void renderRods(PoseStack poseStack, MultiBufferSource buffer) {
+        ModelPart rods = ServantRings.RODS;
         poseStack.scale(-MODEL_SCALE, -MODEL_SCALE, MODEL_SCALE);
         rods.render(poseStack, buffer.getBuffer(RenderType.entityCutoutNoCull(TEXTURE)), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
         rods.render(poseStack, buffer.getBuffer(RenderType.entityTranslucentEmissive(TEXTURE)), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
-        poseStack.popPose();
     }
 
     private static final class BurstState {
@@ -176,6 +224,8 @@ public final class RodStrikeCastRenderEvents {
         private static final ModelPart RODS = MODEL.root().getChild("everything").getChild("rods");
         private static final ModelPart LAYER1 = RODS.getChild("rodLayer1Rot").getChild("rodLayer1");
         private static final Map<String, ModelPart> PARTS = createParts();
+        private static final float LAYER1_REST_Y = PARTS.get("rodLayer1").y;
+        private static final float LAYER2_REST_Y = PARTS.get("rodLayer2").y;
 
         private static Map<String, ModelPart> createParts() {
             Map<String, ModelPart> parts = new HashMap<>();

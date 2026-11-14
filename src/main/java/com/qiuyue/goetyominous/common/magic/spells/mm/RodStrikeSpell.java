@@ -197,8 +197,7 @@ public class RodStrikeSpell extends SummonSpell {
         if (!caster.isAlive() || caster.isRemoved() || caster.level() != worldIn) {
             return;
         }
-        Vec3 spawnPos = new Vec3(caster.getX(), caster.getY() + caster.getBbHeight() + 0.6D, caster.getZ())
-                .add(Vec3.directionFromRotation(0.0F, caster.yBodyRot).scale(0.5D));
+        Vec3 spawnPos = caster.getEyePosition(1.0F).add(caster.getViewVector(1.0F).scale(0.5D));
         Vec3 direction = aimPos.subtract(spawnPos);
         MutantBlazeServantRodProjectile rod = new MutantBlazeServantRodProjectile(worldIn, caster);
         rod.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
