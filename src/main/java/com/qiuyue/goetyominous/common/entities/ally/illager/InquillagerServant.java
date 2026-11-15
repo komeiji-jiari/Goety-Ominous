@@ -71,6 +71,11 @@ public class InquillagerServant extends SpellcasterIllagerServant {
         return TEXTURE_BY_TYPE.getOrDefault(this.getOutfitType(), TEXTURE_BY_TYPE.get(0));
     }
 
+    @Override
+    public boolean canHaveWeapon() {
+        return true;
+    }
+
     public boolean isMainWeapon(ItemStack itemStack) {
         return itemStack.getItem() instanceof SwordItem || itemStack.is(ItemTags.SWORDS);
     }

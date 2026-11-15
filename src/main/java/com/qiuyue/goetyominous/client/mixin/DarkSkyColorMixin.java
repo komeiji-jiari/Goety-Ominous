@@ -13,9 +13,10 @@ public abstract class DarkSkyColorMixin {
 
     @Inject(method = "getSkyColor", at = @At("RETURN"), cancellable = true, require = 1)
     private void goetyominous$darkSkyColor(Vec3 pos, float partialTick, CallbackInfoReturnable<Vec3> cir) {
-        if (!DarkSceneRenderer.active()) {
+        float darkness = DarkSceneRenderer.darkness();
+        if (darkness <= 0.0F) {
             return;
         }
-        cir.setReturnValue(DarkSceneRenderer.skyColor());
+        cir.setReturnValue(cir.getReturnValue().lerp(DarkSceneRenderer.skyColor(), (double) darkness));
     }
 }

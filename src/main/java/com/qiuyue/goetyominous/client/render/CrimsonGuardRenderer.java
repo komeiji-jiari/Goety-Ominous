@@ -1,8 +1,8 @@
 package com.qiuyue.goetyominous.client.render;
 
-import com.Polarice3.Goety.client.render.layer.HierarchicalArmorLayer;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.init.ModEntityLayers;
+import com.qiuyue.goetyominous.client.render.layer.HelmetlessArmorLayer;
 import com.qiuyue.goetyominous.client.render.model.CrimsonGuardModel;
 import com.qiuyue.goetyominous.common.entities.ally.illager.CrimsonGuardServant;
 import com.qiuyue.goetyominous.common.entities.ally.illager.ZCrimsonGuardServant;
@@ -24,7 +24,7 @@ public class CrimsonGuardRenderer<T extends Mob> extends MobRenderer<T, CrimsonG
 
     public CrimsonGuardRenderer(EntityRendererProvider.Context context) {
         super(context, new CrimsonGuardModel<>(context.bakeLayer(ModEntityLayers.CRIMSON_GUARD_LAYER)), 0.5F);
-        this.addLayer(new HierarchicalArmorLayer<>(this, context));
+        this.addLayer(new HelmetlessArmorLayer<>(this, context));
     }
 
     @Override

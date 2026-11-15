@@ -101,6 +101,7 @@ public class GrimMonarchEntity extends Monster {
     private int echoFarTicks;
     private boolean echoFollowing;
     private int echoRepathTicks;
+    private boolean slicePaused;
     private float pendingSmitingBonus;
     private int pendingSmiteReserveDeduction;
     private int teleportCooldown;
@@ -125,6 +126,14 @@ public class GrimMonarchEntity extends Monster {
     private float summonStarTimer;
     private float summonStarSpacing;
     private boolean nightRegistered;
+    private int sliceAmount;
+    private int sliceTargetCount;
+    private boolean sliceCompleted;
+    private boolean sliceTeleportFailed;
+    private double sliceTeleportRange = GrimMonarchConstants.SLICE_CHAIN_TELEPORT;
+    private int sliceRocksRemaining;
+    private int sliceRockTimer;
+    private Vec3 sliceRockOrigin = Vec3.ZERO;
     private final GrimMonarchMoveRunner moveRunner = new GrimMonarchMoveRunner(this);
 
     public GrimMonarchEntity(EntityType<? extends GrimMonarchEntity> type, Level level) {
@@ -197,6 +206,50 @@ public class GrimMonarchEntity extends Monster {
         return entity instanceof GrimMonarchEntity owner ? owner : null;
     }
 
+    @Nullable
+    private GrimMonarchEntity echoEntity() {
+        if (this.echoUUID == null || !(this.level() instanceof ServerLevel server)) {
+            return null;
+        }
+        Entity entity = server.getEntity(this.echoUUID);
+        return entity instanceof GrimMonarchEntity echo && echo.isEcho() && echo.isAlive()
+                ? echo : null;
+    }
+
+    void beginSlicePause() {
+        if (!this.isEcho() || this.slicePaused || this.isDeadOrDying()) {
+            return;
+        }
+        this.slicePaused = true;
+        this.setInvisible(true);
+        this.getNavigation().stop();
+        this.setDeltaMovement(Vec3.ZERO);
+        this.selectAttackTarget(null);
+        this.moveRunner.stop();
+        this.summonStarsRemaining = 0;
+        this.summonStarTimer = 0.0F;
+        this.summonStarSpacing = 0.0F;
+        this.echoFollowing = false;
+        this.echoRepathTicks = 0;
+        this.setVisualAction(GrimMonarchAction.IDLE);
+    }
+
+    void endSlicePause() {
+        if (!this.slicePaused) {
+            return;
+        }
+        this.slicePaused = false;
+        this.setInvisible(false);
+        this.decisionDelay = 6;
+        GrimMonarchEntity owner = this.echoOwnerEntity();
+        if (owner != null && owner.isAlive()) {
+            this.teleportNearOwner(owner);
+        }
+        if (this.level() instanceof ServerLevel server) {
+            this.sliceShowVfx(server);
+        }
+    }
+
     @Override
     public boolean isAlliedTo(Entity entity) {
         if (entity instanceof GrimMonarchEntity other && other != this) {
@@ -248,6 +301,7 @@ public class GrimMonarchEntity extends Monster {
             @Override
             public boolean canUse() {
                 return GrimMonarchEntity.this.action() == GrimMonarchAction.IDLE
+                        && !GrimMonarchEntity.this.slicePaused
                         && !GrimMonarchEntity.this.isDeadOrDying()
                         && super.canUse();
             }
@@ -255,6 +309,7 @@ public class GrimMonarchEntity extends Monster {
             @Override
             public boolean canContinueToUse() {
                 return GrimMonarchEntity.this.action() == GrimMonarchAction.IDLE
+                        && !GrimMonarchEntity.this.slicePaused
                         && !GrimMonarchEntity.this.isDeadOrDying()
                         && super.canContinueToUse();
             }
@@ -300,6 +355,9 @@ public class GrimMonarchEntity extends Monster {
     }
 
     private String group(GrimMonarchAction action) {
+        if (action.slice()) {
+            return "slice";
+        }
         if (action == GrimMonarchAction.DASH_WINDUP || action == GrimMonarchAction.DASH_RUN
                 || action == GrimMonarchAction.DASH_FINISH) {
             return "dash";
@@ -322,6 +380,9 @@ public class GrimMonarchEntity extends Monster {
             case "summon" -> ticks(GrimMonarchConstants.SUMMON_COOLDOWN_SECONDS);
             case "echo" -> 0;
             case "calamity" -> ticks(GrimMonarchConstants.CALAMITY_COOLDOWN_SECONDS);
+            case "slice" -> ticks(this.sliceCompleted && !this.sliceTeleportFailed
+                    ? GrimMonarchConstants.SLICE_COOLDOWN_SECONDS
+                    : GrimMonarchConstants.SLICE_ABORT_COOLDOWN_SECONDS);
             default -> 0;
         });
     }
@@ -374,10 +435,54 @@ public class GrimMonarchEntity extends Monster {
         if (GrimMonarchMoveTable.DOOM_DIVE_RUSH.equals(moveId)) {
             this.moveDistance = GrimMonarchConstants.COMBO_DASH_BLOCKS;
         }
+        if (visual == GrimMonarchAction.SLICE_START) {
+            this.sliceHide(GrimMonarchConstants.SLICE_START_TELEPORT);
+        } else if (visual == GrimMonarchAction.SLICE_HIDE_SPRINT
+                || visual == GrimMonarchAction.SLICE_HIDE_NORMAL
+                || visual == GrimMonarchAction.SLICE_HIDE_SWING) {
+            this.sliceHide(GrimMonarchConstants.SLICE_CHAIN_TELEPORT);
+        } else if (visual == GrimMonarchAction.SLICE_HIT_1
+                || visual == GrimMonarchAction.SLICE_HIT_2
+                || visual == GrimMonarchAction.SLICE_HIT_3) {
+            ++this.sliceAmount;
+            LivingEntity target = this.getTarget();
+            if (target != null && target.isAlive()) {
+                if (!this.sliceTeleport(target, this.sliceTeleportRange)) {
+                    this.sliceTeleportFailed = true;
+                }
+            }
+            this.sliceShow();
+        } else if (visual == GrimMonarchAction.SLICE_FINISH) {
+            this.sliceShow();
+            LivingEntity target = this.getTarget();
+            if (target != null && target.isAlive()) {
+                this.teleportTo(target.getX(), target.getY(), target.getZ());
+            }
+            this.getNavigation().stop();
+            this.setDeltaMovement(Vec3.ZERO);
+            this.fallDistance = 0.0F;
+        } else if (visual == GrimMonarchAction.COUNTER_LEFT || visual == GrimMonarchAction.COUNTER_RIGHT) {
+            this.setInvisible(false);
+            this.setNoGravity(false);
+        } else if (visual == GrimMonarchAction.COUNTER_HIDE) {
+            this.setInvisible(true);
+            this.setNoGravity(true);
+        } else if (visual == GrimMonarchAction.COUNTER_SLAM) {
+            this.sliceShow();
+            this.setNoGravity(false);
+            LivingEntity target = this.getTarget();
+            if (target != null && target.isAlive()) {
+                this.teleportTo(target.getX(), target.getY(), target.getZ());
+            }
+            this.getNavigation().stop();
+            this.setDeltaMovement(Vec3.ZERO);
+            this.fallDistance = 0.0F;
+        }
         this.moveRunner.start(move);
     }
 
     private void finishMove() {
+        this.setInvisible(false);
         GrimMonarchAction visual = this.action();
         String group = this.group(visual);
         if (visual != GrimMonarchAction.DASH_FINISH) {
@@ -391,6 +496,12 @@ public class GrimMonarchEntity extends Monster {
             }
         }
         this.moveRunner.stop();
+        if (visual.slice()) {
+            GrimMonarchEntity echo = this.echoEntity();
+            if (echo != null) {
+                echo.endSlicePause();
+            }
+        }
         this.setNoGravity(false);
         this.ascending = false;
         this.landingActive = false;
@@ -419,6 +530,45 @@ public class GrimMonarchEntity extends Monster {
                         ticks(GrimMonarchConstants.CALAMITY_FOLLOWUP_COOLDOWN_SECONDS));
                 this.startMove(GrimMonarchMoveTable.DOOM_DIVE_LAND, GrimMonarchAction.CALAMITY_THREE);
             }
+            case GrimMonarchMoveTable.SLICE_SUMMON -> this.beginSliceHunt();
+            case GrimMonarchMoveTable.SLICE_START, GrimMonarchMoveTable.SLICE_START_HALF ->
+                    this.startMove(GrimMonarchMoveTable.SLICE_HIT_1, GrimMonarchAction.SLICE_HIT_1);
+            case GrimMonarchMoveTable.SLICE_HIT_1 -> {
+                if (this.sliceAmount < this.sliceTargetCount) {
+                    this.startMove(GrimMonarchMoveTable.SLICE_HIDE_SPRINT, GrimMonarchAction.SLICE_HIDE_SPRINT);
+                } else {
+                    this.startMove(GrimMonarchMoveTable.SLICE_HIDE_SWING, GrimMonarchAction.SLICE_HIDE_SWING);
+                }
+            }
+            case GrimMonarchMoveTable.SLICE_HIDE_SPRINT ->
+                    this.startMove(GrimMonarchMoveTable.SLICE_HIT_2, GrimMonarchAction.SLICE_HIT_2);
+            case GrimMonarchMoveTable.SLICE_HIT_2 -> {
+                if (this.sliceAmount < this.sliceTargetCount) {
+                    this.startMove(GrimMonarchMoveTable.SLICE_HIDE_NORMAL, GrimMonarchAction.SLICE_HIDE_NORMAL);
+                } else {
+                    this.startMove(GrimMonarchMoveTable.SLICE_HIDE_SWING, GrimMonarchAction.SLICE_HIDE_SWING);
+                }
+            }
+            case GrimMonarchMoveTable.SLICE_HIDE_NORMAL ->
+                    this.startMove(GrimMonarchMoveTable.SLICE_HIT_3, GrimMonarchAction.SLICE_HIT_3);
+            case GrimMonarchMoveTable.SLICE_HIT_3 -> {
+                if (this.sliceAmount < this.sliceTargetCount) {
+                    this.startMove(GrimMonarchMoveTable.SLICE_HIDE_NORMAL, GrimMonarchAction.SLICE_HIDE_NORMAL);
+                } else {
+                    this.startMove(GrimMonarchMoveTable.SLICE_HIDE_SWING, GrimMonarchAction.SLICE_HIDE_SWING);
+                }
+            }
+            case GrimMonarchMoveTable.SLICE_HIDE_SWING ->
+                    this.startMove(GrimMonarchMoveTable.SLICE_FINISH, GrimMonarchAction.SLICE_FINISH);
+            case GrimMonarchMoveTable.SLICE_FINISH -> {
+                this.sliceCompleted = true;
+                this.finishMove();
+            }
+            case GrimMonarchMoveTable.COUNTER_LEFT -> this.beginCounterHide(true);
+            case GrimMonarchMoveTable.COUNTER_RIGHT -> this.beginCounterHide(false);
+            case GrimMonarchMoveTable.COUNTER_HIDE ->
+                    this.startMove(GrimMonarchMoveTable.COUNTER_SLAM, GrimMonarchAction.COUNTER_SLAM);
+            case GrimMonarchMoveTable.COUNTER_SLAM -> this.finishCounter();
             case GrimMonarchMoveTable.DEATH -> {
             }
             default -> this.finishMove();
@@ -458,7 +608,116 @@ public class GrimMonarchEntity extends Monster {
             this.tickDoomMove(move, old, now);
             return;
         }
+        if (this.action().slice()) {
+            this.tickSlice(move, old, now);
+            return;
+        }
         this.applyMoveEvents(move, old, now);
+    }
+
+    private void startSlice() {
+        if (this.isEcho()) {
+            return;
+        }
+        this.sliceAmount = 0;
+        this.sliceCompleted = false;
+        this.sliceTeleportFailed = false;
+        this.sliceRocksRemaining = 0;
+        this.sliceRockTimer = 0;
+        GrimMonarchEntity echo = this.echoEntity();
+        if (echo != null) {
+            echo.beginSlicePause();
+        }
+        this.startMove(GrimMonarchMoveTable.SLICE_SUMMON, GrimMonarchAction.SLICE_SUMMON);
+    }
+
+    private void beginSliceHunt() {
+        boolean half = this.getHealth() <= this.getMaxHealth() * 0.5F;
+        this.sliceTargetCount = half ? 5 : 3 + this.getRandom().nextInt(3);
+        this.startMove(half ? GrimMonarchMoveTable.SLICE_START_HALF : GrimMonarchMoveTable.SLICE_START,
+                GrimMonarchAction.SLICE_START);
+    }
+
+    private void tickSlice(GrimMonarchMove move, float old, float now) {
+        if (!GrimMonarchMoveTable.SLICE_FINISH.equals(move.id())
+                && !this.validVictim(this.getTarget())) {
+            this.sliceAbort();
+            return;
+        }
+        this.applyMoveEvents(move, old, now);
+        int index = 0;
+        for (GrimMonarchPhase phase : move.phases()) {
+            for (GrimMonarchHitWindow window : phase.hits()) {
+                String key = move.id() + ":" + index++;
+                if (window.kind() == GrimMonarchHitWindow.Kind.CLAW) {
+                    GrimMonarchClawSweep.hitWindow(this, key, old, now,
+                            window.damageMultiplier(), window.start(), window.end(),
+                            true, false, false, GrimMonarchConstants.SLICE_HIT_RADIUS,
+                            GrimMonarchConstants.SLICE_KNOCKBACK, GrimMonarchConstants.SLICE_HIT_ARC);
+                }
+            }
+        }
+    }
+
+    private void sliceAbort() {
+        this.sliceCompleted = false;
+        this.sliceShow();
+        this.finishMove();
+    }
+
+    private void sliceHide(double range) {
+        this.sliceTeleportRange = range;
+        this.setInvisible(true);
+        this.getNavigation().stop();
+        Vec3 movement = this.getDeltaMovement();
+        this.setDeltaMovement(0.0D, movement.y, 0.0D);
+    }
+
+    private void sliceShow() {
+        this.setInvisible(false);
+        LivingEntity target = this.getTarget();
+        if (target != null && target.isAlive()) {
+            this.faceTarget();
+        }
+        if (this.level() instanceof ServerLevel server) {
+            this.sliceShowVfx(server);
+        }
+    }
+
+    private boolean sliceTeleport(@Nullable LivingEntity target, double range) {
+        if (this.level().isClientSide || target == null || !target.isAlive()) {
+            return false;
+        }
+        for (int i = 0; i < 64; ++i) {
+            double x = target.getX() + (this.getRandom().nextDouble() * 2.0D - 1.0D) * range;
+            double z = target.getZ() + (this.getRandom().nextDouble() * 2.0D - 1.0D) * range;
+            Vec3 candidate = new Vec3(x, target.getY(), z);
+            Vec3 at = this.findGround(candidate, 8.0D);
+            if (at == null || !this.supported(at) || !this.fitsAt(at)
+                    || !this.canSeeFrom(at, target)) {
+                continue;
+            }
+            this.performTeleport(at, target);
+            return true;
+        }
+        return false;
+    }
+
+    private void sliceShowVfx(ServerLevel server) {
+        Vec3 at = this.position();
+        for (int i = 0; i < 16; ++i) {
+            server.sendParticles(ParticleTypes.LARGE_SMOKE,
+                    at.x + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(),
+                    at.y + this.getRandom().nextDouble() * this.getBbHeight(),
+                    at.z + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(),
+                    0, 0.0D, 0.0D, 0.0D, 0.5D);
+        }
+        server.sendParticles(new TeleportInShockwaveParticleOption(),
+                at.x, at.y + 0.5D, at.z, 0, 0.0D, 0.0D, 0.0D, 0.5D);
+        server.sendParticles(new TeleportShockwaveParticleOption(10),
+                at.x, at.y + 0.5D, at.z, 0, 0.0D, 0.0D, 0.0D, 0.5D);
+        this.level().playSound(null, at.x, at.y, at.z,
+                ModSounds.WIGHT_TELEPORT.get(), SoundSource.HOSTILE, 1.0F, 0.5F);
     }
 
     private void tickDashMove(float old, float now) {
@@ -773,6 +1032,8 @@ public class GrimMonarchEntity extends Monster {
                 this.echoSpawnedThisCast = GrimMonarchCombat.spawnEcho(this);
             } else if ("calamity_ripple".equals(event.key())) {
                 GrimMonarchCombat.spawnCalamityRipple(this);
+            } else if ("slice_land".equals(event.key())) {
+                GrimMonarchCombat.sliceLand(this);
             }
         }
     }
@@ -783,7 +1044,7 @@ public class GrimMonarchEntity extends Monster {
 
     @Override
     public void tick() {
-        if (!this.level().isClientSide && !this.ready()) {
+        if (!this.level().isClientSide && !this.ready() && !this.slicePaused) {
             this.startMove(this.isEcho() ? GrimMonarchMoveTable.ECHO_SPAWN : GrimMonarchMoveTable.SPAWN,
                     this.isEcho() ? GrimMonarchAction.ECHO_SPAWN : GrimMonarchAction.SPAWN);
             this.entityData.set(READY, true);
@@ -793,7 +1054,19 @@ public class GrimMonarchEntity extends Monster {
         if (this.level().isClientSide) {
             return;
         }
-        if (this.isEcho() && !this.isDeadOrDying()) {
+        if (this.isEcho() && this.slicePaused) {
+            GrimMonarchEntity owner = this.echoOwnerEntity();
+            if (owner == null || !owner.isAlive() || !owner.action().slice()) {
+                this.endSlicePause();
+            } else {
+                this.selectAttackTarget(null);
+                this.getNavigation().stop();
+                Vec3 movement = this.getDeltaMovement();
+                this.setDeltaMovement(0.0D, movement.y, 0.0D);
+                return;
+            }
+        }
+        if (this.isEcho() && !this.isDeadOrDying() && !this.action().counter()) {
             this.tickEchoOwner();
         }
         MiscCapHelper.updateMobTarget(this);
@@ -875,6 +1148,15 @@ public class GrimMonarchEntity extends Monster {
                     Math.cos(angle) * GrimMonarchConstants.SOUL_STAR_CIRCLE_RADIUS, 0.8D,
                     Math.sin(angle) * GrimMonarchConstants.SOUL_STAR_CIRCLE_RADIUS));
             --this.circleRemaining;
+        }
+        if (this.sliceRocksRemaining > 0) {
+            if (this.sliceRockTimer <= 0) {
+                GrimMonarchCombat.sliceRockRing(this, this.sliceRockOrigin,
+                        GrimMonarchConstants.SLICE_ROCK_RINGS - this.sliceRocksRemaining);
+                --this.sliceRocksRemaining;
+                this.sliceRockTimer += GrimMonarchConstants.SLICE_ROCK_RING_TICKS;
+            }
+            --this.sliceRockTimer;
         }
         if (MobsConfig.GrimMonarchBossBar.get() && this.tickCount % 5 == 0) {
             this.bossInfo.update();
@@ -966,6 +1248,7 @@ public class GrimMonarchEntity extends Monster {
         if (result && this.getHealth() < healthBefore) {
             this.dynamicReductionTicks = GrimMonarchConstants.DYNAMIC_REDUCTION_TICKS;
             if (!this.isDeadOrDying()) {
+                this.tryCounter(source);
                 this.handleRapidDamage(source);
             }
         }
@@ -1227,6 +1510,12 @@ public class GrimMonarchEntity extends Monster {
         return true;
     }
 
+    void beginSliceRocks(Vec3 origin) {
+        this.sliceRockOrigin = origin;
+        this.sliceRocksRemaining = GrimMonarchConstants.SLICE_ROCK_RINGS;
+        this.sliceRockTimer = 0;
+    }
+
     private void beginCircle() {
         if (this.circleSize() == 0 || !this.circleReady()) {
             return;
@@ -1276,6 +1565,9 @@ public class GrimMonarchEntity extends Monster {
     }
 
     private void chooseAction() {
+        if (this.slicePaused) {
+            return;
+        }
         if (this.decisionDelay <= 0) {
             this.refreshDecisionTarget();
         }
@@ -1326,6 +1618,11 @@ public class GrimMonarchEntity extends Monster {
                 && this.calamityReach(target) <= GrimMonarchConstants.CALAMITY_JUMP_RANGE) {
             ready.add(GrimMonarchAction.CALAMITY_ONE);
         }
+        if (!this.isEcho() && sight && this.available("slice")
+                && distance >= GrimMonarchConstants.SLICE_MIN_RANGE
+                && distance < GrimMonarchConstants.SLICE_MAX_RANGE) {
+            ready.add(GrimMonarchAction.SLICE_START);
+        }
         GrimMonarchAction next = ready.stream()
                 .min(Comparator.comparingLong(action -> this.lastAttackUse.getOrDefault(this.group(action), -1L)))
                 .orElse(null);
@@ -1336,6 +1633,8 @@ public class GrimMonarchEntity extends Monster {
                 this.startMove(GrimMonarchMoveTable.SWEEP, GrimMonarchAction.SWEEP);
             } else if (next == GrimMonarchAction.SUMMON) {
                 this.startMove(GrimMonarchMoveTable.SUMMON, GrimMonarchAction.SUMMON);
+            } else if (next == GrimMonarchAction.SLICE_START) {
+                this.startSlice();
             } else {
                 this.startMove(GrimMonarchMoveTable.DOOM_DIVE_START, GrimMonarchAction.CALAMITY_ONE);
             }
@@ -1448,8 +1747,83 @@ public class GrimMonarchEntity extends Monster {
         return false;
     }
 
+    private void tryCounter(DamageSource source) {
+        if (this.level().isClientSide || this.slicePaused || this.isDeadOrDying()) {
+            return;
+        }
+        if (this.action() != GrimMonarchAction.IDLE || !this.available("counter")) {
+            return;
+        }
+        Entity attacker = source.getEntity();
+        Entity direct = source.getDirectEntity();
+        if (!(attacker instanceof LivingEntity living)) {
+            return;
+        }
+        boolean melee = direct == attacker;
+        boolean projectile = direct != null && direct != attacker
+                && source.is(DamageTypeTags.IS_PROJECTILE);
+        if (!melee && !projectile) {
+            return;
+        }
+        if (this.getRandom().nextDouble() >= GrimMonarchConstants.COUNTER_TRIGGER_CHANCE) {
+            return;
+        }
+        if (this.validVictim(living)) {
+            this.selectAttackTarget(living);
+            double dx = living.getX() - this.getX();
+            double dz = living.getZ() - this.getZ();
+            if (dx * dx + dz * dz > 1.0E-6D) {
+                float yaw = (float) Math.toDegrees(Math.atan2(-dx, dz));
+                this.setYRot(yaw);
+                this.yHeadRot = yaw;
+                this.yBodyRot = yaw;
+            }
+        }
+        this.cooldowns.put("counter", ticks(GrimMonarchConstants.COUNTER_COOLDOWN_SECONDS));
+        boolean left = this.getRandom().nextBoolean();
+        this.startMove(left ? GrimMonarchMoveTable.COUNTER_LEFT : GrimMonarchMoveTable.COUNTER_RIGHT,
+                left ? GrimMonarchAction.COUNTER_LEFT : GrimMonarchAction.COUNTER_RIGHT);
+    }
+
+    @Nullable
+    private Vec3 counterAirPosition(boolean left) {
+        Vec3 forward = this.forward();
+        double sideX = left ? forward.z : -forward.z;
+        double sideZ = left ? -forward.x : forward.x;
+        for (double distance = GrimMonarchConstants.COUNTER_EVADE_DISTANCE;
+             distance >= GrimMonarchConstants.COUNTER_EVADE_DISTANCE - 2.0D; distance -= 1.0D) {
+            for (double height = GrimMonarchConstants.COUNTER_EVADE_HEIGHT;
+                 height >= GrimMonarchConstants.COUNTER_EVADE_HEIGHT - 2.0D; height -= 1.0D) {
+                Vec3 air = this.position().add(sideX * distance, height, sideZ * distance);
+                if (this.fitsAt(air)) {
+                    return air;
+                }
+            }
+        }
+        return null;
+    }
+
+    private void beginCounterHide(boolean left) {
+        Vec3 air = this.counterAirPosition(left);
+        if (air != null) {
+            this.performTeleport(air, this.getTarget());
+        }
+        this.startMove(GrimMonarchMoveTable.COUNTER_HIDE, GrimMonarchAction.COUNTER_HIDE);
+    }
+
+    private void finishCounter() {
+        boolean half = this.getHealth() <= this.getMaxHealth() * 0.5F;
+        double chance = half ? GrimMonarchConstants.COUNTER_SWEEP_HALF_CHANCE
+                : GrimMonarchConstants.COUNTER_SWEEP_CHANCE;
+        if (this.getRandom().nextDouble() < chance) {
+            this.startMove(GrimMonarchMoveTable.SWEEP, GrimMonarchAction.SWEEP);
+        } else {
+            this.finishMove();
+        }
+    }
+
     private void handleRapidDamage(DamageSource source) {
-        if (this.level().isClientSide || this.rapidTeleportCooldown > 0) {
+        if (this.slicePaused || this.level().isClientSide || this.rapidTeleportCooldown > 0) {
             return;
         }
         GrimMonarchAction action = this.action();
@@ -1733,11 +2107,16 @@ public class GrimMonarchEntity extends Monster {
 
     @Override
     public void setTarget(@Nullable LivingEntity target) {
+        if (!this.level().isClientSide && !this.selectingAttackTarget
+                && (this.action().slice() || this.action().counter())) {
+            return;
+        }
         LivingEntity current = this.getTarget();
         double follow = AttributesConfig.GrimMonarchFollowRange.get();
         if (!this.level().isClientSide && !this.selectingAttackTarget && current != target && this.isAlive()
                 && this.validVictim(current) && this.targetDistanceSqr(current, this.position()) <= follow * follow
-                && (this.attackMovement() || this.action() == GrimMonarchAction.SUMMON
+                && (this.attackMovement() || this.action().slice() || this.action().counter()
+                || this.action() == GrimMonarchAction.SUMMON
                 || this.action() == GrimMonarchAction.CLONE || this.tickCount < this.targetHeldUntil)) {
             return;
         }
@@ -2061,6 +2440,7 @@ public class GrimMonarchEntity extends Monster {
 
     @Override
     public void die(DamageSource source) {
+        this.setInvisible(false);
         if (!this.level().isClientSide && this.isEcho()) {
             GrimMonarchEntity owner = this.echoOwnerEntity();
             if (owner != null) {
@@ -2079,6 +2459,7 @@ public class GrimMonarchEntity extends Monster {
 
     @Override
     public void remove(Entity.RemovalReason reason) {
+        this.setInvisible(false);
         if (!this.level().isClientSide && !this.isEcho()
                 && reason != Entity.RemovalReason.UNLOADED_TO_CHUNK) {
             this.unregisterNight();
@@ -2132,7 +2513,8 @@ public class GrimMonarchEntity extends Monster {
         }
 
         private boolean hasCombatFocus() {
-            return !GrimMonarchEntity.this.isDeadOrDying()
+            return !GrimMonarchEntity.this.slicePaused
+                    && !GrimMonarchEntity.this.isDeadOrDying()
                     && (GrimMonarchEntity.this.validVictim(GrimMonarchEntity.this.getTarget())
                     || GrimMonarchEntity.this.isEcho()
                     && GrimMonarchEntity.this.echoOwnerEntity() != null);

@@ -4,6 +4,7 @@ import com.Polarice3.Goety.client.events.BossBarEvent;
 import com.Polarice3.Goety.client.events.ClientEvents;
 import com.Polarice3.Goety.utils.MiscCapHelper;
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.client.render.DarkSceneRenderer;
 import com.qiuyue.goetyominous.common.entities.hostile.grimmonarch.GrimMonarchEntity;
 import com.qiuyue.goetyominous.common.init.ModSounds;
 import net.minecraft.client.Minecraft;
@@ -12,12 +13,14 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -69,6 +72,39 @@ public final class GrimMonarchClientEvents {
             return;
         }
         ClientEvents.playBossMusic(ModSounds.MONARCH_BOSS.get(), monarch, 1.0F, 1.0F);
+    }
+
+    @SubscribeEvent
+    public static void tickSliceDarkness(TickEvent.ClientTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) {
+            return;
+        }
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.level == null || minecraft.player == null) {
+            DarkSceneRenderer.release();
+            return;
+        }
+        boolean slicing = false;
+        boolean deep = false;
+        for (Entity entity : minecraft.level.entitiesForRendering()) {
+            if (!(entity instanceof GrimMonarchEntity boss) || boss.isEcho()
+                    || !boss.action().slice()) {
+                continue;
+            }
+            if (boss.distanceToSqr(minecraft.player) > 64.0D * 64.0D) {
+                continue;
+            }
+            slicing = true;
+            if (boss.getHealth() < boss.getMaxHealth() * 0.5F) {
+                deep = true;
+                break;
+            }
+        }
+        if (!slicing) {
+            DarkSceneRenderer.release();
+        } else {
+            DarkSceneRenderer.darken(deep ? DarkSceneRenderer.blackLevel() : 0);
+        }
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)

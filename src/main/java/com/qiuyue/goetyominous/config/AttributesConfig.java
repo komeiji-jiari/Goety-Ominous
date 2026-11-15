@@ -121,6 +121,8 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> BastionGuardServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> BastionGuardServantArmorToughness;
     public static final ForgeConfigSpec.ConfigValue<Double> BastionGuardServantAttackDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> GuzzlerServantHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> GuzzlerServantAttackDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> GrimMonarchHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> GrimMonarchArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> GrimMonarchSpeed;
@@ -437,6 +439,12 @@ public class AttributesConfig {
                 .defineInRange("bastionGuardServantArmorToughness", 6.0D, 0.0D, Double.MAX_VALUE);
         BastionGuardServantAttackDamage = BUILDER.comment("How much damage Bastion Guard Servants deal (Default: 12.0)")
                 .defineInRange("bastionGuardServantAttackDamage", 12.0D, 1.0D, Double.MAX_VALUE);
+        BUILDER.pop();
+        BUILDER.push("Guzzler Servant");
+        GuzzlerServantHealth = BUILDER.comment("How much Max Health Guzzlers have (Default: 90.0)")
+                .defineInRange("guzzlerServantHealth", 90.0D, 1.0D, Double.MAX_VALUE);
+        GuzzlerServantAttackDamage = BUILDER.comment("How much damage Guzzlers deal (Default: 12.0)")
+                .defineInRange("guzzlerServantAttackDamage", 12.0D, 1.0D, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.pop();
         BUILDER.push("Grim Monarch");

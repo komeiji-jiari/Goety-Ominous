@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.compat.jade;
 
+import com.qiuyue.goetyominous.common.entities.ally.mobs.Guzzler;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractPiglinServant;
 import snownee.jade.addon.vanilla.MobBreedingProvider;
 import snownee.jade.addon.vanilla.MobGrowthProvider;
@@ -19,6 +20,8 @@ public class PiglinJadePlugin implements IWailaPlugin {
                 PiglinBreedProvider.INSTANCE, AbstractPiglinServant.class);
         registration.registerEntityDataProvider(
                 PiglinEvolutionProvider.INSTANCE, AbstractPiglinServant.class);
+        registration.registerEntityDataProvider(
+                GuzzlerUpgradeProvider.INSTANCE, Guzzler.class);
     }
 
     @Override
@@ -29,6 +32,8 @@ public class PiglinJadePlugin implements IWailaPlugin {
                 MobBreedingProvider.INSTANCE, AbstractPiglinServant.class);
         registration.registerEntityComponent(
                 PiglinEvolutionComponent.INSTANCE, AbstractPiglinServant.class);
+        registration.registerEntityComponent(
+                GuzzlerUpgradeComponent.INSTANCE, Guzzler.class);
 
 
     }

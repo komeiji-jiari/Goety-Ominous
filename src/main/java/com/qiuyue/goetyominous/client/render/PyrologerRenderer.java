@@ -1,8 +1,8 @@
 package com.qiuyue.goetyominous.client.render;
 
-import com.Polarice3.Goety.client.render.layer.HierarchicalArmorLayer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.qiuyue.goetyominous.client.init.ModEntityLayers;
+import com.qiuyue.goetyominous.client.render.layer.HelmetlessArmorLayer;
 import com.qiuyue.goetyominous.client.render.model.PyrologerModel;
 import com.qiuyue.goetyominous.common.entities.ally.illager.PyrologerServant;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -26,7 +26,7 @@ public class PyrologerRenderer<T extends Mob> extends MobRenderer<T, PyrologerMo
     public PyrologerRenderer(EntityRendererProvider.Context context, boolean armorLayer) {
         super(context, new PyrologerModel<>(context.bakeLayer(ModEntityLayers.PYROLOGER_LAYER)), 0.5F);
         if (armorLayer) {
-            this.addLayer(new HierarchicalArmorLayer<>(this, context));
+            this.addLayer(new HelmetlessArmorLayer<>(this, context));
         }
     }
 

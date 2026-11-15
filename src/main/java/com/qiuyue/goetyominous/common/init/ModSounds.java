@@ -187,6 +187,17 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> VAULT_REJECT_REWARDED_PLAYER = create("vault_reject_rewarded_player");
     public static final RegistryObject<SoundEvent> VAULT_STEP = create("vault_step");
 
+    public static final RegistryObject<SoundEvent> GUZZLER_IDLE = create("guzzler_idle");
+    public static final RegistryObject<SoundEvent> GUZZLER_HURT = create("guzzler_hurt");
+    public static final RegistryObject<SoundEvent> GUZZLER_DEATH = create("guzzler_death");
+    public static final RegistryObject<SoundEvent> GUZZLER_STEP = create("guzzler_step");
+    public static final RegistryObject<SoundEvent> GUZZLER_ARM = create("guzzler_arm");
+    public static final RegistryObject<SoundEvent> GUZZLER_AGGRO = create("guzzler_aggro");
+    public static final RegistryObject<SoundEvent> GUZZLER_SPIN_LOOP = create("guzzler_spin_loop");
+    public static final RegistryObject<SoundEvent> GUZZLER_BREATHE = create("guzzler_breathe");
+    public static final RegistryObject<SoundEvent> GUZZLER_CHEST_BEAT = create("guzzler_chest_beat");
+    public static final RegistryObject<SoundEvent> GUZZLER_SNORT = create("guzzler_snort");
+
     private static RegistryObject<SoundEvent> create(String name) {
         return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(GoetyOminous.MOD_ID, name)));
     }

@@ -18,6 +18,20 @@ public final class GrimMonarchMoveTable {
     public static final String ECHO = "echo";
     public static final String ECHO_SPAWN = "echo_spawn";
     public static final String DEATH = "death";
+    public static final String SLICE_SUMMON = "slice_summon";
+    public static final String SLICE_START = "slice_start";
+    public static final String SLICE_START_HALF = "slice_start_half";
+    public static final String SLICE_HIT_1 = "slice_hit_1";
+    public static final String SLICE_HIT_2 = "slice_hit_2";
+    public static final String SLICE_HIT_3 = "slice_hit_3";
+    public static final String SLICE_HIDE_SPRINT = "slice_hide_sprint";
+    public static final String SLICE_HIDE_NORMAL = "slice_hide_normal";
+    public static final String SLICE_HIDE_SWING = "slice_hide_swing";
+    public static final String SLICE_FINISH = "slice_finish";
+    public static final String COUNTER_LEFT = "counter_left";
+    public static final String COUNTER_RIGHT = "counter_right";
+    public static final String COUNTER_HIDE = "counter_hide";
+    public static final String COUNTER_SLAM = "counter_slam";
 
     private static final Map<String, GrimMonarchMove> MOVES = build();
 
@@ -138,6 +152,50 @@ public final class GrimMonarchMoveTable {
         moves.put(ECHO_SPAWN, move(ECHO_SPAWN, 2.30937F, List.of(
                 phase(0.0F, 2.30937F, List.of(), List.of())
         ), List.of(), false));
+
+        moves.put(SLICE_SUMMON, move(SLICE_SUMMON, GrimMonarchConstants.SLICE_SUMMON_SECONDS,
+                List.of(), List.of(), false));
+        moves.put(SLICE_START, move(SLICE_START, GrimMonarchConstants.SLICE_START_SECONDS,
+                List.of(), List.of(), false));
+        moves.put(SLICE_START_HALF, move(SLICE_START_HALF, GrimMonarchConstants.SLICE_START_HALF_SECONDS,
+                List.of(), List.of(), false));
+        moves.put(SLICE_HIT_1, move(SLICE_HIT_1, GrimMonarchConstants.SLICE_HIT_SECONDS, List.of(
+                phase(0.0F, GrimMonarchConstants.SLICE_HIT_SECONDS,
+                        List.of(hit(0.0F, 0.20F, GrimMonarchConstants.SLICE_DAMAGE_MULTIPLIER,
+                                GrimMonarchHitWindow.Kind.CLAW, 0.0D)),
+                        List.of())
+        ), List.of(), false));
+        moves.put(SLICE_HIDE_SPRINT, move(SLICE_HIDE_SPRINT, GrimMonarchConstants.SLICE_HIDE_SECONDS,
+                List.of(), List.of(), false));
+        moves.put(SLICE_HIT_2, move(SLICE_HIT_2, GrimMonarchConstants.SLICE_HIT_SECONDS, List.of(
+                phase(0.0F, GrimMonarchConstants.SLICE_HIT_SECONDS,
+                        List.of(hit(0.0F, 0.20F, GrimMonarchConstants.SLICE_DAMAGE_MULTIPLIER,
+                                GrimMonarchHitWindow.Kind.CLAW, 0.0D)),
+                        List.of())
+        ), List.of(), false));
+        moves.put(SLICE_HIDE_NORMAL, move(SLICE_HIDE_NORMAL, GrimMonarchConstants.SLICE_HIDE_SECONDS,
+                List.of(), List.of(), false));
+        moves.put(SLICE_HIT_3, move(SLICE_HIT_3, GrimMonarchConstants.SLICE_HIT_SECONDS, List.of(
+                phase(0.0F, GrimMonarchConstants.SLICE_HIT_SECONDS,
+                        List.of(hit(0.0F, 0.20F, GrimMonarchConstants.SLICE_DAMAGE_MULTIPLIER,
+                                GrimMonarchHitWindow.Kind.CLAW, 0.0D)),
+                        List.of())
+        ), List.of(), false));
+        moves.put(SLICE_HIDE_SWING, move(SLICE_HIDE_SWING, GrimMonarchConstants.SLICE_HIDE_SECONDS,
+                List.of(), List.of(), false));
+        moves.put(SLICE_FINISH, move(SLICE_FINISH, GrimMonarchConstants.SLICE_FINISH_SECONDS, List.of(
+                phase(0.0F, GrimMonarchConstants.SLICE_FINISH_SECONDS, List.of(), List.of())
+        ), List.of(event("slice_land", GrimMonarchConstants.SLICE_LAND_TIME)), false));
+
+        moves.put(COUNTER_LEFT, move(COUNTER_LEFT, GrimMonarchConstants.COUNTER_EVADE_SECONDS,
+                List.of(), List.of(), false));
+        moves.put(COUNTER_RIGHT, move(COUNTER_RIGHT, GrimMonarchConstants.COUNTER_EVADE_SECONDS,
+                List.of(), List.of(), false));
+        moves.put(COUNTER_HIDE, move(COUNTER_HIDE, GrimMonarchConstants.COUNTER_HIDE_SECONDS,
+                List.of(), List.of(), false));
+        moves.put(COUNTER_SLAM, move(COUNTER_SLAM, GrimMonarchConstants.SLICE_FINISH_SECONDS, List.of(
+                phase(0.0F, GrimMonarchConstants.SLICE_FINISH_SECONDS, List.of(), List.of())
+        ), List.of(event("slice_land", GrimMonarchConstants.SLICE_LAND_TIME)), false));
 
         return Map.copyOf(moves);
     }

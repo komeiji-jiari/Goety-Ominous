@@ -96,6 +96,7 @@ public class HeresiarchServant extends CultistServant {
     private static final EntityDataAccessor<Integer> ANIM_STATE;
     private static final EntityDataAccessor<Integer> DATA_TYPE_ID;
     private static final EntityDataAccessor<Boolean> HAS_OBSIDIAN_SOUL;
+    private static final EntityDataAccessor<Boolean> START_TELEPORTING;
     public static String IDLE;
     public static String BLESS;
     public static String SUMMON;
@@ -119,7 +120,6 @@ public class HeresiarchServant extends CultistServant {
     public int meleeCool;
     public int fightTick;
     public int aboutToTeleport = 0;
-    public boolean startTeleporting;
     public float runeScale, prevRuneScale;
     public final List<Pair<Vec3, com.Polarice3.Goety.utils.ModelSnapshot>> trailSnapshots = new ArrayList<>(50);
     public float lastTrailTick = 0;
@@ -196,6 +196,7 @@ public class HeresiarchServant extends CultistServant {
         this.entityData.define(ANIM_STATE, 0);
         this.entityData.define(DATA_TYPE_ID, 0);
         this.entityData.define(HAS_OBSIDIAN_SOUL, false);
+        this.entityData.define(START_TELEPORTING, false);
     }
 
     public void addAdditionalSaveData(CompoundTag pCompound) {
@@ -362,10 +363,13 @@ public class HeresiarchServant extends CultistServant {
     }
 
     public boolean shouldAddTrailSnapshot() {
+        if (!com.Polarice3.Goety.config.MobsConfig.HeresiarchAfterImage.get()) {
+            return false;
+        }
         return Mth.degreesDifferenceAbs(this.getYRot(), this.yBodyRot) < 45.0F
                 && Mth.degreesDifferenceAbs(this.getYRot(), this.yBodyRotO) < 45.0F
                 && Mth.degreesDifferenceAbs(this.yBodyRot, this.yBodyRotO) < 45.0F
-                && this.startTeleporting;
+                && this.isStartTeleporting();
     }
 
     public int getAnimationState(String animation) {
@@ -482,6 +486,14 @@ public class HeresiarchServant extends CultistServant {
 
     public void setHasObsidianSoul(boolean hasSoul) {
         this.entityData.set(HAS_OBSIDIAN_SOUL, hasSoul);
+    }
+
+    public void setStartTeleporting(boolean startTeleporting) {
+        this.entityData.set(START_TELEPORTING, startTeleporting);
+    }
+
+    public boolean isStartTeleporting() {
+        return this.entityData.get(START_TELEPORTING);
     }
 
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
@@ -624,7 +636,7 @@ public class HeresiarchServant extends CultistServant {
                     }
                 }
             }
-            if (this.startTeleporting) {
+            if (this.isStartTeleporting()) {
                 ++this.aboutToTeleport;
                 int i = MobUtil.healthIsHalved(this) ? 30 : 60;
                 if (this.aboutToTeleport >= i && !this.isCurrentAnimation(MELEE)) {
@@ -635,7 +647,7 @@ public class HeresiarchServant extends CultistServant {
                             this.spawnMaverickServant();
                         }
                     }
-                    this.startTeleporting = false;
+                    this.setStartTeleporting(false);
                 }
             } else if (this.aboutToTeleport > 0) {
                 this.aboutToTeleport = 0;
@@ -816,6 +828,7 @@ public class HeresiarchServant extends CultistServant {
         ANIM_STATE = SynchedEntityData.defineId(HeresiarchServant.class, EntityDataSerializers.INT);
         DATA_TYPE_ID = SynchedEntityData.defineId(HeresiarchServant.class, EntityDataSerializers.INT);
         HAS_OBSIDIAN_SOUL = SynchedEntityData.defineId(HeresiarchServant.class, EntityDataSerializers.BOOLEAN);
+        START_TELEPORTING = SynchedEntityData.defineId(HeresiarchServant.class, EntityDataSerializers.BOOLEAN);
         IDLE = "idle";
         BLESS = "bless";
         SUMMON = "summon";
@@ -922,7 +935,7 @@ public class HeresiarchServant extends CultistServant {
         }
 
         public boolean canUse() {
-            return (this.heresiarch.startTeleporting || this.heresiarch.isCurrentAnimation(HeresiarchServant.IDLE))
+            return (this.heresiarch.isStartTeleporting() || this.heresiarch.isCurrentAnimation(HeresiarchServant.IDLE))
                     && this.heresiarch.meleeCool <= 0 && this.getTarget() != null
                     ? this.heresiarch.isWithinMeleeAttackRange(this.getTarget()) : false;
         }
@@ -960,7 +973,7 @@ public class HeresiarchServant extends CultistServant {
             this.meleeTick = 0;
             this.heresiarch.meleeCool = MathHelper.secondsToTicks(5);
             this.heresiarch.setAnimationState(HeresiarchServant.IDLE);
-            this.heresiarch.startTeleporting = true;
+            this.heresiarch.setStartTeleporting(true);
         }
     }
 
@@ -974,7 +987,7 @@ public class HeresiarchServant extends CultistServant {
                     && this.heresiarch.isWithinMeleeAttackRange(this.getTarget())) {
                 return false;
             } else {
-                return this.heresiarch.startTeleporting && this.heresiarch.aboutToTeleport > 0
+                return this.heresiarch.isStartTeleporting() && this.heresiarch.aboutToTeleport > 0
                         && this.heresiarch.isCurrentAnimation(HeresiarchServant.IDLE);
             }
         }
@@ -1482,7 +1495,7 @@ public class HeresiarchServant extends CultistServant {
 
         public boolean canUse() {
             return this.getTarget() != null && this.heresiarch.hasLineOfSight(this.getTarget())
-                    && !this.heresiarch.startTeleporting
+                    && !this.heresiarch.isStartTeleporting()
                     && this.heresiarch.isCurrentAnimation(HeresiarchServant.IDLE);
         }
 
@@ -1514,7 +1527,7 @@ public class HeresiarchServant extends CultistServant {
         public void stop() {
             super.stop();
             this.heresiarch.setAnimationState(HeresiarchServant.IDLE);
-            this.heresiarch.startTeleporting = true;
+            this.heresiarch.setStartTeleporting(true);
         }
     }
 

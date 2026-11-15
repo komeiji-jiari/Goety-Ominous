@@ -65,6 +65,11 @@ public class ConquillagerServant extends SpellcasterIllagerServant implements Cr
         this.goalSelector.addGoal(3, new IllagerCrossbowGoal<>(this, 1.0D, 16.0F));
     }
 
+    @Override
+    public boolean canHaveWeapon() {
+        return true;
+    }
+
     public static AttributeSupplier.Builder setCustomAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.FOLLOW_RANGE, 32.0D)

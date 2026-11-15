@@ -4,6 +4,10 @@ import com.Polarice3.Goety.init.ModSounds;
 import com.qiuyue.goetyominous.common.blocks.entities.PlushieBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.locale.Language;
+import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -42,6 +46,10 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 public class PlushieBlock extends BaseEntityBlock implements SimpleWaterloggedBlock, Equipable {
     public static final IntegerProperty ROTATION = BlockStateProperties.ROTATION_16;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -50,6 +58,8 @@ public class PlushieBlock extends BaseEntityBlock implements SimpleWaterloggedBl
 
     public String name;
     public static final String EXPLOSION_PROOF_TEXTURE = "him";
+    private static final String MESSAGE_KEY_PREFIX = "message.goetyominous.plushie.";
+    private static final float PLUSHIE_MESSAGE_CHANCE = 0.3F;
 
     protected PlushieBlock(BlockBehaviour.Properties properties) {
         super(properties);
@@ -90,18 +100,54 @@ public class PlushieBlock extends BaseEntityBlock implements SimpleWaterloggedBl
         return super.getExplosionResistance();
     }
 
+    private SoundEvent getSqueezeSound(Level level) {
+        if ("player_7".equals(this.name) || "player_seven".equals(this.name) || "eunice_carrill".equals(this.name)) {
+            return level.random.nextBoolean() ? SoundEvents.CAT_HURT : SoundEvents.CAT_DEATH;
+        }
+        if ("lll152".equals(this.name)) {
+            return SoundEvents.WITHER_AMBIENT;
+        }
+        if ("skillupper".equals(this.name)) {
+            return level.random.nextBoolean() ? SoundEvents.AXOLOTL_HURT : SoundEvents.AXOLOTL_DEATH;
+        }
+        if ("wu1wu2".equals(this.name)) {
+            return SoundEvents.GENERIC_SPLASH;
+        }
+        return ModSounds.PLUSHIE_SQUEEZE.get();
+    }
+
+    private void sendPlushieMessage(Player player) {
+        if (!"player_7".equals(this.name) && !"player_seven".equals(this.name) && !"eunice_carrill".equals(this.name)) {
+            return;
+        }
+        if (player.getRandom().nextFloat() >= PLUSHIE_MESSAGE_CHANCE) {
+            return;
+        }
+        List<String> messages = new ArrayList<>();
+        for (Map.Entry<String, String> entry : Language.getInstance().getLanguageData().entrySet()) {
+            if (entry.getKey().startsWith(MESSAGE_KEY_PREFIX) && !entry.getValue().isEmpty()) {
+                messages.add(entry.getValue());
+            }
+        }
+        if (!messages.isEmpty()) {
+            player.displayClientMessage(Component.literal(
+                    messages.get(player.getRandom().nextInt(messages.size()))), false);
+        }
+    }
+
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player,
                                  InteractionHand hand, BlockHitResult hit) {
         if (level.getBlockEntity(pos) instanceof PlushieBlockEntity entity) {
             PlushieBlockEntity.startAnimating(entity);
         }
-        if (!level.isClientSide) {
-            level.playSound(null, pos, ModSounds.PLUSHIE_SQUEEZE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-            level.gameEvent(player, GameEvent.BLOCK_ACTIVATE, pos);
-            return InteractionResult.CONSUME;
+        if (level.isClientSide) {
+            this.sendPlushieMessage(player);
+            return InteractionResult.SUCCESS;
         }
-        return InteractionResult.SUCCESS;
+        level.playSound(null, pos, this.getSqueezeSound(level), SoundSource.BLOCKS, 1.0F, 1.0F);
+        level.gameEvent(player, GameEvent.BLOCK_ACTIVATE, pos);
+        return InteractionResult.CONSUME;
     }
 
     @Override

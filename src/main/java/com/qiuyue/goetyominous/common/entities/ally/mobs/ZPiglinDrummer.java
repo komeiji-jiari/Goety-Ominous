@@ -69,7 +69,7 @@ public class ZPiglinDrummer extends ZPiglinServant {
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, AttributesConfig.PiglinDrummerHealth.get())
-                .add(Attributes.ARMOR, AttributesConfig.PiglinDrummerArmor.get())
+                .add(Attributes.ARMOR, AttributesConfig.PiglinDrummerArmor.get() + 2.0D)
                 .add(Attributes.ARMOR_TOUGHNESS, AttributesConfig.PiglinDrummerArmorToughness.get())
                 .add(Attributes.FOLLOW_RANGE, AttributesConfig.PiglinDrummerFollowRange.get())
                 .add(Attributes.MOVEMENT_SPEED, AttributesConfig.PiglinDrummerSpeed.get()-0.05D)
@@ -79,7 +79,7 @@ public class ZPiglinDrummer extends ZPiglinServant {
     @Override
     public void setConfigurableAttributes() {
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), AttributesConfig.PiglinDrummerHealth.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), AttributesConfig.PiglinDrummerArmor.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), AttributesConfig.PiglinDrummerArmor.get() + 2.0D);
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR_TOUGHNESS), AttributesConfig.PiglinDrummerArmorToughness.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.FOLLOW_RANGE), AttributesConfig.PiglinDrummerFollowRange.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.MOVEMENT_SPEED), AttributesConfig.PiglinDrummerSpeed.get()-0.05D);

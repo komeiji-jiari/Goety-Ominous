@@ -671,6 +671,20 @@ public class ModEntityTypes {
                     .clientTrackingRange(8)
                     .build(MOD_ID + ":zbastion_guard_servant"));
 
+    public static final RegistryObject<EntityType<Guzzler>> GUZZLER = ENTITY_TYPES.register(
+            "guzzler",
+            () -> EntityType.Builder.of(Guzzler::new, MobCategory.MISC)
+                    .sized(2.25F, 3.75F)
+                    .clientTrackingRange(10)
+                    .build(MOD_ID + ":guzzler"));
+
+    public static final RegistryObject<EntityType<ZGuzzler>> ZGUZZLER = ENTITY_TYPES.register(
+            "zguzzler",
+            () -> EntityType.Builder.of(ZGuzzler::new, MobCategory.MISC)
+                    .sized(2.25F, 3.75F)
+                    .clientTrackingRange(10)
+                    .build(MOD_ID + ":zguzzler"));
+
     public static void register(IEventBus modEventBus) {
         ENTITY_TYPES.register(modEventBus);
     }

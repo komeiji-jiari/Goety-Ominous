@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 @Mod.EventBusSubscriber(modid = GoetyOminous.MOD_ID, value = Dist.CLIENT)
 public class DarkSceneRenderer {
 
-    private static final float[] VISIBILITY = {0.350F, 0.200F, 0.120F, 0.080F, 0.040F, 0.020F, 0.000F};
+    private static final float[] VISIBILITY = {0.100F, 0.200F, 0.120F, 0.080F, 0.040F, 0.020F, 0.000F};
     private static final float MIN_FOG_END = 0.35F;
     private static final float FOG_START_RATIO = 0.30F;
     private static final float MIN_FOG_START = 0.02F;
@@ -47,6 +47,12 @@ public class DarkSceneRenderer {
     private static long onsetAt;
     private static long onsetLength;
     private static float onsetStart;
+    private static boolean releasing;
+    private static long releaseAt;
+    private static long releaseLength;
+    private static float releaseStart;
+    private static long darkenAt;
+    private static long darkenLength;
     private static boolean fogSuppressed;
     private static float fogNear = 1.0F;
     private static float fogFar = 8.0F;
@@ -105,11 +111,74 @@ public class DarkSceneRenderer {
         }
     }
 
+    public static int blackLevel() {
+        return VISIBILITY.length - 1;
+    }
+
+    public static void darken(int newLevel) {
+        Minecraft minecraft = Minecraft.getInstance();
+        newLevel = Mth.clamp(newLevel, 0, VISIBILITY.length - 1);
+        if (active && !releasing && newLevel == level) {
+            return;
+        }
+        boolean activating = !active;
+        level = newLevel;
+        releasing = false;
+        if (activating) {
+            active = true;
+            onsetStart = renderDistance(minecraft) + 32.0F;
+            applyClouds();
+        }
+        startOnset(activating ? onsetStart : Math.max(fogFar, MIN_FOG_END), minecraft);
+        if (activating) {
+            darkenAt = onsetAt;
+            darkenLength = onsetLength;
+        }
+    }
+
+    public static void release() {
+        if (!active || releasing) {
+            return;
+        }
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.options == null) {
+            finishRelease();
+            return;
+        }
+        releasing = true;
+        releaseStart = fogFar;
+        float targetFar = Math.max(MIN_FOG_END, renderDistance(minecraft) + 32.0F);
+        long millis = (long) (Math.abs(targetFar - releaseStart) / CLOSE_SPEED * 1000.0F);
+        releaseLength = Math.max(MIN_ONSET_MILLIS, Math.min(MAX_ONSET_MILLIS, millis));
+        releaseAt = Util.getMillis();
+    }
+
+    public static float darkness() {
+        if (!active) {
+            return 0.0F;
+        }
+        if (releasing) {
+            return 1.0F - releaseProgress();
+        }
+        if (darkenAt == 0L || darkenLength <= 0L) {
+            return 1.0F;
+        }
+        float t = (Util.getMillis() - darkenAt) / (float) darkenLength;
+        if (t >= 1.0F) {
+            darkenAt = 0L;
+            return 1.0F;
+        }
+        return Math.max(0.0F, t);
+    }
+
     @SubscribeEvent
     public static void onLoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
         active = false;
         onsetAt = 0L;
         onsetLength = 0L;
+        releasing = false;
+        releaseAt = 0L;
+        releaseLength = 0L;
         applyClouds();
     }
 
@@ -169,8 +238,12 @@ public class DarkSceneRenderer {
 
     private static void update(Minecraft minecraft) {
         float renderDistance = renderDistance(minecraft);
-        float targetFar = Math.max(MIN_FOG_END, renderDistance * VISIBILITY[level]);
-        fogFar = Mth.lerp(onsetProgress(), onsetStart, targetFar);
+        float targetFar = releasing
+                ? Math.max(MIN_FOG_END, renderDistance + 32.0F)
+                : Math.max(MIN_FOG_END, renderDistance * VISIBILITY[level]);
+        float from = releasing ? releaseStart : onsetStart;
+        float progress = releasing ? releaseProgress() : onsetProgress();
+        fogFar = Mth.lerp(progress, from, targetFar);
         fogNear = Math.max(MIN_FOG_START, fogFar * FOG_START_RATIO);
     }
 
@@ -184,6 +257,27 @@ public class DarkSceneRenderer {
             return 1.0F;
         }
         return Math.max(0.0F, t);
+    }
+
+    private static float releaseProgress() {
+        if (releaseAt == 0L || releaseLength <= 0L) {
+            finishRelease();
+            return 1.0F;
+        }
+        float t = (Util.getMillis() - releaseAt) / (float) releaseLength;
+        if (t >= 1.0F) {
+            finishRelease();
+            return 1.0F;
+        }
+        return Math.max(0.0F, t);
+    }
+
+    private static void finishRelease() {
+        releasing = false;
+        releaseAt = 0L;
+        releaseLength = 0L;
+        active = false;
+        applyClouds();
     }
 
     private static void startOnset(float fromFar, Minecraft minecraft) {

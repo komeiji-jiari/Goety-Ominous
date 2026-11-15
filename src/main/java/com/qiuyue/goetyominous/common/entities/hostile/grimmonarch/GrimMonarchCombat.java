@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.common.entities.hostile.grimmonarch;
 import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.common.entities.projectiles.Ripple;
 import com.Polarice3.Goety.common.entities.projectiles.SoulStar;
+import com.Polarice3.Goety.common.entities.util.ModFallingBlock;
 import com.Polarice3.Goety.utils.BlockFinder;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.GoetyOminous;
@@ -23,6 +24,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -188,6 +191,67 @@ final class GrimMonarchCombat {
         star.signalTo(at.add(0.0D, 4.0D, 0.0D), 30);
         star.life = 0;
         server.addFreshEntity(star);
+    }
+
+    static void sliceLand(GrimMonarchEntity boss) {
+        Vec3 center = boss.position();
+        radialHit(boss, center, GrimMonarchConstants.SLICE_LAND_RADIUS,
+                GrimMonarchConstants.SLICE_LAND_DAMAGE_MULTIPLIER,
+                GrimMonarchConstants.SLICE_LAND_KNOCKBACK, true);
+        if (boss.level() instanceof ServerLevel server) {
+            Ripple ripple = new Ripple(server, boss, center.x, center.y + 1.0D, center.z,
+                    Ripple.Preset.SOUL_RIPPLE);
+            ripple.setSpeed(GrimMonarchConstants.SLICE_RIPPLE_SPEED);
+            ripple.setEndRadius(GrimMonarchConstants.SLICE_RIPPLE_RADIUS);
+            ripple.setAngle(360.0F);
+            ripple.setDamage((float) (AttributesConfig.GrimMonarchAttackDamage.get()
+                    * GrimMonarchConstants.SLICE_RIPPLE_DAMAGE_MULTIPLIER * boss.echoDamageScale()));
+            ripple.addEffect(new MobEffectInstance(GoetyEffects.SOUL_BURN.get(),
+                    GrimMonarchConstants.SLICE_RIPPLE_SOUL_BURN_TICKS));
+            server.addFreshEntity(ripple);
+        }
+        boss.beginSliceRocks(center);
+    }
+
+    static void sliceRockRing(GrimMonarchEntity boss, Vec3 center, int ring) {
+        if (!(boss.level() instanceof ServerLevel server)) {
+            return;
+        }
+        double radius = GrimMonarchConstants.SLICE_ROCK_RING_START
+                + GrimMonarchConstants.SLICE_ROCK_RING_STEP * (double) ring;
+        for (int i = 0; i < GrimMonarchConstants.SLICE_ROCK_POINTS; ++i) {
+            double angle = (double) i * Math.PI * 2.0D
+                    / (double) GrimMonarchConstants.SLICE_ROCK_POINTS;
+            double x = center.x + Math.cos(angle) * radius;
+            double z = center.z + Math.sin(angle) * radius;
+            BlockPos pos = BlockPos.containing(x, center.y, z);
+            BlockState state = server.getBlockState(pos);
+            for (int depth = 0; depth < 30 && state.getRenderShape() != RenderShape.MODEL; ++depth) {
+                pos = pos.below();
+                state = server.getBlockState(pos);
+            }
+            if (state.getRenderShape() == RenderShape.MODEL
+                    && !state.hasBlockEntity()
+                    && !server.getBlockState(pos.above()).blocksMotion()) {
+                ModFallingBlock rock = new ModFallingBlock(server,
+                        (double) pos.getX() + 0.5D, (double) pos.getY() + 1.0D,
+                        (double) pos.getZ() + 0.5D, state,
+                        GrimMonarchConstants.SLICE_ROCK_DURATION);
+                rock.push(0.0D, GrimMonarchConstants.SLICE_ROCK_POP_MIN
+                                + boss.getRandom().nextDouble()
+                                * GrimMonarchConstants.SLICE_ROCK_POP_RANDOM,
+                        0.0D);
+                server.addFreshEntity(rock);
+            }
+            Vec3 point = new Vec3(x, center.y, z);
+            AABB column = new AABB(x - 0.5D, center.y - 2.0D, z - 0.5D,
+                    x + 0.5D, center.y + 3.0D, z + 0.5D);
+            for (LivingEntity victim : server.getEntitiesOfClass(
+                    LivingEntity.class, column, boss::validVictim)) {
+                hit(boss, victim, GrimMonarchConstants.SLICE_ROCK_DAMAGE_MULTIPLIER,
+                        GrimMonarchConstants.SLICE_ROCK_KNOCKBACK, true, false, false, point);
+            }
+        }
     }
 
     static void spawnCalamityRipple(GrimMonarchEntity boss) {

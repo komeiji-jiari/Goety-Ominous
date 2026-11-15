@@ -33,6 +33,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -836,7 +837,7 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
                     }
                 }
                 this.setImmuneToZombification(true);
-                this.playSound(SoundEvents.PIGLIN_CELEBRATE, 1.0F, 1.0F);
+                this.playSound(this.getImmunitySound(), 1.0F, 1.0F);
                 if (this.level() instanceof ServerLevel serverLevel) {
                     serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER,
                             this.getX(), this.getY() + 1.0D, this.getZ(),
@@ -850,7 +851,7 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
                     itemstack.shrink(1);
                 }
                 this.setImmuneToZombification(true);
-                this.playSound(SoundEvents.PIGLIN_CONVERTED_TO_ZOMBIFIED, 1.0F, 1.0F);
+                this.playSound(this.getTinctureSound(), 1.0F, 1.0F);
                 this.addEffect(new net.minecraft.world.effect.MobEffectInstance(
                         net.minecraft.world.effect.MobEffects.CONFUSION, 200, 0));
                 if (this.level() instanceof ServerLevel serverLevel) {
@@ -1119,13 +1120,18 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
             if (!stack.isEmpty()) {
                 Integer points = this.getFoodPoints().get(stack.getItem());
                 if (points != null) {
+                    ItemStack consumed = stack.copyWithCount(1);
                     this.eatenFoodLevel = points;
                     this.playSound(SoundEvents.GENERIC_EAT, 1.0F, 1.0F);
                     inv.removeItem(i, 1);
+                    this.onInventoryFoodConsumed(consumed);
                     return;
                 }
             }
         }
+    }
+
+    protected void onInventoryFoodConsumed(ItemStack stack) {
     }
 
     private static boolean isNetherwardTinctureItem(net.minecraft.world.item.Item item) {
@@ -1249,6 +1255,14 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
     }
 
     protected abstract void playConvertedSound();
+
+    protected SoundEvent getTinctureSound() {
+        return SoundEvents.PIGLIN_CONVERTED_TO_ZOMBIFIED;
+    }
+
+    protected SoundEvent getImmunitySound() {
+        return SoundEvents.PIGLIN_CELEBRATE;
+    }
 
     static {
         DATA_IMMUNE_TO_ZOMBIFICATION = SynchedEntityData.defineId(AbstractPiglinServant.class, EntityDataSerializers.BOOLEAN);

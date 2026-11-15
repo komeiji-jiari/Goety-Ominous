@@ -80,6 +80,22 @@
       "text": "猪灵部落的古老习俗中有着以战鼓振奋盟友的专职鼓手，你设法也将你的猪灵仆从训练成了其中一个，不过需要注意的是他们并没有自保能力。"
     },
     {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:guzzler"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_piglin_to_guzzler"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "卷轴中记载了一些古代猪灵中的大块头，但可惜的是他们似乎已经灭绝了。不过通过了解卷轴中那些巨大猪灵的习性，你意识到了一种将疣猪兽与猪灵结合的方法。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "这种拥有疣猪兽特征的巨大贪食猪灵可以接受任意食物而非特定的几种。用食物右击他们可以让他们食用食物并积累饱腹值，到达一定的饱腹值会让他们获得能力上的强化。强化时需要注意的是他们对食物有点挑剔，不会一直食用特定食物，除了绯红菌，诡异菌和下界疣以外。如果潜行右键，则可以正常将食物放入他们的物品栏内。"
+    },
+    {
       "type": "patchouli:spotlight",
       "item": "minecraft:cooked_porkchop",
       "title": "喂食、治愈与繁殖",

@@ -23,6 +23,15 @@ public final class GrimMonarchClawSweep {
     public static void hitWindow(GrimMonarchEntity boss, String key, float old, float now,
                                  double damageMultiplier, float windowStart, float windowEnd,
                                  boolean combo) {
+        hitWindow(boss, key, old, now, damageMultiplier, windowStart, windowEnd,
+                combo, combo, combo, CLOSE_RADIUS, 1.1D, 360.0D);
+    }
+
+    public static void hitWindow(GrimMonarchEntity boss, String key, float old, float now,
+                                 double damageMultiplier, float windowStart, float windowEnd,
+                                 boolean closeBody, boolean ignoreInvulnerability,
+                                 boolean shieldPiercing, double closeRadius, double force,
+                                 double closeArc) {
         float from = Math.max(old, windowStart);
         float to = Math.min(now, windowEnd);
         if (to <= from || now <= old || boss.level().isClientSide) {
@@ -72,13 +81,13 @@ public final class GrimMonarchClawSweep {
             maxY = Math.max(maxY, Math.max(segment.from().y, segment.to().y));
             maxZ = Math.max(maxZ, Math.max(segment.from().z, segment.to().z));
         }
-        if (combo) {
-            minX = Math.min(minX, boss.getX() - CLOSE_RADIUS);
+        if (closeBody) {
+            minX = Math.min(minX, boss.getX() - closeRadius);
             minY = Math.min(minY, boss.getY());
-            minZ = Math.min(minZ, boss.getZ() - CLOSE_RADIUS);
-            maxX = Math.max(maxX, boss.getX() + CLOSE_RADIUS);
+            minZ = Math.min(minZ, boss.getZ() - closeRadius);
+            maxX = Math.max(maxX, boss.getX() + closeRadius);
             maxY = Math.max(maxY, boss.getY() + CLOSE_HEIGHT);
-            maxZ = Math.max(maxZ, boss.getZ() + CLOSE_RADIUS);
+            maxZ = Math.max(maxZ, boss.getZ() + closeRadius);
         }
         AABB search = new AABB(
                 minX - PADDING, minY - PADDING, minZ - PADDING,
@@ -93,9 +102,19 @@ public final class GrimMonarchClawSweep {
                 continue;
             }
             AABB raw = victim.getBoundingBox();
-            boolean hit = combo && GrimMonarchCombatMath.boxDistanceSquaredXZ(
+            boolean inArc = true;
+            if (closeBody) {
+                Vec3 center = raw.getCenter();
+                double dx = center.x - boss.getX();
+                double dz = center.z - boss.getZ();
+                if (dx * dx + dz * dz > 1.0E-6D) {
+                    float angle = (float) Math.toDegrees(Math.atan2(-dx, dz)) - boss.getYRot();
+                    inArc = Math.abs(Mth.wrapDegrees(angle)) <= closeArc * 0.5F;
+                }
+            }
+            boolean hit = closeBody && inArc && GrimMonarchCombatMath.boxDistanceSquaredXZ(
                     boss.getX(), boss.getZ(), raw.minX, raw.minZ, raw.maxX, raw.maxZ)
-                    <= CLOSE_RADIUS * CLOSE_RADIUS
+                    <= closeRadius * closeRadius
                     && raw.maxY >= boss.getY()
                     && raw.minY <= boss.getY() + CLOSE_HEIGHT;
             if (!hit) {
@@ -111,7 +130,8 @@ public final class GrimMonarchClawSweep {
                 continue;
             }
             victims.add(victim.getUUID());
-            GrimMonarchCombat.hit(boss, victim, damageMultiplier, 1.1D, true, combo, combo, boss.position());
+            GrimMonarchCombat.hit(boss, victim, damageMultiplier, force, true,
+                    ignoreInvulnerability, shieldPiercing, boss.position());
         }
     }
 }

@@ -178,6 +178,9 @@ public class ModModelLayers {
         event.registerLayerDefinition(BastionGuardModel.LAYER_LOCATION,
                 BastionGuardModel::createBodyLayer);
 
+        event.registerLayerDefinition(GuzzlerModel.LAYER_LOCATION,
+                GuzzlerModel::createBodyLayer);
+
         event.registerLayerDefinition(ModEntityLayers.CURSED_BLACK_WOLF_ARMOR_LAYER,
                 CursedBlackWolfArmorModel::createBodyLayer);
 
@@ -435,6 +438,10 @@ public class ModModelLayers {
 
         event.registerEntityRenderer(ModEntityTypes.ZBASTION_GUARD_SERVANT.get(),
                 context -> new BastionGuardRenderer<>(context));
+
+        event.registerEntityRenderer(ModEntityTypes.GUZZLER.get(), context -> new GuzzlerRenderer<>(context));
+
+        event.registerEntityRenderer(ModEntityTypes.ZGUZZLER.get(), context -> new GuzzlerRenderer<>(context));
 
         event.registerEntityRenderer(ModEntityTypes.STORM_NECROMANCER.get(),
                 com.qiuyue.goetyominous.client.render.StormNecromancerRenderer::new);

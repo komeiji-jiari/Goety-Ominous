@@ -45,18 +45,19 @@ public final class GrimMonarchAnimator {
         }
         String key = entity.action() == GrimMonarchAction.IDLE ? "idle" : entity.action().name();
         TransitionState transition = TRANSITIONS.computeIfAbsent(entity, value -> new TransitionState());
+        boolean snap = entity.action().slam();
         if (!key.equals(transition.action)) {
-            if (transition.pose != null) {
+            if (transition.pose != null && !snap) {
                 transition.from = GrimMonarchClips.copy(transition.pose);
                 transition.endAge = ageInTicks + TRANSITION_TICKS;
             }
             transition.action = key;
         }
-        if (transition.from != null && ageInTicks < transition.endAge) {
+        if (snap || transition.from == null || ageInTicks >= transition.endAge) {
+            transition.from = null;
+        } else {
             float weight = Mth.clamp((transition.endAge - ageInTicks) / TRANSITION_TICKS, 0.0F, 1.0F);
             GrimMonarchClips.blend(pose, transition.from, weight);
-        } else {
-            transition.from = null;
         }
         transition.pose = GrimMonarchClips.copy(pose);
         GrimMonarchClips.apply(model, pose);

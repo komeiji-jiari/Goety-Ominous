@@ -1115,5 +1115,46 @@
   "copper_trapdoor_open": {
     "subtitle": "subtitles.block.copper_trapdoor.open",
     "sounds": [ "goetyominous:block/copper_trapdoor/toggle1", "goetyominous:block/copper_trapdoor/toggle2", "goetyominous:block/copper_trapdoor/toggle3", "goetyominous:block/copper_trapdoor/toggle4" ]
+  },
+
+  "guzzler_idle": {
+    "subtitle": "subtitles.goetyominous.guzzler_idle",
+    "sounds": [ "goetyominous:guzzler/idle1", "goetyominous:guzzler/idle2", "goetyominous:guzzler/idle3", "goetyominous:guzzler/idle4", "goetyominous:guzzler/idle5", "goetyominous:guzzler/idle6", "goetyominous:guzzler/idle7", "goetyominous:guzzler/idle8", "goetyominous:guzzler/idle9" ]
+  },
+  "guzzler_hurt": {
+    "subtitle": "subtitles.goetyominous.guzzler_hurt",
+    "sounds": [ "goetyominous:guzzler/hurt1", "goetyominous:guzzler/hurt2", "goetyominous:guzzler/hurt3", "goetyominous:guzzler/hurt4", "goetyominous:guzzler/hurt5", "goetyominous:guzzler/hurt6", "goetyominous:guzzler/hurt7", "goetyominous:guzzler/hurt8", "goetyominous:guzzler/hurt9", "goetyominous:guzzler/hurt10", "goetyominous:guzzler/hurt11", "goetyominous:guzzler/hurt12", "goetyominous:guzzler/hurt13", "goetyominous:guzzler/hurt14", "goetyominous:guzzler/hurt15", "goetyominous:guzzler/hurt16" ]
+  },
+  "guzzler_death": {
+    "subtitle": "subtitles.goetyominous.guzzler_death",
+    "sounds": [ "goetyominous:guzzler/death1", "goetyominous:guzzler/death2", "goetyominous:guzzler/death3", "goetyominous:guzzler/death4", "goetyominous:guzzler/death5", "goetyominous:guzzler/death6", "goetyominous:guzzler/death7", "goetyominous:guzzler/death8", "goetyominous:guzzler/death9", "goetyominous:guzzler/death10" ]
+  },
+  "guzzler_step": {
+    "subtitle": "subtitles.goetyominous.guzzler_step",
+    "sounds": [ "goetyominous:guzzler/step1", "goetyominous:guzzler/step2", "goetyominous:guzzler/step3", "goetyominous:guzzler/step4", "goetyominous:guzzler/step5", "goetyominous:guzzler/step6", "goetyominous:guzzler/step7", "goetyominous:guzzler/step8", "goetyominous:guzzler/step9", "goetyominous:guzzler/step10" ]
+  },
+  "guzzler_arm": {
+    "subtitle": "subtitles.goetyominous.guzzler_arm",
+    "sounds": [ "goetyominous:guzzler/arm1", "goetyominous:guzzler/arm2", "goetyominous:guzzler/arm3", "goetyominous:guzzler/arm4", "goetyominous:guzzler/arm5", "goetyominous:guzzler/arm6" ]
+  },
+  "guzzler_aggro": {
+    "subtitle": "subtitles.goetyominous.guzzler_aggro",
+    "sounds": [ "goetyominous:guzzler/aggro1", "goetyominous:guzzler/aggro2", "goetyominous:guzzler/aggro3" ]
+  },
+  "guzzler_spin_loop": {
+    "subtitle": "subtitles.goetyominous.guzzler_spin_loop",
+    "sounds": [ "goetyominous:guzzler/spin_loop1", "goetyominous:guzzler/spin_loop2", "goetyominous:guzzler/spin_loop3", "goetyominous:guzzler/spin_loop4", "goetyominous:guzzler/spin_loop5", "goetyominous:guzzler/spin_loop6", "goetyominous:guzzler/spin_loop7" ]
+  },
+  "guzzler_breathe": {
+    "subtitle": "subtitles.goetyominous.guzzler_breathe",
+    "sounds": [ "goetyominous:guzzler/breathe1", "goetyominous:guzzler/breathe2", "goetyominous:guzzler/breathe3", "goetyominous:guzzler/breathe4", "goetyominous:guzzler/breathe5", "goetyominous:guzzler/breathe6", "goetyominous:guzzler/breathe7", "goetyominous:guzzler/breathe8", "goetyominous:guzzler/breathe9", "goetyominous:guzzler/breathe10", "goetyominous:guzzler/breathe11", "goetyominous:guzzler/breathe12", "goetyominous:guzzler/breathe13", "goetyominous:guzzler/breathe14", "goetyominous:guzzler/breathe15", "goetyominous:guzzler/breathe16", "goetyominous:guzzler/breathe17", "goetyominous:guzzler/breathe18", "goetyominous:guzzler/breathe19", "goetyominous:guzzler/breathe20", "goetyominous:guzzler/breathe21", "goetyominous:guzzler/breathe22", "goetyominous:guzzler/breathe23", "goetyominous:guzzler/breathe24", "goetyominous:guzzler/breathe25", "goetyominous:guzzler/breathe26", "goetyominous:guzzler/breathe27" ]
+  },
+  "guzzler_chest_beat": {
+    "subtitle": "subtitles.goetyominous.guzzler_chest_beat",
+    "sounds": [ "goetyominous:guzzler/chest_beat1", "goetyominous:guzzler/chest_beat2", "goetyominous:guzzler/chest_beat3", "goetyominous:guzzler/chest_beat4", "goetyominous:guzzler/chest_beat5" ]
+  },
+  "guzzler_snort": {
+    "subtitle": "subtitles.goetyominous.guzzler_snort",
+    "sounds": [ "goetyominous:guzzler/snort1", "goetyominous:guzzler/snort2", "goetyominous:guzzler/snort3", "goetyominous:guzzler/snort4", "goetyominous:guzzler/snort5", "goetyominous:guzzler/snort6", "goetyominous:guzzler/snort7", "goetyominous:guzzler/snort8", "goetyominous:guzzler/snort9", "goetyominous:guzzler/snort10", "goetyominous:guzzler/snort11", "goetyominous:guzzler/snort12", "goetyominous:guzzler/snort13", "goetyominous:guzzler/snort14", "goetyominous:guzzler/snort15", "goetyominous:guzzler/snort16", "goetyominous:guzzler/snort17" ]
   }
 }

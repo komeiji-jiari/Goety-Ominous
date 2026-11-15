@@ -7,6 +7,7 @@ import com.Polarice3.Goety.utils.SEHelper;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.blocks.HimPlushieRitual;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.HeresiarchServant;
+import com.qiuyue.goetyominous.common.init.ModBlocks;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.common.items.ModItems;
 import com.qiuyue.goetyominous.common.items.curios.ScreamingSkullJar;
@@ -19,6 +20,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -122,6 +124,13 @@ public class ModEventHandler {
 
         LivingEntity killedEntity = event.getEntity();
         Entity sourceEntity = event.getSource().getEntity();
+
+        if (killedEntity instanceof Axolotl axolotl && axolotl.getVariant() == Axolotl.Variant.BLUE
+                && sourceEntity instanceof Player) {
+            event.getDrops().add(new ItemEntity(killedEntity.level(),
+                    killedEntity.getX(), killedEntity.getY(), killedEntity.getZ(),
+                    new ItemStack(ModBlocks.PLUSHIE_SKILLUPPER.get().asItem())));
+        }
 
         if (killedEntity instanceof HostileBlackWolf wolf) {
             Entity killer = event.getSource().getDirectEntity();

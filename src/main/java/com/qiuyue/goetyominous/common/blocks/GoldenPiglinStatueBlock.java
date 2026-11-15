@@ -66,6 +66,11 @@ public class GoldenPiglinStatueBlock extends CultStatueBlock {
         builder.add(HALF);
     }
 
+    @Override
+    protected void spawnDestroyParticles(Level level, Player player, BlockPos pos, BlockState state) {
+        level.levelEvent(player, 2001, pos, Block.getId(Blocks.GOLD_BLOCK.defaultBlockState()));
+    }
+
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {

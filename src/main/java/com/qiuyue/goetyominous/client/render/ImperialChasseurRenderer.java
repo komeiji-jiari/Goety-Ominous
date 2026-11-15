@@ -1,8 +1,8 @@
 package com.qiuyue.goetyominous.client.render;
 
-import com.Polarice3.Goety.client.render.layer.HierarchicalArmorLayer;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.init.ModEntityLayers;
+import com.qiuyue.goetyominous.client.render.layer.HelmetlessArmorLayer;
 import com.qiuyue.goetyominous.client.render.model.ImperialChasseurModel;
 import com.qiuyue.goetyominous.common.entities.ally.illager.ImperialChasseurServant;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -18,7 +18,7 @@ public class ImperialChasseurRenderer<T extends Mob> extends MobRenderer<T, Impe
 
     public ImperialChasseurRenderer(EntityRendererProvider.Context context) {
         super(context, new ImperialChasseurModel<>(context.bakeLayer(ModEntityLayers.IMPERIAL_CHASSEUR_LAYER)), 0.5F);
-        this.addLayer(new HierarchicalArmorLayer<>(this, context));
+        this.addLayer(new HelmetlessArmorLayer<>(this, context));
     }
 
     @Override

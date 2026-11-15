@@ -80,6 +80,22 @@
       "text": "Among the ancient customs of the Piglin Hordes are dedicated drummers who rally their allies with war drums. You have managed to train one of your Piglin servants into such a drummer, though note that they have no means of defending themselves."
     },
     {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:guzzler"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:convert_piglin_to_guzzler"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The scroll records some of the big, hulking figures among ancient Piglins, but unfortunately they appear to be extinct. However, by studying the habits of those giant Piglins in the scroll, you have realized a way to combine a Hoglin with a Piglin."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "This massive, voracious Piglin bearing Hoglin traits can accept any kind of food rather than only a few specific types. Right-clicking them with food lets them eat it and accumulate Satiety, reaching a certain Satiety grants them a buff to their abilities. When buffing, note that they are a little picky about food and will not keep eating the same item, except for Crimson Fungus, Warped Fungus, and Nether Wart. Sneak-right-clicking instead places the food normally into their inventory."
+    },
+    {
       "type": "patchouli:spotlight",
       "item": "minecraft:cooked_porkchop",
       "title": "Feeding, Healing & Breeding",
