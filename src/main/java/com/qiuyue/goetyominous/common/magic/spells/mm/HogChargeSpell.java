@@ -131,9 +131,11 @@ public class HogChargeSpell extends EverChargeSpell {
         double speed = 0.5 + velocity * 0.1;
 
         Vec3 lookVec = caster.getLookAngle();
-        Vec3 push = lookVec.scale(speed);
-        caster.setDeltaMovement(caster.getDeltaMovement().add(push.x, 0, push.z));
-        caster.hurtMarked = true;
+        if (caster.onGround() || caster.isInWater() || caster.isInLava()) {
+            Vec3 push = lookVec.scale(speed);
+            caster.setDeltaMovement(caster.getDeltaMovement().add(push.x, 0, push.z));
+            caster.hurtMarked = true;
+        }
         caster.resetFallDistance();
 
         Vec3 motion = caster.getDeltaMovement();
@@ -149,6 +151,7 @@ public class HogChargeSpell extends EverChargeSpell {
             if (!caster.isShiftKeyDown()) {
                 BlockPos center = caster.blockPosition().offset(
                         (int) Math.round(lookVec.x), 0, (int) Math.round(lookVec.z));
+                double stepUp = caster.onGround() ? 0.6D : 0.0D;
                 for (int dx = -breakRadius; dx <= breakRadius; dx++) {
                     for (int dy = 0; dy <= 2; dy++) {
                         for (int dz = -breakRadius; dz <= breakRadius; dz++) {
@@ -162,7 +165,7 @@ public class HogChargeSpell extends EverChargeSpell {
                             if (state.isAir() || state.getDestroySpeed(worldIn, pos) < 0) continue;
                             VoxelShape shape = state.getCollisionShape(worldIn, pos);
                             if (!shape.isEmpty()
-                                    && shape.max(Direction.Axis.Y) + pos.getY() <= caster.getY() + caster.getStepHeight() + 1.0E-4D) {
+                                    && shape.max(Direction.Axis.Y) + pos.getY() <= caster.getY() + stepUp + 1.0E-4D) {
                                 continue;
                             }
                             if (!this.isBreakable(worldIn, pos, state)) continue;
