@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.List;
 import java.util.Map;
 
 @Mixin(GolemType.class)
@@ -26,5 +27,15 @@ public class GolemTypeMixin {
         if (mold != null) {
             map.putIfAbsent(roots.setValue(BlockStateProperties.WATERLOGGED, true), mold);
         }
+    }
+
+    @Inject(method = "getMolds", at = @At("RETURN"), remap = false)
+    private static void goetyominous$allowWaterloggedRootsMolds(BlockState state, CallbackInfoReturnable<List<IMold>> cir) {
+        if (!state.is(ModBlocks.OVERGROWN_ROOTS.get())
+                || !state.hasProperty(BlockStateProperties.WATERLOGGED)
+                || !state.getValue(BlockStateProperties.WATERLOGGED)) {
+            return;
+        }
+        cir.getReturnValue().add(GolemType.LEAPLEAF.getMold());
     }
 }
