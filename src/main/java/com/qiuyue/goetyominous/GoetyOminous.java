@@ -208,8 +208,6 @@ public class GoetyOminous {
         WeaponConfig.loadConfig(WeaponConfig.SPEC,
                 FMLPaths.CONFIGDIR.get().resolve("goetyominous/goetyominous-weapons.toml").toString());
 
-        com.qiuyue.goetyominous.common.init.ModAttributes.init();
-        com.qiuyue.goetyominous.compat.mod.GoetyRevelationCompat.registerFelSpellPower(FEL);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
