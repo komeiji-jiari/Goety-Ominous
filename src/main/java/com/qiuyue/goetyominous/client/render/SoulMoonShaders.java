@@ -15,7 +15,7 @@ import javax.annotation.Nullable;
 public final class SoulMoonShaders {
 
     public static final ResourceLocation MOON_TEXTURE =
-            new ResourceLocation(GoetyOminous.MOD_ID, "textures/sky/soul_moon_eclipse.png");
+            new ResourceLocation(GoetyOminous.MOD_ID, "textures/sky/soul_moon_atlas.png");
 
     @Nullable private static ShaderInstance halo;
 
