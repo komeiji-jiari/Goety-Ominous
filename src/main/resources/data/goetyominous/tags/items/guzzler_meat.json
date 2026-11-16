@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:porkchop",
+    {
+      "id": "mynethersdelight:hoglin_loin",
+      "required": false
+    }
+  ]
+}

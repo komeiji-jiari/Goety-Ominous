@@ -33,10 +33,10 @@
       "item": "minecraft:shroomlight"
     },
     {
-      "item": "minecraft:porkchop"
+      "tag": "goetyominous:guzzler_meat"
     },
     {
-      "item": "minecraft:porkchop"
+      "tag": "goetyominous:guzzler_meat"
     }
   ],
   "result": {
