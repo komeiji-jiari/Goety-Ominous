@@ -6,6 +6,8 @@ final class GrimMonarchConstants {
     static final int NIGHT_TRANSITION_TICKS = 100;
     static final long NIGHT_DAY_TICKS = 24000L;
     static final long NIGHT_MIDNIGHT_TIME = 18000L;
+    static final long NIGHT_DAWN_SPAN = 6000L;
+    static final double NIGHT_DAWN_STEP = 0.004D;
     static final long NIGHT_FULL_MOON_CYCLE = 8L;
     static final double TURN_DEGREES_PER_TICK = 14.0D;
     static final double ATTACK_TURN_DEGREES_PER_TICK = 90.0D;

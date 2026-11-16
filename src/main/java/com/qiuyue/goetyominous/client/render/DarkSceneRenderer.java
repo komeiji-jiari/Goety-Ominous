@@ -42,6 +42,8 @@ public class DarkSceneRenderer {
     private static final float MOON_TINT_GREEN = 1.06F;
     private static final float MOON_TINT_BLUE = 1.18F;
 
+    public static final float MOON_SCALE = 2.5F;
+
     private static boolean active;
     private static int level = 1;
     private static long onsetAt;

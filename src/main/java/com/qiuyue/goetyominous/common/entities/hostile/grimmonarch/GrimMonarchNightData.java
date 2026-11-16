@@ -26,6 +26,8 @@ public class GrimMonarchNightData extends SavedData {
     private static final String TARGET = "Target";
     private static final String FINAL = "Final";
     private static final String TICKS = "Ticks";
+    private static final String DAWN = "Dawn";
+    private static final String DAWN_SHOWN = "DawnShown";
 
     private final Set<UUID> monarchs = new LinkedHashSet<>();
     private boolean started;
@@ -35,6 +37,8 @@ public class GrimMonarchNightData extends SavedData {
     private long transitionTarget;
     private long finalTarget;
     private int transitionTicks;
+    private double dawnProgress;
+    private double dawnShown;
 
     private GrimMonarchNightData() {
     }
@@ -46,20 +50,37 @@ public class GrimMonarchNightData extends SavedData {
 
     public void register(UUID id) {
         if (this.monarchs.add(id)) {
+            if (this.monarchs.size() == 1) {
+                this.dawnProgress = 0.0D;
+                this.dawnShown = 0.0D;
+            }
             this.setDirty();
         }
     }
 
-    public void unregister(UUID id) {
+    public void unregister(UUID id, ServerLevel level) {
         if (this.monarchs.remove(id)) {
             if (this.monarchs.isEmpty()) {
+                if (this.locked && this.finalTarget > 0L) {
+                    setLevelTime(level, this.finalTarget + GrimMonarchConstants.NIGHT_DAWN_SPAN);
+                }
                 this.started = false;
                 this.locked = false;
                 this.transitionStart = 0L;
                 this.transitionTarget = 0L;
                 this.finalTarget = 0L;
                 this.transitionTicks = 0;
+                this.dawnProgress = 0.0D;
+                this.dawnShown = 0.0D;
             }
+            this.setDirty();
+        }
+    }
+
+    public void reportHealth(float ratio) {
+        double progress = 1.0D - Math.max(0.0F, Math.min(1.0F, ratio));
+        if (progress > this.dawnProgress) {
+            this.dawnProgress = progress;
             this.setDirty();
         }
     }
@@ -97,7 +118,13 @@ public class GrimMonarchNightData extends SavedData {
             }
         }
         if (this.locked) {
-            setLevelTime(level, this.finalTarget);
+            if (this.dawnShown < this.dawnProgress) {
+                this.dawnShown = Math.min(this.dawnProgress,
+                        this.dawnShown + GrimMonarchConstants.NIGHT_DAWN_STEP);
+                this.setDirty();
+            }
+            setLevelTime(level, this.finalTarget
+                    + (long) (this.dawnShown * (double) GrimMonarchConstants.NIGHT_DAWN_SPAN));
         } else {
             ++this.transitionTicks;
             this.setDirty();
@@ -151,6 +178,8 @@ public class GrimMonarchNightData extends SavedData {
         tag.putLong(TARGET, this.transitionTarget);
         tag.putLong(FINAL, this.finalTarget);
         tag.putInt(TICKS, this.transitionTicks);
+        tag.putDouble(DAWN, this.dawnProgress);
+        tag.putDouble(DAWN_SHOWN, this.dawnShown);
         return tag;
     }
 
@@ -169,6 +198,10 @@ public class GrimMonarchNightData extends SavedData {
         data.transitionTarget = tag.getLong(TARGET);
         data.finalTarget = tag.getLong(FINAL);
         data.transitionTicks = tag.getInt(TICKS);
+        data.dawnProgress = tag.contains(DAWN, Tag.TAG_DOUBLE)
+                ? Math.max(0.0D, Math.min(1.0D, tag.getDouble(DAWN))) : 0.0D;
+        data.dawnShown = tag.contains(DAWN_SHOWN, Tag.TAG_DOUBLE)
+                ? Math.max(0.0D, Math.min(data.dawnProgress, tag.getDouble(DAWN_SHOWN))) : 0.0D;
         if (!data.started || data.finalTarget <= 0L
                 || (!data.locked && data.transitionTarget <= 0L)) {
             data.started = false;
@@ -177,6 +210,8 @@ public class GrimMonarchNightData extends SavedData {
             data.transitionTarget = 0L;
             data.finalTarget = 0L;
             data.transitionTicks = 0;
+            data.dawnProgress = 0.0D;
+            data.dawnShown = 0.0D;
         }
         return data;
     }
