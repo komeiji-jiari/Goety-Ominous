@@ -281,7 +281,7 @@ public class MmConfig {
         BUILDER.pop();
         BUILDER.push("Spells");
         BUILDER.push("Hog Charge Spell");
-        HogChargeSoulCost = BUILDER.comment("Soul cost of Hog Charge spell per second (Default: 10)")
+        HogChargeSoulCost = BUILDER.comment("Soul cost of Hog Charge spell per second, plus one upfront (Default: 10)")
                 .defineInRange("hogChargeSoulCost", 10, 1, 100);
         HogChargeCooldown = BUILDER.comment("Cooldown of Hog Charge spell in ticks (Default: 200)")
                 .defineInRange("hogChargeCooldown", 200, 0, 2000);

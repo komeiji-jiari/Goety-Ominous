@@ -3,5 +3,5 @@ package com.qiuyue.goetyominous.utils;
 import net.minecraft.world.entity.MobType;
 
 public class ModMobType {
-    public static final MobType FEL = new MobType();
+    public static final MobType FEL = com.goety_soul_witch.registry.ModMobType.FEL;
 }

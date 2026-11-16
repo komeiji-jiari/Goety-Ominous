@@ -12,6 +12,8 @@ import com.qiuyue.goetyominous.common.explore.ExpeditionLootStorage;
 import com.qiuyue.goetyominous.common.explore.ExpeditionManager;
 import com.qiuyue.goetyominous.common.explore.IExpeditionLootHolder;
 import com.qiuyue.goetyominous.common.init.pp.PpEntityRegistry;
+import com.qiuyue.goetyominous.common.items.ModItems;
+import com.qiuyue.goetyominous.common.items.explore.TravelerCompassItem;
 import com.qiuyue.goetyominous.common.items.pp.PpItems;
 import com.qiuyue.goetyominous.config.pp.PpConfig;
 import net.minecraft.core.BlockPos;
@@ -306,7 +308,7 @@ public class PiglinTravelerServant extends AbstractPiglinServant implements Cros
 
     @Override
     protected void onBarterLoot(ItemStack drop) {
-        if (drop.getItem() instanceof TravelersCompassItem) {
+        if (drop.getItem() instanceof TravelerCompassItem) {
             this.playBarteringAnimation();
             this.playSound(PPSounds.MAKE_COMPASS.get(), 1.0F, 1.0F);
         }
@@ -342,6 +344,11 @@ public class PiglinTravelerServant extends AbstractPiglinServant implements Cros
                 .create(LootContextParamSets.PIGLIN_BARTER);
         LootTable lootTable = serverLevel.getServer().getLootData().getLootTable(PPLoot.TRAVELER_BARTER);
         List<ItemStack> drops = lootTable.getRandomItems(lootParams);
+        for (int i = 0; i < drops.size(); i++) {
+            if (drops.get(i).getItem() instanceof TravelersCompassItem) {
+                drops.set(i, new ItemStack(ModItems.TRAVELER_COMPASS.get()));
+            }
+        }
         this.alreadyLocatedObjects = new HashMap<>(proxy.alreadyLocatedObjects);
         this.currentlyLocatedObject = proxy.currentlyLocatedObject;
         proxy.currentlyLocatedObject = null;

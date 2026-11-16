@@ -142,7 +142,7 @@ public class ModEventHandler {
                 if (boline && wolf.getRandom().nextFloat() < 0.5F) {
                     event.getDrops().add(new ItemEntity(wolf.level(),
                             wolf.getX(), wolf.getY(), wolf.getZ(),
-                            new ItemStack(ModItems.WOLF_TONGUE.get(), 1)));
+                            new ItemStack(com.goety_soul_witch.registry.GoetyOminousItems.WOLF_TONGUE.get(), 1)));
                 }
             }
         }
@@ -174,7 +174,7 @@ public class ModEventHandler {
             LivingEntity owner = ((net.minecraft.world.entity.OwnableEntity) pool).getOwner();
             if (owner != null) {
                 int amplifier = 0;
-                if (com.qiuyue.goetyominous.utils.CroneCuriosUtil.hasCroneRobe(owner)) {
+                if (com.goety_soul_witch.common.util.CroneCuriosUtil.hasCroneRobe(owner)) {
                     amplifier += 1;
                 }
                 event.getEntity().addEffect(new MobEffectInstance(GoetyEffects.ACID_VENOM.get(), 200, amplifier), owner);

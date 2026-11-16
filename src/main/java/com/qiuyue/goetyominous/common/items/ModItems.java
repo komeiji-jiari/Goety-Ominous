@@ -4,7 +4,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import com.Polarice3.Goety.common.items.ServantSpawnEggItem;
 import com.Polarice3.Goety.common.items.block.BlockItemBase;
-import com.Polarice3.Goety.common.items.magic.DarkStaff;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.render.item.BoneCudgelRenderer;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.Warg;
@@ -12,6 +11,7 @@ import com.qiuyue.goetyominous.common.init.ModBlocks;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.common.items.curios.*;
+import com.qiuyue.goetyominous.common.items.explore.TravelerCompassItem;
 import com.qiuyue.goetyominous.common.items.revive.BrokenStormCrown;
 import com.qiuyue.goetyominous.common.items.revive.StormSoulJar;
 import com.qiuyue.goetyominous.common.items.revive.SunkenSoulJar;
@@ -29,8 +29,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import static com.qiuyue.goetyominous.config.WeaponConfig.FelStaffDamage;
-
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS,
             GoetyOminous.MOD_ID);
@@ -38,12 +36,6 @@ public class ModItems {
     public static void init() {
         ModItems.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
-
-    public static final RegistryObject<DarkStaff> FEL_STAFF = ITEMS.register("fel_staff",
-            () -> new DarkStaff(FelStaffDamage.get(), GoetyOminous.FEL));
-
-    public static final RegistryObject<Item> FEL_CORE = ITEMS.register("fel_core",
-            () -> new Item(new Item.Properties().rarity(Rarity.COMMON).stacksTo(64)));
 
     public static final RegistryObject<Item> WIND_CHARGE = ITEMS.register("wind_charge",
             () -> new WindChargeItem(new Item.Properties()));
@@ -72,20 +64,8 @@ public class ModItems {
     public static final RegistryObject<Item> SCRAPE_POTTERY_SHERD = ITEMS.register("scrape_pottery_sherd",
             () -> new Item(new Item.Properties()));
 
-    public static final RegistryObject<Item> HARMONIOUS_DIAMOND = ITEMS.register("harmonious_diamond",
-            () -> new Item(new Item.Properties().rarity(Rarity.COMMON).stacksTo(64)));
-
     public static final RegistryObject<Item> OMINOUS_ICON = ITEMS.register("ominous_icon",
             () -> new OminousIconItem(new Item.Properties().stacksTo(1)));
-
-    public static final RegistryObject<Item> BAT_WING = ITEMS.register("bat_wing",
-            () -> new BatWingItem(new Item.Properties()));
-
-    public static final RegistryObject<Item> WORMY_APPLE = ITEMS.register("wormy_apple",
-            () -> new WormyAppleItem(new Item.Properties()));
-
-    public static final RegistryObject<Item> WOLF_TONGUE = ITEMS.register("wolf_tongue",
-            () -> new Item(new Item.Properties().rarity(Rarity.COMMON).stacksTo(64)));
 
     public static final RegistryObject<Item> COLD_HEART = ITEMS.register("cold_heart",
             () -> new ColdHeartItem());
@@ -170,17 +150,14 @@ public class ModItems {
     public static final RegistryObject<Item> BROKEN_STORM_CROWN = ITEMS.register("broken_storm_crown",
             () -> new BrokenStormCrown());
 
+    public static final RegistryObject<Item> TRAVELER_COMPASS = ITEMS.register("traveler_compass",
+            () -> new TravelerCompassItem(new Item.Properties().stacksTo(1)));
+
     public static final RegistryObject<Item> DARK_ANKH = ITEMS.register("dark_ankh",
             () -> new DarkAnkh());
 
     public static final RegistryObject<Item> SCREAMING_SKULL_JAR = ITEMS.register("screaming_skull_jar",
             () -> new ScreamingSkullJar());
-
-    public static final RegistryObject<CroneRobeItem> CRONE_ROBE = ITEMS.register("crone_robe",
-            () -> new CroneRobeItem());
-
-    public static final RegistryObject<CroneRobeItem> CRONE_ROBE_ALT = ITEMS.register("crone_robe_alt",
-            () -> new CroneRobeItem());
 
     public static final RegistryObject<Item> FUNGUS_PACK = ITEMS.register("fungus_pack",
             () -> new FungusPackItem());
@@ -465,7 +442,7 @@ public class ModItems {
 
     public static final RegistryObject<ServantSpawnEggItem> ZBASTION_GUARD_SERVANT_SPAWN_EGG = ITEMS.register(
             "zbastion_guard_servant_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.ZBASTION_GUARD_SERVANT, 0x4E6B4E, 0xE9AF15, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.ZBASTION_GUARD_SERVANT, 0x2B2B2B, 0x4E6B4E, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> GUZZLER_SPAWN_EGG = ITEMS.register(
             "guzzler_spawn_egg",
@@ -473,7 +450,7 @@ public class ModItems {
 
     public static final RegistryObject<ServantSpawnEggItem> ZGUZZLER_SPAWN_EGG = ITEMS.register(
             "zguzzler_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.ZGUZZLER, 0x4E6B4E, 0xB02E26, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.ZGUZZLER, 0xE6918B, 0x4E6B4E, egg()));
 
     public static final RegistryObject<net.minecraftforge.common.ForgeSpawnEggItem> PIGLIN_MERCHANT_SPAWN_EGG = ITEMS.register(
             "piglin_merchant_spawn_egg",

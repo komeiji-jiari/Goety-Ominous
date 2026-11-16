@@ -1,0 +1,25 @@
+{
+  "name": "旅行家指南针",
+  "icon": "goetyominous:traveler_compass",
+  "category": "goety:ominous_crafts",
+  "advancement": "goetyominous:goetyominous/read_bastion_scroll",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "旅行家指南针是猪灵旅行者远征的核心。右击这个指南针可以打开一个UI，允许你派遣猪灵旅行者收集物资。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:traveler_compass"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "一个探索队伍最多可以接受10名旅行者。旅行者的数量越多，可获取的资源也越多，意外死亡的概率也会逐渐降低，在10名队员时为0。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "持有镐的旅行者会增加一次获取矿石的概率，而持有弩的旅行者会增加一次获取生物掉落物的概率。探索完成后，需要空手右击已返回的旅行者，让他们把战利品交给你。如果旅行者被指路石绑定过箱子，那么他们会将战利品主动放入箱子里。需要注意的是如果旅行者处于跟随或者待命模式时不会主动与箱子交互。"
+    }
+  ]
+}

@@ -3,10 +3,8 @@ package com.qiuyue.goetyominous.client.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.init.ModEntityLayers;
-import com.qiuyue.goetyominous.client.render.curios.CroneRobeRenderer;
 import com.qiuyue.goetyominous.client.render.layer.CursedWolfArmorLayer;
 import com.qiuyue.goetyominous.client.render.model.*;
-import com.qiuyue.goetyominous.client.render.model.curios.CroneRobeModel;
 import com.qiuyue.goetyominous.client.render.model.equipment.BoneCudgelModel;
 import com.qiuyue.goetyominous.client.render.model.projectile.AcidFungus;
 import com.qiuyue.goetyominous.client.render.model.projectile.PitchforkModel;
@@ -79,8 +77,6 @@ public class ModModelLayers {
         event.registerLayerDefinition(HURRICANE_PUNCH,
                 com.qiuyue.goetyominous.client.render.model.HurricanePunchModel::createBodyLayer);
 
-        event.registerLayerDefinition(CroneRobeModel.LAYER_LOCATION, CroneRobeModel::createBodyLayer);
-
         event.registerLayerDefinition(BoneCudgelModel.LAYER_LOCATION, BoneCudgelModel::createBodyLayer);
 
         event.registerLayerDefinition(ModEntityLayers.ACID_FUNGUS_LAYER,
@@ -130,9 +126,6 @@ public class ModModelLayers {
 
         event.registerLayerDefinition(ModEntityLayers.CURSED_BLACK_BEAST_ARMOR_LAYER,
                 CursedBlackBeastArmorModel::createBodyLayer);
-
-        event.registerLayerDefinition(CroneRobeModel.LAYER_LOCATION, CroneRobeModel::createBodyLayer);
-        CroneRobeRenderer.register();
 
         event.registerLayerDefinition(ModEntityLayers.FUNGUS_PACK_LAYER, FungusPackModel::createBodyLayer);
 

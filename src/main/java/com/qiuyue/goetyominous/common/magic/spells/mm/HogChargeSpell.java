@@ -49,7 +49,11 @@ public class HogChargeSpell extends EverChargeSpell {
 
     public static final int MAX_CAST_TICKS = 200;
     private static final int SOUND_INTERVAL = 10;
-    private final Set<UUID> channeling = new HashSet<>();
+    private static final Set<UUID> CHANNELING = new HashSet<>();
+
+    public static void forgetChannel(UUID id) {
+        CHANNELING.remove(id);
+    }
 
     @Override
     public SpellStat defaultStats() {
@@ -97,7 +101,7 @@ public class HogChargeSpell extends EverChargeSpell {
 
     @Override
     public void startSpell(ServerLevel worldIn, LivingEntity caster, ItemStack staff, SpellStat spellStat) {
-        this.channeling.add(caster.getUUID());
+        CHANNELING.add(caster.getUUID());
         if (staff.getTag() != null) {
             staff.getTag().putInt("Seconds", 0);
         }
@@ -222,7 +226,7 @@ public class HogChargeSpell extends EverChargeSpell {
     }
 
     private void endChannel(ServerLevel level, LivingEntity caster) {
-        if (!this.channeling.remove(caster.getUUID())) {
+        if (!CHANNELING.remove(caster.getUUID())) {
             return;
         }
         Vec3 pos = caster.position();

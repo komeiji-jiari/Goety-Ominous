@@ -29,7 +29,7 @@ public class GolemTypeMixin {
         }
     }
 
-    @Inject(method = "getMolds", at = @At("RETURN"), remap = false)
+    @Inject(method = "getMolds", at = @At("RETURN"), remap = false, require = 1)
     private static void goetyominous$allowWaterloggedRootsMolds(BlockState state, CallbackInfoReturnable<List<IMold>> cir) {
         if (!state.is(ModBlocks.OVERGROWN_ROOTS.get())
                 || !state.hasProperty(BlockStateProperties.WATERLOGGED)

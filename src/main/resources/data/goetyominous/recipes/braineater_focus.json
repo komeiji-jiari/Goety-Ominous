@@ -2,7 +2,7 @@
   "type": "goety:ritual",
   "ritual_type": "goety:craft",
   "activation_item": {
-    "item": "goetyominous:fel_core"
+    "item": "goety_soul_witch:fel_core"
   },
   "craftType": "fel",
   "soulCost": 1,

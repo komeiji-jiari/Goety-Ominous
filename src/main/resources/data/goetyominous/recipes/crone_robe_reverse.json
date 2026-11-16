@@ -1,8 +1,8 @@
 {
   "type": "goety:cursed_infuser_recipes",
   "ingredient": {
-    "item": "goetyominous:crone_robe_alt"
+    "item": "goety_soul_witch:crone_robe_alt"
   },
-  "result": "goetyominous:crone_robe",
+  "result": "goety_soul_witch:crone_robe",
   "cookingTime": 60
 }

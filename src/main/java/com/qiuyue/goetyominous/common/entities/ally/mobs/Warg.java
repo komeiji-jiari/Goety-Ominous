@@ -19,7 +19,7 @@ import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.common.items.CursedMetalWolfArmorItem;
 import com.qiuyue.goetyominous.common.items.CursedWargArmorItem;
 import com.qiuyue.goetyominous.common.items.DarkWargArmorItem;
-import com.qiuyue.goetyominous.common.items.curios.CroneRobeItem;
+import com.goety_soul_witch.common.item.CroneRobeItem;
 import com.qiuyue.goetyominous.common.world.WargTotemData;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.minecraft.core.BlockPos;

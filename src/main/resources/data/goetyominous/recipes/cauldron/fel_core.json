@@ -7,19 +7,19 @@
   },
   "ingredients": [
     {
-      "item": "goetyominous:bat_wing"
+      "item": "goety_soul_witch:bat_wing"
     },
     {
-      "item": "goetyominous:wormy_apple"
+      "item": "goety_soul_witch:wormy_apple"
     },
     {
       "item": "goety:venomous_fang"
     },
     {
-      "item": "goetyominous:wolf_tongue"
+      "item": "goety_soul_witch:wolf_tongue"
     }
   ],
   "result": {
-    "item": "goetyominous:fel_core"
+    "item": "goety_soul_witch:fel_core"
   }
 }

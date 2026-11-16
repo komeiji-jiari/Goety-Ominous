@@ -8,7 +8,7 @@ import com.Polarice3.Goety.utils.ServerParticleUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.projectile.EntityPoisonBall;
 import com.qiuyue.goetyominous.config.SpellConfig;
-import com.qiuyue.goetyominous.utils.CroneCuriosUtil;
+import com.goety_soul_witch.common.util.CroneCuriosUtil;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;

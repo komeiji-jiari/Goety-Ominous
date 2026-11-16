@@ -1,8 +1,6 @@
-package com.qiuyue.goetyominous.common.items.pp;
+package com.qiuyue.goetyominous.common.items.explore;
 
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractPiglinServant;
-import com.qiuyue.goetyominous.common.entities.ally.pp.PiglinTravelerServant;
-import com.qiuyue.goetyominous.common.items.explore.ExpeditionCompassItem;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -13,7 +11,7 @@ public class TravelerCompassItem extends ExpeditionCompassItem {
 
     @Override
     protected boolean acceptsTraveler(LivingEntity entity) {
-        return entity instanceof PiglinTravelerServant;
+        return entity instanceof AbstractPiglinServant;
     }
 
     @Override

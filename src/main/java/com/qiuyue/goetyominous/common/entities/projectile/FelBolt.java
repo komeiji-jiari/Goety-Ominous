@@ -132,7 +132,7 @@ public class FelBolt extends SpellHurtingProjectile {
                 livingTarget.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 0));
                 MobEffect effect = MobEffects.POISON;
                 LivingEntity livingOwner = com.Polarice3.Goety.utils.MobUtil.getOwner(this);
-                if (livingOwner != null && com.qiuyue.goetyominous.utils.CroneCuriosUtil.hasCroneRobe(livingOwner)) {
+                if (livingOwner != null && com.goety_soul_witch.common.util.CroneCuriosUtil.hasCroneRobe(livingOwner)) {
                     effect = GoetyEffects.ACID_VENOM.get();
                 }
                 livingTarget.addEffect(new MobEffectInstance(effect, 100, 0));

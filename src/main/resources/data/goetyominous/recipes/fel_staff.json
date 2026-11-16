@@ -12,7 +12,7 @@
       "tag": "forge:storage_blocks/lapis"
     },
     {
-      "item": "goetyominous:harmonious_diamond"
+      "item": "goety_soul_witch:harmonious_diamond"
     },
     {
       "item": "goety:nightshade_blossom"
@@ -34,6 +34,6 @@
     }
   ],
   "result": {
-    "item": "goetyominous:fel_staff"
+    "item": "goety_soul_witch:fel_staff"
   }
 }

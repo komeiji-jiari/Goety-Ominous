@@ -1,6 +1,6 @@
 {
   "name": "Fel Materials",
-  "icon": "goetyominous:fel_core",
+  "icon": "goety_soul_witch:fel_core",
   "category": "goety:ominous_crafts",
   "advancement": "goetyominous:goetyominous/witch_lesson",
   "secret": true,
@@ -26,17 +26,17 @@
     },
     {
       "type": "patchouli:spotlight",
-      "item": "goetyominous:bat_wing",
+      "item": "goety_soul_witch:bat_wing",
       "text": "Granny would never chop off the wings of Granny's own pet bats! Granny has Granny's little apprentice wield the Wicked Boline to snip off a couple for Granny!"
     },
     {
       "type": "patchouli:spotlight",
-      "item": "goetyominous:wormy_apple",
+      "item": "goety_soul_witch:wormy_apple",
       "text": "Rotten apples? Throw them away? HAHAHAHAHAHA! Only amateur witches would think that! After all, you'll need to chop quite a few oak leaves with your Wicked Boline to get just one!"
     },
     {
       "type": "patchouli:spotlight",
-      "item": "goetyominous:wolf_tongue",
+      "item": "goety_soul_witch:wolf_tongue",
       "text": "Granny would pull out the tongues of disobedient Black Doggies with a Wicked Boline! HAHAHA! Just kidding—Granny only ever kept a black cat! Where'd that black cat go, you ask? Oh, don't ask so many questions, child! *old hag wink*"
     }
   ]

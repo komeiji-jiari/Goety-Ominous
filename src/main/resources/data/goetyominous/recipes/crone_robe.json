@@ -15,7 +15,7 @@
       "item": "goety:occult_fabric"
     },
     {
-      "item": "goetyominous:fel_core"
+      "item": "goety_soul_witch:fel_core"
     },
     {
       "item": "goety:spiteful_belt"
@@ -24,10 +24,10 @@
       "item": "goety:soul_emerald"
     },
     {
-      "item": "goetyominous:harmonious_diamond"
+      "item": "goety_soul_witch:harmonious_diamond"
     }
   ],
   "result": {
-    "item": "goetyominous:crone_robe"
+    "item": "goety_soul_witch:crone_robe"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "邪能物品",
-  "icon": "goetyominous:fel_core",
+  "icon": "goety_soul_witch:fel_core",
   "category": "goety:ominous_crafts",
   "advancement": "goetyominous:goetyominous/witch_lesson",
   "secret": true,
@@ -26,17 +26,17 @@
     },
     {
       "type": "patchouli:spotlight",
-      "item": "goetyominous:bat_wing",
+      "item": "goety_soul_witch:bat_wing",
       "text": "奶奶可舍不得把奶奶的蝙蝠宠物的翅膀砍下来！让奶奶的小学徒拿着伯莱恩匕首去替奶奶砍两片下来！"
     },
     {
       "type": "patchouli:spotlight",
-      "item": "goetyominous:wormy_apple",
+      "item": "goety_soul_witch:wormy_apple",
       "text": "烂苹果？扔掉？哈哈哈只有业余的女巫才会这么想！毕竟你得拿着你的伯莱恩匕首砍不少橡树树叶才能拿到那么一个！"
     },
     {
       "type": "patchouli:spotlight",
-      "item": "goetyominous:wolf_tongue",
+      "item": "goety_soul_witch:wolf_tongue",
       "text": "奶奶会用伯莱恩匕首把不听话的黑狗狗的舌头拔掉！哈哈哈骗你的，奶奶只养过一只黑猫！你问那只黑猫去哪了？哦别问那么多孩子！*老太婆眨眼*"
     }
   ]

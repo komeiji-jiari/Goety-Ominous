@@ -50,6 +50,7 @@ import com.qiuyue.goetyominous.compat.curios.CuriosIntegration;
 import com.qiuyue.goetyominous.config.WeaponConfig;
 import com.qiuyue.goetyominous.utils.BuiltinPacksRegistry;
 import com.qiuyue.goetyominous.client.OminousIconRotation;
+import com.qiuyue.goetyominous.client.item.TravelerCompassAngleProperty;
 import com.qiuyue.goetyominous.utils.ModRituals;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
@@ -90,7 +91,8 @@ public class GoetyOminous {
 
     public static final String MOD_ID = "goetyominous";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-    public static com.Polarice3.Goety.api.magic.SpellType FEL;
+    public static final com.Polarice3.Goety.api.magic.SpellType FEL =
+            com.goety_soul_witch.registry.ModSpellType.FEL;
 
     public GoetyOminous() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -123,6 +125,8 @@ public class GoetyOminous {
         TrialJigsaw.STRUCTURE_TYPES.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModRituals.register(modEventBus);
+        ModCreativeTab.registerMainTabItems(com.goety_soul_witch.registry.ModItems.ITEMS);
+        ModCreativeTab.registerMainTabItems(com.goety_soul_witch.registry.GoetyOminousItems.ITEMS);
         ModCreativeTab.CREATIVE_MODE_TABS.register(modEventBus);
         com.Polarice3.Goety.api.ritual.RitualType.addRitualType("fel",
                 new FelRitualType("fel"));
@@ -205,7 +209,6 @@ public class GoetyOminous {
                 FMLPaths.CONFIGDIR.get().resolve("goetyominous/goetyominous-weapons.toml").toString());
 
         com.qiuyue.goetyominous.common.init.ModAttributes.init();
-        FEL = com.Polarice3.Goety.api.magic.SpellType.create("FEL", "fel");
         com.qiuyue.goetyominous.compat.mod.GoetyRevelationCompat.registerFelSpellPower(FEL);
     }
 
@@ -438,6 +441,9 @@ public class GoetyOminous {
             ItemProperties.register(ModItems.PIGLIN_PRIDE.get(), new ResourceLocation("firework"),
                     (stack, level, entity, seed) ->
                             CogCrossbowItem.isCharged(stack) && CogCrossbowItem.containsChargedProjectile(stack, Items.FIREWORK_ROCKET) ? 1.0F : 0.0F);
+
+            ItemProperties.register(ModItems.TRAVELER_COMPASS.get(), new ResourceLocation("angle"),
+                    TravelerCompassAngleProperty.INSTANCE);
 
             OminousIconRotation.register();
         });

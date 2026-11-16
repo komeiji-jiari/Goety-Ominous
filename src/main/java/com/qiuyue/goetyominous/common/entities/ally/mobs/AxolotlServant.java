@@ -36,6 +36,7 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.navigation.AmphibiousPathNavigation;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
@@ -229,6 +230,13 @@ public class AxolotlServant extends AnimalSummon implements LerpingModel{
         this.setVariant(Variant.byId(pCompound.getInt("Variant")));
         this.setPlayingDead(pCompound.getBoolean("PlayingDead"));
         this.playDeadTimer = pCompound.getInt("PlayDeadTimer");
+    }
+
+    @Override
+    public void convertNewEquipment(Entity pEntity) {
+        if (pEntity instanceof Axolotl axolotl) {
+            this.setVariant(Variant.byId(axolotl.getVariant().getId()));
+        }
     }
 
     @Nullable

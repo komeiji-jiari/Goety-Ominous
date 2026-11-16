@@ -36,6 +36,7 @@ public class MmCompatManager {
         MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.mm.MmTesseractTags.class);
         MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.mm.MutantShulkerServantEvents.class);
         MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.mm.WitherScytheEvents.class);
+        MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.events.mm.HogChargeChannelCleanup.class);
         MinecraftForge.EVENT_BUS.register(com.qiuyue.goetyominous.common.magic.spells.mm.RodStrikeSpell.class);
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> MmClientCompatManager.register(modEventBus));

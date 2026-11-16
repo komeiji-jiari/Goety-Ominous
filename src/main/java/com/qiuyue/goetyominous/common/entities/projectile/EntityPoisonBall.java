@@ -6,7 +6,7 @@ import com.Polarice3.Goety.common.enchantments.ModEnchantments;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.config.SpellConfig;
-import com.qiuyue.goetyominous.utils.CroneCuriosUtil;
+import com.goety_soul_witch.common.util.CroneCuriosUtil;
 import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;

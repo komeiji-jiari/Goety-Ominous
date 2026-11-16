@@ -1,7 +1,7 @@
 {
   "name": "Axolotl Servant",
   "icon": "minecraft:axolotl_bucket",
-  "category": "goety:ominous_summons",
+  "category": "goety:ominous_mutations",
   "pages": [
     {
       "type": "patchouli:text",

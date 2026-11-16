@@ -60,7 +60,7 @@ public class AcidPoolSpell extends Spell {
     @Override
     public boolean ReduceCastTime(LivingEntity caster) {
         return super.ReduceCastTime(caster)
-                || com.qiuyue.goetyominous.utils.CroneCuriosUtil.hasCroneHat(caster);
+                || com.goety_soul_witch.common.util.CroneCuriosUtil.hasCroneHat(caster);
     }
 
     @Override

@@ -8,7 +8,7 @@ import com.Polarice3.Goety.utils.MathHelper;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.GoetyOminous;
-import com.qiuyue.goetyominous.utils.CroneCuriosUtil;
+import com.goety_soul_witch.common.util.CroneCuriosUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;

@@ -13,9 +13,8 @@ public class ModTags {
             new ResourceLocation(GoetyOminous.MOD_ID, "fungus_packs"));
 
     public static class EntityTypes {
-        public static final TagKey<EntityType<?>> FEL_HEAL = TagKey.create(
-                net.minecraft.core.registries.Registries.ENTITY_TYPE,
-                new ResourceLocation(com.qiuyue.goetyominous.GoetyOminous.MOD_ID, "fel_heal"));
+        public static final TagKey<EntityType<?>> FEL_HEAL =
+                com.goety_soul_witch.registry.ModTags.EntityTypes.FEL_HEAL;
 
         public static final TagKey<EntityType<?>> STORM_CONVERT = TagKey.create(
                 net.minecraft.core.registries.Registries.ENTITY_TYPE,

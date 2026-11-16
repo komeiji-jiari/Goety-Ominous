@@ -7,7 +7,6 @@ public class WeaponConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
-    public static final ForgeConfigSpec.ConfigValue<Double> FelStaffDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> BoneCudgelDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> BoneCudgelAttackSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> FirebrandDamage;
@@ -24,10 +23,6 @@ public class WeaponConfig {
 
     static {
         BUILDER.push("Tools & Weapons");
-        BUILDER.push("Fel Staff");
-        FelStaffDamage = BUILDER.comment("Melee damage of Fel Staff (Default: 4.0)")
-                .defineInRange("felStaffDamage", 4.0, 1.0, 100.0);
-        BUILDER.pop();
         BUILDER.push("Bone Cudgel");
         BoneCudgelDamage = BUILDER
                 .comment("Bone Cudgel base damage, Default: 13.0")

@@ -20,7 +20,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class ModNetwork {
-    private static final String PROTOCOL_VERSION = "8";
+    private static final String PROTOCOL_VERSION = "9";
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(GoetyOminous.MOD_ID, "main"),
             () -> PROTOCOL_VERSION,
@@ -35,14 +35,6 @@ public class ModNetwork {
                 OpenFungusPackPacket::encode,
                 OpenFungusPackPacket::decode,
                 OpenFungusPackPacket::handle);
-        register(CCroneRobePacket.class,
-                CCroneRobePacket::encode,
-                CCroneRobePacket::decode,
-                CCroneRobePacket::handle);
-        register(CExtractPotionPacket.class,
-                CExtractPotionPacket::encode,
-                CExtractPotionPacket::decode,
-                CExtractPotionPacket::handle);
         register(WindChargeImpulsePacket.class,
                 WindChargeImpulsePacket::encode,
                 WindChargeImpulsePacket::decode,

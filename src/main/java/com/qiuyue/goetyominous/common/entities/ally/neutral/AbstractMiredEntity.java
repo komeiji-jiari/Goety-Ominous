@@ -8,7 +8,7 @@ import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.MathHelper;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.utils.CroneCuriosUtil;
+import com.goety_soul_witch.common.util.CroneCuriosUtil;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;

@@ -1,19 +1,21 @@
 package com.qiuyue.goetyominous.common.init;
 
+import com.Polarice3.Goety.common.items.ServantSpawnEggItem;
 import com.Polarice3.Goety.common.items.magic.DarkStaff;
 import com.Polarice3.Goety.common.items.magic.MagicFocus;
+import com.Polarice3.Goety.common.items.revive.ReviveServantItem;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.blocks.trial.TrialBlocks;
-import com.qiuyue.goetyominous.common.items.CursedBlackBeastArmorItem;
-import com.qiuyue.goetyominous.common.items.CursedMetalWolfArmorItem;
-import com.qiuyue.goetyominous.common.items.CursedWargArmorItem;
 import com.qiuyue.goetyominous.common.items.ModItems;
 import com.qiuyue.goetyominous.common.items.OminousIconItem;
 import com.qiuyue.goetyominous.common.items.PlushieBlockItem;
+import com.qiuyue.goetyominous.common.items.WargSpawnEggItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
@@ -50,20 +52,57 @@ public class ModCreativeTab {
                     .withSearchBar()
                     .displayItems((parameters, output) -> {
                         Buckets buckets = Buckets.collect();
+                        buckets.staves.forEach(output::accept);
                         buckets.weapons.forEach(output::accept);
                         buckets.curios.forEach(output::accept);
                         buckets.armor.forEach(output::accept);
-                        buckets.foci.forEach(output::accept);
+                        buckets.revive.forEach(output::accept);
+                        buckets.materials.forEach(output::accept);
                         buckets.other.forEach(output::accept);
-                        buckets.blocks.forEach(output::accept);
                         buckets.spawnEggs.forEach(output::accept);
+                    }).build());
+
+    public static final RegistryObject<CreativeModeTab> BLOCKS_TAB = CREATIVE_MODE_TABS
+            .register("goetyominous_blocks", () -> CreativeModeTab.builder()
+                    .icon(() -> ModBlocks.CULT_STATUE.get().asItem().getDefaultInstance())
+                    .title(Component.translatable("itemGroup.goetyominous.blocks"))
+                    .withTabsBefore(MAIN_TAB.getKey())
+                    .withSearchBar()
+                    .displayItems((parameters, output) ->
+                            Buckets.collect().blocks.forEach(output::accept)).build());
+
+    public static final RegistryObject<CreativeModeTab> SERVANT_TAB = CREATIVE_MODE_TABS
+            .register("goetyominous_servants", () -> CreativeModeTab.builder()
+                    .icon(() -> ModItems.STORM_SOUL_JAR.get().getDefaultInstance())
+                    .title(Component.translatable("itemGroup.goetyominous.servants"))
+                    .withTabsBefore(BLOCKS_TAB.getKey())
+                    .withSearchBar()
+                    .displayItems((parameters, output) ->
+                            Buckets.collect().servantEggs.forEach(output::accept)).build());
+
+    public static final RegistryObject<CreativeModeTab> FOCUS_TAB = CREATIVE_MODE_TABS
+            .register("goetyominous_focuses", () -> CreativeModeTab.builder()
+                    .icon(() -> ModItems.SPIDER_FOCUS.get().getDefaultInstance())
+                    .title(Component.translatable("itemGroup.goetyominous.focuses"))
+                    .withTabsBefore(SERVANT_TAB.getKey())
+                    .withSearchBar()
+                    .displayItems((parameters, output) ->
+                            Buckets.collect().foci.forEach(output::accept)).build());
+
+    public static final RegistryObject<CreativeModeTab> PLUSHIE_TAB = CREATIVE_MODE_TABS
+            .register("goetyominous_plushies", () -> CreativeModeTab.builder()
+                    .icon(() -> ModBlocks.PLUSHIE_HIM.get().asItem().getDefaultInstance())
+                    .title(Component.translatable("itemGroup.goetyominous.plushies"))
+                    .withTabsBefore(FOCUS_TAB.getKey())
+                    .displayItems((parameters, output) -> {
+                        ModBlocks.PLUSHIES.forEach(block -> output.accept(block.get()));
                     }).build());
 
     public static final RegistryObject<CreativeModeTab> COMPAT_TAB = CREATIVE_MODE_TABS
             .register("goetyominous_compat", () -> CreativeModeTab.builder()
                     .icon(() -> com.Polarice3.Goety.common.items.ModItems.HUNGER_CORE.get().getDefaultInstance())
                     .title(Component.translatable("itemGroup.goetyominous.compat"))
-                    .withTabsBefore(MAIN_TAB.getKey())
+                    .withTabsBefore(PLUSHIE_TAB.getKey())
                     .withSearchBar()
                     .displayItems((parameters, output) -> {
                         CompatBuckets buckets = CompatBuckets.collect();
@@ -78,21 +117,16 @@ public class ModCreativeTab {
                         buckets.spawnEggs.forEach(output::accept);
                     }).build());
 
-    public static final RegistryObject<CreativeModeTab> PLUSHIE_TAB = CREATIVE_MODE_TABS
-            .register("goetyominous_plushies", () -> CreativeModeTab.builder()
-                    .icon(() -> ModBlocks.PLUSHIE_HIM.get().asItem().getDefaultInstance())
-                    .title(Component.translatable("itemGroup.goetyominous.plushies"))
-                    .withTabsBefore(COMPAT_TAB.getKey())
-                    .displayItems((parameters, output) -> {
-                        ModBlocks.PLUSHIES.forEach(block -> output.accept(block.get()));
-                    }).build());
-
     private static final class Buckets {
         final List<Item> spawnEggs = new ArrayList<>();
+        final List<Item> servantEggs = new ArrayList<>();
         final List<Item> foci = new ArrayList<>();
+        final List<Item> staves = new ArrayList<>();
         final List<Item> weapons = new ArrayList<>();
         final List<Item> curios = new ArrayList<>();
         final List<Item> armor = new ArrayList<>();
+        final List<Item> materials = new ArrayList<>();
+        final List<Item> revive = new ArrayList<>();
         final List<Item> other = new ArrayList<>();
         final List<Item> blocks = new ArrayList<>();
 
@@ -100,6 +134,12 @@ public class ModCreativeTab {
             Buckets buckets = new Buckets();
             collectFrom(ModItems.ITEMS, buckets);
             MAIN_TAB_ITEM_SOURCES.forEach(source -> collectFrom(source.registry(), buckets));
+            Item croneHat = ForgeRegistries.ITEMS.getValue(new ResourceLocation("goety", "crone_hat"));
+            if (croneHat != null) {
+                int robeIndex = buckets.curios.indexOf(com.goety_soul_witch.registry.GoetyOminousItems.CRONE_ROBE.get());
+                buckets.curios.add(robeIndex < 0 ? buckets.curios.size() : robeIndex, croneHat);
+            }
+            sortMaterials(buckets.materials);
             sortOther(buckets.other);
             return buckets;
         }
@@ -168,7 +208,13 @@ public class ModCreativeTab {
                     return;
                 }
                 if (item instanceof SpawnEggItem) {
-                    buckets.spawnEggs.add(item);
+                    if (isServantEgg(item)) {
+                        buckets.servantEggs.add(item);
+                    } else {
+                        buckets.spawnEggs.add(item);
+                    }
+                } else if (item instanceof DarkStaff) {
+                    buckets.staves.add(item);
                 } else if (item instanceof ICurioItem) {
                     buckets.curios.add(item);
                 } else if (item instanceof MagicFocus) {
@@ -177,6 +223,10 @@ public class ModCreativeTab {
                     buckets.weapons.add(item);
                 } else if (isMobArmor(item)) {
                     buckets.armor.add(item);
+                } else if (item instanceof ReviveServantItem) {
+                    buckets.revive.add(item);
+                } else if (isMaterial(item)) {
+                    buckets.materials.add(item);
                 } else if (item instanceof BlockItem) {
                     buckets.blocks.add(item);
                 } else {
@@ -186,31 +236,53 @@ public class ModCreativeTab {
         });
     }
 
-    private static void sortOther(List<Item> items) {
+    private static void sortMaterials(List<Item> items) {
         List<Item> order = new ArrayList<>();
-        order.add(ModItems.FEL_CORE.get());
-        order.add(ModItems.HARMONIOUS_DIAMOND.get());
-        order.add(ModItems.WOLF_TONGUE.get());
-        order.add(ModItems.BAT_WING.get());
-        order.add(ModItems.WORMY_APPLE.get());
+        order.add(com.goety_soul_witch.registry.GoetyOminousItems.FEL_CORE.get());
+        order.add(com.goety_soul_witch.registry.GoetyOminousItems.HARMONIOUS_DIAMOND.get());
+        order.add(com.goety_soul_witch.registry.GoetyOminousItems.WOLF_TONGUE.get());
+        order.add(com.goety_soul_witch.registry.GoetyOminousItems.BAT_WING.get());
+        order.add(com.goety_soul_witch.registry.GoetyOminousItems.WORMY_APPLE.get());
         order.add(ModItems.COLD_HEART.get());
-        order.add(ModItems.ACID_FUNGUS.get());
-        order.add(ModItems.HURRICANE_CORE.get());
-
-        order.add(ModItems.BURNING_POTION.get());
         order.add(ModItems.NETHER_WART_POTION.get());
-        order.add(ModItems.WITCH_BOMB.get());
-
-        order.add(ModItems.BASTION_SCROLL.get());
-        order.add(ModItems.SUNKEN_SOUL_JAR.get());
-        order.add(ModItems.STORM_SOUL_JAR.get());
-        order.add(ModItems.THUNDER_HORN.get());
         order.add(ModItems.BROKEN_STORM_CROWN.get());
 
         items.sort(Comparator.comparingInt(item -> {
             int index = order.indexOf(item);
             return index < 0 ? order.size() : index;
         }));
+    }
+
+    private static void sortOther(List<Item> items) {
+        List<Item> order = new ArrayList<>();
+        order.add(ModItems.THUNDER_HORN.get());
+        order.add(ModItems.BASTION_SCROLL.get());
+        order.add(ModItems.ACID_FUNGUS.get());
+        order.add(ModItems.BURNING_POTION.get());
+        order.add(ModItems.WITCH_BOMB.get());
+
+        items.sort(Comparator.comparingInt(item -> {
+            int index = order.indexOf(item);
+            return index < 0 ? order.size() : index;
+        }));
+    }
+
+    private static Set<Item> materialItems;
+
+    private static boolean isMaterial(Item item) {
+        if (materialItems == null) {
+            Set<Item> items = new HashSet<>();
+            items.add(com.goety_soul_witch.registry.GoetyOminousItems.FEL_CORE.get());
+            items.add(com.goety_soul_witch.registry.GoetyOminousItems.HARMONIOUS_DIAMOND.get());
+            items.add(com.goety_soul_witch.registry.GoetyOminousItems.WOLF_TONGUE.get());
+            items.add(com.goety_soul_witch.registry.GoetyOminousItems.BAT_WING.get());
+            items.add(com.goety_soul_witch.registry.GoetyOminousItems.WORMY_APPLE.get());
+            items.add(ModItems.COLD_HEART.get());
+            items.add(ModItems.NETHER_WART_POTION.get());
+            items.add(ModItems.BROKEN_STORM_CROWN.get());
+            materialItems = items;
+        }
+        return materialItems.contains(item);
     }
 
     private static boolean isWeapon(Item item) {
@@ -229,10 +301,12 @@ public class ModCreativeTab {
     }
 
     private static boolean isMobArmor(Item item) {
-        return item instanceof ArmorItem
-                || item instanceof CursedMetalWolfArmorItem
-                || item instanceof CursedWargArmorItem
-                || item instanceof CursedBlackBeastArmorItem;
+        return item instanceof ArmorItem;
+    }
+
+    private static boolean isServantEgg(Item item) {
+        return item instanceof ServantSpawnEggItem
+                && !(item instanceof WargSpawnEggItem warg && warg.isHostile());
     }
 
     private static Set<Item> vanillaTabbedItems;

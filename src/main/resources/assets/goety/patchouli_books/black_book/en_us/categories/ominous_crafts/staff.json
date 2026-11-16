@@ -1,6 +1,6 @@
 {
   "name": "Staffs",
   "description": "A Dark Wizard's way to perform spells.",
-  "icon": "goetyominous:fel_staff",
+  "icon": "goety_soul_witch:fel_staff",
   "parent": "goety:ominous_crafts"
 }

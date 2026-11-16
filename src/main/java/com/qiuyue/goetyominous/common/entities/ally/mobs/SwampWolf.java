@@ -5,7 +5,7 @@ import com.Polarice3.Goety.common.entities.ally.BlackWolf;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.utils.CuriosFinder;
 import com.Polarice3.Goety.utils.MathHelper;
-import com.qiuyue.goetyominous.common.items.curios.CroneRobeItem;
+import com.goety_soul_witch.common.item.CroneRobeItem;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;

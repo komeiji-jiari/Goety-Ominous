@@ -8,7 +8,7 @@ import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.entities.util.BoggedLike;
 import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.config.AttributesConfig;
-import com.qiuyue.goetyominous.utils.CroneCuriosUtil;
+import com.goety_soul_witch.common.util.CroneCuriosUtil;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;

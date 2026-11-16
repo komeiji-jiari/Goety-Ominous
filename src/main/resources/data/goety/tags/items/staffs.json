@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "goetyominous:fel_staff",
+    "goety_soul_witch:fel_staff",
     {
       "id": "goetyominous:key_of_rlyeh",
       "required": false

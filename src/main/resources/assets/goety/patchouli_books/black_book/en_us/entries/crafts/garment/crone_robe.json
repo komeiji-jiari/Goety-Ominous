@@ -1,6 +1,6 @@
 {
   "name": "Crone Robe",
-  "icon": "goetyominous:crone_robe",
+  "icon": "goety_soul_witch:crone_robe",
   "advancement": "goetyominous:goetyominous/witch_lesson",
   "secret": true,
   "category": "goety:ominous_crafts/garment",

@@ -62,12 +62,12 @@ public class BrainEaterSpell extends ChargingSpell {
     @Override
     public int soulCost(LivingEntity caster, ItemStack staff) {
         int cost = super.soulCost(caster, staff);
-        return com.qiuyue.goetyominous.utils.CroneCuriosUtil.hasCroneRobe(caster) ? cost / 2 : cost;
+        return com.goety_soul_witch.common.util.CroneCuriosUtil.hasCroneRobe(caster) ? cost / 2 : cost;
     }
 
     @Override
     public boolean ReduceCastTime(LivingEntity caster) {
-        return super.ReduceCastTime(caster) || com.qiuyue.goetyominous.utils.CroneCuriosUtil.hasCroneHat(caster);
+        return super.ReduceCastTime(caster) || com.goety_soul_witch.common.util.CroneCuriosUtil.hasCroneHat(caster);
     }
 
     @Override
