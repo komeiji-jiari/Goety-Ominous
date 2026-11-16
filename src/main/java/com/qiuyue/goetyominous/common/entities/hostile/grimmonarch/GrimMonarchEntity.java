@@ -1090,6 +1090,7 @@ public class GrimMonarchEntity extends Monster {
             this.nightRegistered = true;
             this.registerNight();
         }
+        this.reportNightHealth();
         this.tickSoulMechanics();
         if (this.moddedInvul > 0) {
             --this.moddedInvul;
@@ -1177,7 +1178,16 @@ public class GrimMonarchEntity extends Monster {
         if (!this.level().isClientSide && !this.isEcho()
                 && this.level() instanceof ServerLevel server
                 && server.getServer() != null) {
-            GrimMonarchNightData.get(server).unregister(this.getUUID());
+            GrimMonarchNightData.get(server).unregister(this.getUUID(), server);
+        }
+    }
+
+    private void reportNightHealth() {
+        if (!this.level().isClientSide && !this.isEcho()
+                && this.level() instanceof ServerLevel server
+                && server.getServer() != null) {
+            GrimMonarchNightData.get(server).reportHealth(
+                    this.getHealth() / Math.max(1.0F, this.getMaxHealth()));
         }
     }
 
