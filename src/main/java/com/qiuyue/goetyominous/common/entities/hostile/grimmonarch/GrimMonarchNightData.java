@@ -98,16 +98,12 @@ public class GrimMonarchNightData extends SavedData {
             long day = Math.floorDiv(now, GrimMonarchConstants.NIGHT_DAY_TICKS);
             long timeOfDay = Math.floorMod(now, GrimMonarchConstants.NIGHT_DAY_TICKS);
             long midnightDay = timeOfDay > GrimMonarchConstants.NIGHT_MIDNIGHT_TIME ? day + 1L : day;
-            long fullMoonDay = midnightDay;
-            long remainder = Math.floorMod(fullMoonDay, GrimMonarchConstants.NIGHT_FULL_MOON_CYCLE);
-            if (remainder != 0L) {
-                fullMoonDay += GrimMonarchConstants.NIGHT_FULL_MOON_CYCLE - remainder;
-            }
+            // komeji lifted the full-moon restriction: lock to the current
+            // (already-arriving) midnight so the moon uses the real current phase.
             this.transitionStart = now;
             this.transitionTarget = midnightDay * GrimMonarchConstants.NIGHT_DAY_TICKS
                     + GrimMonarchConstants.NIGHT_MIDNIGHT_TIME;
-            this.finalTarget = fullMoonDay * GrimMonarchConstants.NIGHT_DAY_TICKS
-                    + GrimMonarchConstants.NIGHT_MIDNIGHT_TIME;
+            this.finalTarget = this.transitionTarget;
             this.transitionTicks = 0;
             this.started = true;
             this.setDirty();
