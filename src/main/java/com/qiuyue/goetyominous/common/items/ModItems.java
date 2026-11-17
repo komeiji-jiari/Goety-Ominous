@@ -11,7 +11,6 @@ import com.qiuyue.goetyominous.common.init.ModBlocks;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.common.items.curios.*;
-import com.qiuyue.goetyominous.common.items.explore.TravelerCompassItem;
 import com.qiuyue.goetyominous.common.items.revive.BrokenStormCrown;
 import com.qiuyue.goetyominous.common.items.revive.StormSoulJar;
 import com.qiuyue.goetyominous.common.items.revive.SunkenSoulJar;
@@ -149,9 +148,6 @@ public class ModItems {
 
     public static final RegistryObject<Item> BROKEN_STORM_CROWN = ITEMS.register("broken_storm_crown",
             () -> new BrokenStormCrown());
-
-    public static final RegistryObject<Item> TRAVELER_COMPASS = ITEMS.register("traveler_compass",
-            () -> new TravelerCompassItem(new Item.Properties().stacksTo(1)));
 
     public static final RegistryObject<Item> DARK_ANKH = ITEMS.register("dark_ankh",
             () -> new DarkAnkh());
@@ -412,13 +408,21 @@ public class ModItems {
             "elite_zpiglin_hunter_servant_spawn_egg",
             () -> new ServantSpawnEggItem(ModEntityTypes.ELITE_ZPIGLIN_HUNTER_SERVANT, 0xE6918B, 0x490300, egg()));
 
-    public static final RegistryObject<ServantSpawnEggItem> FUNGUS_THROWER_SPAWN_EGG = ITEMS.register(
+    public static final RegistryObject<ForgeSpawnEggItem> FUNGUS_THROWER_SPAWN_EGG = ITEMS.register(
             "fungus_thrower_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.FUNGUS_THROWER, 0xF2BA86, 0xA800BF, egg()));
+            () -> new ForgeSpawnEggItem(ModEntityTypes.FUNGUS_THROWER, 0xF2BA86, 0x8B1A1A, egg()));
 
-    public static final RegistryObject<ServantSpawnEggItem> ZFUNGUS_THROWER_SPAWN_EGG = ITEMS.register(
+    public static final RegistryObject<ForgeSpawnEggItem> ZFUNGUS_THROWER_SPAWN_EGG = ITEMS.register(
             "zfungus_thrower_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.ZFUNGUS_THROWER, 0xE6918B, 0xA800BF, egg()));
+            () -> new ForgeSpawnEggItem(ModEntityTypes.ZFUNGUS_THROWER, 0xE6918B, 0x8B1A1A, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> FUNGUS_THROWER_SERVANT_SPAWN_EGG = ITEMS.register(
+            "fungus_thrower_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.FUNGUS_THROWER_SERVANT, 0xF2BA86, 0xA800BF, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> ZFUNGUS_THROWER_SERVANT_SPAWN_EGG = ITEMS.register(
+            "zfungus_thrower_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.ZFUNGUS_THROWER_SERVANT, 0xE6918B, 0xA800BF, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> ELITE_FUNGUS_THROWER_SPAWN_EGG = ITEMS.register(
             "elite_fungus_thrower_spawn_egg",
@@ -451,6 +455,14 @@ public class ModItems {
     public static final RegistryObject<ServantSpawnEggItem> ZGUZZLER_SPAWN_EGG = ITEMS.register(
             "zguzzler_spawn_egg",
             () -> new ServantSpawnEggItem(ModEntityTypes.ZGUZZLER, 0xE6918B, 0x4E6B4E, egg()));
+
+    public static final RegistryObject<ForgeSpawnEggItem> GUZZLER_BOSS_SPAWN_EGG = ITEMS.register(
+            "guzzler_boss_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.GUZZLER_BOSS, 0xD9A066, 0x8B1A1A, egg()));
+
+    public static final RegistryObject<ForgeSpawnEggItem> ZGUZZLER_BOSS_SPAWN_EGG = ITEMS.register(
+            "zguzzler_boss_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.ZGUZZLER_BOSS, 0xE6918B, 0x8B1A1A, egg()));
 
     public static final RegistryObject<net.minecraftforge.common.ForgeSpawnEggItem> PIGLIN_MERCHANT_SPAWN_EGG = ITEMS.register(
             "piglin_merchant_spawn_egg",

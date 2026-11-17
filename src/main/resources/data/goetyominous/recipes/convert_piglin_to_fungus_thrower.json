@@ -9,7 +9,7 @@
     "tag": "goety:fungus_thrower_convert",
     "display_name": "entity.goetyominous.piglin_servant"
   },
-  "entity_to_convert_into": "goetyominous:fungus_thrower",
+  "entity_to_convert_into": "goetyominous:fungus_thrower_servant",
   "soulCost": 1,
   "duration": 10,
   "research": "bastion",

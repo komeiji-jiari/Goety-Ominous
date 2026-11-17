@@ -30,19 +30,12 @@ import java.util.List;
 
 public class EliteFungusThrower extends FungusThrower {
 
-    public final AnimationState idleAnimationState = new AnimationState();
-    public final AnimationState walkAnimationState = new AnimationState();
-    public final AnimationState throwAnimationState = new AnimationState();
     public final AnimationState healAnimationState = new AnimationState();
 
-    private static final EntityDataAccessor<Boolean> DATA_THROWING =
-            SynchedEntityData.defineId(EliteFungusThrower.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_HEALING =
             SynchedEntityData.defineId(EliteFungusThrower.class, EntityDataSerializers.BOOLEAN);
 
-    private boolean lastThrowing;
     private boolean lastHealing;
-    private float walkWeight;
 
     public EliteFungusThrower(EntityType<? extends AbstractPiglinServant> type, Level level) {
         super(type, level);
@@ -88,16 +81,7 @@ public class EliteFungusThrower extends FungusThrower {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(DATA_THROWING, false);
         this.entityData.define(DATA_HEALING, false);
-    }
-
-    public boolean isThrowing() {
-        return this.entityData.get(DATA_THROWING);
-    }
-
-    public void setThrowing(boolean throwing) {
-        this.entityData.set(DATA_THROWING, throwing);
     }
 
     public boolean isHealing() {
@@ -109,41 +93,16 @@ public class EliteFungusThrower extends FungusThrower {
     }
 
     @Override
-    public void tick() {
-        super.tick();
-        if (this.level().isClientSide) {
-            this.setupAnimationStates();
-        }
-    }
-
-    private void setupAnimationStates() {
-        boolean throwing = this.isThrowing();
+    protected void setupAnimationStates() {
+        super.setupAnimationStates();
         boolean healing = this.isHealing();
-        if (throwing && !this.lastThrowing) {
-            this.throwAnimationState.start(this.tickCount);
-        } else if (!throwing && this.lastThrowing) {
-            this.throwAnimationState.stop();
-            this.idleAnimationState.start(this.tickCount);
-        }
         if (healing && !this.lastHealing) {
             this.healAnimationState.start(this.tickCount);
         } else if (!healing && this.lastHealing) {
             this.healAnimationState.stop();
             this.idleAnimationState.start(this.tickCount);
         }
-        this.walkAnimationState.startIfStopped(this.tickCount);
-        this.idleAnimationState.startIfStopped(this.tickCount);
-        this.walkWeight = approach(this.walkWeight, this.walkAnimation.speed() > 0.01F ? 1.0F : 0.0F, 0.2F);
-        this.lastThrowing = throwing;
         this.lastHealing = healing;
-    }
-
-    private static float approach(float value, float target, float step) {
-        return value < target ? Math.min(value + step, target) : Math.max(value - step, target);
-    }
-
-    public float getWalkWeight() {
-        return this.walkWeight;
     }
 
     public void throwHealFungus(@Nullable LivingEntity target) {
@@ -266,6 +225,7 @@ public class EliteFungusThrower extends FungusThrower {
                 ModEntityTypes.ZELITE_FUNGUS_THROWER.get(), serverLevel);
         zombie.copyTrueOwner(this);
         zombie.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
+        this.copyConversionRotation(zombie);
         zombie.setBaby(this.isBaby());
         zombie.setHealth(zombie.getMaxHealth());
         for (EquipmentSlot slot : EquipmentSlot.values()) {

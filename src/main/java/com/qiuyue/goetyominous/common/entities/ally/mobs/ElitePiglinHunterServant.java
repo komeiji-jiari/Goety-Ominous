@@ -95,6 +95,7 @@ public class ElitePiglinHunterServant extends StrongPiglinHunterServant {
                 ModEntityTypes.ELITE_ZPIGLIN_HUNTER_SERVANT.get(), serverLevel);
         zombified.copyTrueOwner(this);
         zombified.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
+        this.copyConversionRotation(zombified);
         zombified.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 0));
         zombified.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()),
                 MobSpawnType.CONVERSION, null, null);

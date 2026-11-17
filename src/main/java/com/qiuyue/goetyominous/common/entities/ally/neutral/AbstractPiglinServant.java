@@ -573,6 +573,15 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
         return com.Polarice3.Goety.common.entities.ModEntityType.ZPIGLIN_SERVANT.get();
     }
 
+    protected void copyConversionRotation(Mob mob) {
+        mob.setYHeadRot(this.getYHeadRot());
+        mob.setYBodyRot(this.yBodyRot);
+        mob.yHeadRotO = this.yHeadRotO;
+        mob.yBodyRotO = this.yBodyRotO;
+        mob.yRotO = this.yRotO;
+        mob.xRotO = this.xRotO;
+    }
+
     protected void finishConversion(ServerLevel serverLevel) {
         com.Polarice3.Goety.common.entities.neutral.ZPiglinServant zombifiedpiglin =
                 new com.Polarice3.Goety.common.entities.neutral.ZPiglinServant(
@@ -581,6 +590,7 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
         zombifiedpiglin.setBaby(this.isBaby());
         zombifiedpiglin.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
         zombifiedpiglin.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
+        this.copyConversionRotation(zombifiedpiglin);
         zombifiedpiglin.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 0));
         zombifiedpiglin.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()),
                 MobSpawnType.CONVERSION, null, null);
@@ -600,6 +610,9 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
                 Mob zombie = this.convertTo(variantType, true);
                 if (zombie instanceof Owned owned) {
                     owned.copyTrueOwner(this);
+                }
+                if (zombie != null) {
+                    this.copyConversionRotation(zombie);
                 }
                 this.afterZombieConversion(zombie);
                 ForgeEventFactory.onLivingConvert(this, zombie);
@@ -622,7 +635,7 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
         if (this instanceof PiglinBruteServant) return com.Polarice3.Goety.common.entities.ModEntityType.ZPIGLIN_BRUTE_SERVANT.get();
         if (this instanceof PiglinServant) return com.Polarice3.Goety.common.entities.ModEntityType.ZPIGLIN_SERVANT.get();
         if (this instanceof EliteFungusThrower) return ModEntityTypes.ZELITE_FUNGUS_THROWER.get();
-        if (this instanceof FungusThrower) return ModEntityTypes.ZFUNGUS_THROWER.get();
+        if (this instanceof FungusThrower) return ModEntityTypes.ZFUNGUS_THROWER_SERVANT.get();
         if (this instanceof PiglinDrummer) return ModEntityTypes.ZPIGLIN_DRUMMER.get();
         if (this instanceof BastionGuardServant) return ModEntityTypes.ZBASTION_GUARD_SERVANT.get();
         return null;

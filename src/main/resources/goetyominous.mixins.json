@@ -22,7 +22,6 @@
     "GolemTypeMixin",
     "LeapleafMoldMixin",
     "LeapleafWaterConversionMixin",
-    "LeapleafWaterWalkMixin",
     "LeapingSpellWaterMixin",
     "SoulBoltSpellFelMixin",
     "WindBlastSpellFelMixin",

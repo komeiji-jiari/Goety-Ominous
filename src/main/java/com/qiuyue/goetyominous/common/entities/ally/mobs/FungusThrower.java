@@ -1,10 +1,14 @@
 package com.qiuyue.goetyominous.common.entities.ally.mobs;
 
+import com.qiuyue.goetyominous.common.entities.FungusThrowerAnimated;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractPiglinServant;
 import com.qiuyue.goetyominous.common.entities.projectile.AcidFungus;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.config.AttributesConfig;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -28,12 +32,35 @@ import net.minecraftforge.event.ForgeEventFactory;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 
-public class FungusThrower extends AbstractPiglinServant {
+public class FungusThrower extends AbstractPiglinServant implements FungusThrowerAnimated {
+
+    public final AnimationState idleAnimationState = new AnimationState();
+    public final AnimationState walkAnimationState = new AnimationState();
+    public final AnimationState throwAnimationState = new AnimationState();
+
+    private static final EntityDataAccessor<Boolean> DATA_THROWING =
+            SynchedEntityData.defineId(FungusThrower.class, EntityDataSerializers.BOOLEAN);
 
     private int fleeTime;
+    private boolean lastThrowing;
+    private float walkWeight;
 
     public FungusThrower(EntityType<? extends AbstractPiglinServant> type, Level level) {
         super(type, level);
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_THROWING, false);
+    }
+
+    public boolean isThrowing() {
+        return this.entityData.get(DATA_THROWING);
+    }
+
+    public void setThrowing(boolean throwing) {
+        this.entityData.set(DATA_THROWING, throwing);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -98,6 +125,46 @@ public class FungusThrower extends AbstractPiglinServant {
         if (this.fleeTime > 0) {
             --this.fleeTime;
         }
+        if (this.level().isClientSide) {
+            this.setupAnimationStates();
+        }
+    }
+
+    protected void setupAnimationStates() {
+        boolean throwing = this.isThrowing();
+        if (throwing && !this.lastThrowing) {
+            this.throwAnimationState.start(this.tickCount);
+        } else if (!throwing && this.lastThrowing) {
+            this.throwAnimationState.stop();
+            this.idleAnimationState.start(this.tickCount);
+        }
+        this.walkAnimationState.startIfStopped(this.tickCount);
+        this.idleAnimationState.startIfStopped(this.tickCount);
+        this.walkWeight = approach(this.walkWeight, this.walkAnimation.speed() > 0.01F ? 1.0F : 0.0F, 0.2F);
+        this.lastThrowing = throwing;
+    }
+
+    private static float approach(float value, float target, float step) {
+        return value < target ? Math.min(value + step, target) : Math.max(value - step, target);
+    }
+
+    public float getWalkWeight() {
+        return this.walkWeight;
+    }
+
+    @Override
+    public AnimationState getIdleAnimationState() {
+        return this.idleAnimationState;
+    }
+
+    @Override
+    public AnimationState getWalkAnimationState() {
+        return this.walkAnimationState;
+    }
+
+    @Override
+    public AnimationState getThrowAnimationState() {
+        return this.throwAnimationState;
     }
 
     protected float getFungusDamage() {
@@ -166,9 +233,10 @@ public class FungusThrower extends AbstractPiglinServant {
     protected void finishConversion(ServerLevel serverLevel) {
         this.getInventory().removeAllItems().forEach(this::spawnAtLocation);
         ZFungusThrower zombie = new ZFungusThrower(
-                ModEntityTypes.ZFUNGUS_THROWER.get(), serverLevel);
+                ModEntityTypes.ZFUNGUS_THROWER_SERVANT.get(), serverLevel);
         zombie.copyTrueOwner(this);
         zombie.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
+        this.copyConversionRotation(zombie);
         zombie.setBaby(this.isBaby());
         zombie.setHealth(zombie.getMaxHealth());
         for (EquipmentSlot slot : EquipmentSlot.values()) {
@@ -208,7 +276,7 @@ public class FungusThrower extends AbstractPiglinServant {
 
         @Override
         public boolean canContinueToUse() {
-            return this.throwTick < (thrower instanceof EliteFungusThrower ? 33 : 30);
+            return this.throwTick < 33;
         }
 
         @Override
@@ -224,18 +292,14 @@ public class FungusThrower extends AbstractPiglinServant {
         @Override
         public void start() {
             this.throwTick = 0;
-            if (thrower instanceof EliteFungusThrower elite) {
-                elite.setThrowing(true);
-            }
+            thrower.setThrowing(true);
             thrower.level().broadcastEntityEvent(thrower, (byte) 4);
         }
 
         @Override
         public void stop() {
             thrower.fleeTime = 20;
-            if (thrower instanceof EliteFungusThrower elite) {
-                elite.setThrowing(false);
-            }
+            thrower.setThrowing(false);
         }
 
         @Override

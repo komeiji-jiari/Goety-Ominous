@@ -68,8 +68,6 @@ public class PiglinServantRenderer extends HumanoidMobRenderer<Mob, PiglinServan
                         new ResourceLocation(GoetyOminous.MOD_ID, "textures/entity/piglin/piglin_hunter_servant_strong.png"))
                 .put(com.qiuyue.goetyominous.common.init.ModEntityTypes.ELITE_PIGLIN_HUNTER_SERVANT.get(),
                         new ResourceLocation(GoetyOminous.MOD_ID, "textures/entity/piglin/piglin_hunter_servant_elite.png"))
-                .put(com.qiuyue.goetyominous.common.init.ModEntityTypes.FUNGUS_THROWER.get(),
-                        new ResourceLocation(GoetyOminous.MOD_ID, "textures/entity/piglin/fungus_thrower.png"))
                 .build();
     }
 }

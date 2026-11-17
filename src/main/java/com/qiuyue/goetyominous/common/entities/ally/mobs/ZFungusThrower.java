@@ -1,10 +1,14 @@
 package com.qiuyue.goetyominous.common.entities.ally.mobs;
 
 import com.Polarice3.Goety.common.entities.neutral.ZPiglinServant;
+import com.qiuyue.goetyominous.common.entities.FungusThrowerAnimated;
 import com.qiuyue.goetyominous.common.entities.projectile.AcidFungus;
 import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
@@ -28,12 +32,35 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 
-public class ZFungusThrower extends ZPiglinServant {
+public class ZFungusThrower extends ZPiglinServant implements FungusThrowerAnimated {
+
+    public final AnimationState idleAnimationState = new AnimationState();
+    public final AnimationState walkAnimationState = new AnimationState();
+    public final AnimationState throwAnimationState = new AnimationState();
+
+    private static final EntityDataAccessor<Boolean> DATA_THROWING =
+            SynchedEntityData.defineId(ZFungusThrower.class, EntityDataSerializers.BOOLEAN);
 
     private int fleeTime;
+    private boolean lastThrowing;
+    private float walkWeight;
 
     public ZFungusThrower(EntityType<? extends ZPiglinServant> type, Level level) {
         super(type, level);
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_THROWING, false);
+    }
+
+    public boolean isThrowing() {
+        return this.entityData.get(DATA_THROWING);
+    }
+
+    public void setThrowing(boolean throwing) {
+        this.entityData.set(DATA_THROWING, throwing);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -99,6 +126,46 @@ public class ZFungusThrower extends ZPiglinServant {
         if (this.fleeTime > 0) {
             --this.fleeTime;
         }
+        if (this.level().isClientSide) {
+            this.setupAnimationStates();
+        }
+    }
+
+    protected void setupAnimationStates() {
+        boolean throwing = this.isThrowing();
+        if (throwing && !this.lastThrowing) {
+            this.throwAnimationState.start(this.tickCount);
+        } else if (!throwing && this.lastThrowing) {
+            this.throwAnimationState.stop();
+            this.idleAnimationState.start(this.tickCount);
+        }
+        this.walkAnimationState.startIfStopped(this.tickCount);
+        this.idleAnimationState.startIfStopped(this.tickCount);
+        this.walkWeight = approach(this.walkWeight, this.walkAnimation.speed() > 0.01F ? 1.0F : 0.0F, 0.2F);
+        this.lastThrowing = throwing;
+    }
+
+    private static float approach(float value, float target, float step) {
+        return value < target ? Math.min(value + step, target) : Math.max(value - step, target);
+    }
+
+    public float getWalkWeight() {
+        return this.walkWeight;
+    }
+
+    @Override
+    public AnimationState getIdleAnimationState() {
+        return this.idleAnimationState;
+    }
+
+    @Override
+    public AnimationState getWalkAnimationState() {
+        return this.walkAnimationState;
+    }
+
+    @Override
+    public AnimationState getThrowAnimationState() {
+        return this.throwAnimationState;
     }
 
     protected float getFungusDamage() {
@@ -170,7 +237,7 @@ public class ZFungusThrower extends ZPiglinServant {
 
         @Override
         public boolean canContinueToUse() {
-            return this.throwTick < (thrower instanceof ZEliteFungusThrower ? 33 : 30);
+            return this.throwTick < 33;
         }
 
         @Override
@@ -186,18 +253,14 @@ public class ZFungusThrower extends ZPiglinServant {
         @Override
         public void start() {
             this.throwTick = 0;
-            if (thrower instanceof ZEliteFungusThrower elite) {
-                elite.setThrowing(true);
-            }
+            thrower.setThrowing(true);
             thrower.level().broadcastEntityEvent(thrower, (byte) 4);
         }
 
         @Override
         public void stop() {
             thrower.fleeTime = 20;
-            if (thrower instanceof ZEliteFungusThrower elite) {
-                elite.setThrowing(false);
-            }
+            thrower.setThrowing(false);
         }
 
         @Override
@@ -210,7 +273,7 @@ public class ZFungusThrower extends ZPiglinServant {
                 thrower.getLookControl().setLookAt(target, 100.0F, 100.0F);
                 thrower.lookAt(target, 100.0F, 100.0F);
             }
-            if (this.throwTick == (thrower instanceof ZEliteFungusThrower ? 16 : 12) && target != null) {
+            if (this.throwTick == 16 && target != null) {
                 thrower.swing(InteractionHand.MAIN_HAND);
                 thrower.throwAcid(target);
             }

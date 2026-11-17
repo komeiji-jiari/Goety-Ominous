@@ -5,6 +5,8 @@ import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.render.model.GuzzlerModel;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.Guzzler;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.ZGuzzler;
+import com.qiuyue.goetyominous.common.entities.hostile.GuzzlerBoss;
+import com.qiuyue.goetyominous.common.entities.hostile.ZGuzzlerBoss;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -31,7 +33,7 @@ public class GuzzlerRenderer<T extends Mob> extends MobRenderer<T, GuzzlerModel<
 
     @Override
     public ResourceLocation getTextureLocation(T entity) {
-        return entity instanceof ZGuzzler ? ZOMBIE_TEXTURE : TEXTURE;
+        return entity instanceof ZGuzzler || entity instanceof ZGuzzlerBoss ? ZOMBIE_TEXTURE : TEXTURE;
     }
 
     @Override
@@ -42,7 +44,8 @@ public class GuzzlerRenderer<T extends Mob> extends MobRenderer<T, GuzzlerModel<
     @Override
     protected boolean isShaking(T entity) {
         return super.isShaking(entity)
-                || entity instanceof Guzzler guzzler && guzzler.isConverting();
+                || entity instanceof Guzzler guzzler && guzzler.isConverting()
+                || entity instanceof GuzzlerBoss boss && boss.isConverting();
     }
 
     @Override

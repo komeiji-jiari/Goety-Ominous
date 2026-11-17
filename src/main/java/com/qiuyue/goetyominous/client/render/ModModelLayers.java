@@ -217,11 +217,8 @@ public class ModModelLayers {
         event.registerEntityRenderer(ModEntityTypes.CRIMSON_GUARD_SERVANT.get(), CrimsonGuardRenderer::new);
         event.registerEntityRenderer(ModEntityTypes.ZCRIMSON_GUARD_SERVANT.get(), CrimsonGuardRenderer::new);
 
-        event.registerEntityRenderer(ModEntityTypes.FUNGUS_THROWER.get(),
-                context -> new PiglinServantRenderer(context,
-                        ModEntityLayers.PIGLIN_SERVANT_LAYER,
-                        ModEntityLayers.PIGLIN_SERVANT_INNER_ARMOR_LAYER,
-                        ModEntityLayers.PIGLIN_SERVANT_OUTER_ARMOR_LAYER));
+        event.registerEntityRenderer(ModEntityTypes.FUNGUS_THROWER.get(), FungusThrowerRenderer::new);
+        event.registerEntityRenderer(ModEntityTypes.FUNGUS_THROWER_SERVANT.get(), FungusThrowerRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.PIGLIN_SERVANT.get(),
                 (context) -> new PiglinServantRenderer(context,
@@ -398,6 +395,7 @@ public class ModModelLayers {
         event.registerEntityRenderer(ModEntityTypes.CERBERUS.get(), CerberusRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.ZFUNGUS_THROWER.get(), ZFungusThrowerRenderer::new);
+        event.registerEntityRenderer(ModEntityTypes.ZFUNGUS_THROWER_SERVANT.get(), ZFungusThrowerRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.ELITE_FUNGUS_THROWER.get(), EliteFungusThrowerRenderer::new);
 
@@ -435,6 +433,10 @@ public class ModModelLayers {
         event.registerEntityRenderer(ModEntityTypes.GUZZLER.get(), context -> new GuzzlerRenderer<>(context));
 
         event.registerEntityRenderer(ModEntityTypes.ZGUZZLER.get(), context -> new GuzzlerRenderer<>(context));
+
+        event.registerEntityRenderer(ModEntityTypes.GUZZLER_BOSS.get(), context -> new GuzzlerRenderer<>(context));
+
+        event.registerEntityRenderer(ModEntityTypes.ZGUZZLER_BOSS.get(), context -> new GuzzlerRenderer<>(context));
 
         event.registerEntityRenderer(ModEntityTypes.STORM_NECROMANCER.get(),
                 com.qiuyue.goetyominous.client.render.StormNecromancerRenderer::new);

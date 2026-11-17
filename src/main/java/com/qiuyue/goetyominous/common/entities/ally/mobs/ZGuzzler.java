@@ -552,6 +552,24 @@ public class ZGuzzler extends ZPiglinServant {
     }
 
     @Override
+    public void tryKill(Player player) {
+        if (this.killChance <= 0) {
+            this.warnKill(player);
+        } else {
+            super.tryKill(player);
+        }
+    }
+
+    @Override
+    public void knockback(double strength, double x, double z) {
+    }
+
+    @Override
+    public boolean isPushable() {
+        return false;
+    }
+
+    @Override
     protected float getDamageAfterArmorAbsorb(DamageSource source, float amount) {
         float reduced = super.getDamageAfterArmorAbsorb(source, amount);
         int level = this.getUpgradeLevel();

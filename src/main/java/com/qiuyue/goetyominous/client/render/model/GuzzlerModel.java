@@ -7,6 +7,7 @@ import com.qiuyue.goetyominous.client.render.model.animation.GuzzlerAnimation;
 import com.qiuyue.goetyominous.client.render.model.animation.PoseBlend;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.Guzzler;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.ZGuzzler;
+import com.qiuyue.goetyominous.common.entities.hostile.GuzzlerBoss;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -119,6 +120,12 @@ public class GuzzlerModel<T extends Mob> extends HierarchicalModel<T> {
 				this.head.yRot += netHeadYaw * ((float) Math.PI / 180F);
 				this.head.xRot += headPitch * ((float) Math.PI / 180F);
 			}
+		} else if (entity instanceof GuzzlerBoss boss) {
+			this.setupGuzzlerBoss(boss, limbSwingAmount, ageInTicks);
+			if (!entity.isDeadOrDying() && !boss.isSitting()) {
+				this.head.yRot += netHeadYaw * ((float) Math.PI / 180F);
+				this.head.xRot += headPitch * ((float) Math.PI / 180F);
+			}
 		}
 	}
 
@@ -133,6 +140,20 @@ public class GuzzlerModel<T extends Mob> extends HierarchicalModel<T> {
 			case Guzzler.ANIM_STAND_UP -> this.animate(guzzler.standUpAnimationState, GuzzlerAnimation.STAND_UP, ageInTicks);
 			case Guzzler.ANIM_DEATH -> this.animate(guzzler.deathAnimationState, GuzzlerAnimation.DEATH, ageInTicks);
 			default -> this.animateIdle(guzzler.idleAnimationState, guzzler.walkAnimationState, guzzler.tickCount, limbSwingAmount, ageInTicks);
+		}
+	}
+
+	private void setupGuzzlerBoss(GuzzlerBoss boss, float limbSwingAmount, float ageInTicks) {
+		switch (boss.getAnimState()) {
+			case GuzzlerBoss.ANIM_SLAM -> this.animate(boss.slamAnimationState, GuzzlerAnimation.SLAM_ATTACK, ageInTicks);
+			case GuzzlerBoss.ANIM_SPIN -> this.animate(boss.spinAnimationState, GuzzlerAnimation.SPIN_ATTACK, ageInTicks);
+			case GuzzlerBoss.ANIM_JUMP_START -> this.animate(boss.jumpStartAnimationState, GuzzlerAnimation.JUMP_ATTACK_START, ageInTicks);
+			case GuzzlerBoss.ANIM_JUMP_LAND -> this.animate(boss.jumpLandAnimationState, GuzzlerAnimation.JUMP_ATTACK_LAND, ageInTicks);
+			case GuzzlerBoss.ANIM_SIT -> this.animate(boss.sitAnimationState, GuzzlerAnimation.SIT, ageInTicks);
+			case GuzzlerBoss.ANIM_REST -> this.animate(boss.restAnimationState, GuzzlerAnimation.REST, ageInTicks);
+			case GuzzlerBoss.ANIM_STAND_UP -> this.animate(boss.standUpAnimationState, GuzzlerAnimation.STAND_UP, ageInTicks);
+			case GuzzlerBoss.ANIM_DEATH -> this.animate(boss.deathAnimationState, GuzzlerAnimation.DEATH, ageInTicks);
+			default -> this.animateIdle(boss.idleAnimationState, boss.walkAnimationState, boss.tickCount, limbSwingAmount, ageInTicks);
 		}
 	}
 

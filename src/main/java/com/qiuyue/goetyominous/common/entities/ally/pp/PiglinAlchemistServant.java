@@ -370,6 +370,7 @@ public class PiglinAlchemistServant extends AbstractPiglinServant implements Alc
         zombified.copyTrueOwner(this);
         zombified.setBaby(this.isBaby());
         zombified.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
+        this.copyConversionRotation(zombified);
         zombified.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 0));
         zombified.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()),
                 MobSpawnType.CONVERSION, null, null);

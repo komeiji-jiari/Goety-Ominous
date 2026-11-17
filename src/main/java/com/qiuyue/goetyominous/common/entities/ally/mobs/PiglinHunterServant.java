@@ -96,6 +96,7 @@ public class PiglinHunterServant extends AbstractPiglinServant implements Crossb
                 com.qiuyue.goetyominous.common.init.ModEntityTypes.ZPIGLIN_HUNTER_SERVANT.get(), serverLevel);
         zombified.copyTrueOwner(this);
         zombified.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
+        this.copyConversionRotation(zombified);
         zombified.setItemSlot(EquipmentSlot.MAINHAND, this.getMainHandItem().copy());
         zombified.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 0));
         zombified.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()),

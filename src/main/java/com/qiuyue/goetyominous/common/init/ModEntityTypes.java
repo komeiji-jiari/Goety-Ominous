@@ -12,6 +12,8 @@ import com.qiuyue.goetyominous.common.entities.ally.illager.PyrologerServant;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.CrimsonGuard;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.ImperialChasseur;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.Pyrologer;
+import com.qiuyue.goetyominous.common.entities.hostile.piglin.HostileFungusThrower;
+import com.qiuyue.goetyominous.common.entities.hostile.piglin.ZHostileFungusThrower;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.*;
 
 import com.qiuyue.goetyominous.common.entities.ally.mobs.StormNecromancerServant;
@@ -323,19 +325,33 @@ public class ModEntityTypes {
                     .clientTrackingRange(8)
                     .build(MOD_ID + ":disciple_servant"));
 
-    public static final RegistryObject<EntityType<FungusThrower>> FUNGUS_THROWER = ENTITY_TYPES.register(
+    public static final RegistryObject<EntityType<HostileFungusThrower>> FUNGUS_THROWER = ENTITY_TYPES.register(
             "fungus_thrower",
-            () -> EntityType.Builder.of(FungusThrower::new, MobCategory.MISC)
+            () -> EntityType.Builder.of(HostileFungusThrower::new, MobCategory.MONSTER)
                     .sized(0.6F, 1.95F)
                     .clientTrackingRange(8)
                     .build(MOD_ID + ":fungus_thrower"));
 
-    public static final RegistryObject<EntityType<ZFungusThrower>> ZFUNGUS_THROWER = ENTITY_TYPES.register(
+    public static final RegistryObject<EntityType<ZHostileFungusThrower>> ZFUNGUS_THROWER = ENTITY_TYPES.register(
             "zfungus_thrower",
-            () -> EntityType.Builder.of(ZFungusThrower::new, MobCategory.MISC)
+            () -> EntityType.Builder.of(ZHostileFungusThrower::new, MobCategory.MONSTER)
                     .sized(0.6F, 1.95F)
                     .clientTrackingRange(8)
                     .build(MOD_ID + ":zfungus_thrower"));
+
+    public static final RegistryObject<EntityType<FungusThrower>> FUNGUS_THROWER_SERVANT = ENTITY_TYPES.register(
+            "fungus_thrower_servant",
+            () -> EntityType.Builder.of(FungusThrower::new, MobCategory.MISC)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":fungus_thrower_servant"));
+
+    public static final RegistryObject<EntityType<ZFungusThrower>> ZFUNGUS_THROWER_SERVANT = ENTITY_TYPES.register(
+            "zfungus_thrower_servant",
+            () -> EntityType.Builder.of(ZFungusThrower::new, MobCategory.MISC)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":zfungus_thrower_servant"));
 
     public static final RegistryObject<EntityType<EliteFungusThrower>> ELITE_FUNGUS_THROWER = ENTITY_TYPES.register(
             "elite_fungus_thrower",
@@ -684,6 +700,20 @@ public class ModEntityTypes {
                     .sized(2.25F, 3.75F)
                     .clientTrackingRange(10)
                     .build(MOD_ID + ":zguzzler"));
+
+    public static final RegistryObject<EntityType<GuzzlerBoss>> GUZZLER_BOSS = ENTITY_TYPES.register(
+            "guzzler_boss",
+            () -> EntityType.Builder.of(GuzzlerBoss::new, MobCategory.MISC)
+                    .sized(2.25F, 3.75F)
+                    .clientTrackingRange(10)
+                    .build(MOD_ID + ":guzzler_boss"));
+
+    public static final RegistryObject<EntityType<ZGuzzlerBoss>> ZGUZZLER_BOSS = ENTITY_TYPES.register(
+            "zguzzler_boss",
+            () -> EntityType.Builder.of(ZGuzzlerBoss::new, MobCategory.MISC)
+                    .sized(2.25F, 3.75F)
+                    .clientTrackingRange(10)
+                    .build(MOD_ID + ":zguzzler_boss"));
 
     public static void register(IEventBus modEventBus) {
         ENTITY_TYPES.register(modEventBus);

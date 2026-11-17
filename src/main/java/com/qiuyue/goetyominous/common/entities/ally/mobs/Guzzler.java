@@ -491,6 +491,7 @@ public class Guzzler extends AbstractPiglinServant {
         zombified.copyTrueOwner(this);
         zombified.setUpgrade(this.upgradeLevel, this.upgradePoints);
         zombified.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
+        this.copyConversionRotation(zombified);
         zombified.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 0));
         zombified.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()),
                 MobSpawnType.CONVERSION, null, null);
@@ -768,6 +769,24 @@ public class Guzzler extends AbstractPiglinServant {
             this.beginStandUp();
         }
         return result;
+    }
+
+    @Override
+    public void tryKill(Player player) {
+        if (this.killChance <= 0) {
+            this.warnKill(player);
+        } else {
+            super.tryKill(player);
+        }
+    }
+
+    @Override
+    public void knockback(double strength, double x, double z) {
+    }
+
+    @Override
+    public boolean isPushable() {
+        return false;
     }
 
     @Override

@@ -3,9 +3,6 @@ package com.qiuyue.goetyominous.common.entities.ally.mobs;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.ZPiglinServant;
 import com.qiuyue.goetyominous.config.AttributesConfig;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -22,16 +19,7 @@ import net.minecraft.world.level.Level;
 
 public class ZEliteFungusThrower extends ZFungusThrower {
 
-    public final AnimationState idleAnimationState = new AnimationState();
-    public final AnimationState walkAnimationState = new AnimationState();
-    public final AnimationState throwAnimationState = new AnimationState();
     public final AnimationState healAnimationState = new AnimationState();
-
-    private static final EntityDataAccessor<Boolean> DATA_THROWING =
-            SynchedEntityData.defineId(ZEliteFungusThrower.class, EntityDataSerializers.BOOLEAN);
-
-    private boolean lastThrowing;
-    private float walkWeight;
 
     public ZEliteFungusThrower(EntityType<? extends ZPiglinServant> type, Level level) {
         super(type, level);
@@ -58,20 +46,6 @@ public class ZEliteFungusThrower extends ZFungusThrower {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DATA_THROWING, false);
-    }
-
-    public boolean isThrowing() {
-        return this.entityData.get(DATA_THROWING);
-    }
-
-    public void setThrowing(boolean throwing) {
-        this.entityData.set(DATA_THROWING, throwing);
-    }
-
-    @Override
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.removeAllGoals(goal ->
@@ -89,32 +63,6 @@ public class ZEliteFungusThrower extends ZFungusThrower {
         this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Mob.class, 15.0F));
     }
 
-    @Override
-    public void tick() {
-        super.tick();
-        if (this.level().isClientSide) {
-            this.setupAnimationStates();
-        }
-    }
-
-    private void setupAnimationStates() {
-        boolean throwing = this.isThrowing();
-        if (throwing && !this.lastThrowing) {
-            this.throwAnimationState.start(this.tickCount);
-        } else if (!throwing && this.lastThrowing) {
-            this.throwAnimationState.stop();
-            this.idleAnimationState.start(this.tickCount);
-        }
-        this.walkAnimationState.startIfStopped(this.tickCount);
-        this.idleAnimationState.startIfStopped(this.tickCount);
-        this.walkWeight = approach(this.walkWeight, this.walkAnimation.speed() > 0.01F ? 1.0F : 0.0F, 0.2F);
-        this.lastThrowing = throwing;
-    }
-
-    private static float approach(float value, float target, float step) {
-        return value < target ? Math.min(value + step, target) : Math.max(value - step, target);
-    }
-
     public boolean isHealing() {
         return false;
     }
@@ -122,9 +70,5 @@ public class ZEliteFungusThrower extends ZFungusThrower {
     @Override
     protected float getFungusDamage() {
         return 5.0F;
-    }
-
-    public float getWalkWeight() {
-        return this.walkWeight;
     }
 }

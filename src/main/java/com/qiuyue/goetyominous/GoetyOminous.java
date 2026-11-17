@@ -22,6 +22,8 @@ import com.qiuyue.goetyominous.common.entities.hostile.Scorch;
 import com.qiuyue.goetyominous.common.entities.hostile.cultists.Disciple;
 import com.qiuyue.goetyominous.common.entities.hostile.BoggedEntity;
 import com.qiuyue.goetyominous.common.entities.hostile.BreezeEntity;
+import com.qiuyue.goetyominous.common.entities.hostile.GuzzlerBoss;
+import com.qiuyue.goetyominous.common.entities.hostile.ZGuzzlerBoss;
 import com.qiuyue.goetyominous.common.entities.hostile.cultists.*;
 import com.qiuyue.goetyominous.common.init.*;
 import com.qiuyue.goetyominous.common.items.CogCrossbowItem;
@@ -44,13 +46,13 @@ import com.qiuyue.goetyominous.common.entities.hostile.illagers.ArchGeomancerEnt
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.CrimsonGuard;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.ImperialChasseur;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.Pyrologer;
+import com.qiuyue.goetyominous.common.entities.hostile.piglin.AbstractFungusThrowerHostile;
 import com.qiuyue.goetyominous.common.items.ModItems;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.compat.curios.CuriosIntegration;
 import com.qiuyue.goetyominous.config.WeaponConfig;
 import com.qiuyue.goetyominous.utils.BuiltinPacksRegistry;
 import com.qiuyue.goetyominous.client.OminousIconRotation;
-import com.qiuyue.goetyominous.client.item.TravelerCompassAngleProperty;
 import com.qiuyue.goetyominous.utils.ModRituals;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
@@ -326,14 +328,18 @@ public class GoetyOminous {
         event.put(ModEntityTypes.DISCIPLE_SERVANT.get(), DiscipleServant.setCustomAttributes().build());
         event.put(ModEntityTypes.STORM_NECROMANCER_SERVANT.get(), AbstractStormNecromancer.setCustomAttributes().build());
         event.put(ModEntityTypes.STORM_NECROMANCER.get(), AbstractStormNecromancer.setCustomAttributes().build());
-        event.put(ModEntityTypes.FUNGUS_THROWER.get(), FungusThrower.createAttributes().build());
-        event.put(ModEntityTypes.ZFUNGUS_THROWER.get(), ZPiglinServant.setCustomAttributes().build());
+        event.put(ModEntityTypes.FUNGUS_THROWER.get(), AbstractFungusThrowerHostile.createAttributes().build());
+        event.put(ModEntityTypes.ZFUNGUS_THROWER.get(), AbstractFungusThrowerHostile.createAttributes().build());
+        event.put(ModEntityTypes.FUNGUS_THROWER_SERVANT.get(), FungusThrower.createAttributes().build());
+        event.put(ModEntityTypes.ZFUNGUS_THROWER_SERVANT.get(), ZPiglinServant.setCustomAttributes().build());
         event.put(ModEntityTypes.ELITE_FUNGUS_THROWER.get(), EliteFungusThrower.createAttributes().build());
         event.put(ModEntityTypes.ZELITE_FUNGUS_THROWER.get(), ZEliteFungusThrower.createAttributes().build());
         event.put(ModEntityTypes.BASTION_GUARD_SERVANT.get(), BastionGuardServant.createAttributes().build());
         event.put(ModEntityTypes.ZBASTION_GUARD_SERVANT.get(), ZBastionGuardServant.createAttributes().build());
         event.put(ModEntityTypes.GUZZLER.get(), Guzzler.createAttributes().build());
         event.put(ModEntityTypes.ZGUZZLER.get(), ZGuzzler.createAttributes().build());
+        event.put(ModEntityTypes.GUZZLER_BOSS.get(), GuzzlerBoss.createAttributes().build());
+        event.put(ModEntityTypes.ZGUZZLER_BOSS.get(), ZGuzzlerBoss.createAttributes().build());
         event.put(ModEntityTypes.PIGLIN_MERCHANT.get(), PiglinMerchant.createAttributes().build());
         event.put(ModEntityTypes.PIGLIN_DRUMMER.get(), PiglinDrummer.createAttributes().build());
         event.put(ModEntityTypes.ZPIGLIN_DRUMMER.get(), ZPiglinDrummer.createAttributes().build());
@@ -439,9 +445,6 @@ public class GoetyOminous {
             ItemProperties.register(ModItems.PIGLIN_PRIDE.get(), new ResourceLocation("firework"),
                     (stack, level, entity, seed) ->
                             CogCrossbowItem.isCharged(stack) && CogCrossbowItem.containsChargedProjectile(stack, Items.FIREWORK_ROCKET) ? 1.0F : 0.0F);
-
-            ItemProperties.register(ModItems.TRAVELER_COMPASS.get(), new ResourceLocation("angle"),
-                    TravelerCompassAngleProperty.INSTANCE);
 
             OminousIconRotation.register();
         });
