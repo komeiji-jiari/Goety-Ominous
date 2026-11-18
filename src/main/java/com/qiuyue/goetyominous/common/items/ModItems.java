@@ -4,7 +4,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import com.Polarice3.Goety.common.items.ServantSpawnEggItem;
 import com.Polarice3.Goety.common.items.block.BlockItemBase;
-import com.Polarice3.Goety.common.items.curios.EternalCauldronItem;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.render.item.BoneCudgelRenderer;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.Warg;
@@ -160,7 +159,7 @@ public class ModItems {
             () -> new DarkAnkh());
 
     public static final RegistryObject<Item> NETHER_ETERNAL_CAULDRON = ITEMS.register("nether_eternal_cauldron",
-            EternalCauldronItem::new);
+            NetherEternalCauldronItem::new);
 
     public static final RegistryObject<Item> SCREAMING_SKULL_JAR = ITEMS.register("screaming_skull_jar",
             () -> new ScreamingSkullJar());

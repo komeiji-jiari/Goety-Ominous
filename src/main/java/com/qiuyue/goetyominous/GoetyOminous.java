@@ -465,6 +465,9 @@ public class GoetyOminous {
         net.minecraft.client.gui.screens.MenuScreens.register(
                 com.qiuyue.goetyominous.common.init.ModContainerTypes.FUNGUS_PACK.get(),
                 com.qiuyue.goetyominous.client.gui.screen.inventory.FungusPackScreen::new);
+        net.minecraft.client.gui.screens.MenuScreens.register(
+                com.qiuyue.goetyominous.common.init.ModContainerTypes.NETHER_ETERNAL_CAULDRON.get(),
+                com.qiuyue.goetyominous.client.gui.screen.inventory.NetherEternalCauldronScreen::new);
 
 }
 
