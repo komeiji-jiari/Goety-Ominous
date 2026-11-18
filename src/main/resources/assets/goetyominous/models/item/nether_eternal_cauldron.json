@@ -1,0 +1,17 @@
+{
+  "parent": "goetyominous:item/nether_eternal_cauldron_empty",
+  "overrides": [
+    {
+      "predicate": {
+        "filled": 0.0
+      },
+      "model": "goetyominous:item/nether_eternal_cauldron_empty"
+    },
+    {
+      "predicate": {
+        "filled": 1.0
+      },
+      "model": "goetyominous:item/nether_eternal_cauldron_filled"
+    }
+  ]
+}

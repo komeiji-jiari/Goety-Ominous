@@ -3,8 +3,11 @@ package com.qiuyue.goetyominous.common.init;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.blocks.*;
 import com.qiuyue.goetyominous.common.items.ModItems;
+import com.Polarice3.Goety.init.ModSoundTypes;
 import com.qiuyue.goetyominous.common.items.PlushieBlockItem;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HalfTransparentBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
@@ -32,6 +35,19 @@ public class ModBlocks {
                     .instrument(NoteBlockInstrument.SNARE)
                     .sound(HeavyCoreBlock.HEAVY_CORE_SOUND)
                     .strength(10.0F, 1200.0F)));
+
+    public static final RegistryObject<Block> CURSED_METAL_GRATE = BLOCKS.register("cursed_metal_grate",
+            () -> new HalfTransparentBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .requiresCorrectToolForDrops()
+                    .strength(5.0F, 6.0F)
+                    .noOcclusion()
+                    .dynamicShape()
+                    .sound(ModSoundTypes.MOD_METAL)));
+
+    public static final RegistryObject<PolarCrystalBlock> POLAR_CRYSTAL = BLOCKS.register("polar_crystal",
+            () -> new PolarCrystalBlock(BlockBehaviour.Properties.copy(Blocks.AMETHYST_CLUSTER)
+                    .lightLevel(state -> state.getValue(PolarCrystalBlock.POWERED) ? 10 : 2)));
 
     public static final RegistryObject<WolfTotemBlock> WOLF_TOTEM =
             BLOCKS.register("wolf_totem", WolfTotemBlock::new);

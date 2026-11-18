@@ -1,0 +1,13 @@
+{
+  "structures": [
+    {
+      "structure": "goetyominous:crypt_wing_e",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "goetyominous:crypt_wing",
+    "salt": 1876543465,
+    "search_chunks": 24
+  }
+}

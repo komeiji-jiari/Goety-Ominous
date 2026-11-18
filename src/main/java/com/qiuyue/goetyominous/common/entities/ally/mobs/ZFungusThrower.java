@@ -1,7 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.ally.mobs;
 
 import com.Polarice3.Goety.common.entities.neutral.ZPiglinServant;
-import com.qiuyue.goetyominous.common.entities.FungusThrowerAnimated;
 import com.qiuyue.goetyominous.common.entities.projectile.AcidFungus;
 import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.config.AttributesConfig;
@@ -32,7 +31,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 
-public class ZFungusThrower extends ZPiglinServant implements FungusThrowerAnimated {
+public class ZFungusThrower extends ZPiglinServant {
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState walkAnimationState = new AnimationState();
@@ -153,17 +152,14 @@ public class ZFungusThrower extends ZPiglinServant implements FungusThrowerAnima
         return this.walkWeight;
     }
 
-    @Override
     public AnimationState getIdleAnimationState() {
         return this.idleAnimationState;
     }
 
-    @Override
     public AnimationState getWalkAnimationState() {
         return this.walkAnimationState;
     }
 
-    @Override
     public AnimationState getThrowAnimationState() {
         return this.throwAnimationState;
     }

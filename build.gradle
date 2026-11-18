@@ -195,13 +195,6 @@ repositories {
         url = "https://maven.blamejared.com/"
     }
 
-    maven {
-        name = "GoetySoulWitchLocal"
-        url = project.uri("../Goety-Soul-Witch/mcmodsrepo")
-        content {
-            includeGroup "com.goety_soul_witch"
-        }
-    }
 }
 
 dependencies {
@@ -229,7 +222,8 @@ dependencies {
 
     implementation fg.deobf("curse.maven:goety-586095:9474033")
     implementation fg.deobf("top.theillusivec4.curios:curios-forge:5.14.1+1.20.1")
-    implementation fg.deobf("com.goety_soul_witch:goety_soul_witch:1.0.9")
+    // Goety:Soul Witch 库：更新时替换 libs/goety_soul_witch-<version>.jar 即可
+    implementation fg.deobf("blank:goety_soul_witch:1.0.10")
     implementation 'io.github.llamalad7:mixinextras-forge:0.5.5'
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.5"))
     compileOnly fg.deobf("curse.maven:patchouli-306770:7731017")

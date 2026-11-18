@@ -6,6 +6,8 @@
     "goetyominous:whirling_cage",
     "goetyominous:cult_statue",
     "goetyominous:golden_piglin_statue",
+    "goetyominous:cursed_metal_grate",
+    "goetyominous:polar_crystal",
     {
       "id": "goetyominous:gammaroach_nest",
       "required": false

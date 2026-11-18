@@ -125,7 +125,7 @@ final class GrimMonarchConstants {
     static final float CALAMITY_DAMAGE_MULTIPLIER = 0.5F;
     static final double DAMAGE_IMMUNITY_RANGE = 20.0D;
     static final double DAMAGE_IMMUNITY_RANGE_SQR = DAMAGE_IMMUNITY_RANGE * DAMAGE_IMMUNITY_RANGE;
-    static final float OWNED_DAMAGE_MULTIPLIER = 0.5F;
+    static final float OWNED_DAMAGE_MULTIPLIER = 0.05F;
     static final int BYPASS_INVULNERABILITY_TICKS = 20;
     static final int PLUNGE_TICKS = 5;
     static final int DYNAMIC_REDUCTION_TICKS = 4;

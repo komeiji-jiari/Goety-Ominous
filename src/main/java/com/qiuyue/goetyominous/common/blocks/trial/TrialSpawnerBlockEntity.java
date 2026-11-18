@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 public class TrialSpawnerBlockEntity extends BlockEntity implements TrialSpawner.StateAccessor {
     private static final Logger LOGGER = LogUtils.getLogger();
     private TrialSpawner trialSpawner;
+    private String variant = "";
 
     public TrialSpawnerBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.TRIAL_SPAWNER.get(), pos, state);
@@ -37,6 +38,7 @@ public class TrialSpawnerBlockEntity extends BlockEntity implements TrialSpawner
         this.trialSpawner.codec().parse(NbtOps.INSTANCE, tag)
                 .resultOrPartial(LOGGER::error)
                 .ifPresent(spawner -> this.trialSpawner = spawner);
+        this.variant = VaultVariants.readVariant(tag);
         if (this.level != null) {
             this.markUpdated();
         }
@@ -48,6 +50,11 @@ public class TrialSpawnerBlockEntity extends BlockEntity implements TrialSpawner
         this.trialSpawner.codec().encodeStart(NbtOps.INSTANCE, this.trialSpawner)
                 .resultOrPartial(error -> LOGGER.warn("Failed to encode TrialSpawner {}", error))
                 .ifPresent(encoded -> tag.merge((CompoundTag) encoded));
+        VaultVariants.writeVariant(tag, this.variant);
+    }
+
+    public String getVariant() {
+        return this.variant;
     }
 
     @Nullable
@@ -58,7 +65,9 @@ public class TrialSpawnerBlockEntity extends BlockEntity implements TrialSpawner
 
     @Override
     public CompoundTag getUpdateTag() {
-        return this.trialSpawner.getData().getUpdateTag(this.getBlockState().getValue(TrialSpawnerBlock.STATE));
+        CompoundTag tag = this.trialSpawner.getData().getUpdateTag(this.getBlockState().getValue(TrialSpawnerBlock.STATE));
+        VaultVariants.writeVariant(tag, this.variant);
+        return tag;
     }
 
     @Override

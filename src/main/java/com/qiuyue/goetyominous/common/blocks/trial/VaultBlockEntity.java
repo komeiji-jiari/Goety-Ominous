@@ -48,6 +48,7 @@ public class VaultBlockEntity extends BlockEntity {
     private final VaultSharedData sharedData = new VaultSharedData();
     private final VaultClientData clientData = new VaultClientData();
     private VaultConfig config;
+    private String variant = "";
 
     public VaultBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.VAULT.get(), pos, state);
@@ -62,8 +63,10 @@ public class VaultBlockEntity extends BlockEntity {
 
     @Override
     public CompoundTag getUpdateTag() {
-        return Util.make(new CompoundTag(),
-                tag -> tag.put("shared_data", encode(VaultSharedData.CODEC, this.sharedData)));
+        CompoundTag tag = Util.make(new CompoundTag(),
+                update -> update.put("shared_data", encode(VaultSharedData.CODEC, this.sharedData)));
+        VaultVariants.writeVariant(tag, this.variant);
+        return tag;
     }
 
     @Override
@@ -72,6 +75,7 @@ public class VaultBlockEntity extends BlockEntity {
         tag.put("config", encode(VaultConfig.CODEC, this.config));
         tag.put("shared_data", encode(VaultSharedData.CODEC, this.sharedData));
         tag.put("server_data", encode(VaultServerData.CODEC, this.serverData));
+        VaultVariants.writeVariant(tag, this.variant);
     }
 
     private static <T> Tag encode(Codec<T> codec, T value) {
@@ -94,6 +98,17 @@ public class VaultBlockEntity extends BlockEntity {
             VaultSharedData.CODEC.parse(ops, tag.get("shared_data"))
                     .resultOrPartial(LOGGER::error).ifPresent(this.sharedData::set);
         }
+        this.variant = VaultVariants.readVariant(tag);
+        ItemStack key = VaultVariants.keyFor(this.variant, this.getBlockState());
+        if (key != null && !ItemStack.isSameItemSameTags(this.config.keyItem(), key)) {
+            this.config = new VaultConfig(this.config.lootTable(), this.config.activationRange(),
+                    this.config.deactivationRange(), key, this.config.overrideLootTableToDisplay(),
+                    this.config.playerDetector(), this.config.entitySelector());
+        }
+    }
+
+    public String getVariant() {
+        return this.variant;
     }
 
     @Nullable
@@ -245,7 +260,7 @@ public class VaultBlockEntity extends BlockEntity {
         public static void tick(Level level, BlockPos pos, BlockState state, VaultClientData clientData, VaultSharedData sharedData) {
             clientData.updateDisplayItemSpin();
             if (level.getGameTime() % PARTICLE_TICK_RATE == 0L) {
-                emitConnectionParticlesForNearbyPlayers(level, pos, state, sharedData);
+                emitConnectionParticlesForNearbyPlayers(level, pos, state, sharedData, connectionParticle(level, pos));
             }
             emitIdleParticles(level, pos, sharedData,
                     state.getValue(VaultBlock.OMINOUS) ? ParticleTypes.SOUL_FIRE_FLAME : ParticleTypes.SMALL_FLAME);
@@ -254,7 +269,7 @@ public class VaultBlockEntity extends BlockEntity {
 
         public static void emitActivationParticles(Level level, BlockPos pos, BlockState state,
                                                    VaultSharedData sharedData, ParticleOptions particle) {
-            emitConnectionParticlesForNearbyPlayers(level, pos, state, sharedData);
+            emitConnectionParticlesForNearbyPlayers(level, pos, state, sharedData, connectionParticle(level, pos));
             RandomSource random = level.random;
             for (int i = 0; i < ACTIVATION_PARTICLE_COUNT; ++i) {
                 Vec3 vec3 = randomPosInsideCage(pos, random);
@@ -283,18 +298,25 @@ public class VaultBlockEntity extends BlockEntity {
             }
         }
 
-        private static void emitConnectionParticlesForPlayer(Level level, Vec3 keyhole, Player player) {
+        private static ParticleOptions connectionParticle(Level level, BlockPos pos) {
+            return level.getBlockEntity(pos) instanceof VaultBlockEntity vault
+                    && VaultVariants.CRYPT.equals(vault.getVariant())
+                    ? ModParticleTypes.CRYPT_VAULT_CONNECTION.get()
+                    : ModParticleTypes.VAULT_CONNECTION.get();
+        }
+
+        private static void emitConnectionParticlesForPlayer(Level level, Vec3 keyhole, Player player, ParticleOptions particle) {
             RandomSource random = level.random;
             Vec3 toPlayer = keyhole.vectorTo(player.position().add(0.0D, player.getBbHeight() / 2.0F, 0.0D));
             int count = Mth.nextInt(random, 2, 5);
             for (int i = 0; i < count; ++i) {
                 Vec3 velocity = toPlayer.offsetRandom(random, 1.0F);
-                level.addParticle(ModParticleTypes.VAULT_CONNECTION.get(), keyhole.x, keyhole.y, keyhole.z,
+                level.addParticle(particle, keyhole.x, keyhole.y, keyhole.z,
                         velocity.x, velocity.y, velocity.z);
             }
         }
 
-        private static void emitConnectionParticlesForNearbyPlayers(Level level, BlockPos pos, BlockState state, VaultSharedData sharedData) {
+        private static void emitConnectionParticlesForNearbyPlayers(Level level, BlockPos pos, BlockState state, VaultSharedData sharedData, ParticleOptions particle) {
             Set<UUID> connected = sharedData.getConnectedPlayers();
             if (connected.isEmpty()) {
                 return;
@@ -305,7 +327,7 @@ public class VaultBlockEntity extends BlockEntity {
                 if (player == null || !isWithinConnectionRange(pos, sharedData, player)) {
                     continue;
                 }
-                emitConnectionParticlesForPlayer(level, keyhole, player);
+                emitConnectionParticlesForPlayer(level, keyhole, player, particle);
             }
         }
 

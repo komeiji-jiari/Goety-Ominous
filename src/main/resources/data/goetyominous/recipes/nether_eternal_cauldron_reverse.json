@@ -1,0 +1,8 @@
+{
+  "type": "goety:cursed_infuser_recipes",
+  "ingredient": {
+    "item": "goetyominous:nether_eternal_cauldron"
+  },
+  "result": "goety:eternal_cauldron",
+  "cookingTime": 60
+}

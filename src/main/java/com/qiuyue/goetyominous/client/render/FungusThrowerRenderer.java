@@ -4,7 +4,7 @@ import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.init.ModEntityLayers;
 import com.qiuyue.goetyominous.client.render.model.FungusThrowerServantModel;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractPiglinServant;
-import com.qiuyue.goetyominous.common.entities.hostile.piglin.AbstractFungusThrowerHostile;
+import com.qiuyue.goetyominous.common.entities.hostile.piglin.HostileFungusThrower;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
@@ -18,6 +18,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class FungusThrowerRenderer extends HumanoidMobRenderer<Mob, FungusThrowerServantModel<Mob>> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(GoetyOminous.MOD_ID,
             "textures/entity/piglin/fungus_thrower.png");
+    private static final ResourceLocation HOSTILE_TEXTURE = new ResourceLocation(GoetyOminous.MOD_ID,
+            "textures/entity/piglin/hostile_fungus_thrower.png");
 
     public FungusThrowerRenderer(EntityRendererProvider.Context context) {
         super(context, new FungusThrowerServantModel<>(context.bakeLayer(ModEntityLayers.PIGLIN_SERVANT_LAYER)),
@@ -32,11 +34,11 @@ public class FungusThrowerRenderer extends HumanoidMobRenderer<Mob, FungusThrowe
     protected boolean isShaking(Mob entity) {
         return super.isShaking(entity)
                 || entity instanceof AbstractPiglinServant servant && servant.isConverting()
-                || entity instanceof AbstractFungusThrowerHostile thrower && thrower.isConverting();
+                || entity instanceof HostileFungusThrower thrower && thrower.isConverting();
     }
 
     @Override
     public ResourceLocation getTextureLocation(Mob entity) {
-        return TEXTURE;
+        return entity instanceof HostileFungusThrower ? HOSTILE_TEXTURE : TEXTURE;
     }
 }

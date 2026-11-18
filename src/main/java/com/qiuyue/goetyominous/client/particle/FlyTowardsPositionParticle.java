@@ -23,6 +23,10 @@ public class FlyTowardsPositionParticle extends TextureSheetParticle {
     }
 
     FlyTowardsPositionParticle(ClientLevel level, double x, double y, double z, double xd, double yd, double zd, boolean isGlowing, LifetimeAlpha lifetimeAlpha) {
+        this(level, x, y, z, xd, yd, zd, isGlowing, lifetimeAlpha, 0.9F, 0.9F, 1.0F);
+    }
+
+    FlyTowardsPositionParticle(ClientLevel level, double x, double y, double z, double xd, double yd, double zd, boolean isGlowing, LifetimeAlpha lifetimeAlpha, float red, float green, float blue) {
         super(level, x, y, z);
         this.isGlowing = isGlowing;
         this.lifetimeAlpha = lifetimeAlpha;
@@ -41,9 +45,9 @@ public class FlyTowardsPositionParticle extends TextureSheetParticle {
         this.zo = this.z;
         this.quadSize = 0.1F * (this.random.nextFloat() * 0.5F + 0.2F);
         float f = this.random.nextFloat() * 0.6F + 0.4F;
-        this.rCol = 0.9F * f;
-        this.gCol = 0.9F * f;
-        this.bCol = f;
+        this.rCol = red * f;
+        this.gCol = green * f;
+        this.bCol = blue * f;
         this.hasPhysics = false;
         this.lifetime = (int) (Math.random() * 10.0D) + 30;
     }
@@ -132,6 +136,23 @@ public class FlyTowardsPositionParticle extends TextureSheetParticle {
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xd, double yd, double zd) {
             FlyTowardsPositionParticle particle = new FlyTowardsPositionParticle(level, x, y, z, xd, yd, zd, true,
                     new LifetimeAlpha(0.0F, 0.6F, 0.25F, 1.0F));
+            particle.scale(1.5F);
+            particle.pickSprite(this.sprite);
+            return particle;
+        }
+    }
+
+    public static class CryptVaultConnectionProvider implements ParticleProvider<SimpleParticleType> {
+        private final SpriteSet sprite;
+
+        public CryptVaultConnectionProvider(SpriteSet sprite) {
+            this.sprite = sprite;
+        }
+
+        @Override
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xd, double yd, double zd) {
+            FlyTowardsPositionParticle particle = new FlyTowardsPositionParticle(level, x, y, z, xd, yd, zd, true,
+                    new LifetimeAlpha(0.0F, 0.6F, 0.25F, 1.0F), 0.35F, 0.6F, 1.0F);
             particle.scale(1.5F);
             particle.pickSprite(this.sprite);
             return particle;

@@ -4,6 +4,7 @@ import com.Polarice3.Goety.api.entities.ally.illager.IllagerType;
 import com.Polarice3.Goety.common.entities.ally.BlackWolf;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.common.entities.neutral.ZPiglinServant;
+import com.Polarice3.Goety.common.items.curios.EternalCauldronItem;
 import com.qiuyue.goetyominous.common.blocks.trial.TrialBlocks;
 import com.qiuyue.goetyominous.common.entities.ally.illager.BoundPyrologer;
 import com.qiuyue.goetyominous.common.entities.ally.illager.ImperialChasseurServant;
@@ -31,11 +32,13 @@ import com.qiuyue.goetyominous.common.network.ModNetwork;
 import com.qiuyue.goetyominous.common.research.ResearchList;
 import com.qiuyue.goetyominous.common.ritual.FelRitualType;
 import com.qiuyue.goetyominous.common.world.ModMobSpawnBiomeModifier;
+import com.qiuyue.goetyominous.common.worldgen.crypt.CryptStructures;
 import com.qiuyue.goetyominous.common.worldgen.jigsaw.TrialJigsaw;
 import com.qiuyue.goetyominous.compat.mod.*;
 import com.qiuyue.goetyominous.config.ExpeditionConfig;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.config.SpellConfig;
+import com.qiuyue.goetyominous.config.WorldGenConfig;
 import com.qiuyue.goetyominous.common.entities.ally.illager.CrimsonGuardServant;
 import com.qiuyue.goetyominous.common.entities.ally.illager.train.GoetyOminousType;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.*;
@@ -46,7 +49,8 @@ import com.qiuyue.goetyominous.common.entities.hostile.illagers.ArchGeomancerEnt
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.CrimsonGuard;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.ImperialChasseur;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.Pyrologer;
-import com.qiuyue.goetyominous.common.entities.hostile.piglin.AbstractFungusThrowerHostile;
+import com.qiuyue.goetyominous.common.entities.hostile.piglin.HostileFungusThrower;
+import com.qiuyue.goetyominous.common.entities.hostile.piglin.ZHostileFungusThrower;
 import com.qiuyue.goetyominous.common.items.ModItems;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import com.qiuyue.goetyominous.compat.curios.CuriosIntegration;
@@ -125,6 +129,8 @@ public class GoetyOminous {
         TrialBlocks.register(modEventBus);
         ModProcessorTypes.register(modEventBus);
         TrialJigsaw.STRUCTURE_TYPES.register(modEventBus);
+        CryptStructures.STRUCTURE_TYPES.register(modEventBus);
+        CryptStructures.PLACEMENT_TYPES.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModRituals.register(modEventBus);
         ModCreativeTab.registerMainTabItems(com.goety_soul_witch.registry.ModItems.ITEMS);
@@ -209,6 +215,11 @@ public class GoetyOminous {
                 "goetyominous/goetyominous-weapons.toml");
         WeaponConfig.loadConfig(WeaponConfig.SPEC,
                 FMLPaths.CONFIGDIR.get().resolve("goetyominous/goetyominous-weapons.toml").toString());
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, WorldGenConfig.SPEC,
+                "goetyominous/goetyominous-worldgen.toml");
+        WorldGenConfig.loadConfig(WorldGenConfig.SPEC,
+                FMLPaths.CONFIGDIR.get().resolve("goetyominous/goetyominous-worldgen.toml").toString());
 
     }
 
@@ -328,8 +339,8 @@ public class GoetyOminous {
         event.put(ModEntityTypes.DISCIPLE_SERVANT.get(), DiscipleServant.setCustomAttributes().build());
         event.put(ModEntityTypes.STORM_NECROMANCER_SERVANT.get(), AbstractStormNecromancer.setCustomAttributes().build());
         event.put(ModEntityTypes.STORM_NECROMANCER.get(), AbstractStormNecromancer.setCustomAttributes().build());
-        event.put(ModEntityTypes.FUNGUS_THROWER.get(), AbstractFungusThrowerHostile.createAttributes().build());
-        event.put(ModEntityTypes.ZFUNGUS_THROWER.get(), AbstractFungusThrowerHostile.createAttributes().build());
+        event.put(ModEntityTypes.FUNGUS_THROWER.get(), HostileFungusThrower.createAttributes().build());
+        event.put(ModEntityTypes.ZFUNGUS_THROWER.get(), ZHostileFungusThrower.createAttributes().build());
         event.put(ModEntityTypes.FUNGUS_THROWER_SERVANT.get(), FungusThrower.createAttributes().build());
         event.put(ModEntityTypes.ZFUNGUS_THROWER_SERVANT.get(), ZPiglinServant.setCustomAttributes().build());
         event.put(ModEntityTypes.ELITE_FUNGUS_THROWER.get(), EliteFungusThrower.createAttributes().build());
@@ -446,6 +457,9 @@ public class GoetyOminous {
                     (stack, level, entity, seed) ->
                             CogCrossbowItem.isCharged(stack) && CogCrossbowItem.containsChargedProjectile(stack, Items.FIREWORK_ROCKET) ? 1.0F : 0.0F);
 
+            ItemProperties.register(ModItems.NETHER_ETERNAL_CAULDRON.get(), new ResourceLocation("filled"),
+                    (stack, level, entity, seed) ->
+                            EternalCauldronItem.getBottle(stack).isEmpty() ? 0.0F : 1.0F);
             OminousIconRotation.register();
         });
         net.minecraft.client.gui.screens.MenuScreens.register(

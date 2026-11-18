@@ -77,7 +77,16 @@
     "trial.RaiderOminousBottleMixin",
     "trial.RaidsRaidOmenMixin",
     "trial.BadOmenRaidTriggerMixin",
-    "trial.RaidOmenAbsorbMixin"
+    "trial.RaidOmenAbsorbMixin",
+    "crypt.CryptStructureMixin",
+    "crypt.CryptPlacerMixin",
+    "crypt.CryptRotationMixin",
+    "crypt.CryptChunkGeneratorMixin",
+    "crypt.CryptBeardifierMixin",
+    "crypt.CryptPlacedFeatureMixin",
+    "crypt.CrypticEyeItemMixin",
+    "crypt.BlockStateBasePolarCrystalMixin",
+    "crypt.AbstractBeamPolarCrystalMixin"
   ],
   "client": [],
   "server": [],

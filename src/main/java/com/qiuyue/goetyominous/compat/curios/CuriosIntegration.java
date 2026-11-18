@@ -41,6 +41,8 @@ public class CuriosIntegration {
 
     private void registerCapabilities(RegisterCapabilitiesEvent event) {
         CuriosApi.registerCurio(ModItems.DARK_ANKH.get(), new DarkAnkh());
+        CuriosApi.registerCurio(ModItems.NETHER_ETERNAL_CAULDRON.get(),
+                (ICurioItem) ModItems.NETHER_ETERNAL_CAULDRON.get());
         CuriosApi.registerCurio(ModItems.FUNGUS_PACK.get(), (ICurioItem) ModItems.FUNGUS_PACK.get());
         COMPAT_CURIOS.forEach(item ->
                 CuriosApi.registerCurio(item.get(), (ICurioItem) item.get()));

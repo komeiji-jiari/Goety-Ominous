@@ -4,6 +4,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import com.Polarice3.Goety.common.items.ServantSpawnEggItem;
 import com.Polarice3.Goety.common.items.block.BlockItemBase;
+import com.Polarice3.Goety.common.items.curios.EternalCauldronItem;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.render.item.BoneCudgelRenderer;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.Warg;
@@ -52,6 +53,12 @@ public class ModItems {
             () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> OMINOUS_TRIAL_KEY = ITEMS.register("ominous_trial_key",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> CRYPT_KEY = ITEMS.register("crypt_key",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> OMINOUS_CRYPT_KEY = ITEMS.register("ominous_crypt_key",
             () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> FLOW_POTTERY_SHERD = ITEMS.register("flow_pottery_sherd",
@@ -152,6 +159,9 @@ public class ModItems {
     public static final RegistryObject<Item> DARK_ANKH = ITEMS.register("dark_ankh",
             () -> new DarkAnkh());
 
+    public static final RegistryObject<Item> NETHER_ETERNAL_CAULDRON = ITEMS.register("nether_eternal_cauldron",
+            EternalCauldronItem::new);
+
     public static final RegistryObject<Item> SCREAMING_SKULL_JAR = ITEMS.register("screaming_skull_jar",
             () -> new ScreamingSkullJar());
 
@@ -246,6 +256,12 @@ public class ModItems {
 
     public static final RegistryObject<Item> HEAVY_CORE = ITEMS.register("heavy_core",
             () -> new BlockItemBase(ModBlocks.HEAVY_CORE.get()));
+
+    public static final RegistryObject<Item> CURSED_METAL_GRATE = ITEMS.register("cursed_metal_grate",
+            () -> new BlockItemBase(ModBlocks.CURSED_METAL_GRATE.get()));
+
+    public static final RegistryObject<Item> POLAR_CRYSTAL = ITEMS.register("polar_crystal",
+            () -> new BlockItemBase(ModBlocks.POLAR_CRYSTAL.get()));
 
 
     public static final RegistryObject<ForgeSpawnEggItem> BREEZE_SPAWN_EGG = ITEMS.register(

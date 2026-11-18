@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.client.render.model;
 
-import com.qiuyue.goetyominous.common.entities.FungusThrowerAnimated;
+import com.qiuyue.goetyominous.common.entities.ally.mobs.FungusThrower;
+import com.qiuyue.goetyominous.common.entities.hostile.piglin.HostileFungusThrower;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.Mob;
 import net.minecraftforge.api.distmarker.Dist;
@@ -18,7 +19,11 @@ public class FungusThrowerServantModel<T extends Mob> extends PiglinServantModel
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        if (entity instanceof FungusThrowerAnimated thrower) {
+        if (entity instanceof HostileFungusThrower thrower) {
+            this.animator.animate(entity, ageInTicks, netHeadYaw, headPitch,
+                    thrower.getIdleAnimationState(), thrower.getWalkAnimationState(), thrower.getThrowAnimationState(),
+                    thrower.isThrowing(), thrower.getWalkWeight());
+        } else if (entity instanceof FungusThrower thrower) {
             this.animator.animate(entity, ageInTicks, netHeadYaw, headPitch,
                     thrower.getIdleAnimationState(), thrower.getWalkAnimationState(), thrower.getThrowAnimationState(),
                     thrower.isThrowing(), thrower.getWalkWeight());

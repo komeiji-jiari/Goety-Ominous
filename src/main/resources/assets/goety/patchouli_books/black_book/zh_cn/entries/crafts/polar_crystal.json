@@ -1,0 +1,22 @@
+{
+  "name": "极地水晶",
+  "icon": "goetyominous:polar_crystal",
+  "category": "goety:ominous_crafts/artifice",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "极地水晶可以生长在方块的任意一面上，无论是地板，墙壁还是天花板。任何击中它的法术无论是闪电束，火球还是光束，都会使其在暗淡状态和发光的蓝色状态之间切换。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goetyominous:polar_crystal"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "发光时，水晶会向它附着的方块输出满格红石信号，而该方块会继续传递信号，距离水晶最多三格远的机械装置都会对其作出反应。再次击中它即可关闭。光束在水晶上持续存在时，只算作一次激活。"
+    }
+  ],
+  "extra_recipe_mappings": {
+    "goetyominous:polar_crystal": 1
+  }
+}

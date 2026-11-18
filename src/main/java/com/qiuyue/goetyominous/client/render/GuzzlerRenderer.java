@@ -19,8 +19,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class GuzzlerRenderer<T extends Mob> extends MobRenderer<T, GuzzlerModel<T>> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(GoetyOminous.MOD_ID,
             "textures/entity/piglin/guzzler.png");
+    private static final ResourceLocation HOSTILE_TEXTURE = new ResourceLocation(GoetyOminous.MOD_ID,
+            "textures/entity/piglin/hostile_guzzler.png");
     private static final ResourceLocation ZOMBIE_TEXTURE = new ResourceLocation(GoetyOminous.MOD_ID,
             "textures/entity/piglin/zguzzler.png");
+    private static final ResourceLocation HOSTILE_ZOMBIE_TEXTURE = new ResourceLocation(GoetyOminous.MOD_ID,
+            "textures/entity/piglin/hostile_zguzzler.png");
 
     public GuzzlerRenderer(EntityRendererProvider.Context context) {
         super(context, new GuzzlerModel<>(context.bakeLayer(GuzzlerModel.LAYER_LOCATION)), 1.2F);
@@ -33,7 +37,13 @@ public class GuzzlerRenderer<T extends Mob> extends MobRenderer<T, GuzzlerModel<
 
     @Override
     public ResourceLocation getTextureLocation(T entity) {
-        return entity instanceof ZGuzzler || entity instanceof ZGuzzlerBoss ? ZOMBIE_TEXTURE : TEXTURE;
+        if (entity instanceof ZGuzzlerBoss) {
+            return HOSTILE_ZOMBIE_TEXTURE;
+        }
+        if (entity instanceof ZGuzzler) {
+            return ZOMBIE_TEXTURE;
+        }
+        return entity instanceof GuzzlerBoss ? HOSTILE_TEXTURE : TEXTURE;
     }
 
     @Override

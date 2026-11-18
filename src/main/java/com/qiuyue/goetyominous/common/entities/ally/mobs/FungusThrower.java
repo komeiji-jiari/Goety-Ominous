@@ -1,6 +1,5 @@
 package com.qiuyue.goetyominous.common.entities.ally.mobs;
 
-import com.qiuyue.goetyominous.common.entities.FungusThrowerAnimated;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractPiglinServant;
 import com.qiuyue.goetyominous.common.entities.projectile.AcidFungus;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
@@ -32,7 +31,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 
-public class FungusThrower extends AbstractPiglinServant implements FungusThrowerAnimated {
+public class FungusThrower extends AbstractPiglinServant {
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState walkAnimationState = new AnimationState();
@@ -152,17 +151,14 @@ public class FungusThrower extends AbstractPiglinServant implements FungusThrowe
         return this.walkWeight;
     }
 
-    @Override
     public AnimationState getIdleAnimationState() {
         return this.idleAnimationState;
     }
 
-    @Override
     public AnimationState getWalkAnimationState() {
         return this.walkAnimationState;
     }
 
-    @Override
     public AnimationState getThrowAnimationState() {
         return this.throwAnimationState;
     }

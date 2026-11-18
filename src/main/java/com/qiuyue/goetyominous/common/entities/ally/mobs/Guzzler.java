@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.entities.ally.mobs;
 
 import com.Polarice3.Goety.common.entities.ally.Summoned;
 import com.Polarice3.Goety.common.entities.neutral.Owned;
+import com.Polarice3.Goety.common.entities.util.CameraShake;
 import com.mojang.datafixers.util.Pair;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.entities.ai.CenteredGroundNavigation;
@@ -82,6 +83,7 @@ public class Guzzler extends AbstractPiglinServant {
     private static final int NEARBY_CHECK_INTERVAL = 10;
     private static final double NEARBY_RANGE = 16.0D;
     private static final int DEATH_TICKS = 44;
+    private static final int DEATH_SHAKE_TICK = 29;
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState walkAnimationState = new AnimationState();
@@ -559,6 +561,7 @@ public class Guzzler extends AbstractPiglinServant {
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
         this.playSound(ModSounds.GUZZLER_STEP.get(), 0.2F, this.getVoicePitch());
+        CameraShake.cameraShake(this.level(), this.position(), 10.0F, 0.01F, 5, 0);
     }
 
     public void playSlamImpactSound() {
@@ -825,6 +828,9 @@ public class Guzzler extends AbstractPiglinServant {
     protected void tickDeath() {
         ++this.deathTime;
         this.getNavigation().stop();
+        if (!this.level().isClientSide && this.deathTime == DEATH_SHAKE_TICK) {
+            CameraShake.cameraShake(this.level(), this.position(), 25.0F, 0.15F, 0, 20);
+        }
         if (!this.level().isClientSide && this.deathTime >= DEATH_TICKS && !this.isRemoved()) {
             if (this.level() instanceof ServerLevel serverLevel) {
                 serverLevel.sendParticles(ParticleTypes.POOF,

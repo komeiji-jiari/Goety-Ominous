@@ -25,10 +25,11 @@ public abstract class SinglePoolElementLiquidMixin {
     @Inject(method = "getSettings", at = @At("RETURN"), require = 1)
     private void goetyominous$ignoreWaterlogging(Rotation rotation, BoundingBox box, boolean keepJigsaws,
                                                  CallbackInfoReturnable<StructurePlaceSettings> cir) {
-        boolean trial = this.template.left()
-                .map(id -> id.getNamespace().equals(GoetyOminous.MOD_ID) && id.getPath().startsWith("trial_chambers/"))
+        boolean ignoreLiquids = this.template.left()
+                .map(id -> id.getNamespace().equals(GoetyOminous.MOD_ID)
+                        && (id.getPath().startsWith("trial_chambers/") || id.getPath().startsWith("crypt/")))
                 .orElse(false);
-        if (trial) {
+        if (ignoreLiquids) {
             cir.getReturnValue().setKeepLiquids(false);
         }
     }

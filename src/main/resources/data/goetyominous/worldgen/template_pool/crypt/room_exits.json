@@ -1,0 +1,384 @@
+{
+  "name": "goetyominous:crypt/room_exits",
+  "fallback": "goetyominous:crypt/caps",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "location": "goetyominous:crypt/corridor_straight_a",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "goetyominous:crypt/corridor_straight_web_a",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "goetyominous:crypt/corridor_straight_trap_a",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "goetyominous:crypt/corridor_straight_plinth_a",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "location": "goetyominous:crypt/corridor_corner_a",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "goetyominous:crypt/corridor_corner_web_a",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "goetyominous:crypt/corridor_corner_trap_a",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "goetyominous:crypt/corridor_corner_plinth_a",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 4,
+      "element": {
+        "location": "goetyominous:crypt/corridor_t_a",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "location": "goetyominous:crypt/corridor_t_web_a",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "location": "goetyominous:crypt/corridor_t_trap_a",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "location": "goetyominous:crypt/corridor_t_plinth_a",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 4,
+      "element": {
+        "location": "goetyominous:crypt/corridor_cross_a",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "location": "goetyominous:crypt/corridor_cross_web_a",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "location": "goetyominous:crypt/corridor_cross_trap_a",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "location": "goetyominous:crypt/corridor_cross_plinth_a",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "location": "goetyominous:crypt/catacomb_a",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "location": "goetyominous:crypt/catacomb_b",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "location": "goetyominous:crypt/catacomb_c",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "location": "goetyominous:crypt/catacomb_d",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "location": "goetyominous:crypt/catacomb_e",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "location": "goetyominous:crypt/catacomb_f",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "location": "goetyominous:crypt/spider_hall_a",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "location": "goetyominous:crypt/spider_hall_b",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "location": "goetyominous:crypt/trap_hall_a",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "location": "goetyominous:crypt/trap_hall_b",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "location": "goetyominous:crypt/trap_hall_c",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "location": "goetyominous:crypt/trap_hall_d",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "location": "goetyominous:crypt/trap_hall_e",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "location": "goetyominous:crypt/trap_hall_f",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "location": "goetyominous:crypt/spider_nest_a",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "location": "goetyominous:crypt/spider_nest_b",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "location": "goetyominous:crypt/spider_nest_c",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "location": "goetyominous:crypt/sculk_graveyard_a",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "location": "goetyominous:crypt/sculk_graveyard_b",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 4,
+      "element": {
+        "location": "goetyominous:crypt/study_hall_a",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "location": "goetyominous:crypt/treasure_cross_a",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "location": "goetyominous:crypt/stair_hall_a",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "location": "goetyominous:crypt/stairway_a",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "location": "goetyominous:crypt/spawner_shaft_a",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "location": "goetyominous:crypt/wind_lift_a",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "location": "goetyominous:crypt/corridor_cross_fountain_a",
+        "processors": "goetyominous:crypt_ignore_void",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}

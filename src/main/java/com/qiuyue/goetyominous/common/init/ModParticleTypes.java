@@ -34,6 +34,7 @@ public class ModParticleTypes {
             PARTICLE_TYPES.register("bouncing_spark", () -> new SimpleParticleType(true));
 
     public static final RegistryObject<SimpleParticleType> VAULT_CONNECTION = PARTICLE_TYPES.register("vault_connection", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> CRYPT_VAULT_CONNECTION = PARTICLE_TYPES.register("crypt_vault_connection", () -> new SimpleParticleType(false));
 
     public static final RegistryObject<SimpleParticleType> WIND_TYPHOON = PARTICLE_TYPES.register("wind_typhoon", () -> new SimpleParticleType(false));
 
