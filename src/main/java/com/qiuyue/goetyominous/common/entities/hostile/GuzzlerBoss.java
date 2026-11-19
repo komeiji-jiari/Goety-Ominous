@@ -317,7 +317,7 @@ public class GuzzlerBoss extends Monster {
     private boolean hasNearbyPlayer() {
         AABB area = this.getBoundingBox().inflate(NEARBY_RANGE, 8.0D, NEARBY_RANGE);
         return !this.level().getEntitiesOfClass(Player.class, area,
-                player -> EntitySelector.NO_SPECTATORS.test(player) && this.hasLineOfSight(player)).isEmpty();
+                player -> EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(player) && this.hasLineOfSight(player)).isEmpty();
     }
 
     @Override
