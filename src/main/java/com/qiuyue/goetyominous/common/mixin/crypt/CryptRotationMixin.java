@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.common.mixin.crypt;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.qiuyue.goetyominous.common.worldgen.crypt.CryptPlacementRules;
+import com.qiuyue.goetyominous.common.worldgen.windshrine.WindShrinePlacementRules;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.pools.JigsawPlacement;
@@ -16,6 +17,6 @@ public abstract class CryptRotationMixin {
             at = @At(value = "INVOKE",
                     target = "Lnet/minecraft/world/level/block/Rotation;getRandom(Lnet/minecraft/util/RandomSource;)Lnet/minecraft/world/level/block/Rotation;"))
     private static Rotation goetyominous$forcedStartRotation(RandomSource random, Operation<Rotation> original) {
-        return CryptPlacementRules.forcedRotationOr(original.call(random));
+        return CryptPlacementRules.forcedRotationOr(WindShrinePlacementRules.forcedRotationOr(original.call(random)));
     }
 }

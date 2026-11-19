@@ -38,7 +38,7 @@ public final class CryptGeneration {
             Registries.TEMPLATE_POOL, new ResourceLocation(GoetyOminous.MOD_ID, "crypt/entrance"));
 
     public static boolean classic() {
-        return !WorldGenConfig.ReplaceCrypt.get();
+        return WorldGenConfig.ClassicCrypt.get();
     }
 
     public static boolean replacesClassic(Structure.GenerationContext context) {

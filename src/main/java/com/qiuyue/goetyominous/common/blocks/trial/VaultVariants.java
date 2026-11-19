@@ -13,6 +13,7 @@ public final class VaultVariants {
     public static final String NEO_FORGE_DATA = "NeoForgeData";
     public static final String VARIANT = "goety:vault_variant";
     public static final String CRYPT = "crypt";
+    public static final String WIND_SHRINE = "wind_shrine";
 
     @Nullable
     public static String variantOf(BlockEntity blockEntity) {
@@ -47,15 +48,21 @@ public final class VaultVariants {
 
     @Nullable
     public static ItemStack keyFor(String variant, BlockState state) {
-        if (!CRYPT.equals(variant)) {
+        if (!CRYPT.equals(variant) && !WIND_SHRINE.equals(variant)) {
             return null;
         }
         boolean ominous = state.hasProperty(VaultBlock.OMINOUS) && state.getValue(VaultBlock.OMINOUS);
+        if (WIND_SHRINE.equals(variant)) {
+            return new ItemStack(ominous ? ModItems.OMINOUS_GALE_KEY.get() : ModItems.GALE_KEY.get());
+        }
         return new ItemStack(ominous ? ModItems.OMINOUS_CRYPT_KEY.get() : ModItems.CRYPT_KEY.get());
     }
 
     @Nullable
     public static String vaultTextures(String variant) {
+        if (WIND_SHRINE.equals(variant)) {
+            return "block/wind_vault/";
+        }
         return CRYPT.equals(variant) ? "block/crypt_vault/" : null;
     }
 

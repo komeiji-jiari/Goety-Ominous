@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.qiuyue.goetyominous.common.worldgen.crypt.CryptPlacementRules;
+import com.qiuyue.goetyominous.common.worldgen.windshrine.WindShrinePlacementRules;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
@@ -44,6 +45,7 @@ public abstract class CryptPlacerMixin {
     private void goetyominous$beginParent(PoolElementStructurePiece parent, MutableObject<VoxelShape> free, int depth,
                                           boolean expansionHack, LevelHeightAccessor heightAccessor, RandomState randomState,
                                           CallbackInfo ci) {
+        WindShrinePlacementRules.beginParent(parent, depth, ((MutableObject<?>) free).getValue(), this.structureTemplateManager);
         CryptPlacementRules.beginParent(parent, depth);
     }
 
@@ -52,6 +54,7 @@ public abstract class CryptPlacerMixin {
                     target = "Lnet/minecraft/world/level/block/JigsawBlock;getFrontFacing(Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/core/Direction;",
                     ordinal = 0))
     private Direction goetyominous$captureParentDirection(Direction direction) {
+        WindShrinePlacementRules.parentDirection(direction);
         CryptPlacementRules.parentDirection(direction);
         return direction;
     }
@@ -61,7 +64,7 @@ public abstract class CryptPlacerMixin {
                     target = "Lnet/minecraft/world/level/levelgen/structure/pools/StructureTemplatePool;getShuffledTemplates(Lnet/minecraft/util/RandomSource;)Ljava/util/List;"))
     private List<StructurePoolElement> goetyominous$reweightCandidates(StructureTemplatePool pool, RandomSource random,
                                                                        Operation<List<StructurePoolElement>> original) {
-        return CryptPlacementRules.reweight(original.call(pool, random));
+        return CryptPlacementRules.reweight(WindShrinePlacementRules.reweight(original.call(pool, random), random, this.pools, this.structureTemplateManager));
     }
 
     @WrapOperation(method = "tryPlacingChildren", require = 1,
@@ -70,6 +73,7 @@ public abstract class CryptPlacerMixin {
                     ordinal = 1))
     private BoundingBox goetyominous$captureCandidate(StructurePoolElement element, StructureTemplateManager templateManager,
                                                       BlockPos pos, Rotation rotation, Operation<BoundingBox> original) {
+        WindShrinePlacementRules.candidate(element, this.pools, templateManager);
         CryptPlacementRules.candidate(element, this.structureTemplateManager);
         return original.call(element, templateManager, pos, rotation);
     }
@@ -77,6 +81,7 @@ public abstract class CryptPlacerMixin {
     @ModifyExpressionValue(method = "tryPlacingChildren", require = 1,
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/AABB;deflate(D)Lnet/minecraft/world/phys/AABB;"))
     private AABB goetyominous$captureCandidateBounds(AABB bounds) {
+        WindShrinePlacementRules.candidateBounds(bounds);
         CryptPlacementRules.candidateBounds(bounds);
         return bounds;
     }
@@ -86,6 +91,6 @@ public abstract class CryptPlacerMixin {
                     target = "Lnet/minecraft/world/phys/shapes/Shapes;joinIsNotEmpty(Lnet/minecraft/world/phys/shapes/VoxelShape;Lnet/minecraft/world/phys/shapes/VoxelShape;Lnet/minecraft/world/phys/shapes/BooleanOp;)Z"))
     private boolean goetyominous$collisionTest(VoxelShape free, VoxelShape candidate, BooleanOp op,
                                                Operation<Boolean> original) {
-        return CryptPlacementRules.rejectOrCollides(original.call(free, candidate, op));
+        return CryptPlacementRules.rejectOrCollides(WindShrinePlacementRules.rejectOrCollides(original.call(free, candidate, op)));
     }
 }

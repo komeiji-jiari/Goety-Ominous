@@ -10,14 +10,21 @@ public class WorldGenConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
-    public static final ForgeConfigSpec.BooleanValue ReplaceCrypt;
+    public static final ForgeConfigSpec.BooleanValue ClassicCrypt;
+    public static final ForgeConfigSpec.BooleanValue ClassicWindShrine;
 
     static {
         BUILDER.push("World Generation");
-        ReplaceCrypt = BUILDER.comment("Replace the classic Goety crypt with the layered Goety 3 crypt, Default: true")
-                .define("replaceCrypt", true);
+        ClassicCrypt = BUILDER.comment("Generate the original Goety crypt instead of the layered Goety 3 crypt, Default: false")
+                .define("classicCrypt", false);
+        ClassicWindShrine = BUILDER.comment("Generate the original Goety wind shrine instead of the Goety 3 mountain wind shrine, Default: false")
+                .define("classicWindShrine", false);
         BUILDER.pop();
         SPEC = BUILDER.build();
+    }
+
+    public static boolean classicWindShrine() {
+        return ClassicWindShrine.get();
     }
 
     public static void loadConfig(ForgeConfigSpec config, String path) {

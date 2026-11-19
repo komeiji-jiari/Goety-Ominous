@@ -33,7 +33,7 @@ public final class CryptWingPlacement extends StructurePlacement {
 
     @Override
     protected boolean isPlacementChunk(ChunkGeneratorStructureState state, int x, int z) {
-        if (!WorldGenConfig.ReplaceCrypt.get()) {
+        if (WorldGenConfig.ClassicCrypt.get()) {
             return false;
         }
         for (Holder<StructureSet> set : state.possibleStructureSets()) {

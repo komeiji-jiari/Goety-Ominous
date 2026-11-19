@@ -131,6 +131,9 @@ public class GoetyOminous {
         TrialJigsaw.STRUCTURE_TYPES.register(modEventBus);
         CryptStructures.STRUCTURE_TYPES.register(modEventBus);
         CryptStructures.PLACEMENT_TYPES.register(modEventBus);
+        com.qiuyue.goetyominous.common.worldgen.windshrine.WindShrineStructures.STRUCTURE_TYPES.register(modEventBus);
+        com.qiuyue.goetyominous.common.worldgen.windshrine.WindShrineStructures.PLACEMENT_TYPES.register(modEventBus);
+        com.qiuyue.goetyominous.common.worldgen.windshrine.WindShrineStructures.PROCESSOR_TYPES.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModRituals.register(modEventBus);
         ModCreativeTab.registerMainTabItems(com.goety_soul_witch.registry.ModItems.ITEMS);

@@ -60,6 +60,12 @@ public class ModItems {
     public static final RegistryObject<Item> OMINOUS_CRYPT_KEY = ITEMS.register("ominous_crypt_key",
             () -> new Item(new Item.Properties()));
 
+    public static final RegistryObject<Item> GALE_KEY = ITEMS.register("gale_key",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> OMINOUS_GALE_KEY = ITEMS.register("ominous_gale_key",
+            () -> new Item(new Item.Properties()));
+
     public static final RegistryObject<Item> FLOW_POTTERY_SHERD = ITEMS.register("flow_pottery_sherd",
             () -> new Item(new Item.Properties()));
 

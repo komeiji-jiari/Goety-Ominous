@@ -86,7 +86,17 @@
     "crypt.CryptPlacedFeatureMixin",
     "crypt.CrypticEyeItemMixin",
     "crypt.BlockStateBasePolarCrystalMixin",
-    "crypt.AbstractBeamPolarCrystalMixin"
+    "crypt.AbstractBeamPolarCrystalMixin",
+    "BlenderAccessor",
+    "StructurePiecesBuilderAccessor",
+    "windshrine.BlenderWindShrineMixin",
+    "windshrine.NoiseBasedChunkGeneratorWindShrineMixin",
+    "windshrine.WorldCarverWindShrineMixin",
+    "windshrine.BiomeWindShrineMixin",
+    "windshrine.ChunkStatusWindShrineMixin",
+    "windshrine.ResourceKeyArgumentWindShrineMixin",
+    "windshrine.ResourceOrTagKeyArgumentWindShrineMixin",
+    "windshrine.JigsawStructureWindShrineMixin"
   ],
   "client": [],
   "server": [],

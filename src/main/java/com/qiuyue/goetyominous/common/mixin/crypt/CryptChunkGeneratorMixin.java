@@ -9,6 +9,8 @@ import com.qiuyue.goetyominous.common.worldgen.crypt.CryptMound;
 import com.qiuyue.goetyominous.common.worldgen.crypt.CryptPlans;
 import com.qiuyue.goetyominous.common.worldgen.crypt.CryptShell;
 import com.qiuyue.goetyominous.common.worldgen.crypt.CryptTerrain;
+import com.qiuyue.goetyominous.common.worldgen.windshrine.WindShrinePlans;
+import com.qiuyue.goetyominous.common.worldgen.windshrine.WindShrineTerrain;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.SectionPos;
 import net.minecraft.world.level.ChunkPos;
@@ -35,6 +37,7 @@ public abstract class CryptChunkGeneratorMixin {
     private void goetyominous$cryptTerrainHead(WorldGenLevel level, ChunkAccess chunk, StructureManager structureManager,
                                                CallbackInfo ci) {
         if (structureManager.shouldGenerateStructures()) {
+            WindShrineTerrain.apply(level, chunk, (ChunkGenerator) (Object) this, structureManager);
             CryptShell.apply(level, chunk, structureManager);
             CryptMound.remember(chunk);
             CryptExclusion.begin(level, chunk, structureManager);
@@ -58,6 +61,7 @@ public abstract class CryptChunkGeneratorMixin {
     private void goetyominous$cryptTerrainTail(WorldGenLevel level, ChunkAccess chunk, StructureManager structureManager,
                                                CallbackInfo ci) {
         if (structureManager.shouldGenerateStructures()) {
+            WindShrineTerrain.cleanup(level, chunk);
             CryptCleanup.apply(level, chunk, structureManager);
             CryptMound.growOnce(level, chunk, structureManager);
         }
@@ -85,7 +89,9 @@ public abstract class CryptChunkGeneratorMixin {
                                             ChunkPos chunkPos, SectionPos sectionPos,
                                             CallbackInfoReturnable<Boolean> cir) {
         ChunkGenerator generator = (ChunkGenerator) (Object) this;
-        if (CryptPlans.reserves(entry.structure().value(), registryAccess, generator, randomState, templates, seed,
+        if (WindShrinePlans.reservesSurface(entry.structure().value(), registryAccess, generator, randomState, templates,
+                seed, chunk, chunkPos)
+                || CryptPlans.reserves(entry.structure().value(), registryAccess, generator, randomState, templates, seed,
                 chunk, chunkPos)) {
             cir.setReturnValue(false);
         }

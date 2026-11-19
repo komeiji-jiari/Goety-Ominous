@@ -1,0 +1,14 @@
+{
+  "type": "goetyominous:wind_shrine_expansion",
+  "biomes": "#minecraft:is_overworld",
+  "step": "surface_structures",
+  "spawn_overrides": {
+  },
+  "terrain_adaptation": "none",
+  "start_pool": "goetyominous:wind_shrine_expansion/start",
+  "start_jigsaw_name": "goetyominous:wind_shrine/expansion_start",
+  "size": 10,
+  "max_distance_from_center": 128,
+  "door": 7,
+  "search_chunks": 12
+}
