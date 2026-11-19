@@ -1,6 +1,6 @@
 {
   "type": "goetyominous:wind_shrine",
-  "biomes": "#goetyominous:has_structure/wind_shrine",
+  "biomes": "#goety:has_structure/wind_shrine",
   "step": "surface_structures",
   "spawn_overrides": {
   },
