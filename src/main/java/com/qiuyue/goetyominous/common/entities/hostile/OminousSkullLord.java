@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.hostile;
 
+import com.Polarice3.Goety.api.entities.IOwned;
 import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.common.entities.ModEntityType;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
@@ -20,6 +21,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -49,6 +51,14 @@ public class OminousSkullLord extends SkullLord {
         super(type, level);
         this.applyOminousHealth();
         this.setHealth(this.getMaxHealth());
+    }
+
+    @Override
+    public boolean isAlliedTo(Entity entity) {
+        if (entity instanceof IOwned owned && owned.getTrueOwner() == this) {
+            return true;
+        }
+        return super.isAlliedTo(entity);
     }
 
     public static AttributeSupplier.Builder createAttributes() {

@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.entities.projectile;
 
 import com.Polarice3.Goety.utils.CuriosFinder;
 import com.Polarice3.Goety.utils.EffectsUtil;
+import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.ModDamageSource;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
@@ -122,12 +123,15 @@ public class FrostBallEntity extends AbstractHurtingProjectile {
     protected void onHitEntity(EntityHitResult result) {
         boolean pierce = this.ownerHasFrostRobes();
         Entity target = result.getEntity();
+        Entity owner = this.getOwner();
+        if (target == owner || (owner != null && MobUtil.areAllies(target, owner))) {
+            return;
+        }
         if (pierce && !this.piercedEntities.add(target.getId())) {
             return;
         }
         super.onHitEntity(result);
         if (!this.level().isClientSide) {
-            Entity owner = this.getOwner();
             float damage = 4.0F;
             int duration = 0;
             boolean hurt;

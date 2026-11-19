@@ -7,18 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "goety:forbidden_fragment",
-          "weight": 20
-        },
-        {
-          "type": "minecraft:item",
-          "name": "goety:haunting_scroll",
-          "weight": 5
-        },
-        {
-          "type": "minecraft:item",
           "name": "minecraft:book",
-          "weight": 1,
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
@@ -26,84 +15,68 @@
               "treasure": true
             }
           ]
-        },
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
         {
           "type": "minecraft:item",
-          "name": "goety:frozen_blade",
-          "weight": 10,
+          "name": "goety:forbidden_fragment"
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "goety:ectoplasm",
+          "weight": 1,
           "functions": [
             {
-              "function": "minecraft:set_damage",
-              "damage": {
+              "function": "minecraft:set_count",
+              "count": {
                 "type": "minecraft:uniform",
-                "min": 0.1,
-                "max": 0.5
+                "min": 2.0,
+                "max": 6.0
               },
               "add": false
+            },
+            {
+              "function": "minecraft:looting_enchant",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 1.0
+              }
             }
           ]
         },
         {
           "type": "minecraft:item",
-          "name": "goety:cursed_paladin_helmet",
-          "weight": 10,
+          "name": "goety:magic_emerald",
+          "weight": 1,
           "functions": [
             {
-              "function": "minecraft:set_damage",
-              "damage": {
+              "function": "minecraft:set_count",
+              "count": {
                 "type": "minecraft:uniform",
-                "min": 0.1,
-                "max": 0.5
+                "min": 2.0,
+                "max": 4.0
               },
               "add": false
-            }
-          ]
-        },
-        {
-          "type": "minecraft:item",
-          "name": "goety:cursed_paladin_chestplate",
-          "weight": 10,
-          "functions": [
+            },
             {
-              "function": "minecraft:set_damage",
-              "damage": {
+              "function": "minecraft:looting_enchant",
+              "count": {
                 "type": "minecraft:uniform",
-                "min": 0.1,
-                "max": 0.5
-              },
-              "add": false
-            }
-          ]
-        },
-        {
-          "type": "minecraft:item",
-          "name": "goety:cursed_paladin_leggings",
-          "weight": 10,
-          "functions": [
-            {
-              "function": "minecraft:set_damage",
-              "damage": {
-                "type": "minecraft:uniform",
-                "min": 0.1,
-                "max": 0.5
-              },
-              "add": false
-            }
-          ]
-        },
-        {
-          "type": "minecraft:item",
-          "name": "goety:cursed_paladin_boots",
-          "weight": 10,
-          "functions": [
-            {
-              "function": "minecraft:set_damage",
-              "damage": {
-                "type": "minecraft:uniform",
-                "min": 0.1,
-                "max": 0.5
-              },
-              "add": false
+                "min": 1.0,
+                "max": 1.0
+              }
             }
           ]
         }
