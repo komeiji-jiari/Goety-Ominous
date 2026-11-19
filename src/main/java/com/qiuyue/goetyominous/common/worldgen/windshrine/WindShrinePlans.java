@@ -41,6 +41,8 @@ import java.util.Set;
 
 public final class WindShrinePlans {
     public static final ResourceLocation ID = new ResourceLocation(GoetyOminous.MOD_ID, "wind_shrine");
+    public static final ResourceLocation MAIN_ID = new ResourceLocation("goety", "wind_shrine");
+    public static final ResourceLocation CLASSIC_POOL = new ResourceLocation("goety", "wind_shrine/start_pool");
     public static final List<ResourceLocation> WINGS = List.of(
             new ResourceLocation(GoetyOminous.MOD_ID, "wind_shrine_expansion_a"),
             new ResourceLocation(GoetyOminous.MOD_ID, "wind_shrine_expansion_b"),
@@ -163,7 +165,7 @@ public final class WindShrinePlans {
             return false;
         }
         for (Holder<StructureSet> set : state.possibleStructureSets()) {
-            if (set.is(ID)) {
+            if (set.is(MAIN_ID)) {
                 return true;
             }
         }
@@ -231,12 +233,12 @@ public final class WindShrinePlans {
 
     public static Optional<RandomSpreadStructurePlacement> spread(RegistryAccess registryAccess) {
         Registry<StructureSet> sets = registryAccess.registryOrThrow(Registries.STRUCTURE_SET);
-        StructureSet set = sets.get(ID);
+        StructureSet set = sets.get(MAIN_ID);
         if (set == null || !(set.placement() instanceof RandomSpreadStructurePlacement spread)) {
             return Optional.empty();
         }
         for (StructureSet.StructureSelectionEntry entry : set.structures()) {
-            if (entry.structure().is(ID)) {
+            if (entry.structure().is(MAIN_ID)) {
                 return Optional.of(spread);
             }
         }
@@ -248,10 +250,15 @@ public final class WindShrinePlans {
         return structure instanceof WindShrineStructure shrine ? Optional.of(shrine) : Optional.empty();
     }
 
+    public static boolean isMainShrine(Structure structure, RegistryAccess registryAccess) {
+        return structure instanceof WindShrineStructure
+                || MAIN_ID.equals(registryAccess.registryOrThrow(Registries.STRUCTURE).getKey(structure));
+    }
+
     private static final int RESERVED_MARGIN = 200;
 
     public static boolean reservesSurface(Structure structure, RegistryAccess registryAccess, ChunkGenerator generator, RandomState randomState, StructureTemplateManager templates, long seed, LevelHeightAccessor heightAccessor, ChunkPos chunkPos) {
-        if (structure instanceof WindShrineStructure || structure instanceof WindShrineExpansionStructure || structure instanceof CryptStructure || structure instanceof CryptWingStructure || structure.step() != GenerationStep.Decoration.SURFACE_STRUCTURES) {
+        if (isMainShrine(structure, registryAccess) || structure instanceof WindShrineExpansionStructure || structure instanceof CryptStructure || structure instanceof CryptWingStructure || structure.step() != GenerationStep.Decoration.SURFACE_STRUCTURES) {
             return false;
         }
         if (!possibleIn(CryptTerrain.structureState()) || WorldGenConfig.classicWindShrine()) {

@@ -5,6 +5,7 @@ import com.Polarice3.Goety.client.particles.ModParticleTypes;
 import com.Polarice3.Goety.client.particles.SmashParticleOption;
 import com.Polarice3.Goety.client.particles.WindParticleOption;
 import com.Polarice3.Goety.common.entities.util.CameraShake;
+import com.Polarice3.Goety.common.entities.util.ModFallingBlock;
 import com.Polarice3.Goety.utils.BlockFinder;
 import com.Polarice3.Goety.utils.ColorUtil;
 import com.Polarice3.Goety.utils.MobUtil;
@@ -12,6 +13,7 @@ import com.Polarice3.Goety.utils.ServerParticleUtil;
 import com.qiuyue.goetyominous.common.entities.hostile.GuzzlerBoss;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntitySelector;
@@ -20,6 +22,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -199,6 +202,9 @@ public class GuzzlerBossAttackGoal extends Goal {
             Vec3 center = this.getSlamCenter();
             this.areaAttack(SLAM_RADIUS, this.getDamage(1.0F), 0.5D, center);
             this.groundBurst(SLAM_RADIUS, 20.0F, 0.14F, 20, center);
+            if (this.mob.level() instanceof ServerLevel serverLevel) {
+                this.raiseGroundTremor(serverLevel, center, Mth.ceil(SLAM_RADIUS));
+            }
             this.mob.playSlamImpactSound();
         }
         if (this.actionTick >= SLAM_END_TICK) {
@@ -405,6 +411,9 @@ public class GuzzlerBossAttackGoal extends Goal {
             this.landed = true;
             this.areaAttack(JUMP_LAND_RADIUS, this.getDamage(1.5F), 0.9D);
             this.groundBurst(JUMP_LAND_RADIUS, 28.0F, 0.18F, 24);
+            if (this.mob.level() instanceof ServerLevel serverLevel) {
+                this.raiseGroundTremor(serverLevel, this.mob.position(), Mth.ceil(JUMP_LAND_RADIUS));
+            }
             this.mob.playJumpLandSound();
         }
         if (this.actionTick >= JUMP_LAND_END_TICK) {
@@ -500,6 +509,39 @@ public class GuzzlerBossAttackGoal extends Goal {
             return true;
         }
         return false;
+    }
+
+    private void raiseGroundTremor(ServerLevel serverLevel, Vec3 center, int maxRadius) {
+        int hitY = Mth.floor(center.y - 0.5D);
+        int minY = serverLevel.getMinBuildHeight();
+        double spread = Math.PI * 2.0D;
+        for (int distance = 1; distance <= maxRadius; ++distance) {
+            int arcLen = Mth.ceil(distance * spread);
+            if (arcLen <= 1) {
+                continue;
+            }
+            for (int i = 0; i < arcLen; ++i) {
+                double theta = ((double) i / (double) (arcLen - 1) - 0.5D) * spread;
+                double vx = Math.cos(theta);
+                double vz = Math.sin(theta);
+                double px = center.x + vx * distance;
+                double pz = center.z + vz * distance;
+                BlockPos pos = new BlockPos(Mth.floor(px), hitY, Mth.floor(pz));
+                BlockState state = serverLevel.getBlockState(pos);
+                while (state.getRenderShape() != RenderShape.MODEL && pos.getY() > minY) {
+                    pos = pos.below();
+                    state = serverLevel.getBlockState(pos);
+                }
+                if (state.getRenderShape() != RenderShape.MODEL || state.isAir() || state.hasBlockEntity()) {
+                    continue;
+                }
+                if (serverLevel.getBlockState(pos.above()).blocksMotion()) {
+                    continue;
+                }
+                serverLevel.addFreshEntity(new ModFallingBlock(serverLevel, Vec3.atCenterOf(pos.above()), state,
+                        (float) (0.2D + this.mob.getRandom().nextGaussian() * 0.15D)));
+            }
+        }
     }
 
     private void groundBurst(double radius, float shakeRadius, float shakeMagnitude, int shakeTicks) {

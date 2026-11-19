@@ -100,7 +100,7 @@ public class VaultBlockEntity extends BlockEntity {
         }
         this.variant = VaultVariants.readVariant(tag);
         ItemStack key = VaultVariants.keyFor(this.variant, this.getBlockState());
-        if (key != null && !ItemStack.isSameItemSameTags(this.config.keyItem(), key)) {
+        if (key != null && !sameKey(this.config.keyItem(), key)) {
             this.config = new VaultConfig(this.config.lootTable(), this.config.activationRange(),
                     this.config.deactivationRange(), key, this.config.overrideLootTableToDisplay(),
                     this.config.playerDetector(), this.config.entitySelector());
@@ -109,6 +109,17 @@ public class VaultBlockEntity extends BlockEntity {
 
     public String getVariant() {
         return this.variant;
+    }
+
+    private static boolean sameKey(ItemStack first, ItemStack second) {
+        if (!ItemStack.isSameItem(first, second)) {
+            return false;
+        }
+        CompoundTag firstTag = first.getTag();
+        CompoundTag secondTag = second.getTag();
+        boolean firstEmpty = firstTag == null || firstTag.isEmpty();
+        boolean secondEmpty = secondTag == null || secondTag.isEmpty();
+        return firstEmpty ? secondEmpty : firstTag.equals(secondTag);
     }
 
     @Nullable
@@ -235,7 +246,7 @@ public class VaultBlockEntity extends BlockEntity {
         }
 
         private static boolean isValidToInsert(VaultConfig config, ItemStack stack) {
-            return ItemStack.isSameItemSameTags(stack, config.keyItem()) && stack.getCount() >= config.keyItem().getCount();
+            return sameKey(stack, config.keyItem()) && stack.getCount() >= config.keyItem().getCount();
         }
 
         private static boolean shouldCycleDisplayItem(long gameTime, VaultState vaultState) {

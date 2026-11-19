@@ -343,6 +343,9 @@ public class ModModelLayers {
         event.registerEntityRenderer(ModEntityTypes.HURRICANE.get(),
                 com.qiuyue.goetyominous.client.render.HurricaneRenderer::new);
 
+        event.registerEntityRenderer(ModEntityTypes.OMINOUS_SKULL_LORD.get(),
+                com.qiuyue.goetyominous.client.render.OminousSkullLordRenderer::new);
+
         event.registerEntityRenderer(ModEntityTypes.GRIM_MONARCH.get(),
                 com.qiuyue.goetyominous.client.render.GrimMonarchRenderer::new);
         event.registerEntityRenderer(ModEntityTypes.GRIM_MONARCH_ECHO.get(),

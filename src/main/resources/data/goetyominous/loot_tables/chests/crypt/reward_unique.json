@@ -1,0 +1,58 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:golden_apple",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "goety:rampaging_axe",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "goety:eerie_pickaxe",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "goety:forbidden_piece",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 5.0,
+                "max": 6.0
+              },
+              "add": false
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "goety:moon_banner_pattern",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "goety:fanged_dagger",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "goety:soul_bolt_focus",
+          "weight": 1
+        }
+      ]
+    }
+  ],
+  "random_sequence": "goetyominous:chests/crypt/reward_unique"
+}

@@ -281,9 +281,17 @@ public class ModItems {
             "hurricane_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntityTypes.HURRICANE, 0x5E6FA8, 0xE8ECFF, egg()));
 
+    public static final RegistryObject<ForgeSpawnEggItem> OMINOUS_HURRICANE_SPAWN_EGG = ITEMS.register(
+            "ominous_hurricane_spawn_egg",
+            () -> new OminousHurricaneSpawnEggItem(ModEntityTypes.HURRICANE, 0x5E6FA8, 0xE8ECFF, egg()));
+
     public static final RegistryObject<ServantSpawnEggItem> HURRICANE_SERVANT_SPAWN_EGG = ITEMS.register(
             "hurricane_servant_spawn_egg",
             () -> new ServantSpawnEggItem(ModEntityTypes.HURRICANE_SERVANT, 0xB9C4E8, 0x5E6FA8, egg()));
+
+    public static final RegistryObject<ForgeSpawnEggItem> OMINOUS_SKULL_LORD_SPAWN_EGG = ITEMS.register(
+            "ominous_skull_lord_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.OMINOUS_SKULL_LORD, 0xD3D3D3, 0x74F1F5, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> MIRED_SERVANT_SPAWN_EGG = ITEMS.register(
             "mired_servant_spawn_egg",

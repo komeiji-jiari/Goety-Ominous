@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public final class WindShrineHiddenStructures {
-    private static final List<String> HIDDEN_PREFIXES = List.of("goetyominous:wind_shrine_expansion", "goetyominous:crypt_wing", "goetyominous:crypt_boss", "goetyominous:crypt_vault");
+    private static final List<String> HIDDEN_PREFIXES = List.of("goetyominous:wind_shrine", "goetyominous:crypt_wing", "goetyominous:crypt_boss", "goetyominous:crypt_vault");
 
     private WindShrineHiddenStructures() {
     }

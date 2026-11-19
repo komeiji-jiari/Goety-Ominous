@@ -96,7 +96,9 @@
     "windshrine.ChunkStatusWindShrineMixin",
     "windshrine.ResourceKeyArgumentWindShrineMixin",
     "windshrine.ResourceOrTagKeyArgumentWindShrineMixin",
-    "windshrine.JigsawStructureWindShrineMixin"
+    "windshrine.JigsawStructureWindShrineMixin",
+    "windshrine.StructureWindShrineMixin",
+    "crypt.PithosOminousSkullLordMixin"
   ],
   "client": [],
   "server": [],

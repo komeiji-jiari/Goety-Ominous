@@ -29,9 +29,9 @@ public final class CryptGeneration {
     private static final int MAX_DEPTH = 5;
     private static final int MAX_DISTANCE = 80;
     private static final int SURFACE_OFFSET = -59;
-    private static final int MAX_SLOPE = 10;
-    private static final int MIN_SURFACE = 60;
-    private static final int MAX_SURFACE = 65;
+    private static final int MAX_SLOPE = 15;
+    private static final int MIN_SURFACE = 55;
+    private static final int MAX_SURFACE = 80;
 
     public static final ResourceLocation MAIN_STRUCTURE_SET = new ResourceLocation("goety", "crypt");
     public static final ResourceKey<StructureTemplatePool> MAIN_POOL = ResourceKey.create(
@@ -147,7 +147,7 @@ public final class CryptGeneration {
                 Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
         int floor = context.chunkGenerator().getFirstFreeHeight(center.getX(), center.getZ(),
                 Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState());
-        if (surface - floor > 1 || floor < MIN_SURFACE || floor > MAX_SURFACE) {
+        if (surface - floor > 3 || floor < MIN_SURFACE || floor > MAX_SURFACE) {
             return false;
         }
         int lowest = surface;

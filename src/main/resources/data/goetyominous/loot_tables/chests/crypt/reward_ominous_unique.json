@@ -1,0 +1,74 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "goety:forbidden_fragment",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "goety:haunting_scroll",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "goety:forbidden_piece",
+          "weight": 2,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              },
+              "add": false
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "goety:fell_blade",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:enchanted_golden_apple",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "goety:dark_ingot",
+          "weight": 2,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 2.0
+              },
+              "add": false
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "goety:necro_cape",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "goety:necro_crown",
+          "weight": 1
+        }
+      ]
+    }
+  ],
+  "random_sequence": "goetyominous:chests/crypt/reward_ominous_unique"
+}

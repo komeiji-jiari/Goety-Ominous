@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -239,8 +240,8 @@ public final class WindShrineTerrain {
         CryptTerrain.refreshHeightmaps(chunk);
     }
 
-    private static boolean isForeign(Structure structure) {
-        return !(structure instanceof WindShrineStructure) && !(structure instanceof WindShrineExpansionStructure) && structure.step() == GenerationStep.Decoration.SURFACE_STRUCTURES;
+    private static boolean isForeign(Structure structure, RegistryAccess registryAccess) {
+        return !WindShrinePlans.isMainShrine(structure, registryAccess) && !(structure instanceof WindShrineExpansionStructure) && structure.step() == GenerationStep.Decoration.SURFACE_STRUCTURES;
     }
 
     private static List<BoundingBox> foreignPieces(WorldGenRegion region, StructureManager structureManager, ChunkPos chunkPos) {
@@ -258,7 +259,7 @@ public final class WindShrineTerrain {
                     continue;
                 }
                 for (Map.Entry<Structure, StructureStart> entry : neighbour.getAllStarts().entrySet()) {
-                    if (isForeign(entry.getKey()) && entry.getValue().isValid() && seen.add(entry.getValue())) {
+                    if (isForeign(entry.getKey(), region.registryAccess()) && entry.getValue().isValid() && seen.add(entry.getValue())) {
                         collectForeign(entry.getValue(), chunkPos, boxes);
                     }
                 }
@@ -272,7 +273,7 @@ public final class WindShrineTerrain {
                 }
                 List<StructureStart> starts;
                 try {
-                    starts = structureManager.startsForStructure(neighbour, WindShrineTerrain::isForeign);
+                    starts = structureManager.startsForStructure(neighbour, structure -> isForeign(structure, region.registryAccess()));
                 } catch (RuntimeException ignored) {
                     continue;
                 }
