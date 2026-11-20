@@ -58,6 +58,8 @@
     "MaceFallDustMixin",
     "MaceBreachMixin",
     "MaceAnvilEnchantMixin",
+    "OminousCandleArmorPierceMixin",
+    "OminousCandleResistanceFloorMixin",
     "LivingEntityRemoveMixin",
     "WebBlockMixin",
     "DecoratedPotPatternsMixin",
@@ -98,7 +100,8 @@
     "windshrine.ResourceOrTagKeyArgumentWindShrineMixin",
     "windshrine.JigsawStructureWindShrineMixin",
     "windshrine.StructureWindShrineMixin",
-    "crypt.PithosOminousSkullLordMixin"
+    "crypt.PithosOminousSkullLordMixin",
+    "crypt.SkullLordOminousBodyMixin"
   ],
   "client": [],
   "server": [],

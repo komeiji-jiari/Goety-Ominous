@@ -9,6 +9,7 @@ import com.qiuyue.goetyominous.client.render.projectile.QuadStarRenderer;
 import com.qiuyue.goetyominous.client.render.block.TrialSpawnerRenderer;
 import com.qiuyue.goetyominous.client.render.block.VaultRenderer;
 import com.qiuyue.goetyominous.client.gui.overlay.NetherEternalCauldronGui;
+import com.qiuyue.goetyominous.client.render.model.HandheldSeparateTransformsModel;
 import com.qiuyue.goetyominous.client.render.model.VaultVariantModel;
 import com.qiuyue.goetyominous.common.blocks.trial.TrialBlocks;
 import com.qiuyue.goetyominous.client.render.entity.OminousItemSpawnerRenderer;
@@ -65,6 +66,11 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
+    public static void registerGeometryLoaders(ModelEvent.RegisterGeometryLoaders event) {
+        event.register("handheld_separate_transforms", HandheldSeparateTransformsModel.Loader.INSTANCE);
+    }
+
+    @SubscribeEvent
     public static void registerParticles(RegisterParticleProvidersEvent event) {
         event.registerSpecial(ModParticleTypes.GUST_EMITTER_SMALL.get(), new GustSeedParticle.Provider(1.0D, 3, 2));
         event.registerSpecial(ModParticleTypes.GUST_EMITTER_LARGE.get(), new GustSeedParticle.Provider(3.0D, 7, 0));
@@ -81,5 +87,6 @@ public class ClientEvents {
         event.registerSpriteSet(ModParticleTypes.OMINOUS_SPAWNING.get(), FlyStraightTowardsParticle.OminousSpawnerProvider::new);
         event.registerSpriteSet(ModParticleTypes.WIND_TYPHOON.get(), WindTyphoonParticle.Provider::new);
         event.registerSpriteSet(ModParticleTypes.BOUNCING_SPARK.get(), BouncingSparkParticle.Provider::new);
+        event.registerSpriteSet(ModParticleTypes.SOUL_FLAME_GATHER.get(), GatheringParticle.Provider::new);
     }
 }

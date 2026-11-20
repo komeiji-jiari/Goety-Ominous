@@ -1,10 +1,11 @@
 package com.qiuyue.goetyominous.client.render;
 
-import com.Polarice3.Goety.Goety;
-import com.Polarice3.Goety.client.render.ModModelLayer;
 import com.Polarice3.Goety.client.render.SkullLordRenderer;
-import com.Polarice3.Goety.client.render.model.SkullLordModel;
 import com.Polarice3.Goety.common.entities.hostile.BoneLord;
+import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.client.init.ModEntityLayers;
+import com.qiuyue.goetyominous.client.render.layer.OminousSkullLordGlowLayer;
+import com.qiuyue.goetyominous.client.render.model.OminousSkullLordModel;
 import com.qiuyue.goetyominous.common.entities.hostile.OminousSkullLord;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -18,14 +19,18 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
-public class OminousSkullLordRenderer extends MobRenderer<OminousSkullLord, SkullLordModel<OminousSkullLord>> {
+public class OminousSkullLordRenderer extends MobRenderer<OminousSkullLord, OminousSkullLordModel<OminousSkullLord>> {
 
-    private static final ResourceLocation LOCATION = Goety.location("textures/entity/skull_lord/skull_lord.png");
-    private static final ResourceLocation VULNERABLE = Goety.location("textures/entity/skull_lord/skull_lord_vulnerable.png");
-    private static final ResourceLocation CHARGE = Goety.location("textures/entity/skull_lord/skull_lord_charging.png");
+    private static final ResourceLocation LOCATION = new ResourceLocation(GoetyOminous.MOD_ID,
+            "textures/entity/skull_lord/ominous_skull_lord.png");
+    private static final ResourceLocation VULNERABLE = new ResourceLocation(GoetyOminous.MOD_ID,
+            "textures/entity/skull_lord/ominous_skull_lord_vulnerable.png");
+    private static final ResourceLocation CHARGE = new ResourceLocation(GoetyOminous.MOD_ID,
+            "textures/entity/skull_lord/ominous_skull_lord_charging.png");
 
     public OminousSkullLordRenderer(EntityRendererProvider.Context context) {
-        super(context, new SkullLordModel<>(context.bakeLayer(ModModelLayer.SKULL_LORD)), 0.5F);
+        super(context, new OminousSkullLordModel<>(context.bakeLayer(ModEntityLayers.OMINOUS_SKULL_LORD_LAYER)), 0.5F);
+        this.addLayer(new OminousSkullLordGlowLayer(this));
     }
 
     @Override
@@ -43,7 +48,7 @@ public class OminousSkullLordRenderer extends MobRenderer<OminousSkullLord, Skul
                 Mth.lerp(partialTicks, entity.zOld, entity.getZ()));
         poseStack.translate(-start.x, -start.y, -start.z);
         Vec3 end = new Vec3(Mth.lerp(partialTicks, boneLord.xOld, boneLord.getX()),
-                Mth.lerp(partialTicks, boneLord.yOld, boneLord.getY()) + boneLord.getBbHeight(),
+                Mth.lerp(partialTicks, boneLord.yOld, boneLord.getY()) + boneLord.getBbHeight() - 0.5D,
                 Mth.lerp(partialTicks, boneLord.zOld, boneLord.getZ()));
         VertexConsumer vertexConsumer = buffer.getBuffer(SkullLordRenderer.CONNECTION);
         Vec3 offset = end.subtract(start);

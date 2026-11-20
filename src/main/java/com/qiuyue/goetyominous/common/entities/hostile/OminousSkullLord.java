@@ -40,6 +40,9 @@ import net.minecraft.world.phys.Vec3;
 import java.util.EnumSet;
 import java.util.UUID;
 
+import static com.Polarice3.Goety.client.particles.ModParticleTypes.BIG_SOUL_FIRE;
+import static com.Polarice3.Goety.client.particles.ModParticleTypes.BIG_SOUL_FIRE_DROP;
+
 public class OminousSkullLord extends SkullLord {
 
     private static final UUID OMINOUS_HEALTH_ID = UUID.fromString("b7e1f2a4-6c3d-4f8e-9a1b-2c3d4e5f6a7b");
@@ -109,8 +112,46 @@ public class OminousSkullLord extends SkullLord {
         if (this.getBoneLord() != null && !this.getBoneLord().isDeadOrDying()) {
             this.boneLordRegen = 200;
         }
+        if (!this.level().isClientSide && this.level() instanceof ServerLevel serverLevel
+                && !this.isDeadOrDying() && !this.isSpawning() && !this.isShockWave() && !this.isElectroOrb()) {
+            ServerParticleUtil.gatheringParticles(ModParticleTypes.SOUL_FLAME_GATHER.get(), this, serverLevel, 1);
+        }
         if (this.level().isClientSide && this.isAlive()) {
             this.emitOminousParticles();
+            this.emitCandleFlames();
+        }
+    }
+
+    private void emitCandleFlames() {
+        if (this.tickCount % 40 == 0) {
+            int index = this.tickCount / 40;
+            this.emitCandleFlame((index & 1) == 0 ? -1.0D : 1.0D, (index & 2) == 0);
+        }
+    }
+
+    private void emitCandleFlame(double side, boolean drop) {
+        double xm = side * 6.9375D / 16.0D;
+        double ym = -14.8126D / 16.0D;
+        double zm = 0.4375D / 16.0D;
+        float pitch = this.getXRot() * Mth.DEG_TO_RAD;
+        double yaw = (180.0F - this.yHeadRot) * Mth.DEG_TO_RAD;
+
+        double xs = -xm;
+        double ys = -ym;
+        double zs = zm;
+
+        double yp = ys * Math.cos(-pitch) - zs * Math.sin(-pitch);
+        double zp = ys * Math.sin(-pitch) + zs * Math.cos(-pitch);
+        double xw = xs * Math.cos(yaw) + zp * Math.sin(yaw);
+        double zw = -xs * Math.sin(yaw) + zp * Math.cos(yaw);
+
+        double px = this.getX() + xw;
+        double py = this.getY() + 0.001D + yp;
+        double pz = this.getZ() + zw;
+        if (drop) {
+            this.level().addParticle(BIG_SOUL_FIRE_DROP.get(), px, py, pz, 0.0D, 0.0D, 0.0D);
+        } else {
+            this.level().addParticle(BIG_SOUL_FIRE.get(), px, py, pz, 0.0D, 0.0D, 0.0D);
         }
     }
 

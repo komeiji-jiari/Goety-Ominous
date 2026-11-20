@@ -358,6 +358,7 @@
   "entity.goetyominous.hurricane_cyclone": "Cyclone",
   "entity.goetyominous.hurricane_core_summon": "Hurricane Core",
   "entity.goetyominous.ominous_skull_lord": "Skull Lord",
+  "entity.goetyominous.ominous_bone_lord": "Bone Lord",
   "entity.goetyominous.grim_monarch": "Grim Monarch",
   "entity.goetyominous.grim_monarch_echo": "Grim Echo",
   "entity.goetyominous.mired": "Mired",
@@ -921,6 +922,7 @@
   "item.goetyominous.firebrand": "Firebrand",
   "item.goetyominous.bone_cudgel": "Bone Cudgel",
   "item.goetyominous.mace": "Mace",
+  "item.goetyominous.ominous_candle": "Ominous Candle",
   "item.goetyominous.barbaric_axe": "Barbaric Axe",
   "item.goetyominous.cog_crossbow": "Cog Crossbow",
   "item.goetyominous.piglin_pride": "Pride Of The Piglins",
@@ -1151,6 +1153,7 @@
 
   "death.attack.goetyominous.fire_wall": "%1$s was burned by %2$s's fire wall.",
   "death.attack.goetyominous.grim_monarch_combo": "%1$s was torn apart by %2$s.",
+  "death.attack.goetyominous.ominous_shockwave": "%1$s's soul was consumed by %2$s.",
 
   "message.goetyominous.plushie.1": "gsm！gsmgsmgsm！",
   "message.goetyominous.plushie.2": "我再理你我就是猫",

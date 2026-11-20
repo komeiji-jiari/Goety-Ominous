@@ -355,6 +355,7 @@
   "entity.goetyominous.hurricane_cyclone": "龙卷风",
   "entity.goetyominous.hurricane_core_summon": "飓风核心",
   "entity.goetyominous.ominous_skull_lord": "骷髅领主",
+  "entity.goetyominous.ominous_bone_lord": "骨头领主",
   "entity.goetyominous.grim_monarch": "幽影君主",
   "entity.goetyominous.grim_monarch_echo": "幽影回响",
   "entity.goetyominous.dreden": "惧灵",
@@ -921,6 +922,7 @@
   "item.goetyominous.firebrand": "烙火",
   "item.goetyominous.bone_cudgel": "大骨棒",
   "item.goetyominous.mace": "重锤",
+  "item.goetyominous.ominous_candle": "噬魂凶刃",
   "item.goetyominous.barbaric_axe": "灭绝战斧",
   "item.goetyominous.cog_crossbow": "齿轮弩",
   "item.goetyominous.piglin_pride": "猪灵之傲",
@@ -1151,6 +1153,7 @@
 
   "death.attack.goetyominous.fire_wall": "%1$s撞上了%2$s的火墙。",
   "death.attack.goetyominous.grim_monarch_combo": "%1$s的内脏变成了外脏，感谢%2$s带来的精彩演出。",
+  "death.attack.goetyominous.ominous_shockwave": "%1$s的灵魂被%2$s彻底吞噬了。",
 
   "message.goetyominous.plushie.1": "gsm！gsmgsmgsm！",
   "message.goetyominous.plushie.2": "我再理你我就是猫",

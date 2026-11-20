@@ -32,6 +32,8 @@ public class ModParticleTypes {
             PARTICLE_TYPES.register("ominous_spawning", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> BOUNCING_SPARK =
             PARTICLE_TYPES.register("bouncing_spark", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> SOUL_FLAME_GATHER =
+            PARTICLE_TYPES.register("soul_flame_gather", () -> new SimpleParticleType(false));
 
     public static final RegistryObject<SimpleParticleType> VAULT_CONNECTION = PARTICLE_TYPES.register("vault_connection", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> CRYPT_VAULT_CONNECTION = PARTICLE_TYPES.register("crypt_vault_connection", () -> new SimpleParticleType(false));

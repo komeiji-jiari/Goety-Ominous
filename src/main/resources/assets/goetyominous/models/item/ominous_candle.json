@@ -1,0 +1,18 @@
+{
+  "parent": "minecraft:item/handheld",
+  "loader": "goetyominous:handheld_separate_transforms",
+  "base": {
+    "parent": "goetyominous:item/ominous_candle_handheld"
+  },
+  "perspectives": {
+    "gui": {
+      "parent": "goetyominous:item/ominous_candle_gui"
+    },
+    "fixed": {
+      "parent": "goetyominous:item/ominous_candle_gui"
+    },
+    "ground": {
+      "parent": "goetyominous:item/ominous_candle_gui"
+    }
+  }
+}

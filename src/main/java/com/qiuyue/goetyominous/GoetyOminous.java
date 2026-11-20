@@ -25,6 +25,7 @@ import com.qiuyue.goetyominous.common.entities.hostile.BoggedEntity;
 import com.qiuyue.goetyominous.common.entities.hostile.BreezeEntity;
 import com.qiuyue.goetyominous.common.entities.hostile.GuzzlerBoss;
 import com.qiuyue.goetyominous.common.entities.hostile.ZGuzzlerBoss;
+import com.qiuyue.goetyominous.common.entities.hostile.OminousBoneLord;
 import com.qiuyue.goetyominous.common.entities.hostile.OminousSkullLord;
 import com.qiuyue.goetyominous.common.entities.hostile.cultists.*;
 import com.qiuyue.goetyominous.common.init.*;
@@ -356,6 +357,7 @@ public class GoetyOminous {
         event.put(ModEntityTypes.GUZZLER_BOSS.get(), GuzzlerBoss.createAttributes().build());
         event.put(ModEntityTypes.ZGUZZLER_BOSS.get(), ZGuzzlerBoss.createAttributes().build());
         event.put(ModEntityTypes.OMINOUS_SKULL_LORD.get(), OminousSkullLord.createAttributes().build());
+        event.put(ModEntityTypes.OMINOUS_BONE_LORD.get(), OminousBoneLord.createAttributes().build());
         event.put(ModEntityTypes.PIGLIN_MERCHANT.get(), PiglinMerchant.createAttributes().build());
         event.put(ModEntityTypes.PIGLIN_DRUMMER.get(), PiglinDrummer.createAttributes().build());
         event.put(ModEntityTypes.ZPIGLIN_DRUMMER.get(), ZPiglinDrummer.createAttributes().build());

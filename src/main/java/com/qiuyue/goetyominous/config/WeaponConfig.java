@@ -7,6 +7,9 @@ public class WeaponConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
+    public static final ForgeConfigSpec.ConfigValue<Double> OminousCandleBaseDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> OminousCandleDamagePerLevel;
+    public static final ForgeConfigSpec.ConfigValue<Integer> OminousCandleKillsPerLevel;
     public static final ForgeConfigSpec.ConfigValue<Double> BoneCudgelDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> BoneCudgelAttackSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> FirebrandDamage;
@@ -23,6 +26,17 @@ public class WeaponConfig {
 
     static {
         BUILDER.push("Tools & Weapons");
+        BUILDER.push("Ominous Candle");
+        OminousCandleBaseDamage = BUILDER
+                .comment("Ominous Candle base attack damage, Default: 5.0")
+                .defineInRange("ominousCandleBaseDamage", 5.0, 1.0, Double.MAX_VALUE);
+        OminousCandleDamagePerLevel = BUILDER
+                .comment("Attack damage gained per growth level, Default: 1.0")
+                .defineInRange("ominousCandleDamagePerLevel", 1.0, 0.0, Double.MAX_VALUE);
+        OminousCandleKillsPerLevel = BUILDER
+                .comment("Unique mob types required per growth level, Default: 3")
+                .defineInRange("ominousCandleKillsPerLevel", 3, 1, Integer.MAX_VALUE);
+        BUILDER.pop();
         BUILDER.push("Bone Cudgel");
         BoneCudgelDamage = BUILDER
                 .comment("Bone Cudgel base damage, Default: 13.0")

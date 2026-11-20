@@ -205,6 +205,12 @@ public class ModModelLayers {
 
         event.registerLayerDefinition(ModEntityLayers.CRIMSON_GUARD_LAYER,
                 CrimsonGuardModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.OMINOUS_SKULL_LORD_LAYER,
+                OminousSkullLordModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModEntityLayers.OMINOUS_BONE_LORD_LAYER,
+                OminousBoneLordModel::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -345,6 +351,9 @@ public class ModModelLayers {
 
         event.registerEntityRenderer(ModEntityTypes.OMINOUS_SKULL_LORD.get(),
                 com.qiuyue.goetyominous.client.render.OminousSkullLordRenderer::new);
+
+        event.registerEntityRenderer(ModEntityTypes.OMINOUS_BONE_LORD.get(),
+                com.qiuyue.goetyominous.client.render.OminousBoneLordRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.GRIM_MONARCH.get(),
                 com.qiuyue.goetyominous.client.render.GrimMonarchRenderer::new);

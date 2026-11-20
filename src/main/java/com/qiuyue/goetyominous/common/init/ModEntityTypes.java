@@ -722,6 +722,13 @@ public class ModEntityTypes {
                     .clientTrackingRange(8)
                     .build(MOD_ID + ":ominous_skull_lord"));
 
+    public static final RegistryObject<EntityType<OminousBoneLord>> OMINOUS_BONE_LORD = ENTITY_TYPES.register(
+            "ominous_bone_lord",
+            () -> EntityType.Builder.of(OminousBoneLord::new, MobCategory.MONSTER)
+                    .sized(0.6F, 1.99F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":ominous_bone_lord"));
+
     public static void register(IEventBus modEventBus) {
         ENTITY_TYPES.register(modEventBus);
     }

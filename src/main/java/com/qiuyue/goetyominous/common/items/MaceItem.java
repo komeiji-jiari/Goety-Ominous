@@ -14,7 +14,9 @@ import java.util.function.Predicate;
 import java.util.Optional;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -69,6 +71,32 @@ public class MaceItem extends Item implements Vanishable {
     @Override
     public int getEnchantmentValue() {
         return 15;
+    }
+
+    private static final ThreadLocal<Integer> ANVIL_ENCHANT_CHECK = ThreadLocal.withInitial(() -> 0);
+
+    public static void beginAnvilEnchantCheck() {
+        ANVIL_ENCHANT_CHECK.set(ANVIL_ENCHANT_CHECK.get() + 1);
+    }
+
+    public static void endAnvilEnchantCheck() {
+        int depth = ANVIL_ENCHANT_CHECK.get() - 1;
+        if (depth <= 0) {
+            ANVIL_ENCHANT_CHECK.remove();
+        } else {
+            ANVIL_ENCHANT_CHECK.set(depth);
+        }
+    }
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        if (ANVIL_ENCHANT_CHECK.get() > 0
+                && (enchantment == Enchantments.SMITE
+                || enchantment == Enchantments.BANE_OF_ARTHROPODS
+                || enchantment == Enchantments.FIRE_ASPECT)) {
+            return true;
+        }
+        return super.canApplyAtEnchantingTable(stack, enchantment);
     }
 
     @Override

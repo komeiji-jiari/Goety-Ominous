@@ -347,4 +347,10 @@ public class ModEntityLayers {
 
     public static final ModelLayerLocation CRIMSON_GUARD_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "crimson_guard"), "main");
+
+    public static final ModelLayerLocation OMINOUS_SKULL_LORD_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "ominous_skull_lord"), "main");
+
+    public static final ModelLayerLocation OMINOUS_BONE_LORD_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "ominous_bone_lord"), "main");
 }

@@ -113,6 +113,9 @@ public class ModItems {
     public static final RegistryObject<Item> MACE = ITEMS.register("mace",
             () -> new MaceItem(new Item.Properties().durability(500).rarity(Rarity.EPIC)));
 
+    public static final RegistryObject<Item> OMINOUS_CANDLE = ITEMS.register("ominous_candle",
+            OminousCandleItem::new);
+
     public static final RegistryObject<PitchforkItem> PITCHFORK = ITEMS.register("pitchfork",
             () -> new PitchforkItem());
 

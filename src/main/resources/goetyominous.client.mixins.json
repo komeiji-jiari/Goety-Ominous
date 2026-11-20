@@ -23,7 +23,10 @@
     "WeavingLevelRendererMixin",
     "TrialSpawnerLevelRendererMixin",
     "ModEffectParticleMixin",
-    "CultStatueGlowMixin"
+    "CultStatueGlowMixin",
+    "OminousCandleBlockPoseMixin",
+    "OminousCandleFirstPersonMixin",
+    "OminousCandleThirdPersonBlockMixin"
   ],
   "injectors": {
     "defaultRequire": 0
