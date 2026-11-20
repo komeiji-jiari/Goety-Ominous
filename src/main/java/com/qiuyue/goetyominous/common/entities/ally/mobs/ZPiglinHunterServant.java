@@ -40,7 +40,6 @@ public class ZPiglinHunterServant extends ZPiglinServant implements CrossbowAtta
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(2, new com.Polarice3.Goety.common.entities.ai.BackawayCrossbowGoal<>(this, 1.0D, 15.0F));
-        this.goalSelector.addGoal(8, new com.Polarice3.Goety.common.entities.ally.Summoned.WanderGoal<>(this, 0.6D));
         this.goalSelector.addGoal(9, new net.minecraft.world.entity.ai.goal.LookAtPlayerGoal(this, Player.class, 15.0F, 1.0F));
         this.goalSelector.addGoal(10, new net.minecraft.world.entity.ai.goal.LookAtPlayerGoal(this, Mob.class, 15.0F));
     }
