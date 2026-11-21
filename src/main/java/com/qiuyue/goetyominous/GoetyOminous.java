@@ -47,7 +47,6 @@ import com.qiuyue.goetyominous.common.entities.ally.mobs.*;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractStormNecromancer;
 import com.qiuyue.goetyominous.common.entities.hostile.SunkenNecromancer;
 import com.qiuyue.goetyominous.common.entities.hostile.grimmonarch.GrimMonarchEntity;
-import com.qiuyue.goetyominous.common.entities.hostile.illagers.ArchGeomancerEntity;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.CrimsonGuard;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.ImperialChasseur;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.Pyrologer;
@@ -337,7 +336,6 @@ public class GoetyOminous {
         event.put(ModEntityTypes.AGONY.get(), Agony.setCustomAttributes().build());
         event.put(ModEntityTypes.DREDEN.get(), AbstractDredenEntity.createAttributes().build());
         event.put(ModEntityTypes.DREDEN_SERVANT.get(), AbstractDredenEntity.createAttributes().build());
-        event.put(ModEntityTypes.ARCH_GEOMANCER.get(), ArchGeomancerEntity.setCustomAttributes().build());
         event.put(ModEntityTypes.CRIMSON_GUARD.get(), CrimsonGuard.createAttributes().build());
         event.put(ModEntityTypes.CRIMSON_GUARD_SERVANT.get(), CrimsonGuardServant.createAttributes().build());
         event.put(ModEntityTypes.ZCRIMSON_GUARD_SERVANT.get(), com.qiuyue.goetyominous.common.entities.ally.illager.ZCrimsonGuardServant.createAttributes().build());

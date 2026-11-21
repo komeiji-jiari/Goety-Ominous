@@ -213,9 +213,6 @@ public class ModEntityLayers {
     public static final ModelLayerLocation CURSED_BLACK_WOLF_ARMOR_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "cursed_black_wolf_armor"), "main");
 
-    public static final ModelLayerLocation ARCH_GEOMANCER_LAYER = new ModelLayerLocation(
-            new ResourceLocation(GoetyOminous.MOD_ID, "arch_geomancer"), "main");
-
     public static final ModelLayerLocation PYROLOGER_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "pyrologer"), "main");
 

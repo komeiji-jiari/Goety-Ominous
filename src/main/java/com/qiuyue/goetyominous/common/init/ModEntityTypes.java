@@ -21,7 +21,6 @@ import com.qiuyue.goetyominous.common.entities.ally.mobs.CrimsonSpiderServant;
 import com.qiuyue.goetyominous.common.entities.hostile.*;
 import com.qiuyue.goetyominous.common.entities.hostile.cultists.*;
 import com.qiuyue.goetyominous.common.entities.hostile.grimmonarch.GrimMonarchEntity;
-import com.qiuyue.goetyominous.common.entities.hostile.illagers.ArchGeomancerEntity;
 import com.qiuyue.goetyominous.common.entities.projectile.*;
 import com.qiuyue.goetyominous.common.entities.util.BurningGroundEntity;
 import com.qiuyue.goetyominous.common.entities.util.FireWallEntity;
@@ -560,29 +559,6 @@ public class ModEntityTypes {
                     .clientTrackingRange(10)
                     .updateInterval(1)
                     .build(MOD_ID + ":hurricane_core_summon"));
-
-    public static final RegistryObject<EntityType<ArchGeomancerEntity>> ARCH_GEOMANCER = ENTITY_TYPES.register(
-            "arch_geomancer",
-            () -> EntityType.Builder.of(ArchGeomancerEntity::new, MobCategory.MONSTER)
-                    .sized(0.6F, 1.95F)
-                    .clientTrackingRange(8)
-                    .build(MOD_ID + ":arch_geomancer"));
-
-    public static final RegistryObject<EntityType<ImpactBlockEntity>> IMPACT_BLOCK = ENTITY_TYPES.register(
-            "impact_block",
-            () -> EntityType.Builder.<ImpactBlockEntity>of(ImpactBlockEntity::new, MobCategory.MISC)
-                    .sized(0.98F, 0.98F)
-                    .clientTrackingRange(10)
-                    .updateInterval(1)
-                    .build(MOD_ID + ":impact_block"));
-
-    public static final RegistryObject<EntityType<TremorBlockEntity>> TREMOR_BLOCK = ENTITY_TYPES.register(
-            "tremor_block",
-            () -> EntityType.Builder.<TremorBlockEntity>of(TremorBlockEntity::new, MobCategory.MISC)
-                    .sized(0.98F, 0.98F)
-                    .clientTrackingRange(10)
-                    .updateInterval(1)
-                    .build(MOD_ID + ":tremor_block"));
 
     public static final RegistryObject<EntityType<EntityPoisonBall>> POISON_BALL = ENTITY_TYPES
             .register("poison_ball",

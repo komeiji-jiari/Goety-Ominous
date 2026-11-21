@@ -17,25 +17,19 @@ import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.init.ModDamageTypes;
 import com.qiuyue.goetyominous.common.items.ModItems;
 import com.qiuyue.goetyominous.common.items.OminousCandleItem;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.ShieldBlockEvent;
@@ -130,41 +124,9 @@ public class OminousCandleEvents {
         }
     }
 
-    @SubscribeEvent(receiveCanceled = true)
-    public static void onProjectileImpact(ProjectileImpactEvent event) {
-        Projectile projectile = event.getProjectile();
-        if (projectile.level().isClientSide || projectile.isRemoved()) {
-            return;
-        }
-        if (!(event.getRayTraceResult() instanceof EntityHitResult hit) || !(hit.getEntity() instanceof Player player)) {
-            return;
-        }
-        if (!player.isUsingItem() || !player.getUseItem().is(ModItems.OMINOUS_CANDLE.get())) {
-            return;
-        }
-        if (projectile.getOwner() == player) {
-            return;
-        }
-        Vec3 delta = projectile.position().subtract(player.position());
-        Vec3 view = player.getViewVector(1.0F);
-        if (delta.x * delta.x + delta.z * delta.z > 1.0E-4D && delta.x * view.x + delta.z * view.z >= 0.0D) {
-            return;
-        }
-        event.setCanceled(true);
-        projectile.discard();
-        if (player.level() instanceof ServerLevel serverLevel) {
-            serverLevel.playSound(null, player.blockPosition(), SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 0.8F, 1.0F);
-            serverLevel.sendParticles(ParticleTypes.CRIT, projectile.getX(), projectile.getY(), projectile.getZ(),
-                    8, 0.2D, 0.2D, 0.2D, 0.1D);
-        }
-    }
-
     @SubscribeEvent
     public static void onShieldBlock(ShieldBlockEvent event) {
         if (!(event.getEntity() instanceof Player player) || player.level().isClientSide) {
-            return;
-        }
-        if (!event.getDamageSource().is(DamageTypeTags.IS_PROJECTILE)) {
             return;
         }
         if (!player.getUseItem().is(ModItems.OMINOUS_CANDLE.get())) {
@@ -178,7 +140,6 @@ public class OminousCandleEvents {
             return;
         }
         DamageSource source = ModDamageTypes.ominousShockwave(serverLevel, player);
-        ItemStack weapon = player.getMainHandItem();
         float weaponDamage = (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE);
         int fireAspect = EnchantmentHelper.getFireAspect(player);
         for (LivingEntity victim : serverLevel.getEntitiesOfClass(LivingEntity.class,
@@ -187,7 +148,7 @@ public class OminousCandleEvents {
                     || victim.distanceToSqr(player) > 64.0D) {
                 continue;
             }
-            float damage = (weaponDamage + EnchantmentHelper.getDamageBonus(weapon, victim.getMobType())) / 2.0F;
+            float damage = weaponDamage;
             victim.addEffect(new MobEffectInstance(GoetyEffects.CURSED.get(), 100, 1));
             int previousInvulnerableTime = victim.invulnerableTime;
             victim.invulnerableTime = 0;

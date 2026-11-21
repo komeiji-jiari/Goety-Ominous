@@ -163,8 +163,6 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> THUG_STEP = create("thug_step");
     public static final RegistryObject<SoundEvent> THUG_CELEBRATE = create("thug_celebrate");
 
-    public static final RegistryObject<SoundEvent> ARCHGEOMANCER_MUSIC = create("archgeomancer");
-
     public static final RegistryObject<SoundEvent> MONARCH_BOSS = create("monarch_boss");
 
     public static final RegistryObject<SoundEvent> MUSIC_DISC_PRECIPICE = create("music_disc_precipice");

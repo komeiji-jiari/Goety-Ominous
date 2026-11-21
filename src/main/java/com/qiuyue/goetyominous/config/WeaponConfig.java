@@ -31,8 +31,8 @@ public class WeaponConfig {
                 .comment("Ominous Candle base attack damage, Default: 5.0")
                 .defineInRange("ominousCandleBaseDamage", 5.0, 1.0, Double.MAX_VALUE);
         OminousCandleDamagePerLevel = BUILDER
-                .comment("Attack damage gained per growth level, Default: 1.0")
-                .defineInRange("ominousCandleDamagePerLevel", 1.0, 0.0, Double.MAX_VALUE);
+                .comment("Attack damage gained per growth level, Default: 0.5")
+                .defineInRange("ominousCandleDamagePerLevel", 0.5, 0.0, Double.MAX_VALUE);
         OminousCandleKillsPerLevel = BUILDER
                 .comment("Unique mob types required per growth level, Default: 3")
                 .defineInRange("ominousCandleKillsPerLevel", 3, 1, Integer.MAX_VALUE);

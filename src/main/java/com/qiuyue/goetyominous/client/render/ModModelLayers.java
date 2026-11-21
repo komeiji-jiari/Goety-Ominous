@@ -180,9 +180,6 @@ public class ModModelLayers {
         event.registerLayerDefinition(ModEntityLayers.CURSED_WOLF_ARMOR_LAYER,
                 CursedWolfArmorModel::createBodyLayer);
 
-        event.registerLayerDefinition(ModEntityLayers.ARCH_GEOMANCER_LAYER,
-                ArchGeomancerModel::createBodyLayer);
-
         event.registerLayerDefinition(ModEntityLayers.PYROLOGER_LAYER,
                 PyrologerModel::createBodyLayer);
 
@@ -455,14 +452,6 @@ public class ModModelLayers {
 
         event.registerEntityRenderer(ModEntityTypes.STORM_NECROMANCER_SERVANT.get(),
                 com.qiuyue.goetyominous.client.render.StormNecromancerRenderer::new);
-
-        event.registerEntityRenderer(ModEntityTypes.ARCH_GEOMANCER.get(), ArchGeomancerRenderer::new);
-
-        event.registerEntityRenderer(ModEntityTypes.IMPACT_BLOCK.get(),
-                com.qiuyue.goetyominous.client.render.projectile.ImpactBlockRenderer::new);
-
-        event.registerEntityRenderer(ModEntityTypes.TREMOR_BLOCK.get(),
-                com.qiuyue.goetyominous.client.render.projectile.TremorBlockRenderer::new);
 
         event.registerEntityRenderer(
                 com.qiuyue.goetyominous.common.init.ModEntityTypes.POISON_BALL.get(),

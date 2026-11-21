@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.common.items;
 
 import com.Polarice3.Goety.api.items.IPersist;
 import com.Polarice3.Goety.api.items.ISoulRepair;
+import com.Polarice3.Goety.api.items.magic.IWand;
 import com.Polarice3.Goety.common.items.ModItems;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
@@ -198,6 +199,12 @@ public class OminousCandleItem extends SwordItem implements ISoulRepair, IPersis
         if (hand == InteractionHand.MAIN_HAND) {
             ItemStack offhand = player.getOffhandItem();
             if (!offhand.isEmpty() && offhand.getUseAnimation() == UseAnim.BLOCK) {
+                return InteractionResultHolder.pass(stack);
+            }
+            if (offhand.getItem() instanceof IWand wand
+                    && IWand.getFocus(offhand) != null
+                    && !IWand.getFocus(offhand).isEmpty()
+                    && !wand.isOnCooldown(player, offhand)) {
                 return InteractionResultHolder.pass(stack);
             }
         }

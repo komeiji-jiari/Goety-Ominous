@@ -55,10 +55,6 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> ScorchDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> UrbhadhachHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> UrbhadhachDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> ArchGeomancerHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> ArchGeomancerArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> ArchGeomancerArmorToughness;
-    public static final ForgeConfigSpec.ConfigValue<Double> ArchGeomancerAttackDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> PiglinServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> PiglinServantArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> PiglinServantDamage;
@@ -269,16 +265,6 @@ public class AttributesConfig {
                 .defineInRange("urbhadhachHealth", 50.0, 1.0, Double.MAX_VALUE);
         UrbhadhachDamage = BUILDER.comment("How much damage Urbhadhach deals, Default: 12.0")
                 .defineInRange("urbhadhachDamage", 12.0, 1.0, Double.MAX_VALUE);
-        BUILDER.pop();
-        BUILDER.push("Arch Geomancer Servant");
-        ArchGeomancerHealth = BUILDER.comment("How much Max Health Arch Geomancers have, Default: 160.0")
-                .defineInRange("archGeomancerHealth", 160.0, 1.0, Double.MAX_VALUE);
-        ArchGeomancerArmor = BUILDER.comment("How much natural Armor Arch Geomancers have, Default: 4.0")
-                .defineInRange("archGeomancerArmor", 4.0, 0.0, Double.MAX_VALUE);
-        ArchGeomancerArmorToughness = BUILDER.comment("How much natural Armor Toughness Arch Geomancers have, Default: 0.0")
-                .defineInRange("archGeomancerArmorToughness", 0.0, 0.0, Double.MAX_VALUE);
-        ArchGeomancerAttackDamage = BUILDER.comment("How much damage Arch Geomancers deal, Default: 7.0")
-                .defineInRange("archGeomancerAttackDamage", 7.0, 1.0, Double.MAX_VALUE);
         BUILDER.pop();
         BUILDER.push("Piglin Servant");
         PiglinServantHealth = BUILDER.comment("How much Max Health Piglin Servants have, Default: 16.0")
