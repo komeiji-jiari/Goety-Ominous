@@ -574,6 +574,10 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
     }
 
     protected void copyConversionRotation(Mob mob) {
+        if (this.hasCustomName()) {
+            mob.setCustomName(this.getCustomName());
+            mob.setCustomNameVisible(this.isCustomNameVisible());
+        }
         mob.setYHeadRot(this.getYHeadRot());
         mob.setYBodyRot(this.yBodyRot);
         mob.yHeadRotO = this.yHeadRotO;

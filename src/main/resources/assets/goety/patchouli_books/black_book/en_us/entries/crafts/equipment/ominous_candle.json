@@ -1,0 +1,21 @@
+{
+  "name": "Soul-Devouring Blade",
+  "icon": "goetyominous:ominous_candle",
+  "category": "goety:ominous_crafts/equipment",
+  "advancement": "goetyominous:goetyominous/get_ominous_candle",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The masterpiece of the ancient crypt lords, bearing the secrets of necromancy they could never complete in life. This dreadful weapon harvests triple the souls from creatures, inflicts a terrible curse upon its victims, and does not break when its durability runs out, it can repair itself using souls, or be repaired with Cursed Metal Ingots on an Anvil."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The blade has a certain greed for its wielder. Whoever wields this weapon must have read the forbidden scroll that records the Nameless. If the wielder has fewer than 20,000 souls, the blade will continuously inflict Soul Hunger upon its bearer. But if they are a Lich, the sword will never weaken them."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Beyond its hunger for souls, this weapon also grows stronger the more kinds of creatures it kills. At first it is not sharp, but as the slaughter continues, its power becomes ever more apparent."
+    }
+  ]
+}

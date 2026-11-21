@@ -25,6 +25,10 @@ public class GuzzlerRenderer<T extends Mob> extends MobRenderer<T, GuzzlerModel<
             "textures/entity/piglin/zguzzler.png");
     private static final ResourceLocation HOSTILE_ZOMBIE_TEXTURE = new ResourceLocation(GoetyOminous.MOD_ID,
             "textures/entity/piglin/hostile_zguzzler.png");
+    private static final ResourceLocation LIANGZI_TEXTURE = new ResourceLocation(GoetyOminous.MOD_ID,
+            "textures/entity/piglin/liangzi.png");
+    private static final ResourceLocation ZOMBIE_LIANGZI_TEXTURE = new ResourceLocation(GoetyOminous.MOD_ID,
+            "textures/entity/piglin/zombie_liangzi.png");
 
     public GuzzlerRenderer(EntityRendererProvider.Context context) {
         super(context, new GuzzlerModel<>(context.bakeLayer(GuzzlerModel.LAYER_LOCATION)), 1.2F);
@@ -41,9 +45,16 @@ public class GuzzlerRenderer<T extends Mob> extends MobRenderer<T, GuzzlerModel<
             return HOSTILE_ZOMBIE_TEXTURE;
         }
         if (entity instanceof ZGuzzler) {
-            return ZOMBIE_TEXTURE;
+            return this.isLiangzi(entity) ? ZOMBIE_LIANGZI_TEXTURE : ZOMBIE_TEXTURE;
         }
-        return entity instanceof GuzzlerBoss ? HOSTILE_TEXTURE : TEXTURE;
+        if (entity instanceof GuzzlerBoss) {
+            return HOSTILE_TEXTURE;
+        }
+        return this.isLiangzi(entity) ? LIANGZI_TEXTURE : TEXTURE;
+    }
+
+    private boolean isLiangzi(T entity) {
+        return entity.hasCustomName() && "liangzi".equalsIgnoreCase(entity.getName().getString());
     }
 
     @Override

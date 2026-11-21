@@ -1,0 +1,17 @@
+{
+  "name": "领主的宝藏",
+  "icon": "goetyominous:ominous_candle",
+  "category": "goety:ominous_rumors",
+  "read_by_default": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "有传言说一些$(l)墓穴$()的领主铸造了$(l)某种武器$()。这种武器能够极大地增加你从生物身上收割的灵魂，并且在灵魂充裕时爆发出强大的荡魂冲击。然而，正如那些领主未能完成自己身上的死灵魔法一样，这些武器并没有发挥出其强大之处。"
+    },
+    {
+      "type": "patchouli:quest",
+      "trigger": "goetyominous:goetyominous/get_ominous_candle",
+      "text": "据说，当你携带着$(l)不祥之兆$()进入墓穴并唤醒这些领主时，他们会变得更加强大愤怒。打败这些$(l)愤怒的领主$()似乎是获取这种武器的唯一手段，尽管你还是怀疑这仍然是一个赝品。"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "display": {
+    "icon": {
+      "item": "goetyominous:broken_storm_crown"
+    },
+    "title": {
+      "translate": "advancements.goetyominous.kill_storm_necromancer.title"
+    },
+    "description": {
+      "translate": "advancements.goetyominous.kill_storm_necromancer.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "goety:goety/root",
+  "criteria": {
+    "kill_a_storm_necromancer": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "goetyominous:storm_necromancer"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    ["kill_a_storm_necromancer"]
+  ]
+}

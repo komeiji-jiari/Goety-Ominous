@@ -200,7 +200,8 @@ public class WolfTotemBlockEntity extends TrainingBlockEntity {
     }
 
     public static void applyWolfTotemBonus(LivingEntity entity) {
-        if (entity instanceof Summoned) {
+        if (entity instanceof Summoned summoned) {
+            summoned.spawnUpgraded();
             entity.getPersistentData().putBoolean(HEALTH_BONUS, true);
             restoreWolfTotemBonus(entity, true);
         }
@@ -212,11 +213,15 @@ public class WolfTotemBlockEntity extends TrainingBlockEntity {
         }
         AttributeInstance health = entity.getAttribute(Attributes.MAX_HEALTH);
         if (health != null) {
-            double baseHealth = entity instanceof SkeletonWolf
-                    ? AttributesConfig.SkeletonWolfHealth.get()
-                    : entity instanceof BlackWolf
-                    ? AttributesConfig.BlackWolfHealth.get()
-                    : health.getBaseValue();
+            boolean upgraded = entity instanceof Summoned summoned && summoned.isUpgraded();
+            double baseHealth;
+            if (entity instanceof SkeletonWolf) {
+                baseHealth = AttributesConfig.SkeletonWolfHealth.get();
+            } else if (entity instanceof BlackWolf) {
+                baseHealth = AttributesConfig.BlackWolfHealth.get() * (upgraded ? 1.5D : 1.0D);
+            } else {
+                baseHealth = health.getBaseValue();
+            }
             health.setBaseValue(baseHealth * 2.0D);
             if (healToFull) {
                 entity.setHealth(entity.getMaxHealth());

@@ -1,0 +1,21 @@
+{
+  "name": "噬魂凶刃",
+  "icon": "goetyominous:ominous_candle",
+  "category": "goety:ominous_crafts/equipment",
+  "advancement": "goetyominous:goetyominous/get_ominous_candle",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "古代墓穴领主的杰作，其上带有他们一生都无法完成的死灵术奥秘。这种可怕的武器能够从生物身上收割3倍的灵魂，给予受害者可怕的诅咒，并且耐久耗尽后不会损坏，可以利用灵魂来自我修复或者使用诅咒金属锭在铁砧上修复。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "该刃对其使用者有一定的贪求。挥舞这把武器的人必须阅读过记载着不朽之名的禁忌卷轴。如果使用者的灵魂少于20000，这把剑会持续给予持有者灵魂饥饿效果。但如果他们是一个巫妖，那么剑永远不会削弱他们。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "除去对灵魂的渴望以外，这把武器还会随着杀死的生物种类越多变得越强。最开始的时候它并不锋利，但随着杀戮的进行，其力量愈显。"
+    }
+  ]
+}

@@ -58,7 +58,7 @@ public class ZEliteFungusThrower extends ZFungusThrower {
         this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, net.minecraft.world.entity.LivingEntity.class, 8.0F, 1.2D, 1.2D,
                 target -> target == this.getTarget() && target != this.getTrueOwner()));
         this.goalSelector.addGoal(2, new ThrowAcidGoal(this));
-        this.goalSelector.addGoal(8, new Summoned.WanderGoal<>(this, 0.6D));
+        this.goalSelector.addGoal(8, new Summoned.WanderGoal<>(this, 1.0D));
         this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 15.0F, 1.0F));
         this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Mob.class, 15.0F));
     }

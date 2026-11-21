@@ -91,6 +91,7 @@
     "crypt.AbstractBeamPolarCrystalMixin",
     "BlenderAccessor",
     "StructurePiecesBuilderAccessor",
+    "RandomizableContainerAccessor",
     "windshrine.BlenderWindShrineMixin",
     "windshrine.NoiseBasedChunkGeneratorWindShrineMixin",
     "windshrine.WorldCarverWindShrineMixin",

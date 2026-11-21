@@ -1,0 +1,17 @@
+{
+  "name": "The Lord's Treasure",
+  "icon": "goetyominous:ominous_candle",
+  "category": "goety:ominous_rumors",
+  "read_by_default": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Rumors speak of certain lords of the $(l)crypts$() who forged $(l)some kind of weapon$(). Such a weapon could greatly increase the souls you harvest from creatures, and erupt with a mighty soul-shaking burst when souls are plentiful. Yet, just as those lords failed to complete the necromancy upon themselves, these weapons never reached their full potential."
+    },
+    {
+      "type": "patchouli:quest",
+      "trigger": "goetyominous:goetyominous/get_ominous_candle",
+      "text": "It is said that when you enter the crypts bearing a $(l)Bad Omen$() and awaken these lords, they become far more powerful and wrathful. Defeating these $(l)wrathful lords$() seems to be the only way to obtain such a weapon, though you still suspect it may yet be a counterfeit."
+    }
+  ]
+}

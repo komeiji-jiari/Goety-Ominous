@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "goetyominous:ominous_candle"
+    },
+    "title": {
+      "translate": "advancements.goetyominous.get_ominous_candle.title"
+    },
+    "description": {
+      "translate": "advancements.goetyominous.get_ominous_candle.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "goetyominous:goetyominous/kill_ominous_skull_lord",
+  "criteria": {
+    "ominous_candle": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "goetyominous:ominous_candle"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    ["ominous_candle"]
+  ]
+}

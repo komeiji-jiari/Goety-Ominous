@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.hostile;
 
 import com.Polarice3.Goety.api.entities.IOwned;
+import com.Polarice3.Goety.common.blocks.entities.PithosBlockEntity;
 import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.common.entities.ModEntityType;
 import com.Polarice3.Goety.common.entities.ally.Summoned;
@@ -10,16 +11,18 @@ import com.Polarice3.Goety.common.magic.spells.ShockwaveSpell;
 import com.Polarice3.Goety.common.magic.spells.storm.ElectroOrbSpell;
 import com.Polarice3.Goety.config.AttributesConfig;
 import com.Polarice3.Goety.init.ModSounds;
-import com.Polarice3.Goety.utils.BlockFinder;
-import com.Polarice3.Goety.utils.MobUtil;
-import com.Polarice3.Goety.utils.ServerParticleUtil;
-import com.Polarice3.Goety.utils.SoundUtil;
+import com.Polarice3.Goety.utils.*;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.common.init.ModParticleTypes;
+import com.qiuyue.goetyominous.common.items.ModItems;
+import com.qiuyue.goetyominous.common.mixin.RandomizableContainerAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -34,7 +37,9 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
@@ -120,6 +125,44 @@ public class OminousSkullLord extends SkullLord {
             this.emitOminousParticles();
             this.emitCandleFlames();
         }
+    }
+
+    @Override
+    public void die(DamageSource cause) {
+        super.die(cause);
+        if (this.level().isClientSide || !(this.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+        BlockPos origin = this.getBoundOrigin();
+        if (origin == null) {
+            return;
+        }
+        if (!serverLevel.isLoaded(origin)) {
+            serverLevel.getChunkAt(origin);
+        }
+        BlockEntity blockEntity = serverLevel.getBlockEntity(origin);
+        if (!(blockEntity instanceof PithosBlockEntity pithos)) {
+            return;
+        }
+        ResourceLocation lootTable = ((RandomizableContainerAccessor) pithos).goetyominous$getLootTable();
+        if (!ModLootTables.CRYPT_TOMB.equals(lootTable)) {
+            return;
+        }
+        ItemStack reward = this.createPithosReward(serverLevel.random);
+        for (int i = 0; i < pithos.getContainerSize(); i++) {
+            if (pithos.getItem(i).isEmpty()) {
+                pithos.setItem(i, reward);
+                return;
+            }
+        }
+    }
+
+    private ItemStack createPithosReward(RandomSource random) {
+        ItemStack stack = new ItemStack(ModItems.OMINOUS_CANDLE.get());
+        int maxDamage = stack.getMaxDamage();
+        stack.setDamageValue(Mth.nextInt(random, maxDamage / 10, maxDamage / 2));
+        EnchantmentHelper.enchantItem(random, stack, 30, false);
+        return stack;
     }
 
     private void emitCandleFlames() {

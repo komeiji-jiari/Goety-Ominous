@@ -6,6 +6,7 @@ import com.Polarice3.Goety.client.particles.SphereExplodeParticleOption;
 import com.Polarice3.Goety.common.effects.GoetyEffects;
 import com.Polarice3.Goety.common.enchantments.ModEnchantments;
 import com.Polarice3.Goety.common.magic.spells.ShockwaveSpell;
+import com.Polarice3.Goety.common.research.ResearchList;
 import com.Polarice3.Goety.config.MainConfig;
 import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.ColorUtil;
@@ -58,7 +59,11 @@ public class OminousCandleEvents {
         if (!(stack.getItem() instanceof OminousCandleItem)) {
             return;
         }
-        if (SEHelper.getSoulAmountInt(player) >= 20000) {
+        if (LichdomHelper.isLich(player)) {
+            return;
+        }
+        if (SEHelper.hasResearch(player, ResearchList.FORBIDDEN)
+                && SEHelper.getSoulAmountInt(player) >= 20000) {
             return;
         }
         player.addEffect(new MobEffectInstance(GoetyEffects.SOUL_HUNGER.get(), 60));

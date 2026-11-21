@@ -1,0 +1,93 @@
+{
+  "display": {
+    "icon": {
+      "item": "goety:infernal_tome"
+    },
+    "title": {
+      "translate": "advancements.goetyominous.kill_cultists.title"
+    },
+    "description": {
+      "translate": "advancements.goetyominous.kill_cultists.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "goety:goety/root",
+  "criteria": {
+    "fanatic": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "goetyominous:fanatic"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "zealot": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "goetyominous:zealot"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "thug": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "goetyominous:thug"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "beldam": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "goetyominous:beldam"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "channeller": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "goetyominous:channeller"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    ["fanatic", "zealot", "thug", "beldam", "channeller"]
+  ]
+}
