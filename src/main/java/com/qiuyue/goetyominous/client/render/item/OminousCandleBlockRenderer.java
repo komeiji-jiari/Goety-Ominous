@@ -24,7 +24,6 @@ public class OminousCandleBlockRenderer {
         model.translateToHand(arm, poseStack);
         boolean leftHand = arm == HumanoidArm.LEFT;
         applyItemBlockingTransform(poseStack, leftHand);
-        poseStack.mulPose(Axis.ZP.rotationDegrees(90.0F));
         applyItemTransformInverse(entity, stack, transform, poseStack, leftHand);
         itemInHandRenderer.renderItem(entity, stack, transform, leftHand, poseStack, multiBufferSource, combinedLight);
         poseStack.popPose();
@@ -43,8 +42,8 @@ public class OminousCandleBlockRenderer {
         poseStack.mulPose(Axis.YN.rotationDegrees(leftHand ? 35.0F : 45.0F));
         poseStack.translate(0.0F, -0.3F, 0.0F);
         poseStack.scale(1.5F, 1.5F, 1.5F);
-        poseStack.mulPose(Axis.ZP.rotationDegrees(50.0F));
-        poseStack.mulPose(Axis.YP.rotationDegrees(335.0F));
+        poseStack.mulPose(Axis.YN.rotationDegrees(50.0F));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(335.0F));
         poseStack.translate(-0.9375F, -0.0625F, 0.0F);
         poseStack.translate(0.5F, 0.5F, 0.25F);
         poseStack.mulPose(Axis.YN.rotationDegrees(180.0F));

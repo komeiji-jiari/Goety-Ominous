@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.client.gui.screen.inventory;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.inventory.container.FungusPackContainer;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -10,8 +11,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 public class FungusPackScreen extends AbstractContainerScreen<FungusPackContainer> {
-    private static final ResourceLocation GUI_TEXTURE = new ResourceLocation("goety",
-            "textures/gui/container/bottle.png");
+    private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(GoetyOminous.MOD_ID,
+            "textures/gui/fungus_pack.png");
 
     public FungusPackScreen(FungusPackContainer container, Inventory inventory, Component title) {
         super(container, inventory, title);
