@@ -7,12 +7,15 @@ import com.Polarice3.Goety.common.entities.neutral.Owned;
 import com.Polarice3.Goety.config.AttributesConfig;
 import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.MobUtil;
+import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -54,6 +57,8 @@ import java.util.EnumSet;
 public class ConquillagerServant extends SpellcasterIllagerServant implements CrossbowAttackMob {
     private static final EntityDataAccessor<Boolean> IS_CHARGING_CROSSBOW = SynchedEntityData
             .defineId(ConquillagerServant.class, EntityDataSerializers.BOOLEAN);
+    private static final ResourceLocation TEXTURE = new ResourceLocation(GoetyOminous.MOD_ID,
+            "textures/entity/illager/conquillager.png");
 
     public ConquillagerServant(EntityType<? extends ConquillagerServant> p_i48556_1_, Level p_i48556_2_) {
         super(p_i48556_1_, p_i48556_2_);
@@ -145,6 +150,15 @@ public class ConquillagerServant extends SpellcasterIllagerServant implements Cr
     @Override
     protected SoundEvent getCastingSoundEvent() {
         return null;
+    }
+
+    public ResourceLocation getResourceLocation() {
+        return TEXTURE;
+    }
+
+    @Override
+    public EntityType<? extends Mob> getNecroConvert() {
+        return ModEntityTypes.SKELETON_CONQUILLAGER_SERVANT.get();
     }
 
     protected void defineSynchedData() {

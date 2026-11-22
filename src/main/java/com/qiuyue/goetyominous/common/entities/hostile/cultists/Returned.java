@@ -18,7 +18,6 @@ import com.Polarice3.Goety.common.magic.spells.nether.LavaballSpell;
 import com.Polarice3.Goety.common.magic.spells.nether.MagmaSpell;
 import com.Polarice3.Goety.common.magic.spells.wild.HuntingSpell;
 import com.Polarice3.Goety.common.magic.spells.wild.MaulingSpell;
-import com.Polarice3.Goety.init.ModMobType;
 import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.BlockFinder;
 import com.Polarice3.Goety.utils.CuriosFinder;
@@ -162,10 +161,6 @@ public class Returned extends AbstractReturned {
 
     protected void resetSpellWeight(SorcererSpell spell) {
         this.spellWeights[spell.id] = 20;
-    }
-
-    public MobType getMobType() {
-        return ModMobType.NETHER;
     }
 
     public float getVoicePitch() {

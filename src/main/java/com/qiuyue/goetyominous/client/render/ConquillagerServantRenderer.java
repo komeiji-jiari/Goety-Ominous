@@ -5,9 +5,9 @@ import com.Polarice3.Goety.client.render.ModModelLayer;
 import com.Polarice3.Goety.client.render.model.VillagerArmorModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.client.render.model.ConquillagerServantModel;
 import com.qiuyue.goetyominous.common.entities.ally.illager.ConquillagerServant;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;
@@ -22,12 +22,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class ConquillagerServantRenderer<T extends ConquillagerServant>
         extends MobRenderer<T, ConquillagerServantModel<T>> {
-    protected static final ResourceLocation TEXTURE = new ResourceLocation(GoetyOminous.MOD_ID,
-            "textures/entity/illager/conquillager.png");
-
     public ConquillagerServantRenderer(EntityRendererProvider.Context renderManagerIn) {
-        super(renderManagerIn, new ConquillagerServantModel<>(renderManagerIn.bakeLayer(ModModelLayer.CONQUILLAGER)),
-                0.5F);
+        this(renderManagerIn, ModModelLayer.CONQUILLAGER);
+    }
+
+    public ConquillagerServantRenderer(EntityRendererProvider.Context renderManagerIn, ModelLayerLocation layer) {
+        super(renderManagerIn, new ConquillagerServantModel<>(renderManagerIn.bakeLayer(layer)), 0.5F);
         this.addLayer(new ItemInHandLayer<>(this, renderManagerIn.getItemInHandRenderer()));
         this.addLayer(
                 new CustomHeadLayer<>(this, renderManagerIn.getModelSet(), renderManagerIn.getItemInHandRenderer()));
@@ -54,6 +54,6 @@ public class ConquillagerServantRenderer<T extends ConquillagerServant>
 
     @Override
     public ResourceLocation getTextureLocation(T entity) {
-        return TEXTURE;
+        return entity.getResourceLocation();
     }
 }

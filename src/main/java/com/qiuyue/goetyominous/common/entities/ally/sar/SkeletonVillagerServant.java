@@ -25,6 +25,7 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -80,8 +81,18 @@ public class SkeletonVillagerServant extends AbstractSkeletonServant implements 
     }
 
     @Override
+    protected SoundEvent getAmbientSound() {
+        return SoundEvents.SKELETON_AMBIENT;
+    }
+
+    @Override
     protected SoundEvent getStepSound() {
         return SoundEvents.SKELETON_STEP;
+    }
+
+    @Override
+    public boolean canFireProjectileWeapon(ProjectileWeaponItem weapon) {
+        return weapon == Items.CROSSBOW;
     }
 
     @Override

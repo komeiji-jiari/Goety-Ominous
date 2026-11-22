@@ -33,6 +33,14 @@ public class ConquillagerServantModel<T extends AbstractIllagerServant> extends 
 	}
 
 	public static LayerDefinition createBodyLayer() {
+		return createBodyLayer(false);
+	}
+
+	public static LayerDefinition createSkeletonBodyLayer() {
+		return createBodyLayer(true);
+	}
+
+	private static LayerDefinition createBodyLayer(boolean skeleton) {
 		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
@@ -84,20 +92,10 @@ public class ConquillagerServantModel<T extends AbstractIllagerServant> extends 
 				PartPose.offset(0.0F, 24.0F, 0.0F));
 
 		PartDefinition right_arm = partdefinition.addOrReplaceChild("right_arm",
-				CubeListBuilder.create().texOffs(44, 22)
-						.addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F))
-						.texOffs(60, 22).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.25F))
-						.texOffs(32, 0).addBox(-4.0F, -4.0F, -3.0F, 5.0F, 6.0F, 6.0F, new CubeDeformation(0.1F)),
-				PartPose.offset(-5.0F, 2.0F, 0.0F));
+				skeleton ? skeletonArm(false) : humanoidArm(false), PartPose.offset(-5.0F, 2.0F, 0.0F));
 
 		PartDefinition left_arm = partdefinition.addOrReplaceChild("left_arm",
-				CubeListBuilder.create().texOffs(44, 22).mirror()
-						.addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false)
-						.texOffs(60, 22).mirror()
-						.addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.25F)).mirror(false)
-						.texOffs(32, 0).mirror()
-						.addBox(-1.0F, -4.0F, -3.0F, 5.0F, 6.0F, 6.0F, new CubeDeformation(0.1F)).mirror(false),
-				PartPose.offset(5.0F, 2.0F, 0.0F));
+				skeleton ? skeletonArm(true) : humanoidArm(true), PartPose.offset(5.0F, 2.0F, 0.0F));
 
 		PartDefinition right_leg = partdefinition.addOrReplaceChild("right_leg", CubeListBuilder.create().texOffs(0, 22)
 				.addBox(-2.1F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)),
@@ -109,6 +107,28 @@ public class ConquillagerServantModel<T extends AbstractIllagerServant> extends 
 				PartPose.offset(1.95F, 12.0F, 0.0F));
 
 		return LayerDefinition.create(meshdefinition, 128, 128);
+	}
+
+	private static CubeListBuilder humanoidArm(boolean mirror) {
+		return CubeListBuilder.create().texOffs(44, 22).mirror(mirror)
+				.addBox(mirror ? -1.0F : -3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F))
+				.texOffs(60, 22).addBox(mirror ? -1.0F : -3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F,
+						new CubeDeformation(0.25F))
+				.texOffs(32, 0).addBox(mirror ? -1.0F : -4.0F, -4.0F, -3.0F, 5.0F, 6.0F, 6.0F,
+						new CubeDeformation(0.1F))
+				.mirror(false);
+	}
+
+	private static CubeListBuilder skeletonArm(boolean mirror) {
+		return CubeListBuilder.create().texOffs(56, 78).mirror(mirror)
+				.addBox(mirror ? -1.1F : -0.9F, -1.9F, -1.0F, 2.0F, 12.0F, 2.0F, new CubeDeformation(0.0F))
+				.texOffs(64, 78).addBox(mirror ? -1.0F : -3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F,
+						new CubeDeformation(0.0F))
+				.texOffs(60, 22).addBox(mirror ? -1.0F : -3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F,
+						new CubeDeformation(0.25F))
+				.texOffs(32, 0).addBox(mirror ? -1.0F : -4.0F, -4.0F, -3.0F, 5.0F, 6.0F, 6.0F,
+						new CubeDeformation(0.1F))
+				.mirror(false);
 	}
 
 	@Override

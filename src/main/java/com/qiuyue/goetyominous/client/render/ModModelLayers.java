@@ -59,6 +59,9 @@ public class ModModelLayers {
         event.registerLayerDefinition(ModEntityLayers.INQUILLAGER_SERVANT_LAYER,
                 InquillagerServantModel::createBodyLayer);
 
+        event.registerLayerDefinition(ModEntityLayers.SKELETON_CONQUILLAGER_SERVANT_LAYER,
+                ConquillagerServantModel::createSkeletonBodyLayer);
+
         event.registerLayerDefinition(SERVANT_WIND_CHARGE,
                 com.qiuyue.goetyominous.client.render.model.WindChargeModel::createBodyLayer);
 
@@ -215,6 +218,10 @@ public class ModModelLayers {
                 event.registerEntityRenderer(ModEntityTypes.CONQUILLAGER_SERVANT.get(),
                 ConquillagerServantRenderer::new);
                 event.registerEntityRenderer(ModEntityTypes.INQUILLAGER_SERVANT.get(), InquillagerServantRenderer::new);
+                event.registerEntityRenderer(ModEntityTypes.ZINQUILLAGER_SERVANT.get(), InquillagerServantRenderer::new);
+                event.registerEntityRenderer(ModEntityTypes.SKELETON_CONQUILLAGER_SERVANT.get(),
+                context -> new ConquillagerServantRenderer<>(context,
+                        ModEntityLayers.SKELETON_CONQUILLAGER_SERVANT_LAYER));
 
         event.registerEntityRenderer(ModEntityTypes.CRIMSON_GUARD.get(), CrimsonGuardRenderer::new);
         event.registerEntityRenderer(ModEntityTypes.CRIMSON_GUARD_SERVANT.get(), CrimsonGuardRenderer::new);
