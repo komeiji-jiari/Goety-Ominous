@@ -172,6 +172,11 @@ public class ZCrimsonGuardServant extends ZombieServant {
     }
 
     @Override
+    public boolean isUnderWaterConverting() {
+        return false;
+    }
+
+    @Override
     public boolean fireImmune() {
         return true;
     }

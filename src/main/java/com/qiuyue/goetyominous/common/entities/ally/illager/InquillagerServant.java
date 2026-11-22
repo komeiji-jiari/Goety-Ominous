@@ -9,6 +9,7 @@ import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.RandomUtil;
 import com.google.common.collect.Maps;
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -69,6 +70,21 @@ public class InquillagerServant extends SpellcasterIllagerServant {
 
     public ResourceLocation getResourceLocation() {
         return TEXTURE_BY_TYPE.getOrDefault(this.getOutfitType(), TEXTURE_BY_TYPE.get(0));
+    }
+
+    @Override
+    public EntityType<? extends Mob> getNecroConvert() {
+        return ModEntityTypes.ZINQUILLAGER_SERVANT.get();
+    }
+
+    @Nullable
+    @Override
+    public <T extends Mob> T convertTo(EntityType<T> entityType, boolean transferInventory) {
+        T mob = super.convertTo(entityType, transferInventory);
+        if (mob instanceof InquillagerServant servant) {
+            servant.setOutfitType(this.getOutfitType());
+        }
+        return mob;
     }
 
     @Override
