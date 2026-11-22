@@ -298,6 +298,8 @@ public class GoetyOminous {
     private void addAttributes(final EntityAttributeCreationEvent event) {
         event.put(ModEntityTypes.CONQUILLAGER_SERVANT.get(), ConquillagerServant.setCustomAttributes().build());
         event.put(ModEntityTypes.INQUILLAGER_SERVANT.get(), InquillagerServant.setCustomAttributes().build());
+        event.put(ModEntityTypes.ZINQUILLAGER_SERVANT.get(), InquillagerServant.setCustomAttributes().build());
+        event.put(ModEntityTypes.SKELETON_CONQUILLAGER_SERVANT.get(), ConquillagerServant.setCustomAttributes().build());
         event.put(ModEntityTypes.PYROLOGER_SERVANT.get(), PyrologerServant.setCustomAttributes().build());
         event.put(ModEntityTypes.PYROLOGER.get(), Pyrologer.createAttributes().build());
         event.put(ModEntityTypes.BOUND_PYROLOGER.get(), BoundPyrologer.setCustomAttributes().build());

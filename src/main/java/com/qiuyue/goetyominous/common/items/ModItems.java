@@ -324,6 +324,14 @@ public class ModItems {
             "inquillager_servant_spawn_egg",
             () -> new ServantSpawnEggItem(ModEntityTypes.INQUILLAGER_SERVANT, 0x660028, 0xF3CE3F, egg()));
 
+    public static final RegistryObject<ServantSpawnEggItem> ZOMBIE_INQUILLAGER_SERVANT_SPAWN_EGG = ITEMS.register(
+            "zombie_inquillager_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.ZINQUILLAGER_SERVANT, 0x6C7E4F, 0x660028, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> SKELETON_CONQUILLAGER_SERVANT_SPAWN_EGG = ITEMS.register(
+            "skeleton_conquillager_servant_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.SKELETON_CONQUILLAGER_SERVANT, 0xC6C6C6, 0x8B0000, egg()));
+
     public static final RegistryObject<ServantSpawnEggItem> PYROLOGER_SERVANT_SPAWN_EGG = ITEMS.register(
             "pyrologer_servant_spawn_egg",
             () -> new ServantSpawnEggItem(ModEntityTypes.PYROLOGER_SERVANT, 0x2B1B12, 0xFF6A1E, egg()));

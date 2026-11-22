@@ -3,7 +3,9 @@ package com.qiuyue.goetyominous.common.init;
 import com.qiuyue.goetyominous.common.blocks.trial.OminousItemSpawner;
 import com.qiuyue.goetyominous.common.entities.ally.illager.BoundPyrologer;
 import com.qiuyue.goetyominous.common.entities.ally.illager.ConquillagerServant;
+import com.qiuyue.goetyominous.common.entities.ally.illager.SkeletonConquillagerServant;
 import com.qiuyue.goetyominous.common.entities.ally.illager.InquillagerServant;
+import com.qiuyue.goetyominous.common.entities.ally.illager.ZInquillagerServant;
 import com.qiuyue.goetyominous.common.entities.ally.illager.CrimsonGuardServant;
 import com.qiuyue.goetyominous.common.entities.ally.illager.ZCrimsonGuardServant;
 import com.qiuyue.goetyominous.common.entities.ally.illager.ImperialChasseurServant;
@@ -51,6 +53,21 @@ public class ModEntityTypes {
                     .sized(0.6F, 1.95F)
                     .clientTrackingRange(8)
                     .build(MOD_ID + ":inquillager_servant"));
+
+    public static final RegistryObject<EntityType<ZInquillagerServant>> ZINQUILLAGER_SERVANT = ENTITY_TYPES.register(
+            "zombie_inquillager_servant",
+            () -> EntityType.Builder.of(ZInquillagerServant::new, MobCategory.MISC)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build(MOD_ID + ":zombie_inquillager_servant"));
+
+    public static final RegistryObject<EntityType<SkeletonConquillagerServant>> SKELETON_CONQUILLAGER_SERVANT = ENTITY_TYPES
+            .register(
+                    "skeleton_conquillager_servant",
+                    () -> EntityType.Builder.of(SkeletonConquillagerServant::new, MobCategory.MISC)
+                            .sized(0.6F, 1.95F)
+                            .clientTrackingRange(8)
+                            .build(MOD_ID + ":skeleton_conquillager_servant"));
 
     public static final RegistryObject<EntityType<PyrologerServant>> PYROLOGER_SERVANT = ENTITY_TYPES.register(
             "pyrologer_servant",
