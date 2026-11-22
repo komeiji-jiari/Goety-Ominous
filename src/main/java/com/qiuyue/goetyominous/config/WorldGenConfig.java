@@ -15,8 +15,8 @@ public class WorldGenConfig {
 
     static {
         BUILDER.push("World Generation");
-        ClassicCrypt = BUILDER.comment("Generate the original Goety crypt instead of the layered Goety 3 crypt, Default: false")
-                .define("classicCrypt", false);
+        ClassicCrypt = BUILDER.comment("Generate the original Goety crypt instead of the layered Goety 3 crypt, Default: true")
+                .define("classicCrypt", true);
         ClassicWindShrine = BUILDER.comment("Generate the original Goety wind shrine instead of the Goety 3 mountain wind shrine, Default: false")
                 .define("classicWindShrine", false);
         BUILDER.pop();

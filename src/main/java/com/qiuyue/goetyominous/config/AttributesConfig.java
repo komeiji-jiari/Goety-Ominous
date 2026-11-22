@@ -119,6 +119,10 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> BastionGuardServantAttackDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> GuzzlerServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> GuzzlerServantAttackDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinShamanHealth;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinShamanArmor;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinShamanDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> PiglinShamanFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> GrimMonarchHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> GrimMonarchArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> GrimMonarchSpeed;
@@ -457,6 +461,16 @@ public class AttributesConfig {
                 .defineInRange("grimMonarchEchoHealth", 200.0D, 1.0D, Double.MAX_VALUE);
         GrimMonarchEchoDamage = BUILDER.comment("Damage multiplier applied to every Grim Monarch Echo attack (Default: 0.7)")
                 .defineInRange("grimMonarchEchoDamage", 0.7D, 0.0D, 10.0D);
+        BUILDER.pop();
+        BUILDER.push("Piglin Shaman");
+        PiglinShamanHealth = BUILDER.comment("How much Max Health Piglin Shamans have (Default: 230.0)")
+                .defineInRange("piglinShamanHealth", 230.0D, 1.0D, Double.MAX_VALUE);
+        PiglinShamanArmor = BUILDER.comment("How much natural Armor Piglin Shamans have (Default: 2.0)")
+                .defineInRange("piglinShamanArmor", 2.0D, 0.0D, Double.MAX_VALUE);
+        PiglinShamanDamage = BUILDER.comment("How much damage Piglin Shamans deal (Default: 6.0)")
+                .defineInRange("piglinShamanDamage", 6.0D, 1.0D, Double.MAX_VALUE);
+        PiglinShamanFollowRange = BUILDER.comment("How far Piglin Shamans target enemies (Default: 32.0)")
+                .defineInRange("piglinShamanFollowRange", 32.0D, 0.0D, Double.MAX_VALUE);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }

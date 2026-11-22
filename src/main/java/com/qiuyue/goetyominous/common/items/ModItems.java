@@ -78,6 +78,9 @@ public class ModItems {
     public static final RegistryObject<Item> OMINOUS_ICON = ITEMS.register("ominous_icon",
             () -> new OminousIconItem(new Item.Properties().stacksTo(1)));
 
+    public static final RegistryObject<Item> SHATTERED_MANUSCRIPT = ITEMS.register("shattered_manuscript",
+            () -> new Item(new Item.Properties()));
+
     public static final RegistryObject<Item> COLD_HEART = ITEMS.register("cold_heart",
             () -> new ColdHeartItem());
 

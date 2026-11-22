@@ -15,6 +15,7 @@ import com.qiuyue.goetyominous.common.entities.hostile.illagers.CrimsonGuard;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.ImperialChasseur;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.Pyrologer;
 import com.qiuyue.goetyominous.common.entities.hostile.piglin.HostileFungusThrower;
+import com.qiuyue.goetyominous.common.entities.hostile.piglin.PiglinShaman;
 import com.qiuyue.goetyominous.common.entities.hostile.piglin.ZHostileFungusThrower;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.*;
 
@@ -382,6 +383,21 @@ public class ModEntityTypes {
                     .sized(0.6F, 1.95F)
                     .clientTrackingRange(8)
                     .build(MOD_ID + ":zelite_fungus_thrower"));
+
+    public static final RegistryObject<EntityType<PiglinShaman>> PIGLIN_SHAMAN = ENTITY_TYPES.register(
+            "piglin_shaman",
+            () -> EntityType.Builder.of(PiglinShaman::new, MobCategory.MONSTER)
+                    .sized(1.375F, 1.95F)
+                    .clientTrackingRange(10)
+                    .build(MOD_ID + ":piglin_shaman"));
+
+    public static final RegistryObject<EntityType<PiglinShamanBrew>> PIGLIN_SHAMAN_BREW = ENTITY_TYPES.register(
+            "piglin_shaman_brew",
+            () -> EntityType.Builder.<PiglinShamanBrew>of(PiglinShamanBrew::new, MobCategory.MISC)
+                    .sized(0.25F, 0.25F)
+                    .clientTrackingRange(4)
+                    .updateInterval(10)
+                    .build(MOD_ID + ":piglin_shaman_brew"));
 
     public static final RegistryObject<EntityType<AcidFungus>> ACID_FUNGUS = ENTITY_TYPES.register(
             "acid_fungus",

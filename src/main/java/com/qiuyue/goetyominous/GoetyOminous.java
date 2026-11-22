@@ -51,6 +51,7 @@ import com.qiuyue.goetyominous.common.entities.hostile.illagers.CrimsonGuard;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.ImperialChasseur;
 import com.qiuyue.goetyominous.common.entities.hostile.illagers.Pyrologer;
 import com.qiuyue.goetyominous.common.entities.hostile.piglin.HostileFungusThrower;
+import com.qiuyue.goetyominous.common.entities.hostile.piglin.PiglinShaman;
 import com.qiuyue.goetyominous.common.entities.hostile.piglin.ZHostileFungusThrower;
 import com.qiuyue.goetyominous.common.items.ModItems;
 import com.qiuyue.goetyominous.config.AttributesConfig;
@@ -346,6 +347,7 @@ public class GoetyOminous {
         event.put(ModEntityTypes.STORM_NECROMANCER.get(), AbstractStormNecromancer.setCustomAttributes().build());
         event.put(ModEntityTypes.FUNGUS_THROWER.get(), HostileFungusThrower.createAttributes().build());
         event.put(ModEntityTypes.ZFUNGUS_THROWER.get(), ZHostileFungusThrower.createAttributes().build());
+        event.put(ModEntityTypes.PIGLIN_SHAMAN.get(), PiglinShaman.createAttributes().build());
         event.put(ModEntityTypes.FUNGUS_THROWER_SERVANT.get(), FungusThrower.createAttributes().build());
         event.put(ModEntityTypes.ZFUNGUS_THROWER_SERVANT.get(), ZPiglinServant.setCustomAttributes().build());
         event.put(ModEntityTypes.ELITE_FUNGUS_THROWER.get(), EliteFungusThrower.createAttributes().build());
