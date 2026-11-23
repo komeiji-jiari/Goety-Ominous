@@ -1,6 +1,7 @@
 package com.qiuyue.goetyominous.common.entities.hostile;
 
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.level.Level;
 
 public class ZGuzzlerBoss extends GuzzlerBoss {
@@ -12,6 +13,11 @@ public class ZGuzzlerBoss extends GuzzlerBoss {
     @Override
     public boolean isConverting() {
         return false;
+    }
+
+    @Override
+    public MobType getMobType() {
+        return MobType.UNDEAD;
     }
 
     @Override
