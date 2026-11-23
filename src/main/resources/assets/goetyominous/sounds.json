@@ -826,6 +826,14 @@
       }
     ]
   },
+  "shaman_boss": {
+    "sounds": [
+      {
+        "name": "goetyominous:shaman_boss",
+        "stream": true
+      }
+    ]
+  },
   "music_disc_precipice": {
     "sounds": [
       {
@@ -846,6 +854,14 @@
     "sounds": [
       {
         "name": "goetyominous:records/creator_music_box",
+        "stream": true
+      }
+    ]
+  },
+  "music_disc_spore": {
+    "sounds": [
+      {
+        "name": "goetyominous:shaman_boss",
         "stream": true
       }
     ]

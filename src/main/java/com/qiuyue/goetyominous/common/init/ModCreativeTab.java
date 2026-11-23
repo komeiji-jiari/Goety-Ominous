@@ -256,6 +256,7 @@ public class ModCreativeTab {
     private static void sortOther(List<Item> items) {
         List<Item> order = new ArrayList<>();
         order.add(ModItems.THUNDER_HORN.get());
+        order.add(ModItems.ANCIENT_HORN.get());
         order.add(ModItems.BASTION_SCROLL.get());
         order.add(ModItems.ACID_FUNGUS.get());
         order.add(ModItems.BURNING_POTION.get());
@@ -324,6 +325,7 @@ public class ModCreativeTab {
             items.add(ModItems.MUSIC_DISC_CREATOR.get());
             items.add(ModItems.MUSIC_DISC_CREATOR_MUSIC_BOX.get());
             items.add(ModItems.MUSIC_DISC_PRECIPICE.get());
+            items.add(ModItems.MUSIC_DISC_SPORE.get());
             items.add(ModItems.WIND_CHARGE.get());
             items.add(ModItems.MACE.get());
             items.add(ModItems.BREEZE_ROD.get());

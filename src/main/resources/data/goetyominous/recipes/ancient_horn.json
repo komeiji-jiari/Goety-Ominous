@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "nbn",
+    "bhb",
+    "nbn"
+  ],
+  "key":
+  {
+    "b":
+    {
+      "tag": "forge:ingots/gold"
+    },
+    "h":
+    {
+      "item": "minecraft:goat_horn"
+    },
+    "n":
+    {
+      "item": "minecraft:crimson_fungus"
+    }
+  },
+  "result":
+  {
+    "item": "goetyominous:ancient_horn",
+    "count": 1
+  }
+}

@@ -1,4 +1,4 @@
-package com.qiuyue.goetyominous.common.items.revive;
+package com.qiuyue.goetyominous.common.items;
 
 import com.Polarice3.Goety.client.particles.ModParticleTypes;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;

@@ -9,8 +9,12 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -25,6 +29,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.List;
 
@@ -56,6 +62,26 @@ public class TrialSpawnerBlock extends BaseEntityBlock {
             tooltip.add(Component.translatable("block.minecraft.spawner.desc1").withStyle(ChatFormatting.GRAY));
             tooltip.add(CommonComponents.space().append(Component.translatable("block.minecraft.spawner.desc2").withStyle(ChatFormatting.BLUE)));
         }
+    }
+
+    @Override
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player,
+                                 InteractionHand hand, BlockHitResult hit) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (level instanceof ServerLevel && be instanceof TrialSpawnerBlockEntity spawner) {
+            ItemStack stack = player.getItemInHand(hand);
+            if (stack.getItem() instanceof SpawnEggItem egg) {
+                EntityType<?> type = egg.getType(stack.getTag());
+                if (type != null) {
+                    spawner.setEntityId(type, level.getRandom());
+                    level.sendBlockUpdated(pos, state, state, 3);
+                    level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+                    stack.shrink(1);
+                    return InteractionResult.CONSUME;
+                }
+            }
+        }
+        return InteractionResult.PASS;
     }
 
     @Nullable

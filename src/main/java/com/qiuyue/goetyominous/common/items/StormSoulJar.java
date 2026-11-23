@@ -1,4 +1,4 @@
-package com.qiuyue.goetyominous.common.items.revive;
+package com.qiuyue.goetyominous.common.items;
 
 import com.Polarice3.Goety.api.entities.IOwned;
 import com.Polarice3.Goety.common.entities.ally.undead.skeleton.RattledServant;

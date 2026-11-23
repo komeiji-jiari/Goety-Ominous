@@ -21,9 +21,9 @@ import com.Polarice3.Goety.utils.BrewUtils;
 import com.Polarice3.Goety.utils.ColorUtil;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.ModDamageSource;
-import com.Polarice3.Goety.utils.ModLootTables;
 import com.Polarice3.Goety.utils.ServerParticleUtil;
 import com.Polarice3.Goety.utils.SoundUtil;
+import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.projectile.FelBolt;
 import com.qiuyue.goetyominous.common.entities.projectile.PiglinShamanBrew;
 import com.qiuyue.goetyominous.config.AttributesConfig;
@@ -34,6 +34,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -71,6 +72,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.ZombifiedPiglin;
 import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
+import net.minecraft.world.entity.monster.piglin.PiglinAi;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -125,7 +127,7 @@ public class PiglinShaman extends Monster {
     private static final int SUMMON_COOLDOWN_FULL = 400;
     private static final int SUMMON_COOLDOWN_HALF = 200;
     private static final int TRADE_LENGTH = 80;
-    private static final int TRADE_THROW_TICK = 70;
+    private static final int TRADE_THROW_TICK = 65;
     private static final int DRINK_LENGTH = 25;
     private static final int DRINK_EFFECT_TICK = 18;
     private static final int HEAL_IDLE_TICKS = 300;
@@ -440,6 +442,9 @@ public class PiglinShaman extends Monster {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
+        if (source.is(DamageTypeTags.IS_FIRE) && this.hasEffect(MobEffects.FIRE_RESISTANCE)) {
+            return false;
+        }
         if (this.getHealth() < 10.0F && (source.is(DamageTypes.CACTUS)
                 || source.is(DamageTypes.SWEET_BERRY_BUSH)
                 || source.is(DamageTypeTags.WITCH_RESISTANT_TO))) {
@@ -507,7 +512,7 @@ public class PiglinShaman extends Monster {
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (stack.is(Items.GOLD_INGOT)
-                && net.minecraft.world.entity.monster.piglin.PiglinAi.isWearingGold(player)
+                && (player.isCreative() || PiglinAi.isWearingGold(player))
                 && this.getTarget() == null && this.isIdle() && !this.tradeActive) {
             if (!this.level().isClientSide) {
                 if (!player.getAbilities().instabuild) {
@@ -563,7 +568,8 @@ public class PiglinShaman extends Monster {
         if (!(this.level() instanceof ServerLevel serverLevel)) {
             return;
         }
-        LootTable lootTable = serverLevel.getServer().getLootData().getLootTable(ModLootTables.CRONE_BARTER);
+        LootTable lootTable = serverLevel.getServer().getLootData().getLootTable(
+                new ResourceLocation(GoetyOminous.MOD_ID, "gameplay/piglin_shaman_bartering"));
         List<ItemStack> loot = lootTable.getRandomItems(new LootParams.Builder(serverLevel)
                 .withParameter(LootContextParams.THIS_ENTITY, this)
                 .withParameter(LootContextParams.ORIGIN, this.position())

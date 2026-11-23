@@ -103,6 +103,13 @@
           "type": "minecraft:item",
           "name": "goetyominous:nether_eternal_cauldron"
         }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance_with_looting",
+          "chance": 0.25,
+          "looting_multiplier": 0.1
+        }
       ]
     },
     {
@@ -112,6 +119,26 @@
         {
           "type": "minecraft:item",
           "name": "goetyominous:shattered_manuscript"
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "goetyominous:music_disc_spore"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:killed_by_player"
+        },
+        {
+          "condition": "minecraft:random_chance_with_looting",
+          "chance": 0.1,
+          "looting_multiplier": 0.1
         }
       ]
     }

@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.entities.hostile;
 
+import com.Polarice3.Goety.common.entities.util.CameraShake;
 import com.Polarice3.Goety.common.network.ModServerBossInfo;
 import com.Polarice3.Goety.config.MainConfig;
 import com.Polarice3.Goety.utils.MobUtil;
@@ -78,6 +79,7 @@ public class GuzzlerBoss extends Monster {
     private static final float SLEEP_CHANCE = 0.25F;
     private static final int SIT_ANIM_TICKS = 20;
     private static final int DEATH_TICKS = 44;
+    private static final int DEATH_SHAKE_TICK = 29;
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState walkAnimationState = new AnimationState();
@@ -445,6 +447,9 @@ public class GuzzlerBoss extends Monster {
     protected void tickDeath() {
         ++this.deathTime;
         this.getNavigation().stop();
+        if (!this.level().isClientSide && this.deathTime == DEATH_SHAKE_TICK) {
+            CameraShake.cameraShake(this.level(), this.position(), 25.0F, 0.15F, 0, 20);
+        }
         if (!this.level().isClientSide && this.deathTime >= DEATH_TICKS && !this.isRemoved()) {
             if (this.level() instanceof ServerLevel serverLevel) {
                 serverLevel.sendParticles(ParticleTypes.POOF,
@@ -603,6 +608,7 @@ public class GuzzlerBoss extends Monster {
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
         this.playSound(ModSounds.GUZZLER_STEP.get(), 0.2F, this.getVoicePitch());
+        CameraShake.cameraShake(this.level(), this.position(), 10.0F, 0.01F, 5, 0);
     }
 
     @Override

@@ -11,10 +11,6 @@ import com.qiuyue.goetyominous.common.init.ModBlocks;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.common.init.ModSounds;
 import com.qiuyue.goetyominous.common.items.curios.*;
-import com.qiuyue.goetyominous.common.items.revive.BrokenStormCrown;
-import com.qiuyue.goetyominous.common.items.revive.StormSoulJar;
-import com.qiuyue.goetyominous.common.items.revive.SunkenSoulJar;
-import com.qiuyue.goetyominous.common.items.revive.ThunderHorn;
 import com.qiuyue.goetyominous.common.research.ResearchList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -78,8 +74,9 @@ public class ModItems {
     public static final RegistryObject<Item> OMINOUS_ICON = ITEMS.register("ominous_icon",
             () -> new OminousIconItem(new Item.Properties().stacksTo(1)));
 
-    public static final RegistryObject<Item> SHATTERED_MANUSCRIPT = ITEMS.register("shattered_manuscript",
-            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> SHATTERED_MANUSCRIPT = ITEMS.register(
+            "shattered_manuscript",
+            () -> new Item(new Item.Properties().fireResistant()));
 
     public static final RegistryObject<Item> COLD_HEART = ITEMS.register("cold_heart",
             () -> new ColdHeartItem());
@@ -161,6 +158,9 @@ public class ModItems {
     public static final RegistryObject<Item> STORM_SOUL_JAR = ITEMS.register("storm_soul_jar",
             () -> new StormSoulJar());
 
+    public static final RegistryObject<Item> ANCIENT_HORN = ITEMS.register("ancient_horn",
+            () -> new AncientHornItem());
+
     public static final RegistryObject<Item> THUNDER_HORN = ITEMS.register("thunder_horn",
             () -> new ThunderHorn());
 
@@ -213,6 +213,10 @@ public class ModItems {
     public static final RegistryObject<Item> MUSIC_DISC_PRECIPICE = ITEMS.register("music_disc_precipice",
             () -> new RecordItem(13, ModSounds.MUSIC_DISC_PRECIPICE.get(),
                     new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 5980));
+
+    public static final RegistryObject<Item> MUSIC_DISC_SPORE = ITEMS.register("music_disc_spore",
+            () -> new RecordItem(14, ModSounds.MUSIC_DISC_SPORE.get(),
+                    new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 4921));
 
     public static final RegistryObject<Item> HURRICANE_CORE = ITEMS.register("hurricane_core",
             () -> new HurricaneCoreItem());
@@ -454,6 +458,10 @@ public class ModItems {
     public static final RegistryObject<ForgeSpawnEggItem> ZFUNGUS_THROWER_SPAWN_EGG = ITEMS.register(
             "zfungus_thrower_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntityTypes.ZFUNGUS_THROWER, 0xE6918B, 0x8B1A1A, egg()));
+
+    public static final RegistryObject<ForgeSpawnEggItem> PIGLIN_SHAMAN_SPAWN_EGG = ITEMS.register(
+            "piglin_shaman_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.PIGLIN_SHAMAN, 0xD9A36C, 0x6A2C91, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> FUNGUS_THROWER_SERVANT_SPAWN_EGG = ITEMS.register(
             "fungus_thrower_servant_spawn_egg",

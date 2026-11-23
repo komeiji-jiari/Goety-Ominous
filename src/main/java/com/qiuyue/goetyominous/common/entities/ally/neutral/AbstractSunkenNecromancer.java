@@ -20,7 +20,7 @@ import com.Polarice3.Goety.common.entities.ai.path.ModWaterPathNavigation;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
-import com.qiuyue.goetyominous.common.items.revive.SunkenSoulJar;
+import com.qiuyue.goetyominous.common.items.SunkenSoulJar;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;

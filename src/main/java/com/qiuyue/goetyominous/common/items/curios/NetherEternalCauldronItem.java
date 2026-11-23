@@ -31,6 +31,11 @@ public class NetherEternalCauldronItem extends EternalCauldronItem {
     }
 
     @Override
+    public boolean isFireResistant() {
+        return true;
+    }
+
+    @Override
     public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
         ItemStack itemstack = playerIn.getItemInHand(handIn);
         if (!worldIn.isClientSide) {

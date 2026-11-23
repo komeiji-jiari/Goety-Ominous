@@ -1,4 +1,4 @@
-package com.qiuyue.goetyominous.common.items.revive;
+package com.qiuyue.goetyominous.common.items;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;

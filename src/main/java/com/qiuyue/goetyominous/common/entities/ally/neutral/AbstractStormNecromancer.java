@@ -20,7 +20,7 @@ import com.Polarice3.Goety.config.ItemConfig;
 import com.Polarice3.Goety.config.MobsConfig;
 import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.*;
-import com.qiuyue.goetyominous.common.items.revive.StormSoulJar;
+import com.qiuyue.goetyominous.common.items.StormSoulJar;
 import com.qiuyue.goetyominous.config.AttributesConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
