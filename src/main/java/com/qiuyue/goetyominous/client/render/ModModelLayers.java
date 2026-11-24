@@ -221,10 +221,10 @@ public class ModModelLayers {
                 event.registerEntityRenderer(ModEntityTypes.CONQUILLAGER_SERVANT.get(),
                 ConquillagerServantRenderer::new);
                 event.registerEntityRenderer(ModEntityTypes.INQUILLAGER_SERVANT.get(), InquillagerServantRenderer::new);
-                event.registerEntityRenderer(ModEntityTypes.ZINQUILLAGER_SERVANT.get(), InquillagerServantRenderer::new);
+                event.registerEntityRenderer(ModEntityTypes.ZINQUILLAGER_SERVANT.get(),
+                        ZInquillagerServantRenderer::new);
                 event.registerEntityRenderer(ModEntityTypes.SKELETON_CONQUILLAGER_SERVANT.get(),
-                context -> new ConquillagerServantRenderer<>(context,
-                        ModEntityLayers.SKELETON_CONQUILLAGER_SERVANT_LAYER));
+                        SkeletonConquillagerServantRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.CRIMSON_GUARD.get(), CrimsonGuardRenderer::new);
         event.registerEntityRenderer(ModEntityTypes.CRIMSON_GUARD_SERVANT.get(), CrimsonGuardRenderer::new);

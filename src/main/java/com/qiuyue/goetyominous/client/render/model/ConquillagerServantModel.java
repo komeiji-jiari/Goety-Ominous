@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.client.render.model;
 
 import com.Polarice3.Goety.common.entities.ally.illager.AbstractIllagerServant;
 import com.google.common.collect.ImmutableList;
+import com.qiuyue.goetyominous.common.entities.ally.illager.SkeletonConquillagerServant;
 import com.google.common.collect.Iterables;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.AnimationUtils;
@@ -13,6 +14,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
@@ -22,7 +24,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 
 @OnlyIn(Dist.CLIENT)
-public class ConquillagerServantModel<T extends AbstractIllagerServant> extends HumanoidModel<T> {
+public class ConquillagerServantModel<T extends Mob> extends HumanoidModel<T> {
 	public final ModelPart clothes;
 	public final ModelPart hat2;
 
@@ -171,7 +173,7 @@ public class ConquillagerServantModel<T extends AbstractIllagerServant> extends 
 			this.leftLeg.zRot = 0.0F;
 		}
 
-		AbstractIllagerServant.IllagerServantArmPose abstractprotectorentity$armpose = entity.getArmPose();
+		AbstractIllagerServant.IllagerServantArmPose abstractprotectorentity$armpose = this.getIllagerArmPose(entity);
 		switch (abstractprotectorentity$armpose) {
 			case CROSSED:
 				this.rightArm.xRot = 0;
@@ -212,6 +214,16 @@ public class ConquillagerServantModel<T extends AbstractIllagerServant> extends 
 		return entityIn.isAggressive();
 	}
 
+	protected AbstractIllagerServant.IllagerServantArmPose getIllagerArmPose(T entity) {
+		if (entity instanceof AbstractIllagerServant servant) {
+			return servant.getArmPose();
+		}
+		if (entity instanceof SkeletonConquillagerServant servant) {
+			return servant.getArmPose();
+		}
+		return AbstractIllagerServant.IllagerServantArmPose.NEUTRAL;
+	}
+
 	public void prepareMobModel(T entityIn, float limbSwing, float limbSwingAmount, float partialTick) {
 		this.rightArmPose = ArmPose.EMPTY;
 		this.leftArmPose = ArmPose.EMPTY;
@@ -228,7 +240,7 @@ public class ConquillagerServantModel<T extends AbstractIllagerServant> extends 
 	private void RightArmPoses(InteractionHand hand, T entityIn) {
 		ItemStack itemstack = entityIn.getItemInHand(hand);
 		UseAnim useAction = itemstack.getUseAnimation();
-		if (entityIn.getArmPose() != AbstractIllagerServant.IllagerServantArmPose.CROSSED) {
+		if (this.getIllagerArmPose(entityIn) != AbstractIllagerServant.IllagerServantArmPose.CROSSED) {
 			this.rightArmPose = ArmPose.EMPTY;
 			if (!itemstack.isEmpty()) {
 				this.rightArmPose = ArmPose.ITEM;
@@ -239,7 +251,7 @@ public class ConquillagerServantModel<T extends AbstractIllagerServant> extends 
 	private void LeftArmPoses(InteractionHand hand, T entityIn) {
 		ItemStack itemstack = entityIn.getItemInHand(hand);
 		UseAnim useAction = itemstack.getUseAnimation();
-		if (entityIn.getArmPose() != AbstractIllagerServant.IllagerServantArmPose.CROSSED) {
+		if (this.getIllagerArmPose(entityIn) != AbstractIllagerServant.IllagerServantArmPose.CROSSED) {
 			this.leftArmPose = ArmPose.EMPTY;
 			if (!itemstack.isEmpty()) {
 				this.leftArmPose = ArmPose.ITEM;

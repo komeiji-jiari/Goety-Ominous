@@ -1,93 +1,119 @@
 package com.qiuyue.goetyominous.common.entities.ally.illager;
 
 import com.Polarice3.Goety.client.particles.ModParticleTypes;
+import com.Polarice3.Goety.common.effects.GoetyEffects;
+import com.Polarice3.Goety.common.entities.ally.Summoned;
+import com.Polarice3.Goety.common.entities.ally.illager.AbstractIllagerServant;
+import com.Polarice3.Goety.common.entities.ally.undead.skeleton.AbstractSkeletonServant;
+import com.Polarice3.Goety.common.entities.ally.undead.skeleton.SkeletonPillagerServant;
+import com.Polarice3.Goety.common.entities.neutral.Owned;
+import com.Polarice3.Goety.config.AttributesConfig;
+import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CrossbowItem;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 
-public class SkeletonConquillagerServant extends ConquillagerServant {
+import javax.annotation.Nullable;
+
+public class SkeletonConquillagerServant extends SkeletonPillagerServant {
     private static final ResourceLocation TEXTURE = new ResourceLocation(GoetyOminous.MOD_ID,
             "textures/entity/illager/skeleton_conquillager.png");
 
-    public SkeletonConquillagerServant(EntityType<? extends SkeletonConquillagerServant> type, Level level) {
+    public SkeletonConquillagerServant(EntityType<? extends AbstractSkeletonServant> type, Level level) {
         super(type, level);
+        this.xpReward = 20;
+    }
+
+    public static AttributeSupplier.Builder setCustomAttributes() {
+        return Mob.createMobAttributes()
+                .add(Attributes.FOLLOW_RANGE, 32.0D)
+                .add(Attributes.MAX_HEALTH, AttributesConfig.ConquillagerHealth.get())
+                .add(Attributes.ARMOR, AttributesConfig.ConquillagerArmor.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.35D)
+                .add(Attributes.ATTACK_DAMAGE, 5.0D);
     }
 
     @Override
+    public void setConfigurableAttributes() {
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH),
+                AttributesConfig.ConquillagerHealth.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), AttributesConfig.ConquillagerArmor.get());
+    }
+
     public ResourceLocation getResourceLocation() {
         return TEXTURE;
     }
 
     @Override
-    public MobType getMobType() {
-        return MobType.UNDEAD;
-    }
-
-    @Override
     protected boolean isSunSensitive() {
-        return true;
+        return false;
     }
 
     @Override
-    public EntityType<? extends Mob> getNecroConvert() {
-        return null;
+    public EntityType<?> getVariant(Level level, BlockPos blockPos) {
+        return ModEntityTypes.SKELETON_CONQUILLAGER_SERVANT.get();
     }
 
     @Override
-    public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
-        if (this.getTrueOwner() != null && player == this.getTrueOwner()
-                && stack.is(Items.BONE) && this.getHealth() < this.getMaxHealth()) {
-            if (!player.getAbilities().instabuild) {
-                stack.shrink(1);
-            }
-            this.playSound(SoundEvents.SKELETON_STEP, 1.0F, 1.25F);
-            this.heal(2.0F);
-            if (this.level() instanceof ServerLevel serverLevel) {
-                for (int i = 0; i < 7; ++i) {
-                    double d0 = this.random.nextGaussian() * 0.02D;
-                    double d1 = this.random.nextGaussian() * 0.02D;
-                    double d2 = this.random.nextGaussian() * 0.02D;
-                    serverLevel.sendParticles(ModParticleTypes.HEAL_EFFECT.get(), this.getRandomX(1.0D),
-                            this.getRandomY() + 0.5D, this.getRandomZ(1.0D), 0, d0, d1, d2, 0.5D);
+    public EntityType<?> getVariant(@Nullable Player player, Level level, BlockPos blockPos) {
+        return ModEntityTypes.SKELETON_CONQUILLAGER_SERVANT.get();
+    }
+
+    public AbstractIllagerServant.IllagerServantArmPose getArmPose() {
+        if (this.isChargingCrossbow()) {
+            return AbstractIllagerServant.IllagerServantArmPose.CROSSBOW_CHARGE;
+        } else if (this.isHolding(item -> item.getItem() instanceof CrossbowItem)) {
+            return AbstractIllagerServant.IllagerServantArmPose.CROSSBOW_HOLD;
+        } else {
+            return this.isAggressive() ? AbstractIllagerServant.IllagerServantArmPose.ATTACKING
+                    : AbstractIllagerServant.IllagerServantArmPose.NEUTRAL;
+        }
+    }
+
+    @Override
+    public ItemStack getProjectile(ItemStack shootable) {
+        int difficulty = this.level().getCurrentDifficultyAt(this.blockPosition()).getDifficulty().getId();
+        return MobUtil.createFirework(difficulty * 2, DyeColor.values());
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+
+        for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class,
+                this.getBoundingBox().inflate(8.0D), EntitySelector.NO_CREATIVE_OR_SPECTATOR)) {
+            if (entity.isAlive() && !MobUtil.areAllies(this, entity)
+                    && entity.getMobType() != MobType.UNDEAD
+                    && !(entity instanceof Player)
+                    && !(entity instanceof Owned)
+                    && !(entity instanceof Summoned)) {
+                if (this.tickCount % 100 == 0 && this.getRandom().nextInt(20) == 0) {
+                    entity.addEffect(new MobEffectInstance(GoetyEffects.ILLAGUE.get(), 2000, 0, false, false));
                 }
             }
-            return InteractionResult.SUCCESS;
         }
-        return super.mobInteract(player, hand);
-    }
 
-    @Override
-    protected SoundEvent getAmbientSound() {
-        return SoundEvents.SKELETON_AMBIENT;
-    }
-
-    @Override
-    protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.SKELETON_HURT;
-    }
-
-    @Override
-    protected SoundEvent getDeathSound() {
-        return SoundEvents.SKELETON_DEATH;
-    }
-
-    @Override
-    protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(SoundEvents.SKELETON_STEP, 0.15F, 1.0F);
+        if (this.level().isClientSide) {
+            if (this.tickCount % 20 == 0) {
+                for (int i = 0; i < 8; ++i) {
+                    this.level().addParticle(ModParticleTypes.PLAGUE_EFFECT.get(), this.getRandomX(0.5D),
+                            this.getRandomY(), this.getRandomZ(0.5D), 0.0D, 0.5D, 0.0D);
+                }
+            }
+        }
     }
 }

@@ -6,6 +6,7 @@ import com.Polarice3.Goety.common.entities.hostile.illagers.Inquillager;
 import com.Polarice3.Goety.common.entities.projectiles.NecroBolt;
 import com.qiuyue.goetyominous.GoetyOminous;
 import com.qiuyue.goetyominous.common.entities.ally.illager.InquillagerServant;
+import com.qiuyue.goetyominous.common.entities.ally.illager.ZInquillagerServant;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -77,8 +78,12 @@ public class IllagerNecroConversionEvents {
             mob.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(mob.blockPosition()),
                     MobSpawnType.CONVERSION, null, null);
         }
-        if (entity instanceof Inquillager inquillager && mob instanceof InquillagerServant servant) {
-            servant.setOutfitType(inquillager.getOutfitType());
+        if (entity instanceof Inquillager inquillager) {
+            if (mob instanceof InquillagerServant servant) {
+                servant.setOutfitType(inquillager.getOutfitType());
+            } else if (mob instanceof ZInquillagerServant servant) {
+                servant.setOutfitType(inquillager.getOutfitType());
+            }
         }
         ForgeEventFactory.onLivingConvert(entity, mob);
         if (!mob.isSilent()) {

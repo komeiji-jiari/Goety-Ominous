@@ -83,6 +83,8 @@ public class InquillagerServant extends SpellcasterIllagerServant {
         T mob = super.convertTo(entityType, transferInventory);
         if (mob instanceof InquillagerServant servant) {
             servant.setOutfitType(this.getOutfitType());
+        } else if (mob instanceof ZInquillagerServant servant) {
+            servant.setOutfitType(this.getOutfitType());
         }
         return mob;
     }

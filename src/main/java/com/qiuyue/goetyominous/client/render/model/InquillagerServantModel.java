@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.client.render.model;
 
 import com.Polarice3.Goety.common.entities.ally.illager.AbstractIllagerServant;
 import com.google.common.collect.ImmutableList;
+import com.qiuyue.goetyominous.common.entities.ally.illager.ZInquillagerServant;
 import com.google.common.collect.Iterables;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.AnimationUtils;
@@ -13,6 +14,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
@@ -22,7 +24,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 
 @OnlyIn(Dist.CLIENT)
-public class InquillagerServantModel<T extends AbstractIllagerServant> extends HumanoidModel<T> {
+public class InquillagerServantModel<T extends Mob> extends HumanoidModel<T> {
 	private final ModelPart hat;
 	private final ModelPart hat2;
 	private final ModelPart clothes;
@@ -187,42 +189,49 @@ public class InquillagerServantModel<T extends AbstractIllagerServant> extends H
 			this.leftLeg.zRot = 0.0F;
 		}
 
-		AbstractIllagerServant.IllagerServantArmPose abstractprotectorentity$armpose = entity.getArmPose();
-		switch (abstractprotectorentity$armpose) {
-			case CROSSED:
-				this.rightArm.xRot = 0;
-				this.leftArm.xRot = 0;
-				break;
-			case ATTACKING:
-				if (!entity.getMainHandItem().isEmpty()
-						&& !(entity.getMainHandItem().getItem() instanceof ProjectileWeaponItem)) {
-					AnimationUtils.swingWeaponDown(this.rightArm, this.leftArm, entity, this.attackTime, ageInTicks);
-				}
-				break;
-			case SPELLCASTING:
-				this.rightArm.z = 0.0F;
-				this.rightArm.x = -5.0F;
-				this.leftArm.z = 0.0F;
-				this.leftArm.x = 5.0F;
-				this.rightArm.xRot = Mth.cos(ageInTicks * 0.6662F) * 0.25F;
-				this.leftArm.xRot = Mth.cos(ageInTicks * 0.6662F) * 0.25F;
-				this.rightArm.zRot = 2.3561945F;
-				this.leftArm.zRot = -2.3561945F;
-				this.rightArm.yRot = 0.0F;
+		boolean zombie = entity instanceof ZInquillagerServant;
+		AbstractIllagerServant.IllagerServantArmPose armPose = this.getIllagerArmPose(entity);
+		if (zombie && armPose != AbstractIllagerServant.IllagerServantArmPose.SPELLCASTING) {
+			AnimationUtils.animateZombieArms(this.leftArm, this.rightArm, entity.isAggressive(), this.attackTime,
+					ageInTicks);
+		} else {
+			switch (armPose) {
+				case CROSSED:
+					this.rightArm.xRot = 0;
+					this.leftArm.xRot = 0;
+					break;
+				case ATTACKING:
+					if (!entity.getMainHandItem().isEmpty()
+							&& !(entity.getMainHandItem().getItem() instanceof ProjectileWeaponItem)) {
+						AnimationUtils.swingWeaponDown(this.rightArm, this.leftArm, entity, this.attackTime,
+								ageInTicks);
+					}
+					break;
+				case SPELLCASTING:
+					this.rightArm.z = 0.0F;
+					this.rightArm.x = -5.0F;
+					this.leftArm.z = 0.0F;
+					this.leftArm.x = 5.0F;
+					this.rightArm.xRot = Mth.cos(ageInTicks * 0.6662F) * 0.25F;
+					this.leftArm.xRot = Mth.cos(ageInTicks * 0.6662F) * 0.25F;
+					this.rightArm.zRot = 2.3561945F;
+					this.leftArm.zRot = -2.3561945F;
+					this.rightArm.yRot = 0.0F;
+					this.leftArm.yRot = 0.0F;
+			}
+
+			if (this.leftArmPose == ArmPose.THROW_SPEAR) {
+				this.leftArm.xRot = this.leftArm.xRot * 0.5F - (float) Math.PI;
 				this.leftArm.yRot = 0.0F;
+			}
+
+			if (this.rightArmPose == ArmPose.THROW_SPEAR) {
+				this.rightArm.xRot = this.rightArm.xRot * 0.5F - (float) Math.PI;
+				this.rightArm.yRot = 0.0F;
+			}
 		}
 
-		if (this.leftArmPose == ArmPose.THROW_SPEAR) {
-			this.leftArm.xRot = this.leftArm.xRot * 0.5F - (float) Math.PI;
-			this.leftArm.yRot = 0.0F;
-		}
-
-		if (this.rightArmPose == ArmPose.THROW_SPEAR) {
-			this.rightArm.xRot = this.rightArm.xRot * 0.5F - (float) Math.PI;
-			this.rightArm.yRot = 0.0F;
-		}
-
-		boolean flag = abstractprotectorentity$armpose == AbstractIllagerServant.IllagerServantArmPose.CROSSED;
+		boolean flag = !zombie && armPose == AbstractIllagerServant.IllagerServantArmPose.CROSSED;
 		this.arms.visible = flag;
 		this.leftArm.visible = !flag;
 		this.rightArm.visible = !flag;
@@ -238,6 +247,16 @@ public class InquillagerServantModel<T extends AbstractIllagerServant> extends H
 
 	public boolean isAggressive(T entityIn) {
 		return entityIn.isAggressive();
+	}
+
+	protected AbstractIllagerServant.IllagerServantArmPose getIllagerArmPose(T entity) {
+		if (entity instanceof AbstractIllagerServant servant) {
+			return servant.getArmPose();
+		}
+		if (entity instanceof ZInquillagerServant servant) {
+			return servant.getArmPose();
+		}
+		return AbstractIllagerServant.IllagerServantArmPose.NEUTRAL;
 	}
 
 	public void prepareMobModel(T entityIn, float limbSwing, float limbSwingAmount, float partialTick) {
@@ -256,7 +275,7 @@ public class InquillagerServantModel<T extends AbstractIllagerServant> extends H
 	private void RightArmPoses(InteractionHand hand, T entityIn) {
 		ItemStack itemstack = entityIn.getItemInHand(hand);
 		UseAnim useAction = itemstack.getUseAnimation();
-		if (entityIn.getArmPose() != AbstractIllagerServant.IllagerServantArmPose.CROSSED) {
+		if (this.getIllagerArmPose(entityIn) != AbstractIllagerServant.IllagerServantArmPose.CROSSED) {
 			this.rightArmPose = ArmPose.EMPTY;
 			if (!itemstack.isEmpty()) {
 				this.rightArmPose = ArmPose.ITEM;
@@ -267,7 +286,7 @@ public class InquillagerServantModel<T extends AbstractIllagerServant> extends H
 	private void LeftArmPoses(InteractionHand hand, T entityIn) {
 		ItemStack itemstack = entityIn.getItemInHand(hand);
 		UseAnim useAction = itemstack.getUseAnimation();
-		if (entityIn.getArmPose() != AbstractIllagerServant.IllagerServantArmPose.CROSSED) {
+		if (this.getIllagerArmPose(entityIn) != AbstractIllagerServant.IllagerServantArmPose.CROSSED) {
 			this.leftArmPose = ArmPose.EMPTY;
 			if (!itemstack.isEmpty()) {
 				this.leftArmPose = ArmPose.ITEM;

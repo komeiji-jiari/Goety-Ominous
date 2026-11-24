@@ -14,6 +14,8 @@ import com.qiuyue.goetyominous.common.explore.ExploreEvents;
 import com.qiuyue.goetyominous.common.blocks.trial.TrialSounds;
 import com.qiuyue.goetyominous.common.entities.ally.illager.ConquillagerServant;
 import com.qiuyue.goetyominous.common.entities.ally.illager.InquillagerServant;
+import com.qiuyue.goetyominous.common.entities.ally.illager.SkeletonConquillagerServant;
+import com.qiuyue.goetyominous.common.entities.ally.illager.ZInquillagerServant;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractDredenEntity;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractHurricane;
 import com.qiuyue.goetyominous.common.entities.ally.neutral.AbstractMiredEntity;
@@ -299,8 +301,9 @@ public class GoetyOminous {
     private void addAttributes(final EntityAttributeCreationEvent event) {
         event.put(ModEntityTypes.CONQUILLAGER_SERVANT.get(), ConquillagerServant.setCustomAttributes().build());
         event.put(ModEntityTypes.INQUILLAGER_SERVANT.get(), InquillagerServant.setCustomAttributes().build());
-        event.put(ModEntityTypes.ZINQUILLAGER_SERVANT.get(), InquillagerServant.setCustomAttributes().build());
-        event.put(ModEntityTypes.SKELETON_CONQUILLAGER_SERVANT.get(), ConquillagerServant.setCustomAttributes().build());
+        event.put(ModEntityTypes.ZINQUILLAGER_SERVANT.get(), ZInquillagerServant.setCustomAttributes().build());
+        event.put(ModEntityTypes.SKELETON_CONQUILLAGER_SERVANT.get(),
+                SkeletonConquillagerServant.setCustomAttributes().build());
         event.put(ModEntityTypes.PYROLOGER_SERVANT.get(), PyrologerServant.setCustomAttributes().build());
         event.put(ModEntityTypes.PYROLOGER.get(), Pyrologer.createAttributes().build());
         event.put(ModEntityTypes.BOUND_PYROLOGER.get(), BoundPyrologer.setCustomAttributes().build());
