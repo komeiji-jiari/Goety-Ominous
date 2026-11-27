@@ -14,7 +14,6 @@ import com.alexander.mutantmore.util.PositionUtils;
 import com.qiuyue.goetyominous.common.entities.ally.mm.AreaDamage;
 import com.qiuyue.goetyominous.common.init.mm.ModSpellControllers;
 import com.goety_soul_witch.common.util.ContinuousControllerSpell;
-import com.goety_soul_witch.common.util.BaseController;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -123,7 +122,7 @@ public class WitherBreathSpell extends ContinuousControllerSpell<WitherBreathSpe
                 potency, duration, usingNetherStaff);
     }
 
-    public static class WitherBreathController extends BaseController {
+    public static class WitherBreathController extends ContinuousControllerSpell.BaseController {
 
         private static final EntityDataAccessor<Integer> TICKS =
                 SynchedEntityData.defineId(WitherBreathController.class, EntityDataSerializers.INT);
