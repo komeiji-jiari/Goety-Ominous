@@ -125,6 +125,19 @@ public class ModEventHandler {
         LivingEntity killedEntity = event.getEntity();
         Entity sourceEntity = event.getSource().getEntity();
 
+        if (killedEntity instanceof com.qiuyue.goetyominous.common.entities.hostile.GuzzlerBoss
+                && net.minecraftforge.fml.ModList.get().isLoaded("mynethersdelight")) {
+            net.minecraft.world.item.Item loin = net.minecraftforge.registries.ForgeRegistries.ITEMS.getValue(
+                    new net.minecraft.resources.ResourceLocation("mynethersdelight", "hoglin_loin"));
+            if (loin != null && loin != net.minecraft.world.item.Items.AIR) {
+                for (ItemEntity drop : event.getDrops()) {
+                    if (drop.getItem().is(net.minecraft.world.item.Items.PORKCHOP)) {
+                        drop.setItem(new ItemStack(loin, drop.getItem().getCount()));
+                    }
+                }
+            }
+        }
+
         if (killedEntity instanceof Axolotl axolotl && axolotl.getVariant() == Axolotl.Variant.BLUE
                 && sourceEntity instanceof Player) {
             event.getDrops().add(new ItemEntity(killedEntity.level(),
