@@ -149,6 +149,12 @@ public class ModItems {
     public static final RegistryObject<Item> PIGLIN_PRIDE = ITEMS.register("piglin_pride",
             () -> new PiglinPrideItem());
 
+    public static final RegistryObject<Item> SHAMAN_TOTEM = ITEMS.register("shaman_totem",
+            () -> new ShamanTotemItem());
+
+    public static final RegistryObject<Item> BROKEN_SHAMAN_TOTEM = ITEMS.register("broken_shaman_totem",
+            () -> new BrokenShamanTotemItem());
+
     public static final RegistryObject<Item> BASTION_SCROLL = ITEMS.register("bastion_scroll",
             () -> new ScrollItem(ResearchList.BASTION));
 
@@ -217,6 +223,10 @@ public class ModItems {
     public static final RegistryObject<Item> MUSIC_DISC_SPORE = ITEMS.register("music_disc_spore",
             () -> new RecordItem(14, ModSounds.MUSIC_DISC_SPORE.get(),
                     new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 4921));
+
+    public static final RegistryObject<Item> MUSIC_DISC_GUZZLER = ITEMS.register("music_disc_guzzler",
+            () -> new RecordItem(15, ModSounds.MUSIC_DISC_GUZZLER.get(),
+                    new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 2386));
 
     public static final RegistryObject<Item> HURRICANE_CORE = ITEMS.register("hurricane_core",
             () -> new HurricaneCoreItem());
@@ -462,6 +472,10 @@ public class ModItems {
     public static final RegistryObject<ForgeSpawnEggItem> PIGLIN_SHAMAN_SPAWN_EGG = ITEMS.register(
             "piglin_shaman_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntityTypes.PIGLIN_SHAMAN, 0xD9A36C, 0x6A2C91, egg()));
+
+    public static final RegistryObject<ServantSpawnEggItem> ALLY_SHAMAN_SPAWN_EGG = ITEMS.register(
+            "ally_shaman_spawn_egg",
+            () -> new ServantSpawnEggItem(ModEntityTypes.ALLY_SHAMAN, 0xE6C07B, 0x2E8B57, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> FUNGUS_THROWER_SERVANT_SPAWN_EGG = ITEMS.register(
             "fungus_thrower_servant_spawn_egg",

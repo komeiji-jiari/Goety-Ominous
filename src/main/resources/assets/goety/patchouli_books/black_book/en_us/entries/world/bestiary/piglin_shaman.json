@@ -1,0 +1,20 @@
+{
+  "name": "Nether Mages",
+  "icon": "goetyominous:shaman_totem",
+  "category": "goety:ominous_world/bestiary",
+  "advancement": "goetyominous:goetyominous/kill_a_piglin_shaman",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Even older and more wicked Piglin sorcerers, whose origins and age remain unknown. The manuscripts they leave behind even record their involvement in suppressing the magicians within the Fortress..."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:piglin_shaman"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "These Shamans brew vast quantities of vile potions and wield formidable magical power. Within dying breath, they summon Zombified Piglin Servants and fire poisonous, wicked projectiles at creatures. Fortunately for you and other dark magic users, these Shamans still preserve a manuscript recording the glorious history of the Piglins, containing some of the ancient knowledge the Piglin tribes have kept to this day. Wither Skeletons do not regard them as threats, due to the dreadful aura of death that clings to them."
+    }
+  ]
+}

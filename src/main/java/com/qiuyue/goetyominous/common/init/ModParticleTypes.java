@@ -1,5 +1,6 @@
 package com.qiuyue.goetyominous.common.init;
 
+import com.Polarice3.Goety.client.particles.MCDEffectOption;
 import com.mojang.serialization.Codec;
 import com.qiuyue.goetyominous.GoetyOminous;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -34,6 +35,9 @@ public class ModParticleTypes {
             PARTICLE_TYPES.register("bouncing_spark", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> SOUL_FLAME_GATHER =
             PARTICLE_TYPES.register("soul_flame_gather", () -> new SimpleParticleType(false));
+
+    public static final RegistryObject<ParticleType<MCDEffectOption>> SHAMAN_SOUL =
+            PARTICLE_TYPES.register("shaman_soul", MCDEffectOption::createType);
 
     public static final RegistryObject<SimpleParticleType> VAULT_CONNECTION = PARTICLE_TYPES.register("vault_connection", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> CRYPT_VAULT_CONNECTION = PARTICLE_TYPES.register("crypt_vault_connection", () -> new SimpleParticleType(false));

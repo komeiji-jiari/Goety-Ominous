@@ -1,0 +1,15 @@
+{
+  "name": "goetyominous:captured_cultist_fort/start",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "goetyominous:captured_cultist_fort",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      }
+    }
+  ]
+}

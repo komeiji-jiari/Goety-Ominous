@@ -11,8 +11,10 @@ import com.Polarice3.Goety.common.network.server.SAddBrewParticlesPacket;
 import com.Polarice3.Goety.common.network.server.SPlayWorldSoundPacket;
 import com.Polarice3.Goety.init.ModSounds;
 import com.Polarice3.Goety.utils.BrewUtils;
+import com.qiuyue.goetyominous.common.entities.ally.mobs.AllyPiglinShaman;
 import com.qiuyue.goetyominous.common.entities.hostile.piglin.PiglinShaman;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -59,7 +61,15 @@ public class PiglinShamanBrew extends ThrownBrew {
         if (owner instanceof PiglinShaman shaman && shaman.isOwnSummon(entity)) {
             return false;
         }
+        if (this.isAllyFiltered(entity)) {
+            return false;
+        }
         return super.canHitEntity(entity);
+    }
+
+    private boolean isAllyFiltered(Entity entity) {
+        Entity owner = this.getOwner();
+        return owner instanceof AllyPiglinShaman && ServantAllyUtil.areAllied(owner, entity);
     }
 
     @Override
@@ -146,6 +156,9 @@ public class PiglinShamanBrew extends ThrownBrew {
                 if (owner instanceof PiglinShaman shaman && shaman.isOwnSummon(entity)) {
                     continue;
                 }
+                if (this.isAllyFiltered(entity)) {
+                    continue;
+                }
                 if (entity instanceof LivingEntity living) {
                     EntityTeleportEvent.EnderEntity event = ForgeEventFactory.onEnderTeleport(
                             living, pos.getX(), pos.getY() + 1, pos.getZ());
@@ -213,6 +226,9 @@ public class PiglinShamanBrew extends ThrownBrew {
         if (living == owner) {
             return false;
         }
-        return !(owner instanceof PiglinShaman shaman) || !shaman.isOwnSummon(living);
+        if (owner instanceof PiglinShaman shaman && shaman.isOwnSummon(living)) {
+            return false;
+        }
+        return !this.isAllyFiltered(living);
     }
 }

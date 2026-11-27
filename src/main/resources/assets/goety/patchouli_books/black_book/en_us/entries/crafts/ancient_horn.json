@@ -1,0 +1,15 @@
+{
+  "name": "Ancient Horn",
+  "icon": "goetyominous:ancient_horn",
+  "category": "goety:ominous_crafts",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "This horn mimics the rallying call the ancient Piglins used to wage war. Some ancient beings of the Nether may answer this call—provided, of course, that you are within a Bastion Remnant or a Fiery Bulwark."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goetyominous:ancient_horn"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "下界永恒坩埚",
+  "icon": "goetyominous:nether_eternal_cauldron",
+  "category": "goety:ominous_crafts/garment",
+  "advancement": "goetyominous:goetyominous/kill_a_piglin_shaman",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你从下界猪灵手中得到了一个坩埚。这个坩埚可以通过按下右键打开内部空间用来盛纳药酿，装备在饰品栏时按下启用饰品键(默认G键)即可在不消耗药酿的情况下触发一次药酿效果，随后该饰品将会进入冷却。效果越多越强的药酿冷却时间也会越长。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "如果你不喜欢它的外观，你可以在诅咒注入器上为其切换纹理。"
+    }
+  ]
+}

@@ -445,6 +445,8 @@ public class ModModelLayers {
 
         event.registerEntityRenderer(ModEntityTypes.PIGLIN_SHAMAN.get(), PiglinShamanRenderer::new);
 
+        event.registerEntityRenderer(ModEntityTypes.ALLY_SHAMAN.get(), AllyPiglinShamanRenderer::new);
+
         event.registerEntityRenderer(ModEntityTypes.PIGLIN_SHAMAN_BREW.get(), ThrownItemRenderer::new);
 
         event.registerEntityRenderer(ModEntityTypes.BASTION_GUARD_SERVANT.get(),

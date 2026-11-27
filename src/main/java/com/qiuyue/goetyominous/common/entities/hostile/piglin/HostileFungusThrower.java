@@ -66,7 +66,14 @@ public class HostileFungusThrower extends AbstractPiglin {
 
     @Override
     protected Brain.Provider<HostileFungusThrower> brainProvider() {
-        return Brain.provider(ImmutableList.of(MemoryModuleType.ATTACK_TARGET), ImmutableList.of());
+        return Brain.provider(ImmutableList.of(
+                MemoryModuleType.ATTACK_TARGET,
+                MemoryModuleType.ANGRY_AT,
+                MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
+                MemoryModuleType.UNIVERSAL_ANGER,
+                MemoryModuleType.HUNTED_RECENTLY,
+                MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER
+        ), ImmutableList.of());
     }
 
     @Override
@@ -119,6 +126,10 @@ public class HostileFungusThrower extends AbstractPiglin {
     @Override
     protected void playConvertedSound() {
         this.playSound(SoundEvents.PIGLIN_CONVERTED_TO_ZOMBIFIED, 1.0F, 1.0F);
+    }
+
+    public void playSkillConvertedSound() {
+        this.playConvertedSound();
     }
 
     @Override

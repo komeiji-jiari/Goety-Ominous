@@ -431,6 +431,11 @@ public class Guzzler extends AbstractPiglinServant {
     }
 
     @Override
+    public void playSkillConversionSound() {
+        this.playSound(ModSounds.GUZZLER_BREATHE.get(), this.getSoundVolume(), this.getVoicePitch());
+    }
+
+    @Override
     protected SoundEvent getTinctureSound() {
         return ModSounds.GUZZLER_IDLE.get();
     }

@@ -1,0 +1,31 @@
+{
+  "type": "goety:ritual",
+  "ritual_type": "goety:craft",
+  "activation_item": {
+    "item": "goetyominous:broken_shaman_totem"
+  },
+  "craftType": "adept_nether",
+  "soulCost": 30,
+  "duration": 10,
+  "research": "bastion",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/gold"
+    },
+    {
+      "item": "goety:soul_emerald"
+    },
+    {
+      "item": "goety:pale_crystal_ball"
+    },
+    {
+      "item": "goety:brew"
+    },
+    {
+      "tag": "forge:ingots/netherite"
+    }
+  ],
+  "result": {
+    "item": "goetyominous:shaman_totem"
+  }
+}

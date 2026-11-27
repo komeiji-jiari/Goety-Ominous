@@ -1,0 +1,20 @@
+{
+  "name": "下界巫师",
+  "icon": "goetyominous:shaman_totem",
+  "category": "goety:ominous_world/bestiary",
+  "advancement": "goetyominous:goetyominous/kill_a_piglin_shaman",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "更古老，更邪恶的猪灵巫师，关于他们的起源和存在时间仍然是未知的。他们留下的手稿上甚至记载了他们介入镇压要塞中的魔法师的事迹..."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:piglin_shaman"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "这些巫师酿造了大量恶毒的药水，并且拥有着强大的魔法力量。他们在垂死的气息中召唤出僵尸猪灵仆从，发射带有剧毒的邪恶飞弹攻击生物。幸运的是，对于你和其他黑魔法使来说，这些巫师仍然保留了一份记载过去猪灵辉煌历史的手稿，这些手稿掌握了猪灵族群保留至今的一些古代知识。他们不会被凋灵骷髅视为威胁，因为他们身上可怕的死亡气息。"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "守卫卷轴",
+  "icon": "goetyominous:bastion_scroll",
+  "category": "goety:ominous_crafts",
+  "advancement": "goetyominous:goetyominous/kill_a_piglin_shaman",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你从猪灵魔法师手中得到了一个记载猪灵历史和秘密知识的手稿。不幸的是，你无法理解猪灵的叙事方式，但你已经设法找到了一种方法召唤下界中的猪灵鬼魂来解密它。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:bastion_scroll"
+    }
+  ]
+}

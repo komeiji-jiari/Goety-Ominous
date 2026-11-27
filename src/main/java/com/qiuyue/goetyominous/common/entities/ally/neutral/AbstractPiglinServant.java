@@ -47,6 +47,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.util.GoalUtils;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.piglin.PiglinAi;
 import net.minecraft.world.entity.monster.piglin.PiglinArmPose;
 import net.minecraft.world.entity.npc.InventoryCarrier;
 import net.minecraft.world.entity.player.Player;
@@ -76,6 +77,8 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
     protected int rangedDamageDealt;
     private int admireTicks;
     private int admireDisabledTicks;
+    @Nullable
+    private UUID barterPlayerUUID;
     public @Nullable AbstractPiglinServant breedingPartner;
     public void setImmune(boolean immune) { this.setImmuneToZombification(immune); }
     private int breedCool;
@@ -159,6 +162,9 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
         p_34661_.putInt("RangedDamageDealt", this.rangedDamageDealt);
         p_34661_.putInt("AdmireTicks", this.admireTicks);
         p_34661_.putInt("AdmireDisabledTicks", this.admireDisabledTicks);
+        if (this.barterPlayerUUID != null) {
+            p_34661_.putUUID("BarterPlayer", this.barterPlayerUUID);
+        }
         p_34661_.putBoolean("UpgradesLocked", this.upgradesLocked());
         super.addAdditionalSaveData(p_34661_);
 
@@ -191,6 +197,7 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
         this.rangedDamageDealt = p_34659_.getInt("RangedDamageDealt");
         this.admireTicks = p_34659_.getInt("AdmireTicks");
         this.admireDisabledTicks = p_34659_.getInt("AdmireDisabledTicks");
+        this.barterPlayerUUID = p_34659_.hasUUID("BarterPlayer") ? p_34659_.getUUID("BarterPlayer") : null;
         super.readAdditionalSaveData(p_34659_);
         this.setImmuneToZombification(p_34659_.getBoolean("IsImmuneToZombification"));
         this.timeInOverworld = p_34659_.getInt("TimeInOverworld");
@@ -573,6 +580,10 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
         return com.Polarice3.Goety.common.entities.ModEntityType.ZPIGLIN_SERVANT.get();
     }
 
+    public EntityType<? extends Mob> getZombieVariant() {
+        return this.getZombieVariantType();
+    }
+
     protected void copyConversionRotation(Mob mob) {
         if (this.hasCustomName()) {
             mob.setCustomName(this.getCustomName());
@@ -606,6 +617,7 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
     @Override
     public void die(DamageSource source) {
         if (!this.level().isClientSide
+                && this.getShrine() == null
                 && this.getTrueOwner() != null
                 && CuriosFinder.hasNamelessSet(this.getTrueOwner())
                 && !this.isBaby()) {
@@ -797,16 +809,18 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
         ItemStack itemstack = pPlayer.getItemInHand(pHand);
         Item item = itemstack.getItem();
         ItemStack itemstack2 = this.getMainHandItem();
-        if (this.getTrueOwner() != null && pPlayer.getUUID().equals(this.getTrueOwner().getUUID())) {
-            if (itemstack.is(Items.GOLD_INGOT) && this.canBarter()
-                    && this.admireTicks <= 0 && this.admireDisabledTicks <= 0) {
-                if (!pPlayer.getAbilities().instabuild) {
-                    itemstack.shrink(1);
-                }
-                this.startAdmiring();
-                return InteractionResult.SUCCESS;
+        if (itemstack.is(Items.GOLD_INGOT) && this.canBarter()
+                && this.admireTicks <= 0 && this.admireDisabledTicks <= 0
+                && this.canBarterWith(pPlayer)) {
+            if (!pPlayer.getAbilities().instabuild) {
+                itemstack.shrink(1);
             }
+            this.barterPlayerUUID = pPlayer.getUUID();
+            this.startAdmiring();
+            return InteractionResult.SUCCESS;
+        }
 
+        if (this.getTrueOwner() != null && pPlayer.getUUID().equals(this.getTrueOwner().getUUID())) {
             net.minecraft.world.item.Item snapWarts =
                     net.minecraftforge.registries.ForgeRegistries.ITEMS.getValue(
                             new net.minecraft.resources.ResourceLocation("goety", "snap_warts"));
@@ -1054,6 +1068,20 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
         return !this.isBaby();
     }
 
+    protected boolean canBarterWith(Player player) {
+        if (player.isCreative()) {
+            return true;
+        }
+        if (this.getOwnerId() != null && this.getOwnerId().equals(player.getUUID())) {
+            return true;
+        }
+        LivingEntity owner = this.getTrueOwner();
+        if (owner != null && MobUtil.areAllies(owner, player)) {
+            return true;
+        }
+        return PiglinAi.isWearingGold(player);
+    }
+
     public boolean isAdmiring() {
         return this.admireTicks > 0;
     }
@@ -1075,6 +1103,7 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
 
     protected void cancelAdmiring(boolean byPlayer) {
         this.admireTicks = 0;
+        this.barterPlayerUUID = null;
         if (this.getOffhandItem().is(Items.GOLD_INGOT)) {
             this.setItemSlot(EquipmentSlot.OFFHAND, ItemStack.EMPTY);
         }
@@ -1084,6 +1113,8 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
     }
 
     protected void finishBarter() {
+        UUID traderId = this.barterPlayerUUID;
+        this.barterPlayerUUID = null;
         if (!this.getOffhandItem().is(Items.GOLD_INGOT)) {
             return;
         }
@@ -1092,8 +1123,12 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
         if (!(this.level() instanceof ServerLevel serverLevel)) {
             return;
         }
+        Player trader = traderId != null ? serverLevel.getPlayerByUUID(traderId) : null;
+        if (trader != null && trader.level() != serverLevel) {
+            trader = null;
+        }
         LivingEntity owner = this.getTrueOwner();
-        Vec3 target = owner != null ? owner.position() : this.position();
+        Vec3 target = trader != null ? trader.position() : owner != null ? owner.position() : this.position();
         for (ItemStack drop : this.rollBarterLoot(serverLevel)) {
             this.onBarterLoot(drop);
             BehaviorUtils.throwItem(this, drop, target);
@@ -1253,6 +1288,14 @@ public abstract class AbstractPiglinServant extends Summoned implements ILooter 
 
     protected boolean isHoldingMeleeWeapon() {
         return this.getMainHandItem().getItem() instanceof TieredItem;
+    }
+
+    public void playSkillConversionSound() {
+        this.playSound(SoundEvents.PIGLIN_RETREAT, this.getSoundVolume(), this.getVoicePitch());
+    }
+
+    public void playSkillConvertedSound() {
+        this.playConvertedSound();
     }
 
     public void playAmbientSound() {

@@ -106,8 +106,7 @@ public class TrialCreativeTabs {
             after(event, Items.MUSIC_DISC_RELIC,
                     ModItems.MUSIC_DISC_CREATOR.get(),
                     ModItems.MUSIC_DISC_CREATOR_MUSIC_BOX.get(),
-                    ModItems.MUSIC_DISC_PRECIPICE.get(),
-                    ModItems.MUSIC_DISC_SPORE.get());
+                    ModItems.MUSIC_DISC_PRECIPICE.get());
             return;
         }
         if (CreativeModeTabs.COMBAT.equals(event.getTabKey())) {

@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.common.entities.hostile;
 import com.Polarice3.Goety.common.entities.util.CameraShake;
 import com.Polarice3.Goety.common.network.ModServerBossInfo;
 import com.Polarice3.Goety.config.MainConfig;
+import com.Polarice3.Goety.utils.MiscCapHelper;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.qiuyue.goetyominous.common.entities.ai.CenteredGroundNavigation;
 import com.qiuyue.goetyominous.common.entities.ai.GuzzlerBossAttackGoal;
@@ -242,6 +243,7 @@ public class GuzzlerBoss extends Monster {
             }
             this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
         }
+        MiscCapHelper.updateMobTarget(this);
     }
 
     private void tickSleep() {
@@ -372,6 +374,14 @@ public class GuzzlerBoss extends Monster {
 
     protected void playConvertedSound() {
         this.playSound(ModSounds.GUZZLER_HURT.get(), 1.0F, this.getVoicePitch());
+    }
+
+    public void playSkillConversionSound() {
+        this.playSound(ModSounds.GUZZLER_BREATHE.get(), this.getSoundVolume(), this.getVoicePitch());
+    }
+
+    public void playSkillConvertedSound() {
+        this.playConvertedSound();
     }
 
     protected void finishConversion(ServerLevel serverLevel) {

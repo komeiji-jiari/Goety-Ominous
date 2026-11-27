@@ -1,0 +1,38 @@
+{
+  "name": "Piglin Shaman",
+  "icon": "goetyominous:shaman_totem",
+  "category": "goety:ominous_summons",
+  "advancement": "goetyominous:goetyominous/kill_a_piglin_shaman",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "After defeating the sorcerers among the Piglins, word of your power has reached the ears of other ancient Shamans. Some of them are drawn to your sinister strength, and through a discarded totem left behind by one such Shaman, you can invite a Shaman to come to your aid."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:ally_shaman"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goetyominous:shaman_totem",
+      "text": "These totems seem to serve as a symbol of status among Shamans. Once you obtain an intact totem, you can hold the use key to call forth a Shaman, consuming the totem in the process. If the Shaman is driven off, they will return their totem before withdrawing."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:shaman_totem"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Shamans can pick up and eat items just like Piglin servants, but unfortunately they will not accept equipment from you. Similar to how Evokers create Ravagers, when you right-click your Shaman with a wand containing a Command Focus, then right-click a nearby Piglin, your Shaman will transform it into a corresponding Zombified Piglin."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Not only that, but these wicked Shamans also cause any Piglin that dies near them to be transformed into a Zombified Piglin, and these Zombified Piglins will be loyal to the Shaman. Right-clicking your Shaman with an empty hand will have them summon Zombified Piglin Servants for you."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "You're also able to trade with your Shaman by giving them a Gold Ingot, without needing to wear appropriate attire to do so. You can also trade with other Shamans, provided you're allied to their employer, if they have one, and wearing the appropriate attire."
+    }
+  ]
+}

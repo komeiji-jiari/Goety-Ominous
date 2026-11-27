@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "goetyominous:broken_shaman_totem"
+    }
+  ],
+  "result": {
+    "item": "minecraft:gold_ingot",
+    "count": 5
+  }
+}

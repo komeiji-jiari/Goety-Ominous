@@ -165,12 +165,15 @@ public class ModSounds {
 
     public static final RegistryObject<SoundEvent> MONARCH_BOSS = create("monarch_boss");
     public static final RegistryObject<SoundEvent> SHAMAN_BOSS = create("shaman_boss");
+    public static final RegistryObject<SoundEvent> GUZZLER_BOSS = create("guzzler_boss");
+    public static final RegistryObject<SoundEvent> GUZZLER_BOSS_POST = create("guzzler_boss_post");
 
     public static final RegistryObject<SoundEvent> MUSIC_DISC_PRECIPICE = create("music_disc_precipice");
 
     public static final RegistryObject<SoundEvent> MUSIC_DISC_CREATOR = create("music_disc_creator");
     public static final RegistryObject<SoundEvent> MUSIC_DISC_CREATOR_MUSIC_BOX = create("music_disc_creator_music_box");
     public static final RegistryObject<SoundEvent> MUSIC_DISC_SPORE = create("music_disc_spore");
+    public static final RegistryObject<SoundEvent> MUSIC_DISC_GUZZLER = create("music_disc_guzzler");
 
     public static final RegistryObject<SoundEvent> VAULT_ACTIVATE = create("vault_activate");
     public static final RegistryObject<SoundEvent> VAULT_AMBIENT = create("vault_ambient");

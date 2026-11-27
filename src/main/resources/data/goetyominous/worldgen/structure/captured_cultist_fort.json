@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:jigsaw",
+  "biomes": "#minecraft:has_structure/bastion_remnant",
+  "step": "underground_decoration",
+  "spawn_overrides": {},
+  "start_pool": "goetyominous:captured_cultist_fort/start",
+  "size": 1,
+  "start_height": {
+    "type": "minecraft:uniform",
+    "min_inclusive": {
+      "absolute": 35
+    },
+    "max_inclusive": {
+      "absolute": 75
+    }
+  },
+  "liquid_settings": "ignore_waterlogging",
+  "max_distance_from_center": 116,
+  "use_expansion_hack": false,
+  "terrain_adaptation": "beard_box"
+}

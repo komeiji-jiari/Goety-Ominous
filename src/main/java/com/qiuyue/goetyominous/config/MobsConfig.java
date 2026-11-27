@@ -10,6 +10,7 @@ public class MobsConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> ShamanServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> WargLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> BreezeServantLimit;
     public static final ForgeConfigSpec.ConfigValue<Integer> HurricaneServantLimit;
@@ -59,6 +60,9 @@ public class MobsConfig {
 
     static {
         BUILDER.push("Servant Limits");
+        ShamanServantLimit = BUILDER
+                .comment("Maximum number of Piglin Shaman Servants that an individual player can have in total (Default: 2)")
+                .defineInRange("shamanServantLimit", 2, 0, 100);
         WargLimit = BUILDER
                 .comment("Maximum number of Wargs that can be summoned (Default: 3)")
                 .defineInRange("wargLimit", 3, 1, 100);

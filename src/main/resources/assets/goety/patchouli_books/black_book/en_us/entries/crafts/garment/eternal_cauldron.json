@@ -1,0 +1,17 @@
+{
+  "name": "Nether Eternal Cauldron",
+  "icon": "goetyominous:nether_eternal_cauldron",
+  "category": "goety:ominous_crafts/garment",
+  "advancement": "goetyominous:goetyominous/kill_a_piglin_shaman",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You obtained a cauldron from the Nether Piglins. Right-click to open its internal storage and fill it with a brew. While equipped in a trinket slot, pressing the activate trinket key (default: G) triggers the brew's effect once without consuming it, after which the trinket enters cooldown. The more effects and the stronger the brew, the longer the cooldown."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "If you don't like its appearance, you can switch its texture on a Cursed Infuser."
+    }
+  ]
+}

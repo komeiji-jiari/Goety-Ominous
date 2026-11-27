@@ -18,7 +18,6 @@ import com.qiuyue.goetyominous.common.entities.hostile.piglin.HostileFungusThrow
 import com.qiuyue.goetyominous.common.entities.hostile.piglin.PiglinShaman;
 import com.qiuyue.goetyominous.common.entities.hostile.piglin.ZHostileFungusThrower;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.*;
-
 import com.qiuyue.goetyominous.common.entities.ally.mobs.StormNecromancerServant;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.CrimsonSpiderServant;
 import com.qiuyue.goetyominous.common.entities.hostile.*;
@@ -390,6 +389,13 @@ public class ModEntityTypes {
                     .sized(1.375F, 1.95F)
                     .clientTrackingRange(10)
                     .build(MOD_ID + ":piglin_shaman"));
+
+    public static final RegistryObject<EntityType<AllyPiglinShaman>> ALLY_SHAMAN = ENTITY_TYPES.register(
+            "ally_shaman",
+            () -> EntityType.Builder.of(AllyPiglinShaman::new, MobCategory.MONSTER)
+                    .sized(1.375F, 1.95F)
+                    .clientTrackingRange(10)
+                    .build(MOD_ID + ":ally_shaman"));
 
     public static final RegistryObject<EntityType<PiglinShamanBrew>> PIGLIN_SHAMAN_BREW = ENTITY_TYPES.register(
             "piglin_shaman_brew",

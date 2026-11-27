@@ -139,6 +139,21 @@ public class ModCreativeTab {
                 int robeIndex = buckets.curios.indexOf(com.goety_soul_witch.registry.GoetyOminousItems.CRONE_ROBE.get());
                 buckets.curios.add(robeIndex < 0 ? buckets.curios.size() : robeIndex, croneHat);
             }
+            buckets.other.remove(ModItems.MUSIC_DISC_SPORE.get());
+            buckets.other.remove(ModItems.MUSIC_DISC_GUZZLER.get());
+            int shamanTotemIndex = buckets.revive.indexOf(ModItems.SHAMAN_TOTEM.get());
+            if (shamanTotemIndex >= 0 && buckets.other.remove(ModItems.BROKEN_SHAMAN_TOTEM.get())) {
+                buckets.revive.add(shamanTotemIndex + 1, ModItems.BROKEN_SHAMAN_TOTEM.get());
+            }
+            int blackBeast = buckets.armor.indexOf(ModItems.DARK_BLACK_BEAST_ARMOR.get());
+            if (blackBeast >= 0) {
+                buckets.armor.add(blackBeast + 1, ModItems.MUSIC_DISC_SPORE.get());
+                buckets.armor.add(blackBeast + 2, ModItems.MUSIC_DISC_GUZZLER.get());
+            } else {
+                int beastIndex = buckets.other.indexOf(ModItems.DARK_BLACK_BEAST_ARMOR.get());
+                buckets.other.add(beastIndex + 1, ModItems.MUSIC_DISC_SPORE.get());
+                buckets.other.add(beastIndex + 2, ModItems.MUSIC_DISC_GUZZLER.get());
+            }
             sortMaterials(buckets.materials);
             sortOther(buckets.other);
             return buckets;
@@ -325,7 +340,6 @@ public class ModCreativeTab {
             items.add(ModItems.MUSIC_DISC_CREATOR.get());
             items.add(ModItems.MUSIC_DISC_CREATOR_MUSIC_BOX.get());
             items.add(ModItems.MUSIC_DISC_PRECIPICE.get());
-            items.add(ModItems.MUSIC_DISC_SPORE.get());
             items.add(ModItems.WIND_CHARGE.get());
             items.add(ModItems.MACE.get());
             items.add(ModItems.BREEZE_ROD.get());

@@ -1,0 +1,16 @@
+{
+  "name": "Bastion Scroll",
+  "icon": "goetyominous:bastion_scroll",
+  "category": "goety:ominous_crafts",
+  "advancement": "goetyominous:goetyominous/kill_a_piglin_shaman",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You obtained a manuscript from a Piglin Mage that records Piglin history and secret knowledge. Unfortunately, you cannot understand the Piglin way of telling it, but you have managed to find a way to summon the spirits of dead Piglins from the Nether to decipher it."
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:bastion_scroll"
+    }
+  ]
+}

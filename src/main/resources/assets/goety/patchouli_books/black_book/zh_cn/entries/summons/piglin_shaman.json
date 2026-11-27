@@ -1,0 +1,38 @@
+{
+  "name": "猪灵萨满",
+  "icon": "goetyominous:shaman_totem",
+  "category": "goety:ominous_summons",
+  "advancement": "goetyominous:goetyominous/kill_a_piglin_shaman",
+  "secret": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "打败了猪灵中的巫师之后，你的力量已经传到了其他古老巫师的耳中。其中有一些人对你的邪恶力量心生向往，通过其中一个萨满留下的废旧图腾，你能够邀请一个萨满前来帮助你。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "goetyominous:ally_shaman"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "goetyominous:shaman_totem",
+      "text": "这些图腾似乎在萨满之中作为一种身份的象征。一旦你得到了一个完好的图腾，你可以长按使用键来呼唤一个萨满，这么做会消耗图腾。如果萨满被击退，他们会在撤离前返还自己的图腾。"
+    },
+    {
+      "type": "goety:ritual",
+      "recipe": "goetyominous:shaman_totem"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "萨满可以和猪灵仆从一样捡起和食用物品，但可惜的是他们不接受你提供的装备。类似唤魔者制造蹂躏者的方法，当你用装有命令聚晶/敕令聚晶的法杖右键萨满，再右键离他们最近的猪灵，你的萨满便会将他们转化为对应的僵尸猪灵。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "不仅如此，这些邪恶的巫师还会让在他们周围死亡的猪灵都被转化为僵尸猪灵，而且这些僵尸猪灵将会忠诚于萨满。空手右键与你的萨满交互，将会使他们为你召唤僵尸猪灵仆从。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "你可以通过给予金锭与萨满交易，且无需穿戴特定的服饰。若你与萨满的雇主也是盟友关系，并且穿戴了合适的服饰，你也能与其他人的萨满进行交易。"
+    }
+  ]
+}

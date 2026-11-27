@@ -9,7 +9,9 @@ import com.Polarice3.Goety.utils.MathHelper;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.google.common.collect.Maps;
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.common.entities.ally.mobs.AllyPiglinShaman;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
+import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.minecraft.Util;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -103,6 +105,15 @@ public class FelBolt extends SpellHurtingProjectile {
     @Override
     protected boolean shouldBurn() {
         return false;
+    }
+
+    @Override
+    protected boolean canHitEntity(Entity entity) {
+        Entity owner = this.getOwner();
+        if (owner instanceof AllyPiglinShaman && ServantAllyUtil.areAllied(owner, entity)) {
+            return false;
+        }
+        return super.canHitEntity(entity);
     }
 
     @Override

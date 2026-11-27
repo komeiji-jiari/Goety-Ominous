@@ -9,6 +9,7 @@ import com.Polarice3.Goety.utils.BlockFinder;
 import com.Polarice3.Goety.utils.MobUtil;
 import com.Polarice3.Goety.utils.WandUtil;
 import com.qiuyue.goetyominous.common.entities.ally.mobs.BreezeServant;
+import com.qiuyue.goetyominous.common.entities.ally.mobs.HurricaneServant;
 import com.qiuyue.goetyominous.common.init.ModEntityTypes;
 import com.qiuyue.goetyominous.config.MobsConfig;
 import com.qiuyue.goetyominous.config.SpellConfig;
@@ -20,6 +21,7 @@ import com.qiuyue.goetyominous.utils.ServantAllyUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.item.ItemStack;
@@ -66,6 +68,19 @@ public class BreezeSpell extends SummonSpell {
 
     public int summonLimit() {
         return (Integer) MobsConfig.BreezeServantLimit.get();
+    }
+
+    @Override
+    public void commonResult(ServerLevel worldIn, LivingEntity caster) {
+        if (this.isShifting(caster)) {
+            for (Entity entity : worldIn.getAllEntities()) {
+                if (entity instanceof LivingEntity living
+                        && (this.summonPredicate().test(living) || living instanceof HurricaneServant)) {
+                    this.teleportServants(caster, entity);
+                }
+            }
+            this.commonResultHit(worldIn, caster);
+        }
     }
 
     public void SpellResult(ServerLevel worldIn, LivingEntity caster, ItemStack staff, SpellStat spellStat) {

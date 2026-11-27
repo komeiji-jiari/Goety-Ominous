@@ -88,5 +88,6 @@ public class ClientEvents {
         event.registerSpriteSet(ModParticleTypes.WIND_TYPHOON.get(), WindTyphoonParticle.Provider::new);
         event.registerSpriteSet(ModParticleTypes.BOUNCING_SPARK.get(), BouncingSparkParticle.Provider::new);
         event.registerSpriteSet(ModParticleTypes.SOUL_FLAME_GATHER.get(), GatheringParticle.Provider::new);
+        event.registerSpecial(ModParticleTypes.SHAMAN_SOUL.get(), new ShamanSoulParticle.Provider());
     }
 }

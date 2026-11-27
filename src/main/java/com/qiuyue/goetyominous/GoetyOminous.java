@@ -351,6 +351,7 @@ public class GoetyOminous {
         event.put(ModEntityTypes.FUNGUS_THROWER.get(), HostileFungusThrower.createAttributes().build());
         event.put(ModEntityTypes.ZFUNGUS_THROWER.get(), ZHostileFungusThrower.createAttributes().build());
         event.put(ModEntityTypes.PIGLIN_SHAMAN.get(), PiglinShaman.createAttributes().build());
+        event.put(ModEntityTypes.ALLY_SHAMAN.get(), com.qiuyue.goetyominous.common.entities.ally.mobs.AllyPiglinShaman.createAttributes().build());
         event.put(ModEntityTypes.FUNGUS_THROWER_SERVANT.get(), FungusThrower.createAttributes().build());
         event.put(ModEntityTypes.ZFUNGUS_THROWER_SERVANT.get(), ZPiglinServant.setCustomAttributes().build());
         event.put(ModEntityTypes.ELITE_FUNGUS_THROWER.get(), EliteFungusThrower.createAttributes().build());

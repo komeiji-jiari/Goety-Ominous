@@ -1,0 +1,15 @@
+{
+  "name": "古代号角",
+  "icon": "goetyominous:ancient_horn",
+  "category": "goety:ominous_crafts",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "这个号角模仿了古代猪灵发动战争的传令声。一些下界中的古老存在可能会响应这个呼唤，当然前提是你必须得在一个堡垒遗迹或者淬焰堡垒中。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "goetyominous:ancient_horn"
+    }
+  ]
+}
