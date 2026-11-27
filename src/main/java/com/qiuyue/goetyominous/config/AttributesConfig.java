@@ -89,7 +89,6 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> CrimsonGuardArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> CrimsonGuardToughness;
     public static final ForgeConfigSpec.ConfigValue<Double> CrimsonGuardDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> CrimsonGuardSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> CrimsonGuardFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> CrimsonGuardKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> CrimsonGuardAttackKnockback;
@@ -98,12 +97,10 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> ImperialChasseurToughness;
     public static final ForgeConfigSpec.ConfigValue<Double> ImperialChasseurDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> ImperialChasseurRangeDamage;
-    public static final ForgeConfigSpec.ConfigValue<Double> ImperialChasseurSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> ImperialChasseurFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> ImperialChasseurKnockbackResistance;
     public static final ForgeConfigSpec.ConfigValue<Double> ImperialChasseurAttackKnockback;
     public static final ForgeConfigSpec.ConfigValue<Double> PyrologerServantHealth;
-    public static final ForgeConfigSpec.ConfigValue<Double> PyrologerServantSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> PyrologerServantFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> PyrologerServantAttackDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> PyrologerServantArmor;
@@ -111,7 +108,6 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> PiglinDrummerArmor;
     public static final ForgeConfigSpec.ConfigValue<Double> PiglinDrummerArmorToughness;
     public static final ForgeConfigSpec.ConfigValue<Double> PiglinDrummerFollowRange;
-    public static final ForgeConfigSpec.ConfigValue<Double> PiglinDrummerSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> PiglinDrummerDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> BastionGuardServantHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> BastionGuardServantArmor;
@@ -125,7 +121,6 @@ public class AttributesConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> PiglinShamanFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> GrimMonarchHealth;
     public static final ForgeConfigSpec.ConfigValue<Double> GrimMonarchArmor;
-    public static final ForgeConfigSpec.ConfigValue<Double> GrimMonarchSpeed;
     public static final ForgeConfigSpec.ConfigValue<Double> GrimMonarchFollowRange;
     public static final ForgeConfigSpec.ConfigValue<Double> GrimMonarchAttackDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> GrimMonarchHPPercentDamage;
@@ -365,8 +360,6 @@ public class AttributesConfig {
                 .defineInRange("crimsonGuardToughness", 6.0, 0.0, Double.MAX_VALUE);
         CrimsonGuardDamage = BUILDER.comment("How much damage Crimson Guards deal, Default: 8.0")
                 .defineInRange("crimsonGuardDamage", 8.0, 1.0, Double.MAX_VALUE);
-        CrimsonGuardSpeed = BUILDER.comment("How fast Crimson Guards move, Default: 0.28")
-                .defineInRange("crimsonGuardSpeed", 0.28, 0.0, Double.MAX_VALUE);
         CrimsonGuardFollowRange = BUILDER.comment("How far Crimson Guards follow targets, Default: 16.0")
                 .defineInRange("crimsonGuardFollowRange", 16.0, 0.0, Double.MAX_VALUE);
         CrimsonGuardKnockbackResistance = BUILDER.comment("How much knockback resistance Crimson Guards have, Default: 1.0")
@@ -385,8 +378,6 @@ public class AttributesConfig {
                 .defineInRange("imperialChasseurDamage", 10.0D, 1.0D, Double.MAX_VALUE);
         ImperialChasseurRangeDamage = BUILDER.comment("Base damage of an Imperial Chasseur's heavy arrow, Default: 10.0")
                 .defineInRange("imperialChasseurRangeDamage", 10.0D, 0.0D, Double.MAX_VALUE);
-        ImperialChasseurSpeed = BUILDER.comment("How fast Imperial Chasseurs move, Default: 0.3")
-                .defineInRange("imperialChasseurSpeed", 0.3D, 0.0D, Double.MAX_VALUE);
         ImperialChasseurFollowRange = BUILDER.comment("How far Imperial Chasseurs target enemies, Default: 64.0")
                 .defineInRange("imperialChasseurFollowRange", 64.0D, 0.0D, Double.MAX_VALUE);
         ImperialChasseurKnockbackResistance = BUILDER.comment("How much knockback resistance Imperial Chasseurs have, Default: 1.0")
@@ -397,8 +388,6 @@ public class AttributesConfig {
         BUILDER.push("Pyrologer Servant");
         PyrologerServantHealth = BUILDER.comment("How much Max Health Pyrologer Servants have, Default: 32.0")
                 .defineInRange("pyrologerServantHealth", 32.0D, 1.0D, Double.MAX_VALUE);
-        PyrologerServantSpeed = BUILDER.comment("How fast Pyrologer Servants move, Default: 0.3")
-                .defineInRange("pyrologerServantSpeed", 0.3D, 0.0D, Double.MAX_VALUE);
         PyrologerServantFollowRange = BUILDER.comment("How far Pyrologer Servants target enemies, Default: 24.0")
                 .defineInRange("pyrologerServantFollowRange", 24.0D, 0.0D, Double.MAX_VALUE);
         PyrologerServantAttackDamage = BUILDER.comment("How much attack damage Pyrologer Servants have, Default: 8.0")
@@ -415,8 +404,6 @@ public class AttributesConfig {
                 .defineInRange("piglinDrummerArmorToughness", 0.0D, 0.0D, Double.MAX_VALUE);
         PiglinDrummerFollowRange = BUILDER.comment("How far Piglin Drummers and their zombified version target enemies, Default: 32.0")
                 .defineInRange("piglinDrummerFollowRange", 32.0D, 0.0D, Double.MAX_VALUE);
-        PiglinDrummerSpeed = BUILDER.comment("How fast Piglin Drummers and their zombified version move, Default: 0.38")
-                .defineInRange("piglinDrummerSpeed", 0.38D, 0.0D, Double.MAX_VALUE);
         PiglinDrummerDamage = BUILDER.comment("How much attack damage Piglin Drummers and their zombified version have, Default: 1.0")
                 .defineInRange("piglinDrummerDamage", 1.0D, 1.0D, Double.MAX_VALUE);
         BUILDER.pop();
@@ -442,8 +429,6 @@ public class AttributesConfig {
                 .defineInRange("grimMonarchHealth", 600.0D, 1.0D, Double.MAX_VALUE);
         GrimMonarchArmor = BUILDER.comment("How much natural Armor the Grim Monarch has (Default: 10.0)")
                 .defineInRange("grimMonarchArmor", 10.0D, 0.0D, Double.MAX_VALUE);
-        GrimMonarchSpeed = BUILDER.comment("How fast the Grim Monarch moves (Default: 0.3)")
-                .defineInRange("grimMonarchSpeed", 0.3D, 0.0D, Double.MAX_VALUE);
         GrimMonarchFollowRange = BUILDER.comment("How far the Grim Monarch targets enemies (Default: 64.0)")
                 .defineInRange("grimMonarchFollowRange", 64.0D, 0.0D, Double.MAX_VALUE);
         GrimMonarchAttackDamage = BUILDER.comment("Base damage used by all Grim Monarch attacks (Default: 16.0)")

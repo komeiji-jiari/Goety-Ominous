@@ -167,7 +167,7 @@ public class GrimMonarchEntity extends Monster {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AttributesConfig.GrimMonarchHealth.get())
                 .add(Attributes.ARMOR, AttributesConfig.GrimMonarchArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.GrimMonarchSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.3D)
                 .add(Attributes.FOLLOW_RANGE, AttributesConfig.GrimMonarchFollowRange.get())
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.GrimMonarchAttackDamage.get())
                 .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.GrimMonarchKnockbackResistance.get());
@@ -177,7 +177,7 @@ public class GrimMonarchEntity extends Monster {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, AttributesConfig.GrimMonarchEchoHealth.get())
                 .add(Attributes.ARMOR, AttributesConfig.GrimMonarchArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.GrimMonarchSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.3D)
                 .add(Attributes.FOLLOW_RANGE, AttributesConfig.GrimMonarchFollowRange.get())
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.GrimMonarchAttackDamage.get()
                         * AttributesConfig.GrimMonarchEchoDamage.get())

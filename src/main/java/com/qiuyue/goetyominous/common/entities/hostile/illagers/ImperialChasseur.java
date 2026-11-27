@@ -69,7 +69,7 @@ public class ImperialChasseur extends HuntingIllagerEntity {
                 .add(Attributes.ARMOR_TOUGHNESS, AttributesConfig.ImperialChasseurToughness.get())
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.ImperialChasseurDamage.get())
                 .add(Attributes.ATTACK_KNOCKBACK, AttributesConfig.ImperialChasseurAttackKnockback.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.ImperialChasseurSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.3D)
                 .add(Attributes.FOLLOW_RANGE, AttributesConfig.ImperialChasseurFollowRange.get())
                 .add(Attributes.KNOCKBACK_RESISTANCE, AttributesConfig.ImperialChasseurKnockbackResistance.get());
     }
@@ -81,7 +81,7 @@ public class ImperialChasseur extends HuntingIllagerEntity {
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR_TOUGHNESS), AttributesConfig.ImperialChasseurToughness.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), AttributesConfig.ImperialChasseurDamage.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_KNOCKBACK), AttributesConfig.ImperialChasseurAttackKnockback.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MOVEMENT_SPEED), AttributesConfig.ImperialChasseurSpeed.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MOVEMENT_SPEED), 0.3D);
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.FOLLOW_RANGE), AttributesConfig.ImperialChasseurFollowRange.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.KNOCKBACK_RESISTANCE), AttributesConfig.ImperialChasseurKnockbackResistance.get());
     }

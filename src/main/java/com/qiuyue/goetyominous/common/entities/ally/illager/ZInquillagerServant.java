@@ -90,7 +90,7 @@ public class ZInquillagerServant extends ZombieServant {
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
                 .add(Attributes.MAX_HEALTH, AttributesConfig.InquillagerHealth.get())
                 .add(Attributes.ARMOR, AttributesConfig.InquillagerArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, 0.35D)
+                .add(Attributes.MOVEMENT_SPEED, 0.23D)
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.InquillagerDamage.get());
     }
 

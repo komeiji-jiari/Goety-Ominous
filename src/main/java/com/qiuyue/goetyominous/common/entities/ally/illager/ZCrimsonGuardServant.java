@@ -85,7 +85,7 @@ public class ZCrimsonGuardServant extends ZombieServant {
                 .add(Attributes.MAX_HEALTH, AttributesConfig.CrimsonGuardHealth.get())
                 .add(Attributes.ARMOR, AttributesConfig.CrimsonGuardArmor.get() + 2.0D)
                 .add(Attributes.ARMOR_TOUGHNESS, AttributesConfig.CrimsonGuardToughness.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.CrimsonGuardSpeed.get() - 0.04D)
+                .add(Attributes.MOVEMENT_SPEED, 0.23D)
                 .add(Attributes.FOLLOW_RANGE, 35.0D)
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.CrimsonGuardDamage.get())
                 .add(Attributes.ATTACK_KNOCKBACK, AttributesConfig.CrimsonGuardAttackKnockback.get())
@@ -97,7 +97,7 @@ public class ZCrimsonGuardServant extends ZombieServant {
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), AttributesConfig.CrimsonGuardHealth.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), AttributesConfig.CrimsonGuardArmor.get() + 2.0D);
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR_TOUGHNESS), AttributesConfig.CrimsonGuardToughness.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MOVEMENT_SPEED), AttributesConfig.CrimsonGuardSpeed.get() - 0.04D);
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MOVEMENT_SPEED), 0.23D);
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.FOLLOW_RANGE), 35.0D);
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), AttributesConfig.CrimsonGuardDamage.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_KNOCKBACK), AttributesConfig.CrimsonGuardAttackKnockback.get());

@@ -94,7 +94,7 @@ public class BoundPyrologer extends AbstractBoundIllager {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, AttributesConfig.PyrologerServantHealth.get())
                 .add(Attributes.ARMOR, AttributesConfig.PyrologerServantArmor.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.PyrologerServantSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.3D)
                 .add(Attributes.FOLLOW_RANGE, AttributesConfig.PyrologerServantFollowRange.get())
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.PyrologerServantAttackDamage.get())
                 .add(Attributes.FLYING_SPEED, 0.15D);
@@ -104,7 +104,7 @@ public class BoundPyrologer extends AbstractBoundIllager {
     public void setConfigurableAttributes() {
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), AttributesConfig.PyrologerServantHealth.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), AttributesConfig.PyrologerServantArmor.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MOVEMENT_SPEED), AttributesConfig.PyrologerServantSpeed.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MOVEMENT_SPEED), 0.3D);
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.FOLLOW_RANGE), AttributesConfig.PyrologerServantFollowRange.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), AttributesConfig.PyrologerServantAttackDamage.get());
     }

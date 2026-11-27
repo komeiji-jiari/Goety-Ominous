@@ -60,7 +60,7 @@ public class CrimsonGuard extends HuntingIllagerEntity {
                 .add(Attributes.MAX_HEALTH, AttributesConfig.CrimsonGuardHealth.get())
                 .add(Attributes.ARMOR, AttributesConfig.CrimsonGuardArmor.get())
                 .add(Attributes.ARMOR_TOUGHNESS, AttributesConfig.CrimsonGuardToughness.get())
-                .add(Attributes.MOVEMENT_SPEED, AttributesConfig.CrimsonGuardSpeed.get())
+                .add(Attributes.MOVEMENT_SPEED, 0.28D)
                 .add(Attributes.FOLLOW_RANGE, AttributesConfig.CrimsonGuardFollowRange.get())
                 .add(Attributes.ATTACK_DAMAGE, AttributesConfig.CrimsonGuardDamage.get())
                 .add(Attributes.ATTACK_KNOCKBACK, AttributesConfig.CrimsonGuardAttackKnockback.get())
@@ -72,7 +72,7 @@ public class CrimsonGuard extends HuntingIllagerEntity {
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.MAX_HEALTH), AttributesConfig.CrimsonGuardHealth.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR), AttributesConfig.CrimsonGuardArmor.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ARMOR_TOUGHNESS), AttributesConfig.CrimsonGuardToughness.get());
-        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MOVEMENT_SPEED), AttributesConfig.CrimsonGuardSpeed.get());
+        MobUtil.setBaseAttributes(this.getAttribute(Attributes.MOVEMENT_SPEED), 0.28D);
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.FOLLOW_RANGE), AttributesConfig.CrimsonGuardFollowRange.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_DAMAGE), AttributesConfig.CrimsonGuardDamage.get());
         MobUtil.setBaseAttributes(this.getAttribute(Attributes.ATTACK_KNOCKBACK), AttributesConfig.CrimsonGuardAttackKnockback.get());
