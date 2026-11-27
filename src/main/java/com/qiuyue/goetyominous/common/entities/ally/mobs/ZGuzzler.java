@@ -64,6 +64,8 @@ public class ZGuzzler extends ZPiglinServant {
 
     private static final EntityDataAccessor<Integer> ANIM_STATE = SynchedEntityData.defineId(
             ZGuzzler.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> DYED = SynchedEntityData.defineId(
+            ZGuzzler.class, EntityDataSerializers.BOOLEAN);
     private static final int SLEEP_DELAY_TICKS = 300;
     private static final int SLEEP_RETRY_TICKS = 100;
     private static final float SLEEP_CHANCE = 0.25F;
@@ -189,6 +191,7 @@ public class ZGuzzler extends ZPiglinServant {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(ANIM_STATE, ANIM_IDLE);
+        this.entityData.define(DYED, false);
     }
 
     @Override
@@ -199,6 +202,7 @@ public class ZGuzzler extends ZPiglinServant {
         tag.putInt("JumpCooldown", this.jumpCooldown);
         tag.putInt("NoSleepTicks", this.noSleepTicks);
         tag.putBoolean("Sleeping", this.isSitting());
+        tag.putBoolean("Dyed", this.isDyed());
         tag.putInt("UpgradeLevel", this.upgradeLevel);
         tag.putInt("UpgradePoints", this.upgradePoints);
     }
@@ -210,6 +214,7 @@ public class ZGuzzler extends ZPiglinServant {
         this.spinCooldown = tag.getInt("SpinCooldown");
         this.jumpCooldown = tag.getInt("JumpCooldown");
         this.noSleepTicks = tag.getInt("NoSleepTicks");
+        this.setDyed(tag.getBoolean("Dyed"));
         this.upgradeLevel = Mth.clamp(tag.getInt("UpgradeLevel"), 0, MAX_UPGRADE_LEVEL);
         this.upgradePoints = Math.max(0, tag.getInt("UpgradePoints"));
         this.normalizeUpgrade();
@@ -225,6 +230,14 @@ public class ZGuzzler extends ZPiglinServant {
         if (tag.contains("Health")) {
             this.setHealth(Math.min(tag.getFloat("Health"), this.getMaxHealth()));
         }
+    }
+
+    public boolean isDyed() {
+        return this.entityData.get(DYED);
+    }
+
+    public void setDyed(boolean dyed) {
+        this.entityData.set(DYED, dyed);
     }
 
     @Override
@@ -408,8 +421,18 @@ public class ZGuzzler extends ZPiglinServant {
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (this.getTrueOwner() != null && player.getUUID().equals(this.getTrueOwner().getUUID())
-                && stack.is(Items.COCOA_BEANS)) {
+        boolean owner = this.getTrueOwner() != null && player.getUUID().equals(this.getTrueOwner().getUUID());
+        if (owner && stack.is(Items.RED_DYE) && !this.isDyed()) {
+            if (!this.level().isClientSide) {
+                this.setDyed(true);
+                if (!player.getAbilities().instabuild) {
+                    stack.shrink(1);
+                }
+                this.playSound(SoundEvents.DYE_USE, 1.0F, 1.0F);
+            }
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
+        }
+        if (owner && stack.is(Items.COCOA_BEANS)) {
             if (!this.level().isClientSide) {
                 this.noSleepTicks = COCOA_NO_SLEEP_TICKS;
                 this.stayTicks = 0;

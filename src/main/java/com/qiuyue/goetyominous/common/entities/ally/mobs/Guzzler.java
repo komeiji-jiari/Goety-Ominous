@@ -38,6 +38,7 @@ import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.piglin.PiglinArmPose;
 import net.minecraft.world.entity.player.Player;
@@ -48,7 +49,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SuspiciousStewItem;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -56,6 +60,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class Guzzler extends AbstractPiglinServant {
     public static final int ANIM_IDLE = 0;
@@ -74,6 +79,8 @@ public class Guzzler extends AbstractPiglinServant {
 
     private static final EntityDataAccessor<Integer> ANIM_STATE = SynchedEntityData.defineId(
             Guzzler.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> DYED = SynchedEntityData.defineId(
+            Guzzler.class, EntityDataSerializers.BOOLEAN);
     private static final int SLEEP_DELAY_TICKS = 300;
     private static final int SLEEP_RETRY_TICKS = 100;
     private static final float SLEEP_CHANCE = 0.25F;
@@ -84,6 +91,9 @@ public class Guzzler extends AbstractPiglinServant {
     private static final double NEARBY_RANGE = 16.0D;
     private static final int DEATH_TICKS = 44;
     private static final int DEATH_SHAKE_TICK = 29;
+    private static final int REPELLENT_PACIFY_TICKS = 200;
+    private static final double REPELLENT_DISTANCE = 8.0D;
+    private static final ResourceLocation MYND_WARPED_FUNGUS_COLONY = new ResourceLocation("mynethersdelight", "warped_fungus_colony");
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState walkAnimationState = new AnimationState();
@@ -111,6 +121,8 @@ public class Guzzler extends AbstractPiglinServant {
     private int upgradeLevel;
     private int upgradePoints;
     private final Map<Item, Integer> fedFoodCounts = new HashMap<>();
+    private BlockPos nearestRepellent;
+    private int repellentPacifyTicks;
 
     public Guzzler(EntityType<? extends Owned> type, Level level) {
         super(type, level);
@@ -258,6 +270,7 @@ public class Guzzler extends AbstractPiglinServant {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(ANIM_STATE, ANIM_IDLE);
+        this.entityData.define(DYED, false);
     }
 
     @Override
@@ -268,6 +281,7 @@ public class Guzzler extends AbstractPiglinServant {
         tag.putInt("JumpCooldown", this.jumpCooldown);
         tag.putInt("NoSleepTicks", this.noSleepTicks);
         tag.putBoolean("Sleeping", this.isSitting());
+        tag.putBoolean("Dyed", this.isDyed());
         tag.putInt("UpgradeLevel", this.upgradeLevel);
         tag.putInt("UpgradePoints", this.upgradePoints);
         CompoundTag fedFoods = new CompoundTag();
@@ -287,6 +301,7 @@ public class Guzzler extends AbstractPiglinServant {
         this.spinCooldown = tag.getInt("SpinCooldown");
         this.jumpCooldown = tag.getInt("JumpCooldown");
         this.noSleepTicks = tag.getInt("NoSleepTicks");
+        this.setDyed(tag.getBoolean("Dyed"));
         this.upgradeLevel = Mth.clamp(tag.getInt("UpgradeLevel"), 0, MAX_UPGRADE_LEVEL);
         this.upgradePoints = Math.max(0, tag.getInt("UpgradePoints"));
         this.normalizeUpgrade();
@@ -313,6 +328,14 @@ public class Guzzler extends AbstractPiglinServant {
         if (tag.contains("Health")) {
             this.setHealth(Math.min(tag.getFloat("Health"), this.getMaxHealth()));
         }
+    }
+
+    public boolean isDyed() {
+        return this.entityData.get(DYED);
+    }
+
+    public void setDyed(boolean dyed) {
+        this.entityData.set(DYED, dyed);
     }
 
     @Override
@@ -597,6 +620,16 @@ public class Guzzler extends AbstractPiglinServant {
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         boolean owner = this.getTrueOwner() != null && player.getUUID().equals(this.getTrueOwner().getUUID());
+        if (owner && stack.is(Items.RED_DYE) && !this.isDyed()) {
+            if (!this.level().isClientSide) {
+                this.setDyed(true);
+                if (!player.getAbilities().instabuild) {
+                    stack.shrink(1);
+                }
+                this.playSound(SoundEvents.DYE_USE, 1.0F, 1.0F);
+            }
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
+        }
         if (owner && stack.is(Items.COCOA_BEANS)) {
             if (!this.level().isClientSide) {
                 this.noSleepTicks = COCOA_NO_SLEEP_TICKS;
@@ -690,6 +723,79 @@ public class Guzzler extends AbstractPiglinServant {
                 this.restSoundTicks = 0;
             }
         }
+    }
+
+    @Override
+    public void aiStep() {
+        if (this.level() instanceof ServerLevel serverLevel && !this.isDeadOrDying()) {
+            Optional<BlockPos> repellent = (this.tickCount + this.getId()) % 20 == 0
+                    ? this.findNearestRepellent(serverLevel)
+                    : Optional.ofNullable(this.nearestRepellent);
+            if (repellent.isPresent()) {
+                if (this.nearestRepellent == null) {
+                    this.getNavigation().stop();
+                    if (this.isSitting()) {
+                        this.beginStandUp();
+                    }
+                }
+                this.nearestRepellent = repellent.get();
+                this.repellentPacifyTicks = REPELLENT_PACIFY_TICKS;
+            } else {
+                this.nearestRepellent = null;
+            }
+            if (this.repellentPacifyTicks > 0) {
+                --this.repellentPacifyTicks;
+                this.setTarget(null);
+            }
+            if (this.nearestRepellent != null) {
+                Vec3 center = this.nearestRepellent.getCenter();
+                if (this.position().closerThan(center, REPELLENT_DISTANCE) && this.getNavigation().isDone()) {
+                    this.fleeRepellent(center);
+                }
+            }
+        }
+        super.aiStep();
+    }
+
+    private void fleeRepellent(Vec3 center) {
+        for (int i = 0; i < 10; ++i) {
+            Vec3 away = LandRandomPos.getPosAway(this, 16, 7, center);
+            if (away == null) {
+                continue;
+            }
+            Path path = this.getNavigation().createPath(away.x, away.y, away.z, 0);
+            if (path != null && path.canReach()) {
+                this.getNavigation().moveTo(path, 1.0D);
+                break;
+            }
+        }
+    }
+
+    private Optional<BlockPos> findNearestRepellent(ServerLevel serverLevel) {
+        return BlockPos.findClosestMatch(this.blockPosition(), 8, 4,
+                pos -> this.isRepellent(serverLevel.getBlockState(pos)));
+    }
+
+    private boolean isRepellent(BlockState state) {
+        return state.is(Blocks.WARPED_FUNGUS)
+                || state.is(Blocks.POTTED_WARPED_FUNGUS)
+                || state.getBlock().builtInRegistryHolder().key().location().equals(MYND_WARPED_FUNGUS_COLONY);
+    }
+
+    @Override
+    public void overrideSetTarget(LivingEntity target) {
+        if (target != null && this.repellentPacifyTicks > 0) {
+            return;
+        }
+        super.overrideSetTarget(target);
+    }
+
+    @Override
+    public float getWalkTargetValue(BlockPos pos, LevelReader levelReader) {
+        if (this.nearestRepellent != null && this.nearestRepellent.closerThan(pos, REPELLENT_DISTANCE)) {
+            return -1.0F;
+        }
+        return super.getWalkTargetValue(pos, levelReader);
     }
 
     private void tickSitting() {

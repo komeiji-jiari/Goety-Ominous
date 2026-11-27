@@ -29,6 +29,10 @@ public class GuzzlerRenderer<T extends Mob> extends MobRenderer<T, GuzzlerModel<
             "textures/entity/piglin/liangzi.png");
     private static final ResourceLocation ZOMBIE_LIANGZI_TEXTURE = new ResourceLocation(GoetyOminous.MOD_ID,
             "textures/entity/piglin/zombie_liangzi.png");
+    private static final ResourceLocation DYED_TEXTURE = new ResourceLocation(GoetyOminous.MOD_ID,
+            "textures/entity/piglin/guzzler_dyed.png");
+    private static final ResourceLocation ZOMBIE_DYED_TEXTURE = new ResourceLocation(GoetyOminous.MOD_ID,
+            "textures/entity/piglin/zguzzler_dyed.png");
 
     public GuzzlerRenderer(EntityRendererProvider.Context context) {
         super(context, new GuzzlerModel<>(context.bakeLayer(GuzzlerModel.LAYER_LOCATION)), 1.2F);
@@ -44,13 +48,19 @@ public class GuzzlerRenderer<T extends Mob> extends MobRenderer<T, GuzzlerModel<
         if (entity instanceof ZGuzzlerBoss) {
             return HOSTILE_ZOMBIE_TEXTURE;
         }
-        if (entity instanceof ZGuzzler) {
-            return this.isLiangzi(entity) ? ZOMBIE_LIANGZI_TEXTURE : ZOMBIE_TEXTURE;
+        if (entity instanceof ZGuzzler zguzzler) {
+            if (this.isLiangzi(entity)) {
+                return ZOMBIE_LIANGZI_TEXTURE;
+            }
+            return zguzzler.isDyed() ? ZOMBIE_DYED_TEXTURE : ZOMBIE_TEXTURE;
         }
         if (entity instanceof GuzzlerBoss) {
             return HOSTILE_TEXTURE;
         }
-        return this.isLiangzi(entity) ? LIANGZI_TEXTURE : TEXTURE;
+        if (this.isLiangzi(entity)) {
+            return LIANGZI_TEXTURE;
+        }
+        return entity instanceof Guzzler guzzler && guzzler.isDyed() ? DYED_TEXTURE : TEXTURE;
     }
 
     private boolean isLiangzi(T entity) {

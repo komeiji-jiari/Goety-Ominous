@@ -18,6 +18,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -32,6 +33,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.SpawnGroupData;
@@ -44,16 +46,21 @@ import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 public class GuzzlerBoss extends Monster {
     public static final int ANIM_IDLE = 0;
@@ -81,6 +88,9 @@ public class GuzzlerBoss extends Monster {
     private static final int SIT_ANIM_TICKS = 20;
     private static final int DEATH_TICKS = 44;
     private static final int DEATH_SHAKE_TICK = 29;
+    private static final int REPELLENT_PACIFY_TICKS = 200;
+    private static final double REPELLENT_DISTANCE = 8.0D;
+    private static final ResourceLocation MYND_WARPED_FUNGUS_COLONY = new ResourceLocation("mynethersdelight", "warped_fungus_colony");
 
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState walkAnimationState = new AnimationState();
@@ -108,6 +118,8 @@ public class GuzzlerBoss extends Monster {
     private boolean nearbyKnown;
     private boolean leaping;
     private int leapTicks;
+    private BlockPos nearestRepellent;
+    private int repellentPacifyTicks;
 
     public GuzzlerBoss(EntityType<? extends GuzzlerBoss> type, Level level) {
         super(type, level);
@@ -244,6 +256,79 @@ public class GuzzlerBoss extends Monster {
             this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
         }
         MiscCapHelper.updateMobTarget(this);
+    }
+
+    @Override
+    public void aiStep() {
+        if (this.level() instanceof ServerLevel serverLevel && !this.isDeadOrDying()) {
+            Optional<BlockPos> repellent = (this.tickCount + this.getId()) % 20 == 0
+                    ? this.findNearestRepellent(serverLevel)
+                    : Optional.ofNullable(this.nearestRepellent);
+            if (repellent.isPresent()) {
+                if (this.nearestRepellent == null) {
+                    this.getNavigation().stop();
+                    if (this.isSitting()) {
+                        this.beginStandUp();
+                    }
+                }
+                this.nearestRepellent = repellent.get();
+                this.repellentPacifyTicks = REPELLENT_PACIFY_TICKS;
+            } else {
+                this.nearestRepellent = null;
+            }
+            if (this.repellentPacifyTicks > 0) {
+                --this.repellentPacifyTicks;
+                this.setTarget(null);
+            }
+            if (this.nearestRepellent != null) {
+                Vec3 center = this.nearestRepellent.getCenter();
+                if (this.position().closerThan(center, REPELLENT_DISTANCE) && this.getNavigation().isDone()) {
+                    this.fleeRepellent(center);
+                }
+            }
+        }
+        super.aiStep();
+    }
+
+    private void fleeRepellent(Vec3 center) {
+        for (int i = 0; i < 10; ++i) {
+            Vec3 away = LandRandomPos.getPosAway(this, 16, 7, center);
+            if (away == null) {
+                continue;
+            }
+            Path path = this.getNavigation().createPath(away.x, away.y, away.z, 0);
+            if (path != null && path.canReach()) {
+                this.getNavigation().moveTo(path, 1.0D);
+                break;
+            }
+        }
+    }
+
+    private Optional<BlockPos> findNearestRepellent(ServerLevel serverLevel) {
+        return BlockPos.findClosestMatch(this.blockPosition(), 8, 4,
+                pos -> this.isRepellent(serverLevel.getBlockState(pos)));
+    }
+
+    private boolean isRepellent(BlockState state) {
+        return state.is(Blocks.WARPED_FUNGUS)
+                || state.is(Blocks.POTTED_WARPED_FUNGUS)
+                || state.getBlock().builtInRegistryHolder().key().location().equals(MYND_WARPED_FUNGUS_COLONY);
+    }
+
+    @Override
+    public void setTarget(LivingEntity target) {
+        if (target != null && this.repellentPacifyTicks > 0) {
+            return;
+        }
+        super.setTarget(target);
+    }
+
+    @Override
+    public float getWalkTargetValue(BlockPos pos, LevelReader levelReader) {
+        if (this.nearestRepellent != null && this.nearestRepellent.closerThan(pos, REPELLENT_DISTANCE)) {
+            return -1.0F;
+        }
+        return super.getWalkTargetValue(pos, levelReader);
     }
 
     private void tickSleep() {
