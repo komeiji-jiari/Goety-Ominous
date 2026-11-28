@@ -471,11 +471,11 @@ public class ModItems {
 
     public static final RegistryObject<ForgeSpawnEggItem> PIGLIN_SHAMAN_SPAWN_EGG = ITEMS.register(
             "piglin_shaman_spawn_egg",
-            () -> new ForgeSpawnEggItem(ModEntityTypes.PIGLIN_SHAMAN, 0xD9A36C, 0x6A2C91, egg()));
+            () -> new ForgeSpawnEggItem(ModEntityTypes.PIGLIN_SHAMAN, 0x29343D, 0xF5DA2A, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> ALLY_SHAMAN_SPAWN_EGG = ITEMS.register(
             "ally_shaman_spawn_egg",
-            () -> new ServantSpawnEggItem(ModEntityTypes.ALLY_SHAMAN, 0xE6C07B, 0x2E8B57, egg()));
+            () -> new ServantSpawnEggItem(ModEntityTypes.ALLY_SHAMAN, 0x3A1A00, 0xF4DA29, egg()));
 
     public static final RegistryObject<ServantSpawnEggItem> FUNGUS_THROWER_SERVANT_SPAWN_EGG = ITEMS.register(
             "fungus_thrower_servant_spawn_egg",

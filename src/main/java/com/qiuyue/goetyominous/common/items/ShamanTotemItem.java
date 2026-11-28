@@ -3,6 +3,7 @@ package com.qiuyue.goetyominous.common.items;
 import com.Polarice3.Goety.common.items.revive.ReviveServantItem;
 import com.Polarice3.Goety.common.ritual.RitualRequirements;
 import com.Polarice3.Goety.init.ModSounds;
+import com.Polarice3.Goety.utils.BlockFinder;
 import com.Polarice3.Goety.utils.MathHelper;
 import com.Polarice3.Goety.utils.SEHelper;
 import com.Polarice3.Goety.utils.ServerParticleUtil;
@@ -83,7 +84,12 @@ public class ShamanTotemItem extends ReviveServantItem {
         if (!RitualRequirements.canSummon(serverLevel, player, ModEntityTypes.ALLY_SHAMAN.get())) {
             return stack;
         }
-        BlockPos pos = player.blockPosition().relative(player.getDirection());
+        Vec3 look = player.getLookAngle().multiply(1.0D, 0.0D, 1.0D);
+        if (look.lengthSqr() < 1.0E-4D) {
+            look = Vec3.atLowerCornerOf(player.getDirection().getNormal());
+        }
+        BlockPos pos = BlockFinder.SummonPosition(serverLevel, player,
+                BlockPos.containing(player.position().add(look.normalize().scale(3.0D))));
         if (servant != null) {
             servant.setPos(Vec3.atBottomCenterOf(pos));
             servant.deathTime = 0;

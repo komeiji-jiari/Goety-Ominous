@@ -144,6 +144,7 @@ public class AllyPiglinShaman extends AbstractPiglinServant {
     private static final int CONVERT_LENGTH = 60;
     private static final double CONVERT_RANGE = 32.0D;
     private static final int COMBAT_MEMORY = 100;
+    private static final int SUMMON_INTERACT_DELAY = 20;
     private static final String[] DISMISS_MESSAGES = {
             "message.goetyominous.ally_shaman.dismiss.1",
             "message.goetyominous.ally_shaman.dismiss.2",
@@ -661,6 +662,9 @@ public class AllyPiglinShaman extends AbstractPiglinServant {
         ItemStack stack = player.getItemInHand(hand);
         if (hand == InteractionHand.MAIN_HAND && stack.isEmpty()
                 && this.getOwnerId() != null && this.getOwnerId().equals(player.getUUID())) {
+            if (this.tickCount < SUMMON_INTERACT_DELAY) {
+                return InteractionResult.SUCCESS;
+            }
             if (!this.level().isClientSide && !this.summonIdle) {
                 if (this.idleSummonCooldown <= 0 && this.spellCooldown <= 0) {
                     this.summonIdle = true;
