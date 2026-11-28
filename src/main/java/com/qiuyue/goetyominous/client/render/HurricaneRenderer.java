@@ -102,7 +102,7 @@ public class HurricaneRenderer<T extends AbstractHurricane> extends MobRenderer<
         public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
             HurricaneModel<T> model = this.getParentModel();
             model.showWind();
-            VertexConsumer consumer = buffer.getBuffer(WindChargeRenderTypes.breezeWind(WIND_TEXTURE, windOffset(entity, partialTicks), 0.0F));
+            VertexConsumer consumer = WindChargeRenderTypes.breezeWind(buffer, WIND_TEXTURE, windOffset(entity, partialTicks), 0.0F);
             model.renderToBuffer(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
             model.showBody();
         }
@@ -124,7 +124,7 @@ public class HurricaneRenderer<T extends AbstractHurricane> extends MobRenderer<
             poseStack.scale(TORNADO_SCALE, TORNADO_SCALE, TORNADO_SCALE);
             poseStack.translate(0.0F, -1.5F, 0.0F);
             this.model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-            VertexConsumer consumer = buffer.getBuffer(WindChargeRenderTypes.breezeWind(BREEZE_WIND_TEXTURE, windOffset(entity, partialTicks), 0.0F));
+            VertexConsumer consumer = WindChargeRenderTypes.breezeWind(buffer, BREEZE_WIND_TEXTURE, windOffset(entity, partialTicks), 0.0F);
             this.model.renderToBuffer(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
             poseStack.popPose();
         }

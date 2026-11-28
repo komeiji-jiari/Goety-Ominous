@@ -64,7 +64,7 @@ public class BreezeRenderer extends MobRenderer<BreezeEntity, BreezeEntityModel<
         @Override
         public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, BreezeEntity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
             float time = (float) entity.tickCount + partialTicks;
-            VertexConsumer consumer = buffer.getBuffer(WindChargeRenderTypes.breezeWind(WIND_TEXTURE, this.xOffset(time) % 1.0F, 0.0F));
+            VertexConsumer consumer = WindChargeRenderTypes.breezeWind(buffer, WIND_TEXTURE, this.xOffset(time) % 1.0F, 0.0F);
             this.model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
             enable(this.model, this.model.wind()).renderToBuffer(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         }

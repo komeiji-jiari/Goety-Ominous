@@ -38,7 +38,7 @@ public class HurricanePunchRenderer extends EntityRenderer<HurricanePunch> {
         float time = (float) entity.tickCount + partialTicks;
         this.model.setupAnim(entity, 0.0F, 0.0F, time, 0.0F, 0.0F);
         this.model.renderToBuffer(poseStack, buffer.getBuffer(this.model.renderType(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-        this.model.renderToBuffer(poseStack, buffer.getBuffer(WindChargeRenderTypes.breezeWind(WIND_TEXTURE, (time * 0.02F) % 1.0F, 0.0F)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        this.model.renderToBuffer(poseStack, WindChargeRenderTypes.breezeWind(buffer, WIND_TEXTURE, (time * 0.02F) % 1.0F, 0.0F), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         poseStack.popPose();
         super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
     }

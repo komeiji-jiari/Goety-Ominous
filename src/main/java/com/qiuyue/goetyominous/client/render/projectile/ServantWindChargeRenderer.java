@@ -27,14 +27,11 @@ public class ServantWindChargeRenderer extends EntityRenderer<AbstractWindCharge
     @Override
     public void render(AbstractWindCharge entity, float entityYaw, float partialTick, PoseStack poseStack,
                        MultiBufferSource buffer, int packedLight) {
-        if (com.qiuyue.goetyominous.client.render.WindChargeShaders.breezeWind() == null) {
-            return;
-        }
         if (entity.tickCount < 2 && this.entityRenderDispatcher.distanceToSqr(entity) < (double) MAX_RENDER_DISTANCE) {
             return;
         }
         float age = (float) entity.tickCount + partialTick;
-        VertexConsumer consumer = buffer.getBuffer(WindChargeRenderTypes.breezeWind(TEXTURE, this.getOffset(age) % 1.0F, 0.0F));
+        VertexConsumer consumer = WindChargeRenderTypes.breezeWind(buffer, TEXTURE, this.getOffset(age) % 1.0F, 0.0F);
         this.model.setupAnim(entity, 0.0F, 0.0F, age, 0.0F, 0.0F);
         this.model.renderToBuffer(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         super.render(entity, entityYaw, partialTick, poseStack, buffer, packedLight);
