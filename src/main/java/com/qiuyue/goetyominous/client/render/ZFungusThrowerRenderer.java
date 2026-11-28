@@ -1,7 +1,7 @@
 package com.qiuyue.goetyominous.client.render;
 
-import com.Polarice3.Goety.client.render.ModModelLayer;
 import com.qiuyue.goetyominous.GoetyOminous;
+import com.qiuyue.goetyominous.client.init.ModEntityLayers;
 import com.qiuyue.goetyominous.client.render.model.ZFungusThrowerServantModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
@@ -16,7 +16,7 @@ public class ZFungusThrowerRenderer extends HumanoidMobRenderer<Mob, ZFungusThro
             "textures/entity/piglin/zfungus_thrower.png");
 
     public ZFungusThrowerRenderer(EntityRendererProvider.Context context) {
-        super(context, new ZFungusThrowerServantModel<>(context.bakeLayer(ModModelLayer.ZPIGLIN_SERVANT)), 0.5F);
+        super(context, new ZFungusThrowerServantModel<>(context.bakeLayer(ModEntityLayers.ZFUNGUS_THROWER_LAYER)), 0.5F);
         this.addLayer(new net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer<>(this,
                 new net.minecraft.client.model.HumanoidModel<>(context.bakeLayer(net.minecraft.client.model.geom.ModelLayers.ZOMBIFIED_PIGLIN_INNER_ARMOR)),
                 new net.minecraft.client.model.HumanoidModel<>(context.bakeLayer(net.minecraft.client.model.geom.ModelLayers.ZOMBIFIED_PIGLIN_OUTER_ARMOR)),

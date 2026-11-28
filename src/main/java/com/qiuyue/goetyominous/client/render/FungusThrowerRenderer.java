@@ -22,7 +22,7 @@ public class FungusThrowerRenderer extends HumanoidMobRenderer<Mob, FungusThrowe
             "textures/entity/piglin/hostile_fungus_thrower.png");
 
     public FungusThrowerRenderer(EntityRendererProvider.Context context) {
-        super(context, new FungusThrowerServantModel<>(context.bakeLayer(ModEntityLayers.PIGLIN_SERVANT_LAYER)),
+        super(context, new FungusThrowerServantModel<>(context.bakeLayer(ModEntityLayers.FUNGUS_THROWER_LAYER)),
                 0.5F, 1.0019531F, 1.0F, 1.0019531F);
         this.addLayer(new HumanoidArmorLayer<>(this,
                 new HumanoidModel<>(context.bakeLayer(ModEntityLayers.PIGLIN_SERVANT_INNER_ARMOR_LAYER)),

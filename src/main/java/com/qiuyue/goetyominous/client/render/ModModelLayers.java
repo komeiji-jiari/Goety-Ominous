@@ -144,9 +144,6 @@ public class ModModelLayers {
         event.registerLayerDefinition(ModEntityLayers.SUNKEN_NECROMANCER_LAYER,
                 SunkenNecromancerModel::createBodyLayer);
 
-        event.registerLayerDefinition(ModEntityLayers.AXOLOTL_SERVANT_LAYER,
-                AxolotlServantModel::createBodyLayer);
-
         event.registerLayerDefinition(ModEntityLayers.HERESIARCH_SERVANT_LAYER,
                 HeresiarchServantModel::createBodyLayer);
 
@@ -195,9 +192,12 @@ public class ModModelLayers {
         event.registerLayerDefinition(ModEntityLayers.ROGUE_CHASSEUR_LAYER,
                 RogueChasseurModel::createBodyLayer);
 
-        event.registerLayerDefinition(ModEntityLayers.PIGLIN_SERVANT_LAYER,
-                () -> net.minecraft.client.model.geom.builders.LayerDefinition.create(
-                        PiglinServantModel.createMesh(net.minecraft.client.model.geom.builders.CubeDeformation.NONE), 64, 64));
+        event.registerLayerDefinition(ModEntityLayers.FUNGUS_THROWER_LAYER,
+                () -> LayerDefinition.create(
+                        PiglinServantModel.createMesh(CubeDeformation.NONE), 64, 64));
+
+        event.registerLayerDefinition(ModEntityLayers.ZFUNGUS_THROWER_LAYER,
+                com.Polarice3.Goety.client.render.model.ZPiglinModel::createBodyLayer);
 
         event.registerLayerDefinition(ModEntityLayers.PIGLIN_SERVANT_INNER_ARMOR_LAYER,
                 () -> LayerDefinition.create(
@@ -241,19 +241,19 @@ public class ModModelLayers {
 
         event.registerEntityRenderer(ModEntityTypes.PIGLIN_BRUTE_SERVANT.get(),
                 (context) -> new PiglinServantRenderer(context,
-                        ModEntityLayers.PIGLIN_SERVANT_LAYER,
+                        ModEntityLayers.PIGLIN_BRUTE_SERVANT_LAYER,
                         ModEntityLayers.PIGLIN_SERVANT_INNER_ARMOR_LAYER,
                         ModEntityLayers.PIGLIN_SERVANT_OUTER_ARMOR_LAYER));
 
         event.registerEntityRenderer(ModEntityTypes.STRONG_PIGLIN_BRUTE_SERVANT.get(),
                 (context) -> new PiglinServantRenderer(context,
-                        ModEntityLayers.PIGLIN_SERVANT_LAYER,
+                        ModEntityLayers.PIGLIN_BRUTE_SERVANT_LAYER,
                         ModEntityLayers.PIGLIN_SERVANT_INNER_ARMOR_LAYER,
                         ModEntityLayers.PIGLIN_SERVANT_OUTER_ARMOR_LAYER));
 
         event.registerEntityRenderer(ModEntityTypes.ELITE_PIGLIN_BRUTE_SERVANT.get(),
                 (context) -> new PiglinServantRenderer(context,
-                        ModEntityLayers.PIGLIN_SERVANT_LAYER,
+                        ModEntityLayers.PIGLIN_BRUTE_SERVANT_LAYER,
                         ModEntityLayers.PIGLIN_SERVANT_INNER_ARMOR_LAYER,
                         ModEntityLayers.PIGLIN_SERVANT_OUTER_ARMOR_LAYER) {
                     @Override

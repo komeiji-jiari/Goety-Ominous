@@ -2,6 +2,7 @@ package com.qiuyue.goetyominous.client.init;
 
 import com.qiuyue.goetyominous.GoetyOminous;
 import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -25,16 +26,15 @@ public class ModEntityLayers {
             new ResourceLocation(GoetyOminous.MOD_ID, "rogue_chasseur"), "main");
 
     public static final ModelLayerLocation BOGGED_LAYER = new ModelLayerLocation(
-            new ResourceLocation("goetyominous", "bogged"), "main");
+            new ResourceLocation("minecraft", "bogged"), "main");
 
     public static final ModelLayerLocation BOGGED_OUTER_LAYER = new ModelLayerLocation(
-            new ResourceLocation("goetyominous", "bogged_outer"), "main");
+            new ResourceLocation("minecraft", "bogged_outer"), "main");
 
     public static final ModelLayerLocation SUNKEN_NECROMANCER_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "sunken_necromancer"), "main");
 
-    public static final ModelLayerLocation AXOLOTL_SERVANT_LAYER = new ModelLayerLocation(
-            new ResourceLocation(GoetyOminous.MOD_ID, "axolotl_servant"), "main");
+    public static final ModelLayerLocation AXOLOTL_SERVANT_LAYER = ModelLayers.AXOLOTL;
 
     public static final ModelLayerLocation HERESIARCH_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "heresiarch_servant"), "main");
@@ -168,8 +168,15 @@ public class ModEntityLayers {
     public static final ModelLayerLocation FLAMEBORN_GUARD_SERVANT_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "flameborn_guard_servant"), "main");
 
-    public static final ModelLayerLocation PIGLIN_SERVANT_LAYER = new ModelLayerLocation(
-            new ResourceLocation(GoetyOminous.MOD_ID, "piglin_servant"), "main");
+    public static final ModelLayerLocation PIGLIN_SERVANT_LAYER = ModelLayers.PIGLIN;
+
+    public static final ModelLayerLocation PIGLIN_BRUTE_SERVANT_LAYER = ModelLayers.PIGLIN_BRUTE;
+
+    public static final ModelLayerLocation FUNGUS_THROWER_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "fungus_thrower"), "main");
+
+    public static final ModelLayerLocation ZFUNGUS_THROWER_LAYER = new ModelLayerLocation(
+            new ResourceLocation(GoetyOminous.MOD_ID, "zfungus_thrower"), "main");
 
     public static final ModelLayerLocation PIGLIN_SERVANT_INNER_ARMOR_LAYER = new ModelLayerLocation(
             new ResourceLocation(GoetyOminous.MOD_ID, "piglin_servant"), "inner_armor");
